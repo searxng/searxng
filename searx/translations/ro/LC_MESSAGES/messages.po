@@ -24,13 +24,14 @@
 # microsoftocsharp <microsoftocsharp@users.noreply.translate.codeberg.org>,
 # 2025.
 # dauiau <dauiau@users.noreply.translate.codeberg.org>, 2025.
+# return42 <return42@noreply.codeberg.org>, 2025.
 msgid ""
 msgstr ""
 "Project-Id-Version: searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-01-29 05:08+0000\n"
-"PO-Revision-Date: 2025-02-25 13:21+0000\n"
-"Last-Translator: dauiau <dauiau@users.noreply.translate.codeberg.org>\n"
+"POT-Creation-Date: 2025-03-29 09:21+0000\n"
+"PO-Revision-Date: 2025-03-31 18:08+0000\n"
+"Last-Translator: return42 <return42@noreply.codeberg.org>\n"
 "Language-Team: Romanian <https://translate.codeberg.org/projects/searxng/"
 "searxng/ro/>\n"
 "Language: ro\n"
@@ -39,8 +40,8 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=n==1 ? 0 : (n==0 || (n%100 > 0 && n%100 < "
 "20)) ? 1 : 2;\n"
-"X-Generator: Weblate 5.9.2\n"
-"Generated-By: Babel 2.16.0\n"
+"X-Generator: Weblate 5.10.2\n"
+"Generated-By: Babel 2.17.0\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
 #: searx/searxng.msg
@@ -364,7 +365,7 @@ msgstr "răspuns"
 msgid "No item found"
 msgstr "Niciun element găsit"
 
-#: searx/engines/qwant.py:288
+#: searx/engines/qwant.py:291
 #: searx/templates/simple/result_templates/images.html:23 searx/webapp.py:314
 msgid "Source"
 msgstr "Sursă"
@@ -442,10 +443,12 @@ msgid "Suspended"
 msgstr "Întrerupt"
 
 #: searx/webutils.py:314
+#, python-brace-format
 msgid "{minutes} minute(s) ago"
 msgstr "{minutes} minut(e) în urmă"
 
 #: searx/webutils.py:315
+#, python-brace-format
 msgid "{hours} hour(s), {minutes} minute(s) ago"
 msgstr "{hours} oră(e), {minutes} minut(e) în urmă"
 
@@ -454,22 +457,24 @@ msgid "Generate different random values"
 msgstr "Generează valori aleatoare diferite"
 
 #: searx/answerers/statistics.py:36
+#, python-brace-format
 msgid "Compute {func} of the arguments"
-msgstr "Calculați {funcția} argumentelor"
+msgstr "Calculați {func} argumentelor"
 
 #: searx/engines/openstreetmap.py:158
 msgid "Show route in map .."
 msgstr "Arată ruta în hartă .."
 
 #: searx/engines/pdbe.py:96
+#, python-brace-format
 msgid "{title} (OBSOLETE)"
-msgstr "{title} {OBSOLETE}"
+msgstr "{title} (OBSOLETE)"
 
 #: searx/engines/pdbe.py:103
 msgid "This entry has been superseded by"
 msgstr "Această intrare a fost inlocuită de"
 
-#: searx/engines/qwant.py:290
+#: searx/engines/qwant.py:293
 msgid "Channel"
 msgstr "Canal"
 
@@ -490,7 +495,8 @@ msgstr "click-uri"
 msgid "Language"
 msgstr "Limba"
 
-#: searx/engines/semantic_scholar.py:78
+#: searx/engines/semantic_scholar.py:79
+#, python-brace-format
 msgid ""
 "{numCitations} citations from the year {firstCitationVelocityYear} to "
 "{lastCitationVelocityYear}"
@@ -498,7 +504,7 @@ msgstr ""
 "{numCitations} Citații din acest an {firstCitationVelocityYear} pâna la "
 "{lastCitationVelocityYear}"
 
-#: searx/engines/tineye.py:47
+#: searx/engines/tineye.py:48
 msgid ""
 "Could not read that image url. This may be due to an unsupported file "
 "format. TinEye only supports images that are JPEG, PNG, GIF, BMP, TIFF or"
@@ -508,7 +514,7 @@ msgstr ""
 "format de fișier nesuportat. TinEye suportă doar imagini care sunt JPEG, "
 "PNG,GIF, BMP, TIFF sau WebP."
 
-#: searx/engines/tineye.py:53
+#: searx/engines/tineye.py:54
 msgid ""
 "The image is too simple to find matches. TinEye requires a basic level of"
 " visual detail to successfully identify matches."
@@ -528,7 +534,19 @@ msgstr "Recenzia cărții"
 msgid "File quality"
 msgstr "Calitatea fișierului"
 
-#: searx/plugins/calculator.py:20
+#: searx/plugins/ahmia_filter.py:32
+msgid "Ahmia blacklist"
+msgstr ""
+
+#: searx/plugins/ahmia_filter.py:33
+msgid "Filter out onion results that appear in Ahmia's blacklist."
+msgstr ""
+
+#: searx/plugins/calculator.py:38
+msgid "Basic Calculator"
+msgstr ""
+
+#: searx/plugins/calculator.py:39
 msgid "Calculate mathematical expressions via the search bar"
 msgstr "Calculați expresii matematice prin bara de căutare"
 
@@ -544,21 +562,21 @@ msgstr "Convertește șirurile în diferite rezumate hash."
 msgid "hash digest"
 msgstr "rezumat hash"
 
-#: searx/plugins/hostnames.py:105
+#: searx/plugins/hostnames.py:123
 msgid "Hostnames plugin"
 msgstr "Pluginul Hostnames"
 
-#: searx/plugins/hostnames.py:106
+#: searx/plugins/hostnames.py:124
 msgid "Rewrite hostnames, remove results or prioritize them based on the hostname"
 msgstr ""
 "Rescrieți hostnames, eliminați rezultatele sau prioritizați-le pe baza "
 "numelui hostname"
 
-#: searx/plugins/oa_doi_rewrite.py:15
+#: searx/plugins/oa_doi_rewrite.py:55
 msgid "Open Access DOI rewrite"
 msgstr "Rescriere DOI cu acces deschis"
 
-#: searx/plugins/oa_doi_rewrite.py:16
+#: searx/plugins/oa_doi_rewrite.py:56
 msgid ""
 "Avoid paywalls by redirecting to open-access versions of publications "
 "when available"
@@ -570,13 +588,13 @@ msgstr ""
 msgid "Self Information"
 msgstr "Informații despre sine"
 
-#: searx/plugins/self_info.py:38
+#: searx/plugins/self_info.py:39
 msgid ""
 "Displays your IP if the query is \"ip\" and your user agent if the query "
 "is \"user-agent\"."
 msgstr ""
-"Afișează IP-ul dvs. dacă interogarea este „ip” și agentul de utilizator dacă "
-"interogarea este „user-agent”."
+"Afișează IP-ul dvs. dacă interogarea este „ip” și agentul de utilizator "
+"dacă interogarea este „user-agent”."
 
 #: searx/plugins/self_info.py:52
 msgid "Your IP is: "
@@ -586,11 +604,11 @@ msgstr "IP-ul dumneavoastră este: "
 msgid "Your user-agent is: "
 msgstr "User-agent-ul dumneavoastră este: "
 
-#: searx/plugins/tor_check.py:29
+#: searx/plugins/tor_check.py:42
 msgid "Tor check plugin"
 msgstr "Activeaza plugin Tor"
 
-#: searx/plugins/tor_check.py:32
+#: searx/plugins/tor_check.py:44
 msgid ""
 "This plugin checks if the address of the request is a Tor exit-node, and "
 "informs the user if it is; like check.torproject.org, but from SearXNG."
@@ -599,27 +617,31 @@ msgstr ""
 "și informează utilizatorul dacă este; la fel ca check.torproject.org, dar"
 " de la SearXNG."
 
-#: searx/plugins/tor_check.py:69
+#: searx/plugins/tor_check.py:65
 msgid "Could not download the list of Tor exit-nodes from"
 msgstr "Nu s-a putut descărca lista de noduri de ieșire Tor din"
 
-#: searx/plugins/tor_check.py:81
+#: searx/plugins/tor_check.py:72
 msgid "You are using Tor and it looks like you have the external IP address"
 msgstr "Folosiți Tor și se pare că aveți adresa IP externă"
 
-#: searx/plugins/tor_check.py:85
+#: searx/plugins/tor_check.py:76
 msgid "You are not using Tor and you have the external IP address"
 msgstr "Nu utilizați Tor și aveți adresa IP externă"
 
-#: searx/plugins/tracker_url_remover.py:18
+#: searx/plugins/tracker_url_remover.py:37
 msgid "Tracker URL remover"
 msgstr "Eliminator de URL pentru urmăritor"
 
-#: searx/plugins/tracker_url_remover.py:19
+#: searx/plugins/tracker_url_remover.py:38
 msgid "Remove trackers arguments from the returned URL"
 msgstr "Elimină argumentele urmăritorului din URL-ul returnat"
 
-#: searx/plugins/unit_converter.py:32
+#: searx/plugins/unit_converter.py:49
+msgid "Unit converter plugin"
+msgstr ""
+
+#: searx/plugins/unit_converter.py:50
 msgid "Convert between units"
 msgstr "Convertiți între unități"
 
@@ -678,7 +700,7 @@ msgstr "Politica de Confidențialitate"
 msgid "Contact instance maintainer"
 msgstr "Contactați întreținătorul instanței"
 
-#: searx/templates/simple/categories.html:26
+#: searx/templates/simple/categories.html:30
 msgid "Click on the magnifier to perform search"
 msgstr "Apăsați pe lupă pentru a executa căutarea"
 
@@ -1174,11 +1196,9 @@ msgstr "URL pentru revindecarea preferințelor dintr-un alt browser"
 
 #: searx/templates/simple/preferences/cookies.html:43
 msgid ""
-"Specifying custom settings in the preferences URL can be used to sync "
-"preferences across devices."
+"A URL containing your preferences. This URL can be used to restore your "
+"settings on a different device."
 msgstr ""
-"Specificând setări personalizate în URLul de preferințe poate fi folosit "
-"pentru sincronizarea preferințelor pe toate aparatele."
 
 #: searx/templates/simple/preferences/cookies.html:46
 msgid "Copy preferences hash"
@@ -1433,7 +1453,7 @@ msgstr "Acest site nu a oferit nici o descriere."
 
 #: searx/templates/simple/result_templates/files.html:38
 #: searx/templates/simple/result_templates/images.html:22
-#: searx/templates/simple/result_templates/torrent.html:11
+#: searx/templates/simple/result_templates/torrent.html:18
 msgid "Filesize"
 msgstr "Dimensiune fișier"
 
@@ -1543,23 +1563,23 @@ msgstr "PDF"
 msgid "HTML"
 msgstr "HTML"
 
-#: searx/templates/simple/result_templates/torrent.html:6
+#: searx/templates/simple/result_templates/torrent.html:7
 msgid "magnet link"
 msgstr "legătură magnet"
 
-#: searx/templates/simple/result_templates/torrent.html:7
+#: searx/templates/simple/result_templates/torrent.html:8
 msgid "torrent file"
 msgstr "fișier torrent"
 
-#: searx/templates/simple/result_templates/torrent.html:9
+#: searx/templates/simple/result_templates/torrent.html:13
 msgid "Seeder"
 msgstr "Sursă completă"
 
-#: searx/templates/simple/result_templates/torrent.html:9
+#: searx/templates/simple/result_templates/torrent.html:14
 msgid "Leecher"
 msgstr "Sursă incompletă"
 
-#: searx/templates/simple/result_templates/torrent.html:13
+#: searx/templates/simple/result_templates/torrent.html:19
 msgid "Number of Files"
 msgstr "Numărul fișierelor"
 
@@ -2082,3 +2102,13 @@ msgstr "ascunde video"
 
 #~ msgid "/"
 #~ msgstr ""
+
+#~ msgid ""
+#~ "Specifying custom settings in the "
+#~ "preferences URL can be used to "
+#~ "sync preferences across devices."
+#~ msgstr ""
+#~ "Specificând setări personalizate în URLul "
+#~ "de preferințe poate fi folosit pentru"
+#~ " sincronizarea preferințelor pe toate "
+#~ "aparatele."

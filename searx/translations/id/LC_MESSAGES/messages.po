@@ -17,13 +17,14 @@
 # Linerly <linerly@users.noreply.translate.codeberg.org>, 2025.
 # Anonymous <anonymous@users.noreply.translate.codeberg.org>, 2025.
 # SilentWord <silentword@users.noreply.translate.codeberg.org>, 2025.
+# Linerly <linerly@noreply.codeberg.org>, 2025.
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-01-29 05:08+0000\n"
-"PO-Revision-Date: 2025-01-30 05:21+0000\n"
-"Last-Translator: Linerly <linerly@users.noreply.translate.codeberg.org>\n"
+"POT-Creation-Date: 2025-03-29 09:21+0000\n"
+"PO-Revision-Date: 2025-03-31 14:03+0000\n"
+"Last-Translator: Linerly <linerly@noreply.codeberg.org>\n"
 "Language-Team: Indonesian <https://translate.codeberg.org/projects/searxng/"
 "searxng/id/>\n"
 "Language: id\n"
@@ -31,8 +32,8 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.9.2\n"
-"Generated-By: Babel 2.16.0\n"
+"X-Generator: Weblate 5.10.2\n"
+"Generated-By: Babel 2.17.0\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
 #: searx/searxng.msg
@@ -356,7 +357,7 @@ msgstr "dijawab"
 msgid "No item found"
 msgstr "Item tidak ditemukan"
 
-#: searx/engines/qwant.py:288
+#: searx/engines/qwant.py:291
 #: searx/templates/simple/result_templates/images.html:23 searx/webapp.py:314
 msgid "Source"
 msgstr "Sumber"
@@ -434,10 +435,12 @@ msgid "Suspended"
 msgstr "Ditangguhkan"
 
 #: searx/webutils.py:314
+#, python-brace-format
 msgid "{minutes} minute(s) ago"
 msgstr "{minutes} menit yang lalu"
 
 #: searx/webutils.py:315
+#, python-brace-format
 msgid "{hours} hour(s), {minutes} minute(s) ago"
 msgstr "{hours} jam, {minutes} menit yang lalu"
 
@@ -446,6 +449,7 @@ msgid "Generate different random values"
 msgstr "Menghasilkan nilai-nilai acak yang berbeda"
 
 #: searx/answerers/statistics.py:36
+#, python-brace-format
 msgid "Compute {func} of the arguments"
 msgstr "Hitung {func} dari argumen"
 
@@ -454,6 +458,7 @@ msgid "Show route in map .."
 msgstr "Tampilkan rute di peta .."
 
 #: searx/engines/pdbe.py:96
+#, python-brace-format
 msgid "{title} (OBSOLETE)"
 msgstr "{title} (USANG)"
 
@@ -461,7 +466,7 @@ msgstr "{title} (USANG)"
 msgid "This entry has been superseded by"
 msgstr "Entri ini telah digantikan oleh"
 
-#: searx/engines/qwant.py:290
+#: searx/engines/qwant.py:293
 msgid "Channel"
 msgstr "Saluran"
 
@@ -482,7 +487,8 @@ msgstr "klik"
 msgid "Language"
 msgstr "Bahasa"
 
-#: searx/engines/semantic_scholar.py:78
+#: searx/engines/semantic_scholar.py:79
+#, python-brace-format
 msgid ""
 "{numCitations} citations from the year {firstCitationVelocityYear} to "
 "{lastCitationVelocityYear}"
@@ -490,7 +496,7 @@ msgstr ""
 "{numCitations} kutipan dari tahun {firstCitationVelocityYear} sampai "
 "dengan {lastCitationVelocityYear}"
 
-#: searx/engines/tineye.py:47
+#: searx/engines/tineye.py:48
 msgid ""
 "Could not read that image url. This may be due to an unsupported file "
 "format. TinEye only supports images that are JPEG, PNG, GIF, BMP, TIFF or"
@@ -500,7 +506,7 @@ msgstr ""
 "tidak didukung. TinEye hanya mendukung gambar JPEG, PNG, GIF, BMP, TIFF, "
 "atau WebP."
 
-#: searx/engines/tineye.py:53
+#: searx/engines/tineye.py:54
 msgid ""
 "The image is too simple to find matches. TinEye requires a basic level of"
 " visual detail to successfully identify matches."
@@ -521,7 +527,19 @@ msgstr "Penilaian buku"
 msgid "File quality"
 msgstr "Kualitas berkas"
 
-#: searx/plugins/calculator.py:20
+#: searx/plugins/ahmia_filter.py:32
+msgid "Ahmia blacklist"
+msgstr "Daftar hitam Ahmia"
+
+#: searx/plugins/ahmia_filter.py:33
+msgid "Filter out onion results that appear in Ahmia's blacklist."
+msgstr "Saringkan hasil onion yang muncul dalam daftar hitam Ahmia."
+
+#: searx/plugins/calculator.py:38
+msgid "Basic Calculator"
+msgstr "Kalukator dasar"
+
+#: searx/plugins/calculator.py:39
 msgid "Calculate mathematical expressions via the search bar"
 msgstr "Hitung ekspresi matematika di bilah pencarian"
 
@@ -537,19 +555,19 @@ msgstr "Mengubah untaian (string) menjadi pilah digest (hash digest) yang berbed
 msgid "hash digest"
 msgstr "pilah digest"
 
-#: searx/plugins/hostnames.py:105
+#: searx/plugins/hostnames.py:123
 msgid "Hostnames plugin"
 msgstr "Plugin nama hos"
 
-#: searx/plugins/hostnames.py:106
+#: searx/plugins/hostnames.py:124
 msgid "Rewrite hostnames, remove results or prioritize them based on the hostname"
 msgstr "Tulis ulang nama hos, hapus atau prioritaskan hasil berdasarkan nama hos"
 
-#: searx/plugins/oa_doi_rewrite.py:15
+#: searx/plugins/oa_doi_rewrite.py:55
 msgid "Open Access DOI rewrite"
 msgstr "Penulisan ulang Open Access DOI"
 
-#: searx/plugins/oa_doi_rewrite.py:16
+#: searx/plugins/oa_doi_rewrite.py:56
 msgid ""
 "Avoid paywalls by redirecting to open-access versions of publications "
 "when available"
@@ -559,7 +577,7 @@ msgstr "Hindari paywall dengan mengalihkan ke versi terbuka jika tersedia"
 msgid "Self Information"
 msgstr "Informasi Diri"
 
-#: searx/plugins/self_info.py:38
+#: searx/plugins/self_info.py:39
 msgid ""
 "Displays your IP if the query is \"ip\" and your user agent if the query "
 "is \"user-agent\"."
@@ -575,11 +593,11 @@ msgstr "IP Anda: "
 msgid "Your user-agent is: "
 msgstr "Agen pengguna Anda: "
 
-#: searx/plugins/tor_check.py:29
+#: searx/plugins/tor_check.py:42
 msgid "Tor check plugin"
 msgstr "Plugin pemeriksaan Tor"
 
-#: searx/plugins/tor_check.py:32
+#: searx/plugins/tor_check.py:44
 msgid ""
 "This plugin checks if the address of the request is a Tor exit-node, and "
 "informs the user if it is; like check.torproject.org, but from SearXNG."
@@ -588,27 +606,31 @@ msgstr ""
 "dan memberi tahu pengguna jika alamat tersebut memang node keluaran Tor; "
 "seperti check.torproject.org, tetapi dari SearXNG."
 
-#: searx/plugins/tor_check.py:69
+#: searx/plugins/tor_check.py:65
 msgid "Could not download the list of Tor exit-nodes from"
 msgstr "Tidak dapat mengunduh daftar node keluar Tor"
 
-#: searx/plugins/tor_check.py:81
+#: searx/plugins/tor_check.py:72
 msgid "You are using Tor and it looks like you have the external IP address"
 msgstr "Anda menggunakan Tor dan sepertinya Anda memiliki alamat IP eksternal"
 
-#: searx/plugins/tor_check.py:85
+#: searx/plugins/tor_check.py:76
 msgid "You are not using Tor and you have the external IP address"
 msgstr "Anda tidak menggunakan Tor dan Anda memiliki alamat IP eksternal"
 
-#: searx/plugins/tracker_url_remover.py:18
+#: searx/plugins/tracker_url_remover.py:37
 msgid "Tracker URL remover"
 msgstr "Penghapus URL pelacak"
 
-#: searx/plugins/tracker_url_remover.py:19
+#: searx/plugins/tracker_url_remover.py:38
 msgid "Remove trackers arguments from the returned URL"
 msgstr "Menghapus argumen pelacak dari URL yang dikembalikan"
 
-#: searx/plugins/unit_converter.py:32
+#: searx/plugins/unit_converter.py:49
+msgid "Unit converter plugin"
+msgstr "Plugin konverter satuan"
+
+#: searx/plugins/unit_converter.py:50
 msgid "Convert between units"
 msgstr "Konversikan antarsatuan"
 
@@ -667,7 +689,7 @@ msgstr "Kebijakan privasi"
 msgid "Contact instance maintainer"
 msgstr "Hubungi pengelola instansi"
 
-#: searx/templates/simple/categories.html:26
+#: searx/templates/simple/categories.html:30
 msgid "Click on the magnifier to perform search"
 msgstr "Klik pembesar untuk melakukan pencarian"
 
@@ -1157,11 +1179,11 @@ msgstr "URL untuk memulihkan preferensi Anda pada peramban lain"
 
 #: searx/templates/simple/preferences/cookies.html:43
 msgid ""
-"Specifying custom settings in the preferences URL can be used to sync "
-"preferences across devices."
+"A URL containing your preferences. This URL can be used to restore your "
+"settings on a different device."
 msgstr ""
-"Menyediakan pengaturan kustom pada URL preferensi agar dapat digunakan "
-"untuk menyinkronkan preferensi pada semua perangkat."
+"URL yang berisi preferensi Anda. URL ini dapat digunakan untuk memulihkan "
+"pengaturan Anda pada perangkat yang berbeda."
 
 #: searx/templates/simple/preferences/cookies.html:46
 msgid "Copy preferences hash"
@@ -1417,7 +1439,7 @@ msgstr "Situs ini tidak memberikan deskripsi apa pun."
 
 #: searx/templates/simple/result_templates/files.html:38
 #: searx/templates/simple/result_templates/images.html:22
-#: searx/templates/simple/result_templates/torrent.html:11
+#: searx/templates/simple/result_templates/torrent.html:18
 msgid "Filesize"
 msgstr "Ukuran berkas"
 
@@ -1527,23 +1549,23 @@ msgstr "PDF"
 msgid "HTML"
 msgstr "HTML"
 
-#: searx/templates/simple/result_templates/torrent.html:6
+#: searx/templates/simple/result_templates/torrent.html:7
 msgid "magnet link"
 msgstr "tautan magnet"
 
-#: searx/templates/simple/result_templates/torrent.html:7
+#: searx/templates/simple/result_templates/torrent.html:8
 msgid "torrent file"
 msgstr "berkas torrent"
 
-#: searx/templates/simple/result_templates/torrent.html:9
+#: searx/templates/simple/result_templates/torrent.html:13
 msgid "Seeder"
 msgstr "Pengumpan"
 
-#: searx/templates/simple/result_templates/torrent.html:9
+#: searx/templates/simple/result_templates/torrent.html:14
 msgid "Leecher"
 msgstr "Leecher"
 
-#: searx/templates/simple/result_templates/torrent.html:13
+#: searx/templates/simple/result_templates/torrent.html:19
 msgid "Number of Files"
 msgstr "Jumlah Berkas"
 
@@ -1946,3 +1968,12 @@ msgstr "sembunyikan video"
 
 #~ msgid "/"
 #~ msgstr ""
+
+#~ msgid ""
+#~ "Specifying custom settings in the "
+#~ "preferences URL can be used to "
+#~ "sync preferences across devices."
+#~ msgstr ""
+#~ "Menyediakan pengaturan kustom pada URL "
+#~ "preferensi agar dapat digunakan untuk "
+#~ "menyinkronkan preferensi pada semua perangkat."

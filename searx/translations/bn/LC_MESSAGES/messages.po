@@ -26,18 +26,17 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-01-29 05:08+0000\n"
+"POT-Creation-Date: 2025-03-29 09:21+0000\n"
 "PO-Revision-Date: 2025-03-06 09:54+0000\n"
 "Last-Translator: MonsoonFire <monsoonfire@noreply.codeberg.org>\n"
-"Language-Team: Bengali <https://translate.codeberg.org/projects/searxng/"
-"searxng/bn/>\n"
 "Language: bn\n"
+"Language-Team: Bengali "
+"<https://translate.codeberg.org/projects/searxng/searxng/bn/>\n"
+"Plural-Forms: nplurals=2; plural=n > 1;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 5.10.2\n"
-"Generated-By: Babel 2.16.0\n"
+"Generated-By: Babel 2.17.0\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
 #: searx/searxng.msg
@@ -361,7 +360,7 @@ msgstr "উত্তরকৃত"
 msgid "No item found"
 msgstr "কোন আইটেম পাওয়া যায়নি"
 
-#: searx/engines/qwant.py:288
+#: searx/engines/qwant.py:291
 #: searx/templates/simple/result_templates/images.html:23 searx/webapp.py:314
 msgid "Source"
 msgstr "উৎস"
@@ -439,10 +438,12 @@ msgid "Suspended"
 msgstr "স্থগিত"
 
 #: searx/webutils.py:314
+#, python-brace-format
 msgid "{minutes} minute(s) ago"
 msgstr "{minutes} মিনিট আগে"
 
 #: searx/webutils.py:315
+#, python-brace-format
 msgid "{hours} hour(s), {minutes} minute(s) ago"
 msgstr "{hours} ঘণ্টা, {minutes} মিনিট আগে"
 
@@ -451,6 +452,7 @@ msgid "Generate different random values"
 msgstr "বিভিন্ন এলোমেলো মান তৈরি করুন"
 
 #: searx/answerers/statistics.py:36
+#, python-brace-format
 msgid "Compute {func} of the arguments"
 msgstr "{func} এই আদেশ কম্পিউট করো"
 
@@ -459,6 +461,7 @@ msgid "Show route in map .."
 msgstr "মানচিত্রে সেরা রাস্তা দেখাও .।"
 
 #: searx/engines/pdbe.py:96
+#, python-brace-format
 msgid "{title} (OBSOLETE)"
 msgstr "{title} (অচল)"
 
@@ -466,7 +469,7 @@ msgstr "{title} (অচল)"
 msgid "This entry has been superseded by"
 msgstr "এই এনট্রিটি দ্বারা বাতিল করা হয়েছে৷"
 
-#: searx/engines/qwant.py:290
+#: searx/engines/qwant.py:293
 msgid "Channel"
 msgstr "চ্যানেল"
 
@@ -487,7 +490,8 @@ msgstr "ক্লিক সংখ্যা"
 msgid "Language"
 msgstr "ভাষা"
 
-#: searx/engines/semantic_scholar.py:78
+#: searx/engines/semantic_scholar.py:79
+#, python-brace-format
 msgid ""
 "{numCitations} citations from the year {firstCitationVelocityYear} to "
 "{lastCitationVelocityYear}"
@@ -495,7 +499,7 @@ msgstr ""
 "{numCitations} উদ্ধৃতি সাল {firstCitationVelocityYear} থেকে "
 "{lastCitationVelocityYear}"
 
-#: searx/engines/tineye.py:47
+#: searx/engines/tineye.py:48
 msgid ""
 "Could not read that image url. This may be due to an unsupported file "
 "format. TinEye only supports images that are JPEG, PNG, GIF, BMP, TIFF or"
@@ -505,7 +509,7 @@ msgstr ""
 "পারার জন্যে। TinEye কেবল JPEG, PNG, GIF, BMP, TIFF আর WebP ফরম্যাট কে "
 "পড়তে পারে।"
 
-#: searx/engines/tineye.py:53
+#: searx/engines/tineye.py:54
 msgid ""
 "The image is too simple to find matches. TinEye requires a basic level of"
 " visual detail to successfully identify matches."
@@ -525,7 +529,19 @@ msgstr "বই পর্যালোচনা"
 msgid "File quality"
 msgstr "নথি মান"
 
-#: searx/plugins/calculator.py:20
+#: searx/plugins/ahmia_filter.py:32
+msgid "Ahmia blacklist"
+msgstr ""
+
+#: searx/plugins/ahmia_filter.py:33
+msgid "Filter out onion results that appear in Ahmia's blacklist."
+msgstr ""
+
+#: searx/plugins/calculator.py:38
+msgid "Basic Calculator"
+msgstr ""
+
+#: searx/plugins/calculator.py:39
 msgid "Calculate mathematical expressions via the search bar"
 msgstr "সার্চ বারের মাধমে গানিতিক সমীকরণ সমাধান করুন"
 
@@ -541,19 +557,19 @@ msgstr "স্ট্রিংগুলিকে বিভিন্ন হ্য�
 msgid "hash digest"
 msgstr "হ্যাশ ডাইজেস্ট"
 
-#: searx/plugins/hostnames.py:105
+#: searx/plugins/hostnames.py:123
 msgid "Hostnames plugin"
 msgstr "হোস্টনেম প্লাগিন"
 
-#: searx/plugins/hostnames.py:106
+#: searx/plugins/hostnames.py:124
 msgid "Rewrite hostnames, remove results or prioritize them based on the hostname"
 msgstr "হোস্টনাম পুনর্লিখন করো, ফলাফল অপসারণ করো বা হোস্টনামের ভিত্তিতে সাজাও"
 
-#: searx/plugins/oa_doi_rewrite.py:15
+#: searx/plugins/oa_doi_rewrite.py:55
 msgid "Open Access DOI rewrite"
 msgstr "পুনর্লিখিত DOI উন্মুক্ত প্রবেশ"
 
-#: searx/plugins/oa_doi_rewrite.py:16
+#: searx/plugins/oa_doi_rewrite.py:56
 msgid ""
 "Avoid paywalls by redirecting to open-access versions of publications "
 "when available"
@@ -565,13 +581,13 @@ msgstr ""
 msgid "Self Information"
 msgstr "নিজ তথ্য"
 
-#: searx/plugins/self_info.py:38
+#: searx/plugins/self_info.py:39
 msgid ""
 "Displays your IP if the query is \"ip\" and your user agent if the query "
 "is \"user-agent\"."
 msgstr ""
-"তোমার আইপি দেখাও যদি তোমার অনুসন্ধান \"ip\" হয় ও তোমার ইউজার এজেন্ট দেখাও যদি "
-"অনুসন্ধান \"user-agent\" হয়।"
+"তোমার আইপি দেখাও যদি তোমার অনুসন্ধান \"ip\" হয় ও তোমার ইউজার এজেন্ট দেখাও"
+" যদি অনুসন্ধান \"user-agent\" হয়।"
 
 #: searx/plugins/self_info.py:52
 msgid "Your IP is: "
@@ -581,11 +597,11 @@ msgstr "তোমার আইপি: "
 msgid "Your user-agent is: "
 msgstr "তোমার ইউজার-এজেন্ট: "
 
-#: searx/plugins/tor_check.py:29
+#: searx/plugins/tor_check.py:42
 msgid "Tor check plugin"
 msgstr "টর চেক প্লাগইন"
 
-#: searx/plugins/tor_check.py:32
+#: searx/plugins/tor_check.py:44
 msgid ""
 "This plugin checks if the address of the request is a Tor exit-node, and "
 "informs the user if it is; like check.torproject.org, but from SearXNG."
@@ -594,27 +610,31 @@ msgstr ""
 "ব্যবহারকারীকে জানিয়ে দেয় যে এটি কিনা, যেমন check.torproject.org কিন্তু "
 "SearXNG থেকে।"
 
-#: searx/plugins/tor_check.py:69
+#: searx/plugins/tor_check.py:65
 msgid "Could not download the list of Tor exit-nodes from"
 msgstr "টর এক্সিট-নোডের তালিকা নামানো সম্ভব হয়নি এখান থেকে"
 
-#: searx/plugins/tor_check.py:81
+#: searx/plugins/tor_check.py:72
 msgid "You are using Tor and it looks like you have the external IP address"
 msgstr "তুমি টর ব্যবহার করছো এবং সম্ভবত বাইরের আইপি ঠিকানা তোমার"
 
-#: searx/plugins/tor_check.py:85
+#: searx/plugins/tor_check.py:76
 msgid "You are not using Tor and you have the external IP address"
 msgstr "তুমি টর ব্যবহার করছো না এবং বাইরের আইপি ঠিকানা তোমার"
 
-#: searx/plugins/tracker_url_remover.py:18
+#: searx/plugins/tracker_url_remover.py:37
 msgid "Tracker URL remover"
 msgstr "ট্র্যাকার URL রিমুভার"
 
-#: searx/plugins/tracker_url_remover.py:19
+#: searx/plugins/tracker_url_remover.py:38
 msgid "Remove trackers arguments from the returned URL"
 msgstr "ফিরে আসা URL থেকে ট্র্যাকার আর্গুমেন্টগুলি সরান৷"
 
-#: searx/plugins/unit_converter.py:32
+#: searx/plugins/unit_converter.py:49
+msgid "Unit converter plugin"
+msgstr ""
+
+#: searx/plugins/unit_converter.py:50
 msgid "Convert between units"
 msgstr "এক একক থেকে অন্য এককে রুপান্তর"
 
@@ -673,7 +693,7 @@ msgstr "গোপনীয়তা নীতি"
 msgid "Contact instance maintainer"
 msgstr "ইন্সট্যান্স রক্ষণাবেক্ষণকারীর সাথে যোগাযোগ করুন"
 
-#: searx/templates/simple/categories.html:26
+#: searx/templates/simple/categories.html:30
 msgid "Click on the magnifier to perform search"
 msgstr "অনুসন্ধান করতে ম্যাগনিফায়ার আইকনে ক্লিক করুন"
 
@@ -1162,11 +1182,9 @@ msgstr "ইউআরএল থেকে আপনার পছন্দগুল
 
 #: searx/templates/simple/preferences/cookies.html:43
 msgid ""
-"Specifying custom settings in the preferences URL can be used to sync "
-"preferences across devices."
+"A URL containing your preferences. This URL can be used to restore your "
+"settings on a different device."
 msgstr ""
-"কাস্টম সেটিংস্‌গুলো প্রেফারেন্স ইউআরএলে উল্লেখিত করা হল যাতে করে আপনার "
-"প্রেফারেন্সগুলি ডিভাইস জুড়ে সিঙ্ক করে ব্যবহার করতে পারেন।"
 
 #: searx/templates/simple/preferences/cookies.html:46
 msgid "Copy preferences hash"
@@ -1420,7 +1438,7 @@ msgstr "এই সাইট কোন বিবরণ প্রদান কর�
 
 #: searx/templates/simple/result_templates/files.html:38
 #: searx/templates/simple/result_templates/images.html:22
-#: searx/templates/simple/result_templates/torrent.html:11
+#: searx/templates/simple/result_templates/torrent.html:18
 msgid "Filesize"
 msgstr "ফাইলের আকার"
 
@@ -1530,23 +1548,23 @@ msgstr "পিডিএফ"
 msgid "HTML"
 msgstr "HTML"
 
-#: searx/templates/simple/result_templates/torrent.html:6
+#: searx/templates/simple/result_templates/torrent.html:7
 msgid "magnet link"
 msgstr "ম্যাগনেট লিঙ্ক"
 
-#: searx/templates/simple/result_templates/torrent.html:7
+#: searx/templates/simple/result_templates/torrent.html:8
 msgid "torrent file"
 msgstr "টরেন্ট ফাইল"
 
-#: searx/templates/simple/result_templates/torrent.html:9
+#: searx/templates/simple/result_templates/torrent.html:13
 msgid "Seeder"
 msgstr "সিডার"
 
-#: searx/templates/simple/result_templates/torrent.html:9
+#: searx/templates/simple/result_templates/torrent.html:14
 msgid "Leecher"
 msgstr "লিচার"
 
-#: searx/templates/simple/result_templates/torrent.html:13
+#: searx/templates/simple/result_templates/torrent.html:19
 msgid "Number of Files"
 msgstr "ফাইলের সংখ্যা"
 
@@ -1814,3 +1832,14 @@ msgstr "ভিডিও লুকিয়ে ফেলুন"
 
 #~ msgid "/"
 #~ msgstr ""
+
+#~ msgid ""
+#~ "Specifying custom settings in the "
+#~ "preferences URL can be used to "
+#~ "sync preferences across devices."
+#~ msgstr ""
+#~ "কাস্টম সেটিংস্‌গুলো প্রেফারেন্স ইউআরএলে "
+#~ "উল্লেখিত করা হল যাতে করে আপনার "
+#~ "প্রেফারেন্সগুলি ডিভাইস জুড়ে সিঙ্ক করে "
+#~ "ব্যবহার করতে পারেন।"
+

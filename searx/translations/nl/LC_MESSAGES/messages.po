@@ -35,13 +35,14 @@
 # SecularSteve <secularsteve@users.noreply.translate.codeberg.org>, 2025.
 # microsoftocsharp <microsoftocsharp@users.noreply.translate.codeberg.org>,
 # return42 <return42@noreply.codeberg.org>, 2025.
+# artens <artens@noreply.codeberg.org>, 2025.
 msgid ""
 msgstr ""
 "Project-Id-Version: searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-01-29 05:08+0000\n"
-"PO-Revision-Date: 2025-03-27 13:44+0000\n"
-"Last-Translator: return42 <return42@noreply.codeberg.org>\n"
+"POT-Creation-Date: 2025-03-29 09:21+0000\n"
+"PO-Revision-Date: 2025-03-31 14:03+0000\n"
+"Last-Translator: artens <artens@noreply.codeberg.org>\n"
 "Language-Team: Dutch <https://translate.codeberg.org/projects/searxng/"
 "searxng/nl/>\n"
 "Language: nl\n"
@@ -50,7 +51,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: Weblate 5.10.2\n"
-"Generated-By: Babel 2.16.0\n"
+"Generated-By: Babel 2.17.0\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
 #: searx/searxng.msg
@@ -374,7 +375,7 @@ msgstr "beantwoord"
 msgid "No item found"
 msgstr "Geen resultaat gevonden"
 
-#: searx/engines/qwant.py:288
+#: searx/engines/qwant.py:291
 #: searx/templates/simple/result_templates/images.html:23 searx/webapp.py:314
 msgid "Source"
 msgstr "Bron"
@@ -452,10 +453,12 @@ msgid "Suspended"
 msgstr "Geschorst"
 
 #: searx/webutils.py:314
+#, python-brace-format
 msgid "{minutes} minute(s) ago"
 msgstr "{minutes} minu(u)t(en) geleden"
 
 #: searx/webutils.py:315
+#, python-brace-format
 msgid "{hours} hour(s), {minutes} minute(s) ago"
 msgstr "{hours} u(u)r(en), {minutes} minu(u)t(en) geleden"
 
@@ -464,6 +467,7 @@ msgid "Generate different random values"
 msgstr "Genereer verschillende willekeurige waarden"
 
 #: searx/answerers/statistics.py:36
+#, python-brace-format
 msgid "Compute {func} of the arguments"
 msgstr "Bereken {func} van de variabelen"
 
@@ -472,6 +476,7 @@ msgid "Show route in map .."
 msgstr "Toon route op kaart..."
 
 #: searx/engines/pdbe.py:96
+#, python-brace-format
 msgid "{title} (OBSOLETE)"
 msgstr "{title} (VEROUDERD)"
 
@@ -479,7 +484,7 @@ msgstr "{title} (VEROUDERD)"
 msgid "This entry has been superseded by"
 msgstr "Dit object is vervangen door"
 
-#: searx/engines/qwant.py:290
+#: searx/engines/qwant.py:293
 msgid "Channel"
 msgstr "Kanaal"
 
@@ -500,7 +505,8 @@ msgstr "klikken"
 msgid "Language"
 msgstr "Taal"
 
-#: searx/engines/semantic_scholar.py:78
+#: searx/engines/semantic_scholar.py:79
+#, python-brace-format
 msgid ""
 "{numCitations} citations from the year {firstCitationVelocityYear} to "
 "{lastCitationVelocityYear}"
@@ -508,7 +514,7 @@ msgstr ""
 "{numCitations} citaties sinds jaar {firstCitationVelocityYear} tot "
 "{lastCitationVelocityYear}"
 
-#: searx/engines/tineye.py:47
+#: searx/engines/tineye.py:48
 msgid ""
 "Could not read that image url. This may be due to an unsupported file "
 "format. TinEye only supports images that are JPEG, PNG, GIF, BMP, TIFF or"
@@ -518,7 +524,7 @@ msgstr ""
 "ondersteunde bestandsindeling. TinEye ondersteunt alleen afbeeldingtypes "
 "JPEG, PNG, GIF, BMP, TIFF of WebP."
 
-#: searx/engines/tineye.py:53
+#: searx/engines/tineye.py:54
 msgid ""
 "The image is too simple to find matches. TinEye requires a basic level of"
 " visual detail to successfully identify matches."
@@ -539,7 +545,19 @@ msgstr "Boekbeoordelingswaarde"
 msgid "File quality"
 msgstr "Bestandskwaliteit"
 
-#: searx/plugins/calculator.py:20
+#: searx/plugins/ahmia_filter.py:32
+msgid "Ahmia blacklist"
+msgstr "Ahmia's zwarte lijst"
+
+#: searx/plugins/ahmia_filter.py:33
+msgid "Filter out onion results that appear in Ahmia's blacklist."
+msgstr "Toon resultaten zonder onion links die op de Ahmia's zwarte lijst staan"
+
+#: searx/plugins/calculator.py:38
+msgid "Basic Calculator"
+msgstr "Simpele Rekenmachine"
+
+#: searx/plugins/calculator.py:39
 msgid "Calculate mathematical expressions via the search bar"
 msgstr "Bereken wiskundige formules via de zoekbalk"
 
@@ -555,21 +573,21 @@ msgstr "Zet tekstwaarden om naar verschillende soorten validatiewaarden (hashes)
 msgid "hash digest"
 msgstr "validatiewaarde"
 
-#: searx/plugins/hostnames.py:105
+#: searx/plugins/hostnames.py:123
 msgid "Hostnames plugin"
 msgstr "Hostnamen plug-in"
 
-#: searx/plugins/hostnames.py:106
+#: searx/plugins/hostnames.py:124
 msgid "Rewrite hostnames, remove results or prioritize them based on the hostname"
 msgstr ""
 "Hernoem hostnamen, verwijder resultaten of geef prioriteit aan op basis "
 "van de hostnaam"
 
-#: searx/plugins/oa_doi_rewrite.py:15
+#: searx/plugins/oa_doi_rewrite.py:55
 msgid "Open Access DOI rewrite"
 msgstr "Open Access DOI bewerken"
 
-#: searx/plugins/oa_doi_rewrite.py:16
+#: searx/plugins/oa_doi_rewrite.py:56
 msgid ""
 "Avoid paywalls by redirecting to open-access versions of publications "
 "when available"
@@ -581,13 +599,13 @@ msgstr ""
 msgid "Self Information"
 msgstr "Informatie over jezelf"
 
-#: searx/plugins/self_info.py:38
+#: searx/plugins/self_info.py:39
 msgid ""
 "Displays your IP if the query is \"ip\" and your user agent if the query "
 "is \"user-agent\"."
 msgstr ""
-"Toont je IP wanneer de query \"ip\" is en je browser user agent wanneer de "
-"query \"user-agent\" is."
+"Toont je IP wanneer de query \"ip\" is en je browser user agent wanneer "
+"de query \"user-agent\" is."
 
 #: searx/plugins/self_info.py:52
 msgid "Your IP is: "
@@ -597,11 +615,11 @@ msgstr "Jouw IP is: "
 msgid "Your user-agent is: "
 msgstr "Jouw user-agent is: "
 
-#: searx/plugins/tor_check.py:29
+#: searx/plugins/tor_check.py:42
 msgid "Tor check plugin"
 msgstr "Tor controle plug-in"
 
-#: searx/plugins/tor_check.py:32
+#: searx/plugins/tor_check.py:44
 msgid ""
 "This plugin checks if the address of the request is a Tor exit-node, and "
 "informs the user if it is; like check.torproject.org, but from SearXNG."
@@ -610,27 +628,31 @@ msgstr ""
 "node is en informeert de gebruiker als dit zo is; net als bij "
 "check.torproject.org, maar dan van SearXNG."
 
-#: searx/plugins/tor_check.py:69
+#: searx/plugins/tor_check.py:65
 msgid "Could not download the list of Tor exit-nodes from"
 msgstr "Het downloaden van de lijst met Tor exit-nodes is mislukt vanaf de bron"
 
-#: searx/plugins/tor_check.py:81
+#: searx/plugins/tor_check.py:72
 msgid "You are using Tor and it looks like you have the external IP address"
 msgstr "Je gebruikt Tor en het lijkt er op dat het externe IP adres is"
 
-#: searx/plugins/tor_check.py:85
+#: searx/plugins/tor_check.py:76
 msgid "You are not using Tor and you have the external IP address"
 msgstr "Je gebruikt geen Tor en hebt het externe IP adres"
 
-#: searx/plugins/tracker_url_remover.py:18
+#: searx/plugins/tracker_url_remover.py:37
 msgid "Tracker URL remover"
 msgstr "Tracker-URL-verwijderaar"
 
-#: searx/plugins/tracker_url_remover.py:19
+#: searx/plugins/tracker_url_remover.py:38
 msgid "Remove trackers arguments from the returned URL"
 msgstr "Verwijdert trackerargumenten van de gekregen URL"
 
-#: searx/plugins/unit_converter.py:32
+#: searx/plugins/unit_converter.py:49
+msgid "Unit converter plugin"
+msgstr "Eenheden conversie plugin"
+
+#: searx/plugins/unit_converter.py:50
 msgid "Convert between units"
 msgstr "Converteren tussen eenheden"
 
@@ -689,7 +711,7 @@ msgstr "Privacybeleid"
 msgid "Contact instance maintainer"
 msgstr "Neem contact op met beheerder instantie"
 
-#: searx/templates/simple/categories.html:26
+#: searx/templates/simple/categories.html:30
 msgid "Click on the magnifier to perform search"
 msgstr "Klik op het vergrootglas om te zoeken"
 
@@ -727,14 +749,14 @@ msgstr "Controleer op bestaande bugs over deze engine op GitHub"
 #: searx/templates/simple/new_issue.html:69
 msgid "I confirm there is no existing bug about the issue I encounter"
 msgstr ""
-"Ik bevestig dat er geen eerder gemelde bug is ingediend over het probleem "
-"dat ik tegenkom"
+"Ik bevestig dat er geen eerder gemelde bug is ingediend over het probleem"
+" dat ik tegenkom"
 
 #: searx/templates/simple/new_issue.html:71
 msgid "If this is a public instance, please specify the URL in the bug report"
 msgstr ""
-"Indien dit een openbaar benaderbare installatie is, specificeer de URL in "
-"het probleemrapport"
+"Indien dit een openbaar benaderbare installatie is, specificeer de URL in"
+" het probleemrapport"
 
 #: searx/templates/simple/new_issue.html:72
 msgid "Submit a new issue on Github including the above information"
@@ -1181,11 +1203,11 @@ msgstr "URL om uw instellingen te herstellen in een andere browser"
 
 #: searx/templates/simple/preferences/cookies.html:43
 msgid ""
-"Specifying custom settings in the preferences URL can be used to sync "
-"preferences across devices."
+"A URL containing your preferences. This URL can be used to restore your "
+"settings on a different device."
 msgstr ""
-"Aangepaste instellingen in de instellingen URL kunnen worden gebruikt om "
-"instellingen te synchroniseren op verschillende apparaten."
+"Een URL met jouw instellings voorkeuren. Deze URL kan gebruikt worden om "
+"jouw instellingen op een ander apparaat te herstellen."
 
 #: searx/templates/simple/preferences/cookies.html:46
 msgid "Copy preferences hash"
@@ -1322,8 +1344,8 @@ msgstr "Met welke taalinstelling wil je zoeken?"
 #: searx/templates/simple/preferences/language.html:25
 msgid "Choose Auto-detect to let SearXNG detect the language of your query."
 msgstr ""
-"Kies 'Automatisch herkennen' om SearXNG de taal van uw zoekopdracht te laten "
-"herkennen."
+"Kies 'Automatisch herkennen' om SearXNG de taal van uw zoekopdracht te "
+"laten herkennen."
 
 #: searx/templates/simple/preferences/method.html:2
 msgid "HTTP Method"
@@ -1342,8 +1364,8 @@ msgid ""
 "When enabled, the result page's title contains your query. Your browser "
 "can record this title"
 msgstr ""
-"Indien aangevinkt, toont de paginatitel je zoekopdracht. Je browser kan deze "
-"titel mogelijk opslaan"
+"Indien aangevinkt, toont de paginatitel je zoekopdracht. Je browser kan "
+"deze titel mogelijk opslaan"
 
 #: searx/templates/simple/preferences/results_on_new_tab.html:2
 msgid "Results on new tabs"
@@ -1366,8 +1388,8 @@ msgid ""
 "Perform search immediately if a category selected. Disable to select "
 "multiple categories"
 msgstr ""
-"Voer zoekopdracht direct uit wanneer categorie wordt geselecteerd. Schakel "
-"functie uit om meerdere categorieën te selecteren"
+"Voer zoekopdracht direct uit wanneer categorie wordt geselecteerd. "
+"Schakel functie uit om meerdere categorieën te selecteren"
 
 #: searx/templates/simple/preferences/theme.html:2
 msgid "Theme"
@@ -1443,7 +1465,7 @@ msgstr "Deze site is niet voorzien van een beschrijving."
 
 #: searx/templates/simple/result_templates/files.html:38
 #: searx/templates/simple/result_templates/images.html:22
-#: searx/templates/simple/result_templates/torrent.html:11
+#: searx/templates/simple/result_templates/torrent.html:18
 msgid "Filesize"
 msgstr "Bestandsgrootte"
 
@@ -1553,23 +1575,23 @@ msgstr "PDF"
 msgid "HTML"
 msgstr "HTML"
 
-#: searx/templates/simple/result_templates/torrent.html:6
+#: searx/templates/simple/result_templates/torrent.html:7
 msgid "magnet link"
 msgstr "magneetlink"
 
-#: searx/templates/simple/result_templates/torrent.html:7
+#: searx/templates/simple/result_templates/torrent.html:8
 msgid "torrent file"
 msgstr "torrentbestand"
 
-#: searx/templates/simple/result_templates/torrent.html:9
+#: searx/templates/simple/result_templates/torrent.html:13
 msgid "Seeder"
 msgstr "Seeders"
 
-#: searx/templates/simple/result_templates/torrent.html:9
+#: searx/templates/simple/result_templates/torrent.html:14
 msgid "Leecher"
 msgstr "Leechers"
 
-#: searx/templates/simple/result_templates/torrent.html:13
+#: searx/templates/simple/result_templates/torrent.html:19
 msgid "Number of Files"
 msgstr "Aantal bestanden"
 
@@ -2097,3 +2119,13 @@ msgstr "verberg video"
 
 #~ msgid "/"
 #~ msgstr ""
+
+#~ msgid ""
+#~ "Specifying custom settings in the "
+#~ "preferences URL can be used to "
+#~ "sync preferences across devices."
+#~ msgstr ""
+#~ "Aangepaste instellingen in de instellingen "
+#~ "URL kunnen worden gebruikt om "
+#~ "instellingen te synchroniseren op "
+#~ "verschillende apparaten."

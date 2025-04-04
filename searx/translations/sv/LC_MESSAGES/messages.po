@@ -30,13 +30,14 @@
 # Erico <erico@users.noreply.translate.codeberg.org>, 2025.
 # Wexterity <wexterity@users.noreply.translate.codeberg.org>, 2025.
 # return42 <return42@noreply.codeberg.org>, 2025.
+# AndersNordh <andersnordh@noreply.codeberg.org>, 2025.
 msgid ""
 msgstr ""
 "Project-Id-Version: searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-01-29 05:08+0000\n"
-"PO-Revision-Date: 2025-03-06 16:03+0000\n"
-"Last-Translator: return42 <return42@noreply.codeberg.org>\n"
+"POT-Creation-Date: 2025-03-29 09:21+0000\n"
+"PO-Revision-Date: 2025-03-31 14:03+0000\n"
+"Last-Translator: AndersNordh <andersnordh@noreply.codeberg.org>\n"
 "Language-Team: Swedish <https://translate.codeberg.org/projects/searxng/"
 "searxng/sv/>\n"
 "Language: sv\n"
@@ -45,7 +46,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: Weblate 5.10.2\n"
-"Generated-By: Babel 2.16.0\n"
+"Generated-By: Babel 2.17.0\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
 #: searx/searxng.msg
@@ -369,7 +370,7 @@ msgstr "svarad"
 msgid "No item found"
 msgstr "Inga artiklar hittade"
 
-#: searx/engines/qwant.py:288
+#: searx/engines/qwant.py:291
 #: searx/templates/simple/result_templates/images.html:23 searx/webapp.py:314
 msgid "Source"
 msgstr "Källa"
@@ -447,10 +448,12 @@ msgid "Suspended"
 msgstr "Avstängd"
 
 #: searx/webutils.py:314
+#, python-brace-format
 msgid "{minutes} minute(s) ago"
 msgstr "{minutes} minut(er) sedan"
 
 #: searx/webutils.py:315
+#, python-brace-format
 msgid "{hours} hour(s), {minutes} minute(s) ago"
 msgstr "{hours} timm(e/ar), {minutes} minut(er) sedan"
 
@@ -459,14 +462,16 @@ msgid "Generate different random values"
 msgstr "Generera olika slumpmässiga värden"
 
 #: searx/answerers/statistics.py:36
+#, python-brace-format
 msgid "Compute {func} of the arguments"
-msgstr "Beräkna (func) för argument"
+msgstr "Beräkna {func} för argument"
 
 #: searx/engines/openstreetmap.py:158
 msgid "Show route in map .."
 msgstr "Visa rutt på karta ..."
 
 #: searx/engines/pdbe.py:96
+#, python-brace-format
 msgid "{title} (OBSOLETE)"
 msgstr "{title} (FÖRÅLDRAD)"
 
@@ -474,7 +479,7 @@ msgstr "{title} (FÖRÅLDRAD)"
 msgid "This entry has been superseded by"
 msgstr "Detta inlägg har ersatts av"
 
-#: searx/engines/qwant.py:290
+#: searx/engines/qwant.py:293
 msgid "Channel"
 msgstr "Kanal"
 
@@ -495,7 +500,8 @@ msgstr "klickar"
 msgid "Language"
 msgstr "Språk"
 
-#: searx/engines/semantic_scholar.py:78
+#: searx/engines/semantic_scholar.py:79
+#, python-brace-format
 msgid ""
 "{numCitations} citations from the year {firstCitationVelocityYear} to "
 "{lastCitationVelocityYear}"
@@ -503,7 +509,7 @@ msgstr ""
 "{numCitations} citat från år {firstCitationVelocityYear} till "
 "{lastCitationVelocityYear}"
 
-#: searx/engines/tineye.py:47
+#: searx/engines/tineye.py:48
 msgid ""
 "Could not read that image url. This may be due to an unsupported file "
 "format. TinEye only supports images that are JPEG, PNG, GIF, BMP, TIFF or"
@@ -513,7 +519,7 @@ msgstr ""
 "inte stöds. TinEye stöder endast bilder som är JPEG, PNG, GIF, BMP, TIFF "
 "eller WebP."
 
-#: searx/engines/tineye.py:53
+#: searx/engines/tineye.py:54
 msgid ""
 "The image is too simple to find matches. TinEye requires a basic level of"
 " visual detail to successfully identify matches."
@@ -534,7 +540,19 @@ msgstr "Bokbetyg"
 msgid "File quality"
 msgstr "Filkvalitet"
 
-#: searx/plugins/calculator.py:20
+#: searx/plugins/ahmia_filter.py:32
+msgid "Ahmia blacklist"
+msgstr "Ahmia svartlistning"
+
+#: searx/plugins/ahmia_filter.py:33
+msgid "Filter out onion results that appear in Ahmia's blacklist."
+msgstr "Filtrera bort onion-resultat som visas i Ahmia:s svartlistning."
+
+#: searx/plugins/calculator.py:38
+msgid "Basic Calculator"
+msgstr "Enkel kalkylator"
+
+#: searx/plugins/calculator.py:39
 msgid "Calculate mathematical expressions via the search bar"
 msgstr "Beräkna matematiska uttryck med sökfältet"
 
@@ -550,21 +568,21 @@ msgstr "Konverterar strängar till olika hashvärden."
 msgid "hash digest"
 msgstr "hashvärde"
 
-#: searx/plugins/hostnames.py:105
+#: searx/plugins/hostnames.py:123
 msgid "Hostnames plugin"
 msgstr "Värdnamn plugin"
 
-#: searx/plugins/hostnames.py:106
+#: searx/plugins/hostnames.py:124
 msgid "Rewrite hostnames, remove results or prioritize them based on the hostname"
 msgstr ""
 "Skriva om värdnamn, ta bort resultat eller prioritera dem baserat på "
 "värdnamnet"
 
-#: searx/plugins/oa_doi_rewrite.py:15
+#: searx/plugins/oa_doi_rewrite.py:55
 msgid "Open Access DOI rewrite"
 msgstr "Open Access DOI-omskrivning"
 
-#: searx/plugins/oa_doi_rewrite.py:16
+#: searx/plugins/oa_doi_rewrite.py:56
 msgid ""
 "Avoid paywalls by redirecting to open-access versions of publications "
 "when available"
@@ -576,13 +594,13 @@ msgstr ""
 msgid "Self Information"
 msgstr "Egen information"
 
-#: searx/plugins/self_info.py:38
+#: searx/plugins/self_info.py:39
 msgid ""
 "Displays your IP if the query is \"ip\" and your user agent if the query "
 "is \"user-agent\"."
 msgstr ""
-"Visar din IP-adress om frågan är \"ip\" och din användaragent är "
-"\"user-agent\"."
+"Visar din IP-adress om frågan är \"ip\" och din användaragent är \"user-"
+"agent\"."
 
 #: searx/plugins/self_info.py:52
 msgid "Your IP is: "
@@ -592,11 +610,11 @@ msgstr "Din IP address är: "
 msgid "Your user-agent is: "
 msgstr "Din användaragent är: "
 
-#: searx/plugins/tor_check.py:29
+#: searx/plugins/tor_check.py:42
 msgid "Tor check plugin"
 msgstr "Tor kontroll plugin"
 
-#: searx/plugins/tor_check.py:32
+#: searx/plugins/tor_check.py:44
 msgid ""
 "This plugin checks if the address of the request is a Tor exit-node, and "
 "informs the user if it is; like check.torproject.org, but from SearXNG."
@@ -605,27 +623,31 @@ msgstr ""
 "och informerar användaren om det är; som check.torproject.org, men från "
 "SearXNG."
 
-#: searx/plugins/tor_check.py:69
+#: searx/plugins/tor_check.py:65
 msgid "Could not download the list of Tor exit-nodes from"
 msgstr "Kunde inte ladda ned listan över Tor exitnoder från"
 
-#: searx/plugins/tor_check.py:81
+#: searx/plugins/tor_check.py:72
 msgid "You are using Tor and it looks like you have the external IP address"
 msgstr "Du använder Tor och det ser ut som du har den externa IP-adressen"
 
-#: searx/plugins/tor_check.py:85
+#: searx/plugins/tor_check.py:76
 msgid "You are not using Tor and you have the external IP address"
 msgstr "Du använder inte Tor och du har den externa IP-adressen"
 
-#: searx/plugins/tracker_url_remover.py:18
+#: searx/plugins/tracker_url_remover.py:37
 msgid "Tracker URL remover"
-msgstr "Bevakningswebbadress borttagare"
+msgstr "Ta bort URL för tracker"
 
-#: searx/plugins/tracker_url_remover.py:19
+#: searx/plugins/tracker_url_remover.py:38
 msgid "Remove trackers arguments from the returned URL"
 msgstr "Ta bort tracker-argument från den återgivna webbadressen"
 
-#: searx/plugins/unit_converter.py:32
+#: searx/plugins/unit_converter.py:49
+msgid "Unit converter plugin"
+msgstr "Plugin för enhetskonvertering"
+
+#: searx/plugins/unit_converter.py:50
 msgid "Convert between units"
 msgstr "Konvertera mellan enheter"
 
@@ -684,7 +706,7 @@ msgstr "Integritetspolicy"
 msgid "Contact instance maintainer"
 msgstr "Kontakta instansens underhållare"
 
-#: searx/templates/simple/categories.html:26
+#: searx/templates/simple/categories.html:30
 msgid "Click on the magnifier to perform search"
 msgstr "Klicka på förstoringsglaset för att utföra sökning"
 
@@ -1173,11 +1195,11 @@ msgstr "URL för att återställa dina inställningar i en annan webbläsare"
 
 #: searx/templates/simple/preferences/cookies.html:43
 msgid ""
-"Specifying custom settings in the preferences URL can be used to sync "
-"preferences across devices."
+"A URL containing your preferences. This URL can be used to restore your "
+"settings on a different device."
 msgstr ""
-"Dina anpassade inställningar i inställningarnas URL kan användas för att "
-"synkronisera inställningar mellan olika enheter."
+"En URL innehållande dina inställningar. Denna URL kan användas för att "
+"återställa dina inställningar på en annan enhet."
 
 #: searx/templates/simple/preferences/cookies.html:46
 msgid "Copy preferences hash"
@@ -1431,7 +1453,7 @@ msgstr "Denna sida gav ingen beskrivning."
 
 #: searx/templates/simple/result_templates/files.html:38
 #: searx/templates/simple/result_templates/images.html:22
-#: searx/templates/simple/result_templates/torrent.html:11
+#: searx/templates/simple/result_templates/torrent.html:18
 msgid "Filesize"
 msgstr "Filstorlek"
 
@@ -1541,23 +1563,23 @@ msgstr "PDF"
 msgid "HTML"
 msgstr "HTML"
 
-#: searx/templates/simple/result_templates/torrent.html:6
+#: searx/templates/simple/result_templates/torrent.html:7
 msgid "magnet link"
 msgstr "magnetlänk"
 
-#: searx/templates/simple/result_templates/torrent.html:7
+#: searx/templates/simple/result_templates/torrent.html:8
 msgid "torrent file"
 msgstr "torrentfil"
 
-#: searx/templates/simple/result_templates/torrent.html:9
+#: searx/templates/simple/result_templates/torrent.html:13
 msgid "Seeder"
 msgstr "Distributör"
 
-#: searx/templates/simple/result_templates/torrent.html:9
+#: searx/templates/simple/result_templates/torrent.html:14
 msgid "Leecher"
 msgstr "Reciprokör"
 
-#: searx/templates/simple/result_templates/torrent.html:13
+#: searx/templates/simple/result_templates/torrent.html:19
 msgid "Number of Files"
 msgstr "Antal filer"
 
@@ -2069,3 +2091,13 @@ msgstr "göm video"
 
 #~ msgid "/"
 #~ msgstr ""
+
+#~ msgid ""
+#~ "Specifying custom settings in the "
+#~ "preferences URL can be used to "
+#~ "sync preferences across devices."
+#~ msgstr ""
+#~ "Dina anpassade inställningar i "
+#~ "inställningarnas URL kan användas för "
+#~ "att synkronisera inställningar mellan olika"
+#~ " enheter."
