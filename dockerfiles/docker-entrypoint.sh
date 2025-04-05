@@ -12,8 +12,7 @@ Environment variables:
   INSTANCE_NAME settings.yml : general.instance_name
   AUTOCOMPLETE  settings.yml : search.autocomplete
   BASE_URL      settings.yml : server.base_url
-  MORTY_URL     settings.yml : result_proxy.url
-  MORTY_KEY     settings.yml : result_proxy.key
+
 Volume:
   /etc/searxng  the docker entry point copies settings.yml and uwsgi.ini in
                 this directory (see the -f command line option)"
@@ -78,20 +77,6 @@ patch_searxng_settings() {
         -e "s/autocomplete: \"\"/autocomplete: \"${AUTOCOMPLETE}\"/g" \
         -e "s/ultrasecretkey/$(openssl rand -hex 32)/g" \
         "${CONF}"
-
-    # Morty configuration
-
-    if [ -n "${MORTY_KEY}" ] && [ -n "${MORTY_URL}" ]; then
-        sed -i -e "s/image_proxy: false/image_proxy: true/g" \
-            "${CONF}"
-        cat >> "${CONF}" <<-EOF
-
-# Morty configuration
-result_proxy:
-   url: ${MORTY_URL}
-   key: !!binary "${MORTY_KEY}"
-EOF
-    fi
 }
 
 update_conf() {
@@ -165,8 +150,6 @@ if [ $DRY_RUN -eq 1 ]; then
     printf 'Dry run\n'
     exit
 fi
-
-unset MORTY_KEY
 
 printf 'Listen on %s\n' "${BIND_ADDRESS}"
 
