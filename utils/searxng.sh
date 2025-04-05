@@ -553,15 +553,6 @@ searxng.remove.settings() {
 
 searxng.check() {
     rst_title "SearXNG checks" section
-
-    for NAME in "searx" "filtron" "morty"; do
-        if service_account_is_available "${NAME}"; then
-            err_msg "There exists an old '${NAME}' account from a previous installation."
-        else
-            info_msg "[OK] (old) account '${NAME}' does not exists"
-        fi
-    done
-
     "${SEARXNG_PYENV}/bin/python" "${SEARXNG_SRC}/utils/searxng_check.py"
 }
 

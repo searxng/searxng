@@ -1802,8 +1802,8 @@ url_replace_hostname(){
 
     # to replace hostname by primary IP::
     #
-    #   url_replace_hostname http://searx-ubu1604/morty $(primary_ip)
-    #   http://10.246.86.250/morty
+    #   url_replace_hostname http://searx-ubu1604/example $(primary_ip)
+    #   http://10.246.86.250/example
 
     # shellcheck disable=SC2001
     echo "$1" | sed "s|\(http[s]*://\)[^/]*\(.*\)|\1$2\2|"

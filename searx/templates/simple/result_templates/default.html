@@ -14,7 +14,7 @@
     {{ _('This site did not provide any description.')|safe }}
   </p>
 {% endif -%}
-{{- result_sub_footer(result, proxify) -}}
+{{- result_sub_footer(result) -}}
 {% if result.iframe_src -%}
 <div id="result-media-{{ index }}" class="embedded-content invisible">
   <iframe data-src="{{result.iframe_src}}" frameborder="0" allowfullscreen></iframe>

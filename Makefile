@@ -65,10 +65,7 @@ test.shell:
 		utils/lib_redis.sh \
 		utils/searxng.sh \
 		utils/lxc.sh \
-		utils/lxc-searxng.env \
-		utils/searx.sh \
-		utils/filtron.sh \
-		utils/morty.sh
+		utils/lxc-searxng.env
 	$(Q)$(MTOOLS) build_msg TEST "$@ OK"
 
 

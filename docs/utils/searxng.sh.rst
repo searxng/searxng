@@ -28,7 +28,7 @@ In most cases you will install SearXNG simply by running the command:
 
 .. code::  bash
 
-   sudo -H ./utils/searx.sh install all
+   sudo -H ./utils/searxng.sh install all
 
 The installation is described in chapter :ref:`installation basic`.
 
