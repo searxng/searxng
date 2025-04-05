@@ -19,5 +19,5 @@
     {%- if result.files %}{{ icon_big('file') }} <span class="badge">{{ result.files }} {{ _('Number of Files') }}</span>{%- endif -%}
 </p>
 {%- if result.content %}<p class="content">{{ result.content|safe }}</p>{%- endif -%}
-{{- result_sub_footer(result, proxify) -}}
+{{- result_sub_footer(result) -}}
 {{- result_footer(result) -}}
