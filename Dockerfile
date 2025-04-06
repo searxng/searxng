@@ -37,6 +37,8 @@ RUN groupadd -g ${SEARXNG_GID} searxng && \
 ENV INSTANCE_NAME=searxng \
   AUTOCOMPLETE= \
   BASE_URL= \
+  MORTY_KEY= \
+  MORTY_URL= \
   SEARXNG_SETTINGS_PATH=/etc/searxng/settings.yml \
   UWSGI_SETTINGS_PATH=/etc/searxng/uwsgi.ini \
   UWSGI_WORKERS=%k \
