@@ -13,7 +13,9 @@ for storing web pages you have visited and searching in the contents later.
 
 The engine supports faceted search, so you can search in a subset of documents
 of the collection.  Furthermore, you can search in MeiliSearch_ instances that
-require authentication by setting ``auth_token``.
+require authentication by setting `auth_key`_.
+
+.. auth_key: https://www.meilisearch.com/docs/reference/api/overview#authorization
 
 Example
 =======
@@ -28,6 +30,7 @@ Here is a simple example to query a Meilisearch instance:
     base_url: http://localhost:7700
     index: my-index
     enable_http: true
+    # auth_key: Bearer XXXXX
 
 """
 
@@ -56,7 +59,7 @@ def init(_):
 
 def request(query, params):
     if auth_key != '':
-        params['headers']['X-Meili-API-Key'] = auth_key
+        params['headers']['Authorization'] = auth_key
 
     params['headers']['Content-Type'] = 'application/json'
     params['url'] = _search_url

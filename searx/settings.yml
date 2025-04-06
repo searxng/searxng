@@ -1317,12 +1317,14 @@ engines:
     disabled: true
     number_of_results: 20
 
+  # https://docs.searxng.org/dev/engines/offline/search-indexer-engines.html#module-searx.engines.meilisearch
   # - name: meilisearch
   #   engine: meilisearch
   #   shortcut: mes
   #   enable_http: true
   #   base_url: http://localhost:7700
   #   index: my-index
+  #   auth_key: Bearer XXXX
 
   - name: mixcloud
     engine: mixcloud
