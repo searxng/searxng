@@ -6,6 +6,8 @@
 
 """
 
+import random
+import socket
 from urllib.parse import urlencode
 import babel
 from flask_babel import gettext
@@ -27,7 +29,6 @@ about = {
 paging = True
 categories = ['music', 'radio']
 
-base_url = "https://de1.api.radio-browser.info"  # see https://api.radio-browser.info/ for all nodes
 number_of_results = 10
 
 station_filters = []  # ['countrycode', 'language']
@@ -51,6 +52,19 @@ none filters are applied. Valid filters are:
 
 """
 
+servers = []
+
+
+def init(_):
+    # see https://api.radio-browser.info
+    ips = socket.getaddrinfo("all.api.radio-browser.info", 80, 0, 0, socket.IPPROTO_TCP)
+    for ip_tuple in ips:
+        _ip: str = ip_tuple[4][0]  # type: ignore
+        url = socket.gethostbyaddr(_ip)[0]
+        srv = "https://" + url
+        if srv not in servers:
+            servers.append(srv)
+
 
 def request(query, params):
     args = {
@@ -73,7 +87,7 @@ def request(query, params):
             if countrycode in traits.custom['countrycodes']:  # type: ignore
                 args['countrycode'] = countrycode
 
-    params['url'] = f"{base_url}/json/stations/search?{urlencode(args)}"
+    params['url'] = f"{random.choice(servers)}/json/stations/search?{urlencode(args)}"
     return params
 
 
@@ -135,12 +149,13 @@ def fetch_traits(engine_traits: EngineTraits):
     """
     # pylint: disable=import-outside-toplevel
 
+    init(None)
     from babel.core import get_global
 
     babel_reg_list = get_global("territory_languages").keys()
 
-    language_list = get(f'{base_url}/json/languages').json()  # type: ignore
-    country_list = get(f'{base_url}/json/countries').json()  # type: ignore
+    language_list = get(f'{servers[0]}/json/languages').json()  # type: ignore
+    country_list = get(f'{servers[0]}/json/countries').json()  # type: ignore
 
     for lang in language_list:
 
