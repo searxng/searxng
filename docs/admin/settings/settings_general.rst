@@ -16,8 +16,14 @@
      open_metrics: ''
 
 ``debug`` : ``$SEARXNG_DEBUG``
-  Allow a more detailed log if you run SearXNG directly. Display *detailed* error
-  messages in the browser too, so this must be deactivated in production.
+  In debug mode, the server provides an interactive debugger, will reload when
+  code is changed and activates a verbose logging.
+
+  .. attention::
+
+     The debug setting is intended for local development server.  Don't
+     activate debug (don't use a development server) when deploying to
+     production.
 
 ``donation_url`` :
   Set value to ``true`` to use your own donation page written in the
