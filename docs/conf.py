@@ -161,7 +161,7 @@ issues_github_path = "searxng/searxng"
 notfound_urls_prefix = '/'
 
 sys.path.append(os.path.abspath('_themes'))
-sys.path.insert(0, os.path.abspath("../utils/"))
+sys.path.insert(0, os.path.abspath("../"))
 html_theme_path = ['_themes']
 html_theme = "searxng"
 
