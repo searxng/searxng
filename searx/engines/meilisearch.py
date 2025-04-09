@@ -15,7 +15,7 @@ The engine supports faceted search, so you can search in a subset of documents
 of the collection.  Furthermore, you can search in MeiliSearch_ instances that
 require authentication by setting `auth_key`_.
 
-.. auth_key: https://www.meilisearch.com/docs/reference/api/overview#authorization
+.. _auth_key: https://www.meilisearch.com/docs/reference/api/overview#authorization
 
 Example
 =======
