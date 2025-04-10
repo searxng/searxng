@@ -126,7 +126,15 @@ def get_real_ip(request: SXNG_Request) -> str:
     if real_ip and remote_addr and real_ip != remote_addr:
         logger.warning("IP from WSGI environment (%s) is not equal to IP from X-Real-IP (%s)", remote_addr, real_ip)
 
-    request_ip = ip_address(forwarded_for or real_ip or remote_addr or '0.0.0.0')
+    raw_ip = forwarded_for or real_ip or remote_addr or '0.0.0.0'
+
+    if raw_ip.startswith('['):
+        raw_ip = raw_ip.split(']')[0][1:]
+    elif ':' in raw_ip and raw_ip.count(':') > 1:
+        if raw_ip.rsplit(':', 1)[1].isdigit():
+            raw_ip = raw_ip.rsplit(':', 1)[0]
+
+    request_ip = ip_address(raw_ip)
     if request_ip.version == 6 and request_ip.ipv4_mapped:
         request_ip = request_ip.ipv4_mapped
 
