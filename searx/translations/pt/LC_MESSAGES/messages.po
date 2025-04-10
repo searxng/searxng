@@ -26,26 +26,28 @@
 # fabiosantoscode <fabiosantoscode@users.noreply.translate.codeberg.org>,
 # Pedro_Tresp <pedro_tresp@users.noreply.translate.codeberg.org>, 2025.
 # rodgui <rodgui@users.noreply.translate.codeberg.org>, 2025.
+# pfaca <pfaca@noreply.codeberg.org>, 2025.
 msgid ""
 msgstr ""
-"Project-Id-Version:  searx\n"
+"Project-Id-Version: searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-03-29 09:21+0000\n"
-"PO-Revision-Date: 2025-02-03 05:37+0000\n"
-"Last-Translator: rodgui <rodgui@users.noreply.translate.codeberg.org>\n"
+"PO-Revision-Date: 2025-04-10 20:02+0000\n"
+"Last-Translator: pfaca <pfaca@noreply.codeberg.org>\n"
+"Language-Team: Portuguese <https://translate.codeberg.org/projects/searxng/"
+"searxng/pt/>\n"
 "Language: pt\n"
-"Language-Team: Portuguese "
-"<https://translate.codeberg.org/projects/searxng/searxng/pt/>\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Weblate 5.10.2\n"
 "Generated-By: Babel 2.17.0\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
 #: searx/searxng.msg
 msgid "without further subgrouping"
-msgstr "Sem subagrupamento adicional"
+msgstr "Sem sub-agrupamento adicional"
 
 #. CONSTANT_NAMES['DEFAULT_CATEGORY']
 #: searx/searxng.msg
@@ -55,7 +57,7 @@ msgstr "outro"
 #. CATEGORY_NAMES['FILES']
 #: searx/searxng.msg
 msgid "files"
-msgstr "arquivos"
+msgstr "ficheiros"
 
 #. CATEGORY_NAMES['GENERAL']
 #: searx/searxng.msg
@@ -110,7 +112,7 @@ msgstr "mapa"
 #. CATEGORY_NAMES['ONIONS']
 #: searx/searxng.msg
 msgid "onions"
-msgstr "onion"
+msgstr "onions"
 
 #. CATEGORY_NAMES['SCIENCE']
 #: searx/searxng.msg
@@ -165,7 +167,7 @@ msgstr "publicações científicas"
 #. STYLE_NAMES['AUTO']
 #: searx/searxng.msg
 msgid "auto"
-msgstr "automático"
+msgstr "auto"
 
 #. STYLE_NAMES['LIGHT']
 #: searx/searxng.msg
@@ -235,7 +237,7 @@ msgstr "Humidade"
 #: searx/engines/duckduckgo_weather.py:77 searx/engines/wttr.py:34
 #: searx/searxng.msg
 msgid "Max temp."
-msgstr "Temperatura máxima."
+msgstr "Temperatura máxima"
 
 #. WEATHER_TERMS['MIN TEMP.']
 #: searx/engines/duckduckgo_weather.py:73 searx/engines/wttr.py:33
@@ -535,15 +537,15 @@ msgstr "Qualidade do ficheiro"
 
 #: searx/plugins/ahmia_filter.py:32
 msgid "Ahmia blacklist"
-msgstr ""
+msgstr "Lista negra de Ahmia"
 
 #: searx/plugins/ahmia_filter.py:33
 msgid "Filter out onion results that appear in Ahmia's blacklist."
-msgstr ""
+msgstr "Filtrar resultados onion que aparecem na lista negra de Ahmia."
 
 #: searx/plugins/calculator.py:38
 msgid "Basic Calculator"
-msgstr ""
+msgstr "Calculadora Básica"
 
 #: searx/plugins/calculator.py:39
 msgid "Calculate mathematical expressions via the search bar"
@@ -620,7 +622,7 @@ msgstr "Não foi possível baixar a lista de nós de saída do Tor de"
 
 #: searx/plugins/tor_check.py:72
 msgid "You are using Tor and it looks like you have the external IP address"
-msgstr "Você está usando o Tor e parece que você tem o endereço IP externo"
+msgstr "Está a usar o Tor e parece que tem o endereço IP externo"
 
 #: searx/plugins/tor_check.py:76
 msgid "You are not using Tor and you have the external IP address"
@@ -636,11 +638,11 @@ msgstr "Remover argumentos de rastreio da hiperligação devolvida"
 
 #: searx/plugins/unit_converter.py:49
 msgid "Unit converter plugin"
-msgstr ""
+msgstr "Plugin conversor de unidades"
 
 #: searx/plugins/unit_converter.py:50
 msgid "Convert between units"
-msgstr "Conversão de unidades"
+msgstr "Converter entre unidades"
 
 #: searx/templates/simple/404.html:4
 msgid "Page not found"
@@ -1190,6 +1192,8 @@ msgid ""
 "A URL containing your preferences. This URL can be used to restore your "
 "settings on a different device."
 msgstr ""
+"Um URL que contém as suas preferências. Este URL pode ser usado para "
+"restaurar as suas configurações em um dispositivo diferente."
 
 #: searx/templates/simple/preferences/cookies.html:46
 msgid "Copy preferences hash"
@@ -2109,4 +2113,3 @@ msgstr "esconder vídeo"
 #~ "Especificar configurações customizadas na URL"
 #~ " de preferências pode ser usado para"
 #~ " sincronizar preferências entre dispositivos."
-
