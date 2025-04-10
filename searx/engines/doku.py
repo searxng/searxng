@@ -4,6 +4,7 @@
 """
 
 from urllib.parse import urlencode
+from urllib.parse import urljoin
 from lxml.html import fromstring
 from searx.utils import extract_text, eval_xpath
 
@@ -63,7 +64,7 @@ def response(resp):
         title = extract_text(eval_xpath(r, './/a[@class="wikilink1"]/@title'))
 
         # append result
-        results.append({'title': title, 'content': "", 'url': base_url + res_url})
+        results.append({'title': title, 'content': "", 'url': urljoin(base_url, res_url)})
 
     # Search results
     for r in eval_xpath(doc, '//dl[@class="search_results"]/*'):
@@ -75,7 +76,7 @@ def response(resp):
                 content = extract_text(eval_xpath(r, '.'))
 
                 # append result
-                results.append({'title': title, 'content': content, 'url': base_url + res_url})
+                results.append({'title': title, 'content': content, 'url': urljoin(base_url, res_url)})
         except:  # pylint: disable=bare-except
             continue
 
