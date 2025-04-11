@@ -22,18 +22,18 @@ searx_dir = abspath(dirname(__file__))
 searx_parent_dir = abspath(dirname(dirname(__file__)))
 
 settings = {}
-searx_debug = False
+sxng_debug = False
 logger = logging.getLogger('searx')
 
 _unset = object()
 
 
 def init_settings():
-    """Initialize global ``settings`` and ``searx_debug`` variables and
+    """Initialize global ``settings`` and ``sxng_debug`` variables and
     ``logger`` from ``SEARXNG_SETTINGS_PATH``.
     """
 
-    global settings, searx_debug  # pylint: disable=global-variable-not-assigned
+    global settings, sxng_debug  # pylint: disable=global-variable-not-assigned
 
     cfg, msg = searx.settings_loader.load_settings(load_user_settings=True)
     cfg = cfg or {}
@@ -42,8 +42,8 @@ def init_settings():
     settings.clear()
     settings.update(cfg)
 
-    searx_debug = settings['general']['debug']
-    if searx_debug:
+    sxng_debug = get_setting("general.debug")
+    if sxng_debug:
         _logging_config_debug()
     else:
         logging.basicConfig(level=LOG_LEVEL_PROD, format=LOG_FORMAT_PROD)

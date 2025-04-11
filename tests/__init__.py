@@ -5,13 +5,8 @@ import pathlib
 import os
 import aiounittest
 
-# Before import from the searx package, we need to set up the (debug)
-# environment.  The import of the searx package initialize the searx.settings
-# and this in turn takes the defaults from the environment!
 
 os.environ.pop('SEARXNG_SETTINGS_PATH', None)
-os.environ['SEARXNG_DEBUG'] = '1'
-os.environ['SEARXNG_DEBUG_LOG_LEVEL'] = 'WARNING'
 os.environ['SEARXNG_DISABLE_ETC_SETTINGS'] = '1'
 
 

@@ -12,7 +12,7 @@ from typing import Dict
 
 import httpx
 
-from searx import logger, searx_debug
+from searx import logger, sxng_debug
 from searx.extended_types import SXNG_Response
 from .client import new_client, get_loop, AsyncHTTPTransportNoHttp
 from .raise_for_httperror import raise_for_httperror
@@ -186,7 +186,7 @@ class Network:
         local_address = next(self._local_addresses_cycle)
         proxies = next(self._proxies_cycle)  # is a tuple so it can be part of the key
         key = (verify, max_redirects, local_address, proxies)
-        hook_log_response = self.log_response if searx_debug else None
+        hook_log_response = self.log_response if sxng_debug else None
         if key not in self._clients or self._clients[key].is_closed:
             client = new_client(
                 self.enable_http,

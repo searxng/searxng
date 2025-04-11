@@ -9,7 +9,6 @@ import csv
 import hashlib
 import hmac
 import re
-import inspect
 import itertools
 import json
 from datetime import datetime, timedelta
@@ -314,21 +313,6 @@ def searxng_l10n_timespan(dt: datetime) -> str:  # pylint: disable=invalid-name
             return gettext('{minutes} minute(s) ago').format(minutes=minutes)
         return gettext('{hours} hour(s), {minutes} minute(s) ago').format(hours=hours, minutes=minutes)
     return format_date(dt)
-
-
-def is_flask_run_cmdline():
-    """Check if the application was started using "flask run" command line
-
-    Inspect the callstack.
-    See https://github.com/pallets/flask/blob/master/src/flask/__main__.py
-
-    Returns:
-        bool: True if the application was started using "flask run".
-    """
-    frames = inspect.stack()
-    if len(frames) < 2:
-        return False
-    return frames[-2].filename.endswith('flask/cli.py')
 
 
 NO_SUBGROUPING = 'without further subgrouping'
