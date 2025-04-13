@@ -30,7 +30,7 @@ SearXNG was born out of the need for a **privacy-respecting** search tool which
 can be extended easily to maximize both its search and its privacy protecting
 capabilities.
 
-Many widely used search engine features may work differently, 
+Some widely used search engine features may work differently, 
 may be turned off by default, or may not be implemented at all in SearXNG 
 **as a consequence of a privacy-by-design approach**.
 
