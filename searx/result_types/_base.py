@@ -55,8 +55,7 @@ def _normalize_url_fields(result: Result | LegacyResult):
         result.parsed_url = result.parsed_url._replace(
             # if the result has no scheme, use http as default
             scheme=result.parsed_url.scheme or "http",
-            # normalize ``example.com/path/`` to ``example.com/path``
-            path=result.parsed_url.path.rstrip("/"),
+            path=result.parsed_url.path,
         )
         result.url = result.parsed_url.geturl()
 
@@ -73,7 +72,7 @@ def _normalize_url_fields(result: Result | LegacyResult):
             item["url"] = _url._replace(
                 scheme=_url.scheme or "http",
                 # netloc=_url.netloc.replace("www.", ""),
-                path=_url.path.rstrip("/"),
+                path=_url.path,
             ).geturl()
 
         infobox_id = getattr(result, "id", None)
@@ -82,7 +81,7 @@ def _normalize_url_fields(result: Result | LegacyResult):
             result.id = _url._replace(
                 scheme=_url.scheme or "http",
                 # netloc=_url.netloc.replace("www.", ""),
-                path=_url.path.rstrip("/"),
+                path=_url.path,
             ).geturl()
 
 
@@ -259,9 +258,6 @@ class Result(msgspec.Struct, kw_only=True):
           ``parse_url`` from field ``url``.  The ``url`` field is initialized
           with the resulting value in ``parse_url``, if ``url`` and
           ``parse_url`` are not equal.
-
-        - ``example.com/path/`` and ``example.com/path`` are equivalent and are
-          normalized to ``example.com/path``.
         """
         _normalize_url_fields(self)
 
