@@ -1,45 +1,60 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-
-"""This is the implementation of the Mullvad-Leta meta-search engine.
-
-This engine **REQUIRES** that searxng operate within a Mullvad VPN
-
-If using docker, consider using gluetun for easily connecting to the Mullvad
-
-- https://github.com/qdm12/gluetun
-
-Otherwise, follow instructions provided by Mullvad for enabling the VPN on Linux
-
-- https://mullvad.net/en/help/install-mullvad-app-linux
+"""Mullvad Leta is a search engine proxy. Currently Leta only offers text
+search results not image, news or any other types of search result.  Leta acts
+as a proxy to Google and Brave search results. You can select which backend
+search engine you wish to use, see  (:py:obj:`leta_engine`).
 
 .. hint::
 
-   The :py:obj:`EngineTraits` is empty by default.  Maintainers have to run
-   ``make data.traits`` (in the Mullvad VPN / :py:obj:`fetch_traits`) and rebase
-   the modified JSON file ``searx/data/engine_traits.json`` on every single
-   update of SearXNG!
+   Leta caches each search for up to 30 days.  For example, if you use search
+   terms like ``news``, contrary to your intention you'll get very old results!
+
+
+Configuration
+=============
+
+The engine has the following additional settings:
+
+- :py:obj:`leta_engine` (:py:obj:`LetaEnginesType`)
+
+You can configure one Leta engine for Google and one for Brave:
+
+.. code:: yaml
+
+  - name: mullvadleta
+    engine: mullvad_leta
+    leta_engine: google
+    shortcut: ml
+
+  - name: mullvadleta brave
+    engine: mullvad_leta
+    network: mullvadleta  # use network from engine "mullvadleta" configured above
+    leta_engine: brave
+    shortcut: mlb
+
+Implementations
+===============
+
 """
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
+import typing
+from urllib.parse import urlencode
+import babel
 from httpx import Response
 from lxml import html
 from searx.enginelib.traits import EngineTraits
-from searx.locales import region_tag, get_official_locales
-from searx.utils import eval_xpath, extract_text, eval_xpath_list
-from searx.exceptions import SearxEngineResponseException
+from searx.locales import get_official_locales, language_tag, region_tag
+from searx.utils import eval_xpath_list
+from searx.result_types import EngineResults, MainResult
 
-if TYPE_CHECKING:
+if typing.TYPE_CHECKING:
     import logging
 
     logger = logging.getLogger()
 
 traits: EngineTraits
-
-use_cache: bool = True  # non-cache use only has 100 searches per day!
-
-leta_engine: str = 'google'
 
 search_url = "https://leta.mullvad.net"
 
@@ -54,154 +69,205 @@ about = {
 }
 
 # engine dependent config
-categories = ['general', 'web']
+categories = ["general", "web"]
 paging = True
-max_page = 50
+max_page = 10
 time_range_support = True
 time_range_dict = {
-    "day": "d1",
-    "week": "w1",
-    "month": "m1",
-    "year": "y1",
+    "day": "d",
+    "week": "w",
+    "month": "m",
+    "year": "y",
 }
 
-available_leta_engines = [
-    'google',  # first will be default if provided engine is invalid
-    'brave',
-]
+LetaEnginesType = typing.Literal["google", "brave"]
+"""Engine types supported by mullvadleta."""
+
+leta_engine: LetaEnginesType = "google"
+"""Select Leta's engine type from :py:obj:`LetaEnginesType`."""
 
 
-def is_vpn_connected(dom: html.HtmlElement) -> bool:
-    """Returns true if the VPN is connected, False otherwise"""
-    connected_text = extract_text(eval_xpath(dom, '//main/div/p[1]'))
-    return connected_text != 'You are not connected to Mullvad VPN.'
+def init(_):
+    l = typing.get_args(LetaEnginesType)
+    if leta_engine not in l:
+        raise ValueError(f"leta_engine '{leta_engine}' is invalid, use one of {', '.join(l)}")
 
 
-def assign_headers(headers: dict) -> dict:
-    """Assigns the headers to make a request to Mullvad Leta"""
-    headers['Accept'] = "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8"
-    headers['Content-Type'] = "application/x-www-form-urlencoded"
-    headers['Host'] = "leta.mullvad.net"
-    headers['Origin'] = "https://leta.mullvad.net"
-    return headers
+class DataNodeQueryMetaDataIndices(typing.TypedDict):
+    """Indices into query metadata."""
+
+    success: int
+    q: int  # pylint: disable=invalid-name
+    country: int
+    language: int
+    lastUpdated: int
+    engine: int
+    items: int
+    infobox: int
+    news: int
+    timestamp: int
+    altered: int
+    page: int
+    next: int  # if -1, there no more results are available
+    previous: int
+
+
+class DataNodeResultIndices(typing.TypedDict):
+    """Indices into query resultsdata."""
+
+    link: int
+    snippet: int
+    title: int
+    favicon: int
 
 
 def request(query: str, params: dict):
-    country = traits.get_region(params.get('searxng_locale', 'all'), traits.all_locale)  # type: ignore
-
-    result_engine = leta_engine
-    if leta_engine not in available_leta_engines:
-        result_engine = available_leta_engines[0]
-        logger.warning(
-            'Configured engine "%s" not one of the available engines %s, defaulting to "%s"',
-            leta_engine,
-            available_leta_engines,
-            result_engine,
-        )
-
-    params['url'] = search_url
-    params['method'] = 'POST'
-    params['data'] = {
+    params["method"] = "GET"
+    args = {
         "q": query,
-        "gl": country if country is str else '',
-        'engine': result_engine,
+        "engine": leta_engine,
+        "x-sveltekit-invalidated": "001",  # hardcoded from all requests seen
     }
-    # pylint: disable=undefined-variable
-    if use_cache:
-        params['data']['oc'] = "on"
-    # pylint: enable=undefined-variable
 
-    if params['time_range'] in time_range_dict:
-        params['dateRestrict'] = time_range_dict[params['time_range']]
-    else:
-        params['dateRestrict'] = ''
+    country = traits.get_region(params.get("searxng_locale"), traits.all_locale)  # type: ignore
+    if country:
+        args["country"] = country
 
-    if params['pageno'] > 1:
-        #  Page 1 is n/a, Page 2 is 11, page 3 is 21, ...
-        params['data']['start'] = ''.join([str(params['pageno'] - 1), "1"])
+    language = traits.get_language(params.get("searxng_locale"), traits.all_locale)  # type: ignore
+    if language:
+        args["language"] = language
 
-    if params['headers'] is None:
-        params['headers'] = {}
+    if params["time_range"] in time_range_dict:
+        args["lastUpdated"] = time_range_dict[params["time_range"]]
 
-    assign_headers(params['headers'])
+    if params["pageno"] > 1:
+        args["page"] = params["pageno"]
+
+    params["url"] = f"{search_url}/search/__data.json?{urlencode(args)}"
+
     return params
 
 
-def extract_result(dom_result: list[html.HtmlElement]):
-    # Infoboxes sometimes appear in the beginning and will have a length of 0
-    if len(dom_result) == 3:
-        [a_elem, h3_elem, p_elem] = dom_result
-    elif len(dom_result) == 4:
-        [_, a_elem, h3_elem, p_elem] = dom_result
-    else:
-        return None
+def response(resp: Response) -> EngineResults:
+    json_response = resp.json()
 
-    return {
-        'url': extract_text(a_elem.text),
-        'title': extract_text(h3_elem),
-        'content': extract_text(p_elem),
-    }
+    nodes = json_response["nodes"]
+    # 0: is None
+    # 1: has "connected=True", not useful
+    # 2: query results within "data"
+
+    data_nodes = nodes[2]["data"]
+    # Instead of nested object structure, all objects are flattened into a
+    # list. Rather, the first object in data_node provides indices into the
+    # "data_nodes" to access each searchresult (which is an object of more
+    # indices)
+    #
+    # Read the relative TypedDict definitions for details
+
+    query_meta_data: DataNodeQueryMetaDataIndices = data_nodes[0]
+
+    query_items_indices = query_meta_data["items"]
+
+    results = EngineResults()
+    for idx in data_nodes[query_items_indices]:
+        query_item_indices: DataNodeResultIndices = data_nodes[idx]
+        results.add(
+            MainResult(
+                url=data_nodes[query_item_indices["link"]],
+                title=data_nodes[query_item_indices["title"]],
+                content=data_nodes[query_item_indices["snippet"]],
+            )
+        )
+
+    return results
 
 
-def extract_results(search_results: html.HtmlElement):
-    for search_result in search_results:
-        dom_result = eval_xpath_list(search_result, 'div/div/*')
-        result = extract_result(dom_result)
-        if result is not None:
-            yield result
+def fetch_traits(engine_traits: EngineTraits) -> None:
+    """Fetch languages and regions from Mullvad-Leta"""
 
+    def extract_table_data(table):
+        for row in table.xpath(".//tr")[2:]:
+            cells = row.xpath(".//td | .//th")  # includes headers and data
+            if len(cells) > 1:  # ensure the column exists
+                cell0 = cells[0].text_content().strip()
+                cell1 = cells[1].text_content().strip()
+                yield [cell0, cell1]
 
-def response(resp: Response):
-    """Checks if connected to Mullvad VPN, then extracts the search results from
-    the DOM resp: requests response object"""
-
-    dom = html.fromstring(resp.text)
-    if not is_vpn_connected(dom):
-        raise SearxEngineResponseException('Not connected to Mullvad VPN')
-    search_results = eval_xpath(dom.body, '//main/div[2]/div')
-    return list(extract_results(search_results))
-
-
-def fetch_traits(engine_traits: EngineTraits):
-    """Fetch languages and regions from Mullvad-Leta
-
-    .. warning::
-
-        Fetching the engine traits also requires a Mullvad VPN connection. If
-        not connected, then an error message will print and no traits will be
-        updated.
-    """
     # pylint: disable=import-outside-toplevel
     # see https://github.com/searxng/searxng/issues/762
-    from searx.network import post as http_post
+    from searx.network import get as http_get
 
     # pylint: enable=import-outside-toplevel
-    resp = http_post(search_url, headers=assign_headers({}))
+
+    resp = http_get(f"{search_url}/documentation")
     if not isinstance(resp, Response):
         print("ERROR: failed to get response from mullvad-leta. Are you connected to the VPN?")
         return
     if not resp.ok:
         print("ERROR: response from mullvad-leta is not OK. Are you connected to the VPN?")
         return
+
     dom = html.fromstring(resp.text)
-    if not is_vpn_connected(dom):
-        print('ERROR: Not connected to Mullvad VPN')
-        return
-    # supported region codes
-    options = eval_xpath_list(dom.body, '//main/div/form/div[2]/div/select[1]/option')
-    if options is None or len(options) <= 0:
-        print('ERROR: could not find any results. Are you connected to the VPN?')
-    for x in options:
-        eng_country = x.get("value")
 
-        sxng_locales = get_official_locales(eng_country, engine_traits.languages.keys(), regional=True)
+    # There are 4 HTML tables on the documentation page for extracting information:
+    # 0. Keyboard Shortcuts
+    # 1. Query Parameters (shoutout to Mullvad for accessible docs for integration)
+    # 2. Country Codes [Country, Code]
+    # 3. Language Codes [Language, Code]
+    tables = eval_xpath_list(dom.body, "//table")
+    if tables is None or len(tables) <= 0:
+        print("ERROR: could not find any tables. Was the page updated?")
 
-        if not sxng_locales:
-            print(
-                "ERROR: can't map from Mullvad-Leta country %s (%s) to a babel region."
-                % (x.get('data-name'), eng_country)
-            )
+    language_table = tables[3]
+    lang_map = {
+        "zh-hant": "zh_Hans",
+        "zh-hans": "zh_Hant",
+        "jp": "ja",
+    }
+
+    for language, code in extract_table_data(language_table):
+
+        locale_tag = lang_map.get(code, code).replace("-", "_")  # type: ignore
+        try:
+            locale = babel.Locale.parse(locale_tag)
+        except babel.UnknownLocaleError:
+            print(f"ERROR: Mullvad-Leta language {language} ({code}) is unknown by babel")
             continue
 
-        for sxng_locale in sxng_locales:
-            engine_traits.regions[region_tag(sxng_locale)] = eng_country
+        sxng_tag = language_tag(locale)
+        engine_traits.languages[sxng_tag] = code
+
+    country_table = tables[2]
+    country_map = {
+        "cn": "zh-CN",
+        "hk": "zh-HK",
+        "jp": "ja-JP",
+        "my": "ms-MY",
+        "tw": "zh-TW",
+        "uk": "en-GB",
+        "us": "en-US",
+    }
+
+    for country, code in extract_table_data(country_table):
+
+        sxng_tag = country_map.get(code)
+        if sxng_tag:
+            engine_traits.regions[sxng_tag] = code
+            continue
+
+        try:
+            locale = babel.Locale.parse(f"{code.lower()}_{code.upper()}")
+        except babel.UnknownLocaleError:
+            locale = None
+
+        if locale:
+            engine_traits.regions[region_tag(locale)] = code
+            continue
+
+        official_locales = get_official_locales(code, engine_traits.languages.keys(), regional=True)
+        if not official_locales:
+            print(f"ERROR: Mullvad-Leta country '{code}' ({country}) could not be mapped as expected.")
+            continue
+
+        for locale in official_locales:
+            engine_traits.regions[region_tag(locale)] = code

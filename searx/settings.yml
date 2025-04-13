@@ -1398,14 +1398,21 @@ engines:
       require_api_key: false
       results: JSON
 
-  # read https://docs.searxng.org/dev/engines/online/mullvad_leta.html
-  # - name: mullvadleta
-  #   engine: mullvad_leta
-  #   leta_engine: google # choose one of the following: google, brave
-  #   use_cache: true  # Only 100 non-cache searches per day, suggested only for private instances
-  #   search_url: https://leta.mullvad.net
-  #   categories: [general, web]
-  #   shortcut: ml
+  # https://docs.searxng.org/dev/engines/online/mullvad_leta.html
+  - name: mullvadleta
+    engine: mullvad_leta
+    disabled: true
+    leta_engine: google
+    categories: [general, web]
+    shortcut: ml
+
+  - name: mullvadleta brave
+    engine: mullvad_leta
+    network: mullvadleta
+    disabled: true
+    leta_engine: brave
+    categories: [general, web]
+    shortcut: mlb
 
   - name: odysee
     engine: odysee
