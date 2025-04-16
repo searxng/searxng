@@ -29,7 +29,7 @@ Programming Interface
   parameter. This function can be omitted, if there is no need to setup anything
   in advance.
 
-:py:func:`search(query, params) <searx.engines.demo_offline.searc>`
+:py:func:`search(query, params) <searx.engines.demo_offline.search>`
   Each offline engine has a function named ``search``.  This function is
   responsible to perform a search and return the results in a presentable
   format. (Where *presentable* means presentable by the selected result

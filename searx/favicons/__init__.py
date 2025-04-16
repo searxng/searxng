@@ -1,5 +1,12 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-"""Implementations for providing the favicons in SearXNG"""
+"""Implementations for providing the favicons in SearXNG.
+
+There is a command line for developer purposes and for deeper analysis.  Here is
+an example in which the command line is called in the development environment::
+
+  $ ./manage pyenv.cmd bash --norc --noprofile
+  (py3) python -m searx.favicons --help
+"""
 
 from __future__ import annotations
 
