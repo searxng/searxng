@@ -236,6 +236,12 @@ class FaviconCacheSQLite(sqlitedb.SQLiteAppl, FaviconCache):
     model in the SQLite DB is implemented using the abstract class
     :py:obj:`sqlitedb.SQLiteAppl`.
 
+    For introspection of the DB, jump into developer environment and run command
+    to show cache state::
+
+        $ ./manage pyenv.cmd bash --norc --noprofile
+        (py3) python -m searx.favicons cache state
+
     The following configurations are required / supported:
 
     - :py:obj:`FaviconCacheConfig.db_url`
@@ -357,6 +363,10 @@ CREATE TABLE IF NOT EXISTS blob_map (
             if sha256 != FALLBACK_ICON:
                 conn.execute(self.SQL_INSERT_BLOBS, (sha256, bytes_c, mime, data))
             conn.execute(self.SQL_INSERT_BLOB_MAP, (sha256, resolver, authority))
+        # hint: the with context of the connection object closes the transaction
+        # but not the DB connection.  The connection has to be closed by the
+        # caller of self.connect()!
+        conn.close()
 
         return True
 
@@ -376,7 +386,8 @@ CREATE TABLE IF NOT EXISTS blob_map (
             return
         self.properties.set("LAST_MAINTENANCE", "")  # hint: this (also) sets the m_time of the property!
 
-        # do maintenance tasks
+        # Do maintenance tasks.  This can be take a little more time, to avoid
+        # DB locks, etablish a new DB connecton.
 
         with self.connect() as conn:
 
@@ -406,6 +417,12 @@ CREATE TABLE IF NOT EXISTS blob_map (
                     conn.execute("DELETE FROM blobs WHERE sha256 IN ('%s')" % "','".join(sha_list))
                     conn.execute("DELETE FROM blob_map WHERE sha256 IN ('%s')" % "','".join(sha_list))
                     logger.debug("dropped %s blobs with total size of %s bytes", len(sha_list), c)
+
+        # Vacuuming the WALs
+        # https://www.theunterminatedstring.com/sqlite-vacuuming/
+
+        conn.execute("PRAGMA wal_checkpoint(TRUNCATE)")
+        conn.close()
 
     def _query_val(self, sql, default=None):
         val = self.DB.execute(sql).fetchone()
