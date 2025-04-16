@@ -20,7 +20,7 @@
          X-Robots-Tag : noindex, nofollow
          Referrer-Policy : no-referrer
 
-``base_url`` : ``$SEARXNG_URL``
+``base_url`` : ``$SEARXNG_BASE_URL``
   The base URL where SearXNG is deployed.  Used to create correct inbound links.
 
 ``port`` & ``bind_address``: ``$SEARXNG_PORT`` & ``$SEARXNG_BIND_ADDRESS``
