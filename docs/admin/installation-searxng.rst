@@ -96,7 +96,7 @@ Modify the ``/etc/searxng/settings.yml`` to your needs:
 
      .. literalinclude:: ../../utils/templates/etc/searxng/settings.yml
         :language: yaml
-        :end-before: # hostnames:
+        :end-before: # preferences:
 
      To see the entire file jump to :origin:`utils/templates/etc/searxng/settings.yml`
 
