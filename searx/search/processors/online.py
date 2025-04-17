@@ -127,6 +127,7 @@ class OnlineProcessor(EngineProcessor):
                 '{} redirects, maximum: {}'.format(len(response.history), soft_max_redirects),
                 (status_code, reason, hostname),
                 secondary=True,
+                log_level=self.metrics_log_level,
             )
 
         return response
@@ -177,20 +178,21 @@ class OnlineProcessor(EngineProcessor):
             self.logger.exception(
                 "requests exception (search duration : {0} s, timeout: {1} s) : {2}".format(
                     default_timer() - start_time, timeout_limit, e
-                )
+                ),
+                exc_info=self.log_engine_exc_info,
             )
         except SearxEngineCaptchaException as e:
             self.handle_exception(result_container, e, suspend=True)
-            self.logger.exception('CAPTCHA')
+            self.logger.exception('CAPTCHA', exc_info=self.log_engine_exc_info)
         except SearxEngineTooManyRequestsException as e:
             self.handle_exception(result_container, e, suspend=True)
-            self.logger.exception('Too many requests')
+            self.logger.exception('Too many requests', exc_info=self.log_engine_exc_info)
         except SearxEngineAccessDeniedException as e:
             self.handle_exception(result_container, e, suspend=True)
-            self.logger.exception('SearXNG is blocked')
+            self.logger.exception('SearXNG is blocked', exc_info=self.log_engine_exc_info)
         except Exception as e:  # pylint: disable=broad-except
             self.handle_exception(result_container, e)
-            self.logger.exception('exception : {0}'.format(e))
+            self.logger.exception('exception : {0}'.format(e), exc_info=self.log_engine_exc_info)
 
     def get_default_tests(self):
         tests = {}
