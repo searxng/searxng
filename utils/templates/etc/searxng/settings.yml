@@ -9,6 +9,8 @@ general:
 search:
   safe_search: 2
   autocomplete: 'duckduckgo'
+  formats:
+    - html
 
 server:
   # Is overwritten by ${SEARXNG_SECRET}
@@ -16,7 +18,7 @@ server:
   limiter: true
   image_proxy: true
   # public URL of the instance, to ensure correct inbound links. Is overwritten
-  # by ${SEARXNG_URL}.
+  # by ${SEARXNG_BASE_URL}.
   # base_url: http://example.com/location
 
 redis:
@@ -31,30 +33,8 @@ ui:
 #     - autocomplete
 #     - method
 
-enabled_plugins:
-  - 'Hash plugin'
-  - 'Self Information'
-  - 'Tracker URL remover'
-  - 'Ahmia blacklist'
-  # - 'Hostnames plugin'  # see 'hostnames' configuration below
-  # - 'Open Access DOI rewrite'
-
-# plugins:
-#   - only_show_green_results
-
-# hostnames:
-#   replace:
-#     '(.*\.)?youtube\.com$': 'invidious.example.com'
-#     '(.*\.)?youtu\.be$': 'invidious.example.com'
-#   remove:
-#     - '(.*\.)?facebook.com$'
-#   low_priority:
-#     - '(.*\.)?google\.com$'
-#   high_priority:
-#     - '(.*\.)?wikipedia.org$'
-
-engines:
-
+# engines:
+#
 #   - name: fdroid
 #     disabled: false
 #
@@ -64,11 +44,3 @@ engines:
 #   - name: mediathekviewweb
 #     categories: TV
 #     disabled: false
-#
-#   - name: invidious
-#     disabled: false
-#     base_url:
-#       - https://invidious.snopyta.org
-#       - https://invidious.tiekoetter.com
-#       - https://invidio.xamh.de
-#       - https://inv.riverside.rocks
