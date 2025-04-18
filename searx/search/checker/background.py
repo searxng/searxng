@@ -10,7 +10,7 @@ from typing import Any, Dict, List, Literal, Optional, Tuple, TypedDict, Union
 
 import redis.exceptions
 
-from searx import logger, settings, searx_debug
+from searx import logger, settings, sxng_debug
 from searx.redisdb import client as get_redis_client
 from searx.exceptions import SearxSettingsException
 from searx.search.processors import PROCESSORS
@@ -139,7 +139,7 @@ def initialize():
         signal.signal(signal.SIGUSR1, _signal_handler)
 
     # special case when debug is activate
-    if searx_debug and settings['checker']['off_when_debug']:
+    if sxng_debug and settings['checker']['off_when_debug']:
         logger.info('debug mode: checker is disabled')
         return
 
