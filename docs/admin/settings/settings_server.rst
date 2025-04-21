@@ -29,6 +29,8 @@
   directly using ``python searx/webapp.py``.  Doesn't apply to a SearXNG
   services running behind a proxy and using socket communications.
 
+.. _server.secret_key:
+
 ``secret_key`` : ``$SEARXNG_SECRET``
   Used for cryptography purpose.
 
