@@ -84,7 +84,6 @@ from typing import TYPE_CHECKING, Any
 from collections import OrderedDict
 import re
 from unicodedata import normalize, combining
-from time import time
 from datetime import datetime, timedelta
 from json import loads
 
@@ -97,6 +96,7 @@ from searx.network import get  # see https://github.com/searxng/searxng/issues/7
 from searx.exceptions import SearxEngineCaptchaException
 from searx.locales import region_tag
 from searx.enginelib.traits import EngineTraits
+from searx.enginelib import EngineCache
 
 if TYPE_CHECKING:
     import logging
@@ -159,10 +159,21 @@ search_form_xpath = '//form[@id="search"]'
     </form>
 """
 
-# timestamp of the last fetch of 'sc' code
-sc_code_ts = 0
-sc_code = ''
-sc_code_cache_sec = 30
+
+CACHE: EngineCache
+"""Persistent (SQLite) key/value cache that deletes its values after ``expire``
+seconds."""
+
+
+def init(_):
+    global CACHE  # pylint: disable=global-statement
+
+    # hint: all three startpage engines (WEB, Images & News) can/should use the
+    # same sc_code ..
+    CACHE = EngineCache("startpage")  # type:ignore
+
+
+sc_code_cache_sec = 3600
 """Time in seconds the sc-code is cached in memory :py:obj:`get_sc_code`."""
 
 
@@ -176,14 +187,10 @@ def get_sc_code(searxng_locale, params):
 
     Startpage's search form generates a new sc-code on each request.  This
     function scrap a new sc-code from Startpage's home page every
-    :py:obj:`sc_code_cache_sec` seconds.
+    :py:obj:`sc_code_cache_sec` seconds."""
 
-    """
-
-    global sc_code_ts, sc_code  # pylint: disable=global-statement
-
-    if sc_code and (time() < (sc_code_ts + sc_code_cache_sec)):
-        logger.debug("get_sc_code: reuse '%s'", sc_code)
+    sc_code = CACHE.get("SC_CODE", "")
+    if sc_code:
         return sc_code
 
     headers = {**params['headers']}
@@ -233,8 +240,9 @@ def get_sc_code(searxng_locale, params):
             message="get_sc_code: [PR-695] query new sc time-stamp failed! (%s)" % resp.url,  # type: ignore
         ) from exc
 
-    sc_code_ts = time()
+    sc_code = str(sc_code)
     logger.debug("get_sc_code: new value is: %s", sc_code)
+    CACHE.set(key="SC_CODE", value=sc_code, expire=sc_code_cache_sec)
     return sc_code
 
 

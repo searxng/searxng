@@ -15,6 +15,7 @@ close to the implementation, its just a simple example.  To get in use of this
 import json
 
 from searx.result_types import EngineResults
+from searx.enginelib import EngineCache
 
 engine_type = 'offline'
 categories = ['general']
@@ -32,14 +33,18 @@ about = {
 # if there is a need for globals, use a leading underline
 _my_offline_engine: str = ""
 
+CACHE: EngineCache
+"""Persistent (SQLite) key/value cache that deletes its values after ``expire``
+seconds."""
 
-def init(engine_settings=None):
+
+def init(engine_settings):
     """Initialization of the (offline) engine.  The origin of this demo engine is a
     simple json string which is loaded in this example while the engine is
-    initialized.
+    initialized."""
+    global _my_offline_engine, CACHE  # pylint: disable=global-statement
 
-    """
-    global _my_offline_engine  # pylint: disable=global-statement
+    CACHE = EngineCache(engine_settings["name"])  # type:ignore
 
     _my_offline_engine = (
         '[ {"value": "%s"}'
@@ -57,8 +62,8 @@ def search(query, request_params) -> EngineResults:
     results.
     """
     res = EngineResults()
+    count = CACHE.get("count", 0)
 
-    count = 0
     for row in json.loads(_my_offline_engine):
         count += 1
         kvmap = {
@@ -75,4 +80,7 @@ def search(query, request_params) -> EngineResults:
             )
         )
     res.add(res.types.LegacyResult(number_of_results=count))
+
+    # cache counter value for 20sec
+    CACHE.set("count", count, expire=20)
     return res
