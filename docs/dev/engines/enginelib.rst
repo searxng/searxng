@@ -4,19 +4,13 @@
 Engine Library
 ==============
 
-.. contents::
-   :depth: 2
-   :local:
-   :backlinks: entry
-
 .. automodule:: searx.enginelib
-  :members:
+   :members:
 
 .. _searx.enginelib.traits:
-
 
 Engine traits
 =============
 
 .. automodule:: searx.enginelib.traits
-  :members:
+   :members:

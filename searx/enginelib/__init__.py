@@ -1,6 +1,16 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 """Implementations of the framework for the SearXNG engines.
 
+- :py:obj:`searx.enginelib.EngineCache`
+- :py:obj:`searx.enginelib.Engine`
+- :py:obj:`searx.enginelib.traits`
+
+There is a command line for developer purposes and for deeper analysis.  Here is
+an example in which the command line is called in the development environment::
+
+  $ ./manage pyenv.cmd bash --norc --noprofile
+  (py3) python -m searx.enginelib --help
+
 .. hint::
 
    The long term goal is to modularize all implementations of the engine
@@ -9,14 +19,156 @@
    - move implementations of the :ref:`searx.engines loader` to a new module in
      the :py:obj:`searx.enginelib` namespace.
 
+-----
+
 """
-
-
 from __future__ import annotations
-from typing import List, Callable, TYPE_CHECKING
+
+__all__ = ["EngineCache", "Engine", "ENGINES_CACHE"]
+
+from typing import List, Callable, TYPE_CHECKING, Any
+import string
+import typer
+
+from ..cache import ExpireCache, ExpireCacheCfg
 
 if TYPE_CHECKING:
     from searx.enginelib import traits
+
+
+ENGINES_CACHE = ExpireCache.build_cache(
+    ExpireCacheCfg(
+        name="ENGINES_CACHE",
+        MAXHOLD_TIME=60 * 60 * 24 * 7,  # 7 days
+        MAINTENANCE_PERIOD=60 * 60,  # 2h
+    )
+)
+"""Global :py:obj:`searx.cache.ExpireCacheSQLite` instance where the cached
+values from all engines are stored.  The `MAXHOLD_TIME` is 7 days and the
+`MAINTENANCE_PERIOD` is set to two hours."""
+
+app = typer.Typer()
+
+
+@app.command()
+def state():
+    """Show state for the caches of the engines."""
+
+    title = "cache tables and key/values"
+    print(title)
+    print("=" * len(title))
+    print(ENGINES_CACHE.state().report())
+    print()
+    title = f"properties of {ENGINES_CACHE.cfg.name}"
+    print(title)
+    print("=" * len(title))
+    print(str(ENGINES_CACHE.properties))  # type: ignore
+
+
+@app.command()
+def maintenance(force: bool = True):
+    """Carry out maintenance on cache of the engines."""
+    ENGINES_CACHE.maintenance(force=force)
+
+
+class EngineCache:
+    """Persistent (SQLite) key/value cache that deletes its values again after
+    ``expire`` seconds (default/max: :py:obj:`MAXHOLD_TIME
+    <searx.cache.ExpireCacheCfg.MAXHOLD_TIME>`).  This class is a wrapper around
+    :py:obj:`ENGINES_CACHE` (:py:obj:`ExpireCacheSQLite
+    <searx.cache.ExpireCacheSQLite>`).
+
+    In the :origin:`searx/engines/demo_offline.py` engine you can find an
+    exemplary implementation of such a cache other exaples are implemeted
+    in:
+
+    - :origin:`searx/engines/radio_browser.py`
+    - :origin:`searx/engines/soundcloud.py`
+    - :origin:`searx/engines/startpage.py`
+
+    .. code: python
+
+       from searx.enginelib import EngineCache
+       CACHE: EngineCache
+
+       def init(engine_settings):
+           global CACHE
+           CACHE = EngineCache(engine_settings["name"])
+
+       def request(query, params):
+           token = CACHE.get(key="token")
+           if token is None:
+               token = get_token()
+               # cache token of this engine for 1h
+               CACHE.set(key="token", value=token, expire=3600)
+           ...
+
+    For introspection of the DB, jump into developer environment and run command to
+    show cache state::
+
+        $ ./manage pyenv.cmd bash --norc --noprofile
+        (py3) python -m searx.enginelib cache state
+
+        cache tables and key/values
+        ===========================
+        [demo_offline        ] 2025-04-22 11:32:50 count        --> (int) 4
+        [startpage           ] 2025-04-22 12:32:30 SC_CODE      --> (str) fSOBnhEMlDfE20
+        [duckduckgo          ] 2025-04-22 12:32:31 4dff493e.... --> (str) 4-128634958369380006627592672385352473325
+        [duckduckgo          ] 2025-04-22 12:40:06 3e2583e2.... --> (str) 4-263126175288871260472289814259666848451
+        [radio_browser       ] 2025-04-23 11:33:08 servers      --> (list) ['https://de2.api.radio-browser.info',  ...]
+        [soundcloud          ] 2025-04-29 11:40:06 guest_client_id --> (str) EjkRJG0BLNEZquRiPZYdNtJdyGtTuHdp
+        [wolframalpha        ] 2025-04-22 12:40:06 code         --> (str) 5aa79f86205ad26188e0e26e28fb7ae7
+        number of tables: 6
+        number of key/value pairs: 7
+
+    In the "cache tables and key/values" section, the table name (engine name) is at
+    first position on the second there is the calculated expire date and on the
+    third and fourth position the key/value is shown.
+
+    About duckduckgo: The *vqd coode* of ddg depends on the query term and therefore
+    the key is a hash value of the query term (to not to store the raw query term).
+
+    In the "properties of ENGINES_CACHE" section all properties of the SQLiteAppl /
+    ExpireCache and their last modification date are shown::
+
+        properties of ENGINES_CACHE
+        ===========================
+        [last modified: 2025-04-22 11:32:27] DB_SCHEMA           : 1
+        [last modified: 2025-04-22 11:32:27] LAST_MAINTENANCE    :
+        [last modified: 2025-04-22 11:32:27] crypt_hash          : ca612e3566fdfd7cf7efe...
+        [last modified: 2025-04-22 11:32:30] CACHE-TABLE--demo_offline: demo_offline
+        [last modified: 2025-04-22 11:32:30] CACHE-TABLE--startpage: startpage
+        [last modified: 2025-04-22 11:32:31] CACHE-TABLE--duckduckgo: duckduckgo
+        [last modified: 2025-04-22 11:33:08] CACHE-TABLE--radio_browser: radio_browser
+        [last modified: 2025-04-22 11:40:06] CACHE-TABLE--soundcloud: soundcloud
+        [last modified: 2025-04-22 11:40:06] CACHE-TABLE--wolframalpha: wolframalpha
+
+    These properties provide information about the state of the ExpireCache and
+    control the behavior.  For example, the maintenance intervals are controlled by
+    the last modification date of the LAST_MAINTENANCE property and the hash value
+    of the password can be used to detect whether the password has been changed (in
+    this case the DB entries can no longer be decrypted and the entire cache must be
+    discarded).
+    """
+
+    def __init__(self, engine_name: str, expire: int | None = None):
+        self.expire = expire or ENGINES_CACHE.cfg.MAXHOLD_TIME
+        _valid = "-_." + string.ascii_letters + string.digits
+        self.table_name = "".join([c if c in _valid else "_" for c in engine_name])
+
+    def set(self, key: str, value: Any, expire: int | None = None) -> bool:
+        return ENGINES_CACHE.set(
+            key=key,
+            value=value,
+            expire=expire or self.expire,
+            table=self.table_name,
+        )
+
+    def get(self, key: str, default=None) -> Any:
+        return ENGINES_CACHE.get(key, default=default, table=self.table_name)
+
+    def secret_hash(self, name: str | bytes) -> str:
+        return ENGINES_CACHE.secret_hash(name=name)
 
 
 class Engine:  # pylint: disable=too-few-public-methods
