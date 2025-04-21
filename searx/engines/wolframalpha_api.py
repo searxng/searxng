@@ -5,7 +5,7 @@
 
 from urllib.parse import urlencode
 
-from lxml import etree
+import lxml.etree
 
 # about
 about = {
@@ -72,7 +72,7 @@ def replace_pua_chars(text):
 def response(resp):
     results = []
 
-    search_results = etree.XML(resp.content)
+    search_results = lxml.etree.XML(resp.content)
 
     # return empty array if there are no results
     if search_results.xpath(failure_xpath):

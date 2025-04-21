@@ -3,11 +3,13 @@
  Wolfram|Alpha (Science)
 """
 
+from __future__ import annotations
+
 from json import loads
-from time import time
 from urllib.parse import urlencode
 
 from searx.network import get as http_get
+from searx.enginelib import EngineCache
 
 # about
 about = {
@@ -40,41 +42,39 @@ search_url = (
 
 referer_url = url + 'input/?{query}'
 
-token = {'value': '', 'last_updated': None}
-
 # pods to display as image in infobox
 # this pods do return a plaintext, but they look better and are more useful as images
 image_pods = {'VisualRepresentation', 'Illustration', 'Symbol'}
 
 
-# seems, wolframalpha resets its token in every hour
-def obtain_token():
-    update_time = time() - (time() % 3600)
-    try:
-        token_response = http_get('https://www.wolframalpha.com/input/api/v1/code?ts=9999999999999999999', timeout=2.0)
-        token['value'] = loads(token_response.text)['code']
-        token['last_updated'] = update_time
-    except:  # pylint: disable=bare-except
-        pass
+CACHE: EngineCache
+"""Persistent (SQLite) key/value cache that deletes its values after ``expire``
+seconds."""
+
+
+def init(engine_settings):
+    global CACHE  # pylint: disable=global-statement
+    CACHE = EngineCache(engine_settings["name"])  # type:ignore
+
+
+def obtain_token() -> str:
+    token = CACHE.get(key="token")
+    if token is None:
+        resp = http_get('https://www.wolframalpha.com/input/api/v1/code?ts=9999999999999999999', timeout=2.0)
+        token = resp.json()["code"]
+        # seems, wolframalpha resets its token in every hour
+        CACHE.set(key="code", value=token, expire=3600)
     return token
 
 
-def init(engine_settings=None):  # pylint: disable=unused-argument
-    obtain_token()
-
-
-# do search-request
 def request(query, params):
-    # obtain token if last update was more than an hour
-    if time() - (token['last_updated'] or 0) > 3600:
-        obtain_token()
-    params['url'] = search_url.format(query=urlencode({'input': query}), token=token['value'])
+    token = obtain_token()
+    params['url'] = search_url.format(query=urlencode({'input': query}), token=token)
     params['headers']['Referer'] = referer_url.format(query=urlencode({'i': query}))
 
     return params
 
 
-# get response from search-request
 def response(resp):
     results = []
 

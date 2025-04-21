@@ -6,16 +6,17 @@ DuckDuckGo WEB
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
-import re
-from urllib.parse import quote_plus
 import json
+import re
+import typing
+
+from urllib.parse import quote_plus
+
 import babel
 import lxml.html
 
 from searx import (
     locales,
-    redislib,
     external_bang,
 )
 from searx.utils import (
@@ -25,12 +26,12 @@ from searx.utils import (
     extract_text,
 )
 from searx.network import get  # see https://github.com/searxng/searxng/issues/762
-from searx import redisdb
 from searx.enginelib.traits import EngineTraits
+from searx.enginelib import EngineCache
 from searx.exceptions import SearxEngineCaptchaException
 from searx.result_types import EngineResults
 
-if TYPE_CHECKING:
+if typing.TYPE_CHECKING:
     import logging
 
     logger: logging.Logger
@@ -61,28 +62,18 @@ url = "https://html.duckduckgo.com/html"
 
 time_range_dict = {'day': 'd', 'week': 'w', 'month': 'm', 'year': 'y'}
 form_data = {'v': 'l', 'api': 'd.js', 'o': 'json'}
-__CACHE = []
+
+CACHE: EngineCache
+"""Persistent (SQLite) key/value cache that deletes its values after ``expire``
+seconds."""
 
 
-def _cache_key(query: str, region: str):
-    return 'SearXNG_ddg_web_vqd' + redislib.secret_hash(f"{query}//{region}")
+def init(_):  # pylint: disable=unused-argument
+    global CACHE  # pylint: disable=global-statement
+    CACHE = EngineCache("duckduckgo")  # type:ignore
 
 
-def cache_vqd(query: str, region: str, value: str):
-    """Caches a ``vqd`` value from a query."""
-    c = redisdb.client()
-    if c:
-        logger.debug("VALKEY cache vqd value: %s (%s)", value, region)
-        c.set(_cache_key(query, region), value, ex=600)
-
-    else:
-        logger.debug("MEM cache vqd value: %s (%s)", value, region)
-        if len(__CACHE) > 100:  # cache vqd from last 100 queries
-            __CACHE.pop(0)
-        __CACHE.append((_cache_key(query, region), value))
-
-
-def get_vqd(query: str, region: str, force_request: bool = False):
+def get_vqd(query: str, region: str, force_request: bool = False) -> str:
     """Returns the ``vqd`` that fits to the *query*.
 
     :param query: The query term
@@ -114,31 +105,34 @@ def get_vqd(query: str, region: str, force_request: bool = False):
     seems the block list is a sliding window: to get my IP rid from the bot list
     I had to cool down my IP for 1h (send no requests from that IP to DDG).
     """
-    key = _cache_key(query, region)
+    key = CACHE.secret_hash(f"{query}//{region}")
+    value = CACHE.get(key=key)
+    if value is not None and not force_request:
+        logger.debug("vqd: re-use cached value: %s", value)
+        return value
 
-    c = redisdb.client()
-    if c:
-        value = c.get(key)
-        if value or value == b'':
-            value = value.decode('utf-8')  # type: ignore
-            logger.debug("re-use CACHED vqd value: %s", value)
-            return value
+    logger.debug("vqd: request value from from duckduckgo.com")
+    resp = get(f'https://duckduckgo.com/?q={quote_plus(query)}')
+    if resp.status_code == 200:  # type: ignore
+        value = extr(resp.text, 'vqd="', '"')  # type: ignore
+        if value:
+            logger.debug("vqd value from duckduckgo.com request: '%s'", value)
+        else:
+            logger.error("vqd: can't parse value from ddg response (return empty string)")
+            return ""
+    else:
+        logger.error("vqd: got HTTP %s from duckduckgo.com", resp.status_code)
 
-    for k, value in __CACHE:
-        if k == key:
-            logger.debug("MEM re-use CACHED vqd value: %s", value)
-            return value
+    if value:
+        CACHE.set(key=key, value=value)
+    else:
+        logger.error("vqd value from duckduckgo.com ", resp.status_code)
+    return value
 
-    if force_request:
-        resp = get(f'https://duckduckgo.com/?q={quote_plus(query)}')
-        if resp.status_code == 200:  # type: ignore
-            value = extr(resp.text, 'vqd="', '"')  # type: ignore
-            if value:
-                logger.debug("vqd value from DDG request: %s", value)
-                cache_vqd(query, region, value)
-                return value
 
-    return None
+def set_vqd(query: str, region: str, value: str):
+    key = CACHE.secret_hash(f"{query}//{region}")
+    CACHE.set(key=key, value=value, expire=3600)
 
 
 def get_ddg_lang(eng_traits: EngineTraits, sxng_locale, default='en_US'):
@@ -373,8 +367,11 @@ def response(resp) -> EngineResults:
         # some locales (at least China) does not have a "next page" button
         form = form[0]
         form_vqd = eval_xpath(form, '//input[@name="vqd"]/@value')[0]
-
-        cache_vqd(resp.search_params['data']['q'], resp.search_params['data']['kl'], form_vqd)
+        set_vqd(
+            query=resp.search_params['data']['q'],
+            region=resp.search_params['data']['kl'],
+            value=str(form_vqd),
+        )
 
     # just select "web-result" and ignore results of class "result--ad result--ad--small"
     for div_result in eval_xpath(doc, '//div[@id="links"]/div[contains(@class, "web-result")]'):
@@ -401,7 +398,7 @@ def response(resp) -> EngineResults:
         results.add(
             results.types.Answer(
                 answer=zero_click,
-                url=eval_xpath_getindex(doc, '//div[@id="zero_click_abstract"]/a/@href', 0),
+                url=eval_xpath_getindex(doc, '//div[@id="zero_click_abstract"]/a/@href', 0),  # type: ignore
             )
         )
 
