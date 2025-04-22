@@ -40,7 +40,10 @@ about = {
 }
 
 base_url = 'https://oqi2j6v4iz-dsn.algolia.net'
-pdia_config_url = 'https://pdimagearchive.org/_astro/config.BiNvrvzG.js'
+pdia_base_url = 'https://pdimagearchive.org'
+pdia_search_url = pdia_base_url + '/search/?q='
+pdia_config_start = "/_astro/InfiniteSearch."
+pdia_config_end = ".js"
 categories = ['images']
 page_size = 20
 paging = True
@@ -62,11 +65,17 @@ def _get_algolia_api_key():
     if __CACHED_API_KEY:
         return __CACHED_API_KEY
 
+    resp = get(pdia_search_url)
+    if resp.status_code != 200:
+        raise LookupError("Failed to fetch config location (and as such the API key) for PDImageArchive")
+    pdia_config_filepart = extr(resp.text, pdia_config_start, pdia_config_end)
+    pdia_config_url = pdia_base_url + pdia_config_start + pdia_config_filepart + pdia_config_end
+
     resp = get(pdia_config_url)
     if resp.status_code != 200:
         raise LookupError("Failed to obtain Algolia API key for PDImageArchive")
 
-    api_key = extr(resp.text, 'r="', '"', default=None)
+    api_key = extr(resp.text, 'const r="', '"', default=None)
 
     if api_key is None:
         raise LookupError("Couldn't obtain Algolia API key for PDImageArchive")
