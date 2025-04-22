@@ -101,7 +101,8 @@ server:
   # 1.0 and 1.1 are supported
   http_protocol_version: "1.0"
   # POST queries are more secure as they don't show up in history but may cause
-  # problems when using Firefox containers
+  # problems when using Firefox containers.
+  # Is overwritten by ${SEARXNG_METHOD}
   method: "POST"
   default_http_headers:
     X-Content-Type-Options: nosniff
