@@ -14,6 +14,7 @@
        limiter: false
        public_instance: false
        image_proxy: false
+       method: "POST"
        default_http_headers:
          X-Content-Type-Options : nosniff
          X-Download-Options : noopen
@@ -49,6 +50,11 @@
 
 ``image_proxy`` : ``$SEARXNG_IMAGE_PROXY``
   Allow your instance of SearXNG of being able to proxy images.  Uses memory space.
+
+.. _method:
+
+``method`` : ``$SEARXNG_METHOD``
+  Whether to use ``GET`` or ``POST`` HTTP method when searching.
 
 .. _HTTP headers: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers
 
