@@ -23,6 +23,7 @@ sxng_locales = (
     ('da-DK', 'Dansk', 'Danmark', 'Danish', '\U0001f1e9\U0001f1f0'),
     ('de', 'Deutsch', '', 'German', '\U0001f310'),
     ('de-AT', 'Deutsch', 'Österreich', 'German', '\U0001f1e6\U0001f1f9'),
+    ('de-BE', 'Deutsch', 'Belgien', 'German', '\U0001f1e7\U0001f1ea'),
     ('de-CH', 'Deutsch', 'Schweiz', 'German', '\U0001f1e8\U0001f1ed'),
     ('de-DE', 'Deutsch', 'Deutschland', 'German', '\U0001f1e9\U0001f1ea'),
     ('el', 'Ελληνικά', '', 'Greek', '\U0001f310'),
