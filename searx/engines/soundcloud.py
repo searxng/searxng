@@ -11,7 +11,7 @@ from lxml import html
 from searx.network import get as http_get
 
 about = {
-    "website": "ttps://soundcloud.com",
+    "website": "https://soundcloud.com",
     "wikidata_id": "Q568769",
     "official_api_documentation": "https://developers.soundcloud.com/docs/api/guide",
     "use_official_api": False,
