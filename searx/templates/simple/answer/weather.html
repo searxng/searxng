@@ -1,0 +1,67 @@
+{% macro show_weather_data(data) %}
+    <table>
+      <tbody>
+        {%- if data.condition -%}
+        <tr>
+          <td>{{ _("Condition") }}</td>
+          <td>{{ data.condition }}</td>
+        </tr>
+        {%- endif -%}
+        {%- if data.temperature -%}
+        <tr>
+          <td>{{ _("Temperature") }}</td>
+          <td>{{ data.temperature }}</td>
+        </tr>
+        {%- endif -%}
+        {%- if data.feelsLike -%}
+        <tr>
+          <td>{{ _("Feels Like") }}</td>
+          <td>{{ data.feelsLike }}</td>
+        </tr>
+        {%- endif -%}
+        {%- if data.wind -%}
+        <tr>
+          <td>{{ _("Wind") }}</td>
+          <td>{{ data.wind }}</td>
+        </tr>
+        {%- endif -%}
+        {%- if data.humidity -%}
+        <tr>
+          <td>{{ _("Humidity") }}</td>
+          <td>{{ data.humidity }}</td>
+        </tr>
+        {%- endif -%}
+        {%- if data.pressure -%}
+        <tr>
+          <td>{{ _("Pressure") }}</td>
+          <td>{{ data.pressure }}</td>
+        </tr>
+        {%- endif -%}
+        <tr>
+        {%- for name, value in data.attributes.items() -%}
+        <tr>
+          <td>{{ name }}</td>
+          <td>{{ value }}</td>
+        </tr>
+        {%- endfor -%}
+      </tbody>
+    </table>
+{% endmacro %}
+
+<details class="answer-weather">
+  <summary>It's currently {{ answer.current.condition }}, {{ answer.current.temperature }} in {{ answer.location }}</summary>
+  <div>
+    <h2 class="title">{{ answer.location }}</h2>
+    <h3>{{ _("Current condition") }}</h3>
+    {{ show_weather_data(answer.current) }}
+
+    {%- if answer.forecasts -%}
+    <div class="answer-weather-forecasts">
+      {%- for forecast in answer.forecasts -%}
+      <h3>{{ forecast.time }}</h3>
+      {{ show_weather_data(forecast) }}
+      {%- endfor -%}
+    </div>
+    {%- endif -%}
+  </div>
+</details>
