@@ -11,7 +11,7 @@ from searx.exceptions import SearxEngineAPIException, SearxEngineCaptchaExceptio
 
 # Metadata
 about = {
-    "website": "https://m.quark.cn/",
+    "website": "https://quark.sm.cn/",
     "wikidata_id": "Q48816502",
     "use_official_api": False,
     "require_api_key": False,
@@ -53,7 +53,7 @@ def request(query, params):
 
     category_config = {
         'general': {
-            'endpoint': 'https://m.quark.cn/s',
+            'endpoint': 'https://quark.sm.cn/s',
             'params': {
                 "q": query,
                 "layout": "html",
