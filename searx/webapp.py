@@ -1383,11 +1383,6 @@ def is_werkzeug_reload_active() -> bool:
         if "--reload" in sys.argv or "--debug" in sys.argv:
             return True
 
-    elif frames[0].filename.endswith('searx/webapp.py'):
-        # server was launched by "python -m searx.webapp" / see run()
-        if searx.sxng_debug:
-            return True
-
     return False
 
 
