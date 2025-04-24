@@ -7,6 +7,7 @@ from flask_babel import gettext
 
 from searx.network import get
 from searx.exceptions import SearxEngineAPIException
+from searx.result_types import EngineResults, Weather
 
 about = {
     "website": 'https://open-meteo.com',
@@ -48,6 +49,7 @@ def request(query, params):
     }
 
     params['url'] = f"{api_url}/v1/forecast?{urlencode(args)}"
+    params['location'] = location['name']
 
     return params
 
@@ -69,50 +71,51 @@ def get_direction(degrees):
     return "W"
 
 
-def generate_condition_table(condition):
-    res = ""
+def build_condition_string(data):
+    if data['relative_humidity_2m'] > 50:
+        return "rainy"
 
-    res += (
-        f"<tr><td><b>{gettext('Temperature')}</b></td>"
-        f"<td><b>{condition['temperature_2m']}°C / {c_to_f(condition['temperature_2m'])}°F</b></td></tr>"
+    if data['cloud_cover'] > 30:
+        return 'cloudy'
+
+    return 'clear sky'
+
+
+def generate_weather_data(data):
+    return Weather.DataItem(
+        condition=build_condition_string(data),
+        temperature=f"{data['temperature_2m']}°C / {c_to_f(data['temperature_2m'])}°F",
+        feelsLike=f"{data['apparent_temperature']}°C / {c_to_f(data['apparent_temperature'])}°F",
+        wind=(
+            f"{get_direction(data['wind_direction_10m'])}, "
+            f"{data['wind_direction_10m']}° — "
+            f"{data['wind_speed_10m']} km/h"
+        ),
+        pressure=f"{data['pressure_msl']}hPa",
+        humidity=f"{data['relative_humidity_2m']}hPa",
+        attributes={gettext('Cloud cover'): f"{data['cloud_cover']}%"},
     )
-
-    res += (
-        f"<tr><td>{gettext('Feels like')}</td><td>{condition['apparent_temperature']}°C / "
-        f"{c_to_f(condition['apparent_temperature'])}°F</td></tr>"
-    )
-
-    res += (
-        f"<tr><td>{gettext('Wind')}</td><td>{get_direction(condition['wind_direction_10m'])}, "
-        f"{condition['wind_direction_10m']}° — "
-        f"{condition['wind_speed_10m']} km/h</td></tr>"
-    )
-
-    res += f"<tr><td>{gettext('Cloud cover')}</td><td>{condition['cloud_cover']}%</td>"
-
-    res += f"<tr><td>{gettext('Humidity')}</td><td>{condition['relative_humidity_2m']}%</td></tr>"
-
-    res += f"<tr><td>{gettext('Pressure')}</td><td>{condition['pressure_msl']}hPa</td></tr>"
-
-    return res
 
 
 def response(resp):
-    data = resp.json()
+    res = EngineResults()
+    json_data = resp.json()
 
-    table_content = generate_condition_table(data['current'])
+    current_weather = generate_weather_data(json_data['current'])
+    weather_answer = Weather(
+        location=resp.search_params['location'],
+        current=current_weather,
+    )
 
-    infobox = f"<table><tbody>{table_content}</tbody></table>"
-
-    for index, time in enumerate(data['hourly']['time']):
+    for index, time in enumerate(json_data['hourly']['time']):
         hourly_data = {}
 
         for key in data_of_interest.split(","):
-            hourly_data[key] = data['hourly'][key][index]
+            hourly_data[key] = json_data['hourly'][key][index]
 
-        table_content = generate_condition_table(hourly_data)
+        forecast_data = generate_weather_data(hourly_data)
+        forecast_data.time = datetime.fromtimestamp(time).strftime('%Y-%m-%d %H:%M')
+        weather_answer.forecasts.append(forecast_data)
 
-        infobox += f"<h3>{datetime.fromtimestamp(time).strftime('%Y-%m-%d %H:%M')}</h3>"
-        infobox += f"<table><tbody>{table_content}</tbody></table>"
-
-    return [{'infobox': 'Open Meteo', 'content': infobox}]
+    res.add(weather_answer)
+    return res
