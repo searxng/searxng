@@ -711,26 +711,6 @@ engines:
     search_type: news
     disabled: true
 
-  - name: curlie
-    engine: xpath
-    shortcut: cl
-    categories: general
-    disabled: true
-    paging: true
-    lang_all: ''
-    search_url: https://curlie.org/search?q={query}&lang={lang}&start={pageno}&stime=92452189
-    page_size: 20
-    results_xpath: //div[@id="site-list-content"]/div[@class="site-item"]
-    url_xpath: ./div[@class="title-and-desc"]/a/@href
-    title_xpath: ./div[@class="title-and-desc"]/a/div
-    content_xpath: ./div[@class="title-and-desc"]/div[@class="site-descr"]
-    about:
-      website: https://curlie.org/
-      wikidata_id: Q60715723
-      use_official_api: false
-      require_api_key: false
-      results: HTML
-
   - name: currency
     engine: currency_convert
     categories: general
