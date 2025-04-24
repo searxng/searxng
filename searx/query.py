@@ -155,7 +155,7 @@ class ExternalBangParser(QueryPartParser):
         return raw_value.startswith('!!') and len(raw_value) > 2
 
     def __call__(self, raw_value):
-        value = raw_value[2:]
+        value = raw_value[2:].lower()
         found, bang_ac_list = self._parse(value) if len(value) > 0 else (False, [])
         if self.enable_autocomplete:
             self._autocomplete(bang_ac_list)
@@ -183,7 +183,7 @@ class BangParser(QueryPartParser):
         return raw_value[0] == '!' and (len(raw_value) < 2 or raw_value[1] != '!')
 
     def __call__(self, raw_value):
-        value = raw_value[1:].replace('-', ' ').replace('_', ' ')
+        value = raw_value[1:].replace('-', ' ').replace('_', ' ').lower()
         found = self._parse(value) if len(value) > 0 else False
         if found and raw_value[0] == '!':
             self.raw_text_query.specific = True
