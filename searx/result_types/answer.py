@@ -18,6 +18,10 @@ template.
    :members:
    :show-inheritance:
 
+.. autoclass:: Weather
+   :members:
+   :show-inheritance:
+
 .. autoclass:: AnswerSet
    :members:
    :show-inheritance:
@@ -26,7 +30,7 @@ template.
 
 from __future__ import annotations
 
-__all__ = ["AnswerSet", "Answer", "Translations"]
+__all__ = ["AnswerSet", "Answer", "Translations", "Weather"]
 
 import msgspec
 
@@ -143,3 +147,51 @@ class Translations(BaseAnswer, kw_only=True):
 
         synonyms: list[str] = []
         """List of synonyms for the requested translation."""
+
+
+class Weather(BaseAnswer, kw_only=True):
+    """Answer type for weather data."""
+
+    template: str = "answer/weather.html"
+    """The template is located at :origin:`answer/weather.html
+    <searx/templates/simple/answer/weather.html>`"""
+
+    location: str
+    """The geo-location the weather data is from (e.g. `Berlin, Germany`)."""
+
+    current: Weather.DataItem
+    """Current weather at ``location``."""
+
+    forecasts: list[Weather.DataItem] = []
+    """Weather forecasts for ``location``."""
+
+    def __post_init__(self):
+        if not self.location:
+            raise ValueError("Weather answer is missing a location")
+
+    class DataItem(msgspec.Struct, kw_only=True):
+        """A container for weather data such as temperature, humidity, ..."""
+
+        time: str | None = None
+        """Time of the forecast - not needed for the current weather."""
+
+        condition: str
+        """Weather condition, e.g. `cloudy`, `rainy`, `sunny` ..."""
+
+        temperature: str
+        """Temperature string, e.g. `17°C`"""
+
+        feelsLike: str | None = None
+        """Felt temperature string, should be formatted like ``temperature``"""
+
+        humidity: str | None = None
+        """Humidity percentage string, e.g. `60%`"""
+
+        pressure: str | None = None
+        """Pressure string, e.g. `1030hPa`"""
+
+        wind: str | None = None
+        """Information about the wind, e.g. `W, 231°, 10 m/s`"""
+
+        attributes: dict[str] = []
+        """Key-Value dict of additional weather attributes that are not available above"""
