@@ -14,21 +14,23 @@
 # Vision <vision@users.noreply.translate.codeberg.org>, 2025.
 # curtwheeler <curtwheeler@users.noreply.translate.codeberg.org>, 2025.
 # return42 <return42@noreply.codeberg.org>, 2025.
+# whytf <whytf@noreply.codeberg.org>, 2025.
 msgid ""
 msgstr ""
-"Project-Id-Version:  searx\n"
+"Project-Id-Version: searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-03-29 09:21+0000\n"
-"PO-Revision-Date: 2025-03-27 13:44+0000\n"
-"Last-Translator: return42 <return42@noreply.codeberg.org>\n"
+"PO-Revision-Date: 2025-04-23 19:16+0000\n"
+"Last-Translator: whytf <whytf@noreply.codeberg.org>\n"
+"Language-Team: Slovak <https://translate.codeberg.org/projects/searxng/"
+"searxng/sk/>\n"
 "Language: sk\n"
-"Language-Team: Slovak "
-"<https://translate.codeberg.org/projects/searxng/searxng/sk/>\n"
-"Plural-Forms: nplurals=4; plural=(n % 1 == 0 && n == 1 ? 0 : n % 1 == 0 "
-"&& n >= 2 && n <= 4 ? 1 : n % 1 != 0 ? 2: 3);\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=4; plural=(n % 1 == 0 && n == 1 ? 0 : n % 1 == 0 && n "
+">= 2 && n <= 4 ? 1 : n % 1 != 0 ? 2: 3);\n"
+"X-Generator: Weblate 5.10.2\n"
 "Generated-By: Babel 2.17.0\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
@@ -433,12 +435,12 @@ msgstr "Pozastavené"
 #: searx/webutils.py:314
 #, python-brace-format
 msgid "{minutes} minute(s) ago"
-msgstr "pred {minutes} min."
+msgstr "pred {minutes} minútami"
 
 #: searx/webutils.py:315
 #, python-brace-format
 msgid "{hours} hour(s), {minutes} minute(s) ago"
-msgstr "pred {hours} hod., {minutes} min."
+msgstr "pred {hours} hodinami, {minutes} minútami"
 
 #: searx/answerers/random.py:69
 msgid "Generate different random values"
@@ -524,15 +526,15 @@ msgstr "Kvalita súboru"
 
 #: searx/plugins/ahmia_filter.py:32
 msgid "Ahmia blacklist"
-msgstr ""
+msgstr "Čierna listina Ahmia"
 
 #: searx/plugins/ahmia_filter.py:33
 msgid "Filter out onion results that appear in Ahmia's blacklist."
-msgstr ""
+msgstr "Odfiltruj výsledky onion, ktoré sa zobrazujú na čiernej listine Ahmia."
 
 #: searx/plugins/calculator.py:38
 msgid "Basic Calculator"
-msgstr ""
+msgstr "Základná Kalkulačka"
 
 #: searx/plugins/calculator.py:39
 msgid "Calculate mathematical expressions via the search bar"
@@ -626,7 +628,7 @@ msgstr "Odstrániť sledovacie argumenty z vrátenej URL"
 
 #: searx/plugins/unit_converter.py:49
 msgid "Unit converter plugin"
-msgstr ""
+msgstr "Modul konvertora jednotiek"
 
 #: searx/plugins/unit_converter.py:50
 msgid "Convert between units"
@@ -1182,6 +1184,8 @@ msgid ""
 "A URL containing your preferences. This URL can be used to restore your "
 "settings on a different device."
 msgstr ""
+"Adresa URL obsahujúca vaše preferencie. Túto adresu URL môžete použiť na "
+"obnovenie nastavení v inom zariadení."
 
 #: searx/templates/simple/preferences/cookies.html:46
 msgid "Copy preferences hash"
@@ -2079,4 +2083,3 @@ msgstr "skryť video"
 #~ "Zadaním osobitých nastavení v adrese "
 #~ "(URL) nastavení je možné synchronizovať "
 #~ "nastavenia do iných zariadení."
-

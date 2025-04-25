@@ -16,20 +16,21 @@
 # return42 <return42@noreply.codeberg.org>, 2025.
 msgid ""
 msgstr ""
-"Project-Id-Version:  searx\n"
+"Project-Id-Version: searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-03-29 09:21+0000\n"
-"PO-Revision-Date: 2025-03-27 13:44+0000\n"
+"PO-Revision-Date: 2025-04-20 12:41+0000\n"
 "Last-Translator: return42 <return42@noreply.codeberg.org>\n"
+"Language-Team: Lithuanian <https://translate.codeberg.org/projects/searxng/"
+"searxng/lt/>\n"
 "Language: lt\n"
-"Language-Team: Lithuanian "
-"<https://translate.codeberg.org/projects/searxng/searxng/lt/>\n"
-"Plural-Forms: nplurals=4; plural=(n % 10 == 1 && (n % 100 > 19 || n % 100"
-" < 11) ? 0 : (n % 10 >= 2 && n % 10 <=9) && (n % 100 > 19 || n % 100 < "
-"11) ? 1 : n % 1 != 0 ? 2: 3);\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=4; plural=(n % 10 == 1 && (n % 100 > 19 || n % 100 < "
+"11) ? 0 : (n % 10 >= 2 && n % 10 <=9) && (n % 100 > 19 || n % 100 < 11) ? 1 :"
+" n % 1 != 0 ? 2: 3);\n"
+"X-Generator: Weblate 5.10.2\n"
 "Generated-By: Babel 2.17.0\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
@@ -525,15 +526,15 @@ msgstr "Failo kokybė"
 
 #: searx/plugins/ahmia_filter.py:32
 msgid "Ahmia blacklist"
-msgstr ""
+msgstr "Ahmia juodasis sąrašas"
 
 #: searx/plugins/ahmia_filter.py:33
 msgid "Filter out onion results that appear in Ahmia's blacklist."
-msgstr ""
+msgstr "Išfiltruoti onion rezultatus esančius Ahmia juodajame sąraše."
 
 #: searx/plugins/calculator.py:38
 msgid "Basic Calculator"
-msgstr ""
+msgstr "Bazinis skaičiuotuvas"
 
 #: searx/plugins/calculator.py:39
 msgid "Calculate mathematical expressions via the search bar"
@@ -582,6 +583,8 @@ msgid ""
 "Displays your IP if the query is \"ip\" and your user agent if the query "
 "is \"user-agent\"."
 msgstr ""
+"Rodo tavo IP jei užklausa yra „ip“ ir tavo naudotojo agentą jei užklausa yra "
+"„user-agent“."
 
 #: searx/plugins/self_info.py:52
 msgid "Your IP is: "
@@ -589,7 +592,7 @@ msgstr "Jūsų IP adresas: "
 
 #: searx/plugins/self_info.py:55
 msgid "Your user-agent is: "
-msgstr ""
+msgstr "Tavo naudotojo agentas (user-agent) yra: "
 
 #: searx/plugins/tor_check.py:42
 msgid "Tor check plugin"
@@ -606,15 +609,15 @@ msgstr ""
 
 #: searx/plugins/tor_check.py:65
 msgid "Could not download the list of Tor exit-nodes from"
-msgstr ""
+msgstr "Nepavyko atsisiųsti Tor išėjimo mazgų iš"
 
 #: searx/plugins/tor_check.py:72
 msgid "You are using Tor and it looks like you have the external IP address"
-msgstr ""
+msgstr "Jūs naudojate Tor ir atrodo, kad turite išorinį IP adresą"
 
 #: searx/plugins/tor_check.py:76
 msgid "You are not using Tor and you have the external IP address"
-msgstr ""
+msgstr "Jūs nenaudojate Tor, tačiau atrodo, kad turite išorinį IP adresą"
 
 #: searx/plugins/tracker_url_remover.py:37
 msgid "Tracker URL remover"
@@ -626,11 +629,11 @@ msgstr "Šalinti seklių argumentus iš grąžinamų URL"
 
 #: searx/plugins/unit_converter.py:49
 msgid "Unit converter plugin"
-msgstr ""
+msgstr "Matavimo vienetų konvertavimo papildinys"
 
 #: searx/plugins/unit_converter.py:50
 msgid "Convert between units"
-msgstr ""
+msgstr "Konvertuoti tarp matavimo vienetų"
 
 #: searx/templates/simple/404.html:4
 msgid "Page not found"
@@ -942,7 +945,7 @@ msgstr "Pavyzdžiai"
 
 #: searx/templates/simple/answer/translations.html:21
 msgid "Definitions"
-msgstr ""
+msgstr "Apibrėžimai"
 
 #: searx/templates/simple/answer/translations.html:30
 msgid "Synonyms"
@@ -966,7 +969,7 @@ msgstr "Pranešimai iš paieškos sistemų"
 
 #: searx/templates/simple/elements/engines_msg.html:7
 msgid "seconds"
-msgstr ""
+msgstr "sekundės"
 
 #: searx/templates/simple/elements/search_url.html:3
 msgid "Search URL"
@@ -1084,11 +1087,11 @@ msgstr "Pakeiskite nuostatose naudojamą paieškos variklį:"
 
 #: searx/templates/simple/messages/no_results.html:22
 msgid "Switch to another instance:"
-msgstr ""
+msgstr "Pakeisti instanciją:"
 
 #: searx/templates/simple/messages/no_results.html:24
 msgid "Search for another query or select another category."
-msgstr ""
+msgstr "Ieškoti kitos užklausos arba pasirinkti kitą kategoriją."
 
 #: searx/templates/simple/messages/no_results.html:25
 msgid "Go back to the previous page using the previous page button."
@@ -1101,7 +1104,7 @@ msgstr "Leisti"
 
 #: searx/templates/simple/preferences/answerers.html:5
 msgid "Keywords (first word in query)"
-msgstr ""
+msgstr "Raktažodžiai (pirmasis užklausos žodis)"
 
 #: searx/templates/simple/preferences/answerers.html:6
 #: searx/templates/simple/result_templates/packages.html:7
@@ -1178,6 +1181,8 @@ msgid ""
 "A URL containing your preferences. This URL can be used to restore your "
 "settings on a different device."
 msgstr ""
+"URL adresas su jūsų nustatymais. Šis URL adresas gali būti panaudotas "
+"atstatyti jūsų nustatymus kitame įrenginyje."
 
 #: searx/templates/simple/preferences/cookies.html:46
 msgid "Copy preferences hash"
@@ -1193,7 +1198,7 @@ msgstr ""
 
 #: searx/templates/simple/preferences/doi_resolver.html:1
 msgid "Digital Object Identifier (DOI)"
-msgstr ""
+msgstr "Skaitmeninis objekto identifikatorius (DOI)"
 
 #: searx/templates/simple/preferences/doi_resolver.html:6
 msgid "Open Access DOI resolver"
@@ -2058,4 +2063,3 @@ msgstr "slėpti vaizdo įrašą"
 #~ "Nurodant tinkintus nustatymus nuostatų URL,"
 #~ " jūs galite susinchronizuoti nuostatas tarp"
 #~ " prietaisų."
-
