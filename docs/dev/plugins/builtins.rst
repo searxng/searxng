@@ -13,3 +13,4 @@ Built-in Plugins
    self_info
    tor_check
    unit_converter
+   time_zone
