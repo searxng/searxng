@@ -24,7 +24,7 @@ LOOP = None
 SSLCONTEXTS: Dict[Any, SSLContext] = {}
 
 
-def shuffle_ciphers(ssl_context):
+def shuffle_ciphers(ssl_context: SSLContext):
     """Shuffle httpx's default ciphers of a SSL context randomly.
 
     From `What Is TLS Fingerprint and How to Bypass It`_
@@ -41,16 +41,16 @@ def shuffle_ciphers(ssl_context):
        https://www.zenrows.com/blog/what-is-tls-fingerprint#how-to-bypass-tls-fingerprinting
 
     """
-    c_list = httpx._config.DEFAULT_CIPHERS.split(':')  # pylint: disable=protected-access
+    c_list = [cipher["name"] for cipher in ssl_context.get_ciphers()]
     sc_list, c_list = c_list[:3], c_list[3:]
     random.shuffle(c_list)
     ssl_context.set_ciphers(":".join(sc_list + c_list))
 
 
-def get_sslcontexts(proxy_url=None, cert=None, verify=True, trust_env=True, http2=False):
-    key = (proxy_url, cert, verify, trust_env, http2)
+def get_sslcontexts(proxy_url=None, cert=None, verify=True, trust_env=True):
+    key = (proxy_url, cert, verify, trust_env)
     if key not in SSLCONTEXTS:
-        SSLCONTEXTS[key] = httpx.create_ssl_context(cert, verify, trust_env, http2)
+        SSLCONTEXTS[key] = httpx.create_ssl_context(verify, cert, trust_env)
     shuffle_ciphers(SSLCONTEXTS[key])
     return SSLCONTEXTS[key]
 
@@ -120,7 +120,7 @@ def get_transport_for_socks_proxy(verify, http2, local_address, proxy_url, limit
         rdns = True
 
     proxy_type, proxy_host, proxy_port, proxy_username, proxy_password = parse_proxy_url(proxy_url)
-    verify = get_sslcontexts(proxy_url, None, verify, True, http2) if verify is True else verify
+    verify = get_sslcontexts(proxy_url, None, verify, True) if verify is True else verify
     return AsyncProxyTransportFixed(
         proxy_type=proxy_type,
         proxy_host=proxy_host,
@@ -138,7 +138,7 @@ def get_transport_for_socks_proxy(verify, http2, local_address, proxy_url, limit
 
 
 def get_transport(verify, http2, local_address, proxy_url, limit, retries):
-    verify = get_sslcontexts(None, None, verify, True, http2) if verify is True else verify
+    verify = get_sslcontexts(None, None, verify, True) if verify is True else verify
     return httpx.AsyncHTTPTransport(
         # pylint: disable=protected-access
         verify=verify,
