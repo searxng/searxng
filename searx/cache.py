@@ -16,20 +16,13 @@ import hashlib
 import hmac
 import os
 import pickle
-import secrets
 import sqlite3
 import string
 import tempfile
 import time
 import typing
 
-from base64 import urlsafe_b64encode, urlsafe_b64decode
-
 import msgspec
-
-from cryptography.fernet import Fernet
-from cryptography.hazmat.primitives import hashes
-from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
 
 from searx import sqlitedb
 from searx import logger
@@ -70,21 +63,14 @@ class ExpireCacheCfg(msgspec.Struct):  # pylint: disable=too-few-public-methods
       if required.
     """
 
-    # encryption of the values stored in the DB
-
     password: bytes = get_setting("server.secret_key").encode()  # type: ignore
-    """Password used in case of :py:obj:`ExpireCacheCfg.ENCRYPT_VALUE` is
-    ``True``.
+    """Password used by :py:obj:`ExpireCache.secret_hash`.
 
     The default password is taken from :ref:`secret_key <server.secret_key>`.
-    When the password is changed, the values in the cache can no longer be
-    decrypted, which is why all values in the cache are deleted when the
-    password is changed.
+    When the password is changed, the hashed keys in the cache can no longer be
+    used, which is why all values in the cache are deleted when the password is
+    changed.
     """
-
-    ENCRYPT_VALUE: bool = True
-    """Encrypting the values before they are written to the DB (see:
-    :py:obj:`ExpireCacheCfg.password`)."""
 
     def __post_init__(self):
         # if db_url is unset, use a default DB in /tmp/sxng_cache_{name}.db
@@ -138,8 +124,7 @@ class ExpireCache(abc.ABC):
 
     cfg: ExpireCacheCfg
 
-    hmac_iterations: int = 10_000
-    crypt_hash_property = "crypt_hash"
+    hash_token = "hash_token"
 
     @abc.abstractmethod
     def set(self, key: str, value: typing.Any, expire: int | None) -> bool:
@@ -154,16 +139,16 @@ class ExpireCache(abc.ABC):
         """Return *value* of *key*.  If key is unset, ``None`` is returned."""
 
     @abc.abstractmethod
-    def maintenance(self, force: bool = False, drop_crypted: bool = False) -> bool:
+    def maintenance(self, force: bool = False, truncate: bool = False) -> bool:
         """Performs maintenance on the cache.
 
         ``force``:
           Maintenance should be carried out even if the maintenance interval has
           not yet been reached.
 
-        ``drop_crypted``:
-           The encrypted values can no longer be decrypted (if the password is
-           changed), they must be removed from the cache.
+        ``truncate``:
+          Truncate the entire cache, which is necessary, for example, if the
+          password has changed.
         """
 
     @abc.abstractmethod
@@ -191,67 +176,13 @@ class ExpireCache(abc.ABC):
         _valid = "-_." + string.ascii_letters + string.digits
         return "".join([c for c in name if c in _valid])
 
-    def derive_key(self, password: bytes, salt: bytes, iterations: int) -> bytes:
-        """Derive a secret-key from a given password and salt."""
-        kdf = PBKDF2HMAC(
-            algorithm=hashes.SHA256(),
-            length=32,
-            salt=salt,
-            iterations=iterations,
-        )
-        return urlsafe_b64encode(kdf.derive(password))
-
     def serialize(self, value: typing.Any) -> bytes:
         dump: bytes = pickle.dumps(value)
-        if self.cfg.ENCRYPT_VALUE:
-            dump = self.encrypt(dump)
         return dump
 
     def deserialize(self, value: bytes) -> typing.Any:
-        if self.cfg.ENCRYPT_VALUE:
-            value = self.decrypt(value)
         obj = pickle.loads(value)
         return obj
-
-    def encrypt(self, message: bytes) -> bytes:
-        """Encode and decode values by a method using `Fernet with password`_ where
-        the key is derived from the password (PBKDF2HMAC_).  The *password* for
-        encryption is taken from the :ref:`server.secret_key`
-
-        .. _Fernet with password:  https://stackoverflow.com/a/55147077
-        .. _PBKDF2HMAC: https://cryptography.io/en/latest/hazmat/primitives/key-derivation-functions/#pbkdf2
-        """
-
-        # Including the salt in the output makes it possible to use a random
-        # salt value, which in turn ensures the encrypted output is guaranteed
-        # to be fully random regardless of password reuse or message
-        # repetition.
-        salt = secrets.token_bytes(16)  # randomly generated salt
-
-        # Including the iteration count ensures that you can adjust
-        # for CPU performance increases over time without losing the ability to
-        # decrypt older messages.
-        iterations = int(self.hmac_iterations)
-
-        key = self.derive_key(self.cfg.password, salt, iterations)
-        crypted_msg = Fernet(key).encrypt(message)
-
-        # Put salt and iteration count on the beginning of the binary
-        token = b"%b%b%b" % (salt, iterations.to_bytes(4, "big"), urlsafe_b64encode(crypted_msg))
-        return urlsafe_b64encode(token)
-
-    def decrypt(self, token: bytes) -> bytes:
-        token = urlsafe_b64decode(token)
-
-        # Strip salt and iteration count from the beginning of the binary
-        salt = token[:16]
-        iterations = int.from_bytes(token[16:20], "big")
-
-        key = self.derive_key(self.cfg.password, salt, iterations)
-        crypted_msg = urlsafe_b64decode(token[20:])
-
-        message = Fernet(key).decrypt(crypted_msg)
-        return message
 
     def secret_hash(self, name: str | bytes) -> str:
         """Creates a hash of the argument ``name``.  The hash value is formed
@@ -276,7 +207,6 @@ class ExpireCacheSQLite(sqlitedb.SQLiteAppl, ExpireCache):
     - :py:obj:`ExpireCacheCfg.MAXHOLD_TIME`
     - :py:obj:`ExpireCacheCfg.MAINTENANCE_PERIOD`
     - :py:obj:`ExpireCacheCfg.MAINTENANCE_MODE`
-    - :py:obj:`ExpireCacheCfg.ENCRYPT_VALUE`
     """
 
     DB_SCHEMA = 1
@@ -300,18 +230,17 @@ class ExpireCacheSQLite(sqlitedb.SQLiteAppl, ExpireCache):
         if not ret_val:
             return False
 
-        if self.cfg.ENCRYPT_VALUE:
-            new = hashlib.sha256(self.cfg.password).hexdigest()
-            old = self.properties(self.crypt_hash_property)
-            if old != new:
-                if old is not None:
-                    log.warning("[%s] crypt token changed: drop all cache tables", self.cfg.name)
-                self.maintenance(force=True, drop_crypted=True)
-                self.properties.set(self.crypt_hash_property, new)
+        new = hashlib.sha256(self.cfg.password).hexdigest()
+        old = self.properties(self.hash_token)
+        if old != new:
+            if old is not None:
+                log.warning("[%s] hash token changed: truncate all cache tables", self.cfg.name)
+            self.maintenance(force=True, truncate=True)
+            self.properties.set(self.hash_token, new)
 
         return True
 
-    def maintenance(self, force: bool = False, drop_crypted: bool = False) -> bool:
+    def maintenance(self, force: bool = False, truncate: bool = False) -> bool:
 
         if not force and int(time.time()) < self.next_maintenance_time:
             # log.debug("no maintenance required yet, next maintenance interval is in the future")
@@ -321,7 +250,7 @@ class ExpireCacheSQLite(sqlitedb.SQLiteAppl, ExpireCache):
         # (e.g. in multi thread or process environments).
         self.properties.set("LAST_MAINTENANCE", "")  # hint: this (also) sets the m_time of the property!
 
-        if drop_crypted:
+        if truncate:
             self.truncate_tables(self.table_names)
             return True
 
