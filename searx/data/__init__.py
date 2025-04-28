@@ -15,6 +15,7 @@ __all__ = [
     'OSM_KEYS_TAGS',
     'ENGINE_DESCRIPTIONS',
     'LOCALES',
+    'TRACKER_PATTERNS',
     'ahmia_blacklist_loader',
 ]
 
@@ -51,3 +52,4 @@ OSM_KEYS_TAGS = _load('osm_keys_tags.json')
 ENGINE_DESCRIPTIONS = _load('engine_descriptions.json')
 ENGINE_TRAITS = _load('engine_traits.json')
 LOCALES = _load('locales.json')
+TRACKER_PATTERNS = _load('tracker_patterns.json')

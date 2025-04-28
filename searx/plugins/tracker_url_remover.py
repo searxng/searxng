@@ -5,24 +5,18 @@ from __future__ import annotations
 import typing
 
 import re
-from urllib.parse import urlunparse, parse_qsl, urlencode
+from urllib.parse import urlunparse, parse_qsl, urlencode, ParseResult
 
 from flask_babel import gettext
 
 from searx.plugins import Plugin, PluginInfo
+from searx.data import TRACKER_PATTERNS
 
 if typing.TYPE_CHECKING:
     from searx.search import SearchWithPlugins
     from searx.extended_types import SXNG_Request
     from searx.result_types import Result
     from searx.plugins import PluginCfg
-
-regexes = {
-    re.compile(r'utm_[^&]+'),
-    re.compile(r'(wkey|wemail)[^&]*'),
-    re.compile(r'(_hsenc|_hsmi|hsCtaTracking|__hssc|__hstc|__hsfp)[^&]*'),
-    re.compile(r'&$'),
-}
 
 
 class SXNGPlugin(Plugin):
@@ -39,20 +33,31 @@ class SXNGPlugin(Plugin):
             preference_section="privacy",
         )
 
+    def _remove_queries(self, url: ParseResult, query_regexes: list[str]):
+        parsed_query: list[tuple[str, str]] = list(parse_qsl(url.query))
+
+        for param_name, param_value in parsed_query.copy():
+            for reg in query_regexes:
+                if re.match(reg, param_name):
+                    parsed_query.remove((param_name, param_value))
+
+        return url._replace(query=urlencode(parsed_query))
+
     def on_result(
         self, request: "SXNG_Request", search: "SearchWithPlugins", result: Result
     ) -> bool:  # pylint: disable=unused-argument
         if not result.parsed_url:
             return True
 
-        parsed_query: list[tuple[str, str]] = parse_qsl(result.parsed_url.query)
-        for name_value in list(parsed_query):
-            param_name = name_value[0]
-            for reg in regexes:
-                if reg.match(param_name):
-                    parsed_query.remove(name_value)
-                    result.parsed_url = result.parsed_url._replace(query=urlencode(parsed_query))
-                    result.url = urlunparse(result.parsed_url)
+        for rule in TRACKER_PATTERNS:
+            if not re.match(rule["urlPattern"], result.url):
+                continue
+
+            for exception in rule["exceptions"]:
+                if re.match(exception, result.url):
                     break
+            else:
+                result.parsed_url = self._remove_queries(result.parsed_url, rule["trackerParams"])
+                result.url = urlunparse(result.parsed_url)
 
         return True
