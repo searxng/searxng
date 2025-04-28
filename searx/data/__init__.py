@@ -23,6 +23,7 @@ OSM_KEYS_TAGS: dict[str, typing.Any]
 ENGINE_DESCRIPTIONS: dict[str, typing.Any]
 ENGINE_TRAITS: dict[str, typing.Any]
 LOCALES: dict[str, typing.Any]
+TRACKER_PATTERNS: list[dict[str, typing.Any]]
 
 lazy_globals = {
     "CURRENCIES": CurrenciesDB(),
@@ -34,6 +35,7 @@ lazy_globals = {
     "ENGINE_DESCRIPTIONS": None,
     "ENGINE_TRAITS": None,
     "LOCALES": None,
+    "TRACKER_PATTERNS": None,
 }
 
 data_json_files = {
@@ -45,6 +47,7 @@ data_json_files = {
     "ENGINE_DESCRIPTIONS": "engine_descriptions.json",
     "ENGINE_TRAITS": "engine_traits.json",
     "LOCALES": "locales.json",
+    "TRACKER_PATTERNS": "tracker_patterns.json",
 }
 
 
