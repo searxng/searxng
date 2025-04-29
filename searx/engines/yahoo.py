@@ -63,21 +63,52 @@ lang2domain = {
 }
 """Map language to domain"""
 
-locale_aliases = {
-    'zh': 'zh_Hans',
-    'zh-HK': 'zh_Hans',
-    'zh-CN': 'zh_Hans',  # dead since 2015 / routed to hk.search.yahoo.com
-    'zh-TW': 'zh_Hant',
+yahoo_languages = {
+    "all": "any",
+    "ar": "ar",
+    "bg": "bg",
+    "cs": "cs",
+    "da": "da",
+    "de": "de",
+    "el": "el",
+    "en": "en",
+    "es": "es",
+    "et": "et",
+    "fi": "fi",
+    "fr": "fr",
+    "he": "he",
+    "hr": "hr",
+    "hu": "hu",
+    "it": "it",
+    "ja": "ja",
+    "ko": "ko",
+    "lt": "lt",
+    "lv": "lv",
+    "nl": "nl",
+    "no": "no",
+    "pl": "pl",
+    "pt": "pt",
+    "ro": "ro",
+    "ru": "ru",
+    "sk": "sk",
+    "sl": "sl",
+    "sv": "sv",
+    "th": "th",
+    "tr": "tr",
+    "zh": "zh_chs",
+    "zh_Hans": "zh_chs",
+    'zh-CN': "zh_chs",
+    "zh_Hant": "zh_cht",
+    "zh-HK": "zh_cht",
+    'zh-TW': "zh_cht",
 }
 
 
 def request(query, params):
     """build request"""
 
-    lang = locale_aliases.get(params['language'], None)
-    if not lang:
-        lang = params['language'].split('-')[0]
-    lang = traits.get_language(lang, traits.all_locale)
+    lang = params["language"].split("-")[0]
+    lang = yahoo_languages.get(lang, "any")
 
     offset = (params['pageno'] - 1) * 7 + 1
     age, btf = time_range_dict.get(params['time_range'], ('', ''))
@@ -154,39 +185,3 @@ def response(resp):
         results.append({'suggestion': extract_text(suggestion)})
 
     return results
-
-
-def fetch_traits(engine_traits: EngineTraits):
-    """Fetch languages from yahoo"""
-
-    # pylint: disable=import-outside-toplevel
-    import babel
-    from searx import network
-    from searx.locales import language_tag
-
-    engine_traits.all_locale = 'any'
-
-    resp = network.get('https://search.yahoo.com/preferences/languages')
-    if not resp.ok:
-        print("ERROR: response from yahoo is not OK.")
-
-    dom = html.fromstring(resp.text)
-    offset = len('lang_')
-
-    eng2sxng = {'zh_chs': 'zh_Hans', 'zh_cht': 'zh_Hant'}
-
-    for val in eval_xpath_list(dom, '//div[contains(@class, "lang-item")]/input/@value'):
-        eng_tag = val[offset:]
-
-        try:
-            sxng_tag = language_tag(babel.Locale.parse(eng2sxng.get(eng_tag, eng_tag)))
-        except babel.UnknownLocaleError:
-            print('ERROR: unknown language --> %s' % eng_tag)
-            continue
-
-        conflict = engine_traits.languages.get(sxng_tag)
-        if conflict:
-            if conflict != eng_tag:
-                print("CONFLICT: babel %s --> %s, %s" % (sxng_tag, conflict, eng_tag))
-            continue
-        engine_traits.languages[sxng_tag] = eng_tag
