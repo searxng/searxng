@@ -1,11 +1,14 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-"""Semantic Scholar (Science)
-"""
+"""Semantic Scholar (Science)"""
 
-from json import dumps, loads
+from json import dumps
 from datetime import datetime
+from lxml import html
 
 from flask_babel import gettext
+from searx.network import get
+from searx.utils import eval_xpath_getindex, gen_useragent, html_to_text
+
 
 about = {
     "website": 'https://www.semanticscholar.org/',
@@ -19,13 +22,31 @@ about = {
 categories = ['science', 'scientific publications']
 paging = True
 search_url = 'https://www.semanticscholar.org/api/1/search'
-paper_url = 'https://www.semanticscholar.org/paper'
+base_url = 'https://www.semanticscholar.org'
+
+
+def _get_ui_version():
+    resp = get(base_url)
+    if not resp.ok:
+        raise RuntimeError("Can't determine Semantic Scholar UI version")
+
+    doc = html.fromstring(resp.text)
+    ui_version = eval_xpath_getindex(doc, "//meta[@name='s2-ui-version']/@content", 0)
+    if not ui_version:
+        raise RuntimeError("Can't determine Semantic Scholar UI version")
+
+    return ui_version
 
 
 def request(query, params):
     params['url'] = search_url
     params['method'] = 'POST'
-    params['headers']['content-type'] = 'application/json'
+    params['headers'] = {
+        'Content-Type': 'application/json',
+        'X-S2-UI-Version': _get_ui_version(),
+        'X-S2-Client': "webapp-browser",
+        'User-Agent': gen_useragent(),
+    }
     params['data'] = dumps(
         {
             "queryString": query,
@@ -43,7 +64,8 @@ def request(query, params):
 
 
 def response(resp):
-    res = loads(resp.text)
+    res = resp.json()
+
     results = []
     for result in res['results']:
         url = result.get('primaryPaperLink', {}).get('url')
@@ -54,7 +76,7 @@ def response(resp):
             if alternatePaperLinks:
                 url = alternatePaperLinks[0].get('url')
         if not url:
-            url = paper_url + '/%s' % result['id']
+            url = base_url + '/paper/%s' % result['id']
 
         # publishedDate
         if 'pubDate' in result:
@@ -88,7 +110,7 @@ def response(resp):
                 'template': 'paper.html',
                 'url': url,
                 'title': result['title']['text'],
-                'content': result['paperAbstract']['text'],
+                'content': html_to_text(result['paperAbstract']['text']),
                 'journal': result.get('venue', {}).get('text') or result.get('journal', {}).get('name'),
                 'doi': result.get('doiInfo', {}).get('doi'),
                 'tags': result.get('fieldsOfStudy'),
