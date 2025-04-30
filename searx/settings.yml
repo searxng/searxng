@@ -619,23 +619,37 @@ engines:
     # to show premium or plus results too:
     # skip_premium: false
 
+  # WARNING: links from chinaso.com voilate users privacy
+  # Before activate these engines its mandatory to read
+  # - https://github.com/searxng/searxng/issues/4694
+  # - https://docs.searxng.org/dev/engines/online/chinaso.html
+
   - name: chinaso news
-    chinaso_category: news
     engine: chinaso
     shortcut: chinaso
+    categories: [news]
+    chinaso_category: news
+    chinaso_news_source: all
     disabled: true
+    inactive: true
 
   - name: chinaso images
-    chinaso_category: images
     engine: chinaso
+    network: chinaso news
     shortcut: chinasoi
+    categories: [images]
+    chinaso_category: images
     disabled: true
+    inactive: true
 
   - name: chinaso videos
-    chinaso_category: videos
     engine: chinaso
+    network: chinaso news
     shortcut: chinasov
+    categories: [videos]
+    chinaso_category: videos
     disabled: true
+    inactive: true
 
   - name: cloudflareai
     engine: cloudflareai

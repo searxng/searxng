@@ -148,6 +148,8 @@ engine is shown.  Most of the options have a default value or even are optional.
 ``display_error_messages`` : default ``true``
   When an engine returns an error, the message is displayed on the user interface.
 
+.. _engine network:
+
 ``network`` : optional
   Use the network configuration from another engine.
   In addition, there are two default networks:
@@ -257,4 +259,3 @@ Example configuration in settings.yml for a German and English speaker:
 
 When searching, the default google engine will return German results and
 "google english" will return English results.
-
