@@ -68,8 +68,8 @@ COPY --chown=searxng:searxng ./dockerfiles/ ./dockerfiles/
 
 LABEL org.opencontainers.image.authors="searxng <$GIT_URL>" \
       org.opencontainers.image.created=$LABEL_DATE \
-      org.opencontainers.image.documentation="https://github.com/searxng/searxng-docker" \
       org.opencontainers.image.description="A privacy-respecting, hackable metasearch engine" \
+      org.opencontainers.image.documentation="https://github.com/searxng/searxng-docker" \
       org.opencontainers.image.licenses="AGPL-3.0-or-later" \
       org.opencontainers.image.revision=$LABEL_VCS_REF \
       org.opencontainers.image.source=$LABEL_VCS_URL \
