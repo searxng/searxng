@@ -161,11 +161,11 @@ class EngineCache:
             key=key,
             value=value,
             expire=expire or self.expire,
-            table=self.table_name,
+            ctx=self.table_name,
         )
 
     def get(self, key: str, default=None) -> Any:
-        return ENGINES_CACHE.get(key, default=default, table=self.table_name)
+        return ENGINES_CACHE.get(key, default=default, ctx=self.table_name)
 
     def secret_hash(self, name: str | bytes) -> str:
         return ENGINES_CACHE.secret_hash(name=name)

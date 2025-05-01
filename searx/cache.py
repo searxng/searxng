@@ -83,12 +83,12 @@ class ExpireCacheStats:
     """Dataclass wich provides information on the status of the cache."""
 
     cached_items: dict[str, list[tuple[str, typing.Any, int]]]
-    """Values in the cache mapped by table name.
+    """Values in the cache mapped by context name.
 
     .. code: python
 
        {
-           "table name": [
+           "context name": [
                ("foo key": "foo value", <expire>),
                ("bar key": "bar value", <expire>),
                # ...
@@ -98,22 +98,22 @@ class ExpireCacheStats:
     """
 
     def report(self):
-        c_tables = 0
+        c_ctx = 0
         c_kv = 0
         lines = []
 
-        for table_name, kv_list in self.cached_items.items():
-            c_tables += 1
+        for ctx_name, kv_list in self.cached_items.items():
+            c_ctx += 1
             if not kv_list:
-                lines.append(f"[{table_name:20s}] empty")
+                lines.append(f"[{ctx_name:20s}] empty")
                 continue
 
             for key, value, expire in kv_list:
                 valid_until = datetime.datetime.fromtimestamp(expire).strftime("%Y-%m-%d %H:%M:%S")
                 c_kv += 1
-                lines.append(f"[{table_name:20s}] {valid_until} {key:12}" f" --> ({type(value).__name__}) {value} ")
+                lines.append(f"[{ctx_name:20s}] {valid_until} {key:12}" f" --> ({type(value).__name__}) {value} ")
 
-        lines.append(f"number of tables: {c_tables}")
+        lines.append(f"Number of contexts: {c_ctx}")
         lines.append(f"number of key/value pairs: {c_kv}")
         return "\n".join(lines)
 
@@ -127,15 +127,27 @@ class ExpireCache(abc.ABC):
     hash_token = "hash_token"
 
     @abc.abstractmethod
-    def set(self, key: str, value: typing.Any, expire: int | None) -> bool:
+    def set(self, key: str, value: typing.Any, expire: int | None, ctx: str | None = None) -> bool:
         """Set *key* to *value*.  To set a timeout on key use argument
         ``expire`` (in sec.).  If expire is unset the default is taken from
         :py:obj:`ExpireCacheCfg.MAXHOLD_TIME`.  After the timeout has expired,
         the key will automatically be deleted.
+
+        The ``ctx`` argument specifies the context of the ``key``.  A key is
+        only unique in its context.
+
+        The concrete implementations of this abstraction determine how the
+        context is mapped in the connected database.  In SQL databases, for
+        example, the context is a DB table or in a Key/Value DB it could be
+        a prefix for the key.
+
+        If the context is not specified (the default is ``None``) then a
+        default context should be used, e.g. a default table for SQL databases
+        or a default prefix in a Key/Value DB.
         """
 
     @abc.abstractmethod
-    def get(self, key: str, default=None) -> typing.Any:
+    def get(self, key: str, default=None, ctx: str | None = None) -> typing.Any:
         """Return *value* of *key*.  If key is unset, ``None`` is returned."""
 
     @abc.abstractmethod
@@ -171,7 +183,7 @@ class ExpireCache(abc.ABC):
     @staticmethod
     def normalize_name(name: str) -> str:
         """Returns a normalized name that can be used as a file name or as a SQL
-        table name."""
+        table name (is used, for example, to normalize the context name)."""
 
         _valid = "-_." + string.ascii_letters + string.digits
         return "".join([c for c in name if c in _valid])
@@ -320,14 +332,15 @@ class ExpireCacheSQLite(sqlitedb.SQLiteAppl, ExpireCache):
 
     # implement ABC methods of ExpireCache
 
-    def set(self, key: str, value: typing.Any, expire: int | None, table: str | None = None) -> bool:
-        """Set key/value in ``table``.  If expire is unset the default is taken
-        from :py:obj:`ExpireCacheCfg.MAXHOLD_TIME`.  If ``table`` argument is
-        ``None`` (the default), a table name is generated from the
-        :py:obj:`ExpireCacheCfg.name`.  If DB ``table`` does not exists, it will be
-        created (on demand) by :py:obj:`self.create_table
+    def set(self, key: str, value: typing.Any, expire: int | None, ctx: str | None = None) -> bool:
+        """Set key/value in DB table given by argument ``ctx``.  If expire is
+        unset the default is taken from :py:obj:`ExpireCacheCfg.MAXHOLD_TIME`.
+        If ``ctx`` argument is ``None`` (the default), a table name is
+        generated from the :py:obj:`ExpireCacheCfg.name`.  If DB table does not
+        exists, it will be created (on demand) by :py:obj:`self.create_table
         <ExpireCacheSQLite.create_table>`.
         """
+        table = ctx
         self.maintenance()
 
         value = self.serialize(value=value)
@@ -360,12 +373,14 @@ class ExpireCacheSQLite(sqlitedb.SQLiteAppl, ExpireCache):
 
         return True
 
-    def get(self, key: str, default=None, table: str | None = None) -> typing.Any:
-        """Get value of ``key`` from ``table``.  If ``table`` argument is
-        ``None`` (the default), a table name is generated from the
-        :py:obj:`ExpireCacheCfg.name`.  If ``key`` not exists (in table), the
-        ``default`` value is returned.
+    def get(self, key: str, default=None, ctx: str | None = None) -> typing.Any:
+        """Get value of ``key`` from table given by argument ``ctx``.  If
+        ``ctx`` argument is ``None`` (the default), a table name is generated
+        from the :py:obj:`ExpireCacheCfg.name`.  If ``key`` not exists (in
+        table), the ``default`` value is returned.
+
         """
+        table = ctx
         self.maintenance()
 
         if not table:
