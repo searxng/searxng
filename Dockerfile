@@ -39,7 +39,7 @@ ARG SEARXNG_GID=977
 RUN grep -m1 root /etc/group > /tmp/.searxng.group \
  && grep -m1 root /etc/passwd > /tmp/.searxng.passwd \
  && echo "searxng:x:$SEARXNG_GID:" >> /tmp/.searxng.group \
- && echo "searxng:x:$SEARXNG_UID:$SEARXNG_GID:searxng:/searxng:/bin/bash" >> /tmp/.searxng.passwd
+ && echo "searxng:x:$SEARXNG_UID:$SEARXNG_GID:searxng:/usr/local/searxng:/bin/bash" >> /tmp/.searxng.passwd
 
 FROM --platform=$TARGETPLATFORM docker.io/library/python:3.13-slim
 
