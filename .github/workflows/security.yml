@@ -1,8 +1,10 @@
-name: "Security checks"
-on:  # yamllint disable-line rule:truthy
+name: Security checks
+
+# yamllint disable-line rule:truthy
+on:
+  workflow_dispatch:
   schedule:
     - cron: "42 05 * * *"
-  workflow_dispatch:
 
 jobs:
   dockers:

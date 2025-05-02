@@ -77,7 +77,8 @@ test.shell:
 MANAGE += weblate.translations.commit weblate.push.translations
 MANAGE += data.all data.traits data.useragents data.locales data.currencies
 MANAGE += docs.html docs.live docs.gh-pages docs.prebuild docs.clean
-MANAGE += docker.build docker.push docker.buildx
+MANAGE += docker.build docker.buildx
+MANAGE += container.build container.buildx
 MANAGE += gecko.driver
 MANAGE += node.env node.env.dev node.clean
 MANAGE += py.build py.clean
@@ -87,6 +88,7 @@ MANAGE += test.yamllint test.pylint test.black test.pybabel test.unit test.cover
 MANAGE += themes.all themes.fix themes.test
 MANAGE += static.build.commit static.build.drop static.build.restore
 MANAGE += nvm.install nvm.clean nvm.status nvm.nodejs
+MANAGE += ci.container.build ci.container.push
 
 PHONY += $(MANAGE)
 

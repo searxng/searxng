@@ -1,70 +1,96 @@
 name: Integration
 
-on:  # yamllint disable-line rule:truthy
+# yamllint disable-line rule:truthy
+on:
+  workflow_dispatch:
   push:
-    branches: ["master"]
+    branches:
+      - master
   pull_request:
-    branches: ["master"]
+    branches:
+      - master
 
 permissions:
   contents: read
 
 jobs:
   python:
+    # TODO: Remove this
+    if: false
     name: Python ${{ matrix.python-version }}
     runs-on: ubuntu-24.04
     strategy:
       matrix:
-        os: [ubuntu-24.04]
-        python-version: ["3.9", "3.10", "3.11", "3.12", "3.13"]
+        python-version:
+          - "3.9"
+          - "3.10"
+          - "3.11"
+          - "3.12"
+          - "3.13"
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          persist-credentials: "false"
+
       - name: Install Ubuntu packages
-        run: |
-          sudo ./utils/searxng.sh install packages
+        run: sudo ./utils/searxng.sh install packages
+
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: ${{ matrix.python-version }}
-          architecture: 'x64'
+          python-version: "${{ matrix.python-version }}"
+
       - name: Run tests
         run: make V=1 ci.test
 
   themes:
+    # TODO: Remove this
+    if: false
     name: Themes
     runs-on: ubuntu-24.04
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          persist-credentials: "false"
+
       - name: Install Ubuntu packages
         run: sudo ./utils/searxng.sh install buildhost
+
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.12'
-          architecture: 'x64'
+          python-version: "3.13"
+
       - name: Build themes
         run: make themes.all
 
   documentation:
+    # TODO: Remove this
+    if: false
     name: Documentation
     runs-on: ubuntu-24.04
     permissions:
-      contents: write  # for JamesIves/github-pages-deploy-action to push changes in repo
+      # for JamesIves/github-pages-deploy-action to push
+      contents: write
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          fetch-depth: '0'
-          persist-credentials: false
+          persist-credentials: "false"
+          fetch-depth: "0"
+
       - name: Install Ubuntu packages
         run: sudo ./utils/searxng.sh install buildhost
+
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.12'
-          architecture: 'x64'
+          python-version: "3.13"
+
       - name: Cache Python dependencies
         id: cache-python
         uses: actions/cache@v4
@@ -73,42 +99,50 @@ jobs:
             ./local
             ./.nvm
             ./node_modules
-          key: python-ubuntu-24.04-3.12-${{ hashFiles('requirements*.txt', 'setup.py','.nvmrc', 'package.json') }}
+          key: python-ubuntu-24.04-3.13-${{ hashFiles('requirements*.txt', 'setup.py','.nvmrc', 'package.json') }}
+
       - name: Build documentation
-        run: |
-          make V=1 docs.clean docs.html
-      - name: Deploy
-        if: github.ref == 'refs/heads/master'
+        run: make V=1 docs.clean docs.html
+
+      - if: github.ref == 'refs/heads/master'
+        name: Deploy
         uses: JamesIves/github-pages-deploy-action@3.7.1
         with:
-          GITHUB_TOKEN: ${{ github.token }}
-          BRANCH: gh-pages
-          FOLDER: dist/docs
-          CLEAN: true  # Automatically remove deleted files from the deploy branch
-          SINGLE_COMMIT: true
-          COMMIT_MESSAGE: '[doc] build from commit ${{ github.sha }}'
+          GITHUB_TOKEN: "${{ github.token }}"
+          BRANCH: "gh-pages"
+          FOLDER: "dist/docs"
+          # Automatically remove deleted files from the deploy branch
+          CLEAN: "true"
+          SINGLE_COMMIT: "true"
+          COMMIT_MESSAGE: "[doc] build from commit ${{ github.sha }}"
 
   babel:
+    # TODO: Remove this
+    if: false
+    # if: github.repository_owner == 'searxng' && github.ref == 'refs/heads/master'
     name: Update translations branch
     runs-on: ubuntu-24.04
-    if: ${{ github.repository_owner == 'searxng' && github.ref == 'refs/heads/master' }}
     needs:
       - python
       - themes
       - documentation
+
     permissions:
-      contents: write  # for make V=1 weblate.push.translations
+      # for make V=1 weblate.push.translations
+      contents: write
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          fetch-depth: '0'
-          token: ${{ secrets.WEBLATE_GITHUB_TOKEN }}
+          token: "${{ secrets.WEBLATE_GITHUB_TOKEN }}"
+          fetch-depth: "0"
+
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.12'
-          architecture: 'x64'
+          python-version: "3.13"
+
       - name: Cache Python dependencies
         id: cache-python
         uses: actions/cache@v4
@@ -117,63 +151,17 @@ jobs:
             ./local
             ./.nvm
             ./node_modules
-          key: python-ubuntu-20.04-3.12-${{ hashFiles('requirements*.txt', 'setup.py','.nvmrc', 'package.json') }}
+          key: python-ubuntu-20.04-3.13-${{ hashFiles('requirements*.txt', 'setup.py','.nvmrc', 'package.json') }}
+
       - name: weblate & git setup
         env:
-          WEBLATE_CONFIG: ${{ secrets.WEBLATE_CONFIG }}
+          WEBLATE_CONFIG: "${{ secrets.WEBLATE_CONFIG }}"
         run: |
           mkdir -p ~/.config
           echo "${WEBLATE_CONFIG}" > ~/.config/weblate
           git config --global user.email "searxng-bot@users.noreply.github.com"
           git config --global user.name "searxng-bot"
+
       - name: Update transations
         id: update
-        run: |
-          make V=1 weblate.push.translations
-
-  dockers:
-    name: Docker
-    if: github.ref == 'refs/heads/master'
-    needs:
-      - python
-      - themes
-      - documentation
-    env:
-      DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
-    runs-on: ubuntu-24.04
-    steps:
-      - name: Checkout
-        if: env.DOCKERHUB_USERNAME != null
-        uses: actions/checkout@v4
-        with:
-          # make sure "make docker.push" can get the git history
-          fetch-depth: '0'
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.12'
-          architecture: 'x64'
-      - name: Cache Python dependencies
-        id: cache-python
-        uses: actions/cache@v4
-        with:
-          path: |
-            ./local
-            ./.nvm
-            ./node_modules
-          key: python-ubuntu-20.04-3.12-${{ hashFiles('requirements*.txt', 'setup.py','.nvmrc', 'package.json') }}
-      - name: Set up QEMU
-        if: env.DOCKERHUB_USERNAME != null
-        uses: docker/setup-qemu-action@v1
-      - name: Set up Docker Buildx
-        if: env.DOCKERHUB_USERNAME != null
-        uses: docker/setup-buildx-action@v1
-      - name: Login to DockerHub
-        if: env.DOCKERHUB_USERNAME != null
-        uses: docker/login-action@v1
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
-      - name: Build and push
-        if: env.DOCKERHUB_USERNAME != null
-        run: make -e GIT_URL=$(git remote get-url origin) docker.buildx
+        run: make V=1 weblate.push.translations
