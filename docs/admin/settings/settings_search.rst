@@ -57,11 +57,11 @@
 
 ``default_lang``:
   Default search language - leave blank to detect from browser information or
-  use codes from :origin:`searx/languages.py`.
+  use codes from :origin:`searx/sxng_locales.py`.
 
 ``languages``:
   List of available languages - leave unset to use all codes from
-  :origin:`searx/languages.py`.  Otherwise list codes of available languages.
+  :origin:`searx/sxng_locales.py`.  Otherwise list codes of available languages.
   The ``all`` value is shown as the ``Default language`` in the user interface
   (in most cases, it is meant to send the query without a language parameter ;
   in some cases, it means the English language) Example:
