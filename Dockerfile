@@ -97,6 +97,8 @@ VOLUME $DATA_PATH
 
 EXPOSE 8080
 
+USER searxng:searxng
+
 HEALTHCHECK CMD wget --quiet --tries=1 --spider http://localhost:8080/healthz || exit 1
 
 ENTRYPOINT ["/usr/local/searxng/dockerfiles/docker-entrypoint.sh"]
