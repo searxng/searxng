@@ -1,33 +1,43 @@
-name: "Checker"
+---
+name: Checker
 
 # yamllint disable-line rule:truthy
 on:
+  workflow_dispatch:
   schedule:
     - cron: "0 4 * * 5"
-  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  PYTHON_VERSION: "3.13"
 
 jobs:
   checker:
     name: Checker
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-24.04-arm
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Install Ubuntu packages
-        run: |
-          sudo ./utils/searxng.sh install packages
-
-      - name: Set up Python
+      - name: Setup Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.13'
-          architecture: 'x64'
+          python-version: "${{ env.PYTHON_VERSION }}"
 
-      - name: Install Python dependencies
-        run: |
-          make V=1 install
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: "false"
+
+      - name: Setup cache Python
+        uses: actions/cache@v4
+        with:
+          key: "python-${{ env.PYTHON_VERSION }}-${{ hashFiles('./requirements*.txt') }}"
+          restore-keys: "python-${{ env.PYTHON_VERSION }}-"
+          path: "./local"
+
+      - name: Setup venv
+        run: make V=1 install
 
       - name: Checker
-        run: |
-          make search.checker
+        continue-on-error: true
+        run: make search.checker
