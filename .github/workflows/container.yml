@@ -53,8 +53,8 @@ jobs:
       - name: Setup cache Python
         uses: actions/cache@v4
         with:
-          key: "python-${{ env.PYTHON_VERSION }}-${{ hashFiles('./requirements*.txt') }}"
-          restore-keys: "python-${{ env.PYTHON_VERSION }}-"
+          key: "python-${{ env.PYTHON_VERSION }}-${{ runner.arch }}-${{ hashFiles('./requirements*.txt') }}"
+          restore-keys: "python-${{ env.PYTHON_VERSION }}-${{ runner.arch }}-"
           path: "./local"
 
       - name: Setup cache container mounts

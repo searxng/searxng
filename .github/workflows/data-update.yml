@@ -1,3 +1,4 @@
+---
 name: Update searx.data
 
 # yamllint disable-line rule:truthy
@@ -6,11 +7,17 @@ on:
   schedule:
     - cron: "59 23 28 * *"
 
+permissions:
+  contents: read
+
+env:
+  PYTHON_VERSION: "3.13"
+
 jobs:
   updateData:
-    name: Update data - ${{ matrix.fetch }}
-    runs-on: ubuntu-24.04
-    if: ${{ github.repository_owner == 'searxng'}}
+    if: github.repository_owner == 'searxng'
+    name: ${{ matrix.fetch }}
+    runs-on: ubuntu-24.04-arm
     strategy:
       fail-fast: false
       matrix:
@@ -22,42 +29,43 @@ jobs:
           - update_engine_traits.py
           - update_wikidata_units.py
           - update_engine_descriptions.py
+
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Install Ubuntu packages
-        run: |
-          sudo ./utils/searxng.sh install packages
-
-      - name: Set up Python
+      - name: Setup Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.12'
-          architecture: 'x64'
+          python-version: "${{ env.PYTHON_VERSION }}"
 
-      - name: Install Python dependencies
-        run: |
-          make V=1 install
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: "false"
+
+      - name: Setup cache Python
+        uses: actions/cache@v4
+        with:
+          key: "python-${{ env.PYTHON_VERSION }}-${{ runner.arch }}-${{ hashFiles('./requirements*.txt') }}"
+          restore-keys: "python-${{ env.PYTHON_VERSION }}-${{ runner.arch }}-"
+          path: "./local"
+
+      - name: Setup venv
+        run: make V=1 install
 
       - name: Fetch data
-        env:
-          FETCH_SCRIPT: ./searxng_extra/update/${{ matrix.fetch }}
-        run: |
-          V=1 ./manage pyenv.cmd python "$FETCH_SCRIPT"
+        run: V=1 ./manage pyenv.cmd python "./searxng_extra/update/${{ matrix.fetch }}"
 
       - name: Create Pull Request
         id: cpr
-        uses: peter-evans/create-pull-request@v6
+        uses: peter-evans/create-pull-request@v7
         with:
-          commit-message: '[data] update searx.data - ${{ matrix.fetch }}'
-          committer: searxng-bot <noreply@github.com>
-          author: ${{ github.actor }} <${{ github.actor }}@users.noreply.github.com>
-          signoff: false
-          branch: update_data_${{ matrix.fetch }}
-          delete-branch: true
-          draft: false
-          title: '[data] update searx.data - ${{ matrix.fetch }}'
+          author: "${{ github.actor }} <${{ github.actor }}@users.noreply.github.com>"
+          committer: "searxng-bot <noreply@github.com>"
+          title: "[data] update searx.data - ${{ matrix.fetch }}"
+          commit-message: "[data] update searx.data - ${{ matrix.fetch }}"
+          branch: "update_data_${{ matrix.fetch }}"
+          delete-branch: "true"
+          draft: "false"
+          signoff: "false"
           body: |
             update searx.data - ${{ matrix.fetch }}
           labels: |
