@@ -6,6 +6,10 @@ on:
   workflow_dispatch:
   schedule:
     - cron: "42 05 * * *"
+  # TODO: Remove this
+  pull_request:
+    branches:
+      - container-gha
 
 permissions:
   contents: read

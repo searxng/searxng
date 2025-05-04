@@ -3,12 +3,12 @@ name: Container
 
 # yamllint disable-line rule:truthy
 on:
+  workflow_dispatch:
   workflow_run:
     workflows:
       - Integration
     types:
       - completed
-    # TODO: Test container.yml on merge https://github.com/searxng/searxng/pull/4699
     branches:
       - master
 
@@ -22,18 +22,22 @@ env:
 
 jobs:
   build:
-    if: github.event.workflow_run.conclusion == 'success'
+    if: github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success'
     name: Build (${{ matrix.arch }})
     runs-on: ${{ matrix.os }}
     strategy:
+      fail-fast: false
       matrix:
         include:
           - arch: amd64
             os: ubuntu-24.04
-          - arch:
-              arm64
-              armv7
+            emulation: false
+          - arch: arm64
             os: ubuntu-24.04-arm
+            emulation: false
+          - arch: armv7
+            os: ubuntu-24.04-arm
+            emulation: true
 
     permissions:
       # Organization GHCR
@@ -60,13 +64,14 @@ jobs:
       - name: Setup cache container mounts
         uses: actions/cache@v4
         with:
-          key: "container-mounts-${{ hashFiles('./Dockerfile') }}"
-          restore-keys: "container-mounts-"
+          key: "container-mounts-${{ runner.arch }}-${{ hashFiles('./Dockerfile*') }}"
+          restore-keys: "container-mounts-${{ runner.arch }}-"
           path: |
             /var/tmp/buildah-cache/
             /var/tmp/buildah-cache-*/
 
-      - name: Setup QEMU
+      - if: ${{ matrix.emulation }}
+        name: Setup QEMU
         uses: docker/setup-qemu-action@v3
 
       - name: Login to GHCR
@@ -89,6 +94,7 @@ jobs:
     runs-on: ubuntu-24.04-arm
     needs: build
     strategy:
+      fail-fast: false
       matrix:
         arch:
           - amd64
@@ -124,4 +130,5 @@ jobs:
         name: Release
         env:
           OVERRIDE_ARCH: "${{ matrix.arch }}"
+        # TODO: Try this with GHCR or testing registry before merge
         run: make -e GIT_URL=$(git remote get-url origin) ci.container.push

@@ -4,6 +4,10 @@ RUN apt-get update \
  && apt-get install -y --no-install-recommends \
     build-essential \
     brotli \
+    # lxml
+    libxml2-dev \
+    libxslt1-dev \
+    zlib1g-dev \
     # uwsgi
     libpcre3-dev \
  && rm -rf /var/lib/apt/lists/*
@@ -12,8 +16,7 @@ WORKDIR /usr/local/searxng/
 
 COPY ./requirements.txt ./requirements.txt
 
-# Readd on #4707 "--mount=type=cache,id=pip,target=/root/.cache/pip"
-RUN python -m venv ./venv \
+RUN --mount=type=cache,id=pip,target=$HOME/.cache/pip python -m venv ./venv \
  && . ./venv/bin/activate \
  && pip install -r requirements.txt \
  && pip install "uwsgi~=2.0"
@@ -42,10 +45,6 @@ FROM docker.io/library/python:3.13-slim
 
 RUN apt-get update \
  && apt-get install -y --no-install-recommends \
-    # healthcheck
-    wget \
-    # lxml (ARMv7)
-    libxslt1.1 \
     # uwsgi
     libpcre3 \
     libxml2 \
@@ -97,6 +96,8 @@ VOLUME $CONFIG_PATH
 VOLUME $DATA_PATH
 
 EXPOSE 8080
+
+USER searxng:searxng
 
 HEALTHCHECK CMD wget --quiet --tries=1 --spider http://localhost:8080/healthz || exit 1
 

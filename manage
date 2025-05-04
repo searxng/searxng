@@ -178,8 +178,7 @@ container.build() {
         platform="linux/$arch"
         ;;
     "ARMV7" | "armhf" | "armv7l" | "armv7")
-        # TODO: Move ARMv7 to a separated Dockerfile
-        dockerfile="Dockerfile"
+        dockerfile="Dockerfile.compat"
         arch="arm"
         variant="v7"
         platform="linux/$arch/$variant"
@@ -239,8 +238,8 @@ container.build() {
             params_build_builder="$docker_builder --platform=$platform --target=builder"
             params_build="$docker_builder --platform=$platform --squash"
         else
-            params_build_builder="build --platform=$platform --target=builder --layers --identity-label=false"
-            params_build="build --platform=$platform --layers --squash-all --omit-history --identity-label=false"
+            params_build_builder="build --format=docker --platform=$platform --target=builder --layers --identity-label=false"
+            params_build="build --format=docker --platform=$platform --layers --squash-all --omit-history --identity-label=false"
         fi
 
         # Define container image org/name
@@ -407,8 +406,7 @@ ci.container.build() {
         platform="linux/$arch"
         ;;
     "ARMV7" | "armhf" | "armv7l" | "armv7")
-        # TODO: Move ARMv7 to a separated Dockerfile
-        dockerfile="Dockerfile"
+        dockerfile="Dockerfile.compat"
         arch="arm"
         variant="v7"
         platform="linux/$arch/$variant"
@@ -459,7 +457,7 @@ ci.container.build() {
 
         build_msg CONTAINER "Building..."
 
-        podman build --platform="$platform" --target=builder --layers --identity-label=false \
+        podman build --format=docker --platform="$platform" --target=builder --layers --identity-label=false \
             --cache-from="ghcr.io/$container_image_organization/cache" \
             --cache-to="ghcr.io/$container_image_organization/cache" \
             --build-arg="TIMESTAMP_SETTINGS=$(git log -1 --format="%cd" --date=unix -- ./searx/settings.yml)" \
@@ -467,7 +465,7 @@ ci.container.build() {
             --tag="ghcr.io/$container_image_organization/cache:$container_image_name-$arch$variant-builder" \
             --file="./$dockerfile"
 
-        podman build --platform="$platform" --layers --squash-all --omit-history --identity-label=false \
+        podman build --format=docker --platform="$platform" --layers --squash-all --omit-history --identity-label=false \
             --cache-from="ghcr.io/$container_image_organization/cache" \
             --cache-to="ghcr.io/$container_image_organization/cache" \
             --build-arg="GIT_URL=$GIT_URL" \

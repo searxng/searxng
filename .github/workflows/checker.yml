@@ -14,8 +14,8 @@ env:
   PYTHON_VERSION: "3.13"
 
 jobs:
-  checker:
-    name: Checker
+  search:
+    name: Search
     runs-on: ubuntu-24.04-arm
     steps:
       - name: Setup Python
@@ -38,6 +38,6 @@ jobs:
       - name: Setup venv
         run: make V=1 install
 
-      - name: Checker
+      - name: Search checker
         continue-on-error: true
         run: make search.checker

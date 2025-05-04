@@ -14,7 +14,7 @@ env:
   PYTHON_VERSION: "3.13"
 
 jobs:
-  updateData:
+  data:
     if: github.repository_owner == 'searxng'
     name: ${{ matrix.fetch }}
     runs-on: ubuntu-24.04-arm
@@ -54,24 +54,22 @@ jobs:
       - name: Fetch data
         run: V=1 ./manage pyenv.cmd python "./searxng_extra/update/${{ matrix.fetch }}"
 
-      - name: Create Pull Request
+      - name: Create PR
         id: cpr
         uses: peter-evans/create-pull-request@v7
         with:
           author: "${{ github.actor }} <${{ github.actor }}@users.noreply.github.com>"
-          committer: "searxng-bot <noreply@github.com>"
+          committer: "searxng-bot <searxng-bot@users.noreply.github.com>"
           title: "[data] update searx.data - ${{ matrix.fetch }}"
           commit-message: "[data] update searx.data - ${{ matrix.fetch }}"
           branch: "update_data_${{ matrix.fetch }}"
           delete-branch: "true"
           draft: "false"
           signoff: "false"
-          body: |
-            update searx.data - ${{ matrix.fetch }}
           labels: |
             data
 
-      - name: Check outputs
+      - name: Display information
         run: |
           echo "Pull Request Number - ${{ steps.cpr.outputs.pull-request-number }}"
           echo "Pull Request URL - ${{ steps.cpr.outputs.pull-request-url }}"
