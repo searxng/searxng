@@ -5,6 +5,7 @@ Coordinates`_
 .. _SPARQL/WIKIDATA Precision, Units and Coordinates:
    https://en.wikibooks.org/wiki/SPARQL/WIKIDATA_Precision,_Units_and_Coordinates#Quantities
 """
+from __future__ import annotations
 
 __all__ = ["convert_from_si", "convert_to_si", "symbol_to_si"]
 
@@ -12,6 +13,47 @@ import collections
 
 from searx import data
 from searx.engines import wikidata
+
+
+class Beaufort:
+    """The mapping of the Beaufort_ contains values from 0 to 16 (55.6 m/s),
+    wind speeds greater than 200km/h (55.6 m/s) are given as 17 Bft. Thats why
+    a value of 17 Bft cannot be converted to SI.
+
+    .. hint::
+
+       Negative values or values greater 16 Bft (55.6 m/s) will throw a
+       :py:obj:`ValueError`.
+
+    _Beaufort: https://en.wikipedia.org/wiki/Beaufort_scale
+    """
+
+    # fmt: off
+    scale: list[float] = [
+         0.2,  1.5,  3.3,  5.4,  7.9,
+        10.7, 13.8, 17.1, 20.7, 24.4,
+        28.4, 32.6, 32.7, 41.1, 45.8,
+        50.8, 55.6
+    ]
+    # fmt: on
+
+    @classmethod
+    def from_si(cls, value) -> float:
+        if value < 0 or value > 55.6:
+            raise ValueError(f"invalid value {value} / the Beaufort scales from 0 to 16 (55.6 m/s)")
+        bft = 0
+        for bft, mps in enumerate(cls.scale):
+            if mps >= value:
+                break
+        return bft
+
+    @classmethod
+    def to_si(cls, value) -> float:
+        idx = round(value)
+        if idx < 0 or idx > 16:
+            raise ValueError(f"invalid value {value} / the Beaufort scales from 0 to 16 (55.6 m/s)")
+        return cls.scale[idx]
+
 
 ADDITIONAL_UNITS = [
     {
@@ -25,6 +67,12 @@ ADDITIONAL_UNITS = [
         "symbol": "°F",
         "to_si": lambda val: (val + 459.67) * 5 / 9,
         "from_si": lambda val: (val * 9 / 5) - 459.67,
+    },
+    {
+        "si_name": "Q182429",
+        "symbol": "Bft",
+        "to_si": Beaufort.to_si,
+        "from_si": Beaufort.from_si,
     },
 ]
 """Additional items to convert from a measure unit to a SI unit (vice versa).
@@ -55,6 +103,7 @@ ALIAS_SYMBOLS = {
     '°C': ('C',),
     '°F': ('F',),
     'mi': ('L',),
+    'Bft': ('bft',),
 }
 """Alias symbols for known unit of measure symbols / by example::
 
@@ -65,11 +114,11 @@ ALIAS_SYMBOLS = {
 
 
 SYMBOL_TO_SI = []
-UNITS_BY_SI_NAME: dict | None = None
+UNITS_BY_SI_NAME: dict = {}
 
 
 def convert_from_si(si_name: str, symbol: str, value: float | int) -> float:
-    from_si = units_by_si_name(si_name)[symbol][symbol]["from_si"]
+    from_si = units_by_si_name(si_name)[symbol][pos_from_si]
     if isinstance(from_si, (float, int)):
         value = float(value) * from_si
     else:
@@ -78,7 +127,7 @@ def convert_from_si(si_name: str, symbol: str, value: float | int) -> float:
 
 
 def convert_to_si(si_name: str, symbol: str, value: float | int) -> float:
-    to_si = units_by_si_name(si_name)[symbol][symbol]["to_si"]
+    to_si = units_by_si_name(si_name)[symbol][pos_to_si]
     if isinstance(to_si, (float, int)):
         value = float(value) * to_si
     else:
@@ -88,18 +137,30 @@ def convert_to_si(si_name: str, symbol: str, value: float | int) -> float:
 
 def units_by_si_name(si_name):
 
-    global UNITS_BY_SI_NAME
-    if UNITS_BY_SI_NAME is not None:
+    global UNITS_BY_SI_NAME  # pylint: disable=global-statement,global-variable-not-assigned
+    if UNITS_BY_SI_NAME:
         return UNITS_BY_SI_NAME[si_name]
 
-    UNITS_BY_SI_NAME = {}
+    # build the catalog ..
     for item in symbol_to_si():
-        by_symbol = UNITS_BY_SI_NAME.get(si_name)
+
+        item_si_name = item[pos_si_name]
+        item_symbol = item[pos_symbol]
+
+        by_symbol = UNITS_BY_SI_NAME.get(item_si_name)
         if by_symbol is None:
             by_symbol = {}
-            UNITS_BY_SI_NAME[si_name] = by_symbol
-        by_symbol[item["symbol"]] = item
+            UNITS_BY_SI_NAME[item_si_name] = by_symbol
+        by_symbol[item_symbol] = item
+
     return UNITS_BY_SI_NAME[si_name]
+
+
+pos_symbol = 0  # (alias) symbol
+pos_si_name = 1  # si_name
+pos_from_si = 2  # from_si
+pos_to_si = 3  # to_si
+pos_symbol = 4  # standardized symbol
 
 
 def symbol_to_si():
