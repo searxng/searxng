@@ -46,7 +46,7 @@ jobs:
         with:
           key: "python-${{ env.PYTHON_VERSION }}-${{ runner.arch }}-${{ hashFiles('./requirements*.txt') }}"
           restore-keys: "python-${{ env.PYTHON_VERSION }}-${{ runner.arch }}-"
-          path: "./local"
+          path: "./local/"
 
       - name: Setup venv
         run: make V=1 install

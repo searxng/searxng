@@ -100,5 +100,6 @@ $(MANAGE):
 PHONY += docs docker themes
 
 docs: docs.html
-docker:  docker.build
+container:  container.build
+docker:  container.build
 themes: themes.all

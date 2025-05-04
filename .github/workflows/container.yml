@@ -8,9 +8,9 @@ on:
       - Integration
     types:
       - completed
-# TODO: Uncomment
-# branches:
-#   - master
+    # TODO: Test container.yml on merge https://github.com/searxng/searxng/pull/4699
+    branches:
+      - master
 
 permissions:
   contents: read
@@ -55,7 +55,7 @@ jobs:
         with:
           key: "python-${{ env.PYTHON_VERSION }}-${{ runner.arch }}-${{ hashFiles('./requirements*.txt') }}"
           restore-keys: "python-${{ env.PYTHON_VERSION }}-${{ runner.arch }}-"
-          path: "./local"
+          path: "./local/"
 
       - name: Setup cache container mounts
         uses: actions/cache@v4
