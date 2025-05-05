@@ -12,10 +12,10 @@ Metadata`_.  A request is filtered out in case of:
 .. _Fetch Metadata:
    https://developer.mozilla.org/en-US/docs/Glossary/Fetch_metadata_request_header
 
-.. Sec-Fetch-Dest:
+.. _Sec-Fetch-Dest:
    https://developer.mozilla.org/en-US/docs/Web/API/Request/destination
 
-.. Sec-Fetch-Mode:
+.. _Sec-Fetch-Mode:
    https://developer.mozilla.org/en-US/docs/Web/API/Request/mode
 
 
