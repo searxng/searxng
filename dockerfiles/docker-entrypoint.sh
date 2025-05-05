@@ -54,6 +54,12 @@ patch_uwsgi_settings() {
         -e "s|workers = .*|workers = ${UWSGI_WORKERS:-%k}|g" \
         -e "s|threads = .*|threads = ${UWSGI_THREADS:-4}|g" \
         "${CONF}"
+
+    # migration from old monolithic container image to the new one
+    # https://github.com/searxng/searxng/pull/4721
+    sed -i \
+        -e "/plugin = python3/d" \
+        "${CONF}"
 }
 
 patch_searxng_settings() {
