@@ -16,7 +16,8 @@ WORKDIR /usr/local/searxng/
 
 COPY ./requirements.txt ./requirements.txt
 
-RUN --mount=type=cache,id=pip,target=$HOME/.cache/pip python -m venv ./venv \
+# Readd on #4707 "--mount=type=cache,id=pip,target=/root/.cache/pip"
+RUN python -m venv ./venv \
  && . ./venv/bin/activate \
  && pip install -r requirements.txt \
  && pip install "uwsgi~=2.0"
