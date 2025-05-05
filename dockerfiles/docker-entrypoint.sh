@@ -43,7 +43,15 @@ do
     esac
 done
 
-echo "SearXNG version $SEARXNG_VERSION"
+get_searxng_version(){
+    su searxng -c \
+       'python3 -c "import six; import searx.version; six.print_(searx.version.VERSION_STRING)"' \
+       2>/dev/null
+}
+
+SEARXNG_VERSION="$(get_searxng_version)"
+export SEARXNG_VERSION
+echo "SearXNG version ${SEARXNG_VERSION}"
 
 # helpers to update the configuration files
 patch_uwsgi_settings() {
@@ -68,7 +76,7 @@ patch_searxng_settings() {
         -e "s|base_url: false|base_url: ${BASE_URL}|g" \
         -e "s/instance_name: \"SearXNG\"/instance_name: \"${INSTANCE_NAME}\"/g" \
         -e "s/autocomplete: \"\"/autocomplete: \"${AUTOCOMPLETE}\"/g" \
-        -e "s/ultrasecretkey/$(head -c 24 /dev/urandom | base64 | tr -dc 'a-zA-Z0-9')/g" \
+        -e "s/ultrasecretkey/$(openssl rand -hex 32)/g" \
         "${CONF}"
 
     # Morty configuration
@@ -164,4 +172,4 @@ printf 'Listen on %s\n' "${BIND_ADDRESS}"
 
 # Start uwsgi
 # TODO: "--http-socket" will be removed in the future (see uwsgi.ini.new config file): https://github.com/searxng/searxng/pull/4578
-exec /usr/local/searxng/venv/bin/uwsgi --http-socket "${BIND_ADDRESS}" "${UWSGI_SETTINGS_PATH}"
+exec uwsgi --http-socket "${BIND_ADDRESS}" "${UWSGI_SETTINGS_PATH}"
