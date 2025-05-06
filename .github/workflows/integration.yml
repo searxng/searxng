@@ -9,7 +9,7 @@ on:
       - master
   pull_request:
     branches:
-      - master
+      - container-gha
 
 permissions:
   contents: read
@@ -80,3 +80,119 @@ jobs:
 
       - name: Build
         run: make themes.all
+
+  # TODO: Remove this
+  container-build:
+    # TODO: Uncomment
+    # if: github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success'
+    name: Build (${{ matrix.arch }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - arch: amd64
+            os: ubuntu-24.04
+            emulation: false
+          - arch: arm64
+            os: ubuntu-24.04-arm
+            emulation: false
+          - arch: armv7
+            os: ubuntu-24.04-arm
+            emulation: true
+
+    permissions:
+      # Organization GHCR
+      packages: write
+
+    steps:
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "${{ env.PYTHON_VERSION }}"
+
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: "false"
+          # make sure "make ci.container.build" can get the git branches
+          fetch-depth: "0"
+
+      - name: Setup cache Python
+        uses: actions/cache@v4
+        with:
+          key: "python-${{ env.PYTHON_VERSION }}-${{ runner.arch }}-${{ hashFiles('./requirements*.txt') }}"
+          restore-keys: "python-${{ env.PYTHON_VERSION }}-${{ runner.arch }}-"
+          path: "./local/"
+
+      - name: Setup cache container mounts
+        uses: actions/cache@v4
+        with:
+          key: "container-mounts-${{ matrix.arch }}-${{ hashFiles('./Dockerfile*') }}"
+          restore-keys: "container-mounts-${{ matrix.arch }}-"
+          path: |
+            /var/tmp/buildah-cache/
+            /var/tmp/buildah-cache-*/
+
+      - if: ${{ matrix.emulation }}
+        name: Setup QEMU
+        uses: docker/setup-qemu-action@v3
+
+      - name: Login to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: "ghcr.io"
+          username: "${{ github.repository_owner }}"
+          password: "${{ secrets.GITHUB_TOKEN }}"
+
+      - name: Build
+        env:
+          OVERRIDE_ARCH: "${{ matrix.arch }}"
+        run: make ci.container.build
+
+  # TODO: Remove this
+  container-test:
+    name: Test (${{ matrix.arch }})
+    runs-on: ${{ matrix.os }}
+    needs: container-build
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - arch: amd64
+            os: ubuntu-24.04
+            emulation: false
+          - arch: arm64
+            os: ubuntu-24.04-arm
+            emulation: false
+          - arch: armv7
+            os: ubuntu-24.04-arm
+            emulation: true
+
+    permissions:
+      # Organization GHCR
+      packages: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: "false"
+          # make sure "make ci.container.test" can get the git branches
+          # fetch-depth: "0"
+
+      - if: ${{ matrix.emulation }}
+        name: Setup QEMU
+        uses: docker/setup-qemu-action@v3
+
+      - name: Login to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: "ghcr.io"
+          username: "${{ github.repository_owner }}"
+          password: "${{ secrets.GITHUB_TOKEN }}"
+
+      - name: Test
+        env:
+          OVERRIDE_ARCH: "${{ matrix.arch }}"
+        run: make ci.container.test

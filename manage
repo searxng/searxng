@@ -429,7 +429,7 @@ ci.container.build() {
     fi
 
     (
-        set -eu
+        set -e
         pyenv.activate
 
         # Check if it is a git repository
@@ -445,6 +445,13 @@ ci.container.build() {
         git update-index -q --refresh
         python -m searx.version freeze
         eval "$(python -m searx.version)"
+
+        # TODO: Remove this
+        echo $VERSION_STRING
+        echo $VERSION_TAG
+        echo $DOCKER_TAG
+        echo $GIT_URL
+        echo $GIT_BRANCH
 
         # Get the last git commit id
         version_gitcommit=$(echo "$VERSION_TAG" | cut -d+ -f2)
@@ -477,6 +484,77 @@ ci.container.build() {
             --file="./$dockerfile"
 
         podman push "ghcr.io/$container_image_organization/cache:$container_image_name-$arch$variant"
+    )
+    dump_return $?
+}
+
+ci.container.test() {
+    if ! "$GITHUB_ACTIONS"; then
+        die 1 "This command is intended to be run in GitHub Actions"
+    fi
+
+    local parch=${OVERRIDE_ARCH:-$(uname -m)}
+    local arch
+    local variant
+    local platform
+
+    # Setup arch specific
+    case $parch in
+    "X64" | "x86_64" | "amd64")
+        arch="amd64"
+        variant=""
+        platform="linux/$arch"
+        ;;
+    "ARM64" | "aarch64" | "arm64")
+        arch="arm64"
+        variant=""
+        platform="linux/$arch"
+        ;;
+    "ARMV7" | "armhf" | "armv7l" | "armv7")
+        arch="arm"
+        variant="v7"
+        platform="linux/$arch/$variant"
+        ;;
+    *)
+        err_msg "Unsupported architecture; (PARCH=\"$parch\")"
+        exit 1
+        ;;
+    esac
+    build_msg CONTAINER "Selected platform: $platform"
+
+    # Check if podman is installed
+    if ! command -v podman &>/dev/null; then
+        die 1 "podman is not installed"
+    fi
+
+    (
+        set -e
+
+        # Define container image org/name
+        git_url="$(git remote get-url origin)"
+        # shellcheck disable=SC2001
+        container_image_organization="$(echo "$git_url" | sed 's|.*github\.com/\([^/]*\).*|\1|' || echo "searxng")"
+        container_image_name="searxng"
+
+        podman pull "ghcr.io/$container_image_organization/cache:$container_image_name-$arch$variant"
+
+        name="$container_image_name-$(date +%N)"
+
+        podman create --name="$name" --rm --timeout=60 --network="host" \
+            "ghcr.io/$container_image_organization/cache:$container_image_name-$arch$variant" >/dev/null
+
+        podman start "$name" >/dev/null
+        podman logs -f "$name" &
+        pid_logs=$!
+
+        # Wait until container is ready
+        sleep 5
+
+        # TODO: Test failing
+        curl -vf --max-time 5 "http://localhost:8080/healthz"
+
+        kill $pid_logs &>/dev/null || true
+        podman stop "$name" >/dev/null
     )
     dump_return $?
 }
@@ -521,11 +599,12 @@ ci.container.push() {
     fi
 
     (
-        set -eu
+        set -e
 
         # Define container image org/name
+        git_url="$(git remote get-url origin)"
         # shellcheck disable=SC2001
-        container_image_organization="$(echo "$GIT_URL" | sed 's|.*github\.com/\([^/]*\).*|\1|' || echo "searxng")"
+        container_image_organization="$(echo "$git_url" | sed 's|.*github\.com/\([^/]*\).*|\1|' || echo "searxng")"
         container_image_name="searxng"
 
         podman pull "ghcr.io/$container_image_organization/$container_image_name:cache-$arch$variant"

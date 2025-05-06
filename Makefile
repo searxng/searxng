@@ -88,7 +88,7 @@ MANAGE += test.yamllint test.pylint test.black test.pybabel test.unit test.cover
 MANAGE += themes.all themes.fix themes.test
 MANAGE += static.build.commit static.build.drop static.build.restore
 MANAGE += nvm.install nvm.clean nvm.status nvm.nodejs
-MANAGE += ci.container.build ci.container.push
+MANAGE += ci.container.build ci.container.test ci.container.push
 
 PHONY += $(MANAGE)
 
