@@ -33,7 +33,7 @@ class SXNGPlugin(Plugin):
     """Rewrite hostnames, remove results or prioritize them."""
 
     id = "tor_check"
-    keywords = ["tor-check"]
+    keywords = ["tor-check", "tor_check", "torcheck", "tor", "tor check"]
 
     def __init__(self, plg_cfg: "PluginCfg") -> None:
         super().__init__(plg_cfg)
@@ -53,7 +53,7 @@ class SXNGPlugin(Plugin):
         if search.search_query.pageno > 1:
             return results
 
-        if search.search_query.query.lower() == "tor-check":
+        if search.search_query.query.lower() in self.keywords:
 
             # Request the list of tor exit nodes.
             try:
