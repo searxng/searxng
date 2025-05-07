@@ -86,7 +86,7 @@ def filter_request(
     user_agent = request.headers.get('User-Agent', '')
     if is_browser_supported(user_agent):
         val = request.headers.get("Sec-Fetch-Mode", "")
-        if val != "navigate":
+        if val not in ('navigate', 'cors'):
             logger.debug("invalid Sec-Fetch-Mode '%s'", val)
             return flask.redirect(flask.url_for('index'), code=302)
 
@@ -96,7 +96,7 @@ def filter_request(
             flask.redirect(flask.url_for('index'), code=302)
 
         val = request.headers.get("Sec-Fetch-Dest", "")
-        if val != "document":
+        if val not in ('document', 'empty'):
             logger.debug("invalid Sec-Fetch-Dest '%s'", val)
             flask.redirect(flask.url_for('index'), code=302)
 
