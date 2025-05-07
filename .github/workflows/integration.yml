@@ -119,8 +119,6 @@ jobs:
         uses: actions/checkout@v4
         with:
           persist-credentials: "false"
-          # make sure "make ci.container.build" can get the git branches
-          fetch-depth: "0"
 
       - name: Setup cache Python
         uses: actions/cache@v4
@@ -182,8 +180,6 @@ jobs:
         uses: actions/checkout@v4
         with:
           persist-credentials: "false"
-          # make sure "make ci.container.test" can get the git branches
-          # fetch-depth: "0"
 
       - if: ${{ matrix.emulation }}
         name: Setup QEMU

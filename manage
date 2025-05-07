@@ -446,13 +446,6 @@ ci.container.build() {
         python -m searx.version freeze
         eval "$(python -m searx.version)"
 
-        # TODO: Remove this
-        echo $VERSION_STRING
-        echo $VERSION_TAG
-        echo $DOCKER_TAG
-        echo $GIT_URL
-        echo $GIT_BRANCH
-
         # Get the last git commit id
         version_gitcommit=$(echo "$VERSION_TAG" | cut -d+ -f2)
         build_msg CONTAINER "Last commit: $version_gitcommit"
