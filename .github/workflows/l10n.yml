@@ -14,6 +14,10 @@ on:
   schedule:
     - cron: "05 07 * * 5"
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref_name }}
+  cancel-in-progress: false
+
 permissions:
   contents: read
 
