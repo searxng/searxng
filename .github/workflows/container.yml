@@ -134,23 +134,16 @@ jobs:
       - name: Test
         env:
           OVERRIDE_ARCH: "${{ matrix.arch }}"
+          GIT_URL: "${{ steps.build.outputs.git_url }}"
         run: make ci.container.test
 
   release:
     # TODO: Uncomment before merge
     # if: github.repository_owner == 'searxng'
     if: false
-    name: Release (${{ matrix.arch }})
+    name: Release
     runs-on: ubuntu-24.04-arm
     needs: test
-    strategy:
-      fail-fast: false
-      matrix:
-        arch:
-          - amd64
-          - arm64
-          - armv7
-
     steps:
       - if: env.DOCKERHUB_USERNAME != ''
         name: Checkout
@@ -177,5 +170,6 @@ jobs:
       - if: env.DOCKERHUB_USERNAME != ''
         name: Release
         env:
-          OVERRIDE_ARCH: "${{ matrix.arch }}"
+          GIT_URL: "${{ steps.build.outputs.git_url }}"
+          DOCKER_TAG: "${{ steps.build.outputs.docker_tag }}"
         run: make ci.container.push

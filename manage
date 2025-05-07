@@ -477,6 +477,15 @@ ci.container.build() {
             --file="./$dockerfile"
 
         podman push "ghcr.io/$container_image_organization/cache:$container_image_name-$arch$variant"
+
+        # From version.py
+        {
+            echo "version_string=$VERSION_STRING"
+            echo "version_tag=$VERSION_TAG"
+            echo "docker_tag=$DOCKER_TAG"
+            echo "git_url=$GIT_URL"
+            echo "git_branch=$GIT_BRANCH"
+        } >>"$GITHUB_OUTPUT"
     )
     dump_return $?
 }
@@ -524,9 +533,8 @@ ci.container.test() {
         set -e
 
         # Define container image org/name
-        git_url="$(git remote get-url origin)"
         # shellcheck disable=SC2001
-        container_image_organization="$(echo "$git_url" | sed 's|.*github\.com/\([^/]*\).*|\1|' || echo "searxng")"
+        container_image_organization="$(echo "$GIT_URL" | sed 's|.*github\.com/\([^/]*\).*|\1|' || echo "searxng")"
         container_image_name="searxng"
 
         podman pull "ghcr.io/$container_image_organization/cache:$container_image_name-$arch$variant"
@@ -543,7 +551,6 @@ ci.container.test() {
         # Wait until container is ready
         sleep 5
 
-        # TODO: Test failing
         curl -vf --max-time 5 "http://localhost:8080/healthz"
 
         kill $pid_logs &>/dev/null || true
@@ -557,34 +564,36 @@ ci.container.push() {
         die 1 "This command is intended to be run in GitHub Actions"
     fi
 
-    local parch=${OVERRIDE_ARCH:-$(uname -m)}
-    local arch
-    local variant
-    local platform
+    # Architectures to release
+    local release_archs=("amd64" "arm64" "armv7")
 
-    # Setup arch specific
-    case $parch in
-    "X64" | "x86_64" | "amd64")
-        arch="amd64"
-        variant=""
-        platform="linux/$arch"
-        ;;
-    "ARM64" | "aarch64" | "arm64")
-        arch="arm64"
-        variant=""
-        platform="linux/$arch"
-        ;;
-    "ARMV7" | "armhf" | "armv7l" | "armv7")
-        arch="arm"
-        variant="v7"
-        platform="linux/$arch/$variant"
-        ;;
-    *)
-        err_msg "Unsupported architecture; (PARCH=\"$parch\")"
-        exit 1
-        ;;
-    esac
-    build_msg CONTAINER "Selected platform: $platform"
+    local archs=()
+    local variants=()
+    local platforms=()
+
+    for arch in "${release_archs[@]}"; do
+        case $arch in
+        "X64" | "x86_64" | "amd64")
+            archs+=("amd64")
+            variants+=("")
+            platforms+=("linux/${archs[-1]}")
+            ;;
+        "ARM64" | "aarch64" | "arm64")
+            archs+=("arm64")
+            variants+=("")
+            platforms+=("linux/${archs[-1]}")
+            ;;
+        "ARMV7" | "armv7" | "armhf" | "arm")
+            archs+=("arm")
+            variants+=("v7")
+            platforms+=("linux/${archs[-1]}/${variants[-1]}")
+            ;;
+        *)
+            err_msg "Unsupported architecture; (ARCH=\"${arch[-1]}\")"
+            exit 1
+            ;;
+        esac
+    done
 
     # Check if podman is installed
     if ! command -v podman &>/dev/null; then
@@ -595,23 +604,43 @@ ci.container.push() {
         set -e
 
         # Define container image org/name
-        git_url="$(git remote get-url origin)"
         # shellcheck disable=SC2001
-        container_image_organization="$(echo "$git_url" | sed 's|.*github\.com/\([^/]*\).*|\1|' || echo "searxng")"
+        container_image_organization="$(echo "$GIT_URL" | sed 's|.*github\.com/\([^/]*\).*|\1|' || echo "searxng")"
         container_image_name="searxng"
 
-        podman pull "ghcr.io/$container_image_organization/$container_image_name:cache-$arch$variant"
+        # Pull archs
+        for i in "${!archs[@]}"; do
+            podman pull "ghcr.io/$container_image_organization/$container_image_name:cache-${archs[$i]}${variants[$i]}"
+        done
 
-        # Get version tag
-        container_image_tag_version=$(podman inspect --format='{{index .Config.Labels "org.opencontainers.image.revision"}}' \
-            "ghcr.io/$container_image_organization/$container_image_name:cache-$arch$variant")
+        # Tags to release
+        tags=("latest")
+        tags+=("$DOCKER_TAG")
 
-        # Recreate tags
-        podman tag "ghcr.io/$container_image_organization/$container_image_name:cache-$arch$variant" "docker.io/$container_image_organization/$container_image_name:latest"
-        podman tag "ghcr.io/$container_image_organization/$container_image_name:cache-$arch$variant" "docker.io/$container_image_organization/$container_image_name:$container_image_tag_version"
+        # Create manifests
+        for tag in "${tags[@]}"; do
+            if ! podman manifest exists "localhost/$container_image_organization/$container_image_name:$tag"; then
+                podman manifest create "localhost/$container_image_organization/$container_image_name:$tag"
+            fi
 
-        podman push "docker.io/$container_image_organization/$container_image_name:latest"
-        podman push "docker.io/$container_image_organization/$container_image_name:$container_image_tag_version"
+            # Add archs to manifest
+            for i in "${!archs[@]}"; do
+                podman manifest add \
+                    "localhost/$container_image_organization/$container_image_name:$tag" \
+                    "containers-storage:ghcr.io/$container_image_organization/$container_image_name:cache-${archs[$i]}${variants[$i]}"
+            done
+        done
+
+        podman image list
+
+        # Push manifests
+        for tag in "${tags[@]}"; do
+            build_msg CONTAINER "Pushing manifest with tag: $tag"
+
+            podman manifest push \
+                "localhost/$container_image_organization/$container_image_name:$tag" \
+                "docker://docker.io/$container_image_organization/$container_image_name:$tag"
+        done
     )
     dump_return $?
 }
