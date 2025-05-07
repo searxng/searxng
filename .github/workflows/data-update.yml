@@ -20,6 +20,7 @@ jobs:
           - update_engine_traits.py
           - update_wikidata_units.py
           - update_engine_descriptions.py
+          - update_tracker_patterns.py
     steps:
       - name: Checkout
         uses: actions/checkout@v4
