@@ -26,9 +26,7 @@ env:
 
 jobs:
   update:
-    # TODO: Uncomment
-    # if: github.repository_owner == 'searxng' && github.event.workflow_run.conclusion == 'success'
-    if: false
+    if: github.repository_owner == 'searxng' && github.event.workflow_run.conclusion == 'success'
     name: Update
     runs-on: ubuntu-24.04-arm
     permissions:

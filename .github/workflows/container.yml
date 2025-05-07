@@ -26,9 +26,7 @@ env:
 
 jobs:
   build:
-    # TODO: Uncomment
-    # if: github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success'
-    if: false
+    if: github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success'
     name: Build (${{ matrix.arch }})
     runs-on: ${{ matrix.os }}
     strategy:
@@ -48,6 +46,13 @@ jobs:
     permissions:
       # Organization GHCR
       packages: write
+
+    outputs:
+      version_string: ${{ steps.build.outputs.version_string }}
+      version_tag: ${{ steps.build.outputs.version_tag }}
+      docker_tag: ${{ steps.build.outputs.docker_tag }}
+      git_url: ${{ steps.build.outputs.git_url }}
+      git_branch: ${{ steps.build.outputs.git_branch }}
 
     steps:
       - name: Setup Python
@@ -88,9 +93,10 @@ jobs:
           password: "${{ secrets.GITHUB_TOKEN }}"
 
       - name: Build
+        id: build
         env:
           OVERRIDE_ARCH: "${{ matrix.arch }}"
-        run: make ci.container.build
+        run: make podman.build
 
   test:
     name: Test (${{ matrix.arch }})
@@ -134,16 +140,17 @@ jobs:
       - name: Test
         env:
           OVERRIDE_ARCH: "${{ matrix.arch }}"
-          GIT_URL: "${{ steps.build.outputs.git_url }}"
-        run: make ci.container.test
+          GIT_URL: "${{ needs.build.outputs.git_url }}"
+        run: make container.test
 
   release:
-    # TODO: Uncomment before merge
-    # if: github.repository_owner == 'searxng'
-    if: false
+    if: github.repository_owner == 'searxng' && github.ref_name == 'master'
     name: Release
     runs-on: ubuntu-24.04-arm
-    needs: test
+    needs:
+      - build
+      - test
+
     steps:
       - if: env.DOCKERHUB_USERNAME != ''
         name: Checkout
@@ -170,6 +177,6 @@ jobs:
       - if: env.DOCKERHUB_USERNAME != ''
         name: Release
         env:
-          GIT_URL: "${{ steps.build.outputs.git_url }}"
-          DOCKER_TAG: "${{ steps.build.outputs.docker_tag }}"
-        run: make ci.container.push
+          GIT_URL: "${{ needs.build.outputs.git_url }}"
+          DOCKER_TAG: "${{ needs.build.outputs.docker_tag }}"
+        run: make container.push

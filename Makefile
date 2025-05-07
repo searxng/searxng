@@ -77,8 +77,9 @@ test.shell:
 MANAGE += weblate.translations.commit weblate.push.translations
 MANAGE += data.all data.traits data.useragents data.locales data.currencies
 MANAGE += docs.html docs.live docs.gh-pages docs.prebuild docs.clean
+MANAGE += podman.build
 MANAGE += docker.build docker.buildx
-MANAGE += container.build container.buildx
+MANAGE += container.build container.test container.push
 MANAGE += gecko.driver
 MANAGE += node.env node.env.dev node.clean
 MANAGE += py.build py.clean
@@ -88,7 +89,6 @@ MANAGE += test.yamllint test.pylint test.black test.pybabel test.unit test.cover
 MANAGE += themes.all themes.fix themes.test
 MANAGE += static.build.commit static.build.drop static.build.restore
 MANAGE += nvm.install nvm.clean nvm.status nvm.nodejs
-MANAGE += ci.container.build ci.container.test ci.container.push
 
 PHONY += $(MANAGE)
 
@@ -97,9 +97,8 @@ $(MANAGE):
 
 # short hands of selected targets
 
-PHONY += docs docker themes
+PHONY += docs container themes
 
 docs: docs.html
 container:  container.build
-docker:  container.build
 themes: themes.all

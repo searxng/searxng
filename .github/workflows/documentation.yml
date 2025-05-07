@@ -24,9 +24,7 @@ env:
 
 jobs:
   release:
-    # TODO: Uncomment
-    # if: github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success'
-    if: false
+    if: github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success'
     name: Release
     runs-on: ubuntu-24.04-arm
     permissions:

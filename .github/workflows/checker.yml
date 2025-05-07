@@ -43,5 +43,4 @@ jobs:
         run: make V=1 install
 
       - name: Search checker
-        continue-on-error: true
         run: make search.checker
