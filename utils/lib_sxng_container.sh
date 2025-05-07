@@ -159,7 +159,7 @@ container.build() {
 }
 
 container.test() {
-    if ! "$GITHUB_ACTIONS"; then
+    if [ "$GITHUB_ACTIONS" != "true" ]; then
         die 1 "This command is intended to be run in GitHub Actions"
     fi
 
@@ -186,7 +186,7 @@ container.test() {
         platform="linux/$arch/$variant"
         ;;
     *)
-        err_msg "Unsupported architecture; (PARCH=\"$parch\")"
+        err_msg "Unsupported architecture; $parch"
         exit 1
         ;;
     esac
@@ -223,7 +223,7 @@ container.test() {
 }
 
 container.push() {
-    if ! "$GITHUB_ACTIONS"; then
+    if [ "$GITHUB_ACTIONS" != "true" ]; then
         die 1 "This command is intended to be run in GitHub Actions"
     fi
 
@@ -252,7 +252,7 @@ container.push() {
             platforms+=("linux/${archs[-1]}/${variants[-1]}")
             ;;
         *)
-            err_msg "Unsupported architecture; (ARCH=\"${arch[-1]}\")"
+            err_msg "Unsupported architecture; $arch"
             exit 1
             ;;
         esac
