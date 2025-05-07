@@ -48,6 +48,8 @@ RUN apt-get update \
  && apt-get install -y --no-install-recommends \
     # healthcheck
     wget \
+    # lxml (ARMv7)
+    libxslt1.1 \
     # uwsgi
     libpcre3 \
     libxml2 \
