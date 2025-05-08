@@ -47,48 +47,6 @@ jobs:
       - name: Build themes
         run: make themes.all
 
-  babel:
-    name: Update translations branch
-    runs-on: ubuntu-24.04
-    if: ${{ github.repository_owner == 'searxng' && github.ref == 'refs/heads/master' }}
-    needs:
-      - python
-      - themes
-    permissions:
-      contents: write  # for make V=1 weblate.push.translations
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: '0'
-          token: ${{ secrets.WEBLATE_GITHUB_TOKEN }}
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.12'
-          architecture: 'x64'
-      - name: Cache Python dependencies
-        id: cache-python
-        uses: actions/cache@v4
-        with:
-          path: |
-            ./local
-            ./.nvm
-            ./node_modules
-          key: python-ubuntu-20.04-3.12-${{ hashFiles('requirements*.txt', 'setup.py','.nvmrc', 'package.json') }}
-      - name: weblate & git setup
-        env:
-          WEBLATE_CONFIG: ${{ secrets.WEBLATE_CONFIG }}
-        run: |
-          mkdir -p ~/.config
-          echo "${WEBLATE_CONFIG}" > ~/.config/weblate
-          git config --global user.email "searxng-bot@users.noreply.github.com"
-          git config --global user.name "searxng-bot"
-      - name: Update transations
-        id: update
-        run: |
-          make V=1 weblate.push.translations
-
   dockers:
     name: Docker
     if: github.ref == 'refs/heads/master'

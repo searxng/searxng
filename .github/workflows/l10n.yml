@@ -1,0 +1,134 @@
+---
+name: Translation
+
+# yamllint disable-line rule:truthy
+on:
+  workflow_dispatch:
+  workflow_run:
+    workflows:
+      - Integration
+    types:
+      - completed
+    branches:
+      - master
+  schedule:
+    - cron: "05 07 * * 5"
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref_name }}
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+env:
+  PYTHON_VERSION: "3.13"
+
+jobs:
+  update:
+    if: github.repository_owner == 'searxng' && github.event.workflow_run.conclusion == 'success'
+    name: Update
+    runs-on: ubuntu-24.04-arm
+    permissions:
+      # For "make V=1 weblate.push.translations"
+      contents: write
+
+    steps:
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "${{ env.PYTHON_VERSION }}"
+
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          token: "${{ secrets.WEBLATE_GITHUB_TOKEN }}"
+          fetch-depth: "0"
+
+      - name: Setup cache Python
+        uses: actions/cache@v4
+        with:
+          key: "python-${{ env.PYTHON_VERSION }}-${{ runner.arch }}-${{ hashFiles('./requirements*.txt') }}"
+          restore-keys: "python-${{ env.PYTHON_VERSION }}-${{ runner.arch }}-"
+          path: "./local/"
+
+      - name: Setup venv
+        run: make V=1 install
+
+      - name: Setup Weblate
+        run: |
+          mkdir -p ~/.config
+          echo "${{ secrets.WEBLATE_CONFIG }}" > ~/.config/weblate
+
+      - name: Setup Git
+        run: |
+          git config --global user.email "searxng-bot@users.noreply.github.com"
+          git config --global user.name "searxng-bot"
+
+      - name: Update translations
+        run: make V=1 weblate.push.translations
+
+  pr:
+    if: |
+      github.repository_owner == 'searxng'
+      && (github.event_name == 'workflow_dispatch' || github.event_name == 'schedule')
+    name: Pull Request
+    runs-on: ubuntu-24.04-arm
+    permissions:
+      # For "make V=1 weblate.translations.commit"
+      contents: write
+
+    steps:
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "${{ env.PYTHON_VERSION }}"
+
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          token: "${{ secrets.WEBLATE_GITHUB_TOKEN }}"
+          fetch-depth: "0"
+
+      - name: Setup cache Python
+        uses: actions/cache@v4
+        with:
+          key: "python-${{ env.PYTHON_VERSION }}-${{ runner.arch }}-${{ hashFiles('./requirements*.txt') }}"
+          restore-keys: "python-${{ env.PYTHON_VERSION }}-${{ runner.arch }}-"
+          path: "./local/"
+
+      - name: Setup venv
+        run: make V=1 install
+
+      - name: Setup Weblate
+        run: |
+          mkdir -p ~/.config
+          echo "${{ secrets.WEBLATE_CONFIG }}" > ~/.config/weblate
+
+      - name: Setup Git
+        run: |
+          git config --global user.email "searxng-bot@users.noreply.github.com"
+          git config --global user.name "searxng-bot"
+
+      - name: Merge and push translation updates
+        run: make V=1 weblate.translations.commit
+
+      - name: Create PR
+        id: cpr
+        uses: peter-evans/create-pull-request@v7
+        with:
+          author: "${{ github.actor }} <${{ github.actor }}@users.noreply.github.com>"
+          committer: "searxng-bot <searxng-bot@users.noreply.github.com>"
+          title: "[l10n] update translations from Weblate"
+          commit-message: "[l10n] update translations from Weblate"
+          branch: "translations_update"
+          delete-branch: "true"
+          draft: "false"
+          signoff: "false"
+          labels: |
+            translation
+
+      - name: Display information
+        run: |
+          echo "Pull Request Number - ${{ steps.cpr.outputs.pull-request-number }}"
+          echo "Pull Request URL - ${{ steps.cpr.outputs.pull-request-url }}"
