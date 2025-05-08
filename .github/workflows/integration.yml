@@ -47,47 +47,6 @@ jobs:
       - name: Build themes
         run: make themes.all
 
-  documentation:
-    name: Documentation
-    runs-on: ubuntu-24.04
-    permissions:
-      contents: write  # for JamesIves/github-pages-deploy-action to push changes in repo
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: '0'
-          persist-credentials: false
-      - name: Install Ubuntu packages
-        run: sudo ./utils/searxng.sh install buildhost
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.12'
-          architecture: 'x64'
-      - name: Cache Python dependencies
-        id: cache-python
-        uses: actions/cache@v4
-        with:
-          path: |
-            ./local
-            ./.nvm
-            ./node_modules
-          key: python-ubuntu-24.04-3.12-${{ hashFiles('requirements*.txt', 'setup.py','.nvmrc', 'package.json') }}
-      - name: Build documentation
-        run: |
-          make V=1 docs.clean docs.html
-      - name: Deploy
-        if: github.ref == 'refs/heads/master'
-        uses: JamesIves/github-pages-deploy-action@3.7.1
-        with:
-          GITHUB_TOKEN: ${{ github.token }}
-          BRANCH: gh-pages
-          FOLDER: dist/docs
-          CLEAN: true  # Automatically remove deleted files from the deploy branch
-          SINGLE_COMMIT: true
-          COMMIT_MESSAGE: '[doc] build from commit ${{ github.sha }}'
-
   babel:
     name: Update translations branch
     runs-on: ubuntu-24.04
@@ -95,7 +54,6 @@ jobs:
     needs:
       - python
       - themes
-      - documentation
     permissions:
       contents: write  # for make V=1 weblate.push.translations
     steps:
@@ -137,7 +95,6 @@ jobs:
     needs:
       - python
       - themes
-      - documentation
     env:
       DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
     runs-on: ubuntu-24.04
