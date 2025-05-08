@@ -18,6 +18,9 @@ jobs:
   container:
     name: Container
     runs-on: ubuntu-24.04-arm
+    permissions:
+      security-events: write
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
