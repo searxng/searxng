@@ -1,28 +1,40 @@
-name: "Security checks"
-on:  # yamllint disable-line rule:truthy
+---
+name: Security
+
+# yamllint disable-line rule:truthy
+on:
+  workflow_dispatch:
   schedule:
     - cron: "42 05 * * *"
-  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref_name }}
+  cancel-in-progress: false
+
+permissions:
+  contents: read
 
 jobs:
-  dockers:
-    name: Trivy ${{ matrix.image }}
-    runs-on: ubuntu-24.04
+  container:
+    name: Container
+    runs-on: ubuntu-24.04-arm
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-
-      - name: Run Trivy vulnerability scanner
-        uses: aquasecurity/trivy-action@master
         with:
-          image-ref: 'searxng/searxng:latest'
-          ignore-unfixed: false
-          vuln-type: 'os,library'
-          severity: 'UNKNOWN,LOW,MEDIUM,HIGH,CRITICAL'
-          format: 'sarif'
-          output: 'trivy-results.sarif'
+          persist-credentials: "false"
 
-      - name: Upload Trivy scan results to GitHub Security tab
-        uses: github/codeql-action/upload-sarif@v2
+      - name: Run Trivy scanner
+        uses: aquasecurity/trivy-action@0.30.0
         with:
-          sarif_file: 'trivy-results.sarif'
+          image-ref: "docker.io/searxng/searxng:latest"
+          vuln-type: "os,library"
+          severity: "UNKNOWN,LOW,MEDIUM,HIGH,CRITICAL"
+          ignore-unfixed: "false"
+          format: "sarif"
+          output: "./trivy-results.sarif"
+
+      - name: Upload SARIFs
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: "./trivy-results.sarif"
