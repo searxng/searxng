@@ -30,15 +30,15 @@ SearXNG was born out of the need for a **privacy-respecting** search tool which
 can be extended easily to maximize both its search and its privacy protecting
 capabilities.
 
-Some widely used search engine features may work differently, 
-may be turned off by default, or may not be implemented at all in SearXNG 
+Some widely used search engine features may work differently,
+may be turned off by default, or may not be implemented at all in SearXNG
 **as a consequence of a privacy-by-design approach**.
 
 Following this approach, features reducing the privacy preserving aspects of SearXNG should be
 switched off by default or should not be implemented at all.  There are plenty of
 search engines already providing such features.  If a feature reduces
-SearXNG's efficacy in protecting a user's privacy, the user must be informed about 
-the effect of choosing to enable it.  Features that protect privacy but differ from the 
+SearXNG's efficacy in protecting a user's privacy, the user must be informed about
+the effect of choosing to enable it.  Features that protect privacy but differ from the
 expectations of the user should also be carefully explained to them.
 
 Also, if you think that something works weird with SearXNG, it might be because
@@ -56,20 +56,12 @@ Code
 ====
 
 .. _PEP8: https://www.python.org/dev/peps/pep-0008/
-.. _Conventional Commits: https://www.conventionalcommits.org/
-.. _Git Commit Good Practice: https://wiki.openstack.org/wiki/GitCommitMessages
 .. _Structural split of changes:
     https://wiki.openstack.org/wiki/GitCommitMessages#Structural_split_of_changes
-.. _gitmoji: https://gitmoji.carloscuesta.me/
-.. _Semantic PR: https://github.com/zeke/semantic-pull-requests
 
 .. sidebar:: Create good commits!
 
-   - `Structural split of changes`_
-   - `Conventional Commits`_
-   - `Git Commit Good Practice`_
-   - some like to use: gitmoji_
-   - not yet active: `Semantic PR`_
+   - :ref:`create commit`
 
 In order to submit a patch, please follow the steps below:
 
@@ -88,15 +80,7 @@ In order to submit a patch, please follow the steps below:
 
 - Add yourself to the :origin:`AUTHORS.rst` file.
 
-- Choose meaningful commit messages, read `Conventional Commits`_
-
-  .. code::
-
-     <type>[optional scope]: <description>
-
-     [optional body]
-
-     [optional footer(s)]
+- Choose meaningful commit messages, see :ref:`create commit`
 
 - Create a pull request.
 
@@ -161,7 +145,7 @@ changed (:ref:`make docs.clean`).
 
 Live builds are implemented by sphinx-autobuild_.  Use environment
 ``$(SPHINXOPTS)`` to pass arguments to the sphinx-autobuild_ command.  You can
-pass any argument except for the ``--host`` option (which is always set to ``0.0.0.0``).  
+pass any argument except for the ``--host`` option (which is always set to ``0.0.0.0``).
 E.g., to find and use a free port, use:
 
 .. code:: sh
