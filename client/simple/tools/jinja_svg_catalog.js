@@ -51,11 +51,13 @@ function jinja_svg_catalog(dest, macros, items) {
     (item) => {
 
       /** @type {import("svgo").Config} */
+      // JSON.stringify & JSON.parse are used to create a deep copy of the
+      // item.svgo_opts object
       const svgo_opts = JSON.parse(JSON.stringify(item.svgo_opts));
       svgo_opts.plugins.push({
-        name: "addAttributesToSVGElement",
+        name: "addClassesToSVGElement",
         params: {
-          attributes: [{ "class": __jinja_class_placeholder__, }]
+          classNames: [__jinja_class_placeholder__]
         }}
       );
 
