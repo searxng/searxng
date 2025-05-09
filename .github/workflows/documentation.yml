@@ -4,11 +4,10 @@ name: Documentation
 # yamllint disable-line rule:truthy
 on:
   workflow_dispatch:
-  workflow_run:
-    workflows:
-      - Integration
-    types:
-      - completed
+  push:
+    branches:
+      - master
+  pull_request:
     branches:
       - master
 
@@ -24,7 +23,6 @@ env:
 
 jobs:
   release:
-    if: github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success'
     name: Release
     runs-on: ubuntu-24.04-arm
     permissions:
@@ -56,7 +54,8 @@ jobs:
       - name: Build documentation
         run: make V=1 docs.clean docs.html
 
-      - name: Release
+      - if: github.ref_name == 'master'
+        name: Release
         uses: JamesIves/github-pages-deploy-action@v4
         with:
           folder: "dist/docs"
