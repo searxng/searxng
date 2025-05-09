@@ -28,22 +28,24 @@
 # Bubowny <bubowny@users.noreply.translate.codeberg.org>, 2025.
 # matsob0123 <matsob0123@users.noreply.translate.codeberg.org>, 2025.
 # return42 <return42@noreply.codeberg.org>, 2025.
+# polskiecus <polskiecus@noreply.codeberg.org>, 2025.
 msgid ""
 msgstr ""
-"Project-Id-Version:  searx\n"
+"Project-Id-Version: searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-03-29 09:21+0000\n"
-"PO-Revision-Date: 2025-03-14 07:09+0000\n"
-"Last-Translator: return42 <return42@noreply.codeberg.org>\n"
+"PO-Revision-Date: 2025-05-09 07:09+0000\n"
+"Last-Translator: polskiecus <polskiecus@noreply.codeberg.org>\n"
+"Language-Team: Polish <https://translate.codeberg.org/projects/searxng/"
+"searxng/pl/>\n"
 "Language: pl\n"
-"Language-Team: Polish "
-"<https://translate.codeberg.org/projects/searxng/searxng/pl/>\n"
-"Plural-Forms: nplurals=4; plural=(n==1 ? 0 : (n%10>=2 && n%10<=4) && "
-"(n%100<12 || n%100>14) ? 1 : n!=1 && (n%10>=0 && n%10<=1) || (n%10>=5 && "
-"n%10<=9) || (n%100>=12 && n%100<=14) ? 2 : 3);\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=4; plural=(n==1 ? 0 : (n%10>=2 && n%10<=4) && ("
+"n%100<12 || n%100>14) ? 1 : n!=1 && (n%10>=0 && n%10<=1) || (n%10>=5 && "
+"n%10<=9) || (n%100>=12 && n%100<=14) ? 2 : 3);\n"
+"X-Generator: Weblate 5.10.2\n"
 "Generated-By: Babel 2.17.0\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
@@ -539,15 +541,17 @@ msgstr "Jakość pliku"
 
 #: searx/plugins/ahmia_filter.py:32
 msgid "Ahmia blacklist"
-msgstr ""
+msgstr "Czarna lista wyszukiwarki Ahmia"
 
 #: searx/plugins/ahmia_filter.py:33
 msgid "Filter out onion results that appear in Ahmia's blacklist."
 msgstr ""
+"Pomiń serwisy .onion, które znajdują się na czarnej liście wyszkukiwarki "
+"Ahmia"
 
 #: searx/plugins/calculator.py:38
 msgid "Basic Calculator"
-msgstr ""
+msgstr "Kalkulator Prosty"
 
 #: searx/plugins/calculator.py:39
 msgid "Calculate mathematical expressions via the search bar"
@@ -642,7 +646,7 @@ msgstr "Usuń argumenty elementów śledzących ze zwróconego adresu URL"
 
 #: searx/plugins/unit_converter.py:49
 msgid "Unit converter plugin"
-msgstr ""
+msgstr "Plugin do konwersji jednostek"
 
 #: searx/plugins/unit_converter.py:50
 msgid "Convert between units"
@@ -1196,6 +1200,8 @@ msgid ""
 "A URL containing your preferences. This URL can be used to restore your "
 "settings on a different device."
 msgstr ""
+"Adres URL zawierający twoje preferencje/ustawienia. Ten Adres URL pozwala na "
+"odzyskanie/przeniesienie swoich ustawień na inne urządzenie"
 
 #: searx/templates/simple/preferences/cookies.html:46
 msgid "Copy preferences hash"
@@ -2103,4 +2109,3 @@ msgstr "ukryj wideo"
 #~ "Określanie własnych ustawień w adresie "
 #~ "URL preferencji może służyć do "
 #~ "synchronizowania preferencji między urządzeniami."
-
