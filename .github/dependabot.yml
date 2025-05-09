@@ -20,3 +20,12 @@ updates:
     target-branch: "master"
     commit-message:
       prefix: "[upd] web-client (simple):"
+
+  - package-ecosystem: "docker"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "friday"
+    target-branch: "master"
+    commit-message:
+      prefix: "[upd] docker:"
