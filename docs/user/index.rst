@@ -13,3 +13,4 @@ User information
    search-syntax
    configured_engines
    about
+   privacy-policy
