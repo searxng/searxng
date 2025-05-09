@@ -42,7 +42,7 @@ jobs:
           make V=1 weblate.translations.commit
       - name: Create Pull Request
         id: cpr
-        uses: peter-evans/create-pull-request@v3
+        uses: peter-evans/create-pull-request@v7
         with:
           token: ${{ secrets.WEBLATE_GITHUB_TOKEN }}
           commit-message: '[l10n] update translations from Weblate'
