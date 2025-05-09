@@ -77,6 +77,8 @@ jobs:
     permissions:
       # For "make V=1 weblate.translations.commit"
       contents: write
+      # For action "peter-evans/create-pull-request"
+      pull-requests: write
 
     steps:
       - name: Setup Python
