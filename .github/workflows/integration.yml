@@ -121,7 +121,7 @@ jobs:
           key: python-ubuntu-20.04-3.12-${{ hashFiles('requirements*.txt', 'setup.py','.nvmrc', 'package.json') }}
       - name: Set up QEMU
         if: env.DOCKERHUB_USERNAME != null
-        uses: docker/setup-qemu-action@v1
+        uses: docker/setup-qemu-action@v3
       - name: Set up Docker Buildx
         if: env.DOCKERHUB_USERNAME != null
         uses: docker/setup-buildx-action@v1
