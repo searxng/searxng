@@ -15,7 +15,7 @@
   </p>
 {% endif -%}
 </p>
-{{- result_sub_footer(result, proxify) -}}
+{{- result_sub_footer(result) -}}
 {% if result.iframe_src -%}
 <div id="result-video-{{ index }}" class="embedded-video invisible">
   <iframe data-src="{{result.iframe_src}}" frameborder="0" allowfullscreen></iframe>

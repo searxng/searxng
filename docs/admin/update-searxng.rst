@@ -58,9 +58,6 @@ and then, to name just a few:
 - Bot protection has been switched from filtron to SearXNG's :ref:`limiter
   <limiter>`, this requires a :ref:`Redis <settings redis>` database.
 
-- The image proxy morty is no longer needed, it has been replaced by the
-  :ref:`image proxy <image_proxy>` from SearXNG.
-
 - To save bandwidth :ref:`cache busting <static_use_hash>` has been implemented.
   To get in use, the ``static-expires`` needs to be set in the :ref:`uwsgi
   setup`.
@@ -71,51 +68,12 @@ examples show, this is not always enough, sometimes services have to be set up
 or reconfigured and sometimes services that are no longer needed should be
 uninstalled.
 
-.. hint::
-
-   First of all: SearXNG is installed by the script :ref:`searxng.sh`.  If you
-   have old filtron, morty or searx setup you should consider complete
-   uninstall/reinstall.
-
 Here you will find a list of changes that affect the infrastructure.  Please
 check to what extent it is necessary to update your installations:
 
 :pull:`1595`: ``[fix] uWSGI: increase buffer-size``
   Re-install uWSGI (:ref:`searxng.sh`) or fix your uWSGI ``searxng.ini``
   file manually.
-
-
-remove obsolete services
-------------------------
-
-If your searx instance was installed *"Step by step"* or by the *"Installation
-scripts"*, you need to undo the installation procedure completely.  If you have
-morty & filtron installed, it is recommended to uninstall these services also.
-In case of scripts, to uninstall use the scripts from the origin you installed
-searx from or try::
-
-  $ sudo -H ./utils/filtron.sh remove all
-  $ sudo -H ./utils/morty.sh   remove all
-  $ sudo -H ./utils/searx.sh   remove all
-
-.. hint::
-
-   If you are migrate from searx take into account that the ``.config.sh`` is no
-   longer used.
-
-If you upgrade from searx or from before :pull:`1332` has been merged and you
-have filtron and/or morty installed, don't forget to remove HTTP sites.
-
-Apache::
-
-  $ sudo -H ./utils/filtron.sh apache remove
-  $ sudo -H ./utils/morty.sh apache remove
-
-nginx::
-
-  $ sudo -H ./utils/filtron.sh nginx remove
-  $ sudo -H ./utils/morty.sh nginx remove
-
 
 
 Check after Installation
@@ -130,9 +88,6 @@ to see if there are some left overs.  In this example there exists a *old*
    SearXNG checks
    --------------
    ERROR: settings.yml in /etc/searx/ is deprecated, move file to folder /etc/searxng/
-   INFO:  [OK] (old) account 'searx' does not exists
-   INFO:  [OK] (old) account 'filtron' does not exists
-   INFO:  [OK] (old) account 'morty' does not exists
    ...
    INFO    searx.redisdb                 : connecting to Redis db=0 path='/usr/local/searxng-redis/run/redis.sock'
    INFO    searx.redisdb                 : connected to Redis

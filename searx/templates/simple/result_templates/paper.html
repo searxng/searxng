@@ -34,5 +34,5 @@
   {%- if result.html_url -%}{{ result_link(result.html_url, _('HTML')) }}{%- endif -%}
   {%- if result.doi %}{{ result_link('https://www.altmetric.com/details/doi/' + result.doi, 'Altmetric') }}{% endif -%}
 </p>
-{{- result_sub_footer(result, proxify) -}}
+{{- result_sub_footer(result) -}}
 {{- result_footer(result) }}
