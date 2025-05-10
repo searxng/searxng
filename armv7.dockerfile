@@ -4,6 +4,10 @@ RUN apt-get update \
  && apt-get install -y --no-install-recommends \
     build-essential \
     brotli \
+    # lxml
+    libxml2-dev \
+    libxslt1-dev \
+    zlib1g-dev \
     # uwsgi
     libpcre3-dev \
  && rm -rf /var/lib/apt/lists/*
@@ -43,6 +47,8 @@ RUN apt-get update \
  && apt-get install -y --no-install-recommends \
     # healthcheck
     wget \
+    # lxml (ARMv7)
+    libxslt1.1 \
     # uwsgi
     libpcre3 \
     libxml2 \
@@ -83,8 +89,6 @@ ENV SEARXNG_VERSION=$SEARXNG_GIT_VERSION \
     AUTOCOMPLETE="" \
     BASE_URL="" \
     BIND_ADDRESS=[::]:8080 \
-    MORTY_KEY="" \
-    MORTY_URL="" \
     SEARXNG_SETTINGS_PATH=$CONFIG_PATH/settings.yml \
     UWSGI_SETTINGS_PATH=$CONFIG_PATH/uwsgi.ini \
     UWSGI_WORKERS=%k \
