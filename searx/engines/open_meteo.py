@@ -3,15 +3,17 @@
 
 from urllib.parse import urlencode, quote_plus
 from datetime import datetime
-from flask_babel import gettext
 
 from searx.network import get
 from searx.exceptions import SearxEngineAPIException
+from searx.result_types import EngineResults, WeatherAnswer
+from searx import weather
+
 
 about = {
-    "website": 'https://open-meteo.com',
+    "website": "https://open-meteo.com",
     "wikidata_id": None,
-    "official_api_documentation": 'https://open-meteo.com/en/docs',
+    "official_api_documentation": "https://open-meteo.com/en/docs",
     "use_official_api": True,
     "require_api_key": False,
     "results": "JSON",
@@ -22,7 +24,17 @@ categories = ["weather"]
 geo_url = "https://geocoding-api.open-meteo.com"
 api_url = "https://api.open-meteo.com"
 
-data_of_interest = "temperature_2m,relative_humidity_2m,apparent_temperature,cloud_cover,pressure_msl,wind_speed_10m,wind_direction_10m"  # pylint: disable=line-too-long
+data_of_interest = (
+    "temperature_2m",
+    "apparent_temperature",
+    "relative_humidity_2m",
+    "apparent_temperature",
+    "cloud_cover",
+    "pressure_msl",
+    "wind_speed_10m",
+    "wind_direction_10m",
+    "weather_code",
+)
 
 
 def request(query, params):
@@ -38,81 +50,113 @@ def request(query, params):
 
     location = json_locations[0]
     args = {
-        'latitude': location['latitude'],
-        'longitude': location['longitude'],
-        'timeformat': 'unixtime',
-        'format': 'json',
-        'current': data_of_interest,
-        'forecast_days': 7,
-        'hourly': data_of_interest,
+        "latitude": location["latitude"],
+        "longitude": location["longitude"],
+        "timeformat": "unixtime",
+        "format": "json",
+        "current": ",".join(data_of_interest),
+        "forecast_days": 3,
+        "hourly": ",".join(data_of_interest),
     }
 
-    params['url'] = f"{api_url}/v1/forecast?{urlencode(args)}"
+    params["url"] = f"{api_url}/v1/forecast?{urlencode(args)}"
+    params["location"] = location["name"]
 
     return params
 
 
-def c_to_f(temperature):
-    return "%.2f" % ((temperature * 1.8) + 32)
+# https://open-meteo.com/en/docs#weather_variable_documentation
+# https://nrkno.github.io/yr-weather-symbols/
+#
+# F I X M E:
+#
+#   Based on the weather icons, we should check again whether this mapping
+#   table needs to be corrected ..
+#
+WMO_TO_CONDITION: dict[int, weather.WeatherConditionType] = {
+    # 0	Clear sky
+    0: "clear sky",
+    # 1, 2, 3     Mainly clear, partly cloudy, and overcast
+    1: "fair",
+    2: "partly cloudy",
+    3: "cloudy",
+    # 45, 48      Fog and depositing rime fog
+    45: "fog",
+    48: "fog",
+    # 51, 53, 55  Drizzle: Light, moderate, and dense intensity
+    51: "light rain",
+    53: "light rain",
+    55: "light rain",
+    # 56, 57      Freezing Drizzle: Light and dense intensity
+    56: "light sleet showers",
+    57: "light sleet",
+    # 61, 63, 65  Rain: Slight, moderate and heavy intensity
+    61: "light rain",
+    63: "rain",
+    65: "heavy rain",
+    # 66, 67    Freezing Rain: Light and heavy intensity
+    66: "light sleet showers",
+    67: "light sleet",
+    # 71, 73, 75  Snow fall: Slight, moderate, and heavy intensity
+    71: "light sleet",
+    73: "sleet",
+    75: "heavy sleet",
+    # 77    Snow grains
+    77: "snow",
+    # 80, 81, 82  Rain showers: Slight, moderate, and violent
+    80: "light rain showers",
+    81: "rain showers",
+    82: "heavy rain showers",
+    # 85, 86      Snow showers slight and heavy
+    85: "snow showers",
+    86: "heavy snow showers",
+    # 95          Thunderstorm: Slight or moderate
+    95: "rain and thunder",
+    # 96, 99      Thunderstorm with slight and heavy hail
+    96: "light snow and thunder",
+    99: "heavy snow and thunder",
+}
 
 
-def get_direction(degrees):
-    if degrees < 45 or degrees >= 315:
-        return "N"
+def _weather_data(location, data):
 
-    if 45 <= degrees < 135:
-        return "O"
-
-    if 135 <= degrees < 225:
-        return "S"
-
-    return "W"
-
-
-def generate_condition_table(condition):
-    res = ""
-
-    res += (
-        f"<tr><td><b>{gettext('Temperature')}</b></td>"
-        f"<td><b>{condition['temperature_2m']}°C / {c_to_f(condition['temperature_2m'])}°F</b></td></tr>"
+    return WeatherAnswer.Item(
+        location=location,
+        temperature=weather.Temperature(unit="°C", value=data["temperature_2m"]),
+        condition=WMO_TO_CONDITION[data["weather_code"]],
+        feels_like=weather.Temperature(unit="°C", value=data["apparent_temperature"]),
+        wind_from=weather.Compass(data["wind_direction_10m"]),
+        wind_speed=weather.WindSpeed(data["wind_speed_10m"], unit="km/h"),
+        pressure=weather.Pressure(data["pressure_msl"], unit="hPa"),
+        humidity=weather.RelativeHumidity(data["relative_humidity_2m"]),
+        cloud_cover=data["cloud_cover"],
     )
-
-    res += (
-        f"<tr><td>{gettext('Feels like')}</td><td>{condition['apparent_temperature']}°C / "
-        f"{c_to_f(condition['apparent_temperature'])}°F</td></tr>"
-    )
-
-    res += (
-        f"<tr><td>{gettext('Wind')}</td><td>{get_direction(condition['wind_direction_10m'])}, "
-        f"{condition['wind_direction_10m']}° — "
-        f"{condition['wind_speed_10m']} km/h</td></tr>"
-    )
-
-    res += f"<tr><td>{gettext('Cloud cover')}</td><td>{condition['cloud_cover']}%</td>"
-
-    res += f"<tr><td>{gettext('Humidity')}</td><td>{condition['relative_humidity_2m']}%</td></tr>"
-
-    res += f"<tr><td>{gettext('Pressure')}</td><td>{condition['pressure_msl']}hPa</td></tr>"
-
-    return res
 
 
 def response(resp):
-    data = resp.json()
+    res = EngineResults()
+    json_data = resp.json()
 
-    table_content = generate_condition_table(data['current'])
+    location = resp.search_params["location"]
+    weather_answer = WeatherAnswer(
+        current=_weather_data(location, json_data["current"]),
+        service="Open-meteo",
+        url="https://open-meteo.com/en/docs",
+    )
 
-    infobox = f"<table><tbody>{table_content}</tbody></table>"
+    for index, time in enumerate(json_data["hourly"]["time"]):
 
-    for index, time in enumerate(data['hourly']['time']):
+        if time < json_data["current"]["time"]:
+            # Cut off the hours that are already in the past
+            continue
+
         hourly_data = {}
+        for key in data_of_interest:
+            hourly_data[key] = json_data["hourly"][key][index]
 
-        for key in data_of_interest.split(","):
-            hourly_data[key] = data['hourly'][key][index]
+        forecast_data = _weather_data(location, hourly_data)
+        forecast_data.time = datetime.fromtimestamp(time).strftime("%Y-%m-%d %H:%M")
+        weather_answer.forecasts.append(forecast_data)
 
-        table_content = generate_condition_table(hourly_data)
-
-        infobox += f"<h3>{datetime.fromtimestamp(time).strftime('%Y-%m-%d %H:%M')}</h3>"
-        infobox += f"<table><tbody>{table_content}</tbody></table>"
-
-    return [{'infobox': 'Open Meteo', 'content': infobox}]
+    res.add(weather_answer)
+    return res

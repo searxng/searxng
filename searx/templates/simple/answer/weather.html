@@ -1,0 +1,55 @@
+{% macro show_weather_data(answer, data) %}
+  <table>
+    <tbody>
+      <tr>
+        <td rowspan="5">
+          {%- if data.url %}<img src="{{ data.url }}" class="thumbnail" title="{{ data.summary }}">{% endif -%}
+        </td>
+      </tr>
+      <tr class="odd">
+        <td>{{ _("Condition") }}:</td>
+        <td>{{ _(data.condition.capitalize()) }}</td>
+        <td>{{ _("Feels Like") }}:</td>
+        <td>{{ data.feels_like }}</td>
+      </tr>
+      <tr class="even">
+        <td>{{ _("Temperature") }}:</td>
+        <td>{{ data.temperature }}</td>
+        <td>{{ _("Wind") }}:</td>
+        <td>{{ data.wind_from }}: {{ data.wind_speed }}</td>
+      </tr>
+      <tr class="odd">
+        <td>{{_("Humidity")}}:</td>
+        <td>{{ data.humidity }}</td>
+        <td>{{ _("Pressure") }}:</td>
+        <td>{{ data.pressure }}</td>
+      </tr>
+    </tbody>
+  </table>
+{% endmacro %}
+
+<details class="weather">
+  <summary>
+    {%- if answer.url -%}
+      <a href="{{ answer.url }}" class="answer-url"
+        {%- if results_on_new_tab %}target="_blank" rel="noopener noreferrer"{%- else -%}rel="noreferrer"{%- endif -%}>
+        {{ answer.service }}
+      </a>
+    {%- else -%}
+      {{ answer.service }}
+    {% endif -%}
+    {{ answer.current.summary }}
+
+    {{ show_weather_data(answer, answer.current) }}
+  </summary>
+  <div class="weather-forecast">
+    {%- if answer.forecasts -%}
+      <div class="answer-weather-forecasts">
+        {%- for forecast in answer.forecasts -%}
+          <h3>{{ forecast.time }}</h3>
+          {{ show_weather_data(answer, forecast) }}
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+  </div>
+</details>
