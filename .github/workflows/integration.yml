@@ -1,58 +1,106 @@
+---
 name: Integration
 
-on:  # yamllint disable-line rule:truthy
+# yamllint disable-line rule:truthy
+on:
   push:
-    branches: ["master"]
+    branches:
+      - master
   pull_request:
-    branches: ["master"]
+    branches:
+      - master
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref_name }}
+  cancel-in-progress: false
 
 permissions:
   contents: read
 
+env:
+  PYTHON_VERSION: "3.13"
+
 jobs:
-  python:
+  test:
     name: Python ${{ matrix.python-version }}
     runs-on: ubuntu-24.04
     strategy:
       matrix:
-        os: [ubuntu-24.04]
-        python-version: ["3.9", "3.10", "3.11", "3.12", "3.13"]
+        python-version:
+          - "3.9"
+          - "3.10"
+          - "3.11"
+          - "3.12"
+          - "3.13"
+
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      - name: Install Ubuntu packages
-        run: |
-          sudo ./utils/searxng.sh install packages
-      - name: Set up Python
+      - name: Setup Python
         uses: actions/setup-python@v5
         with:
-          python-version: ${{ matrix.python-version }}
-          architecture: 'x64'
+          python-version: "${{ matrix.python-version }}"
+
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: "false"
+
+      - name: Setup cache Python
+        uses: actions/cache@v4
+        with:
+          key: "python-${{ matrix.python-version }}-${{ runner.arch }}-${{ hashFiles('./requirements*.txt') }}"
+          restore-keys: "python-${{ matrix.python-version }}-${{ runner.arch }}-"
+          path: "./local/"
+
+      - name: Setup venv
+        run: make V=1 install
+
       - name: Run tests
         run: make V=1 ci.test
 
-  themes:
-    name: Themes
-    runs-on: ubuntu-24.04
+  theme:
+    name: Theme
+    runs-on: ubuntu-24.04-arm
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      - name: Install Ubuntu packages
-        run: sudo ./utils/searxng.sh install buildhost
-      - name: Set up Python
+      - name: Setup Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.12'
-          architecture: 'x64'
-      - name: Build themes
+          python-version: "${{ env.PYTHON_VERSION }}"
+
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: "false"
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: "./.nvmrc"
+
+      - name: Setup cache Node.js
+        uses: actions/cache@v4
+        with:
+          key: "nodejs-${{ runner.arch }}-${{ hashFiles('./.nvmrc', './package.json') }}"
+          path: "./client/simple/node_modules/"
+
+      - name: Setup cache Python
+        uses: actions/cache@v4
+        with:
+          key: "python-${{ env.PYTHON_VERSION }}-${{ runner.arch }}-${{ hashFiles('./requirements*.txt') }}"
+          restore-keys: "python-${{ env.PYTHON_VERSION }}-${{ runner.arch }}-"
+          path: "./local/"
+
+      - name: Setup venv
+        run: make V=1 install
+
+      - name: Build
         run: make themes.all
 
   dockers:
     name: Docker
     if: github.ref == 'refs/heads/master'
     needs:
-      - python
-      - themes
+      - test
+      - theme
     env:
       DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
     runs-on: ubuntu-24.04
