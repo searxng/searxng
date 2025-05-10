@@ -41,6 +41,12 @@ def subprocess_run(args, **kwargs):
 
 
 def get_git_url_and_branch():
+    # handle GHA directly
+    if "GITHUB_REPOSITORY" in os.environ and "GITHUB_REF_NAME" in os.environ:
+        git_url = f"https://github.com/{os.environ['GITHUB_REPOSITORY']}"
+        git_branch = os.environ["GITHUB_REF_NAME"]
+        return git_url, git_branch
+
     try:
         ref = subprocess_run("git rev-parse --abbrev-ref @{upstream}")
     except subprocess.CalledProcessError:
