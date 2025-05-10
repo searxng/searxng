@@ -107,30 +107,6 @@ update_conf() {
     fi
 }
 
-# searx compatibility: copy /etc/searx/* to /etc/searxng/*
-SEARX_CONF=0
-if [ -f "/etc/searx/settings.yml" ]; then
-    if  [ ! -f "${SEARXNG_SETTINGS_PATH}" ]; then
-        printf '⚠️  /etc/searx/settings.yml is copied to /etc/searxng\n'
-        cp "/etc/searx/settings.yml" "${SEARXNG_SETTINGS_PATH}"
-    fi
-    SEARX_CONF=1
-fi
-if [ -f "/etc/searx/uwsgi.ini" ]; then
-    printf '⚠️  /etc/searx/uwsgi.ini is ignored. Use the volume /etc/searxng\n'
-    SEARX_CONF=1
-fi
-if [ "$SEARX_CONF" -eq "1" ]; then
-    printf '⚠️  The deprecated volume /etc/searx is mounted. Please update your configuration to use /etc/searxng ⚠️\n'
-    cat << EOF > /etc/searx/deprecated_volume_read_me.txt
-This Docker image uses the volume /etc/searxng
-Update your configuration:
-* remove uwsgi.ini (or very carefully update your existing uwsgi.ini using https://github.com/searxng/searxng/blob/master/dockerfiles/uwsgi.ini )
-* mount /etc/searxng instead of /etc/searx
-EOF
-fi
-# end of searx compatibility
-
 # make sure there are uwsgi settings
 update_conf "${FORCE_CONF_UPDATE}" "${UWSGI_SETTINGS_PATH}" "/usr/local/searxng/dockerfiles/uwsgi.ini" "patch_uwsgi_settings"
 
