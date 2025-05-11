@@ -1,0 +1,183 @@
+---
+name: Container
+
+# yamllint disable-line rule:truthy
+on:
+  workflow_dispatch:
+  workflow_run:
+    workflows:
+      - Integration
+    types:
+      - completed
+    branches:
+      - master
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref_name }}
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+  # Organization GHCR
+  packages: read
+
+env:
+  PYTHON_VERSION: "3.13"
+
+jobs:
+  build:
+    if: github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success'
+    name: Build (${{ matrix.arch }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - arch: amd64
+            os: ubuntu-24.04
+            emulation: false
+          - arch: arm64
+            os: ubuntu-24.04-arm
+            emulation: false
+          - arch: armv7
+            os: ubuntu-24.04-arm
+            emulation: true
+
+    permissions:
+      # Organization GHCR
+      packages: write
+
+    outputs:
+      version_string: ${{ steps.build.outputs.version_string }}
+      version_tag: ${{ steps.build.outputs.version_tag }}
+      docker_tag: ${{ steps.build.outputs.docker_tag }}
+      git_url: ${{ steps.build.outputs.git_url }}
+      git_branch: ${{ steps.build.outputs.git_branch }}
+
+    steps:
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "${{ env.PYTHON_VERSION }}"
+
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: "false"
+
+      - name: Setup cache Python
+        uses: actions/cache@v4
+        with:
+          key: "python-${{ env.PYTHON_VERSION }}-${{ runner.arch }}-${{ hashFiles('./requirements*.txt') }}"
+          restore-keys: "python-${{ env.PYTHON_VERSION }}-${{ runner.arch }}-"
+          path: "./local/"
+
+      - name: Setup cache container mounts
+        uses: actions/cache@v4
+        with:
+          # yamllint disable-line rule:line-length
+          key: "container-mounts-${{ matrix.arch }}-${{ hashFiles('./container/Dockerfile ./container/legacy/Dockerfile') }}"
+          restore-keys: "container-mounts-${{ matrix.arch }}-"
+          path: |
+            /var/tmp/buildah-cache/
+            /var/tmp/buildah-cache-*/
+
+      - if: ${{ matrix.emulation }}
+        name: Setup QEMU
+        uses: docker/setup-qemu-action@v3
+
+      - name: Login to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: "ghcr.io"
+          username: "${{ github.repository_owner }}"
+          password: "${{ secrets.GITHUB_TOKEN }}"
+
+      - name: Build
+        id: build
+        env:
+          OVERRIDE_ARCH: "${{ matrix.arch }}"
+        run: make podman.build
+
+  test:
+    name: Test (${{ matrix.arch }})
+    runs-on: ${{ matrix.os }}
+    needs: build
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - arch: amd64
+            os: ubuntu-24.04
+            emulation: false
+          - arch: arm64
+            os: ubuntu-24.04-arm
+            emulation: false
+          - arch: armv7
+            os: ubuntu-24.04-arm
+            emulation: true
+
+    permissions:
+      # Organization GHCR
+      packages: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: "false"
+
+      - if: ${{ matrix.emulation }}
+        name: Setup QEMU
+        uses: docker/setup-qemu-action@v3
+
+      - name: Login to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: "ghcr.io"
+          username: "${{ github.repository_owner }}"
+          password: "${{ secrets.GITHUB_TOKEN }}"
+
+      - name: Test
+        env:
+          OVERRIDE_ARCH: "${{ matrix.arch }}"
+          GIT_URL: "${{ needs.build.outputs.git_url }}"
+        run: make container.test
+
+  release:
+    if: github.repository_owner == 'searxng' && github.ref_name == 'master'
+    name: Release
+    runs-on: ubuntu-24.04-arm
+    needs:
+      - build
+      - test
+
+    steps:
+      - if: env.DOCKERHUB_USERNAME != ''
+        name: Checkout
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: "false"
+
+      - if: env.DOCKERHUB_USERNAME != ''
+        name: Login to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: "ghcr.io"
+          username: "${{ github.repository_owner }}"
+          password: "${{ secrets.GITHUB_TOKEN }}"
+
+      - if: env.DOCKERHUB_USERNAME != ''
+        name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          registry: "docker.io"
+          username: "${{ env.DOCKERHUB_USERNAME }}"
+          password: "${{ secrets.DOCKERHUB_TOKEN }}"
+
+      - if: env.DOCKERHUB_USERNAME != ''
+        name: Release
+        env:
+          GIT_URL: "${{ needs.build.outputs.git_url }}"
+          DOCKER_TAG: "${{ needs.build.outputs.docker_tag }}"
+        run: make container.push

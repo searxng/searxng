@@ -54,7 +54,7 @@ ci.test: test.yamllint test.black test.types.ci  test.pylint test.unit test.robo
 test:    test.yamllint test.black test.types.dev test.pylint test.unit test.robot test.rst test.shell
 test.shell:
 	$(Q)shellcheck -x -s dash \
-		dockerfiles/docker-entrypoint.sh
+		container/docker-entrypoint.sh
 	$(Q)shellcheck -x -s bash \
 		utils/brand.sh \
 		$(MTOOLS) \
@@ -77,7 +77,9 @@ test.shell:
 MANAGE += weblate.translations.commit weblate.push.translations
 MANAGE += data.all data.traits data.useragents data.locales data.currencies
 MANAGE += docs.html docs.live docs.gh-pages docs.prebuild docs.clean
-MANAGE += docker.build docker.push docker.buildx
+MANAGE += podman.build
+MANAGE += docker.build docker.buildx
+MANAGE += container.build container.test container.push
 MANAGE += gecko.driver
 MANAGE += node.env node.env.dev node.clean
 MANAGE += py.build py.clean
@@ -95,8 +97,8 @@ $(MANAGE):
 
 # short hands of selected targets
 
-PHONY += docs docker themes
+PHONY += docs container themes
 
 docs: docs.html
-docker:  docker.build
+container:  container.build
 themes: themes.all
