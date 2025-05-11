@@ -12,14 +12,42 @@ CONTAINER_IMAGE_ORGANIZATION=${GITHUB_REPOSITORY_OWNER:-"searxng"}
 CONTAINER_IMAGE_NAME="searxng"
 
 container.build() {
-    pyenv.install
-
     local parch=${OVERRIDE_ARCH:-$(uname -m)}
     local container_engine
     local dockerfile
     local arch
     local variant
     local platform
+
+    # Check if git is installed
+    if ! command -v git &>/dev/null; then
+        die 1 "Git is not installed"
+    fi
+
+    # Check if podman or docker is installed
+    if [ "$1" = "docker" ]; then
+        if command -v docker &>/dev/null; then
+            container_engine="docker"
+        else
+            die 1 "Docker is not installed"
+        fi
+    elif [ "$1" = "podman" ]; then
+        if command -v podman &>/dev/null; then
+            container_engine="podman"
+        else
+            die 1 "Podman is not installed"
+        fi
+    else
+        # If no explicit engine is passed, prioritize podman over docker
+        if command -v podman &>/dev/null; then
+            container_engine="podman"
+        elif command -v docker &>/dev/null; then
+            container_engine="docker"
+        else
+            die 1 "Podman/Docker is not installed"
+        fi
+    fi
+    info_msg "Selected engine: $container_engine"
 
     # Setup arch specific
     case $parch in
@@ -48,35 +76,7 @@ container.build() {
     esac
     info_msg "Selected platform: $platform"
 
-    # Check if podman or docker is installed
-    if [ "$1" = "docker" ]; then
-        if command -v docker &>/dev/null; then
-            container_engine="docker"
-        else
-            die 1 "Docker is not installed"
-        fi
-    elif [ "$1" = "podman" ]; then
-        if command -v podman &>/dev/null; then
-            container_engine="podman"
-        else
-            die 1 "Podman is not installed"
-        fi
-    else
-        # If no explicit engine is passed, prioritize podman over docker
-        if command -v podman &>/dev/null; then
-            container_engine="podman"
-        elif command -v docker &>/dev/null; then
-            container_engine="docker"
-        else
-            die 1 "Podman/Docker is not installed"
-        fi
-    fi
-    info_msg "Selected engine: $container_engine"
-
-    # Check if git is installed
-    if ! command -v git &>/dev/null; then
-        die 1 "Git is not installed"
-    fi
+    pyenv.install
 
     (
         set -e
@@ -159,14 +159,19 @@ container.build() {
 }
 
 container.test() {
-    if [ "$GITHUB_ACTIONS" != "true" ]; then
-        die 1 "This command is intended to be run in GitHub Actions"
-    fi
-
     local parch=${OVERRIDE_ARCH:-$(uname -m)}
     local arch
     local variant
     local platform
+
+    if [ "$GITHUB_ACTIONS" != "true" ]; then
+        die 1 "This command is intended to be run in GitHub Actions"
+    fi
+
+    # Check if podman is installed
+    if ! command -v podman &>/dev/null; then
+        die 1 "podman is not installed"
+    fi
 
     # Setup arch specific
     case $parch in
@@ -191,11 +196,6 @@ container.test() {
         ;;
     esac
     build_msg CONTAINER "Selected platform: $platform"
-
-    # Check if podman is installed
-    if ! command -v podman &>/dev/null; then
-        die 1 "podman is not installed"
-    fi
 
     (
         set -e
@@ -223,16 +223,21 @@ container.test() {
 }
 
 container.push() {
-    if [ "$GITHUB_ACTIONS" != "true" ]; then
-        die 1 "This command is intended to be run in GitHub Actions"
-    fi
-
-    # Architectures to release
+    # Architectures on manifest
     local release_archs=("amd64" "arm64" "armv7")
 
     local archs=()
     local variants=()
     local platforms=()
+
+    if [ "$GITHUB_ACTIONS" != "true" ]; then
+        die 1 "This command is intended to be run in GitHub Actions"
+    fi
+
+    # Check if podman is installed
+    if ! command -v podman &>/dev/null; then
+        die 1 "podman is not installed"
+    fi
 
     for arch in "${release_archs[@]}"; do
         case $arch in
@@ -258,11 +263,6 @@ container.push() {
         esac
     done
 
-    # Check if podman is installed
-    if ! command -v podman &>/dev/null; then
-        die 1 "podman is not installed"
-    fi
-
     (
         set -e
 
@@ -271,12 +271,12 @@ container.push() {
             podman pull "ghcr.io/$CONTAINER_IMAGE_ORGANIZATION/cache:$CONTAINER_IMAGE_NAME-${archs[$i]}${variants[$i]}"
         done
 
-        # Tags to release
-        tags=("latest")
-        tags+=("$DOCKER_TAG")
+        # Manifest tags
+        release_tags=("latest")
+        release_tags+=("$DOCKER_TAG")
 
         # Create manifests
-        for tag in "${tags[@]}"; do
+        for tag in "${release_tags[@]}"; do
             if ! podman manifest exists "localhost/$CONTAINER_IMAGE_ORGANIZATION/$CONTAINER_IMAGE_NAME:$tag"; then
                 podman manifest create "localhost/$CONTAINER_IMAGE_ORGANIZATION/$CONTAINER_IMAGE_NAME:$tag"
             fi
@@ -292,7 +292,7 @@ container.push() {
         podman image list
 
         # Push manifests
-        for tag in "${tags[@]}"; do
+        for tag in "${release_tags[@]}"; do
             build_msg CONTAINER "Pushing manifest with tag: $tag"
 
             podman manifest push \
