@@ -71,6 +71,7 @@ patch_searxng_settings() {
         "${CONF}"
 }
 
+# FIXME: Always use "searxng:searxng" ownership
 update_conf() {
     FORCE_CONF_UPDATE=$1
     CONF="$2"
