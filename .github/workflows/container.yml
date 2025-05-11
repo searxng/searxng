@@ -117,10 +117,6 @@ jobs:
             os: ubuntu-24.04-arm
             emulation: true
 
-    permissions:
-      # Organization GHCR
-      packages: write
-
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -151,6 +147,10 @@ jobs:
     needs:
       - build
       - test
+
+    permissions:
+      # Organization GHCR
+      packages: write
 
     steps:
       - name: Checkout
