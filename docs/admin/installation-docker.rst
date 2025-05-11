@@ -145,13 +145,6 @@ shell inside container
    - `How to make bash scripts work in dash <http://mywiki.wooledge.org/Bashism>`_
    - `Checking for Bashisms  <https://dev.to/bowmanjd/writing-bash-scripts-that-are-not-only-bash-checking-for-bashisms-and-testing-with-dash-1bli>`_
 
-Like in many other distributions, Alpine's `/bin/sh
-<https://wiki.ubuntu.com/DashAsBinSh>`__ is :man:`dash`.  Dash is meant to be
-`POSIX-compliant <https://pubs.opengroup.org/onlinepubs/9699919799>`__.
-Compared to debian, in the Alpine image :man:`bash` is not installed.  The
-:origin:`dockerfiles/docker-entrypoint.sh` script is checked *against dash*
-(``make tests.shell``).
-
 To open a shell inside the container:
 
 .. code:: sh
@@ -188,10 +181,10 @@ Command line
    <https://docs.docker.com/engine/reference/run/#foreground>`__.
 
 In the :origin:`Dockerfile` the ENTRYPOINT_ is defined as
-:origin:`dockerfiles/docker-entrypoint.sh`
+:origin:`container/docker-entrypoint.sh`
 
 .. code:: sh
 
     docker run --rm -it searxng/searxng -h
 
-.. program-output:: ../dockerfiles/docker-entrypoint.sh -h
+.. program-output:: ../container/docker-entrypoint.sh -h

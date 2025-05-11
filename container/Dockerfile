@@ -24,7 +24,7 @@ ARG TIMESTAMP_UWSGI=0
 
 RUN python -m compileall -q searx \
  && touch -c --date=@$TIMESTAMP_SETTINGS ./searx/settings.yml \
- && touch -c --date=@$TIMESTAMP_UWSGI ./dockerfiles/uwsgi.ini \
+ && touch -c --date=@$TIMESTAMP_UWSGI ./container/uwsgi.ini \
  && find /usr/local/searxng/searx/static \
     \( -name '*.html' -o -name '*.css' -o -name '*.js' -o -name '*.svg' -o -name '*.ttf' -o -name '*.eot' \) \
     -type f -exec gzip -9 -k {} + -exec brotli --best {} +
@@ -62,7 +62,7 @@ WORKDIR /usr/local/searxng/
 
 COPY --chown=searxng:searxng --from=builder /usr/local/searxng/venv/ ./venv/
 COPY --chown=searxng:searxng --from=builder /usr/local/searxng/searx/ ./searx/
-COPY --chown=searxng:searxng ./dockerfiles/ ./dockerfiles/
+COPY --chown=searxng:searxng ./container/ ./container/
 
 LABEL org.opencontainers.image.authors="searxng <$GIT_URL>" \
       org.opencontainers.image.created=$LABEL_DATE \
@@ -97,4 +97,4 @@ EXPOSE 8080
 
 HEALTHCHECK CMD wget --quiet --tries=1 --spider http://localhost:8080/healthz || exit 1
 
-ENTRYPOINT ["/usr/local/searxng/dockerfiles/docker-entrypoint.sh"]
+ENTRYPOINT ["/usr/local/searxng/container/docker-entrypoint.sh"]

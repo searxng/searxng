@@ -75,7 +75,8 @@ jobs:
       - name: Setup cache container mounts
         uses: actions/cache@v4
         with:
-          key: "container-mounts-${{ matrix.arch }}-${{ hashFiles('./Dockerfile*') }}"
+          # yamllint disable-line rule:line-length
+          key: "container-mounts-${{ matrix.arch }}-${{ hashFiles('./container/Dockerfile ./container/legacy/Dockerfile') }}"
           restore-keys: "container-mounts-${{ matrix.arch }}-"
           path: |
             /var/tmp/buildah-cache/

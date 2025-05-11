@@ -36,7 +36,7 @@ container.build() {
         platform="linux/$arch"
         ;;
     "ARMV7" | "armhf" | "armv7l" | "armv7")
-        dockerfile="armv7.dockerfile"
+        dockerfile="legacy/Dockerfile"
         arch="arm"
         variant="v7"
         platform="linux/$arch/$variant"
@@ -125,9 +125,9 @@ container.build() {
         # shellcheck disable=SC2086
         "$container_engine" $params_build_builder \
             --build-arg="TIMESTAMP_SETTINGS=$(git log -1 --format="%cd" --date=unix -- ./searx/settings.yml)" \
-            --build-arg="TIMESTAMP_UWSGI=$(git log -1 --format="%cd" --date=unix -- ./dockerfiles/uwsgi.ini)" \
+            --build-arg="TIMESTAMP_UWSGI=$(git log -1 --format="%cd" --date=unix -- ./container/uwsgi.ini)" \
             --tag="localhost/$CONTAINER_IMAGE_ORGANIZATION/$CONTAINER_IMAGE_NAME:builder" \
-            --file="./$dockerfile" \
+            --file="./container/$dockerfile" \
             .
         build_msg CONTAINER "Image \"builder\" built"
 
@@ -138,7 +138,7 @@ container.build() {
             --build-arg="LABEL_DATE=$(date -u +%Y-%m-%dT%H:%M:%SZ)" \
             --build-arg="LABEL_VCS_REF=$(git rev-parse HEAD)" \
             --build-arg="LABEL_VCS_URL=$GIT_URL" \
-            --file="./$dockerfile" \
+            --file="./container/$dockerfile" \
             .
         build_msg CONTAINER "Image built"
 
