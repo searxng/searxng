@@ -117,10 +117,6 @@ jobs:
             os: ubuntu-24.04-arm
             emulation: true
 
-    permissions:
-      # Organization GHCR
-      packages: write
-
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -152,15 +148,17 @@ jobs:
       - build
       - test
 
+    permissions:
+      # Organization GHCR
+      packages: write
+
     steps:
-      - if: env.DOCKERHUB_USERNAME != null
-        name: Checkout
+      - name: Checkout
         uses: actions/checkout@v4
         with:
           persist-credentials: "false"
 
-      - if: env.DOCKERHUB_USERNAME != null
-        name: Login to GHCR
+      - name: Login to GHCR
         uses: docker/login-action@v3
         with:
           registry: "ghcr.io"
@@ -175,8 +173,7 @@ jobs:
           username: "${{ env.DOCKERHUB_USERNAME }}"
           password: "${{ secrets.DOCKERHUB_TOKEN }}"
 
-      - if: env.DOCKERHUB_USERNAME != null
-        name: Release
+      - name: Release
         env:
           GIT_URL: "${{ needs.build.outputs.git_url }}"
           DOCKER_TAG: "${{ needs.build.outputs.docker_tag }}"
