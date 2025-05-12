@@ -19,24 +19,14 @@ container.build() {
     local variant
     local platform
 
-    # Check if git is installed
-    if ! command -v git &>/dev/null; then
-        die 1 "Git is not installed"
-    fi
+    required_commands git
 
     # Check if podman or docker is installed
-    if [ "$1" = "docker" ]; then
-        if command -v docker &>/dev/null; then
-            container_engine="docker"
-        else
-            die 1 "Docker is not installed"
+    if [ "$1" = "podman" ] || [ "$1" = "docker" ]; then
+        if ! command -v "$1" &>/dev/null; then
+            die 42 "$1 is not installed"
         fi
-    elif [ "$1" = "podman" ]; then
-        if command -v podman &>/dev/null; then
-            container_engine="podman"
-        else
-            die 1 "Podman is not installed"
-        fi
+        container_engine="$1"
     else
         # If no explicit engine is passed, prioritize podman over docker
         if command -v podman &>/dev/null; then
@@ -44,7 +34,7 @@ container.build() {
         elif command -v docker &>/dev/null; then
             container_engine="docker"
         else
-            die 1 "Podman/Docker is not installed"
+            die 42 "no compatible container engine is installed (podman or docker)"
         fi
     fi
     info_msg "Selected engine: $container_engine"
@@ -168,10 +158,7 @@ container.test() {
         die 1 "This command is intended to be run in GitHub Actions"
     fi
 
-    # Check if podman is installed
-    if ! command -v podman &>/dev/null; then
-        die 1 "podman is not installed"
-    fi
+    required_commands podman
 
     # Setup arch specific
     case $parch in
@@ -234,10 +221,7 @@ container.push() {
         die 1 "This command is intended to be run in GitHub Actions"
     fi
 
-    # Check if podman is installed
-    if ! command -v podman &>/dev/null; then
-        die 1 "podman is not installed"
-    fi
+    required_commands podman
 
     for arch in "${release_archs[@]}"; do
         case $arch in
