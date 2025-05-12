@@ -6,6 +6,7 @@ Developer documentation
    :maxdepth: 2
 
    quickstart
+   commits
    rtm_asdf
    contribution_guide
    extended_types
