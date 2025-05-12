@@ -1,0 +1,34 @@
+---
+name: Cleanup
+
+# yamllint disable-line rule:truthy
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "4 4 * * 0"
+
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  container-cache:
+    name: Container cache
+    runs-on: ubuntu-24.04
+    permissions:
+      # Organization GHCR
+      packages: write
+
+    steps:
+      - name: Prune
+        uses: snok/container-retention-policy@v3.0.0
+        with:
+          account: "${{ github.repository_owner }}"
+          token: "${{ secrets.GITHUB_TOKEN }}"
+          image-names: "cache"
+          image-tags: "!searxng-*"
+          cut-off: "1w"
+          keep-n-most-recent: "100"

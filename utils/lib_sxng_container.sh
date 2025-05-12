@@ -112,7 +112,6 @@ container.build() {
 
         if [ "$GITHUB_ACTIONS" = "true" ]; then
             params_build_builder+=" --cache-from=ghcr.io/$CONTAINER_IMAGE_ORGANIZATION/cache --cache-to=ghcr.io/$CONTAINER_IMAGE_ORGANIZATION/cache"
-            params_build+=" --cache-from=ghcr.io/$CONTAINER_IMAGE_ORGANIZATION/cache --cache-to=ghcr.io/$CONTAINER_IMAGE_ORGANIZATION/cache"
 
             # Tags
             params_build+=" --tag=ghcr.io/$CONTAINER_IMAGE_ORGANIZATION/cache:$CONTAINER_IMAGE_NAME-$arch$variant"
