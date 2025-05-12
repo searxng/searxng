@@ -153,30 +153,26 @@ jobs:
       - test
 
     steps:
-      - if: env.DOCKERHUB_USERNAME != null
-        name: Checkout
+      - name: Checkout
         uses: actions/checkout@v4
         with:
           persist-credentials: "false"
 
-      - if: env.DOCKERHUB_USERNAME != null
-        name: Login to GHCR
+      - name: Login to GHCR
         uses: docker/login-action@v3
         with:
           registry: "ghcr.io"
           username: "${{ github.repository_owner }}"
           password: "${{ secrets.GITHUB_TOKEN }}"
 
-      - if: env.DOCKERHUB_USERNAME != null
-        name: Login to Docker Hub
+      - name: Login to Docker Hub
         uses: docker/login-action@v3
         with:
           registry: "docker.io"
-          username: "${{ env.DOCKERHUB_USERNAME }}"
+          username: "${{ secrets.DOCKERHUB_USERNAME }}"
           password: "${{ secrets.DOCKERHUB_TOKEN }}"
 
-      - if: env.DOCKERHUB_USERNAME != null
-        name: Release
+      - name: Release
         env:
           GIT_URL: "${{ needs.build.outputs.git_url }}"
           DOCKER_TAG: "${{ needs.build.outputs.docker_tag }}"
