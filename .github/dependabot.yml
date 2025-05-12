@@ -10,6 +10,12 @@ updates:
     target-branch: "master"
     commit-message:
       prefix: "[upd] pypi:"
+    groups:
+      minor:
+        applies-to: version-updates
+        update-types:
+          - "minor"
+          - "patch"
 
   - package-ecosystem: "npm"
     directory: "/client/simple"
@@ -20,6 +26,12 @@ updates:
     target-branch: "master"
     commit-message:
       prefix: "[upd] web-client (simple):"
+    groups:
+      minor:
+        applies-to: version-updates
+        update-types:
+          - "minor"
+          - "patch"
 
   - package-ecosystem: "docker"
     directory: "/"
