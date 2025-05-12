@@ -136,13 +136,13 @@ container.build() {
             "$container_engine" push "ghcr.io/$CONTAINER_IMAGE_ORGANIZATION/cache:$CONTAINER_IMAGE_NAME-$arch$variant"
 
             # Output to GHA
-            {
-                echo "version_string=$VERSION_STRING"
-                echo "version_tag=$VERSION_TAG"
-                echo "docker_tag=$DOCKER_TAG"
-                echo "git_url=$GIT_URL"
-                echo "git_branch=$GIT_BRANCH"
-            } >>"$GITHUB_OUTPUT"
+            cat <<EOF >>"$GITHUB_OUTPUT"
+version_string=$VERSION_STRING
+version_tag=$VERSION_TAG
+docker_tag=$DOCKER_TAG
+git_url=$GIT_URL
+git_branch=$GIT_BRANCH
+EOF
         fi
     )
     dump_return $?
