@@ -169,18 +169,6 @@ ui:
 #     - image_proxy
 #     - query_in_title
 
-# searx supports result proxification using an external service:
-# https://github.com/asciimoo/morty uncomment below section if you have running
-# morty proxy the key is base64 encoded (keep the !!binary notation)
-# Note: since commit af77ec3, morty accepts a base64 encoded key.
-#
-# result_proxy:
-#   url: http://127.0.0.1:3000/
-#   # the key is a base64 encoded string, the YAML !!binary prefix is optional
-#   key: !!binary "your_morty_proxy_key"
-#   # [true|false] enable the "proxy" button next to each result
-#   proxify_results: true
-
 # communication with search engines
 #
 outgoing:
