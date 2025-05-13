@@ -51,6 +51,9 @@ def request(query, params):
     if netloc == main_wiki:
         eng_lang: str = traits.get_language(sxng_lang, 'English')  # type: ignore
         query += ' (' + eng_lang + ')'
+        # wiki.archlinux.org is protected by anubis
+        # - https://github.com/searxng/searxng/issues/4646#issuecomment-2817848019
+        params['headers']['User-Agent'] = "SearXNG"
     elif netloc == 'wiki.archlinuxcn.org':
         base_url = 'https://' + netloc + '/wzh/index.php?'
 
