@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-03-29 09:21+0000\n"
+"POT-Creation-Date: 2025-05-13 19:13+0000\n"
 "PO-Revision-Date: 2025-01-15 06:48+0000\n"
 "Last-Translator: hirushaadi "
 "<hirushaadi@users.noreply.translate.codeberg.org>\n"
@@ -67,7 +67,7 @@ msgid "videos"
 msgstr "වීඩියෝ"
 
 #. CATEGORY_NAMES['RADIO']
-#: searx/engines/radio_browser.py:103 searx/searxng.msg
+#: searx/engines/radio_browser.py:151 searx/searxng.msg
 msgid "radio"
 msgstr "රේඩියෝව"
 
@@ -344,93 +344,93 @@ msgstr "වසා ඇත"
 msgid "answered"
 msgstr "පිළිතුරු දී ඇත"
 
-#: searx/webapp.py:312
+#: searx/webapp.py:291
 msgid "No item found"
 msgstr "අයිතමයක් හමු නොවීය"
 
 #: searx/engines/qwant.py:291
-#: searx/templates/simple/result_templates/images.html:23 searx/webapp.py:314
+#: searx/templates/simple/result_templates/images.html:23 searx/webapp.py:293
 msgid "Source"
 msgstr "මූලාශ්‍රය"
 
-#: searx/webapp.py:316
+#: searx/webapp.py:295
 msgid "Error loading the next page"
 msgstr "ඊළඟ පිටුව පූරණය කිරීමේ දෝෂයකි"
 
-#: searx/webapp.py:469 searx/webapp.py:875
+#: searx/webapp.py:446 searx/webapp.py:844
 msgid "Invalid settings, please edit your preferences"
 msgstr "වලංගු නොවන සැකසුම්, කරුණාකර ඔබගේ මනාප සංස්කරණය කරන්න"
 
-#: searx/webapp.py:485
+#: searx/webapp.py:462
 msgid "Invalid settings"
 msgstr "වලංගු නොවන සැකසුම්"
 
-#: searx/webapp.py:562 searx/webapp.py:652
+#: searx/webapp.py:539 searx/webapp.py:629
 msgid "search error"
 msgstr "සෙවුම් දෝෂයකි"
 
-#: searx/webutils.py:36
+#: searx/webutils.py:35
 msgid "timeout"
 msgstr "වෙලාව අවසන්"
 
-#: searx/webutils.py:37
+#: searx/webutils.py:36
 msgid "parsing error"
 msgstr "විග්‍රහ කිරීමේ දෝෂයකි"
 
-#: searx/webutils.py:38
+#: searx/webutils.py:37
 msgid "HTTP protocol error"
 msgstr "HTTP ප්‍රොටෝකෝල දෝෂයකි"
 
-#: searx/webutils.py:39
+#: searx/webutils.py:38
 msgid "network error"
 msgstr "ජාල දෝෂයකි"
 
-#: searx/webutils.py:40
+#: searx/webutils.py:39
 msgid "SSL error: certificate validation has failed"
 msgstr "SSL දෝෂය: සහතික වලංගු කිරීම අසාර්ථක විය"
 
-#: searx/webutils.py:42
+#: searx/webutils.py:41
 msgid "unexpected crash"
 msgstr "අනපේක්ෂිත බිද වැටීමකි"
 
-#: searx/webutils.py:49
+#: searx/webutils.py:48
 msgid "HTTP error"
 msgstr "HTTP දෝශයකි"
 
-#: searx/webutils.py:50
+#: searx/webutils.py:49
 msgid "HTTP connection error"
 msgstr "HTTP සම්බන්ධතා දෝෂයකි"
 
-#: searx/webutils.py:56
+#: searx/webutils.py:55
 msgid "proxy error"
 msgstr "proxy දෝෂයකි"
 
-#: searx/webutils.py:57
+#: searx/webutils.py:56
 msgid "CAPTCHA"
 msgstr "CAPTCHA"
 
-#: searx/webutils.py:58
+#: searx/webutils.py:57
 msgid "too many requests"
 msgstr "බොහෝ ඉල්ලීම්"
 
-#: searx/webutils.py:59
+#: searx/webutils.py:58
 msgid "access denied"
 msgstr "ප්‍රවේශය ප්‍රතික්ෂේප විය"
 
-#: searx/webutils.py:60
+#: searx/webutils.py:59
 msgid "server API error"
 msgstr "සේවාදායකයේ API දෝෂයකි"
 
-#: searx/webutils.py:79
+#: searx/webutils.py:78
 msgid "Suspended"
 msgstr "අත්හිටුවා ඇත"
 
-#: searx/webutils.py:314
+#: searx/webutils.py:313
 #, python-brace-format
 msgid "{minutes} minute(s) ago"
 msgstr "මිනිත්තු(ව) {minutes}කට පෙර"
 
-#: searx/webutils.py:315
+#: searx/webutils.py:314
 #, python-brace-format
 msgid "{hours} hour(s), {minutes} minute(s) ago"
 msgstr "පැය {hours}, මිනිත්තු(ව) {minutes}කට පෙර"
@@ -461,15 +461,15 @@ msgstr ""
 msgid "Channel"
 msgstr "නාලිකාව"
 
-#: searx/engines/radio_browser.py:105
+#: searx/engines/radio_browser.py:153
 msgid "bitrate"
 msgstr ""
 
-#: searx/engines/radio_browser.py:106
+#: searx/engines/radio_browser.py:154
 msgid "votes"
 msgstr "ඡන්ද"
 
-#: searx/engines/radio_browser.py:107
+#: searx/engines/radio_browser.py:155
 msgid "clicks"
 msgstr "ක්ලික් කිරීම්"
 
@@ -478,7 +478,7 @@ msgstr "ක්ලික් කිරීම්"
 msgid "Language"
 msgstr "භාෂාව"
 
-#: searx/engines/semantic_scholar.py:79
+#: searx/engines/semantic_scholar.py:101
 #, python-brace-format
 msgid ""
 "{numCitations} citations from the year {firstCitationVelocityYear} to "
@@ -690,10 +690,6 @@ msgstr "කතුවරයා"
 
 #: searx/templates/simple/macros.html:50
 msgid "cached"
-msgstr ""
-
-#: searx/templates/simple/macros.html:50
-msgid "proxied"
 msgstr ""
 
 #: searx/templates/simple/new_issue.html:64
@@ -1728,5 +1724,8 @@ msgstr ""
 #~ "Specifying custom settings in the "
 #~ "preferences URL can be used to "
 #~ "sync preferences across devices."
+#~ msgstr ""
+
+#~ msgid "proxied"
 #~ msgstr ""
 
