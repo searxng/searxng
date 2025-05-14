@@ -119,7 +119,7 @@ jobs:
         id: cpr
         uses: peter-evans/create-pull-request@v7
         with:
-          author: "${{ github.actor }} <${{ github.actor }}@users.noreply.github.com>"
+          author: "searxng-bot <searxng-bot@users.noreply.github.com>"
           committer: "searxng-bot <searxng-bot@users.noreply.github.com>"
           title: "[l10n] update translations from Weblate"
           commit-message: "[l10n] update translations from Weblate"
@@ -127,6 +127,8 @@ jobs:
           delete-branch: "true"
           draft: "false"
           signoff: "false"
+          body: |
+            [l10n] update translations from Weblate
           labels: |
             translation
 
