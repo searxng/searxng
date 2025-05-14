@@ -12,7 +12,7 @@ on:
       - master
 
 concurrency:
-  group: ${{ github.workflow }}-${{ github.ref_name }}
+  group: ${{ github.workflow }}
   cancel-in-progress: false
 
 permissions:
