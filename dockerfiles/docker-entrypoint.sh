@@ -68,10 +68,9 @@ patch_searxng_settings() {
     CONF="$1"
 
     # Make sure that there is trailing slash at the end of BASE_URL
-    # see https://www.gnu.org/savannah-checkouts/gnu/bash/manual/bash.html#Shell-Parameter-Expansion
     export BASE_URL="${BASE_URL%/}/"
 
-    # update settings.yml
+    # 更新 settings.yml 的基础字段
     sed -i \
         -e "s|base_url: false|base_url: ${BASE_URL}|g" \
         -e "s/instance_name: \"SearXNG\"/instance_name: \"${INSTANCE_NAME}\"/g" \
@@ -79,11 +78,9 @@ patch_searxng_settings() {
         -e "s/ultrasecretkey/$(openssl rand -hex 32)/g" \
         "${CONF}"
 
-    # Morty configuration
-
+    # Morty 代理配置写入
     if [ -n "${MORTY_KEY}" ] && [ -n "${MORTY_URL}" ]; then
-        sed -i -e "s/image_proxy: false/image_proxy: true/g" \
-            "${CONF}"
+        sed -i -e "s/image_proxy: false/image_proxy: true/g" "${CONF}"
         cat >> "${CONF}" <<-EOF
 
 # Morty configuration
@@ -92,7 +89,21 @@ result_proxy:
    key: !!binary "${MORTY_KEY}"
 EOF
     fi
+
+    # IP池代理配置写入（PROXY_POOL 环境变量，支持多个逗号分隔）
+    if [ -n "${PROXY_POOL}" ]; then
+        echo "" >> "${CONF}"
+        echo "outgoing:" >> "${CONF}"
+        echo "  proxies:" >> "${CONF}"
+        echo "    all://:" >> "${CONF}"
+
+        IFS=',' read -ra PROXY_LIST <<< "$PROXY_POOL"
+        for proxy in "${PROXY_LIST[@]}"; do
+            echo "      - ${proxy}" >> "${CONF}"
+        done
+    fi
 }
+
 
 update_conf() {
     FORCE_CONF_UPDATE=$1
