@@ -17,7 +17,6 @@ Environment variables:
 Volume:
   /etc/searxng  the docker entry point copies settings.yml and uwsgi.ini in
                 this directory (see the -f command line option)"
-
 EOF
 }
 
@@ -28,10 +27,8 @@ DRY_RUN=0
 while getopts "fdh" option
 do
     case $option in
-
         f) FORCE_CONF_UPDATE=1 ;;
         d) DRY_RUN=1 ;;
-
         h)
             help
             exit 0
@@ -56,8 +53,6 @@ echo "SearXNG version ${SEARXNG_VERSION}"
 # helpers to update the configuration files
 patch_uwsgi_settings() {
     CONF="$1"
-
-    # update uwsg.ini
     sed -i \
         -e "s|workers = .*|workers = ${UWSGI_WORKERS:-%k}|g" \
         -e "s|threads = .*|threads = ${UWSGI_THREADS:-4}|g" \
@@ -67,30 +62,26 @@ patch_uwsgi_settings() {
 patch_searxng_settings() {
     CONF="$1"
 
-    # Make sure that there is trailing slash at the end of BASE_URL
     export BASE_URL="${BASE_URL%/}/"
 
-    # 更新 settings.yml 的基础字段
     sed -i \
         -e "s|base_url: false|base_url: ${BASE_URL}|g" \
         -e "s/instance_name: \"SearXNG\"/instance_name: \"${INSTANCE_NAME}\"/g" \
         -e "s/autocomplete: \"\"/autocomplete: \"${AUTOCOMPLETE}\"/g" \
-        -e "s/ultrasecretkey/$(openssl rand -hex 32)/g" \
+        -e "s|ultrasecretkey|$(openssl rand -hex 32)|g" \
         "${CONF}"
 
-    # Morty 代理配置写入
     if [ -n "${MORTY_KEY}" ] && [ -n "${MORTY_URL}" ]; then
         sed -i -e "s/image_proxy: false/image_proxy: true/g" "${CONF}"
-        cat >> "${CONF}" <<-EOF
-
-# Morty configuration
-result_proxy:
-   url: ${MORTY_URL}
-   key: !!binary "${MORTY_KEY}"
-EOF
+        {
+            echo ""
+            echo "# Morty configuration"
+            echo "result_proxy:"
+            echo "   url: ${MORTY_URL}"
+            echo "   key: !!binary \"${MORTY_KEY}\""
+        } >> "${CONF}"
     fi
 
-    # IP池代理配置写入（PROXY_POOL 环境变量，支持多个逗号分隔）
     if [ -n "${PROXY_POOL}" ]; then
         echo "" >> "${CONF}"
         echo "outgoing:" >> "${CONF}"
@@ -104,7 +95,6 @@ EOF
     fi
 }
 
-
 update_conf() {
     FORCE_CONF_UPDATE=$1
     CONF="$2"
@@ -115,9 +105,7 @@ update_conf() {
 
     if [ -f "${CONF}" ]; then
         if [ "${REF_CONF}" -nt "${CONF}" ]; then
-            # There is a new version
             if [ "$FORCE_CONF_UPDATE" -ne 0 ]; then
-                # Replace the current configuration
                 printf '⚠️  Automatically update %s to the new version\n' "${CONF}"
                 if [ ! -f "${OLD_CONF}" ]; then
                     printf 'The previous configuration is saved to %s\n' "${OLD_CONF}"
@@ -126,7 +114,6 @@ update_conf() {
                 cp "${REF_CONF}" "${CONF}"
                 $PATCH_REF_CONF "${CONF}"
             else
-                # Keep the current configuration
                 printf '⚠️  Check new version %s to make sure SearXNG is working properly\n' "${NEW_CONF}"
                 cp "${REF_CONF}" "${NEW_CONF}"
                 $PATCH_REF_CONF "${NEW_CONF}"
@@ -141,7 +128,7 @@ update_conf() {
     fi
 }
 
-# searx compatibility: copy /etc/searx/* to /etc/searxng/*
+# searx compatibility
 SEARX_CONF=0
 if [ -f "/etc/searx/settings.yml" ]; then
     if  [ ! -f "${SEARXNG_SETTINGS_PATH}" ]; then
@@ -163,15 +150,10 @@ Update your configuration:
 * mount /etc/searxng instead of /etc/searx
 EOF
 fi
-# end of searx compatibility
 
-# make sure there are uwsgi settings
 update_conf "${FORCE_CONF_UPDATE}" "${UWSGI_SETTINGS_PATH}" "/usr/local/searxng/dockerfiles/uwsgi.ini" "patch_uwsgi_settings"
-
-# make sure there are searxng settings
 update_conf "${FORCE_CONF_UPDATE}" "${SEARXNG_SETTINGS_PATH}" "/usr/local/searxng/searx/settings.yml" "patch_searxng_settings"
 
-# dry run (to update configuration files, then inspect them)
 if [ $DRY_RUN -eq 1 ]; then
     printf 'Dry run\n'
     exit
@@ -181,6 +163,4 @@ unset MORTY_KEY
 
 printf 'Listen on %s\n' "${BIND_ADDRESS}"
 
-# Start uwsgi
-# TODO: "--http-socket" will be removed in the future (see uwsgi.ini.new config file): https://github.com/searxng/searxng/pull/4578
 exec uwsgi --http-socket "${BIND_ADDRESS}" "${UWSGI_SETTINGS_PATH}"
