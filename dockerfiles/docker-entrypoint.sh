@@ -16,7 +16,7 @@ Environment variables:
   MORTY_KEY     settings.yml : result_proxy.key
 Volume:
   /etc/searxng  the docker entry point copies settings.yml and uwsgi.ini in
-                this directory (see the -f command line option)"
+                this directory (see the -f command line option)
 EOF
 }
 
