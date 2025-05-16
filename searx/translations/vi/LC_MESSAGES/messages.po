@@ -19,13 +19,14 @@
 # KhietVo <khietvo@users.noreply.translate.codeberg.org>, 2025.
 # nam000 <nam000@users.noreply.translate.codeberg.org>, 2025.
 # buiducnhat <buiducnhat@noreply.codeberg.org>, 2025.
+# cduon010 <cduon010@noreply.codeberg.org>, 2025.
 msgid ""
 msgstr ""
 "Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-03-29 09:21+0000\n"
-"PO-Revision-Date: 2025-03-05 02:17+0000\n"
-"Last-Translator: buiducnhat <buiducnhat@noreply.codeberg.org>\n"
+"POT-Creation-Date: 2025-05-13 19:13+0000\n"
+"PO-Revision-Date: 2025-05-12 21:53+0000\n"
+"Last-Translator: cduon010 <cduon010@noreply.codeberg.org>\n"
 "Language: vi\n"
 "Language-Team: Vietnamese "
 "<https://translate.codeberg.org/projects/searxng/searxng/vi/>\n"
@@ -73,13 +74,12 @@ msgstr "hình ảnh"
 #. CATEGORY_NAMES['VIDEOS']
 #: searx/searxng.msg
 msgid "videos"
-msgstr "phim"
+msgstr "băng hình"
 
 #. CATEGORY_NAMES['RADIO']
-#: searx/engines/radio_browser.py:103 searx/searxng.msg
-#, fuzzy
+#: searx/engines/radio_browser.py:151 searx/searxng.msg
 msgid "radio"
-msgstr "radio"
+msgstr "máy radio"
 
 #. CATEGORY_NAMES['TV']
 #: searx/searxng.msg
@@ -104,7 +104,7 @@ msgstr "bản đồ"
 #. CATEGORY_NAMES['ONIONS']
 #: searx/searxng.msg
 msgid "onions"
-msgstr "hành tây"
+msgstr "định tuyến onion"
 
 #. CATEGORY_NAMES['SCIENCE']
 #: searx/searxng.msg
@@ -354,93 +354,93 @@ msgstr "đóng"
 msgid "answered"
 msgstr "đã trả lời"
 
-#: searx/webapp.py:312
+#: searx/webapp.py:291
 msgid "No item found"
 msgstr "Không tìm thấy gì"
 
 #: searx/engines/qwant.py:291
-#: searx/templates/simple/result_templates/images.html:23 searx/webapp.py:314
+#: searx/templates/simple/result_templates/images.html:23 searx/webapp.py:293
 msgid "Source"
 msgstr "Nguồn"
 
-#: searx/webapp.py:316
+#: searx/webapp.py:295
 msgid "Error loading the next page"
 msgstr "Không thể tải trang kế tiếp"
 
-#: searx/webapp.py:469 searx/webapp.py:875
+#: searx/webapp.py:446 searx/webapp.py:844
 msgid "Invalid settings, please edit your preferences"
 msgstr "Cài đặt không hợp lệ, xin xem lại tuỳ chỉnh"
 
-#: searx/webapp.py:485
+#: searx/webapp.py:462
 msgid "Invalid settings"
 msgstr "Cài đặt không hợp lệ"
 
-#: searx/webapp.py:562 searx/webapp.py:652
+#: searx/webapp.py:539 searx/webapp.py:629
 msgid "search error"
 msgstr "lỗi tìm kiếm"
 
-#: searx/webutils.py:36
+#: searx/webutils.py:35
 msgid "timeout"
 msgstr "Hết thời gian"
 
-#: searx/webutils.py:37
+#: searx/webutils.py:36
 msgid "parsing error"
 msgstr "lỗi phân tích"
 
-#: searx/webutils.py:38
+#: searx/webutils.py:37
 msgid "HTTP protocol error"
 msgstr "Lỗi giao thức HTTP"
 
-#: searx/webutils.py:39
+#: searx/webutils.py:38
 msgid "network error"
 msgstr "Lỗi mạng"
 
-#: searx/webutils.py:40
+#: searx/webutils.py:39
 msgid "SSL error: certificate validation has failed"
 msgstr "Lỗi SSL: xác thực chứng chỉ không thành công"
 
-#: searx/webutils.py:42
+#: searx/webutils.py:41
 msgid "unexpected crash"
 msgstr "sập đột ngột"
 
-#: searx/webutils.py:49
+#: searx/webutils.py:48
 msgid "HTTP error"
 msgstr "Lỗi HTTP"
 
-#: searx/webutils.py:50
+#: searx/webutils.py:49
 msgid "HTTP connection error"
 msgstr "Lỗi kết nối HTTP"
 
-#: searx/webutils.py:56
+#: searx/webutils.py:55
 msgid "proxy error"
 msgstr "Lỗi proxy"
 
-#: searx/webutils.py:57
+#: searx/webutils.py:56
 msgid "CAPTCHA"
 msgstr "CAPTCHA"
 
-#: searx/webutils.py:58
+#: searx/webutils.py:57
 msgid "too many requests"
 msgstr "quá nhiều yêu cầu"
 
-#: searx/webutils.py:59
+#: searx/webutils.py:58
 msgid "access denied"
 msgstr "Truy cập bị từ chối"
 
-#: searx/webutils.py:60
+#: searx/webutils.py:59
 msgid "server API error"
 msgstr "Lỗi máy chủ API"
 
-#: searx/webutils.py:79
+#: searx/webutils.py:78
 msgid "Suspended"
 msgstr "Treo/gián đoạn/chặn"
 
-#: searx/webutils.py:314
+#: searx/webutils.py:313
 #, python-brace-format
 msgid "{minutes} minute(s) ago"
 msgstr "{minutes} phút() trước"
 
-#: searx/webutils.py:315
+#: searx/webutils.py:314
 #, python-brace-format
 msgid "{hours} hour(s), {minutes} minute(s) ago"
 msgstr "{hours} giờ, {minutes} phút trước"
@@ -471,15 +471,15 @@ msgstr "Mục này đã được thay thế bởi"
 msgid "Channel"
 msgstr "Kênh"
 
-#: searx/engines/radio_browser.py:105
+#: searx/engines/radio_browser.py:153
 msgid "bitrate"
 msgstr "tốc độ bit"
 
-#: searx/engines/radio_browser.py:106
+#: searx/engines/radio_browser.py:154
 msgid "votes"
 msgstr "bình chọn"
 
-#: searx/engines/radio_browser.py:107
+#: searx/engines/radio_browser.py:155
 #, fuzzy
 msgid "clicks"
 msgstr "nhấp chuột"
@@ -489,7 +489,7 @@ msgstr "nhấp chuột"
 msgid "Language"
 msgstr "Ngôn ngữ"
 
-#: searx/engines/semantic_scholar.py:79
+#: searx/engines/semantic_scholar.py:101
 #, python-brace-format
 msgid ""
 "{numCitations} citations from the year {firstCitationVelocityYear} to "
@@ -538,7 +538,7 @@ msgstr ""
 
 #: searx/plugins/calculator.py:38
 msgid "Basic Calculator"
-msgstr ""
+msgstr "máy tính"
 
 #: searx/plugins/calculator.py:39
 msgid "Calculate mathematical expressions via the search bar"
@@ -714,10 +714,6 @@ msgstr "Tác giả"
 #: searx/templates/simple/macros.html:50
 msgid "cached"
 msgstr "đã lưu cache"
-
-#: searx/templates/simple/macros.html:50
-msgid "proxied"
-msgstr "đã proxy"
 
 #: searx/templates/simple/new_issue.html:64
 msgid "Start submitting a new issue on GitHub"
@@ -2096,4 +2092,7 @@ msgstr "ẩn phim"
 #~ "những tùy chọn URL có thể dùng "
 #~ "để đồng bộ tùy chọn giữa nhiều "
 #~ "thiết bị."
+
+#~ msgid "proxied"
+#~ msgstr "đã proxy"
 

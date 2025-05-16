@@ -16,21 +16,20 @@
 # return42 <return42@noreply.codeberg.org>, 2025.
 msgid ""
 msgstr ""
-"Project-Id-Version: searx\n"
+"Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-03-29 09:21+0000\n"
+"POT-Creation-Date: 2025-05-13 19:13+0000\n"
 "PO-Revision-Date: 2025-04-20 12:41+0000\n"
 "Last-Translator: return42 <return42@noreply.codeberg.org>\n"
-"Language-Team: Lithuanian <https://translate.codeberg.org/projects/searxng/"
-"searxng/lt/>\n"
 "Language: lt\n"
+"Language-Team: Lithuanian "
+"<https://translate.codeberg.org/projects/searxng/searxng/lt/>\n"
+"Plural-Forms: nplurals=4; plural=(n % 10 == 1 && (n % 100 > 19 || n % 100"
+" < 11) ? 0 : (n % 10 >= 2 && n % 10 <=9) && (n % 100 > 19 || n % 100 < "
+"11) ? 1 : n % 1 != 0 ? 2: 3);\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=4; plural=(n % 10 == 1 && (n % 100 > 19 || n % 100 < "
-"11) ? 0 : (n % 10 >= 2 && n % 10 <=9) && (n % 100 > 19 || n % 100 < 11) ? 1 :"
-" n % 1 != 0 ? 2: 3);\n"
-"X-Generator: Weblate 5.10.2\n"
 "Generated-By: Babel 2.17.0\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
@@ -74,7 +73,7 @@ msgid "videos"
 msgstr "vaizdo įrašai"
 
 #. CATEGORY_NAMES['RADIO']
-#: searx/engines/radio_browser.py:103 searx/searxng.msg
+#: searx/engines/radio_browser.py:151 searx/searxng.msg
 msgid "radio"
 msgstr "radijas"
 
@@ -351,93 +350,93 @@ msgstr "Uždaryta"
 msgid "answered"
 msgstr "atsakyta"
 
-#: searx/webapp.py:312
+#: searx/webapp.py:291
 msgid "No item found"
 msgstr "Elementų nerasta"
 
 #: searx/engines/qwant.py:291
-#: searx/templates/simple/result_templates/images.html:23 searx/webapp.py:314
+#: searx/templates/simple/result_templates/images.html:23 searx/webapp.py:293
 msgid "Source"
 msgstr "Šaltinis"
 
-#: searx/webapp.py:316
+#: searx/webapp.py:295
 msgid "Error loading the next page"
 msgstr "Klaida keliant kitą puslapį"
 
-#: searx/webapp.py:469 searx/webapp.py:875
+#: searx/webapp.py:446 searx/webapp.py:844
 msgid "Invalid settings, please edit your preferences"
 msgstr "Neteisingi nustatymai, pakeiskite savo nuostatas"
 
-#: searx/webapp.py:485
+#: searx/webapp.py:462
 msgid "Invalid settings"
 msgstr "Neteisingi nustatymai"
 
-#: searx/webapp.py:562 searx/webapp.py:652
+#: searx/webapp.py:539 searx/webapp.py:629
 msgid "search error"
 msgstr "paieškos klaida"
 
-#: searx/webutils.py:36
+#: searx/webutils.py:35
 msgid "timeout"
 msgstr "laikas baigėsi"
 
-#: searx/webutils.py:37
+#: searx/webutils.py:36
 msgid "parsing error"
 msgstr "parsavymo klaida"
 
-#: searx/webutils.py:38
+#: searx/webutils.py:37
 msgid "HTTP protocol error"
 msgstr "HTTP protokolo klaida"
 
-#: searx/webutils.py:39
+#: searx/webutils.py:38
 msgid "network error"
 msgstr "tinklo klaida"
 
-#: searx/webutils.py:40
+#: searx/webutils.py:39
 msgid "SSL error: certificate validation has failed"
 msgstr "SSL klaida: liudijimo tikrinimas patyrė nesėkmę"
 
-#: searx/webutils.py:42
+#: searx/webutils.py:41
 msgid "unexpected crash"
 msgstr "netikėta klaida"
 
-#: searx/webutils.py:49
+#: searx/webutils.py:48
 msgid "HTTP error"
 msgstr "HTTP klaida"
 
-#: searx/webutils.py:50
+#: searx/webutils.py:49
 msgid "HTTP connection error"
 msgstr "HTTP ryšio klaida"
 
-#: searx/webutils.py:56
+#: searx/webutils.py:55
 msgid "proxy error"
 msgstr "persiuntimų serverio klaida"
 
-#: searx/webutils.py:57
+#: searx/webutils.py:56
 msgid "CAPTCHA"
 msgstr "CAPTCHA"
 
-#: searx/webutils.py:58
+#: searx/webutils.py:57
 msgid "too many requests"
 msgstr "per daug užklausų"
 
-#: searx/webutils.py:59
+#: searx/webutils.py:58
 msgid "access denied"
 msgstr "prieiga uždrausta"
 
-#: searx/webutils.py:60
+#: searx/webutils.py:59
 msgid "server API error"
 msgstr "serverio API klaida"
 
-#: searx/webutils.py:79
+#: searx/webutils.py:78
 msgid "Suspended"
 msgstr "Sustabdytas"
 
-#: searx/webutils.py:314
+#: searx/webutils.py:313
 #, python-brace-format
 msgid "{minutes} minute(s) ago"
 msgstr "prieš {minutes} min"
 
-#: searx/webutils.py:315
+#: searx/webutils.py:314
 #, python-brace-format
 msgid "{hours} hour(s), {minutes} minute(s) ago"
 msgstr "prieš {hours} val., {minutes} min"
@@ -468,15 +467,15 @@ msgstr "Šį įrašą pakeitė"
 msgid "Channel"
 msgstr "Kanalas"
 
-#: searx/engines/radio_browser.py:105
+#: searx/engines/radio_browser.py:153
 msgid "bitrate"
 msgstr "pralaidumas"
 
-#: searx/engines/radio_browser.py:106
+#: searx/engines/radio_browser.py:154
 msgid "votes"
 msgstr "balsai"
 
-#: searx/engines/radio_browser.py:107
+#: searx/engines/radio_browser.py:155
 msgid "clicks"
 msgstr "paspaudimai"
 
@@ -485,7 +484,7 @@ msgstr "paspaudimai"
 msgid "Language"
 msgstr "Kalba"
 
-#: searx/engines/semantic_scholar.py:79
+#: searx/engines/semantic_scholar.py:101
 #, python-brace-format
 msgid ""
 "{numCitations} citations from the year {firstCitationVelocityYear} to "
@@ -583,8 +582,8 @@ msgid ""
 "Displays your IP if the query is \"ip\" and your user agent if the query "
 "is \"user-agent\"."
 msgstr ""
-"Rodo tavo IP jei užklausa yra „ip“ ir tavo naudotojo agentą jei užklausa yra "
-"„user-agent“."
+"Rodo tavo IP jei užklausa yra „ip“ ir tavo naudotojo agentą jei užklausa "
+"yra „user-agent“."
 
 #: searx/plugins/self_info.py:52
 msgid "Your IP is: "
@@ -712,10 +711,6 @@ msgstr "Autorius"
 #: searx/templates/simple/macros.html:50
 msgid "cached"
 msgstr "patalpinta"
-
-#: searx/templates/simple/macros.html:50
-msgid "proxied"
-msgstr "persiustas"
 
 #: searx/templates/simple/new_issue.html:64
 msgid "Start submitting a new issue on GitHub"
@@ -2063,3 +2058,7 @@ msgstr "slėpti vaizdo įrašą"
 #~ "Nurodant tinkintus nustatymus nuostatų URL,"
 #~ " jūs galite susinchronizuoti nuostatas tarp"
 #~ " prietaisų."
+
+#~ msgid "proxied"
+#~ msgstr "persiustas"
+

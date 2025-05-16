@@ -18,19 +18,18 @@
 # Priit Jõerüüt <jrtcdbrg@noreply.codeberg.org>, 2025.
 msgid ""
 msgstr ""
-"Project-Id-Version: searx\n"
+"Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-03-29 09:21+0000\n"
+"POT-Creation-Date: 2025-05-13 19:13+0000\n"
 "PO-Revision-Date: 2025-03-30 01:58+0000\n"
 "Last-Translator: Priit Jõerüüt <jrtcdbrg@noreply.codeberg.org>\n"
-"Language-Team: Estonian <https://translate.codeberg.org/projects/searxng/"
-"searxng/et/>\n"
 "Language: et\n"
+"Language-Team: Estonian "
+"<https://translate.codeberg.org/projects/searxng/searxng/et/>\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.10.2\n"
 "Generated-By: Babel 2.17.0\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
@@ -74,7 +73,7 @@ msgid "videos"
 msgstr "videod"
 
 #. CATEGORY_NAMES['RADIO']
-#: searx/engines/radio_browser.py:103 searx/searxng.msg
+#: searx/engines/radio_browser.py:151 searx/searxng.msg
 msgid "radio"
 msgstr "raadio"
 
@@ -351,93 +350,93 @@ msgstr "suletud"
 msgid "answered"
 msgstr "vastatud"
 
-#: searx/webapp.py:312
+#: searx/webapp.py:291
 msgid "No item found"
 msgstr "Üksust ei leitud"
 
 #: searx/engines/qwant.py:291
-#: searx/templates/simple/result_templates/images.html:23 searx/webapp.py:314
+#: searx/templates/simple/result_templates/images.html:23 searx/webapp.py:293
 msgid "Source"
 msgstr "Allikas"
 
-#: searx/webapp.py:316
+#: searx/webapp.py:295
 msgid "Error loading the next page"
 msgstr "Viga järgmise lehekülje laadimisel"
 
-#: searx/webapp.py:469 searx/webapp.py:875
+#: searx/webapp.py:446 searx/webapp.py:844
 msgid "Invalid settings, please edit your preferences"
 msgstr "Sobimatud seaded, palun muuda oma eelistusi"
 
-#: searx/webapp.py:485
+#: searx/webapp.py:462
 msgid "Invalid settings"
 msgstr "Sobimatud seaded"
 
-#: searx/webapp.py:562 searx/webapp.py:652
+#: searx/webapp.py:539 searx/webapp.py:629
 msgid "search error"
 msgstr "otsingu viga"
 
-#: searx/webutils.py:36
+#: searx/webutils.py:35
 msgid "timeout"
 msgstr "päring aegus"
 
-#: searx/webutils.py:37
+#: searx/webutils.py:36
 msgid "parsing error"
 msgstr "parsimise viga"
 
-#: searx/webutils.py:38
+#: searx/webutils.py:37
 msgid "HTTP protocol error"
 msgstr "HTTP-protokolli viga"
 
-#: searx/webutils.py:39
+#: searx/webutils.py:38
 msgid "network error"
 msgstr "võrguviga"
 
-#: searx/webutils.py:40
+#: searx/webutils.py:39
 msgid "SSL error: certificate validation has failed"
 msgstr "SSL viga: sertifikaadi valideerimine ei õnnestunud"
 
-#: searx/webutils.py:42
+#: searx/webutils.py:41
 msgid "unexpected crash"
 msgstr "ootamatu krahh"
 
-#: searx/webutils.py:49
+#: searx/webutils.py:48
 msgid "HTTP error"
 msgstr "HTTP-viga"
 
-#: searx/webutils.py:50
+#: searx/webutils.py:49
 msgid "HTTP connection error"
 msgstr "HTTP-ühenduse viga"
 
-#: searx/webutils.py:56
+#: searx/webutils.py:55
 msgid "proxy error"
 msgstr "proksiserveri viga"
 
-#: searx/webutils.py:57
+#: searx/webutils.py:56
 msgid "CAPTCHA"
 msgstr "ROBOTILÕKS"
 
-#: searx/webutils.py:58
+#: searx/webutils.py:57
 msgid "too many requests"
 msgstr "liiga palju päringuid"
 
-#: searx/webutils.py:59
+#: searx/webutils.py:58
 msgid "access denied"
 msgstr "ligipääs keelatud"
 
-#: searx/webutils.py:60
+#: searx/webutils.py:59
 msgid "server API error"
 msgstr "serveri API viga"
 
-#: searx/webutils.py:79
+#: searx/webutils.py:78
 msgid "Suspended"
 msgstr "Peatatud"
 
-#: searx/webutils.py:314
+#: searx/webutils.py:313
 #, python-brace-format
 msgid "{minutes} minute(s) ago"
 msgstr "{minutes} minut(it) tagasi"
 
-#: searx/webutils.py:315
+#: searx/webutils.py:314
 #, python-brace-format
 msgid "{hours} hour(s), {minutes} minute(s) ago"
 msgstr "{hours} tund(i), {minutes} minut(it) tagasi"
@@ -468,15 +467,15 @@ msgstr "See üksus on asendatud"
 msgid "Channel"
 msgstr "Kanal"
 
-#: searx/engines/radio_browser.py:105
+#: searx/engines/radio_browser.py:153
 msgid "bitrate"
 msgstr "bitikiirus"
 
-#: searx/engines/radio_browser.py:106
+#: searx/engines/radio_browser.py:154
 msgid "votes"
 msgstr "hääled"
 
-#: searx/engines/radio_browser.py:107
+#: searx/engines/radio_browser.py:155
 msgid "clicks"
 msgstr "klikid"
 
@@ -485,7 +484,7 @@ msgstr "klikid"
 msgid "Language"
 msgstr "Keel"
 
-#: searx/engines/semantic_scholar.py:79
+#: searx/engines/semantic_scholar.py:101
 #, python-brace-format
 msgid ""
 "{numCitations} citations from the year {firstCitationVelocityYear} to "
@@ -714,10 +713,6 @@ msgstr "Autor"
 #: searx/templates/simple/macros.html:50
 msgid "cached"
 msgstr "vahemälus"
-
-#: searx/templates/simple/macros.html:50
-msgid "proxied"
-msgstr "proksiserveris"
 
 #: searx/templates/simple/new_issue.html:64
 msgid "Start submitting a new issue on GitHub"
@@ -2076,3 +2071,7 @@ msgstr "peida video"
 #~ "Kohandatud seadete määramine eelistuste URL-i"
 #~ " saad kasutada eelistuste sünkroniseerimiseks "
 #~ "eri seadmete vahel."
+
+#~ msgid "proxied"
+#~ msgstr "proksiserveris"
+

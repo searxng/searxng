@@ -51,19 +51,18 @@
 # Outbreak2096 <outbreak2096@noreply.codeberg.org>, 2025.
 msgid ""
 msgstr ""
-"Project-Id-Version: searx\n"
+"Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-03-29 09:21+0000\n"
+"POT-Creation-Date: 2025-05-13 19:13+0000\n"
 "PO-Revision-Date: 2025-03-30 01:58+0000\n"
 "Last-Translator: Outbreak2096 <outbreak2096@noreply.codeberg.org>\n"
-"Language-Team: Chinese (Simplified Han script) <https://"
-"translate.codeberg.org/projects/searxng/searxng/zh_Hans/>\n"
 "Language: zh_Hans_CN\n"
+"Language-Team: Chinese (Simplified Han script) "
+"<https://translate.codeberg.org/projects/searxng/searxng/zh_Hans/>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.10.2\n"
 "Generated-By: Babel 2.17.0\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
@@ -107,7 +106,7 @@ msgid "videos"
 msgstr "视频"
 
 #. CATEGORY_NAMES['RADIO']
-#: searx/engines/radio_browser.py:103 searx/searxng.msg
+#: searx/engines/radio_browser.py:151 searx/searxng.msg
 msgid "radio"
 msgstr "电台"
 
@@ -384,93 +383,93 @@ msgstr "已关闭"
 msgid "answered"
 msgstr "回答"
 
-#: searx/webapp.py:312
+#: searx/webapp.py:291
 msgid "No item found"
 msgstr "未找到项目"
 
 #: searx/engines/qwant.py:291
-#: searx/templates/simple/result_templates/images.html:23 searx/webapp.py:314
+#: searx/templates/simple/result_templates/images.html:23 searx/webapp.py:293
 msgid "Source"
 msgstr "来源"
 
-#: searx/webapp.py:316
+#: searx/webapp.py:295
 msgid "Error loading the next page"
 msgstr "载入下个页面时发生错误"
 
-#: searx/webapp.py:469 searx/webapp.py:875
+#: searx/webapp.py:446 searx/webapp.py:844
 msgid "Invalid settings, please edit your preferences"
 msgstr "无效设置，请编辑您的首选项"
 
-#: searx/webapp.py:485
+#: searx/webapp.py:462
 msgid "Invalid settings"
 msgstr "无效设置"
 
-#: searx/webapp.py:562 searx/webapp.py:652
+#: searx/webapp.py:539 searx/webapp.py:629
 msgid "search error"
 msgstr "搜索错误"
 
-#: searx/webutils.py:36
+#: searx/webutils.py:35
 msgid "timeout"
 msgstr "超时"
 
-#: searx/webutils.py:37
+#: searx/webutils.py:36
 msgid "parsing error"
 msgstr "解析错误"
 
-#: searx/webutils.py:38
+#: searx/webutils.py:37
 msgid "HTTP protocol error"
 msgstr "HTTP 协议错误"
 
-#: searx/webutils.py:39
+#: searx/webutils.py:38
 msgid "network error"
 msgstr "网络错误"
 
-#: searx/webutils.py:40
+#: searx/webutils.py:39
 msgid "SSL error: certificate validation has failed"
 msgstr "SSL 错误：证书校验失败"
 
-#: searx/webutils.py:42
+#: searx/webutils.py:41
 msgid "unexpected crash"
 msgstr "意外崩溃"
 
-#: searx/webutils.py:49
+#: searx/webutils.py:48
 msgid "HTTP error"
 msgstr "HTTP 错误"
 
-#: searx/webutils.py:50
+#: searx/webutils.py:49
 msgid "HTTP connection error"
 msgstr "HTTP 连接错误"
 
-#: searx/webutils.py:56
+#: searx/webutils.py:55
 msgid "proxy error"
 msgstr "代理错误"
 
-#: searx/webutils.py:57
+#: searx/webutils.py:56
 msgid "CAPTCHA"
 msgstr "验证码"
 
-#: searx/webutils.py:58
+#: searx/webutils.py:57
 msgid "too many requests"
 msgstr "请求过于频繁"
 
-#: searx/webutils.py:59
+#: searx/webutils.py:58
 msgid "access denied"
 msgstr "拒绝访问"
 
-#: searx/webutils.py:60
+#: searx/webutils.py:59
 msgid "server API error"
 msgstr "服务器 API 错误"
 
-#: searx/webutils.py:79
+#: searx/webutils.py:78
 msgid "Suspended"
 msgstr "暂停服务"
 
-#: searx/webutils.py:314
+#: searx/webutils.py:313
 #, python-brace-format
 msgid "{minutes} minute(s) ago"
 msgstr "{minutes} 分钟前"
 
-#: searx/webutils.py:315
+#: searx/webutils.py:314
 #, python-brace-format
 msgid "{hours} hour(s), {minutes} minute(s) ago"
 msgstr "{hours} 小时 {minutes} 分钟前"
@@ -501,15 +500,15 @@ msgstr "此条目已被以下内容取代"
 msgid "Channel"
 msgstr "频道"
 
-#: searx/engines/radio_browser.py:105
+#: searx/engines/radio_browser.py:153
 msgid "bitrate"
 msgstr "比特率"
 
-#: searx/engines/radio_browser.py:106
+#: searx/engines/radio_browser.py:154
 msgid "votes"
 msgstr "投票数"
 
-#: searx/engines/radio_browser.py:107
+#: searx/engines/radio_browser.py:155
 msgid "clicks"
 msgstr "点击数"
 
@@ -518,7 +517,7 @@ msgstr "点击数"
 msgid "Language"
 msgstr "语言"
 
-#: searx/engines/semantic_scholar.py:79
+#: searx/engines/semantic_scholar.py:101
 #, python-brace-format
 msgid ""
 "{numCitations} citations from the year {firstCitationVelocityYear} to "
@@ -731,10 +730,6 @@ msgstr "作者"
 #: searx/templates/simple/macros.html:50
 msgid "cached"
 msgstr "快照"
-
-#: searx/templates/simple/macros.html:50
-msgid "proxied"
-msgstr "已代理"
 
 #: searx/templates/simple/new_issue.html:64
 msgid "Start submitting a new issue on GitHub"
@@ -2037,3 +2032,7 @@ msgstr "隐藏视频"
 #~ "preferences URL can be used to "
 #~ "sync preferences across devices."
 #~ msgstr "在首选项 URL 中指定可跨设备同步的偏好设置。"
+
+#~ msgid "proxied"
+#~ msgstr "已代理"
+
