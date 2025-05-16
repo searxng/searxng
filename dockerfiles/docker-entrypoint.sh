@@ -16,7 +16,7 @@ Environment variables:
   MORTY_KEY     settings.yml : result_proxy.key
 Volume:
   /etc/searxng  the docker entry point copies settings.yml and uwsgi.ini in
-                this directory (see the -f command line option)
+                this directory (see the -f command line option)"
 EOF
 }
 
@@ -88,8 +88,8 @@ patch_searxng_settings() {
         echo "  proxies:" >> "${CONF}"
         echo "    all://:" >> "${CONF}"
 
-        IFS=',' read -ra PROXY_LIST <<< "$PROXY_POOL"
-        for proxy in "${PROXY_LIST[@]}"; do
+        IFS=',' set -- $PROXY_POOL
+        for proxy in "$@"; do
             echo "      - ${proxy}" >> "${CONF}"
         done
     fi
