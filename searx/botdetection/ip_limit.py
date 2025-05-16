@@ -6,8 +6,8 @@ Method ``ip_limit``
 
 The ``ip_limit`` method counts request from an IP in *sliding windows*.  If
 there are to many requests in a sliding window, the request is evaluated as a
-bot request.  This method requires a redis DB and needs a HTTP X-Forwarded-For_
-header.  To take privacy only the hash value of an IP is stored in the redis DB
+bot request.  This method requires a valkey DB and needs a HTTP X-Forwarded-For_
+header.  To take privacy only the hash value of an IP is stored in the valkey DB
 and at least for a maximum of 10 minutes.
 
 The :py:obj:`.link_token` method can be used to investigate whether a request is
@@ -46,8 +46,8 @@ import flask
 import werkzeug
 
 from searx.extended_types import SXNG_Request
-from searx import redisdb
-from searx.redislib import incr_sliding_window, drop_counter
+from searx import valkeydb
+from searx.valkeylib import incr_sliding_window, drop_counter
 
 from . import link_token
 from . import config
@@ -97,14 +97,14 @@ def filter_request(
 ) -> werkzeug.Response | None:
 
     # pylint: disable=too-many-return-statements
-    redis_client = redisdb.client()
+    valkey_client = valkeydb.client()
 
     if network.is_link_local and not cfg['botdetection.ip_limit.filter_link_local']:
         logger.debug("network %s is link-local -> not monitored by ip_limit method", network.compressed)
         return None
 
     if request.args.get('format', 'html') != 'html':
-        c = incr_sliding_window(redis_client, 'ip_limit.API_WINDOW:' + network.compressed, API_WINDOW)
+        c = incr_sliding_window(valkey_client, 'ip_limit.API_WINDOW:' + network.compressed, API_WINDOW)
         if c > API_MAX:
             return too_many_requests(network, "too many request in API_WINDOW")
 
@@ -114,12 +114,12 @@ def filter_request(
 
         if not suspicious:
             # this IP is no longer suspicious: release ip again / delete the counter of this IP
-            drop_counter(redis_client, 'ip_limit.SUSPICIOUS_IP_WINDOW' + network.compressed)
+            drop_counter(valkey_client, 'ip_limit.SUSPICIOUS_IP_WINDOW' + network.compressed)
             return None
 
         # this IP is suspicious: count requests from this IP
         c = incr_sliding_window(
-            redis_client, 'ip_limit.SUSPICIOUS_IP_WINDOW' + network.compressed, SUSPICIOUS_IP_WINDOW
+            valkey_client, 'ip_limit.SUSPICIOUS_IP_WINDOW' + network.compressed, SUSPICIOUS_IP_WINDOW
         )
         if c > SUSPICIOUS_IP_MAX:
             logger.error("BLOCK: too many request from %s in SUSPICIOUS_IP_WINDOW (redirect to /)", network)
@@ -127,22 +127,22 @@ def filter_request(
             response.headers["Cache-Control"] = "no-store, max-age=0"
             return response
 
-        c = incr_sliding_window(redis_client, 'ip_limit.BURST_WINDOW' + network.compressed, BURST_WINDOW)
+        c = incr_sliding_window(valkey_client, 'ip_limit.BURST_WINDOW' + network.compressed, BURST_WINDOW)
         if c > BURST_MAX_SUSPICIOUS:
             return too_many_requests(network, "too many request in BURST_WINDOW (BURST_MAX_SUSPICIOUS)")
 
-        c = incr_sliding_window(redis_client, 'ip_limit.LONG_WINDOW' + network.compressed, LONG_WINDOW)
+        c = incr_sliding_window(valkey_client, 'ip_limit.LONG_WINDOW' + network.compressed, LONG_WINDOW)
         if c > LONG_MAX_SUSPICIOUS:
             return too_many_requests(network, "too many request in LONG_WINDOW (LONG_MAX_SUSPICIOUS)")
 
         return None
 
     # vanilla limiter without extensions counts BURST_MAX and LONG_MAX
-    c = incr_sliding_window(redis_client, 'ip_limit.BURST_WINDOW' + network.compressed, BURST_WINDOW)
+    c = incr_sliding_window(valkey_client, 'ip_limit.BURST_WINDOW' + network.compressed, BURST_WINDOW)
     if c > BURST_MAX:
         return too_many_requests(network, "too many request in BURST_WINDOW (BURST_MAX)")
 
-    c = incr_sliding_window(redis_client, 'ip_limit.LONG_WINDOW' + network.compressed, LONG_WINDOW)
+    c = incr_sliding_window(valkey_client, 'ip_limit.LONG_WINDOW' + network.compressed, LONG_WINDOW)
     if c > LONG_MAX:
         return too_many_requests(network, "too many request in LONG_WINDOW (LONG_MAX)")
 

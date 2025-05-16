@@ -140,7 +140,7 @@ proxy :ref:`installation nginx` into the archlinux container run:
 .. sidebar:: Fully functional SearXNG suite
 
    From here on you have a fully functional SearXNG suite (including a
-   :ref:`redis db`).
+   :ref:`valkey db`).
 
 In such a SearXNG suite admins can maintain and access the debug log of the
 services quite easy.
