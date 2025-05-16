@@ -9,6 +9,8 @@ SEARXNG_UWSGI_USE_SOCKET="${SEARXNG_UWSGI_USE_SOCKET:-true}"
 source "$(dirname "${BASH_SOURCE[0]}")/lib.sh"
 # shellcheck source=utils/lib_redis.sh
 source "$(dirname "${BASH_SOURCE[0]}")/lib_redis.sh"
+# shellcheck source=utils/lib_valkey.sh
+source "$(dirname "${BASH_SOURCE[0]}")/lib_valkey.sh"
 # shellcheck source=utils/brand.sh
 source "${REPO_ROOT}/utils/brand.sh"
 
@@ -119,8 +121,8 @@ usage() {
     # shellcheck disable=SC1117
     cat <<EOF
 usage:
-  $(basename "$0") install    [all|user|pyenv|settings|uwsgi|redis|nginx|apache|searxng-src|packages|buildhost]
-  $(basename "$0") remove     [all|user|pyenv|settings|uwsgi|redis|nginx|apache]
+  $(basename "$0") install    [all|user|pyenv|settings|uwsgi|valkey|nginx|apache|searxng-src|packages|buildhost]
+  $(basename "$0") remove     [all|user|pyenv|settings|uwsgi|valkey|nginx|apache]
   $(basename "$0") instance   [cmd|update|check|localtest|inspect]
 install|remove:
   all           : complete (de-) installation of the SearXNG service
@@ -128,9 +130,12 @@ install|remove:
   pyenv         : virtualenv (python) in ${SEARXNG_PYENV}
   settings      : settings from ${SEARXNG_SETTINGS_PATH}
   uwsgi         : SearXNG's uWSGI app ${SEARXNG_UWSGI_APP}
-  redis         : build & install or remove a local redis server ${REDIS_HOME}/run/redis.sock
   nginx         : HTTP site ${NGINX_APPS_AVAILABLE}/${NGINX_SEARXNG_SITE}
   apache        : HTTP site ${APACHE_SITES_AVAILABLE}/${APACHE_SEARXNG_SITE}
+install:
+  valkey        : install a local valkey server
+remove:
+  redis         : remove a local redis server ${REDIS_HOME}/run/redis.sock
 install:
   searxng-src   : clone ${GIT_URL} into ${SEARXNG_SRC}
   packages      : installs packages from OS package manager required by SearXNG
@@ -194,7 +199,7 @@ main() {
                 buildhost) searxng.install.buildhost;;
                 nginx) searxng.nginx.install;;
                 apache) searxng.apache.install;;
-                redis) searxng.install.redis;;
+                valkey) searxng.install.valkey;;
                 *) usage "$_usage"; exit 42;;
             esac
             ;;
@@ -208,6 +213,7 @@ main() {
                 uwsgi) searxng.remove.uwsgi;;
                 apache) searxng.apache.remove;;
                 remove) searxng.nginx.remove;;
+                valkey) searxng.remove.valkey;;
                 redis) searxng.remove.redis;;
                 *) usage "$_usage"; exit 42;;
             esac
@@ -259,7 +265,7 @@ main() {
 searxng.install.all() {
     rst_title "SearXNG installation" part
 
-    local redis_url
+    local valkey_url
 
     rst_title "SearXNG"
     searxng.install.packages
@@ -277,8 +283,8 @@ searxng.install.all() {
     searxng.install.uwsgi
     wait_key
 
-    rst_title "Redis DB"
-    searxng.install.redis.db
+    rst_title "Valkey DB"
+    searxng.install.valkey.db
 
     rst_title "HTTP Server"
     searxng.install.http.site
@@ -289,77 +295,35 @@ searxng.install.all() {
     fi
 }
 
-searxng.install.redis.db() {
-    local redis_url
+searxng.install.valkey.db() {
+    local valkey_url
 
-    redis_url=$(searxng.instance.get_setting redis.url)
-    rst_para "\
-In your instance, redis DB connector is configured at:
+    valkey_url=$(searxng.instance.get_setting valkey.url)
 
-    ${redis_url}
+    if [ "${valkey_url}" = "False" ]; then
+        rst_para "valkey DB connector is not configured in your instance"
+    else
+        rst_para "\
+In your instance, valkey DB connector is configured at:
+
+    ${valkey_url}
 "
-    if searxng.instance.exec python -c "from searx import redisdb; redisdb.initialize() or exit(42)"; then
-        info_msg "SearXNG instance is able to connect redis DB."
+        if searxng.instance.exec python -c "from searx import valkeydb; valkeydb.initialize() or exit(42)"; then
+            info_msg "SearXNG instance is able to connect valkey DB."
+            return
+        fi
+    fi
+
+    if ! [[ ${valkey_url} = valkey://localhost:6379/* ]]; then
+        err_msg "SearXNG instance can't connect valkey DB / check valkey & your settings"
         return
     fi
-    if ! [[ ${redis_url} = unix://${REDIS_HOME}/run/redis.sock* ]]; then
-        err_msg "SearXNG instance can't connect redis DB / check redis & your settings"
-        return
+    rst_para ".. but this valkey DB is not installed yet."
+
+    if ask_yn "Do you want to install the valkey DB now?" Yn; then
+        searxng.install.valkey
+        uWSGI_restart "$SEARXNG_UWSGI_APP"
     fi
-    rst_para ".. but this redis DB is not installed yet."
-
-    case $DIST_ID-$DIST_VERS in
-        fedora-*)
-            # Fedora runs uWSGI in emperor-tyrant mode: in Tyrant mode the
-            # Emperor will run the vassal using the UID/GID of the vassal
-            # configuration file [1] (user and group of the app .ini file).
-            #
-            # HINT: without option ``emperor-tyrant-initgroups=true`` in
-            # ``/etc/uwsgi.ini`` the process won't get the additional groups,
-            # but this option is not available in 2.0.x branch [2][3] / on
-            # fedora35 there is v2.0.20 installed --> no way to get additional
-            # groups on fedora's tyrant mode.
-            #
-            # ERROR:searx.redisdb: [searxng (993)] can't connect redis DB ...
-            # ERROR:searx.redisdb:   Error 13 connecting to unix socket: /usr/local/searxng-redis/run/redis.sock. Permission denied.
-            # ERROR:searx.plugins.limiter: init limiter DB failed!!!
-            #
-            # $ ps -aef | grep '/usr/sbin/uwsgi --ini searxng.ini'
-            # searxng       93      92  0 12:43 ?        00:00:00 /usr/sbin/uwsgi --ini searxng.ini
-            # searxng      186      93  0 12:44 ?        00:00:01 /usr/sbin/uwsgi --ini searxng.ini
-            #
-            # Additional groups:
-            #
-            # $ groups searxng
-            # searxng : searxng searxng-redis
-            #
-            # Here you can see that the additional "Groups" of PID 186 are unset
-            # (missing gid of searxng-redis)
-            #
-            # $ cat /proc/186/task/186/status
-            # ...
-            # Uid:      993     993     993     993
-            # Gid:      993     993     993     993
-            # FDSize:   128
-            # Groups:
-            # ...
-            #
-            # [1] https://uwsgi-docs.readthedocs.io/en/latest/Emperor.html#tyrant-mode-secure-multi-user-hosting
-            # [2] https://github.com/unbit/uwsgi/issues/2099
-            # [3] https://github.com/unbit/uwsgi/pull/752
-
-            rst_para "\
-Fedora uses emperor-tyrant mode / in this mode we had a lot of trouble with
-sockets and permissions of the vasals.  We recommend to setup a redis DB
-and using redis:// TCP protocol in the settings.yml configuration."
-            ;;
-        *)
-            if ask_yn "Do you want to install the redis DB now?" Yn; then
-                searxng.install.redis
-                uWSGI_restart "$SEARXNG_UWSGI_APP"
-            fi
-            ;;
-    esac
 }
 
 searxng.install.http.site() {
@@ -380,16 +344,16 @@ searxng.install.http.site() {
 }
 
 searxng.remove.all() {
-    local redis_url
+    local valkey_url
 
     rst_title "De-Install SearXNG (service)"
     if ! ask_yn "Do you really want to deinstall SearXNG?"; then
         return
     fi
 
-    redis_url=$(searxng.instance.get_setting redis.url)
-    if ! [[ ${redis_url} = unix://${REDIS_HOME}/run/redis.sock* ]]; then
-        searxng.remove.redis
+    valkey_url=$(searxng.instance.get_setting valkey.url)
+    if ! [[ ${valkey_url} = unix://${VALKEY_HOME}/run/valkey.sock* ]]; then
+        searxng.remove.valkey
     fi
 
     searxng.remove.uwsgi
@@ -642,18 +606,17 @@ searxng.remove.uwsgi() {
     uWSGI_remove_app "${SEARXNG_UWSGI_APP}"
 }
 
-searxng.install.redis() {
-    rst_title "SearXNG (install redis)"
-    redis.build
-    redis.install
-    redis.addgrp "${SERVICE_USER}"
-}
-
 searxng.remove.redis() {
     rst_title "SearXNG (remove redis)"
     redis.rmgrp "${SERVICE_USER}"
     redis.remove
 }
+
+searxng.install.valkey() {
+    rst_title "SearXNG (install valkey)"
+    valkey.install
+}
+
 
 searxng.instance.localtest() {
     rst_title "Test SearXNG instance locally" section
@@ -690,11 +653,11 @@ To install uWSGI use::
         die 42 "SearXNG's uWSGI app not available"
     fi
 
-    if ! searxng.instance.exec python -c "from searx import redisdb; redisdb.initialize() or exit(42)"; then
+    if ! searxng.instance.exec python -c "from searx import valkeydb; valkeydb.initialize() or exit(42)"; then
         rst_para "\
-The configured redis DB is not available: If your server is public to the
+The configured valkey DB is not available: If your server is public to the
 internet, you should setup a bot protection to block excessively bot queries.
-Bot protection requires a redis DB.  About bot protection visit the official
+Bot protection requires a valkey DB.  About bot protection visit the official
 SearXNG documentation and query for the word 'limiter'.
 "
     fi

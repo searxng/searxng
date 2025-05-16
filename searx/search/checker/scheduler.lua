@@ -2,9 +2,9 @@
 --
 -- This script is not a string in scheduler.py, so editors can provide syntax highlighting.
 
--- The Redis KEY is defined here and not in Python on purpose:
+-- The Valkey KEY is defined here and not in Python on purpose:
 -- only this LUA script can read and update this key to avoid lock and concurrency issues.
-local redis_key = 'SearXNG_checker_next_call_ts'
+local valkey_key = 'SearXNG_checker_next_call_ts'
 
 local now = redis.call('TIME')[1]
 local start_after_from = ARGV[1]
@@ -12,14 +12,14 @@ local start_after_to = ARGV[2]
 local every_from = ARGV[3]
 local every_to = ARGV[4]
 
-local next_call_ts = redis.call('GET', redis_key)
+local next_call_ts = redis.call('GET', valkey_key)
 
 if (next_call_ts == false or next_call_ts == nil) then
-    -- the scheduler has never run on this Redis instance, so:
+    -- the scheduler has never run on this Valkey instance, so:
     -- 1/ the scheduler does not run now
     -- 2/ the next call is a random time between start_after_from and start_after_to
     local initial_delay = math.random(start_after_from, start_after_to)
-    redis.call('SET', redis_key, now + initial_delay)
+    redis.call('SET', valkey_key, now + initial_delay)
     return { false, initial_delay }
 end
 
@@ -31,6 +31,6 @@ if call_now then
     -- the checker runs now, define the timestamp of the next call:
     -- this is a random delay between every_from and every_to
     local periodic_delay = math.random(every_from, every_to)
-    next_call_ts = redis.call('INCRBY', redis_key, periodic_delay)
+    next_call_ts = redis.call('INCRBY', valkey_key, periodic_delay)
 end
 return { call_now, next_call_ts - now }
