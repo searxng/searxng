@@ -8,18 +8,18 @@ import os
 import signal
 from typing import Any, Dict, List, Literal, Optional, Tuple, TypedDict, Union
 
-import redis.exceptions
+import valkey.exceptions
 
 from searx import logger, settings, sxng_debug
-from searx.redisdb import client as get_redis_client
+from searx.valkeydb import client as get_valkey_client
 from searx.exceptions import SearxSettingsException
 from searx.search.processors import PROCESSORS
 from searx.search.checker import Checker
 from searx.search.checker.scheduler import scheduler_function
 
 
-REDIS_RESULT_KEY = 'SearXNG_checker_result'
-REDIS_LOCK_KEY = 'SearXNG_checker_lock'
+VALKEY_RESULT_KEY = 'SearXNG_checker_result'
+VALKEY_LOCK_KEY = 'SearXNG_checker_lock'
 
 
 CheckerResult = Union['CheckerOk', 'CheckerErr', 'CheckerOther']
@@ -77,23 +77,23 @@ def _get_interval(every: Any, error_msg: str) -> Tuple[int, int]:
 
 
 def get_result() -> CheckerResult:
-    client = get_redis_client()
+    client = get_valkey_client()
     if client is None:
-        # without Redis, the checker is disabled
+        # without Valkey, the checker is disabled
         return {'status': 'disabled'}
-    serialized_result: Optional[bytes] = client.get(REDIS_RESULT_KEY)
+    serialized_result: Optional[bytes] = client.get(VALKEY_RESULT_KEY)
     if serialized_result is None:
-        # the Redis key does not exist
+        # the Valkey key does not exist
         return {'status': 'unknown'}
     return json.loads(serialized_result)
 
 
 def _set_result(result: CheckerResult):
-    client = get_redis_client()
+    client = get_valkey_client()
     if client is None:
-        # without Redis, the function does nothing
+        # without Valkey, the function does nothing
         return
-    client.set(REDIS_RESULT_KEY, json.dumps(result))
+    client.set(VALKEY_RESULT_KEY, json.dumps(result))
 
 
 def _timestamp():
@@ -102,9 +102,9 @@ def _timestamp():
 
 def run():
     try:
-        # use a Redis lock to make sure there is no checker running at the same time
+        # use a Valkey lock to make sure there is no checker running at the same time
         # (this should not happen, this is a safety measure)
-        with get_redis_client().lock(REDIS_LOCK_KEY, blocking_timeout=60, timeout=3600):
+        with get_valkey_client().lock(VALKEY_LOCK_KEY, blocking_timeout=60, timeout=3600):
             logger.info('Starting checker')
             result: CheckerOk = {'status': 'ok', 'engines': {}, 'timestamp': _timestamp()}
             for name, processor in PROCESSORS.items():
@@ -118,7 +118,7 @@ def run():
 
             _set_result(result)
             logger.info('Check done')
-    except redis.exceptions.LockError:
+    except valkey.exceptions.LockError:
         _set_result({'status': 'error', 'timestamp': _timestamp()})
         logger.exception('Error while running the checker')
     except Exception:  # pylint: disable=broad-except
@@ -149,9 +149,9 @@ def initialize():
         logger.info('Checker scheduler is disabled')
         return
 
-    # make sure there is a Redis connection
-    if get_redis_client() is None:
-        logger.error('The checker requires Redis')
+    # make sure there is a Valkey connection
+    if get_valkey_client() is None:
+        logger.error('The checker requires Valkey')
         return
 
     # start the background scheduler

@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-"""Redis is an open source (BSD licensed), in-memory data structure (key value
-based) store.  Before configuring the ``redis_server`` engine, you must install
-the dependency redis_.
+"""Valkey is an open source (BSD licensed), in-memory data structure (key value
+based) store.  Before configuring the ``valkey_server`` engine, you must install
+the dependency valkey_.
 
 Configuration
 =============
@@ -17,11 +17,11 @@ Below is an example configuration:
 
 .. code:: yaml
 
-  # Required dependency: redis
+  # Required dependency: valkey
 
-  - name: myredis
+  - name: myvalkey
     shortcut : rds
-    engine: redis_server
+    engine: valkey_server
     exact_match_only: false
     host: '127.0.0.1'
     port: 6379
@@ -34,13 +34,13 @@ Implementations
 
 """
 
-import redis  # pylint: disable=import-error
+import valkey  # pylint: disable=import-error
 
 from searx.result_types import EngineResults
 
 engine_type = 'offline'
 
-# redis connection variables
+# valkey connection variables
 host = '127.0.0.1'
 port = 6379
 password = ''
@@ -50,12 +50,12 @@ db = 0
 paging = False
 exact_match_only = True
 
-_redis_client = None
+_valkey_client = None
 
 
 def init(_engine_settings):
-    global _redis_client  # pylint: disable=global-statement
-    _redis_client = redis.StrictRedis(
+    global _valkey_client  # pylint: disable=global-statement
+    _valkey_client = valkey.StrictValkey(
         host=host,
         port=port,
         db=db,
@@ -72,28 +72,28 @@ def search(query, _params) -> EngineResults:
             res.add(res.types.KeyValue(kvmap=kvmap))
         return res
 
-    kvmap: dict[str, str] = _redis_client.hgetall(query)
+    kvmap: dict[str, str] = _valkey_client.hgetall(query)
     if kvmap:
         res.add(res.types.KeyValue(kvmap=kvmap))
     elif " " in query:
         qset, rest = query.split(" ", 1)
-        for row in _redis_client.hscan_iter(qset, match='*{}*'.format(rest)):
+        for row in _valkey_client.hscan_iter(qset, match='*{}*'.format(rest)):
             res.add(res.types.KeyValue(kvmap={row[0]: row[1]}))
     return res
 
 
 def search_keys(query) -> list[dict]:
     ret = []
-    for key in _redis_client.scan_iter(match='*{}*'.format(query)):
-        key_type = _redis_client.type(key)
+    for key in _valkey_client.scan_iter(match='*{}*'.format(query)):
+        key_type = _valkey_client.type(key)
         res = None
 
         if key_type == 'hash':
-            res = _redis_client.hgetall(key)
+            res = _valkey_client.hgetall(key)
         elif key_type == 'list':
-            res = dict(enumerate(_redis_client.lrange(key, 0, -1)))
+            res = dict(enumerate(_valkey_client.lrange(key, 0, -1)))
 
         if res:
-            res['redis_key'] = key
+            res['valkey_key'] = key
             ret.append(res)
     return ret

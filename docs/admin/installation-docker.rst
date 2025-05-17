@@ -8,7 +8,7 @@ Docker Container
 .. _searxng/searxng @dockerhub: https://hub.docker.com/r/searxng/searxng
 .. _searxng-docker: https://github.com/searxng/searxng-docker
 .. _[caddy]: https://hub.docker.com/_/caddy
-.. _Redis: https://redis.io/
+.. _Valkey: https://valkey.io/
 
 ----
 
@@ -36,7 +36,7 @@ docker container**
 The sources are hosted at searxng-docker_ and the container includes:
 
 - a HTTPS reverse proxy `[caddy]`_ and
-- a Redis_ DB
+- a Valkey_ DB
 
 The `default SearXNG setup <https://github.com/searxng/searxng-docker/blob/master/searxng/settings.yml>`_
 of this container:
