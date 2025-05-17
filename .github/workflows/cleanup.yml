@@ -5,7 +5,7 @@ name: Cleanup
 on:
   workflow_dispatch:
   schedule:
-    - cron: "4 4 * * 0"
+    - cron: "4 4 * * *"
 
 concurrency:
   group: ${{ github.workflow }}
@@ -28,7 +28,7 @@ jobs:
         with:
           account: "${{ github.repository_owner }}"
           token: "${{ secrets.GITHUB_TOKEN }}"
-          image-names: "cache"
-          image-tags: "!searxng-*"
-          cut-off: "1w"
+          image-names: "cache base"
+          image-tags: "!searxng*"
+          cut-off: "1d"
           keep-n-most-recent: "100"
