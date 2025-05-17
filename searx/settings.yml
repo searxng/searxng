@@ -1711,6 +1711,8 @@ engines:
     disabled: true
     additional_tests:
       rosebud: *test_rosebud
+    network:
+      impersonate: chrome
 
   - name: qwant news
     qwant_categ: news
