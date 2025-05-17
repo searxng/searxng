@@ -13,14 +13,14 @@
 
 from __future__ import annotations
 
-__all__ = ["Result", "MainResult", "KeyValue", "EngineResults", "AnswerSet", "Answer", "Translations"]
+__all__ = ["Result", "MainResult", "KeyValue", "EngineResults", "AnswerSet", "Answer", "Translations", "WeatherAnswer"]
 
 import abc
 
 from searx import enginelib
 
 from ._base import Result, MainResult, LegacyResult
-from .answer import AnswerSet, Answer, Translations
+from .answer import AnswerSet, Answer, Translations, WeatherAnswer
 from .keyvalue import KeyValue
 
 
@@ -35,6 +35,7 @@ class ResultList(list, abc.ABC):
         MainResult = MainResult
         Result = Result
         Translations = Translations
+        WeatherAnswer = WeatherAnswer
 
         # for backward compatibility
         LegacyResult = LegacyResult
