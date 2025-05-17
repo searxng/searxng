@@ -11,10 +11,15 @@ from ssl import SSLContext
 import threading
 
 import httpx
-from httpx_socks import AsyncProxyTransport
+import httpx_curl_cffi
+import httpx_socks  # pyright: ignore[reportMissingTypeStubs]
 from python_socks import parse_proxy_url, ProxyConnectionError, ProxyTimeoutError, ProxyError
 
 from searx import logger
+
+if t.TYPE_CHECKING:
+    from curl_cffi import BrowserTypeLiteral
+
 
 CertTypes = str | tuple[str, str] | tuple[str, str, str]
 SslContextKeyType = tuple[str | None, CertTypes | None, bool, bool]
@@ -94,7 +99,7 @@ class AsyncHTTPTransportNoHttp(httpx.AsyncHTTPTransport):
         pass
 
 
-class AsyncProxyTransportFixed(AsyncProxyTransport):
+class AsyncProxyTransportFixed(httpx_socks.AsyncProxyTransport):
     """Fix httpx_socks.AsyncProxyTransport
 
     Map python_socks exceptions to httpx.ProxyError exceptions
@@ -112,7 +117,7 @@ class AsyncProxyTransportFixed(AsyncProxyTransport):
 
 
 def get_transport_for_socks_proxy(
-    verify: bool, http2: bool, local_address: str, proxy_url: str, limit: httpx.Limits, retries: int
+    verify: bool, http2: bool, local_address: str | None, proxy_url: str, limit: httpx.Limits, retries: int
 ):
     # support socks5h (requests compatibility):
     # https://requests.readthedocs.io/en/master/user/advanced/#socks
@@ -143,7 +148,7 @@ def get_transport_for_socks_proxy(
 
 
 def get_transport(
-    verify: bool, http2: bool, local_address: str, proxy_url: str | None, limit: httpx.Limits, retries: int
+    verify: bool, http2: bool, local_address: str | None, proxy_url: str | None, limit: httpx.Limits, retries: int
 ):
     _verify = get_sslcontexts(None, None, verify, True) if verify is True else verify
     return httpx.AsyncHTTPTransport(
@@ -159,6 +164,7 @@ def get_transport(
 
 def new_client(
     # pylint: disable=too-many-arguments
+    impersonate: "BrowserTypeLiteral | None",
     enable_http: bool,
     verify: bool,
     enable_http2: bool,
@@ -166,7 +172,7 @@ def new_client(
     max_keepalive_connections: int,
     keepalive_expiry: float,
     proxies: dict[str, str],
-    local_address: str,
+    local_address: str | None,
     retries: int,
     max_redirects: int,
     hook_log_response: t.Callable[..., t.Any] | None,
@@ -176,13 +182,31 @@ def new_client(
         max_keepalive_connections=max_keepalive_connections,
         keepalive_expiry=keepalive_expiry,
     )
+
     # See https://www.python-httpx.org/advanced/#routing
     mounts = {}
     mounts: None | (dict[str, t.Any | None]) = {}
+
+    # build transport object
+
     for pattern, proxy_url in proxies.items():
         if not enable_http and pattern.startswith('http://'):
             continue
-        if proxy_url.startswith('socks4://') or proxy_url.startswith('socks5://') or proxy_url.startswith('socks5h://'):
+        if impersonate:
+            mounts[pattern] = httpx_curl_cffi.AsyncCurlTransport(
+                impersonate=impersonate,
+                default_headers=True,
+                # required for parallel requests, see curl_cffi issues below
+                curl_options={httpx_curl_cffi.CurlOpt.FRESH_CONNECT: True},
+                http_version=(
+                    httpx_curl_cffi.CurlHttpVersion.V3 if enable_http2 else httpx_curl_cffi.CurlHttpVersion.V1_1
+                ),
+                proxy=proxy_url,
+                local_address=local_address,
+            )
+        elif (
+            proxy_url.startswith('socks4://') or proxy_url.startswith('socks5://') or proxy_url.startswith('socks5h://')
+        ):
             mounts[pattern] = get_transport_for_socks_proxy(
                 verify, enable_http2, local_address, proxy_url, limit, retries
             )
@@ -192,11 +216,25 @@ def new_client(
     if not enable_http:
         mounts['http://'] = AsyncHTTPTransportNoHttp()
 
-    transport = get_transport(verify, enable_http2, local_address, None, limit, retries)
+    if impersonate:
+        logger.debug("transport layer for this client is impersonate: %s", impersonate)
+        transport = httpx_curl_cffi.AsyncCurlTransport(
+            impersonate=impersonate,
+            default_headers=True,
+            # required for parallel requests, see curl_cffi issues below
+            curl_options={httpx_curl_cffi.CurlOpt.FRESH_CONNECT: True},
+            http_version=httpx_curl_cffi.CurlHttpVersion.V3 if enable_http2 else httpx_curl_cffi.CurlHttpVersion.V1_1,
+            local_address=local_address,
+        )
+    else:
+        logger.debug("transport layer for this client is httpx.AsyncHTTPTransport")
+        transport = get_transport(verify, enable_http2, local_address, None, limit, retries)
 
     event_hooks = None
     if hook_log_response:
         event_hooks = {'response': [hook_log_response]}
+
+    # build client ..
 
     return httpx.AsyncClient(
         transport=transport,

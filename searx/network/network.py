@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-# pylint: disable=global-statement
+# pylint: disable=global-statement, too-many-arguments, too-many-positional-arguments
 # pylint: disable=missing-module-docstring, missing-class-docstring
 
 __all__ = ["get_network"]
@@ -20,6 +20,8 @@ from searx.extended_types import SXNG_Response
 from .client import new_client, get_loop, AsyncHTTPTransportNoHttp
 from .raise_for_httperror import raise_for_httperror
 
+if t.TYPE_CHECKING:
+    from curl_cffi import BrowserTypeLiteral
 
 logger = logger.getChild('network')
 DEFAULT_NAME = '__DEFAULT__'
@@ -44,29 +46,9 @@ ADDRESS_MAPPING = {'ipv4': '0.0.0.0', 'ipv6': '::'}
 @t.final
 class Network:
 
-    __slots__ = (
-        'enable_http',
-        'verify',
-        'enable_http2',
-        'max_connections',
-        'max_keepalive_connections',
-        'keepalive_expiry',
-        'local_addresses',
-        'proxies',
-        'using_tor_proxy',
-        'max_redirects',
-        'retries',
-        'retry_on_http_error',
-        '_local_addresses_cycle',
-        '_proxies_cycle',
-        '_clients',
-        '_logger',
-    )
-
     _TOR_CHECK_RESULT = {}
 
     def __init__(
-        # pylint: disable=too-many-arguments
         self,
         enable_http: bool = True,
         verify: bool = True,
@@ -81,6 +63,7 @@ class Network:
         retry_on_http_error: bool = False,
         max_redirects: int = 30,
         logger_name: str = None,  # pyright: ignore[reportArgumentType]
+        impersonate: "BrowserTypeLiteral | None" = None,
     ):
 
         self.enable_http = enable_http
@@ -95,9 +78,10 @@ class Network:
         self.retries = retries
         self.retry_on_http_error = retry_on_http_error
         self.max_redirects = max_redirects
+        self.impersonate: "BrowserTypeLiteral | None" = impersonate
         self._local_addresses_cycle = self.get_ipaddress_cycle()
         self._proxies_cycle = self.get_proxy_cycles()
-        self._clients = {}
+        self._clients: dict[t.Any, httpx.AsyncClient] = {}
         self._logger = logger.getChild(logger_name) if logger_name else logger
         self.check_parameters()
 
@@ -119,7 +103,7 @@ class Network:
             local_addresses = [local_addresses]
         yield from local_addresses
 
-    def get_ipaddress_cycle(self):
+    def get_ipaddress_cycle(self) -> Generator[str | None]:
         while True:
             count = 0
             for address in self.iter_ipaddresses():
@@ -190,23 +174,24 @@ class Network:
     async def get_client(self, verify: bool | None = None, max_redirects: int | None = None) -> httpx.AsyncClient:
         verify = self.verify if verify is None else verify
         max_redirects = self.max_redirects if max_redirects is None else max_redirects
-        local_address = next(self._local_addresses_cycle)
+        local_address: str | None = next(self._local_addresses_cycle)
         proxies = next(self._proxies_cycle)  # is a tuple so it can be part of the key
-        key = (verify, max_redirects, local_address, proxies)
+        key = (verify, max_redirects, local_address, proxies, self.impersonate)
         hook_log_response = self.log_response if sxng_debug else None
         if key not in self._clients or self._clients[key].is_closed:
             client = new_client(
-                self.enable_http,
-                verify,
-                self.enable_http2,
-                self.max_connections,
-                self.max_keepalive_connections,
-                self.keepalive_expiry,
-                dict(proxies),
-                local_address,
-                0,
-                max_redirects,
-                hook_log_response,
+                impersonate=self.impersonate,
+                enable_http=self.enable_http,
+                verify=verify,
+                enable_http2=self.enable_http2,
+                max_connections=self.max_connections,
+                max_keepalive_connections=self.max_keepalive_connections,
+                keepalive_expiry=self.keepalive_expiry,
+                proxies=dict(proxies),
+                local_address=local_address,
+                retries=0,
+                max_redirects=max_redirects,
+                hook_log_response=hook_log_response,
             )
             if self.using_tor_proxy and not await self.check_tor_proxy(client, proxies):
                 await client.aclose()
@@ -274,10 +259,21 @@ class Network:
         was_disconnected = False
         do_raise_for_httperror = Network.extract_do_raise_for_httperror(kwargs)
         kwargs_clients = Network.extract_kwargs_clients(kwargs)
+
+        cookies = kwargs.pop("cookies", None)
+        kwargs["headers"] = {k.lower(): v for k, v in kwargs.get("headers", {}).items()}
+
+        if self.impersonate:
+            # In impersonate mode, it must be prevented that the User-Agent
+            # header from the browser is overwritten by the application; we use
+            # the default headers from:
+            # https://curl-cffi.readthedocs.io/en/latest/api.html#curl_cffi.Curl.impersonate:
+            kwargs["headers"].pop("user-agent", None)
+
         while retries >= 0:  # pragma: no cover
             client = await self.get_client(**kwargs_clients)
-            cookies = kwargs.pop("cookies", None)
             client.cookies = httpx.Cookies(cookies)
+
             try:
                 if stream:
                     return client.stream(method, url, **kwargs)
