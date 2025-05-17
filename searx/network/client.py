@@ -11,7 +11,15 @@ from typing import Any, Dict
 import httpx
 from httpx_socks import AsyncProxyTransport
 from python_socks import parse_proxy_url, ProxyConnectionError, ProxyTimeoutError, ProxyError
+
 import uvloop
+
+try:
+    from httpx_curl_cffi import AsyncCurlTransport, CurlOpt, CurlHttpVersion
+except ImportError:
+    AsyncCurlTransport = None
+    CurlOpt = None
+    CurlHttpVersion = None
 
 from searx import logger
 
@@ -24,7 +32,7 @@ LOOP = None
 SSLCONTEXTS: Dict[Any, SSLContext] = {}
 
 
-def shuffle_ciphers(ssl_context):
+def shuffle_ciphers(ssl_context: SSLContext):
     """Shuffle httpx's default ciphers of a SSL context randomly.
 
     From `What Is TLS Fingerprint and How to Bypass It`_
@@ -41,16 +49,16 @@ def shuffle_ciphers(ssl_context):
        https://www.zenrows.com/blog/what-is-tls-fingerprint#how-to-bypass-tls-fingerprinting
 
     """
-    c_list = httpx._config.DEFAULT_CIPHERS.split(':')  # pylint: disable=protected-access
+    c_list = [cipher["name"] for cipher in ssl_context.get_ciphers()]
     sc_list, c_list = c_list[:3], c_list[3:]
     random.shuffle(c_list)
     ssl_context.set_ciphers(":".join(sc_list + c_list))
 
 
-def get_sslcontexts(proxy_url=None, cert=None, verify=True, trust_env=True, http2=False):
-    key = (proxy_url, cert, verify, trust_env, http2)
+def get_sslcontexts(proxy_url=None, cert=None, verify=True, trust_env=True):
+    key = (proxy_url, cert, verify, trust_env)
     if key not in SSLCONTEXTS:
-        SSLCONTEXTS[key] = httpx.create_ssl_context(cert, verify, trust_env, http2)
+        SSLCONTEXTS[key] = httpx.create_ssl_context(verify, cert, trust_env)
     shuffle_ciphers(SSLCONTEXTS[key])
     return SSLCONTEXTS[key]
 
@@ -120,7 +128,7 @@ def get_transport_for_socks_proxy(verify, http2, local_address, proxy_url, limit
         rdns = True
 
     proxy_type, proxy_host, proxy_port, proxy_username, proxy_password = parse_proxy_url(proxy_url)
-    verify = get_sslcontexts(proxy_url, None, verify, True, http2) if verify is True else verify
+    verify = get_sslcontexts(proxy_url, None, verify, True) if verify is True else verify
     return AsyncProxyTransportFixed(
         proxy_type=proxy_type,
         proxy_host=proxy_host,
@@ -138,7 +146,7 @@ def get_transport_for_socks_proxy(verify, http2, local_address, proxy_url, limit
 
 
 def get_transport(verify, http2, local_address, proxy_url, limit, retries):
-    verify = get_sslcontexts(None, None, verify, True, http2) if verify is True else verify
+    verify = get_sslcontexts(None, None, verify, True) if verify is True else verify
     return httpx.AsyncHTTPTransport(
         # pylint: disable=protected-access
         verify=verify,
@@ -152,6 +160,7 @@ def get_transport(verify, http2, local_address, proxy_url, limit, retries):
 
 def new_client(
     # pylint: disable=too-many-arguments
+    impersonate,
     enable_http,
     verify,
     enable_http2,
@@ -169,12 +178,27 @@ def new_client(
         max_keepalive_connections=max_keepalive_connections,
         keepalive_expiry=keepalive_expiry,
     )
+    if impersonate and (AsyncCurlTransport is None or CurlOpt is None):
+        raise ValueError("impersonate require the AMD64 or ARM64 architecture")
+
     # See https://www.python-httpx.org/advanced/#routing
     mounts = {}
     for pattern, proxy_url in proxies.items():
         if not enable_http and pattern.startswith('http://'):
             continue
-        if proxy_url.startswith('socks4://') or proxy_url.startswith('socks5://') or proxy_url.startswith('socks5h://'):
+        if impersonate and AsyncCurlTransport is not None and CurlOpt is not None and CurlHttpVersion is not None:
+            mounts[pattern] = AsyncCurlTransport(
+                impersonate=impersonate,
+                default_headers=True,
+                # required for parallel requests, see curl_cffi issues below
+                curl_options={CurlOpt.FRESH_CONNECT: True},
+                http_version=CurlHttpVersion.V3 if enable_http2 else CurlHttpVersion.V1_1,
+                proxy=proxy_url,
+                local_address=local_address,
+            )
+        elif (
+            proxy_url.startswith('socks4://') or proxy_url.startswith('socks5://') or proxy_url.startswith('socks5h://')
+        ):
             mounts[pattern] = get_transport_for_socks_proxy(
                 verify, enable_http2, local_address, proxy_url, limit, retries
             )
@@ -184,7 +208,17 @@ def new_client(
     if not enable_http:
         mounts['http://'] = AsyncHTTPTransportNoHttp()
 
-    transport = get_transport(verify, enable_http2, local_address, None, limit, retries)
+    if impersonate and AsyncCurlTransport is not None and CurlOpt is not None and CurlHttpVersion is not None:
+        transport = AsyncCurlTransport(
+            impersonate=impersonate,
+            default_headers=True,
+            # required for parallel requests, see curl_cffi issues below
+            curl_options={CurlOpt.FRESH_CONNECT: True},
+            http_version=CurlHttpVersion.V3 if enable_http2 else CurlHttpVersion.V1_1,
+            local_address=local_address,
+        )
+    else:
+        transport = get_transport(verify, enable_http2, local_address, None, limit, retries)
 
     event_hooks = None
     if hook_log_response:
