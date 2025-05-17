@@ -1,0 +1,27 @@
+contents:
+  keyring:
+    - https://packages.wolfi.dev/os/wolfi-signing.rsa.pub
+  repositories:
+    - https://packages.wolfi.dev/os
+  packages:
+    - wolfi-baselayout
+    - ca-certificates-bundle
+    - busybox
+    - build-base
+    - python-3.13-dev
+    - py3-pip
+    - brotli
+
+entrypoint:
+  command: /bin/sh -l
+
+work-dir: /usr/local/searxng/
+
+environment:
+  PATH: /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+  SSL_CERT_FILE: /etc/ssl/certs/ca-certificates.crt
+  HISTFILE: /dev/null
+
+archs:
+  - x86_64
+  - aarch64
