@@ -10,11 +10,9 @@ RUN --mount=type=cache,id=pip,target=/root/.cache/pip python -m venv ./venv \
 COPY ./searx/ ./searx/
 
 ARG TIMESTAMP_SETTINGS="0"
-ARG TIMESTAMP_UWSGI="0"
 
 RUN python -m compileall -q searx \
  && touch -c --date=@$TIMESTAMP_SETTINGS ./searx/settings.yml \
- && touch -c --date=@$TIMESTAMP_UWSGI ./container/uwsgi.ini \
  && find ./searx/static \
     \( -name "*.html" -o -name "*.css" -o -name "*.js" -o -name "*.svg" -o -name "*.ttf" -o -name "*.eot" \) \
     -type f -exec gzip -9 -k {} + -exec brotli --best {} +
@@ -29,7 +27,12 @@ ARG LABEL_VCS_URL="unspecified"
 
 COPY --chown=searxng:searxng --from=builder /usr/local/searxng/venv/ ./venv/
 COPY --chown=searxng:searxng --from=builder /usr/local/searxng/searx/ ./searx/
-COPY --chown=searxng:searxng ./container/ ./container/
+COPY --chown=searxng:searxng ./container/config/ ./.template/
+COPY --chown=searxng:searxng ./container/entrypoint.sh ./entrypoint.sh
+
+ARG TIMESTAMP_UWSGI="0"
+
+RUN touch -c --date=@$TIMESTAMP_UWSGI ./.template/uwsgi.ini
 
 LABEL org.opencontainers.image.authors="searxng <$GIT_URL>" \
       org.opencontainers.image.created="$LABEL_DATE" \
@@ -59,4 +62,4 @@ EXPOSE 8080
 
 HEALTHCHECK CMD wget --quiet --tries=1 --spider http://localhost:8080/healthz || exit 1
 
-ENTRYPOINT ["/usr/local/searxng/container/docker-entrypoint.sh"]
+ENTRYPOINT ["/usr/local/searxng/entrypoint.sh"]

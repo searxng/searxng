@@ -181,10 +181,10 @@ Command line
    <https://docs.docker.com/engine/reference/run/#foreground>`__.
 
 In the :origin:`Dockerfile` the ENTRYPOINT_ is defined as
-:origin:`container/docker-entrypoint.sh`
+:origin:`container/entrypoint.sh`
 
 .. code:: sh
 
     docker run --rm -it searxng/searxng -h
 
-.. program-output:: ../container/docker-entrypoint.sh -h
+.. program-output:: ../container/entrypoint.sh -h

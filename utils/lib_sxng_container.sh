@@ -114,7 +114,6 @@ container.build() {
         # shellcheck disable=SC2086
         "$container_engine" $params_build_builder \
             --build-arg="TIMESTAMP_SETTINGS=$(git log -1 --format="%cd" --date=unix -- ./searx/settings.yml)" \
-            --build-arg="TIMESTAMP_UWSGI=$(git log -1 --format="%cd" --date=unix -- ./container/uwsgi.ini)" \
             --tag="localhost/$CONTAINER_IMAGE_ORGANIZATION/$CONTAINER_IMAGE_NAME:builder" \
             --file="./container/$dockerfile" \
             .
@@ -122,6 +121,8 @@ container.build() {
 
         # shellcheck disable=SC2086
         "$container_engine" $params_build \
+            --build-arg="TIMESTAMP_SETTINGS=$(git log -1 --format="%cd" --date=unix -- ./searx/settings.yml)" \
+            --build-arg="TIMESTAMP_UWSGI=$(git log -1 --format="%cd" --date=unix -- ./container/config/uwsgi.ini)" \
             --build-arg="GIT_URL=$GIT_URL" \
             --build-arg="SEARXNG_GIT_VERSION=$VERSION_STRING" \
             --build-arg="LABEL_DATE=$(date -u +%Y-%m-%dT%H:%M:%SZ)" \
