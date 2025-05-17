@@ -149,6 +149,21 @@ def mwmbl(query, _lang):
     return [result for result in results if not result.startswith("go: ") and not result.startswith("search: ")]
 
 
+def naver(query, _lang):
+    # Naver search autocompleter
+    url = f"https://ac.search.naver.com/nx/ac?{urlencode({'q': query, 'r_format': 'json', 'st': 0})}"
+    response = get(url)
+
+    results = []
+
+    if response.ok:
+        data = response.json()
+        if data.get('items'):
+            for item in data['items'][0]:
+                results.append(item[0])
+    return results
+
+
 def qihu360search(query, _lang):
     # 360Search search autocompleter
     url = f"https://sug.so.360.cn/suggest?{urlencode({'format': 'json', 'word': query})}"
@@ -300,6 +315,7 @@ backends = {
     'duckduckgo': duckduckgo,
     'google': google_complete,
     'mwmbl': mwmbl,
+    'naver': naver,
     'quark': quark,
     'qwant': qwant,
     'seznam': seznam,
