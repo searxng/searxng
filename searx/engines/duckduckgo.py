@@ -63,14 +63,16 @@ url = "https://html.duckduckgo.com/html"
 time_range_dict = {'day': 'd', 'week': 'w', 'month': 'm', 'year': 'y'}
 form_data = {'v': 'l', 'api': 'd.js', 'o': 'json'}
 
-CACHE: EngineCache
+_CACHE: EngineCache = None  # type: ignore
 """Persistent (SQLite) key/value cache that deletes its values after ``expire``
 seconds."""
 
 
-def init(_):  # pylint: disable=unused-argument
-    global CACHE  # pylint: disable=global-statement
-    CACHE = EngineCache("duckduckgo")  # type:ignore
+def get_cache():
+    global _CACHE  # pylint: disable=global-statement
+    if _CACHE is None:
+        _CACHE = EngineCache("duckduckgo")  # type:ignore
+    return _CACHE
 
 
 def get_vqd(query: str, region: str, force_request: bool = False) -> str:
@@ -105,8 +107,9 @@ def get_vqd(query: str, region: str, force_request: bool = False) -> str:
     seems the block list is a sliding window: to get my IP rid from the bot list
     I had to cool down my IP for 1h (send no requests from that IP to DDG).
     """
-    key = CACHE.secret_hash(f"{query}//{region}")
-    value = CACHE.get(key=key)
+    cache = get_cache()
+    key = cache.secret_hash(f"{query}//{region}")
+    value = cache.get(key=key)
     if value is not None and not force_request:
         logger.debug("vqd: re-use cached value: %s", value)
         return value
@@ -124,15 +127,16 @@ def get_vqd(query: str, region: str, force_request: bool = False) -> str:
         logger.error("vqd: got HTTP %s from duckduckgo.com", resp.status_code)
 
     if value:
-        CACHE.set(key=key, value=value)
+        cache.set(key=key, value=value)
     else:
         logger.error("vqd value from duckduckgo.com ", resp.status_code)
     return value
 
 
 def set_vqd(query: str, region: str, value: str):
-    key = CACHE.secret_hash(f"{query}//{region}")
-    CACHE.set(key=key, value=value, expire=3600)
+    cache = get_cache()
+    key = cache.secret_hash(f"{query}//{region}")
+    cache.set(key=key, value=value, expire=3600)
 
 
 def get_ddg_lang(eng_traits: EngineTraits, sxng_locale, default='en_US'):
