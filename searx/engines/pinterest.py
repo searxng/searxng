@@ -1,6 +1,5 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-"""Pinterest (images)
-"""
+"""Pinterest (images)"""
 
 from json import dumps
 
@@ -28,6 +27,11 @@ def request(query, params):
         'context': {},
     }
     params['url'] = f"{base_url}/resource/BaseSearchResource/get/?data={dumps(args)}"
+    params['headers'] = {
+        'X-Pinterest-AppState': 'active',
+        'X-Pinterest-Source-Url': '/ideas/',
+        'X-Pinterest-PWS-Handler': 'www/ideas.js',
+    }
 
     return params
 
