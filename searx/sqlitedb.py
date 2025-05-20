@@ -114,7 +114,7 @@ class SQLiteAppl(abc.ABC):
     """
 
     SQLITE_JOURNAL_MODE = "WAL"
-    """``SQLiteAppl`` applications are optimzed for WAL_ mode, its not recommend
+    """``SQLiteAppl`` applications are optimized for WAL_ mode, its not recommend
     to change the journal mode (see :py:obj:`SQLiteAppl.tear_down`).
 
     .. _WAL: https://sqlite.org/wal.html
@@ -145,7 +145,7 @@ class SQLiteAppl(abc.ABC):
       - https://github.com/python/cpython/issues/118172
       - https://github.com/python/cpython/issues/123873
 
-      The workaround for SQLite3 multithreading cache inconsistency ist to set
+      The workaround for SQLite3 multithreading cache inconsistency is to set
       option ``cached_statements`` to ``0`` by default.
     """
 

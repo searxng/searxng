@@ -79,7 +79,7 @@ class EngineCache:
     <searx.cache.ExpireCacheSQLite>`).
 
     In the :origin:`searx/engines/demo_offline.py` engine you can find an
-    exemplary implementation of such a cache other exaples are implemeted
+    exemplary implementation of such a cache other examples are implemented
     in:
 
     - :origin:`searx/engines/radio_browser.py`

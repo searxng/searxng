@@ -8,7 +8,7 @@ class OpenMetricsFamily:  # pylint: disable=too-few-public-methods
     The type_hint parameter must be one of 'counter', 'gauge', 'histogram', 'summary'.
     The help_hint parameter is a short string explaining the metric.
     The data_info parameter is a dictionary of descriptionary parameters for the data point (e.g. request method/path).
-    The data parameter is a flat list of the actual data in shape of a primive type.
+    The data parameter is a flat list of the actual data in shape of a primitive type.
 
     See https://github.com/OpenObservability/OpenMetrics/blob/main/specification/OpenMetrics.md for more information.
     """

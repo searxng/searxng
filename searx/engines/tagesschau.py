@@ -77,7 +77,7 @@ def response(resp):
         elif item_type == 'video':
             results.append(_video(item))
         else:
-            logger.error("unknow result type: %s", item_type)
+            logger.error("unknown result type: %s", item_type)
 
     return results
 

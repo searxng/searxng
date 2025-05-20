@@ -319,9 +319,9 @@ def dict_deepupdate(base_dict: dict, upd_dict: dict, names=None):
     """
     # pylint: disable=too-many-branches
     if not isinstance(base_dict, dict):
-        raise TypeError("argument 'base_dict' is not a ditionary type")
+        raise TypeError("argument 'base_dict' is not a dictionary type")
     if not isinstance(upd_dict, dict):
-        raise TypeError("argument 'upd_dict' is not a ditionary type")
+        raise TypeError("argument 'upd_dict' is not a dictionary type")
 
     if names is None:
         names = []
