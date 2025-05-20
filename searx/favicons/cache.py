@@ -140,7 +140,7 @@ class FaviconCacheConfig(msgspec.Struct):  # pylint: disable=too-few-public-meth
 
 @dataclasses.dataclass
 class FaviconCacheStats:
-    """Dataclass wich provides information on the status of the cache."""
+    """Dataclass which provides information on the status of the cache."""
 
     favicons: int | None = None
     bytes: int | None = None
@@ -387,7 +387,7 @@ CREATE TABLE IF NOT EXISTS blob_map (
         self.properties.set("LAST_MAINTENANCE", "")  # hint: this (also) sets the m_time of the property!
 
         # Do maintenance tasks.  This can be take a little more time, to avoid
-        # DB locks, etablish a new DB connecton.
+        # DB locks, establish a new DB connection.
 
         with self.connect() as conn:
 

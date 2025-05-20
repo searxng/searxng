@@ -26,7 +26,7 @@ log: logging.Logger = logging.getLogger("searx.plugins")
 
 @dataclass
 class PluginInfo:
-    """Object that holds informations about a *plugin*, these infos are shown to
+    """Object that holds information about a *plugin*, these infos are shown to
     the user in the Preferences menu.
 
     To be able to translate the information into other languages, the text must
@@ -85,7 +85,7 @@ class Plugin(abc.ABC):
     constructor (if not already set in the subclass)."""
 
     info: PluginInfo
-    """Informations about the *plugin*, see :py:obj:`PluginInfo`."""
+    """Information about the *plugin*, see :py:obj:`PluginInfo`."""
 
     fqn: str = ""
 
@@ -129,8 +129,8 @@ class Plugin(abc.ABC):
     def init(self, app: "flask.Flask") -> bool:  # pylint: disable=unused-argument
         """Initialization of the plugin, the return value decides whether this
         plugin is active or not.  Initialization only takes place once, at the
-        time the WEB application is set up.  The base methode always returns
-        ``True``, the methode can be overwritten in the inheritances,
+        time the WEB application is set up.  The base method always returns
+        ``True``, the method can be overwritten in the inheritances,
 
         - ``True`` plugin is active
         - ``False`` plugin is inactive

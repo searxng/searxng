@@ -42,7 +42,7 @@ class SXNG_Request(flask.Request):
     """list of searx.plugins.Plugin.id (the id of the plugins)"""
 
     preferences: "searx.preferences.Preferences"
-    """The prefernces of the request."""
+    """The preferences of the request."""
 
     errors: list[str]
     """A list of errors (translated text) added by :py:obj:`searx.webapp` in

@@ -42,7 +42,7 @@ class ExpireCacheCfg(msgspec.Struct):  # pylint: disable=too-few-public-methods
     DB will be created in `/tmp/sxng_cache_{self.name}.db`"""
 
     MAX_VALUE_LEN: int = 1024 * 10
-    """Max lenght of a *serialized* value."""
+    """Max length of a *serialized* value."""
 
     MAXHOLD_TIME: int = 60 * 60 * 24 * 7  # 7 days
     """Hold time (default in sec.), after which a value is removed from the cache."""
@@ -80,7 +80,7 @@ class ExpireCacheCfg(msgspec.Struct):  # pylint: disable=too-few-public-methods
 
 @dataclasses.dataclass
 class ExpireCacheStats:
-    """Dataclass wich provides information on the status of the cache."""
+    """Dataclass which provides information on the status of the cache."""
 
     cached_items: dict[str, list[tuple[str, typing.Any, int]]]
     """Values in the cache mapped by context name.

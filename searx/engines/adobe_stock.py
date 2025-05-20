@@ -156,7 +156,7 @@ def parse_image_item(item):
 def parse_video_item(item):
 
     # in video items, the title is more or less a "content description", we try
-    # to reduce the lenght of the title ..
+    # to reduce the length of the title ..
 
     title = item["title"]
     content = ""
