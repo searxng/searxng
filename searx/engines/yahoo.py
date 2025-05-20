@@ -159,12 +159,12 @@ def response(resp):
 
     # parse results
     for result in eval_xpath_list(dom, '//div[contains(@class,"algo-sr")]'):
-        url = eval_xpath_getindex(result, './/h3/a/@href', 0, default=None)
+        url = eval_xpath_getindex(result, './/div[contains(@class,"compTitle")]/a/@href', 0, default=None)
         if url is None:
             continue
         url = parse_url(url)
 
-        title = eval_xpath_getindex(result, './/h3//a/@aria-label', 0, default='')
+        title = eval_xpath_getindex(result, './/div[contains(@class,"compTitle")]/a/h3/span', 0, default='')
         title: str = extract_text(title)
         content = eval_xpath_getindex(result, './/div[contains(@class, "compText")]', 0, default='')
         content: str = extract_text(content, allow_none=True)
