@@ -87,13 +87,8 @@ instance using `docker run <https://docs.docker.com/engine/reference/run/>`_:
    $ docker run --rm \
                 -d -p ${PORT}:8080 \
                 -v "${PWD}/searxng:/etc/searxng" \
-                -e "BASE_URL=http://localhost:$PORT/" \
-                -e "INSTANCE_NAME=my-instance" \
                 searxng/searxng
    2f998.... # container's ID
-
-The environment variables UWSGI_WORKERS and UWSGI_THREADS overwrite the default
-number of UWSGI processes and UWSGI threads specified in `/etc/searxng/uwsgi.ini`.
 
 Open your WEB browser and visit the URL:
 
