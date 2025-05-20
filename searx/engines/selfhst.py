@@ -11,7 +11,7 @@ about = {
     "require_api_key": False,
     "results": 'JSON',
 }
-categories = ['images']
+categories = ['images', 'icons']
 
 
 icons_list_url = 'https://cdn.selfh.st/directory/icons.json'

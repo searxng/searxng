@@ -1,7 +1,5 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-"""Material Icons (images)
-
-"""
+"""Material Icons (icons)"""
 
 import re
 from json import loads
@@ -14,6 +12,8 @@ about = {
     "require_api_key": False,
     "results": 'JSON',
 }
+categories = ['images', 'icons']
+
 search_url = "https://fonts.google.com/metadata/icons?key=material_symbols&incomplete=true"
 result_url = "https://fonts.google.com/icons?icon.query={query}&selected=Material+Symbols+Outlined:{icon_name}:FILL@0{fill};wght@400;GRAD@0;opsz@24"  # pylint: disable=line-too-long
 img_src_url = "https://fonts.gstatic.com/s/i/short-term/release/materialsymbolsoutlined/{icon_name}/{svg_type}/24px.svg"
@@ -46,7 +46,7 @@ def response(resp):
             continue
 
         tags = [tag.title() for tag in result["tags"]]
-        categories = [category.title() for category in result["categories"]]
+        icon_categories = [category.title() for category in result["categories"]]
 
         results.append(
             {
@@ -54,7 +54,7 @@ def response(resp):
                 'url': result_url.format(icon_name=result["name"], query=result["name"], fill=0 if outlined else 1),
                 'img_src': img_src_url.format(icon_name=result["name"], svg_type=svg_type),
                 'title': result["name"].replace("_", "").title(),
-                'content': ", ".join(tags) + " / " + ", ".join(categories),
+                'content': ", ".join(tags) + " / " + ", ".join(icon_categories),
             }
         )
 
