@@ -34,7 +34,7 @@ search:
   # Filter results. 0: None, 1: Moderate, 2: Strict
   safe_search: 0
   # Existing autocomplete backends: "360search", "baidu", "brave", "dbpedia", "duckduckgo", "google", "yandex",
-  # "mwmbl", "seznam", "sogou", "stract", "swisscows", "quark", "qwant", "wikipedia" -
+  # "mwmbl", "naver", "seznam", "sogou", "stract", "swisscows", "quark", "qwant", "wikipedia" -
   # leave blank to turn it off by default.
   autocomplete: ""
   # minimun characters to type before autocompleter starts
@@ -2360,25 +2360,31 @@ engines:
     disabled: true
 
   - name: naver
-    shortcut: nvr
     categories: [general, web]
-    engine: xpath
-    paging: true
-    search_url: https://search.naver.com/search.naver?where=webkr&sm=osp_hty&ie=UTF-8&query={query}&start={pageno}
-    url_xpath: //a[@class="link_tit"]/@href
-    title_xpath: //a[@class="link_tit"]
-    content_xpath: //div[@class="total_dsc_wrap"]/a
-    first_page_num: 1
-    page_size: 10
+    engine: naver
+    shortcut: nvr
     disabled: true
-    about:
-      website: https://www.naver.com/
-      wikidata_id: Q485639
-      official_api_documentation: https://developers.naver.com/docs/nmt/examples/
-      use_official_api: false
-      require_api_key: false
-      results: HTML
-      language: ko
+
+  - name: naver images
+    naver_category: images
+    categories: [images]
+    engine: naver
+    shortcut: nvri
+    disabled: true
+
+  - name: naver news
+    naver_category: news
+    categories: [news]
+    engine: naver
+    shortcut: nvrn
+    disabled: true
+
+  - name: naver videos
+    naver_category: videos
+    categories: [videos]
+    engine: naver
+    shortcut: nvrv
+    disabled: true
 
   - name: rubygems
     shortcut: rbg
