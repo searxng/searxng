@@ -1235,11 +1235,13 @@ engines:
     shortcut: zlib
     categories: files
     timeout: 7.0
+    disabled: true
 
   - name: library of congress
     engine: loc
     shortcut: loc
     categories: images
+    disabled: true
 
   - name: libretranslate
     engine: libretranslate
@@ -1706,6 +1708,7 @@ engines:
     engine: qwant
     shortcut: qw
     categories: [general, web]
+    disabled: true
     additional_tests:
       rosebud: *test_rosebud
 
