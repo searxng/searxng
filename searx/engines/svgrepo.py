@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-"""Svgrepo (images)
+"""Svgrepo (icons)
 """
 
 from lxml import html
@@ -14,7 +14,7 @@ about = {
 }
 
 paging = True
-categories = ['images']
+categories = ['images', 'icons']
 base_url = "https://www.svgrepo.com"
 
 results_xpath = "//div[@class='style_nodeListing__7Nmro']/div"
