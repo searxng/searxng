@@ -1,6 +1,6 @@
 #!/bin/sh
 # shellcheck shell=dash
-set -eu
+set -u
 
 check_file() {
     local target="$1"
