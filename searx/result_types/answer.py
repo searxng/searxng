@@ -18,6 +18,10 @@ template.
    :members:
    :show-inheritance:
 
+.. autoclass:: WeatherAnswer
+   :members:
+   :show-inheritance:
+
 .. autoclass:: AnswerSet
    :members:
    :show-inheritance:
@@ -26,10 +30,12 @@ template.
 
 from __future__ import annotations
 
-__all__ = ["AnswerSet", "Answer", "Translations"]
+__all__ = ["AnswerSet", "Answer", "Translations", "WeatherAnswer"]
 
+from flask_babel import gettext
 import msgspec
 
+from searx import weather
 from ._base import Result
 
 
@@ -143,3 +149,90 @@ class Translations(BaseAnswer, kw_only=True):
 
         synonyms: list[str] = []
         """List of synonyms for the requested translation."""
+
+
+class WeatherAnswer(BaseAnswer, kw_only=True):
+    """Answer type for weather data."""
+
+    template: str = "answer/weather.html"
+    """The template is located at :origin:`answer/weather.html
+    <searx/templates/simple/answer/weather.html>`"""
+
+    current: WeatherAnswer.Item
+    """Current weather at ``location``."""
+
+    forecasts: list[WeatherAnswer.Item] = []
+    """Weather forecasts for ``location``."""
+
+    service: str = ""
+    """Weather service from which this information was provided."""
+
+    class Item(msgspec.Struct, kw_only=True):
+        """Weather parameters valid for a specific point in time."""
+
+        location: weather.GeoLocation
+        """The geo-location the weather data is from (e.g. `Berlin, Germany`)."""
+
+        temperature: weather.Temperature
+        """Air temperature at 2m above the ground."""
+
+        condition: weather.WeatherConditionType
+        """Standardized designations that summarize the weather situation
+        (e.g. ``light sleet showers and thunder``)."""
+
+        # optional fields
+
+        datetime: weather.DateTime | None = None
+        """Time of the forecast - not needed for the current weather."""
+
+        summary: str | None = None
+        """One-liner about the weather forecast / current weather conditions.
+        If unset, a summary is build up from temperature and current weather
+        conditions.
+        """
+
+        feels_like: weather.Temperature | None = None
+        """Apparent temperature, the temperature equivalent perceived by
+        humans, caused by the combined effects of air temperature, relative
+        humidity and wind speed.  The measure is most commonly applied to the
+        perceived outdoor temperature.
+        """
+
+        pressure: weather.Pressure | None = None
+        """Air pressure at sea level (e.g. 1030 hPa) """
+
+        humidity: weather.RelativeHumidity | None = None
+        """Amount of relative humidity in the air at 2m above the ground. The
+        unit is ``%``, e.g. 60%)
+        """
+
+        wind_from: weather.Compass
+        """The directon which moves towards / direction the wind is coming from."""
+
+        wind_speed: weather.WindSpeed | None = None
+        """Speed of wind / wind speed at 10m above the ground (10 min average)."""
+
+        cloud_cover: int | None = None
+        """Amount of sky covered by clouds / total cloud cover for all heights
+        (cloudiness, unit: %)"""
+
+        # attributes: dict[str, str | int] = {}
+        # """Key-Value dict of additional typeless weather attributes."""
+
+        def __post_init__(self):
+            if not self.summary:
+                self.summary = gettext("{location}: {temperature}, {condition}").format(
+                    location=self.location,
+                    temperature=self.temperature,
+                    condition=gettext(self.condition.capitalize()),
+                )
+
+        @property
+        def url(self) -> str | None:
+            """Determines a `data URL`_ with a symbol for the weather
+            conditions.  If no symbol can be assigned, ``None`` is returned.
+
+            .. _data URL:
+               https://developer.mozilla.org/en-US/docs/Web/URI/Reference/Schemes/data
+            """
+            return weather.symbol_url(self.condition)
