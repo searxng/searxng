@@ -12,22 +12,11 @@ from .online import OnlineProcessor
 parser_re = re.compile('.*?(\\d+(?:\\.\\d+)?) ([^.0-9]+) (?:in|to) ([^.0-9]+)', re.I)
 
 
-def normalize_name(name):
+def normalize_name(name: str):
+    name = name.strip()
     name = name.lower().replace('-', ' ').rstrip('s')
     name = re.sub(' +', ' ', name)
     return unicodedata.normalize('NFKD', name).lower()
-
-
-def name_to_iso4217(name):
-    name = normalize_name(name)
-    currency = CURRENCIES['names'].get(name, [name])
-    if isinstance(currency, str):
-        return currency
-    return currency[-1]
-
-
-def iso4217_to_name(iso4217, language):
-    return CURRENCIES['iso4217'].get(iso4217, {}).get(language, iso4217)
 
 
 class OnlineCurrencyProcessor(OnlineProcessor):
@@ -52,14 +41,15 @@ class OnlineCurrencyProcessor(OnlineProcessor):
             amount = float(amount_str)
         except ValueError:
             return None
-        from_currency = name_to_iso4217(from_currency.strip())
-        to_currency = name_to_iso4217(to_currency.strip())
+
+        from_currency = CURRENCIES.name_to_iso4217(normalize_name(from_currency))
+        to_currency = CURRENCIES.name_to_iso4217(normalize_name(to_currency))
 
         params['amount'] = amount
         params['from'] = from_currency
         params['to'] = to_currency
-        params['from_name'] = iso4217_to_name(from_currency, 'en')
-        params['to_name'] = iso4217_to_name(to_currency, 'en')
+        params['from_name'] = CURRENCIES.iso4217_to_name(from_currency, "en")
+        params['to_name'] = CURRENCIES.iso4217_to_name(to_currency, "en")
         return params
 
     def get_default_tests(self):

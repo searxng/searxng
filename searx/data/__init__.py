@@ -4,21 +4,17 @@
   make data.all
 
 """
-
+from __future__ import annotations
 
 __all__ = ["ahmia_blacklist_loader"]
 
 import json
-from pathlib import Path
 import typing
 
-from searx import logger
+from .core import log, data_dir
+from .currencies import CurrenciesDB
 
-log = logger.getChild("data")
-
-data_dir = Path(__file__).parent
-
-CURRENCIES: dict[str, typing.Any]
+CURRENCIES: CurrenciesDB
 USER_AGENTS: dict[str, typing.Any]
 EXTERNAL_URLS: dict[str, typing.Any]
 WIKIDATA_UNITS: dict[str, typing.Any]
@@ -29,7 +25,7 @@ ENGINE_TRAITS: dict[str, typing.Any]
 LOCALES: dict[str, typing.Any]
 
 lazy_globals = {
-    "CURRENCIES": None,
+    "CURRENCIES": CurrenciesDB(),
     "USER_AGENTS": None,
     "EXTERNAL_URLS": None,
     "WIKIDATA_UNITS": None,
@@ -41,7 +37,6 @@ lazy_globals = {
 }
 
 data_json_files = {
-    "CURRENCIES": "currencies.json",
     "USER_AGENTS": "useragents.json",
     "EXTERNAL_URLS": "external_urls.json",
     "WIKIDATA_UNITS": "wikidata_units.json",
@@ -63,6 +58,7 @@ def __getattr__(name):
         return data
 
     log.debug("init searx.data.%s", name)
+
     with open(data_dir / data_json_files[name], encoding='utf-8') as f:
         lazy_globals[name] = json.load(f)
 
