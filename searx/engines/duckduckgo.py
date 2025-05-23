@@ -372,8 +372,9 @@ def response(resp) -> EngineResults:
             continue
         item["title"] = extract_text(title)
         item["url"] = eval_xpath(div_result, './/h2/a/@href')[0]
-        item["content"] = extract_text(eval_xpath(div_result, './/a[contains(@class, "result__snippet")]')[0])
-
+        item["content"] = extract_text(
+            eval_xpath_getindex(div_result, './/a[contains(@class, "result__snippet")]', 0, [])
+        )
         results.append(item)
 
     zero_click_info_xpath = '//div[@id="zero_click_abstract"]'
