@@ -58,7 +58,7 @@ paging = True
 time_range_support = True
 safesearch = True  # user can't select but the results are filtered
 
-url = "https://html.duckduckgo.com/html"
+url = "https://html.duckduckgo.com/html/"
 
 time_range_dict = {'day': 'd', 'week': 'w', 'month': 'm', 'year': 'y'}
 form_data = {'v': 'l', 'api': 'd.js', 'o': 'json'}
@@ -248,7 +248,6 @@ def quote_ddg_bangs(query):
 
 
 def request(query, params):
-
     query = quote_ddg_bangs(query)
 
     if len(query) >= 500:
@@ -256,93 +255,79 @@ def request(query, params):
         params["url"] = None
         return
 
-    # Advanced search syntax ends in CAPTCHA
-    # https://duckduckgo.com/duckduckgo-help-pages/results/syntax/
-    query = " ".join(
-        [
-            x.removeprefix("site:").removeprefix("intitle:").removeprefix("inurl:").removeprefix("filetype:")
-            for x in query.split()
-        ]
-    )
     eng_region: str = traits.get_region(params['searxng_locale'], traits.all_locale)  # type: ignore
-    if eng_region == "wt-wt":
-        # https://html.duckduckgo.com/html sets an empty value for "all".
-        eng_region = ""
 
-    params['data']['kl'] = eng_region
-    params['cookies']['kl'] = eng_region
+    # Note: The API is reverse-engineered from DuckDuckGo's HTML webpage
+    # (https://html.duckduckgo.com/html/) and may be subject to additional bot detection mechanisms
+    # and breaking changes in the future.
+    #
+    # The params['data'] dictionary can have the following key parameters, in this order:
+    # - q (str): Search query string
+    # - b (str): Beginning parameter - empty string for first page requests
+    # - s (int): Search offset for pagination
+    # - nextParams (str): Continuation parameters from previous page response, typically empty
+    # - v (str): Typically 'l' for subsequent pages
+    # - o (str): Output format, typically 'json'
+    # - dc (int): Display count - value equal to offset (s) + 1
+    # - api (str): API endpoint identifier, typically 'd.js'
+    # - vqd (str): Validation query digest
+    # - kl (str): Keyboard language/region code (e.g., 'en-us')
+    # - df (str): Time filter, maps to values like 'd' (day), 'w' (week), 'm' (month), 'y' (year)
 
-    # eng_lang = get_ddg_lang(traits, params['searxng_locale'])
-
-    params['url'] = url
-    params['method'] = 'POST'
     params['data']['q'] = query
 
-    # The API is not documented, so we do some reverse engineering and emulate
-    # what https://html.duckduckgo.com/html does when you press "next Page" link
-    # again and again ..
-
-    params['headers']['Content-Type'] = 'application/x-www-form-urlencoded'
-
-    params['headers']['Sec-Fetch-Dest'] = "document"
-    params['headers']['Sec-Fetch-Mode'] = "navigate"  # at least this one is used by ddg's bot detection
-    params['headers']['Sec-Fetch-Site'] = "same-origin"
-    params['headers']['Sec-Fetch-User'] = "?1"
-
-    # Form of the initial search page does have empty values in the form
     if params['pageno'] == 1:
-
         params['data']['b'] = ""
-
-    params['data']['df'] = ''
-    if params['time_range'] in time_range_dict:
-
-        params['data']['df'] = time_range_dict[params['time_range']]
-        params['cookies']['df'] = time_range_dict[params['time_range']]
-
-    if params['pageno'] == 2:
-
-        # second page does have an offset of 20
-        offset = (params['pageno'] - 1) * 20
+    elif params['pageno'] >= 2:
+        offset = 10 + (params['pageno'] - 2) * 15  # Page 2 = 10, Page 3+ = 10 + n*15
         params['data']['s'] = offset
-        params['data']['dc'] = offset + 1
-
-    elif params['pageno'] > 2:
-
-        # third and following pages do have an offset of 20 + n*50
-        offset = 20 + (params['pageno'] - 2) * 50
-        params['data']['s'] = offset
-        params['data']['dc'] = offset + 1
-
-    if params['pageno'] > 1:
-
-        # initial page does not have these additional data in the input form
-        params['data']['o'] = form_data.get('o', 'json')
-        params['data']['api'] = form_data.get('api', 'd.js')
         params['data']['nextParams'] = form_data.get('nextParams', '')
         params['data']['v'] = form_data.get('v', 'l')
-        params['headers']['Referer'] = url
+        params['data']['o'] = form_data.get('o', 'json')
+        params['data']['dc'] = offset + 1
+        params['data']['api'] = form_data.get('api', 'd.js')
 
+        # vqd is required to request other pages after the first one
         vqd = get_vqd(query, eng_region, force_request=False)
-
-        # Certain conditions must be met in order to call up one of the
-        # following pages ...
-
         if vqd:
-            params['data']['vqd'] = vqd  # follow up pages / requests needs a vqd argument
+            params['data']['vqd'] = vqd
         else:
-            # Don't try to call follow up pages without a vqd value.  DDG
-            # recognizes this as a request from a bot.  This lowers the
+            # Don't try to call follow up pages without a vqd value.
+            # DDG recognizes this as a request from a bot. This lowers the
             # reputation of the SearXNG IP and DDG starts to activate CAPTCHAs.
             params["url"] = None
             return
 
         if params['searxng_locale'].startswith("zh"):
-            # Some locales (at least China) do not have a "next page" button and ddg
+            # Some locales (at least China) do not have a "next page" button and DDG
             # will return a HTTP/2 403 Forbidden for a request of such a page.
             params["url"] = None
             return
 
+    # Put empty kl in form data if language/region set to all
+    if eng_region == "wt-wt":
+        params['data']['kl'] = ""
+    else:
+        params['data']['kl'] = eng_region
+
+    params['data']['df'] = ''
+    if params['time_range'] in time_range_dict:
+        params['data']['df'] = time_range_dict[params['time_range']]
+        params['cookies']['df'] = time_range_dict[params['time_range']]
+
+    params['cookies']['kl'] = eng_region
+
+    params['url'] = url
+    params['method'] = 'POST'
+
+    params['headers']['Content-Type'] = 'application/x-www-form-urlencoded'
+    params['headers']['Referer'] = url
+    params['headers']['Sec-Fetch-Dest'] = "document"
+    params['headers']['Sec-Fetch-Mode'] = "navigate"  # at least this one is used by ddg's bot detection
+    params['headers']['Sec-Fetch-Site'] = "same-origin"
+    params['headers']['Sec-Fetch-User'] = "?1"
+
+    logger.debug("param headers: %s", params['headers'])
     logger.debug("param data: %s", params['data'])
     logger.debug("param cookies: %s", params['cookies'])
 
