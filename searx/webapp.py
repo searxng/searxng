@@ -106,6 +106,7 @@ from searx.metrics import get_engines_stats, get_engine_errors, get_reliabilitie
 from searx.flaskfix import patch_application
 
 from searx.locales import (
+    LOCALE_BEST_MATCH,
     LOCALE_NAMES,
     RTL_LOCALES,
     localeselector,
@@ -1059,10 +1060,12 @@ def image_proxy():
 
 @app.route('/engine_descriptions.json', methods=['GET'])
 def engine_descriptions():
-    locale = get_locale().split('_')[0]
+    sxng_ui_lang_tag = get_locale().replace("_", "-")
+    sxng_ui_lang_tag = LOCALE_BEST_MATCH.get(sxng_ui_lang_tag, sxng_ui_lang_tag)
+
     result = ENGINE_DESCRIPTIONS['en'].copy()
-    if locale != 'en':
-        for engine, description in ENGINE_DESCRIPTIONS.get(locale, {}).items():
+    if sxng_ui_lang_tag != 'en':
+        for engine, description in ENGINE_DESCRIPTIONS.get(sxng_ui_lang_tag, {}).items():
             result[engine] = description
     for engine, description in result.items():
         if len(description) == 2 and description[1] == 'ref':
