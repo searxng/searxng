@@ -180,7 +180,7 @@ class Network:
         Network._TOR_CHECK_RESULT[proxies] = result
         return result
 
-    async def get_client(self, verify=None, max_redirects=None):
+    async def get_client(self, verify=None, max_redirects=None) -> httpx.AsyncClient:
         verify = self.verify if verify is None else verify
         max_redirects = self.max_redirects if max_redirects is None else max_redirects
         local_address = next(self._local_addresses_cycle)
@@ -269,6 +269,8 @@ class Network:
         kwargs_clients = Network.extract_kwargs_clients(kwargs)
         while retries >= 0:  # pragma: no cover
             client = await self.get_client(**kwargs_clients)
+            cookies = kwargs.pop("cookies", None)
+            client.cookies = httpx.Cookies(cookies)
             try:
                 if stream:
                     response = client.stream(method, url, **kwargs)
