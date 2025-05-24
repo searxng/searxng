@@ -3,6 +3,7 @@
 """
 
 import json
+from searx.result_types import EngineResults
 
 # about
 about = {
@@ -28,13 +29,15 @@ def request(_query, params):
     return params
 
 
-def response(resp):
+def response(resp) -> EngineResults:
+    res = EngineResults()
+
     # remove first and last lines to get only json
     json_resp = resp.text[resp.text.find('\n') + 1 : resp.text.rfind('\n') - 2]
     try:
         conversion_rate = float(json.loads(json_resp)["to"][0]["mid"])
     except IndexError:
-        return []
+        return res
     answer = '{0} {1} = {2} {3}, 1 {1} ({5}) = {4} {3} ({6})'.format(
         resp.search_params['amount'],
         resp.search_params['from'],
@@ -46,5 +49,5 @@ def response(resp):
     )
 
     url = f"https://duckduckgo.com/?q={resp.search_params['from']}+to+{resp.search_params['to']}"
-
-    return [{"answer": answer, "url": url}]
+    res.add(res.types.Answer(answer=answer, url=url))
+    return res

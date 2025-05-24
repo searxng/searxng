@@ -15,9 +15,7 @@ import json
 
 from searx.locales import LOCALE_NAMES, locales_initialize
 from searx.engines import wikidata, set_loggers
-from searx.data import data_dir
-
-DATA_FILE = data_dir / 'currencies.json'
+from searx.data.currencies import CurrenciesDB
 
 set_loggers(wikidata, 'wikidata')
 locales_initialize()
@@ -149,7 +147,7 @@ def main():
         if len(db['names'][name]) == 1:
             db['names'][name] = db['names'][name][0]
 
-    with DATA_FILE.open('w', encoding='utf8') as f:
+    with CurrenciesDB.json_file.open('w', encoding='utf8') as f:
         json.dump(db, f, indent=4, sort_keys=True, ensure_ascii=False)
 
 
