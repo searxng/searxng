@@ -2,6 +2,7 @@
 # shellcheck shell=dash
 set -u
 
+# Check if it's a valid file
 check_file() {
     local target="$1"
 
@@ -16,6 +17,7 @@ EOF
     fi
 }
 
+# Check if it's a valid directory
 check_directory() {
     local target="$1"
 
@@ -66,22 +68,6 @@ EOF
     fi
 }
 
-# Apply envs to uwsgi.ini
-setup_uwsgi() {
-    local timestamp
-
-    timestamp=$(stat -c %Y "$UWSGI_SETTINGS_PATH")
-
-    sed -i \
-        -e "s|workers = .*|workers = ${UWSGI_WORKERS:-%k}|g" \
-        -e "s|threads = .*|threads = ${UWSGI_THREADS:-4}|g" \
-        "$UWSGI_SETTINGS_PATH"
-
-    # Restore timestamp
-    touch -c -d "@$timestamp" "$UWSGI_SETTINGS_PATH"
-}
-
-# Apply envs to settings.yml
 setup_searxng() {
     local timestamp
 
@@ -106,7 +92,6 @@ setup_searxng() {
 volume_handler() {
     local target="$1"
 
-    # Check if it's a valid directory
     check_directory "$target"
     setup_ownership "$target" "directory"
 }
@@ -145,7 +130,6 @@ EOF
         cp -pfT "$template" "$target"
     fi
 
-    # Check if it's a valid file
     check_file "$target"
 }
 
@@ -156,11 +140,9 @@ volume_handler "$CONFIG_PATH"
 volume_handler "$DATA_PATH"
 
 # Check for updates in files
-config_handler "$UWSGI_SETTINGS_PATH" "/usr/local/searxng/.template/uwsgi.ini"
 config_handler "$SEARXNG_SETTINGS_PATH" "/usr/local/searxng/searx/settings.yml"
 
 # Update files
-setup_uwsgi
 setup_searxng
 
-exec /usr/local/searxng/venv/bin/uwsgi --http-socket "$BIND_ADDRESS" "$UWSGI_SETTINGS_PATH"
+exec /usr/local/searxng/venv/bin/granian searx.webapp:app
