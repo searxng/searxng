@@ -19,7 +19,7 @@ Settings
    settings_search
    settings_server
    settings_ui
-   settings_redis
+   settings_valkey
    settings_outgoing
    settings_categories_as_tabs
    settings_plugins

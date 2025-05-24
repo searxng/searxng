@@ -6,7 +6,7 @@ Limiter
 
 .. sidebar:: info
 
-   The limiter requires a :ref:`Redis <settings redis>` database.
+   The limiter requires a :ref:`Valkey <settings valkey>` database.
 
 .. contents::
    :depth: 2
