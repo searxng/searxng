@@ -36,16 +36,19 @@ jobs:
       packages: write
 
     steps:
-      - name: Checkout
+      - if: github.repository_owner == 'searxng'
+        name: Checkout
         uses: actions/checkout@v4
         with:
           persist-credentials: "false"
 
-      - name: Get date
+      - if: github.repository_owner == 'searxng'
+        name: Get date
         id: date
         run: echo "date=$(date +'%Y%m%d')" >>$GITHUB_OUTPUT
 
-      - name: Check cache apko
+      - if: github.repository_owner == 'searxng'
+        name: Check cache apko
         id: cache-apko
         uses: actions/cache/restore@v4
         with:
@@ -54,7 +57,7 @@ jobs:
           path: "/tmp/.apko/"
           lookup-only: true
 
-      - if: steps.cache-apko.outputs.cache-hit != 'true'
+      - if: github.repository_owner == 'searxng' && steps.cache-apko.outputs.cache-hit != 'true'
         name: Setup cache apko
         uses: actions/cache@v4
         with:
@@ -63,13 +66,13 @@ jobs:
           restore-keys: "apko-${{ steps.date.outputs.date }}-"
           path: "/tmp/.apko/"
 
-      - if: steps.cache-apko.outputs.cache-hit != 'true'
+      - if: github.repository_owner == 'searxng' && steps.cache-apko.outputs.cache-hit != 'true'
         name: Setup apko
         run: |
           eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
           brew install apko
 
-      - if: steps.cache-apko.outputs.cache-hit != 'true'
+      - if: github.repository_owner == 'searxng' && steps.cache-apko.outputs.cache-hit != 'true'
         name: Login to GHCR
         uses: docker/login-action@v3
         with:
@@ -77,7 +80,7 @@ jobs:
           username: "${{ github.repository_owner }}"
           password: "${{ secrets.GITHUB_TOKEN }}"
 
-      - if: steps.cache-apko.outputs.cache-hit != 'true'
+      - if: github.repository_owner == 'searxng' && steps.cache-apko.outputs.cache-hit != 'true'
         name: Build
         run: |
           eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
