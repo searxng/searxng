@@ -7,6 +7,7 @@
   var qinput_id = "q", qinput;
 
   const isMobile = window.matchMedia("only screen and (max-width: 50em)").matches;
+  const isResultsPage = document.querySelector("main").id == "main_results";
 
   function submitIfQuery () {
     if (qinput.value.length  > 0) {
@@ -87,7 +88,7 @@
 
   searxng.ready(function () {
     // focus search input on large screens
-    if (!isMobile) document.getElementById("q").focus();
+    if (!isMobile && !isResultsPage) document.getElementById("q").focus();
 
     qinput = d.getElementById(qinput_id);
     const autocomplete = d.querySelector(".autocomplete");
