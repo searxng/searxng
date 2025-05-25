@@ -27,7 +27,7 @@ ARG LABEL_VCS_URL="unspecified"
 
 COPY --chown=searxng:searxng --from=builder /usr/local/searxng/venv/ ./venv/
 COPY --chown=searxng:searxng --from=builder /usr/local/searxng/searx/ ./searx/
-COPY --chown=searxng:searxng ./container/config/ ./.template/
+COPY --chown=searxng:searxng ./container/template/ ./.template/
 COPY --chown=searxng:searxng ./container/entrypoint.sh ./entrypoint.sh
 
 ARG TIMESTAMP_UWSGI="0"
@@ -46,12 +46,10 @@ LABEL org.opencontainers.image.authors="searxng <$GIT_URL>" \
       org.opencontainers.image.version="$SEARXNG_GIT_VERSION"
 
 ENV SEARXNG_VERSION="$SEARXNG_GIT_VERSION" \
-    INSTANCE_NAME="SearXNG" \
-    AUTOCOMPLETE="" \
-    BASE_URL="" \
     BIND_ADDRESS="[::]:8080" \
     SEARXNG_SETTINGS_PATH="$CONFIG_PATH/settings.yml" \
     UWSGI_SETTINGS_PATH="$CONFIG_PATH/uwsgi.ini" \
+    # TODO: Remove on Granian migration: https://github.com/searxng/searxng/pull/4820
     UWSGI_WORKERS="%k" \
     UWSGI_THREADS="4"
 

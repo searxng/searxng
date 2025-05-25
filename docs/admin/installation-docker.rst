@@ -87,8 +87,6 @@ instance using `docker run <https://docs.docker.com/engine/reference/run/>`_:
    $ docker run --rm \
                 -d -p ${PORT}:8080 \
                 -v "${PWD}/searxng:/etc/searxng" \
-                -e "BASE_URL=http://localhost:$PORT/" \
-                -e "INSTANCE_NAME=my-instance" \
                 searxng/searxng
    2f998.... # container's ID
 
