@@ -270,7 +270,8 @@ class Network:
         while retries >= 0:  # pragma: no cover
             client = await self.get_client(**kwargs_clients)
             cookies = kwargs.pop("cookies", None)
-            client.cookies = httpx.Cookies(cookies)
+            if cookies:
+                client.cookies = httpx.Cookies(cookies)
             try:
                 if stream:
                     response = client.stream(method, url, **kwargs)
