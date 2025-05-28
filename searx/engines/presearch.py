@@ -137,19 +137,20 @@ def _get_request_id(query, params):
         if l.territory:
             headers['Accept-Language'] = f"{l.language}-{l.territory},{l.language};" "q=0.9,*;" "q=0.5"
 
-    resp_text = get(url, headers=headers).text  # type: ignore
+    resp = get(url, headers=headers)
 
-    for line in resp_text.split("\n"):
+    for line in resp.text.split("\n"):
         if "window.searchId = " in line:
-            return line.split("= ")[1][:-1].replace('"', "")
+            return line.split("= ")[1][:-1].replace('"', ""), resp.cookies
 
-    return None
+    raise RuntimeError("Couldn't find any request id for presearch")
 
 
 def request(query, params):
-    request_id = _get_request_id(query, params)
+    request_id, cookies = _get_request_id(query, params)
     params["headers"]["Accept"] = "application/json"
     params["url"] = f"{base_url}/results?id={request_id}"
+    params["cookies"] = cookies
 
     return params
 
