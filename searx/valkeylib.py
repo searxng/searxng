@@ -43,8 +43,8 @@ def lua_script_storage(client, script):
 
 PURGE_BY_PREFIX = """
 local prefix = tostring(ARGV[1])
-for i, name in ipairs(valkey.call('KEYS', prefix .. '*')) do
-    valkey.call('EXPIRE', name, 0)
+for i, name in ipairs(server.call('KEYS', prefix .. '*')) do
+    server.call('EXPIRE', name, 0)
 end
 """
 
@@ -92,17 +92,17 @@ local limit = tonumber(ARGV[1])
 local expire = tonumber(ARGV[2])
 local c_name = KEYS[1]
 
-local c = valkey.call('GET', c_name)
+local c = server.call('GET', c_name)
 
 if not c then
-    c = valkey.call('INCR', c_name)
+    c = server.call('INCR', c_name)
     if expire > 0 then
-        valkey.call('EXPIRE', c_name, expire)
+        server.call('EXPIRE', c_name, expire)
     end
 else
     c = tonumber(c)
     if limit == 0 or c < limit then
-       c = valkey.call('INCR', c_name)
+       c = server.call('INCR', c_name)
     end
 end
 return c
@@ -169,12 +169,12 @@ def drop_counter(client, name):
 INCR_SLIDING_WINDOW = """
 local expire = tonumber(ARGV[1])
 local name = KEYS[1]
-local current_time = valkey.call('TIME')
+local current_time = server.call('TIME')
 
-valkey.call('ZREMRANGEBYSCORE', name, 0, current_time[1] - expire)
-valkey.call('ZADD', name, current_time[1], current_time[1] .. current_time[2])
-local result = valkey.call('ZCOUNT', name, 0, current_time[1] + 1)
-valkey.call('EXPIRE', name, expire)
+server.call('ZREMRANGEBYSCORE', name, 0, current_time[1] - expire)
+server.call('ZADD', name, current_time[1], current_time[1] .. current_time[2])
+local result = server.call('ZCOUNT', name, 0, current_time[1] + 1)
+server.call('EXPIRE', name, expire)
 return result
 """
 
