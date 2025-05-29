@@ -3,8 +3,12 @@
 """A SearXNG message file, see :py:obj:`searx.babel`
 """
 
+import typing
+
 from searx import webutils
 from searx import engines
+from searx.weather import WeatherConditionType
+
 
 __all__ = [
     'CONSTANT_NAMES',
@@ -13,6 +17,7 @@ __all__ = [
     'STYLE_NAMES',
     'BRAND_CUSTOM_LINKS',
     'WEATHER_TERMS',
+    'WEATHER_CONDITIONS',
     'SOCIAL_MEDIA_TERMS',
 ]
 
@@ -84,6 +89,13 @@ WEATHER_TERMS = {
     'VISIBILITY': 'Visibility',
     'WIND': 'Wind',
 }
+
+
+WEATHER_CONDITIONS = [
+    # The capitalized string goes into to i18n/l10n (en: "Clear sky" -> de: "wolkenloser Himmel")
+    msg.capitalize()
+    for msg in typing.get_args(WeatherConditionType)
+]
 
 SOCIAL_MEDIA_TERMS = {
     'SUBSCRIBERS': 'subscribers',

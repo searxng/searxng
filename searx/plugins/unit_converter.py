@@ -15,7 +15,7 @@ import babel.numbers
 
 from flask_babel import gettext, get_locale
 
-from searx.units import symbol_to_si
+from searx.wikidata_units import symbol_to_si
 from searx.plugins import Plugin, PluginInfo
 from searx.result_types import EngineResults
 

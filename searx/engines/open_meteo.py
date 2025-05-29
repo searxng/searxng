@@ -1,18 +1,17 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 """Open Meteo (weather)"""
 
-from urllib.parse import urlencode, quote_plus
+from urllib.parse import urlencode
 from datetime import datetime
-from flask_babel import gettext
 
-from searx.network import get
-from searx.exceptions import SearxEngineAPIException
-from searx.result_types import EngineResults, Weather
+from searx.result_types import EngineResults, WeatherAnswer
+from searx import weather
+
 
 about = {
-    "website": 'https://open-meteo.com',
+    "website": "https://open-meteo.com",
     "wikidata_id": None,
-    "official_api_documentation": 'https://open-meteo.com/en/docs',
+    "official_api_documentation": "https://open-meteo.com/en/docs",
     "use_official_api": True,
     "require_api_key": False,
     "results": "JSON",
@@ -23,98 +22,129 @@ categories = ["weather"]
 geo_url = "https://geocoding-api.open-meteo.com"
 api_url = "https://api.open-meteo.com"
 
-data_of_interest = "temperature_2m,relative_humidity_2m,apparent_temperature,cloud_cover,pressure_msl,wind_speed_10m,wind_direction_10m"  # pylint: disable=line-too-long
+data_of_interest = (
+    "temperature_2m",
+    "apparent_temperature",
+    "relative_humidity_2m",
+    "apparent_temperature",
+    "cloud_cover",
+    "pressure_msl",
+    "wind_speed_10m",
+    "wind_direction_10m",
+    "weather_code",
+    # "visibility",
+    # "is_day",
+)
 
 
 def request(query, params):
-    location_url = f"{geo_url}/v1/search?name={quote_plus(query)}"
 
-    resp = get(location_url)
-    if resp.status_code != 200:
-        raise SearxEngineAPIException("invalid geo location response code")
+    try:
+        location = weather.GeoLocation.by_query(query)
+    except ValueError:
+        return
 
-    json_locations = resp.json().get("results", [])
-    if len(json_locations) == 0:
-        raise SearxEngineAPIException("location not found")
-
-    location = json_locations[0]
     args = {
-        'latitude': location['latitude'],
-        'longitude': location['longitude'],
-        'timeformat': 'unixtime',
-        'format': 'json',
-        'current': data_of_interest,
-        'forecast_days': 7,
-        'hourly': data_of_interest,
+        "latitude": location.latitude,
+        "longitude": location.longitude,
+        "timeformat": "unixtime",
+        "timezone": "auto",  # use timezone of the location
+        "format": "json",
+        "current": ",".join(data_of_interest),
+        "forecast_days": 3,
+        "hourly": ",".join(data_of_interest),
     }
 
-    params['url'] = f"{api_url}/v1/forecast?{urlencode(args)}"
-    params['location'] = location['name']
-
-    return params
+    params["url"] = f"{api_url}/v1/forecast?{urlencode(args)}"
 
 
-def c_to_f(temperature):
-    return "%.2f" % ((temperature * 1.8) + 32)
+# https://open-meteo.com/en/docs#weather_variable_documentation
+# https://nrkno.github.io/yr-weather-symbols/
+
+WMO_TO_CONDITION: dict[int, weather.WeatherConditionType] = {
+    # 0	Clear sky
+    0: "clear sky",
+    # 1, 2, 3     Mainly clear, partly cloudy, and overcast
+    1: "fair",
+    2: "partly cloudy",
+    3: "cloudy",
+    # 45, 48      Fog and depositing rime fog
+    45: "fog",
+    48: "fog",
+    # 51, 53, 55  Drizzle: Light, moderate, and dense intensity
+    51: "light rain",
+    53: "light rain",
+    55: "light rain",
+    # 56, 57      Freezing Drizzle: Light and dense intensity
+    56: "light sleet showers",
+    57: "light sleet",
+    # 61, 63, 65  Rain: Slight, moderate and heavy intensity
+    61: "light rain",
+    63: "rain",
+    65: "heavy rain",
+    # 66, 67    Freezing Rain: Light and heavy intensity
+    66: "light sleet showers",
+    67: "light sleet",
+    # 71, 73, 75  Snow fall: Slight, moderate, and heavy intensity
+    71: "light sleet",
+    73: "sleet",
+    75: "heavy sleet",
+    # 77    Snow grains
+    77: "snow",
+    # 80, 81, 82  Rain showers: Slight, moderate, and violent
+    80: "light rain showers",
+    81: "rain showers",
+    82: "heavy rain showers",
+    # 85, 86      Snow showers slight and heavy
+    85: "snow showers",
+    86: "heavy snow showers",
+    # 95          Thunderstorm: Slight or moderate
+    95: "rain and thunder",
+    # 96, 99      Thunderstorm with slight and heavy hail
+    96: "light snow and thunder",
+    99: "heavy snow and thunder",
+}
 
 
-def get_direction(degrees):
-    if degrees < 45 or degrees >= 315:
-        return "N"
+def _weather_data(location: weather.GeoLocation, data: dict):
 
-    if 45 <= degrees < 135:
-        return "O"
-
-    if 135 <= degrees < 225:
-        return "S"
-
-    return "W"
-
-
-def build_condition_string(data):
-    if data['relative_humidity_2m'] > 50:
-        return "rainy"
-
-    if data['cloud_cover'] > 30:
-        return 'cloudy'
-
-    return 'clear sky'
-
-
-def generate_weather_data(data):
-    return Weather.DataItem(
-        condition=build_condition_string(data),
-        temperature=f"{data['temperature_2m']}°C / {c_to_f(data['temperature_2m'])}°F",
-        feelsLike=f"{data['apparent_temperature']}°C / {c_to_f(data['apparent_temperature'])}°F",
-        wind=(
-            f"{get_direction(data['wind_direction_10m'])}, "
-            f"{data['wind_direction_10m']}° — "
-            f"{data['wind_speed_10m']} km/h"
-        ),
-        pressure=f"{data['pressure_msl']}hPa",
-        humidity=f"{data['relative_humidity_2m']}hPa",
-        attributes={gettext('Cloud cover'): f"{data['cloud_cover']}%"},
+    return WeatherAnswer.Item(
+        location=location,
+        temperature=weather.Temperature(unit="°C", value=data["temperature_2m"]),
+        condition=WMO_TO_CONDITION[data["weather_code"]],
+        feels_like=weather.Temperature(unit="°C", value=data["apparent_temperature"]),
+        wind_from=weather.Compass(data["wind_direction_10m"]),
+        wind_speed=weather.WindSpeed(data["wind_speed_10m"], unit="km/h"),
+        pressure=weather.Pressure(data["pressure_msl"], unit="hPa"),
+        humidity=weather.RelativeHumidity(data["relative_humidity_2m"]),
+        cloud_cover=data["cloud_cover"],
     )
 
 
 def response(resp):
+    location = weather.GeoLocation.by_query(resp.search_params["query"])
+
     res = EngineResults()
     json_data = resp.json()
 
-    current_weather = generate_weather_data(json_data['current'])
-    weather_answer = Weather(
-        location=resp.search_params['location'],
-        current=current_weather,
+    weather_answer = WeatherAnswer(
+        current=_weather_data(location, json_data["current"]),
+        service="Open-meteo",
+        # url="https://open-meteo.com/en/docs",
     )
 
-    for index, time in enumerate(json_data['hourly']['time']):
+    for index, time in enumerate(json_data["hourly"]["time"]):
+
+        if time < json_data["current"]["time"]:
+            # Cut off the hours that are already in the past
+            continue
+
         hourly_data = {}
+        for key in data_of_interest:
+            hourly_data[key] = json_data["hourly"][key][index]
 
-        for key in data_of_interest.split(","):
-            hourly_data[key] = json_data['hourly'][key][index]
-
-        forecast_data = generate_weather_data(hourly_data)
-        forecast_data.time = datetime.fromtimestamp(time).strftime('%Y-%m-%d %H:%M')
+        forecast_data = _weather_data(location, hourly_data)
+        forecast_data.datetime = weather.DateTime(datetime.fromtimestamp(time))
         weather_answer.forecasts.append(forecast_data)
 
     res.add(weather_answer)
