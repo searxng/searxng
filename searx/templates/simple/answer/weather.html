@@ -1,67 +1,62 @@
-{% macro show_weather_data(data) %}
-    <table>
-      <tbody>
-        {%- if data.condition -%}
-        <tr>
-          <td>{{ _("Condition") }}</td>
-          <td>{{ data.condition }}</td>
-        </tr>
-        {%- endif -%}
-        {%- if data.temperature -%}
-        <tr>
-          <td>{{ _("Temperature") }}</td>
-          <td>{{ data.temperature }}</td>
-        </tr>
-        {%- endif -%}
-        {%- if data.feelsLike -%}
-        <tr>
-          <td>{{ _("Feels Like") }}</td>
-          <td>{{ data.feelsLike }}</td>
-        </tr>
-        {%- endif -%}
-        {%- if data.wind -%}
-        <tr>
-          <td>{{ _("Wind") }}</td>
-          <td>{{ data.wind }}</td>
-        </tr>
-        {%- endif -%}
-        {%- if data.humidity -%}
-        <tr>
-          <td>{{ _("Humidity") }}</td>
-          <td>{{ data.humidity }}</td>
-        </tr>
-        {%- endif -%}
-        {%- if data.pressure -%}
-        <tr>
-          <td>{{ _("Pressure") }}</td>
-          <td>{{ data.pressure }}</td>
-        </tr>
-        {%- endif -%}
-        <tr>
-        {%- for name, value in data.attributes.items() -%}
-        <tr>
-          <td>{{ name }}</td>
-          <td>{{ value }}</td>
-        </tr>
-        {%- endfor -%}
-      </tbody>
-    </table>
+{% macro show_weather_data(answer, data) %}
+  <table>
+    <colgroup>
+      <col span="1" class="thumbnail">
+      <col span="1" class="title">
+      <col span="1" class="measured">
+      <col span="1" class="title">
+      <col span="1" class="measured">
+    </colgroup>
+    <tbody>
+      <tr>
+        <td rowspan="4">
+          {%- if data.url %}<img class="symbol" src="{{ data.url }}" title="{{ data.summary }}">{% endif -%}
+        </td>
+      </tr>
+      <tr>
+        <td>{{ _("Temperature") }}:</td>
+        <td>{{ data.temperature.l10n(locale=data.location) }}</td>
+        <td>{{ _("Feels Like") }}:</td>
+        <td>{{ data.feels_like.l10n(locale=data.location) }}</td>
+      </tr>
+      <tr>
+        <td>{{ _("Wind") }}:</td>
+        <td>{{ data.wind_from.l10n(locale=data.location) }}: {{ data.wind_speed.l10n(locale=data.location) }}</td>
+        <td>{{ _("Pressure") }}:</td>
+        <td>{{ data.pressure.l10n(locale=data.location) }}</td>
+      </tr>
+      <tr>
+        <td>{{_("Humidity")}}:</td>
+        <td>{{ data.humidity.l10n(locale=data.location) }}</td>
+        <td></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
 {% endmacro %}
 
-<details class="answer-weather">
-  <summary>It's currently {{ answer.current.condition }}, {{ answer.current.temperature }} in {{ answer.location }}</summary>
-  <div>
-    <h2 class="title">{{ answer.location }}</h2>
-    <h3>{{ _("Current condition") }}</h3>
-    {{ show_weather_data(answer.current) }}
-
+<details class="weather">
+  <summary>
+    <div class="summary"> {{ answer.current.summary }}</div>
+    {{ show_weather_data(answer, answer.current) }}
+  </summary>
+  <div class="weather-forecast">
     {%- if answer.forecasts -%}
-    <div class="answer-weather-forecasts">
-      {%- for forecast in answer.forecasts -%}
-      <h3>{{ forecast.time }}</h3>
-      {{ show_weather_data(forecast) }}
-      {%- endfor -%}
-    </div>
+      <div class="answer-weather-forecasts">
+        {%- for forecast in answer.forecasts -%}
+            <div class="summary">{{ forecast.datetime.l10n(locale=answer.current.location,fmt="short") }} {{ forecast.summary }}</div>
+            {{ show_weather_data(answer, forecast) }}
+        {%- endfor -%}
+      </div>
     {%- endif -%}
   </div>
 </details>
+
+{%- if answer.url -%}
+    <a href="{{ answer.url }}" class="answer-url"
+        {%- if results_on_new_tab %}target="_blank" rel="noopener noreferrer"{%- else -%}rel="noreferrer"{%- endif -%}>
+        {{ answer.service }}
+    </a>
+{%- else -%}
+    <span class="answer-url">{{ answer.service }}</span>
+{% endif -%}

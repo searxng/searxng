@@ -226,7 +226,7 @@ class ExpireCacheSQLite(sqlitedb.SQLiteAppl, ExpireCache):
     # The key/value tables will be created on demand by self.create_table
     DDL_CREATE_TABLES = {}
 
-    CACHE_TABLE_PREFIX = "CACHE-TABLE-"
+    CACHE_TABLE_PREFIX = "CACHE-TABLE"
 
     def __init__(self, cfg: ExpireCacheCfg):
         """An instance of the SQLite expire cache is build up from a
