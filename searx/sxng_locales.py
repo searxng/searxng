@@ -106,7 +106,7 @@ sxng_locales = (
     ('th-TH', 'ไทย', 'ไทย', 'Thai', '\U0001f1f9\U0001f1ed'),
     ('tr', 'Türkçe', '', 'Turkish', '\U0001f310'),
     ('tr-TR', 'Türkçe', 'Türkiye', 'Turkish', '\U0001f1f9\U0001f1f7'),
-    ('uk', 'Українська', '', 'Ukrainian', '\U0001f310'),
+    ('uk', 'Українська', '', 'Ukrainian', '\U0001f1fa\U0001f1e6'),
     ('ur', 'اردو', '', 'Urdu', '\U0001f310'),
     ('vi', 'Tiếng Việt', '', 'Vietnamese', '\U0001f310'),
     ('vi-VN', 'Tiếng Việt', 'Việt Nam', 'Vietnamese', '\U0001f1fb\U0001f1f3'),
