@@ -51,5 +51,5 @@ class CurrenciesDB:
     def iso4217_to_name(self, iso4217, language):
         self.init()
 
-        iso4217_languages: dict = self.cache.get(key=iso4217, default={}, ctx=self.ctx_names)
+        iso4217_languages: dict = self.cache.get(key=iso4217, default={}, ctx=self.ctx_iso4217)
         return iso4217_languages.get(language, iso4217)
