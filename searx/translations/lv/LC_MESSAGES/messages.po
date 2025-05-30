@@ -10,22 +10,23 @@
 # Obligate <Obligate@users.noreply.translate.codeberg.org>, 2024.
 # Anonymous <anonymous@users.noreply.translate.codeberg.org>, 2025.
 # Obligate <obligate@users.noreply.translate.codeberg.org>, 2025.
+# sandijs <sandijs@noreply.codeberg.org>, 2025.
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-05-13 19:13+0000\n"
-"PO-Revision-Date: 2025-01-06 15:53+0000\n"
-"Last-Translator: return42 <return42@users.noreply.translate.codeberg.org>"
-"\n"
+"PO-Revision-Date: 2025-05-30 07:10+0000\n"
+"Last-Translator: sandijs <sandijs@noreply.codeberg.org>\n"
+"Language-Team: Latvian <https://translate.codeberg.org/projects/searxng/"
+"searxng/lv/>\n"
 "Language: lv\n"
-"Language-Team: Latvian "
-"<https://translate.codeberg.org/projects/searxng/searxng/lv/>\n"
-"Plural-Forms: nplurals=3; plural=(n % 10 == 0 || n % 100 >= 11 && n % 100"
-" <= 19) ? 0 : ((n % 10 == 1 && n % 100 != 11) ? 1 : 2);\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n % 10 == 0 || n % 100 >= 11 && n % 100 <= "
+"19) ? 0 : ((n % 10 == 1 && n % 100 != 11) ? 1 : 2);\n"
+"X-Generator: Weblate 5.11.4\n"
 "Generated-By: Babel 2.17.0\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
@@ -166,7 +167,7 @@ msgstr "tumšs"
 #. STYLE_NAMES['BLACK']
 #: searx/searxng.msg
 msgid "black"
-msgstr ""
+msgstr "melns"
 
 #. BRAND_CUSTOM_LINKS['UPTIME']
 #: searx/searxng.msg
@@ -293,7 +294,7 @@ msgstr "abonenti"
 #. SOCIAL_MEDIA_TERMS['POSTS']
 #: searx/engines/lemmy.py:86 searx/searxng.msg
 msgid "posts"
-msgstr ""
+msgstr "ziņojumi"
 
 #. SOCIAL_MEDIA_TERMS['ACTIVE USERS']
 #: searx/engines/lemmy.py:87 searx/searxng.msg
@@ -334,17 +335,17 @@ msgstr "autors"
 #. SOCIAL_MEDIA_TERMS['THREAD OPEN']
 #: searx/engines/discourse.py:149 searx/searxng.msg
 msgid "open"
-msgstr ""
+msgstr "atvērts"
 
 #. SOCIAL_MEDIA_TERMS['THREAD CLOSED']
 #: searx/engines/discourse.py:149 searx/searxng.msg
 msgid "closed"
-msgstr ""
+msgstr "aizvērts"
 
 #. SOCIAL_MEDIA_TERMS['THREAD ANSWERED']
 #: searx/engines/discourse.py:160 searx/searxng.msg
 msgid "answered"
-msgstr ""
+msgstr "atbildēja"
 
 #: searx/webapp.py:291
 msgid "No item found"
@@ -448,7 +449,7 @@ msgstr ""
 
 #: searx/engines/openstreetmap.py:158
 msgid "Show route in map .."
-msgstr ""
+msgstr "Rādīt maršrutu kartē .."
 
 #: searx/engines/pdbe.py:96
 #, python-brace-format
@@ -521,23 +522,23 @@ msgstr "Failu kvalitāte"
 
 #: searx/plugins/ahmia_filter.py:32
 msgid "Ahmia blacklist"
-msgstr ""
+msgstr "Ahmia melnais saraksts"
 
 #: searx/plugins/ahmia_filter.py:33
 msgid "Filter out onion results that appear in Ahmia's blacklist."
-msgstr ""
+msgstr "Izfiltrēt \"sīpolu\" rezultātus, kas parādās Ahmia melnajā sarakstā."
 
 #: searx/plugins/calculator.py:38
 msgid "Basic Calculator"
-msgstr ""
+msgstr "Parasts kalkulators"
 
 #: searx/plugins/calculator.py:39
 msgid "Calculate mathematical expressions via the search bar"
-msgstr ""
+msgstr "Izrēķināt matemātiskas izteiksmes, izmantojot meklētāju"
 
 #: searx/plugins/hash_plugin.py:34
 msgid "Hash plugin"
-msgstr ""
+msgstr "Jaucējvērtības spraudnis"
 
 #: searx/plugins/hash_plugin.py:35
 msgid "Converts strings to different hash digests."
@@ -549,11 +550,13 @@ msgstr "jaucējkoda sašķelšana"
 
 #: searx/plugins/hostnames.py:123
 msgid "Hostnames plugin"
-msgstr ""
+msgstr "Saimniekvārdu spraudnis"
 
 #: searx/plugins/hostnames.py:124
 msgid "Rewrite hostnames, remove results or prioritize them based on the hostname"
 msgstr ""
+"Pārrakstīt saimniekvārdus, noņemt rezultātus vai prioritizēt tos, "
+"pamatojoties uz saimniekvārdu"
 
 #: searx/plugins/oa_doi_rewrite.py:55
 msgid "Open Access DOI rewrite"
@@ -576,14 +579,16 @@ msgid ""
 "Displays your IP if the query is \"ip\" and your user agent if the query "
 "is \"user-agent\"."
 msgstr ""
+"Tiek izvadīta Jūsu IP, ja pieprasījumā norādīts “ip”, un Jūsu "
+"lietotājaģents, ja pieprasījumā norādīts “user-agent”."
 
 #: searx/plugins/self_info.py:52
 msgid "Your IP is: "
-msgstr ""
+msgstr "Jūsu IP ir: "
 
 #: searx/plugins/self_info.py:55
 msgid "Your user-agent is: "
-msgstr ""
+msgstr "Jūsu lietotājaģents ir: "
 
 #: searx/plugins/tor_check.py:42
 msgid "Tor check plugin"
@@ -594,18 +599,20 @@ msgid ""
 "This plugin checks if the address of the request is a Tor exit-node, and "
 "informs the user if it is; like check.torproject.org, but from SearXNG."
 msgstr ""
+"Šis spraudnis pārbauda vai pieprasītā adrese ir Tor izejas mezgls un informē "
+"lietotāju, ja tas tā ir; piemēram, check.torproject.org, bet no SearXNG."
 
 #: searx/plugins/tor_check.py:65
 msgid "Could not download the list of Tor exit-nodes from"
-msgstr ""
+msgstr "Nevarēja lejupielādēt Tor izejas mezglu sarakstu no"
 
 #: searx/plugins/tor_check.py:72
 msgid "You are using Tor and it looks like you have the external IP address"
-msgstr ""
+msgstr "Jūs lietojat Tor un izskatās, ka Jums ir ārējā IP adrese"
 
 #: searx/plugins/tor_check.py:76
 msgid "You are not using Tor and you have the external IP address"
-msgstr ""
+msgstr "Jūs nelietojat Tor un Jums ir ārējā IP adrese"
 
 #: searx/plugins/tracker_url_remover.py:37
 msgid "Tracker URL remover"
@@ -613,15 +620,15 @@ msgstr "Izsekošanas URL noņemšanas līdzeklis"
 
 #: searx/plugins/tracker_url_remover.py:38
 msgid "Remove trackers arguments from the returned URL"
-msgstr ""
+msgstr "Noņemt izsekotāju argumentus no atgrieztā URL"
 
 #: searx/plugins/unit_converter.py:49
 msgid "Unit converter plugin"
-msgstr ""
+msgstr "Vienību pārveidotāja spraudnis"
 
 #: searx/plugins/unit_converter.py:50
 msgid "Convert between units"
-msgstr ""
+msgstr "Konvertēt starp vienībām"
 
 #: searx/templates/simple/404.html:4
 msgid "Page not found"
@@ -634,7 +641,7 @@ msgstr "Doties uz %(search_page)s."
 
 #: searx/templates/simple/404.html:6
 msgid "search page"
-msgstr ""
+msgstr "meklēšanas lapa"
 
 #: searx/templates/simple/base.html:53
 msgid "Donate"
@@ -647,11 +654,11 @@ msgstr "Opcijas"
 
 #: searx/templates/simple/base.html:67
 msgid "Powered by"
-msgstr ""
+msgstr "Darbojas ar"
 
 #: searx/templates/simple/base.html:67
 msgid "a privacy-respecting, open metasearch engine"
-msgstr ""
+msgstr "privātumu respektējoša, atvērta meta-meklētājprogramma"
 
 #: searx/templates/simple/base.html:68
 #: searx/templates/simple/result_templates/packages.html:59
@@ -660,15 +667,15 @@ msgstr "Pirmkods"
 
 #: searx/templates/simple/base.html:69
 msgid "Issue tracker"
-msgstr ""
+msgstr "Problēmu izsekotājs"
 
 #: searx/templates/simple/base.html:70 searx/templates/simple/stats.html:18
 msgid "Engine stats"
-msgstr ""
+msgstr "Dzinēja statistika"
 
 #: searx/templates/simple/base.html:72
 msgid "Public instances"
-msgstr ""
+msgstr "Publiskās instances"
 
 #: searx/templates/simple/base.html:75
 msgid "Privacy policy"
@@ -1784,4 +1791,3 @@ msgstr "slēpt video"
 
 #~ msgid "proxied"
 #~ msgstr ""
-
