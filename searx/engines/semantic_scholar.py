@@ -1,124 +1,135 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-"""Semantic Scholar (Science)"""
+"""Semantic Scholar (Scientific articles)
 
-from json import dumps
+API documentation: https://api.semanticscholar.org/api-docs/graph (though direct access to details was problematic)
+Key details:
+- Endpoint: /graph/v1/paper/search
+- Response: JSON
+- Pagination: offset, limit
+- Fields: title, abstract, authors, venue, year, paperId, externalIds (DOI), openAccessPdf, url
+"""
+
+import json
 from datetime import datetime
-from lxml import html
+from searx.utils import get_json_result, get_json_list_value, get_json_string_value, get_json_int_value
 
-from flask_babel import gettext
-from searx.network import get
-from searx.utils import eval_xpath_getindex, gen_useragent, html_to_text
-
-
+# about
 about = {
     "website": 'https://www.semanticscholar.org/',
-    "wikidata_id": 'Q22908627',
-    "official_api_documentation": 'https://api.semanticscholar.org/',
+    "wikidata_id": 'Q22680419', # Wikidata ID for Semantic Scholar
+    "official_api_documentation": 'https://api.semanticscholar.org/api-docs/graph',
     "use_official_api": True,
-    "require_api_key": False,
+    "require_api_key": False, # API key recommended for higher rate limits, but not strictly required
     "results": 'JSON',
+    "categories": ['science', 'technology', 'computer science', 'medical', 'scientific publications'],
+    "attributes": {  # For informing users about potential API key benefits
+        "api_key": "recommended for higher rate limits (1 request/second vs 1000 requests/5 minutes shared for anonymous users)"
+    }
 }
 
-categories = ['science', 'scientific publications']
 paging = True
-search_url = 'https://www.semanticscholar.org/api/1/search'
-base_url = 'https://www.semanticscholar.org'
+number_of_results = 10  # Default limit, can be up to 100 according to general API practices.
+                        # The API docs state "limit: Up to 100 results to return in each request. Defaults to 100."
+                        # Let's use a higher default, e.g., 20 or 50, if appropriate for Searx.
+                        # Sticking to 10 for now as it's common in other engines.
 
+# Base URL for the paper search API
+base_url = 'https://api.semanticscholar.org/graph/v1/paper/search'
 
-def _get_ui_version():
-    resp = get(base_url)
-    if not resp.ok:
-        raise RuntimeError("Can't determine Semantic Scholar UI version")
-
-    doc = html.fromstring(resp.text)
-    ui_version = eval_xpath_getindex(doc, "//meta[@name='s2-ui-version']/@content", 0)
-    if not ui_version:
-        raise RuntimeError("Can't determine Semantic Scholar UI version")
-
-    return ui_version
-
+# Fields to request from the API
+# Ref: https://api.semanticscholar.org/api-docs/graph#tag/Paper-Data/operation/get_graph_v1_paper_search
+# Common fields: paperId, externalIds, url, title, abstract, venue, year, authors, openAccessPdf
+fields_to_request = [
+    'paperId',
+    'externalIds', # Contains DOI
+    'url',         # URL to Semantic Scholar page
+    'title',
+    'abstract',
+    'venue',
+    'year',
+    'authors',     # Array of authors: {authorId, name}
+    'openAccessPdf' # Object: {url, status}
+]
+fields_param = ','.join(fields_to_request)
 
 def request(query, params):
-    params['url'] = search_url
-    params['method'] = 'POST'
-    params['headers'] = {
-        'Content-Type': 'application/json',
-        'X-S2-UI-Version': _get_ui_version(),
-        'X-S2-Client': "webapp-browser",
-        'User-Agent': gen_useragent(),
-    }
-    params['data'] = dumps(
-        {
-            "queryString": query,
-            "page": params['pageno'],
-            "pageSize": 10,
-            "sort": "relevance",
-            "getQuerySuggestions": False,
-            "authors": [],
-            "coAuthors": [],
-            "venues": [],
-            "performTitleMatch": True,
-        }
-    )
+    offset = (params['pageno'] - 1) * number_of_results
+    # According to docs, query parameter for GET is 'query'.
+    # For POST, it's a JSON body: { "query": "string", "facets": ..., ... }
+    # We are using GET.
+    api_url = f"{base_url}?query={query}&offset={offset}&limit={number_of_results}&fields={fields_param}"
+
+    params['url'] = api_url
+    # Searx typically handles URL encoding for query parameters.
     return params
 
-
 def response(resp):
-    res = resp.json()
-
     results = []
-    for result in res['results']:
-        url = result.get('primaryPaperLink', {}).get('url')
-        if not url and result.get('links'):
-            url = result.get('links')[0]
-        if not url:
-            alternatePaperLinks = result.get('alternatePaperLinks')
-            if alternatePaperLinks:
-                url = alternatePaperLinks[0].get('url')
-        if not url:
-            url = base_url + '/paper/%s' % result['id']
+    search_data = resp.json()
 
-        # publishedDate
-        if 'pubDate' in result:
-            publishedDate = datetime.strptime(result['pubDate'], "%Y-%m-%d")
-        else:
-            publishedDate = None
+    # Expected structure:
+    # {
+    #   "total": int,
+    #   "offset": int,
+    #   "next": int (next offset, if more results),
+    #   "data": [ {paper}, {paper}, ... ]
+    # }
 
-        # authors
-        authors = [author[0]['name'] for author in result.get('authors', [])]
+    # Pass total number of results to searx if pageno is 1
+    # This helps searx display the total number of results found
+    if params['pageno'] == 1:
+        total = get_json_int_value(search_data, 'total', 0)
+        if total > 0:
+            results.append({'number_of_results': total})
 
-        # pick for the first alternate link, but not from the crawler
-        pdf_url = None
-        for doc in result.get('alternatePaperLinks', []):
-            if doc['linkType'] not in ('crawler', 'doi'):
-                pdf_url = doc['url']
-                break
+    papers = get_json_list_value(search_data, 'data', [])
 
-        # comments
-        comments = None
-        if 'citationStats' in result:
-            comments = gettext(
-                '{numCitations} citations from the year {firstCitationVelocityYear} to {lastCitationVelocityYear}'
-            ).format(
-                numCitations=result['citationStats']['numCitations'],
-                firstCitationVelocityYear=result['citationStats']['firstCitationVelocityYear'],
-                lastCitationVelocityYear=result['citationStats']['lastCitationVelocityYear'],
-            )
+    for paper in papers:
+        title = get_json_string_value(paper, 'title', '')
+        paper_id = get_json_string_value(paper, 'paperId', '')
 
-        results.append(
-            {
-                'template': 'paper.html',
-                'url': url,
-                'title': result['title']['text'],
-                'content': html_to_text(result['paperAbstract']['text']),
-                'journal': result.get('venue', {}).get('text') or result.get('journal', {}).get('name'),
-                'doi': result.get('doiInfo', {}).get('doi'),
-                'tags': result.get('fieldsOfStudy'),
-                'authors': authors,
-                'pdf_url': pdf_url,
-                'publishedDate': publishedDate,
-                'comments': comments,
-            }
-        )
+        # URL to the paper on Semantic Scholar website
+        # The 'url' field from API is usually the correct one.
+        url = get_json_string_value(paper, 'url', '')
+        if not url and paper_id: # Fallback if 'url' is missing
+            url = f"https://www.semanticscholar.org/paper/{paper_id}"
+
+        abstract = get_json_string_value(paper, 'abstract', '')
+        venue = get_json_string_value(paper, 'venue', '')
+        year_val = get_json_result(paper, 'year') # Can be int or string
+
+        publishedDate = None
+        if year_val is not None:
+            try:
+                year_int = int(str(year_val)) # Ensure it's an int
+                publishedDate = datetime(year_int, 1, 1)
+            except ValueError:
+                pass # If year format is unexpected
+
+        authors_list = get_json_list_value(paper, 'authors', [])
+        # Each author in authors_list is expected to be like: {"authorId": "...", "name": "..."}
+        authors = [get_json_string_value(author, 'name', '') for author in authors_list if get_json_string_value(author, 'name')]
+
+        external_ids = get_json_result(paper, 'externalIds', {}) # This is a dict e.g. {"DOI": "..."}
+        doi = get_json_string_value(external_ids, 'DOI', '') if external_ids else ''
+
+        open_access_pdf_info = get_json_result(paper, 'openAccessPdf', {}) # This is a dict e.g. {"url": "...", "status": "..."}
+        pdf_url = get_json_string_value(open_access_pdf_info, 'url', '') if open_access_pdf_info else ''
+
+        content = abstract if abstract else ''
+
+        res_dict = {
+            'template': 'paper.html',
+            'url': url,
+            'title': title,
+            'publishedDate': publishedDate,
+            'content': content,
+            'doi': doi,
+            'authors': authors,
+            'venue': venue,
+            'pdf_url': pdf_url,
+            'paper_id': paper_id
+        }
+        results.append(res_dict)
 
     return results

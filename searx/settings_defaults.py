@@ -236,6 +236,6 @@ SCHEMA = {
         'scheduling': SettingsValue((None, dict), None, None),
     },
     'categories_as_tabs': SettingsValue(dict, CATEGORIES_AS_TABS),
-    'engines': SettingsValue(list, []),
+    'engines': SettingsValue(list, ['citeseerx', 'europe_pmc', 'semantic_scholar']),
     'doi_resolvers': {},
 }
