@@ -481,46 +481,49 @@ class Compass:
 WeatherConditionType = typing.Literal[
     # The capitalized string goes into to i18n/l10n (en: "Clear sky" -> de: "wolkenloser Himmel")
     "clear sky",
+    "partly cloudy",
     "cloudy",
     "fair",
     "fog",
-    "heavy rain and thunder",
-    "heavy rain showers and thunder",
-    "heavy rain showers",
-    "heavy rain",
-    "heavy sleet and thunder",
-    "heavy sleet showers and thunder",
-    "heavy sleet showers",
-    "heavy sleet",
-    "heavy snow and thunder",
-    "heavy snow showers and thunder",
-    "heavy snow showers",
-    "heavy snow",
+    # rain
     "light rain and thunder",
     "light rain showers and thunder",
     "light rain showers",
     "light rain",
-    "light sleet and thunder",
-    "light sleet showers and thunder",
-    "light sleet showers",
-    "light sleet",
-    "light snow and thunder",
-    "light snow showers and thunder",
-    "light snow showers",
-    "light snow",
-    "partly cloudy",
     "rain and thunder",
     "rain showers and thunder",
     "rain showers",
     "rain",
+    "heavy rain and thunder",
+    "heavy rain showers and thunder",
+    "heavy rain showers",
+    "heavy rain",
+    # sleet
+    "light sleet and thunder",
+    "light sleet showers and thunder",
+    "light sleet showers",
+    "light sleet",
     "sleet and thunder",
     "sleet showers and thunder",
     "sleet showers",
     "sleet",
+    "heavy sleet and thunder",
+    "heavy sleet showers and thunder",
+    "heavy sleet showers",
+    "heavy sleet",
+    # snow
+    "light snow and thunder",
+    "light snow showers and thunder",
+    "light snow showers",
+    "light snow",
     "snow and thunder",
     "snow showers and thunder",
     "snow showers",
     "snow",
+    "heavy snow and thunder",
+    "heavy snow showers and thunder",
+    "heavy snow showers",
+    "heavy snow",
 ]
 """Standardized designations for weather conditions.  The designators were
 taken from a collaboration between NRK and Norwegian Meteorological Institute
@@ -535,46 +538,49 @@ taken from a collaboration between NRK and Norwegian Meteorological Institute
 
 YR_WEATHER_SYMBOL_MAP = {
     "clear sky": "01d",  # 01d clearsky_day
-    "fair": "02d",  # 02d fair_day
     "partly cloudy": "03d",  # 03d partlycloudy_day
     "cloudy": "04",  # 04 cloudy
-    "light rain showers": "40d",  # 40d lightrainshowers_day
-    "rain showers": "05d",  # 05d rainshowers_day
-    "heavy rain showers": "41d",  # 41d heavyrainshowers_day
-    "light rain showers and thunder": "24d",  # 24d lightrainshowersandthunder_day
-    "rain showers and thunder": "06d",  # 06d rainshowersandthunder_day
-    "heavy rain showers and thunder": "25d",  # 25d heavyrainshowersandthunder_day
-    "light sleet showers": "42d",  # 42d lightsleetshowers_day
-    "sleet showers": "07d",  # 07d sleetshowers_day
-    "heavy sleet showers": "43d",  # 43d heavysleetshowers_day
-    "light sleet showers and thunder": "26d",  # 26d lightssleetshowersandthunder_day
-    "sleet showers and thunder": "20d",  # 20d sleetshowersandthunder_day
-    "heavy sleet showers and thunder": "27d",  # 27d heavysleetshowersandthunder_day
-    "light snow showers": "44d",  # 44d lightsnowshowers_day
-    "snow showers": "08d",  # 08d snowshowers_day
-    "heavy snow showers": "45d",  # 45d heavysnowshowers_day
-    "light snow showers and thunder": "28d",  # 28d lightssnowshowersandthunder_day
-    "snow showers and thunder": "21d",  # 21d snowshowersandthunder_day
-    "heavy snow showers and thunder": "29d",  # 29d heavysnowshowersandthunder_day
-    "light rain": "46",  # 46 lightrain
-    "rain": "09",  # 09 rain
-    "heavy rain": "10",  # 10 heavyrain
-    "light rain and thunder": "30",  # 30 lightrainandthunder
-    "rain and thunder": "22",  # 22 rainandthunder
-    "heavy rain and thunder": "11",  # 11 heavyrainandthunder
-    "light sleet": "47",  # 47 lightsleet
-    "sleet": "12",  # 12 sleet
-    "heavy sleet": "48",  # 48 heavysleet
-    "light sleet and thunder": "31",  # 31 lightsleetandthunder
-    "sleet and thunder": "23",  # 23 sleetandthunder
-    "heavy sleet and thunder": "32",  # 32 heavysleetandthunder
-    "light snow": "49",  # 49 lightsnow
-    "snow": "13",  # 13 snow
-    "heavy snow": "50",  # 50 heavysnow
-    "light snow and thunder": "33",  # 33 lightsnowandthunder
-    "snow and thunder": "14",  # 14 snowandthunder
-    "heavy snow and thunder": "34",  # 34 heavysnowandthunder
+    "fair": "02d",  # 02d fair_day
     "fog": "15",  # 15 fog
+    # rain
+    "light rain and thunder": "30",  # 30 lightrainandthunder
+    "light rain showers and thunder": "24d",  # 24d lightrainshowersandthunder_day
+    "light rain showers": "40d",  # 40d lightrainshowers_day
+    "light rain": "46",  # 46 lightrain
+    "rain and thunder": "22",  # 22 rainandthunder
+    "rain showers and thunder": "06d",  # 06d rainshowersandthunder_day
+    "rain showers": "05d",  # 05d rainshowers_day
+    "rain": "09",  # 09 rain
+    "heavy rain and thunder": "11",  # 11 heavyrainandthunder
+    "heavy rain showers and thunder": "25d",  # 25d heavyrainshowersandthunder_day
+    "heavy rain showers": "41d",  # 41d heavyrainshowers_day
+    "heavy rain": "10",  # 10 heavyrain
+    # sleet
+    "light sleet and thunder": "31",  # 31 lightsleetandthunder
+    "light sleet showers and thunder": "26d",  # 26d lightssleetshowersandthunder_day
+    "light sleet showers": "42d",  # 42d lightsleetshowers_day
+    "light sleet": "47",  # 47 lightsleet
+    "sleet and thunder": "23",  # 23 sleetandthunder
+    "sleet showers and thunder": "20d",  # 20d sleetshowersandthunder_day
+    "sleet showers": "07d",  # 07d sleetshowers_day
+    "sleet": "12",  # 12 sleet
+    "heavy sleet and thunder": "32",  # 32 heavysleetandthunder
+    "heavy sleet showers and thunder": "27d",  # 27d heavysleetshowersandthunder_day
+    "heavy sleet showers": "43d",  # 43d heavysleetshowers_day
+    "heavy sleet": "48",  # 48 heavysleet
+    # snow
+    "light snow and thunder": "33",  # 33 lightsnowandthunder
+    "light snow showers and thunder": "28d",  # 28d lightssnowshowersandthunder_day
+    "light snow showers": "44d",  # 44d lightsnowshowers_day
+    "light snow": "49",  # 49 lightsnow
+    "snow and thunder": "14",  # 14 snowandthunder
+    "snow showers and thunder": "21d",  # 21d snowshowersandthunder_day
+    "snow showers": "08d",  # 08d snowshowers_day
+    "snow": "13",  # 13 snow
+    "heavy snow and thunder": "34",  # 34 heavysnowandthunder
+    "heavy snow showers and thunder": "29d",  # 29d heavysnowshowersandthunder_day
+    "heavy snow showers": "45d",  # 45d heavysnowshowers_day
+    "heavy snow": "50",  # 50 heavysnow
 }
 """Map a :py:obj:`WeatherConditionType` to a `YR weather symbol`_
 
