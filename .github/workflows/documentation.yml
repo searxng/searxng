@@ -23,6 +23,7 @@ env:
 
 jobs:
   release:
+    if: github.repository_owner == 'searxng' || github.event_name == 'workflow_dispatch'
     name: Release
     runs-on: ubuntu-24.04-arm
     permissions:

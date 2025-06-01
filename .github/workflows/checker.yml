@@ -19,6 +19,7 @@ env:
 
 jobs:
   search:
+    if: github.repository_owner == 'searxng' || github.event_name == 'workflow_dispatch'
     name: Search
     runs-on: ubuntu-24.04-arm
     steps:
