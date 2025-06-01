@@ -2,16 +2,8 @@
 """Tube Archivist - Your self hosted YouTube media server.  Connects with a self-hosted instance of Tube Archivist to allow searching for your hosted videos.
 """
 
-import re
 from urllib.parse import urlencode
-from datetime import datetime, timedelta
 from dateutil.parser import parse
-from dateutil.relativedelta import relativedelta
-
-import babel
-
-from searx.network import get  # see https://github.com/searxng/searxng/issues/762
-from searx.locales import language_tag
 from searx.utils import html_to_text, humanize_number
 from searx.enginelib.traits import EngineTraits
 
