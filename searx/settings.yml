@@ -2036,12 +2036,14 @@ engines:
     enable_http: true
     shortcut: tch
 
-  - name: tubearchivist
-    engine: tubearchivist
-    weight: 10
-    base_url: https://tube.apps.clabough.tech
-    token: c15575e5824c778f89eb12b40002b3834f4385f3
-    shortcut: tuba
+  # TubeArchivist is a self-hosted Youtube archivist software.
+  # This engine allows searching your self-hosted instance
+  # - name: tubearchivist
+  #   engine: tubearchivist
+  #   weight: 10
+  #   base_url:
+  #   token:
+  #   shortcut: tuba
 
   # torznab engine lets you query any torznab compatible indexer.  Using this
   # engine in combination with Jackett opens the possibility to query a lot of

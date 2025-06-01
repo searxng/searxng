@@ -1,7 +1,5 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-"""Peertube and :py:obj:`SepiaSearch <searx.engines.sepiasearch>` do share
-(more or less) the same REST API and the schema of the JSON result is identical.
-
+"""Tube Archivist - Your self hosted YouTube media server.  Connects with a self-hosted instance of Tube Archivist to allow searching for your hosted videos.
 """
 
 import re
@@ -33,10 +31,22 @@ categories = ["videos"]
 paging = True
 base_url = ""
 """Base URL of the Tube Archivist instance.  Fill this in with your own tubearchivist url
+
+Configuration
+=============
+
+The engine has the following (required) settings:
+
+
+``base_url``:
+  TubeArchivist endpoint URL. (http://your-instance:port)
+
+``api_key``:
+  The API key to use for authentication.
+  (Can be found under Settings -> User -> Admin Interface)
 """
 token = ""
-"""Token for API use
-"""
+"""The API key to use for authentication."""
 
 
 def request(query, params):
@@ -81,8 +91,6 @@ def video_response(resp):
             'content': html_to_text(channel_result['channel_description']),
             'author': channel_result['channel_name'],
             'views': humanize_number(channel_result['channel_subs']),
-            # 'template': 'videos.html',
-            # 'publishedDate': parse(video_result['published']),
             'thumbnail': f'{absolute_url(channel_result["channel_thumb_url"])}?auth={token}',
             'metadata': ' | '.join(metadata)
         })
@@ -113,7 +121,6 @@ def video_response(resp):
     return results
 
 def absolute_url(relative_url):
-
     url=f'{base_url.rstrip("/")}{relative_url}'
     print(url)
     return url
