@@ -2037,14 +2037,14 @@ engines:
     shortcut: tch
 
   # TubeArchivist is a self-hosted Youtube archivist software.
-  # This engine allows searching your self-hosted instance
+  # https://docs.searxng.org/dev/engines/online/tubearchivist.html
+  #
   # - name: tubearchivist
   #   engine: tubearchivist
-  #   weight: 10
-  #   base_url:
-  #   token:
-  #   link_to_mp4: false
   #   shortcut: tuba
+  #   base_url:
+  #   ta_token:
+  #   ta_link_to_mp4: false
 
   # torznab engine lets you query any torznab compatible indexer.  Using this
   # engine in combination with Jackett opens the possibility to query a lot of
