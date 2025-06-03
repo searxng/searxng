@@ -20,7 +20,7 @@ The :ref:`LegacyResult <LegacyResult>` is used internally for the results that
 have not yet been typed.  The templates can be used as orientation until the
 final typing is complete.
 
-- :ref:`template default` / :py:obj:`Result`
+- :ref:`template default` / :py:obj:`MainResult`
 - :ref:`template images`
 - :ref:`template videos`
 - :ref:`template torrent`

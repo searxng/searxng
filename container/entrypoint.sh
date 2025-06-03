@@ -2,6 +2,46 @@
 # shellcheck shell=dash
 set -u
 
+help() {
+    cat <<EOF
+Command line:
+  -h  Display this help
+
+Environment variables:
+  SEARXNG_SETTINGS_PATH   path of the local settings.yml file
+  UWSGI_SETTINGS_PATH     path of the uwsgi.ini wfile
+  DATA_PATH:              default /var/cache/searxng
+  BIND_ADDRESS            default [::]:8080
+
+Environment variables used for settings.yml:
+  BASE_URL        -> server.base_url
+  INSTANCE_NAME   -> general.instance_name
+  AUTOCOMPLETE    -> search.autocomplete
+
+Environment variables used for uwsgi.ini:
+  UWSGI_WORKERS   -> workers
+  UWSGI_THREADS   -> threads
+EOF
+}
+
+main() {
+    echo "SearXNG $SEARXNG_VERSION"
+
+    # Check for volume mounts
+    volume_handler "$CONFIG_PATH"
+    volume_handler "$DATA_PATH"
+
+    # Check for updates in files
+    config_handler "$UWSGI_SETTINGS_PATH" "/usr/local/searxng/.template/uwsgi.ini"
+    config_handler "$SEARXNG_SETTINGS_PATH" "/usr/local/searxng/searx/settings.yml"
+
+    # Update files
+    setup_uwsgi
+    setup_searxng
+
+    exec /usr/local/searxng/venv/bin/uwsgi --http-socket "$BIND_ADDRESS" "$UWSGI_SETTINGS_PATH"
+}
+
 check_file() {
     local target="$1"
 
@@ -149,18 +189,19 @@ EOF
     check_file "$target"
 }
 
-echo "SearXNG $SEARXNG_VERSION"
 
-# Check for volume mounts
-volume_handler "$CONFIG_PATH"
-volume_handler "$DATA_PATH"
+while getopts "h" option
+do
+    case $option in
+        h)
+            help
+            exit 0
+            ;;
+        *)
+            echo "unknow option ${option}"
+            exit 42
+            ;;
+    esac
+done
 
-# Check for updates in files
-config_handler "$UWSGI_SETTINGS_PATH" "/usr/local/searxng/.template/uwsgi.ini"
-config_handler "$SEARXNG_SETTINGS_PATH" "/usr/local/searxng/searx/settings.yml"
-
-# Update files
-setup_uwsgi
-setup_searxng
-
-exec /usr/local/searxng/venv/bin/uwsgi --http-socket "$BIND_ADDRESS" "$UWSGI_SETTINGS_PATH"
+main
