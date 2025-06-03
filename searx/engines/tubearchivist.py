@@ -22,8 +22,8 @@ The engine has the following (required) settings:
 Notes
 =====
 
-TubeArchivist requires authentication for all image loads via cookie authentiation.  What this means is that by
-defualt, SearXNG will have no way to pull images from TubeArchivist (as there is no way to pass cookies in a URL string only).
+TubeArchivist requires authentication for all image loads via cookie authentication.  What this means is that by
+default, SearXNG will have no way to pull images from TubeArchivist (as there is no way to pass cookies in a URL string only).
 
 In the meantime while work is done on the TubeArchivist side, this can be worked around by bypassing auth for images in TubeArchivist
 by altering the default TubeArchivist nginx file.
