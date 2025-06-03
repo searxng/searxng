@@ -149,7 +149,7 @@ jobs:
         uses: actions/cache@v4
         with:
           # yamllint disable-line rule:line-length
-          key: "container-mounts-${{ matrix.arch }}-${{ hashFiles('./container/Dockerfile', './container/legacy/Dockerfile') }}"
+          key: "container-mounts-${{ matrix.arch }}-${{ hashFiles('./container/Dockerfile') }}"
           restore-keys: "container-mounts-${{ matrix.arch }}-"
           path: |
             /var/tmp/buildah-cache/
