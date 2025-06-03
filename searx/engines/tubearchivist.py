@@ -65,7 +65,7 @@ traits: EngineTraits
 about = {
     # pylint: disable=line-too-long
     "website": 'https://www.tubearchivist.com',
-    "official_api_documentation": 'https://github.com/tubearchivist/tubearchivist',
+    "official_api_documentation": 'https://docs.tubearchivist.com/api/introduction/',
     "use_official_api": True,
     "require_api_key": False,
     "results": 'JSON',
