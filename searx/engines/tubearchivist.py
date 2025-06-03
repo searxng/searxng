@@ -23,15 +23,17 @@ Notes
 =====
 
 TubeArchivist requires authentication for all image loads via cookie authentication.  What this means is that by
-default, SearXNG will have no way to pull images from TubeArchivist (as there is no way to pass cookies in a URL string only).
+default, SearXNG will have no way to pull images from TubeArchivist (as there is no way to pass cookies in a URL
+string only).
 
-In the meantime while work is done on the TubeArchivist side, this can be worked around by bypassing auth for images in TubeArchivist
-by altering the default TubeArchivist nginx file.
+In the meantime while work is done on the TubeArchivist side, this can be worked around by bypassing auth for
+images in TubeArchivist by altering the default TubeArchivist nginx file.
 
 This is located in the main tubearchivist docker container at `/etc/nginx/sites-available/default`.
 
-It is **strongly** recommended first setting up the intial connection and verying searching works first with broken images, and then
-attempting this change.  This will limit any debugging to only images, rather than tokens/networking.
+It is **strongly** recommended first setting up the intial connection and verying searching works first with
+broken images, and then attempting this change.  This will limit any debugging to only images, rather than
+tokens/networking.
 
 Steps to enable **unauthenticated** metadata access for channels and videos:
 
@@ -95,7 +97,7 @@ def request(query, params):
         return False
 
     args = {
-           'query': query,
+        'query': query,
     }
     params['url'] = f"{base_url.rstrip('/')}/api/search?{urlencode(args)}"
     params['headers']['Authorization'] = f'Token {token}'
@@ -118,40 +120,40 @@ def video_response(resp):
 
     for channel_result in json_data['results']['channel_results']:
         channel_url = absolute_url(f'/channel/{channel_result["channel_id"]}')
-        results.append({
-            'url': channel_url,
-            'title': channel_result['channel_name'],
-            'content': html_to_text(channel_result['channel_description']),
-            'author': channel_result['channel_name'],
-            'views': humanize_number(channel_result['channel_subs']),
-            'thumbnail': f'{absolute_url(channel_result["channel_thumb_url"])}?auth={token}'
-        })
-
+        results.append(
+            {
+                'url': channel_url,
+                'title': channel_result['channel_name'],
+                'content': html_to_text(channel_result['channel_description']),
+                'author': channel_result['channel_name'],
+                'views': humanize_number(channel_result['channel_subs']),
+                'thumbnail': f'{absolute_url(channel_result["channel_thumb_url"])}?auth={token}',
+            }
+        )
 
     for video_result in json_data['results']['video_results']:
-        metadata = list(filter(None, [
-            video_result['channel']['channel_name'],
-            *video_result.get('tags', [])
-        ]))[:5]
+        metadata = list(filter(None, [video_result['channel']['channel_name'], *video_result.get('tags', [])]))[:5]
         if link_to_mp4:
             url = f'{base_url.rstrip("/")}{video_result["media_url"]}'
         else:
             url = f'{base_url.rstrip("/")}/?videoId={video_result["youtube_id"]}'
-        results.append({
-            'template': 'videos.html',
-            'url': url,
-            'title': video_result['title'],
-            'content': html_to_text(video_result['description']),
-            'author': video_result['channel']['channel_name'],
-            'length': video_result['player']['duration_str'],
-            'views': humanize_number(video_result['stats']['view_count']),
-            'publishedDate': parse(video_result['published']),
-            'thumbnail': f'{absolute_url(video_result["vid_thumb_url"])}?auth={token}',
-            'metadata': ' | '.join(metadata)
-        })
+        results.append(
+            {
+                'template': 'videos.html',
+                'url': url,
+                'title': video_result['title'],
+                'content': html_to_text(video_result['description']),
+                'author': video_result['channel']['channel_name'],
+                'length': video_result['player']['duration_str'],
+                'views': humanize_number(video_result['stats']['view_count']),
+                'publishedDate': parse(video_result['published']),
+                'thumbnail': f'{absolute_url(video_result["vid_thumb_url"])}?auth={token}',
+                'metadata': ' | '.join(metadata),
+            }
+        )
 
     return results
 
+
 def absolute_url(relative_url):
     return f'{base_url.rstrip("/")}{relative_url}'
-
