@@ -183,23 +183,19 @@ def get_sc_code(searxng_locale, params):
     Startpage puts a ``sc`` argument on every HTML :py:obj:`search form
     <search_form_xpath>`.  Without this argument Startpage considers the request
     is from a bot.  We do not know what is encoded in the value of the ``sc``
-    argument, but it seems to be a kind of a *time-stamp*.
+    argument, but it seems to be a kind of a *timestamp*.
 
     Startpage's search form generates a new sc-code on each request.  This
-    function scrap a new sc-code from Startpage's home page every
+    function scrapes a new sc-code from Startpage's home page every
     :py:obj:`sc_code_cache_sec` seconds."""
 
-    sc_code = CACHE.get("SC_CODE", "")
+    sc_code = CACHE.get("SC_CODE")
+
     if sc_code:
+        logger.debug("get_sc_code: using cached value: %s", sc_code)
         return sc_code
 
     headers = {**params['headers']}
-    headers['Origin'] = base_url
-    headers['Referer'] = base_url + '/'
-    # headers['Connection'] = 'keep-alive'
-    # headers['Accept-Encoding'] = 'gzip, deflate, br'
-    # headers['Accept'] = 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8'
-    # headers['User-Agent'] = 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:105.0) Gecko/20100101 Firefox/105.0'
 
     # add Accept-Language header
     if searxng_locale == 'all':
@@ -216,9 +212,9 @@ def get_sc_code(searxng_locale, params):
             )
         headers['Accept-Language'] = ac_lang
 
-    get_sc_url = base_url + '/?sc=%s' % (sc_code)
-    logger.debug("query new sc time-stamp ... %s", get_sc_url)
-    logger.debug("headers: %s", headers)
+    get_sc_url = base_url + '/'
+    logger.debug("get_sc_code: querying new sc timestamp @ %s", get_sc_url)
+    logger.debug("get_sc_code: request headers: %s", headers)
     resp = get(get_sc_url, headers=headers)
 
     # ?? x = network.get('https://www.startpage.com/sp/cdn/images/filter-chevron.svg', headers=headers)
@@ -237,7 +233,7 @@ def get_sc_code(searxng_locale, params):
     except IndexError as exc:
         logger.debug("suspend startpage API --> https://github.com/searxng/searxng/pull/695")
         raise SearxEngineCaptchaException(
-            message="get_sc_code: [PR-695] query new sc time-stamp failed! (%s)" % resp.url,  # type: ignore
+            message="get_sc_code: [PR-695] querying new sc timestamp failed! (%s)" % resp.url,  # type: ignore
         ) from exc
 
     sc_code = str(sc_code)
@@ -249,8 +245,8 @@ def get_sc_code(searxng_locale, params):
 def request(query, params):
     """Assemble a Startpage request.
 
-    To avoid CAPTCHA we need to send a well formed HTTP POST request with a
-    cookie.  We need to form a request that is identical to the request build by
+    To avoid CAPTCHAs we need to send a well formed HTTP POST request with a
+    cookie. We need to form a request that is identical to the request built by
     Startpage's search form:
 
     - in the cookie the **region** is selected
@@ -262,24 +258,30 @@ def request(query, params):
     engine_region = traits.get_region(params['searxng_locale'], 'en-US')
     engine_language = traits.get_language(params['searxng_locale'], 'en')
 
-    # build arguments
+    params['headers']['Origin'] = base_url
+    params['headers']['Referer'] = base_url + '/'
+
+    # Build form data
     args = {
         'query': query,
         'cat': startpage_categ,
         't': 'device',
-        'sc': get_sc_code(params['searxng_locale'], params),  # hint: this func needs HTTP headers,
+        'sc': get_sc_code(params['searxng_locale'], params),  # hint: this func needs HTTP headers
         'with_date': time_range_dict.get(params['time_range'], ''),
+        'abp': '1',
+        'abd': '1',
+        'abe': '1',
     }
 
     if engine_language:
         args['language'] = engine_language
         args['lui'] = engine_language
 
-    args['abp'] = '1'
     if params['pageno'] > 1:
         args['page'] = params['pageno']
+        args['segment'] = 'startpage.udog'
 
-    # build cookie
+    # Build cookie
     lang_homepage = 'en'
     cookie = OrderedDict()
     cookie['date_time'] = 'world'
@@ -304,15 +306,10 @@ def request(query, params):
     params['cookies']['preferences'] = 'N1N'.join(["%sEEE%s" % x for x in cookie.items()])
     logger.debug('cookie preferences: %s', params['cookies']['preferences'])
 
-    # POST request
     logger.debug("data: %s", args)
     params['data'] = args
     params['method'] = 'POST'
     params['url'] = search_url
-    params['headers']['Origin'] = base_url
-    params['headers']['Referer'] = base_url + '/'
-    # is the Accept header needed?
-    # params['headers']['Accept'] = 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8'
 
     return params
 
