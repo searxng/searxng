@@ -55,8 +55,7 @@ When all services are installed and running fine, you can add SearXNG to your
 HTTP server.  We do not have any preferences regarding the HTTP server, you can use
 whatever you prefer.
 
-We use caddy in our :ref:`docker image <installation docker>` and we have
-implemented installation procedures for:
+We implemented installation procedures for:
 
 - :ref:`installation nginx`
 - :ref:`installation apache`
