@@ -97,15 +97,10 @@ def request(query, params):
     if not query:
         return False
 
-    params['url'] = (
-        base_url.rstrip("/")
-        + "/api/search?"
-        + urlencode(
-            {
-                'query': query,
-            }
-        )
-    )
+    args = {
+           'query': query,
+    }
+    params['url'] = f"{base_url.rstrip('/')}/api/search?{urlencode(args)}"
     params['headers']['Authorization'] = f'Token {token}'
 
     return params
