@@ -58,9 +58,6 @@ Searching again should now show images.
 from urllib.parse import urlencode
 from dateutil.parser import parse
 from searx.utils import html_to_text, humanize_number
-from searx.enginelib.traits import EngineTraits
-
-traits: EngineTraits
 
 about = {
     # pylint: disable=line-too-long
@@ -125,7 +122,6 @@ def video_response(resp):
         return []
 
     for channel_result in json_data['results']['channel_results']:
-        metadata = []
         channel_url = absolute_url(f'/channel/{channel_result["channel_id"]}')
         results.append({
             'url': channel_url,
@@ -133,32 +129,27 @@ def video_response(resp):
             'content': html_to_text(channel_result['channel_description']),
             'author': channel_result['channel_name'],
             'views': humanize_number(channel_result['channel_subs']),
-            'thumbnail': f'{absolute_url(channel_result["channel_thumb_url"])}?auth={token}',
-            'metadata': ' | '.join(metadata)
+            'thumbnail': f'{absolute_url(channel_result["channel_thumb_url"])}?auth={token}'
         })
 
 
     for video_result in json_data['results']['video_results']:
-        metadata = [
-            x
-            for x in [
-                video_result['channel']['channel_name'],
-                ' | '.join(video_result['tags']),
-            ]
-            if x
-        ]
+        metadata = list(filter(None, [
+            video_result['channel']['channel_name'],
+            *video_result.get('tags', [])
+        ]))[:5]
         if link_to_mp4:
             url = f'{base_url.rstrip("/")}{video_result["media_url"]}'
         else:
             url = f'{base_url.rstrip("/")}/?videoId={video_result["youtube_id"]}'
         results.append({
+            'template': 'videos.html',
             'url': url,
             'title': video_result['title'],
             'content': html_to_text(video_result['description']),
             'author': video_result['channel']['channel_name'],
             'length': video_result['player']['duration_str'],
             'views': humanize_number(video_result['stats']['view_count']),
-            'template': 'videos.html',
             'publishedDate': parse(video_result['published']),
             'thumbnail': f'{absolute_url(video_result["vid_thumb_url"])}?auth={token}',
             'metadata': ' | '.join(metadata)
@@ -167,7 +158,5 @@ def video_response(resp):
     return results
 
 def absolute_url(relative_url):
-    url=f'{base_url.rstrip("/")}{relative_url}'
-    print(url)
-    return url
+    return f'{base_url.rstrip("/")}{relative_url}'
 
