@@ -8,8 +8,12 @@ article.
    https://redis.com/blog/bullet-proofing-lua-scripts-in-redispy/
 
 """
+from __future__ import annotations
+from typing import Tuple, List, Iterable
 
+from ipaddress import IPv4Network, IPv6Network
 import hmac
+import redis
 
 from searx import get_setting
 
@@ -83,7 +87,7 @@ def secret_hash(name: str):
     :type name: str
     """
     m = hmac.new(bytes(name, encoding='utf-8'), digestmod='sha256')
-    m.update(bytes(get_setting('server.secret_key'), encoding='utf-8'))
+    m.update(bytes(get_setting('server.secret_key'), encoding='utf-8'))  # type: ignore
     return m.hexdigest()
 
 
@@ -238,3 +242,244 @@ def incr_sliding_window(client, name: str, duration: int):
     name = "SearXNG_counter_" + secret_hash(name)
     c = script(args=[duration], keys=[name])
     return c
+
+
+class RangeReader:
+    """Base class of readers passed to :py:obj:`RangeTable.init_table`."""
+
+    # pylint: disable=too-few-public-methods
+
+    def __init__(self, table: List[Tuple[(int, int)]]):
+        self._table = table
+
+    @property
+    def table(self) -> List[Tuple[(int, int)]]:
+        """Returns a table by a list of tuples (table's rows) with a *start*
+        value of the range and a *end* value.  The values of *start* and *end*
+        column are integers."""
+        return self._table
+
+
+class IPNetworkReader(RangeReader):
+    """A reader for :py:obj:`RangeTable` that is build up from a list of
+    :py:obj:`IPv4Network` and :py:obj:`IPv6Network` items.
+
+    .. code:: python
+
+       >>> from ipaddress import IPv4Network, ip_address
+       >>> from searx import redislib
+       >>> reader = redislib.IPNetworkReader([
+               IPv4Network('192.169.0.42/32'),
+               IPv4Network('192.169.1.0/24'),
+       ])
+       >>> ipv4_ranges = redislib.RangeTable('ipv4_ranges', client)
+       >>> ipv4_ranges.init_table(reader)
+
+    A IP lookup can be done by :py:obj`RangeTable.in_range`:
+
+    .. code:: python
+
+       >>> ipv4_ranges.in_range(int(ip_address('192.169.0.42')))
+       True
+       >>> ipv4_ranges.in_range(int(ip_address('192.169.0.41')))
+       False
+       >>> ipv4_ranges.in_range(int(ip_address('192.169.0.43')))
+       False
+       >>> ipv4_ranges.in_range(int(ip_address('192.169.1.43')))
+       True
+
+    """
+
+    # pylint: disable=too-few-public-methods, super-init-not-called
+
+    def __init__(self, table: List[IPv4Network | IPv6Network]):
+        self._table = table
+
+    @property
+    def table(self) -> Iterable[Tuple[(int, int)]]:
+        """Yields rows of a table where the *start* value of the range is the
+        integer of the ``net.network_address`` and the *end* value is the
+        integer of the ``net.broadcast_address``.
+        """
+
+        for net in self._table:
+            yield (int(net.network_address), int(net.broadcast_address))
+
+
+class RangeTable:
+    """.. sidebar: info
+
+       - ZRANGEBYSCORE_
+       - client.zrangebyscore_
+
+    A table of ranges.  A range is a tuple with a *start* value of the range
+    and a *end* value.  The values of *start* and *end* column are integers.  By
+    example, the tuple ``(0, 10)`` is a range that includes 11 integers from 0
+    to 10 (includes 0 and 10).
+
+    The table of ranges is stored in the redis DB by a set with scores (aka
+    `sorted set`).  For ultrafast lookups if a score is in a range
+    ZRANGEBYSCORE_ is used (client.zrangebyscore_).
+
+    A table is loaded into the redis DB by :py:obj:`RangeTable.init_table`
+    (client.zadd_).
+
+    .. tabs::
+
+       .. group-tab:: redis-py
+
+          .. code:: python
+
+             >>> from searx import redisdb
+             >>> from searx import redislib
+             >>> redisdb.initialize()
+             True
+             >>> client = redisdb.client()
+
+          .. code:: python
+
+             >>> table_0_100 = [
+             ...     (0, 10),    # range starts by 0 and ends in 10
+             ...     (10, 19),   # range starts by 10 and ends in 19
+             ...     (20, 97),   # range starts by 20 and ends in 97
+             ... ]
+             >>> my_table = redislib.RangeTable('mytable', client)
+             >>> reader = redislib.RangeReader(table_0_100)
+             >>> my_table.init_table(reader)
+
+       .. group-tab:: REDIS
+
+          The analogous redis command would be:
+
+          .. code::
+
+              ZADD SearXNG_range_table_my_table 10 "0-10" 19 "10-19"  97 "20-97"
+
+    In the example above, a value of 10 is in two ranges: ``(0, 10)`` and ``(10,
+    19)``.  Only the first range that matches ``(0, 10)`` will be returned by
+    :py:obj:`RangeTable.get_range_of` (the second range 10 is in, is
+    ``(10, 19)`` but is not returned).
+
+
+    .. tabs::
+
+       .. group-tab:: redis-py
+
+          .. code:: python
+
+             >>> my_table.get_range_of(5)
+             (0, 10)
+             >>> my_table.get_range_of(10)
+             (0, 10)
+
+          .. code:: python
+
+             >>> my_table.in_range(5)
+             True
+             >>> my_table.in_range(10)
+             True
+
+       .. group-tab:: REDIS
+
+          .. code::
+
+             ZRANGEBYSCORE SearXNG_range_table_my_table 5 +inf LIMIT 0 1
+               --> '0-10'
+             ZRANGEBYSCORE SearXNG_range_table_my_table 10 +inf LIMIT 0 1
+               --> '0-10'
+
+    The value 19 is only in one range: ``(10, 19)``:
+
+    .. tabs::
+
+       .. group-tab:: redis-py
+
+          .. code:: python
+
+             >>> my_table.get_range_of(19)
+             (10, 19)
+
+       .. group-tab:: REDIS
+
+          .. code::
+
+             ZRANGEBYSCORE SearXNG_range_table_my_table 19 +inf LIMIT 0 1
+               --> '10-19'
+
+
+    A value of ``>97`` is not in any range:
+
+    .. tabs::
+
+       .. group-tab:: redis-py
+
+          .. code:: python
+
+             >>> my_table.get_range_of(97)
+             (20, 97)
+             >>> my_table.get_range_of(98) is None
+             True
+
+       .. group-tab:: REDIS
+
+          .. code::
+
+             ZRANGEBYSCORE SearXNG_range_table_my_table 19 +inf LIMIT 0 1
+               --> '20-97'
+             ZRANGEBYSCORE SearXNG_range_table_my_table 98 +inf LIMIT 0 1
+               --> (empty array)
+
+
+
+    .. _Checking if IP falls within a range with Redis:
+       https://stackoverflow.com/questions/33015904/checking-if-ip-falls-within-a-range-with-redis/33020687#33020687
+    .. _sorted set:
+       https://redis.io/docs/data-types/sorted-sets/
+    .. _ZRANGEBYSCORE:
+       https://redis.io/commands/zrangebyscore/
+    .. _client.zrangebyscore:
+       https://redis-py-doc.readthedocs.io/en/master/#redis.Redis.zrangebyscore
+    .. _client.zadd:
+       https://redis-py-doc.readthedocs.io/en/master/#redis.Redis.zadd
+
+    """
+
+    def __init__(self, table_name: str, client: redis.Redis):
+        self.table_name = f"SearXNG_range_table_{table_name}"
+        self.client = client
+
+    def get_range_of(self, score: int) -> Tuple[int, int] | None:
+        """Find and return a range in this table where score is in.  Only the
+        first range that matches will be returned (by example ``(0, 10)``).  If
+        score is not in any of the ranges, ``None`` is returned.
+        """
+        member = self.client.zrangebyscore(
+            name=self.table_name,
+            max='+inf',
+            min=score,
+            start=0,
+            num=1,
+        )
+
+        if not member:
+            return None
+        start, end = [int(x) for x in member[0].decode('utf-8').split('-')]
+        if score >= start:
+            # score is in range ..
+            return (start, end)
+        return None
+
+    def in_range(self, score: int) -> bool:
+        """Returns ``True`` when score is in one ore more *start*, *end* ranges.
+        If not, ``False`` is returned.
+        """
+        return bool(self.get_range_of(score))
+
+    def init_table(self, reader: RangeReader):
+        """Init table by a list of tuples (table's rows) with a *start* value of
+        the range and a *end* value.
+        """
+        mapping = {}
+        for start, end in reader.table:
+            mapping[f"{start}-{end}"] = end
+        self.client.zadd(self.table_name, mapping=mapping)

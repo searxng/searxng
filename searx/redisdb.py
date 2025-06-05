@@ -28,7 +28,7 @@ from searx import get_setting
 OLD_REDIS_URL_DEFAULT_URL = 'unix:///usr/local/searxng-redis/run/redis.sock?db=0'
 """This was the default Redis URL in settings.yml."""
 
-_CLIENT = None
+_CLIENT: redis.Redis = None  # type: ignore
 logger = logging.getLogger(__name__)
 
 
@@ -43,7 +43,7 @@ def initialize():
         return False
     try:
         # create a client, but no connection is done
-        _CLIENT = redis.Redis.from_url(redis_url)
+        _CLIENT = redis.Redis.from_url(redis_url)  # type: ignore
 
         # log the parameters as seen by the redis lib, without the password
         kwargs = _CLIENT.get_connection_kwargs().copy()
@@ -58,7 +58,7 @@ def initialize():
         logger.info("connected to Redis")
         return True
     except redis.exceptions.RedisError as e:
-        _CLIENT = None
+        _CLIENT = None  # type: ignore
         _pw = pwd.getpwuid(os.getuid())
         logger.exception("[%s (%s)] can't connect redis DB ...", _pw.pw_name, _pw.pw_uid)
         if redis_url == OLD_REDIS_URL_DEFAULT_URL and isinstance(e, redis.exceptions.ConnectionError):
