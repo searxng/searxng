@@ -36,7 +36,7 @@
 
 ``limiter`` :  ``$SEARXNG_LIMITER``
   Rate limit the number of request on the instance, block some bots.  The
-  :ref:`limiter` requires a :ref:`settings redis` database.
+  :ref:`limiter` requires a :ref:`settings valkey` database.
 
 .. _public_instance:
 

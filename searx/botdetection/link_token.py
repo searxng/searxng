@@ -10,7 +10,7 @@ a ping by request a static URL.
 
 .. note::
 
-   This method requires a redis DB and needs a HTTP X-Forwarded-For_ header.
+   This method requires a valkey DB and needs a HTTP X-Forwarded-For_ header.
 
 To get in use of this method a flask URL route needs to be added:
 
@@ -45,8 +45,8 @@ import string
 import random
 
 from searx import logger
-from searx import redisdb
-from searx.redislib import secret_hash
+from searx import valkeydb
+from searx.valkeylib import secret_hash
 from searx.extended_types import SXNG_Request
 
 from ._helpers import (
@@ -76,17 +76,17 @@ def is_suspicious(network: IPv4Network | IPv6Network, request: SXNG_Request, ren
     :py:obj:`PING_LIVE_TIME`.
 
     """
-    redis_client = redisdb.client()
-    if not redis_client:
+    valkey_client = valkeydb.client()
+    if not valkey_client:
         return False
 
     ping_key = get_ping_key(network, request)
-    if not redis_client.get(ping_key):
+    if not valkey_client.get(ping_key):
         logger.info("missing ping (IP: %s) / request: %s", network.compressed, ping_key)
         return True
 
     if renew:
-        redis_client.set(ping_key, 1, ex=PING_LIVE_TIME)
+        valkey_client.set(ping_key, 1, ex=PING_LIVE_TIME)
 
     logger.debug("found ping for (client) network %s -> %s", network.compressed, ping_key)
     return False
@@ -98,9 +98,9 @@ def ping(request: SXNG_Request, token: str):
     The expire time of this ping-key is :py:obj:`PING_LIVE_TIME`.
 
     """
-    from . import redis_client, cfg  # pylint: disable=import-outside-toplevel, cyclic-import
+    from . import valkey_client, cfg  # pylint: disable=import-outside-toplevel, cyclic-import
 
-    if not redis_client:
+    if not valkey_client:
         return
     if not token_is_valid(token):
         return
@@ -110,7 +110,7 @@ def ping(request: SXNG_Request, token: str):
 
     ping_key = get_ping_key(network, request)
     logger.debug("store ping_key for (client) network %s (IP %s) -> %s", network.compressed, real_ip, ping_key)
-    redis_client.set(ping_key, 1, ex=PING_LIVE_TIME)
+    valkey_client.set(ping_key, 1, ex=PING_LIVE_TIME)
 
 
 def get_ping_key(network: IPv4Network | IPv6Network, request: SXNG_Request) -> str:
@@ -134,21 +134,21 @@ def token_is_valid(token) -> bool:
 
 def get_token() -> str:
     """Returns current token.  If there is no currently active token a new token
-    is generated randomly and stored in the redis DB.
+    is generated randomly and stored in the valkey DB.
 
     - :py:obj:`TOKEN_LIVE_TIME`
     - :py:obj:`TOKEN_KEY`
 
     """
-    redis_client = redisdb.client()
-    if not redis_client:
-        # This function is also called when limiter is inactive / no redis DB
+    valkey_client = valkeydb.client()
+    if not valkey_client:
+        # This function is also called when limiter is inactive / no valkey DB
         # (see render function in webapp.py)
         return '12345678'
-    token = redis_client.get(TOKEN_KEY)
+    token = valkey_client.get(TOKEN_KEY)
     if token:
         token = token.decode('UTF-8')
     else:
         token = ''.join(random.choice(string.ascii_lowercase + string.digits) for _ in range(16))
-        redis_client.set(TOKEN_KEY, token, ex=TOKEN_LIVE_TIME)
+        valkey_client.set(TOKEN_KEY, token, ex=TOKEN_LIVE_TIME)
     return token
