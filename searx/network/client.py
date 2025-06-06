@@ -191,7 +191,7 @@ def new_client(
         event_hooks = {'response': [hook_log_response]}
 
     return httpx.AsyncClient(
-        transport=transport,
+        # transport=transport,
         mounts=mounts,
         max_redirects=max_redirects,
         event_hooks=event_hooks,
