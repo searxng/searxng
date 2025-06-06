@@ -13,6 +13,7 @@ import typing
 
 from .core import log, data_dir
 from .currencies import CurrenciesDB
+from .tracker_patterns import TrackerPatternsDB
 
 CURRENCIES: CurrenciesDB
 USER_AGENTS: dict[str, typing.Any]
@@ -23,6 +24,7 @@ OSM_KEYS_TAGS: dict[str, typing.Any]
 ENGINE_DESCRIPTIONS: dict[str, typing.Any]
 ENGINE_TRAITS: dict[str, typing.Any]
 LOCALES: dict[str, typing.Any]
+TRACKER_PATTERNS: TrackerPatternsDB
 
 lazy_globals = {
     "CURRENCIES": CurrenciesDB(),
@@ -34,6 +36,7 @@ lazy_globals = {
     "ENGINE_DESCRIPTIONS": None,
     "ENGINE_TRAITS": None,
     "LOCALES": None,
+    "TRACKER_PATTERNS": TrackerPatternsDB(),
 }
 
 data_json_files = {
