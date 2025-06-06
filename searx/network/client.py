@@ -11,7 +11,15 @@ from typing import Any, Dict
 import httpx
 from httpx_socks import AsyncProxyTransport
 from python_socks import parse_proxy_url, ProxyConnectionError, ProxyTimeoutError, ProxyError
+
 import uvloop
+
+try:
+    from httpx_curl_cffi import AsyncCurlTransport, CurlOpt, CurlHttpVersion
+except ImportError:
+    AsyncCurlTransport = None
+    CurlOpt = None
+    CurlHttpVersion = None
 
 from searx import logger
 
@@ -152,6 +160,7 @@ def get_transport(verify, http2, local_address, proxy_url, limit, retries):
 
 def new_client(
     # pylint: disable=too-many-arguments
+    impersonate,
     enable_http,
     verify,
     enable_http2,
@@ -169,12 +178,27 @@ def new_client(
         max_keepalive_connections=max_keepalive_connections,
         keepalive_expiry=keepalive_expiry,
     )
+    if impersonate and (AsyncCurlTransport is None or CurlOpt is None):
+        raise ValueError("impersonate requires the AMD64 or ARM64 architecture")
+
     # See https://www.python-httpx.org/advanced/#routing
     mounts = {}
     for pattern, proxy_url in proxies.items():
         if not enable_http and pattern.startswith('http://'):
             continue
-        if proxy_url.startswith('socks4://') or proxy_url.startswith('socks5://') or proxy_url.startswith('socks5h://'):
+        if impersonate and AsyncCurlTransport is not None and CurlOpt is not None and CurlHttpVersion is not None:
+            mounts[pattern] = AsyncCurlTransport(
+                impersonate=impersonate,
+                default_headers=True,
+                # required for parallel requests, see curl_cffi issues below
+                curl_options={CurlOpt.FRESH_CONNECT: True},
+                http_version=CurlHttpVersion.V3 if enable_http2 else CurlHttpVersion.V1_1,
+                proxy=proxy_url,
+                local_address=local_address,
+            )
+        elif (
+            proxy_url.startswith('socks4://') or proxy_url.startswith('socks5://') or proxy_url.startswith('socks5h://')
+        ):
             mounts[pattern] = get_transport_for_socks_proxy(
                 verify, enable_http2, local_address, proxy_url, limit, retries
             )
@@ -184,7 +208,17 @@ def new_client(
     if not enable_http:
         mounts['http://'] = AsyncHTTPTransportNoHttp()
 
-    transport = get_transport(verify, enable_http2, local_address, None, limit, retries)
+    if impersonate and AsyncCurlTransport is not None and CurlOpt is not None and CurlHttpVersion is not None:
+        transport = AsyncCurlTransport(
+            impersonate=impersonate,
+            default_headers=True,
+            # required for parallel requests, see curl_cffi issues below
+            curl_options={CurlOpt.FRESH_CONNECT: True},
+            http_version=CurlHttpVersion.V3 if enable_http2 else CurlHttpVersion.V1_1,
+            local_address=local_address,
+        )
+    else:
+        transport = get_transport(verify, enable_http2, local_address, None, limit, retries)
 
     event_hooks = None
     if hook_log_response:
