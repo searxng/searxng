@@ -16,35 +16,37 @@ Granian
    - `Backpressure`_
    - `Runtime mode`_
 
-.. contents::
-   :depth: 2
-   :local:
-   :backlinks: entry
-
 .. note::
 
    Granian will be the future replacement for :ref:`searxng uwsgi` in SearXNG.
-   At the moment, it's only officially supported in the :ref:`installation container`.
+   At the moment, it's only officially supported in the :ref:`installation
+   container`.
 
 .. _Granian installation:
 
 Installation
 ============
 
-We only recommend installing Granian with pip, as officially documented:
+We only recommend installing Granian with pip, as officially documented. Run
+the following command in the Python environment of the SearXNG installation:
 
 .. code:: sh
 
-   pip install granian
+   $ pip install granian
 
 .. _Granian configuration:
 
 Configuration
 =============
 
-Granian can be configured via option parameters and environment variables.
+.. note::
 
-We provide sane defaults that should fit all use cases,
-however if you feel you should change something,
-Granian documents all available parameters in the `Options`_ section.
+   It's not advised to modify the amount of workers, expect increased resource
+   usage and potential issues with :ref:`botdetection`.
 
+Granian can be configured via option parameters and environment variables
+(``$GRANIAN_*``).
+
+We provide sane defaults that should fit most use cases, however if you feel
+you should change something, Granian documents all available parameters in the
+`Options`_ section.

@@ -17,17 +17,11 @@ Installation container
    - `Docker cheat sheet (PDF doc)`_
    - `Podman rootless containers`_
 
-.. contents::
-   :depth: 2
-   :local:
-   :backlinks: entry
-
 .. important::
 
    Understanding container architecture basics is essential for properly
-   maintaining your SearXNG instance.
-   This guide assumes familiarity with container concepts and provides
-   deployment steps at a high level.
+   maintaining your SearXNG instance.  This guide assumes familiarity with
+   container concepts and provides deployment steps at a high level.
 
    If you're new to containers, we recommend learning the fundamentals at
    `Docker 101`_ before proceeding.
@@ -45,21 +39,21 @@ Installation
 Prerequisites
 -------------
 
-You need a working Docker or Podman installation on your system.
-Choose the option that works best for your environment:
+You need a working Docker or Podman installation on your system.  Choose the
+option that works best for your environment:
 
 - `Docker <https://docs.docker.com/get-docker/>`_ (recommended for most users)
 - `Podman <https://podman.io/docs/installation>`_
 
-In the case of Docker, you need to add the user running the container
-to the ``docker`` group and restart the session:
+In the case of Docker, you need to add the user running the container to the
+``docker`` group and restart the session:
 
 .. code:: sh
 
    $ sudo usermod -aG docker $USER
 
-In the case of Podman, no additional steps are generally required,
-but there are some considerations when running `Podman rootless containers`_.
+In the case of Podman, no additional steps are generally required, but there
+are some considerations when running `Podman rootless containers`_.
 
 .. _Container pulling images:
 
@@ -68,8 +62,8 @@ Pulling images
 
 .. note::
 
-   DockerHub now applies rate limits to unauthenticated image pulls.
-   If you are affected by this, you can use the `GHCR mirror`_ instead.
+   DockerHub now applies rate limits to unauthenticated image pulls.  If you
+   are affected by this, you can use the `GHCR mirror`_ instead.
 
 The official images are mirrored at:
 
@@ -82,7 +76,7 @@ Pull the latest image:
 
    $ docker pull docker.io/searxng/searxng:latest
 
-...or if you want to lock in to a specific version:
+\.\. or if you want to lock in to a specific version:
 
 .. code:: sh
 
@@ -93,12 +87,9 @@ Pull the latest image:
 Instancing
 ==========
 
-.. note::
-
-   This section is intended for advanced users who need custom deployments.
-
-   We recommend using `Docker compose`_, which provides a preconfigured
-   environment with sensible defaults.
+This section is intended for advanced users who need custom deployments.  We
+recommend using `Docker compose`_, which provides a preconfigured environment
+with sensible defaults.
 
 Basic container instancing example:
 
@@ -110,12 +101,12 @@ Basic container instancing example:
 
    # Run the container
    $ docker run --name searxng --replace -d \
-       -p 8080:8080 \
+       -p 8888:8080 \
        -v "./config/:/etc/searxng/" \
        -v "./data/:/var/cache/searxng/" \
        docker.io/searxng/searxng:latest
 
-This will start SearXNG in the background, accessible at http://localhost:8080.
+This will start SearXNG in the background, accessible at http://localhost:8888
 
 .. _Container management:
 
@@ -128,7 +119,7 @@ List running containers:
 
    $ docker container list
    CONTAINER ID  IMAGE  ...  CREATED        PORTS                   NAMES
-   37f6487c8703  ...    ...  3 minutes ago  0.0.0.0:8080->8080/tcp  searxng
+   37f6487c8703  ...    ...  3 minutes ago  0.0.0.0:8888->8080/tcp  searxng
 
 Access the container shell (troubleshooting):
 
@@ -161,25 +152,26 @@ Environment variables
 
 The following environment variables can be configured:
 
-- ``GRANIAN_*``: Controls the Granian server options (see :ref:`Granian configuration`)
-- ``FORCE_OWNERSHIP``: Ensures mounted volumes/files are owned by the "searxng:searxng" user (default: ``true``)
+- ``$SEARXNG_*``: Controls the SearXNG configuration options, look out for
+  environment ``$SEARXNG_*`` in :ref:`settings server` and :ref:`settings
+  general`.
+- ``$GRANIAN_*``: Controls the :ref:`Granian server options <Granian configuration>`.
+- ``$FORCE_OWNERSHIP``: Ensures mounted volumes/files are owned by the
+  ``searxng:searxng`` user (default: ``true``)
 
 Container internal paths (don't modify unless you know what you're doing):
 
-- ``CONFIG_PATH``: Path to the SearXNG configuration directory (default: ``/etc/searxng``)
-- ``SEARXNG_SETTINGS_PATH``: Path to the SearXNG settings file (default: ``$CONFIG_PATH/settings.yml``)
-- ``DATA_PATH``: Path to the SearXNG data directory (default: ``/var/cache/searxng``)
+- ``$CONFIG_PATH``: Path to the SearXNG configuration directory (default: ``/etc/searxng``)
+- ``$SEARXNG_SETTINGS_PATH``: Path to the SearXNG settings file (default: ``$CONFIG_PATH/settings.yml``)
+- ``$DATA_PATH``: Path to the SearXNG data directory (default: ``/var/cache/searxng``)
 
 .. _Container custom images:
 
 Custom images
 =============
 
-.. note::
-
-   Custom container images are not officially supported.
-
-To build your own SearXNG container image from source:
+To build your own SearXNG container image from source (please note, custom
+container images are not officially supported):
 
 .. code:: sh
 
