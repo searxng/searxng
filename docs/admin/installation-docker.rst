@@ -110,12 +110,12 @@ Basic container instancing example:
 
    # Run the container
    $ docker run --name searxng --replace -d \
-       -p 8080:8080 \
+       -p 8888:8080 \
        -v "./config/:/etc/searxng/" \
        -v "./data/:/var/cache/searxng/" \
        docker.io/searxng/searxng:latest
 
-This will start SearXNG in the background, accessible at http://localhost:8080.
+This will start SearXNG in the background, accessible at http://localhost:8888
 
 .. _Container management:
 
@@ -128,7 +128,7 @@ List running containers:
 
    $ docker container list
    CONTAINER ID  IMAGE  ...  CREATED        PORTS                   NAMES
-   37f6487c8703  ...    ...  3 minutes ago  0.0.0.0:8080->8080/tcp  searxng
+   37f6487c8703  ...    ...  3 minutes ago  0.0.0.0:8888->8080/tcp  searxng
 
 Access the container shell (troubleshooting):
 
@@ -161,6 +161,7 @@ Environment variables
 
 The following environment variables can be configured:
 
+- ``SEARXNG_*``: Controls the SearXNG configuration options (see :origin:`Default settings <searx/settings_defaults.py>`)
 - ``GRANIAN_*``: Controls the Granian server options (see :ref:`Granian configuration`)
 - ``FORCE_OWNERSHIP``: Ensures mounted volumes/files are owned by the "searxng:searxng" user (default: ``true``)
 

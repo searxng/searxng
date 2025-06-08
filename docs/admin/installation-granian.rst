@@ -42,9 +42,13 @@ We only recommend installing Granian with pip, as officially documented:
 Configuration
 =============
 
+.. note::
+
+   It's not advised to modify the amount of workers,
+   expect increased resource usage and potential issues with :docs:`src/searx.botdetection.html`.
+
 Granian can be configured via option parameters and environment variables.
 
-We provide sane defaults that should fit all use cases,
+We provide sane defaults that should fit most use cases,
 however if you feel you should change something,
 Granian documents all available parameters in the `Options`_ section.
-
