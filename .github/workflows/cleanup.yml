@@ -15,10 +15,10 @@ permissions:
   contents: read
 
 jobs:
-  container-cache:
+  registry:
     # FIXME: On forks it fails with "Failed to fetch packages: missing field `id` at line 1 column 141"
     if: github.repository_owner == 'searxng' || github.event_name == 'workflow_dispatch'
-    name: Container cache
+    name: Registry
     runs-on: ubuntu-24.04
     permissions:
       # Organization GHCR
@@ -30,7 +30,8 @@ jobs:
         with:
           account: "${{ github.repository_owner }}"
           token: "${{ secrets.GITHUB_TOKEN }}"
-          image-names: "cache base"
+          # Remove only cache images https://github.com/snok/container-retention-policy/issues/97
+          image-names: "cache"
           image-tags: "!searxng*"
           cut-off: "1d"
           keep-n-most-recent: "100"
