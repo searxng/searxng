@@ -6,7 +6,7 @@ the list of engines, categories, and languages.
 
 ## `!` Select engine and category
 
-To set category and/or engine names use a `!` prefix.  To give a few examples:
+To set category and/or engine names, use a `!` prefix.  To give a few examples:
 
 - Search Wikipedia for **paris**:
 
