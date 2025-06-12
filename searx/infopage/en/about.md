@@ -4,10 +4,10 @@ SearXNG is a [metasearch engine], aggregating the results of other
 {{link('search engines', 'preferences')}} while not storing information about
 its users.
 
-The SearXNG project is driven by an open community, come join us on Matrix if
+The SearXNG project is driven by an open community. Come join us on Matrix if
 you have questions or just want to chat about SearXNG at [#searxng:matrix.org]
 
-Make SearXNG better.
+Make SearXNG better:
 
 - You can improve SearXNG translations at [Weblate], or...
 - Track development, send contributions, and report issues at [SearXNG sources].
@@ -19,8 +19,8 @@ Make SearXNG better.
 - SearXNG may not offer you as personalized results as Google, but it doesn't
   generate a profile about you.
 - SearXNG doesn't care about what you search for, never shares anything with a
-  third-party, and it can't be used to compromise you.
-- SearXNG is free software, the code is 100% open, and everyone is welcome to
+  third-party, and can't be used to compromise you.
+- SearXNG is free software; the code is 100% open, and everyone is welcome to
   make it better.
 
 If you do care about privacy, want to be a conscious user, or otherwise believe
@@ -41,12 +41,12 @@ search engine, see your browser's documentation:
 When adding a search engine, there must be no duplicates with the same name.  If
 you encounter a problem where you cannot add the search engine, you can either:
 
-- remove the duplicate (default name: SearXNG) or
-- contact the owner to give the instance a different name than the default.
+- Remove the duplicate (default name: SearXNG) or
+- Contact the owner to give the instance a different name from the default.
 
 ## How does it work?
 
-SearXNG is a fork from the well-known [searx] [metasearch engine] which was
+SearXNG is a fork of the well-known [searx] [metasearch engine] which was
 inspired by the [Seeks project].  It provides basic privacy by mixing your
 queries with searches on other platforms without storing search data.  SearXNG
 can be added to your browser's search bar; moreover, it can be set as the
