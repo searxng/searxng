@@ -14,14 +14,13 @@ import flask
 import werkzeug
 
 from searx import logger
-from searx.extended_types import SXNG_Request
 
 from . import config
 
 logger = logger.getChild('botdetection')
 
 
-def dump_request(request: SXNG_Request):
+def dump_request(request: flask.Request):
     return (
         request.path
         + " || X-Forwarded-For: %s" % request.headers.get('X-Forwarded-For')
@@ -52,7 +51,20 @@ def too_many_requests(network: IPv4Network | IPv6Network, log_msg: str) -> werkz
 
 
 def get_network(real_ip: IPv4Address | IPv6Address, cfg: config.Config) -> IPv4Network | IPv6Network:
-    """Returns the (client) network of whether the real_ip is part of."""
+    """Returns the (client) network of whether the ``real_ip`` is part of.
+
+    The ``ipv4_prefix`` and ``ipv6_prefix`` define the number of leading bits in
+    an address that are compared to determine whether or not an address is part
+    of a (client) network.
+
+    .. code:: toml
+
+       [real_ip]
+
+       ipv4_prefix = 32
+       ipv6_prefix = 48
+
+    """
 
     if real_ip.version == 6:
         prefix = cfg['real_ip.ipv6_prefix']
@@ -72,66 +84,87 @@ def _log_error_only_once(err_msg):
         _logged_errors.append(err_msg)
 
 
-def get_real_ip(request: SXNG_Request) -> str:
-    """Returns real IP of the request.  Since not all proxies set all the HTTP
-    headers and incoming headers can be faked it may happen that the IP cannot
-    be determined correctly.
-
-    .. sidebar:: :py:obj:`flask.Request.remote_addr`
-
-       SearXNG uses Werkzeug's ProxyFix_ (with it default ``x_for=1``).
+def get_real_ip(request: flask.Request, cfg: config.Config) -> IPv4Address | IPv6Address:
+    """Returns real IP of the request.
 
     This function tries to get the remote IP in the order listed below,
-    additional some tests are done and if inconsistencies or errors are
+    additional tests are done and if inconsistencies or errors are
     detected, they are logged.
+
+    If the request comes via socket and/or the IP cannot be determined,
+    the function will return "0.0.0.0" as a fallback value.
 
     The remote IP of the request is taken from (first match):
 
-    - X-Forwarded-For_ header
-    - `X-real-IP header <https://github.com/searxng/searxng/issues/1237#issuecomment-1147564516>`__
+    - X-Forwarded-For_ if header comes from a network of ``real_ip.trusted_proxies``
+    - X-Real-IP_ if header comes from a network of ``real_ip.trusted_proxies``
     - :py:obj:`flask.Request.remote_addr`
-
-    .. _ProxyFix:
-       https://werkzeug.palletsprojects.com/middleware/proxy_fix/
 
     .. _X-Forwarded-For:
       https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Forwarded-For
+    .. _X-Real-IP:
+      https://github.com/searxng/searxng/issues/1237#issuecomment-1147564516
 
+    .. code:: toml
+
+       [real_ip]
+
+       trusted_proxies = [
+         '127.0.0.0/8',     # IPv4 localhost network
+         '::1',             # IPv6 localhost
+         '192.168.0.0/16',  # IPv4 private network
+       ]
     """
 
-    forwarded_for = request.headers.get("X-Forwarded-For")
-    real_ip = request.headers.get('X-Real-IP')
-    remote_addr = request.remote_addr
-    # logger.debug(
-    #     "X-Forwarded-For: %s || X-Real-IP: %s || request.remote_addr: %s", forwarded_for, real_ip, remote_addr
-    # )
+    remote_addr = ip_address(request.remote_addr or "0.0.0.0")
+    request_ip = remote_addr
 
-    if not forwarded_for:
-        _log_error_only_once("X-Forwarded-For header is not set!")
-    else:
-        from . import cfg  # pylint: disable=import-outside-toplevel, cyclic-import
+    if is_trusted_proxy(remote_addr, cfg):
+        forwarded_for = request.headers.get("X-Forwarded-For")
+        real_ip = request.headers.get("X-Real-IP")
 
-        forwarded_for = [x.strip() for x in forwarded_for.split(',')]
-        x_for: int = cfg['real_ip.x_for']  # type: ignore
-        forwarded_for = forwarded_for[-min(len(forwarded_for), x_for)]
-
-    if not real_ip:
-        _log_error_only_once("X-Real-IP header is not set!")
-
-    if forwarded_for and real_ip and forwarded_for != real_ip:
-        logger.warning("IP from X-Real-IP (%s) is not equal to IP from X-Forwarded-For (%s)", real_ip, forwarded_for)
-
-    if forwarded_for and remote_addr and forwarded_for != remote_addr:
-        logger.warning(
-            "IP from WSGI environment (%s) is not equal to IP from X-Forwarded-For (%s)", remote_addr, forwarded_for
+        logger.debug(
+            "X-Forwarded-For: %s || X-Real-IP: %s || request.remote_addr: %s",
+            forwarded_for,
+            real_ip,
+            remote_addr.compressed,
         )
 
-    if real_ip and remote_addr and real_ip != remote_addr:
-        logger.warning("IP from WSGI environment (%s) is not equal to IP from X-Real-IP (%s)", remote_addr, real_ip)
+        if forwarded_for:
+            try:
+                forwarded_for = ip_address(forwarded_for.split(",")[0].strip())
+            except ValueError:
+                forwarded_for = None
 
-    request_ip = ip_address(forwarded_for or real_ip or remote_addr or '0.0.0.0')
-    if request_ip.version == 6 and request_ip.ipv4_mapped:
-        request_ip = request_ip.ipv4_mapped
+        if real_ip:
+            try:
+                real_ip = ip_address(real_ip)
+            except ValueError:
+                real_ip = None
 
-    # logger.debug("get_real_ip() -> %s", request_ip)
-    return str(request_ip)
+        request_ip = forwarded_for or real_ip or remote_addr
+
+    logger.debug("get_real_ip() -> %s", request_ip)
+    return request_ip
+
+
+def is_trusted_proxy(remote_ip: IPv4Address | IPv6Address, cfg: config.Config) -> bool:
+    """Checks if the ``remote_ip`` is a member of one of the networks in the
+    ``real_ip.trusted_proxies`` list."""
+
+    # probably from a socket
+    if remote_ip.compressed == "0.0.0.0":
+        return True
+
+    trusted_proxy = cfg.get("real_ip.trusted_proxies", default=None)
+    if trusted_proxy is None:
+        logger.warning("missing real_ip.trusted_proxies config (default: loopback)")
+        trusted_proxy = ["127.0.0.0/8", "::1"]
+
+    logger.debug("real_ip.trusted_proxies: %s", trusted_proxy)
+    for net in trusted_proxy:
+        net = ip_network(net, strict=False)
+        if remote_ip.version == net.version and remote_ip in net:
+            logger.debug("remote_ip %s is member of %s", remote_ip, net)
+            return True
+    return False

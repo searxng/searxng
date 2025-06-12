@@ -11,6 +11,7 @@ import re
 from flask_babel import gettext
 from httpx import HTTPError
 
+import searx.limiter
 from searx.network import get
 from searx.plugins import Plugin, PluginInfo
 from searx.result_types import EngineResults
@@ -66,7 +67,8 @@ class SXNGPlugin(Plugin):
                 results.add(results.types.Answer(answer=f"{msg} {url_exit_list}"))
                 return results
 
-            real_ip = get_real_ip(request)
+            cfg = searx.limiter.get_cfg()
+            real_ip = get_real_ip(request, cfg).compressed
 
             if real_ip in node_list:
                 msg = gettext("You are using Tor and it looks like you have the external IP address")

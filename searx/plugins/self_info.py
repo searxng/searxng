@@ -6,7 +6,9 @@ import typing
 import re
 from flask_babel import gettext
 
-from searx.botdetection._helpers import get_real_ip
+import searx.limiter
+
+from searx.botdetection import get_real_ip
 from searx.result_types import EngineResults
 
 from . import Plugin, PluginInfo
@@ -49,7 +51,8 @@ class SXNGPlugin(Plugin):
             return results
 
         if self.ip_regex.search(search.search_query.query):
-            results.add(results.types.Answer(answer=gettext("Your IP is: ") + get_real_ip(request)))
+            cfg = searx.limiter.get_cfg()
+            results.add(results.types.Answer(answer=gettext("Your IP is: ") + get_real_ip(request, cfg).compressed))
 
         if self.ua_regex.match(search.search_query.query):
             results.add(results.types.Answer(answer=gettext("Your user-agent is: ") + str(request.user_agent)))
