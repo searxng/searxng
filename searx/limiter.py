@@ -95,8 +95,6 @@ Implementation
 from __future__ import annotations
 import sys
 
-from pathlib import Path
-from ipaddress import ip_address
 import flask
 import werkzeug
 
@@ -124,34 +122,15 @@ from searx.botdetection import (
 # coherency, the logger is "limiter"
 logger = logger.getChild('limiter')
 
-CFG: config.Config = None  # type: ignore
 _INSTALLED = False
-
-LIMITER_CFG_SCHEMA = Path(__file__).parent / "limiter.toml"
-"""Base configuration (schema) of the botdetection."""
-
-CFG_DEPRECATED = {
-    # "dummy.old.foo": "config 'dummy.old.foo' exists only for tests.  Don't use it in your real project config."
-}
-
-
-def get_cfg() -> config.Config:
-    global CFG  # pylint: disable=global-statement
-
-    if CFG is None:
-        from . import settings_loader  # pylint: disable=import-outside-toplevel
-
-        cfg_file = (settings_loader.get_user_cfg_folder() or Path("/etc/searxng")) / "limiter.toml"
-        CFG = config.Config.from_toml(LIMITER_CFG_SCHEMA, cfg_file, CFG_DEPRECATED)
-    return CFG
 
 
 def filter_request(request: SXNG_Request) -> werkzeug.Response | None:
     # pylint: disable=too-many-return-statements
 
-    cfg = get_cfg()
-    real_ip = ip_address(get_real_ip(request))
-    network = get_network(real_ip, cfg)
+    cfg = config.get_cfg()
+    real_ip = get_real_ip(request)
+    network = get_network(real_ip)
 
     if request.path == '/healthz':
         return None
@@ -228,7 +207,7 @@ def initialize(app: flask.Flask, settings):
     # even if the limiter is not activated, the botdetection must be activated
     # (e.g. the self_info plugin uses the botdetection to get client IP)
 
-    cfg = get_cfg()
+    cfg = config.get_cfg()
     redis_client = redisdb.client()
     botdetection.init(cfg, redis_client)
 
