@@ -121,7 +121,7 @@ class SXNGPlugin(Plugin):
         self.info = PluginInfo(
             id=self.id,
             name=gettext("Hostnames plugin"),
-            description=gettext("Rewrite hostnames, remove results or prioritize them based on the hostname"),
+            description=gettext("Rewrite hostnames and remove or prioritize results based on the hostname"),
             preference_section="general",
         )
 
