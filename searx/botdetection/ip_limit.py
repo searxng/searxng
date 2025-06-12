@@ -45,12 +45,11 @@ from ipaddress import (
 import flask
 import werkzeug
 
-from searx.extended_types import SXNG_Request
-from searx import valkeydb
 from searx.valkeylib import incr_sliding_window, drop_counter
 
 from . import link_token
 from . import config
+from . import valkeydb
 from ._helpers import (
     too_many_requests,
     logger,
@@ -92,12 +91,12 @@ SUSPICIOUS_IP_MAX = 3
 
 def filter_request(
     network: IPv4Network | IPv6Network,
-    request: SXNG_Request,
+    request: flask.Request,
     cfg: config.Config,
 ) -> werkzeug.Response | None:
 
     # pylint: disable=too-many-return-statements
-    valkey_client = valkeydb.client()
+    valkey_client = valkeydb.get_valkey_client()
 
     if network.is_link_local and not cfg['botdetection.ip_limit.filter_link_local']:
         logger.debug("network %s is link-local -> not monitored by ip_limit method", network.compressed)
