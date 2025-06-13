@@ -1,0 +1,30 @@
+version: '3.7'
+
+services:
+  searxng:
+    image: ghcr.io/searxng/searxng
+    container_name: searxng
+    ports:
+      - "8080:8080"
+    volumes:
+      - searxng-data:/usr/local/searxng/data
+      - searxng-config:/usr/local/searxng/config
+    environment:
+      - INSTANCE_NAME=SearXNG
+      - BASE_URL=http://localhost:8080/
+    cap_drop:
+      - ALL
+    cap_add:
+      - CHOWN
+      - SETGID
+      - SETUID
+      - DAC_OVERRIDE
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "1"
+
+volumes:
+  searxng-data:
+  searxng-config:
