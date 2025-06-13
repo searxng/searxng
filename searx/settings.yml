@@ -1583,6 +1583,20 @@ engines:
     url: https://thepiratebay.org/
     timeout: 3.0
 
+  - name: pixabay images
+    engine: pixabay
+    pixabay_type: images
+    categories: images
+    shortcut: pixi
+    disabled: true
+
+  - name: pixabay videos
+    engine: pixabay
+    pixabay_type: videos
+    categories: videos
+    shortcut: pixv
+    disabled: true
+
   - name: pixiv
     shortcut: pv
     engine: pixiv
