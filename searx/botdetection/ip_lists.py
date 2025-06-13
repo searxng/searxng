@@ -13,7 +13,7 @@ and :py:obj:`pass-list <pass_ip>`.
    [botdetection.ip_lists]
 
    trusted_proxies = [
-     '127.0.0.1/32',    # IPv4 localhost
+     '127.0.0.0/8',     # IPv4 localhost network
      '::1',             # IPv6 localhost
      '192.168.0.0/16',  # IPv4 private network
    ]
@@ -21,7 +21,7 @@ and :py:obj:`pass-list <pass_ip>`.
    pass_ip = [
      '167.235.158.251', # IPv4 of check.searx.space
      '192.168.0.0/16',  # IPv4 private network
-     'fe80::/10'        # IPv6 linklocal
+     'fe80::/10',       # IPv6 linklocal
    ]
 
    block_ip = [
@@ -58,7 +58,7 @@ def trusted_proxies(remote_addr: IPv4Address | IPv6Address, cfg: config.Config) 
     ``botdetection.ip_lists.trusted_proxies`` list.
     """
 
-    for net in cfg.get("botdetection.ip_lists.trusted_proxies", default=["127.0.0.1/32", "::1"]):
+    for net in cfg.get("botdetection.ip_lists.trusted_proxies", default=["127.0.0.0/8", "::1"]):
         net = ip_network(net, strict=False)
         if remote_addr.version == net.version and remote_addr in net:
             return True
