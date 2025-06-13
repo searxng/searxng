@@ -17,7 +17,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-05-31 18:38+0000\n"
+"POT-Creation-Date: 2025-06-13 02:39+0000\n"
 "PO-Revision-Date: 2025-02-06 15:54+0000\n"
 "Last-Translator: curtwheeler "
 "<curtwheeler@users.noreply.translate.codeberg.org>\n"
@@ -745,11 +745,13 @@ msgstr "검색바를 통해 수학연산 계산하기"
 msgid "Hash plugin"
 msgstr "해시 플러그인"
 
-#: searx/plugins/hash_plugin.py:35
-msgid "Converts strings to different hash digests."
-msgstr "문자열을 다른 해시 다이제스트 값으로 변환합니다."
+#: searx/plugins/hash_plugin.py:36
+msgid ""
+"Converts strings to different hash digests. Available functions: md5, "
+"sha1, sha224, sha256, sha384, sha512."
+msgstr ""
 
-#: searx/plugins/hash_plugin.py:62
+#: searx/plugins/hash_plugin.py:64
 msgid "hash digest"
 msgstr "해시 다이제스트"
 
@@ -1327,8 +1329,8 @@ msgid "Autocomplete"
 msgstr "자동 완성"
 
 #: searx/templates/simple/preferences/autocomplete.html:15
-msgid "Find stuff as you type"
-msgstr "입력하는 대로 찾으세요"
+msgid "Show possible queries as you type"
+msgstr ""
 
 #: searx/templates/simple/preferences/center_alignment.html:2
 msgid "Center Alignment"
@@ -1402,9 +1404,9 @@ msgstr "DOI 재작성에 사용된 서비스 선택"
 
 #: searx/templates/simple/preferences/engines.html:9
 msgid ""
-"This tab does not exists in the user interface, but you can search in "
-"these engines by its !bangs."
-msgstr "이 탭은 유저 인터페이스에 나타나지 않지만, !bang을 사용하여 이 검색엔진으로 검색할 수 있습니다."
+"This tab does not exist in the user interface, but you can search with "
+"these engines via !bangs."
+msgstr ""
 
 #: searx/templates/simple/preferences/engines.html:15
 msgid "Enable all"
@@ -1521,12 +1523,12 @@ msgid ""
 msgstr "활성화 할 경우, 결과 페이지 제목에 검색어가 표시 됩니다. 페이지 제목은 브라우저가 기록할 수 있습니다"
 
 #: searx/templates/simple/preferences/results_on_new_tab.html:2
-msgid "Results on new tabs"
-msgstr "새 탭에서 결과 열기"
+msgid "Results in new tabs"
+msgstr ""
 
 #: searx/templates/simple/preferences/results_on_new_tab.html:14
-msgid "Open result links on new browser tabs"
-msgstr "새 탭에서 결과 링크를 엽니다"
+msgid "Open result links in new browser tabs"
+msgstr ""
 
 #: searx/templates/simple/preferences/safesearch.html:20
 msgid "Filter content"
@@ -2110,4 +2112,22 @@ msgstr "비디오 숨기기"
 
 #~ msgid "proxied"
 #~ msgstr "프록시됨"
+
+#~ msgid ""
+#~ "This tab does not exists in the"
+#~ " user interface, but you can search"
+#~ " in these engines by its !bangs."
+#~ msgstr "이 탭은 유저 인터페이스에 나타나지 않지만, !bang을 사용하여 이 검색엔진으로 검색할 수 있습니다."
+
+#~ msgid "Results on new tabs"
+#~ msgstr "새 탭에서 결과 열기"
+
+#~ msgid "Open result links on new browser tabs"
+#~ msgstr "새 탭에서 결과 링크를 엽니다"
+
+#~ msgid "Find stuff as you type"
+#~ msgstr "입력하는 대로 찾으세요"
+
+#~ msgid "Converts strings to different hash digests."
+#~ msgstr "문자열을 다른 해시 다이제스트 값으로 변환합니다."
 

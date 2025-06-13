@@ -30,7 +30,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-05-31 18:38+0000\n"
+"POT-Creation-Date: 2025-06-13 02:39+0000\n"
 "PO-Revision-Date: 2025-04-15 10:37+0000\n"
 "Last-Translator: DZDevelopers <dzdevelopers@noreply.codeberg.org>\n"
 "Language: ar\n"
@@ -758,11 +758,13 @@ msgstr "حساب التعبيرات الرياضية عبر شريط البحث"
 msgid "Hash plugin"
 msgstr "إضافة تجزئة"
 
-#: searx/plugins/hash_plugin.py:35
-msgid "Converts strings to different hash digests."
-msgstr "يحول السلسلة إلى ملخص التجزئة."
+#: searx/plugins/hash_plugin.py:36
+msgid ""
+"Converts strings to different hash digests. Available functions: md5, "
+"sha1, sha224, sha256, sha384, sha512."
+msgstr ""
 
-#: searx/plugins/hash_plugin.py:62
+#: searx/plugins/hash_plugin.py:64
 msgid "hash digest"
 msgstr "ملخص التجزئة"
 
@@ -1348,8 +1350,8 @@ msgid "Autocomplete"
 msgstr "تكملة تلقائية"
 
 #: searx/templates/simple/preferences/autocomplete.html:15
-msgid "Find stuff as you type"
-msgstr "العثور على نتائج أثناء الكتابة"
+msgid "Show possible queries as you type"
+msgstr ""
 
 #: searx/templates/simple/preferences/center_alignment.html:2
 msgid "Center Alignment"
@@ -1429,11 +1431,9 @@ msgstr "حدد الخدمة التي يستخدمه المعرف الرقمي. (
 
 #: searx/templates/simple/preferences/engines.html:9
 msgid ""
-"This tab does not exists in the user interface, but you can search in "
-"these engines by its !bangs."
+"This tab does not exist in the user interface, but you can search with "
+"these engines via !bangs."
 msgstr ""
-"علامة التبويب هذه غير موجودة في واجهة المستخدم ، ولكن يمكنك البحث في هذه "
-"المحركات من خلال !bangs"
 
 #: searx/templates/simple/preferences/engines.html:15
 msgid "Enable all"
@@ -1557,12 +1557,12 @@ msgstr ""
 "بك. يمكن لمتصفحك تسجيل هذا العنوان"
 
 #: searx/templates/simple/preferences/results_on_new_tab.html:2
-msgid "Results on new tabs"
-msgstr "عرض نتائج البحث في ألسنة جديدة"
+msgid "Results in new tabs"
+msgstr ""
 
 #: searx/templates/simple/preferences/results_on_new_tab.html:14
-msgid "Open result links on new browser tabs"
-msgstr "عرض روابط نتائج البحث في ألسنة جديدة للمتصفح"
+msgid "Open result links in new browser tabs"
+msgstr ""
 
 #: searx/templates/simple/preferences/safesearch.html:20
 msgid "Filter content"
@@ -2296,4 +2296,25 @@ msgstr "إخفاء الفيديو"
 
 #~ msgid "proxied"
 #~ msgstr "المخدم البروكسي"
+
+#~ msgid ""
+#~ "This tab does not exists in the"
+#~ " user interface, but you can search"
+#~ " in these engines by its !bangs."
+#~ msgstr ""
+#~ "علامة التبويب هذه غير موجودة في "
+#~ "واجهة المستخدم ، ولكن يمكنك البحث "
+#~ "في هذه المحركات من خلال !bangs"
+
+#~ msgid "Results on new tabs"
+#~ msgstr "عرض نتائج البحث في ألسنة جديدة"
+
+#~ msgid "Open result links on new browser tabs"
+#~ msgstr "عرض روابط نتائج البحث في ألسنة جديدة للمتصفح"
+
+#~ msgid "Find stuff as you type"
+#~ msgstr "العثور على نتائج أثناء الكتابة"
+
+#~ msgid "Converts strings to different hash digests."
+#~ msgstr "يحول السلسلة إلى ملخص التجزئة."
 

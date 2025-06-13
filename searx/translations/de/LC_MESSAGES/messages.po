@@ -27,19 +27,18 @@
 # return42 <return42@noreply.codeberg.org>, 2025.
 msgid ""
 msgstr ""
-"Project-Id-Version: searx\n"
+"Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-05-31 18:38+0000\n"
+"POT-Creation-Date: 2025-06-13 02:39+0000\n"
 "PO-Revision-Date: 2025-06-01 06:39+0000\n"
 "Last-Translator: return42 <return42@noreply.codeberg.org>\n"
-"Language-Team: German <https://translate.codeberg.org/projects/searxng/"
-"searxng/de/>\n"
 "Language: de\n"
+"Language-Team: German "
+"<https://translate.codeberg.org/projects/searxng/searxng/de/>\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.11.4\n"
 "Generated-By: Babel 2.17.0\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
@@ -759,11 +758,13 @@ msgstr "Rechne mathematische Ausdrücke mit der Suchleiste aus"
 msgid "Hash plugin"
 msgstr "Hash Werte berechnen"
 
-#: searx/plugins/hash_plugin.py:35
-msgid "Converts strings to different hash digests."
-msgstr "Konvertiert Zeichenketten in verschiedene Hashwerte."
+#: searx/plugins/hash_plugin.py:36
+msgid ""
+"Converts strings to different hash digests. Available functions: md5, "
+"sha1, sha224, sha256, sha384, sha512."
+msgstr ""
 
-#: searx/plugins/hash_plugin.py:62
+#: searx/plugins/hash_plugin.py:64
 msgid "hash digest"
 msgstr "Hashwert"
 
@@ -1356,8 +1357,8 @@ msgid "Autocomplete"
 msgstr "Autovervollständigung"
 
 #: searx/templates/simple/preferences/autocomplete.html:15
-msgid "Find stuff as you type"
-msgstr "Die Autovervollständigung zeigt Vorschläge während der Eingabe an"
+msgid "Show possible queries as you type"
+msgstr ""
 
 #: searx/templates/simple/preferences/center_alignment.html:2
 msgid "Center Alignment"
@@ -1438,11 +1439,9 @@ msgstr "Wähle den Dienst für DOI Rewrite"
 
 #: searx/templates/simple/preferences/engines.html:9
 msgid ""
-"This tab does not exists in the user interface, but you can search in "
-"these engines by its !bangs."
+"This tab does not exist in the user interface, but you can search with "
+"these engines via !bangs."
 msgstr ""
-"Diese Registerkarte ist in der Benutzeroberfläche nicht vorhanden, aber "
-"in Suchmaschinen kann mittels !bang gesucht werden."
 
 #: searx/templates/simple/preferences/engines.html:15
 msgid "Enable all"
@@ -1567,12 +1566,12 @@ msgstr ""
 "Browsers angezeigt"
 
 #: searx/templates/simple/preferences/results_on_new_tab.html:2
-msgid "Results on new tabs"
-msgstr "Ergebnisse in neuem Tab"
+msgid "Results in new tabs"
+msgstr ""
 
 #: searx/templates/simple/preferences/results_on_new_tab.html:14
-msgid "Open result links on new browser tabs"
-msgstr "Links in einem neuen Browser-Tab öffnen"
+msgid "Open result links in new browser tabs"
+msgstr ""
 
 #: searx/templates/simple/preferences/safesearch.html:20
 msgid "Filter content"
@@ -2341,3 +2340,26 @@ msgstr "Video verstecken"
 
 #~ msgid "proxied"
 #~ msgstr "proxy"
+
+#~ msgid ""
+#~ "This tab does not exists in the"
+#~ " user interface, but you can search"
+#~ " in these engines by its !bangs."
+#~ msgstr ""
+#~ "Diese Registerkarte ist in der "
+#~ "Benutzeroberfläche nicht vorhanden, aber in"
+#~ " Suchmaschinen kann mittels !bang gesucht"
+#~ " werden."
+
+#~ msgid "Results on new tabs"
+#~ msgstr "Ergebnisse in neuem Tab"
+
+#~ msgid "Open result links on new browser tabs"
+#~ msgstr "Links in einem neuen Browser-Tab öffnen"
+
+#~ msgid "Find stuff as you type"
+#~ msgstr "Die Autovervollständigung zeigt Vorschläge während der Eingabe an"
+
+#~ msgid "Converts strings to different hash digests."
+#~ msgstr "Konvertiert Zeichenketten in verschiedene Hashwerte."
+

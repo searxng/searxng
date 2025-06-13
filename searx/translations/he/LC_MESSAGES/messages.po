@@ -24,20 +24,19 @@
 # ngf <ngf@noreply.codeberg.org>, 2025.
 msgid ""
 msgstr ""
-"Project-Id-Version: searx\n"
+"Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-05-31 18:38+0000\n"
+"POT-Creation-Date: 2025-06-13 02:39+0000\n"
 "PO-Revision-Date: 2025-06-01 06:39+0000\n"
 "Last-Translator: ngf <ngf@noreply.codeberg.org>\n"
-"Language-Team: Hebrew <https://translate.codeberg.org/projects/searxng/"
-"searxng/he/>\n"
 "Language: he\n"
+"Language-Team: Hebrew "
+"<https://translate.codeberg.org/projects/searxng/searxng/he/>\n"
+"Plural-Forms: nplurals=4; plural=(n == 1) ? 0 : ((n == 2) ? 1 : ((n > 10 "
+"&& n % 10 == 0) ? 2 : 3));\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=4; plural=(n == 1) ? 0 : ((n == 2) ? 1 : ((n > 10 && "
-"n % 10 == 0) ? 2 : 3));\n"
-"X-Generator: Weblate 5.11.4\n"
 "Generated-By: Babel 2.17.0\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
@@ -756,11 +755,13 @@ msgstr "חשב ביטויים מתמטיים באמצעות שורת החיפו�
 msgid "Hash plugin"
 msgstr "תוסף גיבוב"
 
-#: searx/plugins/hash_plugin.py:35
-msgid "Converts strings to different hash digests."
-msgstr "ממיר מחרוזות לתוך hash digests (לקט גיבוב) שונים."
+#: searx/plugins/hash_plugin.py:36
+msgid ""
+"Converts strings to different hash digests. Available functions: md5, "
+"sha1, sha224, sha256, sha384, sha512."
+msgstr ""
 
-#: searx/plugins/hash_plugin.py:62
+#: searx/plugins/hash_plugin.py:64
 msgid "hash digest"
 msgstr "דגימת האש"
 
@@ -1342,8 +1343,8 @@ msgid "Autocomplete"
 msgstr "השלמה אוטומטית"
 
 #: searx/templates/simple/preferences/autocomplete.html:15
-msgid "Find stuff as you type"
-msgstr "מצא טקסט תוך כדי הקלדה"
+msgid "Show possible queries as you type"
+msgstr ""
 
 #: searx/templates/simple/preferences/center_alignment.html:2
 msgid "Center Alignment"
@@ -1421,11 +1422,9 @@ msgstr "בחר שירות המשתמש בשכתוב DOI"
 
 #: searx/templates/simple/preferences/engines.html:9
 msgid ""
-"This tab does not exists in the user interface, but you can search in "
-"these engines by its !bangs."
+"This tab does not exist in the user interface, but you can search with "
+"these engines via !bangs."
 msgstr ""
-"כרטיסייה זו לא קיימת בממשק המשתמש, אבל תוכל לחפש במנועי החיפוש הבאים "
-"באמצעות !bangs"
 
 #: searx/templates/simple/preferences/engines.html:15
 msgid "Enable all"
@@ -1546,12 +1545,12 @@ msgstr ""
 " יכול לתעד את כותרת זאת"
 
 #: searx/templates/simple/preferences/results_on_new_tab.html:2
-msgid "Results on new tabs"
-msgstr "תוצאות בכרטיסיות חדשות"
+msgid "Results in new tabs"
+msgstr ""
 
 #: searx/templates/simple/preferences/results_on_new_tab.html:14
-msgid "Open result links on new browser tabs"
-msgstr "פתח קישורי תוצאה בתוך כרטיסיות דפדפן חדשות"
+msgid "Open result links in new browser tabs"
+msgstr ""
 
 #: searx/templates/simple/preferences/safesearch.html:20
 msgid "Filter content"
@@ -2275,3 +2274,25 @@ msgstr "הסתר וידאו"
 
 #~ msgid "proxied"
 #~ msgstr "פרוקסי"
+
+#~ msgid ""
+#~ "This tab does not exists in the"
+#~ " user interface, but you can search"
+#~ " in these engines by its !bangs."
+#~ msgstr ""
+#~ "כרטיסייה זו לא קיימת בממשק המשתמש, "
+#~ "אבל תוכל לחפש במנועי החיפוש הבאים "
+#~ "באמצעות !bangs"
+
+#~ msgid "Results on new tabs"
+#~ msgstr "תוצאות בכרטיסיות חדשות"
+
+#~ msgid "Open result links on new browser tabs"
+#~ msgstr "פתח קישורי תוצאה בתוך כרטיסיות דפדפן חדשות"
+
+#~ msgid "Find stuff as you type"
+#~ msgstr "מצא טקסט תוך כדי הקלדה"
+
+#~ msgid "Converts strings to different hash digests."
+#~ msgstr "ממיר מחרוזות לתוך hash digests (לקט גיבוב) שונים."
+
