@@ -33,7 +33,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-06-12 00:11+0000\n"
+"POT-Creation-Date: 2025-06-13 02:39+0000\n"
 "PO-Revision-Date: 2025-06-02 14:58+0000\n"
 "Last-Translator: yurtpage <yurtpage@noreply.codeberg.org>\n"
 "Language: ru\n"
@@ -763,11 +763,13 @@ msgstr "Считать математические выражения в стр
 msgid "Hash plugin"
 msgstr "Хеш плагин"
 
-#: searx/plugins/hash_plugin.py:35
-msgid "Converts strings to different hash digests."
-msgstr "Рассчитывает контрольные суммы от строки."
+#: searx/plugins/hash_plugin.py:36
+msgid ""
+"Converts strings to different hash digests. Available functions: md5, "
+"sha1, sha224, sha256, sha384, sha512."
+msgstr ""
 
-#: searx/plugins/hash_plugin.py:62
+#: searx/plugins/hash_plugin.py:64
 msgid "hash digest"
 msgstr "контрольная сумма"
 
@@ -2337,4 +2339,7 @@ msgstr "скрыть видео"
 
 #~ msgid "Find stuff as you type"
 #~ msgstr "Показывать предложения по мере ввода запроса"
+
+#~ msgid "Converts strings to different hash digests."
+#~ msgstr "Рассчитывает контрольные суммы от строки."
 
