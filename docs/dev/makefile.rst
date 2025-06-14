@@ -362,15 +362,15 @@ can be used to convenient run common build tasks of the static files.
 .. program-output:: bash -c "cd ..; ./manage static.help"
 
 
-.. _manage redis.help:
+.. _manage valkey.help:
 
-``./manage redis.help``
+``./manage valkey.help``
 =======================
 
-The ``./manage redis.*`` command line can be used to convenient run common Redis
-tasks (:ref:`Redis developer notes`).
+The ``./manage valkey.*`` command line can be used to convenient run common Valkey
+tasks (:ref:`Valkey developer notes`).
 
-.. program-output:: bash -c "cd ..; ./manage redis.help"
+.. program-output:: bash -c "cd ..; ./manage valkey.help"
 
 
 .. _manage go.help:

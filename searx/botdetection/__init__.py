@@ -12,11 +12,11 @@ from ._helpers import too_many_requests
 
 __all__ = ['dump_request', 'get_network', 'get_real_ip', 'too_many_requests']
 
-redis_client = None
+valkey_client = None
 cfg = None
 
 
-def init(_cfg, _redis_client):
-    global redis_client, cfg  # pylint: disable=global-statement
-    redis_client = _redis_client
+def init(_cfg, _valkey_client):
+    global valkey_client, cfg  # pylint: disable=global-statement
+    valkey_client = _valkey_client
     cfg = _cfg
