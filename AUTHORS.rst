@@ -177,3 +177,4 @@ features or generally made searx better:
 - Daniel Mowitz `<https://daniel.mowitz.rocks>`
 - `Bearz314 <https://github.com/bearz314>`_
 - Tommaso Colella `<https://github.com/gioleppe>`
+- @AgentScrubbles
