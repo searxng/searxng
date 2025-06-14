@@ -6,10 +6,18 @@
     </a>
     <div id="search_view">
       <div class="search_box">
-        <input id="q" name="q" type="text" placeholder="{{ _('Search for...') }}" tabindex="1" autocomplete="off" autocapitalize="none" spellcheck="false" autocorrect="off" dir="auto" value="{{ q or '' }}">
-        <button id="clear_search" type="reset" aria-label="{{ _('clear') }}" class="hide_if_nojs"><span>{{ icon_big('close') }}</span><span class="show_if_nojs">{{ _('clear') }}</span></button>
-        <button id="send_search" type="submit" {%- if search_on_category_select -%}name="category_{{ selected_categories[0]|replace(' ', '_') }}"{%- endif -%} aria-label="{{ _('search') }}"><span class="hide_if_nojs">{{ icon_big('search') }}</span><span class="show_if_nojs">{{ _('search') }}</span></button>
-        <div class="autocomplete hide_if_nojs"><ul></ul></div>
+        <input id="q" name="q" type="text" placeholder="{{ _('Search by...') }}" tabindex="1" autocomplete="off" autocapitalize="none" spellcheck="false" autocorrect="off" dir="auto" value="{{ q or '' }}">
+        <div id="autocomplete-results" class="autocomplete-suggestions"></div>
+        
+        <button id="clear_search" type="reset" aria-label="{{ _('clear') }}" class="hide_if_nojs">
+          <span>{{ icon_big('close') }}</span><span class="show_if_nojs">{{ _('clear') }}</span>
+        </button>
+        
+        <button id="voice_search" type="button" aria-label="Voice Search">🎤</button>
+        <button id="image_search" type="button" aria-label="Image Search">📷</button>
+        <button id="send_search" type="submit" {%- if search_on_category_select -%}name="category_{{ selected_categories[0]|replace(' ', '_') }}"{%- endif -%} aria-label="{{ _('search') }}">
+          <span class="hide_if_nojs">{{ icon_big('search') }}</span><span class="show_if_nojs">{{ _('search') }}</span>
+        </button>
       </div>
     </div>
     {% set display_tooltip = true %}
@@ -20,6 +28,145 @@
     {% include 'simple/filters/time_range.html' %}
     {% include 'simple/filters/safesearch.html' %}
   </div>
-  <input type="hidden" name="theme" value="{{ theme }}" >
-  {% if timeout_limit %}<input type="hidden" name="timeout_limit" value="{{ timeout_limit|e }}" >{% endif %}
+
+  <!-- Wikipedia Instant Answer Section -->
+  <div id="wikipedia-answer" class="instant-answer" style="display: none;">
+    <h2><a id="wiki-title" href="#" target="_blank"></a></h2>
+    <img id="wiki-image" src="" alt="" style="display: none; width: 150px;">
+    <p id="wiki-summary"></p>
+    <a id="wiki-read-more" href="#" target="_blank">Read more on Wikipedia</a>
+  </div>
 </form>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const searchInput = document.getElementById("q");
+    const suggestionBox = document.getElementById("autocomplete-results");
+    const wikiAnswerDiv = document.getElementById("wikipedia-answer");
+    const wikiTitle = document.getElementById("wiki-title");
+    const wikiSummary = document.getElementById("wiki-summary");
+    const wikiImage = document.getElementById("wiki-image");
+    const wikiReadMore = document.getElementById("wiki-read-more");
+
+    function fetchWikipediaAnswer(query) {
+        const url = https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(query)};
+        
+        fetch(url, { headers: { "User-Agent": "SearXNG-Frontend/1.0" } })
+            .then(response => response.json())
+            .then(data => {
+                if (data.title && data.extract) {
+                    wikiTitle.textContent = data.title;
+                    wikiTitle.href = data.content_urls.desktop.page;
+                    wikiSummary.textContent = data.extract;
+                    wikiReadMore.href = data.content_urls.desktop.page;
+
+                    if (data.thumbnail && data.thumbnail.source) {
+                        wikiImage.src = data.thumbnail.source;
+                        wikiImage.style.display = "block";
+                    } else {
+                        wikiImage.style.display = "none";
+                    }
+
+                    wikiAnswerDiv.style.display = "block"; // Show instant answer
+                } else {
+                    wikiAnswerDiv.style.display = "none"; // Hide if no result
+                }
+            })
+            .catch(error => {
+                console.error("Wikipedia API Error:", error);
+                wikiAnswerDiv.style.display = "none";
+            });
+    }
+
+    searchInput.addEventListener("input", function () {
+        let query = searchInput.value.trim();
+        if (query.length > 2) {
+            fetchWikipediaAnswer(query);
+        } else {
+            wikiAnswerDiv.style.display = "none";
+        }
+    });
+
+    // Preserve existing search button functionality
+    document.getElementById("send_search").addEventListener("click", function (event) {
+        let query = searchInput.value.trim();
+        if (query) {
+            fetchWikipediaAnswer(query);
+        }
+    });
+});
+</script>
+
+<style>
+.search_box {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+#voice_search, #image_search {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 18px;
+    padding: 8px;
+}
+
+.autocomplete-suggestions {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background: white;
+    border: 1px solid #ccc;
+    max-height: 200px;
+    overflow-y: auto;
+    z-index: 1000;
+    border-radius: 5px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    display: none;
+}
+
+.suggestion-item {
+    padding: 10px;
+    cursor: pointer;
+    border-bottom: 1px solid #ddd;
+    font-size: 14px;
+    transition: background 0.2s;
+}
+
+.suggestion-item:last-child {
+    border-bottom: none;
+}
+
+.suggestion-item:hover {
+    background: #f0f0f0;
+}
+
+/* Wikipedia Instant Answer Box */
+.instant-answer {
+    background: #f9f9f9;
+    border-left: 5px solid #0078d7;
+    padding: 15px;
+    margin-top: 10px;
+    border-radius: 5px;
+    display: none;
+}
+
+.instant-answer h2 {
+    margin: 0;
+    font-size: 18px;
+}
+
+.instant-answer p {
+    margin: 5px 0;
+    font-size: 14px;
+}
+
+.instant-answer a {
+    color: #0078d7;
+    text-decoration: none;
+    font-weight: bold;
+}
+</style>
