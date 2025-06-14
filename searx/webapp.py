@@ -59,7 +59,7 @@ from searx import (
 
 from searx import infopage
 from searx import limiter
-from searx.botdetection import link_token
+from searx.botdetection import link_token, config as botdetection_config
 
 from searx.data import ENGINE_DESCRIPTIONS
 from searx.result_types import Answer
@@ -1266,7 +1266,7 @@ def config():
     for _ in searx.plugins.STORAGE:
         _plugins.append({'name': _.id, 'enabled': _.active})
 
-    _limiter_cfg = limiter.get_cfg()
+    _limiter_cfg = botdetection_config.get_cfg()
 
     return jsonify(
         {

@@ -38,16 +38,15 @@ from __future__ import annotations
 from ipaddress import (
     IPv4Network,
     IPv6Network,
-    ip_address,
 )
 
-import string
 import random
+import string
 
 from searx import logger
 from searx import redisdb
-from searx.redislib import secret_hash
 from searx.extended_types import SXNG_Request
+from searx.redislib import secret_hash
 
 from ._helpers import (
     get_network,
@@ -98,15 +97,15 @@ def ping(request: SXNG_Request, token: str):
     The expire time of this ping-key is :py:obj:`PING_LIVE_TIME`.
 
     """
-    from . import redis_client, cfg  # pylint: disable=import-outside-toplevel, cyclic-import
+    from . import redis_client  # pylint: disable=import-outside-toplevel
 
     if not redis_client:
         return
     if not token_is_valid(token):
         return
 
-    real_ip = ip_address(get_real_ip(request))
-    network = get_network(real_ip, cfg)
+    real_ip = get_real_ip(request)
+    network = get_network(real_ip)
 
     ping_key = get_ping_key(network, request)
     logger.debug("store ping_key for (client) network %s (IP %s) -> %s", network.compressed, real_ip, ping_key)
