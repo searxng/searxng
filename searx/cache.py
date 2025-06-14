@@ -10,6 +10,7 @@ from __future__ import annotations
 __all__ = ["ExpireCacheCfg", "ExpireCacheStats", "ExpireCache", "ExpireCacheSQLite"]
 
 import abc
+from collections.abc import Iterator
 import dataclasses
 import datetime
 import hashlib
@@ -395,6 +396,20 @@ class ExpireCacheSQLite(sqlitedb.SQLiteAppl, ExpireCache):
             return default
 
         return self.deserialize(row[0])
+
+    def pairs(self, ctx: str) -> Iterator[tuple[str, typing.Any]]:
+        """Iterate over key/value pairs from table given by argument ``ctx``.
+        If ``ctx`` argument is ``None`` (the default), a table name is
+        generated from the :py:obj:`ExpireCacheCfg.name`."""
+        table = ctx
+        self.maintenance()
+
+        if not table:
+            table = self.normalize_name(self.cfg.name)
+
+        if table in self.table_names:
+            for row in self.DB.execute(f"SELECT key, value FROM {table}"):
+                yield row[0], self.deserialize(row[1])
 
     def state(self) -> ExpireCacheStats:
         cached_items = {}
