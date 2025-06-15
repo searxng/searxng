@@ -66,7 +66,7 @@ git build-essential libxslt-dev zlib1g-dev libffi-dev libssl-dev"
 SEARXNG_BUILD_PACKAGES_debian="\
 graphviz imagemagick texlive-xetex librsvg2-bin
 texlive-latex-recommended texlive-extra-utils fonts-dejavu
-latexmk shellcheck"
+latexmk shellcheck shfmt"
 
 # pacman packages
 
@@ -77,7 +77,7 @@ git base-devel libxml2"
 
 SEARXNG_BUILD_PACKAGES_arch="\
 graphviz imagemagick texlive-bin extra/librsvg
-texlive-core texlive-latexextra ttf-dejavu shellcheck"
+texlive-core texlive-latexextra ttf-dejavu shellcheck shfmt"
 
 # dnf packages
 
@@ -90,7 +90,7 @@ SEARXNG_BUILD_PACKAGES_fedora="\
 graphviz graphviz-gd ImageMagick librsvg2-tools
 texlive-xetex-bin texlive-collection-fontsrecommended
 texlive-collection-latex dejavu-sans-fonts dejavu-serif-fonts
-dejavu-sans-mono-fonts ShellCheck"
+dejavu-sans-mono-fonts ShellCheck shfmt"
 
 case $DIST_ID-$DIST_VERS in
     ubuntu-18.04)

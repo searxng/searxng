@@ -161,3 +161,33 @@ To lint shell scripts we use ShellCheck_ - a shell script static analysis tool
          $ sudo dnf install ShellCheck
 
 .. SNAP sh lint requirements
+
+.. _sh format:
+
+Format shell scripts
+====================
+
+.. _shfmt: https://github.com/mvdan/sh
+
+To format shell scripts we use shfmt_ - a shell script parser & formatter
+(:ref:`install buildhost <searxng.sh install buildhost>`).
+
+.. tabs::
+
+   .. group-tab:: Ubuntu / debian
+
+      .. code-block:: sh
+
+         $ sudo apt install shfmt
+
+   .. group-tab:: Arch Linux
+
+      .. code-block:: sh
+
+         $ sudo pacman -S shfmt
+
+   .. group-tab::  Fedora / RHEL
+
+      .. code-block:: sh
+
+         $ sudo dnf install shfmt

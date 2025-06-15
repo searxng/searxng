@@ -51,6 +51,14 @@ GECKODRIVER_VERSION="v0.35.0"
 # SPHINXOPTS=
 BLACK_OPTIONS=("--target-version" "py311" "--line-length" "120" "--skip-string-normalization")
 BLACK_TARGETS=("--exclude" "(searx/static|searx/languages.py)" "--include" 'searxng.msg|\.pyi?$' "searx" "searxng_extra" "tests")
+SHFMT_TARGETS=(
+    "./container/"
+    "./docs/"
+    "./searx/"
+    "./searxng_extra/"
+    "./tests/"
+    "./utils/"
+    "./manage")
 
 YAMLLINT_FILES=()
 while IFS= read -r line; do
@@ -218,8 +226,14 @@ pyenv.uninstall() {
 }
 
 format.python() {
-    build_msg TEST "[format.python] black \$BLACK_TARGETS"
+    build_msg TEST "[format.python] black ${BLACK_TARGETS[*]}"
     pyenv.cmd black "${BLACK_OPTIONS[@]}" "${BLACK_TARGETS[@]}"
+    dump_return $?
+}
+
+format.shell() {
+    build_msg TEST "[format.shell] shfmt ${SHFMT_TARGETS[*]}"
+    shfmt --list --write --apply-ignore --simplify "${SHFMT_TARGETS[@]}"
     dump_return $?
 }
 
