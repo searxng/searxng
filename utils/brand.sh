@@ -8,11 +8,11 @@ build.env.export() {
     GIT_BRANCH="$(git branch | grep '\*' | cut -d' ' -f2-)"
     GIT_REMOTE="$(git config "branch.${GIT_BRANCH}.remote")"
     GIT_URL="$(git config --get "remote.${GIT_REMOTE}.url")"
-    if [[ "${GIT_URL}" == git@* ]]; then
+    if [[ ${GIT_URL} == git@* ]]; then
         GIT_URL="${GIT_URL/://}"
         GIT_URL="${GIT_URL/git@/https://}"
     fi
-    if [[ "${GIT_URL}" == *.git ]]; then
+    if [[ ${GIT_URL} == *.git ]]; then
         GIT_URL="${GIT_URL%.git}"
     fi
 
@@ -27,6 +27,6 @@ build.env.export() {
 
 }
 
-pushd "${REPO_ROOT}" &> /dev/null
+pushd "${REPO_ROOT}" &>/dev/null
 build.env.export
-popd &> /dev/null
+popd &>/dev/null
