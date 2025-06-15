@@ -4,7 +4,7 @@
 declare _Blue
 declare _creset
 
-vite.help(){
+vite.help() {
     cat <<EOF
 vite.:  .. to be done ..
   simple.:
@@ -28,7 +28,8 @@ VITE_SIMPLE_THEME="${REPO_ROOT}/client/simple"
 # }
 
 vite.simple.build() {
-    (   set -e
+    (
+        set -e
         templates.simple.pygments
 
         node.env
@@ -39,12 +40,13 @@ vite.simple.build() {
         npm run fix
         npm run icons.html
         npm run build
-        popd &> /dev/null
+        popd &>/dev/null
     )
 }
 
 vite.simple.fix() {
-    (   set -e
+    (
+        set -e
         node.env
         npm --prefix client/simple run fix
     )
@@ -52,8 +54,8 @@ vite.simple.fix() {
 
 templates.simple.pygments() {
     build_msg PYGMENTS "searxng_extra/update/update_pygments.py"
-    pyenv.cmd python searxng_extra/update/update_pygments.py \
-        | prefix_stdout "${_Blue}PYGMENTS ${_creset} "
+    pyenv.cmd python searxng_extra/update/update_pygments.py |
+        prefix_stdout "${_Blue}PYGMENTS ${_creset} "
     if [ "${PIPESTATUS[0]}" -ne "0" ]; then
         build_msg PYGMENTS "building LESS files for pygments failed"
         return 1
