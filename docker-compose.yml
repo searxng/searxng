@@ -1,0 +1,12 @@
+version: '3'
+
+services:
+  searxng:
+    build:
+      context: .
+      dockerfile: container/Dockerfile
+    ports:
+      - '8080:8080'
+    volumes:
+      - ./config:/etc/searxng
+    restart: unless-stopped

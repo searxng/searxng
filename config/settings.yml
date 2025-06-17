@@ -1,0 +1,62 @@
+use_default_settings: true
+server:
+  # Is overwritten by ${SEARXNG_PORT} and ${SEARXNG_BIND_ADDRESS}
+  port: 8080
+  bind_address: '0.0.0.0'
+  # public URL of the instance, to ensure correct inbound links. Is overwritten
+  # by ${SEARXNG_URL}.
+  base_url: / # "http://example.com/location"
+  # If your instance owns a /etc/searxng/settings.yml file, then set the following
+  # values there.
+  secret_key: '7cca6afcc62bed12f2b62f42da9cb8fc353aeb17d4d82f14c76eccc3e26e8344'
+  # Proxy image results through SearXNG
+  image_proxy: false
+  # 1.0 and 1.1 are supported
+  http_protocol_version: '1.0'
+  # POST queries are more secure as they don't show up in history
+  method: 'POST'
+  default_http_headers:
+    X-Content-Type-Options: nosniff
+    X-Download-Options: noopen
+    X-Robots-Tag: noindex, nofollow
+    Referrer-Policy: no-referrer
+
+search:
+  formats:
+    - json
+    - html
+  safe_search: 0
+  autocomplete: 'google'
+  default_lang: 'en'
+
+# Enable search engines
+engines:
+  - name: google
+    engine: google
+    shortcut: g
+    disabled: false
+  - name: bing
+    engine: bing
+    shortcut: b
+    disabled: false
+  - name: duckduckgo
+    engine: duckduckgo
+    shortcut: ddg
+    disabled: false
+
+# Disable git version check
+general:
+  check_version: false
+  debug: false
+  instance_name: 'SearXNG'
+
+# Disable bot detection
+botdetection:
+  enabled: false
+
+# UI settings
+ui:
+  static_path: ''
+  templates_path: ''
+  default_theme: 'simple'
+  default_locale: 'en'
