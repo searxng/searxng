@@ -6,6 +6,7 @@ found in :py:obj:`lang2domain` URL ``<lang>.search.yahoo.com`` is used.
 
 """
 
+from typing import TYPE_CHECKING
 from urllib.parse import (
     unquote,
     urlencode,
@@ -21,6 +22,11 @@ from searx.utils import (
 from searx.enginelib.traits import EngineTraits
 
 traits: EngineTraits
+
+if TYPE_CHECKING:
+    import logging
+
+    logger: logging.Logger
 
 # about
 about = {
@@ -38,11 +44,8 @@ paging = True
 time_range_support = True
 # send_accept_language_header = True
 
-time_range_dict = {
-    'day': ('1d', 'd'),
-    'week': ('1w', 'w'),
-    'month': ('1m', 'm'),
-}
+time_range_dict = {'day': 'd', 'week': 'w', 'month': 'm'}
+safesearch_dict = {0: 'p', 1: 'i', 2: 'r'}
 
 region2domain = {
     "CO": "co.search.yahoo.com",  # Colombia
@@ -118,42 +121,85 @@ yahoo_languages = {
     "sv": "sv",  # Swedish
     "th": "th",  # Thai
     "tr": "tr",  # Turkish
-    "zh": "zh_chs",  # Chinese (Simplified)
+    "zh": "zh_chs",  # Chinese (Simplified)
     "zh_Hans": "zh_chs",
     'zh-CN': "zh_chs",
-    "zh_Hant": "zh_cht",  # Chinese (Traditional)
+    "zh_Hant": "zh_cht",  # Chinese (Traditional)
     "zh-HK": "zh_cht",
     'zh-TW': "zh_cht",
 }
 
 
+def build_sb_cookie(cookie_params):
+    """Build sB cookie parameter from provided parameters.
+
+    :param cookie_params: Dictionary of cookie parameters
+    :type cookie_params: dict
+    :returns: Formatted cookie string
+    :rtype: str
+
+    Example:
+        >>> cookie_params = {'v': '1', 'vm': 'p', 'fl': '1', 'vl': 'lang_fr'}
+        >>> build_sb_cookie(cookie_params)
+        'v=1&vm=p&fl=1&vl=lang_fr'
+    """
+
+    cookie_parts = []
+    for key, value in cookie_params.items():
+        cookie_parts.append(f"{key}={value}")
+
+    return "&".join(cookie_parts)
+
+
 def request(query, params):
-    """build request"""
+    """Build Yahoo search request."""
 
     lang, region = (params["language"].split("-") + [None])[:2]
     lang = yahoo_languages.get(lang, "any")
 
-    offset = (params['pageno'] - 1) * 7 + 1
-    age, btf = time_range_dict.get(params['time_range'], ('', ''))
+    # Build URL parameters
+    # - p (str): Search query string
+    # - btf (str): Time filter, maps to values like 'd' (day), 'w' (week), 'm' (month)
+    # - iscqry (str): Empty string, necessary for results to appear properly on first page
+    # - b (int): Search offset for pagination
+    # - pz (str): Amount of results expected for the page
+    url_params = {'p': query}
 
-    args = urlencode(
-        {
-            'p': query,
-            'ei': 'UTF-8',
-            'fl': 1,
-            'vl': 'lang_' + lang,
-            'btf': btf,
-            'fr2': 'time',
-            'age': age,
-            'b': offset,
-            'xargs': 0,
-        }
-    )
+    btf = time_range_dict.get(params['time_range'])
+    if btf:
+        url_params['btf'] = btf
 
+    if params['pageno'] == 1:
+        url_params['iscqry'] = ''
+    elif params['pageno'] >= 2:
+        url_params['b'] = params['pageno'] * 7 + 1  #  8, 15, 21, etc.
+        url_params['pz'] = 7
+        url_params['bct'] = 0
+        url_params['xargs'] = 0
+
+    # Build sB cookie (for filters)
+    # - vm (str): SafeSearch filter, maps to values like 'p' (None), 'i' (Moderate), 'r' (Strict)
+    # - fl (bool): Indicates if a search language is used or not
+    # - vl (str): The search language to use (e.g. lang_fr)
+    sbcookie_params = {
+        'v': 1,
+        'vm': safesearch_dict[params['safesearch']],
+        'fl': 1,
+        'vl': f'lang_{lang}',
+        'pn': 10,
+        'rw': 'new',
+        'userset': 1,
+    }
+    params['cookies']['sB'] = build_sb_cookie(sbcookie_params)
+
+    # Search region/language
     domain = region2domain.get(region)
     if not domain:
-        domain = lang2domain.get(lang, '%s.search.yahoo.com' % lang)
-    params['url'] = 'https://%s/search?%s' % (domain, args)
+        domain = lang2domain.get(lang, f'{lang}.search.yahoo.com')
+    logger.debug(f'domain selected: {domain}')
+    logger.debug(f'cookies: {params["cookies"]}')
+
+    params['url'] = f'https://{domain}/search?{urlencode(url_params)}'
     params['domain'] = domain
 
 
