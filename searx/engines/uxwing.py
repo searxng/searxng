@@ -4,7 +4,7 @@
 from urllib.parse import quote_plus
 from lxml import html
 
-from searx.utils import eval_xpath, eval_xpath_list, extract_text
+from searx.utils import eval_xpath, eval_xpath_list, extract_text, gen_useragent
 
 about = {
     "website": 'https://uxwing.com',
@@ -17,10 +17,12 @@ about = {
 categories = ['images', 'icons']
 
 base_url = "https://uxwing.com"
+enable_http2 = False
 
 
 def request(query, params):
     params['url'] = f"{base_url}/?s={quote_plus(query)}"
+    params['headers'] = {'User-Agent': "Mozilla/5.0 (X11; Linux x86_64; rv:139.0) Gecko/20100101 Firefox/139.0"}
     return params
 
 
