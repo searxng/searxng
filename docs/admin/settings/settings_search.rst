@@ -46,6 +46,7 @@
   - ``qwant``
   - ``seznam``
   - ``sogou``
+  - ``startpage``
   - ``stract``
   - ``swisscows``
   - ``wikipedia``

@@ -20,7 +20,7 @@ from searx.engines import (
 )
 from searx.network import get as http_get, post as http_post
 from searx.exceptions import SearxEngineResponseException
-from searx.utils import extr
+from searx.utils import extr, gen_useragent
 
 
 def update_kwargs(**kwargs):
@@ -233,6 +233,52 @@ def sogou(query, _lang):
     return []
 
 
+def startpage(query, sxng_locale):
+    """Autocomplete from Startpage's Firefox extension.
+    Supports the languages specified in lang_map.
+    """
+
+    lang_map = {
+        'da': 'dansk',
+        'de': 'deutsch',
+        'en': 'english',
+        'es': 'espanol',
+        'fr': 'francais',
+        'nb': 'norsk',
+        'nl': 'nederlands',
+        'pl': 'polski',
+        'pt': 'portugues',
+        'sv': 'svenska',
+    }
+
+    base_lang = sxng_locale.split('-')[0]
+    lui = lang_map.get(base_lang, 'english')
+
+    url_params = {
+        'q': query,
+        'format': 'opensearch',
+        'segment': 'startpage.defaultffx',
+        'lui': lui,
+    }
+    url = f'https://www.startpage.com/suggestions?{urlencode(url_params)}'
+
+    # Needs user agent, returns a 204 otherwise
+    h = {'User-Agent': gen_useragent()}
+
+    resp = get(url, headers=h)
+
+    if resp.ok:
+        try:
+            data = resp.json()
+
+            if len(data) >= 2 and isinstance(data[1], list):
+                return data[1]
+        except json.JSONDecodeError:
+            pass
+
+    return []
+
+
 def stract(query, _lang):
     # stract autocompleter (beta)
     url = f"https://stract.com/beta/api/autosuggest?q={quote_plus(query)}"
@@ -320,6 +366,7 @@ backends = {
     'qwant': qwant,
     'seznam': seznam,
     'sogou': sogou,
+    'startpage': startpage,
     'stract': stract,
     'swisscows': swisscows,
     'wikipedia': wikipedia,
