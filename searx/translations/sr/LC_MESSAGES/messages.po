@@ -17,20 +17,19 @@
 # return42 <return42@noreply.codeberg.org>, 2025.
 msgid ""
 msgstr ""
-"Project-Id-Version: searx\n"
+"Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-06-13 02:39+0000\n"
+"POT-Creation-Date: 2025-06-23 21:05+0000\n"
 "PO-Revision-Date: 2025-06-22 17:06+0000\n"
 "Last-Translator: return42 <return42@noreply.codeberg.org>\n"
-"Language-Team: Serbian <https://translate.codeberg.org/projects/searxng/"
-"searxng/sr/>\n"
 "Language: sr\n"
+"Language-Team: Serbian "
+"<https://translate.codeberg.org/projects/searxng/searxng/sr/>\n"
+"Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
-"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
-"X-Generator: Weblate 5.11.4\n"
 "Generated-By: Babel 2.17.0\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
@@ -764,8 +763,8 @@ msgid "Hostnames plugin"
 msgstr "Хостнејмс плагин"
 
 #: searx/plugins/hostnames.py:124
-msgid "Rewrite hostnames, remove results or prioritize them based on the hostname"
-msgstr "Преуреди домене, уклони или промени приоритет резултата према домену"
+msgid "Rewrite hostnames and remove or prioritize results based on the hostname"
+msgstr ""
 
 #: searx/plugins/oa_doi_rewrite.py:55
 msgid "Open Access DOI rewrite"
@@ -821,11 +820,11 @@ msgstr "Користите Тор и могуће је да имате екст�
 msgid "You are not using Tor and you have the external IP address"
 msgstr "Ne kористите Тор и имате екстерну IP адресу"
 
-#: searx/plugins/tracker_url_remover.py:37
+#: searx/plugins/tracker_url_remover.py:35
 msgid "Tracker URL remover"
 msgstr "Уклони трекер URL адресе"
 
-#: searx/plugins/tracker_url_remover.py:38
+#: searx/plugins/tracker_url_remover.py:36
 msgid "Remove trackers arguments from the returned URL"
 msgstr "Уклања аргументе трекера од повратне URL адресе"
 
@@ -1343,8 +1342,8 @@ msgid "Center Alignment"
 msgstr "Поравнање по средини"
 
 #: searx/templates/simple/preferences/center_alignment.html:14
-msgid "Displays results in the center of the page (Oscar layout)."
-msgstr "Приказује резултате на центру странице (Оскар распоред)."
+msgid "Display results in the center of the page (Oscar layout)."
+msgstr ""
 
 #: searx/templates/simple/preferences/cookies.html:2
 msgid ""
@@ -1355,8 +1354,8 @@ msgstr ""
 "рачунару."
 
 #: searx/templates/simple/preferences/cookies.html:3
-msgid "With that list, you can assess SearXNG transparency."
-msgstr "Са том листом можете проценити транспарентност СеарКСНГ-а."
+msgid "With this list, you can assess the transparency of SearXNG."
+msgstr ""
 
 #: searx/templates/simple/preferences/cookies.html:9
 msgid "Cookie name"
@@ -1452,19 +1451,13 @@ msgstr "Прикажи иконице поред резултата претра
 
 #: searx/templates/simple/preferences/footer.html:2
 msgid ""
-"These settings are stored in your cookies, this allows us not to store "
+"These settings are stored in your cookies. This allows us not to store "
 "this data about you."
 msgstr ""
-"Ова подешавања се чувају у вашим колачићима, што нам омогућава да не "
-"сачувамо ове податке о вама."
 
 #: searx/templates/simple/preferences/footer.html:3
-msgid ""
-"These cookies serve your sole convenience, we don't use these cookies to "
-"track you."
+msgid "These cookies serve your sole convenience; we don't use them to track you."
 msgstr ""
-"Ови колачићи служе Вашој погодности, ми не користимо ове колачиће да вас "
-"пратимо."
 
 #: searx/templates/simple/preferences/footer.html:6
 msgid "Save"
@@ -1500,18 +1493,18 @@ msgid "Image proxy"
 msgstr "Прокси слика"
 
 #: searx/templates/simple/preferences/image_proxy.html:14
-msgid "Proxying image results through SearXNG"
-msgstr "Прокси резултат слике преко СеарКСНГ"
+msgid "Proxy image results through SearXNG"
+msgstr ""
 
 #: searx/templates/simple/preferences/infinite_scroll.html:2
 msgid "Infinite scroll"
 msgstr "Бесконачно померање"
 
 #: searx/templates/simple/preferences/infinite_scroll.html:14
-msgid "Automatically load next page when scrolling to bottom of current page"
+msgid ""
+"Automatically load the next page when scrolling to the bottom of the "
+"current page"
 msgstr ""
-"Аутоматско учитавање следеће странице приликом померања на дно текуће "
-"странице"
 
 #: searx/templates/simple/preferences/language.html:24
 msgid "What language do you prefer for search?"
@@ -1561,19 +1554,17 @@ msgstr "Тражите категорију избора"
 
 #: searx/templates/simple/preferences/search_on_category_select.html:14
 msgid ""
-"Perform search immediately if a category selected. Disable to select "
-"multiple categories"
+"Perform a search immediately if a category is selected. Disable to select"
+" multiple categories"
 msgstr ""
-"Извршите претрагу одмах ако је одабрана категорија. Онемогућите да бисте "
-"изабрали више категорија"
 
 #: searx/templates/simple/preferences/theme.html:2
 msgid "Theme"
 msgstr "Тема"
 
 #: searx/templates/simple/preferences/theme.html:14
-msgid "Change SearXNG layout"
-msgstr "Промените изглед СеарКСНГ-а"
+msgid "Change the layout of SearXNG"
+msgstr ""
 
 #: searx/templates/simple/preferences/theme.html:19
 msgid "Theme style"
@@ -2018,7 +2009,7 @@ msgstr "сакриј видео"
 #~ msgstr ""
 
 #~ msgid "Displays results in the center of the page (Oscar layout)."
-#~ msgstr ""
+#~ msgstr "Приказује резултате на центру странице (Оскар распоред)."
 
 #~ msgid "preferences"
 #~ msgstr "ПОДЕШАВАЊА"
@@ -2308,3 +2299,50 @@ msgstr "сакриј видео"
 
 #~ msgid "Converts strings to different hash digests."
 #~ msgstr "Претвара стринг у другачије хешеве."
+
+#~ msgid ""
+#~ "Rewrite hostnames, remove results or "
+#~ "prioritize them based on the hostname"
+#~ msgstr "Преуреди домене, уклони или промени приоритет резултата према домену"
+
+#~ msgid "With that list, you can assess SearXNG transparency."
+#~ msgstr "Са том листом можете проценити транспарентност СеарКСНГ-а."
+
+#~ msgid ""
+#~ "These settings are stored in your "
+#~ "cookies, this allows us not to "
+#~ "store this data about you."
+#~ msgstr ""
+#~ "Ова подешавања се чувају у вашим "
+#~ "колачићима, што нам омогућава да не "
+#~ "сачувамо ове податке о вама."
+
+#~ msgid ""
+#~ "These cookies serve your sole "
+#~ "convenience, we don't use these cookies"
+#~ " to track you."
+#~ msgstr ""
+#~ "Ови колачићи служе Вашој погодности, ми"
+#~ " не користимо ове колачиће да вас "
+#~ "пратимо."
+
+#~ msgid "Proxying image results through SearXNG"
+#~ msgstr "Прокси резултат слике преко СеарКСНГ"
+
+#~ msgid "Automatically load next page when scrolling to bottom of current page"
+#~ msgstr ""
+#~ "Аутоматско учитавање следеће странице приликом"
+#~ " померања на дно текуће странице"
+
+#~ msgid ""
+#~ "Perform search immediately if a category"
+#~ " selected. Disable to select multiple "
+#~ "categories"
+#~ msgstr ""
+#~ "Извршите претрагу одмах ако је одабрана"
+#~ " категорија. Онемогућите да бисте изабрали"
+#~ " више категорија"
+
+#~ msgid "Change SearXNG layout"
+#~ msgstr "Промените изглед СеарКСНГ-а"
+

@@ -18,19 +18,18 @@
 # return42 <return42@noreply.codeberg.org>, 2025.
 msgid ""
 msgstr ""
-"Project-Id-Version: searx\n"
+"Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-06-13 02:39+0000\n"
+"POT-Creation-Date: 2025-06-23 21:05+0000\n"
 "PO-Revision-Date: 2025-06-22 17:06+0000\n"
 "Last-Translator: return42 <return42@noreply.codeberg.org>\n"
-"Language-Team: Basque <https://translate.codeberg.org/projects/searxng/"
-"searxng/eu/>\n"
 "Language: eu\n"
+"Language-Team: Basque "
+"<https://translate.codeberg.org/projects/searxng/searxng/eu/>\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.11.4\n"
 "Generated-By: Babel 2.17.0\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
@@ -764,10 +763,8 @@ msgid "Hostnames plugin"
 msgstr "Hostnames plugina"
 
 #: searx/plugins/hostnames.py:124
-msgid "Rewrite hostnames, remove results or prioritize them based on the hostname"
+msgid "Rewrite hostnames and remove or prioritize results based on the hostname"
 msgstr ""
-"Berridatzi ostalari-izenak, kendu emaitzak edo eman lehentasuna ostalari-"
-"izenaren arabera"
 
 #: searx/plugins/oa_doi_rewrite.py:55
 msgid "Open Access DOI rewrite"
@@ -826,11 +823,11 @@ msgstr "Tor erabiltzen ari zara eta badirudi kanpoko IP helbidea duzula"
 msgid "You are not using Tor and you have the external IP address"
 msgstr "Tor erabiltzen ari zara eta kanpoko IP helbidea duzula dirudi"
 
-#: searx/plugins/tracker_url_remover.py:37
+#: searx/plugins/tracker_url_remover.py:35
 msgid "Tracker URL remover"
 msgstr "URL aztarnariak kendu"
 
-#: searx/plugins/tracker_url_remover.py:38
+#: searx/plugins/tracker_url_remover.py:36
 msgid "Remove trackers arguments from the returned URL"
 msgstr "Aztarnarien argumentuak kendu itzulitako URLtik"
 
@@ -1348,8 +1345,8 @@ msgid "Center Alignment"
 msgstr "Erdiko Lerrokadura"
 
 #: searx/templates/simple/preferences/center_alignment.html:14
-msgid "Displays results in the center of the page (Oscar layout)."
-msgstr "Emaitzak orriaren erdialdean bistaratzen ditu (Oscar diseinua)."
+msgid "Display results in the center of the page (Oscar layout)."
+msgstr ""
 
 #: searx/templates/simple/preferences/cookies.html:2
 msgid ""
@@ -1360,8 +1357,8 @@ msgstr ""
 " haien balioak."
 
 #: searx/templates/simple/preferences/cookies.html:3
-msgid "With that list, you can assess SearXNG transparency."
-msgstr "Zerrenda horrekin, SearXNGren gardentasuna ebaluatu dezakezu."
+msgid "With this list, you can assess the transparency of SearXNG."
+msgstr ""
 
 #: searx/templates/simple/preferences/cookies.html:9
 msgid "Cookie name"
@@ -1457,19 +1454,13 @@ msgstr "Erakutsi fabikonoak bilaketa-emaitzetatik gertu"
 
 #: searx/templates/simple/preferences/footer.html:2
 msgid ""
-"These settings are stored in your cookies, this allows us not to store "
+"These settings are stored in your cookies. This allows us not to store "
 "this data about you."
 msgstr ""
-"Ezarpen hauek zure cookietan gordetzen dira, honek zuri buruzko "
-"informaziorik ez gordetzea baimentzen digu."
 
 #: searx/templates/simple/preferences/footer.html:3
-msgid ""
-"These cookies serve your sole convenience, we don't use these cookies to "
-"track you."
+msgid "These cookies serve your sole convenience; we don't use them to track you."
 msgstr ""
-"Cookie hauek zure onurarako besterik ez dira, ez ditugu zure jarraipenik "
-"egiteko erabiltzen."
 
 #: searx/templates/simple/preferences/footer.html:6
 msgid "Save"
@@ -1504,18 +1495,18 @@ msgid "Image proxy"
 msgstr "Irudien proxya"
 
 #: searx/templates/simple/preferences/image_proxy.html:14
-msgid "Proxying image results through SearXNG"
-msgstr "Proxy irudien emaitzak SearXNG bidez"
+msgid "Proxy image results through SearXNG"
+msgstr ""
 
 #: searx/templates/simple/preferences/infinite_scroll.html:2
 msgid "Infinite scroll"
 msgstr "Korritze amaigabea"
 
 #: searx/templates/simple/preferences/infinite_scroll.html:14
-msgid "Automatically load next page when scrolling to bottom of current page"
+msgid ""
+"Automatically load the next page when scrolling to the bottom of the "
+"current page"
 msgstr ""
-"Kargatu automatikoki hurrengo orria uneko orrialdearen behealdera "
-"mugitzean"
 
 #: searx/templates/simple/preferences/language.html:24
 msgid "What language do you prefer for search?"
@@ -1565,19 +1556,17 @@ msgstr "Bilatu kategoria hautatzean"
 
 #: searx/templates/simple/preferences/search_on_category_select.html:14
 msgid ""
-"Perform search immediately if a category selected. Disable to select "
-"multiple categories"
+"Perform a search immediately if a category is selected. Disable to select"
+" multiple categories"
 msgstr ""
-"Egin bilaketa berehala kategoria bat hautatuz gero. Desgaitu hainbat "
-"kategoria hautatzeko"
 
 #: searx/templates/simple/preferences/theme.html:2
 msgid "Theme"
 msgstr "Itxura"
 
 #: searx/templates/simple/preferences/theme.html:14
-msgid "Change SearXNG layout"
-msgstr "Aldatu SearXNGren diseinua"
+msgid "Change the layout of SearXNG"
+msgstr ""
 
 #: searx/templates/simple/preferences/theme.html:19
 msgid "Theme style"
@@ -2027,7 +2016,7 @@ msgstr "ezkutatu bideoa"
 #~ msgstr ""
 
 #~ msgid "Displays results in the center of the page (Oscar layout)."
-#~ msgstr ""
+#~ msgstr "Emaitzak orriaren erdialdean bistaratzen ditu (Oscar diseinua)."
 
 #~ msgid "preferences"
 #~ msgstr "hobespenak"
@@ -2307,3 +2296,53 @@ msgstr "ezkutatu bideoa"
 
 #~ msgid "Converts strings to different hash digests."
 #~ msgstr "Kateak traola laburpen desberdinetara bihurtzen ditu."
+
+#~ msgid ""
+#~ "Rewrite hostnames, remove results or "
+#~ "prioritize them based on the hostname"
+#~ msgstr ""
+#~ "Berridatzi ostalari-izenak, kendu emaitzak "
+#~ "edo eman lehentasuna ostalari-izenaren "
+#~ "arabera"
+
+#~ msgid "With that list, you can assess SearXNG transparency."
+#~ msgstr "Zerrenda horrekin, SearXNGren gardentasuna ebaluatu dezakezu."
+
+#~ msgid ""
+#~ "These settings are stored in your "
+#~ "cookies, this allows us not to "
+#~ "store this data about you."
+#~ msgstr ""
+#~ "Ezarpen hauek zure cookietan gordetzen "
+#~ "dira, honek zuri buruzko informaziorik "
+#~ "ez gordetzea baimentzen digu."
+
+#~ msgid ""
+#~ "These cookies serve your sole "
+#~ "convenience, we don't use these cookies"
+#~ " to track you."
+#~ msgstr ""
+#~ "Cookie hauek zure onurarako besterik ez"
+#~ " dira, ez ditugu zure jarraipenik "
+#~ "egiteko erabiltzen."
+
+#~ msgid "Proxying image results through SearXNG"
+#~ msgstr "Proxy irudien emaitzak SearXNG bidez"
+
+#~ msgid "Automatically load next page when scrolling to bottom of current page"
+#~ msgstr ""
+#~ "Kargatu automatikoki hurrengo orria uneko "
+#~ "orrialdearen behealdera mugitzean"
+
+#~ msgid ""
+#~ "Perform search immediately if a category"
+#~ " selected. Disable to select multiple "
+#~ "categories"
+#~ msgstr ""
+#~ "Egin bilaketa berehala kategoria bat "
+#~ "hautatuz gero. Desgaitu hainbat kategoria "
+#~ "hautatzeko"
+
+#~ msgid "Change SearXNG layout"
+#~ msgstr "Aldatu SearXNGren diseinua"
+

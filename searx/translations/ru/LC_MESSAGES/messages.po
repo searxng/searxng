@@ -31,21 +31,20 @@
 # yurtpage <yurtpage@noreply.codeberg.org>, 2025.
 msgid ""
 msgstr ""
-"Project-Id-Version: searx\n"
+"Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-06-13 02:39+0000\n"
+"POT-Creation-Date: 2025-06-23 21:05+0000\n"
 "PO-Revision-Date: 2025-06-21 19:58+0000\n"
 "Last-Translator: yurtpage <yurtpage@noreply.codeberg.org>\n"
-"Language-Team: Russian <https://translate.codeberg.org/projects/searxng/"
-"searxng/ru/>\n"
 "Language: ru\n"
+"Language-Team: Russian "
+"<https://translate.codeberg.org/projects/searxng/searxng/ru/>\n"
+"Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) "
+"|| (n%100>=11 && n%100<=14)? 2 : 3);\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
-"n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || ("
-"n%100>=11 && n%100<=14)? 2 : 3);\n"
-"X-Generator: Weblate 5.11.4\n"
 "Generated-By: Babel 2.17.0\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
@@ -769,8 +768,8 @@ msgid ""
 "Converts strings to different hash digests. Available functions: md5, "
 "sha1, sha224, sha256, sha384, sha512."
 msgstr ""
-"Конвертирует рядки в разные хеш-суммы. Доступные функции: md5, sha1, sha224, "
-"sha256, sha384, sha512."
+"Конвертирует рядки в разные хеш-суммы. Доступные функции: md5, sha1, "
+"sha224, sha256, sha384, sha512."
 
 #: searx/plugins/hash_plugin.py:64
 msgid "hash digest"
@@ -781,10 +780,8 @@ msgid "Hostnames plugin"
 msgstr "Плагин имён хостов"
 
 #: searx/plugins/hostnames.py:124
-msgid "Rewrite hostnames, remove results or prioritize them based on the hostname"
+msgid "Rewrite hostnames and remove or prioritize results based on the hostname"
 msgstr ""
-"Переписывать имена хостов, удалять и приоритизировать результаты в "
-"зависимости от имён хостов"
 
 #: searx/plugins/oa_doi_rewrite.py:55
 msgid "Open Access DOI rewrite"
@@ -843,11 +840,11 @@ msgstr "Вы используете Tor и кажется что у вас ес�
 msgid "You are not using Tor and you have the external IP address"
 msgstr "Вы не используете Tor и у вас внешний IP-адрес"
 
-#: searx/plugins/tracker_url_remover.py:37
+#: searx/plugins/tracker_url_remover.py:35
 msgid "Tracker URL remover"
 msgstr "Убрать отслеживание URL"
 
-#: searx/plugins/tracker_url_remover.py:38
+#: searx/plugins/tracker_url_remover.py:36
 msgid "Remove trackers arguments from the returned URL"
 msgstr "Удаление параметров для отслеживания пользователя из URL-адреса"
 
@@ -958,8 +955,7 @@ msgstr ""
 
 #: searx/templates/simple/new_issue.html:71
 msgid "If this is a public instance, please specify the URL in the bug report"
-msgstr ""
-"Если это публичное зеркало, пожалуйста, укажите ссылку в отчёте об ошибке"
+msgstr "Если это публичное зеркало, пожалуйста, укажите ссылку в отчёте об ошибке"
 
 #: searx/templates/simple/new_issue.html:72
 msgid "Submit a new issue on Github including the above information"
@@ -1370,19 +1366,18 @@ msgid "Center Alignment"
 msgstr "Выравнивание по центру"
 
 #: searx/templates/simple/preferences/center_alignment.html:14
-msgid "Displays results in the center of the page (Oscar layout)."
-msgstr "Отображать результаты по центру страницы (макет Oscar)."
+msgid "Display results in the center of the page (Oscar layout)."
+msgstr ""
 
 #: searx/templates/simple/preferences/cookies.html:2
 msgid ""
 "This is the list of cookies and their values SearXNG is storing on your "
 "computer."
-msgstr ""
-"Список cookies и их значений, которые SearXNG хранит в вашем обозревателе."
+msgstr "Список cookies и их значений, которые SearXNG хранит в вашем обозревателе."
 
 #: searx/templates/simple/preferences/cookies.html:3
-msgid "With that list, you can assess SearXNG transparency."
-msgstr "SearXNG ничего от вас не скрывает."
+msgid "With this list, you can assess the transparency of SearXNG."
+msgstr ""
 
 #: searx/templates/simple/preferences/cookies.html:9
 msgid "Cookie name"
@@ -1484,19 +1479,13 @@ msgstr "Показывать значки сайтов около результ
 
 #: searx/templates/simple/preferences/footer.html:2
 msgid ""
-"These settings are stored in your cookies, this allows us not to store "
+"These settings are stored in your cookies. This allows us not to store "
 "this data about you."
 msgstr ""
-"Все настройки сохраняются в cookie вашего обозревателя. Это позволяет нам не "
-"хранить о вас никаких данных на серверах."
 
 #: searx/templates/simple/preferences/footer.html:3
-msgid ""
-"These cookies serve your sole convenience, we don't use these cookies to "
-"track you."
+msgid "These cookies serve your sole convenience; we don't use them to track you."
 msgstr ""
-"Cookie нужны исключительно для вашего удобства, мы не используем cookie "
-"для слежки."
 
 #: searx/templates/simple/preferences/footer.html:6
 msgid "Save"
@@ -1532,16 +1521,18 @@ msgid "Image proxy"
 msgstr "Прокси для картинок"
 
 #: searx/templates/simple/preferences/image_proxy.html:14
-msgid "Proxying image results through SearXNG"
-msgstr "Проксировать изображения в результатах методами SearXNG"
+msgid "Proxy image results through SearXNG"
+msgstr ""
 
 #: searx/templates/simple/preferences/infinite_scroll.html:2
 msgid "Infinite scroll"
 msgstr "Бесконечная прокрутка"
 
 #: searx/templates/simple/preferences/infinite_scroll.html:14
-msgid "Automatically load next page when scrolling to bottom of current page"
-msgstr "Автоматически загружать следующую страницу при прокрутке до конца страницы"
+msgid ""
+"Automatically load the next page when scrolling to the bottom of the "
+"current page"
+msgstr ""
 
 #: searx/templates/simple/preferences/language.html:24
 msgid "What language do you prefer for search?"
@@ -1570,8 +1561,8 @@ msgid ""
 "When enabled, the result page's title contains your query. Your browser "
 "can record this title"
 msgstr ""
-"Добавить поисковый запрос в заголовок страницы с результатами. Обозреватель "
-"может сохранять этот заголовок"
+"Добавить поисковый запрос в заголовок страницы с результатами. "
+"Обозреватель может сохранять этот заголовок"
 
 #: searx/templates/simple/preferences/results_on_new_tab.html:2
 msgid "Results in new tabs"
@@ -1591,19 +1582,17 @@ msgstr "Поиск по выбранной категории"
 
 #: searx/templates/simple/preferences/search_on_category_select.html:14
 msgid ""
-"Perform search immediately if a category selected. Disable to select "
-"multiple categories"
+"Perform a search immediately if a category is selected. Disable to select"
+" multiple categories"
 msgstr ""
-"Выполняйте мгновенный поиск при выборе категории. Выключите для выбора "
-"нескольких категорий сразу"
 
 #: searx/templates/simple/preferences/theme.html:2
 msgid "Theme"
 msgstr "Тема"
 
 #: searx/templates/simple/preferences/theme.html:14
-msgid "Change SearXNG layout"
-msgstr "Изменить расположение элементов SearXNG"
+msgid "Change the layout of SearXNG"
+msgstr ""
 
 #: searx/templates/simple/preferences/theme.html:19
 msgid "Theme style"
@@ -2054,7 +2043,7 @@ msgstr "скрыть видео"
 #~ msgstr ""
 
 #~ msgid "Displays results in the center of the page (Oscar layout)."
-#~ msgstr ""
+#~ msgstr "Отображать результаты по центру страницы (макет Oscar)."
 
 #~ msgid "preferences"
 #~ msgstr "Настройки"
@@ -2349,3 +2338,54 @@ msgstr "скрыть видео"
 
 #~ msgid "Converts strings to different hash digests."
 #~ msgstr "Рассчитывает контрольные суммы от строки."
+
+#~ msgid ""
+#~ "Rewrite hostnames, remove results or "
+#~ "prioritize them based on the hostname"
+#~ msgstr ""
+#~ "Переписывать имена хостов, удалять и "
+#~ "приоритизировать результаты в зависимости от"
+#~ " имён хостов"
+
+#~ msgid "With that list, you can assess SearXNG transparency."
+#~ msgstr "SearXNG ничего от вас не скрывает."
+
+#~ msgid ""
+#~ "These settings are stored in your "
+#~ "cookies, this allows us not to "
+#~ "store this data about you."
+#~ msgstr ""
+#~ "Все настройки сохраняются в cookie "
+#~ "вашего обозревателя. Это позволяет нам "
+#~ "не хранить о вас никаких данных на"
+#~ " серверах."
+
+#~ msgid ""
+#~ "These cookies serve your sole "
+#~ "convenience, we don't use these cookies"
+#~ " to track you."
+#~ msgstr ""
+#~ "Cookie нужны исключительно для вашего "
+#~ "удобства, мы не используем cookie для"
+#~ " слежки."
+
+#~ msgid "Proxying image results through SearXNG"
+#~ msgstr "Проксировать изображения в результатах методами SearXNG"
+
+#~ msgid "Automatically load next page when scrolling to bottom of current page"
+#~ msgstr ""
+#~ "Автоматически загружать следующую страницу при"
+#~ " прокрутке до конца страницы"
+
+#~ msgid ""
+#~ "Perform search immediately if a category"
+#~ " selected. Disable to select multiple "
+#~ "categories"
+#~ msgstr ""
+#~ "Выполняйте мгновенный поиск при выборе "
+#~ "категории. Выключите для выбора нескольких "
+#~ "категорий сразу"
+
+#~ msgid "Change SearXNG layout"
+#~ msgstr "Изменить расположение элементов SearXNG"
+
