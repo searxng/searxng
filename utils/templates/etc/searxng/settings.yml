@@ -23,7 +23,7 @@ server:
 
 valkey:
   # URL to connect valkey database. Is overwritten by ${SEARXNG_VALKEY_URL}.
-  url: unix:///usr/local/searxng-valkey/run/valkey.sock?db=0
+  url: valkey://localhost:6379/0
 
 ui:
   static_use_hash: true

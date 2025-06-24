@@ -5,7 +5,7 @@ This code was partial inspired by the `Bullet-Proofing Lua Scripts in ValkeyPy`_
 article.
 
 .. _Bullet-Proofing Lua Scripts in ValkeyPy:
-   https://valkey.com/blog/bullet-proofing-lua-scripts-in-valkeypy/
+   https://redis.com/blog/bullet-proofing-lua-scripts-in-redispy/
 
 """
 
