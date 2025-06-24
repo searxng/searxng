@@ -21,12 +21,11 @@ A valkey DB connect can be tested by::
 import os
 import pwd
 import logging
+import warnings
+
 import valkey
 from searx import get_setting
 
-
-OLD_VALKEY_URL_DEFAULT_URL = 'unix:///usr/local/searxng-valkey/run/valkey.sock?db=0'
-"""This was the default Valkey URL in settings.yml."""
 
 _CLIENT = None
 logger = logging.getLogger(__name__)
@@ -38,7 +37,9 @@ def client() -> valkey.Valkey:
 
 def initialize():
     global _CLIENT  # pylint: disable=global-statement
-    valkey_url = get_setting('valkey.url')
+    if get_setting('redis.url'):
+        warnings.warn("setting redis.url is deprecated, use valkey.url", DeprecationWarning)
+    valkey_url = get_setting('valkey.url') or get_setting('redis.url')
     if not valkey_url:
         return False
     try:
@@ -57,13 +58,8 @@ def initialize():
         # no error: the valkey connection is working
         logger.info("connected to Valkey")
         return True
-    except valkey.exceptions.ValkeyError as e:
+    except valkey.exceptions.ValkeyError:
         _CLIENT = None
         _pw = pwd.getpwuid(os.getuid())
         logger.exception("[%s (%s)] can't connect valkey DB ...", _pw.pw_name, _pw.pw_uid)
-        if valkey_url == OLD_VALKEY_URL_DEFAULT_URL and isinstance(e, valkey.exceptions.ConnectionError):
-            logger.info(
-                "You can safely ignore the above Valkey error if you don't use Valkey. "
-                "You can remove this error by setting valkey.url to false in your settings.yml."
-            )
     return False

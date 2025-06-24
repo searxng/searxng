@@ -62,6 +62,7 @@ test.shell:
 		utils/lib_sxng*.sh \
 		utils/lib_go.sh \
 		utils/lib_nvm.sh \
+		utils/lib_redis.sh \
 		utils/lib_valkey.sh \
 		utils/searxng.sh \
 		utils/lxc.sh \

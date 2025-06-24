@@ -7,6 +7,8 @@ SEARXNG_UWSGI_USE_SOCKET="${SEARXNG_UWSGI_USE_SOCKET:-true}"
 
 # shellcheck source=utils/lib.sh
 source "$(dirname "${BASH_SOURCE[0]}")/lib.sh"
+# shellcheck source=utils/lib_redis.sh
+source "$(dirname "${BASH_SOURCE[0]}")/lib_redis.sh"
 # shellcheck source=utils/lib_valkey.sh
 source "$(dirname "${BASH_SOURCE[0]}")/lib_valkey.sh"
 # shellcheck source=utils/brand.sh
@@ -128,9 +130,12 @@ install|remove:
   pyenv         : virtualenv (python) in ${SEARXNG_PYENV}
   settings      : settings from ${SEARXNG_SETTINGS_PATH}
   uwsgi         : SearXNG's uWSGI app ${SEARXNG_UWSGI_APP}
-  valkey         : build & install or remove a local valkey server ${VALKEY_HOME}/run/valkey.sock
   nginx         : HTTP site ${NGINX_APPS_AVAILABLE}/${NGINX_SEARXNG_SITE}
   apache        : HTTP site ${APACHE_SITES_AVAILABLE}/${APACHE_SEARXNG_SITE}
+install:
+  valkey        : install a local valkey server
+remove:
+  redis         : remove a local redis server ${REDIS_HOME}/run/redis.sock
 install:
   searxng-src   : clone ${GIT_URL} into ${SEARXNG_SRC}
   packages      : installs packages from OS package manager required by SearXNG
@@ -182,7 +187,7 @@ main() {
         --cmd)  shift; "$@";;
         -h|--help) usage; exit 0;;
         install)
-            sudo_or_exit
+            # sudo_or_exit
             case $2 in
                 all) searxng.install.all;;
                 user) searxng.install.user;;
@@ -209,6 +214,7 @@ main() {
                 apache) searxng.apache.remove;;
                 remove) searxng.nginx.remove;;
                 valkey) searxng.remove.valkey;;
+                redis) searxng.remove.redis;;
                 *) usage "$_usage"; exit 42;;
             esac
             ;;
@@ -293,73 +299,31 @@ searxng.install.valkey.db() {
     local valkey_url
 
     valkey_url=$(searxng.instance.get_setting valkey.url)
-    rst_para "\
+
+    if [ "${valkey_url}" = "False" ]; then
+        rst_para "valkey DB connector is not configured in your instance"
+    else
+        rst_para "\
 In your instance, valkey DB connector is configured at:
 
     ${valkey_url}
 "
-    if searxng.instance.exec python -c "from searx import valkeydb; valkeydb.initialize() or exit(42)"; then
-        info_msg "SearXNG instance is able to connect valkey DB."
-        return
+        if searxng.instance.exec python -c "from searx import valkeydb; valkeydb.initialize() or exit(42)"; then
+            info_msg "SearXNG instance is able to connect valkey DB."
+            return
+        fi
     fi
-    if ! [[ ${valkey_url} = unix://${VALKEY_HOME}/run/valkey.sock* ]]; then
+
+    if ! [[ ${valkey_url} = valkey://localhost:6379/* ]]; then
         err_msg "SearXNG instance can't connect valkey DB / check valkey & your settings"
         return
     fi
     rst_para ".. but this valkey DB is not installed yet."
 
-    case $DIST_ID-$DIST_VERS in
-        fedora-*)
-            # Fedora runs uWSGI in emperor-tyrant mode: in Tyrant mode the
-            # Emperor will run the vassal using the UID/GID of the vassal
-            # configuration file [1] (user and group of the app .ini file).
-            #
-            # HINT: without option ``emperor-tyrant-initgroups=true`` in
-            # ``/etc/uwsgi.ini`` the process won't get the additional groups,
-            # but this option is not available in 2.0.x branch [2][3] / on
-            # fedora35 there is v2.0.20 installed --> no way to get additional
-            # groups on fedora's tyrant mode.
-            #
-            # ERROR:searx.valkeydb: [searxng (993)] can't connect valkey DB ...
-            # ERROR:searx.valkeydb:   Error 13 connecting to unix socket: /usr/local/searxng-valkey/run/valkey.sock. Permission denied.
-            # ERROR:searx.plugins.limiter: init limiter DB failed!!!
-            #
-            # $ ps -aef | grep '/usr/sbin/uwsgi --ini searxng.ini'
-            # searxng       93      92  0 12:43 ?        00:00:00 /usr/sbin/uwsgi --ini searxng.ini
-            # searxng      186      93  0 12:44 ?        00:00:01 /usr/sbin/uwsgi --ini searxng.ini
-            #
-            # Additional groups:
-            #
-            # $ groups searxng
-            # searxng : searxng searxng-valkey
-            #
-            # Here you can see that the additional "Groups" of PID 186 are unset
-            # (missing gid of searxng-valkey)
-            #
-            # $ cat /proc/186/task/186/status
-            # ...
-            # Uid:      993     993     993     993
-            # Gid:      993     993     993     993
-            # FDSize:   128
-            # Groups:
-            # ...
-            #
-            # [1] https://uwsgi-docs.readthedocs.io/en/latest/Emperor.html#tyrant-mode-secure-multi-user-hosting
-            # [2] https://github.com/unbit/uwsgi/issues/2099
-            # [3] https://github.com/unbit/uwsgi/pull/752
-
-            rst_para "\
-Fedora uses emperor-tyrant mode / in this mode we had a lot of trouble with
-sockets and permissions of the vasals.  We recommend to setup a valkey DB
-and using valkey:// TCP protocol in the settings.yml configuration."
-            ;;
-        *)
-            if ask_yn "Do you want to install the valkey DB now?" Yn; then
-                searxng.install.valkey
-                uWSGI_restart "$SEARXNG_UWSGI_APP"
-            fi
-            ;;
-    esac
+    if ask_yn "Do you want to install the valkey DB now?" Yn; then
+        searxng.install.valkey
+        uWSGI_restart "$SEARXNG_UWSGI_APP"
+    fi
 }
 
 searxng.install.http.site() {
@@ -642,18 +606,17 @@ searxng.remove.uwsgi() {
     uWSGI_remove_app "${SEARXNG_UWSGI_APP}"
 }
 
-searxng.install.valkey() {
-    rst_title "SearXNG (install valkey)"
-    valkey.build
-    valkey.install
-    valkey.addgrp "${SERVICE_USER}"
+searxng.remove.redis() {
+    rst_title "SearXNG (remove redis)"
+    redis.rmgrp "${SERVICE_USER}"
+    redis.remove
 }
 
-searxng.remove.valkey() {
-    rst_title "SearXNG (remove valkey)"
-    valkey.rmgrp "${SERVICE_USER}"
-    valkey.remove
+searxng.install.valkey() {
+    rst_title "SearXNG (install valkey)"
+    valkey.install
 }
+
 
 searxng.instance.localtest() {
     rst_title "Test SearXNG instance locally" section

@@ -56,7 +56,7 @@ and set the valkey-url connection. Check the value, it depends on your valkey DB
 .. code:: yaml
 
    valkey:
-     url: unix:///usr/local/searxng-valkey/run/valkey.sock?db=0
+     url: valkey://localhost:6379/0
 
 
 Configure Limiter

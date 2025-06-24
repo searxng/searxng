@@ -36,6 +36,9 @@ if os.path.isfile(OLD_BRAND_ENV):
 
 from searx import valkeydb, get_setting
 
+if get_setting('redis.url'):
+    warnings.warn("setting redis.url is deprecated, use valkey.url", RuntimeWarning, stacklevel=2)
+
 if not valkeydb.initialize():
     warnings.warn("can't connect to valkey DB at: %s" % get_setting('valkey.url'), RuntimeWarning, stacklevel=2)
     warnings.warn("--> no bot protection without valkey DB", RuntimeWarning, stacklevel=2)

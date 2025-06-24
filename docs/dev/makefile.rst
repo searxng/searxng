@@ -362,17 +362,6 @@ can be used to convenient run common build tasks of the static files.
 .. program-output:: bash -c "cd ..; ./manage static.help"
 
 
-.. _manage valkey.help:
-
-``./manage valkey.help``
-=======================
-
-The ``./manage valkey.*`` command line can be used to convenient run common Valkey
-tasks (:ref:`Valkey developer notes`).
-
-.. program-output:: bash -c "cd ..; ./manage valkey.help"
-
-
 .. _manage go.help:
 
 ``./manage go.help``

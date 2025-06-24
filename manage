@@ -84,9 +84,7 @@ gecko.driver:
   download & install geckodriver if not already installed (required for
   robot_tests)
 valkey:
-  build     : build valkey binaries at $(valkey._get_dist)
   install   : create user (${VALKEY_USER}) and install systemd service (${VALKEY_SERVICE_NAME})
-  help      : show more valkey commands
 py.:
   build     : Build python packages at ./${PYDIST}
   clean     : delete virtualenv and intermediate py files

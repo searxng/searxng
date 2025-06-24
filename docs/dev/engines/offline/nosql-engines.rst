@@ -64,7 +64,7 @@ their structure.
 .. _engine valkey_server:
 
 Valkey Server
-------------
+-------------
 
 .. _valkey: https://github.com/andymccurdy/valkey-py#installation
 
@@ -94,4 +94,3 @@ MongoDB
 
 .. automodule:: searx.engines.mongodb
   :members:
-

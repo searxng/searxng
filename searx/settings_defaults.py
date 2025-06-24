@@ -185,6 +185,10 @@ SCHEMA = {
         'method': SettingsValue(('POST', 'GET'), 'POST', 'SEARXNG_METHOD'),
         'default_http_headers': SettingsValue(dict, {}),
     },
+    # redis is deprecated ..
+    'redis': {
+        'url': SettingsValue((None, False, str), False, 'SEARXNG_REDIS_URL'),
+    },
     'valkey': {
         'url': SettingsValue((None, False, str), False, 'SEARXNG_VALKEY_URL'),
     },
