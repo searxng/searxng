@@ -3,6 +3,8 @@
 
 """
 
+import logging
+from logging import Logger
 import threading
 from abc import abstractmethod, ABC
 from timeit import default_timer
@@ -58,12 +60,13 @@ class SuspendedStatus:
 class EngineProcessor(ABC):
     """Base classes used for all types of request processors."""
 
-    __slots__ = 'engine', 'engine_name', 'lock', 'suspended_status', 'logger'
+    __slots__ = 'engine', 'engine_name', 'lock', 'suspended_status', 'logger', 'log_engine_exc_info'
 
     def __init__(self, engine, engine_name: str):
         self.engine = engine
         self.engine_name = engine_name
-        self.logger = engines[engine_name].logger
+        self.logger: Logger = engines[engine_name].logger
+        self.log_engine_exc_info = True
         key = get_network(self.engine_name)
         key = id(key) if key else self.engine_name
         self.suspended_status = SUSPENDED_STATUS.setdefault(key, SuspendedStatus())
@@ -82,6 +85,10 @@ class EngineProcessor(ABC):
     def has_initialize_function(self):
         return hasattr(self.engine, 'init')
 
+    @property
+    def metrics_log_level(self) -> int:
+        return logging.WARN if self.log_engine_exc_info else logging.NOTSET
+
     def handle_exception(self, result_container, exception_or_message, suspend=False):
         # update result_container
         if isinstance(exception_or_message, BaseException):
@@ -95,9 +102,9 @@ class EngineProcessor(ABC):
         # metrics
         counter_inc('engine', self.engine_name, 'search', 'count', 'error')
         if isinstance(exception_or_message, BaseException):
-            count_exception(self.engine_name, exception_or_message)
+            count_exception(self.engine_name, exception_or_message, log_level=self.metrics_log_level)
         else:
-            count_error(self.engine_name, exception_or_message)
+            count_error(self.engine_name, exception_or_message, log_level=self.metrics_log_level)
         # suspend the engine ?
         if suspend:
             suspended_time = None
