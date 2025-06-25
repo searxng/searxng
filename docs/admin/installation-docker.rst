@@ -186,5 +186,3 @@ In the :origin:`Dockerfile` the ENTRYPOINT_ is defined as
 .. code:: sh
 
     docker run --rm -it searxng/searxng -h
-
-.. program-output:: ../container/entrypoint.sh -h
