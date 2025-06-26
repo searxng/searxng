@@ -76,13 +76,48 @@ class SXNGPlugin(Plugin):
 
         # Prevent the runtime from being longer than 50 ms
         res = timeout_func(0.05, _eval_expr, query_py_formatted)
-        if res is None or res == "":
+        if res is None or res[0] == "":
             return results
 
-        res = babel.numbers.format_decimal(res, locale=ui_locale)
+        res, is_boolean = res
+        if is_boolean:
+            res = "True" if res != 0 else "False"
+        else:
+            res = babel.numbers.format_decimal(res, locale=ui_locale)
         results.add(results.types.Answer(answer=f"{search.search_query.query} = {res}"))
 
         return results
+
+
+def _compare(ops: list[ast.cmpop], values: list[int | float]) -> int:
+    """
+    2 < 3 becomes ops=[ast.Lt] and values=[2,3]
+    2 < 3 <= 4 becomes ops=[ast.Lt, ast.LtE] and values=[2,3, 4]
+    """
+    for op, a, b in zip(ops, values, values[1:]):  # pylint: disable=invalid-name
+        if isinstance(op, ast.Eq) and a == b:
+            continue
+        if isinstance(op, ast.NotEq) and a != b:
+            continue
+        if isinstance(op, ast.Lt) and a < b:
+            continue
+        if isinstance(op, ast.LtE) and a <= b:
+            continue
+        if isinstance(op, ast.Gt) and a > b:
+            continue
+        if isinstance(op, ast.GtE) and a >= b:
+            continue
+
+        # Ignore impossible ops:
+        # * ast.Is
+        # * ast.IsNot
+        # * ast.In
+        # * ast.NotIn
+
+        # the result is False for a and b and operation op
+        return 0
+    # the results for all the ops are True
+    return 1
 
 
 operators: dict[type, typing.Callable] = {
@@ -98,6 +133,7 @@ operators: dict[type, typing.Callable] = {
     ast.RShift: operator.rshift,
     ast.LShift: operator.lshift,
     ast.Mod: operator.mod,
+    ast.Compare: _compare,
 }
 
 # with multiprocessing.get_context("fork") we are ready for Py3.14 (by emulating
@@ -109,18 +145,30 @@ mp_fork = multiprocessing.get_context("fork")
 
 def _eval_expr(expr):
     """
+    Evaluates the given textual expression.
+
+    Returns a tuple of (numericResult, isBooleanResult).
+
     >>> _eval_expr('2^6')
-    64
+    64, False
     >>> _eval_expr('2**6')
-    64
+    64, False
     >>> _eval_expr('1 + 2*3**(4^5) / (6 + -7)')
-    -5.0
+    -5.0, False
+    >>> _eval_expr('1 < 3')
+    1, True
+    >>> _eval_expr('5 < 3')
+    0, True
+    >>> _eval_expr('17 == 11+1+5 == 7+5+5')
+    1, True
     """
     try:
-        return _eval(ast.parse(expr, mode='eval').body)
+        root_expr = ast.parse(expr, mode='eval').body
+        return _eval(root_expr), isinstance(root_expr, ast.Compare)
+
     except ZeroDivisionError:
         # This is undefined
-        return ""
+        return "", False
 
 
 def _eval(node):
@@ -132,6 +180,9 @@ def _eval(node):
 
     if isinstance(node, ast.UnaryOp):
         return operators[type(node.op)](_eval(node.operand))
+
+    if isinstance(node, ast.Compare):
+        return _compare(node.ops, [_eval(node.left)] + [_eval(c) for c in node.comparators])
 
     raise TypeError(node)
 
