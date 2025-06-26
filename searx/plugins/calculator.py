@@ -5,6 +5,7 @@ from __future__ import annotations
 import typing
 
 import ast
+import math
 import re
 import operator
 import multiprocessing
@@ -66,10 +67,6 @@ class SXNGPlugin(Plugin):
         decimal = ui_locale.number_symbols["latn"]["decimal"]
         group = ui_locale.number_symbols["latn"]["group"]
         query = re.sub(f"[0-9]+[{decimal}|{group}][0-9]+[{decimal}|{group}]?[0-9]?", _decimal, query)
-
-        # only numbers and math operators are accepted
-        if any(str.isalpha(c) for c in query):
-            return results
 
         # in python, powers are calculated via **
         query_py_formatted = query.replace("^", "**")
@@ -136,6 +133,13 @@ operators: dict[type, typing.Callable] = {
     ast.Compare: _compare,
 }
 
+
+math_constants = {
+    'e': math.e,
+    'pi': math.pi,
+}
+
+
 # with multiprocessing.get_context("fork") we are ready for Py3.14 (by emulating
 # the old behavior "fork") but it will not solve the core problem of fork, nor
 # will it remove the deprecation warnings in py3.12 & py3.13.  Issue is
@@ -183,6 +187,9 @@ def _eval(node):
 
     if isinstance(node, ast.Compare):
         return _compare(node.ops, [_eval(node.left)] + [_eval(c) for c in node.comparators])
+
+    if isinstance(node, ast.Name) and node.id in math_constants:
+        return math_constants[node.id]
 
     raise TypeError(node)
 
