@@ -93,8 +93,8 @@ container.build() {
         info_msg "Set \$GIT_BRANCH: $GIT_BRANCH"
 
         if [ "$container_engine" = "podman" ]; then
-            params_build_builder="build --format=docker --platform=$platform --target=builder --layers --identity-label=false"
-            params_build="build --format=docker --platform=$platform --layers --squash-all --omit-history --identity-label=false"
+            params_build_builder="build --format=oci --platform=$platform --target=builder --layers --identity-label=false"
+            params_build="build --format=oci --platform=$platform --layers --squash-all --omit-history --identity-label=false"
         else
             params_build_builder="build --platform=$platform --target=builder"
             params_build="build --platform=$platform --squash"
