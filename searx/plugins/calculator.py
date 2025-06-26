@@ -1,6 +1,5 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-"""Calculate mathematical expressions using :py:obj:`ast.parse` (mode="eval").
-"""
+"""Calculate mathematical expressions using :py:obj:`ast.parse` (mode="eval")."""
 
 from __future__ import annotations
 import typing
@@ -93,7 +92,12 @@ operators: dict[type, typing.Callable] = {
     ast.Div: operator.truediv,
     ast.Pow: operator.pow,
     ast.BitXor: operator.xor,
+    ast.BitOr: operator.or_,
+    ast.BitAnd: operator.and_,
     ast.USub: operator.neg,
+    ast.RShift: operator.rshift,
+    ast.LShift: operator.lshift,
+    ast.Mod: operator.mod,
 }
 
 # with multiprocessing.get_context("fork") we are ready for Py3.14 (by emulating
