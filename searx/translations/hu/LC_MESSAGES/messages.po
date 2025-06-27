@@ -25,9 +25,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-06-13 02:39+0000\n"
-"PO-Revision-Date: 2025-06-11 23:55+0000\n"
-"Last-Translator: kratos <makesocialfoss32@keemail.me>\n"
+"POT-Creation-Date: 2025-06-23 21:05+0000\n"
+"PO-Revision-Date: 2025-06-22 17:06+0000\n"
+"Last-Translator: return42 <return42@noreply.codeberg.org>\n"
 "Language: hu\n"
 "Language-Team: Hungarian "
 "<https://translate.codeberg.org/projects/searxng/searxng/hu/>\n"
@@ -768,10 +768,8 @@ msgid "Hostnames plugin"
 msgstr "Kiszolgálónév modul"
 
 #: searx/plugins/hostnames.py:124
-msgid "Rewrite hostnames, remove results or prioritize them based on the hostname"
+msgid "Rewrite hostnames and remove or prioritize results based on the hostname"
 msgstr ""
-"Írd át a kiszolgálóneveket, távolítsd el az eredményeket vagy rangsorold "
-"őket a kiszolgálónév alapján"
 
 #: searx/plugins/oa_doi_rewrite.py:55
 msgid "Open Access DOI rewrite"
@@ -830,11 +828,11 @@ msgstr "Ön a Tor-t használja, és úgy tűnik, hogy külső IP-címmel rendelk
 msgid "You are not using Tor and you have the external IP address"
 msgstr "Ön nem használja a Tor-t és külső IP-címmel rendelkezik"
 
-#: searx/plugins/tracker_url_remover.py:37
+#: searx/plugins/tracker_url_remover.py:35
 msgid "Tracker URL remover"
 msgstr "Követők eltávolítása a webcímekből"
 
-#: searx/plugins/tracker_url_remover.py:38
+#: searx/plugins/tracker_url_remover.py:36
 msgid "Remove trackers arguments from the returned URL"
 msgstr ""
 "Eltávolítja a felhasználók követéshez használt argumentumokat a találatok"
@@ -851,7 +849,7 @@ msgstr "Váltson mértékegységek között"
 #: searx/result_types/answer.py:224
 #, python-brace-format
 msgid "{location}: {temperature}, {condition}"
-msgstr ""
+msgstr "{location}: {temperature}, {condition}"
 
 #: searx/templates/simple/404.html:4
 msgid "Page not found"
@@ -1356,8 +1354,8 @@ msgid "Center Alignment"
 msgstr "Középre rendezés"
 
 #: searx/templates/simple/preferences/center_alignment.html:14
-msgid "Displays results in the center of the page (Oscar layout)."
-msgstr "A találatokat a lap közepén jeleníti meg (Oscar elrendezés)."
+msgid "Display results in the center of the page (Oscar layout)."
+msgstr ""
 
 #: searx/templates/simple/preferences/cookies.html:2
 msgid ""
@@ -1366,8 +1364,8 @@ msgid ""
 msgstr "Ez a SearXNG által tárolt sütik és azok értékeinek listája."
 
 #: searx/templates/simple/preferences/cookies.html:3
-msgid "With that list, you can assess SearXNG transparency."
-msgstr "A listával felmérheti a SearXNG átláthatóságát."
+msgid "With this list, you can assess the transparency of SearXNG."
+msgstr ""
 
 #: searx/templates/simple/preferences/cookies.html:9
 msgid "Cookie name"
@@ -1468,19 +1466,13 @@ msgstr "Weblapikonok megjelenítése a keresési eredmények mellett"
 
 #: searx/templates/simple/preferences/footer.html:2
 msgid ""
-"These settings are stored in your cookies, this allows us not to store "
+"These settings are stored in your cookies. This allows us not to store "
 "this data about you."
 msgstr ""
-"Ezek a beállítások böngészősütikben vannak tárolva, így nem kell adatokat"
-" tárolnunk Önről."
 
 #: searx/templates/simple/preferences/footer.html:3
-msgid ""
-"These cookies serve your sole convenience, we don't use these cookies to "
-"track you."
+msgid "These cookies serve your sole convenience; we don't use them to track you."
 msgstr ""
-"Ezek a sütik csak kényelmi funkciókat látnak el, nem használjuk arra, "
-"hogy kövessük Önt."
 
 #: searx/templates/simple/preferences/footer.html:6
 msgid "Save"
@@ -1516,16 +1508,18 @@ msgid "Image proxy"
 msgstr "Kép proxy"
 
 #: searx/templates/simple/preferences/image_proxy.html:14
-msgid "Proxying image results through SearXNG"
-msgstr "Képtalálatok proxyzása a SearXNG-n keresztül"
+msgid "Proxy image results through SearXNG"
+msgstr ""
 
 #: searx/templates/simple/preferences/infinite_scroll.html:2
 msgid "Infinite scroll"
 msgstr "Végtelen görgetés"
 
 #: searx/templates/simple/preferences/infinite_scroll.html:14
-msgid "Automatically load next page when scrolling to bottom of current page"
-msgstr "Görgetéskor automatikusan betölti a következő oldalt, ha a lap aljára ér"
+msgid ""
+"Automatically load the next page when scrolling to the bottom of the "
+"current page"
+msgstr ""
 
 #: searx/templates/simple/preferences/language.html:24
 msgid "What language do you prefer for search?"
@@ -1575,19 +1569,17 @@ msgstr "Keresés kategóriaválasztással"
 
 #: searx/templates/simple/preferences/search_on_category_select.html:14
 msgid ""
-"Perform search immediately if a category selected. Disable to select "
-"multiple categories"
+"Perform a search immediately if a category is selected. Disable to select"
+" multiple categories"
 msgstr ""
-"Azonnali keresés egy kategória kiválasztásakor. Több kategória "
-"kiválasztásához kapcsolja ki"
 
 #: searx/templates/simple/preferences/theme.html:2
 msgid "Theme"
 msgstr "Téma"
 
 #: searx/templates/simple/preferences/theme.html:14
-msgid "Change SearXNG layout"
-msgstr "A SearXNG elrendezésének megváltoztatása"
+msgid "Change the layout of SearXNG"
+msgstr ""
 
 #: searx/templates/simple/preferences/theme.html:19
 msgid "Theme style"
@@ -2032,7 +2024,7 @@ msgstr "videó elrejtése"
 #~ msgstr ""
 
 #~ msgid "Displays results in the center of the page (Oscar layout)."
-#~ msgstr ""
+#~ msgstr "A találatokat a lap közepén jeleníti meg (Oscar elrendezés)."
 
 #~ msgid "preferences"
 #~ msgstr "beállítások"
@@ -2327,4 +2319,53 @@ msgstr "videó elrejtése"
 
 #~ msgid "Converts strings to different hash digests."
 #~ msgstr "A szöveget különböző hash értékekké alakítja."
+
+#~ msgid ""
+#~ "Rewrite hostnames, remove results or "
+#~ "prioritize them based on the hostname"
+#~ msgstr ""
+#~ "Írd át a kiszolgálóneveket, távolítsd el"
+#~ " az eredményeket vagy rangsorold őket "
+#~ "a kiszolgálónév alapján"
+
+#~ msgid "With that list, you can assess SearXNG transparency."
+#~ msgstr "A listával felmérheti a SearXNG átláthatóságát."
+
+#~ msgid ""
+#~ "These settings are stored in your "
+#~ "cookies, this allows us not to "
+#~ "store this data about you."
+#~ msgstr ""
+#~ "Ezek a beállítások böngészősütikben vannak "
+#~ "tárolva, így nem kell adatokat tárolnunk"
+#~ " Önről."
+
+#~ msgid ""
+#~ "These cookies serve your sole "
+#~ "convenience, we don't use these cookies"
+#~ " to track you."
+#~ msgstr ""
+#~ "Ezek a sütik csak kényelmi funkciókat"
+#~ " látnak el, nem használjuk arra, hogy"
+#~ " kövessük Önt."
+
+#~ msgid "Proxying image results through SearXNG"
+#~ msgstr "Képtalálatok proxyzása a SearXNG-n keresztül"
+
+#~ msgid "Automatically load next page when scrolling to bottom of current page"
+#~ msgstr ""
+#~ "Görgetéskor automatikusan betölti a következő"
+#~ " oldalt, ha a lap aljára ér"
+
+#~ msgid ""
+#~ "Perform search immediately if a category"
+#~ " selected. Disable to select multiple "
+#~ "categories"
+#~ msgstr ""
+#~ "Azonnali keresés egy kategória "
+#~ "kiválasztásakor. Több kategória kiválasztásához "
+#~ "kapcsolja ki"
+
+#~ msgid "Change SearXNG layout"
+#~ msgstr "A SearXNG elrendezésének megváltoztatása"
 

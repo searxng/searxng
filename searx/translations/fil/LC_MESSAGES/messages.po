@@ -17,13 +17,14 @@
 # johnmartzbuntia <johnmartzbuntia@users.noreply.translate.codeberg.org>,
 # marc-lopez <marc-lopez@noreply.codeberg.org>, 2025.
 # Kita Ikuyo <kitakita@disroot.org>, 2025.
+# return42 <return42@noreply.codeberg.org>, 2025.
 msgid ""
 msgstr ""
 "Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-06-13 02:39+0000\n"
-"PO-Revision-Date: 2025-04-09 02:43+0000\n"
-"Last-Translator: Kita Ikuyo <kitakita@disroot.org>\n"
+"POT-Creation-Date: 2025-06-23 21:05+0000\n"
+"PO-Revision-Date: 2025-06-22 17:06+0000\n"
+"Last-Translator: return42 <return42@noreply.codeberg.org>\n"
 "Language: fil\n"
 "Language-Team: Filipino "
 "<https://translate.codeberg.org/projects/searxng/searxng/fil/>\n"
@@ -764,10 +765,8 @@ msgid "Hostnames plugin"
 msgstr "Hostnames plugin"
 
 #: searx/plugins/hostnames.py:124
-msgid "Rewrite hostnames, remove results or prioritize them based on the hostname"
+msgid "Rewrite hostnames and remove or prioritize results based on the hostname"
 msgstr ""
-"Isulat muli ang mga hostname, alisin ang mga resulta o unahin ang mga ito"
-" batay sa hostname"
 
 #: searx/plugins/oa_doi_rewrite.py:55
 msgid "Open Access DOI rewrite"
@@ -826,11 +825,11 @@ msgstr "Ikaw ay gumagamit ng Tor at mukhang meron kang pang-labas na IP address"
 msgid "You are not using Tor and you have the external IP address"
 msgstr "Ikaw ay hindi gumagamit ng Tor at meron kang pang-labas na IP address"
 
-#: searx/plugins/tracker_url_remover.py:37
+#: searx/plugins/tracker_url_remover.py:35
 msgid "Tracker URL remover"
 msgstr "Alisin ang URL tracker"
 
-#: searx/plugins/tracker_url_remover.py:38
+#: searx/plugins/tracker_url_remover.py:36
 msgid "Remove trackers arguments from the returned URL"
 msgstr "Alisin ang tracker sa ibabalik na URL"
 
@@ -845,7 +844,7 @@ msgstr "ipalit sa pamamagitan ng mga yunit"
 #: searx/result_types/answer.py:224
 #, python-brace-format
 msgid "{location}: {temperature}, {condition}"
-msgstr ""
+msgstr "{location}: {temperature}, {condition}"
 
 #: searx/templates/simple/404.html:4
 msgid "Page not found"
@@ -1352,8 +1351,8 @@ msgid "Center Alignment"
 msgstr "Pag-align sa Gitnang"
 
 #: searx/templates/simple/preferences/center_alignment.html:14
-msgid "Displays results in the center of the page (Oscar layout)."
-msgstr "Tignan ang resulta sa gitnang bahagi ng pahina (Oscar layout)."
+msgid "Display results in the center of the page (Oscar layout)."
+msgstr ""
 
 #: searx/templates/simple/preferences/cookies.html:2
 msgid ""
@@ -1364,8 +1363,8 @@ msgstr ""
 "i'yong computer."
 
 #: searx/templates/simple/preferences/cookies.html:3
-msgid "With that list, you can assess SearXNG transparency."
-msgstr "Sa tulong ng listahan, maaari mong suriin ang transparansiya ng SearXNG."
+msgid "With this list, you can assess the transparency of SearXNG."
+msgstr ""
 
 #: searx/templates/simple/preferences/cookies.html:9
 msgid "Cookie name"
@@ -1466,19 +1465,13 @@ msgstr "Ipakita ang mga favicon malapit sa mga resulta ng paghahanap"
 
 #: searx/templates/simple/preferences/footer.html:2
 msgid ""
-"These settings are stored in your cookies, this allows us not to store "
+"These settings are stored in your cookies. This allows us not to store "
 "this data about you."
 msgstr ""
-"Ang settings ay nakalagay sa cookies upang hindi kami makakuha ng datos "
-"mula sa iyo."
 
 #: searx/templates/simple/preferences/footer.html:3
-msgid ""
-"These cookies serve your sole convenience, we don't use these cookies to "
-"track you."
+msgid "These cookies serve your sole convenience; we don't use them to track you."
 msgstr ""
-"Hindi namin ginagamit ang cookies para i-track ka, ito ay para maging "
-"maayos ang paggamit mo."
 
 #: searx/templates/simple/preferences/footer.html:6
 msgid "Save"
@@ -1514,18 +1507,18 @@ msgid "Image proxy"
 msgstr "Proxy ng larawan"
 
 #: searx/templates/simple/preferences/image_proxy.html:14
-msgid "Proxying image results through SearXNG"
-msgstr "Ang pag-proxy ng mga resulta ng imahe sa pamamagitan ng SearXNG"
+msgid "Proxy image results through SearXNG"
+msgstr ""
 
 #: searx/templates/simple/preferences/infinite_scroll.html:2
 msgid "Infinite scroll"
 msgstr "Walang hanggan na pag-scroll"
 
 #: searx/templates/simple/preferences/infinite_scroll.html:14
-msgid "Automatically load next page when scrolling to bottom of current page"
+msgid ""
+"Automatically load the next page when scrolling to the bottom of the "
+"current page"
 msgstr ""
-"Awtomatiko na ikarga ang sumunod na pahina kapag nakarating na sa dulo ng"
-" kasalukuyang pahina"
 
 #: searx/templates/simple/preferences/language.html:24
 msgid "What language do you prefer for search?"
@@ -1575,19 +1568,17 @@ msgstr "Maghanap kapag nakapili ng uri"
 
 #: searx/templates/simple/preferences/search_on_category_select.html:14
 msgid ""
-"Perform search immediately if a category selected. Disable to select "
-"multiple categories"
+"Perform a search immediately if a category is selected. Disable to select"
+" multiple categories"
 msgstr ""
-"Isagawa ang paghahanap kaagad kung may kategoryang pinili. I-disable "
-"upang pumili ng maramihang mga kategorya"
 
 #: searx/templates/simple/preferences/theme.html:2
 msgid "Theme"
 msgstr "Tema"
 
 #: searx/templates/simple/preferences/theme.html:14
-msgid "Change SearXNG layout"
-msgstr "Baguhin ang SearXNG layout"
+msgid "Change the layout of SearXNG"
+msgstr ""
 
 #: searx/templates/simple/preferences/theme.html:19
 msgid "Theme style"
@@ -2038,7 +2029,7 @@ msgstr "itago ang video"
 #~ msgstr ""
 
 #~ msgid "Displays results in the center of the page (Oscar layout)."
-#~ msgstr ""
+#~ msgstr "Tignan ang resulta sa gitnang bahagi ng pahina (Oscar layout)."
 
 #~ msgid "preferences"
 #~ msgstr ""
@@ -2339,4 +2330,56 @@ msgstr "itago ang video"
 
 #~ msgid "Converts strings to different hash digests."
 #~ msgstr "Isinasalin ang string sa iba't ibang hash digests."
+
+#~ msgid ""
+#~ "Rewrite hostnames, remove results or "
+#~ "prioritize them based on the hostname"
+#~ msgstr ""
+#~ "Isulat muli ang mga hostname, alisin "
+#~ "ang mga resulta o unahin ang mga"
+#~ " ito batay sa hostname"
+
+#~ msgid "With that list, you can assess SearXNG transparency."
+#~ msgstr ""
+#~ "Sa tulong ng listahan, maaari mong "
+#~ "suriin ang transparansiya ng SearXNG."
+
+#~ msgid ""
+#~ "These settings are stored in your "
+#~ "cookies, this allows us not to "
+#~ "store this data about you."
+#~ msgstr ""
+#~ "Ang settings ay nakalagay sa cookies "
+#~ "upang hindi kami makakuha ng datos "
+#~ "mula sa iyo."
+
+#~ msgid ""
+#~ "These cookies serve your sole "
+#~ "convenience, we don't use these cookies"
+#~ " to track you."
+#~ msgstr ""
+#~ "Hindi namin ginagamit ang cookies para"
+#~ " i-track ka, ito ay para maging "
+#~ "maayos ang paggamit mo."
+
+#~ msgid "Proxying image results through SearXNG"
+#~ msgstr "Ang pag-proxy ng mga resulta ng imahe sa pamamagitan ng SearXNG"
+
+#~ msgid "Automatically load next page when scrolling to bottom of current page"
+#~ msgstr ""
+#~ "Awtomatiko na ikarga ang sumunod na "
+#~ "pahina kapag nakarating na sa dulo "
+#~ "ng kasalukuyang pahina"
+
+#~ msgid ""
+#~ "Perform search immediately if a category"
+#~ " selected. Disable to select multiple "
+#~ "categories"
+#~ msgstr ""
+#~ "Isagawa ang paghahanap kaagad kung may"
+#~ " kategoryang pinili. I-disable upang pumili"
+#~ " ng maramihang mga kategorya"
+
+#~ msgid "Change SearXNG layout"
+#~ msgstr "Baguhin ang SearXNG layout"
 

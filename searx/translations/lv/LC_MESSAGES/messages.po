@@ -11,13 +11,14 @@
 # Anonymous <anonymous@users.noreply.translate.codeberg.org>, 2025.
 # Obligate <obligate@users.noreply.translate.codeberg.org>, 2025.
 # sandijs <sandijs@noreply.codeberg.org>, 2025.
+# return42 <return42@noreply.codeberg.org>, 2025.
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-06-13 02:39+0000\n"
-"PO-Revision-Date: 2025-05-30 07:10+0000\n"
-"Last-Translator: sandijs <sandijs@noreply.codeberg.org>\n"
+"POT-Creation-Date: 2025-06-23 21:05+0000\n"
+"PO-Revision-Date: 2025-06-22 17:06+0000\n"
+"Last-Translator: return42 <return42@noreply.codeberg.org>\n"
 "Language: lv\n"
 "Language-Team: Latvian "
 "<https://translate.codeberg.org/projects/searxng/searxng/lv/>\n"
@@ -759,10 +760,8 @@ msgid "Hostnames plugin"
 msgstr "Saimniekvārdu spraudnis"
 
 #: searx/plugins/hostnames.py:124
-msgid "Rewrite hostnames, remove results or prioritize them based on the hostname"
+msgid "Rewrite hostnames and remove or prioritize results based on the hostname"
 msgstr ""
-"Pārrakstīt saimniekvārdus, noņemt rezultātus vai prioritizēt tos, "
-"pamatojoties uz saimniekvārdu"
 
 #: searx/plugins/oa_doi_rewrite.py:55
 msgid "Open Access DOI rewrite"
@@ -821,11 +820,11 @@ msgstr "Jūs lietojat Tor un izskatās, ka Jums ir ārējā IP adrese"
 msgid "You are not using Tor and you have the external IP address"
 msgstr "Jūs nelietojat Tor un Jums ir ārējā IP adrese"
 
-#: searx/plugins/tracker_url_remover.py:37
+#: searx/plugins/tracker_url_remover.py:35
 msgid "Tracker URL remover"
 msgstr "Izsekošanas URL noņemšanas līdzeklis"
 
-#: searx/plugins/tracker_url_remover.py:38
+#: searx/plugins/tracker_url_remover.py:36
 msgid "Remove trackers arguments from the returned URL"
 msgstr "Noņemt izsekotāju argumentus no atgrieztā URL"
 
@@ -840,7 +839,7 @@ msgstr "Konvertēt starp vienībām"
 #: searx/result_types/answer.py:224
 #, python-brace-format
 msgid "{location}: {temperature}, {condition}"
-msgstr ""
+msgstr "{location}: {temperature}, {condition}"
 
 #: searx/templates/simple/404.html:4
 msgid "Page not found"
@@ -1345,8 +1344,8 @@ msgid "Center Alignment"
 msgstr "Centra līdzinājums"
 
 #: searx/templates/simple/preferences/center_alignment.html:14
-msgid "Displays results in the center of the page (Oscar layout)."
-msgstr "Parāda rezultātus lapas centrā (Oskara izkārtojums)."
+msgid "Display results in the center of the page (Oscar layout)."
+msgstr ""
 
 #: searx/templates/simple/preferences/cookies.html:2
 msgid ""
@@ -1355,8 +1354,8 @@ msgid ""
 msgstr ""
 
 #: searx/templates/simple/preferences/cookies.html:3
-msgid "With that list, you can assess SearXNG transparency."
-msgstr "Izmantojot šo sarakstu, var novērtēt SearXNG pārredzamību."
+msgid "With this list, you can assess the transparency of SearXNG."
+msgstr ""
 
 #: searx/templates/simple/preferences/cookies.html:9
 msgid "Cookie name"
@@ -1453,14 +1452,12 @@ msgstr ""
 
 #: searx/templates/simple/preferences/footer.html:2
 msgid ""
-"These settings are stored in your cookies, this allows us not to store "
+"These settings are stored in your cookies. This allows us not to store "
 "this data about you."
 msgstr ""
 
 #: searx/templates/simple/preferences/footer.html:3
-msgid ""
-"These cookies serve your sole convenience, we don't use these cookies to "
-"track you."
+msgid "These cookies serve your sole convenience; we don't use them to track you."
 msgstr ""
 
 #: searx/templates/simple/preferences/footer.html:6
@@ -1494,16 +1491,18 @@ msgid "Image proxy"
 msgstr "Attēla starpniekserveris"
 
 #: searx/templates/simple/preferences/image_proxy.html:14
-msgid "Proxying image results through SearXNG"
-msgstr "Attēlu rezultātu starpniekservera izmantošana, caur SearXNG"
+msgid "Proxy image results through SearXNG"
+msgstr ""
 
 #: searx/templates/simple/preferences/infinite_scroll.html:2
 msgid "Infinite scroll"
 msgstr "Bezgalīgā ritināšana"
 
 #: searx/templates/simple/preferences/infinite_scroll.html:14
-msgid "Automatically load next page when scrolling to bottom of current page"
-msgstr "Automātiski ielādēt nākamo lappusi, ritinot uz pašreizējās lappuses beigām"
+msgid ""
+"Automatically load the next page when scrolling to the bottom of the "
+"current page"
+msgstr ""
 
 #: searx/templates/simple/preferences/language.html:24
 msgid "What language do you prefer for search?"
@@ -1549,8 +1548,8 @@ msgstr ""
 
 #: searx/templates/simple/preferences/search_on_category_select.html:14
 msgid ""
-"Perform search immediately if a category selected. Disable to select "
-"multiple categories"
+"Perform a search immediately if a category is selected. Disable to select"
+" multiple categories"
 msgstr ""
 
 #: searx/templates/simple/preferences/theme.html:2
@@ -1558,8 +1557,8 @@ msgid "Theme"
 msgstr "Tēma"
 
 #: searx/templates/simple/preferences/theme.html:14
-msgid "Change SearXNG layout"
-msgstr "Mainīt SearXNG izkārtojumu"
+msgid "Change the layout of SearXNG"
+msgstr ""
 
 #: searx/templates/simple/preferences/theme.html:19
 msgid "Theme style"
@@ -1770,7 +1769,7 @@ msgstr "slēpt video"
 #~ msgstr ""
 
 #~ msgid "Displays results in the center of the page (Oscar layout)."
-#~ msgstr ""
+#~ msgstr "Parāda rezultātus lapas centrā (Oskara izkārtojums)."
 
 #~ msgid "preferences"
 #~ msgstr ""
@@ -2025,4 +2024,44 @@ msgstr "slēpt video"
 
 #~ msgid "Converts strings to different hash digests."
 #~ msgstr "Pārvērš virknes (strings) par dažādiem jaucējkoda īssavilkumiem."
+
+#~ msgid ""
+#~ "Rewrite hostnames, remove results or "
+#~ "prioritize them based on the hostname"
+#~ msgstr ""
+#~ "Pārrakstīt saimniekvārdus, noņemt rezultātus "
+#~ "vai prioritizēt tos, pamatojoties uz "
+#~ "saimniekvārdu"
+
+#~ msgid "With that list, you can assess SearXNG transparency."
+#~ msgstr "Izmantojot šo sarakstu, var novērtēt SearXNG pārredzamību."
+
+#~ msgid ""
+#~ "These settings are stored in your "
+#~ "cookies, this allows us not to "
+#~ "store this data about you."
+#~ msgstr ""
+
+#~ msgid ""
+#~ "These cookies serve your sole "
+#~ "convenience, we don't use these cookies"
+#~ " to track you."
+#~ msgstr ""
+
+#~ msgid "Proxying image results through SearXNG"
+#~ msgstr "Attēlu rezultātu starpniekservera izmantošana, caur SearXNG"
+
+#~ msgid "Automatically load next page when scrolling to bottom of current page"
+#~ msgstr ""
+#~ "Automātiski ielādēt nākamo lappusi, ritinot"
+#~ " uz pašreizējās lappuses beigām"
+
+#~ msgid ""
+#~ "Perform search immediately if a category"
+#~ " selected. Disable to select multiple "
+#~ "categories"
+#~ msgstr ""
+
+#~ msgid "Change SearXNG layout"
+#~ msgstr "Mainīt SearXNG izkārtojumu"
 

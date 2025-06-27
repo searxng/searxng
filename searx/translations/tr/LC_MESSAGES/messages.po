@@ -31,8 +31,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-06-13 02:39+0000\n"
-"PO-Revision-Date: 2025-04-02 11:50+0000\n"
+"POT-Creation-Date: 2025-06-23 21:05+0000\n"
+"PO-Revision-Date: 2025-06-22 17:06+0000\n"
 "Last-Translator: return42 <return42@noreply.codeberg.org>\n"
 "Language: tr\n"
 "Language-Team: Turkish "
@@ -774,8 +774,8 @@ msgid "Hostnames plugin"
 msgstr "Sunucu adı eklentisi"
 
 #: searx/plugins/hostnames.py:124
-msgid "Rewrite hostnames, remove results or prioritize them based on the hostname"
-msgstr "Sunucu adını tekrar yaz, sonuçları sil veya sunucu adına göre öncelik ver"
+msgid "Rewrite hostnames and remove or prioritize results based on the hostname"
+msgstr ""
 
 #: searx/plugins/oa_doi_rewrite.py:55
 msgid "Open Access DOI rewrite"
@@ -834,11 +834,11 @@ msgstr "Su anda Tor'a baglisiniz ve dış IP adresiniz var gibi görünüyor"
 msgid "You are not using Tor and you have the external IP address"
 msgstr "Tor kullanmıyorsunuz ve harici IP adresiniz var"
 
-#: searx/plugins/tracker_url_remover.py:37
+#: searx/plugins/tracker_url_remover.py:35
 msgid "Tracker URL remover"
 msgstr "Takip URL kaldırıcı"
 
-#: searx/plugins/tracker_url_remover.py:38
+#: searx/plugins/tracker_url_remover.py:36
 msgid "Remove trackers arguments from the returned URL"
 msgstr "Takip parametrelerini URL'den kaldır"
 
@@ -853,7 +853,7 @@ msgstr "Birimler arasında dönüştürme"
 #: searx/result_types/answer.py:224
 #, python-brace-format
 msgid "{location}: {temperature}, {condition}"
-msgstr ""
+msgstr "{location}: {temperature}, {condition}"
 
 #: searx/templates/simple/404.html:4
 msgid "Page not found"
@@ -1360,8 +1360,8 @@ msgid "Center Alignment"
 msgstr "Ortaya hizalama"
 
 #: searx/templates/simple/preferences/center_alignment.html:14
-msgid "Displays results in the center of the page (Oscar layout)."
-msgstr "Sonuçları sayfanın ortasında görüntüler (Oscar düzeni)."
+msgid "Display results in the center of the page (Oscar layout)."
+msgstr ""
 
 #: searx/templates/simple/preferences/cookies.html:2
 msgid ""
@@ -1372,8 +1372,8 @@ msgstr ""
 "değerlerinin bir listesidir."
 
 #: searx/templates/simple/preferences/cookies.html:3
-msgid "With that list, you can assess SearXNG transparency."
-msgstr "Bu listeyle SeaXNG şeffaflığına ulaşbilirsiniz."
+msgid "With this list, you can assess the transparency of SearXNG."
+msgstr ""
 
 #: searx/templates/simple/preferences/cookies.html:9
 msgid "Cookie name"
@@ -1471,19 +1471,13 @@ msgstr "Arama sonuçlarının yanında favsimgelerini göster"
 
 #: searx/templates/simple/preferences/footer.html:2
 msgid ""
-"These settings are stored in your cookies, this allows us not to store "
+"These settings are stored in your cookies. This allows us not to store "
 "this data about you."
 msgstr ""
-"Bu ayarlar tanımlama bilgilerinde saklanır, bu sizin hakkınızda bu "
-"verileri saklamamamıza izin verir."
 
 #: searx/templates/simple/preferences/footer.html:3
-msgid ""
-"These cookies serve your sole convenience, we don't use these cookies to "
-"track you."
+msgid "These cookies serve your sole convenience; we don't use them to track you."
 msgstr ""
-"Bu tanımlama bilgileri size kolaylık sağlar, sizi izlemek için bu "
-"çerezleri kullanmayız."
 
 #: searx/templates/simple/preferences/footer.html:6
 msgid "Save"
@@ -1518,18 +1512,18 @@ msgid "Image proxy"
 msgstr "Görsel vekil sunucu"
 
 #: searx/templates/simple/preferences/image_proxy.html:14
-msgid "Proxying image results through SearXNG"
-msgstr "Resim sonuçları SearXNG üzerinden vekil sunucu ile iletiliyor"
+msgid "Proxy image results through SearXNG"
+msgstr ""
 
 #: searx/templates/simple/preferences/infinite_scroll.html:2
 msgid "Infinite scroll"
 msgstr "Sonsuz kaydırma"
 
 #: searx/templates/simple/preferences/infinite_scroll.html:14
-msgid "Automatically load next page when scrolling to bottom of current page"
+msgid ""
+"Automatically load the next page when scrolling to the bottom of the "
+"current page"
 msgstr ""
-"Şu anki sayfanın en altına kaydırıldığında sonraki sayfayı otomatik "
-"olarak yükle"
 
 #: searx/templates/simple/preferences/language.html:24
 msgid "What language do you prefer for search?"
@@ -1579,19 +1573,17 @@ msgstr "Kategori seçimine göre ara"
 
 #: searx/templates/simple/preferences/search_on_category_select.html:14
 msgid ""
-"Perform search immediately if a category selected. Disable to select "
-"multiple categories"
+"Perform a search immediately if a category is selected. Disable to select"
+" multiple categories"
 msgstr ""
-"Kategori seçildikten sonra aramayı hemen uygulayın. Birden fazla kategori"
-" seçmek için devre dışı bırakın"
 
 #: searx/templates/simple/preferences/theme.html:2
 msgid "Theme"
 msgstr "Tema"
 
 #: searx/templates/simple/preferences/theme.html:14
-msgid "Change SearXNG layout"
-msgstr "SearXNG düzenini değiştir"
+msgid "Change the layout of SearXNG"
+msgstr ""
 
 #: searx/templates/simple/preferences/theme.html:19
 msgid "Theme style"
@@ -2037,7 +2029,7 @@ msgstr "görüntüyü gizle"
 #~ msgstr ""
 
 #~ msgid "Displays results in the center of the page (Oscar layout)."
-#~ msgstr ""
+#~ msgstr "Sonuçları sayfanın ortasında görüntüler (Oscar düzeni)."
 
 #~ msgid "preferences"
 #~ msgstr "tercihler"
@@ -2332,4 +2324,53 @@ msgstr "görüntüyü gizle"
 
 #~ msgid "Converts strings to different hash digests."
 #~ msgstr "Dizileri farklı özdeğerlerine çevirir."
+
+#~ msgid ""
+#~ "Rewrite hostnames, remove results or "
+#~ "prioritize them based on the hostname"
+#~ msgstr ""
+#~ "Sunucu adını tekrar yaz, sonuçları sil"
+#~ " veya sunucu adına göre öncelik ver"
+
+#~ msgid "With that list, you can assess SearXNG transparency."
+#~ msgstr "Bu listeyle SeaXNG şeffaflığına ulaşbilirsiniz."
+
+#~ msgid ""
+#~ "These settings are stored in your "
+#~ "cookies, this allows us not to "
+#~ "store this data about you."
+#~ msgstr ""
+#~ "Bu ayarlar tanımlama bilgilerinde saklanır,"
+#~ " bu sizin hakkınızda bu verileri "
+#~ "saklamamamıza izin verir."
+
+#~ msgid ""
+#~ "These cookies serve your sole "
+#~ "convenience, we don't use these cookies"
+#~ " to track you."
+#~ msgstr ""
+#~ "Bu tanımlama bilgileri size kolaylık "
+#~ "sağlar, sizi izlemek için bu çerezleri"
+#~ " kullanmayız."
+
+#~ msgid "Proxying image results through SearXNG"
+#~ msgstr "Resim sonuçları SearXNG üzerinden vekil sunucu ile iletiliyor"
+
+#~ msgid "Automatically load next page when scrolling to bottom of current page"
+#~ msgstr ""
+#~ "Şu anki sayfanın en altına "
+#~ "kaydırıldığında sonraki sayfayı otomatik "
+#~ "olarak yükle"
+
+#~ msgid ""
+#~ "Perform search immediately if a category"
+#~ " selected. Disable to select multiple "
+#~ "categories"
+#~ msgstr ""
+#~ "Kategori seçildikten sonra aramayı hemen "
+#~ "uygulayın. Birden fazla kategori seçmek "
+#~ "için devre dışı bırakın"
+
+#~ msgid "Change SearXNG layout"
+#~ msgstr "SearXNG düzenini değiştir"
 

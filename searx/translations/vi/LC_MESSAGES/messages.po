@@ -20,13 +20,15 @@
 # nam000 <nam000@users.noreply.translate.codeberg.org>, 2025.
 # buiducnhat <buiducnhat@noreply.codeberg.org>, 2025.
 # cduon010 <cduon010@noreply.codeberg.org>, 2025.
+# haderachhh <haderachhh@noreply.codeberg.org>, 2025.
+# return42 <return42@noreply.codeberg.org>, 2025.
 msgid ""
 msgstr ""
 "Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-06-13 02:39+0000\n"
-"PO-Revision-Date: 2025-05-12 21:53+0000\n"
-"Last-Translator: cduon010 <cduon010@noreply.codeberg.org>\n"
+"POT-Creation-Date: 2025-06-23 21:05+0000\n"
+"PO-Revision-Date: 2025-06-22 17:06+0000\n"
+"Last-Translator: return42 <return42@noreply.codeberg.org>\n"
 "Language: vi\n"
 "Language-Team: Vietnamese "
 "<https://translate.codeberg.org/projects/searxng/searxng/vi/>\n"
@@ -296,42 +298,42 @@ msgstr "Gió"
 #. WEATHER_CONDITIONS
 #: searx/searxng.msg
 msgid "Clear sky"
-msgstr ""
+msgstr "Trời quang"
 
 #. WEATHER_CONDITIONS
 #: searx/searxng.msg
 msgid "Cloudy"
-msgstr ""
+msgstr "Nhiều mây"
 
 #. WEATHER_CONDITIONS
 #: searx/searxng.msg
 msgid "Fair"
-msgstr ""
+msgstr "Thời tiết tốt"
 
 #. WEATHER_CONDITIONS
 #: searx/searxng.msg
 msgid "Fog"
-msgstr ""
+msgstr "Sương mù"
 
 #. WEATHER_CONDITIONS
 #: searx/searxng.msg
 msgid "Heavy rain and thunder"
-msgstr ""
+msgstr "Mưa to và sấm chớp"
 
 #. WEATHER_CONDITIONS
 #: searx/searxng.msg
 msgid "Heavy rain showers and thunder"
-msgstr ""
+msgstr "Mưa rào lớn và sấm chấp"
 
 #. WEATHER_CONDITIONS
 #: searx/searxng.msg
 msgid "Heavy rain showers"
-msgstr ""
+msgstr "Mưa rào lớn"
 
 #. WEATHER_CONDITIONS
 #: searx/searxng.msg
 msgid "Heavy rain"
-msgstr ""
+msgstr "Mưa lớn"
 
 #. WEATHER_CONDITIONS
 #: searx/searxng.msg
@@ -768,8 +770,8 @@ msgid "Hostnames plugin"
 msgstr "Bổ trợ tên máy chủ"
 
 #: searx/plugins/hostnames.py:124
-msgid "Rewrite hostnames, remove results or prioritize them based on the hostname"
-msgstr "Viết lại máy chủ, xoá các kểt quả tìm kiếm hoặc sắp xếp dựa trên máy chủ"
+msgid "Rewrite hostnames and remove or prioritize results based on the hostname"
+msgstr ""
 
 #: searx/plugins/oa_doi_rewrite.py:55
 msgid "Open Access DOI rewrite"
@@ -828,11 +830,11 @@ msgstr "Bạn đang sử dụng Tor và có vẻ bạn có địa chỉ IP bên 
 msgid "You are not using Tor and you have the external IP address"
 msgstr "Bạn đang không sử dụng Tor và bạn có địa chỉ IP bên ngoài"
 
-#: searx/plugins/tracker_url_remover.py:37
+#: searx/plugins/tracker_url_remover.py:35
 msgid "Tracker URL remover"
 msgstr "Trình loại bỏ URL theo dõi"
 
-#: searx/plugins/tracker_url_remover.py:38
+#: searx/plugins/tracker_url_remover.py:36
 msgid "Remove trackers arguments from the returned URL"
 msgstr "Loại bỏ các đối số theo dõi từ URL trả về"
 
@@ -847,7 +849,7 @@ msgstr "Chuyển đổi giữa các đại lượng"
 #: searx/result_types/answer.py:224
 #, python-brace-format
 msgid "{location}: {temperature}, {condition}"
-msgstr ""
+msgstr "{location}: {temperature}, {condition}"
 
 #: searx/templates/simple/404.html:4
 msgid "Page not found"
@@ -1356,8 +1358,8 @@ msgid "Center Alignment"
 msgstr "Căn giữa"
 
 #: searx/templates/simple/preferences/center_alignment.html:14
-msgid "Displays results in the center of the page (Oscar layout)."
-msgstr "Hiện các kết quả ở giữa trang (theo bố cục Oscar)."
+msgid "Display results in the center of the page (Oscar layout)."
+msgstr ""
 
 #: searx/templates/simple/preferences/cookies.html:2
 msgid ""
@@ -1368,8 +1370,8 @@ msgstr ""
 "tính của bạn."
 
 #: searx/templates/simple/preferences/cookies.html:3
-msgid "With that list, you can assess SearXNG transparency."
-msgstr "Qua danh sách này, bạn có thể đánh giá sự minh bạch của SearXNG."
+msgid "With this list, you can assess the transparency of SearXNG."
+msgstr ""
 
 #: searx/templates/simple/preferences/cookies.html:9
 msgid "Cookie name"
@@ -1470,19 +1472,13 @@ msgstr "Hiển thị biểu tượng web gần kết quả tìm kiếm"
 
 #: searx/templates/simple/preferences/footer.html:2
 msgid ""
-"These settings are stored in your cookies, this allows us not to store "
+"These settings are stored in your cookies. This allows us not to store "
 "this data about you."
 msgstr ""
-"Những cài đặt này được lưu trữ trong các cookie, điều này cho phép chúng "
-"tôi không phải lưu các dữ liệu về bạn."
 
 #: searx/templates/simple/preferences/footer.html:3
-msgid ""
-"These cookies serve your sole convenience, we don't use these cookies to "
-"track you."
+msgid "These cookies serve your sole convenience; we don't use them to track you."
 msgstr ""
-"Những cookie này chỉ phục vụ cho chính bạn, chúng tôi không sử dụng chúng"
-" để theo dõi bạn."
 
 #: searx/templates/simple/preferences/footer.html:6
 msgid "Save"
@@ -1517,16 +1513,18 @@ msgid "Image proxy"
 msgstr "Proxy hình ảnh"
 
 #: searx/templates/simple/preferences/image_proxy.html:14
-msgid "Proxying image results through SearXNG"
-msgstr "Proxy hóa các kết quả bức ảnh tìm kiếm được thông qua SearXNG"
+msgid "Proxy image results through SearXNG"
+msgstr ""
 
 #: searx/templates/simple/preferences/infinite_scroll.html:2
 msgid "Infinite scroll"
 msgstr "Cuộn liên tục"
 
 #: searx/templates/simple/preferences/infinite_scroll.html:14
-msgid "Automatically load next page when scrolling to bottom of current page"
-msgstr "Tự động tải trang kế tiếp khi cuộn đến cuối trang hiện tại"
+msgid ""
+"Automatically load the next page when scrolling to the bottom of the "
+"current page"
+msgstr ""
 
 #: searx/templates/simple/preferences/language.html:24
 msgid "What language do you prefer for search?"
@@ -1574,19 +1572,17 @@ msgstr "Tìm kiếm khi chọn danh mục đơn"
 
 #: searx/templates/simple/preferences/search_on_category_select.html:14
 msgid ""
-"Perform search immediately if a category selected. Disable to select "
-"multiple categories"
+"Perform a search immediately if a category is selected. Disable to select"
+" multiple categories"
 msgstr ""
-"Thực hiện tìm kiếm ngay lập tức ngay khi chọn một danh mục. Tắt cài đặt "
-"này để lựa chọn nhiều danh mục"
 
 #: searx/templates/simple/preferences/theme.html:2
 msgid "Theme"
 msgstr "Chủ đề màu"
 
 #: searx/templates/simple/preferences/theme.html:14
-msgid "Change SearXNG layout"
-msgstr "Thay đổi bố cục của SearXNG"
+msgid "Change the layout of SearXNG"
+msgstr ""
 
 #: searx/templates/simple/preferences/theme.html:19
 msgid "Theme style"
@@ -2036,7 +2032,7 @@ msgstr "ẩn phim"
 #~ msgstr ""
 
 #~ msgid "Displays results in the center of the page (Oscar layout)."
-#~ msgstr ""
+#~ msgstr "Hiện các kết quả ở giữa trang (theo bố cục Oscar)."
 
 #~ msgid "preferences"
 #~ msgstr "tuỳ chỉnh"
@@ -2329,4 +2325,53 @@ msgstr "ẩn phim"
 
 #~ msgid "Converts strings to different hash digests."
 #~ msgstr "Chuyển các chuỗi thành các hash băm khác nhau."
+
+#~ msgid ""
+#~ "Rewrite hostnames, remove results or "
+#~ "prioritize them based on the hostname"
+#~ msgstr ""
+#~ "Viết lại máy chủ, xoá các kểt "
+#~ "quả tìm kiếm hoặc sắp xếp dựa "
+#~ "trên máy chủ"
+
+#~ msgid "With that list, you can assess SearXNG transparency."
+#~ msgstr "Qua danh sách này, bạn có thể đánh giá sự minh bạch của SearXNG."
+
+#~ msgid ""
+#~ "These settings are stored in your "
+#~ "cookies, this allows us not to "
+#~ "store this data about you."
+#~ msgstr ""
+#~ "Những cài đặt này được lưu trữ "
+#~ "trong các cookie, điều này cho "
+#~ "phép chúng tôi không phải lưu các"
+#~ " dữ liệu về bạn."
+
+#~ msgid ""
+#~ "These cookies serve your sole "
+#~ "convenience, we don't use these cookies"
+#~ " to track you."
+#~ msgstr ""
+#~ "Những cookie này chỉ phục vụ cho"
+#~ " chính bạn, chúng tôi không sử "
+#~ "dụng chúng để theo dõi bạn."
+
+#~ msgid "Proxying image results through SearXNG"
+#~ msgstr "Proxy hóa các kết quả bức ảnh tìm kiếm được thông qua SearXNG"
+
+#~ msgid "Automatically load next page when scrolling to bottom of current page"
+#~ msgstr "Tự động tải trang kế tiếp khi cuộn đến cuối trang hiện tại"
+
+#~ msgid ""
+#~ "Perform search immediately if a category"
+#~ " selected. Disable to select multiple "
+#~ "categories"
+#~ msgstr ""
+#~ "Thực hiện tìm kiếm ngay lập tức"
+#~ " ngay khi chọn một danh mục. "
+#~ "Tắt cài đặt này để lựa chọn "
+#~ "nhiều danh mục"
+
+#~ msgid "Change SearXNG layout"
+#~ msgstr "Thay đổi bố cục của SearXNG"
 

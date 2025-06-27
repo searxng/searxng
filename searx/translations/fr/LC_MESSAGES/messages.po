@@ -43,9 +43,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-06-13 02:39+0000\n"
-"PO-Revision-Date: 2025-06-03 03:33+0000\n"
-"Last-Translator: wags07 <wags07@noreply.codeberg.org>\n"
+"POT-Creation-Date: 2025-06-23 21:05+0000\n"
+"PO-Revision-Date: 2025-06-22 17:06+0000\n"
+"Last-Translator: return42 <return42@noreply.codeberg.org>\n"
 "Language: fr\n"
 "Language-Team: French "
 "<https://translate.codeberg.org/projects/searxng/searxng/fr/>\n"
@@ -787,10 +787,8 @@ msgid "Hostnames plugin"
 msgstr "Plugin de noms d’hôtes"
 
 #: searx/plugins/hostnames.py:124
-msgid "Rewrite hostnames, remove results or prioritize them based on the hostname"
+msgid "Rewrite hostnames and remove or prioritize results based on the hostname"
 msgstr ""
-"Réécrire les noms de domaines, supprimer des résultats ou les prioriser "
-"en se basant sur les domaines"
 
 #: searx/plugins/oa_doi_rewrite.py:55
 msgid "Open Access DOI rewrite"
@@ -849,11 +847,11 @@ msgstr "Vous utilisez Tor et il semble que vous ayez l'adresse IP externe"
 msgid "You are not using Tor and you have the external IP address"
 msgstr "Vous n'utilisez pas Tor et vous avez l'adresse IP externe"
 
-#: searx/plugins/tracker_url_remover.py:37
+#: searx/plugins/tracker_url_remover.py:35
 msgid "Tracker URL remover"
 msgstr "Nettoyeur d'URL de suivis"
 
-#: searx/plugins/tracker_url_remover.py:38
+#: searx/plugins/tracker_url_remover.py:36
 msgid "Remove trackers arguments from the returned URL"
 msgstr "Retire les arguments utilisés pour vous pister des URL retournées"
 
@@ -868,7 +866,7 @@ msgstr "Convertit entre les unités"
 #: searx/result_types/answer.py:224
 #, python-brace-format
 msgid "{location}: {temperature}, {condition}"
-msgstr ""
+msgstr "{location} : {temperature}, {condition}"
 
 #: searx/templates/simple/404.html:4
 msgid "Page not found"
@@ -1375,8 +1373,8 @@ msgid "Center Alignment"
 msgstr "Centrer"
 
 #: searx/templates/simple/preferences/center_alignment.html:14
-msgid "Displays results in the center of the page (Oscar layout)."
-msgstr "Affiche les résultats au centre de la page (similaire au thème Oscar)."
+msgid "Display results in the center of the page (Oscar layout)."
+msgstr ""
 
 #: searx/templates/simple/preferences/cookies.html:2
 msgid ""
@@ -1387,8 +1385,8 @@ msgstr ""
 " énumérés ci-dessous."
 
 #: searx/templates/simple/preferences/cookies.html:3
-msgid "With that list, you can assess SearXNG transparency."
-msgstr "Avec cette liste, vous pouvez juger de la transparence de searx."
+msgid "With this list, you can assess the transparency of SearXNG."
+msgstr ""
 
 #: searx/templates/simple/preferences/cookies.html:9
 msgid "Cookie name"
@@ -1487,19 +1485,13 @@ msgstr "Affiche les favicons à côté des résultats de recherche"
 
 #: searx/templates/simple/preferences/footer.html:2
 msgid ""
-"These settings are stored in your cookies, this allows us not to store "
+"These settings are stored in your cookies. This allows us not to store "
 "this data about you."
 msgstr ""
-"Ces paramètres sont stockés dans vos cookies ; ceci nous permet de ne pas"
-" collecter vos données."
 
 #: searx/templates/simple/preferences/footer.html:3
-msgid ""
-"These cookies serve your sole convenience, we don't use these cookies to "
-"track you."
+msgid "These cookies serve your sole convenience; we don't use them to track you."
 msgstr ""
-"Ces cookies existent pour votre confort d'utilisation, nous ne les "
-"utilisons pas pour vous espionner."
 
 #: searx/templates/simple/preferences/footer.html:6
 msgid "Save"
@@ -1534,18 +1526,18 @@ msgid "Image proxy"
 msgstr "Proxy d'images"
 
 #: searx/templates/simple/preferences/image_proxy.html:14
-msgid "Proxying image results through SearXNG"
-msgstr "Proxifier les images à travers SearXNG"
+msgid "Proxy image results through SearXNG"
+msgstr ""
 
 #: searx/templates/simple/preferences/infinite_scroll.html:2
 msgid "Infinite scroll"
 msgstr "Défilement infini"
 
 #: searx/templates/simple/preferences/infinite_scroll.html:14
-msgid "Automatically load next page when scrolling to bottom of current page"
+msgid ""
+"Automatically load the next page when scrolling to the bottom of the "
+"current page"
 msgstr ""
-"Charge automatiquement la page suivante quand vous arrivez en bas de la "
-"page"
 
 #: searx/templates/simple/preferences/language.html:24
 msgid "What language do you prefer for search?"
@@ -1595,19 +1587,17 @@ msgstr "Lancer la recherche lors du choix d'une catégorie"
 
 #: searx/templates/simple/preferences/search_on_category_select.html:14
 msgid ""
-"Perform search immediately if a category selected. Disable to select "
-"multiple categories"
+"Perform a search immediately if a category is selected. Disable to select"
+" multiple categories"
 msgstr ""
-"Effectuer la recherche immédiatement si une catégorie est sélectionnée. "
-"Désactiver pour sélectionner de plusieurs catégories"
 
 #: searx/templates/simple/preferences/theme.html:2
 msgid "Theme"
 msgstr "Thème"
 
 #: searx/templates/simple/preferences/theme.html:14
-msgid "Change SearXNG layout"
-msgstr "Change l'apparence de SearXNG"
+msgid "Change the layout of SearXNG"
+msgstr ""
 
 #: searx/templates/simple/preferences/theme.html:19
 msgid "Theme style"
@@ -2058,10 +2048,7 @@ msgstr "cacher la vidéo"
 #~ msgstr "Centré"
 
 #~ msgid "Displays results in the center of the page (Oscar layout)."
-#~ msgstr ""
-#~ "Affiche les résultats au centre de "
-#~ "la page (mise en page du thème "
-#~ "Oscar)."
+#~ msgstr "Affiche les résultats au centre de la page (similaire au thème Oscar)."
 
 #~ msgid "preferences"
 #~ msgstr "préférences"
@@ -2369,4 +2356,54 @@ msgstr "cacher la vidéo"
 
 #~ msgid "Converts strings to different hash digests."
 #~ msgstr "Convertit les chaînes de caractères en différents condensés de hachage."
+
+#~ msgid ""
+#~ "Rewrite hostnames, remove results or "
+#~ "prioritize them based on the hostname"
+#~ msgstr ""
+#~ "Réécrire les noms de domaines, supprimer"
+#~ " des résultats ou les prioriser en"
+#~ " se basant sur les domaines"
+
+#~ msgid "With that list, you can assess SearXNG transparency."
+#~ msgstr "Avec cette liste, vous pouvez juger de la transparence de searx."
+
+#~ msgid ""
+#~ "These settings are stored in your "
+#~ "cookies, this allows us not to "
+#~ "store this data about you."
+#~ msgstr ""
+#~ "Ces paramètres sont stockés dans vos "
+#~ "cookies ; ceci nous permet de ne"
+#~ " pas collecter vos données."
+
+#~ msgid ""
+#~ "These cookies serve your sole "
+#~ "convenience, we don't use these cookies"
+#~ " to track you."
+#~ msgstr ""
+#~ "Ces cookies existent pour votre confort"
+#~ " d'utilisation, nous ne les utilisons "
+#~ "pas pour vous espionner."
+
+#~ msgid "Proxying image results through SearXNG"
+#~ msgstr "Proxifier les images à travers SearXNG"
+
+#~ msgid "Automatically load next page when scrolling to bottom of current page"
+#~ msgstr ""
+#~ "Charge automatiquement la page suivante "
+#~ "quand vous arrivez en bas de la"
+#~ " page"
+
+#~ msgid ""
+#~ "Perform search immediately if a category"
+#~ " selected. Disable to select multiple "
+#~ "categories"
+#~ msgstr ""
+#~ "Effectuer la recherche immédiatement si "
+#~ "une catégorie est sélectionnée. Désactiver "
+#~ "pour sélectionner de plusieurs catégories"
+
+#~ msgid "Change SearXNG layout"
+#~ msgstr "Change l'apparence de SearXNG"
 

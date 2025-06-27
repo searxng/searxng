@@ -15,13 +15,14 @@
 # Anonymous <anonymous@users.noreply.translate.codeberg.org>, 2025.
 # Hudobni Volk <hudobnivolk@users.noreply.translate.codeberg.org>, 2025.
 # LinuxWizard <linuxwizard@noreply.codeberg.org>, 2025.
+# return42 <return42@noreply.codeberg.org>, 2025.
 msgid ""
 msgstr ""
 "Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-06-13 02:39+0000\n"
-"PO-Revision-Date: 2025-06-07 23:59+0000\n"
-"Last-Translator: LinuxWizard <linuxwizard@noreply.codeberg.org>\n"
+"POT-Creation-Date: 2025-06-23 21:05+0000\n"
+"PO-Revision-Date: 2025-06-22 17:06+0000\n"
+"Last-Translator: return42 <return42@noreply.codeberg.org>\n"
 "Language: sl\n"
 "Language-Team: Slovenian "
 "<https://translate.codeberg.org/projects/searxng/searxng/sl/>\n"
@@ -753,6 +754,8 @@ msgid ""
 "Converts strings to different hash digests. Available functions: md5, "
 "sha1, sha224, sha256, sha384, sha512."
 msgstr ""
+"Pretvori besede v drugo hash vrednost: md5, sha1, sha224, sha256, sha384,"
+" sha512."
 
 #: searx/plugins/hash_plugin.py:64
 msgid "hash digest"
@@ -763,10 +766,8 @@ msgid "Hostnames plugin"
 msgstr "Vtičnik imen gostiteljev"
 
 #: searx/plugins/hostnames.py:124
-msgid "Rewrite hostnames, remove results or prioritize them based on the hostname"
+msgid "Rewrite hostnames and remove or prioritize results based on the hostname"
 msgstr ""
-"Prepiši imena gostiteljev, odstrani rezultate ali jih prednostno razvrsti"
-" glede na ime gostitelja"
 
 #: searx/plugins/oa_doi_rewrite.py:55
 msgid "Open Access DOI rewrite"
@@ -825,11 +826,11 @@ msgstr "Uporabljaš Tor in zdi se, da imaš zunanji IP naslov"
 msgid "You are not using Tor and you have the external IP address"
 msgstr "Ne uporabljaš Tor in imaš zunanji IP naslov"
 
-#: searx/plugins/tracker_url_remover.py:37
+#: searx/plugins/tracker_url_remover.py:35
 msgid "Tracker URL remover"
 msgstr "Odstranjevalec sledilcev URL"
 
-#: searx/plugins/tracker_url_remover.py:38
+#: searx/plugins/tracker_url_remover.py:36
 msgid "Remove trackers arguments from the returned URL"
 msgstr "Odstrani argumente sledilcev iz vrnjenega URL"
 
@@ -1340,15 +1341,15 @@ msgstr "Samodejni predlogi"
 
 #: searx/templates/simple/preferences/autocomplete.html:15
 msgid "Show possible queries as you type"
-msgstr ""
+msgstr "Iščite že med tipkanjem"
 
 #: searx/templates/simple/preferences/center_alignment.html:2
 msgid "Center Alignment"
 msgstr "Sredinska poravnava"
 
 #: searx/templates/simple/preferences/center_alignment.html:14
-msgid "Displays results in the center of the page (Oscar layout)."
-msgstr "Prikaže rezultate na sredini strani (postavitev Oscar)."
+msgid "Display results in the center of the page (Oscar layout)."
+msgstr ""
 
 #: searx/templates/simple/preferences/cookies.html:2
 msgid ""
@@ -1359,8 +1360,8 @@ msgstr ""
 "vaš računalnik."
 
 #: searx/templates/simple/preferences/cookies.html:3
-msgid "With that list, you can assess SearXNG transparency."
-msgstr "S tem seznamom lahko ocenite transparentnost SearXNG."
+msgid "With this list, you can assess the transparency of SearXNG."
+msgstr ""
 
 #: searx/templates/simple/preferences/cookies.html:9
 msgid "Cookie name"
@@ -1423,6 +1424,8 @@ msgid ""
 "This tab does not exist in the user interface, but you can search with "
 "these engines via !bangs."
 msgstr ""
+"Ta kartica ne obstaja v uporabniškem vmesniku, ampak lahko iščeš v teh "
+"iskalnikih z njihovimi !bangi."
 
 #: searx/templates/simple/preferences/engines.html:15
 msgid "Enable all"
@@ -1458,17 +1461,13 @@ msgstr "Prikaži favicon-e ob iskalnih rezultatih"
 
 #: searx/templates/simple/preferences/footer.html:2
 msgid ""
-"These settings are stored in your cookies, this allows us not to store "
+"These settings are stored in your cookies. This allows us not to store "
 "this data about you."
 msgstr ""
-"Te nastavitve so shranjene v vaših piškotkih; to nam omogoča, da ne "
-"hranimo teh podatkov o vas."
 
 #: searx/templates/simple/preferences/footer.html:3
-msgid ""
-"These cookies serve your sole convenience, we don't use these cookies to "
-"track you."
-msgstr "Ti piškotki so za boljšo izkušnjo, ne uporabljamo jih za sledenje."
+msgid "These cookies serve your sole convenience; we don't use them to track you."
+msgstr ""
 
 #: searx/templates/simple/preferences/footer.html:6
 msgid "Save"
@@ -1503,16 +1502,18 @@ msgid "Image proxy"
 msgstr "Posredniški strežnik za slike"
 
 #: searx/templates/simple/preferences/image_proxy.html:14
-msgid "Proxying image results through SearXNG"
-msgstr "Proxy rezultatov slik prek SearXNG"
+msgid "Proxy image results through SearXNG"
+msgstr ""
 
 #: searx/templates/simple/preferences/infinite_scroll.html:2
 msgid "Infinite scroll"
 msgstr "Neskončno drsenje"
 
 #: searx/templates/simple/preferences/infinite_scroll.html:14
-msgid "Automatically load next page when scrolling to bottom of current page"
-msgstr "Samodejno naloži naslednjo stran ob ogledu dna trenutne strani"
+msgid ""
+"Automatically load the next page when scrolling to the bottom of the "
+"current page"
+msgstr ""
 
 #: searx/templates/simple/preferences/language.html:24
 msgid "What language do you prefer for search?"
@@ -1546,11 +1547,11 @@ msgstr ""
 
 #: searx/templates/simple/preferences/results_on_new_tab.html:2
 msgid "Results in new tabs"
-msgstr ""
+msgstr "Zadetki v novih zavihkih"
 
 #: searx/templates/simple/preferences/results_on_new_tab.html:14
 msgid "Open result links in new browser tabs"
-msgstr ""
+msgstr "Odpri povezave zadetkov v novih zavihkih brskalnika"
 
 #: searx/templates/simple/preferences/safesearch.html:20
 msgid "Filter content"
@@ -1562,19 +1563,17 @@ msgstr "Išči ob izboru kategorije"
 
 #: searx/templates/simple/preferences/search_on_category_select.html:14
 msgid ""
-"Perform search immediately if a category selected. Disable to select "
-"multiple categories"
+"Perform a search immediately if a category is selected. Disable to select"
+" multiple categories"
 msgstr ""
-"Izvedi iskanje takoj, če je izbrana kategorija. Onemogoči za izbor več "
-"kategorij"
 
 #: searx/templates/simple/preferences/theme.html:2
 msgid "Theme"
 msgstr "Tema"
 
 #: searx/templates/simple/preferences/theme.html:14
-msgid "Change SearXNG layout"
-msgstr "Spremenite postavitev SearXNG"
+msgid "Change the layout of SearXNG"
+msgstr ""
 
 #: searx/templates/simple/preferences/theme.html:19
 msgid "Theme style"
@@ -2022,7 +2021,7 @@ msgstr "skrij video"
 #~ msgstr ""
 
 #~ msgid "Displays results in the center of the page (Oscar layout)."
-#~ msgstr ""
+#~ msgstr "Prikaže rezultate na sredini strani (postavitev Oscar)."
 
 #~ msgid "preferences"
 #~ msgstr "nastavitve"
@@ -2312,4 +2311,48 @@ msgstr "skrij video"
 
 #~ msgid "Converts strings to different hash digests."
 #~ msgstr "Pretvori besede v drugo hash vrednost."
+
+#~ msgid ""
+#~ "Rewrite hostnames, remove results or "
+#~ "prioritize them based on the hostname"
+#~ msgstr ""
+#~ "Prepiši imena gostiteljev, odstrani rezultate"
+#~ " ali jih prednostno razvrsti glede na"
+#~ " ime gostitelja"
+
+#~ msgid "With that list, you can assess SearXNG transparency."
+#~ msgstr "S tem seznamom lahko ocenite transparentnost SearXNG."
+
+#~ msgid ""
+#~ "These settings are stored in your "
+#~ "cookies, this allows us not to "
+#~ "store this data about you."
+#~ msgstr ""
+#~ "Te nastavitve so shranjene v vaših "
+#~ "piškotkih; to nam omogoča, da ne "
+#~ "hranimo teh podatkov o vas."
+
+#~ msgid ""
+#~ "These cookies serve your sole "
+#~ "convenience, we don't use these cookies"
+#~ " to track you."
+#~ msgstr "Ti piškotki so za boljšo izkušnjo, ne uporabljamo jih za sledenje."
+
+#~ msgid "Proxying image results through SearXNG"
+#~ msgstr "Proxy rezultatov slik prek SearXNG"
+
+#~ msgid "Automatically load next page when scrolling to bottom of current page"
+#~ msgstr "Samodejno naloži naslednjo stran ob ogledu dna trenutne strani"
+
+#~ msgid ""
+#~ "Perform search immediately if a category"
+#~ " selected. Disable to select multiple "
+#~ "categories"
+#~ msgstr ""
+#~ "Izvedi iskanje takoj, če je izbrana "
+#~ "kategorija. Onemogoči za izbor več "
+#~ "kategorij"
+
+#~ msgid "Change SearXNG layout"
+#~ msgstr "Spremenite postavitev SearXNG"
 

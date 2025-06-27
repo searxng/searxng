@@ -22,8 +22,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-06-13 02:39+0000\n"
-"PO-Revision-Date: 2025-06-14 08:58+0000\n"
+"POT-Creation-Date: 2025-06-23 21:05+0000\n"
+"PO-Revision-Date: 2025-06-26 02:46+0000\n"
 "Last-Translator: SomeTr <sometr@noreply.codeberg.org>\n"
 "Language-Team: Ukrainian <https://translate.codeberg.org/projects/searxng/"
 "searxng/uk/>\n"
@@ -759,8 +759,8 @@ msgid ""
 "Converts strings to different hash digests. Available functions: md5, "
 "sha1, sha224, sha256, sha384, sha512."
 msgstr ""
-"Конвертує рядки у різні хеш-дайджести. Доступні функції: md5, sha1, sha224, "
-"sha256, sha384, sha512."
+"Конвертує рядки у різні хеш-дайджести. Доступні функції: md5, sha1, "
+"sha224, sha256, sha384, sha512."
 
 #: searx/plugins/hash_plugin.py:64
 msgid "hash digest"
@@ -771,10 +771,10 @@ msgid "Hostnames plugin"
 msgstr "Плагін Hostnames"
 
 #: searx/plugins/hostnames.py:124
-msgid "Rewrite hostnames, remove results or prioritize them based on the hostname"
+msgid "Rewrite hostnames and remove or prioritize results based on the hostname"
 msgstr ""
-"Переписування імен хостів, видалення результатів або визначення їх "
-"пріоритетності на основі імені хоста"
+"Перепишіть імена хостів і видаляйте результати або визначайте їх "
+"пріоритетність на основі імені хоста"
 
 #: searx/plugins/oa_doi_rewrite.py:55
 msgid "Open Access DOI rewrite"
@@ -832,11 +832,11 @@ msgstr "Ви використовуєте Tor, і виглядає так, що 
 msgid "You are not using Tor and you have the external IP address"
 msgstr "Ви не використовуєте Tor, і у вас зовнішня IP-адреса"
 
-#: searx/plugins/tracker_url_remover.py:37
+#: searx/plugins/tracker_url_remover.py:35
 msgid "Tracker URL remover"
 msgstr "Видалення URL-адреси трекера"
 
-#: searx/plugins/tracker_url_remover.py:38
+#: searx/plugins/tracker_url_remover.py:36
 msgid "Remove trackers arguments from the returned URL"
 msgstr "Вилучіть аргументи трекера з поверненої URL-адреси"
 
@@ -1358,8 +1358,8 @@ msgid "Center Alignment"
 msgstr "Центрування"
 
 #: searx/templates/simple/preferences/center_alignment.html:14
-msgid "Displays results in the center of the page (Oscar layout)."
-msgstr "Відображає результати в центрі сторінки (макет Оскар)."
+msgid "Display results in the center of the page (Oscar layout)."
+msgstr "Показувати результати в центрі сторінки (макет «Oscar»)."
 
 #: searx/templates/simple/preferences/cookies.html:2
 msgid ""
@@ -1370,7 +1370,7 @@ msgstr ""
 "комп’ютері."
 
 #: searx/templates/simple/preferences/cookies.html:3
-msgid "With that list, you can assess SearXNG transparency."
+msgid "With this list, you can assess the transparency of SearXNG."
 msgstr "За допомогою цього списку ви можете оцінити прозорість SearXNG."
 
 #: searx/templates/simple/preferences/cookies.html:9
@@ -1471,19 +1471,17 @@ msgstr "Показувати значки біля результатів пош
 
 #: searx/templates/simple/preferences/footer.html:2
 msgid ""
-"These settings are stored in your cookies, this allows us not to store "
+"These settings are stored in your cookies. This allows us not to store "
 "this data about you."
 msgstr ""
-"Налаштування зберігаються в ваших cookie-файлах, що дає нам змогу не "
-"зберігати ці відомості про вас."
+"Ці налаштування зберігаються у файлах cookie. Таким чином ми маємо змогу не "
+"зберігати дані про вас."
 
 #: searx/templates/simple/preferences/footer.html:3
-msgid ""
-"These cookies serve your sole convenience, we don't use these cookies to "
-"track you."
+msgid "These cookies serve your sole convenience; we don't use them to track you."
 msgstr ""
-"Ці cookie-файли необхідні винятково для вашої зручності, ми не "
-"використовуємо ці cookie-файли, щоб відслідковувати вас."
+"Файли cookie необхідні виключно для вашої зручності; ми не використовуємо "
+"їх, щоб відстежити вас."
 
 #: searx/templates/simple/preferences/footer.html:6
 msgid "Save"
@@ -1519,17 +1517,19 @@ msgid "Image proxy"
 msgstr "Проксі для зображень"
 
 #: searx/templates/simple/preferences/image_proxy.html:14
-msgid "Proxying image results through SearXNG"
-msgstr "Проксувати зображення в результатах методами SearXNG"
+msgid "Proxy image results through SearXNG"
+msgstr "Результати пошуку зображень через проксі SearXNG"
 
 #: searx/templates/simple/preferences/infinite_scroll.html:2
 msgid "Infinite scroll"
 msgstr "Нескінченна прокрутка"
 
 #: searx/templates/simple/preferences/infinite_scroll.html:14
-msgid "Automatically load next page when scrolling to bottom of current page"
+msgid ""
+"Automatically load the next page when scrolling to the bottom of the "
+"current page"
 msgstr ""
-"Автоматично завантажувати наступну сторінку при прокрутці поточної до "
+"Автоматичне завантаження наступної сторінки при прокручуванні поточної до "
 "кінця"
 
 #: searx/templates/simple/preferences/language.html:24
@@ -1578,18 +1578,18 @@ msgstr "Пошук при виборі категорії"
 
 #: searx/templates/simple/preferences/search_on_category_select.html:14
 msgid ""
-"Perform search immediately if a category selected. Disable to select "
-"multiple categories"
+"Perform a search immediately if a category is selected. Disable to select"
+" multiple categories"
 msgstr ""
-"Шукати негайно при виборі категорії. Вимкніть, якщо хочете вибрати кілька"
-" категорій"
+"Шукати негайно, якщо вибрано категорію. Вимкніть, якщо хочете вибрати кілька "
+"категорій"
 
 #: searx/templates/simple/preferences/theme.html:2
 msgid "Theme"
 msgstr "Тема"
 
 #: searx/templates/simple/preferences/theme.html:14
-msgid "Change SearXNG layout"
+msgid "Change the layout of SearXNG"
 msgstr "Змінити макет SearXNG"
 
 #: searx/templates/simple/preferences/theme.html:19
@@ -2037,7 +2037,7 @@ msgstr "приховати відео"
 #~ msgstr ""
 
 #~ msgid "Displays results in the center of the page (Oscar layout)."
-#~ msgstr ""
+#~ msgstr "Відображає результати в центрі сторінки (макет Оскар)."
 
 #~ msgid "preferences"
 #~ msgstr "опції"
@@ -2306,3 +2306,52 @@ msgstr "приховати відео"
 
 #~ msgid "Converts strings to different hash digests."
 #~ msgstr "Конвертує рядки в різні геш-послідовності."
+
+#~ msgid ""
+#~ "Rewrite hostnames, remove results or "
+#~ "prioritize them based on the hostname"
+#~ msgstr ""
+#~ "Переписування імен хостів, видалення "
+#~ "результатів або визначення їх пріоритетності"
+#~ " на основі імені хоста"
+
+#~ msgid "With that list, you can assess SearXNG transparency."
+#~ msgstr "За допомогою цього списку ви можете оцінити прозорість SearXNG."
+
+#~ msgid ""
+#~ "These settings are stored in your "
+#~ "cookies, this allows us not to "
+#~ "store this data about you."
+#~ msgstr ""
+#~ "Налаштування зберігаються в ваших "
+#~ "cookie-файлах, що дає нам змогу не "
+#~ "зберігати ці відомості про вас."
+
+#~ msgid ""
+#~ "These cookies serve your sole "
+#~ "convenience, we don't use these cookies"
+#~ " to track you."
+#~ msgstr ""
+#~ "Ці cookie-файли необхідні винятково для "
+#~ "вашої зручності, ми не використовуємо ці"
+#~ " cookie-файли, щоб відслідковувати вас."
+
+#~ msgid "Proxying image results through SearXNG"
+#~ msgstr "Проксувати зображення в результатах методами SearXNG"
+
+#~ msgid "Automatically load next page when scrolling to bottom of current page"
+#~ msgstr ""
+#~ "Автоматично завантажувати наступну сторінку "
+#~ "при прокрутці поточної до кінця"
+
+#~ msgid ""
+#~ "Perform search immediately if a category"
+#~ " selected. Disable to select multiple "
+#~ "categories"
+#~ msgstr ""
+#~ "Шукати негайно при виборі категорії. "
+#~ "Вимкніть, якщо хочете вибрати кілька "
+#~ "категорій"
+
+#~ msgid "Change SearXNG layout"
+#~ msgstr "Змінити макет SearXNG"

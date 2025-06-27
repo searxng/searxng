@@ -12,13 +12,14 @@
 # Anonymous <anonymous@users.noreply.translate.codeberg.org>, 2025.
 # Harshith-10 <harshith-10@users.noreply.translate.codeberg.org>, 2025.
 # Kranthi294 <kranthi294@noreply.codeberg.org>, 2025.
+# return42 <return42@noreply.codeberg.org>, 2025.
 msgid ""
 msgstr ""
 "Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-06-13 02:39+0000\n"
-"PO-Revision-Date: 2025-06-11 23:55+0000\n"
-"Last-Translator: Kranthi294 <kranthi294@noreply.codeberg.org>\n"
+"POT-Creation-Date: 2025-06-23 21:05+0000\n"
+"PO-Revision-Date: 2025-06-22 17:06+0000\n"
+"Last-Translator: return42 <return42@noreply.codeberg.org>\n"
 "Language: te\n"
 "Language-Team: Telugu "
 "<https://translate.codeberg.org/projects/searxng/searxng/te/>\n"
@@ -759,10 +760,8 @@ msgid "Hostnames plugin"
 msgstr "హోస్ట్ పేర్ల ప్లగిన్"
 
 #: searx/plugins/hostnames.py:124
-msgid "Rewrite hostnames, remove results or prioritize them based on the hostname"
+msgid "Rewrite hostnames and remove or prioritize results based on the hostname"
 msgstr ""
-"హోస్ట్ పేర్లను తిరిగి వ్రాయండి, ఫలితాలను తొలగించండి లేదా హోస్ట్ పేరు "
-"ఆధారంగా వాటికి ప్రాధాన్యత ఇవ్వండి"
 
 #: searx/plugins/oa_doi_rewrite.py:55
 msgid "Open Access DOI rewrite"
@@ -819,11 +818,11 @@ msgstr ""
 msgid "You are not using Tor and you have the external IP address"
 msgstr ""
 
-#: searx/plugins/tracker_url_remover.py:37
+#: searx/plugins/tracker_url_remover.py:35
 msgid "Tracker URL remover"
 msgstr "ట్రాకర్ URL రిమూవర్"
 
-#: searx/plugins/tracker_url_remover.py:38
+#: searx/plugins/tracker_url_remover.py:36
 msgid "Remove trackers arguments from the returned URL"
 msgstr "తిరిగి వచ్చిన URL నుండి ట్రాకర్స్ ఆర్గ్యుమెంట్‌లను తీసివేయండి"
 
@@ -838,7 +837,7 @@ msgstr "యూనిట్లను మార్చండి"
 #: searx/result_types/answer.py:224
 #, python-brace-format
 msgid "{location}: {temperature}, {condition}"
-msgstr ""
+msgstr "{location}: {temperature}, {condition}"
 
 #: searx/templates/simple/404.html:4
 msgid "Page not found"
@@ -1341,8 +1340,8 @@ msgid "Center Alignment"
 msgstr "మధ్య అమరిక"
 
 #: searx/templates/simple/preferences/center_alignment.html:14
-msgid "Displays results in the center of the page (Oscar layout)."
-msgstr "పేజీ మధ్యలో ఫలితాలను ప్రదర్శిస్తుంది (ఆస్కార్ లేఅవుట్)."
+msgid "Display results in the center of the page (Oscar layout)."
+msgstr ""
 
 #: searx/templates/simple/preferences/cookies.html:2
 msgid ""
@@ -1353,8 +1352,8 @@ msgstr ""
 "విలువలు."
 
 #: searx/templates/simple/preferences/cookies.html:3
-msgid "With that list, you can assess SearXNG transparency."
-msgstr "ఆ జాబితాతో, మీరు SearXNG పారదర్శకతను అంచనా వేయవచ్చు."
+msgid "With this list, you can assess the transparency of SearXNG."
+msgstr ""
 
 #: searx/templates/simple/preferences/cookies.html:9
 msgid "Cookie name"
@@ -1452,19 +1451,13 @@ msgstr "శోధన ఫలితాల దగ్గర ఫేవికాన్
 
 #: searx/templates/simple/preferences/footer.html:2
 msgid ""
-"These settings are stored in your cookies, this allows us not to store "
+"These settings are stored in your cookies. This allows us not to store "
 "this data about you."
 msgstr ""
-"ఈ సెట్టింగ్‌లు మీ కుక్కీలలో నిల్వ చేయబడ్డాయి, ఇది మీ గురించిన ఈ డేటాను "
-"నిల్వ చేయకుండా ఉండటానికి మాకు అనుమతిస్తుంది."
 
 #: searx/templates/simple/preferences/footer.html:3
-msgid ""
-"These cookies serve your sole convenience, we don't use these cookies to "
-"track you."
+msgid "These cookies serve your sole convenience; we don't use them to track you."
 msgstr ""
-"ఈ కుక్కీలు మీ సౌకర్యార్థం, మిమ్మల్ని ట్రాక్ చేయడానికి మేము ఈ కుక్కీలను "
-"ఉపయోగించము."
 
 #: searx/templates/simple/preferences/footer.html:6
 msgid "Save"
@@ -1499,18 +1492,18 @@ msgid "Image proxy"
 msgstr "చిత్రం ప్రాక్సీ"
 
 #: searx/templates/simple/preferences/image_proxy.html:14
-msgid "Proxying image results through SearXNG"
-msgstr "SearXNG ద్వారా ఇమేజ్ ఫలితాలను ప్రాక్సీ చేస్తోంది"
+msgid "Proxy image results through SearXNG"
+msgstr ""
 
 #: searx/templates/simple/preferences/infinite_scroll.html:2
 msgid "Infinite scroll"
 msgstr "అనంతమైన స్క్రోల్"
 
 #: searx/templates/simple/preferences/infinite_scroll.html:14
-msgid "Automatically load next page when scrolling to bottom of current page"
+msgid ""
+"Automatically load the next page when scrolling to the bottom of the "
+"current page"
 msgstr ""
-"ప్రస్తుత పేజీ దిగువకు స్క్రోల్ చేస్తున్నప్పుడు తదుపరి పేజీని స్వయంచాలకంగా"
-" లోడ్ చేయండి"
 
 #: searx/templates/simple/preferences/language.html:24
 msgid "What language do you prefer for search?"
@@ -1560,19 +1553,17 @@ msgstr "వర్గం ఎంపికపై శోధించండి"
 
 #: searx/templates/simple/preferences/search_on_category_select.html:14
 msgid ""
-"Perform search immediately if a category selected. Disable to select "
-"multiple categories"
+"Perform a search immediately if a category is selected. Disable to select"
+" multiple categories"
 msgstr ""
-"ఒక వర్గం ఎంచుకోబడితే వెంటనే శోధనను నిర్వహించండి. బహుళ వర్గాలను ఎంచుకోవడం "
-"కోసం నిలిపివేయండి"
 
 #: searx/templates/simple/preferences/theme.html:2
 msgid "Theme"
 msgstr "థీమ్"
 
 #: searx/templates/simple/preferences/theme.html:14
-msgid "Change SearXNG layout"
-msgstr "SearXNG లేఅవుట్‌ని మార్చండి"
+msgid "Change the layout of SearXNG"
+msgstr ""
 
 #: searx/templates/simple/preferences/theme.html:19
 msgid "Theme style"
@@ -2012,7 +2003,7 @@ msgstr "వీడియోను దాచిపెట్టు"
 #~ msgstr ""
 
 #~ msgid "Displays results in the center of the page (Oscar layout)."
-#~ msgstr ""
+#~ msgstr "పేజీ మధ్యలో ఫలితాలను ప్రదర్శిస్తుంది (ఆస్కార్ లేఅవుట్)."
 
 #~ msgid "preferences"
 #~ msgstr "అభిరుచులు"
@@ -2297,4 +2288,53 @@ msgstr "వీడియోను దాచిపెట్టు"
 
 #~ msgid "Converts strings to different hash digests."
 #~ msgstr "స్ట్రింగ్‌లను విభిన్న హాష్ డైజెస్ట్‌లుగా మారుస్తుంది."
+
+#~ msgid ""
+#~ "Rewrite hostnames, remove results or "
+#~ "prioritize them based on the hostname"
+#~ msgstr ""
+#~ "హోస్ట్ పేర్లను తిరిగి వ్రాయండి, ఫలితాలను "
+#~ "తొలగించండి లేదా హోస్ట్ పేరు ఆధారంగా "
+#~ "వాటికి ప్రాధాన్యత ఇవ్వండి"
+
+#~ msgid "With that list, you can assess SearXNG transparency."
+#~ msgstr "ఆ జాబితాతో, మీరు SearXNG పారదర్శకతను అంచనా వేయవచ్చు."
+
+#~ msgid ""
+#~ "These settings are stored in your "
+#~ "cookies, this allows us not to "
+#~ "store this data about you."
+#~ msgstr ""
+#~ "ఈ సెట్టింగ్‌లు మీ కుక్కీలలో నిల్వ "
+#~ "చేయబడ్డాయి, ఇది మీ గురించిన ఈ డేటాను "
+#~ "నిల్వ చేయకుండా ఉండటానికి మాకు అనుమతిస్తుంది."
+
+#~ msgid ""
+#~ "These cookies serve your sole "
+#~ "convenience, we don't use these cookies"
+#~ " to track you."
+#~ msgstr ""
+#~ "ఈ కుక్కీలు మీ సౌకర్యార్థం, మిమ్మల్ని "
+#~ "ట్రాక్ చేయడానికి మేము ఈ కుక్కీలను "
+#~ "ఉపయోగించము."
+
+#~ msgid "Proxying image results through SearXNG"
+#~ msgstr "SearXNG ద్వారా ఇమేజ్ ఫలితాలను ప్రాక్సీ చేస్తోంది"
+
+#~ msgid "Automatically load next page when scrolling to bottom of current page"
+#~ msgstr ""
+#~ "ప్రస్తుత పేజీ దిగువకు స్క్రోల్ చేస్తున్నప్పుడు"
+#~ " తదుపరి పేజీని స్వయంచాలకంగా లోడ్ చేయండి"
+
+#~ msgid ""
+#~ "Perform search immediately if a category"
+#~ " selected. Disable to select multiple "
+#~ "categories"
+#~ msgstr ""
+#~ "ఒక వర్గం ఎంచుకోబడితే వెంటనే శోధనను "
+#~ "నిర్వహించండి. బహుళ వర్గాలను ఎంచుకోవడం కోసం "
+#~ "నిలిపివేయండి"
+
+#~ msgid "Change SearXNG layout"
+#~ msgstr "SearXNG లేఅవుట్‌ని మార్చండి"
 

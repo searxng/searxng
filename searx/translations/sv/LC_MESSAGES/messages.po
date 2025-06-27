@@ -35,8 +35,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-06-13 02:39+0000\n"
-"PO-Revision-Date: 2025-06-14 08:58+0000\n"
+"POT-Creation-Date: 2025-06-23 21:05+0000\n"
+"PO-Revision-Date: 2025-06-24 13:04+0000\n"
 "Last-Translator: AndersNordh <andersnordh@noreply.codeberg.org>\n"
 "Language-Team: Swedish <https://translate.codeberg.org/projects/searxng/"
 "searxng/sv/>\n"
@@ -770,8 +770,8 @@ msgid ""
 "Converts strings to different hash digests. Available functions: md5, "
 "sha1, sha224, sha256, sha384, sha512."
 msgstr ""
-"Konverterar strängar till olika hash-digester. Tillgängliga funktioner: md5, "
-"sha1, sha224, sha256, sha384, sha512."
+"Konverterar strängar till olika hash-digester. Tillgängliga funktioner: "
+"md5, sha1, sha224, sha256, sha384, sha512."
 
 #: searx/plugins/hash_plugin.py:64
 msgid "hash digest"
@@ -782,9 +782,9 @@ msgid "Hostnames plugin"
 msgstr "Värdnamn plugin"
 
 #: searx/plugins/hostnames.py:124
-msgid "Rewrite hostnames, remove results or prioritize them based on the hostname"
+msgid "Rewrite hostnames and remove or prioritize results based on the hostname"
 msgstr ""
-"Skriva om värdnamn, ta bort resultat eller prioritera dem baserat på "
+"Skriv om värdnamn samt ta bort eller prioritera resultat baserat på "
 "värdnamnet"
 
 #: searx/plugins/oa_doi_rewrite.py:55
@@ -844,11 +844,11 @@ msgstr "Du använder Tor och det ser ut som du har den externa IP-adressen"
 msgid "You are not using Tor and you have the external IP address"
 msgstr "Du använder inte Tor och du har den externa IP-adressen"
 
-#: searx/plugins/tracker_url_remover.py:37
+#: searx/plugins/tracker_url_remover.py:35
 msgid "Tracker URL remover"
 msgstr "Ta bort URL för tracker"
 
-#: searx/plugins/tracker_url_remover.py:38
+#: searx/plugins/tracker_url_remover.py:36
 msgid "Remove trackers arguments from the returned URL"
 msgstr "Ta bort tracker-argument från den återgivna webbadressen"
 
@@ -1368,8 +1368,8 @@ msgid "Center Alignment"
 msgstr "Centrera"
 
 #: searx/templates/simple/preferences/center_alignment.html:14
-msgid "Displays results in the center of the page (Oscar layout)."
-msgstr "Centrera resultat på sidan (Oscar layout)."
+msgid "Display results in the center of the page (Oscar layout)."
+msgstr "Visa resultat centrerat på sidan (Oscar-layout)."
 
 #: searx/templates/simple/preferences/cookies.html:2
 msgid ""
@@ -1380,8 +1380,8 @@ msgstr ""
 "dator."
 
 #: searx/templates/simple/preferences/cookies.html:3
-msgid "With that list, you can assess SearXNG transparency."
-msgstr "Med den listan kan du bedöma SearXNG-transparens."
+msgid "With this list, you can assess the transparency of SearXNG."
+msgstr "Med denna lista kan du undersöka transparensen i SearXNG."
 
 #: searx/templates/simple/preferences/cookies.html:9
 msgid "Cookie name"
@@ -1481,19 +1481,17 @@ msgstr "Visa faviconer intill sökresultat"
 
 #: searx/templates/simple/preferences/footer.html:2
 msgid ""
-"These settings are stored in your cookies, this allows us not to store "
+"These settings are stored in your cookies. This allows us not to store "
 "this data about you."
 msgstr ""
-"Dessa inställningar lagras i dina kakor, vilket gör att vi inte lagrar "
+"Dessa inställningar sparas i dina kakor, det förhindrar att vi sparar dessa "
 "data om dig."
 
 #: searx/templates/simple/preferences/footer.html:3
-msgid ""
-"These cookies serve your sole convenience, we don't use these cookies to "
-"track you."
+msgid "These cookies serve your sole convenience; we don't use them to track you."
 msgstr ""
-"Dessa kakor tjänar din egen bekvämlighet, vi använder inte dessa kakor "
-"för att spåra dig."
+"Dessa kakor är till för din bekvämlighet, vi använder dem inte för att spåra "
+"dig."
 
 #: searx/templates/simple/preferences/footer.html:6
 msgid "Save"
@@ -1528,16 +1526,19 @@ msgid "Image proxy"
 msgstr "Bildproxy"
 
 #: searx/templates/simple/preferences/image_proxy.html:14
-msgid "Proxying image results through SearXNG"
-msgstr "Använder proxy för bildresultat via SearXNG"
+msgid "Proxy image results through SearXNG"
+msgstr "Proxyavbildningsresultat genom SearXNG"
 
 #: searx/templates/simple/preferences/infinite_scroll.html:2
 msgid "Infinite scroll"
 msgstr "Oändlig bläddring"
 
 #: searx/templates/simple/preferences/infinite_scroll.html:14
-msgid "Automatically load next page when scrolling to bottom of current page"
-msgstr "Ladda automatiskt nästa sida när du bläddrar till botten av aktuell sida"
+msgid ""
+"Automatically load the next page when scrolling to the bottom of the "
+"current page"
+msgstr ""
+"Automatisk laddning av nästa sida vid bläddring till botten av nuvarande sida"
 
 #: searx/templates/simple/preferences/language.html:24
 msgid "What language do you prefer for search?"
@@ -1587,19 +1588,19 @@ msgstr "Sök vid val av kategori"
 
 #: searx/templates/simple/preferences/search_on_category_select.html:14
 msgid ""
-"Perform search immediately if a category selected. Disable to select "
-"multiple categories"
+"Perform a search immediately if a category is selected. Disable to select"
+" multiple categories"
 msgstr ""
-"Utför sökning omedelbart om en kategori väljs. Inaktivera för att välja "
-"flera kategorier"
+"Genomför sökning direkt om kategori är vald, inaktivera för att välja flera "
+"kategorier"
 
 #: searx/templates/simple/preferences/theme.html:2
 msgid "Theme"
 msgstr "Tema"
 
 #: searx/templates/simple/preferences/theme.html:14
-msgid "Change SearXNG layout"
-msgstr "Ändra SearXNG-layout"
+msgid "Change the layout of SearXNG"
+msgstr "Ändra layout en för SearXNG"
 
 #: searx/templates/simple/preferences/theme.html:19
 msgid "Theme style"
@@ -2046,7 +2047,7 @@ msgstr "göm video"
 #~ msgstr ""
 
 #~ msgid "Displays results in the center of the page (Oscar layout)."
-#~ msgstr ""
+#~ msgstr "Centrera resultat på sidan (Oscar layout)."
 
 #~ msgid "preferences"
 #~ msgstr "inställningar"
@@ -2339,3 +2340,52 @@ msgstr "göm video"
 
 #~ msgid "Converts strings to different hash digests."
 #~ msgstr "Konverterar strängar till olika hashvärden."
+
+#~ msgid ""
+#~ "Rewrite hostnames, remove results or "
+#~ "prioritize them based on the hostname"
+#~ msgstr ""
+#~ "Skriva om värdnamn, ta bort resultat "
+#~ "eller prioritera dem baserat på "
+#~ "värdnamnet"
+
+#~ msgid "With that list, you can assess SearXNG transparency."
+#~ msgstr "Med den listan kan du bedöma SearXNG-transparens."
+
+#~ msgid ""
+#~ "These settings are stored in your "
+#~ "cookies, this allows us not to "
+#~ "store this data about you."
+#~ msgstr ""
+#~ "Dessa inställningar lagras i dina kakor,"
+#~ " vilket gör att vi inte lagrar "
+#~ "data om dig."
+
+#~ msgid ""
+#~ "These cookies serve your sole "
+#~ "convenience, we don't use these cookies"
+#~ " to track you."
+#~ msgstr ""
+#~ "Dessa kakor tjänar din egen "
+#~ "bekvämlighet, vi använder inte dessa "
+#~ "kakor för att spåra dig."
+
+#~ msgid "Proxying image results through SearXNG"
+#~ msgstr "Använder proxy för bildresultat via SearXNG"
+
+#~ msgid "Automatically load next page when scrolling to bottom of current page"
+#~ msgstr ""
+#~ "Ladda automatiskt nästa sida när du "
+#~ "bläddrar till botten av aktuell sida"
+
+#~ msgid ""
+#~ "Perform search immediately if a category"
+#~ " selected. Disable to select multiple "
+#~ "categories"
+#~ msgstr ""
+#~ "Utför sökning omedelbart om en kategori"
+#~ " väljs. Inaktivera för att välja "
+#~ "flera kategorier"
+
+#~ msgid "Change SearXNG layout"
+#~ msgstr "Ändra SearXNG-layout"

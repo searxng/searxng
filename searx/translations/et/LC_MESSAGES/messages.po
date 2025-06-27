@@ -20,8 +20,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-06-13 02:39+0000\n"
-"PO-Revision-Date: 2025-06-15 21:58+0000\n"
+"POT-Creation-Date: 2025-06-23 21:05+0000\n"
+"PO-Revision-Date: 2025-06-26 02:46+0000\n"
 "Last-Translator: Priit Jõerüüt <jrtcdbrg@noreply.codeberg.org>\n"
 "Language-Team: Estonian <https://translate.codeberg.org/projects/searxng/"
 "searxng/et/>\n"
@@ -768,10 +768,10 @@ msgid "Hostnames plugin"
 msgstr "Hostide lisamoodul"
 
 #: searx/plugins/hostnames.py:124
-msgid "Rewrite hostnames, remove results or prioritize them based on the hostname"
+msgid "Rewrite hostnames and remove or prioritize results based on the hostname"
 msgstr ""
-"Väärtusta hostide nimesid, eemalda tulemusi või muuda nende järjekorda "
-"hosti nime alusel"
+"Asenda hostide nimesid ning eemalda või muuda tulemuste järjestust "
+"hostinimede alusel"
 
 #: searx/plugins/oa_doi_rewrite.py:55
 msgid "Open Access DOI rewrite"
@@ -830,11 +830,11 @@ msgstr "Sa kasutad Tori võrku ja tundub, et olemas on väline ip-aadress"
 msgid "You are not using Tor and you have the external IP address"
 msgstr "Sa ei kasuta Tori võrku ja sinu arvutil/nutiseadmel on väline ip-aadress"
 
-#: searx/plugins/tracker_url_remover.py:37
+#: searx/plugins/tracker_url_remover.py:35
 msgid "Tracker URL remover"
 msgstr "Jälitajate eemaldus URList"
 
-#: searx/plugins/tracker_url_remover.py:38
+#: searx/plugins/tracker_url_remover.py:36
 msgid "Remove trackers arguments from the returned URL"
 msgstr "Eemaldab jälitavad argumendid tagastatud URList"
 
@@ -1356,8 +1356,8 @@ msgid "Center Alignment"
 msgstr "Keskele joondamine"
 
 #: searx/templates/simple/preferences/center_alignment.html:14
-msgid "Displays results in the center of the page (Oscar layout)."
-msgstr "Kuvab tulemused lehekülje keskel (Oscari paigutus)."
+msgid "Display results in the center of the page (Oscar layout)."
+msgstr "Näita tulemusi lehe keskel (Oskari paigutus)."
 
 #: searx/templates/simple/preferences/cookies.html:2
 msgid ""
@@ -1368,8 +1368,8 @@ msgstr ""
 "arvutisse salvestab."
 
 #: searx/templates/simple/preferences/cookies.html:3
-msgid "With that list, you can assess SearXNG transparency."
-msgstr "Selle loetelu abil saad hinnata SearXNG läbipaistvust."
+msgid "With this list, you can assess the transparency of SearXNG."
+msgstr "Selle loendi alusel saad hinnata SearXNG läbipaistvust või korrektsust."
 
 #: searx/templates/simple/preferences/cookies.html:9
 msgid "Cookie name"
@@ -1469,18 +1469,16 @@ msgstr "Kuva otsingutulemuste kõrval saidiikoone"
 
 #: searx/templates/simple/preferences/footer.html:2
 msgid ""
-"These settings are stored in your cookies, this allows us not to store "
+"These settings are stored in your cookies. This allows us not to store "
 "this data about you."
 msgstr ""
-"Need seaded salvestatame sinu brauseri küpsistes ja see annab meile "
-"võimaluse sinu kohta andmeid meie serveris mitte salvestada."
+"Need seadistused on salvestatud küpsistes. See tagab, et me ei pea sinu "
+"kohta andmeid koguma."
 
 #: searx/templates/simple/preferences/footer.html:3
-msgid ""
-"These cookies serve your sole convenience, we don't use these cookies to "
-"track you."
+msgid "These cookies serve your sole convenience; we don't use them to track you."
 msgstr ""
-"Need küpsised on vaid mugavuse tarbeks, me ei kasuta neid sinu "
+"Need küpsised on kasutusel mugavuse mõttes - me ei kasuta neid sinu "
 "jälitamiseks."
 
 #: searx/templates/simple/preferences/footer.html:6
@@ -1516,16 +1514,18 @@ msgid "Image proxy"
 msgstr "Pildiproksi"
 
 #: searx/templates/simple/preferences/image_proxy.html:14
-msgid "Proxying image results through SearXNG"
-msgstr "Pildiotsingu tulemuste edastamine SearXNG kaudu"
+msgid "Proxy image results through SearXNG"
+msgstr "SearXNG pildiotsingu tulemused läbi proksi"
 
 #: searx/templates/simple/preferences/infinite_scroll.html:2
 msgid "Infinite scroll"
-msgstr "Lõpmatu kerimine"
+msgstr "Lõputu kerimine"
 
 #: searx/templates/simple/preferences/infinite_scroll.html:14
-msgid "Automatically load next page when scrolling to bottom of current page"
-msgstr "Laadi lehe lõppu kerimisel järgmine leht automaatselt"
+msgid ""
+"Automatically load the next page when scrolling to the bottom of the "
+"current page"
+msgstr "Kerides senise lehe lõppu kuvatakse järgmine leht automaatselt"
 
 #: searx/templates/simple/preferences/language.html:24
 msgid "What language do you prefer for search?"
@@ -1573,19 +1573,19 @@ msgstr "Otsi kategooria valimisel"
 
 #: searx/templates/simple/preferences/search_on_category_select.html:14
 msgid ""
-"Perform search immediately if a category selected. Disable to select "
-"multiple categories"
+"Perform a search immediately if a category is selected. Disable to select"
+" multiple categories"
 msgstr ""
-"Teosta otsing kohe kui kategooria on valitud. Mitme kategooria valimiseks"
-" keela see eelistus"
+"Kategooria valimisel käivitub otsing automaatselt. Kui soovid valida mitut "
+"kategooriat, siis lülita see valik välja"
 
 #: searx/templates/simple/preferences/theme.html:2
 msgid "Theme"
 msgstr "Teema"
 
 #: searx/templates/simple/preferences/theme.html:14
-msgid "Change SearXNG layout"
-msgstr "Muuda SearXNG paigutust"
+msgid "Change the layout of SearXNG"
+msgstr "Muuda SearXNG lehe paigutust"
 
 #: searx/templates/simple/preferences/theme.html:19
 msgid "Theme style"
@@ -2031,7 +2031,7 @@ msgstr "peida video"
 #~ msgstr ""
 
 #~ msgid "Displays results in the center of the page (Oscar layout)."
-#~ msgstr ""
+#~ msgstr "Kuvab tulemused lehekülje keskel (Oscari paigutus)."
 
 #~ msgid "preferences"
 #~ msgstr "eelistused"
@@ -2314,3 +2314,50 @@ msgstr "peida video"
 
 #~ msgid "Converts strings to different hash digests."
 #~ msgstr "Teisendab sõned erinevateks räsitud sõnumilühenditeks."
+
+#~ msgid ""
+#~ "Rewrite hostnames, remove results or "
+#~ "prioritize them based on the hostname"
+#~ msgstr ""
+#~ "Väärtusta hostide nimesid, eemalda tulemusi"
+#~ " või muuda nende järjekorda hosti "
+#~ "nime alusel"
+
+#~ msgid "With that list, you can assess SearXNG transparency."
+#~ msgstr "Selle loetelu abil saad hinnata SearXNG läbipaistvust."
+
+#~ msgid ""
+#~ "These settings are stored in your "
+#~ "cookies, this allows us not to "
+#~ "store this data about you."
+#~ msgstr ""
+#~ "Need seaded salvestatame sinu brauseri "
+#~ "küpsistes ja see annab meile võimaluse"
+#~ " sinu kohta andmeid meie serveris "
+#~ "mitte salvestada."
+
+#~ msgid ""
+#~ "These cookies serve your sole "
+#~ "convenience, we don't use these cookies"
+#~ " to track you."
+#~ msgstr ""
+#~ "Need küpsised on vaid mugavuse tarbeks,"
+#~ " me ei kasuta neid sinu jälitamiseks."
+
+#~ msgid "Proxying image results through SearXNG"
+#~ msgstr "Pildiotsingu tulemuste edastamine SearXNG kaudu"
+
+#~ msgid "Automatically load next page when scrolling to bottom of current page"
+#~ msgstr "Laadi lehe lõppu kerimisel järgmine leht automaatselt"
+
+#~ msgid ""
+#~ "Perform search immediately if a category"
+#~ " selected. Disable to select multiple "
+#~ "categories"
+#~ msgstr ""
+#~ "Teosta otsing kohe kui kategooria on "
+#~ "valitud. Mitme kategooria valimiseks keela "
+#~ "see eelistus"
+
+#~ msgid "Change SearXNG layout"
+#~ msgstr "Muuda SearXNG paigutust"
