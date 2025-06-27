@@ -161,9 +161,11 @@ def html_to_text(html_str: str) -> str:
     s = _HTMLTextExtractor()
     try:
         s.feed(html_str)
+        s.close()
     except AssertionError:
         s = _HTMLTextExtractor()
         s.feed(escape(html_str, quote=True))
+        s.close()
     except _HTMLTextExtractorException:
         logger.debug("HTMLTextExtractor: invalid HTML\n%s", html_str)
     return s.get_text()
