@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
-themes.help(){
+themes.help() {
     cat <<EOF
 themes.:
   all       : test & build all themes
@@ -11,7 +11,8 @@ EOF
 }
 
 themes.all() {
-    (   set -e
+    (
+        set -e
         build_msg SIMPLE "theme: run build"
         vite.simple.build
     )
@@ -19,7 +20,8 @@ themes.all() {
 }
 
 themes.fix() {
-    (   set -e
+    (
+        set -e
         build_msg SIMPLE "theme: fix"
         vite.simple.fix
     )
@@ -27,7 +29,8 @@ themes.fix() {
 }
 
 themes.test() {
-    (   set -e
+    (
+        set -e
         # we run a build to test (in CI)
         build_msg SIMPLE "theme: run build (to test)"
         vite.simple.build

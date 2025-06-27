@@ -33,7 +33,6 @@
 #    "bar"
 #    [CTRL-D]
 
-
 # shellcheck disable=SC2091
 # shellcheck source=utils/lib.sh
 . /dev/null
@@ -57,7 +56,8 @@ REDIS_INSTALL_EXE=(redis-server redis-benchmark redis-cli)
 REDIS_LINK_EXE=(redis-sentinel redis-check-rdb redis-check-aof)
 
 REDIS_CONF="${REDIS_HOME}/redis.conf"
-REDIS_CONF_TEMPLATE=$(cat <<EOF
+REDIS_CONF_TEMPLATE=$(
+    cat <<EOF
 # Note that in order to read the configuration file, Redis must be
 # started with the file path as first argument:
 #
@@ -90,7 +90,7 @@ syslog-enabled yes
 EOF
 )
 
-redis.help(){
+redis.help() {
     cat <<EOF
 redis.:
   devpkg    : install essential packages to compile redis
@@ -114,7 +114,7 @@ redis.devpkg() {
     sudo_or_exit
 
     case ${DIST_ID} in
-        ubuntu|debian)
+        ubuntu | debian)
             pkg_install git build-essential gawk
             ;;
         arch)
@@ -141,7 +141,7 @@ redis.build() {
     rst_title "get redis sources" section
     redis.src "${CACHE}/redis"
 
-    if ! required_commands gcc nm make gawk ; then
+    if ! required_commands gcc nm make gawk; then
         info_msg "install development tools to get missing command(s) .."
         if [[ -n ${SUDO_USER} ]]; then
             sudo -H "$0" redis.devpkg
@@ -172,7 +172,6 @@ cp ${REDIS_INSTALL_EXE[@]} "$(redis._get_dist)"
 EOF
     info_msg "redis binaries available at $(redis._get_dist)"
 }
-
 
 redis.install() {
     sudo_or_exit
@@ -206,7 +205,7 @@ redis.src() {
 
     local dest="${1:-${CACHE}/redis}"
 
-    if [ -d "${dest}" ] ; then
+    if [ -d "${dest}" ]; then
         info_msg "already cloned: $dest"
         tee_stderr 0.1 <<EOF | $(bash.cmd) 2>&1 | prefix_stdout
 cd "${dest}"
@@ -226,7 +225,7 @@ EOF
     fi
 }
 
-redis.useradd(){
+redis.useradd() {
 
     # usage: redis.useradd
 
@@ -275,7 +274,6 @@ redis.rmgrp() {
 
 }
 
-
 # private redis. functions
 # ------------------------
 
@@ -286,21 +284,21 @@ redis._install_bin() {
         set -e
         for redis_exe in "${REDIS_INSTALL_EXE[@]}"; do
             install -v -o "${REDIS_USER}" -g "${REDIS_GROUP}" \
-                 "${src}/${redis_exe}" "${REDIS_HOME_BIN}"
+                "${src}/${redis_exe}" "${REDIS_HOME_BIN}"
         done
 
-        pushd "${REDIS_HOME_BIN}" &> /dev/null
+        pushd "${REDIS_HOME_BIN}" &>/dev/null
         for redis_exe in "${REDIS_LINK_EXE[@]}"; do
             info_msg "link redis-server --> ${redis_exe}"
             sudo -H -u "${REDIS_USER}" ln -sf redis-server "${redis_exe}"
         done
-        popd &> /dev/null
+        popd &>/dev/null
 
     )
 }
 
 redis._install_conf() {
-        sudo -H -u "${REDIS_USER}" bash <<EOF
+    sudo -H -u "${REDIS_USER}" bash <<EOF
 mkdir -p "${REDIS_HOME}/run"
 echo '${REDIS_CONF_TEMPLATE}' > "${REDIS_CONF}"
 EOF
@@ -331,14 +329,14 @@ redis._arch() {
         "armv8") ARCH=arm64 ;;
         .*386.*) ARCH=386 ;;
         ppc64*) ARCH=ppc64le ;;
-    *)  die 42 "ARCH is unknown: $(command uname -m)" ;;
+        *) die 42 "ARCH is unknown: $(command uname -m)" ;;
     esac
     echo "${ARCH}"
 }
 
 # TODO: move this to the right place ..
 
-bash.cmd(){
+bash.cmd() {
 
     # print cmd to get a bash in a non-root mode, even if we are in a sudo
     # context.
@@ -346,7 +344,7 @@ bash.cmd(){
     local user="${USER}"
     local bash_cmd="bash"
 
-    if [ -n "${SUDO_USER}" ] && [ "root" != "${SUDO_USER}" ] ; then
+    if [ -n "${SUDO_USER}" ] && [ "root" != "${SUDO_USER}" ]; then
         user="${SUDO_USER}"
         bash_cmd="sudo -H -u ${SUDO_USER} bash"
     fi
