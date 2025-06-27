@@ -33,8 +33,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-06-13 02:39+0000\n"
-"PO-Revision-Date: 2025-06-02 14:58+0000\n"
+"POT-Creation-Date: 2025-06-23 21:05+0000\n"
+"PO-Revision-Date: 2025-06-21 19:58+0000\n"
 "Last-Translator: yurtpage <yurtpage@noreply.codeberg.org>\n"
 "Language: ru\n"
 "Language-Team: Russian "
@@ -502,7 +502,7 @@ msgstr "Снегопад с грозой"
 #. WEATHER_CONDITIONS
 #: searx/searxng.msg
 msgid "Snow showers"
-msgstr "Снегодап"
+msgstr "Снегопад"
 
 #. WEATHER_CONDITIONS
 #: searx/searxng.msg
@@ -613,7 +613,7 @@ msgstr "ошибка сети"
 
 #: searx/webutils.py:39
 msgid "SSL error: certificate validation has failed"
-msgstr "ошибка SSL: проверка сертификата провалена"
+msgstr "ошибка TLS: проверка сертификата провалена"
 
 #: searx/webutils.py:41
 msgid "unexpected crash"
@@ -768,6 +768,8 @@ msgid ""
 "Converts strings to different hash digests. Available functions: md5, "
 "sha1, sha224, sha256, sha384, sha512."
 msgstr ""
+"Конвертирует рядки в разные хеш-суммы. Доступные функции: md5, sha1, "
+"sha224, sha256, sha384, sha512."
 
 #: searx/plugins/hash_plugin.py:64
 msgid "hash digest"
@@ -778,10 +780,8 @@ msgid "Hostnames plugin"
 msgstr "Плагин имён хостов"
 
 #: searx/plugins/hostnames.py:124
-msgid "Rewrite hostnames, remove results or prioritize them based on the hostname"
+msgid "Rewrite hostnames and remove or prioritize results based on the hostname"
 msgstr ""
-"Переписывать имена хостов, удалять и приоритизировать результаты в "
-"зависимости от имён хостов"
 
 #: searx/plugins/oa_doi_rewrite.py:55
 msgid "Open Access DOI rewrite"
@@ -813,7 +813,7 @@ msgstr "Ваш IP-адрес: "
 
 #: searx/plugins/self_info.py:55
 msgid "Your user-agent is: "
-msgstr "Информация о вашем браузере: "
+msgstr "Ваш обозреватель: "
 
 #: searx/plugins/tor_check.py:42
 msgid "Tor check plugin"
@@ -840,11 +840,11 @@ msgstr "Вы используете Tor и кажется что у вас ес�
 msgid "You are not using Tor and you have the external IP address"
 msgstr "Вы не используете Tor и у вас внешний IP-адрес"
 
-#: searx/plugins/tracker_url_remover.py:37
+#: searx/plugins/tracker_url_remover.py:35
 msgid "Tracker URL remover"
 msgstr "Убрать отслеживание URL"
 
-#: searx/plugins/tracker_url_remover.py:38
+#: searx/plugins/tracker_url_remover.py:36
 msgid "Remove trackers arguments from the returned URL"
 msgstr "Удаление параметров для отслеживания пользователя из URL-адреса"
 
@@ -955,7 +955,7 @@ msgstr ""
 
 #: searx/templates/simple/new_issue.html:71
 msgid "If this is a public instance, please specify the URL in the bug report"
-msgstr "Если это публичное зеркало, пожалуйста, укажите ссылку в баг-репорте"
+msgstr "Если это публичное зеркало, пожалуйста, укажите ссылку в отчёте об ошибке"
 
 #: searx/templates/simple/new_issue.html:72
 msgid "Submit a new issue on Github including the above information"
@@ -971,7 +971,7 @@ msgstr "Без HTTPS"
 #: searx/templates/simple/preferences.html:69
 #: searx/templates/simple/preferences.html:70
 msgid "View error logs and submit a bug report"
-msgstr "Просмотр журнала ошибок и отправка отчета об ошибках"
+msgstr "Просмотр журнала ошибок и отправка отчёта об ошибках"
 
 #: searx/templates/simple/preferences.html:74
 msgid "!bang for this engine"
@@ -1034,7 +1034,7 @@ msgstr "Особые запросы"
 
 #: searx/templates/simple/preferences.html:251
 msgid "Cookies"
-msgstr "Cookies"
+msgstr "Cookie-файлы"
 
 #: searx/templates/simple/results.html:30
 msgid "Number of results"
@@ -1256,7 +1256,7 @@ msgstr "Умеренный"
 #: searx/templates/simple/filters/safesearch.html:4
 #: searx/templates/simple/preferences/safesearch.html:15
 msgid "None"
-msgstr "Отключен"
+msgstr "Нету"
 
 #: searx/templates/simple/filters/time_range.html:1
 #: searx/templates/simple/preferences/engines.html:28
@@ -1359,25 +1359,25 @@ msgstr "Автодополнение"
 
 #: searx/templates/simple/preferences/autocomplete.html:15
 msgid "Show possible queries as you type"
-msgstr ""
+msgstr "Показать возможные запросы при введении"
 
 #: searx/templates/simple/preferences/center_alignment.html:2
 msgid "Center Alignment"
 msgstr "Выравнивание по центру"
 
 #: searx/templates/simple/preferences/center_alignment.html:14
-msgid "Displays results in the center of the page (Oscar layout)."
-msgstr "Отображать результаты по центру страницы (макет Oscar)."
+msgid "Display results in the center of the page (Oscar layout)."
+msgstr ""
 
 #: searx/templates/simple/preferences/cookies.html:2
 msgid ""
 "This is the list of cookies and their values SearXNG is storing on your "
 "computer."
-msgstr "Список cookies и их значений, которые SearXNG хранит в вашем браузере."
+msgstr "Список cookies и их значений, которые SearXNG хранит в вашем обозревателе."
 
 #: searx/templates/simple/preferences/cookies.html:3
-msgid "With that list, you can assess SearXNG transparency."
-msgstr "SearXNG ничего от вас не скрывает."
+msgid "With this list, you can assess the transparency of SearXNG."
+msgstr ""
 
 #: searx/templates/simple/preferences/cookies.html:9
 msgid "Cookie name"
@@ -1401,7 +1401,7 @@ msgstr ""
 
 #: searx/templates/simple/preferences/cookies.html:35
 msgid "URL to restore your preferences in another browser"
-msgstr "URL-адрес для восстановления ваших настроек в другом браузере"
+msgstr "URL-адрес для восстановления ваших настроек в другом обозревателе"
 
 #: searx/templates/simple/preferences/cookies.html:43
 msgid ""
@@ -1442,6 +1442,8 @@ msgid ""
 "This tab does not exist in the user interface, but you can search with "
 "these engines via !bangs."
 msgstr ""
+"Такой вкладки нет в интерфейсе пользователя, но вы можете искать в этих "
+"системах с помощью !bangs."
 
 #: searx/templates/simple/preferences/engines.html:15
 msgid "Enable all"
@@ -1477,19 +1479,13 @@ msgstr "Показывать значки сайтов около результ
 
 #: searx/templates/simple/preferences/footer.html:2
 msgid ""
-"These settings are stored in your cookies, this allows us not to store "
+"These settings are stored in your cookies. This allows us not to store "
 "this data about you."
 msgstr ""
-"Все настройки сохраняются в cookie вашего браузера. Это позволяет нам не "
-"хранить о вас никаких данных на серверах."
 
 #: searx/templates/simple/preferences/footer.html:3
-msgid ""
-"These cookies serve your sole convenience, we don't use these cookies to "
-"track you."
+msgid "These cookies serve your sole convenience; we don't use them to track you."
 msgstr ""
-"Cookie нужны исключительно для вашего удобства, мы не используем cookie "
-"для слежки."
 
 #: searx/templates/simple/preferences/footer.html:6
 msgid "Save"
@@ -1525,16 +1521,18 @@ msgid "Image proxy"
 msgstr "Прокси для картинок"
 
 #: searx/templates/simple/preferences/image_proxy.html:14
-msgid "Proxying image results through SearXNG"
-msgstr "Проксировать изображения в результатах методами SearXNG"
+msgid "Proxy image results through SearXNG"
+msgstr ""
 
 #: searx/templates/simple/preferences/infinite_scroll.html:2
 msgid "Infinite scroll"
 msgstr "Бесконечная прокрутка"
 
 #: searx/templates/simple/preferences/infinite_scroll.html:14
-msgid "Automatically load next page when scrolling to bottom of current page"
-msgstr "Автоматически загружать следующую страницу при прокрутке до конца страницы"
+msgid ""
+"Automatically load the next page when scrolling to the bottom of the "
+"current page"
+msgstr ""
 
 #: searx/templates/simple/preferences/language.html:24
 msgid "What language do you prefer for search?"
@@ -1563,16 +1561,16 @@ msgid ""
 "When enabled, the result page's title contains your query. Your browser "
 "can record this title"
 msgstr ""
-"Добавить поисковый запрос в заголовок страницы с результатами. Браузер "
-"может сохранять этот заголовок"
+"Добавить поисковый запрос в заголовок страницы с результатами. "
+"Обозреватель может сохранять этот заголовок"
 
 #: searx/templates/simple/preferences/results_on_new_tab.html:2
 msgid "Results in new tabs"
-msgstr ""
+msgstr "Результаты в новых вкладках"
 
 #: searx/templates/simple/preferences/results_on_new_tab.html:14
 msgid "Open result links in new browser tabs"
-msgstr ""
+msgstr "Открывать результаты с ссылками в новых вкладках обозревателя"
 
 #: searx/templates/simple/preferences/safesearch.html:20
 msgid "Filter content"
@@ -1584,19 +1582,17 @@ msgstr "Поиск по выбранной категории"
 
 #: searx/templates/simple/preferences/search_on_category_select.html:14
 msgid ""
-"Perform search immediately if a category selected. Disable to select "
-"multiple categories"
+"Perform a search immediately if a category is selected. Disable to select"
+" multiple categories"
 msgstr ""
-"Выполняйте мгновенный поиск при выборе категории. Выключите для выбора "
-"нескольких категорий сразу"
 
 #: searx/templates/simple/preferences/theme.html:2
 msgid "Theme"
 msgstr "Тема"
 
 #: searx/templates/simple/preferences/theme.html:14
-msgid "Change SearXNG layout"
-msgstr "Изменить расположение элементов SearXNG"
+msgid "Change the layout of SearXNG"
+msgstr ""
 
 #: searx/templates/simple/preferences/theme.html:19
 msgid "Theme style"
@@ -1604,7 +1600,7 @@ msgstr "Стиль темы"
 
 #: searx/templates/simple/preferences/theme.html:31
 msgid "Choose auto to follow your browser settings"
-msgstr "Выберите \"автоматически\" для использования настроек вашего браузера"
+msgstr "Выберите «автоматически» для использования настроек вашего обозревателя"
 
 #: searx/templates/simple/preferences/tokens.html:2
 msgid "Engine tokens"
@@ -1784,11 +1780,11 @@ msgstr "торрент-файл"
 
 #: searx/templates/simple/result_templates/torrent.html:13
 msgid "Seeder"
-msgstr "Сиды"
+msgstr "Раздающий"
 
 #: searx/templates/simple/result_templates/torrent.html:14
 msgid "Leecher"
-msgstr "Личи"
+msgstr "Качающий"
 
 #: searx/templates/simple/result_templates/torrent.html:19
 msgid "Number of Files"
@@ -2047,7 +2043,7 @@ msgstr "скрыть видео"
 #~ msgstr ""
 
 #~ msgid "Displays results in the center of the page (Oscar layout)."
-#~ msgstr ""
+#~ msgstr "Отображать результаты по центру страницы (макет Oscar)."
 
 #~ msgid "preferences"
 #~ msgstr "Настройки"
@@ -2342,4 +2338,54 @@ msgstr "скрыть видео"
 
 #~ msgid "Converts strings to different hash digests."
 #~ msgstr "Рассчитывает контрольные суммы от строки."
+
+#~ msgid ""
+#~ "Rewrite hostnames, remove results or "
+#~ "prioritize them based on the hostname"
+#~ msgstr ""
+#~ "Переписывать имена хостов, удалять и "
+#~ "приоритизировать результаты в зависимости от"
+#~ " имён хостов"
+
+#~ msgid "With that list, you can assess SearXNG transparency."
+#~ msgstr "SearXNG ничего от вас не скрывает."
+
+#~ msgid ""
+#~ "These settings are stored in your "
+#~ "cookies, this allows us not to "
+#~ "store this data about you."
+#~ msgstr ""
+#~ "Все настройки сохраняются в cookie "
+#~ "вашего обозревателя. Это позволяет нам "
+#~ "не хранить о вас никаких данных на"
+#~ " серверах."
+
+#~ msgid ""
+#~ "These cookies serve your sole "
+#~ "convenience, we don't use these cookies"
+#~ " to track you."
+#~ msgstr ""
+#~ "Cookie нужны исключительно для вашего "
+#~ "удобства, мы не используем cookie для"
+#~ " слежки."
+
+#~ msgid "Proxying image results through SearXNG"
+#~ msgstr "Проксировать изображения в результатах методами SearXNG"
+
+#~ msgid "Automatically load next page when scrolling to bottom of current page"
+#~ msgstr ""
+#~ "Автоматически загружать следующую страницу при"
+#~ " прокрутке до конца страницы"
+
+#~ msgid ""
+#~ "Perform search immediately if a category"
+#~ " selected. Disable to select multiple "
+#~ "categories"
+#~ msgstr ""
+#~ "Выполняйте мгновенный поиск при выборе "
+#~ "категории. Выключите для выбора нескольких "
+#~ "категорий сразу"
+
+#~ msgid "Change SearXNG layout"
+#~ msgstr "Изменить расположение элементов SearXNG"
 

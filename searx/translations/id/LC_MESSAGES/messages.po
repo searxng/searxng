@@ -22,8 +22,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-06-13 02:39+0000\n"
-"PO-Revision-Date: 2025-06-18 10:58+0000\n"
+"POT-Creation-Date: 2025-06-23 21:05+0000\n"
+"PO-Revision-Date: 2025-06-25 08:05+0000\n"
 "Last-Translator: Linerly <linerly@noreply.codeberg.org>\n"
 "Language-Team: Indonesian <https://translate.codeberg.org/projects/searxng/"
 "searxng/id/>\n"
@@ -769,8 +769,9 @@ msgid "Hostnames plugin"
 msgstr "Plugin nama hos"
 
 #: searx/plugins/hostnames.py:124
-msgid "Rewrite hostnames, remove results or prioritize them based on the hostname"
-msgstr "Tulis ulang nama hos, hapus atau prioritaskan hasil berdasarkan nama hos"
+msgid "Rewrite hostnames and remove or prioritize results based on the hostname"
+msgstr ""
+"Tulis ulang nama hos dan hapus atau prioritaskan hasil berdasarkan nama hos"
 
 #: searx/plugins/oa_doi_rewrite.py:55
 msgid "Open Access DOI rewrite"
@@ -827,11 +828,11 @@ msgstr "Anda menggunakan Tor dan sepertinya Anda memiliki alamat IP eksternal"
 msgid "You are not using Tor and you have the external IP address"
 msgstr "Anda tidak menggunakan Tor dan Anda memiliki alamat IP eksternal"
 
-#: searx/plugins/tracker_url_remover.py:37
+#: searx/plugins/tracker_url_remover.py:35
 msgid "Tracker URL remover"
 msgstr "Penghapus URL pelacak"
 
-#: searx/plugins/tracker_url_remover.py:38
+#: searx/plugins/tracker_url_remover.py:36
 msgid "Remove trackers arguments from the returned URL"
 msgstr "Menghapus argumen pelacak dari URL yang dikembalikan"
 
@@ -1351,8 +1352,8 @@ msgid "Center Alignment"
 msgstr "Penjajaran Tengah"
 
 #: searx/templates/simple/preferences/center_alignment.html:14
-msgid "Displays results in the center of the page (Oscar layout)."
-msgstr "Tampilkan hasil pada bagian tengah halaman (tata letak Oscar)."
+msgid "Display results in the center of the page (Oscar layout)."
+msgstr "Tampilkan hasil pada tengah laman (tata letak Oscar)."
 
 #: searx/templates/simple/preferences/cookies.html:2
 msgid ""
@@ -1363,8 +1364,8 @@ msgstr ""
 "disimpan SearXNG di komputer Anda."
 
 #: searx/templates/simple/preferences/cookies.html:3
-msgid "With that list, you can assess SearXNG transparency."
-msgstr "Anda dapat menilai transparansi SearXNG dengan daftar tersebut."
+msgid "With this list, you can assess the transparency of SearXNG."
+msgstr "Dengan daftar ini, Anda dapat meninjau transparansi SearXNG."
 
 #: searx/templates/simple/preferences/cookies.html:9
 msgid "Cookie name"
@@ -1465,19 +1466,17 @@ msgstr "Tampilkan favikon"
 
 #: searx/templates/simple/preferences/footer.html:2
 msgid ""
-"These settings are stored in your cookies, this allows us not to store "
+"These settings are stored in your cookies. This allows us not to store "
 "this data about you."
 msgstr ""
-"Pengaturan ini disimpan pada kuki Anda, sehingga kami tidak dapat "
-"menyimpan data apa pun tentang Anda."
+"Pengaturan ini disimpan dalam kuki Anda. Ini memungkinkan kami untuk tidak "
+"menyimpan data ini tentang Anda."
 
 #: searx/templates/simple/preferences/footer.html:3
-msgid ""
-"These cookies serve your sole convenience, we don't use these cookies to "
-"track you."
+msgid "These cookies serve your sole convenience; we don't use them to track you."
 msgstr ""
-"Kuki ini hanya dinyalakan demi kenyamanan Anda semata. Kuki ini tidak "
-"kami gunakan untuk melacak Anda."
+"Kuki ini menyediakan kenyamanan Anda; kami tidak menggunakannya untuk "
+"melacak Anda."
 
 #: searx/templates/simple/preferences/footer.html:6
 msgid "Save"
@@ -1512,18 +1511,19 @@ msgid "Image proxy"
 msgstr "Proksi gambar"
 
 #: searx/templates/simple/preferences/image_proxy.html:14
-msgid "Proxying image results through SearXNG"
-msgstr "Memproksikan hasil gambar melalui SearXNG"
+msgid "Proxy image results through SearXNG"
+msgstr "Proksi hasil gambar melalui SearXNG"
 
 #: searx/templates/simple/preferences/infinite_scroll.html:2
 msgid "Infinite scroll"
 msgstr "Guliran takterbatas"
 
 #: searx/templates/simple/preferences/infinite_scroll.html:14
-msgid "Automatically load next page when scrolling to bottom of current page"
+msgid ""
+"Automatically load the next page when scrolling to the bottom of the "
+"current page"
 msgstr ""
-"Secara otomatis memuat laman selanjutnya saat menggulir ke bawah laman "
-"saat ini"
+"Muat laman berikutnya secara otomatis saat menggulir ke bawah laman saat ini"
 
 #: searx/templates/simple/preferences/language.html:24
 msgid "What language do you prefer for search?"
@@ -1573,18 +1573,18 @@ msgstr "Cari berdasarkan pilihan kategori"
 
 #: searx/templates/simple/preferences/search_on_category_select.html:14
 msgid ""
-"Perform search immediately if a category selected. Disable to select "
-"multiple categories"
+"Perform a search immediately if a category is selected. Disable to select"
+" multiple categories"
 msgstr ""
-"Melakukan pencarian dengan segera jika satu kategori dipilih. Nonaktifkan"
-" untuk memilih beberapa kategori"
+"Langsung melakukan pencarian jika kategori dipilih. Nonaktifkan untuk "
+"memilih beberapa kategori"
 
 #: searx/templates/simple/preferences/theme.html:2
 msgid "Theme"
 msgstr "Tema"
 
 #: searx/templates/simple/preferences/theme.html:14
-msgid "Change SearXNG layout"
+msgid "Change the layout of SearXNG"
 msgstr "Ubah tata letak SearXNG"
 
 #: searx/templates/simple/preferences/theme.html:19
@@ -1919,7 +1919,7 @@ msgstr "sembunyikan video"
 #~ msgstr ""
 
 #~ msgid "Displays results in the center of the page (Oscar layout)."
-#~ msgstr ""
+#~ msgstr "Tampilkan hasil pada bagian tengah halaman (tata letak Oscar)."
 
 #~ msgid "preferences"
 #~ msgstr "preferensi"
@@ -2218,3 +2218,52 @@ msgstr "sembunyikan video"
 #~ msgstr ""
 #~ "Mengubah untaian (string) menjadi pilah "
 #~ "digest (hash digest) yang berbeda."
+
+#~ msgid ""
+#~ "Rewrite hostnames, remove results or "
+#~ "prioritize them based on the hostname"
+#~ msgstr ""
+#~ "Tulis ulang nama hos, hapus atau "
+#~ "prioritaskan hasil berdasarkan nama hos"
+
+#~ msgid "With that list, you can assess SearXNG transparency."
+#~ msgstr "Anda dapat menilai transparansi SearXNG dengan daftar tersebut."
+
+#~ msgid ""
+#~ "These settings are stored in your "
+#~ "cookies, this allows us not to "
+#~ "store this data about you."
+#~ msgstr ""
+#~ "Pengaturan ini disimpan pada kuki Anda,"
+#~ " sehingga kami tidak dapat menyimpan "
+#~ "data apa pun tentang Anda."
+
+#~ msgid ""
+#~ "These cookies serve your sole "
+#~ "convenience, we don't use these cookies"
+#~ " to track you."
+#~ msgstr ""
+#~ "Kuki ini hanya dinyalakan demi "
+#~ "kenyamanan Anda semata. Kuki ini tidak"
+#~ " kami gunakan untuk melacak Anda."
+
+#~ msgid "Proxying image results through SearXNG"
+#~ msgstr "Memproksikan hasil gambar melalui SearXNG"
+
+#~ msgid "Automatically load next page when scrolling to bottom of current page"
+#~ msgstr ""
+#~ "Secara otomatis memuat laman selanjutnya "
+#~ "saat menggulir ke bawah laman saat "
+#~ "ini"
+
+#~ msgid ""
+#~ "Perform search immediately if a category"
+#~ " selected. Disable to select multiple "
+#~ "categories"
+#~ msgstr ""
+#~ "Melakukan pencarian dengan segera jika "
+#~ "satu kategori dipilih. Nonaktifkan untuk "
+#~ "memilih beberapa kategori"
+
+#~ msgid "Change SearXNG layout"
+#~ msgstr "Ubah tata letak SearXNG"

@@ -24,9 +24,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-06-13 02:39+0000\n"
-"PO-Revision-Date: 2025-04-03 21:59+0000\n"
-"Last-Translator: sakistzimas <sakistzimas@noreply.codeberg.org>\n"
+"POT-Creation-Date: 2025-06-23 21:05+0000\n"
+"PO-Revision-Date: 2025-06-22 17:06+0000\n"
+"Last-Translator: return42 <return42@noreply.codeberg.org>\n"
 "Language: el_GR\n"
 "Language-Team: Greek "
 "<https://translate.codeberg.org/projects/searxng/searxng/el/>\n"
@@ -770,10 +770,8 @@ msgid "Hostnames plugin"
 msgstr "Προσθήκη ονομάτων κεντρικού υπολογιστή"
 
 #: searx/plugins/hostnames.py:124
-msgid "Rewrite hostnames, remove results or prioritize them based on the hostname"
+msgid "Rewrite hostnames and remove or prioritize results based on the hostname"
 msgstr ""
-"Ξαναγράψτε ονόματα κεντρικών υπολογιστών, αφαιρέστε τα αποτελέσματα ή "
-"δώστε προτεραιότητα σε αυτά με βάση το όνομα κεντρικού υπολογιστή"
 
 #: searx/plugins/oa_doi_rewrite.py:55
 msgid "Open Access DOI rewrite"
@@ -832,11 +830,11 @@ msgstr "Χρησιμοποιείτε Tor και φαίνεται ότι έχετ
 msgid "You are not using Tor and you have the external IP address"
 msgstr "Δεν χρησιμοποιείτε Tor και έχετε την εξωτερική διεύθυνση IP"
 
-#: searx/plugins/tracker_url_remover.py:37
+#: searx/plugins/tracker_url_remover.py:35
 msgid "Tracker URL remover"
 msgstr "Αφαίρεση ιχνηλατών από συνδέσμους"
 
-#: searx/plugins/tracker_url_remover.py:38
+#: searx/plugins/tracker_url_remover.py:36
 msgid "Remove trackers arguments from the returned URL"
 msgstr "Αφαίρεση ιχνηλατών από τους επιστρεφόμενους συνδέσμους"
 
@@ -851,7 +849,7 @@ msgstr "Μετατροπή μεταξύ μονάδων"
 #: searx/result_types/answer.py:224
 #, python-brace-format
 msgid "{location}: {temperature}, {condition}"
-msgstr ""
+msgstr "{location}: {temperature}, {condition}"
 
 #: searx/templates/simple/404.html:4
 msgid "Page not found"
@@ -1362,8 +1360,8 @@ msgid "Center Alignment"
 msgstr "Κεντρική ευθυγράμμιση"
 
 #: searx/templates/simple/preferences/center_alignment.html:14
-msgid "Displays results in the center of the page (Oscar layout)."
-msgstr "Εμφάνιση αποτελεσμάτων στο κέντρο της σελίδας (διάταξη Oscar)."
+msgid "Display results in the center of the page (Oscar layout)."
+msgstr ""
 
 #: searx/templates/simple/preferences/cookies.html:2
 msgid ""
@@ -1374,8 +1372,8 @@ msgstr ""
 "SearXNG στον υπολογιστή σας."
 
 #: searx/templates/simple/preferences/cookies.html:3
-msgid "With that list, you can assess SearXNG transparency."
-msgstr "Με αυτόν τον κατάλογο, μπορείτε να αξιολογήσετε τη διαφάνεια του SearXNG."
+msgid "With this list, you can assess the transparency of SearXNG."
+msgstr ""
 
 #: searx/templates/simple/preferences/cookies.html:9
 msgid "Cookie name"
@@ -1477,19 +1475,13 @@ msgstr "Εμφάνιση εικονιδίων σελιδών δίπλα από �
 
 #: searx/templates/simple/preferences/footer.html:2
 msgid ""
-"These settings are stored in your cookies, this allows us not to store "
+"These settings are stored in your cookies. This allows us not to store "
 "this data about you."
 msgstr ""
-"Αυτές οι ρυθμίσεις αποθηκεύονται στα cookies σας, με αυτόν τον τρόπο δεν "
-"χρειάζεται να αποθηκέυονται στους δικούς μας διακομιστές."
 
 #: searx/templates/simple/preferences/footer.html:3
-msgid ""
-"These cookies serve your sole convenience, we don't use these cookies to "
-"track you."
+msgid "These cookies serve your sole convenience; we don't use them to track you."
 msgstr ""
-"Αυτά τα cookies υπάρχουν αποκλειστικά για την εξυπηρέτησή σας, δεν τα "
-"χρησιμοποιούμε για να σας παρακολουθούμε."
 
 #: searx/templates/simple/preferences/footer.html:6
 msgid "Save"
@@ -1525,18 +1517,18 @@ msgid "Image proxy"
 msgstr "Διακομιστής μεσολάβησης εικόνων"
 
 #: searx/templates/simple/preferences/image_proxy.html:14
-msgid "Proxying image results through SearXNG"
-msgstr "Διαμεσολάβιση φόρτωσης αποτελεσμάτων εικόνων μέσω του SearXNG"
+msgid "Proxy image results through SearXNG"
+msgstr ""
 
 #: searx/templates/simple/preferences/infinite_scroll.html:2
 msgid "Infinite scroll"
 msgstr "Άπειρη κύλιση"
 
 #: searx/templates/simple/preferences/infinite_scroll.html:14
-msgid "Automatically load next page when scrolling to bottom of current page"
+msgid ""
+"Automatically load the next page when scrolling to the bottom of the "
+"current page"
 msgstr ""
-"Αυτόματη φόρτωση της επόμενης σελίδας κατά την κύλιση στο κάτω μέρος της "
-"τρέχουσας σελίδας"
 
 #: searx/templates/simple/preferences/language.html:24
 msgid "What language do you prefer for search?"
@@ -1586,19 +1578,17 @@ msgstr "Αναζήτηση κατά την επιλογή κατηγορίας"
 
 #: searx/templates/simple/preferences/search_on_category_select.html:14
 msgid ""
-"Perform search immediately if a category selected. Disable to select "
-"multiple categories"
+"Perform a search immediately if a category is selected. Disable to select"
+" multiple categories"
 msgstr ""
-"Άμεση αναζήτηση κατά την επιλογή κατηγορίας. Απενεργοποιήστε για να "
-"διαλέξετε πολλαπλές κατηγορίες"
 
 #: searx/templates/simple/preferences/theme.html:2
 msgid "Theme"
 msgstr "Θέμα"
 
 #: searx/templates/simple/preferences/theme.html:14
-msgid "Change SearXNG layout"
-msgstr "Τροποποίηση διάταξης του SearXNG"
+msgid "Change the layout of SearXNG"
+msgstr ""
 
 #: searx/templates/simple/preferences/theme.html:19
 msgid "Theme style"
@@ -2040,7 +2030,7 @@ msgstr "απόκρυψη βίντεο"
 #~ msgstr ""
 
 #~ msgid "Displays results in the center of the page (Oscar layout)."
-#~ msgstr ""
+#~ msgstr "Εμφάνιση αποτελεσμάτων στο κέντρο της σελίδας (διάταξη Oscar)."
 
 #~ msgid "preferences"
 #~ msgstr "Προτιμήσεις"
@@ -2342,4 +2332,58 @@ msgstr "απόκρυψη βίντεο"
 
 #~ msgid "Converts strings to different hash digests."
 #~ msgstr "Μετατρέπει κείμενο σε διαφορετικές συναρτήσεις κατατεμαχισμού."
+
+#~ msgid ""
+#~ "Rewrite hostnames, remove results or "
+#~ "prioritize them based on the hostname"
+#~ msgstr ""
+#~ "Ξαναγράψτε ονόματα κεντρικών υπολογιστών, "
+#~ "αφαιρέστε τα αποτελέσματα ή δώστε "
+#~ "προτεραιότητα σε αυτά με βάση το "
+#~ "όνομα κεντρικού υπολογιστή"
+
+#~ msgid "With that list, you can assess SearXNG transparency."
+#~ msgstr ""
+#~ "Με αυτόν τον κατάλογο, μπορείτε να "
+#~ "αξιολογήσετε τη διαφάνεια του SearXNG."
+
+#~ msgid ""
+#~ "These settings are stored in your "
+#~ "cookies, this allows us not to "
+#~ "store this data about you."
+#~ msgstr ""
+#~ "Αυτές οι ρυθμίσεις αποθηκεύονται στα "
+#~ "cookies σας, με αυτόν τον τρόπο "
+#~ "δεν χρειάζεται να αποθηκέυονται στους "
+#~ "δικούς μας διακομιστές."
+
+#~ msgid ""
+#~ "These cookies serve your sole "
+#~ "convenience, we don't use these cookies"
+#~ " to track you."
+#~ msgstr ""
+#~ "Αυτά τα cookies υπάρχουν αποκλειστικά "
+#~ "για την εξυπηρέτησή σας, δεν τα "
+#~ "χρησιμοποιούμε για να σας παρακολουθούμε."
+
+#~ msgid "Proxying image results through SearXNG"
+#~ msgstr "Διαμεσολάβιση φόρτωσης αποτελεσμάτων εικόνων μέσω του SearXNG"
+
+#~ msgid "Automatically load next page when scrolling to bottom of current page"
+#~ msgstr ""
+#~ "Αυτόματη φόρτωση της επόμενης σελίδας "
+#~ "κατά την κύλιση στο κάτω μέρος της"
+#~ " τρέχουσας σελίδας"
+
+#~ msgid ""
+#~ "Perform search immediately if a category"
+#~ " selected. Disable to select multiple "
+#~ "categories"
+#~ msgstr ""
+#~ "Άμεση αναζήτηση κατά την επιλογή "
+#~ "κατηγορίας. Απενεργοποιήστε για να διαλέξετε"
+#~ " πολλαπλές κατηγορίες"
+
+#~ msgid "Change SearXNG layout"
+#~ msgstr "Τροποποίηση διάταξης του SearXNG"
 

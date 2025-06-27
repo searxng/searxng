@@ -28,20 +28,19 @@
 # itsmrxyz <itsmrxyz@noreply.codeberg.org>, 2025.
 msgid ""
 msgstr ""
-"Project-Id-Version: searx\n"
+"Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-06-13 02:39+0000\n"
-"PO-Revision-Date: 2025-06-20 01:27+0000\n"
-"Last-Translator: itsmrxyz <itsmrxyz@noreply.codeberg.org>\n"
-"Language-Team: Romanian <https://translate.codeberg.org/projects/searxng/"
-"searxng/ro/>\n"
+"POT-Creation-Date: 2025-06-23 21:05+0000\n"
+"PO-Revision-Date: 2025-06-22 17:06+0000\n"
+"Last-Translator: return42 <return42@noreply.codeberg.org>\n"
 "Language: ro\n"
+"Language-Team: Romanian "
+"<https://translate.codeberg.org/projects/searxng/searxng/ro/>\n"
+"Plural-Forms: nplurals=3; plural=n==1 ? 0 : (n==0 || (n%100 > 0 && n%100 "
+"< 20)) ? 1 : 2;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=n==1 ? 0 : (n==0 || (n%100 > 0 && n%100 < "
-"20)) ? 1 : 2;\n"
-"X-Generator: Weblate 5.11.4\n"
 "Generated-By: Babel 2.17.0\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
@@ -777,10 +776,8 @@ msgid "Hostnames plugin"
 msgstr "Pluginul Hostnames"
 
 #: searx/plugins/hostnames.py:124
-msgid "Rewrite hostnames, remove results or prioritize them based on the hostname"
+msgid "Rewrite hostnames and remove or prioritize results based on the hostname"
 msgstr ""
-"Rescrieți hostnames, eliminați rezultatele sau prioritizați-le pe baza "
-"numelui hostname"
 
 #: searx/plugins/oa_doi_rewrite.py:55
 msgid "Open Access DOI rewrite"
@@ -839,11 +836,11 @@ msgstr "Folosiți Tor și se pare că aveți adresa IP externă"
 msgid "You are not using Tor and you have the external IP address"
 msgstr "Nu utilizați Tor și aveți adresa IP externă"
 
-#: searx/plugins/tracker_url_remover.py:37
+#: searx/plugins/tracker_url_remover.py:35
 msgid "Tracker URL remover"
 msgstr "Eliminator de URL pentru urmăritor"
 
-#: searx/plugins/tracker_url_remover.py:38
+#: searx/plugins/tracker_url_remover.py:36
 msgid "Remove trackers arguments from the returned URL"
 msgstr "Elimină argumentele urmăritorului din URL-ul returnat"
 
@@ -858,7 +855,7 @@ msgstr "Convertiți între unități"
 #: searx/result_types/answer.py:224
 #, python-brace-format
 msgid "{location}: {temperature}, {condition}"
-msgstr "{locație}: {temperatură}, {condiție}"
+msgstr "{location}: {temperature}, {condition}"
 
 #: searx/templates/simple/404.html:4
 msgid "Page not found"
@@ -1369,8 +1366,8 @@ msgid "Center Alignment"
 msgstr "Aliniere centrală"
 
 #: searx/templates/simple/preferences/center_alignment.html:14
-msgid "Displays results in the center of the page (Oscar layout)."
-msgstr "Afișează rezultatele pe centrul paginii (amplasare Oscar)."
+msgid "Display results in the center of the page (Oscar layout)."
+msgstr ""
 
 #: searx/templates/simple/preferences/cookies.html:2
 msgid ""
@@ -1381,8 +1378,8 @@ msgstr ""
 "stochează pe computerul dvs."
 
 #: searx/templates/simple/preferences/cookies.html:3
-msgid "With that list, you can assess SearXNG transparency."
-msgstr "Cu această listă, puteți evalua transparența SearXNG."
+msgid "With this list, you can assess the transparency of SearXNG."
+msgstr ""
 
 #: searx/templates/simple/preferences/cookies.html:9
 msgid "Cookie name"
@@ -1414,8 +1411,8 @@ msgid ""
 "A URL containing your preferences. This URL can be used to restore your "
 "settings on a different device."
 msgstr ""
-"Un URL care conține preferințele tale. Acest URL poate fi folosit pentru a-"
-"ți restaura setările pe un alt dispozitiv"
+"Un URL care conține preferințele tale. Acest URL poate fi folosit pentru "
+"a-ți restaura setările pe un alt dispozitiv"
 
 #: searx/templates/simple/preferences/cookies.html:46
 msgid "Copy preferences hash"
@@ -1483,19 +1480,13 @@ msgstr "Afișați favicons lângă rezultatele căutării"
 
 #: searx/templates/simple/preferences/footer.html:2
 msgid ""
-"These settings are stored in your cookies, this allows us not to store "
+"These settings are stored in your cookies. This allows us not to store "
 "this data about you."
 msgstr ""
-"Aceste configurări sunt stocate în cookie-uri, ceea ce ne permite să nu "
-"stocăm aceste date despre dumeavoastră."
 
 #: searx/templates/simple/preferences/footer.html:3
-msgid ""
-"These cookies serve your sole convenience, we don't use these cookies to "
-"track you."
+msgid "These cookies serve your sole convenience; we don't use them to track you."
 msgstr ""
-"Aceste cookie-uri servesc doar pentru conveniența dumneavoastră, noi nu "
-"stocăm aceste cookie-uri pentru a vă urmări."
 
 #: searx/templates/simple/preferences/footer.html:6
 msgid "Save"
@@ -1531,16 +1522,18 @@ msgid "Image proxy"
 msgstr "Proxy de imagini"
 
 #: searx/templates/simple/preferences/image_proxy.html:14
-msgid "Proxying image results through SearXNG"
-msgstr "Trimitere prin proxy a rezultatelor imagini prin SearXNG"
+msgid "Proxy image results through SearXNG"
+msgstr ""
 
 #: searx/templates/simple/preferences/infinite_scroll.html:2
 msgid "Infinite scroll"
 msgstr "Derulare infinită"
 
 #: searx/templates/simple/preferences/infinite_scroll.html:14
-msgid "Automatically load next page when scrolling to bottom of current page"
-msgstr "Încarcă automat pagina următoare când se derulează la baza paginii curente"
+msgid ""
+"Automatically load the next page when scrolling to the bottom of the "
+"current page"
+msgstr ""
 
 #: searx/templates/simple/preferences/language.html:24
 msgid "What language do you prefer for search?"
@@ -1590,19 +1583,17 @@ msgstr "Caută la selectarea categoriei"
 
 #: searx/templates/simple/preferences/search_on_category_select.html:14
 msgid ""
-"Perform search immediately if a category selected. Disable to select "
-"multiple categories"
+"Perform a search immediately if a category is selected. Disable to select"
+" multiple categories"
 msgstr ""
-"Efectuează căutarea imediat dacă este selectată o categorie. Dezactivat "
-"pentru a selecta mai multe categorii"
 
 #: searx/templates/simple/preferences/theme.html:2
 msgid "Theme"
 msgstr "Temă"
 
 #: searx/templates/simple/preferences/theme.html:14
-msgid "Change SearXNG layout"
-msgstr "Schimbă aspectul la SearXNG"
+msgid "Change the layout of SearXNG"
+msgstr ""
 
 #: searx/templates/simple/preferences/theme.html:19
 msgid "Theme style"
@@ -2050,7 +2041,7 @@ msgstr "ascunde video"
 #~ msgstr ""
 
 #~ msgid "Displays results in the center of the page (Oscar layout)."
-#~ msgstr ""
+#~ msgstr "Afișează rezultatele pe centrul paginii (amplasare Oscar)."
 
 #~ msgid "preferences"
 #~ msgstr "preferințe"
@@ -2354,3 +2345,55 @@ msgstr "ascunde video"
 
 #~ msgid "Converts strings to different hash digests."
 #~ msgstr "Convertește șirurile în diferite rezumate hash."
+
+#~ msgid ""
+#~ "Rewrite hostnames, remove results or "
+#~ "prioritize them based on the hostname"
+#~ msgstr ""
+#~ "Rescrieți hostnames, eliminați rezultatele sau"
+#~ " prioritizați-le pe baza numelui "
+#~ "hostname"
+
+#~ msgid "With that list, you can assess SearXNG transparency."
+#~ msgstr "Cu această listă, puteți evalua transparența SearXNG."
+
+#~ msgid ""
+#~ "These settings are stored in your "
+#~ "cookies, this allows us not to "
+#~ "store this data about you."
+#~ msgstr ""
+#~ "Aceste configurări sunt stocate în "
+#~ "cookie-uri, ceea ce ne permite să "
+#~ "nu stocăm aceste date despre "
+#~ "dumeavoastră."
+
+#~ msgid ""
+#~ "These cookies serve your sole "
+#~ "convenience, we don't use these cookies"
+#~ " to track you."
+#~ msgstr ""
+#~ "Aceste cookie-uri servesc doar pentru"
+#~ " conveniența dumneavoastră, noi nu stocăm"
+#~ " aceste cookie-uri pentru a vă "
+#~ "urmări."
+
+#~ msgid "Proxying image results through SearXNG"
+#~ msgstr "Trimitere prin proxy a rezultatelor imagini prin SearXNG"
+
+#~ msgid "Automatically load next page when scrolling to bottom of current page"
+#~ msgstr ""
+#~ "Încarcă automat pagina următoare când se"
+#~ " derulează la baza paginii curente"
+
+#~ msgid ""
+#~ "Perform search immediately if a category"
+#~ " selected. Disable to select multiple "
+#~ "categories"
+#~ msgstr ""
+#~ "Efectuează căutarea imediat dacă este "
+#~ "selectată o categorie. Dezactivat pentru "
+#~ "a selecta mai multe categorii"
+
+#~ msgid "Change SearXNG layout"
+#~ msgstr "Schimbă aspectul la SearXNG"
+

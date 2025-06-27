@@ -22,9 +22,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-06-13 02:39+0000\n"
-"PO-Revision-Date: 2025-05-27 03:58+0000\n"
-"Last-Translator: artnay <artnay@noreply.codeberg.org>\n"
+"POT-Creation-Date: 2025-06-23 21:05+0000\n"
+"PO-Revision-Date: 2025-06-22 17:06+0000\n"
+"Last-Translator: return42 <return42@noreply.codeberg.org>\n"
 "Language: fi\n"
 "Language-Team: Finnish "
 "<https://translate.codeberg.org/projects/searxng/searxng/fi/>\n"
@@ -765,10 +765,8 @@ msgid "Hostnames plugin"
 msgstr "Isäntänimien liitännäinen"
 
 #: searx/plugins/hostnames.py:124
-msgid "Rewrite hostnames, remove results or prioritize them based on the hostname"
+msgid "Rewrite hostnames and remove or prioritize results based on the hostname"
 msgstr ""
-"Kirjoita isäntänimiä uudelleen, poista tuloksia tai priorisoi ne "
-"isäntänimen perusteella"
 
 #: searx/plugins/oa_doi_rewrite.py:55
 msgid "Open Access DOI rewrite"
@@ -827,11 +825,11 @@ msgstr "Käytät Toria ja näyttää siltä, että sinulla on ulkoinen IP-osoite
 msgid "You are not using Tor and you have the external IP address"
 msgstr "Et käytä Toria ja sinulla on ulkoinen IP-osoite"
 
-#: searx/plugins/tracker_url_remover.py:37
+#: searx/plugins/tracker_url_remover.py:35
 msgid "Tracker URL remover"
 msgstr "Seurantapalvelimen osoitteen poistaja"
 
-#: searx/plugins/tracker_url_remover.py:38
+#: searx/plugins/tracker_url_remover.py:36
 msgid "Remove trackers arguments from the returned URL"
 msgstr "Poista seurantapalvelinten argumentit palautetusta osoitteesta"
 
@@ -846,7 +844,7 @@ msgstr "Muunna yksiköiden välillä"
 #: searx/result_types/answer.py:224
 #, python-brace-format
 msgid "{location}: {temperature}, {condition}"
-msgstr ""
+msgstr "{location}: {temperature}, {condition}"
 
 #: searx/templates/simple/404.html:4
 msgid "Page not found"
@@ -1351,8 +1349,8 @@ msgid "Center Alignment"
 msgstr "Keskipisteen kohdistus"
 
 #: searx/templates/simple/preferences/center_alignment.html:14
-msgid "Displays results in the center of the page (Oscar layout)."
-msgstr "Näyttää tulokset sivun keskellä (Oscar-asettelu)."
+msgid "Display results in the center of the page (Oscar layout)."
+msgstr ""
 
 #: searx/templates/simple/preferences/cookies.html:2
 msgid ""
@@ -1363,8 +1361,8 @@ msgstr ""
 "tietokoneellesi."
 
 #: searx/templates/simple/preferences/cookies.html:3
-msgid "With that list, you can assess SearXNG transparency."
-msgstr "Tämän luettelon avulla voit arvioida SearXNG:n läpinäkyvyyttä."
+msgid "With this list, you can assess the transparency of SearXNG."
+msgstr ""
 
 #: searx/templates/simple/preferences/cookies.html:9
 msgid "Cookie name"
@@ -1463,19 +1461,13 @@ msgstr "Näytä Faviconit hakutulosten lähellä"
 
 #: searx/templates/simple/preferences/footer.html:2
 msgid ""
-"These settings are stored in your cookies, this allows us not to store "
+"These settings are stored in your cookies. This allows us not to store "
 "this data about you."
 msgstr ""
-"Nämä asetukset tallennetaan evästeisiisi. Näin Searxin ei tarvitse "
-"tallentaa sinuun liittyviä henkilökohtaisia tietoja."
 
 #: searx/templates/simple/preferences/footer.html:3
-msgid ""
-"These cookies serve your sole convenience, we don't use these cookies to "
-"track you."
+msgid "These cookies serve your sole convenience; we don't use them to track you."
 msgstr ""
-"Kyseiset evästeet palvelevat ainoastaan sinua, eikä niitä käytetä "
-"seuraamiseesi."
 
 #: searx/templates/simple/preferences/footer.html:6
 msgid "Save"
@@ -1510,16 +1502,18 @@ msgid "Image proxy"
 msgstr "Kuvat välityspalvelimen kautta"
 
 #: searx/templates/simple/preferences/image_proxy.html:14
-msgid "Proxying image results through SearXNG"
-msgstr "Kuvatulosten välitys SearXNG:n kautta"
+msgid "Proxy image results through SearXNG"
+msgstr ""
 
 #: searx/templates/simple/preferences/infinite_scroll.html:2
 msgid "Infinite scroll"
 msgstr "Loputon vieritys"
 
 #: searx/templates/simple/preferences/infinite_scroll.html:14
-msgid "Automatically load next page when scrolling to bottom of current page"
-msgstr "Lataa automaattisesti seuraava sivu, kun nykyisen sivun loppu saavutetaan"
+msgid ""
+"Automatically load the next page when scrolling to the bottom of the "
+"current page"
+msgstr ""
 
 #: searx/templates/simple/preferences/language.html:24
 msgid "What language do you prefer for search?"
@@ -1569,19 +1563,17 @@ msgstr "Etsi valitsemalla luokka"
 
 #: searx/templates/simple/preferences/search_on_category_select.html:14
 msgid ""
-"Perform search immediately if a category selected. Disable to select "
-"multiple categories"
+"Perform a search immediately if a category is selected. Disable to select"
+" multiple categories"
 msgstr ""
-"Suorita haku välittömästi, jos luokka on valittu. Poista käytöstä "
-"valitaksesi useita luokkia"
 
 #: searx/templates/simple/preferences/theme.html:2
 msgid "Theme"
 msgstr "Teema"
 
 #: searx/templates/simple/preferences/theme.html:14
-msgid "Change SearXNG layout"
-msgstr "Vaihda SearXNG:n käyttöliittymä"
+msgid "Change the layout of SearXNG"
+msgstr ""
 
 #: searx/templates/simple/preferences/theme.html:19
 msgid "Theme style"
@@ -2030,7 +2022,7 @@ msgstr "piilota video"
 #~ msgstr ""
 
 #~ msgid "Displays results in the center of the page (Oscar layout)."
-#~ msgstr ""
+#~ msgstr "Näyttää tulokset sivun keskellä (Oscar-asettelu)."
 
 #~ msgid "preferences"
 #~ msgstr "asetukset"
@@ -2325,4 +2317,52 @@ msgstr "piilota video"
 
 #~ msgid "Converts strings to different hash digests."
 #~ msgstr "Muuntaa merkkijonot erilaisiksi hash-digesteiksi."
+
+#~ msgid ""
+#~ "Rewrite hostnames, remove results or "
+#~ "prioritize them based on the hostname"
+#~ msgstr ""
+#~ "Kirjoita isäntänimiä uudelleen, poista "
+#~ "tuloksia tai priorisoi ne isäntänimen "
+#~ "perusteella"
+
+#~ msgid "With that list, you can assess SearXNG transparency."
+#~ msgstr "Tämän luettelon avulla voit arvioida SearXNG:n läpinäkyvyyttä."
+
+#~ msgid ""
+#~ "These settings are stored in your "
+#~ "cookies, this allows us not to "
+#~ "store this data about you."
+#~ msgstr ""
+#~ "Nämä asetukset tallennetaan evästeisiisi. Näin"
+#~ " Searxin ei tarvitse tallentaa sinuun "
+#~ "liittyviä henkilökohtaisia tietoja."
+
+#~ msgid ""
+#~ "These cookies serve your sole "
+#~ "convenience, we don't use these cookies"
+#~ " to track you."
+#~ msgstr ""
+#~ "Kyseiset evästeet palvelevat ainoastaan sinua,"
+#~ " eikä niitä käytetä seuraamiseesi."
+
+#~ msgid "Proxying image results through SearXNG"
+#~ msgstr "Kuvatulosten välitys SearXNG:n kautta"
+
+#~ msgid "Automatically load next page when scrolling to bottom of current page"
+#~ msgstr ""
+#~ "Lataa automaattisesti seuraava sivu, kun "
+#~ "nykyisen sivun loppu saavutetaan"
+
+#~ msgid ""
+#~ "Perform search immediately if a category"
+#~ " selected. Disable to select multiple "
+#~ "categories"
+#~ msgstr ""
+#~ "Suorita haku välittömästi, jos luokka on"
+#~ " valittu. Poista käytöstä valitaksesi "
+#~ "useita luokkia"
+
+#~ msgid "Change SearXNG layout"
+#~ msgstr "Vaihda SearXNG:n käyttöliittymä"
 

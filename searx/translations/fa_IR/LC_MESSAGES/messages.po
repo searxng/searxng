@@ -28,9 +28,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-06-13 02:39+0000\n"
-"PO-Revision-Date: 2025-05-06 12:53+0000\n"
-"Last-Translator: ehsanrs2 <ehsanrs2@noreply.codeberg.org>\n"
+"POT-Creation-Date: 2025-06-23 21:05+0000\n"
+"PO-Revision-Date: 2025-06-22 17:06+0000\n"
+"Last-Translator: return42 <return42@noreply.codeberg.org>\n"
 "Language: fa_IR\n"
 "Language-Team: Persian "
 "<https://translate.codeberg.org/projects/searxng/searxng/fa/>\n"
@@ -771,8 +771,8 @@ msgid "Hostnames plugin"
 msgstr "افزونه های نام دامنه"
 
 #: searx/plugins/hostnames.py:124
-msgid "Rewrite hostnames, remove results or prioritize them based on the hostname"
-msgstr "بازنویسی نام‌های دامنه، حذف نتایج یا مرتب کردن آن‌ها بر اساس نام دامنه"
+msgid "Rewrite hostnames and remove or prioritize results based on the hostname"
+msgstr ""
 
 #: searx/plugins/oa_doi_rewrite.py:55
 msgid "Open Access DOI rewrite"
@@ -831,11 +831,11 @@ msgstr "شما در حال استفاده از تور هستید و به نظر 
 msgid "You are not using Tor and you have the external IP address"
 msgstr "شما از تور استفاده نمی‌کنید و آی‌پی خارجی دارید"
 
-#: searx/plugins/tracker_url_remover.py:37
+#: searx/plugins/tracker_url_remover.py:35
 msgid "Tracker URL remover"
 msgstr "حذف کننده URL ردیاب"
 
-#: searx/plugins/tracker_url_remover.py:38
+#: searx/plugins/tracker_url_remover.py:36
 msgid "Remove trackers arguments from the returned URL"
 msgstr "آرگومان های ردیاب ها را از URL برگشتی حذف کنید"
 
@@ -850,7 +850,7 @@ msgstr "تبدیل بین واحد‌ها"
 #: searx/result_types/answer.py:224
 #, python-brace-format
 msgid "{location}: {temperature}, {condition}"
-msgstr ""
+msgstr "{location}: {temperature}, {condition}"
 
 #: searx/templates/simple/404.html:4
 msgid "Page not found"
@@ -1355,8 +1355,8 @@ msgid "Center Alignment"
 msgstr "وسط چین"
 
 #: searx/templates/simple/preferences/center_alignment.html:14
-msgid "Displays results in the center of the page (Oscar layout)."
-msgstr "نمایش نتایج در مرکز صفحه(طرح بندی اسکار)."
+msgid "Display results in the center of the page (Oscar layout)."
+msgstr ""
 
 #: searx/templates/simple/preferences/cookies.html:2
 msgid ""
@@ -1365,8 +1365,8 @@ msgid ""
 msgstr "این فهرست کلوچک‌ها و مقدارهایی است که SearXNG در رایانهٔ شما نگه می‌دارد."
 
 #: searx/templates/simple/preferences/cookies.html:3
-msgid "With that list, you can assess SearXNG transparency."
-msgstr "با این فهرست، می‌توانید شفافیت SearXNG را بیازمایید."
+msgid "With this list, you can assess the transparency of SearXNG."
+msgstr ""
 
 #: searx/templates/simple/preferences/cookies.html:9
 msgid "Cookie name"
@@ -1464,19 +1464,13 @@ msgstr ""
 
 #: searx/templates/simple/preferences/footer.html:2
 msgid ""
-"These settings are stored in your cookies, this allows us not to store "
+"These settings are stored in your cookies. This allows us not to store "
 "this data about you."
 msgstr ""
-"این تنظیمات در کلوچک‌های شما ذخیره می‌شوند و به ما توانایی ذخیرهٔ این "
-"دادهٔ مربوط به شما را نداریم."
 
 #: searx/templates/simple/preferences/footer.html:3
-msgid ""
-"These cookies serve your sole convenience, we don't use these cookies to "
-"track you."
+msgid "These cookies serve your sole convenience; we don't use them to track you."
 msgstr ""
-"این کلوچک‌ها تنها برای آسودگی شما هستند و ما از این کلوچک‌ها برای ردیابی "
-"شما استفاده نمی‌کنیم."
 
 #: searx/templates/simple/preferences/footer.html:6
 msgid "Save"
@@ -1511,16 +1505,18 @@ msgid "Image proxy"
 msgstr "پروکسی تصویر"
 
 #: searx/templates/simple/preferences/image_proxy.html:14
-msgid "Proxying image results through SearXNG"
-msgstr "گذر تصویر از پروکسی به‌وسیلهٔ SearXNG"
+msgid "Proxy image results through SearXNG"
+msgstr ""
 
 #: searx/templates/simple/preferences/infinite_scroll.html:2
 msgid "Infinite scroll"
 msgstr "پایین رفتن بی‌پایان"
 
 #: searx/templates/simple/preferences/infinite_scroll.html:14
-msgid "Automatically load next page when scrolling to bottom of current page"
-msgstr "هنگام پیمایش به پایین صفحه فعلی، صفحه بعدی به صورت خودکار بارگیری می شود"
+msgid ""
+"Automatically load the next page when scrolling to the bottom of the "
+"current page"
+msgstr ""
 
 #: searx/templates/simple/preferences/language.html:24
 msgid "What language do you prefer for search?"
@@ -1568,19 +1564,17 @@ msgstr "جست‌وجو در انتخاب دسته بندی"
 
 #: searx/templates/simple/preferences/search_on_category_select.html:14
 msgid ""
-"Perform search immediately if a category selected. Disable to select "
-"multiple categories"
+"Perform a search immediately if a category is selected. Disable to select"
+" multiple categories"
 msgstr ""
-"انجام دادن جست‌وجو درجا درصورت انتخاب یک دسته بندی. برای انتخاب بیش از یک"
-" دسته بندی غیر فعال کنید"
 
 #: searx/templates/simple/preferences/theme.html:2
 msgid "Theme"
 msgstr "پوسته"
 
 #: searx/templates/simple/preferences/theme.html:14
-msgid "Change SearXNG layout"
-msgstr "تغییر طرح‌بندی SearXNG"
+msgid "Change the layout of SearXNG"
+msgstr ""
 
 #: searx/templates/simple/preferences/theme.html:19
 msgid "Theme style"
@@ -2028,7 +2022,7 @@ msgstr "پنهان‌سازی ویدئو"
 #~ msgstr ""
 
 #~ msgid "Displays results in the center of the page (Oscar layout)."
-#~ msgstr ""
+#~ msgstr "نمایش نتایج در مرکز صفحه(طرح بندی اسکار)."
 
 #~ msgid "preferences"
 #~ msgstr "پیش‌فرض‌ها"
@@ -2324,4 +2318,51 @@ msgstr "پنهان‌سازی ویدئو"
 
 #~ msgid "Converts strings to different hash digests."
 #~ msgstr "رشته‌ها را به چکیده‌های هش تبدیل می‌کند."
+
+#~ msgid ""
+#~ "Rewrite hostnames, remove results or "
+#~ "prioritize them based on the hostname"
+#~ msgstr "بازنویسی نام‌های دامنه، حذف نتایج یا مرتب کردن آن‌ها بر اساس نام دامنه"
+
+#~ msgid "With that list, you can assess SearXNG transparency."
+#~ msgstr "با این فهرست، می‌توانید شفافیت SearXNG را بیازمایید."
+
+#~ msgid ""
+#~ "These settings are stored in your "
+#~ "cookies, this allows us not to "
+#~ "store this data about you."
+#~ msgstr ""
+#~ "این تنظیمات در کلوچک‌های شما ذخیره "
+#~ "می‌شوند و به ما توانایی ذخیرهٔ این"
+#~ " دادهٔ مربوط به شما را نداریم."
+
+#~ msgid ""
+#~ "These cookies serve your sole "
+#~ "convenience, we don't use these cookies"
+#~ " to track you."
+#~ msgstr ""
+#~ "این کلوچک‌ها تنها برای آسودگی شما "
+#~ "هستند و ما از این کلوچک‌ها برای"
+#~ " ردیابی شما استفاده نمی‌کنیم."
+
+#~ msgid "Proxying image results through SearXNG"
+#~ msgstr "گذر تصویر از پروکسی به‌وسیلهٔ SearXNG"
+
+#~ msgid "Automatically load next page when scrolling to bottom of current page"
+#~ msgstr ""
+#~ "هنگام پیمایش به پایین صفحه فعلی، "
+#~ "صفحه بعدی به صورت خودکار بارگیری "
+#~ "می شود"
+
+#~ msgid ""
+#~ "Perform search immediately if a category"
+#~ " selected. Disable to select multiple "
+#~ "categories"
+#~ msgstr ""
+#~ "انجام دادن جست‌وجو درجا درصورت انتخاب"
+#~ " یک دسته بندی. برای انتخاب بیش "
+#~ "از یک دسته بندی غیر فعال کنید"
+
+#~ msgid "Change SearXNG layout"
+#~ msgstr "تغییر طرح‌بندی SearXNG"
 

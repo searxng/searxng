@@ -25,13 +25,14 @@
 # Eshan-K-I <eshan-k-i@users.noreply.translate.codeberg.org>, 2025.
 # rajeeban <rajeeban@users.noreply.translate.codeberg.org>, 2025.
 # prashere <prashere@noreply.codeberg.org>, 2025.
+# return42 <return42@noreply.codeberg.org>, 2025.
 msgid ""
 msgstr ""
 "Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-06-13 02:39+0000\n"
-"PO-Revision-Date: 2025-04-22 10:45+0000\n"
-"Last-Translator: prashere <prashere@noreply.codeberg.org>\n"
+"POT-Creation-Date: 2025-06-23 21:05+0000\n"
+"PO-Revision-Date: 2025-06-22 17:06+0000\n"
+"Last-Translator: return42 <return42@noreply.codeberg.org>\n"
 "Language: ta\n"
 "Language-Team: Tamil "
 "<https://translate.codeberg.org/projects/searxng/searxng/ta/>\n"
@@ -773,7 +774,7 @@ msgid "Hostnames plugin"
 msgstr ""
 
 #: searx/plugins/hostnames.py:124
-msgid "Rewrite hostnames, remove results or prioritize them based on the hostname"
+msgid "Rewrite hostnames and remove or prioritize results based on the hostname"
 msgstr ""
 
 #: searx/plugins/oa_doi_rewrite.py:55
@@ -831,11 +832,11 @@ msgstr ""
 msgid "You are not using Tor and you have the external IP address"
 msgstr ""
 
-#: searx/plugins/tracker_url_remover.py:37
+#: searx/plugins/tracker_url_remover.py:35
 msgid "Tracker URL remover"
 msgstr "உளவுப் பார்க்கும் வலைதள முகவரி நீக்கி"
 
-#: searx/plugins/tracker_url_remover.py:38
+#: searx/plugins/tracker_url_remover.py:36
 msgid "Remove trackers arguments from the returned URL"
 msgstr ""
 "உங்களை உளவு பார்த்து பின்தொடர பயன்படும் எழுத்துக்களை வலைதள "
@@ -852,7 +853,7 @@ msgstr "அலகுகளுக்கு இடையில் மாற்ற�
 #: searx/result_types/answer.py:224
 #, python-brace-format
 msgid "{location}: {temperature}, {condition}"
-msgstr ""
+msgstr "{location}: {temperature}, {condition}"
 
 #: searx/templates/simple/404.html:4
 msgid "Page not found"
@@ -1357,7 +1358,7 @@ msgid "Center Alignment"
 msgstr ""
 
 #: searx/templates/simple/preferences/center_alignment.html:14
-msgid "Displays results in the center of the page (Oscar layout)."
+msgid "Display results in the center of the page (Oscar layout)."
 msgstr ""
 
 #: searx/templates/simple/preferences/cookies.html:2
@@ -1369,8 +1370,8 @@ msgstr ""
 "அவற்றின் மதிப்புகள்."
 
 #: searx/templates/simple/preferences/cookies.html:3
-msgid "With that list, you can assess SearXNG transparency."
-msgstr "அந்த பட்டியலின் மூலம், நீங்கள் SearXNG வெளிப்படைத்தன்மையை மதிப்பிடலாம்."
+msgid "With this list, you can assess the transparency of SearXNG."
+msgstr ""
 
 #: searx/templates/simple/preferences/cookies.html:9
 msgid "Cookie name"
@@ -1466,19 +1467,13 @@ msgstr ""
 
 #: searx/templates/simple/preferences/footer.html:2
 msgid ""
-"These settings are stored in your cookies, this allows us not to store "
+"These settings are stored in your cookies. This allows us not to store "
 "this data about you."
 msgstr ""
-"இந்த அமைப்புகள் உங்கள் குக்கீகளில் சேமிக்கப்பட்டுள்ளன, இது உங்களைப் "
-"பற்றிய இந்தத் தரவைச் சேமிக்காமல் இருக்க அனுமதிக்கிறது."
 
 #: searx/templates/simple/preferences/footer.html:3
-msgid ""
-"These cookies serve your sole convenience, we don't use these cookies to "
-"track you."
+msgid "These cookies serve your sole convenience; we don't use them to track you."
 msgstr ""
-"இந்த நினைவிகள் உங்களின் வசதிக்காக மட்டுமே. இந்த நினைவிகள் உங்களை உளவு "
-"பார்க்காது."
 
 #: searx/templates/simple/preferences/footer.html:6
 msgid "Save"
@@ -1511,16 +1506,18 @@ msgid "Image proxy"
 msgstr "பட நிகராளி"
 
 #: searx/templates/simple/preferences/image_proxy.html:14
-msgid "Proxying image results through SearXNG"
-msgstr "SearXNG மூலம் படத்தின் முடிவுகளைப் பதிலீடு செய்கிறது"
+msgid "Proxy image results through SearXNG"
+msgstr ""
 
 #: searx/templates/simple/preferences/infinite_scroll.html:2
 msgid "Infinite scroll"
 msgstr "தொடர் பட்டியல்"
 
 #: searx/templates/simple/preferences/infinite_scroll.html:14
-msgid "Automatically load next page when scrolling to bottom of current page"
-msgstr "பக்கத்தின் முடிவை அடைந்தவுடன் தானாக அடுத்த பக்கததிற்கு செல்லவும்"
+msgid ""
+"Automatically load the next page when scrolling to the bottom of the "
+"current page"
+msgstr ""
 
 #: searx/templates/simple/preferences/language.html:24
 msgid "What language do you prefer for search?"
@@ -1568,8 +1565,8 @@ msgstr "தேர்ந்தெடுத்தப் பிரிவில் �
 
 #: searx/templates/simple/preferences/search_on_category_select.html:14
 msgid ""
-"Perform search immediately if a category selected. Disable to select "
-"multiple categories"
+"Perform a search immediately if a category is selected. Disable to select"
+" multiple categories"
 msgstr ""
 
 #: searx/templates/simple/preferences/theme.html:2
@@ -1577,8 +1574,8 @@ msgid "Theme"
 msgstr "தீம்"
 
 #: searx/templates/simple/preferences/theme.html:14
-msgid "Change SearXNG layout"
-msgstr "SearXNG தளவமைப்பை மாற்றவும்"
+msgid "Change the layout of SearXNG"
+msgstr ""
 
 #: searx/templates/simple/preferences/theme.html:19
 msgid "Theme style"
@@ -2297,4 +2294,44 @@ msgstr "காணொளிகளை மறை"
 
 #~ msgid "Converts strings to different hash digests."
 #~ msgstr "சரங்களை வெவ்வேறு ஹாஷ் டைஜெஸ்ட்களாக மாற்றுகிறது."
+
+#~ msgid ""
+#~ "Rewrite hostnames, remove results or "
+#~ "prioritize them based on the hostname"
+#~ msgstr ""
+
+#~ msgid "With that list, you can assess SearXNG transparency."
+#~ msgstr "அந்த பட்டியலின் மூலம், நீங்கள் SearXNG வெளிப்படைத்தன்மையை மதிப்பிடலாம்."
+
+#~ msgid ""
+#~ "These settings are stored in your "
+#~ "cookies, this allows us not to "
+#~ "store this data about you."
+#~ msgstr ""
+#~ "இந்த அமைப்புகள் உங்கள் குக்கீகளில் "
+#~ "சேமிக்கப்பட்டுள்ளன, இது உங்களைப் பற்றிய இந்தத்"
+#~ " தரவைச் சேமிக்காமல் இருக்க அனுமதிக்கிறது."
+
+#~ msgid ""
+#~ "These cookies serve your sole "
+#~ "convenience, we don't use these cookies"
+#~ " to track you."
+#~ msgstr ""
+#~ "இந்த நினைவிகள் உங்களின் வசதிக்காக மட்டுமே. "
+#~ "இந்த நினைவிகள் உங்களை உளவு பார்க்காது."
+
+#~ msgid "Proxying image results through SearXNG"
+#~ msgstr "SearXNG மூலம் படத்தின் முடிவுகளைப் பதிலீடு செய்கிறது"
+
+#~ msgid "Automatically load next page when scrolling to bottom of current page"
+#~ msgstr "பக்கத்தின் முடிவை அடைந்தவுடன் தானாக அடுத்த பக்கததிற்கு செல்லவும்"
+
+#~ msgid ""
+#~ "Perform search immediately if a category"
+#~ " selected. Disable to select multiple "
+#~ "categories"
+#~ msgstr ""
+
+#~ msgid "Change SearXNG layout"
+#~ msgstr "SearXNG தளவமைப்பை மாற்றவும்"
 

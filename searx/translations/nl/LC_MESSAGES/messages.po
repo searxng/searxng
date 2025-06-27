@@ -36,13 +36,14 @@
 # microsoftocsharp <microsoftocsharp@users.noreply.translate.codeberg.org>,
 # return42 <return42@noreply.codeberg.org>, 2025.
 # artens <artens@noreply.codeberg.org>, 2025.
+# SecularSteve <secularsteve@noreply.codeberg.org>, 2025.
 msgid ""
 msgstr ""
 "Project-Id-Version: searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-06-13 02:39+0000\n"
-"PO-Revision-Date: 2025-06-17 06:58+0000\n"
-"Last-Translator: artens <artens@noreply.codeberg.org>\n"
+"POT-Creation-Date: 2025-06-23 21:05+0000\n"
+"PO-Revision-Date: 2025-06-24 13:04+0000\n"
+"Last-Translator: SecularSteve <secularsteve@noreply.codeberg.org>\n"
 "Language-Team: Dutch <https://translate.codeberg.org/projects/searxng/"
 "searxng/nl/>\n"
 "Language: nl\n"
@@ -775,8 +776,8 @@ msgid ""
 "Converts strings to different hash digests. Available functions: md5, "
 "sha1, sha224, sha256, sha384, sha512."
 msgstr ""
-"Zet inhoud om naar hash-waarden. Beschikbare functies: md5, sha1, sha224, "
-"sha256, sha384, sha512."
+"Zet inhoud om naar hash-waarden. Beschikbare functies: md5, sha1, sha224,"
+" sha256, sha384, sha512."
 
 #: searx/plugins/hash_plugin.py:64
 msgid "hash digest"
@@ -787,10 +788,10 @@ msgid "Hostnames plugin"
 msgstr "Hostnamen plug-in"
 
 #: searx/plugins/hostnames.py:124
-msgid "Rewrite hostnames, remove results or prioritize them based on the hostname"
+msgid "Rewrite hostnames and remove or prioritize results based on the hostname"
 msgstr ""
-"Hernoem hostnamen, verwijder resultaten of geef prioriteit aan op basis "
-"van de hostnaam"
+"Hostnamen herschrijven en resultaten verwijderen of prioriteit geven op "
+"basis van de hostnaam"
 
 #: searx/plugins/oa_doi_rewrite.py:55
 msgid "Open Access DOI rewrite"
@@ -849,11 +850,11 @@ msgstr "Je gebruikt Tor en het lijkt er op dat het externe IP adres is"
 msgid "You are not using Tor and you have the external IP address"
 msgstr "Je gebruikt geen Tor en hebt het externe IP adres"
 
-#: searx/plugins/tracker_url_remover.py:37
+#: searx/plugins/tracker_url_remover.py:35
 msgid "Tracker URL remover"
 msgstr "Tracker-URL-verwijderaar"
 
-#: searx/plugins/tracker_url_remover.py:38
+#: searx/plugins/tracker_url_remover.py:36
 msgid "Remove trackers arguments from the returned URL"
 msgstr "Verwijdert trackerargumenten van de gekregen URL"
 
@@ -1375,8 +1376,8 @@ msgid "Center Alignment"
 msgstr "Centreren"
 
 #: searx/templates/simple/preferences/center_alignment.html:14
-msgid "Displays results in the center of the page (Oscar layout)."
-msgstr "Laat de resultaten gecentreerd op de pagina zien (Oscar layout)."
+msgid "Display results in the center of the page (Oscar layout)."
+msgstr "Resultaten in het midden van de pagina weergeven (Oscar opmaak)."
 
 #: searx/templates/simple/preferences/cookies.html:2
 msgid ""
@@ -1387,8 +1388,8 @@ msgstr ""
 "opslaat."
 
 #: searx/templates/simple/preferences/cookies.html:3
-msgid "With that list, you can assess SearXNG transparency."
-msgstr "Met die lijst kan je de transparantie van SearXNG beoordelen."
+msgid "With this list, you can assess the transparency of SearXNG."
+msgstr "Met deze lijst kunt u de transparantie van SearXNG beoordelen."
 
 #: searx/templates/simple/preferences/cookies.html:9
 msgid "Cookie name"
@@ -1491,19 +1492,17 @@ msgstr "Toon favicons naast zoekresultaten"
 
 #: searx/templates/simple/preferences/footer.html:2
 msgid ""
-"These settings are stored in your cookies, this allows us not to store "
+"These settings are stored in your cookies. This allows us not to store "
 "this data about you."
 msgstr ""
-"Deze instellingen worden bewaard in je cookies. Hierdoor hoeven wij niets"
-" over jou te bewaren."
+"Deze instellingen worden opgeslagen in uw koekjes. Hierdoor kunnen we deze "
+"gegevens niet over u opslaan."
 
 #: searx/templates/simple/preferences/footer.html:3
-msgid ""
-"These cookies serve your sole convenience, we don't use these cookies to "
-"track you."
+msgid "These cookies serve your sole convenience; we don't use them to track you."
 msgstr ""
-"Deze cookies zijn alleen voor je eigen gemak, we gebruiken deze cookies "
-"niet om je te volgen."
+"Deze koekjes dienen uitsluitend uw gemak; wij gebruiken ze niet om u te "
+"volgen."
 
 #: searx/templates/simple/preferences/footer.html:6
 msgid "Save"
@@ -1538,18 +1537,20 @@ msgid "Image proxy"
 msgstr "Afbeeldingenproxy"
 
 #: searx/templates/simple/preferences/image_proxy.html:14
-msgid "Proxying image results through SearXNG"
-msgstr "Gebruik SearXNG als Afbeeldingsresultaten proxy"
+msgid "Proxy image results through SearXNG"
+msgstr "Proxy-afbeeldingsresultaten via SearXNG"
 
 #: searx/templates/simple/preferences/infinite_scroll.html:2
 msgid "Infinite scroll"
 msgstr "Oneindige lijst"
 
 #: searx/templates/simple/preferences/infinite_scroll.html:14
-msgid "Automatically load next page when scrolling to bottom of current page"
+msgid ""
+"Automatically load the next page when scrolling to the bottom of the "
+"current page"
 msgstr ""
-"Volgende pagina automatisch laden bij bereiken van onderkant huidige "
-"pagina"
+"Automatisch de volgende pagina laden als u naar de onderkant van de huidige "
+"pagina bladert"
 
 #: searx/templates/simple/preferences/language.html:24
 msgid "What language do you prefer for search?"
@@ -1599,19 +1600,19 @@ msgstr "Zoeken bij selecteren van categorie"
 
 #: searx/templates/simple/preferences/search_on_category_select.html:14
 msgid ""
-"Perform search immediately if a category selected. Disable to select "
-"multiple categories"
+"Perform a search immediately if a category is selected. Disable to select"
+" multiple categories"
 msgstr ""
-"Voer zoekopdracht direct uit wanneer categorie wordt geselecteerd. "
-"Schakel functie uit om meerdere categorieën te selecteren"
+"Voer onmiddellijk een zoekopdracht uit als een categorie is geselecteerd. "
+"Uitschakelen om meerdere categorieën te selecteren"
 
 #: searx/templates/simple/preferences/theme.html:2
 msgid "Theme"
 msgstr "Thema"
 
 #: searx/templates/simple/preferences/theme.html:14
-msgid "Change SearXNG layout"
-msgstr "Verander lay-out van SearXNG"
+msgid "Change the layout of SearXNG"
+msgstr "De opmaak van SearXNG wijzigen"
 
 #: searx/templates/simple/preferences/theme.html:19
 msgid "Theme style"
@@ -2059,7 +2060,7 @@ msgstr "verberg video"
 #~ msgstr ""
 
 #~ msgid "Displays results in the center of the page (Oscar layout)."
-#~ msgstr ""
+#~ msgstr "Laat de resultaten gecentreerd op de pagina zien (Oscar layout)."
 
 #~ msgid "preferences"
 #~ msgstr "voorkeuren"
@@ -2369,3 +2370,53 @@ msgstr "verberg video"
 #~ msgstr ""
 #~ "Zet tekstwaarden om naar verschillende "
 #~ "soorten validatiewaarden (hashes)."
+
+#~ msgid ""
+#~ "Rewrite hostnames, remove results or "
+#~ "prioritize them based on the hostname"
+#~ msgstr ""
+#~ "Hernoem hostnamen, verwijder resultaten of "
+#~ "geef prioriteit aan op basis van "
+#~ "de hostnaam"
+
+#~ msgid "With that list, you can assess SearXNG transparency."
+#~ msgstr "Met die lijst kan je de transparantie van SearXNG beoordelen."
+
+#~ msgid ""
+#~ "These settings are stored in your "
+#~ "cookies, this allows us not to "
+#~ "store this data about you."
+#~ msgstr ""
+#~ "Deze instellingen worden bewaard in je"
+#~ " cookies. Hierdoor hoeven wij niets "
+#~ "over jou te bewaren."
+
+#~ msgid ""
+#~ "These cookies serve your sole "
+#~ "convenience, we don't use these cookies"
+#~ " to track you."
+#~ msgstr ""
+#~ "Deze cookies zijn alleen voor je "
+#~ "eigen gemak, we gebruiken deze cookies"
+#~ " niet om je te volgen."
+
+#~ msgid "Proxying image results through SearXNG"
+#~ msgstr "Gebruik SearXNG als Afbeeldingsresultaten proxy"
+
+#~ msgid "Automatically load next page when scrolling to bottom of current page"
+#~ msgstr ""
+#~ "Volgende pagina automatisch laden bij "
+#~ "bereiken van onderkant huidige pagina"
+
+#~ msgid ""
+#~ "Perform search immediately if a category"
+#~ " selected. Disable to select multiple "
+#~ "categories"
+#~ msgstr ""
+#~ "Voer zoekopdracht direct uit wanneer "
+#~ "categorie wordt geselecteerd. Schakel functie"
+#~ " uit om meerdere categorieën te "
+#~ "selecteren"
+
+#~ msgid "Change SearXNG layout"
+#~ msgstr "Verander lay-out van SearXNG"

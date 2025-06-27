@@ -30,9 +30,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-06-13 02:39+0000\n"
-"PO-Revision-Date: 2025-04-15 10:37+0000\n"
-"Last-Translator: DZDevelopers <dzdevelopers@noreply.codeberg.org>\n"
+"POT-Creation-Date: 2025-06-23 21:05+0000\n"
+"PO-Revision-Date: 2025-06-22 17:06+0000\n"
+"Last-Translator: return42 <return42@noreply.codeberg.org>\n"
 "Language: ar\n"
 "Language-Team: Arabic "
 "<https://translate.codeberg.org/projects/searxng/searxng/ar/>\n"
@@ -303,27 +303,27 @@ msgstr "الرياح"
 #. WEATHER_CONDITIONS
 #: searx/searxng.msg
 msgid "Clear sky"
-msgstr ""
+msgstr "سماء صافية"
 
 #. WEATHER_CONDITIONS
 #: searx/searxng.msg
 msgid "Cloudy"
-msgstr ""
+msgstr "مغيم"
 
 #. WEATHER_CONDITIONS
 #: searx/searxng.msg
 msgid "Fair"
-msgstr ""
+msgstr "عادل"
 
 #. WEATHER_CONDITIONS
 #: searx/searxng.msg
 msgid "Fog"
-msgstr ""
+msgstr "ضباب"
 
 #. WEATHER_CONDITIONS
 #: searx/searxng.msg
 msgid "Heavy rain and thunder"
-msgstr ""
+msgstr "مطر غزير و رعد"
 
 #. WEATHER_CONDITIONS
 #: searx/searxng.msg
@@ -773,10 +773,8 @@ msgid "Hostnames plugin"
 msgstr "مُلحق لأسماء المضيفين (Hostnames)"
 
 #: searx/plugins/hostnames.py:124
-msgid "Rewrite hostnames, remove results or prioritize them based on the hostname"
+msgid "Rewrite hostnames and remove or prioritize results based on the hostname"
 msgstr ""
-"أعِد كتابة أسماء المضيفين (hostnames) أو أزِل النتائج أو حدّد أولوياتها "
-"بناءً على اسم المضيف (hostname)"
 
 #: searx/plugins/oa_doi_rewrite.py:55
 msgid "Open Access DOI rewrite"
@@ -834,11 +832,11 @@ msgstr "أنت تستخدم Tor ويبدو أن لديك عنوان IP الخا�
 msgid "You are not using Tor and you have the external IP address"
 msgstr "أنت لا تستخدم Tor ولديك عنوان IP الخارجي"
 
-#: searx/plugins/tracker_url_remover.py:37
+#: searx/plugins/tracker_url_remover.py:35
 msgid "Tracker URL remover"
 msgstr "مزيل روابط التعقّب"
 
-#: searx/plugins/tracker_url_remover.py:38
+#: searx/plugins/tracker_url_remover.py:36
 msgid "Remove trackers arguments from the returned URL"
 msgstr ""
 "إزالة وسيطات التتبع من \"URL\" الذي تم إرجاعه , إزالة وسيطات التتبع من "
@@ -1358,8 +1356,8 @@ msgid "Center Alignment"
 msgstr "محاذاة المركز"
 
 #: searx/templates/simple/preferences/center_alignment.html:14
-msgid "Displays results in the center of the page (Oscar layout)."
-msgstr "اعرض النتائج في منتصف الصفحة (تخطيط Oscar)."
+msgid "Display results in the center of the page (Oscar layout)."
+msgstr ""
 
 #: searx/templates/simple/preferences/cookies.html:2
 msgid ""
@@ -1370,8 +1368,8 @@ msgstr ""
 "الكمبيوتر الخاص بك."
 
 #: searx/templates/simple/preferences/cookies.html:3
-msgid "With that list, you can assess SearXNG transparency."
-msgstr "باستخدام هذه القائمة ، يمكنك تقييم شفافية SearXNG."
+msgid "With this list, you can assess the transparency of SearXNG."
+msgstr ""
 
 #: searx/templates/simple/preferences/cookies.html:9
 msgid "Cookie name"
@@ -1469,19 +1467,13 @@ msgstr "عرض المفضلات قرب نتائج البحث"
 
 #: searx/templates/simple/preferences/footer.html:2
 msgid ""
-"These settings are stored in your cookies, this allows us not to store "
+"These settings are stored in your cookies. This allows us not to store "
 "this data about you."
 msgstr ""
-"يتم تخزين هذه الإعدادات في ملفات تعريف الارتباط الخاصة بك ، وهذا يسمح لنا"
-" بعدم تخزين هذه البيانات عنك."
 
 #: searx/templates/simple/preferences/footer.html:3
-msgid ""
-"These cookies serve your sole convenience, we don't use these cookies to "
-"track you."
+msgid "These cookies serve your sole convenience; we don't use them to track you."
 msgstr ""
-"تخدم ملفات تعريف الارتباط هذه راحتك وحدك ، فنحن لا نستخدم ملفات تعريف "
-"الارتباط هذه لتتبعك."
 
 #: searx/templates/simple/preferences/footer.html:6
 msgid "Save"
@@ -1517,16 +1509,18 @@ msgid "Image proxy"
 msgstr "وكيل بروكسي الصور"
 
 #: searx/templates/simple/preferences/image_proxy.html:14
-msgid "Proxying image results through SearXNG"
-msgstr "تمرير نتائج البحث عن الصور عبر بروكسي SearXNG"
+msgid "Proxy image results through SearXNG"
+msgstr ""
 
 #: searx/templates/simple/preferences/infinite_scroll.html:2
 msgid "Infinite scroll"
 msgstr "تمرير الصفحات بلا حدود"
 
 #: searx/templates/simple/preferences/infinite_scroll.html:14
-msgid "Automatically load next page when scrolling to bottom of current page"
-msgstr "حمّل تلقائيا الصفحة التالية عن السحب إلى أسفل النتائج"
+msgid ""
+"Automatically load the next page when scrolling to the bottom of the "
+"current page"
+msgstr ""
 
 #: searx/templates/simple/preferences/language.html:24
 msgid "What language do you prefer for search?"
@@ -1574,17 +1568,17 @@ msgstr "البحث في الفئة المحددة"
 
 #: searx/templates/simple/preferences/search_on_category_select.html:14
 msgid ""
-"Perform search immediately if a category selected. Disable to select "
-"multiple categories"
-msgstr "قم بإجراء البحث على الفور إذا تم تحديد فئة. قم بتعطيل لتحديد فئات متعددة"
+"Perform a search immediately if a category is selected. Disable to select"
+" multiple categories"
+msgstr ""
 
 #: searx/templates/simple/preferences/theme.html:2
 msgid "Theme"
 msgstr "السمة"
 
 #: searx/templates/simple/preferences/theme.html:14
-msgid "Change SearXNG layout"
-msgstr "تغيير مظهر سيركس"
+msgid "Change the layout of SearXNG"
+msgstr ""
 
 #: searx/templates/simple/preferences/theme.html:19
 msgid "Theme style"
@@ -2027,7 +2021,7 @@ msgstr "إخفاء الفيديو"
 #~ msgstr ""
 
 #~ msgid "Displays results in the center of the page (Oscar layout)."
-#~ msgstr ""
+#~ msgstr "اعرض النتائج في منتصف الصفحة (تخطيط Oscar)."
 
 #~ msgid "preferences"
 #~ msgstr "التفضيلات"
@@ -2317,4 +2311,52 @@ msgstr "إخفاء الفيديو"
 
 #~ msgid "Converts strings to different hash digests."
 #~ msgstr "يحول السلسلة إلى ملخص التجزئة."
+
+#~ msgid ""
+#~ "Rewrite hostnames, remove results or "
+#~ "prioritize them based on the hostname"
+#~ msgstr ""
+#~ "أعِد كتابة أسماء المضيفين (hostnames) أو"
+#~ " أزِل النتائج أو حدّد أولوياتها بناءً"
+#~ " على اسم المضيف (hostname)"
+
+#~ msgid "With that list, you can assess SearXNG transparency."
+#~ msgstr "باستخدام هذه القائمة ، يمكنك تقييم شفافية SearXNG."
+
+#~ msgid ""
+#~ "These settings are stored in your "
+#~ "cookies, this allows us not to "
+#~ "store this data about you."
+#~ msgstr ""
+#~ "يتم تخزين هذه الإعدادات في ملفات "
+#~ "تعريف الارتباط الخاصة بك ، وهذا "
+#~ "يسمح لنا بعدم تخزين هذه البيانات "
+#~ "عنك."
+
+#~ msgid ""
+#~ "These cookies serve your sole "
+#~ "convenience, we don't use these cookies"
+#~ " to track you."
+#~ msgstr ""
+#~ "تخدم ملفات تعريف الارتباط هذه راحتك "
+#~ "وحدك ، فنحن لا نستخدم ملفات تعريف"
+#~ " الارتباط هذه لتتبعك."
+
+#~ msgid "Proxying image results through SearXNG"
+#~ msgstr "تمرير نتائج البحث عن الصور عبر بروكسي SearXNG"
+
+#~ msgid "Automatically load next page when scrolling to bottom of current page"
+#~ msgstr "حمّل تلقائيا الصفحة التالية عن السحب إلى أسفل النتائج"
+
+#~ msgid ""
+#~ "Perform search immediately if a category"
+#~ " selected. Disable to select multiple "
+#~ "categories"
+#~ msgstr ""
+#~ "قم بإجراء البحث على الفور إذا تم"
+#~ " تحديد فئة. قم بتعطيل لتحديد فئات "
+#~ "متعددة"
+
+#~ msgid "Change SearXNG layout"
+#~ msgstr "تغيير مظهر سيركس"
 

@@ -22,20 +22,23 @@
 # MonsoonFire <monsoonfire@users.noreply.translate.codeberg.org>, 2025.
 # MusfiquerRhman <musfiquerrhman@users.noreply.translate.codeberg.org>,
 # MonsoonFire <monsoonfire@noreply.codeberg.org>, 2025.
+# return42 <return42@noreply.codeberg.org>, 2025.
+# MaheAlif <mahealif@noreply.codeberg.org>, 2025.
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-06-13 02:39+0000\n"
-"PO-Revision-Date: 2025-03-06 09:54+0000\n"
-"Last-Translator: MonsoonFire <monsoonfire@noreply.codeberg.org>\n"
+"POT-Creation-Date: 2025-06-23 21:05+0000\n"
+"PO-Revision-Date: 2025-06-27 05:58+0000\n"
+"Last-Translator: MaheAlif <mahealif@noreply.codeberg.org>\n"
+"Language-Team: Bengali <https://translate.codeberg.org/projects/searxng/"
+"searxng/bn/>\n"
 "Language: bn\n"
-"Language-Team: Bengali "
-"<https://translate.codeberg.org/projects/searxng/searxng/bn/>\n"
-"Plural-Forms: nplurals=2; plural=n > 1;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n > 1;\n"
+"X-Generator: Weblate 5.11.4\n"
 "Generated-By: Babel 2.17.0\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
@@ -298,12 +301,12 @@ msgstr "বায়ু"
 #. WEATHER_CONDITIONS
 #: searx/searxng.msg
 msgid "Clear sky"
-msgstr ""
+msgstr "পরিষ্কার আকাশ"
 
 #. WEATHER_CONDITIONS
 #: searx/searxng.msg
 msgid "Cloudy"
-msgstr ""
+msgstr "মেঘলা"
 
 #. WEATHER_CONDITIONS
 #: searx/searxng.msg
@@ -769,8 +772,8 @@ msgid "Hostnames plugin"
 msgstr "হোস্টনেম প্লাগিন"
 
 #: searx/plugins/hostnames.py:124
-msgid "Rewrite hostnames, remove results or prioritize them based on the hostname"
-msgstr "হোস্টনাম পুনর্লিখন করো, ফলাফল অপসারণ করো বা হোস্টনামের ভিত্তিতে সাজাও"
+msgid "Rewrite hostnames and remove or prioritize results based on the hostname"
+msgstr ""
 
 #: searx/plugins/oa_doi_rewrite.py:55
 msgid "Open Access DOI rewrite"
@@ -829,11 +832,11 @@ msgstr "তুমি টর ব্যবহার করছো এবং সম�
 msgid "You are not using Tor and you have the external IP address"
 msgstr "তুমি টর ব্যবহার করছো না এবং বাইরের আইপি ঠিকানা তোমার"
 
-#: searx/plugins/tracker_url_remover.py:37
+#: searx/plugins/tracker_url_remover.py:35
 msgid "Tracker URL remover"
 msgstr "ট্র্যাকার URL রিমুভার"
 
-#: searx/plugins/tracker_url_remover.py:38
+#: searx/plugins/tracker_url_remover.py:36
 msgid "Remove trackers arguments from the returned URL"
 msgstr "ফিরে আসা URL থেকে ট্র্যাকার আর্গুমেন্টগুলি সরান৷"
 
@@ -848,7 +851,7 @@ msgstr "এক একক থেকে অন্য এককে রুপান�
 #: searx/result_types/answer.py:224
 #, python-brace-format
 msgid "{location}: {temperature}, {condition}"
-msgstr ""
+msgstr "{location}: {temperature}, {condition}"
 
 #: searx/templates/simple/404.html:4
 msgid "Page not found"
@@ -1355,8 +1358,8 @@ msgid "Center Alignment"
 msgstr "মধ‍্যবর্তী বিন‍্যাস"
 
 #: searx/templates/simple/preferences/center_alignment.html:14
-msgid "Displays results in the center of the page (Oscar layout)."
-msgstr "পেইজের মাঝখানে রেজাল্ট দেখান (অস্কার লেআউট)।"
+msgid "Display results in the center of the page (Oscar layout)."
+msgstr ""
 
 #: searx/templates/simple/preferences/cookies.html:2
 msgid ""
@@ -1365,8 +1368,8 @@ msgid ""
 msgstr "এটি কুকিজের তালিকা এবং সেগুলির মান SearXNG আপনার কম্পিউটারে সংরক্ষণ করছে।"
 
 #: searx/templates/simple/preferences/cookies.html:3
-msgid "With that list, you can assess SearXNG transparency."
-msgstr "সেই তালিকা দিয়ে, আপনি SearXNG স্বচ্ছতা মূল্যায়ন করতে পারেন।"
+msgid "With this list, you can assess the transparency of SearXNG."
+msgstr ""
 
 #: searx/templates/simple/preferences/cookies.html:9
 msgid "Cookie name"
@@ -1462,19 +1465,13 @@ msgstr "অনুসন্ধানকৃত ফলাফলের কাছে 
 
 #: searx/templates/simple/preferences/footer.html:2
 msgid ""
-"These settings are stored in your cookies, this allows us not to store "
+"These settings are stored in your cookies. This allows us not to store "
 "this data about you."
 msgstr ""
-"এই সেটিংস আপনার কুকিজ সংরক্ষণ করা হয়, এটি আমাদের আপনার সম্পর্কে এই তথ্য "
-"সংরক্ষণ করার অনুমতি দেয় না।"
 
 #: searx/templates/simple/preferences/footer.html:3
-msgid ""
-"These cookies serve your sole convenience, we don't use these cookies to "
-"track you."
+msgid "These cookies serve your sole convenience; we don't use them to track you."
 msgstr ""
-"এই কুকিজগুলি আপনার একমাত্র সুবিধা প্রদান করে, আমরা আপনাকে ট্র্যাক করতে এই"
-" কুকিগুলি ব্যবহার করি না।"
 
 #: searx/templates/simple/preferences/footer.html:6
 msgid "Save"
@@ -1509,18 +1506,18 @@ msgid "Image proxy"
 msgstr "ছবির প্রক্সি"
 
 #: searx/templates/simple/preferences/image_proxy.html:14
-msgid "Proxying image results through SearXNG"
-msgstr "SearXNG এর মাধ্যমে ছবির ফলাফল প্রক্সি করা হচ্ছে"
+msgid "Proxy image results through SearXNG"
+msgstr ""
 
 #: searx/templates/simple/preferences/infinite_scroll.html:2
 msgid "Infinite scroll"
 msgstr "অসীম স্ক্রল"
 
 #: searx/templates/simple/preferences/infinite_scroll.html:14
-msgid "Automatically load next page when scrolling to bottom of current page"
+msgid ""
+"Automatically load the next page when scrolling to the bottom of the "
+"current page"
 msgstr ""
-"বর্তমান পৃষ্ঠার নীচে স্ক্রোল করার সময় স্বয়ংক্রিয়ভাবে পরবর্তী পৃষ্ঠা "
-"লোড করুন"
 
 #: searx/templates/simple/preferences/language.html:24
 msgid "What language do you prefer for search?"
@@ -1568,19 +1565,17 @@ msgstr "বিভাগ নির্বাচন খুঁজে দেখুন
 
 #: searx/templates/simple/preferences/search_on_category_select.html:14
 msgid ""
-"Perform search immediately if a category selected. Disable to select "
-"multiple categories"
+"Perform a search immediately if a category is selected. Disable to select"
+" multiple categories"
 msgstr ""
-"বিভাগ নির্বাচনের সাথে সাথে অনুসন্ধান করো। অনেকগুলো বিভাগ অনুসন্ধান করতে "
-"নিষ্ক্রিয় করো"
 
 #: searx/templates/simple/preferences/theme.html:2
 msgid "Theme"
 msgstr "থিম"
 
 #: searx/templates/simple/preferences/theme.html:14
-msgid "Change SearXNG layout"
-msgstr "SearXNG এর লেআউট পরিবর্তন করুন"
+msgid "Change the layout of SearXNG"
+msgstr ""
 
 #: searx/templates/simple/preferences/theme.html:19
 msgid "Theme style"
@@ -1790,7 +1785,7 @@ msgstr "ভিডিও লুকিয়ে ফেলুন"
 #~ msgstr ""
 
 #~ msgid "Displays results in the center of the page (Oscar layout)."
-#~ msgstr ""
+#~ msgstr "পেইজের মাঝখানে রেজাল্ট দেখান (অস্কার লেআউট)।"
 
 #~ msgid "preferences"
 #~ msgstr "পছন্দসমূহ"
@@ -2077,3 +2072,48 @@ msgstr "ভিডিও লুকিয়ে ফেলুন"
 #~ msgid "Converts strings to different hash digests."
 #~ msgstr "স্ট্রিংগুলিকে বিভিন্ন হ্যাশ ডাইজেস্টে রূপান্তর করে।"
 
+#~ msgid ""
+#~ "Rewrite hostnames, remove results or "
+#~ "prioritize them based on the hostname"
+#~ msgstr "হোস্টনাম পুনর্লিখন করো, ফলাফল অপসারণ করো বা হোস্টনামের ভিত্তিতে সাজাও"
+
+#~ msgid "With that list, you can assess SearXNG transparency."
+#~ msgstr "সেই তালিকা দিয়ে, আপনি SearXNG স্বচ্ছতা মূল্যায়ন করতে পারেন।"
+
+#~ msgid ""
+#~ "These settings are stored in your "
+#~ "cookies, this allows us not to "
+#~ "store this data about you."
+#~ msgstr ""
+#~ "এই সেটিংস আপনার কুকিজ সংরক্ষণ করা "
+#~ "হয়, এটি আমাদের আপনার সম্পর্কে এই "
+#~ "তথ্য সংরক্ষণ করার অনুমতি দেয় না।"
+
+#~ msgid ""
+#~ "These cookies serve your sole "
+#~ "convenience, we don't use these cookies"
+#~ " to track you."
+#~ msgstr ""
+#~ "এই কুকিজগুলি আপনার একমাত্র সুবিধা প্রদান"
+#~ " করে, আমরা আপনাকে ট্র্যাক করতে এই "
+#~ "কুকিগুলি ব্যবহার করি না।"
+
+#~ msgid "Proxying image results through SearXNG"
+#~ msgstr "SearXNG এর মাধ্যমে ছবির ফলাফল প্রক্সি করা হচ্ছে"
+
+#~ msgid "Automatically load next page when scrolling to bottom of current page"
+#~ msgstr ""
+#~ "বর্তমান পৃষ্ঠার নীচে স্ক্রোল করার সময়"
+#~ " স্বয়ংক্রিয়ভাবে পরবর্তী পৃষ্ঠা লোড করুন"
+
+#~ msgid ""
+#~ "Perform search immediately if a category"
+#~ " selected. Disable to select multiple "
+#~ "categories"
+#~ msgstr ""
+#~ "বিভাগ নির্বাচনের সাথে সাথে অনুসন্ধান "
+#~ "করো। অনেকগুলো বিভাগ অনুসন্ধান করতে "
+#~ "নিষ্ক্রিয় করো"
+
+#~ msgid "Change SearXNG layout"
+#~ msgstr "SearXNG এর লেআউট পরিবর্তন করুন"

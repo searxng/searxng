@@ -18,9 +18,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-06-13 02:39+0000\n"
-"PO-Revision-Date: 2025-05-17 15:04+0000\n"
-"Last-Translator: wetinee <wetinee@noreply.codeberg.org>\n"
+"POT-Creation-Date: 2025-06-23 21:05+0000\n"
+"PO-Revision-Date: 2025-06-22 17:06+0000\n"
+"Last-Translator: return42 <return42@noreply.codeberg.org>\n"
 "Language: th\n"
 "Language-Team: Thai "
 "<https://translate.codeberg.org/projects/searxng/searxng/th/>\n"
@@ -761,8 +761,8 @@ msgid "Hostnames plugin"
 msgstr "ชื่อโฮส ปลั๊กอิน"
 
 #: searx/plugins/hostnames.py:124
-msgid "Rewrite hostnames, remove results or prioritize them based on the hostname"
-msgstr "ขียนชื่อโฮสต์ใหม่ ลบผลลัพธ์ หรือจัดลำดับความสำคัญตามชื่อโฮสต์"
+msgid "Rewrite hostnames and remove or prioritize results based on the hostname"
+msgstr ""
 
 #: searx/plugins/oa_doi_rewrite.py:55
 msgid "Open Access DOI rewrite"
@@ -819,11 +819,11 @@ msgstr "คุณกำลังใช้ Tor และดูเหมือน�
 msgid "You are not using Tor and you have the external IP address"
 msgstr "คุณไม่ได้ใช้ Tor และคุณมีที่อยู่ IP ภายนอก"
 
-#: searx/plugins/tracker_url_remover.py:37
+#: searx/plugins/tracker_url_remover.py:35
 msgid "Tracker URL remover"
 msgstr "ลบตัวติดตาม URL"
 
-#: searx/plugins/tracker_url_remover.py:38
+#: searx/plugins/tracker_url_remover.py:36
 msgid "Remove trackers arguments from the returned URL"
 msgstr "ลบอาร์กิวเมนต์ตัวติดตามออกจากการส่งค่าคืนของ URL"
 
@@ -838,7 +838,7 @@ msgstr "แปลงหน่วย"
 #: searx/result_types/answer.py:224
 #, python-brace-format
 msgid "{location}: {temperature}, {condition}"
-msgstr ""
+msgstr "{location}: {temperature}, {condition}"
 
 #: searx/templates/simple/404.html:4
 msgid "Page not found"
@@ -1341,8 +1341,8 @@ msgid "Center Alignment"
 msgstr "จัดตำแหน่งกึ่งกลาง"
 
 #: searx/templates/simple/preferences/center_alignment.html:14
-msgid "Displays results in the center of the page (Oscar layout)."
-msgstr "แสดงผลตรงกลางหน้า (เค้าโครงออสการ์)"
+msgid "Display results in the center of the page (Oscar layout)."
+msgstr ""
 
 #: searx/templates/simple/preferences/cookies.html:2
 msgid ""
@@ -1351,8 +1351,8 @@ msgid ""
 msgstr "นี่คือรายการคุกกี้และค่าของคุกกี้ที่เซียร์เอ็กซ์เอ็นจีจัดเก็บไว้ในคอมพิวเตอร์ของคุณ"
 
 #: searx/templates/simple/preferences/cookies.html:3
-msgid "With that list, you can assess SearXNG transparency."
-msgstr "ด้วยรายการดังกล่าว คุณสามารถประเมินความโปร่งใสของเซียร์เอ็กซ์เอ็นจีได้"
+msgid "With this list, you can assess the transparency of SearXNG."
+msgstr ""
 
 #: searx/templates/simple/preferences/cookies.html:9
 msgid "Cookie name"
@@ -1450,19 +1450,13 @@ msgstr "แสดงไอคอน Fav ใกล้ผลการค้นห�
 
 #: searx/templates/simple/preferences/footer.html:2
 msgid ""
-"These settings are stored in your cookies, this allows us not to store "
+"These settings are stored in your cookies. This allows us not to store "
 "this data about you."
 msgstr ""
-"การตั้งค่าพวกนี้ถูกเก็บไว้ในคุกกี้ของคุณแล้ว "
-"ซึ่งช่วยให้เราไม่สามารถจัดเก็บข้อมูลนี้เกี่ยวกับคุณได้"
 
 #: searx/templates/simple/preferences/footer.html:3
-msgid ""
-"These cookies serve your sole convenience, we don't use these cookies to "
-"track you."
+msgid "These cookies serve your sole convenience; we don't use them to track you."
 msgstr ""
-"คุกกี้พวกนี้ให้บริการเพื่อความสะดวกของคุณ "
-"เราไม่ใช้คุกกี้เหล่านี้เพื่อติดตามคุณ"
 
 #: searx/templates/simple/preferences/footer.html:6
 msgid "Save"
@@ -1497,16 +1491,18 @@ msgid "Image proxy"
 msgstr "พร็อกซีรูปภาพ"
 
 #: searx/templates/simple/preferences/image_proxy.html:14
-msgid "Proxying image results through SearXNG"
-msgstr "การแสดงพร็อกซี่ของภาพผ่าน เซียร์เอ็กซ์เอ็นจี"
+msgid "Proxy image results through SearXNG"
+msgstr ""
 
 #: searx/templates/simple/preferences/infinite_scroll.html:2
 msgid "Infinite scroll"
 msgstr "เลื่อนเมาส์แบบไม่มีที่สิ้นสุด"
 
 #: searx/templates/simple/preferences/infinite_scroll.html:14
-msgid "Automatically load next page when scrolling to bottom of current page"
-msgstr "โหลดหน้าถัดไปโดยอัตโนมัติเมื่อเลื่อนเมาส์ลงไปที่ด้านล่างของหน้าปัจจุบัน"
+msgid ""
+"Automatically load the next page when scrolling to the bottom of the "
+"current page"
+msgstr ""
 
 #: searx/templates/simple/preferences/language.html:24
 msgid "What language do you prefer for search?"
@@ -1554,17 +1550,17 @@ msgstr "ค้นหาในตัวเลือกหมวดหมู่"
 
 #: searx/templates/simple/preferences/search_on_category_select.html:14
 msgid ""
-"Perform search immediately if a category selected. Disable to select "
-"multiple categories"
-msgstr "ทำการค้นหาทันทีหากเลือกหมวดหมู่ไว้ ปิดการใช้งานเพื่อเลือกหลายประเภท"
+"Perform a search immediately if a category is selected. Disable to select"
+" multiple categories"
+msgstr ""
 
 #: searx/templates/simple/preferences/theme.html:2
 msgid "Theme"
 msgstr "ธีม"
 
 #: searx/templates/simple/preferences/theme.html:14
-msgid "Change SearXNG layout"
-msgstr "เปลี่ยนเค้าโครง เซียร์เอ็กซ์เอ็นจี"
+msgid "Change the layout of SearXNG"
+msgstr ""
 
 #: searx/templates/simple/preferences/theme.html:19
 msgid "Theme style"
@@ -2026,4 +2022,46 @@ msgstr "ซ่อนวิดีโอ"
 
 #~ msgid "Converts strings to different hash digests."
 #~ msgstr "แปลงสตริงเป็นแฮชย่อยที่ต่างกัน"
+
+#~ msgid ""
+#~ "Rewrite hostnames, remove results or "
+#~ "prioritize them based on the hostname"
+#~ msgstr "ขียนชื่อโฮสต์ใหม่ ลบผลลัพธ์ หรือจัดลำดับความสำคัญตามชื่อโฮสต์"
+
+#~ msgid "Displays results in the center of the page (Oscar layout)."
+#~ msgstr "แสดงผลตรงกลางหน้า (เค้าโครงออสการ์)"
+
+#~ msgid "With that list, you can assess SearXNG transparency."
+#~ msgstr "ด้วยรายการดังกล่าว คุณสามารถประเมินความโปร่งใสของเซียร์เอ็กซ์เอ็นจีได้"
+
+#~ msgid ""
+#~ "These settings are stored in your "
+#~ "cookies, this allows us not to "
+#~ "store this data about you."
+#~ msgstr ""
+#~ "การตั้งค่าพวกนี้ถูกเก็บไว้ในคุกกี้ของคุณแล้ว "
+#~ "ซึ่งช่วยให้เราไม่สามารถจัดเก็บข้อมูลนี้เกี่ยวกับคุณได้"
+
+#~ msgid ""
+#~ "These cookies serve your sole "
+#~ "convenience, we don't use these cookies"
+#~ " to track you."
+#~ msgstr ""
+#~ "คุกกี้พวกนี้ให้บริการเพื่อความสะดวกของคุณ "
+#~ "เราไม่ใช้คุกกี้เหล่านี้เพื่อติดตามคุณ"
+
+#~ msgid "Proxying image results through SearXNG"
+#~ msgstr "การแสดงพร็อกซี่ของภาพผ่าน เซียร์เอ็กซ์เอ็นจี"
+
+#~ msgid "Automatically load next page when scrolling to bottom of current page"
+#~ msgstr "โหลดหน้าถัดไปโดยอัตโนมัติเมื่อเลื่อนเมาส์ลงไปที่ด้านล่างของหน้าปัจจุบัน"
+
+#~ msgid ""
+#~ "Perform search immediately if a category"
+#~ " selected. Disable to select multiple "
+#~ "categories"
+#~ msgstr "ทำการค้นหาทันทีหากเลือกหมวดหมู่ไว้ ปิดการใช้งานเพื่อเลือกหลายประเภท"
+
+#~ msgid "Change SearXNG layout"
+#~ msgstr "เปลี่ยนเค้าโครง เซียร์เอ็กซ์เอ็นจี"
 
