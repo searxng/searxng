@@ -83,7 +83,7 @@ MANAGE += py.build py.clean
 MANAGE += pyenv pyenv.install pyenv.uninstall
 MANAGE += format.python
 MANAGE += test.yamllint test.pylint test.black test.pybabel test.unit test.coverage test.robot test.rst test.clean test.themes test.types.dev test.types.ci
-MANAGE += themes.all themes.fix themes.test
+MANAGE += themes.all themes.simple themes.fix themes.lint themes.test
 MANAGE += static.build.commit static.build.drop static.build.restore
 MANAGE += nvm.install nvm.clean nvm.status nvm.nodejs
 

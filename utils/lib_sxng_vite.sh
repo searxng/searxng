@@ -9,6 +9,8 @@ vite.help(){
 vite.:  .. to be done ..
   simple.:
     build: build static files of the simple theme
+    fix:   run prettiers on simple theme
+    lint:  run linters on simple theme
     dev:   start development server
 EOF
 }
@@ -36,8 +38,6 @@ vite.simple.build() {
 
         pushd "${VITE_SIMPLE_THEME}"
         npm install
-        npm run fix
-        npm run icons.html
         npm run build
         popd &> /dev/null
     )
@@ -47,6 +47,13 @@ vite.simple.fix() {
     (   set -e
         node.env
         npm --prefix client/simple run fix
+    )
+}
+
+vite.simple.lint() {
+    (   set -e
+        node.env
+        npm --prefix client/simple run lint
     )
 }
 
