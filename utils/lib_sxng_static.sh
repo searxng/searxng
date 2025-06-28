@@ -99,6 +99,7 @@ static.build.commit() {
     (   set -e
         # fix & build the themes
 	    themes.fix
+	    themes.lint
         themes.all
 
         # add build files

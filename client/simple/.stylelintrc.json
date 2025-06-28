@@ -1,17 +1,17 @@
 {
-  "formatter": "unix",
-  "plugins": [ "stylelint-prettier" ],
-  "extends": [ "stylelint-config-standard-less" ],
+  "$schema": "https://json.schemastore.org/stylelintrc.json",
+  "plugins": ["stylelint-prettier"],
+  "extends": ["stylelint-config-standard-less"],
   "rules": {
-    "prettier/prettier": true,
+    "at-rule-no-vendor-prefix": null,
     "declaration-empty-line-before": null,
     "no-invalid-position-at-import-rule": null,
+    "prettier/prettier": true,
     "property-no-vendor-prefix": null,
-    "selector-no-vendor-prefix": null,
     "selector-attribute-quotes": null,
-    "shorthand-property-no-redundant-values": null,
-    "at-rule-no-vendor-prefix": null,
+    "selector-class-pattern": null,
     "selector-id-pattern": null,
-    "selector-class-pattern": null
+    "selector-no-vendor-prefix": null,
+    "shorthand-property-no-redundant-values": null
   }
 }
