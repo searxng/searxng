@@ -1,5 +1,5 @@
 /* SPDX-License-Identifier: AGPL-3.0-or-later */
-((w, d, searxng) => {
+((_w, d, searxng) => {
   if (searxng.endpoint !== "preferences") {
     return;
   }
@@ -12,9 +12,9 @@
         searxng.http("GET", "engine_descriptions.json").then((content) => {
           engine_descriptions = JSON.parse(content);
           for (const [engine_name, description] of Object.entries(engine_descriptions)) {
-            const elements = d.querySelectorAll('[data-engine-name="' + engine_name + '"] .engine-description');
+            const elements = d.querySelectorAll(`[data-engine-name="${engine_name}"] .engine-description`);
             for (const element of elements) {
-              const source = " (<i>" + searxng.settings.translations.Source + ":&nbsp;" + description[1] + "</i>)";
+              const source = ` (<i>${searxng.settings.translations.Source}:&nbsp;${description[1]}</i>)`;
               element.innerHTML = description[0] + source;
             }
           }

@@ -28,7 +28,7 @@ searxng.ready(() => {
   }
 
   function isImageResult(resultElement) {
-    return resultElement && resultElement.classList.contains("result-images");
+    return resultElement?.classList.contains("result-images");
   }
 
   searxng.on(".result", "click", function (e) {
@@ -60,7 +60,7 @@ searxng.ready(() => {
   );
 
   /* common base for layouts */
-  var baseKeyBinding = {
+  const baseKeyBinding = {
     Escape: {
       key: "ESC",
       fun: removeFocus,
@@ -116,7 +116,7 @@ searxng.ready(() => {
       cat: "Results"
     }
   };
-  var keyBindingLayouts = {
+  const keyBindingLayouts = {
     default: Object.assign(
       {
         /* SearXNG layout */
@@ -198,7 +198,7 @@ searxng.ready(() => {
     )
   };
 
-  var keyBindings = keyBindingLayouts[searxng.settings.hotkeys] || keyBindingLayouts.default;
+  const keyBindings = keyBindingLayouts[searxng.settings.hotkeys] || keyBindingLayouts.default;
 
   searxng.on(document, "keydown", (e) => {
     // check for modifiers so we don't break browser's hotkeys
@@ -210,7 +210,7 @@ searxng.ready(() => {
       !e.shiftKey &&
       !e.metaKey
     ) {
-      var tagName = e.target.tagName.toLowerCase();
+      const tagName = e.target.tagName.toLowerCase();
       if (e.key === "Escape") {
         keyBindings[e.key].fun(e);
       } else {
@@ -224,7 +224,7 @@ searxng.ready(() => {
 
   function highlightResult(which) {
     return (noScroll, keepFocus) => {
-      var current = document.querySelector(".result[data-vim-selected]"),
+      let current = document.querySelector(".result[data-vim-selected]"),
         effectiveWhich = which;
       if (current === null) {
         // no selection : choose the first one
@@ -239,7 +239,7 @@ searxng.ready(() => {
         }
       }
 
-      var next,
+      let next,
         results = document.querySelectorAll(".result");
       results = Array.from(results); // convert NodeList to Array for further use
 
@@ -248,13 +248,13 @@ searxng.ready(() => {
       } else {
         switch (effectiveWhich) {
           case "visible": {
-            var top = document.documentElement.scrollTop || document.body.scrollTop;
-            var bot = top + document.documentElement.clientHeight;
+            const top = document.documentElement.scrollTop || document.body.scrollTop;
+            const bot = top + document.documentElement.clientHeight;
 
-            for (var i = 0; i < results.length; i++) {
+            for (let i = 0; i < results.length; i++) {
               next = results[i];
-              var etop = next.offsetTop;
-              var ebot = etop + next.clientHeight;
+              const etop = next.offsetTop;
+              const ebot = etop + next.clientHeight;
 
               if (ebot <= bot && etop > top) {
                 break;
@@ -271,6 +271,7 @@ searxng.ready(() => {
           case "bottom":
             next = results[results.length - 1];
             break;
+          // biome-ignore lint/complexity/noUselessSwitchCase: fallthrough is intended
           case "top":
           /* falls through */
           default:
@@ -282,7 +283,7 @@ searxng.ready(() => {
         current.removeAttribute("data-vim-selected");
         next.setAttribute("data-vim-selected", "true");
         if (!keepFocus) {
-          var link = next.querySelector("h3 a") || next.querySelector("a");
+          const link = next.querySelector("h3 a") || next.querySelector("a");
           if (link !== null) {
             link.focus();
           }
@@ -309,7 +310,7 @@ searxng.ready(() => {
 
   function pageButtonClick(css_selector) {
     return () => {
-      var button = document.querySelector(css_selector);
+      const button = document.querySelector(css_selector);
       if (button) {
         button.click();
       }
@@ -325,11 +326,11 @@ searxng.ready(() => {
   }
 
   function scrollPageToSelected() {
-    var sel = document.querySelector(".result[data-vim-selected]");
+    const sel = document.querySelector(".result[data-vim-selected]");
     if (sel === null) {
       return;
     }
-    var wtop = document.documentElement.scrollTop || document.body.scrollTop,
+    const wtop = document.documentElement.scrollTop || document.body.scrollTop,
       wheight = document.documentElement.clientHeight,
       etop = sel.offsetTop,
       ebot = etop + sel.clientHeight,
@@ -344,7 +345,7 @@ searxng.ready(() => {
     if (wtop > etop - offset) {
       window.scroll(window.scrollX, etop - offset);
     } else {
-      var wbot = wtop + wheight;
+      const wbot = wtop + wheight;
       if (wbot < ebot + offset) {
         window.scroll(window.scrollX, ebot - wheight + offset);
       }
@@ -367,22 +368,22 @@ searxng.ready(() => {
 
   function searchInputFocus() {
     window.scrollTo(0, 0);
-    var q = document.querySelector("#q");
+    const q = document.querySelector("#q");
     q.focus();
     if (q.setSelectionRange) {
-      var len = q.value.length;
+      const len = q.value.length;
       q.setSelectionRange(len, len);
     }
   }
 
   function openResult(newTab) {
     return () => {
-      var link = document.querySelector(".result[data-vim-selected] h3 a");
+      let link = document.querySelector(".result[data-vim-selected] h3 a");
       if (link === null) {
         link = document.querySelector(".result[data-vim-selected] > a");
       }
       if (link !== null) {
-        var url = link.getAttribute("href");
+        const url = link.getAttribute("href");
         if (newTab) {
           window.open(url);
         } else {
@@ -393,40 +394,40 @@ searxng.ready(() => {
   }
 
   function initHelpContent(divElement) {
-    var categories = {};
+    const categories = {};
 
-    for (var k in keyBindings) {
-      var key = keyBindings[k];
+    for (const k in keyBindings) {
+      const key = keyBindings[k];
       categories[key.cat] = categories[key.cat] || [];
       categories[key.cat].push(key);
     }
 
-    var sorted = Object.keys(categories).sort((a, b) => categories[b].length - categories[a].length);
+    const sorted = Object.keys(categories).sort((a, b) => categories[b].length - categories[a].length);
 
     if (sorted.length === 0) {
       return;
     }
 
-    var html = '<a href="#" class="close" aria-label="close" title="close">×</a>';
+    let html = '<a href="#" class="close" aria-label="close" title="close">×</a>';
     html += "<h3>How to navigate SearXNG with hotkeys</h3>";
     html += "<table>";
 
-    for (var i = 0; i < sorted.length; i++) {
-      var cat = categories[sorted[i]];
+    for (let i = 0; i < sorted.length; i++) {
+      const cat = categories[sorted[i]];
 
-      var lastCategory = i === sorted.length - 1;
-      var first = i % 2 === 0;
+      const lastCategory = i === sorted.length - 1;
+      const first = i % 2 === 0;
 
       if (first) {
         html += "<tr>";
       }
       html += "<td>";
 
-      html += "<h4>" + cat[0].cat + "</h4>";
+      html += `<h4>${cat[0].cat}</h4>`;
       html += '<ul class="list-unstyled">';
 
-      for (var cj in cat) {
-        html += "<li><kbd>" + cat[cj].key + "</kbd> " + cat[cj].des + "</li>";
+      for (const cj in cat) {
+        html += `<li><kbd>${cat[cj].key}</kbd> ${cat[cj].des}</li>`;
       }
 
       html += "</ul>";
@@ -443,14 +444,14 @@ searxng.ready(() => {
   }
 
   function toggleHelp() {
-    var helpPanel = document.querySelector("#vim-hotkeys-help");
+    let helpPanel = document.querySelector("#vim-hotkeys-help");
     if (helpPanel === undefined || helpPanel === null) {
       // first call
       helpPanel = document.createElement("div");
       helpPanel.id = "vim-hotkeys-help";
       helpPanel.className = "dialog-modal";
       initHelpContent(helpPanel);
-      var body = document.getElementsByTagName("body")[0];
+      const body = document.getElementsByTagName("body")[0];
       body.appendChild(helpPanel);
     } else {
       // toggle hidden
@@ -459,7 +460,7 @@ searxng.ready(() => {
   }
 
   function copyURLToClipboard() {
-    var currentUrlElement = document.querySelector(".result[data-vim-selected] h3 a");
+    const currentUrlElement = document.querySelector(".result[data-vim-selected] h3 a");
     if (currentUrlElement === null) return;
 
     const url = currentUrlElement.getAttribute("href");
