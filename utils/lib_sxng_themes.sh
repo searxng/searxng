@@ -5,14 +5,23 @@ themes.help(){
     cat <<EOF
 themes.:
   all       : test & build all themes
+  simple    : test & build simple theme
+  lint      : lint JS & CSS (LESS) files
+  fix       : fix JS & CSS (LESS) files
   test      : test all themes
-  fix       : fix JS & CSS (LESS)
 EOF
 }
 
 themes.all() {
     (   set -e
-        build_msg SIMPLE "theme: run build"
+        vite.simple.build
+    )
+    dump_return $?
+}
+
+themes.simple() {
+    (   set -e
+        build_msg SIMPLE "theme: run build (simple)"
         vite.simple.build
     )
     dump_return $?
@@ -20,8 +29,16 @@ themes.all() {
 
 themes.fix() {
     (   set -e
-        build_msg SIMPLE "theme: fix"
+        build_msg SIMPLE "theme: fix (all themes)"
         vite.simple.fix
+    )
+    dump_return $?
+}
+
+themes.lint() {
+    (   set -e
+        build_msg SIMPLE "theme: lint (all themes)"
+        vite.simple.lint
     )
     dump_return $?
 }

@@ -6,8 +6,8 @@ Development Quickstart
 
 .. _npm: https://www.npmjs.com/
 .. _Node.js: https://nodejs.org/
-.. _eslint: https://eslint.org/
-.. _stylelint: https://stylelint.io/
+.. _Biome: https://biomejs.dev/
+.. _Stylelint: https://stylelint.io/
 
 .. sidebar:: further read
 
@@ -41,8 +41,8 @@ to our ":ref:`how to contribute`" guideline.
 
 If you implement themes, you will need to setup a :ref:`Node.js environment
 <make node.env>`.  Before you call *make run* (2.), you need to compile the
-modified styles and JavaScript: ``make node.clean themes.all``.  If eslint_ or
-stylelint_ report some issues, try ``make themes.fix``.
+modified styles and JavaScript: ``make node.clean themes.all``.  If Biome_
+or Stylelint_ reports issues, try ``make themes.fix``.
 
 Alternatively you can also compile selective the theme you have modified,
 e.g. the *simple* theme.
