@@ -1,10 +1,8 @@
 /* SPDX-License-Identifier: AGPL-3.0-or-later */
 /* global L */
-(function (w, d, searxng) {
-  'use strict';
-
-  searxng.ready(function () {
-    searxng.on('.searxng_init_map', 'click', function (event) {
+((w, d, searxng) => {
+  searxng.ready(() => {
+    searxng.on(".searxng_init_map", "click", function (event) {
       // no more request
       this.classList.remove("searxng_init_map");
 
@@ -16,8 +14,8 @@
       var map_boundingbox = JSON.parse(this.dataset.mapBoundingbox);
       var map_geojson = JSON.parse(this.dataset.mapGeojson);
 
-      searxng.loadStyle('css/leaflet.css');
-      searxng.loadScript('js/leaflet.js', function () {
+      searxng.loadStyle("css/leaflet.css");
+      searxng.loadScript("js/leaflet.js", () => {
         var map_bounds = null;
         if (map_boundingbox) {
           var southWest = L.latLng(map_boundingbox[0], map_boundingbox[2]);
@@ -28,17 +26,22 @@
         // init map
         var map = L.map(leaflet_target);
         // create the tile layer with correct attribution
-        var osmMapnikUrl = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+        var osmMapnikUrl = "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";
         var osmMapnikAttrib = 'Map data © <a href="https://openstreetmap.org">OpenStreetMap</a> contributors';
-        var osmMapnik = new L.TileLayer(osmMapnikUrl, {minZoom: 1, maxZoom: 19, attribution: osmMapnikAttrib});
-        var osmWikimediaUrl = 'https://maps.wikimedia.org/osm-intl/{z}/{x}/{y}.png';
-        var osmWikimediaAttrib = 'Wikimedia maps | Maps data © <a href="https://openstreetmap.org">OpenStreetMap contributors</a>';
-        var osmWikimedia = new L.TileLayer(osmWikimediaUrl, {minZoom: 1, maxZoom: 19, attribution: osmWikimediaAttrib});
+        var osmMapnik = new L.TileLayer(osmMapnikUrl, { minZoom: 1, maxZoom: 19, attribution: osmMapnikAttrib });
+        var osmWikimediaUrl = "https://maps.wikimedia.org/osm-intl/{z}/{x}/{y}.png";
+        var osmWikimediaAttrib =
+          'Wikimedia maps | Maps data © <a href="https://openstreetmap.org">OpenStreetMap contributors</a>';
+        var osmWikimedia = new L.TileLayer(osmWikimediaUrl, {
+          minZoom: 1,
+          maxZoom: 19,
+          attribution: osmWikimediaAttrib
+        });
         // init map view
         if (map_bounds) {
           // TODO hack: https://github.com/Leaflet/Leaflet/issues/2021
           // Still useful ?
-          setTimeout(function () {
+          setTimeout(() => {
             map.fitBounds(map_bounds, {
               maxZoom: 17
             });
@@ -55,7 +58,7 @@
 
         var baseLayers = {
           "OSM Mapnik": osmMapnik,
-          "OSM Wikimedia": osmWikimedia,
+          "OSM Wikimedia": osmWikimedia
         };
 
         L.control.layers(baseLayers).addTo(map);
