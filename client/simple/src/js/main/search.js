@@ -1,23 +1,23 @@
 /* SPDX-License-Identifier: AGPL-3.0-or-later */
 /* exported AutoComplete */
 
-((w, d, searxng) => {
-  var qinput_id = "q",
-    qinput;
+((_w, d, searxng) => {
+  const qinput_id = "q";
+  let qinput;
 
   const isMobile = window.matchMedia("only screen and (max-width: 50em)").matches;
   const isResultsPage = document.querySelector("main").id === "main_results";
 
   function submitIfQuery() {
     if (qinput.value.length > 0) {
-      var search = document.getElementById("search");
+      const search = document.getElementById("search");
       setTimeout(search.submit.bind(search), 0);
     }
   }
 
   function createClearButton(qinput) {
-    var cs = document.getElementById("clear_search");
-    var updateClearButton = () => {
+    const cs = document.getElementById("clear_search");
+    const updateClearButton = () => {
       if (qinput.value.length === 0) {
         cs.classList.add("empty");
       } else {
@@ -41,7 +41,7 @@
     if (searxng.settings.method === "GET") {
       const reqParams = new URLSearchParams();
       reqParams.append("q", query);
-      request = fetch("./autocompleter?" + reqParams.toString());
+      request = fetch(`./autocompleter?${reqParams.toString()}`);
     } else {
       const formData = new FormData();
       formData.append("q", query);

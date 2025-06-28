@@ -1,5 +1,5 @@
-import fs from "fs";
-import path from "path";
+import fs from "node:fs";
+import path from "node:path";
 import sharp from "sharp";
 import { optimize as svgo } from "svgo";
 
@@ -14,9 +14,8 @@ import { optimize as svgo } from "svgo";
  *
  * @param {Src2Dest[]} items - Array of SVG files (src: SVG, dest:PNG) to convert.
  */
-
 async function svg2png(items) {
-  items.forEach(async (item) => {
+  for (const item of items) {
     try {
       fs.mkdir(path.dirname(item.dest), { recursive: true }, (err) => {
         if (err) throw err;
@@ -35,18 +34,17 @@ async function svg2png(items) {
       console.error(`ERROR: ${item.dest} -- ${err}`);
       throw err;
     }
-  });
+  }
 }
 
 /**
  * Optimize SVG images for WEB.
  *
- * @param {import('svgo').Config} svgo_opts - Options passed to svgo.
  * @param {Src2Dest[]} items - Array of SVG files (src:SVG, dest:SVG) to optimize.
+ * @param {import('svgo').Config} svgo_opts - Options passed to svgo.
  */
-
-async function svg2svg(svgo_opts, items) {
-  items.forEach(async (item) => {
+async function svg2svg(items, svgo_opts) {
+  for (const item of items) {
     try {
       fs.mkdir(path.dirname(item.dest), { recursive: true }, (err) => {
         if (err) throw err;
@@ -60,7 +58,7 @@ async function svg2svg(svgo_opts, items) {
       console.error(`ERROR: optimize src: ${item.src} -- ${err}`);
       throw err;
     }
-  });
+  }
 }
 
 export { svg2png, svg2svg };

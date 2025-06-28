@@ -17,8 +17,8 @@ window.searxng = ((w, d) => {
         ElementPrototype.webkitMatchesSelector ||
         ElementPrototype.msMatchesSelector ||
         function (selector) {
-          var nodes = (this.parentNode || this.document).querySelectorAll(selector),
-            i = -1;
+          const nodes = (this.parentNode || this.document).querySelectorAll(selector);
+          let i = -1;
           while (nodes[++i] && nodes[i] !== this);
           return !!nodes[i];
         };
@@ -33,7 +33,7 @@ window.searxng = ((w, d) => {
     }
   }
 
-  var searxng = window.searxng || {};
+  const searxng = window.searxng || {};
 
   searxng.on = (obj, eventType, callback, useCapture) => {
     useCapture = useCapture || false;
@@ -45,10 +45,20 @@ window.searxng = ((w, d) => {
       d.addEventListener(
         eventType,
         (e) => {
-          var el = e.target || e.srcElement,
-            found = false;
-          while (el?.matches && el !== d && !(found = el.matches(obj))) el = el.parentElement;
-          if (found) callbackSafe(callback, el, e);
+          let el = e.target || e.srcElement;
+          let found = false;
+
+          while (el?.matches && el !== d) {
+            found = el.matches(obj);
+
+            if (found) break;
+
+            el = el.parentElement;
+          }
+
+          if (found) {
+            callbackSafe(callback, el, e);
+          }
         },
         useCapture
       );
@@ -66,7 +76,7 @@ window.searxng = ((w, d) => {
   searxng.http = (method, url, data = null) =>
     new Promise((resolve, reject) => {
       try {
-        var req = new XMLHttpRequest();
+        const req = new XMLHttpRequest();
         req.open(method, url, true);
         req.timeout = 20000;
 
@@ -104,9 +114,9 @@ window.searxng = ((w, d) => {
     });
 
   searxng.loadStyle = (src) => {
-    var path = searxng.settings.theme_static_path + "/" + src,
-      id = "style_" + src.replace(".", "_"),
-      s = d.getElementById(id);
+    const path = `${searxng.settings.theme_static_path}/${src}`;
+    const id = `style_${src.replace(".", "_")}`;
+    let s = d.getElementById(id);
     if (s === null) {
       s = d.createElement("link");
       s.setAttribute("id", id);
@@ -118,9 +128,9 @@ window.searxng = ((w, d) => {
   };
 
   searxng.loadScript = (src, callback) => {
-    var path = searxng.settings.theme_static_path + "/" + src,
-      id = "script_" + src.replace(".", "_"),
-      s = d.getElementById(id);
+    const path = `${searxng.settings.theme_static_path}/${src}`;
+    const id = `script_${src.replace(".", "_")}`;
+    let s = d.getElementById(id);
     if (s === null) {
       s = d.createElement("script");
       s.setAttribute("id", id);
@@ -137,7 +147,7 @@ window.searxng = ((w, d) => {
         console.log(exception);
       }
     } else {
-      console.log("callback not executed : script '" + path + "' not loaded.");
+      console.log(`callback not executed : script '${path}' not loaded.`);
     }
   };
 
@@ -154,7 +164,7 @@ window.searxng = ((w, d) => {
   });
 
   function getEndpoint() {
-    for (var className of d.getElementsByTagName("body")[0].classList.values()) {
+    for (const className of d.getElementsByTagName("body")[0].classList.values()) {
       if (className.endsWith("_endpoint")) {
         return className.split("_")[0];
       }

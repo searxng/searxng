@@ -6,7 +6,7 @@ import { dirname, resolve } from "node:path";
 import { argv } from "node:process";
 import { jinja_svg_sets } from "./tools/jinja_svg_catalog.js";
 
-const HERE = dirname(argv[1]) + "/";
+const HERE = `${dirname(argv[1])}/`;
 const dest = resolve(HERE, "../../searx/templates/simple/icons.html");
 
 /** @type import("./tools/jinja_svg_catalog.js").JinjaMacro[] */
@@ -34,7 +34,9 @@ const sxng_icon_opts = {
   ]
 };
 
-/** @type import("./tools/jinja_svg_catalog.js").IconSet */
+/**
+ * @type import("./tools/jinja_svg_catalog.js").IconSet[]
+ */
 const simple_icons = [
   {
     base: resolve(HERE, "node_modules/ionicons/dist/svg"),

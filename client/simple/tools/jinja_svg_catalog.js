@@ -1,8 +1,8 @@
+import fs from "node:fs";
+import { dirname, resolve } from "node:path";
+import { fileURLToPath } from "node:url";
 import { Edge } from "edge.js";
-import fs from "fs";
-import { dirname, resolve } from "path";
 import { optimize as svgo } from "svgo";
-import { fileURLToPath } from "url";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const __jinja_class_placeholder__ = "__jinja_class_placeholder__";
@@ -11,7 +11,7 @@ const __jinja_class_placeholder__ = "__jinja_class_placeholder__";
 
 /**
  * @typedef {object} IconSet - A set of icons
- * @property {object[]} set - Array of SVG icons, where property name is the
+ * @property {object} set - Object of SVG icons, where property name is the
  * name of the icon and value is the src of the SVG (relative to base).
  * @property {string} base - Folder in which the SVG src files are located.
  * @property {import("svgo").Config} svgo_opts - svgo options for this set.

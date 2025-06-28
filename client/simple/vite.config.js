@@ -21,10 +21,16 @@ const PATH = {
   templates: resolve(ROOT, "searx/templates/simple")
 };
 
+/**
+ * @type {import('svgo').Config}
+ */
 const svg2svg_opts = {
   plugins: [{ name: "preset-default" }, "sortAttrs", "convertStyleToAttrs"]
 };
 
+/**
+ * @type {import('svgo').Config}
+ */
 const svg2svg_favicon_opts = {
   plugins: [{ name: "preset-default" }, "sortAttrs"]
 };
@@ -52,7 +58,7 @@ export default defineConfig({
           outputSourceFiles: true,
           sourceMapURL: (name) => {
             const s = name.split("/");
-            return s[s.length - 1] + ".map";
+            return `${s[s.length - 1]}.map`;
           }
         }
         // env: 'development',
@@ -68,7 +74,7 @@ export default defineConfig({
   },
 
   build: {
-    target: "es2016",
+    target: "modules",
     manifest: "manifest.json",
     emptyOutDir: true,
     assetsDir: "",
@@ -85,13 +91,13 @@ export default defineConfig({
     rollupOptions: {
       input: {
         // build CSS files
-        "css/searxng.min.css": PATH.src + "/less/style-ltr.less",
-        "css/searxng-rtl.min.css": PATH.src + "/less/style-rtl.less",
-        "css/rss.min.css": PATH.src + "/less/rss.less",
+        "css/searxng.min.css": `${PATH.src}/less/style-ltr.less`,
+        "css/searxng-rtl.min.css": `${PATH.src}/less/style-rtl.less`,
+        "css/rss.min.css": `${PATH.src}/less/rss.less`,
 
         // build JS files
-        "js/searxng.head.min": PATH.src + "/js/searxng.head.js",
-        "js/searxng.min": PATH.src + "/js/searxng.js"
+        "js/searxng.head.min": `${PATH.src}/js/searxng.head.js`,
+        "js/searxng.min": `${PATH.src}/js/searxng.js`
       },
 
       // file naming conventions / pathnames are relative to outDir (PATH.dist)
@@ -111,10 +117,10 @@ export default defineConfig({
 
     viteStaticCopy({
       targets: [
-        { src: PATH.leaflet + "/leaflet.{js,js.map}", dest: PATH.dist + "/js" },
-        { src: PATH.leaflet + "/images/*.png", dest: PATH.dist + "/css/images/" },
-        { src: PATH.leaflet + "/*.{css,css.map}", dest: PATH.dist + "/css" },
-        { src: PATH.static + "/**/*", dest: PATH.dist }
+        { src: `${PATH.leaflet}/leaflet.{js,js.map}`, dest: `${PATH.dist}/js` },
+        { src: `${PATH.leaflet}/images/*.png`, dest: `${PATH.dist}/css/images/` },
+        { src: `${PATH.leaflet}/*.{css,css.map}`, dest: `${PATH.dist}/css` },
+        { src: `${PATH.static}/**/*`, dest: PATH.dist }
       ]
     }),
 
@@ -122,9 +128,9 @@ export default defineConfig({
 
     plg_svg2svg(
       [
-        { src: PATH.src + "/svg/empty_favicon.svg", dest: PATH.dist + "/img/empty_favicon.svg" },
-        { src: PATH.src + "/svg/select-dark.svg", dest: PATH.dist + "/img/select-dark.svg" },
-        { src: PATH.src + "/svg/select-light.svg", dest: PATH.dist + "/img/select-light.svg" }
+        { src: `${PATH.src}/svg/empty_favicon.svg`, dest: `${PATH.dist}/img/empty_favicon.svg` },
+        { src: `${PATH.src}/svg/select-dark.svg`, dest: `${PATH.dist}/img/select-dark.svg` },
+        { src: `${PATH.src}/svg/select-light.svg`, dest: `${PATH.dist}/img/select-light.svg` }
       ],
       svg2svg_opts
     ),
@@ -132,28 +138,28 @@ export default defineConfig({
     // SearXNG brand (static)
 
     plg_svg2png([
-      { src: PATH.brand + "/searxng-wordmark.svg", dest: PATH.dist + "/img/favicon.png" },
-      { src: PATH.brand + "/searxng.svg", dest: PATH.dist + "/img/searxng.png" }
+      { src: `${PATH.brand}/searxng-wordmark.svg`, dest: `${PATH.dist}/img/favicon.png` },
+      { src: `${PATH.brand}/searxng.svg`, dest: `${PATH.dist}/img/searxng.png` }
     ]),
 
     // -- svg
     plg_svg2svg(
       [
-        { src: PATH.brand + "/searxng.svg", dest: PATH.dist + "/img/searxng.svg" },
-        { src: PATH.brand + "/img_load_error.svg", dest: PATH.dist + "/img/img_load_error.svg" }
+        { src: `${PATH.brand}/searxng.svg`, dest: `${PATH.dist}/img/searxng.svg` },
+        { src: `${PATH.brand}/img_load_error.svg`, dest: `${PATH.dist}/img/img_load_error.svg` }
       ],
       svg2svg_opts
     ),
 
     // -- favicon
     plg_svg2svg(
-      [{ src: PATH.brand + "/searxng-wordmark.svg", dest: PATH.dist + "/img/favicon.svg" }],
+      [{ src: `${PATH.brand}/searxng-wordmark.svg`, dest: `${PATH.dist}/img/favicon.svg` }],
       svg2svg_favicon_opts
     ),
 
     // -- simple templates
     plg_svg2svg(
-      [{ src: PATH.brand + "/searxng-wordmark.svg", dest: PATH.templates + "/searxng-wordmark.min.svg" }],
+      [{ src: `${PATH.brand}/searxng-wordmark.svg`, dest: `${PATH.templates}/searxng-wordmark.min.svg` }],
       svg2svg_opts
     )
   ] // end: plugins

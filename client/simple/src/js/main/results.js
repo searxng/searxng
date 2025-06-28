@@ -13,7 +13,7 @@ import "../../../node_modules/swiped-events/src/swiped-events.js";
         "error",
         () => {
           // console.log("ERROR can't load: " + img.src);
-          img.src = window.searxng.settings.theme_static_path + "/img/img_load_error.svg";
+          img.src = `${window.searxng.settings.theme_static_path}/img/img_load_error.svg`;
         },
         { once: true }
       )
@@ -24,11 +24,11 @@ import "../../../node_modules/swiped-events/src/swiped-events.js";
     }
 
     searxng.on(".btn-collapse", "click", function () {
-      var btnLabelCollapsed = this.getAttribute("data-btn-text-collapsed");
-      var btnLabelNotCollapsed = this.getAttribute("data-btn-text-not-collapsed");
-      var target = this.getAttribute("data-target");
-      var targetElement = d.querySelector(target);
-      var html = this.innerHTML;
+      const btnLabelCollapsed = this.getAttribute("data-btn-text-collapsed");
+      const btnLabelNotCollapsed = this.getAttribute("data-btn-text-not-collapsed");
+      const target = this.getAttribute("data-target");
+      const targetElement = d.querySelector(target);
+      let html = this.innerHTML;
       if (this.classList.contains("collapsed")) {
         html = html.replace(btnLabelCollapsed, btnLabelNotCollapsed);
       } else {
@@ -40,16 +40,16 @@ import "../../../node_modules/swiped-events/src/swiped-events.js";
     });
 
     searxng.on(".media-loader", "click", function () {
-      var target = this.getAttribute("data-target");
-      var iframe_load = d.querySelector(target + " > iframe");
-      var srctest = iframe_load.getAttribute("src");
+      const target = this.getAttribute("data-target");
+      const iframe_load = d.querySelector(`${target} > iframe`);
+      const srctest = iframe_load.getAttribute("src");
       if (srctest === null || srctest === undefined || srctest === false) {
         iframe_load.setAttribute("src", iframe_load.getAttribute("data-src"));
       }
     });
 
     searxng.on("#copy_url", "click", function () {
-      var target = this.parentElement.querySelector("pre");
+      const target = this.parentElement.querySelector("pre");
       navigator.clipboard.writeText(target.innerText);
       this.innerText = this.dataset.copiedText;
     });
@@ -165,7 +165,7 @@ import "../../../node_modules/swiped-events/src/swiped-events.js";
     w.addEventListener(
       "scroll",
       () => {
-        var e = d.getElementById("backToTop"),
+        const e = d.getElementById("backToTop"),
           scrollTop = document.documentElement.scrollTop || document.body.scrollTop,
           results = d.getElementById("results");
         if (e !== null) {

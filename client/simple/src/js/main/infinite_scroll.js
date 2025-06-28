@@ -18,10 +18,10 @@ searxng.ready(() => {
   }
 
   const d = document;
-  var onlyImages = d.getElementById("results").classList.contains("only_template_images");
+  const onlyImages = d.getElementById("results").classList.contains("only_template_images");
 
   function newLoadSpinner() {
-    var loader = d.createElement("div");
+    const loader = d.createElement("div");
     loader.classList.add("loader");
     return loader;
   }
@@ -32,18 +32,18 @@ searxng.ready(() => {
   }
 
   function loadNextPage(callback) {
-    var form = d.querySelector("#pagination form.next_page");
+    const form = d.querySelector("#pagination form.next_page");
     if (!form) {
       return;
     }
     replaceChildrenWith(d.querySelector("#pagination"), [newLoadSpinner()]);
-    var formData = new FormData(form);
+    const formData = new FormData(form);
     searxng
       .http("POST", d.querySelector("#search").getAttribute("action"), formData)
       .then((response) => {
-        var nextPageDoc = new DOMParser().parseFromString(response, "text/html");
-        var articleList = nextPageDoc.querySelectorAll("#urls article");
-        var paginationElement = nextPageDoc.querySelector("#pagination");
+        const nextPageDoc = new DOMParser().parseFromString(response, "text/html");
+        const articleList = nextPageDoc.querySelectorAll("#urls article");
+        const paginationElement = nextPageDoc.querySelector("#pagination");
         d.querySelector("#pagination").remove();
         if (articleList.length > 0 && !onlyImages) {
           // do not add <hr> element when there are only images
@@ -59,7 +59,7 @@ searxng.ready(() => {
       })
       .catch((err) => {
         console.log(err);
-        var e = d.createElement("div");
+        const e = d.createElement("div");
         e.textContent = searxng.settings.translations.error_loading_next_page;
         e.classList.add("dialog-error");
         e.setAttribute("role", "alert");
