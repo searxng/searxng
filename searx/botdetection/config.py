@@ -10,15 +10,25 @@ from __future__ import annotations
 from typing import Any
 
 import copy
-import typing
+import importlib
 import logging
 import pathlib
+import typing
 
 from ..compat import tomllib
 
 __all__ = ['Config', 'UNSET', 'SchemaIssue']
 
 log = logging.getLogger(__name__)
+
+CFG: Config = None  # type: ignore
+
+LIMITER_CFG_SCHEMA = pathlib.Path(importlib.import_module("searx").__file__).parent / "limiter.toml"
+"""Base configuration (schema) of the botdetection."""
+
+CFG_DEPRECATED = {
+    # "dummy.old.foo": "config 'dummy.old.foo' exists only for tests.  Don't use it in your real project config."
+}
 
 
 class FALSE:
@@ -182,6 +192,17 @@ def toml_load(file_name):
         raise
 
 
+def get_cfg() -> Config:
+    global CFG  # pylint: disable=global-statement
+
+    if CFG is None:
+        from searx import settings_loader  # pylint: disable=import-outside-toplevel
+
+        cfg_file = (settings_loader.get_user_cfg_folder() or pathlib.Path("/etc/searxng")) / "limiter.toml"
+        CFG = Config.from_toml(LIMITER_CFG_SCHEMA, cfg_file, CFG_DEPRECATED)
+    return CFG
+
+
 # working with dictionaries
 
 
@@ -261,7 +282,6 @@ def _validate(
     data_dict: typing.Dict,
     deprecated: typing.Dict[str, str],
 ) -> typing.Tuple[bool, typing.List]:
-
     is_valid = True
 
     for key, data_value in data_dict.items():

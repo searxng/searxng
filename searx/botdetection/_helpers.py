@@ -10,6 +10,7 @@ from ipaddress import (
     ip_network,
     ip_address,
 )
+
 import flask
 import werkzeug
 
@@ -17,6 +18,7 @@ from searx import logger
 from searx.extended_types import SXNG_Request
 
 from . import config
+from .ip_lists import trusted_proxies  # pylint: disable=cyclic-import
 
 logger = logger.getChild('botdetection')
 
@@ -51,8 +53,10 @@ def too_many_requests(network: IPv4Network | IPv6Network, log_msg: str) -> werkz
     return flask.make_response(('Too Many Requests', 429))
 
 
-def get_network(real_ip: IPv4Address | IPv6Address, cfg: config.Config) -> IPv4Network | IPv6Network:
+def get_network(real_ip: IPv4Address | IPv6Address) -> IPv4Network | IPv6Network:
     """Returns the (client) network of whether the real_ip is part of."""
+
+    cfg = config.get_cfg()
 
     if real_ip.version == 6:
         prefix = cfg['real_ip.ipv6_prefix']
@@ -72,66 +76,67 @@ def _log_error_only_once(err_msg):
         _logged_errors.append(err_msg)
 
 
-def get_real_ip(request: SXNG_Request) -> str:
-    """Returns real IP of the request.  Since not all proxies set all the HTTP
-    headers and incoming headers can be faked it may happen that the IP cannot
-    be determined correctly.
-
-    .. sidebar:: :py:obj:`flask.Request.remote_addr`
-
-       SearXNG uses Werkzeug's ProxyFix_ (with it default ``x_for=1``).
+def get_real_ip(request: SXNG_Request) -> IPv4Address | IPv6Address:
+    """Returns real IP of the request.
 
     This function tries to get the remote IP in the order listed below,
-    additional some tests are done and if inconsistencies or errors are
+    additional tests are done and if inconsistencies or errors are
     detected, they are logged.
 
     The remote IP of the request is taken from (first match):
 
-    - X-Forwarded-For_ header
-    - `X-real-IP header <https://github.com/searxng/searxng/issues/1237#issuecomment-1147564516>`__
+    - X-Forwarded-For_ header (if from a trusted proxy)
+    - X-Real-IP_ header (if from a trusted proxy)
     - :py:obj:`flask.Request.remote_addr`
-
-    .. _ProxyFix:
-       https://werkzeug.palletsprojects.com/middleware/proxy_fix/
 
     .. _X-Forwarded-For:
       https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Forwarded-For
-
+    .. _X-Real-IP:
+      https://github.com/searxng/searxng/issues/1237#issuecomment-1147564516
     """
 
-    forwarded_for = request.headers.get("X-Forwarded-For")
-    real_ip = request.headers.get('X-Real-IP')
-    remote_addr = request.remote_addr
-    # logger.debug(
-    #     "X-Forwarded-For: %s || X-Real-IP: %s || request.remote_addr: %s", forwarded_for, real_ip, remote_addr
-    # )
+    cfg = config.get_cfg()
+    remote_addr = ip_address(request.remote_addr or "0.0.0.0")
+    request_ip = remote_addr
 
-    if not forwarded_for:
-        _log_error_only_once("X-Forwarded-For header is not set!")
-    else:
-        from . import cfg  # pylint: disable=import-outside-toplevel, cyclic-import
+    if trusted_proxies(remote_addr, cfg):
+        forwarded_for = request.headers.get("X-Forwarded-For")
+        real_ip = request.headers.get("X-Real-IP")
 
-        forwarded_for = [x.strip() for x in forwarded_for.split(',')]
-        x_for: int = cfg['real_ip.x_for']  # type: ignore
-        forwarded_for = forwarded_for[-min(len(forwarded_for), x_for)]
-
-    if not real_ip:
-        _log_error_only_once("X-Real-IP header is not set!")
-
-    if forwarded_for and real_ip and forwarded_for != real_ip:
-        logger.warning("IP from X-Real-IP (%s) is not equal to IP from X-Forwarded-For (%s)", real_ip, forwarded_for)
-
-    if forwarded_for and remote_addr and forwarded_for != remote_addr:
-        logger.warning(
-            "IP from WSGI environment (%s) is not equal to IP from X-Forwarded-For (%s)", remote_addr, forwarded_for
+        logger.debug(
+            "X-Forwarded-For: %s || X-Real-IP: %s || request.remote_addr: %s",
+            forwarded_for,
+            real_ip,
+            remote_addr.compressed,
         )
 
-    if real_ip and remote_addr and real_ip != remote_addr:
-        logger.warning("IP from WSGI environment (%s) is not equal to IP from X-Real-IP (%s)", remote_addr, real_ip)
+        if not forwarded_for:
+            _log_error_only_once("X-Forwarded-For header is not set!")
+        else:
+            try:
+                forwarded_for = ip_address(forwarded_for.split(",")[0].strip()).compressed
+            except ValueError:
+                forwarded_for = None
 
-    request_ip = ip_address(forwarded_for or real_ip or remote_addr or '0.0.0.0')
+        if not real_ip:
+            _log_error_only_once("X-Real-IP header is not set!")
+        else:
+            try:
+                real_ip = ip_address(real_ip).compressed
+            except ValueError:
+                real_ip = None
+
+        if forwarded_for and real_ip and forwarded_for != real_ip:
+            logger.warning(
+                "IP from X-Real-IP (%s) is not equal to IP from X-Forwarded-For (%s)",
+                real_ip,
+                forwarded_for,
+            )
+
+        request_ip = ip_address(forwarded_for or real_ip or remote_addr)
+
     if request_ip.version == 6 and request_ip.ipv4_mapped:
         request_ip = request_ip.ipv4_mapped
 
-    # logger.debug("get_real_ip() -> %s", request_ip)
-    return str(request_ip)
+    logger.debug("get_real_ip() -> %s", request_ip.compressed)
+    return request_ip
