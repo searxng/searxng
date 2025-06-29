@@ -7,7 +7,7 @@ NoSQL databases
 .. sidebar:: further read
 
    - `NoSQL databases <https://en.wikipedia.org/wiki/NoSQL>`_
-   - `redis.io <https://redis.io/>`_
+   - `valkey.io <https://valkey.io/>`_
    - `MongoDB <https://www.mongodb.com>`_
 
 .. contents::
@@ -22,7 +22,7 @@ NoSQL databases
 
 The following `NoSQL databases`_ are supported:
 
-- :ref:`engine redis_server`
+- :ref:`engine valkey_server`
 - :ref:`engine mongodb`
 
 All of the engines above are just commented out in the :origin:`settings.yml
@@ -45,7 +45,7 @@ section :ref:`private engines`.
 Extra Dependencies
 ==================
 
-For using :ref:`engine redis_server` or :ref:`engine mongodb` you need to
+For using :ref:`engine valkey_server` or :ref:`engine mongodb` you need to
 install additional packages in Python's Virtual Environment of your SearXNG
 instance.  To switch into the environment (:ref:`searxng-src`) you can use
 :ref:`searxng.sh`::
@@ -61,20 +61,20 @@ Configure the engines
 their structure.
 
 
-.. _engine redis_server:
+.. _engine valkey_server:
 
-Redis Server
-------------
+Valkey Server
+-------------
 
-.. _redis: https://github.com/andymccurdy/redis-py#installation
+.. _valkey: https://github.com/andymccurdy/valkey-py#installation
 
 .. sidebar:: info
 
-   - ``pip install`` redis_
-   - redis.io_
-   - :origin:`redis_server.py <searx/engines/redis_server.py>`
+   - ``pip install`` valkey_
+   - valkey.io_
+   - :origin:`valkey_server.py <searx/engines/valkey_server.py>`
 
-.. automodule:: searx.engines.redis_server
+.. automodule:: searx.engines.valkey_server
   :members:
 
 
@@ -94,4 +94,3 @@ MongoDB
 
 .. automodule:: searx.engines.mongodb
   :members:
-
