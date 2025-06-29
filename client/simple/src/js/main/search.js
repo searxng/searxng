@@ -1,24 +1,23 @@
 /* SPDX-License-Identifier: AGPL-3.0-or-later */
 /* exported AutoComplete */
 
-(function (w, d, searxng) {
-  'use strict';
-
-  var qinput_id = "q", qinput;
+((_w, d, searxng) => {
+  const qinput_id = "q";
+  let qinput;
 
   const isMobile = window.matchMedia("only screen and (max-width: 50em)").matches;
-  const isResultsPage = document.querySelector("main").id == "main_results";
+  const isResultsPage = document.querySelector("main").id === "main_results";
 
-  function submitIfQuery () {
-    if (qinput.value.length  > 0) {
-      var search = document.getElementById('search');
+  function submitIfQuery() {
+    if (qinput.value.length > 0) {
+      const search = document.getElementById("search");
       setTimeout(search.submit.bind(search), 0);
     }
   }
 
-  function createClearButton (qinput) {
-    var cs = document.getElementById('clear_search');
-    var updateClearButton = function () {
+  function createClearButton(qinput) {
+    const cs = document.getElementById("clear_search");
+    const updateClearButton = () => {
       if (qinput.value.length === 0) {
         cs.classList.add("empty");
       } else {
@@ -28,31 +27,31 @@
 
     // update status, event listener
     updateClearButton();
-    cs.addEventListener('click', function (ev) {
-      qinput.value = '';
+    cs.addEventListener("click", (ev) => {
+      qinput.value = "";
       qinput.focus();
       updateClearButton();
       ev.preventDefault();
     });
-    qinput.addEventListener('input', updateClearButton, false);
+    qinput.addEventListener("input", updateClearButton, false);
   }
 
   const fetchResults = async (query) => {
     let request;
-    if (searxng.settings.method === 'GET') {
+    if (searxng.settings.method === "GET") {
       const reqParams = new URLSearchParams();
       reqParams.append("q", query);
-      request = fetch("./autocompleter?" + reqParams.toString());
+      request = fetch(`./autocompleter?${reqParams.toString()}`);
     } else {
       const formData = new FormData();
       formData.append("q", query);
       request = fetch("./autocompleter", {
-        method: 'POST',
-        body: formData,
+        method: "POST",
+        body: formData
       });
     }
 
-    request.then(async function (response) {
+    request.then(async (response) => {
       const results = await response.json();
 
       if (!results) return;
@@ -63,30 +62,30 @@
       autocompleteList.innerHTML = "";
 
       // show an error message that no result was found
-      if (!results[1] || results[1].length == 0) {
+      if (!results[1] || results[1].length === 0) {
         const noItemFoundMessage = document.createElement("li");
-        noItemFoundMessage.classList.add('no-item-found');
+        noItemFoundMessage.classList.add("no-item-found");
         noItemFoundMessage.innerHTML = searxng.settings.translations.no_item_found;
         autocompleteList.appendChild(noItemFoundMessage);
         return;
       }
 
-      for (let result of results[1]) {
+      for (const result of results[1]) {
         const li = document.createElement("li");
         li.innerText = result;
 
-        searxng.on(li, 'mousedown', () => {
+        searxng.on(li, "mousedown", () => {
           qinput.value = result;
           const form = d.querySelector("#search");
           form.submit();
-          autocomplete.classList.remove('open');
+          autocomplete.classList.remove("open");
         });
         autocompleteList.appendChild(li);
       }
     });
   };
 
-  searxng.ready(function () {
+  searxng.ready(() => {
     // focus search input on large screens
     if (!isMobile && !isResultsPage) document.getElementById("q").focus();
 
@@ -100,20 +99,20 @@
 
       // autocompleter
       if (searxng.settings.autocomplete) {
-        searxng.on(qinput, 'input', () => {
+        searxng.on(qinput, "input", () => {
           const query = qinput.value;
           if (query.length < searxng.settings.autocomplete_min) return;
 
           setTimeout(() => {
-            if (query == qinput.value) fetchResults(query);
+            if (query === qinput.value) fetchResults(query);
           }, 300);
         });
 
-        searxng.on(qinput, 'keyup', (e) => {
+        searxng.on(qinput, "keyup", (e) => {
           let currentIndex = -1;
           const listItems = autocompleteList.children;
           for (let i = 0; i < listItems.length; i++) {
-            if (listItems[i].classList.contains('active')) {
+            if (listItems[i].classList.contains("active")) {
               currentIndex = i;
               break;
             }
@@ -121,22 +120,22 @@
 
           let newCurrentIndex = -1;
           if (e.key === "ArrowUp") {
-            if (currentIndex >= 0) listItems[currentIndex].classList.remove('active');
+            if (currentIndex >= 0) listItems[currentIndex].classList.remove("active");
             // we need to add listItems.length to the index calculation here because the JavaScript modulos
             // operator doesn't work with negative numbers
             newCurrentIndex = (currentIndex - 1 + listItems.length) % listItems.length;
           } else if (e.key === "ArrowDown") {
-            if (currentIndex >= 0) listItems[currentIndex].classList.remove('active');
+            if (currentIndex >= 0) listItems[currentIndex].classList.remove("active");
             newCurrentIndex = (currentIndex + 1) % listItems.length;
           } else if (e.key === "Tab" || e.key === "Enter") {
-            autocomplete.classList.remove('open');
+            autocomplete.classList.remove("open");
           }
 
-          if (newCurrentIndex != -1) {
+          if (newCurrentIndex !== -1) {
             const selectedItem = listItems[newCurrentIndex];
-            selectedItem.classList.add('active');
+            selectedItem.classList.add("active");
 
-            if (!selectedItem.classList.contains('no-item-found')) qinput.value = selectedItem.innerText;
+            if (!selectedItem.classList.contains("no-item-found")) qinput.value = selectedItem.innerText;
           }
         });
       }
@@ -147,20 +146,20 @@
     // filter (safesearch, time range or language) (this requires JavaScript
     // though)
     if (
-      qinput !== null
-        && searxng.settings.search_on_category_select
+      qinput !== null &&
+      searxng.settings.search_on_category_select &&
       // If .search_filters is undefined (invisible) we are on the homepage and
       // hence don't have to set any listeners
-        && d.querySelector(".search_filters") != null
+      d.querySelector(".search_filters") != null
     ) {
-      searxng.on(d.getElementById('safesearch'), 'change', submitIfQuery);
-      searxng.on(d.getElementById('time_range'), 'change', submitIfQuery);
-      searxng.on(d.getElementById('language'), 'change', submitIfQuery);
+      searxng.on(d.getElementById("safesearch"), "change", submitIfQuery);
+      searxng.on(d.getElementById("time_range"), "change", submitIfQuery);
+      searxng.on(d.getElementById("language"), "change", submitIfQuery);
     }
 
     const categoryButtons = d.querySelectorAll("button.category_button");
-    for (let button of categoryButtons) {
-      searxng.on(button, 'click', (event) => {
+    for (const button of categoryButtons) {
+      searxng.on(button, "click", (event) => {
         if (event.shiftKey) {
           event.preventDefault();
           button.classList.toggle("selected");
@@ -169,7 +168,7 @@
 
         // manually deselect the old selection when a new category is selected
         const selectedCategories = d.querySelectorAll("button.category_button.selected");
-        for (let categoryButton of selectedCategories) {
+        for (const categoryButton of selectedCategories) {
           categoryButton.classList.remove("selected");
         }
         button.classList.add("selected");
@@ -179,12 +178,12 @@
     // override form submit action to update the actually selected categories
     const form = d.querySelector("#search");
     if (form != null) {
-      searxng.on(form, 'submit', (event) => {
+      searxng.on(form, "submit", (event) => {
         event.preventDefault();
         const categoryValuesInput = d.querySelector("#selected-categories");
         if (categoryValuesInput) {
-          let categoryValues = [];
-          for (let categoryButton of categoryButtons) {
+          const categoryValues = [];
+          for (const categoryButton of categoryButtons) {
             if (categoryButton.classList.contains("selected")) {
               categoryValues.push(categoryButton.name.replace("category_", ""));
             }
@@ -195,5 +194,4 @@
       });
     }
   });
-
 })(window, document, window.searxng);

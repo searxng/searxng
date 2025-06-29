@@ -1,8 +1,8 @@
-import fs from "fs";
-import { resolve, dirname } from "path";
-import { Edge } from 'edge.js';
+import fs from "node:fs";
+import { dirname, resolve } from "node:path";
+import { fileURLToPath } from "node:url";
+import { Edge } from "edge.js";
 import { optimize as svgo } from "svgo";
-import { fileURLToPath } from 'url';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const __jinja_class_placeholder__ = "__jinja_class_placeholder__";
@@ -11,7 +11,7 @@ const __jinja_class_placeholder__ = "__jinja_class_placeholder__";
 
 /**
  * @typedef {object} IconSet - A set of icons
- * @property {object[]} set - Array of SVG icons, where property name is the
+ * @property {object} set - Object of SVG icons, where property name is the
  * name of the icon and value is the src of the SVG (relative to base).
  * @property {string} base - Folder in which the SVG src files are located.
  * @property {import("svgo").Config} svgo_opts - svgo options for this set.
@@ -30,7 +30,6 @@ const __jinja_class_placeholder__ = "__jinja_class_placeholder__";
  * @property {string} class - SVG's class name (value of XML class attribute)
  */
 
-
 // -- functions
 
 /**
@@ -43,34 +42,30 @@ const __jinja_class_placeholder__ = "__jinja_class_placeholder__";
  */
 
 function jinja_svg_catalog(dest, macros, items) {
-
   const svg_catalog = {};
   const edge_template = resolve(__dirname, "jinja_svg_catalog.html.edge");
 
-  items.forEach(
-    (item) => {
-
-      /** @type {import("svgo").Config} */
-      // JSON.stringify & JSON.parse are used to create a deep copy of the
-      // item.svgo_opts object
-      const svgo_opts = JSON.parse(JSON.stringify(item.svgo_opts));
-      svgo_opts.plugins.push({
-        name: "addClassesToSVGElement",
-        params: {
-          classNames: [__jinja_class_placeholder__]
-        }}
-      );
-
-      try {
-        const raw = fs.readFileSync(item.src, "utf8");
-        const opt = svgo(raw, svgo_opts);
-        svg_catalog[item.name] = opt.data;
-      } catch (err) {
-        console.error(`ERROR: jinja_svg_catalog processing ${item.name} src: ${item.src} -- ${err}`);
-        throw(err);
+  items.forEach((item) => {
+    /** @type {import("svgo").Config} */
+    // JSON.stringify & JSON.parse are used to create a deep copy of the
+    // item.svgo_opts object
+    const svgo_opts = JSON.parse(JSON.stringify(item.svgo_opts));
+    svgo_opts.plugins.push({
+      name: "addClassesToSVGElement",
+      params: {
+        classNames: [__jinja_class_placeholder__]
       }
+    });
+
+    try {
+      const raw = fs.readFileSync(item.src, "utf8");
+      const opt = svgo(raw, svgo_opts);
+      svg_catalog[item.name] = opt.data;
+    } catch (err) {
+      console.error(`ERROR: jinja_svg_catalog processing ${item.name} src: ${item.src} -- ${err}`);
+      throw err;
     }
-  );
+  });
 
   fs.mkdir(dirname(dest), { recursive: true }, (err) => {
     if (err) throw err;
@@ -82,19 +77,15 @@ function jinja_svg_catalog(dest, macros, items) {
     edge_template: edge_template,
     __jinja_class_placeholder__: __jinja_class_placeholder__,
     // see https://github.com/edge-js/edge/issues/162
-    open_curly_brace : "{{",
-    close_curly_brace : "}}"
+    open_curly_brace: "{{",
+    close_curly_brace: "}}"
   };
 
-  const jinjatmpl = Edge.create().renderRawSync(
-	  fs.readFileSync(edge_template, "utf-8"),
-	  ctx
-  );
+  const jinjatmpl = Edge.create().renderRawSync(fs.readFileSync(edge_template, "utf-8"), ctx);
 
   fs.writeFileSync(dest, jinjatmpl);
   console.log(`[jinja_svg_catalog] created: ${dest}`);
 }
-
 
 /**
  * Calls jinja_svg_catalog for a collection of icon sets where each set has its
@@ -109,7 +100,6 @@ function jinja_svg_sets(dest, macros, sets) {
   const items = [];
   const all = [];
   for (const obj of sets) {
-
     for (const [name, file] of Object.entries(obj.set)) {
       if (all.includes(name)) {
         throw new Error(`ERROR: ${name} has already been defined`);
@@ -117,7 +107,7 @@ function jinja_svg_sets(dest, macros, sets) {
       items.push({
         name: name,
         src: resolve(obj.base, file),
-        svgo_opts: obj.svgo_opts,
+        svgo_opts: obj.svgo_opts
       });
     }
     jinja_svg_catalog(dest, macros, items);
@@ -126,7 +116,4 @@ function jinja_svg_sets(dest, macros, sets) {
 
 // -- exports
 
-export {
-  jinja_svg_sets,
-  jinja_svg_catalog,
-};
+export { jinja_svg_sets, jinja_svg_catalog };

@@ -26,6 +26,14 @@ themes.fix() {
     dump_return $?
 }
 
+themes.lint() {
+    (   set -e
+        build_msg SIMPLE "theme: lint"
+        vite.simple.lint
+    )
+    dump_return $?
+}
+
 themes.test() {
     (   set -e
         # we run a build to test (in CI)

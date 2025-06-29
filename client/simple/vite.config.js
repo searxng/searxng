@@ -4,16 +4,12 @@
 
 import { resolve } from "node:path";
 import { defineConfig } from "vite";
-import stylelint from "vite-plugin-stylelint";
 import { viteStaticCopy } from "vite-plugin-static-copy";
-import { plg_svg2png } from "./tools/plg.js";
-import { plg_svg2svg } from "./tools/plg.js";
+import { plg_svg2png, plg_svg2svg } from "./tools/plg.js";
 
-
-const ROOT = "../..";  // root of the git reposetory
+const ROOT = "../.."; // root of the git reposetory
 
 const PATH = {
-
   dist: resolve(ROOT, "searx/static/themes/simple"),
   // dist: resolve(ROOT, "client/simple/dist"),
 
@@ -22,27 +18,24 @@ const PATH = {
   brand: "src/brand",
   static: resolve(ROOT, "client/simple/static"),
   leaflet: resolve(ROOT, "client/simple/node_modules/leaflet/dist"),
-  templates: resolve(ROOT, "searx/templates/simple"),
+  templates: resolve(ROOT, "searx/templates/simple")
 };
 
+/**
+ * @type {import('svgo').Config}
+ */
 const svg2svg_opts = {
-  plugins: [
-    { name: "preset-default" },
-    "sortAttrs",
-    "convertStyleToAttrs",
-  ]
+  plugins: [{ name: "preset-default" }, "sortAttrs", "convertStyleToAttrs"]
 };
 
+/**
+ * @type {import('svgo').Config}
+ */
 const svg2svg_favicon_opts = {
-  plugins: [
-    { name: "preset-default" },
-    "sortAttrs",
-  ]
+  plugins: [{ name: "preset-default" }, "sortAttrs"]
 };
-
 
 export default defineConfig({
-
   root: PATH.src,
   mode: "production",
   // mode: "development",
@@ -63,21 +56,25 @@ export default defineConfig({
         // FIXME: missing CCS sourcemaps!!
         sourceMap: {
           outputSourceFiles: true,
-          sourceMapURL: (name) => { const s = name.split('/'); return s[s.length - 1] + '.map'; },
-        },
+          sourceMapURL: (name) => {
+            const s = name.split("/");
+            return `${s[s.length - 1]}.map`;
+          }
+        }
         // env: 'development',
         // relativeUrls: true,
         // javascriptEnabled: true,
-      },
-    },
-  },  // end: css
+      }
+    }
+  }, // end: css
 
-  esbuild : {
+  esbuild: {
     // FIXME: missing CCS sourcemaps!!
     sourcemap: true
   },
 
   build: {
+    target: "modules",
     manifest: "manifest.json",
     emptyOutDir: true,
     assetsDir: "",
@@ -93,47 +90,37 @@ export default defineConfig({
 
     rollupOptions: {
       input: {
-
         // build CSS files
-        "css/searxng.min.css": PATH.src + "/less/style-ltr.less",
-        "css/searxng-rtl.min.css": PATH.src + "/less/style-rtl.less",
-        "css/rss.min.css": PATH.src + "/less/rss.less",
+        "css/searxng.min.css": `${PATH.src}/less/style-ltr.less`,
+        "css/searxng-rtl.min.css": `${PATH.src}/less/style-rtl.less`,
+        "css/rss.min.css": `${PATH.src}/less/rss.less`,
 
         // build JS files
-        "js/searxng.head.min": PATH.src + "/js/searxng.head.js",
-        "js/searxng.min": PATH.src + "/js/searxng.js",
-
+        "js/searxng.head.min": `${PATH.src}/js/searxng.head.js`,
+        "js/searxng.min": `${PATH.src}/js/searxng.js`
       },
 
       // file naming conventions / pathnames are relative to outDir (PATH.dist)
       output: {
         entryFileNames: "[name].js",
         chunkFileNames: "[name].js",
-        assetFileNames: "[name].[ext]",
+        assetFileNames: "[name].[ext]"
         // Vite does not support "rollupOptions.output.sourcemap".
         // Please use "build.sourcemap" instead.
         // sourcemap: true,
-      },
-
-    },
-  },  // end: build
+      }
+    }
+  }, // end: build
 
   plugins: [
-
-    stylelint({
-      build: true,
-      emitWarningAsError: true,
-      fix: true,
-    }),
-
     // Leaflet
 
     viteStaticCopy({
       targets: [
-        { src: PATH.leaflet + "/leaflet.{js,js.map}", dest: PATH.dist + "/js" },
-        { src: PATH.leaflet + "/images/*.png", dest: PATH.dist + "/css/images/" },
-        { src: PATH.leaflet + "/*.{css,css.map}", dest: PATH.dist + "/css" },
-        { src: PATH.static + "/**/*", dest: PATH.dist },
+        { src: `${PATH.leaflet}/leaflet.{js,js.map}`, dest: `${PATH.dist}/js` },
+        { src: `${PATH.leaflet}/images/*.png`, dest: `${PATH.dist}/css/images/` },
+        { src: `${PATH.leaflet}/*.{css,css.map}`, dest: `${PATH.dist}/css` },
+        { src: `${PATH.static}/**/*`, dest: PATH.dist }
       ]
     }),
 
@@ -141,45 +128,39 @@ export default defineConfig({
 
     plg_svg2svg(
       [
-        { src: PATH.src + "/svg/empty_favicon.svg", dest: PATH.dist + "/img/empty_favicon.svg" },
-        { src: PATH.src + "/svg/select-dark.svg", dest: PATH.dist + "/img/select-dark.svg" },
-        { src: PATH.src + "/svg/select-light.svg", dest: PATH.dist + "/img/select-light.svg" },
-      ],
-      svg2svg_opts,
-    ),
-
-    // SearXNG brand (static)
-
-    plg_svg2png(
-      [
-        { src: PATH.brand + "/searxng-wordmark.svg", dest: PATH.dist + "/img/favicon.png" },
-        { src: PATH.brand + "/searxng.svg", dest: PATH.dist + "/img/searxng.png" },
-      ],
-    ),
-
-    // -- svg
-    plg_svg2svg(
-      [
-        { src: PATH.brand + "/searxng.svg", dest: PATH.dist + "/img/searxng.svg" },
-        { src: PATH.brand + "/img_load_error.svg", dest: PATH.dist + "/img/img_load_error.svg" },
-      ],
-      svg2svg_opts,
-    ),
-
-    // -- favicon
-    plg_svg2svg(
-      [ { src: PATH.brand + "/searxng-wordmark.svg", dest: PATH.dist + "/img/favicon.svg" } ],
-      svg2svg_favicon_opts,
-    ),
-
-    // -- simple templates
-    plg_svg2svg(
-      [
-        { src: PATH.brand + "/searxng-wordmark.svg", dest: PATH.templates + "/searxng-wordmark.min.svg" },
+        { src: `${PATH.src}/svg/empty_favicon.svg`, dest: `${PATH.dist}/img/empty_favicon.svg` },
+        { src: `${PATH.src}/svg/select-dark.svg`, dest: `${PATH.dist}/img/select-dark.svg` },
+        { src: `${PATH.src}/svg/select-light.svg`, dest: `${PATH.dist}/img/select-light.svg` }
       ],
       svg2svg_opts
     ),
 
-  ] // end: plugins
+    // SearXNG brand (static)
 
+    plg_svg2png([
+      { src: `${PATH.brand}/searxng-wordmark.svg`, dest: `${PATH.dist}/img/favicon.png` },
+      { src: `${PATH.brand}/searxng.svg`, dest: `${PATH.dist}/img/searxng.png` }
+    ]),
+
+    // -- svg
+    plg_svg2svg(
+      [
+        { src: `${PATH.brand}/searxng.svg`, dest: `${PATH.dist}/img/searxng.svg` },
+        { src: `${PATH.brand}/img_load_error.svg`, dest: `${PATH.dist}/img/img_load_error.svg` }
+      ],
+      svg2svg_opts
+    ),
+
+    // -- favicon
+    plg_svg2svg(
+      [{ src: `${PATH.brand}/searxng-wordmark.svg`, dest: `${PATH.dist}/img/favicon.svg` }],
+      svg2svg_favicon_opts
+    ),
+
+    // -- simple templates
+    plg_svg2svg(
+      [{ src: `${PATH.brand}/searxng-wordmark.svg`, dest: `${PATH.templates}/searxng-wordmark.min.svg` }],
+      svg2svg_opts
+    )
+  ] // end: plugins
 });

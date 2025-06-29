@@ -2,55 +2,54 @@
 
 import "../../../node_modules/swiped-events/src/swiped-events.js";
 
-(function (w, d, searxng) {
-  'use strict';
-
-  if (searxng.endpoint !== 'results') {
+((w, d, searxng) => {
+  if (searxng.endpoint !== "results") {
     return;
   }
 
-  searxng.ready(function () {
-    d.querySelectorAll('#urls img').forEach(
-      img =>
-        img.addEventListener(
-          'error', () => {
-            // console.log("ERROR can't load: " + img.src);
-            img.src = window.searxng.settings.theme_static_path + "/img/img_load_error.svg";
-          },
-          {once: true}
-        ));
+  searxng.ready(() => {
+    d.querySelectorAll("#urls img").forEach((img) =>
+      img.addEventListener(
+        "error",
+        () => {
+          // console.log("ERROR can't load: " + img.src);
+          img.src = `${window.searxng.settings.theme_static_path}/img/img_load_error.svg`;
+        },
+        { once: true }
+      )
+    );
 
-    if (d.querySelector('#search_url button#copy_url')) {
-      d.querySelector('#search_url button#copy_url').style.display = "block";
+    if (d.querySelector("#search_url button#copy_url")) {
+      d.querySelector("#search_url button#copy_url").style.display = "block";
     }
 
-    searxng.on('.btn-collapse', 'click', function () {
-      var btnLabelCollapsed = this.getAttribute('data-btn-text-collapsed');
-      var btnLabelNotCollapsed = this.getAttribute('data-btn-text-not-collapsed');
-      var target = this.getAttribute('data-target');
-      var targetElement = d.querySelector(target);
-      var html = this.innerHTML;
-      if (this.classList.contains('collapsed')) {
+    searxng.on(".btn-collapse", "click", function () {
+      const btnLabelCollapsed = this.getAttribute("data-btn-text-collapsed");
+      const btnLabelNotCollapsed = this.getAttribute("data-btn-text-not-collapsed");
+      const target = this.getAttribute("data-target");
+      const targetElement = d.querySelector(target);
+      let html = this.innerHTML;
+      if (this.classList.contains("collapsed")) {
         html = html.replace(btnLabelCollapsed, btnLabelNotCollapsed);
       } else {
         html = html.replace(btnLabelNotCollapsed, btnLabelCollapsed);
       }
       this.innerHTML = html;
-      this.classList.toggle('collapsed');
-      targetElement.classList.toggle('invisible');
+      this.classList.toggle("collapsed");
+      targetElement.classList.toggle("invisible");
     });
 
-    searxng.on('.media-loader', 'click', function () {
-      var target = this.getAttribute('data-target');
-      var iframe_load = d.querySelector(target + ' > iframe');
-      var srctest = iframe_load.getAttribute('src');
+    searxng.on(".media-loader", "click", function () {
+      const target = this.getAttribute("data-target");
+      const iframe_load = d.querySelector(`${target} > iframe`);
+      const srctest = iframe_load.getAttribute("src");
       if (srctest === null || srctest === undefined || srctest === false) {
-        iframe_load.setAttribute('src', iframe_load.getAttribute('data-src'));
+        iframe_load.setAttribute("src", iframe_load.getAttribute("data-src"));
       }
     });
 
-    searxng.on('#copy_url', 'click', function () {
-      var target = this.parentElement.querySelector('pre');
+    searxng.on("#copy_url", "click", function () {
+      const target = this.parentElement.querySelector("pre");
       navigator.clipboard.writeText(target.innerText);
       this.innerText = this.dataset.copiedText;
     });
@@ -62,8 +61,8 @@ import "../../../node_modules/swiped-events/src/swiped-events.js";
     let imgTimeoutID;
 
     // progress spinner, while an image is loading
-    const imgLoaderSpinner = d.createElement('div');
-    imgLoaderSpinner.classList.add('loader');
+    const imgLoaderSpinner = d.createElement("div");
+    imgLoaderSpinner.classList.add("loader");
 
     // singleton image object, which is used for all loading processes of a
     // detailed image
@@ -89,15 +88,14 @@ import "../../../node_modules/swiped-events/src/swiped-events.js";
     };
 
     searxng.selectImage = (resultElement) => {
-
       // add a class that can be evaluated in the CSS and indicates that the
       // detail view is open
-      d.getElementById('results').classList.add('image-detail-open');
+      d.getElementById("results").classList.add("image-detail-open");
 
       // add a hash to the browser history so that pressing back doesn't return
       // to the previous page this allows us to dismiss the image details on
       // pressing the back button on mobile devices
-      window.location.hash = '#image-viewer';
+      window.location.hash = "#image-viewer";
 
       searxng.scrollPageToSelected();
 
@@ -105,21 +103,21 @@ import "../../../node_modules/swiped-events/src/swiped-events.js";
       if (!resultElement) return;
 
       // find <img> object in the element, if there is none, stop here.
-      const img = resultElement.querySelector('.result-images-source img');
+      const img = resultElement.querySelector(".result-images-source img");
       if (!img) return;
 
       // <img src="" data-src="http://example.org/image.jpg">
-      const src = img.getAttribute('data-src');
+      const src = img.getAttribute("data-src");
 
       // already loaded high-res image or no high-res image available
       if (!src) return;
 
       // use the image thumbnail until the image is fully loaded
-      const thumbnail = resultElement.querySelector('.image_thumbnail');
+      const thumbnail = resultElement.querySelector(".image_thumbnail");
       img.src = thumbnail.src;
 
       // show a progress spinner
-      const detailElement = resultElement.querySelector('.detail');
+      const detailElement = resultElement.querySelector(".detail");
       detailElement.appendChild(imgLoaderSpinner);
 
       // load full size image in background
@@ -127,58 +125,58 @@ import "../../../node_modules/swiped-events/src/swiped-events.js";
         // after the singelton loadImage has loaded the detail image into the
         // cache, it can be used in the origin <img> as src property.
         img.src = src;
-        img.removeAttribute('data-src');
+        img.removeAttribute("data-src");
       });
     };
 
-    searxng.closeDetail = function () {
-      d.getElementById('results').classList.remove('image-detail-open');
+    searxng.closeDetail = () => {
+      d.getElementById("results").classList.remove("image-detail-open");
       // remove #image-viewer hash from url by navigating back
-      if (window.location.hash == '#image-viewer') window.history.back();
+      if (window.location.hash === "#image-viewer") window.history.back();
       searxng.scrollPageToSelected();
     };
-    searxng.on('.result-detail-close', 'click', e => {
+    searxng.on(".result-detail-close", "click", (e) => {
       e.preventDefault();
       searxng.closeDetail();
     });
-    searxng.on('.result-detail-previous', 'click', e => {
+    searxng.on(".result-detail-previous", "click", (e) => {
       e.preventDefault();
       searxng.selectPrevious(false);
     });
-    searxng.on('.result-detail-next', 'click', e => {
+    searxng.on(".result-detail-next", "click", (e) => {
       e.preventDefault();
       searxng.selectNext(false);
     });
 
     // listen for the back button to be pressed and dismiss the image details when called
-    window.addEventListener('hashchange', () => {
-      if (window.location.hash != '#image-viewer') searxng.closeDetail();
+    window.addEventListener("hashchange", () => {
+      if (window.location.hash !== "#image-viewer") searxng.closeDetail();
     });
 
-    d.querySelectorAll('.swipe-horizontal').forEach(
-      obj => {
-        obj.addEventListener('swiped-left', function () {
-          searxng.selectNext(false);
-        });
-        obj.addEventListener('swiped-right', function () {
-          searxng.selectPrevious(false);
-        });
-      }
-    );
+    d.querySelectorAll(".swipe-horizontal").forEach((obj) => {
+      obj.addEventListener("swiped-left", () => {
+        searxng.selectNext(false);
+      });
+      obj.addEventListener("swiped-right", () => {
+        searxng.selectPrevious(false);
+      });
+    });
 
-    w.addEventListener('scroll', function () {
-      var e = d.getElementById('backToTop'),
-        scrollTop = document.documentElement.scrollTop || document.body.scrollTop,
-        results = d.getElementById('results');
-      if (e !== null) {
-        if (scrollTop >= 100) {
-          results.classList.add('scrolling');
-        } else {
-          results.classList.remove('scrolling');
+    w.addEventListener(
+      "scroll",
+      () => {
+        const e = d.getElementById("backToTop"),
+          scrollTop = document.documentElement.scrollTop || document.body.scrollTop,
+          results = d.getElementById("results");
+        if (e !== null) {
+          if (scrollTop >= 100) {
+            results.classList.add("scrolling");
+          } else {
+            results.classList.remove("scrolling");
+          }
         }
-      }
-    }, true);
-
+      },
+      true
+    );
   });
-
 })(window, document, window.searxng);
