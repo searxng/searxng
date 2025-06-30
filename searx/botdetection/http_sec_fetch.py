@@ -82,6 +82,12 @@ def filter_request(
     cfg: config.Config,
 ) -> werkzeug.Response | None:
 
+    if not request.is_secure:
+        logger.warning(
+            "Sec-Fetch cannot be verified for non-secure requests (HTTP headers are not set/sent by the client)."
+        )
+        return None
+
     # Only check Sec-Fetch headers for supported browsers
     user_agent = request.headers.get('User-Agent', '')
     if is_browser_supported(user_agent):
