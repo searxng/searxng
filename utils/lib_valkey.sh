@@ -5,7 +5,10 @@ valkey.distro.setup() {
     # shellcheck disable=SC2034
 
     case $DIST_ID in
-        ubuntu|debian|arch|fedora|centos)
+        ubuntu|debian)
+            VALKEY_PACKAGES="valkey-server"
+            ;;
+        arch|fedora|centos)
             VALKEY_PACKAGES="valkey"
             ;;
         *)
@@ -14,10 +17,42 @@ valkey.distro.setup() {
     esac
 }
 
+valkey.backports() {
+
+    case $DIST_ID in
+        debian)
+            info_msg "APT:: install debian-stable-backports.source / ${DIST_ID}-${DIST_VERS} (${DIST_VERSION_CODENAME})"
+            install_template /etc/apt/sources.list.d/debian-stable-backports.sources
+            apt update
+            ;;
+        ubuntu)
+            info_msg "APT:: install ubuntu-stable-backports.source / ${DIST_ID}-${DIST_VERS} (${DIST_VERSION_CODENAME})"
+            install_template /etc/apt/sources.list.d/ubuntu-stable-backports.sources
+            apt update
+            ;;
+        *)
+            info_msg "APT:: valkey.backports no implementation / ${DIST_ID}-${DIST_VERS} (${DIST_VERSION_CODENAME})"
+            ;;
+    esac
+}
+
 valkey.install(){
     info_msg "installing valkey ..."
     valkey.distro.setup
-    pkg_install "${VALKEY_PACKAGES}"
+
+    case $DIST_ID in
+        debian|ubuntu)
+            apt-cache show "${VALKEY_PACKAGES}" &> /dev/null  || valkey.backports
+            pkg_install "${VALKEY_PACKAGES}"
+            chown -R valkey:valkey /var/log/valkey/ /var/lib/valkey/ /etc/valkey/
+            systemd_activate_service valkey-server
+            ;;
+        *)
+            # install backports if package is not in the current APT repos
+            pkg_install "${VALKEY_PACKAGES}"
+            ;;
+    esac
+
     # case $DIST_ID-$DIST_VERS in
     #     arch-*|fedora-*|centos-7)
     #         systemctl enable nginx

@@ -7,6 +7,8 @@
 DIST_ID=$(source /etc/os-release; echo "$ID");
 # shellcheck disable=SC2034
 DIST_VERS=$(source /etc/os-release; echo "$VERSION_ID");
+# shellcheck disable=SC2034
+DIST_VERSION_CODENAME=$(source /etc/os-release; echo "$VERSION_CODENAME");
 
 ADMIN_NAME="${ADMIN_NAME:-$(git config user.name)}"
 ADMIN_NAME="${ADMIN_NAME:-$USER}"
