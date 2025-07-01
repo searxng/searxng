@@ -44,8 +44,19 @@ valkey.install(){
         debian|ubuntu)
             apt-cache show "${VALKEY_PACKAGES}" &> /dev/null  || valkey.backports
             pkg_install "${VALKEY_PACKAGES}"
-            chown -R valkey:valkey /var/log/valkey/ /var/lib/valkey/ /etc/valkey/
+
+            # do some fix ...
+            # chown -R valkey:valkey /var/log/valkey/ /var/lib/valkey/ /etc/valkey/
+
+            # https://www.freedesktop.org/software/systemd/man/latest/systemd.exec.html#PrivateUsers=
+            sed -i 's/PrivateUsers=true/# PrivateUsers=true/' /lib/systemd/system/valkey-server.service
+            sed -i 's/PrivateUsers=true/# PrivateUsers=true/' /lib/systemd/system/valkey-server@.service
+
             systemd_activate_service valkey-server
+            ;;
+        arch|fedora|centos)
+            pkg_install "${VALKEY_PACKAGES}"
+            systemd_activate_service valkey
             ;;
         *)
             # install backports if package is not in the current APT repos

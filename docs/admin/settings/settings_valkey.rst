@@ -37,16 +37,15 @@ find a description to test your valkey connection in SearXNG.
 Valkey Developer Notes
 ======================
 
-To set up a local Valkey_ DB, set the URL connector in your YAML
-setting:
+To set up a local Valkey_ DB, set the URL connector in your YAML setting:
 
 .. code:: yaml
 
    valkey:
      url: valkey://localhost:6379/0
 
-To install a local Valkey_ DB by your package manager read
-`Valkey-Installation`_ or use:
+To install a local Valkey_ DB from package manager read `Valkey-Installation`_
+or use:
 
 .. code:: sh
 
