@@ -1,9 +1,11 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 """wttr.in (weather forecast service)"""
 
-from json import loads
 from urllib.parse import quote
-from flask_babel import gettext
+from datetime import datetime
+
+from searx.result_types import EngineResults, WeatherAnswer
+from searx import weather
 
 about = {
     "website": "https://wttr.in",
@@ -18,118 +20,105 @@ categories = ["weather"]
 
 url = "https://wttr.in/{query}?format=j1&lang={lang}"
 
-
-def get_weather_condition_key(lang):
-    if lang == "en":
-        return "weatherDesc"
-
-    return "lang_" + lang.lower()
-
-
-def generate_day_table(day):
-    res = ""
-
-    res += f"<tr><td>{gettext('Average temp.')}</td><td>{day['avgtempC']}°C / {day['avgtempF']}°F</td></tr>"
-    res += f"<tr><td>{gettext('Min temp.')}</td><td>{day['mintempC']}°C / {day['mintempF']}°F</td></tr>"
-    res += f"<tr><td>{gettext('Max temp.')}</td><td>{day['maxtempC']}°C / {day['maxtempF']}°F</td></tr>"
-    res += f"<tr><td>{gettext('UV index')}</td><td>{day['uvIndex']}</td></tr>"
-    res += f"<tr><td>{gettext('Sunrise')}</td><td>{day['astronomy'][0]['sunrise']}</td></tr>"
-    res += f"<tr><td>{gettext('Sunset')}</td><td>{day['astronomy'][0]['sunset']}</td></tr>"
-
-    return res
-
-
-def generate_condition_table(condition, lang, current=False):
-    res = ""
-
-    if current:
-        key = "temp_"
-    else:
-        key = "temp"
-
-    res += (
-        f"<tr><td><b>{gettext('Condition')}</b></td>"
-        f"<td><b>{condition[get_weather_condition_key(lang)][0]['value']}</b></td></tr>"
-    )
-    res += (
-        f"<tr><td><b>{gettext('Temperature')}</b></td>"
-        f"<td><b>{condition[key+'C']}°C / {condition[key+'F']}°F</b></td></tr>"
-    )
-    res += (
-        f"<tr><td>{gettext('Feels like')}</td><td>{condition['FeelsLikeC']}°C / {condition['FeelsLikeF']}°F</td></tr>"
-    )
-    res += (
-        f"<tr><td>{gettext('Wind')}</td><td>{condition['winddir16Point']} — "
-        f"{condition['windspeedKmph']} km/h / {condition['windspeedMiles']} mph</td></tr>"
-    )
-    res += (
-        f"<tr><td>{gettext('Visibility')}</td><td>{condition['visibility']} km / {condition['visibilityMiles']} mi</td>"
-    )
-    res += f"<tr><td>{gettext('Humidity')}</td><td>{condition['humidity']}%</td></tr>"
-
-    return res
+# adapted from https://github.com/chubin/wttr.in/blob/master/lib/constants.py
+WWO_TO_CONDITION: dict[str, weather.WeatherConditionType] = {
+    "113": "clear sky",
+    "116": "partly cloudy",
+    "119": "cloudy",
+    "122": "fair",
+    "143": "fair",
+    "176": "light rain showers",
+    "179": "light snow showers",
+    "182": "light sleet showers",
+    "185": "light sleet",
+    "200": "rain and thunder",
+    "227": "light snow",
+    "230": "heavy snow",
+    "248": "fog",
+    "260": "fog",
+    "263": "light rain showers",
+    "266": "light rain showers",
+    "281": "light sleet showers",
+    "284": "light snow showers",
+    "293": "light rain showers",
+    "296": "light rain",
+    "299": "rain showers",
+    "302": "rain",
+    "305": "heavy rain showers",
+    "308": "heavy rain",
+    "311": "light sleet",
+    "314": "sleet",
+    "317": "light sleet",
+    "320": "heavy sleet",
+    "323": "light snow showers",
+    "326": "light snow showers",
+    "329": "heavy snow showers",
+    "332": "heavy snow",
+    "335": "heavy snow showers",
+    "338": "heavy snow",
+    "350": "light sleet",
+    "353": "light rain showers",
+    "356": "heavy rain showers",
+    "359": "heavy rain",
+    "362": "light sleet showers",
+    "365": "sleet showers",
+    "368": "light snow showers",
+    "371": "heavy snow showers",
+    "374": "light sleet showers",
+    "377": "heavy sleet",
+    "386": "rain showers and thunder",
+    "389": "heavy rain showers and thunder",
+    "392": "snow showers and thunder",
+    "395": "heavy snow showers",
+}
 
 
 def request(query, params):
-    if query.replace('/', '') in [":help", ":bash.function", ":translation"]:
-        return None
-
-    if params["language"] == "all":
-        params["language"] = "en"
-    else:
-        params["language"] = params["language"].split("-")[0]
-
     params["url"] = url.format(query=quote(query), lang=params["language"])
-
     params["raise_for_httperror"] = False
 
     return params
 
 
-def response(resp):
-    results = []
+def _weather_data(location: weather.GeoLocation, data: dict):
+    # the naming between different data objects is inconsitent, thus temp_C and
+    # tempC are possible
+    tempC: float = data.get("temp_C") or data.get("tempC")  # type: ignore
 
-    if resp.status_code == 404:
-        return []
-
-    result = loads(resp.text)
-
-    current = result["current_condition"][0]
-    location = result['nearest_area'][0]
-
-    forecast_indices = {3: gettext('Morning'), 4: gettext('Noon'), 6: gettext('Evening'), 7: gettext('Night')}
-
-    title = f"{location['areaName'][0]['value']}, {location['region'][0]['value']}"
-
-    infobox = f"<h3>{gettext('Current condition')}</h3><table><tbody>"
-
-    infobox += generate_condition_table(current, resp.search_params['language'], True)
-
-    infobox += "</tbody></table>"
-
-    for day in result["weather"]:
-        infobox += f"<h3>{day['date']}</h3>"
-
-        infobox += "<table><tbody>"
-
-        infobox += generate_day_table(day)
-
-        infobox += "</tbody></table>"
-
-        infobox += "<table><tbody>"
-
-        for time in forecast_indices.items():
-            infobox += f"<tr><td rowspan=\"7\"><b>{time[1]}</b></td></tr>"
-
-            infobox += generate_condition_table(day['hourly'][time[0]], resp.search_params['language'])
-
-        infobox += "</tbody></table>"
-
-    results.append(
-        {
-            "infobox": title,
-            "content": infobox,
-        }
+    return WeatherAnswer.Item(
+        location=location,
+        temperature=weather.Temperature(unit="°C", value=tempC),
+        condition=WWO_TO_CONDITION[data["weatherCode"]],
+        feels_like=weather.Temperature(unit="°C", value=data["FeelsLikeC"]),
+        wind_from=weather.Compass(int(data["winddirDegree"])),
+        wind_speed=weather.WindSpeed(data["windspeedKmph"], unit="km/h"),
+        pressure=weather.Pressure(data["pressure"], unit="hPa"),
+        humidity=weather.RelativeHumidity(data["humidity"]),
+        cloud_cover=data["cloudcover"],
     )
 
-    return results
+
+def response(resp):
+    res = EngineResults()
+
+    if resp.status_code == 404:
+        return res
+
+    json_data = resp.json()
+    geoloc = weather.GeoLocation.by_query(resp.search_params["query"])
+
+    weather_answer = WeatherAnswer(
+        current=_weather_data(geoloc, json_data["current_condition"][0]),
+        service="wttr.in",
+    )
+
+    for day in json_data["weather"]:
+        date = datetime.fromisoformat(day["date"])
+        time_slot_len = 24 // len(day["hourly"])
+        for index, forecast in enumerate(day["hourly"]):
+            forecast_data = _weather_data(geoloc, forecast)
+            forecast_data.datetime = weather.DateTime(date.replace(hour=index * time_slot_len + 1))
+            weather_answer.forecasts.append(forecast_data)
+
+    res.add(weather_answer)
+    return res
