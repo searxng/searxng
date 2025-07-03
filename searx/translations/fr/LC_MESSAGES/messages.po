@@ -45,8 +45,8 @@ msgstr ""
 "Project-Id-Version: searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-06-23 21:05+0000\n"
-"PO-Revision-Date: 2025-07-02 01:58+0000\n"
-"Last-Translator: demilune <demilune@noreply.codeberg.org>\n"
+"PO-Revision-Date: 2025-07-03 10:26+0000\n"
+"Last-Translator: return42 <return42@noreply.codeberg.org>\n"
 "Language-Team: French <https://translate.codeberg.org/projects/searxng/"
 "searxng/fr/>\n"
 "Language: fr\n"
@@ -110,7 +110,7 @@ msgstr "tv"
 #. CATEGORY_NAMES['IT']
 #: searx/searxng.msg
 msgid "it"
-msgstr "informatique"
+msgstr "IT"
 
 #. CATEGORY_NAMES['NEWS']
 #: searx/searxng.msg
@@ -327,17 +327,17 @@ msgstr "Nuageux"
 #. WEATHER_CONDITIONS
 #: searx/searxng.msg
 msgid "Fair"
-msgstr ""
+msgstr "Faible"
 
 #. WEATHER_CONDITIONS
 #: searx/searxng.msg
 msgid "Fog"
-msgstr ""
+msgstr "Brouillard"
 
 #. WEATHER_CONDITIONS
 #: searx/searxng.msg
 msgid "Heavy rain and thunder"
-msgstr ""
+msgstr "Pluie intense avec orage"
 
 #. WEATHER_CONDITIONS
 #: searx/searxng.msg
@@ -347,12 +347,12 @@ msgstr ""
 #. WEATHER_CONDITIONS
 #: searx/searxng.msg
 msgid "Heavy rain showers"
-msgstr ""
+msgstr "Pluie intense"
 
 #. WEATHER_CONDITIONS
 #: searx/searxng.msg
 msgid "Heavy rain"
-msgstr ""
+msgstr "pluie intense"
 
 #. WEATHER_CONDITIONS
 #: searx/searxng.msg
@@ -377,12 +377,12 @@ msgstr ""
 #. WEATHER_CONDITIONS
 #: searx/searxng.msg
 msgid "Heavy snow and thunder"
-msgstr ""
+msgstr "Neige intense avec éclair"
 
 #. WEATHER_CONDITIONS
 #: searx/searxng.msg
 msgid "Heavy snow showers and thunder"
-msgstr ""
+msgstr "Rideau de neige intense avec éclair"
 
 #. WEATHER_CONDITIONS
 #: searx/searxng.msg
@@ -472,12 +472,12 @@ msgstr ""
 #. WEATHER_CONDITIONS
 #: searx/searxng.msg
 msgid "Rain showers"
-msgstr ""
+msgstr "Vagues de pluie"
 
 #. WEATHER_CONDITIONS
 #: searx/searxng.msg
 msgid "Rain"
-msgstr ""
+msgstr "Pluie"
 
 #. WEATHER_CONDITIONS
 #: searx/searxng.msg
@@ -502,7 +502,7 @@ msgstr ""
 #. WEATHER_CONDITIONS
 #: searx/searxng.msg
 msgid "Snow and thunder"
-msgstr ""
+msgstr "Neige et tonnerre"
 
 #. WEATHER_CONDITIONS
 #: searx/searxng.msg
@@ -512,12 +512,12 @@ msgstr ""
 #. WEATHER_CONDITIONS
 #: searx/searxng.msg
 msgid "Snow showers"
-msgstr ""
+msgstr "Vagues de neige"
 
 #. WEATHER_CONDITIONS
 #: searx/searxng.msg
 msgid "Snow"
-msgstr ""
+msgstr "Neige"
 
 #. SOCIAL_MEDIA_TERMS['SUBSCRIBERS']
 #: searx/engines/lemmy.py:85 searx/searxng.msg
@@ -779,6 +779,8 @@ msgid ""
 "Converts strings to different hash digests. Available functions: md5, "
 "sha1, sha224, sha256, sha384, sha512."
 msgstr ""
+"Convertit des chaînes en différentes valeurs de hachage. Fonctions "
+"disponibles : md5, sha1, sha224, sha256, sha384, sha512."
 
 #: searx/plugins/hash_plugin.py:64
 msgid "hash digest"
@@ -1388,7 +1390,7 @@ msgstr ""
 
 #: searx/templates/simple/preferences/cookies.html:3
 msgid "With this list, you can assess the transparency of SearXNG."
-msgstr ""
+msgstr "Cette liste vous permet d'évaluer la transparence de SearXNG."
 
 #: searx/templates/simple/preferences/cookies.html:9
 msgid "Cookie name"
@@ -1490,10 +1492,13 @@ msgid ""
 "These settings are stored in your cookies. This allows us not to store "
 "this data about you."
 msgstr ""
+"Ces réglages sont stockés dans vos cookies. Cela nous permet de ne pas "
+"stocker ces données vous concernant."
 
 #: searx/templates/simple/preferences/footer.html:3
 msgid "These cookies serve your sole convenience; we don't use them to track you."
 msgstr ""
+"Ces cookies vous rendent service; nous ne les utilisons pas pour vous pister."
 
 #: searx/templates/simple/preferences/footer.html:6
 msgid "Save"
@@ -1540,6 +1545,8 @@ msgid ""
 "Automatically load the next page when scrolling to the bottom of the "
 "current page"
 msgstr ""
+"Charge automatiquement la page suivante après avoir défilé («scrollé») "
+"jusqu'en bas de la page actuelle"
 
 #: searx/templates/simple/preferences/language.html:24
 msgid "What language do you prefer for search?"
@@ -1573,11 +1580,11 @@ msgstr ""
 
 #: searx/templates/simple/preferences/results_on_new_tab.html:2
 msgid "Results in new tabs"
-msgstr ""
+msgstr "Résultat dans une nouvelle page (\"tab\")"
 
 #: searx/templates/simple/preferences/results_on_new_tab.html:14
 msgid "Open result links in new browser tabs"
-msgstr ""
+msgstr "Ouvre le lien dans une nouvelle page"
 
 #: searx/templates/simple/preferences/safesearch.html:20
 msgid "Filter content"
@@ -1592,6 +1599,8 @@ msgid ""
 "Perform a search immediately if a category is selected. Disable to select"
 " multiple categories"
 msgstr ""
+"Lance immédiatement une recherche si une catégorie est sélectionnée. "
+"Désactiver pour choisir plusieurs catégories"
 
 #: searx/templates/simple/preferences/theme.html:2
 msgid "Theme"
@@ -1599,7 +1608,7 @@ msgstr "Thème"
 
 #: searx/templates/simple/preferences/theme.html:14
 msgid "Change the layout of SearXNG"
-msgstr ""
+msgstr "Modifier la présentation de SearXNG"
 
 #: searx/templates/simple/preferences/theme.html:19
 msgid "Theme style"
