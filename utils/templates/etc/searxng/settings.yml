@@ -21,9 +21,9 @@ server:
   # by ${SEARXNG_BASE_URL}.
   # base_url: http://example.com/location
 
-redis:
-  # URL to connect redis database. Is overwritten by ${SEARXNG_REDIS_URL}.
-  url: unix:///usr/local/searxng-redis/run/redis.sock?db=0
+valkey:
+  # URL to connect valkey database. Is overwritten by ${SEARXNG_VALKEY_URL}.
+  url: valkey://localhost:6379/0
 
 ui:
   static_use_hash: true

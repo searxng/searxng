@@ -362,17 +362,6 @@ can be used to convenient run common build tasks of the static files.
 .. program-output:: bash -c "cd ..; ./manage static.help"
 
 
-.. _manage redis.help:
-
-``./manage redis.help``
-=======================
-
-The ``./manage redis.*`` command line can be used to convenient run common Redis
-tasks (:ref:`Redis developer notes`).
-
-.. program-output:: bash -c "cd ..; ./manage redis.help"
-
-
 .. _manage go.help:
 
 ``./manage go.help``

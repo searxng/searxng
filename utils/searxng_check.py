@@ -34,8 +34,11 @@ if os.path.isfile(OLD_BRAND_ENV):
     msg = ('%s is no longer needed, remove the file' % (OLD_BRAND_ENV))
     warnings.warn(msg, DeprecationWarning)
 
-from searx import redisdb, get_setting
+from searx import valkeydb, get_setting
 
-if not redisdb.initialize():
-    warnings.warn("can't connect to redis DB at: %s" % get_setting('redis.url'), RuntimeWarning, stacklevel=2)
-    warnings.warn("--> no bot protection without redis DB", RuntimeWarning, stacklevel=2)
+if get_setting('redis.url'):
+    warnings.warn("setting redis.url is deprecated, use valkey.url", RuntimeWarning, stacklevel=2)
+
+if not valkeydb.initialize():
+    warnings.warn("can't connect to valkey DB at: %s" % get_setting('valkey.url'), RuntimeWarning, stacklevel=2)
+    warnings.warn("--> no bot protection without valkey DB", RuntimeWarning, stacklevel=2)
