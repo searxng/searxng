@@ -27,8 +27,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-06-23 21:05+0000\n"
-"PO-Revision-Date: 2025-06-19 12:36+0000\n"
+"POT-Creation-Date: 2025-07-03 14:46+0000\n"
+"PO-Revision-Date: 2025-06-28 09:58+0000\n"
 "Last-Translator: Fjuro <git@alius.cz>\n"
 "Language: cs\n"
 "Language-Team: Czech "
@@ -191,7 +191,7 @@ msgid "About"
 msgstr "O SearXNG"
 
 #. WEATHER_TERMS['AVERAGE TEMP.']
-#: searx/engines/wttr.py:32 searx/searxng.msg
+#: searx/searxng.msg
 msgid "Average temp."
 msgstr "Prům. teplota"
 
@@ -201,58 +201,53 @@ msgid "Cloud cover"
 msgstr "Pokrytí mraky"
 
 #. WEATHER_TERMS['CONDITION']
-#: searx/engines/duckduckgo_weather.py:45 searx/engines/wttr.py:51
-#: searx/searxng.msg
+#: searx/engines/duckduckgo_weather.py:45 searx/searxng.msg
 msgid "Condition"
 msgstr "Stav"
 
 #. WEATHER_TERMS['CURRENT CONDITION']
-#: searx/engines/duckduckgo_weather.py:118 searx/engines/wttr.py:104
-#: searx/searxng.msg
+#: searx/engines/duckduckgo_weather.py:118 searx/searxng.msg
 msgid "Current condition"
 msgstr "Aktuální stav"
 
 #. WEATHER_TERMS['EVENING']
-#: searx/engines/wttr.py:100 searx/searxng.msg
+#: searx/searxng.msg
 msgid "Evening"
 msgstr "Večer"
 
 #. WEATHER_TERMS['FEELS LIKE']
-#: searx/engines/duckduckgo_weather.py:53 searx/engines/wttr.py:59
-#: searx/searxng.msg
+#: searx/engines/duckduckgo_weather.py:53 searx/searxng.msg
 msgid "Feels like"
 msgstr "Pocitová teplota"
 
 #. WEATHER_TERMS['HUMIDITY']
-#: searx/engines/duckduckgo_weather.py:64 searx/engines/wttr.py:68
-#: searx/searxng.msg searx/templates/simple/answer/weather.html:29
+#: searx/engines/duckduckgo_weather.py:64 searx/searxng.msg
+#: searx/templates/simple/answer/weather.html:29
 msgid "Humidity"
 msgstr "Vlhkost"
 
 #. WEATHER_TERMS['MAX TEMP.']
-#: searx/engines/duckduckgo_weather.py:77 searx/engines/wttr.py:34
-#: searx/searxng.msg
+#: searx/engines/duckduckgo_weather.py:77 searx/searxng.msg
 msgid "Max temp."
 msgstr "Max. teplota"
 
 #. WEATHER_TERMS['MIN TEMP.']
-#: searx/engines/duckduckgo_weather.py:73 searx/engines/wttr.py:33
-#: searx/searxng.msg
+#: searx/engines/duckduckgo_weather.py:73 searx/searxng.msg
 msgid "Min temp."
 msgstr "Min. teplota"
 
 #. WEATHER_TERMS['MORNING']
-#: searx/engines/wttr.py:100 searx/searxng.msg
+#: searx/searxng.msg
 msgid "Morning"
 msgstr "Ráno"
 
 #. WEATHER_TERMS['NIGHT']
-#: searx/engines/wttr.py:100 searx/searxng.msg
+#: searx/searxng.msg
 msgid "Night"
 msgstr "Noc"
 
 #. WEATHER_TERMS['NOON']
-#: searx/engines/wttr.py:100 searx/searxng.msg
+#: searx/searxng.msg
 msgid "Noon"
 msgstr "Poledne"
 
@@ -262,38 +257,34 @@ msgid "Pressure"
 msgstr "Tlak"
 
 #. WEATHER_TERMS['SUNRISE']
-#: searx/engines/duckduckgo_weather.py:81 searx/engines/wttr.py:36
-#: searx/searxng.msg
+#: searx/engines/duckduckgo_weather.py:81 searx/searxng.msg
 msgid "Sunrise"
 msgstr "Východ slunce"
 
 #. WEATHER_TERMS['SUNSET']
-#: searx/engines/duckduckgo_weather.py:82 searx/engines/wttr.py:37
-#: searx/searxng.msg
+#: searx/engines/duckduckgo_weather.py:82 searx/searxng.msg
 msgid "Sunset"
 msgstr "Západ slunce"
 
 #. WEATHER_TERMS['TEMPERATURE']
-#: searx/engines/duckduckgo_weather.py:48 searx/engines/wttr.py:55
-#: searx/searxng.msg searx/templates/simple/answer/weather.html:17
+#: searx/engines/duckduckgo_weather.py:48 searx/searxng.msg
+#: searx/templates/simple/answer/weather.html:17
 msgid "Temperature"
 msgstr "Teplota"
 
 #. WEATHER_TERMS['UV INDEX']
-#: searx/engines/duckduckgo_weather.py:80 searx/engines/wttr.py:35
-#: searx/searxng.msg
+#: searx/engines/duckduckgo_weather.py:80 searx/searxng.msg
 msgid "UV index"
 msgstr "UV index"
 
 #. WEATHER_TERMS['VISIBILITY']
-#: searx/engines/duckduckgo_weather.py:62 searx/engines/wttr.py:66
-#: searx/searxng.msg
+#: searx/engines/duckduckgo_weather.py:62 searx/searxng.msg
 msgid "Visibility"
 msgstr "Viditelnost"
 
 #. WEATHER_TERMS['WIND']
-#: searx/engines/duckduckgo_weather.py:58 searx/engines/wttr.py:62
-#: searx/searxng.msg searx/templates/simple/answer/weather.html:23
+#: searx/engines/duckduckgo_weather.py:58 searx/searxng.msg
+#: searx/templates/simple/answer/weather.html:23
 msgid "Wind"
 msgstr "Vítr"
 
@@ -301,6 +292,11 @@ msgstr "Vítr"
 #: searx/searxng.msg
 msgid "Clear sky"
 msgstr "Jasno"
+
+#. WEATHER_CONDITIONS
+#: searx/searxng.msg
+msgid "Partly cloudy"
+msgstr "Částečně zataženo"
 
 #. WEATHER_CONDITIONS
 #: searx/searxng.msg
@@ -316,66 +312,6 @@ msgstr "Polojasno"
 #: searx/searxng.msg
 msgid "Fog"
 msgstr "Mlha"
-
-#. WEATHER_CONDITIONS
-#: searx/searxng.msg
-msgid "Heavy rain and thunder"
-msgstr "Silný déšť s bouří"
-
-#. WEATHER_CONDITIONS
-#: searx/searxng.msg
-msgid "Heavy rain showers and thunder"
-msgstr "Silné dešťové přeháňky a bouřky"
-
-#. WEATHER_CONDITIONS
-#: searx/searxng.msg
-msgid "Heavy rain showers"
-msgstr "Silné dešťové přeháňky"
-
-#. WEATHER_CONDITIONS
-#: searx/searxng.msg
-msgid "Heavy rain"
-msgstr "Silný déšť"
-
-#. WEATHER_CONDITIONS
-#: searx/searxng.msg
-msgid "Heavy sleet and thunder"
-msgstr "Silný déšť se sněhem a bouřky"
-
-#. WEATHER_CONDITIONS
-#: searx/searxng.msg
-msgid "Heavy sleet showers and thunder"
-msgstr "Silné přeháňky deště se sněhem a bouřky"
-
-#. WEATHER_CONDITIONS
-#: searx/searxng.msg
-msgid "Heavy sleet showers"
-msgstr "Silné přeháňky deště se sněhem"
-
-#. WEATHER_CONDITIONS
-#: searx/searxng.msg
-msgid "Heavy sleet"
-msgstr "Silný déšť se sněhem"
-
-#. WEATHER_CONDITIONS
-#: searx/searxng.msg
-msgid "Heavy snow and thunder"
-msgstr "Silné sněžení a bouřky"
-
-#. WEATHER_CONDITIONS
-#: searx/searxng.msg
-msgid "Heavy snow showers and thunder"
-msgstr "Silné sněhové přeháňky a bouřky"
-
-#. WEATHER_CONDITIONS
-#: searx/searxng.msg
-msgid "Heavy snow showers"
-msgstr "Silné sněhové přeháňky"
-
-#. WEATHER_CONDITIONS
-#: searx/searxng.msg
-msgid "Heavy snow"
-msgstr "Silné sněžení"
 
 #. WEATHER_CONDITIONS
 #: searx/searxng.msg
@@ -399,51 +335,6 @@ msgstr "Slabý déšť"
 
 #. WEATHER_CONDITIONS
 #: searx/searxng.msg
-msgid "Light sleet and thunder"
-msgstr "Slabý déšť se sněhem a bouřky"
-
-#. WEATHER_CONDITIONS
-#: searx/searxng.msg
-msgid "Light sleet showers and thunder"
-msgstr "Slabé přeháňky deště se sněhem a bouřky"
-
-#. WEATHER_CONDITIONS
-#: searx/searxng.msg
-msgid "Light sleet showers"
-msgstr "Slabé přeháňky deště se sněhem"
-
-#. WEATHER_CONDITIONS
-#: searx/searxng.msg
-msgid "Light sleet"
-msgstr "Lehké sněžení"
-
-#. WEATHER_CONDITIONS
-#: searx/searxng.msg
-msgid "Light snow and thunder"
-msgstr "Slabé sněžení a bouřky"
-
-#. WEATHER_CONDITIONS
-#: searx/searxng.msg
-msgid "Light snow showers and thunder"
-msgstr "Slabé sněhové přeháňky a bouřky"
-
-#. WEATHER_CONDITIONS
-#: searx/searxng.msg
-msgid "Light snow showers"
-msgstr "Slabé sněhové přeháňky"
-
-#. WEATHER_CONDITIONS
-#: searx/searxng.msg
-msgid "Light snow"
-msgstr "Slabé sněžení"
-
-#. WEATHER_CONDITIONS
-#: searx/searxng.msg
-msgid "Partly cloudy"
-msgstr "Částečně zataženo"
-
-#. WEATHER_CONDITIONS
-#: searx/searxng.msg
 msgid "Rain and thunder"
 msgstr "Déšť a bouřky"
 
@@ -461,6 +352,46 @@ msgstr "Dešťové přeháňky"
 #: searx/searxng.msg
 msgid "Rain"
 msgstr "Déšť"
+
+#. WEATHER_CONDITIONS
+#: searx/searxng.msg
+msgid "Heavy rain and thunder"
+msgstr "Silný déšť s bouří"
+
+#. WEATHER_CONDITIONS
+#: searx/searxng.msg
+msgid "Heavy rain showers and thunder"
+msgstr "Silné dešťové přeháňky a bouřky"
+
+#. WEATHER_CONDITIONS
+#: searx/searxng.msg
+msgid "Heavy rain showers"
+msgstr "Silné dešťové přeháňky"
+
+#. WEATHER_CONDITIONS
+#: searx/searxng.msg
+msgid "Heavy rain"
+msgstr "Silný déšť"
+
+#. WEATHER_CONDITIONS
+#: searx/searxng.msg
+msgid "Light sleet and thunder"
+msgstr "Slabý déšť se sněhem a bouřky"
+
+#. WEATHER_CONDITIONS
+#: searx/searxng.msg
+msgid "Light sleet showers and thunder"
+msgstr "Slabé přeháňky deště se sněhem a bouřky"
+
+#. WEATHER_CONDITIONS
+#: searx/searxng.msg
+msgid "Light sleet showers"
+msgstr "Slabé přeháňky deště se sněhem"
+
+#. WEATHER_CONDITIONS
+#: searx/searxng.msg
+msgid "Light sleet"
+msgstr "Lehké sněžení"
 
 #. WEATHER_CONDITIONS
 #: searx/searxng.msg
@@ -484,6 +415,46 @@ msgstr "Plískanice"
 
 #. WEATHER_CONDITIONS
 #: searx/searxng.msg
+msgid "Heavy sleet and thunder"
+msgstr "Silný déšť se sněhem a bouřky"
+
+#. WEATHER_CONDITIONS
+#: searx/searxng.msg
+msgid "Heavy sleet showers and thunder"
+msgstr "Silné přeháňky deště se sněhem a bouřky"
+
+#. WEATHER_CONDITIONS
+#: searx/searxng.msg
+msgid "Heavy sleet showers"
+msgstr "Silné přeháňky deště se sněhem"
+
+#. WEATHER_CONDITIONS
+#: searx/searxng.msg
+msgid "Heavy sleet"
+msgstr "Silný déšť se sněhem"
+
+#. WEATHER_CONDITIONS
+#: searx/searxng.msg
+msgid "Light snow and thunder"
+msgstr "Slabé sněžení a bouřky"
+
+#. WEATHER_CONDITIONS
+#: searx/searxng.msg
+msgid "Light snow showers and thunder"
+msgstr "Slabé sněhové přeháňky a bouřky"
+
+#. WEATHER_CONDITIONS
+#: searx/searxng.msg
+msgid "Light snow showers"
+msgstr "Slabé sněhové přeháňky"
+
+#. WEATHER_CONDITIONS
+#: searx/searxng.msg
+msgid "Light snow"
+msgstr "Slabé sněžení"
+
+#. WEATHER_CONDITIONS
+#: searx/searxng.msg
 msgid "Snow and thunder"
 msgstr "Sníh a bouřky"
 
@@ -501,6 +472,26 @@ msgstr "Sněhové přeháňky"
 #: searx/searxng.msg
 msgid "Snow"
 msgstr "Sníh"
+
+#. WEATHER_CONDITIONS
+#: searx/searxng.msg
+msgid "Heavy snow and thunder"
+msgstr "Silné sněžení a bouřky"
+
+#. WEATHER_CONDITIONS
+#: searx/searxng.msg
+msgid "Heavy snow showers and thunder"
+msgstr "Silné sněhové přeháňky a bouřky"
+
+#. WEATHER_CONDITIONS
+#: searx/searxng.msg
+msgid "Heavy snow showers"
+msgstr "Silné sněhové přeháňky"
+
+#. WEATHER_CONDITIONS
+#: searx/searxng.msg
+msgid "Heavy snow"
+msgstr "Silné sněžení"
 
 #. SOCIAL_MEDIA_TERMS['SUBSCRIBERS']
 #: searx/engines/lemmy.py:85 searx/searxng.msg
@@ -775,6 +766,8 @@ msgstr "Doplněk hostitelských jmen"
 #: searx/plugins/hostnames.py:124
 msgid "Rewrite hostnames and remove or prioritize results based on the hostname"
 msgstr ""
+"Přepsat názvy hostitelů a odstranit nebo upřednostnit výsledky v "
+"závislosti na názvu hostitele"
 
 #: searx/plugins/oa_doi_rewrite.py:55
 msgid "Open Access DOI rewrite"
@@ -1358,7 +1351,7 @@ msgstr "Zarovnání na střed"
 
 #: searx/templates/simple/preferences/center_alignment.html:14
 msgid "Display results in the center of the page (Oscar layout)."
-msgstr ""
+msgstr "Zobrazit výsledky uprostřed stránky (rozložení Oscar)."
 
 #: searx/templates/simple/preferences/cookies.html:2
 msgid ""
@@ -1370,7 +1363,7 @@ msgstr ""
 
 #: searx/templates/simple/preferences/cookies.html:3
 msgid "With this list, you can assess the transparency of SearXNG."
-msgstr ""
+msgstr "Pomocí tohoto seznamu můžete posoudit transparentnost SearXNG."
 
 #: searx/templates/simple/preferences/cookies.html:9
 msgid "Cookie name"
@@ -1473,10 +1466,14 @@ msgid ""
 "These settings are stored in your cookies. This allows us not to store "
 "this data about you."
 msgstr ""
+"Tato nastavení jsou uložena ve vašich souborech cookie. To nám umožňuje "
+"neukládat data o vás."
 
 #: searx/templates/simple/preferences/footer.html:3
 msgid "These cookies serve your sole convenience; we don't use them to track you."
 msgstr ""
+"Tyto soubory cookie slouží pouze pro vaše pohodlí; nepoužíváme je, "
+"abychom vás sledovali."
 
 #: searx/templates/simple/preferences/footer.html:6
 msgid "Save"
@@ -1513,7 +1510,7 @@ msgstr "Nepřímé vyhledávání obrázků"
 
 #: searx/templates/simple/preferences/image_proxy.html:14
 msgid "Proxy image results through SearXNG"
-msgstr ""
+msgstr "Načítat výsledky hledání obrázků skrze proxy SearXNG"
 
 #: searx/templates/simple/preferences/infinite_scroll.html:2
 msgid "Infinite scroll"
@@ -1523,7 +1520,7 @@ msgstr "Nekonečné výsledky"
 msgid ""
 "Automatically load the next page when scrolling to the bottom of the "
 "current page"
-msgstr ""
+msgstr "Automaticky načíst další stránku při posunu na konec aktuální stránky"
 
 #: searx/templates/simple/preferences/language.html:24
 msgid "What language do you prefer for search?"
@@ -1574,6 +1571,8 @@ msgid ""
 "Perform a search immediately if a category is selected. Disable to select"
 " multiple categories"
 msgstr ""
+"Při výběru kategorie okamžitě provést hledání. Zakažte pro výběr více "
+"kategorií"
 
 #: searx/templates/simple/preferences/theme.html:2
 msgid "Theme"
@@ -1581,7 +1580,7 @@ msgstr "Vzhled"
 
 #: searx/templates/simple/preferences/theme.html:14
 msgid "Change the layout of SearXNG"
-msgstr ""
+msgstr "Změnit rozvržení SearXNG"
 
 #: searx/templates/simple/preferences/theme.html:19
 msgid "Theme style"

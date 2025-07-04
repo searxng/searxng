@@ -29,13 +29,14 @@
 # curtwheeler <curtwheeler@users.noreply.translate.codeberg.org>, 2025.
 # return42 <return42@noreply.codeberg.org>, 2025.
 # yurtpage <yurtpage@noreply.codeberg.org>, 2025.
+# kotovasia <kotovasia@noreply.codeberg.org>, 2025.
 msgid ""
 msgstr ""
 "Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-06-23 21:05+0000\n"
-"PO-Revision-Date: 2025-06-21 19:58+0000\n"
-"Last-Translator: yurtpage <yurtpage@noreply.codeberg.org>\n"
+"POT-Creation-Date: 2025-07-03 14:46+0000\n"
+"PO-Revision-Date: 2025-07-03 10:26+0000\n"
+"Last-Translator: return42 <return42@noreply.codeberg.org>\n"
 "Language: ru\n"
 "Language-Team: Russian "
 "<https://translate.codeberg.org/projects/searxng/searxng/ru/>\n"
@@ -198,7 +199,7 @@ msgid "About"
 msgstr "О программе"
 
 #. WEATHER_TERMS['AVERAGE TEMP.']
-#: searx/engines/wttr.py:32 searx/searxng.msg
+#: searx/searxng.msg
 msgid "Average temp."
 msgstr "Средняя темп."
 
@@ -208,58 +209,53 @@ msgid "Cloud cover"
 msgstr "Облачность"
 
 #. WEATHER_TERMS['CONDITION']
-#: searx/engines/duckduckgo_weather.py:45 searx/engines/wttr.py:51
-#: searx/searxng.msg
+#: searx/engines/duckduckgo_weather.py:45 searx/searxng.msg
 msgid "Condition"
 msgstr "Условия"
 
 #. WEATHER_TERMS['CURRENT CONDITION']
-#: searx/engines/duckduckgo_weather.py:118 searx/engines/wttr.py:104
-#: searx/searxng.msg
+#: searx/engines/duckduckgo_weather.py:118 searx/searxng.msg
 msgid "Current condition"
 msgstr "Текущие условия"
 
 #. WEATHER_TERMS['EVENING']
-#: searx/engines/wttr.py:100 searx/searxng.msg
+#: searx/searxng.msg
 msgid "Evening"
 msgstr "Вечер"
 
 #. WEATHER_TERMS['FEELS LIKE']
-#: searx/engines/duckduckgo_weather.py:53 searx/engines/wttr.py:59
-#: searx/searxng.msg
+#: searx/engines/duckduckgo_weather.py:53 searx/searxng.msg
 msgid "Feels like"
 msgstr "Ощущается как"
 
 #. WEATHER_TERMS['HUMIDITY']
-#: searx/engines/duckduckgo_weather.py:64 searx/engines/wttr.py:68
-#: searx/searxng.msg searx/templates/simple/answer/weather.html:29
+#: searx/engines/duckduckgo_weather.py:64 searx/searxng.msg
+#: searx/templates/simple/answer/weather.html:29
 msgid "Humidity"
 msgstr "Влажность"
 
 #. WEATHER_TERMS['MAX TEMP.']
-#: searx/engines/duckduckgo_weather.py:77 searx/engines/wttr.py:34
-#: searx/searxng.msg
+#: searx/engines/duckduckgo_weather.py:77 searx/searxng.msg
 msgid "Max temp."
 msgstr "Макс. темп."
 
 #. WEATHER_TERMS['MIN TEMP.']
-#: searx/engines/duckduckgo_weather.py:73 searx/engines/wttr.py:33
-#: searx/searxng.msg
+#: searx/engines/duckduckgo_weather.py:73 searx/searxng.msg
 msgid "Min temp."
 msgstr "Мин. темп."
 
 #. WEATHER_TERMS['MORNING']
-#: searx/engines/wttr.py:100 searx/searxng.msg
+#: searx/searxng.msg
 msgid "Morning"
 msgstr "Утро"
 
 #. WEATHER_TERMS['NIGHT']
-#: searx/engines/wttr.py:100 searx/searxng.msg
+#: searx/searxng.msg
 msgid "Night"
 msgstr "Ночь"
 
 #. WEATHER_TERMS['NOON']
-#: searx/engines/wttr.py:100 searx/searxng.msg
+#: searx/searxng.msg
 msgid "Noon"
 msgstr "Полдень"
 
@@ -269,38 +265,34 @@ msgid "Pressure"
 msgstr "Давление"
 
 #. WEATHER_TERMS['SUNRISE']
-#: searx/engines/duckduckgo_weather.py:81 searx/engines/wttr.py:36
-#: searx/searxng.msg
+#: searx/engines/duckduckgo_weather.py:81 searx/searxng.msg
 msgid "Sunrise"
 msgstr "Восход"
 
 #. WEATHER_TERMS['SUNSET']
-#: searx/engines/duckduckgo_weather.py:82 searx/engines/wttr.py:37
-#: searx/searxng.msg
+#: searx/engines/duckduckgo_weather.py:82 searx/searxng.msg
 msgid "Sunset"
 msgstr "Закат"
 
 #. WEATHER_TERMS['TEMPERATURE']
-#: searx/engines/duckduckgo_weather.py:48 searx/engines/wttr.py:55
-#: searx/searxng.msg searx/templates/simple/answer/weather.html:17
+#: searx/engines/duckduckgo_weather.py:48 searx/searxng.msg
+#: searx/templates/simple/answer/weather.html:17
 msgid "Temperature"
 msgstr "Температура"
 
 #. WEATHER_TERMS['UV INDEX']
-#: searx/engines/duckduckgo_weather.py:80 searx/engines/wttr.py:35
-#: searx/searxng.msg
+#: searx/engines/duckduckgo_weather.py:80 searx/searxng.msg
 msgid "UV index"
 msgstr "УФ-индекс"
 
 #. WEATHER_TERMS['VISIBILITY']
-#: searx/engines/duckduckgo_weather.py:62 searx/engines/wttr.py:66
-#: searx/searxng.msg
+#: searx/engines/duckduckgo_weather.py:62 searx/searxng.msg
 msgid "Visibility"
 msgstr "Видимость"
 
 #. WEATHER_TERMS['WIND']
-#: searx/engines/duckduckgo_weather.py:58 searx/engines/wttr.py:62
-#: searx/searxng.msg searx/templates/simple/answer/weather.html:23
+#: searx/engines/duckduckgo_weather.py:58 searx/searxng.msg
+#: searx/templates/simple/answer/weather.html:23
 msgid "Wind"
 msgstr "Ветер"
 
@@ -308,6 +300,11 @@ msgstr "Ветер"
 #: searx/searxng.msg
 msgid "Clear sky"
 msgstr "Ясное небо"
+
+#. WEATHER_CONDITIONS
+#: searx/searxng.msg
+msgid "Partly cloudy"
+msgstr "Переменная облачность"
 
 #. WEATHER_CONDITIONS
 #: searx/searxng.msg
@@ -323,66 +320,6 @@ msgstr "Ясно"
 #: searx/searxng.msg
 msgid "Fog"
 msgstr "Туман"
-
-#. WEATHER_CONDITIONS
-#: searx/searxng.msg
-msgid "Heavy rain and thunder"
-msgstr "Проливной дождь с грозой"
-
-#. WEATHER_CONDITIONS
-#: searx/searxng.msg
-msgid "Heavy rain showers and thunder"
-msgstr "Ливень с грозой"
-
-#. WEATHER_CONDITIONS
-#: searx/searxng.msg
-msgid "Heavy rain showers"
-msgstr "Сильные ливни"
-
-#. WEATHER_CONDITIONS
-#: searx/searxng.msg
-msgid "Heavy rain"
-msgstr "Проливной дождь"
-
-#. WEATHER_CONDITIONS
-#: searx/searxng.msg
-msgid "Heavy sleet and thunder"
-msgstr "Сильный мокрый снег с грозой"
-
-#. WEATHER_CONDITIONS
-#: searx/searxng.msg
-msgid "Heavy sleet showers and thunder"
-msgstr "Сильные ливни с мокрым снегом и грозой"
-
-#. WEATHER_CONDITIONS
-#: searx/searxng.msg
-msgid "Heavy sleet showers"
-msgstr "Сильные ливни с мокрым снегом"
-
-#. WEATHER_CONDITIONS
-#: searx/searxng.msg
-msgid "Heavy sleet"
-msgstr "Сильный мокрый снег"
-
-#. WEATHER_CONDITIONS
-#: searx/searxng.msg
-msgid "Heavy snow and thunder"
-msgstr "Сильный снег с грозой"
-
-#. WEATHER_CONDITIONS
-#: searx/searxng.msg
-msgid "Heavy snow showers and thunder"
-msgstr "Сильный снегопад с грозой"
-
-#. WEATHER_CONDITIONS
-#: searx/searxng.msg
-msgid "Heavy snow showers"
-msgstr "Сильный снегопад"
-
-#. WEATHER_CONDITIONS
-#: searx/searxng.msg
-msgid "Heavy snow"
-msgstr "Сильный снег"
 
 #. WEATHER_CONDITIONS
 #: searx/searxng.msg
@@ -406,51 +343,6 @@ msgstr "Небольшой дождь"
 
 #. WEATHER_CONDITIONS
 #: searx/searxng.msg
-msgid "Light sleet and thunder"
-msgstr "Небольшой мокрый снег с грозой"
-
-#. WEATHER_CONDITIONS
-#: searx/searxng.msg
-msgid "Light sleet showers and thunder"
-msgstr "Краткосрочные ливни с мокрым снегом и грозой"
-
-#. WEATHER_CONDITIONS
-#: searx/searxng.msg
-msgid "Light sleet showers"
-msgstr "Краткосрочные ливни с мокрым снегом"
-
-#. WEATHER_CONDITIONS
-#: searx/searxng.msg
-msgid "Light sleet"
-msgstr "Небольшой мокрый снег"
-
-#. WEATHER_CONDITIONS
-#: searx/searxng.msg
-msgid "Light snow and thunder"
-msgstr "Небольшой снег с грозой"
-
-#. WEATHER_CONDITIONS
-#: searx/searxng.msg
-msgid "Light snow showers and thunder"
-msgstr "Небольшой снегопад с грозой"
-
-#. WEATHER_CONDITIONS
-#: searx/searxng.msg
-msgid "Light snow showers"
-msgstr "Небольшой снегопад"
-
-#. WEATHER_CONDITIONS
-#: searx/searxng.msg
-msgid "Light snow"
-msgstr "Небольшой снег"
-
-#. WEATHER_CONDITIONS
-#: searx/searxng.msg
-msgid "Partly cloudy"
-msgstr "Переменная облачность"
-
-#. WEATHER_CONDITIONS
-#: searx/searxng.msg
 msgid "Rain and thunder"
 msgstr "Дождь с грозой"
 
@@ -468,6 +360,46 @@ msgstr "Ливни"
 #: searx/searxng.msg
 msgid "Rain"
 msgstr "Дождь"
+
+#. WEATHER_CONDITIONS
+#: searx/searxng.msg
+msgid "Heavy rain and thunder"
+msgstr "Проливной дождь с грозой"
+
+#. WEATHER_CONDITIONS
+#: searx/searxng.msg
+msgid "Heavy rain showers and thunder"
+msgstr "Ливень с грозой"
+
+#. WEATHER_CONDITIONS
+#: searx/searxng.msg
+msgid "Heavy rain showers"
+msgstr "Сильные ливни"
+
+#. WEATHER_CONDITIONS
+#: searx/searxng.msg
+msgid "Heavy rain"
+msgstr "Проливной дождь"
+
+#. WEATHER_CONDITIONS
+#: searx/searxng.msg
+msgid "Light sleet and thunder"
+msgstr "Небольшой мокрый снег с грозой"
+
+#. WEATHER_CONDITIONS
+#: searx/searxng.msg
+msgid "Light sleet showers and thunder"
+msgstr "Краткосрочные ливни с мокрым снегом и грозой"
+
+#. WEATHER_CONDITIONS
+#: searx/searxng.msg
+msgid "Light sleet showers"
+msgstr "Краткосрочные ливни с мокрым снегом"
+
+#. WEATHER_CONDITIONS
+#: searx/searxng.msg
+msgid "Light sleet"
+msgstr "Небольшой мокрый снег"
 
 #. WEATHER_CONDITIONS
 #: searx/searxng.msg
@@ -491,6 +423,46 @@ msgstr "Мокрый снег"
 
 #. WEATHER_CONDITIONS
 #: searx/searxng.msg
+msgid "Heavy sleet and thunder"
+msgstr "Сильный мокрый снег с грозой"
+
+#. WEATHER_CONDITIONS
+#: searx/searxng.msg
+msgid "Heavy sleet showers and thunder"
+msgstr "Сильные ливни с мокрым снегом и грозой"
+
+#. WEATHER_CONDITIONS
+#: searx/searxng.msg
+msgid "Heavy sleet showers"
+msgstr "Сильные ливни с мокрым снегом"
+
+#. WEATHER_CONDITIONS
+#: searx/searxng.msg
+msgid "Heavy sleet"
+msgstr "Сильный мокрый снег"
+
+#. WEATHER_CONDITIONS
+#: searx/searxng.msg
+msgid "Light snow and thunder"
+msgstr "Небольшой снег с грозой"
+
+#. WEATHER_CONDITIONS
+#: searx/searxng.msg
+msgid "Light snow showers and thunder"
+msgstr "Небольшой снегопад с грозой"
+
+#. WEATHER_CONDITIONS
+#: searx/searxng.msg
+msgid "Light snow showers"
+msgstr "Небольшой снегопад"
+
+#. WEATHER_CONDITIONS
+#: searx/searxng.msg
+msgid "Light snow"
+msgstr "Небольшой снег"
+
+#. WEATHER_CONDITIONS
+#: searx/searxng.msg
 msgid "Snow and thunder"
 msgstr "Снег с грозой"
 
@@ -508,6 +480,26 @@ msgstr "Снегопад"
 #: searx/searxng.msg
 msgid "Snow"
 msgstr "Снег"
+
+#. WEATHER_CONDITIONS
+#: searx/searxng.msg
+msgid "Heavy snow and thunder"
+msgstr "Сильный снег с грозой"
+
+#. WEATHER_CONDITIONS
+#: searx/searxng.msg
+msgid "Heavy snow showers and thunder"
+msgstr "Сильный снегопад с грозой"
+
+#. WEATHER_CONDITIONS
+#: searx/searxng.msg
+msgid "Heavy snow showers"
+msgstr "Сильный снегопад"
+
+#. WEATHER_CONDITIONS
+#: searx/searxng.msg
+msgid "Heavy snow"
+msgstr "Сильный снег"
 
 #. SOCIAL_MEDIA_TERMS['SUBSCRIBERS']
 #: searx/engines/lemmy.py:85 searx/searxng.msg
@@ -782,6 +774,8 @@ msgstr "Плагин имён хостов"
 #: searx/plugins/hostnames.py:124
 msgid "Rewrite hostnames and remove or prioritize results based on the hostname"
 msgstr ""
+"Перепишите имена хостов и удалите или приоритизируйте результаты на "
+"основе имени хоста"
 
 #: searx/plugins/oa_doi_rewrite.py:55
 msgid "Open Access DOI rewrite"
@@ -1199,7 +1193,7 @@ msgstr "Сообщения от поисковых систем"
 
 #: searx/templates/simple/elements/engines_msg.html:7
 msgid "seconds"
-msgstr "сек."
+msgstr "секунды"
 
 #: searx/templates/simple/elements/search_url.html:3
 msgid "Search URL"
@@ -1367,7 +1361,7 @@ msgstr "Выравнивание по центру"
 
 #: searx/templates/simple/preferences/center_alignment.html:14
 msgid "Display results in the center of the page (Oscar layout)."
-msgstr ""
+msgstr "Отображать результаты в центре страницы."
 
 #: searx/templates/simple/preferences/cookies.html:2
 msgid ""
@@ -1377,7 +1371,7 @@ msgstr "Список cookies и их значений, которые SearXNG х
 
 #: searx/templates/simple/preferences/cookies.html:3
 msgid "With this list, you can assess the transparency of SearXNG."
-msgstr ""
+msgstr "С помощью этого списка вы можете оценить прозрачность SearXNG."
 
 #: searx/templates/simple/preferences/cookies.html:9
 msgid "Cookie name"
@@ -1482,10 +1476,14 @@ msgid ""
 "These settings are stored in your cookies. This allows us not to store "
 "this data about you."
 msgstr ""
+"Эти настройки хранятся в ваших куки-файлах. Это позволяет нам не хранить "
+"эти данные о вас."
 
 #: searx/templates/simple/preferences/footer.html:3
 msgid "These cookies serve your sole convenience; we don't use them to track you."
 msgstr ""
+"Эти файлы cookie предназначены исключительно для вашего удобства; мы не "
+"используем их для отслеживания вас."
 
 #: searx/templates/simple/preferences/footer.html:6
 msgid "Save"
@@ -1522,7 +1520,7 @@ msgstr "Прокси для картинок"
 
 #: searx/templates/simple/preferences/image_proxy.html:14
 msgid "Proxy image results through SearXNG"
-msgstr ""
+msgstr "Результаты прокси-изображения через SearXNG"
 
 #: searx/templates/simple/preferences/infinite_scroll.html:2
 msgid "Infinite scroll"
@@ -1533,6 +1531,8 @@ msgid ""
 "Automatically load the next page when scrolling to the bottom of the "
 "current page"
 msgstr ""
+"Автоматически загружать следующую страницу при прокрутке текущей страницы"
+" вниз"
 
 #: searx/templates/simple/preferences/language.html:24
 msgid "What language do you prefer for search?"
@@ -1585,6 +1585,8 @@ msgid ""
 "Perform a search immediately if a category is selected. Disable to select"
 " multiple categories"
 msgstr ""
+"Выполнить поиск немедленно, если выбрана категория. Отключить, чтобы "
+"выбрать несколько категорий"
 
 #: searx/templates/simple/preferences/theme.html:2
 msgid "Theme"
@@ -1592,7 +1594,7 @@ msgstr "Тема"
 
 #: searx/templates/simple/preferences/theme.html:14
 msgid "Change the layout of SearXNG"
-msgstr ""
+msgstr "Изменить макет SearXNG"
 
 #: searx/templates/simple/preferences/theme.html:19
 msgid "Theme style"

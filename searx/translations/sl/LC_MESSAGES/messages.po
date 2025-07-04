@@ -20,7 +20,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-06-23 21:05+0000\n"
+"POT-Creation-Date: 2025-07-03 14:46+0000\n"
 "PO-Revision-Date: 2025-06-22 17:06+0000\n"
 "Last-Translator: return42 <return42@noreply.codeberg.org>\n"
 "Language: sl\n"
@@ -184,7 +184,7 @@ msgid "About"
 msgstr "O nas"
 
 #. WEATHER_TERMS['AVERAGE TEMP.']
-#: searx/engines/wttr.py:32 searx/searxng.msg
+#: searx/searxng.msg
 msgid "Average temp."
 msgstr "Povprečna temp."
 
@@ -194,58 +194,53 @@ msgid "Cloud cover"
 msgstr "Oblačnost"
 
 #. WEATHER_TERMS['CONDITION']
-#: searx/engines/duckduckgo_weather.py:45 searx/engines/wttr.py:51
-#: searx/searxng.msg
+#: searx/engines/duckduckgo_weather.py:45 searx/searxng.msg
 msgid "Condition"
 msgstr "Pogoji"
 
 #. WEATHER_TERMS['CURRENT CONDITION']
-#: searx/engines/duckduckgo_weather.py:118 searx/engines/wttr.py:104
-#: searx/searxng.msg
+#: searx/engines/duckduckgo_weather.py:118 searx/searxng.msg
 msgid "Current condition"
 msgstr "Trenutno stanje"
 
 #. WEATHER_TERMS['EVENING']
-#: searx/engines/wttr.py:100 searx/searxng.msg
+#: searx/searxng.msg
 msgid "Evening"
 msgstr "Večer"
 
 #. WEATHER_TERMS['FEELS LIKE']
-#: searx/engines/duckduckgo_weather.py:53 searx/engines/wttr.py:59
-#: searx/searxng.msg
+#: searx/engines/duckduckgo_weather.py:53 searx/searxng.msg
 msgid "Feels like"
 msgstr "Občuti se kot"
 
 #. WEATHER_TERMS['HUMIDITY']
-#: searx/engines/duckduckgo_weather.py:64 searx/engines/wttr.py:68
-#: searx/searxng.msg searx/templates/simple/answer/weather.html:29
+#: searx/engines/duckduckgo_weather.py:64 searx/searxng.msg
+#: searx/templates/simple/answer/weather.html:29
 msgid "Humidity"
 msgstr "Vlaga"
 
 #. WEATHER_TERMS['MAX TEMP.']
-#: searx/engines/duckduckgo_weather.py:77 searx/engines/wttr.py:34
-#: searx/searxng.msg
+#: searx/engines/duckduckgo_weather.py:77 searx/searxng.msg
 msgid "Max temp."
 msgstr "Najvišja temp."
 
 #. WEATHER_TERMS['MIN TEMP.']
-#: searx/engines/duckduckgo_weather.py:73 searx/engines/wttr.py:33
-#: searx/searxng.msg
+#: searx/engines/duckduckgo_weather.py:73 searx/searxng.msg
 msgid "Min temp."
 msgstr "Najnižja temp."
 
 #. WEATHER_TERMS['MORNING']
-#: searx/engines/wttr.py:100 searx/searxng.msg
+#: searx/searxng.msg
 msgid "Morning"
 msgstr "Jutro"
 
 #. WEATHER_TERMS['NIGHT']
-#: searx/engines/wttr.py:100 searx/searxng.msg
+#: searx/searxng.msg
 msgid "Night"
 msgstr "Noč"
 
 #. WEATHER_TERMS['NOON']
-#: searx/engines/wttr.py:100 searx/searxng.msg
+#: searx/searxng.msg
 msgid "Noon"
 msgstr "Opoldne"
 
@@ -255,38 +250,34 @@ msgid "Pressure"
 msgstr "Tlak"
 
 #. WEATHER_TERMS['SUNRISE']
-#: searx/engines/duckduckgo_weather.py:81 searx/engines/wttr.py:36
-#: searx/searxng.msg
+#: searx/engines/duckduckgo_weather.py:81 searx/searxng.msg
 msgid "Sunrise"
 msgstr "Sončni vzhod"
 
 #. WEATHER_TERMS['SUNSET']
-#: searx/engines/duckduckgo_weather.py:82 searx/engines/wttr.py:37
-#: searx/searxng.msg
+#: searx/engines/duckduckgo_weather.py:82 searx/searxng.msg
 msgid "Sunset"
 msgstr "Sončni zahod"
 
 #. WEATHER_TERMS['TEMPERATURE']
-#: searx/engines/duckduckgo_weather.py:48 searx/engines/wttr.py:55
-#: searx/searxng.msg searx/templates/simple/answer/weather.html:17
+#: searx/engines/duckduckgo_weather.py:48 searx/searxng.msg
+#: searx/templates/simple/answer/weather.html:17
 msgid "Temperature"
 msgstr "Temperatura"
 
 #. WEATHER_TERMS['UV INDEX']
-#: searx/engines/duckduckgo_weather.py:80 searx/engines/wttr.py:35
-#: searx/searxng.msg
+#: searx/engines/duckduckgo_weather.py:80 searx/searxng.msg
 msgid "UV index"
 msgstr "UV indeks"
 
 #. WEATHER_TERMS['VISIBILITY']
-#: searx/engines/duckduckgo_weather.py:62 searx/engines/wttr.py:66
-#: searx/searxng.msg
+#: searx/engines/duckduckgo_weather.py:62 searx/searxng.msg
 msgid "Visibility"
 msgstr "Vidnost"
 
 #. WEATHER_TERMS['WIND']
-#: searx/engines/duckduckgo_weather.py:58 searx/engines/wttr.py:62
-#: searx/searxng.msg searx/templates/simple/answer/weather.html:23
+#: searx/engines/duckduckgo_weather.py:58 searx/searxng.msg
+#: searx/templates/simple/answer/weather.html:23
 msgid "Wind"
 msgstr "Veter"
 
@@ -294,6 +285,11 @@ msgstr "Veter"
 #: searx/searxng.msg
 msgid "Clear sky"
 msgstr "Jasno"
+
+#. WEATHER_CONDITIONS
+#: searx/searxng.msg
+msgid "Partly cloudy"
+msgstr "Delno oblačno"
 
 #. WEATHER_CONDITIONS
 #: searx/searxng.msg
@@ -309,66 +305,6 @@ msgstr "Lepo vreme"
 #: searx/searxng.msg
 msgid "Fog"
 msgstr "Megla"
-
-#. WEATHER_CONDITIONS
-#: searx/searxng.msg
-msgid "Heavy rain and thunder"
-msgstr "Močan dež in grmenje"
-
-#. WEATHER_CONDITIONS
-#: searx/searxng.msg
-msgid "Heavy rain showers and thunder"
-msgstr "Močne plohe z dežjem in grmenjem"
-
-#. WEATHER_CONDITIONS
-#: searx/searxng.msg
-msgid "Heavy rain showers"
-msgstr "Močne plohe z dežjem"
-
-#. WEATHER_CONDITIONS
-#: searx/searxng.msg
-msgid "Heavy rain"
-msgstr "Močan dež"
-
-#. WEATHER_CONDITIONS
-#: searx/searxng.msg
-msgid "Heavy sleet and thunder"
-msgstr "Močna sodra in grmenje"
-
-#. WEATHER_CONDITIONS
-#: searx/searxng.msg
-msgid "Heavy sleet showers and thunder"
-msgstr "Močni nalivi s sodro in grmenjem"
-
-#. WEATHER_CONDITIONS
-#: searx/searxng.msg
-msgid "Heavy sleet showers"
-msgstr "Močni nalivi s sodro"
-
-#. WEATHER_CONDITIONS
-#: searx/searxng.msg
-msgid "Heavy sleet"
-msgstr "Močna sodra"
-
-#. WEATHER_CONDITIONS
-#: searx/searxng.msg
-msgid "Heavy snow and thunder"
-msgstr "Močan sneg in grmenje"
-
-#. WEATHER_CONDITIONS
-#: searx/searxng.msg
-msgid "Heavy snow showers and thunder"
-msgstr "Močne snežne plohe in grmenje"
-
-#. WEATHER_CONDITIONS
-#: searx/searxng.msg
-msgid "Heavy snow showers"
-msgstr "Močne snežne plohe"
-
-#. WEATHER_CONDITIONS
-#: searx/searxng.msg
-msgid "Heavy snow"
-msgstr "Močno sneženje"
 
 #. WEATHER_CONDITIONS
 #: searx/searxng.msg
@@ -392,51 +328,6 @@ msgstr "Rahel dež"
 
 #. WEATHER_CONDITIONS
 #: searx/searxng.msg
-msgid "Light sleet and thunder"
-msgstr "Rahla sodra in grmenje"
-
-#. WEATHER_CONDITIONS
-#: searx/searxng.msg
-msgid "Light sleet showers and thunder"
-msgstr "Rahli nalivi s sodro in grmenjem"
-
-#. WEATHER_CONDITIONS
-#: searx/searxng.msg
-msgid "Light sleet showers"
-msgstr "Rahli nalivi s sodro"
-
-#. WEATHER_CONDITIONS
-#: searx/searxng.msg
-msgid "Light sleet"
-msgstr "Rahla sodra"
-
-#. WEATHER_CONDITIONS
-#: searx/searxng.msg
-msgid "Light snow and thunder"
-msgstr "Rahel sneg in grmenje"
-
-#. WEATHER_CONDITIONS
-#: searx/searxng.msg
-msgid "Light snow showers and thunder"
-msgstr "Rahle snežne plohe in grmenje"
-
-#. WEATHER_CONDITIONS
-#: searx/searxng.msg
-msgid "Light snow showers"
-msgstr "Rahle snežne plohe"
-
-#. WEATHER_CONDITIONS
-#: searx/searxng.msg
-msgid "Light snow"
-msgstr "Rahlo sneženje"
-
-#. WEATHER_CONDITIONS
-#: searx/searxng.msg
-msgid "Partly cloudy"
-msgstr "Delno oblačno"
-
-#. WEATHER_CONDITIONS
-#: searx/searxng.msg
 msgid "Rain and thunder"
 msgstr "Dež in grmenje"
 
@@ -454,6 +345,46 @@ msgstr "Nalivi"
 #: searx/searxng.msg
 msgid "Rain"
 msgstr "Dež"
+
+#. WEATHER_CONDITIONS
+#: searx/searxng.msg
+msgid "Heavy rain and thunder"
+msgstr "Močan dež in grmenje"
+
+#. WEATHER_CONDITIONS
+#: searx/searxng.msg
+msgid "Heavy rain showers and thunder"
+msgstr "Močne plohe z dežjem in grmenjem"
+
+#. WEATHER_CONDITIONS
+#: searx/searxng.msg
+msgid "Heavy rain showers"
+msgstr "Močne plohe z dežjem"
+
+#. WEATHER_CONDITIONS
+#: searx/searxng.msg
+msgid "Heavy rain"
+msgstr "Močan dež"
+
+#. WEATHER_CONDITIONS
+#: searx/searxng.msg
+msgid "Light sleet and thunder"
+msgstr "Rahla sodra in grmenje"
+
+#. WEATHER_CONDITIONS
+#: searx/searxng.msg
+msgid "Light sleet showers and thunder"
+msgstr "Rahli nalivi s sodro in grmenjem"
+
+#. WEATHER_CONDITIONS
+#: searx/searxng.msg
+msgid "Light sleet showers"
+msgstr "Rahli nalivi s sodro"
+
+#. WEATHER_CONDITIONS
+#: searx/searxng.msg
+msgid "Light sleet"
+msgstr "Rahla sodra"
 
 #. WEATHER_CONDITIONS
 #: searx/searxng.msg
@@ -477,6 +408,46 @@ msgstr "Sodra"
 
 #. WEATHER_CONDITIONS
 #: searx/searxng.msg
+msgid "Heavy sleet and thunder"
+msgstr "Močna sodra in grmenje"
+
+#. WEATHER_CONDITIONS
+#: searx/searxng.msg
+msgid "Heavy sleet showers and thunder"
+msgstr "Močni nalivi s sodro in grmenjem"
+
+#. WEATHER_CONDITIONS
+#: searx/searxng.msg
+msgid "Heavy sleet showers"
+msgstr "Močni nalivi s sodro"
+
+#. WEATHER_CONDITIONS
+#: searx/searxng.msg
+msgid "Heavy sleet"
+msgstr "Močna sodra"
+
+#. WEATHER_CONDITIONS
+#: searx/searxng.msg
+msgid "Light snow and thunder"
+msgstr "Rahel sneg in grmenje"
+
+#. WEATHER_CONDITIONS
+#: searx/searxng.msg
+msgid "Light snow showers and thunder"
+msgstr "Rahle snežne plohe in grmenje"
+
+#. WEATHER_CONDITIONS
+#: searx/searxng.msg
+msgid "Light snow showers"
+msgstr "Rahle snežne plohe"
+
+#. WEATHER_CONDITIONS
+#: searx/searxng.msg
+msgid "Light snow"
+msgstr "Rahlo sneženje"
+
+#. WEATHER_CONDITIONS
+#: searx/searxng.msg
 msgid "Snow and thunder"
 msgstr "Sneg in grmenje"
 
@@ -494,6 +465,26 @@ msgstr "Snežne plohe"
 #: searx/searxng.msg
 msgid "Snow"
 msgstr "Sneg"
+
+#. WEATHER_CONDITIONS
+#: searx/searxng.msg
+msgid "Heavy snow and thunder"
+msgstr "Močan sneg in grmenje"
+
+#. WEATHER_CONDITIONS
+#: searx/searxng.msg
+msgid "Heavy snow showers and thunder"
+msgstr "Močne snežne plohe in grmenje"
+
+#. WEATHER_CONDITIONS
+#: searx/searxng.msg
+msgid "Heavy snow showers"
+msgstr "Močne snežne plohe"
+
+#. WEATHER_CONDITIONS
+#: searx/searxng.msg
+msgid "Heavy snow"
+msgstr "Močno sneženje"
 
 #. SOCIAL_MEDIA_TERMS['SUBSCRIBERS']
 #: searx/engines/lemmy.py:85 searx/searxng.msg

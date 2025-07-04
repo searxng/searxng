@@ -31,13 +31,14 @@
 # polskiecus <polskiecus@noreply.codeberg.org>, 2025.
 # ziutek <ziutek@noreply.codeberg.org>, 2025.
 # Adiker <adiker@noreply.codeberg.org>, 2025.
+# JonaszPotoniec <jonaszpotoniec@noreply.codeberg.org>, 2025.
 msgid ""
 msgstr ""
 "Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-06-23 21:05+0000\n"
-"PO-Revision-Date: 2025-06-19 12:36+0000\n"
-"Last-Translator: Adiker <adiker@noreply.codeberg.org>\n"
+"POT-Creation-Date: 2025-07-03 14:46+0000\n"
+"PO-Revision-Date: 2025-07-03 10:26+0000\n"
+"Last-Translator: JonaszPotoniec <jonaszpotoniec@noreply.codeberg.org>\n"
 "Language: pl\n"
 "Language-Team: Polish "
 "<https://translate.codeberg.org/projects/searxng/searxng/pl/>\n"
@@ -200,7 +201,7 @@ msgid "About"
 msgstr "Informacje o"
 
 #. WEATHER_TERMS['AVERAGE TEMP.']
-#: searx/engines/wttr.py:32 searx/searxng.msg
+#: searx/searxng.msg
 msgid "Average temp."
 msgstr "Średnia temp."
 
@@ -210,58 +211,53 @@ msgid "Cloud cover"
 msgstr "Zachmurzenie"
 
 #. WEATHER_TERMS['CONDITION']
-#: searx/engines/duckduckgo_weather.py:45 searx/engines/wttr.py:51
-#: searx/searxng.msg
+#: searx/engines/duckduckgo_weather.py:45 searx/searxng.msg
 msgid "Condition"
 msgstr "Warunki pogodowe"
 
 #. WEATHER_TERMS['CURRENT CONDITION']
-#: searx/engines/duckduckgo_weather.py:118 searx/engines/wttr.py:104
-#: searx/searxng.msg
+#: searx/engines/duckduckgo_weather.py:118 searx/searxng.msg
 msgid "Current condition"
 msgstr "Aktualna pogoda"
 
 #. WEATHER_TERMS['EVENING']
-#: searx/engines/wttr.py:100 searx/searxng.msg
+#: searx/searxng.msg
 msgid "Evening"
 msgstr "Wieczorem"
 
 #. WEATHER_TERMS['FEELS LIKE']
-#: searx/engines/duckduckgo_weather.py:53 searx/engines/wttr.py:59
-#: searx/searxng.msg
+#: searx/engines/duckduckgo_weather.py:53 searx/searxng.msg
 msgid "Feels like"
 msgstr "Odczuwalna"
 
 #. WEATHER_TERMS['HUMIDITY']
-#: searx/engines/duckduckgo_weather.py:64 searx/engines/wttr.py:68
-#: searx/searxng.msg searx/templates/simple/answer/weather.html:29
+#: searx/engines/duckduckgo_weather.py:64 searx/searxng.msg
+#: searx/templates/simple/answer/weather.html:29
 msgid "Humidity"
 msgstr "Wilgotność"
 
 #. WEATHER_TERMS['MAX TEMP.']
-#: searx/engines/duckduckgo_weather.py:77 searx/engines/wttr.py:34
-#: searx/searxng.msg
+#: searx/engines/duckduckgo_weather.py:77 searx/searxng.msg
 msgid "Max temp."
 msgstr "Maksymalna temp."
 
 #. WEATHER_TERMS['MIN TEMP.']
-#: searx/engines/duckduckgo_weather.py:73 searx/engines/wttr.py:33
-#: searx/searxng.msg
+#: searx/engines/duckduckgo_weather.py:73 searx/searxng.msg
 msgid "Min temp."
 msgstr "Minimalna temp."
 
 #. WEATHER_TERMS['MORNING']
-#: searx/engines/wttr.py:100 searx/searxng.msg
+#: searx/searxng.msg
 msgid "Morning"
 msgstr "Rano"
 
 #. WEATHER_TERMS['NIGHT']
-#: searx/engines/wttr.py:100 searx/searxng.msg
+#: searx/searxng.msg
 msgid "Night"
 msgstr "Noc"
 
 #. WEATHER_TERMS['NOON']
-#: searx/engines/wttr.py:100 searx/searxng.msg
+#: searx/searxng.msg
 msgid "Noon"
 msgstr "Południe"
 
@@ -271,38 +267,34 @@ msgid "Pressure"
 msgstr "Ciśnienie"
 
 #. WEATHER_TERMS['SUNRISE']
-#: searx/engines/duckduckgo_weather.py:81 searx/engines/wttr.py:36
-#: searx/searxng.msg
+#: searx/engines/duckduckgo_weather.py:81 searx/searxng.msg
 msgid "Sunrise"
 msgstr "Wschód słońca"
 
 #. WEATHER_TERMS['SUNSET']
-#: searx/engines/duckduckgo_weather.py:82 searx/engines/wttr.py:37
-#: searx/searxng.msg
+#: searx/engines/duckduckgo_weather.py:82 searx/searxng.msg
 msgid "Sunset"
 msgstr "Zachód słońca"
 
 #. WEATHER_TERMS['TEMPERATURE']
-#: searx/engines/duckduckgo_weather.py:48 searx/engines/wttr.py:55
-#: searx/searxng.msg searx/templates/simple/answer/weather.html:17
+#: searx/engines/duckduckgo_weather.py:48 searx/searxng.msg
+#: searx/templates/simple/answer/weather.html:17
 msgid "Temperature"
 msgstr "Temperatura"
 
 #. WEATHER_TERMS['UV INDEX']
-#: searx/engines/duckduckgo_weather.py:80 searx/engines/wttr.py:35
-#: searx/searxng.msg
+#: searx/engines/duckduckgo_weather.py:80 searx/searxng.msg
 msgid "UV index"
 msgstr "Indeks UV"
 
 #. WEATHER_TERMS['VISIBILITY']
-#: searx/engines/duckduckgo_weather.py:62 searx/engines/wttr.py:66
-#: searx/searxng.msg
+#: searx/engines/duckduckgo_weather.py:62 searx/searxng.msg
 msgid "Visibility"
 msgstr "Widoczność"
 
 #. WEATHER_TERMS['WIND']
-#: searx/engines/duckduckgo_weather.py:58 searx/engines/wttr.py:62
-#: searx/searxng.msg searx/templates/simple/answer/weather.html:23
+#: searx/engines/duckduckgo_weather.py:58 searx/searxng.msg
+#: searx/templates/simple/answer/weather.html:23
 msgid "Wind"
 msgstr "Wiatr"
 
@@ -310,6 +302,11 @@ msgstr "Wiatr"
 #: searx/searxng.msg
 msgid "Clear sky"
 msgstr "Czyste niebo"
+
+#. WEATHER_CONDITIONS
+#: searx/searxng.msg
+msgid "Partly cloudy"
+msgstr "Częściowo pochmurnie"
 
 #. WEATHER_CONDITIONS
 #: searx/searxng.msg
@@ -325,66 +322,6 @@ msgstr "Pogodnie"
 #: searx/searxng.msg
 msgid "Fog"
 msgstr "Mgła"
-
-#. WEATHER_CONDITIONS
-#: searx/searxng.msg
-msgid "Heavy rain and thunder"
-msgstr "Mocny deszcz z piorunami"
-
-#. WEATHER_CONDITIONS
-#: searx/searxng.msg
-msgid "Heavy rain showers and thunder"
-msgstr "Ulewny deszcz i burza"
-
-#. WEATHER_CONDITIONS
-#: searx/searxng.msg
-msgid "Heavy rain showers"
-msgstr "Ulewny deszcz"
-
-#. WEATHER_CONDITIONS
-#: searx/searxng.msg
-msgid "Heavy rain"
-msgstr "Mocny deszcz"
-
-#. WEATHER_CONDITIONS
-#: searx/searxng.msg
-msgid "Heavy sleet and thunder"
-msgstr "Silny opad deszczu ze śniegiem i piorunami"
-
-#. WEATHER_CONDITIONS
-#: searx/searxng.msg
-msgid "Heavy sleet showers and thunder"
-msgstr "Silne przelotne opady deszczu ze śniegiem i burza"
-
-#. WEATHER_CONDITIONS
-#: searx/searxng.msg
-msgid "Heavy sleet showers"
-msgstr "Silne przelotne opady"
-
-#. WEATHER_CONDITIONS
-#: searx/searxng.msg
-msgid "Heavy sleet"
-msgstr "Silny deszcz ze śniegiem"
-
-#. WEATHER_CONDITIONS
-#: searx/searxng.msg
-msgid "Heavy snow and thunder"
-msgstr "Mocny śnieg z burzą"
-
-#. WEATHER_CONDITIONS
-#: searx/searxng.msg
-msgid "Heavy snow showers and thunder"
-msgstr "Silne przelotne opady śniegu i burza"
-
-#. WEATHER_CONDITIONS
-#: searx/searxng.msg
-msgid "Heavy snow showers"
-msgstr "Silne przelotne opady śniegu"
-
-#. WEATHER_CONDITIONS
-#: searx/searxng.msg
-msgid "Heavy snow"
-msgstr "Silny śnieg"
 
 #. WEATHER_CONDITIONS
 #: searx/searxng.msg
@@ -408,51 +345,6 @@ msgstr "Lekki deszcz"
 
 #. WEATHER_CONDITIONS
 #: searx/searxng.msg
-msgid "Light sleet and thunder"
-msgstr "Słabe opady deszczu ze śniegiem i piorunami"
-
-#. WEATHER_CONDITIONS
-#: searx/searxng.msg
-msgid "Light sleet showers and thunder"
-msgstr "Słabe przelotne opady deszczu ze śniegiem i piorunami"
-
-#. WEATHER_CONDITIONS
-#: searx/searxng.msg
-msgid "Light sleet showers"
-msgstr "Lekkie przelotne opady deszczu ze śniegiem"
-
-#. WEATHER_CONDITIONS
-#: searx/searxng.msg
-msgid "Light sleet"
-msgstr "Lekkie przelotne opady"
-
-#. WEATHER_CONDITIONS
-#: searx/searxng.msg
-msgid "Light snow and thunder"
-msgstr "Lekki śnieg z piorunami"
-
-#. WEATHER_CONDITIONS
-#: searx/searxng.msg
-msgid "Light snow showers and thunder"
-msgstr "Lekki przelotny śnieg z piorunami"
-
-#. WEATHER_CONDITIONS
-#: searx/searxng.msg
-msgid "Light snow showers"
-msgstr "Lekki przelotny śnieg"
-
-#. WEATHER_CONDITIONS
-#: searx/searxng.msg
-msgid "Light snow"
-msgstr "Lekki śnieg"
-
-#. WEATHER_CONDITIONS
-#: searx/searxng.msg
-msgid "Partly cloudy"
-msgstr "Częściowo pochmurnie"
-
-#. WEATHER_CONDITIONS
-#: searx/searxng.msg
 msgid "Rain and thunder"
 msgstr "Deszcz z piorunami"
 
@@ -470,6 +362,46 @@ msgstr "Przelotny deszcz"
 #: searx/searxng.msg
 msgid "Rain"
 msgstr "Deszcz"
+
+#. WEATHER_CONDITIONS
+#: searx/searxng.msg
+msgid "Heavy rain and thunder"
+msgstr "Mocny deszcz z piorunami"
+
+#. WEATHER_CONDITIONS
+#: searx/searxng.msg
+msgid "Heavy rain showers and thunder"
+msgstr "Ulewny deszcz i burza"
+
+#. WEATHER_CONDITIONS
+#: searx/searxng.msg
+msgid "Heavy rain showers"
+msgstr "Ulewny deszcz"
+
+#. WEATHER_CONDITIONS
+#: searx/searxng.msg
+msgid "Heavy rain"
+msgstr "Mocny deszcz"
+
+#. WEATHER_CONDITIONS
+#: searx/searxng.msg
+msgid "Light sleet and thunder"
+msgstr "Słabe opady deszczu ze śniegiem i piorunami"
+
+#. WEATHER_CONDITIONS
+#: searx/searxng.msg
+msgid "Light sleet showers and thunder"
+msgstr "Słabe przelotne opady deszczu ze śniegiem i piorunami"
+
+#. WEATHER_CONDITIONS
+#: searx/searxng.msg
+msgid "Light sleet showers"
+msgstr "Lekkie przelotne opady deszczu ze śniegiem"
+
+#. WEATHER_CONDITIONS
+#: searx/searxng.msg
+msgid "Light sleet"
+msgstr "Lekkie przelotne opady"
 
 #. WEATHER_CONDITIONS
 #: searx/searxng.msg
@@ -493,6 +425,46 @@ msgstr "Mrzawka"
 
 #. WEATHER_CONDITIONS
 #: searx/searxng.msg
+msgid "Heavy sleet and thunder"
+msgstr "Silny opad deszczu ze śniegiem i piorunami"
+
+#. WEATHER_CONDITIONS
+#: searx/searxng.msg
+msgid "Heavy sleet showers and thunder"
+msgstr "Silne przelotne opady deszczu ze śniegiem i burza"
+
+#. WEATHER_CONDITIONS
+#: searx/searxng.msg
+msgid "Heavy sleet showers"
+msgstr "Silne przelotne opady"
+
+#. WEATHER_CONDITIONS
+#: searx/searxng.msg
+msgid "Heavy sleet"
+msgstr "Silny deszcz ze śniegiem"
+
+#. WEATHER_CONDITIONS
+#: searx/searxng.msg
+msgid "Light snow and thunder"
+msgstr "Lekki śnieg z piorunami"
+
+#. WEATHER_CONDITIONS
+#: searx/searxng.msg
+msgid "Light snow showers and thunder"
+msgstr "Lekki przelotny śnieg z piorunami"
+
+#. WEATHER_CONDITIONS
+#: searx/searxng.msg
+msgid "Light snow showers"
+msgstr "Lekki przelotny śnieg"
+
+#. WEATHER_CONDITIONS
+#: searx/searxng.msg
+msgid "Light snow"
+msgstr "Lekki śnieg"
+
+#. WEATHER_CONDITIONS
+#: searx/searxng.msg
 msgid "Snow and thunder"
 msgstr "Śnieg z piorunami"
 
@@ -510,6 +482,26 @@ msgstr "Opady śniegu"
 #: searx/searxng.msg
 msgid "Snow"
 msgstr "Śnieg"
+
+#. WEATHER_CONDITIONS
+#: searx/searxng.msg
+msgid "Heavy snow and thunder"
+msgstr "Mocny śnieg z burzą"
+
+#. WEATHER_CONDITIONS
+#: searx/searxng.msg
+msgid "Heavy snow showers and thunder"
+msgstr "Silne przelotne opady śniegu i burza"
+
+#. WEATHER_CONDITIONS
+#: searx/searxng.msg
+msgid "Heavy snow showers"
+msgstr "Silne przelotne opady śniegu"
+
+#. WEATHER_CONDITIONS
+#: searx/searxng.msg
+msgid "Heavy snow"
+msgstr "Silny śnieg"
 
 #. SOCIAL_MEDIA_TERMS['SUBSCRIBERS']
 #: searx/engines/lemmy.py:85 searx/searxng.msg
@@ -786,6 +778,8 @@ msgstr "Wtyczka Hostnames"
 #: searx/plugins/hostnames.py:124
 msgid "Rewrite hostnames and remove or prioritize results based on the hostname"
 msgstr ""
+"Nadpisz nazwy hostów i usuń lub nadaj priorytet wynikom opartym na nazwie"
+" hosta"
 
 #: searx/plugins/oa_doi_rewrite.py:55
 msgid "Open Access DOI rewrite"
@@ -1369,7 +1363,7 @@ msgstr "Wyśrodkowanie"
 
 #: searx/templates/simple/preferences/center_alignment.html:14
 msgid "Display results in the center of the page (Oscar layout)."
-msgstr ""
+msgstr "Wyświetl wyniki pośrodku strony."
 
 #: searx/templates/simple/preferences/cookies.html:2
 msgid ""
