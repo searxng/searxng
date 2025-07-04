@@ -48,45 +48,20 @@ export default defineConfig({
   // - build.sourcemap
   // - esbuild.sourcemap
   // - css.preprocessorOptions.less.sourceMap
-
   css: {
-    devSourcemap: true,
-    preprocessorOptions: {
-      less: {
-        // FIXME: missing CCS sourcemaps!!
-        sourceMap: {
-          outputSourceFiles: true,
-          sourceMapURL: (name) => {
-            const s = name.split("/");
-            return `${s[s.length - 1]}.map`;
-          }
-        }
-        // env: 'development',
-        // relativeUrls: true,
-        // javascriptEnabled: true,
-      }
-    }
+    devSourcemap: true
   }, // end: css
 
-  esbuild: {
-    // FIXME: missing CCS sourcemaps!!
-    sourcemap: true
-  },
-
   build: {
-    target: "modules",
+    target: ["chrome87", "edge88", "firefox78", "safari14"],
     manifest: "manifest.json",
     emptyOutDir: true,
     assetsDir: "",
     outDir: PATH.dist,
 
-    // FIXME: missing CCS sourcemaps!!
     sourcemap: true,
-
-    // https://vite.dev/config/build-options.html#build-cssminify
-    cssMinify: true,
-    // cssMinify: "esbuild",
     minify: "esbuild",
+    cssMinify: "esbuild",
 
     rollupOptions: {
       input: {
