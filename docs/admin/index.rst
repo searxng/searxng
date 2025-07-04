@@ -10,6 +10,7 @@ Administrator documentation
    installation-docker
    installation-scripts
    installation-searxng
+   installation-granian
    installation-uwsgi
    installation-nginx
    installation-apache

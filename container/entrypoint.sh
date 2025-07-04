@@ -2,6 +2,7 @@
 # shellcheck shell=dash
 set -u
 
+# Check if it's a valid file
 check_file() {
     local target="$1"
 
@@ -16,6 +17,7 @@ EOF
     fi
 }
 
+# Check if it's a valid directory
 check_directory() {
     local target="$1"
 
@@ -47,66 +49,30 @@ EOF
         ;;
     esac
 
-    if [ "$(stat -c %U:%G "$target")" != "searxng:searxng" ]; then
-        if [ "$(id -u)" -eq 0 ]; then
+    target_ownership=$(stat -c %U:%G "$target")
+
+    if [ "$target_ownership" != "searxng:searxng" ]; then
+        if [ "${FORCE_OWNERSHIP:-true}" = true ] && [ "$(id -u)" -eq 0 ]; then
             chown -R searxng:searxng "$target"
         else
             cat <<EOF
 !!!
 !!! WARNING
-!!! "$target" $type is not owned by "searxng"
+!!! "$target" $type is not owned by "searxng:searxng"
 !!! This may cause issues when running SearXNG
 !!!
-!!! Run the container as root to fix this issue automatically
-!!! Alternatively, you can chown the $type manually:
-!!! $ chown -R searxng:searxng "$target"
+!!! Expected "searxng:searxng"
+!!! Got "$target_ownership"
 !!!
 EOF
         fi
     fi
 }
 
-# Apply envs to uwsgi.ini
-setup_uwsgi() {
-    local timestamp
-
-    timestamp=$(stat -c %Y "$UWSGI_SETTINGS_PATH")
-
-    sed -i \
-        -e "s|workers = .*|workers = ${UWSGI_WORKERS:-%k}|g" \
-        -e "s|threads = .*|threads = ${UWSGI_THREADS:-4}|g" \
-        "$UWSGI_SETTINGS_PATH"
-
-    # Restore timestamp
-    touch -c -d "@$timestamp" "$UWSGI_SETTINGS_PATH"
-}
-
-# Apply envs to settings.yml
-setup_searxng() {
-    local timestamp
-
-    timestamp=$(stat -c %Y "$SEARXNG_SETTINGS_PATH")
-
-    # Ensure trailing slash in BASE_URL
-    # https://www.gnu.org/savannah-checkouts/gnu/bash/manual/bash.html#Shell-Parameter-Expansion
-    export BASE_URL="${BASE_URL%/}/"
-
-    sed -i \
-        -e "s|base_url: false|base_url: ${BASE_URL:-false}|g" \
-        -e "s/instance_name: \"SearXNG\"/instance_name: \"${INSTANCE_NAME:-SearXNG}\"/g" \
-        -e "s/autocomplete: \"\"/autocomplete: \"${AUTOCOMPLETE:-}\"/g" \
-        -e "s/ultrasecretkey/$(head -c 24 /dev/urandom | base64 | tr -dc 'a-zA-Z0-9')/g" \
-        "$SEARXNG_SETTINGS_PATH"
-
-    # Restore timestamp
-    touch -c -d "@$timestamp" "$SEARXNG_SETTINGS_PATH"
-}
-
 # Handle volume mounts
 volume_handler() {
     local target="$1"
 
-    # Check if it's a valid directory
     check_directory "$target"
     setup_ownership "$target" "directory"
 }
@@ -143,24 +109,22 @@ EOF
 ...
 EOF
         cp -pfT "$template" "$target"
+
+        sed -i "s/ultrasecretkey/$(head -c 24 /dev/urandom | base64 | tr -dc 'a-zA-Z0-9')/g" "$target"
     fi
 
-    # Check if it's a valid file
     check_file "$target"
 }
 
-echo "SearXNG $SEARXNG_VERSION"
+cat <<EOF
+SearXNG $SEARXNG_VERSION
+EOF
 
 # Check for volume mounts
 volume_handler "$CONFIG_PATH"
 volume_handler "$DATA_PATH"
 
-# Check for updates in files
-config_handler "$UWSGI_SETTINGS_PATH" "/usr/local/searxng/.template/uwsgi.ini"
+# Check for files
 config_handler "$SEARXNG_SETTINGS_PATH" "/usr/local/searxng/searx/settings.yml"
 
-# Update files
-setup_uwsgi
-setup_searxng
-
-exec /usr/local/searxng/venv/bin/uwsgi --http-socket "$BIND_ADDRESS" "$UWSGI_SETTINGS_PATH"
+exec /usr/local/searxng/venv/bin/granian searx.webapp:app
