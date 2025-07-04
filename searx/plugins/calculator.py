@@ -170,8 +170,8 @@ def _eval_expr(expr):
         root_expr = ast.parse(expr, mode='eval').body
         return _eval(root_expr), isinstance(root_expr, ast.Compare)
 
-    except ZeroDivisionError:
-        # This is undefined
+    except (SyntaxError, TypeError, ZeroDivisionError):
+        # Expression that can't be evaluated (i.e. not a math expression)
         return "", False
 
 
