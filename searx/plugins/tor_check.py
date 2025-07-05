@@ -66,7 +66,7 @@ class SXNGPlugin(Plugin):
                 results.add(results.types.Answer(answer=f"{msg} {url_exit_list}"))
                 return results
 
-            real_ip = get_real_ip(request)
+            real_ip = get_real_ip(request).compressed
 
             if real_ip in node_list:
                 msg = gettext("You are using Tor and it looks like you have the external IP address")

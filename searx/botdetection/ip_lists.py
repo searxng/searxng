@@ -4,21 +4,29 @@
 Method ``ip_lists``
 -------------------
 
-The ``ip_lists`` method implements IP :py:obj:`block- <block_ip>` and
-:py:obj:`pass-lists <pass_ip>`.
+The ``ip_lists`` method implements IP
+:py:obj:`trusted_proxies <trusted_proxies>`, :py:obj:`block-list <block_ip>`
+and :py:obj:`pass-list <pass_ip>`.
 
 .. code:: toml
 
    [botdetection.ip_lists]
 
-   pass_ip = [
-    '167.235.158.251', # IPv4 of check.searx.space
-    '192.168.0.0/16',  # IPv4 private network
-    'fe80::/10'        # IPv6 linklocal
+   trusted_proxies = [
+     '127.0.0.0/8',     # IPv4 localhost network
+     '::1',             # IPv6 localhost
+     '192.168.0.0/16',  # IPv4 private network
    ]
+
+   pass_ip = [
+     '167.235.158.251', # IPv4 of check.searx.space
+     '192.168.0.0/16',  # IPv4 private network
+     'fe80::/10',       # IPv6 linklocal
+   ]
+
    block_ip = [
-      '93.184.216.34', # IPv4 of example.org
-      '257.1.1.1',     # invalid IP --> will be ignored, logged in ERROR class
+     '93.184.216.34',   # IPv4 of example.org
+     '257.1.1.1',       # invalid IP --> will be ignored, logged in ERROR class
    ]
 
 """
@@ -43,6 +51,18 @@ SEARXNG_ORG = [
     '2a01:04f8:1c1c:8fc2::/64',  # IPv6 check.searx.space
 ]
 """Passlist of IPs from the SearXNG organization, e.g. `check.searx.space`."""
+
+
+def trusted_proxies(remote_addr: IPv4Address | IPv6Address, cfg: config.Config) -> bool:
+    """Checks if the remote IP is in one of the members of the
+    ``botdetection.ip_lists.trusted_proxies`` list.
+    """
+
+    for net in cfg.get("botdetection.ip_lists.trusted_proxies", default=["127.0.0.0/8", "::1"]):
+        net = ip_network(net, strict=False)
+        if remote_addr.version == net.version and remote_addr in net:
+            return True
+    return False
 
 
 def pass_ip(real_ip: IPv4Address | IPv6Address, cfg: config.Config) -> Tuple[bool, str]:
@@ -72,7 +92,6 @@ def block_ip(real_ip: IPv4Address | IPv6Address, cfg: config.Config) -> Tuple[bo
 def ip_is_subnet_of_member_in_list(
     real_ip: IPv4Address | IPv6Address, list_name: str, cfg: config.Config
 ) -> Tuple[bool, str]:
-
     for net in cfg.get(list_name, default=[]):
         try:
             net = ip_network(net, strict=False)

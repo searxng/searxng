@@ -49,7 +49,7 @@ class SXNGPlugin(Plugin):
             return results
 
         if self.ip_regex.search(search.search_query.query):
-            results.add(results.types.Answer(answer=gettext("Your IP is: ") + get_real_ip(request)))
+            results.add(results.types.Answer(answer=gettext("Your IP is: ") + get_real_ip(request).compressed))
 
         if self.ua_regex.match(search.search_query.query):
             results.add(results.types.Answer(answer=gettext("Your user-agent is: ") + str(request.user_agent)))
