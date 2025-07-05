@@ -9,11 +9,13 @@ from json import loads
 from urllib.parse import quote
 
 from dateutil import parser as date_parser
-from flask_babel import gettext
 
 from searx.engines.duckduckgo import fetch_traits  # pylint: disable=unused-import
 from searx.engines.duckduckgo import get_ddg_lang
 from searx.enginelib.traits import EngineTraits
+
+from searx.result_types import EngineResults, WeatherAnswer
+from searx import weather
 
 if TYPE_CHECKING:
     import logging
@@ -36,52 +38,59 @@ send_accept_language_header = True
 
 # engine dependent config
 categories = ["weather"]
-URL = "https://duckduckgo.com/js/spice/forecast/{query}/{lang}"
+base_url = "https://duckduckgo.com/js/spice/forecast/{query}/{lang}"
+
+# adapted from https://gist.github.com/mikesprague/048a93b832e2862050356ca233ef4dc1
+WEATHERKIT_TO_CONDITION = {
+    "BlowingDust": "fog",
+    "Clear": "clear",
+    "Cloudy": "cloudy",
+    "Foggy": "fog",
+    "Haze": "fog",
+    "MostlyClear": "clear",
+    "MostlyCloudy": "partly cloudy",
+    "PartlyCloudy": "partly cloudy",
+    "Smoky": "fog",
+    "Breezy": "partly cloudy",
+    "Windy": "partly cloudy",
+    "Drizzle": "light rain",
+    "HeavyRain": "heavy rain",
+    "IsolatedThunderstorms": "rain and thunder",
+    "Rain": "rain",
+    "SunShowers": "rain",
+    "ScatteredThunderstorms": "heavy rain and thunder",
+    "StrongStorms": "heavy rain and thunder",
+    "Thunderstorms": "rain and thunder",
+    "Frigid": "clear sky",
+    "Hail": "heavy rain",
+    "Hot": "clear sky",
+    "Flurries": "light snow",
+    "Sleet": "sleet",
+    "Snow": "light snow",
+    "SunFlurries": "light snow",
+    "WintryMix": "sleet",
+    "Blizzard": "heavy snow",
+    "BlowingSnow": "heavy snow",
+    "FreezingDrizzle": "light sleet",
+    "FreezingRain": "sleet",
+    "HeavySnow": "heavy snow",
+    "Hurricane": "rain and thunder",
+    "TropicalStorm": "rain and thunder",
+}
 
 
-def generate_condition_table(condition):
-    res = ""
-
-    res += f"<tr><td><b>{gettext('Condition')}</b></td>" f"<td><b>{condition['conditionCode']}</b></td></tr>"
-
-    res += (
-        f"<tr><td><b>{gettext('Temperature')}</b></td>"
-        f"<td><b>{condition['temperature']}°C / {c_to_f(condition['temperature'])}°F</b></td></tr>"
+def _weather_data(location, data):
+    return WeatherAnswer.Item(
+        location=location,
+        temperature=weather.Temperature(unit="°C", value=data['temperature']),
+        condition=WEATHERKIT_TO_CONDITION[data["conditionCode"]],
+        feels_like=weather.Temperature(unit="°C", value=data['temperatureApparent']),
+        wind_from=weather.Compass(data["windDirection"]),
+        wind_speed=weather.WindSpeed(data["windSpeed"], unit="mi/h"),
+        pressure=weather.Pressure(data["pressure"], unit="hPa"),
+        humidity=weather.RelativeHumidity(data["humidity"] * 100),
+        cloud_cover=data["cloudCover"] * 100,
     )
-
-    res += (
-        f"<tr><td>{gettext('Feels like')}</td><td>{condition['temperatureApparent']}°C / "
-        f"{c_to_f(condition['temperatureApparent'])}°F</td></tr>"
-    )
-
-    res += (
-        f"<tr><td>{gettext('Wind')}</td><td>{condition['windDirection']}° — "
-        f"{(condition['windSpeed'] * 1.6093440006147):.2f} km/h / {condition['windSpeed']} mph</td></tr>"
-    )
-
-    res += f"<tr><td>{gettext('Visibility')}</td><td>{condition['visibility']} m</td>"
-
-    res += f"<tr><td>{gettext('Humidity')}</td><td>{(condition['humidity'] * 100):.1f}%</td></tr>"
-
-    return res
-
-
-def generate_day_table(day):
-    res = ""
-
-    res += (
-        f"<tr><td>{gettext('Min temp.')}</td><td>{day['temperatureMin']}°C / "
-        f"{c_to_f(day['temperatureMin'])}°F</td></tr>"
-    )
-    res += (
-        f"<tr><td>{gettext('Max temp.')}</td><td>{day['temperatureMax']}°C / "
-        f"{c_to_f(day['temperatureMax'])}°F</td></tr>"
-    )
-    res += f"<tr><td>{gettext('UV index')}</td><td>{day['maxUvIndex']}</td></tr>"
-    res += f"<tr><td>{gettext('Sunrise')}</td><td>{date_parser.parse(day['sunrise']).strftime('%H:%M')}</td></tr>"
-    res += f"<tr><td>{gettext('Sunset')}</td><td>{date_parser.parse(day['sunset']).strftime('%H:%M')}</td></tr>"
-
-    return res
 
 
 def request(query, params):
@@ -95,64 +104,30 @@ def request(query, params):
     params['cookies']['l'] = eng_region
     logger.debug("cookies: %s", params['cookies'])
 
-    params["url"] = URL.format(query=quote(query), lang=eng_lang.split('_')[0])
+    params["url"] = base_url.format(query=quote(query), lang=eng_lang.split('_')[0])
     return params
 
 
-def c_to_f(temperature):
-    return "%.2f" % ((temperature * 1.8) + 32)
-
-
 def response(resp):
-    results = []
+    res = EngineResults()
 
     if resp.text.strip() == "ddg_spice_forecast();":
-        return []
+        return res
 
-    result = loads(resp.text[resp.text.find('\n') + 1 : resp.text.rfind('\n') - 2])
+    json_data = loads(resp.text[resp.text.find('\n') + 1 : resp.text.rfind('\n') - 2])
 
-    current = result["currentWeather"]
+    geoloc = weather.GeoLocation.by_query(resp.search_params["query"])
 
-    title = result['location']
-
-    infobox = f"<h3>{gettext('Current condition')}</h3><table><tbody>"
-
-    infobox += generate_condition_table(current)
-
-    infobox += "</tbody></table>"
-
-    last_date = None
-
-    for time in result['forecastHourly']['hours']:
-        current_time = date_parser.parse(time['forecastStart'])
-
-        if last_date != current_time.date():
-            if last_date is not None:
-                infobox += "</tbody></table>"
-
-            infobox += f"<h3>{current_time.strftime('%Y-%m-%d')}</h3>"
-
-            infobox += "<table><tbody>"
-
-            for day in result['forecastDaily']['days']:
-                if date_parser.parse(day['forecastStart']).date() == current_time.date():
-                    infobox += generate_day_table(day)
-
-            infobox += "</tbody></table><table><tbody>"
-
-        last_date = current_time.date()
-
-        infobox += f"<tr><td rowspan=\"7\"><b>{current_time.strftime('%H:%M')}</b></td></tr>"
-
-        infobox += generate_condition_table(time)
-
-    infobox += "</tbody></table>"
-
-    results.append(
-        {
-            "infobox": title,
-            "content": infobox,
-        }
+    weather_answer = WeatherAnswer(
+        current=_weather_data(geoloc, json_data["currentWeather"]),
+        service="duckduckgo weather",
     )
 
-    return results
+    for forecast in json_data['forecastHourly']['hours']:
+        forecast_time = date_parser.parse(forecast['forecastStart'])
+        forecast_data = _weather_data(geoloc, forecast)
+        forecast_data.datetime = weather.DateTime(forecast_time)
+        weather_answer.forecasts.append(forecast_data)
+
+    res.add(weather_answer)
+    return res
