@@ -28,6 +28,8 @@ import msgspec
 from searx import sqlitedb
 from searx import logger
 from searx import get_setting
+from searx import redisdb, redislib
+from searx.sqlitedb import SQLiteProperties
 
 log = logger.getChild("cache")
 
@@ -149,7 +151,7 @@ class ExpireCache(abc.ABC):
 
     @abc.abstractmethod
     def get(self, key: str, default=None, ctx: str | None = None) -> typing.Any:
-        """Return *value* of *key*.  If key is unset, ``None`` is returned."""
+        """Return *value* of *key*.  If key is unset, ``default`` is returned."""
 
     @abc.abstractmethod
     def maintenance(self, force: bool = False, truncate: bool = False) -> bool:
@@ -163,6 +165,10 @@ class ExpireCache(abc.ABC):
           Truncate the entire cache, which is necessary, for example, if the
           password has changed.
         """
+
+    @abc.abstractmethod
+    def pairs(self, ctx: str) -> Iterator[tuple[str, typing.Any]]:
+        """Iterate over key/value pairs from table given by argument ``ctx``."""
 
     @abc.abstractmethod
     def state(self) -> ExpireCacheStats:
@@ -179,7 +185,7 @@ class ExpireCache(abc.ABC):
            types could be implemented in the future, e.g. a Valkey (Redis)
            adapter.
         """
-        return ExpireCacheSQLite(cfg)
+        return ExpireCacheRedis(cfg)
 
     @staticmethod
     def normalize_name(name: str) -> str:
@@ -418,3 +424,103 @@ class ExpireCacheSQLite(sqlitedb.SQLiteAppl, ExpireCache):
             for row in self.DB.execute(f"SELECT key, value, expire FROM {table}"):
                 cached_items[table].append((row[0], self.deserialize(row[1]), row[2]))
         return ExpireCacheStats(cached_items=cached_items)
+
+
+class ExpireCacheRedis(ExpireCache):
+    """Key/value database implementation using Redis as backend.
+
+    Redis is especially made for the purpose of storing key/value pairs in a
+    database, so it might have some small performance bit over using the SQLite
+    backend.
+
+    Please note that this engine doesn't use ``db_url``. Instead it uses
+    the url set with the key ``redis.url`` in ``settings.yml``!"""
+
+    EXPIRE_CACHE_KEY_PREFIX = "ExpireCache"
+
+    def __init__(self, cfg: ExpireCacheCfg):
+        """An instance of the SQLite expire cache is build up from a
+        :py:obj:`config <ExpireCacheCfg>`."""
+
+        self.cfg = cfg
+        self.properties = SQLiteProperties(cfg.db_url)
+
+    def _get_cache_hash_key(self, key: str, ctx: str | None) -> str:
+        """Get the hash key that is used to uniquely identify the given pair (key, cfg)
+        in the cache."""
+        hash = self.secret_hash(key)
+        return f"{self.EXPIRE_CACHE_KEY_PREFIX}|{ctx or ''}|{hash}"
+
+    def _get_keys_iterator(self):
+        """Get an iterator over the keys in this cache."""
+        c = redisdb.client()
+
+        for key in list(c.scan_iter()):
+            key = str(key)
+            key_parts = key.split("|", 2)
+            if len(key_parts) != 3:
+                continue
+
+            prefix, _ctx, _keyhash = key_parts
+            if prefix == self.EXPIRE_CACHE_KEY_PREFIX:
+                yield key
+
+    def set(self, key: str, value: typing.Any, expire: int | None, ctx: str | None = None) -> bool:
+        """Set *key* to *value*. To set a timeout on key use argument
+        ``expire`` (in sec.). If expire is unset the default is taken from
+        :py:obj:`ExpireCacheCfg.MAXHOLD_TIME`.  After the timeout has expired,
+        the key will automatically be deleted.
+        """
+        c = redisdb.client()
+        cache_key = self._get_cache_hash_key(key, ctx)
+
+        value = self.serialize(value)
+        c.set(cache_key, value, ex=expire)
+
+    def get(self, key: str, default=None, ctx: str | None = None) -> typing.Any:
+        """Return *value* of *key*.  If key is unset, ``default`` is returned."""
+        c = redisdb.client()
+        cache_key = self._get_cache_hash_key(key, ctx)
+
+        value = c.get(cache_key)
+        if value or value == b'':
+            return self.deserialize(value)
+
+        return default
+
+    def maintenance(self, force: bool = False, truncate: bool = False) -> bool:
+        """Performs maintenance on the cache.
+
+        Redis automatically removes expired entries, so only ``truncate`` has an effect,
+        i.e. it deletes all entries.
+        """
+        c = redisdb.client()
+
+        for key in self._get_keys_iterator():
+            c.delete(key)
+
+    def pairs(self, ctx: str):
+        found_pairs = []
+        for key in self._get_keys_iterator():
+            _prefix, key_ctx, _keyhash = key.split("|", 2)
+            if key_ctx == ctx:
+                value = self.get(key, ctx)
+                found_pairs.append((key, value))
+        return found_pairs
+
+    def state(self) -> ExpireCacheStats:
+        """Returns a :py:obj:`ExpireCacheStats`, which provides information
+        about the status of the cache."""
+
+        ctxs = {}
+        for key in self._get_keys_iterator():
+            _prefix, ctx, _keyhash = key.split("|", 2)
+
+            if ctx not in ctxs:
+                ctxs[ctx] = []
+
+            value = self.get(key)
+            # querying the expiry time is not supported, thus it's always set to None
+            ctxs[ctx].push((key, value, None))
+
+        return ExpireCacheStats(ctxs)
