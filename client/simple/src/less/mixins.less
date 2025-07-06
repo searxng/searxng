@@ -2,9 +2,6 @@
 
 // Mixins
 .text-size-adjust (@property: 100%) {
-  -webkit-text-size-adjust: @property;
-  -ms-text-size-adjust: @property;
-  -moz-text-size-adjust: @property;
   text-size-adjust: @property;
 }
 
@@ -22,7 +19,6 @@
 
 // disable user selection
 .disable-user-select () {
-  -webkit-touch-callout: none;
   user-select: none;
 }
 

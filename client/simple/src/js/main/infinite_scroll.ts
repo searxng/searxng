@@ -1,4 +1,4 @@
-import { assertElement, searxng } from "./00_toolkit";
+import { assertElement, http, settings } from "../core/toolkit.ts";
 
 const newLoadSpinner = (): HTMLDivElement => {
   return Object.assign(document.createElement("div"), {
@@ -13,12 +13,9 @@ const loadNextPage = async (onlyImages: boolean, callback: () => void): Promise<
   const form = document.querySelector<HTMLFormElement>("#pagination form.next_page");
   assertElement(form);
 
-  const formData = new FormData(form);
-
   const action = searchForm.getAttribute("action");
   if (!action) {
-    console.error("Form action not found");
-    return;
+    throw new Error("Form action not defined");
   }
 
   const paginationElement = document.querySelector<HTMLElement>("#pagination");
@@ -27,7 +24,7 @@ const loadNextPage = async (onlyImages: boolean, callback: () => void): Promise<
   paginationElement.replaceChildren(newLoadSpinner());
 
   try {
-    const res = await searxng.http("POST", action, formData);
+    const res = await http("POST", action, { body: new FormData(form) });
     const nextPage = await res.text();
     if (!nextPage) return;
 
@@ -39,8 +36,7 @@ const loadNextPage = async (onlyImages: boolean, callback: () => void): Promise<
 
     const urlsElement = document.querySelector<HTMLElement>("#urls");
     if (!urlsElement) {
-      console.error("URLs element not found");
-      return;
+      throw new Error("URLs element not found");
     }
 
     if (articleList.length > 0 && !onlyImages) {
@@ -59,7 +55,7 @@ const loadNextPage = async (onlyImages: boolean, callback: () => void): Promise<
     console.error("Error loading next page:", error);
 
     const errorElement = Object.assign(document.createElement("div"), {
-      textContent: searxng.settings.translations?.error_loading_next_page ?? "Error loading next page",
+      textContent: settings.translations?.error_loading_next_page ?? "Error loading next page",
       className: "dialog-error"
     });
     errorElement.setAttribute("role", "alert");
@@ -67,42 +63,36 @@ const loadNextPage = async (onlyImages: boolean, callback: () => void): Promise<
   }
 };
 
-searxng.ready(
-  () => {
-    const resultsElement = document.getElementById("results");
-    if (!resultsElement) {
-      console.error("Results element not found");
-      return;
-    }
+const resultsElement: HTMLElement | null = document.getElementById("results");
+if (!resultsElement) {
+  throw new Error("Results element not found");
+}
 
-    const onlyImages = resultsElement.classList.contains("only_template_images");
-    const observedSelector = "article.result:last-child";
+const onlyImages: boolean = resultsElement.classList.contains("only_template_images");
+const observedSelector = "article.result:last-child";
 
-    const intersectionObserveOptions: IntersectionObserverInit = {
-      rootMargin: "320px"
-    };
+const intersectionObserveOptions: IntersectionObserverInit = {
+  rootMargin: "320px"
+};
 
-    const observer = new IntersectionObserver(async (entries: IntersectionObserverEntry[]) => {
-      const [paginationEntry] = entries;
+const observer: IntersectionObserver = new IntersectionObserver((entries: IntersectionObserverEntry[]) => {
+  const [paginationEntry] = entries;
 
-      if (paginationEntry?.isIntersecting) {
-        observer.unobserve(paginationEntry.target);
+  if (paginationEntry?.isIntersecting) {
+    observer.unobserve(paginationEntry.target);
 
-        await loadNextPage(onlyImages, () => {
-          const nextObservedElement = document.querySelector<HTMLElement>(observedSelector);
-          if (nextObservedElement) {
-            observer.observe(nextObservedElement);
-          }
-        });
+    loadNextPage(onlyImages, () => {
+      const nextObservedElement = document.querySelector<HTMLElement>(observedSelector);
+      if (nextObservedElement) {
+        observer.observe(nextObservedElement);
       }
-    }, intersectionObserveOptions);
-
-    const initialObservedElement = document.querySelector<HTMLElement>(observedSelector);
-    if (initialObservedElement) {
-      observer.observe(initialObservedElement);
-    }
-  },
-  {
-    on: [searxng.endpoint === "results", searxng.settings.infinite_scroll]
+    }).then(() => {
+      // wait until promise is resolved
+    });
   }
-);
+}, intersectionObserveOptions);
+
+const initialObservedElement: HTMLElement | null = document.querySelector<HTMLElement>(observedSelector);
+if (initialObservedElement) {
+  observer.observe(initialObservedElement);
+}

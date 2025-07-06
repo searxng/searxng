@@ -1,4 +1,4 @@
-import { assertElement, searxng } from "./00_toolkit.ts";
+import { assertElement, listen, mutable, settings } from "../core/toolkit.ts";
 
 export type KeyBindingLayout = "default" | "vim";
 
@@ -9,11 +9,13 @@ type KeyBinding = {
   cat: string;
 };
 
+type HighlightResultElement = "down" | "up" | "visible" | "bottom" | "top";
+
 /* common base for layouts */
 const baseKeyBinding: Record<string, KeyBinding> = {
   Escape: {
     key: "ESC",
-    fun: (event) => removeFocus(event),
+    fun: (event: KeyboardEvent) => removeFocus(event),
     des: "remove focus from the focused input",
     cat: "Control"
   },
@@ -145,12 +147,12 @@ const keyBindingLayouts: Record<KeyBindingLayout, Record<string, KeyBinding>> = 
   }
 };
 
-const keyBindings =
-  searxng.settings.hotkeys && searxng.settings.hotkeys in keyBindingLayouts
-    ? keyBindingLayouts[searxng.settings.hotkeys]
+const keyBindings: Record<string, KeyBinding> =
+  settings.hotkeys && settings.hotkeys in keyBindingLayouts
+    ? keyBindingLayouts[settings.hotkeys]
     : keyBindingLayouts.default;
 
-const isElementInDetail = (element?: Element): boolean => {
+const isElementInDetail = (element?: HTMLElement): boolean => {
   const ancestor = element?.closest(".detail, .result");
   return ancestor?.classList.contains("detail") ?? false;
 };
@@ -159,12 +161,12 @@ const getResultElement = (element?: HTMLElement): HTMLElement | undefined => {
   return element?.closest(".result") ?? undefined;
 };
 
-const isImageResult = (resultElement?: Element): boolean => {
+const isImageResult = (resultElement?: HTMLElement): boolean => {
   return resultElement?.classList.contains("result-images") ?? false;
 };
 
 const highlightResult =
-  (which: string | HTMLElement) =>
+  (which: HighlightResultElement | HTMLElement) =>
   (noScroll?: boolean, keepFocus?: boolean): void => {
     let effectiveWhich = which;
     let current = document.querySelector<HTMLElement>(".result[data-vim-selected]");
@@ -210,7 +212,7 @@ const highlightResult =
           next = results[results.indexOf(current) - 1] || current;
           break;
         case "bottom":
-          next = results[results.length - 1];
+          next = results.at(-1);
           break;
         // biome-ignore lint/complexity/noUselessSwitchCase: fallthrough is intended
         case "top":
@@ -229,7 +231,7 @@ const highlightResult =
       }
 
       if (!noScroll) {
-        scrollPageToSelected();
+        mutable.scrollPageToSelected?.();
       }
     }
   };
@@ -245,7 +247,7 @@ const removeFocus = (event: KeyboardEvent): void => {
   if (document.activeElement && (tagName === "input" || tagName === "select" || tagName === "textarea")) {
     (document.activeElement as HTMLElement).blur();
   } else {
-    searxng.closeDetail?.();
+    mutable.closeDetail?.();
   }
 };
 
@@ -256,23 +258,23 @@ const pageButtonClick = (css_selector: string): void => {
   }
 };
 
-const GoToNextPage = () => {
+const GoToNextPage = (): void => {
   pageButtonClick('nav#pagination .next_page button[type="submit"]');
 };
 
-const GoToPreviousPage = () => {
+const GoToPreviousPage = (): void => {
   pageButtonClick('nav#pagination .previous_page button[type="submit"]');
 };
 
-const scrollPageToSelected = (): void => {
+mutable.scrollPageToSelected = (): void => {
   const sel = document.querySelector<HTMLElement>(".result[data-vim-selected]");
   if (!sel) return;
 
-  const wtop = document.documentElement.scrollTop || document.body.scrollTop,
-    height = document.documentElement.clientHeight,
-    etop = sel.offsetTop,
-    ebot = etop + sel.clientHeight,
-    offset = 120;
+  const wtop = document.documentElement.scrollTop || document.body.scrollTop;
+  const height = document.documentElement.clientHeight;
+  const etop = sel.offsetTop;
+  const ebot = etop + sel.clientHeight;
+  const offset = 120;
 
   // first element ?
   if (!sel.previousElementSibling && ebot < height) {
@@ -297,7 +299,7 @@ const scrollPage = (amount: number): void => {
   highlightResult("visible")();
 };
 
-const scrollPageTo = (position: number, nav: string): void => {
+const scrollPageTo = (position: number, nav: HighlightResultElement): void => {
   window.scrollTo(0, position);
   highlightResult(nav)();
 };
@@ -385,7 +387,10 @@ const initHelpContent = (divElement: HTMLElement, keyBindings: typeof baseKeyBin
 
 const toggleHelp = (keyBindings: typeof baseKeyBinding): void => {
   let helpPanel = document.querySelector<HTMLElement>("#vim-hotkeys-help");
-  if (!helpPanel) {
+  if (helpPanel) {
+    // toggle hidden
+    helpPanel.classList.toggle("invisible");
+  } else {
     // first call
     helpPanel = Object.assign(document.createElement("div"), {
       id: "vim-hotkeys-help",
@@ -396,9 +401,6 @@ const toggleHelp = (keyBindings: typeof baseKeyBinding): void => {
     if (body) {
       body.appendChild(helpPanel);
     }
-  } else {
-    // toggle hidden
-    helpPanel.classList.toggle("invisible");
   }
 };
 
@@ -412,56 +414,53 @@ const copyURLToClipboard = async (): Promise<void> => {
   }
 };
 
-searxng.ready(() => {
-  searxng.listen("click", ".result", function (this: HTMLElement, event: Event) {
-    if (!isElementInDetail(event.target as HTMLElement)) {
-      highlightResult(this)(true, true);
+listen("click", ".result", function (this: HTMLElement, event: PointerEvent) {
+  if (!isElementInDetail(event.target as HTMLElement)) {
+    highlightResult(this)(true, true);
 
+    const resultElement = getResultElement(event.target as HTMLElement);
+
+    if (resultElement && isImageResult(resultElement)) {
+      event.preventDefault();
+      mutable.selectImage?.(resultElement);
+    }
+  }
+});
+
+// FIXME: Focus might also trigger Pointer event ^^^
+listen(
+  "focus",
+  ".result a",
+  (event: FocusEvent) => {
+    if (!isElementInDetail(event.target as HTMLElement)) {
       const resultElement = getResultElement(event.target as HTMLElement);
+
+      if (resultElement && !resultElement.hasAttribute("data-vim-selected")) {
+        highlightResult(resultElement)(true);
+      }
 
       if (resultElement && isImageResult(resultElement)) {
         event.preventDefault();
-        searxng.selectImage?.(resultElement);
+        mutable.selectImage?.(resultElement);
       }
     }
-  });
+  },
+  { capture: true }
+);
 
-  searxng.listen(
-    "focus",
-    ".result a",
-    (event: Event) => {
-      if (!isElementInDetail(event.target as HTMLElement)) {
-        const resultElement = getResultElement(event.target as HTMLElement);
+listen("keydown", document, (event: KeyboardEvent) => {
+  // check for modifiers so we don't break browser's hotkeys
+  if (Object.hasOwn(keyBindings, event.key) && !event.ctrlKey && !event.altKey && !event.shiftKey && !event.metaKey) {
+    const tagName = (event.target as HTMLElement)?.tagName?.toLowerCase();
 
-        if (resultElement && !resultElement.getAttribute("data-vim-selected")) {
-          highlightResult(resultElement)(true);
-        }
-
-        if (resultElement && isImageResult(resultElement)) {
-          searxng.selectImage?.(resultElement);
-        }
-      }
-    },
-    { capture: true }
-  );
-
-  searxng.listen("keydown", document, (event: KeyboardEvent) => {
-    // check for modifiers so we don't break browser's hotkeys
-    if (Object.hasOwn(keyBindings, event.key) && !event.ctrlKey && !event.altKey && !event.shiftKey && !event.metaKey) {
-      const tagName = (event.target as Element)?.tagName?.toLowerCase();
-
-      if (event.key === "Escape") {
-        keyBindings[event.key]?.fun(event);
-      } else {
-        if (event.target === document.body || tagName === "a" || tagName === "button") {
-          event.preventDefault();
-          keyBindings[event.key]?.fun(event);
-        }
-      }
+    if (event.key === "Escape") {
+      keyBindings[event.key]?.fun(event);
+    } else if (event.target === document.body || tagName === "a" || tagName === "button") {
+      event.preventDefault();
+      keyBindings[event.key]?.fun(event);
     }
-  });
-
-  searxng.scrollPageToSelected = scrollPageToSelected;
-  searxng.selectNext = highlightResult("down");
-  searxng.selectPrevious = highlightResult("up");
+  }
 });
+
+mutable.selectNext = highlightResult("down");
+mutable.selectPrevious = highlightResult("up");

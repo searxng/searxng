@@ -1,10 +1,8 @@
 import fs from "node:fs";
 import { dirname, resolve } from "node:path";
-import { fileURLToPath } from "node:url";
 import { Edge } from "edge.js";
 import { type Config as SvgoConfig, optimize as svgo } from "svgo";
 
-const __dirname = dirname(fileURLToPath(import.meta.url));
 const __jinja_class_placeholder__ = "__jinja_class_placeholder__";
 
 // A set of icons
@@ -43,9 +41,9 @@ export type JinjaMacro = {
  * @param macros - Jinja macros to create.
  * @param items - Array of SVG items.
  */
-export const jinja_svg_catalog = (dest: string, macros: JinjaMacro[], items: IconSVG[]) => {
+export const jinja_svg_catalog = (dest: string, macros: JinjaMacro[], items: IconSVG[]): void => {
   const svg_catalog: Record<string, string> = {};
-  const edge_template = resolve(__dirname, "jinja_svg_catalog.html.edge");
+  const edge_template = resolve(import.meta.dirname, "jinja_svg_catalog.html.edge");
 
   for (const item of items) {
     // JSON.stringify & JSON.parse are used to create a deep copy of the item.svgo_opts object
@@ -63,15 +61,13 @@ export const jinja_svg_catalog = (dest: string, macros: JinjaMacro[], items: Ico
       const opt = svgo(raw, svgo_opts);
 
       svg_catalog[item.name] = opt.data;
-    } catch (err) {
-      console.error(`ERROR: jinja_svg_catalog processing ${item.name} src: ${item.src} -- ${err}`);
-      throw err;
+    } catch (error) {
+      console.error(`ERROR: jinja_svg_catalog processing ${item.name} src: ${item.src} -- ${error}`);
+      throw error;
     }
   }
 
-  fs.mkdir(dirname(dest), { recursive: true }, (err) => {
-    if (err) throw err;
-  });
+  fs.mkdirSync(dirname(dest), { recursive: true });
 
   const ctx = {
     svg_catalog: svg_catalog,
@@ -97,7 +93,7 @@ export const jinja_svg_catalog = (dest: string, macros: JinjaMacro[], items: Ico
  * @param macros - Jinja macros to create.
  * @param sets - Array of SVG sets.
  */
-export const jinja_svg_sets = (dest: string, macros: JinjaMacro[], sets: IconSet[]) => {
+export const jinja_svg_sets = (dest: string, macros: JinjaMacro[], sets: IconSet[]): void => {
   const items: IconSVG[] = [];
   const all: string[] = [];
 
