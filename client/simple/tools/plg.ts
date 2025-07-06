@@ -20,8 +20,8 @@ export const plg_svg2png = (items: Src2Dest[]): Plugin => {
   return {
     name: "searxng-simple-svg2png",
     apply: "build",
-    async writeBundle() {
-      await svg2png(items);
+    writeBundle: () => {
+      svg2png(items);
     }
   };
 };
@@ -36,7 +36,7 @@ export const plg_svg2svg = (items: Src2Dest[], svgo_opts: Config): Plugin => {
   return {
     name: "searxng-simple-svg2svg",
     apply: "build",
-    writeBundle() {
+    writeBundle: () => {
       svg2svg(items, svgo_opts);
     }
   };

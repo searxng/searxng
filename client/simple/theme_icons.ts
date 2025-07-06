@@ -8,7 +8,7 @@ import type { Config as SvgoConfig } from "svgo";
 import { type IconSet, type JinjaMacro, jinja_svg_sets } from "./tools/jinja_svg_catalog.ts";
 
 const HERE = `${dirname(argv[1] || "")}/`;
-const dest = resolve(HERE, "../../searx/templates/simple/icons.html");
+const dest: string = resolve(HERE, "../../searx/templates/simple/icons.html");
 
 const searxng_jinja_macros: JinjaMacro[] = [
   { name: "icon", class: "sxng-icon-set" },

@@ -196,11 +196,6 @@ html.no-js #clear_search.hide_if_nojs {
   .ltr-rounded-left-corners(0.8rem);
 }
 
-#q::-ms-clear,
-#q::-webkit-search-cancel-button {
-  display: none;
-}
-
 #send_search {
   .ltr-rounded-right-corners(0.8rem);
 
@@ -271,7 +266,6 @@ html.no-js #clear_search.hide_if_nojs {
       width: 100%;
       .ltr-text-align-left();
       overflow: scroll hidden;
-      -webkit-overflow-scrolling: touch;
     }
   }
 }
@@ -374,11 +368,6 @@ html.no-js #clear_search.hide_if_nojs {
 
 #categories {
   .disable-user-select;
-
-  &::-webkit-scrollbar {
-    width: 0;
-    height: 0;
-  }
 }
 
 #categories_container {

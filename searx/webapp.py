@@ -358,7 +358,7 @@ def get_client_settings():
         'favicon_resolver': req_pref.get_value('favicon_resolver'),
         'advanced_search': req_pref.get_value('advanced_search'),
         'query_in_title': req_pref.get_value('query_in_title'),
-        'safesearch': str(req_pref.get_value('safesearch')),
+        'safesearch': req_pref.get_value('safesearch'),
         'theme': req_pref.get_value('theme'),
         'doi_resolver': get_doi_resolver(),
     }
@@ -368,15 +368,7 @@ def render(template_name: str, **kwargs):
     # values from the preferences
     # pylint: disable=too-many-statements
     client_settings = get_client_settings()
-    kwargs['client_settings'] = str(
-        base64.b64encode(
-            bytes(
-                json.dumps(client_settings),
-                encoding='utf-8',
-            )
-        ),
-        encoding='utf-8',
-    )
+    kwargs['client_settings'] = base64.b64encode(json.dumps(client_settings).encode('utf-8')).decode('utf-8')
     kwargs['preferences'] = sxng_request.preferences
     kwargs.update(client_settings)
 

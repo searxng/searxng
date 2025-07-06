@@ -6,11 +6,12 @@ import { resolve } from "node:path";
 import { constants as zlibConstants } from "node:zlib";
 import browserslistToEsbuild from "browserslist-to-esbuild";
 import { browserslistToTargets } from "lightningcss";
+import type { PreRenderedAsset } from "rolldown";
 import type { Config } from "svgo";
 import type { UserConfig } from "vite";
 import analyzer from "vite-bundle-analyzer";
-import manifest from "./package.json";
-import { plg_svg2png, plg_svg2svg } from "./tools/plg";
+import manifest from "./package.json" with { type: "json" };
+import { plg_svg2png, plg_svg2svg } from "./tools/plg.ts";
 
 const ROOT = "../../"; // root of the git repository
 
@@ -20,7 +21,7 @@ const PATH = {
   modules: "node_modules/",
   src: "src/",
   templates: resolve(ROOT, "searx/templates/simple/")
-};
+} as const;
 
 const svg2svg_opts: Config = {
   plugins: [{ name: "preset-default" }, "sortAttrs", "convertStyleToAttrs"]
@@ -49,37 +50,37 @@ export default {
     rollupOptions: {
       input: {
         // build CSS files
-        "searxng-ltr.min.css": `${PATH.src}/less/style-ltr.less`,
-        "searxng-rtl.min.css": `${PATH.src}/less/style-rtl.less`,
-        "rss.min.css": `${PATH.src}/less/rss.less`,
+        "searxng-ltr.css": `${PATH.src}/less/style-ltr.less`,
+        "searxng-rtl.css": `${PATH.src}/less/style-rtl.less`,
+        "rss.css": `${PATH.src}/less/rss.less`,
 
         // build script files
-        "searxng.min": `${PATH.src}/js/main/index.ts`,
+        "searxng.core": `${PATH.src}/js/core/index.ts`,
 
         // ol
-        "ol.min": `${PATH.src}/js/pkg/ol.ts`,
-        "ol.min.css": `${PATH.modules}/ol/ol.css`
+        ol: `${PATH.src}/js/pkg/ol.ts`,
+        "ol.css": `${PATH.modules}/ol/ol.css`
       },
 
       // file naming conventions / pathnames are relative to outDir (PATH.dist)
       output: {
-        entryFileNames: "js/[name].js",
-        chunkFileNames: "js/[name].js",
-        assetFileNames: ({ names }) => {
+        entryFileNames: "js/[name].min.js",
+        chunkFileNames: "js/[name].min.js",
+        assetFileNames: ({ names }: PreRenderedAsset): string => {
           const [name] = names;
 
           const extension = name?.split(".").pop();
           switch (extension) {
             case "css":
-              return `css/[name][extname]`;
+              return "css/[name].min[extname]";
             case "js":
-              return `js/[name][extname]`;
+              return "js/[name].min[extname]";
             case "png":
             case "svg":
-              return `img/[name][extname]`;
+              return "img/[name][extname]";
             default:
               console.warn("Unknown asset:", name);
-              return `[name][extname]`;
+              return "[name][extname]";
           }
         }
       }

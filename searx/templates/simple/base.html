@@ -2,6 +2,7 @@
 <html class="no-js theme-{{ preferences.get_value('simple_style') or 'auto' }} center-alignment-{{ preferences.get_value('center_alignment') and 'yes' or 'no' }}" lang="{{ locale_rfc5646 }}" {% if rtl %} dir="rtl"{% endif %}>
 <head>
   <meta charset="UTF-8">
+  <meta name="endpoint" content="{{ endpoint }}">
   <meta name="description" content="SearXNG — a privacy-respecting, open metasearch engine">
   <meta name="keywords" content="SearXNG, search, search engine, metasearch, meta search">
   <meta name="generator" content="searxng/{{ searx_version }}">
@@ -82,6 +83,6 @@
         {% endfor %}
     </p>
   </footer>
-  <script type="module" src="{{ url_for('static', filename='js/searxng.min.js') }}" client_settings="{{ client_settings }}"></script>
+  <script type="module" src="{{ url_for('static', filename='js/searxng.core.min.js') }}" client_settings="{{ client_settings }}"></script>
 </body>
 </html>
