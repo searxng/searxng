@@ -1,25 +1,26 @@
 import fs from "node:fs";
 import path from "node:path";
 import sharp from "sharp";
+import type { Config } from "svgo";
 import { optimize as svgo } from "svgo";
 
-/**
- * @typedef {object} Src2Dest - Mapping of src to dest
- * @property {string} src - Name of the source file.
- * @property {string} dest - Name of the destination file.
- */
+// Mapping of src to dest
+export type Src2Dest = {
+  // Name of the source file.
+  src: string;
+  // Name of the destination file.
+  dest: string;
+};
 
 /**
  * Convert a list of SVG files to PNG.
  *
- * @param {Src2Dest[]} items - Array of SVG files (src: SVG, dest:PNG) to convert.
+ * @param items - Array of SVG files (src: SVG, dest:PNG) to convert.
  */
-async function svg2png(items) {
+export const svg2png = async (items: Src2Dest[]) => {
   for (const item of items) {
     try {
-      fs.mkdir(path.dirname(item.dest), { recursive: true }, (err) => {
-        if (err) throw err;
-      });
+      fs.mkdirSync(path.dirname(item.dest), { recursive: true });
 
       const info = await sharp(item.src)
         .png({
@@ -35,23 +36,22 @@ async function svg2png(items) {
       throw err;
     }
   }
-}
+};
 
 /**
  * Optimize SVG images for WEB.
  *
- * @param {Src2Dest[]} items - Array of SVG files (src:SVG, dest:SVG) to optimize.
- * @param {import('svgo').Config} svgo_opts - Options passed to svgo.
+ * @param items - Array of SVG files (src:SVG, dest:SVG) to optimize.
+ * @param svgo_opts - Options passed to svgo.
  */
-async function svg2svg(items, svgo_opts) {
+export const svg2svg = (items: Src2Dest[], svgo_opts: Config) => {
   for (const item of items) {
     try {
-      fs.mkdir(path.dirname(item.dest), { recursive: true }, (err) => {
-        if (err) throw err;
-      });
+      fs.mkdirSync(path.dirname(item.dest), { recursive: true });
 
       const raw = fs.readFileSync(item.src, "utf8");
       const opt = svgo(raw, svgo_opts);
+
       fs.writeFileSync(item.dest, opt.data);
       console.log(`[svg2svg] optimized: ${item.dest} -- src: ${item.src}`);
     } catch (err) {
@@ -59,6 +59,4 @@ async function svg2svg(items, svgo_opts) {
       throw err;
     }
   }
-}
-
-export { svg2png, svg2svg };
+};

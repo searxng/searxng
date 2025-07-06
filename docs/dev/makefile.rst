@@ -103,8 +103,8 @@ Node.js environment (``make node.env``)
 
    Node.js_ version {{version.node}} or higher is required to build the themes.
    If the requirement is not met, the build chain uses nvm_ (Node Version
-   Manager) to install latest LTS of Node.js_ locally: there is no need to
-   install nvm_ or npm_ on your system.
+   Manager) to install Node.js_ locally: there is no need to install
+   nvm_ or npm_ on your system.
 
 To install NVM_ and Node.js_ in once you can use :ref:`make nvm.nodejs`.
 
@@ -150,7 +150,7 @@ setup.
 ``make nvm.nodejs``
 -------------------
 
-Install latest Node.js_ LTS locally (uses nvm_)::
+Install latest Node.js_ locally (uses nvm_)::
 
   $ make nvm.nodejs
   INFO:  install (update) NVM at /share/searxng/.nvm
