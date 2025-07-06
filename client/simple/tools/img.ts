@@ -17,24 +17,24 @@ export type Src2Dest = {
  *
  * @param items - Array of SVG files (src: SVG, dest:PNG) to convert.
  */
-export const svg2png = async (items: Src2Dest[]) => {
+export const svg2png = (items: Src2Dest[]): void => {
   for (const item of items) {
-    try {
-      fs.mkdirSync(path.dirname(item.dest), { recursive: true });
+    fs.mkdirSync(path.dirname(item.dest), { recursive: true });
 
-      const info = await sharp(item.src)
-        .png({
-          force: true,
-          compressionLevel: 9,
-          palette: true
-        })
-        .toFile(item.dest);
-
-      console.log(`[svg2png] created ${item.dest} -- bytes: ${info.size}, w:${info.width}px,  h:${info.height}px`);
-    } catch (err) {
-      console.error(`ERROR: ${item.dest} -- ${err}`);
-      throw err;
-    }
+    sharp(item.src)
+      .png({
+        force: true,
+        compressionLevel: 9,
+        palette: true
+      })
+      .toFile(item.dest)
+      .then((info) => {
+        console.log(`[svg2png] created ${item.dest} -- bytes: ${info.size}, w:${info.width}px,  h:${info.height}px`);
+      })
+      .catch((error) => {
+        console.error(`ERROR: ${item.dest} -- ${error}`);
+        throw error;
+      });
   }
 };
 
@@ -44,7 +44,7 @@ export const svg2png = async (items: Src2Dest[]) => {
  * @param items - Array of SVG files (src:SVG, dest:SVG) to optimize.
  * @param svgo_opts - Options passed to svgo.
  */
-export const svg2svg = (items: Src2Dest[], svgo_opts: Config) => {
+export const svg2svg = (items: Src2Dest[], svgo_opts: Config): void => {
   for (const item of items) {
     try {
       fs.mkdirSync(path.dirname(item.dest), { recursive: true });
@@ -54,9 +54,9 @@ export const svg2svg = (items: Src2Dest[], svgo_opts: Config) => {
 
       fs.writeFileSync(item.dest, opt.data);
       console.log(`[svg2svg] optimized: ${item.dest} -- src: ${item.src}`);
-    } catch (err) {
-      console.error(`ERROR: optimize src: ${item.src} -- ${err}`);
-      throw err;
+    } catch (error) {
+      console.error(`ERROR: optimize src: ${item.src} -- ${error}`);
+      throw error;
     }
   }
 };
