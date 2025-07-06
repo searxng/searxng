@@ -92,5 +92,8 @@ jobs:
       - name: Setup venv
         run: make V=1 install
 
+      - name: Lint
+        run: make themes.lint
+
       - name: Build
         run: make themes.all

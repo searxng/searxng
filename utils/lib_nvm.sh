@@ -94,7 +94,7 @@ nvm.: use nvm (without dot) to execute nvm commands directly
   install   : install NVM locally at $(git rev-parse --show-toplevel)/${NVM_LOCAL_FOLDER}
   clean     : remove NVM installation
   status    : prompt some status information about nvm & node
-  nodejs    : install Node.js latest LTS
+  nodejs    : install latest Node.js
   cmd ...   : run command ... in NVM environment
   bash      : start bash interpreter with NVM environment sourced
 EOF
@@ -163,7 +163,7 @@ nvm.status() {
         info_msg "NVM is installed at ${NVM_DIR}"
     else
         warn_msg "NVM is not installed"
-        info_msg "to install NVM and Node.js (LTS) use: ${main_cmd} nvm.nodejs"
+        info_msg "to install NVM and Node.js use: ${main_cmd} nvm.nodejs"
     fi
 }
 

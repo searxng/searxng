@@ -36,12 +36,24 @@ indent_size = 2
 [*.js]
 indent_size = 2
 
+[*.ts]
+indent_size = 2
+
 [*.json]
 indent_size = 2
 insert_final_newline = ignore
 
+[*.map]
+indent_size = ignore
+insert_final_newline = ignore
+
 # Minified JavaScript files shouldn't be changed
-[**.min.js]
+[*.min.js]
+indent_style = ignore
+insert_final_newline = ignore
+
+# Minified CSS files shouldn't be changed
+[*.min.css]
 indent_style = ignore
 insert_final_newline = ignore
 
