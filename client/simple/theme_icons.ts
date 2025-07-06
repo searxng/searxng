@@ -4,40 +4,33 @@
 
 import { dirname, resolve } from "node:path";
 import { argv } from "node:process";
-import { jinja_svg_sets } from "./tools/jinja_svg_catalog.js";
+import type { Config as SvgoConfig } from "svgo";
+import { type IconSet, type JinjaMacro, jinja_svg_sets } from "./tools/jinja_svg_catalog.ts";
 
-const HERE = `${dirname(argv[1])}/`;
+const HERE = `${dirname(argv[1] || "")}/`;
 const dest = resolve(HERE, "../../searx/templates/simple/icons.html");
 
-/** @type import("./tools/jinja_svg_catalog.js").JinjaMacro[] */
-const searxng_jinja_macros = [
+const searxng_jinja_macros: JinjaMacro[] = [
   { name: "icon", class: "sxng-icon-set" },
   { name: "icon_small", class: "sxng-icon-set-small" },
   { name: "icon_big", class: "sxng-icon-set-big" }
 ];
 
-const sxng_icon_opts = {
+const sxng_icon_opts: SvgoConfig = {
   multipass: true,
   plugins: [
-    { name: "removeTitle" },
-    { name: "removeXMLNS" },
+    "removeTitle",
+    "removeXMLNS",
     {
       name: "addAttributesToSVGElement",
       params: {
-        attributes: [
-          {
-            "aria-hidden": "true"
-          }
-        ]
+        attributes: [{ "aria-hidden": "true" }]
       }
     }
   ]
 };
 
-/**
- * @type import("./tools/jinja_svg_catalog.js").IconSet[]
- */
-const simple_icons = [
+const simple_icons: IconSet[] = [
   {
     base: resolve(HERE, "node_modules/ionicons/dist/svg"),
     set: {
