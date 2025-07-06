@@ -1,38 +1,33 @@
 {
-  "js/searxng.head.js": {
-    "file": "js/searxng.head.min.js",
-    "name": "js/searxng.head.min",
-    "src": "js/searxng.head.js",
-    "isEntry": true
+  "node_modules/ol/ol.css": {
+    "file": "css/ol.min.css",
+    "src": "node_modules/ol/ol.css"
   },
-  "js/searxng.js": {
+  "src/js/main/index.ts": {
     "file": "js/searxng.min.js",
-    "name": "js/searxng.min",
-    "src": "js/searxng.js",
+    "name": "searxng.min",
+    "src": "src/js/main/index.ts",
+    "isEntry": true,
+    "dynamicImports": [
+      "src/js/pkg/ol.ts"
+    ]
+  },
+  "src/js/pkg/ol.ts": {
+    "file": "js/ol.min.js",
+    "name": "ol.min",
+    "src": "src/js/pkg/ol.ts",
     "isEntry": true
   },
-  "less/rss.less": {
+  "src/less/rss.less": {
     "file": "css/rss.min.css",
-    "src": "less/rss.less",
-    "isEntry": true,
-    "names": [
-      "css/rss.min.css"
-    ]
+    "src": "src/less/rss.less"
   },
-  "less/style-ltr.less": {
-    "file": "css/searxng.min.css",
-    "src": "less/style-ltr.less",
-    "isEntry": true,
-    "names": [
-      "css/searxng.min.css"
-    ]
+  "src/less/style-ltr.less": {
+    "file": "css/searxng-ltr.min.css",
+    "src": "src/less/style-ltr.less"
   },
-  "less/style-rtl.less": {
+  "src/less/style-rtl.less": {
     "file": "css/searxng-rtl.min.css",
-    "src": "less/style-rtl.less",
-    "isEntry": true,
-    "names": [
-      "css/searxng-rtl.min.css"
-    ]
+    "src": "src/less/style-rtl.less"
   }
 }
