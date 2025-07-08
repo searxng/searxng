@@ -1350,9 +1350,9 @@ def is_werkzeug_reload_active() -> bool:
     .. _werkzeug.serving:
        https://werkzeug.palletsprojects.com/en/stable/serving/#werkzeug.serving.run_simple
     """
-
-    if "uwsgi" in sys.argv:
-        # server was launched by uWSGI
+    logger.debug("sys.argv: %s", sys.argv)
+    if "uwsgi" in sys.argv[0] or "granian" in sys.argv[0]:
+        # server was launched by granian (or uWSGI)
         return False
 
     # https://github.com/searxng/searxng/pull/1656#issuecomment-1214198941
