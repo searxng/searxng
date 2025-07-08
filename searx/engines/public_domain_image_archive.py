@@ -39,9 +39,7 @@ about = {
     "results": 'JSON',
 }
 
-base_url = 'https://oqi2j6v4iz-dsn.algolia.net'
 pdia_base_url = 'https://pdimagearchive.org'
-pdia_search_url = pdia_base_url + '/search/?q='
 pdia_config_start = "/_astro/InfiniteSearch."
 pdia_config_end = ".js"
 categories = ['images']
@@ -49,7 +47,7 @@ page_size = 20
 paging = True
 
 
-__CACHED_API_KEY = None
+__CACHED_API_URL = None
 
 
 def _clean_url(url):
@@ -59,61 +57,52 @@ def _clean_url(url):
     return urlunparse((parsed.scheme, parsed.netloc, parsed.path, parsed.params, urlencode(query), parsed.fragment))
 
 
-def _get_algolia_api_key():
-    global __CACHED_API_KEY  # pylint:disable=global-statement
+def _get_algolia_api_url():
+    global __CACHED_API_URL  # pylint:disable=global-statement
 
-    if __CACHED_API_KEY:
-        return __CACHED_API_KEY
+    if __CACHED_API_URL:
+        return __CACHED_API_URL
 
-    resp = get(pdia_search_url)
+    # fake request to extract api url
+    resp = get(f"{pdia_base_url}/search/?q=")
     if resp.status_code != 200:
-        raise LookupError("Failed to fetch config location (and as such the API key) for PDImageArchive")
+        raise LookupError("Failed to fetch config location (and as such the API url) for PDImageArchive")
     pdia_config_filepart = extr(resp.text, pdia_config_start, pdia_config_end)
     pdia_config_url = pdia_base_url + pdia_config_start + pdia_config_filepart + pdia_config_end
 
     resp = get(pdia_config_url)
     if resp.status_code != 200:
-        raise LookupError("Failed to obtain Algolia API key for PDImageArchive")
+        raise LookupError("Failed to obtain AWS api url for PDImageArchive")
 
-    api_key = extr(resp.text, 'const r="', '"', default=None)
+    api_url = extr(resp.text, 'const r="', '"', default=None)
 
-    if api_key is None:
-        raise LookupError("Couldn't obtain Algolia API key for PDImageArchive")
+    if api_url is None:
+        raise LookupError("Couldn't obtain AWS api url for PDImageArchive")
 
-    __CACHED_API_KEY = api_key
-    return api_key
+    __CACHED_API_URL = api_url
+    return api_url
 
 
-def _clear_cached_api_key():
-    global __CACHED_API_KEY  # pylint:disable=global-statement
+def _clear_cached_api_url():
+    global __CACHED_API_URL  # pylint:disable=global-statement
 
-    __CACHED_API_KEY = None
+    __CACHED_API_URL = None
 
 
 def request(query, params):
-    api_key = _get_algolia_api_key()
+    params['url'] = _get_algolia_api_url()
+    params['method'] = 'POST'
 
-    args = {
-        'x-algolia-api-key': api_key,
-        'x-algolia-application-id': 'OQI2J6V4IZ',
+    request_data = {
+        'page': params['pageno'] - 1,
+        'query': query,
+        'hitsPerPage': page_size,
+        'indexName': 'prod_all-images',
     }
-    params['url'] = f"{base_url}/1/indexes/*/queries?{urlencode(args)}"
-    params["method"] = "POST"
+    params['headers'] = {'Content-Type': 'application/json'}
+    params['data'] = dumps(request_data)
 
-    request_params = {
-        "page": params["pageno"] - 1,
-        "query": query,
-        "highlightPostTag": "__ais-highlight__",
-        "highlightPreTag": "__ais-highlight__",
-    }
-    data = {
-        "requests": [
-            {"indexName": "prod_all-images", "params": urlencode(request_params)},
-        ]
-    }
-    params["data"] = dumps(data)
-
-    # http errors are handled manually to be able to reset the api key
+    # http errors are handled manually to be able to reset the api url
     params['raise_for_httperror'] = False
     return params
 
@@ -123,7 +112,7 @@ def response(resp):
     json_data = resp.json()
 
     if resp.status_code == 403:
-        _clear_cached_api_key()
+        _clear_cached_api_url()
         raise SearxEngineAccessDeniedException()
 
     if resp.status_code != 200:
@@ -135,12 +124,11 @@ def response(resp):
     for result in json_data['results'][0]['hits']:
         content = []
 
-        if "themes" in result:
+        if result.get("themes"):
             content.append("Themes: " + result['themes'])
 
-        if "encompassingWork" in result:
+        if result.get("encompassingWork"):
             content.append("Encompassing work: " + result['encompassingWork'])
-        content = "\n".join(content)
 
         base_image_url = result['thumbnail'].split("?")[0]
 
@@ -151,7 +139,7 @@ def response(resp):
                 'img_src': _clean_url(base_image_url),
                 'thumbnail_src': _clean_url(base_image_url + THUMBNAIL_SUFFIX),
                 'title': f"{result['title'].strip()} by {result['artist']} {result.get('displayYear', '')}",
-                'content': content,
+                'content': "\n".join(content),
             }
         )
 
