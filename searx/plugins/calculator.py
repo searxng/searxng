@@ -40,6 +40,22 @@ class SXNGPlugin(Plugin):
             preference_section="general",
         )
 
+    def timeout_func(self, timeout, func, *args, **kwargs):
+        que = mp_fork.Queue()
+        p = mp_fork.Process(target=handler, args=(que, func, args), kwargs=kwargs)
+        p.start()
+        p.join(timeout=timeout)
+        ret_val = None
+        # pylint: disable=used-before-assignment,undefined-variable
+        if not p.is_alive():
+            ret_val = que.get()
+        else:
+            self.log.debug("terminate function (%s: %s // %s) after timeout is exceeded", func.__name__, args, kwargs)
+            p.terminate()
+        p.join()
+        p.close()
+        return ret_val
+
     def post_search(self, request: "SXNG_Request", search: "SearchWithPlugins") -> EngineResults:
         results = EngineResults()
 
@@ -72,7 +88,7 @@ class SXNGPlugin(Plugin):
         query_py_formatted = query.replace("^", "**")
 
         # Prevent the runtime from being longer than 50 ms
-        res = timeout_func(0.05, _eval_expr, query_py_formatted)
+        res = self.timeout_func(0.05, _eval_expr, query_py_formatted)
         if res is None or res[0] == "":
             return results
 
@@ -200,21 +216,3 @@ def handler(q: multiprocessing.Queue, func, args, **kwargs):  # pylint:disable=i
     except:
         q.put(None)
         raise
-
-
-def timeout_func(timeout, func, *args, **kwargs):
-
-    que = mp_fork.Queue()
-    p = mp_fork.Process(target=handler, args=(que, func, args), kwargs=kwargs)
-    p.start()
-    p.join(timeout=timeout)
-    ret_val = None
-    # pylint: disable=used-before-assignment,undefined-variable
-    if not p.is_alive():
-        ret_val = que.get()
-    else:
-        logger.debug("terminate function after timeout is exceeded")  # type: ignore
-        p.terminate()
-    p.join()
-    p.close()
-    return ret_val
