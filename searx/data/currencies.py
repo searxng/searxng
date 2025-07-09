@@ -24,8 +24,9 @@ class CurrenciesDB:
 
     def init(self):
         if self.cache.properties("currencies loaded") != "OK":
-            self.load()
+            # To avoid parallel initializations, the property is set first
             self.cache.properties.set("currencies loaded", "OK")
+            self.load()
         # F I X M E:
         #     do we need a maintenance .. rember: database is stored
         #     in /tmp and will be rebuild during the reboot anyway

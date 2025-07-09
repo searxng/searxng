@@ -7,7 +7,6 @@ import typing
 __all__ = ["TrackerPatternsDB"]
 
 import re
-import pathlib
 from collections.abc import Iterator
 from urllib.parse import urlparse, urlunparse, parse_qsl, urlencode
 
@@ -22,7 +21,6 @@ class TrackerPatternsDB:
     # pylint: disable=missing-class-docstring
 
     ctx_name = "data_tracker_patterns"
-    json_file = pathlib.Path(__file__).parent / "tracker_patterns.json"
 
     CLEAR_LIST_URL = [
         # ClearURL rule lists, the first one that responds HTTP 200 is used
@@ -42,8 +40,9 @@ class TrackerPatternsDB:
 
     def init(self):
         if self.cache.properties("tracker_patterns loaded") != "OK":
-            self.load()
+            # To avoid parallel initializations, the property is set first
             self.cache.properties.set("tracker_patterns loaded", "OK")
+            self.load()
         # F I X M E:
         #     do we need a maintenance .. rember: database is stored
         #     in /tmp and will be rebuild during the reboot anyway
