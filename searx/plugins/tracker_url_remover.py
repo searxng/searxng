@@ -13,6 +13,7 @@ from searx.data import TRACKER_PATTERNS
 from . import Plugin, PluginInfo
 
 if typing.TYPE_CHECKING:
+    import flask
     from searx.search import SearchWithPlugins
     from searx.extended_types import SXNG_Request
     from searx.result_types import Result, LegacyResult
@@ -36,6 +37,10 @@ class SXNGPlugin(Plugin):
             description=gettext("Remove trackers arguments from the returned URL"),
             preference_section="privacy",
         )
+
+    def init(self, app: "flask.Flask") -> bool:
+        TRACKER_PATTERNS.init()
+        return True
 
     def on_result(self, request: "SXNG_Request", search: "SearchWithPlugins", result: Result) -> bool:
 
