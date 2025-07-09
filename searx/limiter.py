@@ -17,7 +17,7 @@ from the :ref:`botdetection`:
   the time.
 
 - Detection & dynamically :ref:`botdetection rate limit` of bots based on the
-  behavior of the requests.  For dynamically changeable IP lists a Redis
+  behavior of the requests.  For dynamically changeable IP lists a Valkey
   database is needed.
 
 The prerequisite for IP based methods is the correct determination of the IP of
@@ -50,13 +50,13 @@ To enable the limiter activate:
      ...
      limiter: true  # rate limit the number of request on the instance, block some bots
 
-and set the redis-url connection. Check the value, it depends on your redis DB
-(see :ref:`settings redis`), by example:
+and set the valkey-url connection. Check the value, it depends on your valkey DB
+(see :ref:`settings valkey`), by example:
 
 .. code:: yaml
 
-   redis:
-     url: unix:///usr/local/searxng-redis/run/redis.sock?db=0
+   valkey:
+     url: valkey://localhost:6379/0
 
 
 Configure Limiter
@@ -102,7 +102,7 @@ import werkzeug
 
 from searx import (
     logger,
-    redisdb,
+    valkeydb,
 )
 from searx import botdetection
 from searx.extended_types import SXNG_Request, sxng_request
@@ -217,7 +217,7 @@ def pre_request():
 
 
 def is_installed():
-    """Returns ``True`` if limiter is active and a redis DB is available."""
+    """Returns ``True`` if limiter is active and a valkey DB is available."""
     return _INSTALLED
 
 
@@ -229,15 +229,15 @@ def initialize(app: flask.Flask, settings):
     # (e.g. the self_info plugin uses the botdetection to get client IP)
 
     cfg = get_cfg()
-    redis_client = redisdb.client()
-    botdetection.init(cfg, redis_client)
+    valkey_client = valkeydb.client()
+    botdetection.init(cfg, valkey_client)
 
     if not (settings['server']['limiter'] or settings['server']['public_instance']):
         return
 
-    if not redis_client:
+    if not valkey_client:
         logger.error(
-            "The limiter requires Redis, please consult the documentation: "
+            "The limiter requires Valkey, please consult the documentation: "
             "https://docs.searxng.org/admin/searx.limiter.html"
         )
         if settings['server']['public_instance']:

@@ -4,46 +4,34 @@
 ``redis:``
 ==========
 
-.. _Redis.from_url(url): https://redis-py.readthedocs.io/en/stable/connections.html#redis.client.Redis.from_url
+.. _Valkey: https://valkey.io
 
-A redis DB can be connected by an URL, in :py:obj:`searx.redisdb` you
-will find a description to test your redis connection in SearXNG.  When using
-sockets, don't forget to check the access rights on the socket::
+.. attention::
 
-  ls -la /usr/local/searxng-redis/run/redis.sock
-  srwxrwx--- 1 searxng-redis searxng-redis ... /usr/local/searxng-redis/run/redis.sock
+   SearXNG is switching from the Redis DB to Valkey_. The configuration
+   description of Valkey_ in SearXNG can be found here: :ref:`settings
+   <settings valkey>`.
 
-In this example read/write access is given to the *searxng-redis* group.  To get
-access rights to redis instance (the socket), your SearXNG (or even your
-developer) account needs to be added to the *searxng-redis* group.
-
-``url`` : ``$SEARXNG_REDIS_URL``
-  URL to connect redis database, see `Redis.from_url(url)`_ & :ref:`redis db`::
-
-    redis://[[username]:[password]]@localhost:6379/0
-    rediss://[[username]:[password]]@localhost:6379/0
-    unix://[[username]:[password]]@/path/to/socket.sock?db=0
+If you have built and installed a local Redis DB for SearXNG, it is recommended
+to uninstall it now and replace it with the installation of a Valkey_ DB.
 
 .. _Redis Developer Notes:
 
 Redis Developer Notes
 =====================
 
-To set up a local redis instance, first set the socket path of the Redis DB
-in your YAML setting:
+To uninstall SearXNG's local Redis DB you can use:
+
+.. code:: sh
+
+   # stop your SearXNG instance
+   $ ./utils/searxng.sh remove.redis
+
+Remove the Redis DB in your YAML setting:
 
 .. code:: yaml
 
    redis:
      url: unix:///usr/local/searxng-redis/run/redis.sock?db=0
 
-Then use the following commands to install the redis instance (:ref:`manage
-redis.help`):
-
-.. code:: sh
-
-   $ ./manage redis.build
-   $ sudo -H ./manage redis.install
-   $ sudo -H ./manage redis.addgrp "${USER}"
-   # don't forget to logout & login to get member of group
-
+To install Valkey_ read: :ref:`Valkey Developer Notes`

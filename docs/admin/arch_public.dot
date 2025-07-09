@@ -7,7 +7,8 @@ digraph G {
   rp      [label="reverse proxy"];
   static  [label="static files", shape=folder, href="url to configure static files", fillcolor=lightgray];
   uwsgi   [label="uwsgi", shape=parallelogram href="https://docs.searxng.org/utils/searxng.sh.html"]
-  redis     [label="redis DB", shape=cylinder];
+  valkey  [label="valkey DB", shape=cylinder];
+
   searxng1  [label="SearXNG #1", fontcolor=blue3];
   searxng2  [label="SearXNG #2", fontcolor=blue3];
   searxng3  [label="SearXNG #3", fontcolor=blue3];
@@ -21,10 +22,10 @@ digraph G {
       { rank=same; static rp };
       rp -> static  [label="optional: reverse proxy serves static files", fillcolor=slategray, fontcolor=slategray];
       rp -> uwsgi [label="http:// (tcp) or unix:// (socket)"];
-      uwsgi -> searxng1 -> redis;
-      uwsgi -> searxng2 -> redis;
-      uwsgi -> searxng3 -> redis;
-      uwsgi -> searxng4 -> redis;
+      uwsgi -> searxng1 -> valkey;
+      uwsgi -> searxng2 -> valkey;
+      uwsgi -> searxng3 -> valkey;
+      uwsgi -> searxng4 -> valkey;
   }
 
 }

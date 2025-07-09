@@ -35,8 +35,8 @@ source "$(dirname "${BASH_SOURCE[0]}")/utils/lib_sxng_test.sh"
 # shellcheck source=utils/lib_go.sh
 source "$(dirname "${BASH_SOURCE[0]}")/utils/lib_go.sh"
 
-# shellcheck source=utils/lib_redis.sh
-source "$(dirname "${BASH_SOURCE[0]}")/utils/lib_redis.sh"
+# shellcheck source=utils/lib_valkey.sh
+source "$(dirname "${BASH_SOURCE[0]}")/utils/lib_valkey.sh"
 
 # shellcheck source=utils/lib_sxng_vite.sh
 source "$(dirname "${BASH_SOURCE[0]}")/utils/lib_sxng_vite.sh"
@@ -51,12 +51,6 @@ GECKODRIVER_VERSION="v0.35.0"
 # SPHINXOPTS=
 BLACK_OPTIONS=("--target-version" "py311" "--line-length" "120" "--skip-string-normalization")
 BLACK_TARGETS=("--exclude" "(searx/static|searx/languages.py)" "--include" 'searxng.msg|\.pyi?$' "searx" "searxng_extra" "tests")
-
-_dev_redis_sock="/usr/local/searxng-redis/run/redis.sock"
-# set SEARXNG_REDIS_URL if it is not defined and "{_dev_redis_sock}" exists.
-if [ -S "${_dev_redis_sock}" ] && [ -z "${SEARXNG_REDIS_URL}" ]; then
-    export SEARXNG_REDIS_URL="unix://${_dev_redis_sock}?db=0"
-fi
 
 YAMLLINT_FILES=()
 while IFS= read -r line; do
@@ -83,10 +77,8 @@ docs.:
 gecko.driver:
   download & install geckodriver if not already installed (required for
   robot_tests)
-redis:
-  build     : build redis binaries at $(redis._get_dist)
-  install   : create user (${REDIS_USER}) and install systemd service (${REDIS_SERVICE_NAME})
-  help      : show more redis commands
+valkey:
+  install   : create user (${VALKEY_USER}) and install systemd service (${VALKEY_SERVICE_NAME})
 py.:
   build     : Build python packages at ./${PYDIST}
   clean     : delete virtualenv and intermediate py files
@@ -109,7 +101,7 @@ EOF
     vite.help
     cat <<EOF
 environment ...
-  SEARXNG_REDIS_URL : ${SEARXNG_REDIS_URL}
+  SEARXNG_VALKEY_URL : ${SEARXNG_VALKEY_URL}
 EOF
 }
 

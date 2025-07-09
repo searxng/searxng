@@ -110,9 +110,10 @@ server:
     X-Robots-Tag: noindex, nofollow
     Referrer-Policy: no-referrer
 
-redis:
-  # URL to connect redis database. Is overwritten by ${SEARXNG_REDIS_URL}.
-  # https://docs.searxng.org/admin/settings/settings_redis.html#settings-redis
+valkey:
+  # URL to connect valkey database. Is overwritten by ${SEARXNG_VALKEY_URL}.
+  # https://docs.searxng.org/admin/settings/settings_valkey.html#settings-valkey
+  # url: valkey://localhost:6379/0
   url: false
 
 ui:
@@ -1809,10 +1810,10 @@ engines:
     shortcut: rt
     disabled: true
 
-  # Required dependency: redis
-  # - name: myredis
+  # Required dependency: valkey
+  # - name: myvalkey
   #   shortcut : rds
-  #   engine: redis_server
+  #   engine: valkey_server
   #   exact_match_only: false
   #   host: '127.0.0.1'
   #   port: 6379
