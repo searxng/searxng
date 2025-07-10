@@ -7,7 +7,7 @@ from lxml import html
 
 from flask_babel import gettext
 from searx.network import get
-from searx.utils import eval_xpath_getindex, gen_useragent, html_to_text
+from searx.utils import eval_xpath_getindex, html_to_text
 
 
 about = {
@@ -41,12 +41,13 @@ def _get_ui_version():
 def request(query, params):
     params['url'] = search_url
     params['method'] = 'POST'
-    params['headers'] = {
-        'Content-Type': 'application/json',
-        'X-S2-UI-Version': _get_ui_version(),
-        'X-S2-Client': "webapp-browser",
-        'User-Agent': gen_useragent(),
-    }
+    params['headers'].update(
+        {
+            'Content-Type': 'application/json',
+            'X-S2-UI-Version': _get_ui_version(),
+            'X-S2-Client': "webapp-browser",
+        }
+    )
     params['data'] = dumps(
         {
             "queryString": query,

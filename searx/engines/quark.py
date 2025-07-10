@@ -6,7 +6,7 @@ from datetime import datetime
 import re
 import json
 
-from searx.utils import html_to_text, gen_useragent
+from searx.utils import html_to_text
 from searx.exceptions import SearxEngineAPIException, SearxEngineCaptchaException
 
 # Metadata
@@ -77,9 +77,6 @@ def request(query, params):
         query_params["tl_request"] = time_range_dict.get(params['time_range'])
 
     params["url"] = f"{query_url}?{urlencode(query_params)}"
-    params["headers"] = {
-        "User-Agent": gen_useragent(),
-    }
     return params
 
 
