@@ -5,10 +5,10 @@ valkey.distro.setup() {
     # shellcheck disable=SC2034
 
     case $DIST_ID in
-        ubuntu|debian)
+        ubuntu | debian)
             VALKEY_PACKAGES="valkey-server"
             ;;
-        arch|fedora|centos)
+        arch | fedora | centos)
             VALKEY_PACKAGES="valkey"
             ;;
         *)
@@ -36,13 +36,13 @@ valkey.backports() {
     esac
 }
 
-valkey.install(){
+valkey.install() {
     info_msg "installing valkey ..."
     valkey.distro.setup
 
     case $DIST_ID in
-        debian|ubuntu)
-            apt-cache show "${VALKEY_PACKAGES}" &> /dev/null  || valkey.backports
+        debian | ubuntu)
+            apt-cache show "${VALKEY_PACKAGES}" &>/dev/null || valkey.backports
             pkg_install "${VALKEY_PACKAGES}"
 
             # do some fix ...
@@ -54,7 +54,7 @@ valkey.install(){
 
             systemd_activate_service valkey-server
             ;;
-        arch|fedora|centos)
+        arch | fedora | centos)
             pkg_install "${VALKEY_PACKAGES}"
             systemd_activate_service valkey
             ;;

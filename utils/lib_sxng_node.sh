@@ -6,7 +6,7 @@ declare _creset
 
 export NODE_MINIMUM_VERSION="18.17.0"
 
-node.help(){
+node.help() {
     cat <<EOF
 node.:
   env       : download & install SearXNG's npm dependencies locally
@@ -24,7 +24,8 @@ nodejs.ensure() {
 
 node.env() {
     nodejs.ensure
-    (   set -e
+    (
+        set -e
         build_msg INSTALL "[npm] ./client/simple/package.json"
         npm --prefix client/simple install
     )
@@ -43,20 +44,22 @@ node.clean() {
         return 0
     fi
     build_msg CLEAN "themes -- locally installed npm dependencies"
-    (   set -e
-        npm --prefix client/simple run clean \
-	    | prefix_stdout "${_Blue}CLEAN    ${_creset} "
-	if [ "${PIPESTATUS[0]}" -ne "0" ]; then
+    (
+        set -e
+        npm --prefix client/simple run clean |
+            prefix_stdout "${_Blue}CLEAN    ${_creset} "
+        if [ "${PIPESTATUS[0]}" -ne "0" ]; then
             return 1
-	fi
+        fi
     )
     build_msg CLEAN "locally installed developer and CI tools"
-    (   set -e
-        npm --prefix . run clean \
-	    | prefix_stdout "${_Blue}CLEAN    ${_creset} "
-	if [ "${PIPESTATUS[0]}" -ne "0" ]; then
+    (
+        set -e
+        npm --prefix . run clean |
+            prefix_stdout "${_Blue}CLEAN    ${_creset} "
+        if [ "${PIPESTATUS[0]}" -ne "0" ]; then
             return 1
-	fi
+        fi
     )
     dump_return $?
 }

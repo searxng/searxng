@@ -23,14 +23,14 @@
 # configure golang environment
 # ----------------------------
 
-[[ -z "${GO_VERSION}" ]] && GO_VERSION="go1.17.3"
+[[ -z ${GO_VERSION} ]] && GO_VERSION="go1.17.3"
 
 GO_DL_URL="https://golang.org/dl"
 
 # implement go functions
 # -----------------------
 
-go.help(){
+go.help() {
     cat <<EOF
 go.:
   ls        : list golang binary archives (stable)
@@ -40,7 +40,7 @@ go.:
 EOF
 }
 
-go.ls(){
+go.ls() {
     python <<EOF
 import sys, json, requests
 resp = requests.get("${GO_DL_URL}/?mode=json&include=all")
@@ -54,7 +54,7 @@ for ver in json.loads(resp.text):
 EOF
 }
 
-go.ver_info(){
+go.ver_info() {
 
     # print information about a golang distribution. To print filename
     # sha256 and size of the archive that fits to your OS and host:
@@ -84,15 +84,15 @@ EOF
 }
 
 go.os() {
-  local OS
-  case "$(command uname -a)xx" in
-    Linux\ *) OS=linux ;;
-    Darwin\ *) OS=darwin ;;
-    FreeBSD\ *) OS=freebsd ;;
-    CYGWIN* | MSYS* | MINGW*) OS=windows ;;
-    *)  die 42 "OS is unknown: $(command uname -a)" ;;
-  esac
-  echo "${OS}"
+    local OS
+    case "$(command uname -a)xx" in
+        Linux\ *) OS=linux ;;
+        Darwin\ *) OS=darwin ;;
+        FreeBSD\ *) OS=freebsd ;;
+        CYGWIN* | MSYS* | MINGW*) OS=windows ;;
+        *) die 42 "OS is unknown: $(command uname -a)" ;;
+    esac
+    echo "${OS}"
 }
 
 go.arch() {
@@ -104,7 +104,7 @@ go.arch() {
         "armv8") ARCH=arm64 ;;
         .*386.*) ARCH=386 ;;
         ppc64*) ARCH=ppc64le ;;
-    *)  die 42 "ARCH is unknown: $(command uname -m)" ;;
+        *) die 42 "ARCH is unknown: $(command uname -m)" ;;
     esac
     echo "${ARCH}"
 }
@@ -140,14 +140,14 @@ go.golang() {
     info_msg "Download go binary ${fname} (${size}B)"
     cache_download "${GO_DL_URL}/${fname}" "${fname}"
 
-    pushd "${CACHE}" &> /dev/null
-    echo "${sha}  ${fname}" > "${fname}.sha256"
+    pushd "${CACHE}" &>/dev/null
+    echo "${sha}  ${fname}" >"${fname}.sha256"
     if ! sha256sum -c "${fname}.sha256" >/dev/null; then
         die 42 "downloaded file ${fname} checksum does not match"
     else
         info_msg "${fname} checksum OK"
     fi
-    popd &> /dev/null
+    popd &>/dev/null
 
     info_msg "install golang"
     tee_stderr 0.1 <<EOF | sudo -i -u "${user}" | prefix_stdout "${userpr}"
@@ -201,7 +201,7 @@ go.bash() {
     sudo -i -u "${user}" bash --init-file "~${user}/.go_env"
 }
 
-go.version(){
+go.version() {
     local user
     user="${1:-${USERNAME}}"
     sudo -i -u "${user}" <<EOF
