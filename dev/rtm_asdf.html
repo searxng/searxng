@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Runtime Management &#8212; SearXNG Documentation (2025.7.11+d57433985)</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=6625fa76" />
+    <link rel="stylesheet" type="text/css" href="../_static/searxng.css?v=52e4ff28" />
+    <script src="../_static/documentation_options.js?v=e2a99f3f"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script data-project="searxng" data-version="2025.7.11+d57433985" src="../_static/describe_version.js?v=fa7f30d0"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="How to contribute" href="contribution_guide.html" />
+    <link rel="prev" title="Git Commits &amp; Change Management" href="commits.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="contribution_guide.html" title="How to contribute"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="commits.html" title="Git Commits &amp; Change Management"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">SearXNG Documentation (2025.7.11+d57433985)</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" accesskey="U">Developer documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Runtime Management</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="runtime-management">
+<h1>Runtime Management<a class="headerlink" href="#runtime-management" title="Link to this heading">¶</a></h1>
+<p>The runtimes are managed with asdf and are activated in this project via the
+<a class="reference external" href=".tool-versions">.tool-versions</a>. If you have not yet installed <a class="reference external" href="https://asdf-vm.com/">asdf</a>, then
+chapter <a class="reference internal" href="#introduce-asdf"><span class="std std-ref">Introduce asdf</span></a> may be of help to you.</p>
+<nav class="contents local" id="contents">
+<ul class="simple">
+<li><p><a class="reference internal" href="#get-started" id="id2">Get started</a></p></li>
+<li><p><a class="reference internal" href="#manage-versions" id="id3">Manage Versions</a></p></li>
+<li><p><a class="reference internal" href="#introduce-asdf" id="id4">Introduce asdf</a></p></li>
+</ul>
+</nav>
+<section id="get-started">
+<h2><a class="toc-backref" href="#id2" role="doc-backlink">Get started</a><a class="headerlink" href="#get-started" title="Link to this heading">¶</a></h2>
+<p>If you have asdf installed you can install the runtimes of this project by:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span><span class="nb">cd</span><span class="w"> </span>/path/to/searxng
+$<span class="w"> </span>asdf<span class="w"> </span>install<span class="w">          </span><span class="c1"># will install runtimes listed in .tool-versions</span>
+...
+</pre></div>
+</div>
+</section>
+<section id="manage-versions">
+<h2><a class="toc-backref" href="#id3" role="doc-backlink">Manage Versions</a><a class="headerlink" href="#manage-versions" title="Link to this heading">¶</a></h2>
+<p>If you want to perform a <code class="docutils literal notranslate"><span class="pre">test</span></code> with special runtime versions of nodejs,
+python or shellcheck, you can patch the <code class="docutils literal notranslate"><span class="pre">.tool-versions</span></code>:</p>
+<div class="highlight-diff notranslate"><div class="highlight"><pre><span></span><span class="gd">--- a/.tool-versions</span>
+<span class="gi">+++ b/.tool-versions</span>
+<span class="gu">@@ -1,2 +1,2 @@</span>
+<span class="gd">-python 3.12.0</span>
+<span class="gd">-shellcheck 0.9.0</span>
+<span class="gi">+python 3.11.6</span>
+<span class="gi">+shellcheck 0.8.0</span>
+</pre></div>
+</div>
+<p>To install use <code class="docutils literal notranslate"><span class="pre">asdf</span> <span class="pre">install</span></code> again.  If the runtime tools have changed, any
+existing (nodejs and python) environments should be cleaned up with a <code class="docutils literal notranslate"><span class="pre">make</span>
+<span class="pre">clean</span></code>.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>asdf<span class="w"> </span>install
+...
+$<span class="w"> </span>make<span class="w"> </span>clean<span class="w"> </span><span class="nb">test</span>
+</pre></div>
+</div>
+</section>
+<section id="introduce-asdf">
+<span id="id1"></span><h2><a class="toc-backref" href="#id4" role="doc-backlink">Introduce asdf</a><a class="headerlink" href="#introduce-asdf" title="Link to this heading">¶</a></h2>
+<p>To <a class="reference external" href="https://asdf-vm.com/guide/getting-started.html#_2-download-asdf">download asdf</a> and <a class="reference external" href="https://asdf-vm.com/guide/getting-started.html#_3-install-asdf">install asdf</a>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/asdf-vm/asdf.git<span class="w"> </span>~/.asdf<span class="w"> </span>--branch<span class="w"> </span>&lt;version&gt;
+$<span class="w"> </span><span class="nb">echo</span><span class="w"> </span><span class="s1">&#39;. &quot;$HOME/.asdf/asdf.sh&quot;&#39;</span><span class="w"> </span>&gt;&gt;<span class="w"> </span>~/.bashrc
+$<span class="w"> </span><span class="nb">echo</span><span class="w"> </span><span class="s1">&#39;. &quot;$HOME/.asdf/completions/asdf.bash&quot;&#39;</span><span class="w"> </span>&gt;&gt;<span class="w"> </span>~/.bashrc
+</pre></div>
+</div>
+<p>Start a new shell and try to <a class="reference external" href="https://asdf-vm.com/guide/getting-started.html#install-the-plugin">install plugins</a>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>asdf<span class="w"> </span>plugin-list-all<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-E<span class="w"> </span><span class="s1">&#39;(golang|python|nodejs|shellcheck).git&#39;</span>
+golang<span class="w">                        </span>https://github.com/asdf-community/asdf-golang.git
+nodejs<span class="w">                        </span>https://github.com/asdf-vm/asdf-nodejs.git
+python<span class="w">                        </span>https://github.com/danhper/asdf-python.git
+shellcheck<span class="w">                    </span>https://github.com/luizm/asdf-shellcheck.git
+
+$<span class="w"> </span>asdf<span class="w"> </span>plugin<span class="w"> </span>add<span class="w"> </span>golang<span class="w"> </span>https://github.com/asdf-community/asdf-golang.git
+$<span class="w"> </span>asdf<span class="w"> </span>plugin<span class="w"> </span>add<span class="w"> </span>nodejs<span class="w"> </span>https://github.com/asdf-vm/asdf-nodejs.git
+$<span class="w"> </span>asdf<span class="w"> </span>plugin<span class="w"> </span>add<span class="w"> </span>python<span class="w"> </span>https://github.com/danhper/asdf-python.git
+$<span class="w"> </span>asdf<span class="w"> </span>plugin<span class="w"> </span>add<span class="w"> </span>shellcheck<span class="w"> </span>https://github.com/luizm/asdf-shellcheck.git
+</pre></div>
+</div>
+<p>Each plugin has dependencies, to compile runtimes visit the URLs from above and
+look out for the dependencies you need to install on your OS, on Debian for the
+runtimes listed above you will need:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>sudo<span class="w"> </span>apt<span class="w"> </span>update
+$<span class="w"> </span>sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span><span class="se">\</span>
+<span class="w">       </span>dirmngr<span class="w"> </span>gpg<span class="w"> </span>curl<span class="w"> </span>gawk<span class="w"> </span>coreutils<span class="w"> </span>build-essential<span class="w"> </span>libssl-dev<span class="w"> </span>zlib1g-dev<span class="w"> </span><span class="se">\</span>
+<span class="w">       </span>libbz2-dev<span class="w"> </span>libreadline-dev<span class="w"> </span>libsqlite3-dev<span class="w"> </span><span class="se">\</span>
+<span class="w">       </span>libncursesw5-dev<span class="w"> </span>xz-utils<span class="w"> </span>tk-dev<span class="w"> </span>libxml2-dev<span class="w"> </span>libxmlsec1-dev<span class="w"> </span>libffi-dev<span class="w"> </span>liblzma-dev
+</pre></div>
+</div>
+<p>With dependencies installed you can install/compile runtimes:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>asdf<span class="w"> </span>install<span class="w"> </span>golang<span class="w"> </span>latest
+$<span class="w"> </span>asdf<span class="w"> </span>install<span class="w"> </span>nodejs<span class="w"> </span>latest
+$<span class="w"> </span>asdf<span class="w"> </span>install<span class="w"> </span>python<span class="w"> </span>latest
+$<span class="w"> </span>asdf<span class="w"> </span>install<span class="w"> </span>shellcheck<span class="w"> </span>latest
+</pre></div>
+</div>
+<p>Python will be compiled and will take a while.</p>
+<p>In the repository the version is defined in <a class="reference external" href=".tool-versions">.tool-versions</a>. Outside the
+repository, its recommended that the runtime should use the versions of the OS
+(<a class="reference external" href="https://asdf-vm.com/manage/versions.html#fallback-to-system-version">Fallback to System Version</a>) / if not already done register the system
+versions global:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span><span class="nb">cd</span><span class="w"> </span>/
+$<span class="w"> </span>asdf<span class="w"> </span>global<span class="w"> </span>golang<span class="w"> </span>system
+$<span class="w"> </span>asdf<span class="w"> </span>global<span class="w"> </span>nodejs<span class="w"> </span>system
+$<span class="w"> </span>asdf<span class="w"> </span>global<span class="w"> </span>python<span class="w"> </span>system
+$<span class="w"> </span>asdf<span class="w"> </span>global<span class="w"> </span>shellcheck<span class="w"> </span>system
+</pre></div>
+</div>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+  <span id="sidebar-top"></span>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+  
+    
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/searxng-wordmark.svg" alt="Logo of SearXNG"/>
+            </a></p>
+  
+
+<h3><a href="../index.html">Table of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../user/index.html">User information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../own-instance.html">Why use a private instance?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../admin/index.html">Administrator documentation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Developer documentation</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html">Development Quickstart</a></li>
+<li class="toctree-l2"><a class="reference internal" href="commits.html">Git Commits &amp; Change Management</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Runtime Management</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#get-started">Get started</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#manage-versions">Manage Versions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#introduce-asdf">Introduce asdf</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="contribution_guide.html">How to contribute</a></li>
+<li class="toctree-l2"><a class="reference internal" href="extended_types.html">Extended Types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="engines/index.html">Engine Implementations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="result_types/index.html">Result Types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="templates.html">Simple Theme Templates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="search_api.html">Search API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plugins/index.html">Plugins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="answerers/index.html">Answerers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="translation.html">Translation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lxcdev.html">Developing in Linux Containers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="makefile.html">Makefile &amp; <code class="docutils literal notranslate"><span class="pre">./manage</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="reST.html">reST primer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searxng_extra/index.html">Tooling box <code class="docutils literal notranslate"><span class="pre">searxng_extra</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../utils/index.html">DevOps tooling box</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../src/index.html">Source-Code</a></li>
+</ul>
+
+  <h3>Project Links</h3>
+  <ul>
+    <li><a href="https://github.com/searxng/searxng/tree/master">Source</a>
+  
+    <li><a href="https://github.com/searxng/searxng/wiki">Wiki</a>
+  
+    <li><a href="https://searx.space">Public instances</a>
+  
+    <li><a href="https://github.com/searxng/searxng/issues">Issue Tracker</a>
+  </ul><h3>Navigation</h3>
+<ul>
+  <li><a href="../index.html">Overview</a>
+    <ul>
+      <li><a href="index.html">Developer documentation</a>
+        <ul>
+          <li>Previous: <a href="commits.html" title="previous chapter">Git Commits &amp; Change Management</a>
+          <li>Next: <a href="contribution_guide.html" title="next chapter">How to contribute</a></ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/dev/rtm_asdf.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright SearXNG team.
+    </div>
+  </body>
+</html>
