@@ -50,8 +50,8 @@ search.checker.%: install
 	$(Q)./manage pyenv.cmd searxng-checker -v "$(subst _, ,$(patsubst search.checker.%,%,$@))"
 
 PHONY += test ci.test test.shell
-ci.test: test.yamllint test.black test.types.ci  test.pylint test.unit test.robot test.rst test.shell test.pybabel
-test:    test.yamllint test.black test.types.dev test.pylint test.unit test.robot test.rst test.shell
+ci.test: test.yamllint test.shfmt test.black test.types.ci  test.pylint test.unit test.robot test.rst test.shell test.pybabel
+test:    test.yamllint test.shfmt test.black test.types.dev test.pylint test.unit test.robot test.rst test.shell
 test.shell:
 	$(Q)shellcheck -x -s dash \
 		container/entrypoint.sh
@@ -82,8 +82,8 @@ MANAGE += gecko.driver
 MANAGE += node.env node.env.dev node.clean
 MANAGE += py.build py.clean
 MANAGE += pyenv pyenv.install pyenv.uninstall
-MANAGE += format.python
-MANAGE += test.yamllint test.pylint test.black test.pybabel test.unit test.coverage test.robot test.rst test.clean test.themes test.types.dev test.types.ci
+MANAGE += format.python format.shell
+MANAGE += test.yamllint test.pylint test.shfmt test.black test.pybabel test.unit test.coverage test.robot test.rst test.clean test.themes test.types.dev test.types.ci
 MANAGE += themes.all themes.simple themes.fix themes.lint themes.test
 MANAGE += static.build.commit static.build.drop static.build.restore
 MANAGE += nvm.install nvm.clean nvm.status nvm.nodejs

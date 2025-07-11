@@ -34,6 +34,9 @@ jobs:
           - "3.13"
 
     steps:
+      - name: Install shfmt
+        run: sudo apt-get install -y shfmt
+
       - name: Setup Python
         uses: actions/setup-python@v5
         with:

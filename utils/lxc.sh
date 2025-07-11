@@ -60,19 +60,17 @@ REMOTE_IMAGES=()
 CONTAINERS=()
 LOCAL_IMAGES=()
 
-for ((i=0; i<${#LXC_SUITE[@]}; i+=2)); do
+for ((i = 0; i < ${#LXC_SUITE[@]}; i += 2)); do
     REMOTE_IMAGES=("${REMOTE_IMAGES[@]}" "${LXC_SUITE[i]}")
-    CONTAINERS=("${CONTAINERS[@]}" "${LXC_HOST_PREFIX}-${LXC_SUITE[i+1]}")
-    LOCAL_IMAGES=("${LOCAL_IMAGES[@]}" "${LXC_SUITE[i+1]}")
+    CONTAINERS=("${CONTAINERS[@]}" "${LXC_HOST_PREFIX}-${LXC_SUITE[i + 1]}")
+    LOCAL_IMAGES=("${LOCAL_IMAGES[@]}" "${LXC_SUITE[i + 1]}")
 done
 
 HOST_USER="${SUDO_USER:-$USER}"
 HOST_USER_ID=$(id -u "${HOST_USER}")
 HOST_GROUP_ID=$(id -g "${HOST_USER}")
 
-# ----------------------------------------------------------------------------
 usage() {
-# ----------------------------------------------------------------------------
     _cmd="$(basename "$0")"
     cat <<EOF
 usage::
@@ -110,12 +108,12 @@ install
 
 EOF
     usage_containers
-    [ -n "${1+x}" ] &&  err_msg "$1"
+    [ -n "${1+x}" ] && err_msg "$1"
 }
 
 usage_containers() {
     lxc_suite_install_info
-    [ -n "${1+x}" ] &&  err_msg "$1"
+    [ -n "${1+x}" ] && err_msg "$1"
 }
 
 lxd_info() {
@@ -138,7 +136,7 @@ main() {
     lxc_distro_setup
 
     # don't check prerequisite when in recursion
-    if [[ ! $1 == __* ]] && [[ ! $1 == --help  ]]; then
+    if [[ $1 != __* ]] && [[ $1 != --help ]]; then
         if ! in_container; then
             ! required_commands lxc && lxd_info && exit 42
         fi
@@ -146,27 +144,40 @@ main() {
     fi
 
     case $1 in
-        --getenv)  var="$2"; echo "${!var}"; exit 0;;
-        -h|--help) usage; exit 0;;
+        --getenv)
+            var="$2"
+            echo "${!var}"
+            exit 0
+            ;;
+        -h | --help)
+            usage
+            exit 0
+            ;;
 
         build)
             sudo_or_exit
             case $2 in
                 ${LXC_HOST_PREFIX}-*) build_container "$2" ;;
-                ''|--|containers) build_all_containers ;;
-                *) usage "$_usage"; exit 42;;
+                '' | -- | containers) build_all_containers ;;
+                *)
+                    usage "$_usage"
+                    exit 42
+                    ;;
             esac
             ;;
         copy)
             case $2 in
-                ''|images) lxc_copy_images_locally;;
-                *) usage "$_usage"; exit 42;;
+                '' | images) lxc_copy_images_locally ;;
+                *)
+                    usage "$_usage"
+                    exit 42
+                    ;;
             esac
             ;;
         remove)
             sudo_or_exit
             case $2 in
-                ''|--|containers) remove_containers ;;
+                '' | -- | containers) remove_containers ;;
                 images) lxc_delete_images_locally ;;
                 ${LXC_HOST_PREFIX}-*)
                     ! lxc_exists "$2" && warn_msg "container not yet exists: $2" && exit 0
@@ -174,19 +185,25 @@ main() {
                         lxc_delete_container "$2"
                     fi
                     ;;
-                *) usage "unknown or missing container <name> $2"; exit 42;;
+                *)
+                    usage "unknown or missing container <name> $2"
+                    exit 42
+                    ;;
             esac
             ;;
-        start|stop)
+        start | stop)
             sudo_or_exit
             case $2 in
-                ''|--|containers)  lxc_cmd "$1" ;;
+                '' | -- | containers) lxc_cmd "$1" ;;
                 ${LXC_HOST_PREFIX}-*)
                     ! lxc_exists "$2" && usage_containers "unknown container: $2" && exit 42
                     info_msg "lxc $1 $2"
                     lxc "$1" "$2" | prefix_stdout "[${_BBlue}${i}${_creset}] "
                     ;;
-                *) usage "unknown or missing container <name> $2"; exit 42;;
+                *)
+                    usage "unknown or missing container <name> $2"
+                    exit 42
+                    ;;
             esac
             ;;
         show)
@@ -195,10 +212,10 @@ main() {
                 suite)
                     case $3 in
                         ${LXC_HOST_PREFIX}-*)
-                            lxc exec -t "$3" -- "${LXC_REPO_ROOT}/utils/lxc.sh" __show suite \
-                                | prefix_stdout "[${_BBlue}$3${_creset}]  "
-                        ;;
-                        *) show_suite;;
+                            lxc exec -t "$3" -- "${LXC_REPO_ROOT}/utils/lxc.sh" __show suite |
+                                prefix_stdout "[${_BBlue}$3${_creset}]  "
+                            ;;
+                        *) show_suite ;;
                     esac
                     ;;
                 images) show_images ;;
@@ -207,7 +224,7 @@ main() {
                         ${LXC_HOST_PREFIX}-*)
                             ! lxc_exists "$3" && usage_containers "unknown container: $3" && exit 42
                             lxc config show "$3" | prefix_stdout "[${_BBlue}${3}${_creset}] "
-                        ;;
+                            ;;
                         *)
                             rst_title "container configurations"
                             echo
@@ -230,7 +247,10 @@ main() {
                             ;;
                     esac
                     ;;
-                *) usage "$_usage"; exit 42;;
+                *)
+                    usage "$_usage"
+                    exit 42
+                    ;;
             esac
             ;;
         __show)
@@ -243,30 +263,36 @@ main() {
             sudo_or_exit
             shift
             case $1 in
-                --) shift; lxc_exec "$@" ;;
+                --)
+                    shift
+                    lxc_exec "$@"
+                    ;;
                 ${LXC_HOST_PREFIX}-*)
                     ! lxc_exists "$1" && usage_containers "unknown container: $1" && exit 42
                     local name=$1
                     shift
                     lxc_exec_cmd "${name}" "$@"
                     ;;
-                *) usage_containers "unknown container: $1" && exit 42
-           esac
+                *) usage_containers "unknown container: $1" && exit 42 ;;
+            esac
             ;;
         install)
             sudo_or_exit
             case $2 in
-                suite|base)
+                suite | base)
                     case $3 in
                         ${LXC_HOST_PREFIX}-*)
                             ! lxc_exists "$3" && usage_containers "unknown container: $3" && exit 42
                             lxc_exec_cmd "$3" "${LXC_REPO_ROOT}/utils/lxc.sh" __install "$2"
                             ;;
-                        ''|--) lxc_exec "${LXC_REPO_ROOT}/utils/lxc.sh" __install "$2" ;;
-                        *) usage_containers "unknown container: $3" && exit 42
+                        '' | --) lxc_exec "${LXC_REPO_ROOT}/utils/lxc.sh" __install "$2" ;;
+                        *) usage_containers "unknown container: $3" && exit 42 ;;
                     esac
                     ;;
-                *) usage "$_usage"; exit 42 ;;
+                *)
+                    usage "$_usage"
+                    exit 42
+                    ;;
             esac
             ;;
         __install)
@@ -281,11 +307,16 @@ main() {
             echo
             echo ".. generic utils/lxc.sh documentation"
             ;;
-        -*) usage "unknown option $1"; exit 42;;
-        *)  usage "unknown or missing command $1"; exit 42;;
+        -*)
+            usage "unknown option $1"
+            exit 42
+            ;;
+        *)
+            usage "unknown or missing command $1"
+            exit 42
+            ;;
     esac
 }
-
 
 build_all_containers() {
     rst_title "Build all LXC containers of suite"
@@ -310,11 +341,11 @@ build_container() {
     local image
     local boilerplate_script
 
-    for ((i=0; i<${#LXC_SUITE[@]}; i+=2)); do
-        if [ "${LXC_HOST_PREFIX}-${LXC_SUITE[i+1]}" = "$1" ]; then
+    for ((i = 0; i < ${#LXC_SUITE[@]}; i += 2)); do
+        if [ "${LXC_HOST_PREFIX}-${LXC_SUITE[i + 1]}" = "$1" ]; then
             remote_image="${LXC_SUITE[i]}"
-            container="${LXC_HOST_PREFIX}-${LXC_SUITE[i+1]}"
-            image="${LXC_SUITE[i+1]}"
+            container="${LXC_HOST_PREFIX}-${LXC_SUITE[i + 1]}"
+            image="${LXC_SUITE[i + 1]}"
             boilerplate_script="${image}_boilerplate"
             boilerplate_script="${!boilerplate_script}"
             break
@@ -335,8 +366,8 @@ build_container() {
     lxc_install_boilerplate "${container}" "$boilerplate_script"
     echo
     rst_title "install LXC base packages" section
-    lxc_exec_cmd "${container}" "${LXC_REPO_ROOT}/utils/lxc.sh" __install base \
-        | prefix_stdout "[${_BBlue}${container}${_creset}] "
+    lxc_exec_cmd "${container}" "${LXC_REPO_ROOT}/utils/lxc.sh" __install base |
+        prefix_stdout "[${_BBlue}${container}${_creset}] "
     echo
     lxc list "$container"
 }
@@ -348,7 +379,7 @@ remove_containers() {
     lxc list "$LXC_HOST_PREFIX-"
     echo -en "\\n${_BRed}LXC containers to delete::${_creset}\\n\\n  ${CONTAINERS[*]}\\n" | $FMT
     local default=Ny
-    [[ $FORCE_TIMEOUT = 0 ]] && default=Yn
+    [[ $FORCE_TIMEOUT == 0 ]] && default=Yn
     if ask_yn "Do you really want to delete these containers" $default; then
         for i in "${CONTAINERS[@]}"; do
             lxc_delete_container "$i"
@@ -363,8 +394,8 @@ remove_containers() {
 
 lxc_copy_images_locally() {
     rst_title "copy images" section
-    for ((i=0; i<${#LXC_SUITE[@]}; i+=2)); do
-        lxc_image_copy "${LXC_SUITE[i]}" "${LXC_SUITE[i+1]}"
+    for ((i = 0; i < ${#LXC_SUITE[@]}; i += 2)); do
+        lxc_image_copy "${LXC_SUITE[i]}" "${LXC_SUITE[i + 1]}"
     done
     # lxc image list local: && wait_key
 }
@@ -391,7 +422,7 @@ lxc_delete_images_locally() {
     lxc image list local:
 }
 
-show_images(){
+show_images() {
     rst_title "local images"
     echo
     lxc image list local:
@@ -408,11 +439,10 @@ show_images(){
 
 }
 
-
 # container
 # ---------
 
-show_suite(){
+show_suite() {
     rst_title "LXC suite ($LXC_HOST_PREFIX-*)"
     echo
     lxc list "$LXC_HOST_PREFIX-"
@@ -421,8 +451,8 @@ show_suite(){
         if ! lxc_exists "$i"; then
             warn_msg "container ${_BBlue}$i${_creset} does not yet exists"
         else
-            lxc exec -t "${i}" -- "${LXC_REPO_ROOT}/utils/lxc.sh" __show suite \
-                | prefix_stdout "[${_BBlue}${i}${_creset}]  "
+            lxc exec -t "${i}" -- "${LXC_REPO_ROOT}/utils/lxc.sh" __show suite |
+                prefix_stdout "[${_BBlue}${i}${_creset}]  "
             echo
         fi
     done
@@ -469,8 +499,8 @@ lxc_init_all_containers() {
     local image_name
     local container_name
 
-    for ((i=0; i<${#LXC_SUITE[@]}; i+=2)); do
-        lxc_init_container "${LXC_SUITE[i+1]}" "${LXC_HOST_PREFIX}-${LXC_SUITE[i+1]}"
+    for ((i = 0; i < ${#LXC_SUITE[@]}; i += 2)); do
+        lxc_init_container "${LXC_SUITE[i + 1]}" "${LXC_HOST_PREFIX}-${LXC_SUITE[i + 1]}"
     done
 }
 
@@ -487,8 +517,8 @@ lxc_config_container() {
 
     info_msg "[${_BBlue}$1${_creset}] map uid/gid from host to container"
     # https://lxd.readthedocs.io/en/latest/userns-idmap/#custom-idmaps
-    echo -e -n "uid $HOST_USER_ID 0\\ngid $HOST_GROUP_ID 0"\
-        | lxc config set "$1" raw.idmap -
+    echo -e -n "uid $HOST_USER_ID 0\\ngid $HOST_GROUP_ID 0" |
+        lxc config set "$1" raw.idmap -
 
     info_msg "[${_BBlue}$1${_creset}] share ${REPO_ROOT} (repo_share) from HOST into container"
     # https://lxd.readthedocs.io/en/latest/instances/#type-disk
@@ -504,15 +534,15 @@ lxc_boilerplate_all_containers() {
     local boilerplate_script
     local image_name
 
-    for ((i=0; i<${#LXC_SUITE[@]}; i+=2)); do
+    for ((i = 0; i < ${#LXC_SUITE[@]}; i += 2)); do
 
-        image_name="${LXC_SUITE[i+1]}"
+        image_name="${LXC_SUITE[i + 1]}"
         boilerplate_script="${image_name}_boilerplate"
         boilerplate_script="${!boilerplate_script}"
 
         lxc_install_boilerplate "${LXC_HOST_PREFIX}-${image_name}" "$boilerplate_script"
 
-        if [[ -z "${boilerplate_script}" ]]; then
+        if [[ -z ${boilerplate_script} ]]; then
             err_msg "[${_BBlue}${container_name}${_creset}] no boilerplate for image '${image_name}'"
         fi
     done
@@ -546,10 +576,10 @@ EOF
     if lxc start -q "${container_name}" &>/dev/null; then
         sleep 5 # guest needs some time to come up and get an IP
     fi
-    if [[ -n "${boilerplate_script}" ]]; then
-        echo "${boilerplate_script}" \
-            | lxc exec "${container_name}" -- bash \
-            | prefix_stdout "[${_BBlue}${container_name}${_creset}] "
+    if [[ -n ${boilerplate_script} ]]; then
+        echo "${boilerplate_script}" |
+            lxc exec "${container_name}" -- bash |
+            prefix_stdout "[${_BBlue}${container_name}${_creset}] "
     fi
 }
 
@@ -568,6 +598,4 @@ check_connectivity() {
     return $ret_val
 }
 
-# ----------------------------------------------------------------------------
 main "$@"
-# ----------------------------------------------------------------------------
