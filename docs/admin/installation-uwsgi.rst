@@ -181,10 +181,7 @@ uWSGI setup
 
 Create the configuration ini-file according to your distribution and restart the
 uwsgi application.  As shown below, the :ref:`installation scripts` installs by
-default:
-
-- a uWSGI setup that listens on a socket and
-- enables :ref:`cache busting <static_use_hash>`.
+default a uWSGI setup that listens on a socket.
 
 .. tabs::
 

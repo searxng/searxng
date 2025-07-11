@@ -29,8 +29,8 @@ up and maintained by the scripts from our :ref:`toolboxing`.
 
    Reference architecture of a public SearXNG setup.
 
-The reference installation activates ``server.limiter``, ``server.image_proxy``
-and ``ui.static_use_hash`` (:origin:`/etc/searxng/settings.yml
+The reference installation activates ``server.limiter`` and
+``server.image_proxy`` (:origin:`/etc/searxng/settings.yml
 <utils/templates/etc/searxng/settings.yml>`)
 
 .. literalinclude:: ../../utils/templates/etc/searxng/settings.yml

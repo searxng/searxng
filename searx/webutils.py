@@ -12,14 +12,15 @@ import re
 import itertools
 import json
 from datetime import datetime, timedelta
-from typing import Iterable, List, Tuple, Dict, TYPE_CHECKING
+from typing import Iterable, List, Tuple, TYPE_CHECKING
 
 from io import StringIO
 from codecs import getincrementalencoder
 
 from flask_babel import gettext, format_date  # type: ignore
 
-from searx import logger, settings
+from searx import logger, get_setting
+
 from searx.engines import DEFAULT_CATEGORY
 
 if TYPE_CHECKING:
@@ -177,30 +178,22 @@ def get_themes(templates_path):
     return os.listdir(templates_path)
 
 
-def get_hash_for_file(file: pathlib.Path) -> str:
-    m = hashlib.sha1()
-    with file.open('rb') as f:
-        m.update(f.read())
-    return m.hexdigest()
+def get_static_file_list() -> list[str]:
+    file_list = []
+    static_path = pathlib.Path(str(get_setting("ui.static_path")))
 
-
-def get_static_files(static_path: str) -> Dict[str, str]:
-    static_files: Dict[str, str] = {}
-    static_path_path = pathlib.Path(static_path)
-
-    def walk(path: pathlib.Path):
-        for file in path.iterdir():
-            if file.name.startswith('.'):
+    def _walk(path: pathlib.Path):
+        for f in path.iterdir():
+            if f.name.startswith('.'):
                 # ignore hidden file
                 continue
-            if file.is_file():
-                static_files[str(file.relative_to(static_path_path))] = get_hash_for_file(file)
-            if file.is_dir() and file.name not in ('node_modules', 'src'):
-                # ignore "src" and "node_modules" directories
-                walk(file)
+            if f.is_file():
+                file_list.append(str(f.relative_to(static_path)))
+            if f.is_dir():
+                _walk(f)
 
-    walk(static_path_path)
-    return static_files
+    _walk(static_path)
+    return file_list
 
 
 def get_result_templates(templates_path):
@@ -331,7 +324,7 @@ def group_engines_in_tab(engines: Iterable[Engine]) -> List[Tuple[str, Iterable[
     def engine_sort_key(engine):
         return (engine.about.get('language', ''), engine.name)
 
-    tabs = list(settings['categories_as_tabs'].keys())
+    tabs = list(get_setting('categories_as_tabs').keys())
     subgroups = itertools.groupby(sorted(engines, key=get_subgroup), get_subgroup)
     sorted_groups = sorted(((name, list(engines)) for name, engines in subgroups), key=group_sort_key)
 

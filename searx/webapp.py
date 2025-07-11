@@ -76,7 +76,6 @@ from searx.engines import (
 from searx import webutils
 from searx.webutils import (
     highlight_content,
-    get_static_files,
     get_result_templates,
     get_themes,
     exception_classname_to_text,
@@ -131,7 +130,6 @@ warnings.simplefilter("always")
 
 # about static
 logger.debug('static directory is %s', settings['ui']['static_path'])
-static_files = get_static_files(settings['ui']['static_path'])
 
 # about templates
 logger.debug('templates directory is %s', settings['ui']['templates_path'])
@@ -239,25 +237,44 @@ def get_result_template(theme_name: str, template_name: str):
     return 'result_templates/' + template_name
 
 
+_STATIC_FILES: list[str] = []
+
+
 def custom_url_for(endpoint: str, **values):
-    suffix = ""
-    if endpoint == 'static' and values.get('filename'):
-        file_hash = static_files.get(values['filename'])
-        if not file_hash:
+    global _STATIC_FILES  # pylint: disable=global-statement
+    if not _STATIC_FILES:
+        _STATIC_FILES = webutils.get_static_file_list()
+
+    if endpoint == "static" and values.get("filename"):
+
+        # We need to verify the "filename" argument: in the jinja templates
+        # there could be call like:
+        #     url_for('static', filename='img/favicon.png')
+        # which should map to:
+        #     static/themes/<theme_name>/img/favicon.png
+
+        arg_filename = values["filename"]
+        if arg_filename not in _STATIC_FILES:
             # try file in the current theme
-            theme_name = sxng_request.preferences.get_value('theme')
-            filename_with_theme = "themes/{}/{}".format(theme_name, values['filename'])
-            file_hash = static_files.get(filename_with_theme)
-            if file_hash:
-                values['filename'] = filename_with_theme
-        if get_setting('ui.static_use_hash') and file_hash:
-            suffix = "?" + file_hash
-    if endpoint == 'info' and 'locale' not in values:
-        locale = sxng_request.preferences.get_value('locale')
-        if infopage.INFO_PAGES.get_page(values['pagename'], locale) is None:
+            theme_name = sxng_request.preferences.get_value("theme")
+            arg_filename = f"themes/{theme_name}/{arg_filename}"
+            if arg_filename in _STATIC_FILES:
+                values["filename"] = arg_filename
+
+    if endpoint == "info" and "locale" not in values:
+
+        # We need to verify the "locale" argument: in the jinja templates there
+        # could be call like:
+        #     url_for('info', pagename='about')
+        # which should map to:
+        #     info/<locale>/about
+
+        locale = sxng_request.preferences.get_value("locale")
+        if infopage.INFO_PAGES.get_page(values["pagename"], locale) is None:
             locale = infopage.INFO_PAGES.locale_default
-        values['locale'] = locale
-    return url_for(endpoint, **values) + suffix
+        values["locale"] = locale
+
+    return url_for(endpoint, **values)
 
 
 def image_proxify(url: str):
