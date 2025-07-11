@@ -58,10 +58,6 @@ and then, to name just a few:
 - Bot protection has been switched from filtron to SearXNG's :ref:`limiter
   <limiter>`, this requires a :ref:`Valkey <settings valkey>` database.
 
-- To save bandwidth :ref:`cache busting <static_use_hash>` has been implemented.
-  To get in use, the ``static-expires`` needs to be set in the :ref:`uwsgi
-  setup`.
-
 To stay tuned and get in use of the new features, instance maintainers have to
 update the SearXNG code regularly (see :ref:`update searxng`).  As the above
 examples show, this is not always enough, sometimes services have to be set up

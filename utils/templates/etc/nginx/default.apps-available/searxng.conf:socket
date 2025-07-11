@@ -16,10 +16,7 @@ location ${SEARXNG_URL_PATH} {
     uwsgi_param    HTTP_X_FORWARDED_FOR  \$proxy_add_x_forwarded_for;
 }
 
-# uWSGI serves the static files and in settings.yml we use::
-#
-#   ui:
-#     static_use_hash: true
+# To serve the static files via the HTTP server
 #
 # location ${SEARXNG_URL_PATH}/static/ {
 #     alias ${SEARXNG_STATIC}/;

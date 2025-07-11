@@ -25,9 +25,6 @@ class ViewsTestCase(SearxTestCase):  # pylint: disable=too-many-public-methods
             pass
 
         self.setattr4test(searx.search.processors, 'initialize_processor', dummy)
-        # remove sha for the static file so the tests don't have to care about
-        # the changing URLs
-        self.setattr4test(searx.webapp, 'static_files', {})
 
         # set some defaults
         test_results = [

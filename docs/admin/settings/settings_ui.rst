@@ -10,7 +10,6 @@
 .. code:: yaml
 
    ui:
-     static_use_hash: false
      default_locale: ""
      query_in_title: false
      infinite_scroll: false
@@ -22,11 +21,6 @@
      search_on_category_select: true
      hotkeys: default
      url_formatting: pretty
-
-.. _static_use_hash:
-
-``static_use_hash`` : ``$SEARXNG_STATIC_USE_HASH``
-  Enables `cache busting`_ of static files.
 
 ``default_locale`` :
   SearXNG interface language.  If blank, the locale is detected by using the
