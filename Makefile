@@ -32,7 +32,7 @@ install uninstall:
 	$(Q)./manage pyenv.$@
 
 PHONY += clean
-clean: py.clean docs.clean node.clean nvm.clean test.clean
+clean: py.clean docs.clean node.clean nvm.clean go.clean test.clean
 	$(Q)./manage build_msg CLEAN  "common files"
 	$(Q)find . -name '*.orig' -exec rm -f {} +
 	$(Q)find . -name '*.rej' -exec rm -f {} +
@@ -57,7 +57,7 @@ test.shell:
 		$(MTOOLS) \
 		utils/lib.sh \
 		utils/lib_sxng*.sh \
-		utils/lib_go.sh \
+		utils/lib_govm.sh \
 		utils/lib_nvm.sh \
 		utils/lib_redis.sh \
 		utils/lib_valkey.sh \
@@ -82,6 +82,7 @@ MANAGE += test.yamllint test.pylint test.black test.pybabel test.unit test.cover
 MANAGE += themes.all themes.simple themes.fix themes.lint themes.test
 MANAGE += static.build.commit static.build.drop static.build.restore
 MANAGE += nvm.install nvm.clean nvm.status nvm.nodejs
+MANAGE += go.env.dev go.clean
 
 PHONY += $(MANAGE)
 

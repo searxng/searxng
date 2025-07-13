@@ -32,8 +32,8 @@ source "$(dirname "${BASH_SOURCE[0]}")/utils/lib_sxng_themes.sh"
 # shellcheck source=utils/lib_sxng_test.sh
 source "$(dirname "${BASH_SOURCE[0]}")/utils/lib_sxng_test.sh"
 
-# shellcheck source=utils/lib_go.sh
-source "$(dirname "${BASH_SOURCE[0]}")/utils/lib_go.sh"
+# shellcheck source=utils/lib_govm.sh
+source "$(dirname "${BASH_SOURCE[0]}")/utils/lib_govm.sh"
 
 # shellcheck source=utils/lib_valkey.sh
 source "$(dirname "${BASH_SOURCE[0]}")/utils/lib_valkey.sh"
@@ -41,7 +41,8 @@ source "$(dirname "${BASH_SOURCE[0]}")/utils/lib_valkey.sh"
 # shellcheck source=utils/lib_sxng_vite.sh
 source "$(dirname "${BASH_SOURCE[0]}")/utils/lib_sxng_vite.sh"
 
-PATH="${REPO_ROOT}/node_modules/.bin:${PATH}"
+# add ./local dev tools from python (virtualenv), golang and nodejs
+PATH="${PY_ENV}/bin:${REPO_ROOT}/node_modules/.bin:${GOROOT}/bin:${GOPATH}/bin:${PATH}"
 
 # config
 
@@ -100,9 +101,25 @@ EOF
     static.help
     vite.help
     cat <<EOF
+dev.:
+  env: enter developer environment (or exec a command in)
 environment ...
   SEARXNG_VALKEY_URL : ${SEARXNG_VALKEY_URL}
 EOF
+}
+
+dev.env() {
+    go.env.dev
+    node.env.dev
+
+    export GOENV
+
+    if [ -z "$1" ]; then
+        export PS1="(dev.env)$ "
+        bash --norc --noprofile
+    else
+        "$@"
+    fi
 }
 
 
