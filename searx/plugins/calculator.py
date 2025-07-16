@@ -71,6 +71,22 @@ class SXNGPlugin(Plugin):
         # replace commonly used math operators with their proper Python operator
         query = query.replace("x", "*").replace(":", "/")
 
+        # Is this a term that can be calculated?
+        word, constants = "", set()
+        for x in query:
+            # Alphabetic characters are defined as "Letters" in the Unicode
+            # character database and are the constants in an equation.
+            if x.isalpha():
+                word += x.strip()
+            elif word:
+                constants.add(word)
+                word = ""
+
+        # In the term of an arithmetic operation there should be no other
+        # alphabetic characters besides the constants
+        if constants - set(math_constants):
+            return results
+
         # use UI language
         ui_locale = babel.Locale.parse(request.preferences.get_value("locale"), sep="-")
 
