@@ -12,7 +12,7 @@ and developers.
    :maxdepth: 2
 
    searxng.sh
-   lxc.sh
+
 
 Common command environments
 ===========================
@@ -24,8 +24,7 @@ The scripts in our tooling box often dispose of common environments:
 ``FORCE_TIMEOUT`` : environment
   Sets timeout for interactive prompts. If you want to run a script in batch
   job, with defaults choices, set ``FORCE_TIMEOUT=0``.  By example; to install a
-  SearXNG server and nginx proxy on all containers of the :ref:`SearXNG suite
-  <lxc-searxng.env>` use::
+  SearXNG server and nginx proxy use::
 
-    sudo -H ./utils/lxc.sh cmd -- FORCE_TIMEOUT=0 ./utils/searxng.sh install all
-    sudo -H ./utils/lxc.sh cmd -- FORCE_TIMEOUT=0 ./utils/searxng.sh install nginx
+    $ FORCE_TIMEOUT=0 ./utils/searxng.sh install all
+    $ FORCE_TIMEOUT=0 ./utils/searxng.sh install nginx
