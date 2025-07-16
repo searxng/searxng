@@ -117,8 +117,6 @@ go.vm.is_installed() {
 # shellcheck disable=SC2120
 go.vm.install() {
 
-    python -m pip install -U requests
-
     # Go versions manager; to install Go at arbitrary place:
     #
     # usage:  go.vm.install <version> <dest>
@@ -183,7 +181,7 @@ go.vm.list() {
 
     # Go versions manager; list Go versions (stable)
 
-    python <<EOF
+    "${PY_ENV_BIN}/python" <<EOF
 import sys, json, requests
 resp = requests.get("${_GO_DL_URL}/?mode=json&include=all")
 for ver in json.loads(resp.text):
@@ -209,7 +207,7 @@ go.vm.version() {
     # os:    [darwin|freebsd|linux|windows]
     # arch:  [amd64|arm64|386|armv6l|ppc64le|s390x]
 
-    python - "$@" <<EOF
+    "${PY_ENV_BIN}/python" - "$@" <<EOF
 import sys, json, requests
 resp = requests.get("${_GO_DL_URL}/?mode=json&include=all")
 for ver in json.loads(resp.text):
