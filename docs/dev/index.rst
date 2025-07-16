@@ -17,7 +17,6 @@ Developer documentation
    plugins/index
    answerers/index
    translation
-   lxcdev
    makefile
    reST
    searxng_extra/index
