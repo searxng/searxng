@@ -12,7 +12,7 @@ REDIS_GROUP="searxng-redis"
 REDIS_SERVICE_NAME="searxng-redis"
 REDIS_SYSTEMD_UNIT="${SYSTEMD_UNITS}/${REDIS_SERVICE_NAME}.service"
 
-redis.help(){
+redis.help() {
     cat <<EOF
 redis.:
   remove    : delete user (${REDIS_USER}) and remove service (${REDIS_SERVICE_NAME})
@@ -20,7 +20,6 @@ redis.:
   rmgrp     : remove <user> from group (${REDIS_USER})
 EOF
 }
-
 
 redis.remove() {
     sudo_or_exit
@@ -35,7 +34,6 @@ redis.remove() {
 redis.shell() {
     interactive_shell "${REDIS_USER}"
 }
-
 
 redis.userdel() {
     sudo_or_exit

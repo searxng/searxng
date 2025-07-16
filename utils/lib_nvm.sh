@@ -17,7 +17,7 @@ declare main_cmd
 
 NVM_LOCAL_FOLDER=.nvm
 
-[[ -z "${NVM_GIT_URL}" ]] &&  NVM_GIT_URL="https://github.com/nvm-sh/nvm.git"
+[[ -z "${NVM_GIT_URL}" ]] && NVM_GIT_URL="https://github.com/nvm-sh/nvm.git"
 [[ -z "${NVM_MIN_NODE_VER}" ]] && NVM_MIN_NODE_VER="16.13.0"
 
 # initialize nvm environment
@@ -105,7 +105,7 @@ nvm.install() {
     info_msg "install (update) NVM at ${NVM_DIR}"
     if nvm.is_installed; then
         info_msg "already cloned at: ${NVM_DIR}"
-        pushd "${NVM_DIR}" &> /dev/null
+        pushd "${NVM_DIR}" &>/dev/null
         git fetch --all | prefix_stdout "  ${_Yellow}||${_creset} "
     else
         # delete any leftovers from previous installations
@@ -114,14 +114,14 @@ nvm.install() {
         fi
         info_msg "clone: ${NVM_GIT_URL}"
         git clone "${NVM_GIT_URL}" "${NVM_DIR}" 2>&1 | prefix_stdout "  ${_Yellow}||${_creset} "
-        pushd "${NVM_DIR}" &> /dev/null
+        pushd "${NVM_DIR}" &>/dev/null
         git config --local advice.detachedHead false
     fi
     NVM_VERSION_TAG="$(git rev-list --tags --max-count=1)"
     NVM_VERSION_TAG="$(git describe --abbrev=0 --tags --match "v[0-9]*" "${NVM_VERSION_TAG}")"
     info_msg "checkout ${NVM_VERSION_TAG}"
     git checkout "${NVM_VERSION_TAG}" 2>&1 | prefix_stdout "  ${_Yellow}||${_creset} "
-    popd &> /dev/null
+    popd &>/dev/null
     if [ -f "${REPO_ROOT}/.nvm_packages" ]; then
         cp "${REPO_ROOT}/.nvm_packages" "${NVM_DIR}/default-packages"
     fi

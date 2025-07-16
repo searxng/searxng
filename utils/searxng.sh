@@ -94,7 +94,7 @@ case $DIST_ID-$DIST_VERS in
         SEARXNG_BUILD_PACKAGES="${SEARXNG_BUILD_PACKAGES_debian}"
         APACHE_PACKAGES="$APACHE_PACKAGES libapache2-mod-proxy-uwsgi"
         ;;
-    ubuntu-*|debian-*)
+    ubuntu-* | debian-*)
         SEARXNG_PACKAGES="${SEARXNG_PACKAGES_debian} python-is-python3"
         SEARXNG_BUILD_PACKAGES="${SEARXNG_BUILD_PACKAGES_debian}"
         ;;
@@ -142,7 +142,7 @@ instance:
   cmd           : run command in SearXNG instance's environment (e.g. bash)
 EOF
     searxng.instance.env
-    [[ -n ${1} ]] &&  err_msg "$1"
+    [[ -n ${1} ]] && err_msg "$1"
 }
 
 searxng.instance.env() {
@@ -164,52 +164,68 @@ EOF
 
 main() {
     case $1 in
-        install|remove|instance)
+        install | remove | instance)
             nginx_distro_setup
             apache_distro_setup
             uWSGI_distro_setup
             required_commands \
-                sudo systemctl install git wget curl \
-                || exit
+                sudo systemctl install git wget curl ||
+                exit
             ;;
     esac
 
     local _usage="unknown or missing $1 command $2"
 
     case $1 in
-        --getenv)  var="$2"; echo "${!var}"; exit 0;;
-        --cmd)  shift; "$@";;
-        -h|--help) usage; exit 0;;
+        --getenv)
+            var="$2"
+            echo "${!var}"
+            exit 0
+            ;;
+        --cmd)
+            shift
+            "$@"
+            ;;
+        -h | --help)
+            usage
+            exit 0
+            ;;
         install)
             sudo_or_exit
             case $2 in
-                all) searxng.install.all;;
-                user) searxng.install.user;;
-                pyenv) searxng.install.pyenv;;
-                searxng-src) searxng.install.clone;;
-                settings) searxng.install.settings;;
-                uwsgi) searxng.install.uwsgi;;
-                packages) searxng.install.packages;;
-                buildhost) searxng.install.buildhost;;
-                nginx) searxng.nginx.install;;
-                apache) searxng.apache.install;;
-                valkey) searxng.install.valkey;;
-                *) usage "$_usage"; exit 42;;
+                all) searxng.install.all ;;
+                user) searxng.install.user ;;
+                pyenv) searxng.install.pyenv ;;
+                searxng-src) searxng.install.clone ;;
+                settings) searxng.install.settings ;;
+                uwsgi) searxng.install.uwsgi ;;
+                packages) searxng.install.packages ;;
+                buildhost) searxng.install.buildhost ;;
+                nginx) searxng.nginx.install ;;
+                apache) searxng.apache.install ;;
+                valkey) searxng.install.valkey ;;
+                *)
+                    usage "$_usage"
+                    exit 42
+                    ;;
             esac
             ;;
         remove)
             sudo_or_exit
             case $2 in
-                all) searxng.remove.all;;
-                user) drop_service_account "${SERVICE_USER}";;
-                pyenv) searxng.remove.pyenv;;
-                settings) searxng.remove.settings;;
-                uwsgi) searxng.remove.uwsgi;;
-                apache) searxng.apache.remove;;
-                remove) searxng.nginx.remove;;
-                valkey) searxng.remove.valkey;;
-                redis) searxng.remove.redis;;
-                *) usage "$_usage"; exit 42;;
+                all) searxng.remove.all ;;
+                user) drop_service_account "${SERVICE_USER}" ;;
+                pyenv) searxng.remove.pyenv ;;
+                settings) searxng.remove.settings ;;
+                uwsgi) searxng.remove.uwsgi ;;
+                apache) searxng.apache.remove ;;
+                remove) searxng.nginx.remove ;;
+                valkey) searxng.remove.valkey ;;
+                redis) searxng.remove.redis ;;
+                *)
+                    usage "$_usage"
+                    exit 42
+                    ;;
             esac
             ;;
         instance)
@@ -228,19 +244,30 @@ main() {
                     ;;
                 cmd)
                     sudo_or_exit
-                    shift; shift; searxng.instance.exec "$@"
+                    shift
+                    shift
+                    searxng.instance.exec "$@"
                     ;;
                 get_setting)
-                    shift; shift; searxng.instance.get_setting "$@"
+                    shift
+                    shift
+                    searxng.instance.get_setting "$@"
                     ;;
                 call)
                     # call a function in instance's environment
-                    shift; shift; searxng.instance.self.call "$@"
+                    shift
+                    shift
+                    searxng.instance.self.call "$@"
                     ;;
                 _call)
-                    shift; shift; "$@"
+                    shift
+                    shift
+                    "$@"
                     ;;
-                *) usage "$_usage"; exit 42;;
+                *)
+                    usage "$_usage"
+                    exit 42
+                    ;;
             esac
             ;;
         *)
@@ -363,9 +390,9 @@ searxng.remove.all() {
 searxng.install.user() {
     rst_title "SearXNG -- install user" section
     echo
-    if getent passwd "${SERVICE_USER}"  > /dev/null; then
-       echo "user already exists"
-       return 0
+    if getent passwd "${SERVICE_USER}" >/dev/null; then
+        echo "user already exists"
+        return 0
     fi
 
     tee_stderr 1 <<EOF | bash | prefix_stdout
@@ -384,7 +411,7 @@ searxng.install.packages() {
 
 searxng.install.buildhost() {
     TITLE="SearXNG -- install buildhost packages" pkg_install \
-         "${SEARXNG_PACKAGES} ${SEARXNG_BUILD_PACKAGES}"
+        "${SEARXNG_PACKAGES} ${SEARXNG_BUILD_PACKAGES}"
 }
 
 searxng.install.clone() {
@@ -393,7 +420,7 @@ searxng.install.clone() {
         die 42 "To clone SearXNG, first install user ${SERVICE_USER}."
     fi
     echo
-    if ! sudo -i -u "${SERVICE_USER}" ls -d "$REPO_ROOT" > /dev/null; then
+    if ! sudo -i -u "${SERVICE_USER}" ls -d "$REPO_ROOT" >/dev/null; then
         die 42 "user '${SERVICE_USER}' missed read permission: $REPO_ROOT"
     fi
     # SERVICE_HOME="$(sudo -i -u "${SERVICE_USER}" echo \$HOME 2>/dev/null)"
@@ -415,10 +442,10 @@ searxng.install.clone() {
     # https://github.com/searxng/searxng/issues/1251
     git config --system --add safe.directory "${REPO_ROOT}/.git"
     git_clone "$REPO_ROOT" "${SEARXNG_SRC}" \
-              "$GIT_BRANCH" "${SERVICE_USER}"
+        "$GIT_BRANCH" "${SERVICE_USER}"
     git config --system --add safe.directory "${SEARXNG_SRC}"
 
-    pushd "${SEARXNG_SRC}" > /dev/null
+    pushd "${SEARXNG_SRC}" >/dev/null
     tee_stderr 0.1 <<EOF | sudo -H -u "${SERVICE_USER}" -i 2>&1 | prefix_stdout "$_service_prefix"
 cd "${SEARXNG_SRC}"
 git remote set-url origin ${GIT_URL}
@@ -426,7 +453,7 @@ git config user.email "${ADMIN_EMAIL}"
 git config user.name "${ADMIN_NAME}"
 git config --list
 EOF
-    popd > /dev/null
+    popd >/dev/null
 }
 
 searxng.install.link_src() {
@@ -476,7 +503,7 @@ searxng.remove.pyenv() {
         return
     fi
     info_msg "remove pyenv activation from ~/.profile"
-    tee_stderr 0.1 <<EOF | sudo -H -u "${SERVICE_USER}" -i 2>&1 |  prefix_stdout "$_service_prefix"
+    tee_stderr 0.1 <<EOF | sudo -H -u "${SERVICE_USER}" -i 2>&1 | prefix_stdout "$_service_prefix"
 grep -v 'source ${SEARXNG_PYENV}/bin/activate' ~/.profile > ~/.profile.##
 mv ~/.profile.## ~/.profile
 EOF
@@ -493,9 +520,9 @@ searxng.install.settings() {
     mkdir -p "$(dirname "${SEARXNG_SETTINGS_PATH}")"
 
     DEFAULT_SELECT=1 \
-                  install_template --no-eval \
-                  "${SEARXNG_SETTINGS_PATH}" \
-                  "${SERVICE_USER}" "${SERVICE_GROUP}"
+        install_template --no-eval \
+        "${SEARXNG_SETTINGS_PATH}" \
+        "${SERVICE_USER}" "${SERVICE_GROUP}"
 
     tee_stderr 0.1 <<EOF | sudo -H -i 2>&1 | prefix_stdout "root"
 sed -i -e "s/ultrasecretkey/$(openssl rand -hex 16)/g" "${SEARXNG_SETTINGS_PATH}"
@@ -529,9 +556,9 @@ pip install -U --use-pep517 --no-build-isolation -e .
 EOF
     rst_para "update instance's settings.yml from ${SEARXNG_SETTINGS_PATH}"
     DEFAULT_SELECT=2 \
-                  install_template --no-eval \
-                  "${SEARXNG_SETTINGS_PATH}" \
-                  "${SERVICE_USER}" "${SERVICE_GROUP}"
+        install_template --no-eval \
+        "${SEARXNG_SETTINGS_PATH}" \
+        "${SERVICE_USER}" "${SERVICE_GROUP}"
 
     sudo -H -i <<EOF
 sed -i -e "s/ultrasecretkey/$(openssl rand -hex 16)/g" "${SEARXNG_SETTINGS_PATH}"
@@ -568,10 +595,10 @@ searxng.install.uwsgi.socket() {
             # Emperor will run the vassal using the UID/GID of the vassal
             # configuration file [1] (user and group of the app .ini file).
             # [1] https://uwsgi-docs.readthedocs.io/en/latest/Emperor.html#tyrant-mode-secure-multi-user-hosting
-            uWSGI_install_app --variant=socket  "${SEARXNG_UWSGI_APP}" "${SERVICE_USER}" "${SERVICE_GROUP}"
+            uWSGI_install_app --variant=socket "${SEARXNG_UWSGI_APP}" "${SERVICE_USER}" "${SERVICE_GROUP}"
             ;;
         *)
-            uWSGI_install_app --variant=socket  "${SEARXNG_UWSGI_APP}"
+            uWSGI_install_app --variant=socket "${SEARXNG_UWSGI_APP}"
             ;;
     esac
     sleep 5
@@ -611,11 +638,10 @@ searxng.install.valkey() {
     valkey.install
 }
 
-
 searxng.instance.localtest() {
     rst_title "Test SearXNG instance locally" section
-    rst_para "Activate debug mode, start a minimal SearXNG "\
-             "service and debug a HTTP request/response cycle."
+    rst_para "Activate debug mode, start a minimal SearXNG " \
+        "service and debug a HTTP request/response cycle."
 
     if service_is_available "http://${SEARXNG_INTERNAL_HTTP}" &>/dev/null; then
         err_msg "URL/port http://${SEARXNG_INTERNAL_HTTP} is already in use, you"
@@ -626,7 +652,7 @@ searxng.instance.localtest() {
     fi
     echo
     searxng.instance.debug.on
-    tee_stderr 0.1 <<EOF | sudo -H -u "${SERVICE_USER}" -i 2>&1 |  prefix_stdout "$_service_prefix"
+    tee_stderr 0.1 <<EOF | sudo -H -u "${SERVICE_USER}" -i 2>&1 | prefix_stdout "$_service_prefix"
 export SEARXNG_SETTINGS_PATH="${SEARXNG_SETTINGS_PATH}"
 cd ${SEARXNG_SRC}
 timeout 10 python searx/webapp.py &
@@ -708,7 +734,7 @@ This installs SearXNG's uWSGI app as Nginx site.  The Nginx site is located at:
 ${NGINX_APPS_AVAILABLE}/${NGINX_SEARXNG_SITE} and requires a uWSGI."
     searxng.install.http.pre
 
-    if ! nginx_is_installed ; then
+    if ! nginx_is_installed; then
         err_msg "Nginx packages are not installed"
         if ! ask_yn "Do you really want to continue and install Nginx packages?" Yn; then
             return
@@ -749,8 +775,8 @@ searxng.instance.exec() {
         die 42 "can't execute: instance does not exist (missed account ${SERVICE_USER})"
     fi
     sudo -H -i -u "${SERVICE_USER}" \
-         SEARXNG_UWSGI_USE_SOCKET="${SEARXNG_UWSGI_USE_SOCKET}" \
-         "$@"
+        SEARXNG_UWSGI_USE_SOCKET="${SEARXNG_UWSGI_USE_SOCKET}" \
+        "$@"
 }
 
 searxng.instance.self.call() {
@@ -769,7 +795,7 @@ EOF
 searxng.instance.debug.on() {
     warn_msg "Do not enable debug in a production environment!"
     info_msg "try to enable debug mode ..."
-    tee_stderr 0.1 <<EOF | sudo -H -i 2>&1 |  prefix_stdout "$_service_prefix"
+    tee_stderr 0.1 <<EOF | sudo -H -i 2>&1 | prefix_stdout "$_service_prefix"
 cd ${SEARXNG_SRC}
 sed -i -e "s/debug: false/debug: true/g" "$SEARXNG_SETTINGS_PATH"
 EOF
@@ -778,7 +804,7 @@ EOF
 
 searxng.instance.debug.off() {
     info_msg "try to disable debug mode ..."
-    tee_stderr 0.1 <<EOF | sudo -H -i 2>&1 |  prefix_stdout "$_service_prefix"
+    tee_stderr 0.1 <<EOF | sudo -H -i 2>&1 | prefix_stdout "$_service_prefix"
 cd ${SEARXNG_SRC}
 sed -i -e "s/debug: true/debug: false/g" "$SEARXNG_SETTINGS_PATH"
 EOF
@@ -799,7 +825,7 @@ searxng.instance.inspect() {
     echo
 
     case $DIST_ID-$DIST_VERS in
-        ubuntu-*|debian-*)
+        ubuntu-* | debian-*)
             # For uWSGI debian uses the LSB init process; for each configuration
             # file new uWSGI daemon instance is started with additional option.
             service uwsgi status "${SERVICE_NAME}"
@@ -812,16 +838,16 @@ searxng.instance.inspect() {
             ;;
     esac
 
-    echo -e  "// use ${_BCyan}CTRL-C${_creset} to stop monitoring the log"
+    echo -e "// use ${_BCyan}CTRL-C${_creset} to stop monitoring the log"
     read -r -s -n1 -t 5
     echo
 
-    while true;  do
+    while true; do
         trap break 2
         case $DIST_ID-$DIST_VERS in
-            ubuntu-*|debian-*) tail -f "/var/log/uwsgi/app/${SERVICE_NAME%.*}.log" ;;
-            arch-*)  journalctl -f -u "uwsgi@${SERVICE_NAME%.*}" ;;
-            fedora-*)  journalctl -f -u uwsgi ;;
+            ubuntu-* | debian-*) tail -f "/var/log/uwsgi/app/${SERVICE_NAME%.*}.log" ;;
+            arch-*) journalctl -f -u "uwsgi@${SERVICE_NAME%.*}" ;;
+            fedora-*) journalctl -f -u uwsgi ;;
         esac
     done
 
@@ -858,10 +884,10 @@ searxng.doc.rst() {
     local arch_build="${SEARXNG_BUILD_PACKAGES_arch}"
     local fedora_build="${SEARXNG_BUILD_PACKAGES_fedora}"
     debian="$(echo "${debian}" | sed 's/.*/          & \\/' | sed '$ s/.$//')"
-    arch="$(echo "${arch}"     | sed 's/.*/          & \\/' | sed '$ s/.$//')"
+    arch="$(echo "${arch}" | sed 's/.*/          & \\/' | sed '$ s/.$//')"
     fedora="$(echo "${fedora}" | sed 's/.*/          & \\/' | sed '$ s/.$//')"
     debian_build="$(echo "${debian_build}" | sed 's/.*/          & \\/' | sed '$ s/.$//')"
-    arch_build="$(echo "${arch_build}"     | sed 's/.*/          & \\/' | sed '$ s/.$//')"
+    arch_build="$(echo "${arch_build}" | sed 's/.*/          & \\/' | sed '$ s/.$//')"
     fedora_build="$(echo "${fedora_build}" | sed 's/.*/          & \\/' | sed '$ s/.$//')"
 
     if [[ ${SEARXNG_UWSGI_USE_SOCKET} == true ]]; then
@@ -870,7 +896,7 @@ searxng.doc.rst() {
         uwsgi_variant=':socket'
     fi
 
-    eval "echo \"$(< "${REPO_ROOT}/docs/build-templates/searxng.rst")\""
+    eval "echo \"$(<"${REPO_ROOT}/docs/build-templates/searxng.rst")\""
 
     # I use ubuntu-20.04 here to demonstrate that versions are also supported,
     # normally debian-* and ubuntu-* are most the same.
@@ -885,7 +911,8 @@ searxng.doc.rst() {
             echo -e "\n.. START searxng uwsgi-description $DIST_NAME"
 
             case $DIST_ID-$DIST_VERS in
-                ubuntu-*|debian-*)  cat <<EOF
+                ubuntu-* | debian-*)
+                    cat <<EOF
 
 .. code:: bash
 
@@ -901,8 +928,9 @@ searxng.doc.rst() {
    disable:   sudo -H rm ${uWSGI_APPS_ENABLED}/${SEARXNG_UWSGI_APP}
 
 EOF
-                ;;
-                arch-*) cat <<EOF
+                    ;;
+                arch-*)
+                    cat <<EOF
 
 .. code:: bash
 
@@ -919,8 +947,9 @@ EOF
    disable:   sudo -H systemctl disable  uwsgi@${SEARXNG_UWSGI_APP%.*}
 
 EOF
-                ;;
-                fedora-*|centos-7) cat <<EOF
+                    ;;
+                fedora-* | centos-7)
+                    cat <<EOF
 
 .. code:: bash
 
@@ -933,40 +962,40 @@ EOF
    disable:   sudo -H rm ${uWSGI_APPS_ENABLED}/${SEARXNG_UWSGI_APP}
 
 EOF
-                ;;
+                    ;;
             esac
             echo -e ".. END searxng uwsgi-description $DIST_NAME"
 
-            local _show_cursor=""  # prevent from prefix_stdout's trailing show-cursor
+            local _show_cursor="" # prevent from prefix_stdout's trailing show-cursor
 
             echo -e "\n.. START searxng uwsgi-appini $DIST_NAME"
             echo ".. code:: bash"
             echo
-            eval "echo \"$(< "${TEMPLATES}/${uWSGI_APPS_AVAILABLE}/${SEARXNG_UWSGI_APP}${uwsgi_variant}")\"" | prefix_stdout "  "
+            eval "echo \"$(<"${TEMPLATES}/${uWSGI_APPS_AVAILABLE}/${SEARXNG_UWSGI_APP}${uwsgi_variant}")\"" | prefix_stdout "  "
             echo -e "\n.. END searxng uwsgi-appini $DIST_NAME"
 
             echo -e "\n.. START nginx socket"
             echo ".. code:: nginx"
             echo
-            eval "echo \"$(< "${TEMPLATES}/${NGINX_APPS_AVAILABLE}/${NGINX_SEARXNG_SITE}:socket")\"" | prefix_stdout "  "
+            eval "echo \"$(<"${TEMPLATES}/${NGINX_APPS_AVAILABLE}/${NGINX_SEARXNG_SITE}:socket")\"" | prefix_stdout "  "
             echo -e "\n.. END nginx socket"
 
             echo -e "\n.. START nginx http"
             echo ".. code:: nginx"
             echo
-            eval "echo \"$(< "${TEMPLATES}/${NGINX_APPS_AVAILABLE}/${NGINX_SEARXNG_SITE}")\"" | prefix_stdout "  "
+            eval "echo \"$(<"${TEMPLATES}/${NGINX_APPS_AVAILABLE}/${NGINX_SEARXNG_SITE}")\"" | prefix_stdout "  "
             echo -e "\n.. END nginx http"
 
             echo -e "\n.. START apache socket"
             echo ".. code:: apache"
             echo
-            eval "echo \"$(< "${TEMPLATES}/${APACHE_SITES_AVAILABLE}/${APACHE_SEARXNG_SITE}:socket")\"" | prefix_stdout "  "
+            eval "echo \"$(<"${TEMPLATES}/${APACHE_SITES_AVAILABLE}/${APACHE_SEARXNG_SITE}:socket")\"" | prefix_stdout "  "
             echo -e "\n.. END apache socket"
 
             echo -e "\n.. START apache http"
             echo ".. code:: apache"
             echo
-            eval "echo \"$(< "${TEMPLATES}/${APACHE_SITES_AVAILABLE}/${APACHE_SEARXNG_SITE}")\"" | prefix_stdout "  "
+            eval "echo \"$(<"${TEMPLATES}/${APACHE_SITES_AVAILABLE}/${APACHE_SEARXNG_SITE}")\"" | prefix_stdout "  "
             echo -e "\n.. END apache http"
         )
     done
