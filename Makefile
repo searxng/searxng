@@ -39,9 +39,6 @@ clean: py.clean docs.clean node.clean nvm.clean test.clean
 	$(Q)find . -name '*~' -exec rm -f {} +
 	$(Q)find . -name '*.bak' -exec rm -f {} +
 
-lxc.clean:
-	$(Q)rm -rf lxc-env
-
 PHONY += search.checker search.checker.%
 search.checker: install
 	$(Q)./manage pyenv.cmd searxng-checker -v
@@ -64,9 +61,7 @@ test.shell:
 		utils/lib_nvm.sh \
 		utils/lib_redis.sh \
 		utils/lib_valkey.sh \
-		utils/searxng.sh \
-		utils/lxc.sh \
-		utils/lxc-searxng.env
+		utils/searxng.sh
 	$(Q)$(MTOOLS) build_msg TEST "$@ OK"
 
 

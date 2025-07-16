@@ -41,10 +41,6 @@ fi
 
 SEARXNG_URL="${SEARXNG_URL:-http://$(uname -n)/searxng}"
 SEARXNG_URL="${SEARXNG_URL%/}" # if exists, remove trailing slash
-if in_container; then
-    # hint: Linux containers do not have DNS entries, lets use IPs
-    SEARXNG_URL="http://$(primary_ip)/searxng"
-fi
 SEARXNG_URL_PATH="$(echo "${SEARXNG_URL}" | sed -e 's,^.*://[^/]*\(/.*\),\1,g')"
 [[ "${SEARXNG_URL_PATH}" == "${SEARXNG_URL}" ]] && SEARXNG_URL_PATH=/
 
@@ -114,9 +110,7 @@ esac
 
 _service_prefix="  ${_Yellow}|${SERVICE_USER}|${_creset} "
 
-# ----------------------------------------------------------------------------
 usage() {
-# ----------------------------------------------------------------------------
 
     # shellcheck disable=SC1117
     cat <<EOF
@@ -839,12 +833,6 @@ searxng.instance.inspect() {
 
 _searxng.instance.inspect() {
     searxng.instance.env
-
-    if in_container; then
-        # shellcheck source=utils/lxc-searxng.env
-        source "${REPO_ROOT}/utils/lxc-searxng.env"
-        lxc_suite_info
-    fi
 
     MSG="${_Green}[${_BCyan}CTRL-C${_Green}] to stop or [${_BCyan}KEY${_Green}] to continue${_creset}"
 

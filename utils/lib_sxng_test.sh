@@ -21,7 +21,7 @@ if [ "$VERBOSE" = "1" ]; then
 fi
 
 test.yamllint() {
-    build_msg TEST "[yamllint] \$YAMLLINT_FILES"
+    build_msg TEST "[yamllint] $YAMLLINT_FILES"
     pyenv.cmd yamllint --strict --format parsable "${YAMLLINT_FILES[@]}"
     dump_return $?
 }
@@ -100,7 +100,7 @@ test.types.ci() {
 }
 
 test.black() {
-    build_msg TEST "[black] \$BLACK_TARGETS"
+    build_msg TEST "[black] $BLACK_TARGETS"
     pyenv.cmd black --check --diff "${BLACK_OPTIONS[@]}" "${BLACK_TARGETS[@]}"
     dump_return $?
 }
