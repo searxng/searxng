@@ -27,7 +27,7 @@ Here is how a minimal workflow looks like:
 
 1. *start* hacking
 2. *run* your code: :ref:`make run`
-3. *format & test* your code: :ref:`make format.python` and :ref:`make test`
+3. *format & test* your code: :ref:`make format` and :ref:`make test`
 
 If you think at some point something fails, go back to *start*.  Otherwise,
 choose a meaningful commit message and we are happy to receive your pull

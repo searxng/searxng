@@ -14,6 +14,14 @@ charset = utf-8
 # code formatter accepts length of 120, but editor should prefer 80
 max_line_length = 80
 
+[{*.sh,manage}]
+indent_style = space
+indent_size = 4
+
+# shfmt options
+shell_variant  = bash
+switch_case_indent = true
+
 [*.html]
 # in the jinja templates we use indent size of 2 and we do not use tabs
 indent_size = 2
