@@ -25,6 +25,38 @@ transferred to the plugin, e.g. to activate it by default / *opt-in* or
 Please note that some plugins, such as the :ref:`hostnames plugin` plugin,
 require further configuration before they can be made available for selection.
 
+By default the :ref:`settings built in plugins` are loaded.  To change the list
+of plugins to be loaded, the value for ``plugins:`` in
+``/etc/searxng/settings.yml`` must be overwritten.
+
+Following is an example that uses :ref:`settings use_default_settings` and only
+two plugins are registered: the calculator can be activated by the user and the
+unit converter is active by default.
+
+
+.. code:: yaml
+
+    use_default_settings: true
+
+    plugins:
+
+      searx.plugins.calculator.SXNGPlugin:
+        active: false
+
+      searx.plugins.unit_converter.SXNGPlugin:
+        active: true
+
+To prevent any plugins from loading, the following setting can be used:
+
+.. code:: yaml
+
+    use_default_settings: true
+
+    plugins: {}
+
+
+.. _settings built in plugins:
+
 built-in plugins
 ================
 

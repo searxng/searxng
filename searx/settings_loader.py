@@ -137,6 +137,10 @@ def update_settings(default_settings: dict, user_settings: dict):
     if categories_as_tabs:
         default_settings['categories_as_tabs'] = categories_as_tabs
 
+    plugins = user_settings.get('plugins')
+    if plugins is not None:
+        default_settings['plugins'] = plugins
+
     # parse the engines
     remove_engines = None
     keep_only_engines = None
