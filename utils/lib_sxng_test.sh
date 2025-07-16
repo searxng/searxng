@@ -6,8 +6,9 @@ test.help(){
 test.:
   yamllint  : lint YAML files (YAMLLINT_FILES)
   pylint    : lint ./searx, ./searxng_extra and ./tests
-  pyright   : static type check of python sources (.dev or .ci)
   black     : check black code format
+  shfmt     : check shfmt code format
+  shfmt     : check Shell script code format
   unit      : run unit tests
   coverage  : run unit tests with coverage
   robot     : run robot test
@@ -102,6 +103,12 @@ test.types.ci() {
 test.black() {
     build_msg TEST "[black] $BLACK_TARGETS"
     pyenv.cmd black --check --diff "${BLACK_OPTIONS[@]}" "${BLACK_TARGETS[@]}"
+    dump_return $?
+}
+
+test.shfmt() {
+    build_msg TEST "[shfmt] ${SHFMT_SCRIPTS[*]}"
+    go.tool shfmt --list --diff "${SHFMT_SCRIPTS[@]}"
     dump_return $?
 }
 
