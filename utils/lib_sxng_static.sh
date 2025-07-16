@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
-
 STATIC_BUILD_COMMIT="[build] /static"
 STATIC_BUILT_PATHS=(
     'searx/templates/simple/icons.html'
@@ -9,7 +8,7 @@ STATIC_BUILT_PATHS=(
     'client/simple/package-lock.json'
 )
 
-static.help(){
+static.help() {
     cat <<EOF
 static.build.:  ${STATIC_BUILD_COMMIT}
   commit    : build & commit /static folder
@@ -57,8 +56,8 @@ static.build.drop() {
 
     # get only last (option -n1) local commit not in remotes
     branch="$(git branch --show-current)"
-    last_commit_id="$(git log -n1 "${branch}" --pretty=format:'%h'\
-     --not --exclude="${branch}" --branches --remotes)"
+    last_commit_id="$(git log -n1 "${branch}" --pretty=format:'%h' \
+        --not --exclude="${branch}" --branches --remotes)"
 
     if [ -z "${last_commit_id}" ]; then
         err_msg "there are no local commits"
@@ -96,7 +95,8 @@ static.build.commit() {
     # drop existing commit from previous build
     static.build.drop &>/dev/null
 
-    (   set -e
+    (
+        set -e
         # fix & build the themes
         themes.fix
         themes.lint

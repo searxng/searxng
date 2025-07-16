@@ -41,28 +41,28 @@ container.build() {
 
     # Setup arch specific
     case $parch in
-    "X64" | "x86_64" | "amd64")
-        dockerfile="Dockerfile"
-        arch="amd64"
-        variant=""
-        platform="linux/$arch"
-        ;;
-    "ARM64" | "aarch64" | "arm64")
-        dockerfile="Dockerfile"
-        arch="arm64"
-        variant=""
-        platform="linux/$arch"
-        ;;
-    "ARMV7" | "armhf" | "armv7l" | "armv7")
-        dockerfile="Dockerfile"
-        arch="arm"
-        variant="v7"
-        platform="linux/$arch/$variant"
-        ;;
-    *)
-        err_msg "Unsupported architecture; $parch"
-        exit 1
-        ;;
+        "X64" | "x86_64" | "amd64")
+            dockerfile="Dockerfile"
+            arch="amd64"
+            variant=""
+            platform="linux/$arch"
+            ;;
+        "ARM64" | "aarch64" | "arm64")
+            dockerfile="Dockerfile"
+            arch="arm64"
+            variant=""
+            platform="linux/$arch"
+            ;;
+        "ARMV7" | "armhf" | "armv7l" | "armv7")
+            dockerfile="Dockerfile"
+            arch="arm"
+            variant="v7"
+            platform="linux/$arch/$variant"
+            ;;
+        *)
+            err_msg "Unsupported architecture; $parch"
+            exit 1
+            ;;
     esac
     info_msg "Selected platform: $platform"
 
@@ -161,25 +161,25 @@ container.test() {
 
     # Setup arch specific
     case $parch in
-    "X64" | "x86_64" | "amd64")
-        arch="amd64"
-        variant=""
-        platform="linux/$arch"
-        ;;
-    "ARM64" | "aarch64" | "arm64")
-        arch="arm64"
-        variant=""
-        platform="linux/$arch"
-        ;;
-    "ARMV7" | "armhf" | "armv7l" | "armv7")
-        arch="arm"
-        variant="v7"
-        platform="linux/$arch/$variant"
-        ;;
-    *)
-        err_msg "Unsupported architecture; $parch"
-        exit 1
-        ;;
+        "X64" | "x86_64" | "amd64")
+            arch="amd64"
+            variant=""
+            platform="linux/$arch"
+            ;;
+        "ARM64" | "aarch64" | "arm64")
+            arch="arm64"
+            variant=""
+            platform="linux/$arch"
+            ;;
+        "ARMV7" | "armhf" | "armv7l" | "armv7")
+            arch="arm"
+            variant="v7"
+            platform="linux/$arch/$variant"
+            ;;
+        *)
+            err_msg "Unsupported architecture; $parch"
+            exit 1
+            ;;
     esac
     build_msg CONTAINER "Selected platform: $platform"
 
@@ -224,25 +224,25 @@ container.push() {
 
     for arch in "${release_archs[@]}"; do
         case $arch in
-        "X64" | "x86_64" | "amd64")
-            archs+=("amd64")
-            variants+=("")
-            platforms+=("linux/${archs[-1]}")
-            ;;
-        "ARM64" | "aarch64" | "arm64")
-            archs+=("arm64")
-            variants+=("")
-            platforms+=("linux/${archs[-1]}")
-            ;;
-        "ARMV7" | "armv7" | "armhf" | "arm")
-            archs+=("arm")
-            variants+=("v7")
-            platforms+=("linux/${archs[-1]}/${variants[-1]}")
-            ;;
-        *)
-            err_msg "Unsupported architecture; $arch"
-            exit 1
-            ;;
+            "X64" | "x86_64" | "amd64")
+                archs+=("amd64")
+                variants+=("")
+                platforms+=("linux/${archs[-1]}")
+                ;;
+            "ARM64" | "aarch64" | "arm64")
+                archs+=("arm64")
+                variants+=("")
+                platforms+=("linux/${archs[-1]}")
+                ;;
+            "ARMV7" | "armv7" | "armhf" | "arm")
+                archs+=("arm")
+                variants+=("v7")
+                platforms+=("linux/${archs[-1]}/${variants[-1]}")
+                ;;
+            *)
+                err_msg "Unsupported architecture; $arch"
+                exit 1
+                ;;
         esac
     done
 
