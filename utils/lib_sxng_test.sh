@@ -6,8 +6,8 @@ test.help(){
 test.:
   yamllint  : lint YAML files (YAMLLINT_FILES)
   pylint    : lint ./searx, ./searxng_extra and ./tests
-  black     : check black code format
-  shfmt     : check shfmt code format
+  pyright   : check Python types
+  black     : check Python code format
   shfmt     : check Shell script code format
   unit      : run unit tests
   coverage  : run unit tests with coverage
@@ -49,46 +49,18 @@ test.pylint() {
     dump_return $?
 }
 
-test.types.dev() {
+test.pyright() {
     # use this pyright test for local tests in development / it suppress
     # warnings related to intentional monkey patching but gives good hints where
     # we need to work on SearXNG's typification.
-    #
-    # --> pyrightconfig.json
 
     build_msg TEST "[pyright/types] static type check of python sources"
-    build_msg TEST "    --> typeCheckingMode: on"
     node.env.dev
 
     build_msg TEST "[pyright/types] suppress warnings related to intentional monkey patching"
     # We run Pyright in the virtual environment because pyright executes
     # "python" to determine the Python version.
     pyenv.cmd npx --no-install pyright -p pyrightconfig.json \
-        | grep -E '\.py:[0-9]+:[0-9]+'\
-        | grep -v '/engines/.*.py.* - warning: "logger" is not defined'\
-        | grep -v '/plugins/.*.py.* - error: "logger" is not defined'\
-        | grep -v '/engines/.*.py.* - warning: "supported_languages" is not defined' \
-        | grep -v '/engines/.*.py.* - warning: "language_aliases" is not defined' \
-        | grep -v '/engines/.*.py.* - warning: "categories" is not defined'
-    # ignore exit value from pyright
-    # dump_return ${PIPESTATUS[0]}
-    return 0
-}
-
-test.types.ci() {
-    # use this pyright test for CI / disables typeCheckingMode, needed as long
-    # we do not have fixed all typification issues.
-    #
-    # --> pyrightconfig-ci.json
-
-    build_msg TEST "[pyright] static type check of python sources"
-    build_msg TEST "    --> typeCheckingMode: off !!!"
-    node.env.dev
-
-    build_msg TEST "[pyright] suppress warnings related to intentional monkey patching"
-    # We run Pyright in the virtual environment because pyright executes
-    # "python" to determine the Python version.
-    pyenv.cmd npx --no-install pyright -p pyrightconfig-ci.json \
         | grep -E '\.py:[0-9]+:[0-9]+'\
         | grep -v '/engines/.*.py.* - warning: "logger" is not defined'\
         | grep -v '/plugins/.*.py.* - error: "logger" is not defined'\
