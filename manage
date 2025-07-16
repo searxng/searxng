@@ -58,7 +58,7 @@ while IFS= read -r line; do
     if [ "$line" != "tests/unit/settings/syntaxerror_settings.yml" ]; then
         YAMLLINT_FILES+=("$line")
     fi
-done <<< "$(git ls-files './tests/*.yml' './searx/*.yml' './utils/templates/etc/searxng/*.yml' '.github/*.yml' '.github/*/*.yml')"
+done <<<"$(git ls-files './tests/*.yml' './searx/*.yml' './utils/templates/etc/searxng/*.yml' '.github/*.yml' '.github/*/*.yml')"
 
 RST_FILES=(
     'README.rst'
@@ -129,7 +129,6 @@ dev.env() {
     fi
 }
 
-
 if [ "$VERBOSE" = "1" ]; then
     SPHINX_VERBOSE="-v"
     PYLINT_VERBOSE="-v"
@@ -142,14 +141,14 @@ webapp.run() {
     local parent_proc="$$"
     (
         if [ "${LIVE_THEME}" ]; then
-            ( themes.live "${LIVE_THEME}" )
+            (themes.live "${LIVE_THEME}")
             kill $parent_proc
         fi
-    )&
+    ) &
     (
         sleep 3
         xdg-open http://127.0.0.1:8888/
-    )&
+    ) &
     SEARXNG_DEBUG=1 \
         GRANIAN_RELOAD="true" \
         GRANIAN_RELOAD_IGNORE_WORKER_FAILURE="true" \
@@ -172,10 +171,11 @@ gecko.driver() {
 
     build_msg INSTALL "gecko.driver"
     # run installation in a subprocess and activate pyenv
-    (   set -e
+    (
+        set -e
         pyenv.activate
 
-        INSTALLED_VERSION=$(geckodriver -V 2> /dev/null | head -1 | awk '{ print "v" $2}') || INSTALLED_VERSION=""
+        INSTALLED_VERSION=$(geckodriver -V 2>/dev/null | head -1 | awk '{ print "v" $2}') || INSTALLED_VERSION=""
         set +e
         if [ "${INSTALLED_VERSION}" = "${GECKODRIVER_VERSION}" ]; then
             build_msg INSTALL "geckodriver already installed"
@@ -183,13 +183,13 @@ gecko.driver() {
         fi
         PLATFORM="$(python -c 'import platform; print(platform.system().lower(), platform.architecture()[0])')"
         case "$PLATFORM" in
-            "linux 32bit" | "linux2 32bit") ARCH="linux32";;
-            "linux 64bit" | "linux2 64bit") ARCH="linux64";;
-            "windows 32 bit") ARCH="win32";;
-            "windows 64 bit") ARCH="win64";;
-            "mac 64bit") ARCH="macos";;
+            "linux 32bit" | "linux2 32bit") ARCH="linux32" ;;
+            "linux 64bit" | "linux2 64bit") ARCH="linux64" ;;
+            "windows 32 bit") ARCH="win32" ;;
+            "windows 64 bit") ARCH="win64" ;;
+            "mac 64bit") ARCH="macos" ;;
         esac
-        GECKODRIVER_URL="https://github.com/mozilla/geckodriver/releases/download/$GECKODRIVER_VERSION/geckodriver-$GECKODRIVER_VERSION-$ARCH.tar.gz";
+        GECKODRIVER_URL="https://github.com/mozilla/geckodriver/releases/download/$GECKODRIVER_VERSION/geckodriver-$GECKODRIVER_VERSION-$ARCH.tar.gz"
 
         build_msg GECKO "Installing ${PY_ENV_BIN}/geckodriver from $GECKODRIVER_URL"
 
@@ -204,13 +204,14 @@ gecko.driver() {
 py.build() {
     build_msg BUILD "python package ${PYDIST}"
     pyenv.cmd python setup.py \
-              sdist -d "${PYDIST}" \
-              bdist_wheel --bdist-dir "${PYBUILD}" -d "${PYDIST}"
+        sdist -d "${PYDIST}" \
+        bdist_wheel --bdist-dir "${PYBUILD}" -d "${PYDIST}"
 }
 
 py.clean() {
     build_msg CLEAN pyenv
-    (   set -e
+    (
+        set -e
         pyenv.drop
         [ "$VERBOSE" = "1" ] && set -x
         rm -rf "${PYDIST}" "${PYBUILD}" "${PY_ENV}" ./.tox ./*.egg-info
@@ -221,7 +222,7 @@ py.clean() {
 }
 
 pyenv.check() {
-    cat  <<EOF
+    cat <<EOF
 import yaml
 print('import yaml --> OK')
 EOF
@@ -230,13 +231,14 @@ EOF
 pyenv.install() {
 
     if ! pyenv.OK; then
-        py.clean > /dev/null
+        py.clean >/dev/null
     fi
-    if pyenv.install.OK > /dev/null; then
+    if pyenv.install.OK >/dev/null; then
         return 0
     fi
 
-    (   set -e
+    (
+        set -e
         pyenv
         build_msg PYENV "[install] pip install --use-pep517 --no-build-isolation -e 'searx${PY_SETUP_EXTRAS}'"
         "${PY_ENV_BIN}/python" -m pip install --use-pep517 --no-build-isolation -e ".${PY_SETUP_EXTRAS}"
@@ -249,8 +251,8 @@ pyenv.install() {
 
 pyenv.uninstall() {
     build_msg PYENV "[pyenv.uninstall] uninstall packages: ${PYOBJECTS}"
-    pyenv.cmd python setup.py develop --uninstall 2>&1 \
-        | prefix_stdout "${_Blue}PYENV     ${_creset}[pyenv.uninstall] "
+    pyenv.cmd python setup.py develop --uninstall 2>&1 |
+        prefix_stdout "${_Blue}PYENV     ${_creset}[pyenv.uninstall] "
 
 }
 
@@ -272,7 +274,7 @@ docs.prebuild() {
         set -e
         [ "$VERBOSE" = "1" ] && set -x
         mkdir -p "${DOCS_BUILD}/includes"
-        ./utils/searxng.sh searxng.doc.rst >  "${DOCS_BUILD}/includes/searxng.rst"
+        ./utils/searxng.sh searxng.doc.rst >"${DOCS_BUILD}/includes/searxng.rst"
         pyenv.cmd searxng_extra/docs_prebuild
     )
     dump_return $?
@@ -282,7 +284,8 @@ docs.prebuild() {
 main() {
 
     local _type
-    local cmd="$1"; shift
+    local cmd="$1"
+    shift
 
     if [ "$cmd" == "" ]; then
         help
@@ -291,8 +294,11 @@ main() {
     fi
 
     case "$cmd" in
-        --getenv) var="$1"; echo "${!var}";;
-        --help) help;;
+        --getenv)
+            var="$1"
+            echo "${!var}"
+            ;;
+        --help) help ;;
         --*)
             help
             err_msg "unknown option $cmd"
