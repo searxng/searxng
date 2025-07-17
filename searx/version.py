@@ -69,6 +69,7 @@ def get_git_version():
     # which depended on the git version: '2023.05.06+..' --> '2023.5.6+..'
     git_commit_date_hash = git_commit_date_hash.replace('.0', '.')
     tag_version = git_version = git_commit_date_hash
+    docker_tag = git_commit_date_hash.replace("+", "-")
 
     # add "+dirty" suffix if there are uncommitted changes except searx/settings.yml
     try:
@@ -78,7 +79,7 @@ def get_git_version():
             git_version += "+dirty"
         else:
             logger.warning('"%s" returns an unexpected return code %i', e.returncode, e.cmd)
-    docker_tag = git_version.replace("+", "-")
+
     return git_version, tag_version, docker_tag
 
 
