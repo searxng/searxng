@@ -1,18 +1,19 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 # pylint: disable=,missing-module-docstring,missing-class-docstring
 
+import importlib
+import logging
 import os
 import shlex
 import subprocess
-import logging
-import importlib
 
 # fallback values
 # if there is searx.version_frozen module, and it is not possible to get the git tag
 VERSION_STRING = "1.0.0"
 VERSION_TAG = "1.0.0"
-GIT_URL = "unknow"
-GIT_BRANCH = "unknow"
+DOCKER_TAG = "1.0.0"
+GIT_URL = "unknown"
+GIT_BRANCH = "unknown"
 
 logger = logging.getLogger("searx")
 
@@ -82,6 +83,25 @@ def get_git_version():
     return git_version, tag_version, docker_tag
 
 
+def get_information():
+    version_string = VERSION_STRING
+    version_tag = VERSION_TAG
+    docker_tag = DOCKER_TAG
+    git_url = GIT_URL
+    git_branch = GIT_BRANCH
+
+    try:
+        version_string, version_tag, docker_tag = get_git_version()
+    except subprocess.CalledProcessError as ex:
+        logger.error("Error while getting the version: %s", ex.stderr)
+    try:
+        git_url, git_branch = get_git_url_and_branch()
+    except subprocess.CalledProcessError as ex:
+        logger.error("Error while getting the git URL & branch: %s", ex.stderr)
+
+    return version_string, version_tag, docker_tag, git_url, git_branch
+
+
 try:
     vf = importlib.import_module('searx.version_frozen')
     VERSION_STRING, VERSION_TAG, DOCKER_TAG, GIT_URL, GIT_BRANCH = (
@@ -92,18 +112,7 @@ try:
         vf.GIT_BRANCH,
     )
 except ImportError:
-    try:
-        try:
-            VERSION_STRING, VERSION_TAG, DOCKER_TAG = get_git_version()
-        except subprocess.CalledProcessError as ex:
-            logger.error("Error while getting the version: %s", ex.stderr)
-        try:
-            GIT_URL, GIT_BRANCH = get_git_url_and_branch()
-        except subprocess.CalledProcessError as ex:
-            logger.error("Error while getting the git URL & branch: %s", ex.stderr)
-    except FileNotFoundError as ex:
-        logger.error("%s is not found, fallback to the default version", ex.filename)
-
+    VERSION_STRING, VERSION_TAG, DOCKER_TAG, GIT_URL, GIT_BRANCH = get_information()
 
 logger.info("version: %s", VERSION_STRING)
 
@@ -111,6 +120,8 @@ if __name__ == "__main__":
     import sys
 
     if len(sys.argv) >= 2 and sys.argv[1] == "freeze":
+        VERSION_STRING, VERSION_TAG, DOCKER_TAG, GIT_URL, GIT_BRANCH = get_information()
+
         # freeze the version (to create an archive outside a git repository)
         python_code = f"""# SPDX-License-Identifier: AGPL-3.0-or-later
 # pylint: disable=missing-module-docstring
