@@ -37,16 +37,16 @@ setup_ownership() {
     local type="$2"
 
     case "$type" in
-    file | directory) ;;
-    *)
-        cat <<EOF
+        file | directory) ;;
+        *)
+            cat <<EOF
 !!!
 !!! ERROR
 !!! "$type" is not a valid type, exiting...
 !!!
 EOF
-        exit 1
-        ;;
+            exit 1
+            ;;
     esac
 
     target_ownership=$(stat -c %U:%G "$target")

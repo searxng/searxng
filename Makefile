@@ -32,15 +32,12 @@ install uninstall:
 	$(Q)./manage pyenv.$@
 
 PHONY += clean
-clean: py.clean docs.clean node.clean nvm.clean test.clean
+clean: py.clean docs.clean node.clean nvm.clean go.clean test.clean
 	$(Q)./manage build_msg CLEAN  "common files"
 	$(Q)find . -name '*.orig' -exec rm -f {} +
 	$(Q)find . -name '*.rej' -exec rm -f {} +
 	$(Q)find . -name '*~' -exec rm -f {} +
 	$(Q)find . -name '*.bak' -exec rm -f {} +
-
-lxc.clean:
-	$(Q)rm -rf lxc-env
 
 PHONY += search.checker search.checker.%
 search.checker: install
@@ -50,8 +47,8 @@ search.checker.%: install
 	$(Q)./manage pyenv.cmd searxng-checker -v "$(subst _, ,$(patsubst search.checker.%,%,$@))"
 
 PHONY += test ci.test test.shell
-ci.test: test.yamllint test.black test.types.ci  test.pylint test.unit test.robot test.rst test.shell test.pybabel
-test:    test.yamllint test.black test.types.dev test.pylint test.unit test.robot test.rst test.shell
+test:    test.yamllint test.black test.pyright test.pylint test.unit test.robot test.rst test.shell test.shfmt
+ci.test: test test.pybabel
 test.shell:
 	$(Q)shellcheck -x -s dash \
 		container/entrypoint.sh
@@ -60,15 +57,15 @@ test.shell:
 		$(MTOOLS) \
 		utils/lib.sh \
 		utils/lib_sxng*.sh \
-		utils/lib_go.sh \
+		utils/lib_govm.sh \
 		utils/lib_nvm.sh \
 		utils/lib_redis.sh \
 		utils/lib_valkey.sh \
-		utils/searxng.sh \
-		utils/lxc.sh \
-		utils/lxc-searxng.env
+		utils/searxng.sh
 	$(Q)$(MTOOLS) build_msg TEST "$@ OK"
 
+PHONY += format
+format: format.python format.shell
 
 # wrap ./manage script
 
@@ -82,11 +79,12 @@ MANAGE += gecko.driver
 MANAGE += node.env node.env.dev node.clean
 MANAGE += py.build py.clean
 MANAGE += pyenv pyenv.install pyenv.uninstall
-MANAGE += format.python
-MANAGE += test.yamllint test.pylint test.black test.pybabel test.unit test.coverage test.robot test.rst test.clean test.themes test.types.dev test.types.ci
+MANAGE += format.python format.shell
+MANAGE += test.yamllint test.pylint test.black test.pybabel test.unit test.coverage test.robot test.rst test.clean test.themes test.pyright test.shfmt
 MANAGE += themes.all themes.simple themes.fix themes.lint themes.test
 MANAGE += static.build.commit static.build.drop static.build.restore
 MANAGE += nvm.install nvm.clean nvm.status nvm.nodejs
+MANAGE += go.env.dev go.clean
 
 PHONY += $(MANAGE)
 

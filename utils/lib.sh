@@ -4,11 +4,20 @@
 # shellcheck disable=SC2059,SC1117
 
 # ubuntu, debian, arch, fedora, centos ...
-DIST_ID=$(source /etc/os-release; echo "$ID");
+DIST_ID=$(
+    source /etc/os-release
+    echo "$ID"
+)
 # shellcheck disable=SC2034
-DIST_VERS=$(source /etc/os-release; echo "$VERSION_ID");
+DIST_VERS=$(
+    source /etc/os-release
+    echo "$VERSION_ID"
+)
 # shellcheck disable=SC2034
-DIST_VERSION_CODENAME=$(source /etc/os-release; echo "$VERSION_CODENAME");
+DIST_VERSION_CODENAME=$(
+    source /etc/os-release
+    echo "$VERSION_CODENAME"
+)
 
 ADMIN_NAME="${ADMIN_NAME:-$(git config user.name)}"
 ADMIN_NAME="${ADMIN_NAME:-$USER}"
@@ -18,10 +27,10 @@ ADMIN_EMAIL="${ADMIN_EMAIL:-$USER@$(hostname)}"
 
 if [[ -z "${REPO_ROOT}" ]]; then
     REPO_ROOT=$(dirname "${BASH_SOURCE[0]}")
-    while [ -h "${REPO_ROOT}" ] ; do
+    while [ -h "${REPO_ROOT}" ]; do
         REPO_ROOT=$(readlink "${REPO_ROOT}")
     done
-    REPO_ROOT=$(cd "${REPO_ROOT}/.." && pwd -P )
+    REPO_ROOT=$(cd "${REPO_ROOT}/.." && pwd -P)
 fi
 
 if [[ -z ${TEMPLATES} ]]; then
@@ -34,7 +43,7 @@ fi
 
 if [[ -z ${DIFF_CMD} ]]; then
     DIFF_CMD="diff -u"
-    if command -v colordiff >/dev/null;  then
+    if command -v colordiff >/dev/null; then
         DIFF_CMD="colordiff -u"
     fi
 fi
@@ -53,7 +62,7 @@ source_dot_config() {
 sudo_or_exit() {
     # usage: sudo_or_exit
 
-    if [ ! "$(id -u)" -eq 0 ];  then
+    if [ ! "$(id -u)" -eq 0 ]; then
         err_msg "this command requires root (sudo) privilege!" >&2
         exit 42
     fi
@@ -87,7 +96,7 @@ set_terminal_colors() {
     _hide_cursor='\e[?25l'
 
     # SGR (Select Graphic Rendition) parameters
-    _creset='\e[0m'  # reset all attributes
+    _creset='\e[0m' # reset all attributes
 
     # original specification only had 8 colors
     _colors=8
@@ -128,9 +137,9 @@ rst_title() {
     # usage: rst_title <header-text> [part|chapter|section]
 
     case ${2-chapter} in
-        part)     printf "\n${_BGreen}${1//?/=}${_creset}\n${_BCyan}${1}${_creset}\n${_BGreen}${1//?/=}${_creset}\n";;
-        chapter)  printf "\n${_BCyan}${1}${_creset}\n${_BGreen}${1//?/=}${_creset}\n";;
-        section)  printf "\n${_BCyan}${1}${_creset}\n${_BGreen}${1//?/-}${_creset}\n";;
+        part) printf "\n${_BGreen}${1//?/=}${_creset}\n${_BCyan}${1}${_creset}\n${_BGreen}${1//?/=}${_creset}\n" ;;
+        chapter) printf "\n${_BCyan}${1}${_creset}\n${_BGreen}${1//?/=}${_creset}\n" ;;
+        section) printf "\n${_BCyan}${1}${_creset}\n${_BGreen}${1//?/-}${_creset}\n" ;;
         *)
             err_msg "invalid argument '${2}' in line $(caller)"
             return 42
@@ -150,16 +159,16 @@ rst_para() {
 }
 
 die() {
-    echo -e "${_BRed}ERROR:${_creset} ${BASH_SOURCE[1]}: line ${BASH_LINENO[0]}: ${2-died ${1-1}}" >&2;
+    echo -e "${_BRed}ERROR:${_creset} ${BASH_SOURCE[1]}: line ${BASH_LINENO[0]}: ${2-died ${1-1}}" >&2
     exit "${1-1}"
 }
 
 die_caller() {
-    echo -e "${_BRed}ERROR:${_creset} ${BASH_SOURCE[2]}: line ${BASH_LINENO[1]}: ${FUNCNAME[1]}(): ${2-died ${1-1}}" >&2;
+    echo -e "${_BRed}ERROR:${_creset} ${BASH_SOURCE[2]}: line ${BASH_LINENO[1]}: ${FUNCNAME[1]}(): ${2-died ${1-1}}" >&2
     exit "${1-1}"
 }
 
-err_msg()  { echo -e "${_BRed}ERROR:${_creset} $*" >&2; }
+err_msg() { echo -e "${_BRed}ERROR:${_creset} $*" >&2; }
 warn_msg() { echo -e "${_BBlue}WARN:${_creset}  $*" >&2; }
 info_msg() { echo -e "${_BYellow}INFO:${_creset}  $*" >&2; }
 
@@ -181,11 +190,11 @@ dump_return() {
 
 clean_stdin() {
     if [[ $(uname -s) != 'Darwin' ]]; then
-        while read -r -n1 -t 0.1; do : ; done
+        while read -r -n1 -t 0.1; do :; done
     fi
 }
 
-wait_key(){
+wait_key() {
     # usage: wait_key [<timeout in sec>]
 
     clean_stdin
@@ -233,7 +242,8 @@ ask_yn() {
         # shellcheck disable=SC2086,SC2229
         read -r -n1 $_t
         if [[ -z $REPLY ]]; then
-            printf "$default\n"; break
+            printf "$default\n"
+            break
         elif [[ $REPLY =~ ^[Yy]$ ]]; then
             exit_val=${EXIT_YES}
             printf "\n"
@@ -250,7 +260,7 @@ ask_yn() {
     return $exit_val
 }
 
-tee_stderr () {
+tee_stderr() {
 
     # usage::
     #   tee_stderr 1 <<EOF | python -i
@@ -260,23 +270,23 @@ tee_stderr () {
     #   >>> print("hello")
     #    hello
 
-    local _t="0";
-    if [[ -n $1 ]] ; then _t="$1"; fi
+    local _t="0"
+    if [[ -n $1 ]]; then _t="$1"; fi
 
     (while read -r line; do
-         # shellcheck disable=SC2086,SC2229
-         sleep $_t
-         echo -e "$line" >&2
-         echo "$line"
+        # shellcheck disable=SC2086,SC2229
+        sleep $_t
+        echo -e "$line" >&2
+        echo "$line"
     done)
 }
 
-prefix_stdout () {
+prefix_stdout() {
     # usage: <cmd> | prefix_stdout [prefix]
 
     local prefix="${_BYellow}-->|${_creset}"
 
-    if [[ -n $1 ]] ; then prefix="$1"; fi
+    if [[ -n $1 ]]; then prefix="$1"; fi
 
     # shellcheck disable=SC2162
     (while IFS= read line; do
@@ -296,7 +306,7 @@ append_line() {
 
     local LINE=$1
     local FILE=$2
-    grep -qFs -- "$LINE" "$FILE" || echo "$LINE" >> "$FILE"
+    grep -qFs -- "$LINE" "$FILE" || echo "$LINE" >>"$FILE"
 }
 
 cache_download() {
@@ -311,7 +321,7 @@ cache_download() {
         mkdir -p "${CACHE}"
     fi
 
-    if [[ -f "${CACHE}/$2" ]] ; then
+    if [[ -f "${CACHE}/$2" ]]; then
         info_msg "already cached: $1"
         info_msg "  --> ${CACHE}/$2"
     fi
@@ -320,9 +330,11 @@ cache_download() {
         info_msg "caching: $1"
         info_msg "  --> ${CACHE}/$2"
         if [[ -n ${SUDO_USER} ]]; then
-            sudo -u "${SUDO_USER}" wget --progress=bar -O "${CACHE}/$2" "$1" ; exit_value=$?
+            sudo -u "${SUDO_USER}" wget --progress=bar -O "${CACHE}/$2" "$1"
+            exit_value=$?
         else
-            wget --progress=bar -O "${CACHE}/$2" "$1" ; exit_value=$?
+            wget --progress=bar -O "${CACHE}/$2" "$1"
+            exit_value=$?
         fi
         if [[ ! $exit_value = 0 ]]; then
             err_msg "failed to download: $1"
@@ -350,7 +362,7 @@ choose_one() {
     local default=${DEFAULT_SELECT-1}
     local REPLY
     local env_name=$1 && shift
-    local choice=$1;
+    local choice=$1
     local max="${#@}"
     local _t
     [[ -n $FORCE_TIMEOUT ]] && _t=$FORCE_TIMEOUT
@@ -358,7 +370,7 @@ choose_one() {
 
     list=("$@")
     echo -e "${_BGreen}Menu::${_creset}"
-    for ((i=1; i<= $((max -1)); i++)); do
+    for ((i = 1; i <= $((max - 1)); i++)); do
         if [[ "$i" == "$default" ]]; then
             echo -e "  ${_BGreen}$i.${_creset}) ${list[$i]} [default]"
         else
@@ -369,7 +381,7 @@ choose_one() {
         clean_stdin
         printf "$1 [${_BGreen}$default${_creset}] "
 
-        if (( 10 > max )); then
+        if ((10 > max)); then
             # shellcheck disable=SC2086,SC2229
             read -r -n1 $_t
         else
@@ -377,7 +389,7 @@ choose_one() {
             read -r $_t
         fi
         # selection fits
-        [[ $REPLY =~ ^-?[0-9]+$ ]] && (( REPLY > 0 )) && (( REPLY < max )) && break
+        [[ $REPLY =~ ^-?[0-9]+$ ]] && ((REPLY > 0)) && ((REPLY < max)) && break
 
         # take default
         [[ -z $REPLY ]] && REPLY=$default && break
@@ -414,8 +426,14 @@ install_template() {
 
     for i in "$@"; do
         case $i in
-            --no-eval) do_eval=0; shift ;;
-            --variant=*) variant=":${i#*=}"; shift ;;
+            --no-eval)
+                do_eval=0
+                shift
+                ;;
+            --variant=*)
+                variant=":${i#*=}"
+                shift
+                ;;
             *) pos_args+=("$i") ;;
         esac
     done
@@ -431,7 +449,7 @@ install_template() {
     info_msg "install (eval=$do_eval): ${dst}"
     [[ -n $variant ]] && info_msg "variant --> ${variant}"
 
-    if [[ ! -f "${template_origin}" ]] ; then
+    if [[ ! -f "${template_origin}" ]]; then
         err_msg "${template_origin} does not exists"
         err_msg "... can't install $dst"
         wait_key 30
@@ -440,15 +458,15 @@ install_template() {
 
     if [[ "$do_eval" == "1" ]]; then
         template_file="${CACHE}${dst}${variant}"
-	info_msg "BUILD ${template_file}"
-	info_msg "BUILD using template ${template_origin}"
+        info_msg "BUILD ${template_file}"
+        info_msg "BUILD using template ${template_origin}"
         if [[ -n ${SUDO_USER} ]]; then
             sudo -u "${SUDO_USER}" mkdir -p "$(dirname "${template_file}")"
         else
             mkdir -p "$(dirname "${template_file}")"
         fi
         # shellcheck disable=SC2086
-        eval "echo \"$(cat ${template_origin})\"" > "${template_file}"
+        eval "echo \"$(cat ${template_origin})\"" >"${template_file}"
         if [[ -n ${SUDO_USER} ]]; then
             chown "${SUDO_USER}:${SUDO_USER}" "${template_file}"
         fi
@@ -461,11 +479,11 @@ install_template() {
     if [[ ! -f "${dst}" ]]; then
         info_msg "install: ${template_file}"
         sudo -H install -v -o "${owner}" -g "${group}" -m "${chmod}" \
-             "${template_file}" "${dst}" | prefix_stdout
+            "${template_file}" "${dst}" | prefix_stdout
         return $?
     fi
 
-    if [[ -f "${dst}" ]] && cmp --silent "${template_file}" "${dst}" ; then
+    if [[ -f "${dst}" ]] && cmp --silent "${template_file}" "${dst}"; then
         info_msg "file ${dst} already installed"
         return 0
     fi
@@ -474,16 +492,16 @@ install_template() {
 
     while true; do
         choose_one _reply "choose next step with file $dst" \
-                   "replace file" \
-                   "leave file unchanged" \
-                   "interactive shell" \
-                   "diff files"
+            "replace file" \
+            "leave file unchanged" \
+            "interactive shell" \
+            "diff files"
 
         case $_reply in
             "replace file")
                 info_msg "install: ${template_file}"
                 sudo -H install -v -o "${owner}" -g "${group}" -m "${chmod}" \
-                     "${template_file}" "${dst}" | prefix_stdout
+                    "${template_file}" "${dst}" | prefix_stdout
                 break
                 ;;
             "leave file unchanged")
@@ -503,6 +521,7 @@ install_template() {
                 ;;
             "diff files")
                 $DIFF_CMD "${dst}" "${template_file}" | prefix_stdout
+                ;;
         esac
     done
 }
@@ -514,14 +533,14 @@ service_is_available() {
     [[ -z $1 ]] && die_caller 42 "missing argument <URL>"
     local URL="$1"
     http_code=$(curl -H 'Cache-Control: no-cache' \
-         --silent -o /dev/null --head --write-out '%{http_code}' --insecure \
-         "${URL}")
+        --silent -o /dev/null --head --write-out '%{http_code}' --insecure \
+        "${URL}")
     exit_val=$?
     if [[ $exit_val = 0 ]]; then
         info_msg "got $http_code from ${URL}"
     fi
     case "$http_code" in
-        404|410|423) exit_val=$http_code;;
+        404 | 410 | 423) exit_val=$http_code ;;
     esac
     return "$exit_val"
 }
@@ -549,7 +568,7 @@ PYBUILD="${PYBUILD:=build/py${PY}}"
 #PY_SETUP_EXTRAS='[develop,test]'
 PY_SETUP_EXTRAS="${PY_SETUP_EXTRAS:=[develop,test]}"
 
-PIP_BOILERPLATE=( pip wheel setuptools )
+PIP_BOILERPLATE=(pip wheel setuptools)
 
 # shellcheck disable=SC2120
 pyenv() {
@@ -563,28 +582,28 @@ pyenv() {
     # files.
 
     required_commands \
-        sha256sum "${PYTHON}" \
-        || exit
+        sha256sum "${PYTHON}" ||
+        exit
 
     local pip_req=()
 
-    if ! pyenv.OK > /dev/null; then
+    if ! pyenv.OK >/dev/null; then
         rm -f "${PY_ENV}/${PY_ENV_REQ}.sha256"
-        pyenv.drop > /dev/null
+        pyenv.drop >/dev/null
         build_msg PYENV "[virtualenv] installing ${PY_ENV_REQ} into ${PY_ENV}"
 
         "${PYTHON}" -m venv "$@" "${PY_ENV}"
         "${PY_ENV_BIN}/python" -m pip install -U "${PIP_BOILERPLATE[@]}"
 
         for i in ${PY_ENV_REQ}; do
-            pip_req=( "${pip_req[@]}" "-r" "$i" )
+            pip_req=("${pip_req[@]}" "-r" "$i")
         done
 
         (
             [ "$VERBOSE" = "1" ] && set -x
             # shellcheck disable=SC2086
-            "${PY_ENV_BIN}/python" -m pip install "${pip_req[@]}" \
-                && sha256sum ${PY_ENV_REQ} > "${PY_ENV}/requirements.sha256"
+            "${PY_ENV_BIN}/python" -m pip install "${pip_req[@]}" &&
+                sha256sum ${PY_ENV_REQ} >"${PY_ENV}/requirements.sha256"
         )
     fi
     pyenv.OK
@@ -602,17 +621,17 @@ pyenv.OK() {
         return 1
     fi
 
-    if [ ! -f "${PY_ENV}/requirements.sha256" ] \
-        || ! sha256sum -c "${PY_ENV}/requirements.sha256" > /dev/null 2>&1; then
+    if [ ! -f "${PY_ENV}/requirements.sha256" ] ||
+        ! sha256sum -c "${PY_ENV}/requirements.sha256" >/dev/null 2>&1; then
         build_msg PYENV "[virtualenv] requirements.sha256 failed"
         sed 's/^/          [virtualenv] - /' <"${PY_ENV}/requirements.sha256"
         return 1
     fi
 
     if [ "$VERBOSE" = "1" ]; then
-        pyenv.check \
-            | "${PY_ENV_BIN}/python" 2>&1 \
-            | prefix_stdout "${_Blue}PYENV     ${_creset}[check] "
+        pyenv.check |
+            "${PY_ENV_BIN}/python" 2>&1 |
+            prefix_stdout "${_Blue}PYENV     ${_creset}[check] "
     else
         pyenv.check | "${PY_ENV_BIN}/python" 1>/dev/null
     fi
@@ -648,7 +667,7 @@ pyenv.check() {
         imp="$imp, $i"
     done
 
-    cat  <<EOF
+    cat <<EOF
 import ${imp#,*}
 
 EOF
@@ -657,16 +676,16 @@ EOF
 pyenv.install() {
 
     if ! pyenv.OK; then
-        py.clean > /dev/null
+        py.clean >/dev/null
     fi
-    if ! pyenv.install.OK > /dev/null; then
+    if ! pyenv.install.OK >/dev/null; then
         build_msg PYENV "[install] ${PYOBJECTS}"
         if ! pyenv.OK >/dev/null; then
             pyenv
         fi
         for i in ${PYOBJECTS}; do
-    	    build_msg PYENV "[install] pip install --use-pep517 --no-build-isolation -e '$i${PY_SETUP_EXTRAS}'"
-    	    "${PY_ENV_BIN}/python" -m pip install --use-pep517 --no-build-isolation -e "$i${PY_SETUP_EXTRAS}"
+            build_msg PYENV "[install] pip install --use-pep517 --no-build-isolation -e '$i${PY_SETUP_EXTRAS}'"
+            "${PY_ENV_BIN}/python" -m pip install --use-pep517 --no-build-isolation -e "$i${PY_SETUP_EXTRAS}"
         done
     fi
     pyenv.install.OK
@@ -708,19 +727,19 @@ pyenv.uninstall() {
     build_msg PYENV "[uninstall] ${PYOBJECTS}"
 
     if [ "." = "${PYOBJECTS}" ]; then
-	pyenv.cmd python setup.py develop --uninstall 2>&1 \
-            | prefix_stdout "${_Blue}PYENV     ${_creset}[pyenv.uninstall] "
+        pyenv.cmd python setup.py develop --uninstall 2>&1 |
+            prefix_stdout "${_Blue}PYENV     ${_creset}[pyenv.uninstall] "
     else
         # shellcheck disable=SC2086
-	pyenv.cmd python -m pip uninstall --yes ${PYOBJECTS} 2>&1 \
-            | prefix_stdout "${_Blue}PYENV     ${_creset}[pyenv.uninstall] "
+        pyenv.cmd python -m pip uninstall --yes ${PYOBJECTS} 2>&1 |
+            prefix_stdout "${_Blue}PYENV     ${_creset}[pyenv.uninstall] "
     fi
 }
 
-
 pyenv.cmd() {
     pyenv.install
-    (   set -e
+    (
+        set -e
         # shellcheck source=/dev/null
         source "${PY_ENV_BIN}/activate"
         [ "$VERBOSE" = "1" ] && set -x
@@ -728,13 +747,11 @@ pyenv.cmd() {
     )
 }
 
-
 pyenv.activate() {
     pyenv.install
     # shellcheck source=/dev/null
     source "${PY_ENV_BIN}/activate"
 }
-
 
 # Sphinx doc
 # ----------
@@ -750,18 +767,18 @@ docs.html() {
     # shellcheck disable=SC2086
     PATH="${PY_ENV_BIN}:${PATH}" pyenv.cmd sphinx-build \
         ${SPHINX_VERBOSE} ${SPHINXOPTS} \
-	-b html -c ./docs -d "${DOCS_BUILD}/.doctrees" ./docs "${DOCS_DIST}"
+        -b html -c ./docs -d "${DOCS_BUILD}/.doctrees" ./docs "${DOCS_DIST}"
     dump_return $?
 }
 
 docs.live() {
-    build_msg SPHINX  "autobuild ./docs --> file://$(readlink -e "$(pwd)/$DOCS_DIST")"
+    build_msg SPHINX "autobuild ./docs --> file://$(readlink -e "$(pwd)/$DOCS_DIST")"
     pyenv.install
     docs.prebuild
     # shellcheck disable=SC2086
     PATH="${PY_ENV_BIN}:${PATH}" pyenv.cmd sphinx-autobuild \
         ${SPHINX_VERBOSE} ${SPHINXOPTS} --open-browser --host 0.0.0.0 \
-	-b html -c ./docs -d "${DOCS_BUILD}/.doctrees" ./docs "${DOCS_DIST}"
+        -b html -c ./docs -d "${DOCS_BUILD}/.doctrees" ./docs "${DOCS_DIST}"
     dump_return $?
 }
 
@@ -804,25 +821,25 @@ docs.gh-pages() {
     (
         git worktree remove -f "${GH_PAGES}"
         git branch -D gh-pages
-    ) &> /dev/null  || true
+    ) &>/dev/null || true
     git worktree add --no-checkout "${GH_PAGES}" "${remote}/master"
 
-    pushd "${GH_PAGES}" &> /dev/null
+    pushd "${GH_PAGES}" &>/dev/null
     git checkout --orphan gh-pages
     git rm -rfq .
-    popd &> /dev/null
+    popd &>/dev/null
 
     cp -r "${DOCS_DIST}"/* "${GH_PAGES}"/
     touch "${GH_PAGES}/.nojekyll"
-    cat > "${GH_PAGES}/404.html" <<EOF
+    cat >"${GH_PAGES}/404.html" <<EOF
 <html><head><META http-equiv='refresh' content='0;URL=index.html'></head></html>
 EOF
 
-    pushd "${GH_PAGES}" &> /dev/null
+    pushd "${GH_PAGES}" &>/dev/null
     git add --all .
     git commit -q -m "gh-pages build from: ${branch}@${head} (${remote_url})"
     git push -f "${remote}" gh-pages
-    popd &> /dev/null
+    popd &>/dev/null
 
     set +x
     build_msg GH-PAGES "deployed"
@@ -850,14 +867,13 @@ drop_service_account() {
     fi
 }
 
-interactive_shell(){
+interactive_shell() {
 
     # usage:  interactive_shell "${SERVICE_USER}"
 
     echo -e "// exit with [${_BCyan}CTRL-D${_creset}]"
     sudo -H -u "${1}" -i
 }
-
 
 # systemd
 # -------
@@ -883,7 +899,7 @@ systemd_remove_service() {
         return 42
     fi
     systemd_deactivate_service "${1}"
-    rm "${2}"  2>&1 | prefix_stdout
+    rm "${2}" 2>&1 | prefix_stdout
 }
 
 systemd_activate_service() {
@@ -927,7 +943,6 @@ systemctl status --no-pager ${1}.service
 EOF
 }
 
-
 # nginx
 # -----
 
@@ -945,14 +960,14 @@ nginx_distro_setup() {
     NGINX_APPS_AVAILABLE="/etc/nginx/default.apps-available"
 
     case $DIST_ID-$DIST_VERS in
-        ubuntu-*|debian-*)
+        ubuntu-* | debian-*)
             NGINX_PACKAGES="nginx"
             NGINX_DEFAULT_SERVER=/etc/nginx/sites-available/default
             ;;
         arch-*)
             NGINX_PACKAGES="nginx-mainline"
             ;;
-        fedora-*|centos-7)
+        fedora-* | centos-7)
             NGINX_PACKAGES="nginx"
             ;;
         *)
@@ -961,11 +976,11 @@ nginx_distro_setup() {
     esac
 }
 
-install_nginx(){
+install_nginx() {
     info_msg "installing nginx ..."
     pkg_install "${NGINX_PACKAGES}"
     case $DIST_ID-$DIST_VERS in
-        arch-*|fedora-*|centos-7)
+        arch-* | fedora-* | centos-7)
             systemctl enable nginx
             systemctl start nginx
             ;;
@@ -981,8 +996,8 @@ nginx_reload() {
     info_msg "reload nginx .."
     echo
     if ! nginx -t; then
-       err_msg "testing nginx configuration failed"
-       return 42
+        err_msg "testing nginx configuration failed"
+        return 42
     fi
     systemctl restart nginx
 }
@@ -998,16 +1013,16 @@ nginx_install_app() {
 
     for i in "$@"; do
         case $i in
-            -*) template_opts+=("$i");;
-            *)  pos_args+=("$i");;
+            -*) template_opts+=("$i") ;;
+            *) pos_args+=("$i") ;;
         esac
     done
 
     nginx_include_apps_enabled "${NGINX_DEFAULT_SERVER}"
 
     install_template "${template_opts[@]}" \
-                     "${NGINX_APPS_AVAILABLE}/${pos_args[1]}" \
-                     root root 644
+        "${NGINX_APPS_AVAILABLE}/${pos_args[1]}" \
+        root root 644
     nginx_enable_app "${pos_args[1]}"
     info_msg "installed nginx app: ${pos_args[1]}"
 }
@@ -1042,8 +1057,7 @@ nginx_include_apps_enabled() {
     (
         local line
         local stage=0
-        while IFS=  read -r line
-        do
+        while IFS= read -r line; do
             echo "$line"
             if [[ $stage = 0 ]]; then
                 if [[ $line =~ ^[[:space:]]*server*[[:space:]]*\{ ]]; then
@@ -1057,8 +1071,8 @@ nginx_include_apps_enabled() {
                 echo ""
                 stage=2
             fi
-        done < "${server_conf}.bak"
-    ) > "${server_conf}"
+        done <"${server_conf}.bak"
+    ) >"${server_conf}"
 
 }
 
@@ -1095,14 +1109,13 @@ nginx_disable_app() {
     nginx_reload
 }
 
-
 # Apache
 # ------
 
 apache_distro_setup() {
     # shellcheck disable=SC2034
     case $DIST_ID-$DIST_VERS in
-        ubuntu-*|debian-*)
+        ubuntu-* | debian-*)
             # debian uses the /etc/apache2 path, while other distros use
             # the apache default at /etc/httpd
             APACHE_SITES_AVAILABLE="/etc/apache2/sites-available"
@@ -1116,7 +1129,7 @@ apache_distro_setup() {
             APACHE_MODULES="modules"
             APACHE_PACKAGES="apache"
             ;;
-        fedora-*|centos-7)
+        fedora-* | centos-7)
             APACHE_SITES_AVAILABLE="/etc/httpd/sites-available"
             APACHE_SITES_ENABLED="/etc/httpd/sites-enabled"
             APACHE_MODULES="modules"
@@ -1128,13 +1141,13 @@ apache_distro_setup() {
     esac
 }
 
-install_apache(){
+install_apache() {
     info_msg "installing apache ..."
     pkg_install "$APACHE_PACKAGES"
     case $DIST_ID-$DIST_VERS in
-        arch-*|fedora-*|centos-7)
+        arch-* | fedora-* | centos-7)
             if ! grep "IncludeOptional sites-enabled" "/etc/httpd/conf/httpd.conf"; then
-                echo "IncludeOptional sites-enabled/*.conf" >> "/etc/httpd/conf/httpd.conf"
+                echo "IncludeOptional sites-enabled/*.conf" >>"/etc/httpd/conf/httpd.conf"
             fi
             systemctl enable httpd
             systemctl start httpd
@@ -1144,9 +1157,9 @@ install_apache(){
 
 apache_is_installed() {
     case $DIST_ID-$DIST_VERS in
-        ubuntu-*|debian-*) (command -v apachectl) &>/dev/null;;
-        arch-*) (command -v httpd) &>/dev/null;;
-        fedora-*|centos-7) (command -v httpd) &>/dev/null;;
+        ubuntu-* | debian-*) (command -v apachectl) &>/dev/null ;;
+        arch-*) (command -v httpd) &>/dev/null ;;
+        fedora-* | centos-7) (command -v httpd) &>/dev/null ;;
     esac
 }
 
@@ -1155,11 +1168,11 @@ apache_reload() {
     info_msg "reload apache .."
     echo
     case $DIST_ID-$DIST_VERS in
-        ubuntu-*|debian-*)
+        ubuntu-* | debian-*)
             sudo -H apachectl configtest
             sudo -H systemctl force-reload apache2
             ;;
-        arch-*|fedora-*|centos-7)
+        arch-* | fedora-* | centos-7)
             sudo -H httpd -t
             sudo -H systemctl force-reload httpd
             ;;
@@ -1177,14 +1190,14 @@ apache_install_site() {
 
     for i in "$@"; do
         case $i in
-            -*) template_opts+=("$i");;
-            *)  pos_args+=("$i");;
+            -*) template_opts+=("$i") ;;
+            *) pos_args+=("$i") ;;
         esac
     done
 
     install_template "${template_opts[@]}" \
-                     "${APACHE_SITES_AVAILABLE}/${pos_args[1]}" \
-                     root root 644
+        "${APACHE_SITES_AVAILABLE}/${pos_args[1]}" \
+        root root 644
     apache_enable_site "${pos_args[1]}"
     info_msg "installed apache site: ${pos_args[1]}"
 }
@@ -1207,7 +1220,7 @@ apache_enable_site() {
     info_msg "enable apache site: ${CONF}"
 
     case $DIST_ID-$DIST_VERS in
-        ubuntu-*|debian-*)
+        ubuntu-* | debian-*)
             sudo -H a2ensite -q "${CONF}"
             ;;
         arch-*)
@@ -1215,7 +1228,7 @@ apache_enable_site() {
             rm -f "${APACHE_SITES_ENABLED}/${CONF}"
             ln -s "${APACHE_SITES_AVAILABLE}/${CONF}" "${APACHE_SITES_ENABLED}/${CONF}"
             ;;
-        fedora-*|centos-7)
+        fedora-* | centos-7)
             mkdir -p "${APACHE_SITES_ENABLED}"
             rm -f "${APACHE_SITES_ENABLED}/${CONF}"
             ln -s "${APACHE_SITES_AVAILABLE}/${CONF}" "${APACHE_SITES_ENABLED}/${CONF}"
@@ -1233,13 +1246,13 @@ apache_disable_site() {
     info_msg "disable apache site: ${CONF}"
 
     case $DIST_ID-$DIST_VERS in
-        ubuntu-*|debian-*)
+        ubuntu-* | debian-*)
             sudo -H a2dissite -q "${CONF}"
             ;;
         arch-*)
             rm -f "${APACHE_SITES_ENABLED}/${CONF}"
             ;;
-        fedora-*|centos-7)
+        fedora-* | centos-7)
             rm -f "${APACHE_SITES_ENABLED}/${CONF}"
             ;;
     esac
@@ -1256,7 +1269,7 @@ uWSGI_SETUP="${uWSGI_SETUP:=/etc/uwsgi}"
 
 uWSGI_distro_setup() {
     case $DIST_ID-$DIST_VERS in
-        ubuntu-*|debian-*)
+        ubuntu-* | debian-*)
             # init.d --> /usr/share/doc/uwsgi/README.Debian.gz
             # For uWSGI debian uses the LSB init process, this might be changed
             # one day, see https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=833067
@@ -1273,7 +1286,7 @@ uWSGI_distro_setup() {
             uWSGI_APPS_ENABLED="${uWSGI_SETUP}"
             uWSGI_PACKAGES="uwsgi"
             ;;
-        fedora-*|centos-7)
+        fedora-* | centos-7)
             # systemd --> /usr/lib/systemd/system/uwsgi.service
             # Fedora runs uWSGI in emperor-tyrant mode: in Tyrant mode the
             # Emperor will run the vassal using the UID/GID of the vassal
@@ -1287,14 +1300,14 @@ uWSGI_distro_setup() {
         *)
             err_msg "$DIST_ID-$DIST_VERS: uWSGI not yet implemented"
             ;;
-esac
+    esac
 }
 
-install_uwsgi(){
+install_uwsgi() {
     info_msg "installing uwsgi ..."
     pkg_install "$uWSGI_PACKAGES"
     case $DIST_ID-$DIST_VERS in
-        fedora-*|centos-7)
+        fedora-* | centos-7)
             # enable & start should be called once at uWSGI installation time
             systemctl enable uwsgi
             systemctl restart uwsgi
@@ -1311,7 +1324,7 @@ uWSGI_restart() {
     [[ -z $CONF ]] && die_caller 42 "missing argument <myapp.ini>"
     info_msg "restart uWSGI service"
     case $DIST_ID-$DIST_VERS in
-        ubuntu-*|debian-*)
+        ubuntu-* | debian-*)
             # the 'service' method seems broken in that way, that it (re-)starts
             # the whole uwsgi process.
             service uwsgi restart "${CONF%.*}"
@@ -1324,7 +1337,7 @@ uWSGI_restart() {
                 info_msg "[uWSGI:systemd-template] ${CONF} not installed (no need to restart)"
             fi
             ;;
-        fedora-*|centos-7)
+        fedora-* | centos-7)
             # in emperor mode, just touch the file to restart
             if uWSGI_app_enabled "${CONF}"; then
                 touch "${uWSGI_APPS_ENABLED}/${CONF}"
@@ -1360,14 +1373,14 @@ uWSGI_install_app() {
 
     for i in "$@"; do
         case $i in
-            -*) template_opts+=("$i");;
-            *)  pos_args+=("$i");;
+            -*) template_opts+=("$i") ;;
+            *) pos_args+=("$i") ;;
         esac
     done
     mkdir -p "${uWSGI_APPS_AVAILABLE}"
     install_template "${template_opts[@]}" \
-                     "${uWSGI_APPS_AVAILABLE}/${pos_args[1]}" \
-                     "${pos_args[2]:-root}" "${pos_args[3]:-root}" "${pos_args[4]:-644}"
+        "${uWSGI_APPS_AVAILABLE}/${pos_args[1]}" \
+        "${pos_args[2]:-root}" "${pos_args[3]:-root}" "${pos_args[4]:-644}"
     uWSGI_enable_app "${pos_args[1]}"
     uWSGI_restart "${pos_args[1]}"
     info_msg "uWSGI app: ${pos_args[1]} is installed"
@@ -1394,7 +1407,7 @@ uWSGI_app_enabled() {
 
     [[ -z $CONF ]] && die_caller 42 "missing argument <myapp.ini>"
     case $DIST_ID-$DIST_VERS in
-        ubuntu-*|debian-*)
+        ubuntu-* | debian-*)
             [[ -f "${uWSGI_APPS_ENABLED}/${CONF}" ]]
             exit_val=$?
             ;;
@@ -1402,7 +1415,7 @@ uWSGI_app_enabled() {
             systemctl -q is-enabled "uwsgi@${CONF%.*}"
             exit_val=$?
             ;;
-        fedora-*|centos-7)
+        fedora-* | centos-7)
             [[ -f "${uWSGI_APPS_ENABLED}/${CONF}" ]]
             exit_val=$?
             ;;
@@ -1424,7 +1437,7 @@ uWSGI_enable_app() {
 
     [[ -z $CONF ]] && die_caller 42 "missing argument <myapp.ini>"
     case $DIST_ID-$DIST_VERS in
-        ubuntu-*|debian-*)
+        ubuntu-* | debian-*)
             mkdir -p "${uWSGI_APPS_ENABLED}"
             rm -f "${uWSGI_APPS_ENABLED}/${CONF}"
             ln -s "${uWSGI_APPS_AVAILABLE}/${CONF}" "${uWSGI_APPS_ENABLED}/${CONF}"
@@ -1437,7 +1450,7 @@ uWSGI_enable_app() {
             systemctl enable "uwsgi@${CONF%.*}"
             info_msg "enabled uWSGI app: ${CONF} (restart required)"
             ;;
-        fedora-*|centos-7)
+        fedora-* | centos-7)
             mkdir -p "${uWSGI_APPS_ENABLED}"
             rm -f "${uWSGI_APPS_ENABLED}/${CONF}"
             ln -s "${uWSGI_APPS_AVAILABLE}/${CONF}" "${uWSGI_APPS_ENABLED}/${CONF}"
@@ -1458,7 +1471,7 @@ uWSGI_disable_app() {
 
     [[ -z $CONF ]] && die_caller 42 "missing argument <myapp.ini>"
     case $DIST_ID-$DIST_VERS in
-        ubuntu-*|debian-*)
+        ubuntu-* | debian-*)
             service uwsgi stop "${CONF%.*}"
             rm -f "${uWSGI_APPS_ENABLED}/${CONF}"
             info_msg "disabled uWSGI app: ${CONF} (restart uWSGI required)"
@@ -1468,7 +1481,7 @@ uWSGI_disable_app() {
             systemctl disable "uwsgi@${CONF%.*}"
             rm -f "${uWSGI_APPS_ENABLED}/${CONF}"
             ;;
-        fedora-*|centos-7)
+        fedora-* | centos-7)
             # in emperor mode, just remove the app.ini file
             rm -f "${uWSGI_APPS_ENABLED}/${CONF}"
             ;;
@@ -1497,7 +1510,7 @@ pkg_install() {
         return 42
     fi
     case $DIST_ID in
-        ubuntu|debian)
+        ubuntu | debian)
             if [[ $_apt_pkg_info_is_updated == 0 ]]; then
                 export _apt_pkg_info_is_updated=1
                 apt update
@@ -1513,7 +1526,7 @@ pkg_install() {
             # shellcheck disable=SC2068
             dnf install -y $@
             ;;
-	centos)
+        centos)
             # shellcheck disable=SC2068
             yum install -y $@
             ;;
@@ -1533,7 +1546,7 @@ pkg_remove() {
         return 42
     fi
     case $DIST_ID in
-        ubuntu|debian)
+        ubuntu | debian)
             # shellcheck disable=SC2068
             apt-get purge --autoremove --ignore-missing -y $@
             ;;
@@ -1545,7 +1558,7 @@ pkg_remove() {
             # shellcheck disable=SC2068
             dnf remove -y $@
             ;;
-	centos)
+        centos)
             # shellcheck disable=SC2068
             yum remove -y $@
             ;;
@@ -1557,20 +1570,20 @@ pkg_is_installed() {
     # usage: pkg_is_install foopkg || pkg_install foopkg
 
     case $DIST_ID in
-        ubuntu|debian)
-            dpkg -l "$1" &> /dev/null
+        ubuntu | debian)
+            dpkg -l "$1" &>/dev/null
             return $?
             ;;
         arch)
-            pacman -Qsq "$1" &> /dev/null
+            pacman -Qsq "$1" &>/dev/null
             return $?
             ;;
         fedora)
-            dnf list -q --installed "$1" &> /dev/null
+            dnf list -q --installed "$1" &>/dev/null
             return $?
             ;;
-	centos)
-            yum list -q --installed "$1" &> /dev/null
+        centos)
+            yum list -q --installed "$1" &>/dev/null
             return $?
             ;;
     esac
@@ -1609,16 +1622,16 @@ git_clone() {
     [[ -z $user ]] && [[ -n "${SUDO_USER}" ]] && user="${SUDO_USER}"
     [[ -n $user ]] && bash_cmd="sudo -H -u $user -i"
 
-    if [[ -d "${dest}" ]] ; then
+    if [[ -d "${dest}" ]]; then
         info_msg "already cloned: $dest"
-        tee_stderr 0.1 <<EOF | $bash_cmd 2>&1 |  prefix_stdout "  ${_Yellow}|$user|${_creset} "
+        tee_stderr 0.1 <<EOF | $bash_cmd 2>&1 | prefix_stdout "  ${_Yellow}|$user|${_creset} "
 cd "${dest}"
 git checkout -m -B "$branch" --track "$remote/$branch"
 git pull --all
 EOF
     else
         info_msg "clone into: $dest"
-        tee_stderr 0.1 <<EOF | $bash_cmd 2>&1 |  prefix_stdout "  ${_Yellow}|$user|${_creset} "
+        tee_stderr 0.1 <<EOF | $bash_cmd 2>&1 | prefix_stdout "  ${_Yellow}|$user|${_creset} "
 mkdir -p "$(dirname "$dest")"
 cd "$(dirname "$dest")"
 git clone --branch "$branch" --origin "$remote" "$url" "$(basename "$dest")"
@@ -1626,151 +1639,10 @@ EOF
     fi
 }
 
-# containers
-# ----------
-
-in_container() {
-    # Test if shell runs in a container.
-    #
-    # usage:  in_container && echo "process running inside a LXC container"
-    #         in_container || echo "process is not running inside a LXC container"
-    #
-    # sudo_or_exit
-    # hint:   Reads init process environment, therefore root access is required!
-    # to be safe, take a look at the environment of process 1 (/sbin/init)
-    # grep -qa 'container=lxc' /proc/1/environ
-
-    # see lxc_init_container_env
-    [[ -f /.lxcenv ]]
-}
-
-LXC_ENV_FOLDER=
-if in_container; then
-    # shellcheck disable=SC2034
-    LXC_ENV_FOLDER="lxc-env/$(hostname)/"
-    PY_ENV="${LXC_ENV_FOLDER}${PY_ENV}"
-    PY_ENV_BIN="${LXC_ENV_FOLDER}${PY_ENV_BIN}"
-    PYDIST="${LXC_ENV_FOLDER}${PYDIST}"
-    PYBUILD="${LXC_ENV_FOLDER}${PYBUILD}"
-    DOCS_DIST="${LXC_ENV_FOLDER}${DOCS_DIST}"
-    DOCS_BUILD="${LXC_ENV_FOLDER}${DOCS_BUILD}"
-fi
-
-lxc_init_container_env() {
-
-    # usage: lxc_init_container_env <name>
-
-    # Create a /.lxcenv file in the root folder.  Call this once after the
-    # container is initial started and before installing any boilerplate stuff.
-
-    info_msg "create /.lxcenv in container $1"
-    cat <<EOF | lxc exec "${1}" -- bash | prefix_stdout "[${_BBlue}${1}${_creset}] "
-touch "/.lxcenv"
-ls -l "/.lxcenv"
-EOF
-}
-
-# apt packages
-LXC_BASE_PACKAGES_debian="bash git build-essential python3 python3-venv python-is-python3"
-
-# pacman packages
-LXC_BASE_PACKAGES_arch="bash git base-devel python"
-
-# dnf packages
-LXC_BASE_PACKAGES_fedora="bash git @development-tools python"
-
-# yum packages
-LXC_BASE_PACKAGES_centos="bash git python3"
-
-lxc_distro_setup() {
-    case $DIST_ID in
-        ubuntu|debian) LXC_BASE_PACKAGES="${LXC_BASE_PACKAGES_debian}" ;;
-        arch)          LXC_BASE_PACKAGES="${LXC_BASE_PACKAGES_arch}" ;;
-        fedora)        LXC_BASE_PACKAGES="${LXC_BASE_PACKAGES_fedora}" ;;
-        centos)        LXC_BASE_PACKAGES="${LXC_BASE_PACKAGES_centos}" ;;
-        *) err_msg "$DIST_ID-$DIST_VERS: pkg_install LXC_BASE_PACKAGES not yet implemented" ;;
-    esac
-}
-
-lxc_install_base_packages() {
-    info_msg "install LXC_BASE_PACKAGES in container $1"
-    case $DIST_ID in
-        centos) yum groupinstall "Development Tools" -y  ;;
-    esac
-    pkg_install "${LXC_BASE_PACKAGES}"
-}
-
-
-lxc_image_copy() {
-
-    # usage: lxc_image_copy <remote image> <local image>
-    #
-    #        lxc_image_copy "images:ubuntu/20.04"  "ubu2004"
-
-    if lxc_image_exists "local:${LXC_SUITE[i+1]}"; then
-        info_msg "image ${LXC_SUITE[i]} already copied --> ${LXC_SUITE[i+1]}"
-    else
-        info_msg "copy image locally ${LXC_SUITE[i]} --> ${LXC_SUITE[i+1]}"
-        lxc image copy "${LXC_SUITE[i]}" local: \
-            --alias  "${LXC_SUITE[i+1]}" | prefix_stdout
-    fi
-}
-
-lxc_init_container() {
-
-    # usage: lxc_init_container <image name> <container name>
-
-    local image_name="$1"
-    local container_name="$2"
-
-    if lxc info "${container_name}" &>/dev/null; then
-        info_msg "container '${container_name}' already exists"
-    else
-        info_msg "create container instance: ${container_name}"
-        lxc init "local:${image_name}" "${container_name}"
-    fi
-}
-
-lxc_exists(){
-
-    # usage: lxc_exists <name> || echo "container <name> does not exists"
-
-    lxc info "$1" &>/dev/null
-}
-
-lxc_image_exists(){
-    # usage: lxc_image_exists <alias> || echo "image <alias> does locally not exists"
-
-    lxc image info "local:$1" &>/dev/null
-
-}
-
-lxc_delete_container() {
-
-    #  usage: lxc_delete_container <container-name>
-
-    if lxc info "$1" &>/dev/null; then
-        info_msg "stop & delete instance ${_BBlue}${1}${_creset}"
-        lxc stop "$1" &>/dev/null
-        lxc delete "$1" | prefix_stdout
-    else
-        warn_msg "instance '$1' does not exist / can't delete :o"
-    fi
-}
-
-lxc_delete_local_image() {
-
-    #  usage: lxc_delete_local_image <container-name>
-
-    info_msg "delete image 'local:$i'"
-    lxc image delete "local:$i"
-}
-
-
 # IP
 # --
 
-global_IPs(){
+global_IPs() {
     # usage: global_IPS
     #
     # print list of host's SCOPE global addresses and adapters e.g::
@@ -1787,18 +1659,18 @@ primary_ip() {
 
     case $DIST_ID in
         arch)
-            ip -o addr show \
-                | sed -nr 's/[0-9]*:\s*([a-z0-9]*).*inet[6]?\s*([a-z0-9.:]*).*scope global.*/\2/p' \
-                | head -n 1
+            ip -o addr show |
+                sed -nr 's/[0-9]*:\s*([a-z0-9]*).*inet[6]?\s*([a-z0-9.:]*).*scope global.*/\2/p' |
+                head -n 1
             ;;
-        *)  hostname -I | cut -d' ' -f1 ;;
+        *) hostname -I | cut -d' ' -f1 ;;
     esac
 }
 
 # URL
 # ---
 
-url_replace_hostname(){
+url_replace_hostname() {
 
     # usage:  url_replace_hostname <url> <new hostname>
 
