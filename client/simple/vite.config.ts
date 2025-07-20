@@ -3,11 +3,13 @@
  */
 
 import { resolve } from "node:path";
+import { constants as zlibConstants } from "node:zlib";
 import browserslistToEsbuild from "browserslist-to-esbuild";
 import { browserslistToTargets } from "lightningcss";
 import type { Config } from "svgo";
 import type { UserConfig } from "vite";
-import { browserslist } from "./package.json";
+import analyzer from "vite-bundle-analyzer";
+import manifest from "./package.json";
 import { plg_svg2png, plg_svg2svg } from "./tools/plg";
 
 const ROOT = "../../"; // root of the git repository
@@ -35,8 +37,8 @@ export default {
   // mode: "development",
 
   build: {
-    target: browserslistToEsbuild(browserslist),
-    cssTarget: browserslistToEsbuild(browserslist),
+    target: browserslistToEsbuild(manifest.browserslist),
+    cssTarget: browserslistToEsbuild(manifest.browserslist),
     manifest: "manifest.json",
     emptyOutDir: true,
     assetsDir: "",
@@ -85,6 +87,24 @@ export default {
   }, // end: build
 
   plugins: [
+    // -- bundle analyzer
+    analyzer({
+      enabled: process.env.VITE_BUNDLE_ANALYZE === "true",
+      analyzerPort: "auto",
+      summary: true,
+      reportTitle: manifest.name,
+
+      // sidecars with max compression
+      gzipOptions: {
+        level: zlibConstants.Z_BEST_COMPRESSION
+      },
+      brotliOptions: {
+        params: {
+          [zlibConstants.BROTLI_PARAM_QUALITY]: zlibConstants.BROTLI_MAX_QUALITY
+        }
+      }
+    }),
+
     // -- svg images
     plg_svg2svg(
       [
@@ -134,7 +154,7 @@ export default {
   css: {
     transformer: "lightningcss",
     lightningcss: {
-      targets: browserslistToTargets(browserslist)
+      targets: browserslistToTargets(manifest.browserslist)
     },
     devSourcemap: true
   }, // end: css
