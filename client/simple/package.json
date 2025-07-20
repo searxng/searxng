@@ -1,6 +1,7 @@
 {
   "$schema": "https://json.schemastore.org/package.json",
-  "name": "simple",
+  "name": "@searxng/theme-simple",
+  "version": "0.0.0",
   "private": true,
   "license": "AGPL-3.0",
   "type": "module",
@@ -23,26 +24,28 @@
     "Safari >= 15.4",
     "not dead"
   ],
+  "dependencies": {
+    "ionicons": "~8.0.13",
+    "normalize.css": "8.0.1",
+    "ol": "~10.6.1",
+    "swiped-events": "1.2.0"
+  },
   "devDependencies": {
-    "@biomejs/biome": "~2.1.0",
-    "@types/node": "^24.0.0",
-    "browserslist": "^4.25.1",
-    "browserslist-to-esbuild": "^2.1.1",
-    "edge.js": "^6.2.1",
-    "ionicons": "^8.0.10",
-    "less": "^4.3.0",
-    "lightningcss": "^1.30.1",
-    "normalize.css": "^8.0.1",
-    "ol": "^10.6.1",
-    "sharp": "^0.34.3",
-    "sort-package-json": "^3.4.0",
-    "stylelint": "^16.21.1",
-    "stylelint-config-standard-less": "^3.0.1",
-    "stylelint-prettier": "^5.0.3",
-    "svgo": "^4.0.0",
-    "swiped-events": "^1.2.0",
+    "@biomejs/biome": "2.1.2",
+    "@types/node": "~24.0.15",
+    "browserslist": "~4.25.1",
+    "browserslist-to-esbuild": "~2.1.1",
+    "edge.js": "~6.2.1",
+    "less": "~4.4.0",
+    "lightningcss": "~1.30.1",
+    "sharp": "~0.34.3",
+    "sort-package-json": "~3.4.0",
+    "stylelint": "~16.22.0",
+    "stylelint-config-standard-less": "~3.0.1",
+    "stylelint-prettier": "~5.0.3",
+    "svgo": "~4.0.0",
     "typescript": "~5.8.3",
-    "vite": "npm:rolldown-vite@~7.0.8",
-    "vite-plugin-static-copy": "^3.1.0"
+    "vite": "npm:rolldown-vite@~7.0.9",
+    "vite-bundle-analyzer": "~1.1.0"
   }
 }
