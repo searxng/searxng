@@ -29,6 +29,15 @@ themes.simple() {
     dump_return $?
 }
 
+themes.simple.analyze() {
+    (
+        set -e
+        build_msg SIMPLE "theme: run analyze (simple)"
+        vite.simple.analyze
+    )
+    dump_return $?
+}
+
 themes.fix() {
     (
         set -e
