@@ -8,10 +8,10 @@ from :py:obj:`BANGS_URL`.
 """
 
 import json
-import httpx
 
 from searx.external_bang import LEAF_KEY
 from searx.data import data_dir
+from searx.network import get as http_get
 
 DATA_FILE = data_dir / 'external_bangs.json'
 
@@ -24,7 +24,7 @@ HTTP_COLON = 'http:'
 
 def main():
     print(f'fetch bangs from {BANGS_URL}')
-    response = httpx.get(BANGS_URL)
+    response = http_get(BANGS_URL)
     response.raise_for_status()
     ddg_bangs = json.loads(response.content.decode())
     trie = parse_ddg_bangs(ddg_bangs)
