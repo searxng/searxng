@@ -98,7 +98,10 @@ def response(resp):
     if baidu_category == 'images':
         # baidu's JSON encoder wrongly quotes / and ' characters by \\ and \'
         text = text.replace(r"\/", "/").replace(r"\'", "'")
-    data = json.loads(text, strict=False)
+    try:
+        data = json.loads(text, strict=False)
+    except json.JSONDecodeError:
+        return []
     parsers = {'general': parse_general, 'images': parse_images, 'it': parse_it}
 
     return parsers[baidu_category](data)
