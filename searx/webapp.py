@@ -30,6 +30,9 @@ from pygments.formatters import HtmlFormatter  # pylint: disable=no-name-in-modu
 
 from werkzeug.serving import is_running_from_reloader
 
+from whitenoise import WhiteNoise
+from whitenoise.base import Headers
+
 import flask
 
 from flask import (
@@ -147,7 +150,7 @@ STATS_SORT_PARAMETERS = {
 }
 
 # Flask app
-app = Flask(__name__, static_folder=settings['ui']['static_path'], template_folder=templates_path)
+app = Flask(__name__, static_folder=None, template_folder=templates_path)
 
 app.jinja_env.trim_blocks = True
 app.jinja_env.lstrip_blocks = True
@@ -245,6 +248,7 @@ def custom_url_for(endpoint: str, **values):
     if not _STATIC_FILES:
         _STATIC_FILES = webutils.get_static_file_list()
 
+    # handled by WhiteNoise
     if endpoint == "static" and values.get("filename"):
 
         # We need to verify the "filename" argument: in the jinja templates
@@ -257,9 +261,11 @@ def custom_url_for(endpoint: str, **values):
         if arg_filename not in _STATIC_FILES:
             # try file in the current theme
             theme_name = sxng_request.preferences.get_value("theme")
-            arg_filename = f"themes/{theme_name}/{arg_filename}"
-            if arg_filename in _STATIC_FILES:
-                values["filename"] = arg_filename
+            theme_filename = f"themes/{theme_name}/{arg_filename}"
+            if theme_filename in _STATIC_FILES:
+                values["filename"] = theme_filename
+
+        return f"/static/{values['filename']}"
 
     if endpoint == "info" and "locale" not in values:
 
@@ -1424,7 +1430,22 @@ def init():
     favicons.init()
 
 
-application = app
+def static_headers(headers: Headers, _path: str, _url: str) -> None:
+    headers['Cache-Control'] = 'public, max-age=30, stale-while-revalidate=60'
+
+    for header, value in settings['server']['default_http_headers'].items():
+        headers[header] = value
+
+
+app.wsgi_app = WhiteNoise(
+    app.wsgi_app,
+    root=settings['ui']['static_path'],
+    prefix="static",
+    max_age=None,
+    allow_all_origins=False,
+    add_headers_function=static_headers,
+)
+
 patch_application(app)
 init()
 

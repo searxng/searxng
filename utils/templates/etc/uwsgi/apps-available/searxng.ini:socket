@@ -75,7 +75,4 @@ pythonpath = ${SEARXNG_SRC}
 socket = ${SEARXNG_UWSGI_SOCKET}
 buffer-size = 8192
 
-# To serve the static files via the WSGI server
-static-map = /static=${SEARXNG_STATIC}
-static-gzip-all = True
 offload-threads = %k
