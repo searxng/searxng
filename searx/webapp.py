@@ -1447,6 +1447,10 @@ app.wsgi_app = WhiteNoise(
 )
 
 patch_application(app)
+
+# remove when we drop support for uwsgi
+application = app
+
 init()
 
 if __name__ == "__main__":
