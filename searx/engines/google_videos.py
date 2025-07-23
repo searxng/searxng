@@ -10,17 +10,13 @@
 
 .. _data URLs:
    https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/Data_URIs
-
 """
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
-
-from urllib.parse import urlencode
+from urllib.parse import urlencode, urlparse, parse_qs
 from lxml import html
 
 from searx.utils import (
-    eval_xpath,
     eval_xpath_list,
     eval_xpath_getindex,
     extract_text,
@@ -39,11 +35,6 @@ from searx.engines.google import (
 from searx.enginelib.traits import EngineTraits
 from searx.utils import get_embeded_stream_url
 
-if TYPE_CHECKING:
-    import logging
-
-    logger: logging.Logger
-
 traits: EngineTraits
 
 # about
@@ -57,14 +48,9 @@ about = {
 }
 
 # engine dependent config
-
 categories = ['videos', 'web']
 paging = True
 max_page = 50
-"""`Google: max 50 pages`
-
-.. _Google: max 50 pages: https://github.com/searxng/searxng/issues/2982
-"""
 language_support = True
 time_range_support = True
 safesearch = True
@@ -72,7 +58,6 @@ safesearch = True
 
 def request(query, params):
     """Google-Video search request"""
-
     google_info = get_google_info(params, traits)
     start = (params['pageno'] - 1) * 10
 
@@ -85,7 +70,7 @@ def request(query, params):
             {
                 'q': query,
                 'tbm': "vid",
-                'start': 10 * params['pageno'],
+                'start': start,
                 **google_info['params'],
                 'asearch': 'arc',
                 'async': ui_async(start),
@@ -114,40 +99,66 @@ def response(resp):
     # convert the text to dom
     dom = html.fromstring(resp.text)
 
+    result_divs = eval_xpath_list(dom, '//div[contains(@class, "MjjYud")]')
+
     # parse results
-    for result in eval_xpath_list(dom, '//div[contains(@class, "g ")]'):
-
-        thumbnail = eval_xpath_getindex(result, './/img/@src', 0, None)
-        if thumbnail:
-            if thumbnail.startswith('data:image'):
-                img_id = eval_xpath_getindex(result, './/img/@id', 0, None)
-                if img_id:
-                    thumbnail = data_image_map.get(img_id)
-        else:
-            thumbnail = None
-
-        title = extract_text(eval_xpath_getindex(result, './/a/h3[1]', 0))
-        url = eval_xpath_getindex(result, './/a/h3[1]/../@href', 0)
-
-        c_node = eval_xpath_getindex(result, './/div[contains(@class, "ITZIwc")]', 0)
-        content = extract_text(c_node)
-        pub_info = extract_text(eval_xpath(result, './/div[contains(@class, "gqF9jc")]'))
-
-        results.append(
-            {
-                'url': url,
-                'title': title,
-                'content': content,
-                'author': pub_info,
-                'thumbnail': thumbnail,
-                'iframe_src': get_embeded_stream_url(url),
-                'template': 'videos.html',
-            }
+    for result in result_divs:
+        title = extract_text(
+            eval_xpath_getindex(result, './/h3[contains(@class, "LC20lb")]', 0, default=None), allow_none=True
         )
+        url = eval_xpath_getindex(result, './/a[@jsname="UWckNb"]/@href', 0, default=None)
+        content = extract_text(
+            eval_xpath_getindex(result, './/div[contains(@class, "ITZIwc")]', 0, default=None), allow_none=True
+        )
+        pub_info = extract_text(
+            eval_xpath_getindex(result, './/div[contains(@class, "gqF9jc")]', 0, default=None), allow_none=True
+        )
+        # Broader XPath to find any <img> element
+        thumbnail = eval_xpath_getindex(result, './/img/@src', 0, default=None)
+        duration = extract_text(
+            eval_xpath_getindex(result, './/span[contains(@class, "k1U36b")]', 0, default=None), allow_none=True
+        )
+        video_id = eval_xpath_getindex(result, './/div[@jscontroller="rTuANe"]/@data-vid', 0, default=None)
+
+        # Fallback for video_id from URL if not found via XPath
+        if not video_id and url and 'youtube.com' in url:
+            parsed_url = urlparse(url)
+            video_id = parse_qs(parsed_url.query).get('v', [None])[0]
+
+        # Handle thumbnail
+        if thumbnail and thumbnail.startswith('data:image'):
+            img_id = eval_xpath_getindex(result, './/img/@id', 0, default=None)
+            if img_id and img_id in data_image_map:
+                thumbnail = data_image_map[img_id]
+            else:
+                thumbnail = None
+        if not thumbnail and video_id:
+            thumbnail = f"https://img.youtube.com/vi/{video_id}/hqdefault.jpg"
+
+        # Handle video embed URL
+        embed_url = None
+        if video_id:
+            embed_url = get_embeded_stream_url(f"https://www.youtube.com/watch?v={video_id}")
+        elif url:
+            embed_url = get_embeded_stream_url(url)
+
+        # Only append results with valid title and url
+        if title and url:
+            results.append(
+                {
+                    'url': url,
+                    'title': title,
+                    'content': content or '',
+                    'author': pub_info,
+                    'thumbnail': thumbnail,
+                    'length': duration,
+                    'iframe_src': embed_url,
+                    'template': 'videos.html',
+                }
+            )
 
     # parse suggestion
     for suggestion in eval_xpath_list(dom, suggestion_xpath):
-        # append suggestion
         results.append({'suggestion': extract_text(suggestion)})
 
     return results
