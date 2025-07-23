@@ -6,7 +6,6 @@
 # pylint: disable=use-dict-literal
 from __future__ import annotations
 
-import inspect
 import json
 import os
 import sys
@@ -27,8 +26,6 @@ import httpx
 from pygments import highlight
 from pygments.lexers import get_lexer_by_name
 from pygments.formatters import HtmlFormatter  # pylint: disable=no-name-in-module
-
-from werkzeug.serving import is_running_from_reloader
 
 from whitenoise import WhiteNoise
 from whitenoise.base import Headers
@@ -1364,38 +1361,6 @@ def run():
         app.run(port=port, host=host, threaded=True)
 
 
-def is_werkzeug_reload_active() -> bool:
-    """Returns ``True`` if server is is launched by :ref:`werkzeug.serving` and
-    the ``use_reload`` argument was set to ``True``.  If this is the case, it
-    should be avoided that the server is initialized twice (:py:obj:`init`,
-    :py:obj:`run`).
-
-    .. _werkzeug.serving:
-       https://werkzeug.palletsprojects.com/en/stable/serving/#werkzeug.serving.run_simple
-    """
-    logger.debug("sys.argv: %s", sys.argv)
-    if "uwsgi" in sys.argv[0] or "granian" in sys.argv[0]:
-        # server was launched by granian (or uWSGI)
-        return False
-
-    # https://github.com/searxng/searxng/pull/1656#issuecomment-1214198941
-    # https://github.com/searxng/searxng/pull/1616#issuecomment-1206137468
-
-    frames = inspect.stack()
-
-    if len(frames) > 1 and frames[-2].filename.endswith('flask/cli.py'):
-        # server was launched by "flask run", is argument "--reload" set?
-        if "--reload" in sys.argv or "--debug" in sys.argv:
-            return True
-
-    elif frames[0].filename.endswith('searx/webapp.py'):
-        # server was launched by "python -m searx.webapp" / see run()
-        if searx.sxng_debug:
-            return True
-
-    return False
-
-
 def init():
 
     if searx.sxng_debug or app.debug:
@@ -1407,17 +1372,6 @@ def init():
     if not app.debug and get_setting("server.secret_key") == 'ultrasecretkey':
         logger.error("server.secret_key is not changed. Please use something else instead of ultrasecretkey.")
         sys.exit(1)
-
-    # When automatic reloading is activated stop Flask from initialising twice.
-    # - https://github.com/pallets/flask/issues/5307#issuecomment-1774646119
-    # - https://stackoverflow.com/a/25504196
-
-    reloader_active = is_werkzeug_reload_active()
-    werkzeug_run_main = is_running_from_reloader()
-
-    if reloader_active and not werkzeug_run_main:
-        logger.info("in reloading mode and not in main loop, cancel the initialization")
-        return
 
     locales_initialize()
     valkey_initialize()
