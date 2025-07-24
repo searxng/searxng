@@ -265,7 +265,7 @@ def custom_url_for(endpoint: str, **values):
             if theme_filename in _STATIC_FILES:
                 values["filename"] = theme_filename
 
-        return f"/static/{values['filename']}"
+        return f"static/{values['filename']}"
 
     if endpoint == "info" and "locale" not in values:
 
