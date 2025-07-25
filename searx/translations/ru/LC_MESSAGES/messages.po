@@ -30,22 +30,25 @@
 # return42 <return42@noreply.codeberg.org>, 2025.
 # yurtpage <yurtpage@noreply.codeberg.org>, 2025.
 # kotovasia <kotovasia@noreply.codeberg.org>, 2025.
+# IcewindX <icewindx@noreply.codeberg.org>, 2025.
+# 0ko <0ko@noreply.codeberg.org>, 2025.
 msgid ""
 msgstr ""
-"Project-Id-Version:  searx\n"
+"Project-Id-Version: searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-07-03 14:46+0000\n"
-"PO-Revision-Date: 2025-07-03 10:26+0000\n"
-"Last-Translator: return42 <return42@noreply.codeberg.org>\n"
+"PO-Revision-Date: 2025-07-23 11:09+0000\n"
+"Last-Translator: IcewindX <icewindx@noreply.codeberg.org>\n"
+"Language-Team: Russian <https://translate.codeberg.org/projects/searxng/"
+"searxng/ru/>\n"
 "Language: ru\n"
-"Language-Team: Russian "
-"<https://translate.codeberg.org/projects/searxng/searxng/ru/>\n"
-"Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
-"n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) "
-"|| (n%100>=11 && n%100<=14)? 2 : 3);\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || ("
+"n%100>=11 && n%100<=14)? 2 : 3);\n"
+"X-Generator: Weblate 5.12.2\n"
 "Generated-By: Babel 2.17.0\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
@@ -577,7 +580,7 @@ msgstr "Не удалось загрузить следующую страниц
 
 #: searx/webapp.py:447 searx/webapp.py:845
 msgid "Invalid settings, please edit your preferences"
-msgstr "Неправильные параметры, пожалуйста измените ваши настройки"
+msgstr "Неправильные параметры, пожалуйста, измените ваши настройки"
 
 #: searx/webapp.py:463
 msgid "Invalid settings"
@@ -711,7 +714,7 @@ msgid ""
 "format. TinEye only supports images that are JPEG, PNG, GIF, BMP, TIFF or"
 " WebP."
 msgstr ""
-"Не удалось прочитать изображение по ссылки. Возможно это вызвано "
+"Не удалось прочитать изображение по ссылке. Возможно это вызвано "
 "неподдерживаемым форматом файла. TinEye поддерживает только следующие "
 "форматы: JPEG, PNG, GIF, BMP, TIFF or WebP."
 
@@ -807,7 +810,7 @@ msgstr "Ваш IP-адрес: "
 
 #: searx/plugins/self_info.py:55
 msgid "Your user-agent is: "
-msgstr "Ваш обозреватель: "
+msgstr "Ваш браузер: "
 
 #: searx/plugins/tor_check.py:42
 msgid "Tor check plugin"
@@ -828,7 +831,7 @@ msgstr "Не удалось загрузить список выходных у�
 
 #: searx/plugins/tor_check.py:72
 msgid "You are using Tor and it looks like you have the external IP address"
-msgstr "Вы используете Tor и кажется что у вас есть внешний айпи адрес"
+msgstr "Вы используете Tor и кажется что у вас есть внешний IP-адрес"
 
 #: searx/plugins/tor_check.py:76
 msgid "You are not using Tor and you have the external IP address"
@@ -939,7 +942,7 @@ msgstr "Создайте задачу на GitHub"
 
 #: searx/templates/simple/new_issue.html:66
 msgid "Please check for existing bugs about this engine on GitHub"
-msgstr "Пожалуйста проверьте ныне существующие ошибки этого движка на GitHub"
+msgstr "Пожалуйста, проверьте ныне существующие ошибки этого движка на GitHub"
 
 #: searx/templates/simple/new_issue.html:69
 msgid "I confirm there is no existing bug about the issue I encounter"
@@ -1193,7 +1196,7 @@ msgstr "Сообщения от поисковых систем"
 
 #: searx/templates/simple/elements/engines_msg.html:7
 msgid "seconds"
-msgstr "секунды"
+msgstr "сек."
 
 #: searx/templates/simple/elements/search_url.html:3
 msgid "Search URL"
@@ -1250,7 +1253,7 @@ msgstr "Умеренный"
 #: searx/templates/simple/filters/safesearch.html:4
 #: searx/templates/simple/preferences/safesearch.html:15
 msgid "None"
-msgstr "Нету"
+msgstr "Нет"
 
 #: searx/templates/simple/filters/time_range.html:1
 #: searx/templates/simple/preferences/engines.html:28
@@ -1361,13 +1364,13 @@ msgstr "Выравнивание по центру"
 
 #: searx/templates/simple/preferences/center_alignment.html:14
 msgid "Display results in the center of the page (Oscar layout)."
-msgstr "Отображать результаты в центре страницы."
+msgstr "Отображать результаты по центру страницы."
 
 #: searx/templates/simple/preferences/cookies.html:2
 msgid ""
 "This is the list of cookies and their values SearXNG is storing on your "
 "computer."
-msgstr "Список cookies и их значений, которые SearXNG хранит в вашем обозревателе."
+msgstr "Список cookies и их значений, которые SearXNG хранит в вашем браузере."
 
 #: searx/templates/simple/preferences/cookies.html:3
 msgid "With this list, you can assess the transparency of SearXNG."
@@ -1395,7 +1398,7 @@ msgstr ""
 
 #: searx/templates/simple/preferences/cookies.html:35
 msgid "URL to restore your preferences in another browser"
-msgstr "URL-адрес для восстановления ваших настроек в другом обозревателе"
+msgstr "URL-адрес для восстановления ваших настроек в другом браузере"
 
 #: searx/templates/simple/preferences/cookies.html:43
 msgid ""
@@ -1520,7 +1523,7 @@ msgstr "Прокси для картинок"
 
 #: searx/templates/simple/preferences/image_proxy.html:14
 msgid "Proxy image results through SearXNG"
-msgstr "Результаты прокси-изображения через SearXNG"
+msgstr "Проксировать найденные изображения через SearXNG"
 
 #: searx/templates/simple/preferences/infinite_scroll.html:2
 msgid "Infinite scroll"
@@ -1561,8 +1564,8 @@ msgid ""
 "When enabled, the result page's title contains your query. Your browser "
 "can record this title"
 msgstr ""
-"Добавить поисковый запрос в заголовок страницы с результатами. "
-"Обозреватель может сохранять этот заголовок"
+"Добавить поисковый запрос в заголовок страницы с результатами. Ваш браузер "
+"может сохранять этот заголовок"
 
 #: searx/templates/simple/preferences/results_on_new_tab.html:2
 msgid "Results in new tabs"
@@ -1570,7 +1573,7 @@ msgstr "Результаты в новых вкладках"
 
 #: searx/templates/simple/preferences/results_on_new_tab.html:14
 msgid "Open result links in new browser tabs"
-msgstr "Открывать результаты с ссылками в новых вкладках обозревателя"
+msgstr "Открывать результаты с ссылками в новых вкладках браузера"
 
 #: searx/templates/simple/preferences/safesearch.html:20
 msgid "Filter content"
@@ -1594,7 +1597,7 @@ msgstr "Тема"
 
 #: searx/templates/simple/preferences/theme.html:14
 msgid "Change the layout of SearXNG"
-msgstr "Изменить макет SearXNG"
+msgstr "Изменить раскладку интерфейса SearXNG"
 
 #: searx/templates/simple/preferences/theme.html:19
 msgid "Theme style"
@@ -1602,7 +1605,7 @@ msgstr "Стиль темы"
 
 #: searx/templates/simple/preferences/theme.html:31
 msgid "Choose auto to follow your browser settings"
-msgstr "Выберите «автоматически» для использования настроек вашего обозревателя"
+msgstr "Выберите «автоматически» для использования настроек вашего браузера"
 
 #: searx/templates/simple/preferences/tokens.html:2
 msgid "Engine tokens"
@@ -2390,4 +2393,3 @@ msgstr "скрыть видео"
 
 #~ msgid "Change SearXNG layout"
 #~ msgstr "Изменить расположение элементов SearXNG"
-
