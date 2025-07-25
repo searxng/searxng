@@ -126,7 +126,20 @@ webapp.run() {
         sleep 3
         xdg-open http://127.0.0.1:8888/
     )&
-    SEARXNG_DEBUG=1 pyenv.cmd python -m searx.webapp
+    SEARXNG_DEBUG=1 \
+        GRANIAN_RELOAD="true" \
+        GRANIAN_RELOAD_IGNORE_WORKER_FAILURE="true" \
+        GRANIAN_RELOAD_PATHS="./searx" \
+        GRANIAN_PROCESS_NAME="searxng" \
+        GRANIAN_INTERFACE="wsgi" \
+        GRANIAN_HOST="::" \
+        GRANIAN_PORT="8888" \
+        GRANIAN_WEBSOCKETS="false" \
+        GRANIAN_LOOP="uvloop" \
+        GRANIAN_BLOCKING_THREADS="4" \
+        GRANIAN_WORKERS_KILL_TIMEOUT="30" \
+        GRANIAN_BLOCKING_THREADS_IDLE_TIMEOUT="300" \
+        pyenv.cmd granian searx.webapp:app
 }
 
 # shellcheck disable=SC2119

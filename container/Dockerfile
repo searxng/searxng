@@ -1,11 +1,11 @@
 FROM ghcr.io/searxng/base:searxng-builder AS builder
 
-COPY ./requirements.txt ./requirements.txt
+COPY ./requirements*.txt ./
 
 RUN --mount=type=cache,id=pip,target=/root/.cache/pip python -m venv ./venv \
  && . ./venv/bin/activate \
  && pip install -r requirements.txt \
- && pip install "granian~=2.0"
+ && pip install -r requirements-server.txt
 
 COPY ./searx/ ./searx/
 
