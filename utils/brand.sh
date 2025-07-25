@@ -27,6 +27,6 @@ build.env.export() {
 
 }
 
-pushd "${REPO_ROOT}" &> /dev/null
+pushd "${REPO_ROOT}" &>/dev/null
 build.env.export
-popd &> /dev/null
+popd &>/dev/null

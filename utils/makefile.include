@@ -1,22 +1,8 @@
 # -*- coding: utf-8; mode: makefile-gmake -*-
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
-ifeq (,$(wildcard /.lxcenv.mk))
-PHONY += lxc-activate lxc-purge
-lxc-activate:
-	@$(MAKE) -s -f "$$(dirname $(abspath $(lastword $(MAKEFILE_LIST))))/makefile.lxc" lxc-activate
-lxc-purge:
-	$(Q)rm -rf ./lxc-env
-else
-	include /.lxcenv.mk
-endif
-
 PHONY += make-help
-ifeq (,$(wildcard /.lxcenv.mk))
 make-help:
-else
-make-help: lxc-help
-endif
 	@echo  'options:'
 	@echo  '  make V=0|1 [targets] 0 => quiet build (default), 1 => verbose build'
 	@echo  '  make V=2   [targets] 2 => give reason for rebuild of target'
