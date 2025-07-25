@@ -101,7 +101,7 @@ def request(query, params):
 def _match_query(query):
     """
     The standard for full text queries.
-    searx format: "key:value" e.g. city:berlin
+    SearXNG format: "key:value" e.g. city:berlin
     REF: https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-match-query.html
     """
 

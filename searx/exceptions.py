@@ -97,7 +97,7 @@ class SearxEngineCaptchaException(SearxEngineAccessDeniedException):
 class SearxEngineTooManyRequestsException(SearxEngineAccessDeniedException):
     """The website has returned a Too Many Request status code
 
-    By default, searx stops sending requests to this engine for 1 hour.
+    By default, SearXNG stops sending requests to this engine for 1 hour.
     """
 
     SUSPEND_TIME_SETTING = "search.suspended_times.SearxEngineTooManyRequests"

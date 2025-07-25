@@ -142,7 +142,7 @@ weblate.push.translations() {
 
         # update messages.pot in the master branch
         build_msg BABEL 'extract messages from source files and generate POT file'
-        pybabel extract -F babel.cfg \
+        pybabel extract -F babel.cfg --project="SearXNG" --version="-" \
                 -o "${messages_pot}" \
                 "searx/"
 

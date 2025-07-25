@@ -23,10 +23,10 @@ class TestUtils(SearxTestCase):
         self.assertIsNotNone(utils.gen_useragent())
         self.assertTrue(utils.gen_useragent().startswith('Mozilla'))
 
-    def test_searx_useragent(self):
-        self.assertIsInstance(utils.searx_useragent(), str)
-        self.assertIsNotNone(utils.searx_useragent())
-        self.assertTrue(utils.searx_useragent().startswith('searx'))
+    def test_searxng_useragent(self):
+        self.assertIsInstance(utils.searxng_useragent(), str)
+        self.assertIsNotNone(utils.searxng_useragent())
+        self.assertTrue(utils.searxng_useragent().startswith('SearXNG'))
 
     def test_html_to_text(self):
         html_str = """
