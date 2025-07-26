@@ -15,7 +15,7 @@ from babel.dates import format_datetime, format_date, format_time, get_datetime_
 
 from searx.data import WIKIDATA_UNITS
 from searx.network import post, get
-from searx.utils import searx_useragent, get_string_replaces_function
+from searx.utils import searxng_useragent, get_string_replaces_function
 from searx.external_urls import get_external_url, get_earth_coordinates_url, area_to_osm_zoom
 from searx.engines.wikipedia import (
     fetch_wikimedia_traits,
@@ -142,7 +142,7 @@ replace_http_by_https = get_string_replaces_function({'http:': 'https:'})
 
 def get_headers():
     # user agent: https://www.mediawiki.org/wiki/Wikidata_Query_Service/User_Manual#Query_limits
-    return {'Accept': 'application/sparql-results+json', 'User-Agent': searx_useragent()}
+    return {'Accept': 'application/sparql-results+json', 'User-Agent': searxng_useragent()}
 
 
 def get_label_for_entity(entity_id, language):

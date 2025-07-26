@@ -59,7 +59,7 @@ Sample response
          "shortcut": "bb"
        },
      ],
-     "instance_name": "searx",
+     "instance_name": "SearXNG",
      "locales": {
        "de": "Deutsch (German)",
        "en": "English",

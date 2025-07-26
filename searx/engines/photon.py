@@ -5,7 +5,7 @@
 
 from json import loads
 from urllib.parse import urlencode
-from searx.utils import searx_useragent
+from searx.utils import searxng_useragent
 
 # about
 about = {
@@ -40,8 +40,8 @@ def request(query, params):
         if language in supported_languages:
             params['url'] = params['url'] + "&lang=" + language
 
-    # using searx User-Agent
-    params['headers']['User-Agent'] = searx_useragent()
+    # using SearXNG User-Agent
+    params['headers']['User-Agent'] = searxng_useragent()
 
     return params
 

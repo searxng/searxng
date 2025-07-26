@@ -16,7 +16,7 @@ from os.path import join
 from lxml.html import fromstring
 
 from searx.engines import wikidata, set_loggers
-from searx.utils import extract_text, searx_useragent
+from searx.utils import extract_text, searxng_useragent
 from searx.locales import LOCALE_NAMES, locales_initialize, match_locale
 from searx import searx_dir
 from searx.utils import gen_useragent, detect_language
@@ -113,7 +113,7 @@ def get_wikipedia_summary(wikipedia_url, searxng_locale):
     # get the REST API URL from the HTML URL
 
     # Headers
-    headers = {'User-Agent': searx_useragent()}
+    headers = {'User-Agent': searxng_useragent()}
 
     if searxng_locale in WIKIPEDIA_LANGUAGE_VARIANTS:
         headers['Accept-Language'] = WIKIPEDIA_LANGUAGE_VARIANTS.get(searxng_locale)

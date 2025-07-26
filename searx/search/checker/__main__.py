@@ -94,7 +94,7 @@ def run(engine_name_list, verbose):
 
 # call by setup.py
 def main():
-    parser = argparse.ArgumentParser(description='Check searx engines.')
+    parser = argparse.ArgumentParser(description='Check SearXNG engines.')
     parser.add_argument(
         'engine_name_list',
         metavar='engine name',

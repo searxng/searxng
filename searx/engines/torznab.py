@@ -149,7 +149,7 @@ def build_result(item: etree.Element) -> Dict[str, Any]:
     leechers = get_torznab_attribute(item, 'leechers')
     peers = get_torznab_attribute(item, 'peers')
 
-    # map attributes to searx result
+    # map attributes to SearXNG result
     result: Dict[str, Any] = {
         'template': 'torrent.html',
         'title': get_attribute(item, 'title'),

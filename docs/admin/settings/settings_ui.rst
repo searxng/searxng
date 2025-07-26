@@ -25,7 +25,7 @@
 ``default_locale`` :
   SearXNG interface language.  If blank, the locale is detected by using the
   browser language.  If it doesn't work, or you are deploying a language
-  specific instance of searx, a locale can be defined using an ISO language
+  specific instance of SearXNG, a locale can be defined using an ISO language
   code, like ``fr``, ``en``, ``de``.
 
 ``query_in_title`` :

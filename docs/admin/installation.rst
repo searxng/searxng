@@ -18,5 +18,5 @@ special preferences, it's recommended to use the :ref:`installation container` o
 .. attention::
 
    SearXNG is growing rapidly, you should regularly read our :ref:`migrate and
-   stay tuned` section.  If you want to upgrade an existing instance or migrate
-   from searx to SearXNG, you should read this section first!
+   stay tuned` section.  If you want to upgrade an existing instance, you
+   should read this section first!
