@@ -16,9 +16,23 @@ import pathlib
 
 from ..compat import tomllib
 
-__all__ = ['Config', 'UNSET', 'SchemaIssue']
+__all__ = ['Config', 'UNSET', 'SchemaIssue', 'set_global_cfg', 'get_global_cfg']
 
 log = logging.getLogger(__name__)
+
+CFG: Config | None = None
+"""Global config of the botdetection."""
+
+
+def set_global_cfg(cfg: Config):
+    global CFG  # pylint: disable=global-statement
+    CFG = cfg
+
+
+def get_global_cfg() -> Config:
+    if CFG is None:
+        raise ValueError("Botdetection's config is not yet initialized.")
+    return CFG
 
 
 class FALSE:

@@ -96,7 +96,6 @@ from __future__ import annotations
 import sys
 
 from pathlib import Path
-from ipaddress import ip_address
 import flask
 import werkzeug
 
@@ -131,11 +130,12 @@ LIMITER_CFG_SCHEMA = Path(__file__).parent / "limiter.toml"
 """Base configuration (schema) of the botdetection."""
 
 CFG_DEPRECATED = {
-    # "dummy.old.foo": "config 'dummy.old.foo' exists only for tests.  Don't use it in your real project config."
+    "real_ip.x_for": "limiter: config option 'real_ip.x_for' has been replaced by 'real_ip.trusted_proxies'"
 }
 
 
 def get_cfg() -> config.Config:
+    """Returns SearXNG's global limiter configuration."""
     global CFG  # pylint: disable=global-statement
 
     if CFG is None:
@@ -150,7 +150,7 @@ def filter_request(request: SXNG_Request) -> werkzeug.Response | None:
     # pylint: disable=too-many-return-statements
 
     cfg = get_cfg()
-    real_ip = ip_address(get_real_ip(request))
+    real_ip = get_real_ip(request, cfg)
     network = get_network(real_ip, cfg)
 
     if request.path == '/healthz':

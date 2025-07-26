@@ -8,7 +8,7 @@ from flask_babel import gettext
 import searx.plugins
 import searx.preferences
 import searx.limiter
-import searx.botdetection
+import searx.botdetection.config
 
 from searx.extended_types import sxng_request
 from searx.result_types import Answer
@@ -35,13 +35,54 @@ class PluginIPSelfInfo(SearxTestCase):
     def test_plugin_store_init(self):
         self.assertEqual(1, len(self.storage))
 
-    def test_pageno_1_2(self):
-
+    def test_v4_pageno_1_2(self):
         with self.app.test_request_context():
             sxng_request.preferences = self.pref
             sxng_request.remote_addr = "127.0.0.1"
-            sxng_request.headers = {"X-Forwarded-For": "1.2.3.4, 127.0.0.1", "X-Real-IP": "127.0.0.1"}  # type: ignore
-            answer = Answer(answer=gettext("Your IP is: ") + "127.0.0.1")
+            sxng_request.headers = {"X-Forwarded-For": "1.2.3.4, 127.0.0.1", "X-Real-IP": ""}  # type: ignore
+            answer = Answer(answer=gettext("Your IP is: ") + "1.2.3.4")
+
+            search = do_post_search("ip", self.storage, pageno=1)
+            self.assertIn(answer, search.result_container.answers)
+
+            search = do_post_search("ip", self.storage, pageno=2)
+            self.assertEqual(list(search.result_container.answers), [])
+
+    def test_v6_pageno_1_2(self):
+        with self.app.test_request_context():
+            sxng_request.preferences = self.pref
+            sxng_request.remote_addr = "::1"
+            sxng_request.headers = {  # type: ignore
+                "X-Forwarded-For": "fd0f:a306:f289:0000:0000:0000:ffff:baba, ::1, 127.0.0.1",
+                "X-Real-IP": "fd0f:a306:f289:0000:0000:0000:ffff:baba",
+            }
+            answer = Answer(answer=gettext("Your IP is: ") + "fd0f:a306:f289::ffff:baba")
+
+            search = do_post_search("ip", self.storage, pageno=1)
+            self.assertIn(answer, search.result_container.answers)
+
+            search = do_post_search("ip", self.storage, pageno=2)
+            self.assertEqual(list(search.result_container.answers), [])
+
+    def test_socket_pageno_1_2(self):
+        with self.app.test_request_context():
+            sxng_request.preferences = self.pref
+            sxng_request.remote_addr = None
+            sxng_request.headers = {"X-Forwarded-For": "1.2.3.4, 127.0.0.1", "X-Real-IP": ""}  # type: ignore
+            answer = Answer(answer=gettext("Your IP is: ") + "1.2.3.4")
+
+            search = do_post_search("ip", self.storage, pageno=1)
+            self.assertIn(answer, search.result_container.answers)
+
+            search = do_post_search("ip", self.storage, pageno=2)
+            self.assertEqual(list(search.result_container.answers), [])
+
+    def test_socket_unknown_pageno_1_2(self):
+        with self.app.test_request_context():
+            sxng_request.preferences = self.pref
+            sxng_request.remote_addr = None
+            sxng_request.headers = {}  # type: ignore
+            answer = Answer(answer=gettext("Your IP is: ") + "0.0.0.0")
 
             search = do_post_search("ip", self.storage, pageno=1)
             self.assertIn(answer, search.result_container.answers)
@@ -56,7 +97,6 @@ class PluginIPSelfInfo(SearxTestCase):
         ]
     )
     def test_user_agent_in_answer(self, query: str):
-
         query = "user-agent"
 
         with self.app.test_request_context():
