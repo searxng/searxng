@@ -1,8 +1,6 @@
 #!/usr/bin/env python
 # SPDX-License-Identifier: AGPL-3.0-or-later
-"""WebbApp
-
-"""
+"""WebApp"""
 # pylint: disable=use-dict-literal
 from __future__ import annotations
 
@@ -262,7 +260,8 @@ def custom_url_for(endpoint: str, **values):
             if theme_filename in _STATIC_FILES:
                 values["filename"] = theme_filename
 
-        return f"static/{values['filename']}"
+        app_prefix = url_for("index")
+        return f"{app_prefix}static/{values['filename']}"
 
     if endpoint == "info" and "locale" not in values:
 
