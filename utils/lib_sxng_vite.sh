@@ -43,6 +43,21 @@ vite.simple.build() {
     )
 }
 
+vite.simple.analyze() {
+    (
+        set -e
+        templates.simple.pygments
+
+        node.env
+        build_msg SIMPLE "run analyze of theme from: ${VITE_SIMPLE_THEME}"
+
+        pushd "${VITE_SIMPLE_THEME}"
+        npm install
+        VITE_BUNDLE_ANALYZE=true npm run build
+        popd &> /dev/null
+    )
+}
+
 vite.simple.fix() {
     (   set -e
         node.env
