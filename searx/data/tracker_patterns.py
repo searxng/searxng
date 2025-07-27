@@ -10,6 +10,8 @@ import re
 from collections.abc import Iterator
 from urllib.parse import urlparse, urlunparse, parse_qsl, urlencode
 
+from httpx import HTTPError
+
 from searx.data.core import get_cache, log
 from searx.network import get as http_get
 
@@ -70,10 +72,19 @@ class TrackerPatternsDB:
     def iter_clear_list(self) -> Iterator[RuleType]:
         resp = None
         for url in self.CLEAR_LIST_URL:
-            resp = http_get(url, timeout=3)
-            if resp.status_code == 200:
-                break
-            log.warning(f"TRACKER_PATTERNS: ClearURL ignore HTTP {resp.status_code} {url}")
+            log.debug("TRACKER_PATTERNS: Trying to fetch %s...", url)
+            try:
+                resp = http_get(url, timeout=3)
+
+            except HTTPError as exc:
+                log.warning("TRACKER_PATTERNS: HTTPError (%s) occured while fetching %s", url, exc)
+                continue
+
+            if resp.status_code != 200:
+                log.warning(f"TRACKER_PATTERNS: ClearURL ignore HTTP {resp.status_code} {url}")
+                continue
+
+            break
 
         if resp is None:
             log.error("TRACKER_PATTERNS: failed fetching ClearURL rule lists")
