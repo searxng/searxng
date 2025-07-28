@@ -129,7 +129,7 @@ def get_vqd(query: str, region: str, force_request: bool = False) -> str:
     if value:
         cache.set(key=key, value=value)
     else:
-        logger.error("vqd value from duckduckgo.com ", resp.status_code)
+        logger.error("none vqd value from duckduckgo.com: HTTP %s", resp.status_code)
     return value
 
 
