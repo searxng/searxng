@@ -88,10 +88,12 @@ class ResultContainer:
             if isinstance(result, Result):
                 result.engine = result.engine or engine_name
                 result.normalize_result_fields()
+                if not self.on_result(result):
+                    continue
 
-                if isinstance(result, BaseAnswer) and self.on_result(result):
+                if isinstance(result, BaseAnswer):
                     self.answers.add(result)
-                elif isinstance(result, MainResult) and self.on_result(result):
+                elif isinstance(result, MainResult):
                     main_count += 1
                     self._merge_main_result(result, main_count)
                 else:
