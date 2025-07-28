@@ -1,13 +1,10 @@
-general:
-  instance_name: "lusk.bzh"
-  default_doi_resolver: ''
-
+# see https://docs.searxng.org/admin/settings/settings.html#settings-use-default-settings
+use_default_settings: true
 server:
-  secret_key: "17031980"
+  # base_url is defined in the SEARXNG_BASE_URL environment variable, see .env and docker-compose.yml
+  secret_key: "ultrasecretkey"  # change this!
+  limiter: false  # enable this when running the instance for a public usage on the internet
+  image_proxy: true
+redis:
+  url: redis://redis:6379/0
 
-search:
-  safe_search: 0
-  language: "fr"
-
-ui:
-  theme: "custom"
