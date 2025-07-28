@@ -1,8 +1,10 @@
 {% extends "simple/base.html" %}
-{% from 'simple/icons.html' import icon_big %}
+
 {% block content %}
-<div class="index">
-    <div class="title"><h1>SearXNG</h1></div>
-    {% include 'simple/simple_search.html' %}
+<div class="search-container">
+  <form action="{{ url_for('search') }}" method="get">
+    <input type="text" name="q" placeholder="{{ _('Rechercher...') }}" required autofocus>
+    <button type="submit">🔍</button>
+  </form>
 </div>
 {% endblock %}
