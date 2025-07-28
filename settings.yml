@@ -1,11 +1,8 @@
 use_default_settings: true
 
-default_doi_resolver: []  # ✅ Corrige l'erreur de validation
-
 server:
   secret_key: "ultrasecretkey"
   limiter: false
   image_proxy: true
 
-# redis:
-#   url: redis://redis:6379/0  # ❌ Désactivé car Koyeb ne connaît pas "redis"
+# Pas de redis configuré
