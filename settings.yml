@@ -1,11 +1,11 @@
 use_default_settings: true
 
-default_doi_resolver: ''  # ✅ Corrige l'erreur fatale
+default_doi_resolver: []  # ✅ Corrige l'erreur de validation
 
 server:
-  secret_key: "ultrasecretkey"  # 🔐 à changer pour production
+  secret_key: "ultrasecretkey"
   limiter: false
   image_proxy: true
 
 # redis:
-#   url: redis://redis:6379/0  # ❌ Désactivé car l'hôte "redis" n'existe pas sur Koyeb
+#   url: redis://redis:6379/0  # ❌ Désactivé car Koyeb ne connaît pas "redis"
