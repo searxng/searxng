@@ -1,8 +1,12 @@
 use_default_settings: true
 
+preferences:
+  default_doi_resolver: []
+
 server:
   secret_key: "ultrasecretkey"
   limiter: false
   image_proxy: true
 
-# Pas de redis configuré
+# redis:
+#   url: redis://redis:6379/0
