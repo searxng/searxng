@@ -1,0 +1,40 @@
+body {
+  background-color: #111;
+  color: #eee;
+  font-family: system-ui, sans-serif;
+}
+a {
+  color: #4fc3f7;
+  text-decoration: none;
+}
+header {
+  margin: 1rem auto;
+  text-align: center;
+}
+.search-container {
+  display: flex;
+  justify-content: center;
+  margin: 2rem;
+}
+input[type="text"] {
+  padding: 0.5rem;
+  border-radius: 5px;
+  border: none;
+  width: 60%;
+  font-size: 1rem;
+}
+button {
+  padding: 0.5rem 1rem;
+  background-color: #333;
+  color: #fff;
+  border: none;
+  font-size: 1rem;
+  cursor: pointer;
+}
+button:hover {
+  background-color: #444;
+}
+footer {
+  margin-top: auto;
+  padding: 1rem;
+}
