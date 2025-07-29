@@ -72,13 +72,13 @@ const keyBindingLayouts: Record<KeyBindingLayout, Record<string, KeyBinding>> = 
   default: {
     ArrowLeft: {
       key: "←",
-      fun: () => highlightResult("up"),
+      fun: () => highlightResult("up")(),
       des: "select previous search result",
       cat: "Results"
     },
     ArrowRight: {
       key: "→",
-      fun: () => highlightResult("down"),
+      fun: () => highlightResult("down")(),
       des: "select next search result",
       cat: "Results"
     },
@@ -113,13 +113,13 @@ const keyBindingLayouts: Record<KeyBindingLayout, Record<string, KeyBinding>> = 
     },
     j: {
       key: "j",
-      fun: () => highlightResult("down"),
+      fun: () => highlightResult("down")(),
       des: "select next search result",
       cat: "Results"
     },
     k: {
       key: "k",
-      fun: () => highlightResult("up"),
+      fun: () => highlightResult("up")(),
       des: "select previous search result",
       cat: "Results"
     },
@@ -155,7 +155,7 @@ const isElementInDetail = (element?: Element): boolean => {
   return ancestor?.classList.contains("detail") ?? false;
 };
 
-const getResultElement = (element?: Element): Element | undefined => {
+const getResultElement = (element?: HTMLElement): HTMLElement | undefined => {
   return element?.closest(".result") ?? undefined;
 };
 
@@ -164,10 +164,10 @@ const isImageResult = (resultElement?: Element): boolean => {
 };
 
 const highlightResult =
-  (which: string | Element) =>
+  (which: string | HTMLElement) =>
   (noScroll?: boolean, keepFocus?: boolean): void => {
-    let current = document.querySelector<HTMLElement>(".result[data-vim-selected]");
     let effectiveWhich = which;
+    let current = document.querySelector<HTMLElement>(".result[data-vim-selected]");
     if (!current) {
       // no selection : choose the first one
       current = document.querySelector<HTMLElement>(".result");
@@ -181,8 +181,9 @@ const highlightResult =
       }
     }
 
-    let next: Element | null | undefined = null;
     const results = Array.from(document.querySelectorAll<HTMLElement>(".result"));
+
+    let next: HTMLElement | undefined;
 
     if (typeof effectiveWhich !== "string") {
       next = effectiveWhich;
@@ -192,14 +193,11 @@ const highlightResult =
           const top = document.documentElement.scrollTop || document.body.scrollTop;
           const bot = top + document.documentElement.clientHeight;
 
-          for (let i = 0; i < results.length; i++) {
-            const element = results[i] as HTMLElement;
-            next = element;
-
+          for (const element of results) {
             const etop = element.offsetTop;
             const ebot = etop + element.clientHeight;
-
             if (ebot <= bot && etop > top) {
+              next = element;
               break;
             }
           }
@@ -221,15 +219,15 @@ const highlightResult =
       }
     }
 
-    if (next && current) {
+    if (next) {
       current.removeAttribute("data-vim-selected");
       next.setAttribute("data-vim-selected", "true");
+
       if (!keepFocus) {
-        const link = next.querySelector<HTMLElement>("h3 a") || next.querySelector<HTMLElement>("a");
-        if (link) {
-          link.focus();
-        }
+        const link = next.querySelector<HTMLAnchorElement>("h3 a") || next.querySelector<HTMLAnchorElement>("a");
+        link?.focus();
       }
+
       if (!noScroll) {
         scrollPageToSelected();
       }
@@ -415,11 +413,11 @@ const copyURLToClipboard = async (): Promise<void> => {
 };
 
 searxng.ready(() => {
-  searxng.listen("click", ".result", function (this: Element, event: Event) {
-    if (!isElementInDetail(event.target as Element)) {
+  searxng.listen("click", ".result", function (this: HTMLElement, event: Event) {
+    if (!isElementInDetail(event.target as HTMLElement)) {
       highlightResult(this)(true, true);
 
-      const resultElement = getResultElement(event.target as Element);
+      const resultElement = getResultElement(event.target as HTMLElement);
 
       if (resultElement && isImageResult(resultElement)) {
         event.preventDefault();
@@ -432,8 +430,8 @@ searxng.ready(() => {
     "focus",
     ".result a",
     (event: Event) => {
-      if (!isElementInDetail(event.target as Element)) {
-        const resultElement = getResultElement(event.target as Element);
+      if (!isElementInDetail(event.target as HTMLElement)) {
+        const resultElement = getResultElement(event.target as HTMLElement);
 
         if (resultElement && !resultElement.getAttribute("data-vim-selected")) {
           highlightResult(resultElement)(true);
