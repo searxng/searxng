@@ -21,6 +21,7 @@ kw2func = [
     ("avg", lambda args: sum(args) / len(args)),
     ("sum", sum),
     ("prod", lambda args: reduce(mul, args, 1)),
+    ("range", lambda args: max(args) - min(args)),
 ]
 
 
