@@ -178,3 +178,4 @@ features or generally made SearXNG better:
 - `Bearz314 <https://github.com/bearz314>`_
 - Tommaso Colella `<https://github.com/gioleppe>`
 - @AgentScrubbles
+- Filip Mikina `<https://github.com/fiffek>`
