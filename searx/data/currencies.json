@@ -1,5 +1,51 @@
 {
     "iso4217": {
+        "203": {
+            "ar": "كرونة تشيكية",
+            "bg": "Чешка крона",
+            "bn": "চেক কোরুনা",
+            "ca": "corona txeca",
+            "cs": "koruna česká",
+            "cy": "Czech koruna",
+            "da": "tjekkiske koruna",
+            "de": "tschechische Krone",
+            "en": "Czech koruna",
+            "eo": "ĉeĥa krono",
+            "es": "corona checa",
+            "et": "Tšehhi kroon",
+            "eu": "Txekiar koroa",
+            "fi": "Tšekin koruna",
+            "fr": "couronne tchèque",
+            "ga": "koruna na Seice",
+            "gl": "Coroa checa",
+            "he": "קורונה צ'כית",
+            "hr": "Češka kruna",
+            "hu": "cseh korona",
+            "ia": "corona tchec",
+            "id": "Koruna Ceko",
+            "it": "corona ceca",
+            "ja": "チェコ・コルナ",
+            "ko": "체코 코루나",
+            "lt": "Čekijos krona",
+            "lv": "Čehijas krona",
+            "nl": "Tsjechische kroon",
+            "oc": "corona chèca",
+            "pa": "ਚੈੱਕ ਕੋਰੂਨਾ",
+            "pl": "Korona czeska",
+            "pt": "coroa checa",
+            "ro": "Coroană cehă",
+            "ru": "чешская крона",
+            "sk": "česká koruna",
+            "sl": "češka krona",
+            "sr": "чешка круна",
+            "sv": "tjeckisk krona",
+            "ta": "செக் கொருனா",
+            "th": "โกรูนาเช็ก",
+            "tr": "Çek korunası",
+            "tt": "Чех кронасы",
+            "uk": "чеська крона",
+            "vi": "Koruna Séc"
+        },
         "AED": {
             "af": "Verenigde Arabiese Emirate dirham",
             "ar": "درهم إماراتي",
@@ -144,7 +190,7 @@
             "es": "dram armenio",
             "et": "Armeenia dramm",
             "fi": "Armenian dram",
-            "fr": "dram",
+            "fr": "dram arménien",
             "ga": "dram na hAirméine",
             "gl": "Dram armenio",
             "he": "דראם ארמני",
@@ -3027,6 +3073,7 @@
             "ja": "ケイマン諸島・ドル",
             "ko": "케이맨 제도 달러",
             "lt": "Kaimanų salų doleris",
+            "lv": "Kaimanu Salu dolārs",
             "nl": "Kaaimaneilandse dollar",
             "oc": "Dolar de las illas Caiman",
             "pa": "ਕੇਮਨ ਟਾਪੂ ਡਾਲਰ",
@@ -3816,7 +3863,7 @@
             "vi": "Ringgit"
         },
         "MZN": {
-            "ar": "متكال موزمبيقي",
+            "ar": "مثقال موزنبيقي",
             "ca": "metical",
             "cs": "Mosambický metical",
             "cy": "Metical Mosambic",
@@ -5622,7 +5669,7 @@
             "ar": "دولار أمريكي",
             "bg": "щатски долар",
             "bn": "মার্কিন ডলার",
-            "ca": "dòlar dels Estats Units",
+            "ca": "dòlar estatunidenc",
             "cs": "americký dolar",
             "cy": "$ (UDA)",
             "da": "amerikansk dollar",
@@ -5811,7 +5858,7 @@
             "tr": "Đồng",
             "tt": "Вьетнам донгы",
             "uk": "в'єтнамський донг",
-            "vi": "Việt Nam Đồng"
+            "vi": "đồng Việt Nam"
         },
         "VUV": {
             "ar": "فاتو فانواتي",
@@ -5934,6 +5981,7 @@
             "ms": "Perak sebagai pelaburan",
             "ru": "серебро как инвестиция",
             "sv": "Silver som investering",
+            "tr": "Yatırım olarak gümüş",
             "vi": "Bạc như một khoản đầu tư"
         },
         "XAU": {
@@ -5952,6 +6000,7 @@
             "ru": "золото как инвестиция",
             "sr": "investiciono zlato",
             "sv": "investeringsguld",
+            "tr": "Yatırım olarak altın",
             "uk": "Золото як інвестиція",
             "vi": "Kênh đầu tư vàng"
         },
@@ -6024,6 +6073,7 @@
             "ja": "カリブ・ギルダー",
             "nl": "Caribische gulden",
             "pap": "Florin karibense",
+            "pl": "Gulden karaibski",
             "pt": "Florim do Caribe",
             "ru": "Карибский гульден",
             "sl": "karibski goldinar"
@@ -6461,7 +6511,10 @@
         "KM": "BAM",
         "Ksh": "KES",
         "Kz": "AOA",
-        "Kč": "CZK",
+        "Kč": [
+            "CZK",
+            "203"
+        ],
         "L": [
             "MDL",
             "HNL",
@@ -6510,6 +6563,7 @@
         "TSh": "TZS",
         "TT$": "TTD",
         "UF": "CLF",
+        "UGX": "UGX",
         "UM": "MRU",
         "Ush": "UGX",
         "VT": "VUV",
@@ -7227,11 +7281,17 @@
         "cordoba nicaraguense": "NIO",
         "cordoba nicaragüense": "NIO",
         "cordoba oro": "NIO",
-        "coroa checa": "CZK",
+        "coroa checa": [
+            "CZK",
+            "203"
+        ],
         "coroa da dinamarca": "DKK",
         "coroa da islândia": "ISK",
         "coroa da noruega": "NOK",
-        "coroa da república checa": "CZK",
+        "coroa da república checa": [
+            "CZK",
+            "203"
+        ],
         "coroa da suécia": "SEK",
         "coroa danesa": "DKK",
         "coroa dinamarquesa": "DKK",
@@ -7239,24 +7299,45 @@
         "coroa norueguesa": "NOK",
         "coroa sueca": "SEK",
         "coroa sueca svensk krona": "SEK",
-        "coroa tcheca": "CZK",
-        "coroană cehă": "CZK",
+        "coroa tcheca": [
+            "CZK",
+            "203"
+        ],
+        "coroană cehă": [
+            "CZK",
+            "203"
+        ],
         "coroană daneză": "DKK",
         "coroană islandeză": "ISK",
         "coroană norvegiană": "NOK",
         "coroană suedeză": "SEK",
         "corona": "SEK",
-        "corona ceca": "CZK",
-        "corona checa": "CZK",
-        "corona chèca": "CZK",
+        "corona ceca": [
+            "CZK",
+            "203"
+        ],
+        "corona checa": [
+            "CZK",
+            "203"
+        ],
+        "corona chèca": [
+            "CZK",
+            "203"
+        ],
         "corona d'islàndia": "ISK",
         "corona danesa": "DKK",
         "corona danese": "DKK",
         "corona de dinamarca": "DKK",
-        "corona de la república txeca": "CZK",
+        "corona de la república txeca": [
+            "CZK",
+            "203"
+        ],
         "corona de noruega": "NOK",
         "corona de suècia": "SEK",
-        "corona de txèquia": "CZK",
+        "corona de txèquia": [
+            "CZK",
+            "203"
+        ],
         "corona islandesa": "ISK",
         "corona islandese": "ISK",
         "corona noruega": "NOK",
@@ -7265,9 +7346,18 @@
         "corona norvegiana": "NOK",
         "corona sueca": "SEK",
         "corona svedese": "SEK",
-        "corona tchec": "CZK",
-        "corona txeca": "CZK",
-        "corone ceche": "CZK",
+        "corona tchec": [
+            "CZK",
+            "203"
+        ],
+        "corona txeca": [
+            "CZK",
+            "203"
+        ],
+        "corone ceche": [
+            "CZK",
+            "203"
+        ],
         "corone norvegesi": "NOK",
         "coróin na danmhairge": "DKK",
         "coróin na hiorua": "NOK",
@@ -7288,9 +7378,18 @@
         "couronne norvegienne": "NOK",
         "couronne norvégienne": "NOK",
         "couronne suédoise": "SEK",
-        "couronne tcheque": "CZK",
-        "couronne tchèque": "CZK",
-        "couronnes tchèques": "CZK",
+        "couronne tcheque": [
+            "CZK",
+            "203"
+        ],
+        "couronne tchèque": [
+            "CZK",
+            "203"
+        ],
+        "couronnes tchèques": [
+            "CZK",
+            "203"
+        ],
         "córdoba": "NIO",
         "córdoba nicaraguano": "NIO",
         "córdoba nicaraguayen": "NIO",
@@ -7305,7 +7404,10 @@
         "córdoba ouro": "NIO",
         "crc": "CRC",
         "csd": "RSD",
-        "cseh korona": "CZK",
+        "cseh korona": [
+            "CZK",
+            "203"
+        ],
         "csendes óceáni valutaközösségi frank": "XPF",
         "cub$": "CUP",
         "cubaanse peso": "CUP",
@@ -7317,17 +7419,44 @@
         "currency of somalia": "SOS",
         "currency of tajikistan": "TJS",
         "cve": "CVE",
-        "czech koruna": "CZK",
-        "czk": "CZK",
-        "ĉeĥa krono": "CZK",
-        "ĉeĥia krono": "CZK",
+        "czech koruna": [
+            "CZK",
+            "203"
+        ],
+        "czk": [
+            "CZK",
+            "203"
+        ],
+        "ĉeĥa krono": [
+            "CZK",
+            "203"
+        ],
+        "ĉeĥia krono": [
+            "CZK",
+            "203"
+        ],
         "ĉilia peso": "CLP",
         "ĉina juano": "CNY",
-        "čehijas krona": "CZK",
-        "čekijos krona": "CZK",
-        "česká koruna": "CZK",
-        "češka krona": "CZK",
-        "češka kruna": "CZK",
+        "čehijas krona": [
+            "CZK",
+            "203"
+        ],
+        "čekijos krona": [
+            "CZK",
+            "203"
+        ],
+        "česká koruna": [
+            "CZK",
+            "203"
+        ],
+        "češka krona": [
+            "CZK",
+            "203"
+        ],
+        "češka kruna": [
+            "CZK",
+            "203"
+        ],
         "čileanski peso": "CLP",
         "čileanski pezo": "CLP",
         "čilenski peso": "CLP",
@@ -7339,7 +7468,10 @@
         "čínsky jüan": "CNY",
         "čínský jüan": "CNY",
         "čīles peso": "CLP",
-        "çek korunası": "CZK",
+        "çek korunası": [
+            "CZK",
+            "203"
+        ],
         "cирійський фунт": "SYP",
         "d.r.": "EGP",
         "da": "DZD",
@@ -8844,6 +8976,7 @@
         ],
         "gulden antyli holenderskich": "ANG",
         "gulden holandských antíl": "ANG",
+        "gulden karaibski": "XCG",
         "gulden nizozemských antil": "ANG",
         "gultrum butanés": "BTN",
         "gurdas": "HTG",
@@ -8896,7 +9029,10 @@
         "hak pengeluaran khusus": "XDR",
         "halalas": "SAR",
         "hegoafrikar rand": "ZAR",
-        "heller": "CZK",
+        "heller": [
+            "CZK",
+            "203"
+        ],
         "hinda rupio": "INR",
         "hindistan rupisi": "INR",
         "hk$": "HKD",
@@ -9197,6 +9333,8 @@
         "kaapverdische escudo": "CVE",
         "kaboverda eskudo": "CVE",
         "kaiman dollar": "KYD",
+        "kaimanu dolārs": "KYD",
+        "kaimanu salu dolārs": "KYD",
         "kaimanų doleris": "KYD",
         "kaimanų salų doleris": "KYD",
         "kajmana dolaro": "KYD",
@@ -9266,7 +9404,10 @@
         "kazakstansk tenge": "KZT",
         "kazašské tenge": "KZT",
         "kazašský tenge": "KZT",
-        "kč": "CZK",
+        "kč": [
+            "CZK",
+            "203"
+        ],
         "keenia šilling": "KES",
         "kelet karibi dollár": "XCD",
         "kenia schilling": "KES",
@@ -9373,19 +9514,46 @@
         "kopeken": "RUB",
         "kordoba": "NIO",
         "koroa danimarkar": "DKK",
-        "korona czeska": "CZK",
+        "korona czeska": [
+            "CZK",
+            "203"
+        ],
         "korona duńska": "DKK",
         "korona islandzka": "ISK",
         "korona norweska": "NOK",
         "korona szwedzka": "SEK",
-        "koruna": "CZK",
-        "koruna ceko": "CZK",
-        "koruna ceska": "CZK",
-        "koruna ceská": "CZK",
-        "koruna česka": "CZK",
-        "koruna česká": "CZK",
-        "koruna na seice": "CZK",
-        "koruna séc": "CZK",
+        "koruna": [
+            "CZK",
+            "203"
+        ],
+        "koruna ceko": [
+            "CZK",
+            "203"
+        ],
+        "koruna ceska": [
+            "CZK",
+            "203"
+        ],
+        "koruna ceská": [
+            "CZK",
+            "203"
+        ],
+        "koruna česka": [
+            "CZK",
+            "203"
+        ],
+        "koruna česká": [
+            "CZK",
+            "203"
+        ],
+        "koruna na seice": [
+            "CZK",
+            "203"
+        ],
+        "koruna séc": [
+            "CZK",
+            "203"
+        ],
         "kosta rika colónu": "CRC",
         "kosta rikos kolonas": "CRC",
         "kostarický colón": "CRC",
@@ -12033,12 +12201,30 @@
         "tikalo": "THB",
         "tiugrikas": "MNT",
         "tiyin": "UZS",
-        "tjeckisk koruna": "CZK",
-        "tjeckisk krona": "CZK",
-        "tjekkisk koruna": "CZK",
-        "tjekkiske koruna": "CZK",
-        "tjekkiske kroner": "CZK",
-        "tjekkoslovakiske kroner": "CZK",
+        "tjeckisk koruna": [
+            "CZK",
+            "203"
+        ],
+        "tjeckisk krona": [
+            "CZK",
+            "203"
+        ],
+        "tjekkisk koruna": [
+            "CZK",
+            "203"
+        ],
+        "tjekkiske koruna": [
+            "CZK",
+            "203"
+        ],
+        "tjekkiske kroner": [
+            "CZK",
+            "203"
+        ],
+        "tjekkoslovakiske kroner": [
+            "CZK",
+            "203"
+        ],
         "tjs": "TJS",
         "tmm": "TMT",
         "tmt": "TMT",
@@ -12094,17 +12280,47 @@
         "trl": "TRY",
         "try": "TRY",
         "tschang": "THB",
-        "tschechische krone": "CZK",
-        "tschechische währung": "CZK",
-        "tsehhi kroon": "CZK",
-        "tsekin koruna": "CZK",
+        "tschechische krone": [
+            "CZK",
+            "203"
+        ],
+        "tschechische währung": [
+            "CZK",
+            "203"
+        ],
+        "tsehhi kroon": [
+            "CZK",
+            "203"
+        ],
+        "tsekin koruna": [
+            "CZK",
+            "203"
+        ],
         "tsh": "TZS",
-        "tshekin koruna": "CZK",
-        "tshekin kruunu": "CZK",
-        "tsjechische kroon": "CZK",
-        "tšehhi kroon": "CZK",
-        "tšekin koruna": "CZK",
-        "tšekin kruunu": "CZK",
+        "tshekin koruna": [
+            "CZK",
+            "203"
+        ],
+        "tshekin kruunu": [
+            "CZK",
+            "203"
+        ],
+        "tsjechische kroon": [
+            "CZK",
+            "203"
+        ],
+        "tšehhi kroon": [
+            "CZK",
+            "203"
+        ],
+        "tšekin koruna": [
+            "CZK",
+            "203"
+        ],
+        "tšekin kruunu": [
+            "CZK",
+            "203"
+        ],
         "tšiili peeso": "CLP",
         "tt$": "TTD",
         "ttd": "TTD",
@@ -12164,7 +12380,10 @@
         "türkmenistan manatı": "TMT",
         "türkmén manat": "TMT",
         "twd": "TWD",
-        "txekiar koroa": "CZK",
+        "txekiar koroa": [
+            "CZK",
+            "203"
+        ],
         "tyrkisk lira": "TRY",
         "tzs": "TZS",
         "ṭākā": "BDT",
@@ -12445,6 +12664,8 @@
         "xu": "VND",
         "xua": "XUA",
         "xxx": "XXX",
+        "yatırım olarak altın": "XAU",
+        "yatırım olarak gümüş": "XAG",
         "yemen riyali": "YER",
         "yemeni rial": "YER",
         "yemenitisk rial": "YER",
@@ -12706,6 +12927,7 @@
         "đồng tiền": "VND",
         "đồng vietnam": "VND",
         "đồng vietnamita": "VND",
+        "đồng việt nam": "VND",
         "đồng vítneam": "VND",
         "ƒ": [
             "AWG",
@@ -13017,7 +13239,10 @@
         "валюта уругвая": "UYU",
         "валюта центральноафриканской республики": "XAF",
         "валюта чада": "XAF",
-        "валюта чехии": "CZK",
+        "валюта чехии": [
+            "CZK",
+            "203"
+        ],
         "валюта чили": "CLP",
         "валюта швейцарии": "CHF",
         "валюта швеции": "SEK",
@@ -13376,9 +13601,13 @@
         "крона": [
             "NOK",
             "DKK",
-            "CZK"
+            "CZK",
+            "203"
         ],
-        "крона чеська": "CZK",
+        "крона чеська": [
+            "CZK",
+            "203"
+        ],
         "крона швеции": "SEK",
         "куба писысы": "CUP",
         "кубански пезос": "CUP",
@@ -14005,12 +14234,31 @@
         "центральноафриканский франк": "XAF",
         "центральноафриканский франк кфа": "XAF",
         "центральноафриканський франк": "XAF",
-        "чеська крона": "CZK",
-        "чех кронасы": "CZK",
-        "чешка коруна": "CZK",
-        "чешка крона": "CZK",
-        "чешка круна": "CZK",
-        "чешская крона": "CZK",
+        "цифровая рупия": "INR",
+        "чеська крона": [
+            "CZK",
+            "203"
+        ],
+        "чех кронасы": [
+            "CZK",
+            "203"
+        ],
+        "чешка коруна": [
+            "CZK",
+            "203"
+        ],
+        "чешка крона": [
+            "CZK",
+            "203"
+        ],
+        "чешка круна": [
+            "CZK",
+            "203"
+        ],
+        "чешская крона": [
+            "CZK",
+            "203"
+        ],
         "чилеански пезос": "CLP",
         "чилеански песо": "CLP",
         "чили песосы": "CLP",
@@ -14291,7 +14539,10 @@
         "קוואנזה": "AOA",
         "קוואצ'ה זמבי": "ZMW",
         "קורדובה": "NIO",
-        "קורונה צ'כית": "CZK",
+        "קורונה צ'כית": [
+            "CZK",
+            "203"
+        ],
         "קינה": "PGK",
         "קצאל": "GTQ",
         "קרונה איסלנדית": "ISK",
@@ -14365,6 +14616,7 @@
         "الدينار ليبي": "LYD",
         "الروبل": "RUB",
         "الروبل الروسي": "RUB",
+        "الروبية الرقمية": "INR",
         "الروبية الهندية": "INR",
         "الريال السعودي": "SAR",
         "الريال القطري": "QAR",
@@ -14375,6 +14627,7 @@
         "الفرنك السويسري": "CHF",
         "الليرة السورية": "SYP",
         "الليره السورية": "SYP",
+        "المثقال الموزنبيقي": "MZN",
         "اليورو": "EUR",
         "ايسكودو": "CVE",
         "ايسكودو الرأس الأخضر": "CVE",
@@ -14638,11 +14891,17 @@
         "ك": "KWD",
         "كتزال غواتيمالي": "GTQ",
         "كرونة آيسلندية": "ISK",
-        "كرونة تشيكية": "CZK",
+        "كرونة تشيكية": [
+            "CZK",
+            "203"
+        ],
         "كرونة دنماركية": "DKK",
         "كرونة سويدية": "SEK",
         "كرونة نروجية": "NOK",
-        "كرونه تشيكيه": "CZK",
+        "كرونه تشيكيه": [
+            "CZK",
+            "203"
+        ],
         "كرونه سويدية": "SEK",
         "كرونه نروجية": "NOK",
         "كواشا": "MWK",
@@ -14690,8 +14949,8 @@
         "مارك بوسني": "BAM",
         "مانات": "AZN",
         "مانات أذربيجاني": "AZN",
-        "متكال": "MZN",
         "متكال موزمبيقي": "MZN",
+        "مثقال موزنبيقي": "MZN",
         "منات تركمانستاني": "TMT",
         "ناكفا": "ERN",
         "نايرا": "NGN",
@@ -14730,7 +14989,10 @@
         "ইসরায়েলি শেকেল": "ILS",
         "কানাডীয় ডলার": "CAD",
         "কুয়েতি দিনার": "KWD",
-        "চেক কোরুনা": "CZK",
+        "চেক কোরুনা": [
+            "CZK",
+            "203"
+        ],
         "জর্ডানীয় দিনার": "JOD",
         "জাপানি ইয়েন": "JPY",
         "টাকা": "BDT",
@@ -14799,7 +15061,10 @@
         "ਗੁਇਆਨਵੀ ਡਾਲਰ": "GYD",
         "ਗੁਇਆਨਾਈ ਡਾਲਰ": "GYD",
         "ਚਿਲੀਆਈ ਪੇਸੋ": "CLP",
-        "ਚੈੱਕ ਕੋਰੂਨਾ": "CZK",
+        "ਚੈੱਕ ਕੋਰੂਨਾ": [
+            "CZK",
+            "203"
+        ],
         "ਜਪਾਨੀ ਯੈੱਨ": "JPY",
         "ਜਮੈਕੀ ਡਾਲਰ": "JMD",
         "ਜਾਰਜੀਆਈ ਲਾਰੀ": "GEL",
@@ -14949,7 +15214,10 @@
         "சுவிஸ் பிராங்க்": "CHF",
         "சுவீடன் குரோணர்": "SEK",
         "சுவீடிய குரோனா": "SEK",
-        "செக் கொருனா": "CZK",
+        "செக் கொருனா": [
+            "CZK",
+            "203"
+        ],
         "செர்பிய தினார்": "RSD",
         "செர்பியன் தினார்": "RSD",
         "ஜார்ஜிய லாரி": "GEL",
@@ -15173,7 +15441,10 @@
         "เหยินหมินปี้": "CNY",
         "เหรินหมินปี้": "CNY",
         "แดนาร์มาซิโดเนีย": "MKD",
-        "โกรูนาเช็ก": "CZK",
+        "โกรูนาเช็ก": [
+            "CZK",
+            "203"
+        ],
         "โครเนอเดนมาร์ก": "DKK",
         "โฟรินต์ฮังการี": "HUF",
         "ไนรา": "NGN",
@@ -15412,7 +15683,10 @@
         "짐바브웨 골드": "ZWG",
         "짯": "MMK",
         "챠트": "MMK",
-        "체코 코루나": "CZK",
+        "체코 코루나": [
+            "CZK",
+            "203"
+        ],
         "칠레 페소": "CLP",
         "카보베르데 에스쿠도": "CVE",
         "카보베르데 이스쿠두": "CVE",
@@ -15687,8 +15961,14 @@
         "タジキスタン・ソモニ": "TJS",
         "タラ": "WST",
         "タンザニア・シリング": "TZS",
-        "チェコ・クローネ": "CZK",
-        "チェコ・コルナ": "CZK",
+        "チェコ・クローネ": [
+            "CZK",
+            "203"
+        ],
+        "チェコ・コルナ": [
+            "CZK",
+            "203"
+        ],
         "チャット": "MMK",
         "チュニジア・ディナール": "TND",
         "チリの通貨": "CLP",
