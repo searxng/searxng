@@ -70,6 +70,8 @@ def response(resp):
                 'codelines': sorted(lines.items()),
                 'code_language': code_language,
                 'template': 'code.html',
+                'strip_whitespace': True,
+                'strip_new_lines': True,
             }
         )
 

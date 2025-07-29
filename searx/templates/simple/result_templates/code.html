@@ -25,7 +25,7 @@
 {%- endif -%}
 
 <div dir="ltr" class="codelines">
-    {{- result.codelines|code_highlighter(result.code_language)|safe -}}
+    {{- result.codelines|code_highlighter(result.code_language, result.hl_lines, result.strip_whitespace, result.strip_new_lines)|safe -}}
 </div>
 
 {{- result_sub_footer(result) -}}
