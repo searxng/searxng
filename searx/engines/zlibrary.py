@@ -193,7 +193,7 @@ def fetch_traits(engine_traits: EngineTraits) -> None:
 
     try:
         resp = get(base_url, verify=False)
-    except (SearxException, httpx.ConnectError) as exc:
+    except (SearxException, httpx.HTTPError) as exc:
         print(f"ERROR: zlibrary domain '{base_url}' is seized?")
         print(f"  --> {exc}")
         _use_old_values()
