@@ -29,6 +29,7 @@ __all__ = ["EngineCache", "Engine", "ENGINES_CACHE"]
 from typing import List, Callable, TYPE_CHECKING, Any
 import string
 import typer
+import logging
 
 from ..cache import ExpireCache, ExpireCacheCfg
 

@@ -19,7 +19,7 @@ class TinEyeTests(SearxTestCase):
     def setUp(self):
         super().setUp()
         self.tineye = searx.engines.engines['tineye']
-        self.tineye.logger.setLevel(logging.INFO)
+        self.tineye.logger.setLevel(logging.INFO) # type: ignore
 
     def tearDown(self):
         searx.search.load_engines([])
@@ -28,7 +28,7 @@ class TinEyeTests(SearxTestCase):
         response = Mock()
         response.status_code = 401
         response.raise_for_status.side_effect = HTTPError()
-        self.assertRaises(HTTPError, lambda: self.tineye.response(response))
+        self.assertRaises(HTTPError, lambda: self.tineye.response(response)) # type: ignore
 
     @parameterized.expand([(400), (422)])
     def test_returns_empty_list(self, status_code):

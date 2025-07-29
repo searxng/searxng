@@ -170,6 +170,7 @@ class SQLiteAppl(abc.ABC):
         if self.SQLITE_THREADING_MODE == "serialized":
             self._DB = None
         else:
+            # NOTE: (Vizonex) py -m searx.webapp brings me to right here.
             msg = (
                 f"SQLite library is compiled with {self.SQLITE_THREADING_MODE} mode,"
                 " read https://docs.python.org/3/library/sqlite3.html#sqlite3.threadsafety"

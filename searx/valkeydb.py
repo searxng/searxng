@@ -19,7 +19,9 @@ A valkey DB connect can be tested by::
 """
 
 import os
-import pwd
+import sys
+if sys.platform != "win32":
+    import pwd
 import logging
 import warnings
 
