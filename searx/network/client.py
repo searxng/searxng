@@ -7,16 +7,22 @@ import random
 from ssl import SSLContext
 import threading
 from typing import Any, Dict
-
+import sys
 import httpx
 from httpx_socks import AsyncProxyTransport
 from python_socks import parse_proxy_url, ProxyConnectionError, ProxyTimeoutError, ProxyError
-import uvloop
+
 
 from searx import logger
 
-
-uvloop.install()
+if sys.platform != "win32":
+    # FIXME: HEADS UP, install() has been deprecated for a while an 
+    # alternative workaround should be planned within a year.
+    import uvloop
+    uvloop.install()
+else:
+    import winloop
+    winloop.install()
 
 
 logger = logger.getChild('searx.network.client')
@@ -101,7 +107,7 @@ class AsyncProxyTransportFixed(AsyncProxyTransport):
         try:
             return await super().handle_async_request(request)
         except ProxyConnectionError as e:
-            raise httpx.ProxyError("ProxyConnectionError: " + e.strerror, request=request) from e
+            raise httpx.ProxyError("ProxyConnectionError: " + (e.strerror or ''), request=request) from e
         except ProxyTimeoutError as e:
             raise httpx.ProxyError("ProxyTimeoutError: " + e.args[0], request=request) from e
         except ProxyError as e:
@@ -129,7 +135,8 @@ def get_transport_for_socks_proxy(verify, http2, local_address, proxy_url, limit
         password=proxy_password,
         rdns=rdns,
         loop=get_loop(),
-        verify=verify,
+        # XXX: Pyright
+        verify=bool(verify),
         http2=http2,
         local_address=local_address,
         limits=limit,
