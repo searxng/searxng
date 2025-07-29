@@ -26,6 +26,7 @@ import logging
 import warnings
 
 import valkey
+from valkey.exceptions import ValkeyError
 from searx import get_setting
 
 
@@ -34,6 +35,7 @@ logger = logging.getLogger(__name__)
 
 
 def client() -> valkey.Valkey:
+    assert _CLIENT is not None
     return _CLIENT
 
 
@@ -46,7 +48,7 @@ def initialize():
         return False
     try:
         # create a client, but no connection is done
-        _CLIENT = valkey.Valkey.from_url(valkey_url)
+        _CLIENT = valkey.Valkey.from_url(valkey_url) # type: ignore
 
         # log the parameters as seen by the valkey lib, without the password
         kwargs = _CLIENT.get_connection_kwargs().copy()
@@ -60,8 +62,9 @@ def initialize():
         # no error: the valkey connection is working
         logger.info("connected to Valkey")
         return True
-    except valkey.exceptions.ValkeyError:
+    except ValkeyError:
         _CLIENT = None
-        _pw = pwd.getpwuid(os.getuid())
-        logger.exception("[%s (%s)] can't connect valkey DB ...", _pw.pw_name, _pw.pw_uid)
+        if not sys.platform == "win32":
+            _pw = pwd.getpwuid(os.getuid()) 
+            logger.exception("[%s (%s)] can't connect valkey DB ...", _pw.pw_name, _pw.pw_uid)
     return False
