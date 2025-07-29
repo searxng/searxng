@@ -95,7 +95,7 @@ server:
   # If your instance owns a /etc/searxng/settings.yml file, then set the following
   # values there.
 
-  secret_key: "ultrasecretkey"  # Is overwritten by ${SEARXNG_SECRET}
+  secret_key: "mysecret"  # Is overwritten by ${SEARXNG_SECRET}
   # Proxy image results through SearXNG. Is overwritten by ${SEARXNG_IMAGE_PROXY}
   image_proxy: false
   # 1.0 and 1.1 are supported
@@ -220,7 +220,7 @@ outgoing:
 plugins:
 
   searx.plugins.calculator.SXNGPlugin:
-    active: true
+    active: false
 
   searx.plugins.hash_plugin.SXNGPlugin:
     active: true

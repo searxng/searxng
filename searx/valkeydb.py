@@ -35,8 +35,7 @@ logger = logging.getLogger(__name__)
 
 
 def client() -> valkey.Valkey:
-    assert _CLIENT is not None
-    return _CLIENT
+    return _CLIENT # type: ignore
 
 
 def initialize():
