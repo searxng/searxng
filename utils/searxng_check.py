@@ -11,7 +11,7 @@ from pathlib import Path
 repo_root = Path(__file__).resolve().parent.parent
 
 LOG_FORMAT_DEBUG = '%(levelname)-7s %(name)-30.30s: %(message)s'
-logging.basicConfig(level=logging.getLevelName('DEBUG'), format=LOG_FORMAT_DEBUG)
+logging.basicConfig(level=logging.DEBUG, format=LOG_FORMAT_DEBUG)
 os.environ['SEARXNG_DEBUG'] = '1'
 
 # from here on implement the checks of the installation
