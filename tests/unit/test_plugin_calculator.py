@@ -1,6 +1,8 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 # pylint: disable=missing-module-docstring,disable=missing-class-docstring,invalid-name
 
+import warnings
+
 from parameterized.parameterized import parameterized
 
 import searx.plugins
@@ -12,6 +14,10 @@ from searx.result_types import Answer
 from tests import SearxTestCase
 from .test_utils import random_string
 from .test_plugins import do_post_search
+
+
+# Reporting the DeprecationWarning once should be sufficient when running tests
+warnings.filterwarnings("once", category=DeprecationWarning)
 
 
 class PluginCalculator(SearxTestCase):
