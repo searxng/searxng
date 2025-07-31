@@ -9,24 +9,26 @@ usage::
 """
 
 from __future__ import annotations
+import typing as t
 
 import sys
 import copy
 from os.path import realpath, dirname
 
-from typing import TYPE_CHECKING, Dict
 import types
 import inspect
 
 from searx import logger, settings
 from searx.utils import load_module
 
-if TYPE_CHECKING:
+if t.TYPE_CHECKING:
     from searx.enginelib import Engine
 
 logger = logger.getChild('engines')
 ENGINE_DIR = dirname(realpath(__file__))
-ENGINE_DEFAULT_ARGS = {
+
+# Defaults for the namespace of an engine module, see load_engine()
+ENGINE_DEFAULT_ARGS: dict[str, int | str | list[t.Any] | dict[str, t.Any] | bool] = {
     # Common options in the engine module
     "engine_type": "online",
     "paging": False,
@@ -49,11 +51,8 @@ ENGINE_DEFAULT_ARGS = {
 # set automatically when an engine does not have any tab category
 DEFAULT_CATEGORY = 'other'
 
-
-# Defaults for the namespace of an engine module, see :py:func:`load_engine`
-
-categories = {'general': []}
-engines: Dict[str, Engine | types.ModuleType] = {}
+categories: dict[str, list[str]] = {'general': []}
+engines: dict[str, Engine | types.ModuleType] = {}
 engine_shortcuts = {}
 """Simple map of registered *shortcuts* to name of the engine (or ``None``).
 
@@ -77,7 +76,7 @@ def check_engine_module(module: types.ModuleType):
         raise TypeError(msg)
 
 
-def load_engine(engine_data: dict) -> Engine | types.ModuleType | None:
+def load_engine(engine_data: dict[str, t.Any]) -> Engine | types.ModuleType | None:
     """Load engine from ``engine_data``.
 
     :param dict engine_data:  Attributes from YAML ``settings:engines/<engine>``

@@ -1,9 +1,48 @@
 {
-    "venvPath": "local",
-    "venv": "py3",
-    "include": [
-        "searx",
-        "searxng_extra",
-        "tests"
-    ]
+  "venvPath": "local",
+  "venv": "py3",
+  "include": [
+    "searx",
+    "searxng_extra",
+    "tests"
+  ],
+  "reportAny" : "information",
+  "enableTypeIgnoreComments": true,
+  "reportIgnoreCommentWithoutRule": true,
+  "reportImplicitStringConcatenation": false,
+  "reportUninitializedInstanceVariable": false,
+  "reportUnnecessaryIsInstance": false,
+  "reportUnreachable": "information",
+  "reportUnusedCallResult": false,
+  "executionEnvironments": [
+    {
+      "root": "searx",
+      "extraPaths": ["."]
+    },
+    {
+      "root": "searxng_extra",
+      "extraPaths": ["."],
+      "reportAny" : false,
+      "reportUnknownMemberType": false,
+      "reportUnknownVariableType": false
+    },
+    {
+      "root": "tests",
+      "extraPaths": ["."],
+      "reportAny" : false,
+      "reportImplicitOverride": false,
+      "reportMissingParameterType": false,
+      "reportMissingTypeArgument": false,
+      "reportMissingTypeStubs": false,
+      "reportPrivateLocalImportUsage": false,
+      "reportPrivateUsage": false,
+      "reportUnannotatedClassAttribute": false,
+      "reportUnknownArgumentType": false,
+      "reportUnknownLambdaType": false,
+      "reportUnknownMemberType": false,
+      "reportUnknownParameterType": false,
+      "reportUnknownVariableType": false,
+      "reportUnusedParameter": false
+    }
+  ]
 }
