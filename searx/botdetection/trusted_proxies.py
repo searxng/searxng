@@ -20,7 +20,7 @@ if t.TYPE_CHECKING:
 
 
 class ProxyFix:
-    """A middle ware like the ProxyFix_ class, where the `x_for` argument is
+    """A middleware like the ProxyFix_ class, where the `x_for` argument is
     replaced by a method that determines the number of trusted proxies via
     the `botdetection.trusted_proxies` setting.
 
@@ -31,8 +31,9 @@ class ProxyFix:
     The remote IP (py:obj:`flask.Request.remote_addr`) of the request is taken
     from (first match):
 
-    - X-Forwarded-For_: If the header is set, the first IP that comes before the
-      IPs that are still part of the ``botdetection.trusted_proxies`` is used.
+    - X-Forwarded-For_: If the header is set, the first untrusted IP that comes
+      before the IPs that are still part of the ``botdetection.trusted_proxies``
+      is used.
 
     - `X-Real-IP <https://github.com/searxng/searxng/issues/1237#issuecomment-1147564516>`__:
       If X-Forwarded-For_ is not set, `X-Real-IP` is used
@@ -65,26 +66,26 @@ class ProxyFix:
         self,
         x_forwarded_for: list[IPv4Address | IPv6Address],
         trusted_proxies: list[IPv4Network | IPv6Network],
-    ) -> IPv4Address | IPv6Address:
-        x_for: int = 1
-        for proxy in reversed(x_forwarded_for):
-            proxy = ip_address(proxy)
+    ) -> str:
+        # always rtl
+        for addr in reversed(x_forwarded_for):
             trust: bool = False
 
-            if proxy.version == 6 and proxy.ipv4_mapped:
-                proxy = proxy.ipv4_mapped
             for net in trusted_proxies:
-                if proxy.version == net.version and proxy in net:
-                    logger.debug("trust proxy %s (member of %s)", proxy, net)
+                if addr.version == net.version and addr in net:
+                    logger.debug("trust proxy %s (member of %s)", addr, net)
                     trust = True
                     break
-            if trust:
-                x_for += 1
-            else:
-                break
-        return x_forwarded_for[-x_for]
+
+            # client address
+            if not trust:
+                return addr.compressed
+
+        # fallback to first address
+        return x_forwarded_for[0].compressed
 
     def __call__(self, environ: WSGIEnvironment, start_response: StartResponse) -> abc.Iterable[bytes]:
+        # pylint: disable=too-many-statements
 
         trusted_proxies = self.trusted_proxies()
 
@@ -92,14 +93,17 @@ class ProxyFix:
         # variable is first removed from the WSGI environment and explicitly set
         # in this function!
 
-        orig_remote_addr = environ.pop("REMOTE_ADDR")
+        orig_remote_addr: str | None = environ.pop("REMOTE_ADDR")
 
         # Validate the IPs involved in this game and delete all invalid ones
         # from the WSGI environment.
 
         if orig_remote_addr:
             try:
-                _ = ip_address(orig_remote_addr)
+                addr = ip_address(orig_remote_addr)
+                if addr.version == 6 and addr.ipv4_mapped:
+                    addr = addr.ipv4_mapped
+                orig_remote_addr = addr.compressed
             except ValueError as exc:
                 logger.error("REMOTE_ADDR: %s / discard REMOTE_ADDR from WSGI environment", exc)
                 orig_remote_addr = None
@@ -107,7 +111,10 @@ class ProxyFix:
         x_real_ip: str | None = environ.get("HTTP_X_REAL_IP")
         if x_real_ip:
             try:
-                _ = ip_address(x_real_ip)
+                addr = ip_address(x_real_ip)
+                if addr.version == 6 and addr.ipv4_mapped:
+                    addr = addr.ipv4_mapped
+                x_real_ip = addr.compressed
             except ValueError as exc:
                 logger.error("X-Real-IP: %s / discard HTTP_X_REAL_IP from WSGI environment", exc)
                 environ.pop("HTTP_X_REAL_IP")
@@ -117,12 +124,16 @@ class ProxyFix:
         if environ.get("HTTP_X_FORWARDED_FOR"):
             for x_for_ip in parse_list_header(str(environ.get("HTTP_X_FORWARDED_FOR"))):
                 try:
-                    x_forwarded_for.append(ip_address(x_for_ip))
+                    addr = ip_address(x_for_ip)
                 except ValueError as exc:
                     logger.error("X-Forwarded-For: %s / discard HTTP_X_FORWARDED_FOR from WSGI environment", exc)
                     environ.pop("HTTP_X_FORWARDED_FOR")
                     x_forwarded_for = []
                     break
+
+                if addr.version == 6 and addr.ipv4_mapped:
+                    addr = addr.ipv4_mapped
+                x_forwarded_for.append(addr)
 
         # log questionable WSGI environments
 
@@ -134,9 +145,6 @@ class ProxyFix:
             # without trusted_proxies, this variable is useless for determining
             # the real IP
             x_forwarded_for = []
-
-        if x_forwarded_for and x_real_ip:
-            _log_error_only_once("ignore X-Real-IP, prefer X-Forwarded-For and botdetection.trusted_proxies")
 
         # securing the WSGI environment variables that are adjusted
 

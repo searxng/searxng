@@ -3,7 +3,7 @@
 from __future__ import annotations
 import typing as t
 
-__all__ = ["dump_request", "get_network", "too_many_requests"]
+__all__ = ["_log_error_only_once", "dump_request", "get_network", "logger", "too_many_requests"]
 
 from ipaddress import (
     IPv4Network,
