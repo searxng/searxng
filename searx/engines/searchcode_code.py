@@ -20,9 +20,6 @@ about = {
 categories = ['it']
 search_api = 'https://searchcode.com/api/codesearch_I/?'
 
-# special code-endings which are not recognised by the file ending
-code_endings = {'cs': 'c#', 'h': 'c', 'hpp': 'cpp', 'cxx': 'cpp'}
-
 # paging is broken in searchcode.com's API .. not sure it will ever been fixed
 # paging = True
 
@@ -56,10 +53,6 @@ def response(resp):
         for line, code in result['lines'].items():
             lines[int(line)] = code
 
-        code_language = code_endings.get(
-            result['filename'].split('.')[-1].lower(), result['filename'].split('.')[-1].lower()
-        )
-
         # append result
         results.append(
             {
@@ -68,8 +61,10 @@ def response(resp):
                 'content': '',
                 'repository': repo,
                 'codelines': sorted(lines.items()),
-                'code_language': code_language,
+                'filename': result['filename'],
                 'template': 'code.html',
+                'strip_whitespace': True,
+                'strip_new_lines': True,
             }
         )
 
