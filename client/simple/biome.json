@@ -1,5 +1,5 @@
 {
-  "$schema": "https://biomejs.dev/schemas/2.0.6/schema.json",
+  "$schema": "https://biomejs.dev/schemas/2.1.2/schema.json",
   "files": {
     "includes": ["**", "!dist/**", "!node_modules/**"],
     "ignoreUnknown": true
@@ -28,7 +28,71 @@
   "linter": {
     "enabled": true,
     "rules": {
-      "recommended": true
+      "recommended": true,
+      "complexity": {
+        "noForEach": "error",
+        "useSimplifiedLogicExpression": "warn"
+      },
+      "correctness": {
+        "noUndeclaredVariables": {
+          "level": "error",
+          "options": {
+            "checkTypes": true
+          }
+        },
+        "useImportExtensions": "error"
+      },
+      "nursery": {
+        "noAwaitInLoop": "warn",
+        "noBitwiseOperators": "warn",
+        "noConstantBinaryExpression": "warn",
+        "noGlobalDirnameFilename": "warn",
+        "noImplicitCoercion": "warn",
+        "noMisusedPromises": "warn",
+        "noUnassignedVariables": "warn",
+        "noUselessBackrefInRegex": "warn",
+        "noUselessEscapeInString": "warn",
+        "noUselessUndefined": "warn",
+        "useAdjacentGetterSetter": "warn",
+        "useConsistentObjectDefinition": {
+          "level": "warn",
+          "options": {
+            "syntax": "explicit"
+          }
+        },
+        "useConsistentResponse": "warn",
+        "useExhaustiveSwitchCases": "warn",
+        "useExplicitType": "warn",
+        "useIndexOf": "warn",
+        "useIterableCallbackReturn": "warn",
+        "useJsonImportAttribute": "warn",
+        "useNumericSeparators": "warn",
+        "useObjectSpread": "warn",
+        "useParseIntRadix": "warn",
+        "useReadonlyClassProperties": "warn",
+        "useSingleJsDocAsterisk": "warn",
+        "useUnifiedTypeSignature": "warn"
+      },
+      "performance": {
+        "noBarrelFile": "error",
+        "noDelete": "error",
+        "noNamespaceImport": "error",
+        "noReExportAll": "error",
+        "useTopLevelRegex": "error"
+      },
+      "style": {
+        "noEnum": "error",
+        "noInferrableTypes": "error",
+        "noNamespace": "error",
+        "noCommonJs": "error"
+      },
+      "suspicious": {
+        "noAlert": "error",
+        "noEmptyBlockStatements": "error",
+        "noEvolvingTypes": "error",
+        "noVar": "error",
+        "useNumberToFixedDigitsArgument": "error"
+      }
     }
   },
   "javascript": {

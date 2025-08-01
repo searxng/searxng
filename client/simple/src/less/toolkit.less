@@ -156,9 +156,7 @@ div.selectable_url {
 
   td {
     padding: 0 1em 0 0;
-    padding-top: 0;
     .ltr-padding-right(1rem);
-    padding-bottom: 0;
     .ltr-padding-left(0);
   }
 
@@ -307,7 +305,7 @@ html body .tabs > input:checked {
   }
 
   ~ label {
-    position: inherited;
+    position: inherit;
     background: inherit;
     border-bottom: 2px solid transparent;
     font-weight: normal;
@@ -347,17 +345,9 @@ select {
   }
 }
 
-@supports (
-  (background-position-x: 100%) and
-    (
-      (appearance: none) or (-webkit-appearance: none) or
-        (-moz-appearance: none)
-    )
-) {
+@supports ((background-position-x: 100%) and ((appearance: none))) {
   select {
     appearance: none;
-    -webkit-appearance: none;
-    -moz-appearance: none;
     border-width: 0 2rem 0 0;
     border-color: transparent;
     background: data-uri("image/svg+xml;charset=UTF-8", @select-light-svg-path)
@@ -400,8 +390,6 @@ select {
 
 /* -- checkbox-onoff -- */
 input.checkbox-onoff[type="checkbox"] {
-  -webkit-appearance: none;
-  -moz-appearance: none;
   appearance: none;
   cursor: pointer;
   display: inline-block;
@@ -475,8 +463,6 @@ input.checkbox-onoff.reversed-checkbox[type="checkbox"] {
 /* -- checkbox -- */
 @supports (transform: rotate(-45deg)) {
   input[type="checkbox"]:not(.checkbox-onoff) {
-    -webkit-appearance: none;
-    -moz-appearance: none;
     appearance: none;
 
     width: 20px;
@@ -549,33 +535,16 @@ input.checkbox-onoff.reversed-checkbox[type="checkbox"] {
   border-right: 0.5em solid var(--color-toolkit-loader-border);
   border-bottom: 0.5em solid var(--color-toolkit-loader-border);
   border-left: 0.5em solid var(--color-toolkit-loader-borderleft);
-  -webkit-transform: translateZ(0);
-  -ms-transform: translateZ(0);
   transform: translateZ(0);
-  -webkit-animation: load8 1.2s infinite linear;
   animation: load8 1.2s infinite linear;
-}
-
-@-webkit-keyframes load8 {
-  0% {
-    -webkit-transform: rotate(0deg);
-    transform: rotate(0deg);
-  }
-
-  100% {
-    -webkit-transform: rotate(360deg);
-    transform: rotate(360deg);
-  }
 }
 
 @keyframes load8 {
   0% {
-    -webkit-transform: rotate(0deg);
     transform: rotate(0deg);
   }
 
   100% {
-    -webkit-transform: rotate(360deg);
     transform: rotate(360deg);
   }
 }
@@ -606,9 +575,6 @@ td:hover .engine-tooltip,
   margin: 0;
   padding: 0 0.125rem 0 4rem;
   width: 100%;
-  width: -moz-available;
-  width: -webkit-fill-available;
-  width: fill;
   flex-flow: row nowrap;
   align-items: center;
   display: inline-flex;
