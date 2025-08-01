@@ -17,6 +17,7 @@ A valkey DB connect can be tested by::
   >>>
 
 """
+from __future__ import annotations
 
 import os
 import pwd
@@ -26,12 +27,12 @@ import warnings
 import valkey
 from searx import get_setting
 
-
-_CLIENT = None
+_CLIENT: valkey.Valkey | None = None
 logger = logging.getLogger(__name__)
 
 
-def client() -> valkey.Valkey:
+def client() -> valkey.Valkey | None:
+    """Returns SearXNG's global Valkey DB connector (Valkey client object)."""
     return _CLIENT
 
 
