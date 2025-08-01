@@ -254,8 +254,8 @@ container.push() {
             podman pull "ghcr.io/$CONTAINER_IMAGE_ORGANIZATION/cache:$CONTAINER_IMAGE_NAME-${archs[$i]}${variants[$i]}"
         done
 
-        # Manifest tags
-        release_tags=("latest" "$DOCKER_TAG")
+        # Manifest tags ("latest" should be the last manifest)
+        release_tags=("$DOCKER_TAG" "latest")
 
         # Create manifests
         for tag in "${release_tags[@]}"; do
