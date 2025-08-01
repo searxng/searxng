@@ -160,8 +160,8 @@ webapp.run() {
         GRANIAN_WEBSOCKETS="false" \
         GRANIAN_LOOP="uvloop" \
         GRANIAN_BLOCKING_THREADS="4" \
-        GRANIAN_WORKERS_KILL_TIMEOUT="30" \
-        GRANIAN_BLOCKING_THREADS_IDLE_TIMEOUT="300" \
+        GRANIAN_WORKERS_KILL_TIMEOUT="30s" \
+        GRANIAN_BLOCKING_THREADS_IDLE_TIMEOUT="5m" \
         pyenv.cmd granian searx.webapp:app
 }
 
