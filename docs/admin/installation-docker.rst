@@ -80,7 +80,7 @@ Pull the latest image:
 
 .. code:: sh
 
-   $ docker pull docker.io/searxng/searxng:2025.6.3-b73ac81
+   $ docker pull docker.io/searxng/searxng:2025.8.1-3d96414
 
 .. _Container instancing:
 
@@ -119,14 +119,14 @@ List running containers:
 
    $ docker container list
    CONTAINER ID  IMAGE  ...  CREATED        PORTS                   NAMES
-   37f6487c8703  ...    ...  3 minutes ago  0.0.0.0:8888->8080/tcp  searxng
+   1af574997e63  ...    ...  3 minutes ago  0.0.0.0:8888->8080/tcp  searxng
 
 Access the container shell (troubleshooting):
 
 .. code:: sh
 
    $ docker container exec -it --user root searxng /bin/sh -l
-   37f6487c8703:/usr/local/searxng#
+   1af574997e63:/usr/local/searxng#
 
 Stop and remove the container:
 
@@ -182,9 +182,9 @@ container images are not officially supported):
    $ make container
 
    $ docker images
-   REPOSITORY                 TAG                       IMAGE ID      CREATED         SIZE
-   localhost/searxng/searxng  latest                    b14e256bfc36  14 seconds ago  201 MB
-   localhost/searxng/searxng  2025.5.1-b653119ab-dirty  b14e256bfc36  14 seconds ago  201 MB
-   localhost/searxng/searxng  builder                   7f334c752b41  20 seconds ago  765 MB
-   ghcr.io/searxng/base       searxng-builder           7d6b8a1bed4a  20 hours ago    625 MB
-   ghcr.io/searxng/base       searxng                   29baf9ef13ef  20 hours ago    62.5 MB
+   REPOSITORY                 TAG                 IMAGE ID  CREATED             SIZE
+   localhost/searxng/searxng  2025.8.1-3d96414    ...       About a minute ago  183 MB
+   localhost/searxng/searxng  latest              ...       About a minute ago  183 MB
+   localhost/searxng/searxng  builder             ...       About a minute ago  524 MB
+   ghcr.io/searxng/base       searxng-builder     ...       2 days ago          378 MB
+   ghcr.io/searxng/base       searxng             ...       2 days ago          42.2 MB
