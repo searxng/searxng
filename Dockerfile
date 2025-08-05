@@ -37,7 +37,7 @@ ENV SEARXNG_SECRET="${SEARXNG_SECRET}" \
 # =========================
 # 📡 Expose Port
 # =========================
-EXPOSE 8888
+EXPOSE ${PORT}
 
 # =========================
 # 🚀 Start SearXNG
