@@ -25,7 +25,7 @@ EOF
 # 🛠 Install Dependencies
 # =========================
 RUN apt-get update && \
-    apt-get -y install \
+    apt-get -y install --no-install-recommends \
         python3 python3-venv python3-pip \
         valkey-server \
         firefox-esr \
@@ -40,8 +40,8 @@ RUN apt-get update && \
 # =========================
 # 📂 Copy App Files
 # =========================
-COPY . /app
 WORKDIR /app
+COPY . /app
 
 # =========================
 # 🌍 Environment Variables
@@ -59,4 +59,4 @@ EXPOSE 8888
 # =========================
 # 🚀 Start SearXNG
 # =========================
-CMD ["uwsgi", "--ini", "utils/templates/etc/uwsgi/apps-available/searxng.ini"]
+CMD ["uwsgi", "--ini", "/app/utils/templates/etc/uwsgi/apps-available/searxng.ini"]
