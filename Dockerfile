@@ -5,7 +5,7 @@ ARG DEBIAN_CODENAME="bookworm"
 FROM mcr.microsoft.com/devcontainers/base:${DEBIAN_CODENAME}
 
 # =========================
-# 🛠 Install Dependencies (بدون مشاكل valkey أو duplicate sources)
+# 🛠 Install Dependencies
 # =========================
 RUN apt-get update && \
     apt-get -y install --no-install-recommends \
@@ -25,6 +25,13 @@ RUN apt-get update && \
 # =========================
 COPY . /app
 WORKDIR /app
+
+# =========================
+# 🛠 Create Virtualenv for SearXNG
+# =========================
+ENV SEARXNG_PYENV="/app/.venv"
+RUN python3 -m venv $SEARXNG_PYENV && \
+    $SEARXNG_PYENV/bin/pip install --no-cache-dir -r requirements.txt
 
 # =========================
 # 🌍 Environment Variables
