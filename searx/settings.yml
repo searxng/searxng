@@ -34,12 +34,12 @@ search:
     - json
 
 server:
-  port: ${PORT:-8888}
+  port: 8888
   bind_address: "0.0.0.0"
-  base_url: "${SEARXNG_BASE_URL:-false}"
+  base_url: "https://searxng-production-xxxx.up.railway.app/"
   limiter: false
   public_instance: false
-  secret_key: "${SEARXNG_SECRET}"
+  secret_key: "a4b17f5bcdad9832f64f7e0d76f7e7f8927b1e6b5a29d06f46d8e3bc29f4ac7b"
   image_proxy: true
   http_protocol_version: "1.1"
   method: "GET"
