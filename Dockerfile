@@ -1,14 +1,14 @@
 # =========================
-# 📦 Base Image
+# 📦 Base Image: Debian Bookworm Slim
 # =========================
-ARG DEBIAN_CODENAME="bookworm"
-FROM mcr.microsoft.com/devcontainers/base:${DEBIAN_CODENAME}
+FROM debian:bookworm-slim
 
 # =========================
-# 📥 Debian Sources (fixed for Bookworm)
+# 📥 Fix Debian Sources (Stable - Bookworm)
 # =========================
-RUN echo "deb http://deb.debian.org/debian ${DEBIAN_CODENAME} main" > /etc/apt/sources.list && \
-    echo "deb http://security.debian.org/debian-security ${DEBIAN_CODENAME}-security main" >> /etc/apt/sources.list
+RUN echo "deb http://deb.debian.org/debian bookworm main" > /etc/apt/sources.list && \
+    echo "deb http://deb.debian.org/debian bookworm-updates main" >> /etc/apt/sources.list && \
+    echo "deb http://security.debian.org/debian-security bookworm-security main" >> /etc/apt/sources.list
 
 # =========================
 # 🛠 Install Dependencies
