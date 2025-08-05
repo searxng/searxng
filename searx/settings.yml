@@ -1277,6 +1277,13 @@ engines:
       require_api_key: false
       results: HTML
 
+  # - name: marginalia
+  #   engine: marginalia
+  #   # contact for an API key: contact@marginalia-search.com
+  #   # rate-limited API key, for test & debug: public
+  #   api_key: unset
+  #   shortcut: mar
+
   - name: mastodon users
     engine: mastodon
     mastodon_type: accounts
