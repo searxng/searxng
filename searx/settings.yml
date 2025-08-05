@@ -1,7 +1,3 @@
-# Complete SearXNG Settings for Web Scraping & Email Research
-
-## **settings.yml** - Full Configuration File
-
 general:
   debug: false
   instance_name: "Research SearXNG"
@@ -616,4 +612,5 @@ engines:
   - name: baidu images
     baidu_category: images
     categories: [images]
-    engine:
+    engine: baidu
+    shortcut: bd
