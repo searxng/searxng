@@ -50,7 +50,7 @@ server:
     Referrer-Policy: no-referrer
 
 valkey:
-  url: "${REDIS_URL:-false}"
+  url: false
 
 ui:
   static_path: ""
