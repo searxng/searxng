@@ -24,6 +24,10 @@ RUN apt-get update && \
 # 📂 Copy App Files
 # =========================
 COPY . /app
+
+# 📂 Copy settings.yml explicitly to ensure path is correct
+COPY searx/settings.yml /app/searx/settings.yml
+
 WORKDIR /app
 
 # =========================
@@ -50,4 +54,3 @@ EXPOSE ${PORT}
 # 🚀 Start SearXNG
 # =========================
 CMD ["uwsgi", "--ini", "utils/templates/etc/uwsgi/apps-available/searxng.ini"]
-
