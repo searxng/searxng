@@ -30,8 +30,8 @@ WORKDIR /app
 # 🛠 Create Virtualenv for SearXNG
 # =========================
 ENV SEARXNG_PYENV="/app/.venv"
-RUN python3 -m venv $SEARXNG_PYENV && \
-    $SEARXNG_PYENV/bin/pip install --no-cache-dir -r requirements.txt
+RUN python3 -m venv ${SEARXNG_PYENV} && \
+    ${SEARXNG_PYENV}/bin/pip install --no-cache-dir -r requirements.txt
 
 # =========================
 # 🌍 Environment Variables
