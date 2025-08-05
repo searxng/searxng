@@ -5,21 +5,10 @@ ARG DEBIAN_CODENAME="bookworm"
 FROM mcr.microsoft.com/devcontainers/base:${DEBIAN_CODENAME}
 
 # =========================
-# 📥 Debian Sources
+# 📥 Debian Sources (fixed for Bookworm)
 # =========================
-RUN cat <<EOF > /etc/apt/sources.list.d/debian.sources
-Types: deb
-URIs: http://deb.debian.org/debian
-Suites: ${DEBIAN_CODENAME} ${DEBIAN_CODENAME}-updates ${DEBIAN_CODENAME}-backports
-Components: main
-Signed-By: /usr/share/keyrings/debian-archive-keyring.gpg
-
-Types: deb
-URIs: http://security.debian.org/debian-security
-Suites: ${DEBIAN_CODENAME}-security
-Components: main
-Signed-By: /usr/share/keyrings/debian-archive-keyring.gpg
-EOF
+RUN echo "deb http://deb.debian.org/debian ${DEBIAN_CODENAME} main" > /etc/apt/sources.list && \
+    echo "deb http://security.debian.org/debian-security ${DEBIAN_CODENAME}-security main" >> /etc/apt/sources.list
 
 # =========================
 # 🛠 Install Dependencies
@@ -60,3 +49,4 @@ EXPOSE 8888
 # 🚀 Start SearXNG
 # =========================
 CMD ["uwsgi", "--ini", "/app/utils/templates/etc/uwsgi/apps-available/searxng.ini"]
+
