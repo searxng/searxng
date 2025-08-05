@@ -1,22 +1,16 @@
 # =========================
-# 📦 Base Image: Debian Bookworm Slim
+# 📦 Base Image
 # =========================
-FROM debian:bookworm-slim
+ARG DEBIAN_CODENAME="bookworm"
+FROM mcr.microsoft.com/devcontainers/base:${DEBIAN_CODENAME}
 
 # =========================
-# 📥 Fix Debian Sources (Stable - Bookworm)
-# =========================
-RUN echo "deb http://deb.debian.org/debian bookworm main" > /etc/apt/sources.list && \
-    echo "deb http://deb.debian.org/debian bookworm-updates main" >> /etc/apt/sources.list && \
-    echo "deb http://security.debian.org/debian-security bookworm-security main" >> /etc/apt/sources.list
-
-# =========================
-# 🛠 Install Dependencies
+# 🛠 Install Dependencies (بدون مشاكل valkey أو duplicate sources)
 # =========================
 RUN apt-get update && \
     apt-get -y install --no-install-recommends \
         python3 python3-venv python3-pip \
-        valkey-server \
+        redis-server \
         firefox-esr \
         graphviz \
         imagemagick \
@@ -29,8 +23,8 @@ RUN apt-get update && \
 # =========================
 # 📂 Copy App Files
 # =========================
-WORKDIR /app
 COPY . /app
+WORKDIR /app
 
 # =========================
 # 🌍 Environment Variables
@@ -48,5 +42,5 @@ EXPOSE 8888
 # =========================
 # 🚀 Start SearXNG
 # =========================
-CMD ["uwsgi", "--ini", "/app/utils/templates/etc/uwsgi/apps-available/searxng.ini"]
+CMD ["uwsgi", "--ini", "utils/templates/etc/uwsgi/apps-available/searxng.ini"]
 
