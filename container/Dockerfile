@@ -1,61 +1,65 @@
-FROM ghcr.io/searxng/base:searxng-builder AS builder
+# =========================
+# 📦 Base Image
+# =========================
+ARG DEBIAN_CODENAME="bookworm"
+FROM mcr.microsoft.com/devcontainers/base:${DEBIAN_CODENAME}
 
-COPY ./requirements*.txt ./
+# =========================
+# 📥 Debian Sources
+# =========================
+RUN cat <<EOF > /etc/apt/sources.list.d/debian.sources
+Types: deb
+URIs: http://deb.debian.org/debian
+Suites: ${DEBIAN_CODENAME} ${DEBIAN_CODENAME}-updates ${DEBIAN_CODENAME}-backports
+Components: main
+Signed-By: /usr/share/keyrings/debian-archive-keyring.gpg
 
-RUN --mount=type=cache,id=pip,target=/root/.cache/pip python -m venv ./venv \
- && . ./venv/bin/activate \
- && pip install -r requirements.txt \
- && pip install -r requirements-server.txt
+Types: deb
+URIs: http://security.debian.org/debian-security
+Suites: ${DEBIAN_CODENAME}-security
+Components: main
+Signed-By: /usr/share/keyrings/debian-archive-keyring.gpg
+EOF
 
-COPY ./searx/ ./searx/
+# =========================
+# 🛠 Install Dependencies
+# =========================
+RUN apt-get update && \
+    apt-get -y install \
+        python3 python3-venv python3-pip \
+        valkey-server \
+        firefox-esr \
+        graphviz \
+        imagemagick \
+        librsvg2-bin \
+        fonts-dejavu \
+        shellcheck \
+        uwsgi uwsgi-plugin-python3 && \
+    apt-get clean && rm -rf /var/lib/apt/lists/*
 
-ARG TIMESTAMP_SETTINGS="0"
+# =========================
+# 📂 Copy Configuration Files
+# =========================
+# uWSGI config
+COPY utils/templates/etc/uwsgi/apps-available/searxng.ini /etc/uwsgi/apps-available/searxng.ini
 
-RUN python -m compileall -q searx \
- && touch -c --date=@$TIMESTAMP_SETTINGS ./searx/settings.yml \
- && find ./searx/static \
-    \( -name "*.html" -o -name "*.css" -o -name "*.js" -o -name "*.svg" -o -name "*.ttf" -o -name "*.eot" \) \
-    -type f -exec gzip -9 -k {} + -exec brotli --best {} +
+# SearXNG settings
+COPY searx/settings.yml /app/searx/settings.yml
 
-FROM ghcr.io/searxng/base:searxng AS dist
+# =========================
+# 🌍 Environment Variables
+# =========================
+ENV SEARXNG_SECRET="${SEARXNG_SECRET}" \
+    SEARXNG_BASE_URL="${SEARXNG_BASE_URL}" \
+    SEARXNG_PORT="${PORT}" \
+    SEARXNG_SETTINGS_PATH="/app/searx/settings.yml"
 
-ARG LABEL_DATE="0001-01-01T00:00:00Z"
-ARG GIT_URL="unspecified"
-ARG SEARXNG_GIT_VERSION="unspecified"
-ARG LABEL_VCS_REF="unspecified"
-ARG LABEL_VCS_URL="unspecified"
+# =========================
+# 📡 Expose Port
+# =========================
+EXPOSE 8888
 
-COPY --chown=searxng:searxng --from=builder /usr/local/searxng/venv/ ./venv/
-COPY --chown=searxng:searxng --from=builder /usr/local/searxng/searx/ ./searx/
-COPY --chown=searxng:searxng ./container/template/ ./.template/
-COPY --chown=searxng:searxng ./container/entrypoint.sh ./entrypoint.sh
-
-LABEL org.opencontainers.image.authors="searxng <$GIT_URL>" \
-      org.opencontainers.image.created="$LABEL_DATE" \
-      org.opencontainers.image.description="A privacy-respecting, hackable metasearch engine" \
-      org.opencontainers.image.documentation="https://github.com/searxng/searxng-docker" \
-      org.opencontainers.image.licenses="AGPL-3.0-or-later" \
-      org.opencontainers.image.revision="$LABEL_VCS_REF" \
-      org.opencontainers.image.source="$LABEL_VCS_URL" \
-      org.opencontainers.image.title="searxng" \
-      org.opencontainers.image.url="$LABEL_VCS_URL" \
-      org.opencontainers.image.version="$SEARXNG_GIT_VERSION"
-
-ENV SEARXNG_VERSION="$SEARXNG_GIT_VERSION" \
-    SEARXNG_SETTINGS_PATH="$CONFIG_PATH/settings.yml" \
-    GRANIAN_PROCESS_NAME="searxng" \
-    GRANIAN_INTERFACE="wsgi" \
-    GRANIAN_HOST="::" \
-    GRANIAN_PORT="8080" \
-    GRANIAN_WEBSOCKETS="false" \
-    GRANIAN_LOOP="uvloop" \
-    GRANIAN_BLOCKING_THREADS="4" \
-    GRANIAN_WORKERS_KILL_TIMEOUT="30s" \
-    GRANIAN_BLOCKING_THREADS_IDLE_TIMEOUT="5m"
-
-VOLUME $CONFIG_PATH
-VOLUME $DATA_PATH
-
-EXPOSE 8080
-
-ENTRYPOINT ["/usr/local/searxng/entrypoint.sh"]
+# =========================
+# 🚀 Start SearXNG
+# =========================
+CMD ["uwsgi", "--ini", "/etc/uwsgi/apps-available/searxng.ini"]
