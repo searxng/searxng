@@ -613,9 +613,10 @@ engines:
     baidu_category: images
     categories: [images]
     engine: baidu
-    shortcut: bd
+    shortcut: bdi
 
-    doi_resolvers:
+# DOI resolvers moved to correct position
+doi_resolvers:
   oadoi.org: 'https://oadoi.org/'
   doi.org: 'https://doi.org/'
   sci-hub.se: 'https://sci-hub.se/'
