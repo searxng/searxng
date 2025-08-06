@@ -212,7 +212,7 @@ const highlightResult =
           next = results[results.indexOf(current) - 1] || current;
           break;
         case "bottom":
-          next = results[results.length - 1];
+          next = results.at(-1);
           break;
         // biome-ignore lint/complexity/noUselessSwitchCase: fallthrough is intended
         case "top":
@@ -270,11 +270,11 @@ mutable.scrollPageToSelected = (): void => {
   const sel = document.querySelector<HTMLElement>(".result[data-vim-selected]");
   if (!sel) return;
 
-  const wtop = document.documentElement.scrollTop || document.body.scrollTop,
-    height = document.documentElement.clientHeight,
-    etop = sel.offsetTop,
-    ebot = etop + sel.clientHeight,
-    offset = 120;
+  const wtop = document.documentElement.scrollTop || document.body.scrollTop;
+  const height = document.documentElement.clientHeight;
+  const etop = sel.offsetTop;
+  const ebot = etop + sel.clientHeight;
+  const offset = 120;
 
   // first element ?
   if (!sel.previousElementSibling && ebot < height) {
@@ -387,7 +387,10 @@ const initHelpContent = (divElement: HTMLElement, keyBindings: typeof baseKeyBin
 
 const toggleHelp = (keyBindings: typeof baseKeyBinding): void => {
   let helpPanel = document.querySelector<HTMLElement>("#vim-hotkeys-help");
-  if (!helpPanel) {
+  if (helpPanel) {
+    // toggle hidden
+    helpPanel.classList.toggle("invisible");
+  } else {
     // first call
     helpPanel = Object.assign(document.createElement("div"), {
       id: "vim-hotkeys-help",
@@ -398,9 +401,6 @@ const toggleHelp = (keyBindings: typeof baseKeyBinding): void => {
     if (body) {
       body.appendChild(helpPanel);
     }
-  } else {
-    // toggle hidden
-    helpPanel.classList.toggle("invisible");
   }
 };
 
@@ -453,11 +453,9 @@ listen("keydown", document, (event: KeyboardEvent) => {
 
     if (event.key === "Escape") {
       keyBindings[event.key]?.fun(event);
-    } else {
-      if (event.target === document.body || tagName === "a" || tagName === "button") {
-        event.preventDefault();
-        keyBindings[event.key]?.fun(event);
-      }
+    } else if (event.target === document.body || tagName === "a" || tagName === "button") {
+      event.preventDefault();
+      keyBindings[event.key]?.fun(event);
     }
   }
 });

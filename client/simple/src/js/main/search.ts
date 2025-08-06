@@ -49,7 +49,7 @@ const fetchResults = async (qInput: HTMLInputElement, query: string): Promise<vo
     autocompleteList.replaceChildren();
 
     // show an error message that no result was found
-    if (!results?.[1]?.length) {
+    if (results?.[1]?.length === 0) {
       const noItemFoundMessage = Object.assign(document.createElement("li"), {
         className: "no-item-found",
         textContent: settings.translations?.no_item_found ?? "No results found"
@@ -146,6 +146,8 @@ if (settings.autocomplete) {
           if (autocomplete) {
             autocomplete.classList.remove("open");
           }
+          break;
+        default:
           break;
       }
 

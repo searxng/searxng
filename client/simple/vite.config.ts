@@ -72,15 +72,15 @@ export default {
           const extension = name?.split(".").pop();
           switch (extension) {
             case "css":
-              return `css/[name].min[extname]`;
+              return "css/[name].min[extname]";
             case "js":
-              return `js/[name].min[extname]`;
+              return "js/[name].min[extname]";
             case "png":
             case "svg":
-              return `img/[name][extname]`;
+              return "img/[name][extname]";
             default:
               console.warn("Unknown asset:", name);
-              return `[name][extname]`;
+              return "[name][extname]";
           }
         }
       }

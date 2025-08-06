@@ -24,8 +24,8 @@ listen("click", ".searxng_init_map", async function (this: HTMLElement, event: E
 
   const { leafletTarget: target, mapLon, mapLat, mapGeojson } = this.dataset;
 
-  const lon = parseFloat(mapLon || "0");
-  const lat = parseFloat(mapLat || "0");
+  const lon = Number.parseFloat(mapLon || "0");
+  const lat = Number.parseFloat(mapLat || "0");
   const view = new View({ maxZoom: 16, enableRotation: false });
   const map = new OlMap({
     target: target,
