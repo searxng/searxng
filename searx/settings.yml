@@ -1,45 +1,32 @@
+# SearXNG Settings - Optimized for Railway
+use_default_settings: true
+
 general:
   debug: false
   instance_name: "Research SearXNG"
   privacypolicy_url: false
   donation_url: false
   contact_url: false
-  enable_metrics: true
-  open_metrics: "${METRICS_PASSWORD:-}"
-
-brand:
-  new_issue_url: https://github.com/searxng/searxng/issues/new
-  docs_url: https://docs.searxng.org/
-  public_instances: https://searx.space
-  wiki_url: https://github.com/searxng/searxng/wiki
-  issue_url: https://github.com/searxng/searxng/issues
+  enable_metrics: false
 
 search:
   safe_search: 0
   autocomplete: "google"
   autocomplete_min: 2
-  favicon_resolver: "google"
   default_lang: "auto"
-  ban_time_on_fail: 3
-  max_ban_time_on_fail: 60
-  suspended_times:
-    SearxEngineAccessDenied: 3600
-    SearxEngineCaptcha: 3600
-    SearxEngineTooManyRequests: 1800
-    cf_SearxEngineCaptcha: 7200
-    cf_SearxEngineAccessDenied: 3600
-    recaptcha_SearxEngineCaptcha: 7200
+  ban_time_on_fail: 5
+  max_ban_time_on_fail: 120
   formats:
     - html
     - json
 
 server:
-  port: 8888
+  port: 8080
   bind_address: "0.0.0.0"
-  base_url: "https://searxng-production-xxxx.up.railway.app/"
+  base_url: false
   limiter: false
   public_instance: false
-  secret_key: "a4b17f5bcdad9832f64f7e0d76f7e7f8927b1e6b5a29d06f46d8e3bc29f4ac7b"
+  secret_key: "ultrasecretkey12345678901234567890123456789012345678901234567890"
   image_proxy: true
   http_protocol_version: "1.1"
   method: "GET"
@@ -49,578 +36,124 @@ server:
     X-Robots-Tag: noindex, nofollow
     Referrer-Policy: no-referrer
 
-valkey:
+redis:
   url: false
 
 ui:
   static_path: ""
   templates_path: ""
-  query_in_title: true
-  infinite_scroll: true
   default_theme: simple
   center_alignment: false
-  default_locale: ""
-  results_on_new_tab: true
-  theme_args:
-    simple_style: auto
+  results_on_new_tab: false
+  query_in_title: true
+  infinite_scroll: false
   search_on_category_select: true
   hotkeys: default
-  url_formatting: full
-
-preferences:
-  lock:
-    - method
 
 outgoing:
-  request_timeout: 5.0
-  max_request_timeout: 15.0
+  request_timeout: 3.0
+  max_request_timeout: 10.0
   useragent_suffix: ""
-  pool_connections: 100
-  pool_maxsize: 50
-  enable_http2: true
-
-plugins:
-  searx.plugins.calculator.SXNGPlugin:
-    active: true
-  searx.plugins.hash_plugin.SXNGPlugin:
-    active: true
-  searx.plugins.self_info.SXNGPlugin:
-    active: true
-  searx.plugins.unit_converter.SXNGPlugin:
-    active: true
-  searx.plugins.tracker_url_remover.SXNGPlugin:
-    active: false
-
-checker:
-  off_when_debug: true
+  pool_connections: 20
+  pool_maxsize: 10
+  enable_http2: false
 
 categories_as_tabs:
   general:
   images:
   videos:
   news:
-  map:
+  maps:
   it:
   science:
-  files:
-  social media:
 
 engines:
+  # Essential search engines only
   - name: google
     engine: google
     shortcut: go
-    weight: 1.5
-
-  - name: google images
-    engine: google_images
-    shortcut: goi
-
-  - name: google news
-    engine: google_news
-    shortcut: gon
-
-  - name: google videos
-    engine: google_videos
-    shortcut: gov
-
-  - name: google scholar
-    engine: google_scholar
-    shortcut: gos
-
+    weight: 2
+    
   - name: bing
     engine: bing
     shortcut: bi
-    weight: 1.3
-
-  - name: bing images
-    engine: bing_images
-    shortcut: bii
-
-  - name: bing news
-    engine: bing_news
-    shortcut: bin
-
-  - name: bing videos
-    engine: bing_videos
-    shortcut: biv
-
+    weight: 1.5
+    
   - name: duckduckgo
     engine: duckduckgo
     shortcut: ddg
     weight: 1.2
-
-  - name: duckduckgo images
-    engine: duckduckgo_extra
-    categories: [images, web]
-    ddg_category: images
-    shortcut: ddi
-
-  - name: duckduckgo videos
-    engine: duckduckgo_extra
-    categories: [videos, web]
-    ddg_category: videos
-    shortcut: ddv
-
-  - name: duckduckgo news
-    engine: duckduckgo_extra
-    categories: [news, web]
-    ddg_category: news
-    shortcut: ddn
-
-  - name: brave
-    engine: brave
-    shortcut: br
-    time_range_support: true
-    paging: true
-    categories: [general, web]
-    brave_category: search
-
-  - name: brave.images
-    engine: brave
-    network: brave
-    shortcut: brimg
-    categories: [images, web]
-    brave_category: images
-
-  - name: brave.videos
-    engine: brave
-    network: brave
-    shortcut: brvid
-    categories: [videos, web]
-    brave_category: videos
-
-  - name: brave.news
-    engine: brave
-    network: brave
-    shortcut: brnews
-    categories: news
-    brave_category: news
-
+    
   - name: startpage
     engine: startpage
     shortcut: sp
     startpage_categ: web
     categories: [general, web]
-
-  - name: startpage images
-    engine: startpage
-    startpage_categ: images
-    categories: [images, web]
-    shortcut: spi
-
-  - name: startpage news
-    engine: startpage
-    startpage_categ: news
-    categories: [news, web]
-    shortcut: spn
-
-  - name: yandex
-    engine: yandex
-    categories: general
-    search_type: web
-    shortcut: yd
-
-  - name: yandex images
-    engine: yandex
-    categories: images
-    search_type: images
-    shortcut: ydi
-
-  - name: yahoo
-    engine: yahoo
-    shortcut: yh
-
-  - name: yahoo news
-    engine: yahoo_news
-    shortcut: yhn
-
-  - name: qwant
-    qwant_categ: web
-    engine: qwant
-    shortcut: qw
-    categories: [general, web]
-
-  - name: qwant news
-    qwant_categ: news
-    engine: qwant
-    shortcut: qwn
-    categories: news
-    network: qwant
-
-  - name: qwant images
-    qwant_categ: images
-    engine: qwant
-    shortcut: qwi
-    categories: [images, web]
-    network: qwant
-
-  - name: qwant videos
-    qwant_categ: videos
-    engine: qwant
-    shortcut: qwv
-    categories: [videos, web]
-    network: qwant
-
-  - name: mojeek
-    shortcut: mjk
-    engine: mojeek
-    categories: [general, web]
-
-  - name: mojeek images
-    shortcut: mjkimg
-    engine: mojeek
-    categories: [images, web]
-    search_type: images
-    paging: false
-
-  - name: yep
-    engine: yep
-    shortcut: yep
-    categories: general
-    search_type: web
-    timeout: 5
-
-  - name: yep images
-    engine: yep
-    shortcut: yepi
-    categories: images
-    search_type: images
-
-  - name: yep news
-    engine: yep
-    shortcut: yepn
-    categories: news
-    search_type: news
-
-  - name: reddit
-    engine: reddit
-    shortcut: re
-    page_size: 25
-
-  - name: hackernews
-    engine: hackernews
-    shortcut: hn
-
-  - name: mastodon users
-    engine: mastodon
-    mastodon_type: accounts
-    base_url: https://mastodon.social
-    shortcut: mau
-
-  - name: mastodon hashtags
-    engine: mastodon
-    mastodon_type: hashtags
-    base_url: https://mastodon.social
-    shortcut: mah
-
-  - name: lemmy communities
-    engine: lemmy
-    lemmy_type: Communities
-    shortcut: leco
-
-  - name: lemmy users
-    engine: lemmy
-    network: lemmy communities
-    lemmy_type: Users
-    shortcut: leus
-
-  - name: lemmy posts
-    engine: lemmy
-    network: lemmy communities
-    lemmy_type: Posts
-    shortcut: lepo
-
-  - name: lemmy comments
-    engine: lemmy
-    network: lemmy communities
-    lemmy_type: Comments
-    shortcut: lecom
-
+    
+  # Image engines
+  - name: google images
+    engine: google_images
+    shortcut: goi
+    
+  - name: bing images
+    engine: bing_images
+    shortcut: bii
+    
+  # News engines  
+  - name: google news
+    engine: google_news
+    shortcut: gon
+    
+  - name: bing news
+    engine: bing_news
+    shortcut: bin
+    
+  # Video engines
+  - name: youtube
+    shortcut: yt
+    engine: youtube_noapi
+    
+  - name: google videos
+    engine: google_videos
+    shortcut: gov
+    
+  # Developer tools
   - name: github
     engine: github
     shortcut: gh
-
-  - name: gitlab
-    engine: gitlab
-    base_url: https://gitlab.com
-    shortcut: gl
-
-  - name: codeberg
-    engine: gitea
-    base_url: https://codeberg.org
-    shortcut: cb
-
+    
   - name: stackoverflow
     engine: stackexchange
     shortcut: st
     api_site: 'stackoverflow'
     categories: [it, q&a]
-
-  - name: askubuntu
-    engine: stackexchange
-    shortcut: ubuntu
-    api_site: 'askubuntu'
-    categories: [it, q&a]
-
-  - name: superuser
-    engine: stackexchange
-    shortcut: su
-    api_site: 'superuser'
-    categories: [it, q&a]
-
-  - name: arxiv
-    engine: arxiv
-    shortcut: arx
-    timeout: 6.0
-
-  - name: pubmed
-    engine: pubmed
-    shortcut: pub
-    timeout: 5.0
-
-  - name: semantic scholar
-    engine: semantic_scholar
-    shortcut: se
-
-  - name: crossref
-    engine: crossref
-    shortcut: cr
-    timeout: 30
-
+    
+  # Reference
   - name: wikipedia
     engine: wikipedia
     shortcut: wp
     display_type: ["infobox", "list"]
     categories: [general]
-
-  - name: wikidata
-    engine: wikidata
-    shortcut: wd
-    timeout: 5.0
-    weight: 2
-    display_type: ["infobox", "list"]
-    categories: [general]
-
-  - name: wikibooks
-    engine: mediawiki
-    weight: 0.5
-    shortcut: wb
-    categories: [general, wikimedia]
-    base_url: "https://{language}.wikibooks.org/"
-    search_type: text
-
-  - name: wikinews
-    engine: mediawiki
-    shortcut: wn
-    categories: [news, wikimedia]
-    base_url: "https://{language}.wikinews.org/"
-    search_type: text
-    srsort: create_timestamp_desc
-
-  - name: wikiquote
-    engine: mediawiki
-    weight: 0.5
-    shortcut: wq
-    categories: [general, wikimedia]
-    base_url: "https://{language}.wikiquote.org/"
-    search_type: text
-
-  - name: wiktionary
-    engine: mediawiki
-    shortcut: wt
-    categories: [dictionaries, wikimedia]
-    base_url: "https://{language}.wiktionary.org/"
-    search_type: text
-
-  - name: reuters
-    engine: reuters
-    shortcut: reu
-
-  - name: ansa
-    engine: ansa
-    shortcut: ans
-
-  - name: tagesschau
-    engine: tagesschau
-    use_source_url: true
-    shortcut: ts
-
-  - name: youtube
-    shortcut: yt
-    engine: youtube_noapi
-
-  - name: dailymotion
-    engine: dailymotion
-    shortcut: dm
-
-  - name: vimeo
-    engine: vimeo
-    shortcut: vm
-
-  - name: peertube
-    engine: peertube
-    shortcut: ptb
-    paging: true
-    categories: videos
-    timeout: 6.0
-
-  - name: rumble
-    engine: rumble
-    shortcut: ru
-    base_url: https://rumble.com/
-    paging: true
-    categories: videos
-
-  - name: soundcloud
-    engine: soundcloud
-    shortcut: sc
-
-  - name: bandcamp
-    engine: bandcamp
-    shortcut: bc
-    categories: music
-
-  - name: mixcloud
-    engine: mixcloud
-    shortcut: mc
-
+    
+  # Social
+  - name: reddit
+    engine: reddit
+    shortcut: re
+    page_size: 25
+    
+  # Files & Images
   - name: unsplash
     engine: unsplash
     shortcut: us
-
+    categories: [images]
+    
   - name: flickr
     categories: images
     shortcut: fl
     engine: flickr_noapi
 
-  - name: deviantart
-    engine: deviantart
-    shortcut: da
-    timeout: 3.0
-
-  - name: pinterest
-    engine: pinterest
-    shortcut: pin
-
-  - name: openverse
-    engine: openverse
-    categories: images
-    shortcut: opv
-
-  - name: library of congress
-    engine: loc
-    shortcut: loc
-    categories: images
-
-  - name: npm
-    engine: npm
-    shortcut: npm
-    timeout: 5.0
-
-  - name: pypi
-    shortcut: pypi
-    engine: pypi
-
-  - name: docker hub
-    engine: docker_hub
-    shortcut: dh
-    categories: [it, packages]
-
-  - name: crates.io
-    engine: crates
-    shortcut: crates
-    timeout: 6.0
-
-  - name: hex
-    engine: hex
-    shortcut: hex
-    sort_criteria: "recent_downloads"
-    page_size: 10
-
-  - name: packagist
-    engine: json_engine
-    paging: true
-    search_url: https://packagist.org/search.json?q={query}&page={pageno}
-    results_query: results
-    url_query: url
-    title_query: name
-    content_query: description
-    categories: [it, packages]
-    timeout: 5.0
-    shortcut: pack
-
-  - name: library genesis
-    engine: xpath
-    search_url: https://libgen.rs/search.php?req={query}
-    url_xpath: //a[contains(@href,"book/index.php?md5")]/@href
-    title_xpath: //a[contains(@href,"book/")]/text()[1]
-    content_xpath: //td/a[1][contains(@href,"=author")]/text()
-    categories: files
-    timeout: 10.0
-    shortcut: lg
-
-  - name: annas archive
-    engine: annas_archive
-    shortcut: aa
-
-  - name: z-library
-    engine: zlibrary
-    shortcut: zlib
-    categories: files
-    timeout: 7.0
-
-  - name: piratebay
-    engine: piratebay
-    shortcut: tpb
-    url: https://thepiratebay.org/
-    timeout: 3.0
-
-  - name: 1337x
-    engine: 1337x
-    shortcut: 1337x
-
-  - name: kickass
-    engine: kickass
-    base_url:
-      - https://kickasstorrents.to
-      - https://kickasstorrents.cr
-    shortcut: kc
-    timeout: 4.0
-
-  - name: nyaa
-    engine: nyaa
-    shortcut: nt
-
-  - name: solidtorrents
-    engine: solidtorrents
-    shortcut: solid
-    timeout: 4.0
-    base_url:
-      - https://solidtorrents.to
-      - https://bitsearch.to
-
-  - name: bt4g
-    engine: bt4g
-    shortcut: bt4g
-
-  - name: baidu
-    baidu_category: general
-    categories: [general]
-    engine: baidu
-    shortcut: bd
-
-  - name: baidu images
-    baidu_category: images
-    categories: [images]
-    engine: baidu
-    shortcut: bdi
-
-# DOI resolvers moved to correct position
 doi_resolvers:
   oadoi.org: 'https://oadoi.org/'
   doi.org: 'https://doi.org/'
-  sci-hub.se: 'https://sci-hub.se/'
-  sci-hub.st: 'https://sci-hub.st/'
-  sci-hub.ru: 'https://sci-hub.ru/'
 
 default_doi_resolver: 'oadoi.org'
