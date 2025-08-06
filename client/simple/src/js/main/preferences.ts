@@ -1,7 +1,9 @@
 import { http, listen, settings } from "../core/toolkit.ts";
 
+let engineDescriptions: Record<string, [string, string]> | undefined;
+
 const loadEngineDescriptions = async (): Promise<void> => {
-  let engineDescriptions: Record<string, [string, string]> | null = null;
+  if (engineDescriptions) return;
   try {
     const res = await http("GET", "engine_descriptions.json");
     engineDescriptions = await res.json();
