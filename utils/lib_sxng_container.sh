@@ -14,7 +14,6 @@ CONTAINER_IMAGE_NAME="searxng"
 container.build() {
     local parch=${OVERRIDE_ARCH:-$(uname -m)}
     local container_engine
-    local dockerfile
     local arch
     local variant
     local platform
@@ -42,19 +41,16 @@ container.build() {
     # Setup arch specific
     case $parch in
         "X64" | "x86_64" | "amd64")
-            dockerfile="Dockerfile"
             arch="amd64"
             variant=""
             platform="linux/$arch"
             ;;
         "ARM64" | "aarch64" | "arm64")
-            dockerfile="Dockerfile"
             arch="arm64"
             variant=""
             platform="linux/$arch"
             ;;
         "ARMV7" | "armhf" | "armv7l" | "armv7")
-            dockerfile="Dockerfile"
             arch="arm"
             variant="v7"
             platform="linux/$arch/$variant"
@@ -86,27 +82,20 @@ container.build() {
         python -m searx.version freeze
         eval "$(python -m searx.version)"
 
-        info_msg "Set \$VERSION_STRING: $VERSION_STRING"
-        info_msg "Set \$VERSION_TAG: $VERSION_TAG"
         info_msg "Set \$DOCKER_TAG: $DOCKER_TAG"
         info_msg "Set \$GIT_URL: $GIT_URL"
-        info_msg "Set \$GIT_BRANCH: $GIT_BRANCH"
 
         if [ "$container_engine" = "podman" ]; then
-            params_build_builder="build --format=oci --platform=$platform --target=builder --layers --identity-label=false"
-            params_build="build --format=oci --platform=$platform --layers --squash-all --omit-history --identity-label=false"
+            params_build_builder="build --format=oci --platform=$platform --layers --identity-label=false"
+            params_build=$params_build_builder
         else
-            params_build_builder="build --platform=$platform --target=builder"
-            params_build="build --platform=$platform --squash"
+            params_build_builder="build --platform=$platform"
+            params_build=$params_build_builder
         fi
 
         if [ "$GITHUB_ACTIONS" = "true" ]; then
-            params_build_builder+=" --cache-from=ghcr.io/$CONTAINER_IMAGE_ORGANIZATION/cache --cache-to=ghcr.io/$CONTAINER_IMAGE_ORGANIZATION/cache"
-
-            # Tags
             params_build+=" --tag=ghcr.io/$CONTAINER_IMAGE_ORGANIZATION/cache:$CONTAINER_IMAGE_NAME-$arch$variant"
         else
-            # Tags
             params_build+=" --tag=localhost/$CONTAINER_IMAGE_ORGANIZATION/$CONTAINER_IMAGE_NAME:latest"
             params_build+=" --tag=localhost/$CONTAINER_IMAGE_ORGANIZATION/$CONTAINER_IMAGE_NAME:$DOCKER_TAG"
         fi
@@ -115,19 +104,19 @@ container.build() {
         "$container_engine" $params_build_builder \
             --build-arg="TIMESTAMP_SETTINGS=$(git log -1 --format="%cd" --date=unix -- ./searx/settings.yml)" \
             --tag="localhost/$CONTAINER_IMAGE_ORGANIZATION/$CONTAINER_IMAGE_NAME:builder" \
-            --file="./container/$dockerfile" \
+            --file="./container/builder.dockerfile" \
             .
         build_msg CONTAINER "Image \"builder\" built"
 
         # shellcheck disable=SC2086
         "$container_engine" $params_build \
-            --build-arg="TIMESTAMP_SETTINGS=$(git log -1 --format="%cd" --date=unix -- ./searx/settings.yml)" \
-            --build-arg="GIT_URL=$GIT_URL" \
-            --build-arg="SEARXNG_GIT_VERSION=$VERSION_STRING" \
-            --build-arg="LABEL_DATE=$(date -u +%Y-%m-%dT%H:%M:%SZ)" \
-            --build-arg="LABEL_VCS_REF=$(git rev-parse HEAD)" \
-            --build-arg="LABEL_VCS_URL=$GIT_URL" \
-            --file="./container/$dockerfile" \
+            --build-arg="CONTAINER_IMAGE_ORGANIZATION=$CONTAINER_IMAGE_ORGANIZATION" \
+            --build-arg="CONTAINER_IMAGE_NAME=$CONTAINER_IMAGE_NAME" \
+            --build-arg="CREATED=$(date -u +%Y-%m-%dT%H:%M:%SZ)" \
+            --build-arg="VERSION=$DOCKER_TAG" \
+            --build-arg="VCS_URL=$GIT_URL" \
+            --build-arg="VCS_REVISION=$(git rev-parse HEAD)" \
+            --file="./container/dist.dockerfile" \
             .
         build_msg CONTAINER "Image built"
 
@@ -136,11 +125,8 @@ container.build() {
 
             # Output to GHA
             cat <<EOF >>"$GITHUB_OUTPUT"
-version_string=$VERSION_STRING
-version_tag=$VERSION_TAG
 docker_tag=$DOCKER_TAG
 git_url=$GIT_URL
-git_branch=$GIT_BRANCH
 EOF
         fi
     )

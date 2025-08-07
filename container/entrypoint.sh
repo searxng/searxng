@@ -127,4 +127,4 @@ volume_handler "$DATA_PATH"
 # Check for files
 config_handler "$SEARXNG_SETTINGS_PATH" "/usr/local/searxng/searx/settings.yml"
 
-exec /usr/local/searxng/venv/bin/granian searx.webapp:app
+exec /usr/local/searxng/.venv/bin/granian searx.webapp:app

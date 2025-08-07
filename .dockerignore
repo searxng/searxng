@@ -1,44 +1,5 @@
-*~
-*/*~
-*/*/*~
-*/*/*/*~
-*/*/*/*/*~
+*
 
-# Git
-.git
-.gitignore
-
-# CI
-.codeclimate.yml
-.travis.yml
-.taskcluster.yml
-
-# Byte-compiled / optimized / DLL files
-__pycache__/
-*/__pycache__/
-*/*/__pycache__/
-*/*/*/__pycache__/
-*.py[cod]
-*/*.py[cod]
-*/*/*.py[cod]
-*/*/*/*.py[cod]
-
-# node_modules
-node_modules/
-*/node_modules/
-*/*/node_modules/
-*/*/*/node_modules/
-*/*/*/*/node_modules/
-
-.tx/
-
-# to sync with .gitignore
-geckodriver.log
-.coverage
-coverage/
-cache/
-build/
-dist/
-local/
-gh-pages/
-*.egg-info/
+!container/entrypoint.sh
+!searx/**
+!requirements*.txt

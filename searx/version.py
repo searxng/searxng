@@ -134,9 +134,14 @@ DOCKER_TAG = "{DOCKER_TAG}"
 GIT_URL = "{GIT_URL}"
 GIT_BRANCH = "{GIT_BRANCH}"
 """
-        with open(os.path.join(os.path.dirname(__file__), "version_frozen.py"), "w", encoding="utf8") as f:
+        path = os.path.join(os.path.dirname(__file__), "version_frozen.py")
+        with open(path, "w", encoding="utf8") as f:
             f.write(python_code)
             print(f"{f.name} created")
+
+        # set file timestamp to commit timestamp
+        commit_timestamp = int(subprocess_run("git show -s --format=%ct"))
+        os.utime(path, (commit_timestamp, commit_timestamp))
     else:
         # output shell code to set the variables
         # usage: eval "$(python -m searx.version)"

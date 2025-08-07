@@ -104,6 +104,8 @@ jobs:
     needs: build-base
     strategy:
       fail-fast: false
+      # Faster runners first to cache arch independent wheels
+      max-parallel: 1
       matrix:
         include:
           - arch: amd64
@@ -121,11 +123,8 @@ jobs:
       packages: write
 
     outputs:
-      version_string: ${{ steps.build.outputs.version_string }}
-      version_tag: ${{ steps.build.outputs.version_tag }}
       docker_tag: ${{ steps.build.outputs.docker_tag }}
       git_url: ${{ steps.build.outputs.git_url }}
-      git_branch: ${{ steps.build.outputs.git_branch }}
 
     steps:
       - name: Setup Python
@@ -148,9 +147,8 @@ jobs:
       - name: Setup cache container mounts
         uses: actions/cache@v4
         with:
-          # yamllint disable-line rule:line-length
-          key: "container-mounts-${{ matrix.arch }}-${{ hashFiles('./container/Dockerfile') }}"
-          restore-keys: "container-mounts-${{ matrix.arch }}-"
+          key: "container-mounts-${{ hashFiles('./container/*.dockerfile') }}"
+          restore-keys: "container-mounts-"
           path: |
             /var/tmp/buildah-cache/
             /var/tmp/buildah-cache-*/
