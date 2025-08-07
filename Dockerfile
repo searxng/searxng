@@ -7,6 +7,9 @@ COPY searx/settings.yml /app/searx/settings.yml
 # ✅ Copy your custom logo to replace the default SearXNG logo
 COPY searx/static/themes/simple/img/searxng.png /usr/local/searxng/searx/static/themes/simple/img/searxng.png
 
+# ✅ Copy your favicon
+COPY searx/static/themes/simple/img/favicon.png /usr/local/searxng/searx/static/themes/simple/img/favicon.png
+
 # ✅ Copy your custom homepage (index.html) to override the default one
 COPY searx/templates/simple/index.html /usr/local/searxng/searx/templates/simple/index.html
 
