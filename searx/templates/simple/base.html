@@ -30,8 +30,10 @@
   <link rel="icon" href="{{ url_for('static', filename='img/favicon.svg') }}" type="image/svg+xml">
   <link rel="apple-touch-icon" href="{{ url_for('static', filename='img/favicon.png') }}">
 </head>
+
 <body class="{{ endpoint }}_endpoint">
   <main id="main_{{ self._TemplateReference__context.name|replace("simple/", "")|replace(".html", "") }}" class="{{ body_class }}">
+
     {% if errors %}
     <div class="dialog-error" role="alert">
       <a href="#" class="close" aria-label="close" title="close">×</a>
@@ -58,16 +60,9 @@
       {%- endblock -%}
     </nav>
 
-    {% block header %}
-    <header id="header" style="text-align: center; padding: 20px 0;">
-      <a href="{{ url_for('index') }}">
-        <img src="{{ url_for('static', filename='themes/simple/img/cf-logo.png') }}" alt="Critical Future" style="height: 60px;">
-      </a>
-    </header>
-    {% endblock %}
+    {% block header %}{% endblock %}
 
-    {% block content %}
-    {% endblock %}
+    {% block content %}{% endblock %}
   </main>
 
   {% block footer %}
