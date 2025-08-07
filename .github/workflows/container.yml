@@ -121,6 +121,8 @@ jobs:
     permissions:
       # Organization GHCR
       packages: write
+      # Clean key cache step
+      actions: write
 
     outputs:
       docker_tag: ${{ steps.build.outputs.docker_tag }}
@@ -144,14 +146,23 @@ jobs:
           restore-keys: "python-${{ env.PYTHON_VERSION }}-${{ runner.arch }}-"
           path: "./local/"
 
-      - name: Setup cache container mounts
-        uses: actions/cache@v4
+      - name: Restore cache container mounts
+        id: cache-container-mounts
+        uses: actions/cache/restore@v4
         with:
           key: "container-mounts-${{ hashFiles('./container/*.dockerfile') }}"
           restore-keys: "container-mounts-"
           path: |
             /var/tmp/buildah-cache/
             /var/tmp/buildah-cache-*/
+
+      # https://github.com/actions/cache/pull/1308
+      - if: steps.cache-container-mounts.outputs.cache-hit == 'true'
+        name: Clean key cache container mounts
+        continue-on-error: true
+        env:
+          GH_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+        run: gh cache delete container-mounts-${{ hashFiles('./container/*.dockerfile') }}
 
       - if: ${{ matrix.emulation }}
         name: Setup QEMU
@@ -169,6 +180,15 @@ jobs:
         env:
           OVERRIDE_ARCH: "${{ matrix.arch }}"
         run: make podman.build
+
+      - if: always()
+        name: Save cache container mounts
+        uses: actions/cache/save@v4
+        with:
+          key: "container-mounts-${{ hashFiles('./container/*.dockerfile') }}"
+          path: |
+            /var/tmp/buildah-cache/
+            /var/tmp/buildah-cache-*/
 
   test:
     name: Test (${{ matrix.arch }})
