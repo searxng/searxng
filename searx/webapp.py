@@ -1387,7 +1387,8 @@ def static_headers(headers: Headers, _path: str, _url: str) -> None:
     headers['Cache-Control'] = 'public, max-age=30, stale-while-revalidate=60'
 
     for header, value in settings['server']['default_http_headers'].items():
-        headers[header] = value
+        # cast value to string, as WhiteNoise requires header values to be strings
+        headers[header] = str(value)
 
 
 app.wsgi_app = WhiteNoise(
