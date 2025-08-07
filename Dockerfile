@@ -1,7 +1,14 @@
+# Use the official SearXNG image
 FROM searxng/searxng:latest
 
-# Copy custom settings file into the default expected directory
+# Copy the settings file
 COPY searx/settings.yml /app/searx/settings.yml
+
+# ✅ Copy your custom logo to replace the default SearXNG logo
+COPY searx/static/themes/simple/img/searxng.png /usr/local/searxng/searx/static/themes/simple/img/searxng.png
+
+# ✅ Copy your custom homepage (index.html) to override the default one
+COPY searx/templates/simple/index.html /usr/local/searxng/searx/templates/simple/index.html
 
 # Set environment variables for Railway
 ENV SEARXNG_SETTINGS_PATH=/app/searx/settings.yml
@@ -9,8 +16,9 @@ ENV SEARXNG_PORT=${PORT}
 ENV SEARXNG_BASE_URL=${SEARXNG_BASE_URL}
 ENV SEARXNG_SECRET=${SEARXNG_SECRET}
 
-# Expose the Railway port
+# Expose the port used by Railway
 EXPOSE ${PORT}
 
-# Start command for Railway
+# Start the SearXNG application
 CMD uwsgi --http-socket 0.0.0.0:${PORT} --module searx.webapp --callable app
+
