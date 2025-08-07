@@ -1,14 +1,32 @@
-={% extends "simple/base.html" %}
+{% extends "simple/base.html" %}
 {% from 'simple/icons.html' import icon_big %}
 
 {% block content %}
+<style>
+  .index {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 75vh; 
+  }
+
+  .index .title {
+    margin-bottom: 30px;
+  }
+
+  .index .title img {
+    height: 80px;
+  }
+</style>
+
 <div class="index">
-    <div class="title">
-        <h1>
-            <img src="{{ url_for('static', filename='themes/simple/img/searxng.png') }}" alt="Critical Future Logo" style="height: 80px;">
-        </h1>
-    </div>
-    
-    {% include 'simple/simple_search.html' %}
+  <div class="title">
+    <h1>
+      <img src="{{ url_for('static', filename='themes/simple/img/searxng.png') }}" alt="Critical Future Logo">
+    </h1>
+  </div>
+
+  {% include 'simple/simple_search.html' %}
 </div>
 {% endblock %}
