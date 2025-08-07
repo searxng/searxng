@@ -4,7 +4,7 @@
 <div class="index">
     <div class="title">
         <h1>
-            <img src="{{ url_for('static', filename='themes/simple/img/searxng.png') }}" alt="Critical Future" style="height: 80px;">
+            <img src="{{ url_for('static', filename='themes/simple/img/searxng.png') }}?v={{ searx_version }}" alt="Critical Future" style="height: 80px;">
         </h1>
     </div>
     {% include 'simple/simple_search.html' %}
