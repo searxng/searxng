@@ -11,21 +11,30 @@
   <meta name="HandheldFriendly" content="True">
   <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
   <title>Critical Future Search</title>
+
   {% block meta %}{% endblock %}
+
+  {# Load main CSS, including RTL if enabled #}
   {% if rtl %}
   <link rel="stylesheet" href="{{ url_for('static', filename='css/searxng-rtl.min.css') }}" type="text/css" media="screen">
   {% else %}
   <link rel="stylesheet" href="{{ url_for('static', filename='css/searxng.min.css') }}" type="text/css" media="screen">
   {% endif %}
+
+  {# Load limiter token CSS if server limiter or public instance is set #}
   {% if get_setting('server.limiter') or get_setting('server.public_instance') %}
   <link rel="stylesheet" href="{{ url_for('client_token', token=link_token) }}" type="text/css">
   {% endif %}
+
   <!--[if gte IE 9]>-->
   <script src="{{ url_for('static', filename='js/searxng.head.min.js') }}" client_settings="{{ client_settings }}"></script>
   <!--<![endif]-->
+
   {% block head %}
   <link title="{{ instance_name }}" type="application/opensearchdescription+xml" rel="search" href="{{ opensearch_url }}">
   {% endblock %}
+
+  {# Icons and favicons for browser tab #}
   <link rel="icon" href="{{ url_for('static', filename='img/favicon.png') }}" sizes="any">
   <link rel="icon" href="{{ url_for('static', filename='img/favicon.svg') }}" type="image/svg+xml">
   <link rel="apple-touch-icon" href="{{ url_for('static', filename='img/favicon.png') }}">
@@ -34,6 +43,7 @@
 <body class="{{ endpoint }}_endpoint">
   <main id="main_{{ self._TemplateReference__context.name|replace("simple/", "")|replace(".html", "") }}" class="{{ body_class }}">
 
+    {# Display error messages if any #}
     {% if errors %}
     <div class="dialog-error" role="alert">
       <a href="#" class="close" aria-label="close" title="close">×</a>
@@ -45,26 +55,35 @@
     </div>
     {% endif %}
 
+    {# Top navigation links (Donate, Preferences) — About has been removed #}
     <nav id="links_on_top">
       {%- from 'simple/icons.html' import icon_big -%}
-      {%- block linkto_about -%}
-      <a href="{{ url_for('info', pagename='about') }}" class="link_on_top_about">{{ icon_big('information-circle') }}<span>{{ _('About') }}</span></a>
-      {%- endblock -%}
+
+      {# Donate button (optional) #}
       {%- block linkto_donate -%}
       {%- if donation_url -%}
-      <a href="{{ donation_url }}" class="link_on_top_donate">{{ icon_big('heart') }}<span>{{ _('Donate') }}</span></a>
+      <a href="{{ donation_url }}" class="link_on_top_donate">
+        {{ icon_big('heart') }}<span>{{ _('Donate') }}</span>
+      </a>
       {%- endif -%}
       {%- endblock -%}
+
+      {# Preferences/settings button #}
       {%- block linkto_preferences -%}
-      <a href="{{ url_for('preferences') }}" class="link_on_top_preferences">{{ icon_big('settings') }}<span>{{ _('Preferences') }}</span></a>
+      <a href="{{ url_for('preferences') }}" class="link_on_top_preferences">
+        {{ icon_big('settings') }}<span>{{ _('Preferences') }}</span>
+      </a>
       {%- endblock -%}
     </nav>
 
+    {# Header content (can be customized from index.html) #}
     {% block header %}{% endblock %}
 
+    {# Main content block (search area, etc.) #}
     {% block content %}{% endblock %}
   </main>
 
+  {# Footer area with credits #}
   {% block footer %}
   <footer>
     <p style="text-align: center; padding: 20px;">
@@ -81,3 +100,4 @@
   <!--<![endif]-->
 </body>
 </html>
+
