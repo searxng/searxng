@@ -1277,12 +1277,13 @@ engines:
       require_api_key: false
       results: HTML
 
-  # - name: marginalia
-  #   engine: marginalia
-  #   # contact for an API key: contact@marginalia-search.com
-  #   # rate-limited API key, for test & debug: public
-  #   api_key: unset
-  #   shortcut: mar
+  - name: marginalia
+    engine: marginalia
+    shortcut: mar
+    # To get an API key, please follow the instructions at
+    # - https://about.marginalia-search.com/article/api/
+    # api_key: ...
+    inactive: true
 
   - name: mastodon users
     engine: mastodon
