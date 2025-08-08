@@ -446,7 +446,7 @@ class LegacyResult(dict):
     positions: list[int]
     score: float
     category: str
-    publishedDate: datetime.datetime | None = None
+    publishedDate: datetime.datetime | None
     pubdate: str = ""
 
     # infobox result
@@ -476,6 +476,7 @@ class LegacyResult(dict):
         self["positions"] = self.get("positions", "")
         self["score"] = self.get("score", 0)
         self["category"] = self.get("category", "")
+        self["publishedDate"] = self.get("publishedDate")
 
         if "infobox" in self:
             self["urls"] = self.get("urls", [])
