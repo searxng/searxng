@@ -47,7 +47,7 @@ def _stringify_pages(biblio: Dict[str, Any]) -> Optional[str]:
 
 
 def _parse_date(value: Optional[str]) -> Optional[datetime]:
-    if value is None or value == "":
+    if not value:
         return None
     # OpenAlex may return YYYY, YYYY-MM or YYYY-MM-DD
     for fmt in ("%Y-%m-%d", "%Y-%m", "%Y"):
