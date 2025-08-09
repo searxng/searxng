@@ -32,7 +32,7 @@ search_url = "https://api.openalex.org/works"
 
 # Optional: include your email for OpenAlex polite pool. Can be set from settings.yml
 # engines: - name: openalex; engine: openalex; mailto: "[email protected]"
-
+mailto = ""
 
 def _stringify_pages(biblio: Dict[str, Any]) -> Optional[str]:
     first_page = biblio.get("first_page")
