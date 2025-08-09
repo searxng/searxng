@@ -1277,6 +1277,15 @@ engines:
       require_api_key: false
       results: HTML
 
+  - name: marginalia
+    engine: marginalia
+    shortcut: mar
+    # To get an API key, please follow the instructions at
+    # - https://about.marginalia-search.com/article/api/
+    # api_key: ...
+    disabled: true
+    inactive: true
+
   - name: mastodon users
     engine: mastodon
     mastodon_type: accounts
