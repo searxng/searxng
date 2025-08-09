@@ -117,79 +117,83 @@ def request(query, params):
     return params
 
 
+def _extract_links(item: Dict[str, Any]) -> tuple[str, Optional[str], Optional[str]]:
+    primary_location = item.get("primary_location", {})
+    landing_page_url: Optional[str] = primary_location.get("landing_page_url")
+    work_url: str = item.get("id", "")
+    url: str = landing_page_url or work_url
+    open_access = item.get("open_access", {})
+    pdf_url: Optional[str] = primary_location.get("pdf_url") or open_access.get("oa_url")
+    html_url: Optional[str] = landing_page_url
+    return url, html_url, pdf_url
+
+
+def _extract_authors(item: Dict[str, Any]) -> List[str]:
+    authors: List[str] = []
+    for auth in item.get("authorships", []):
+        if not auth:
+            continue
+        author_obj = auth.get("author", {})
+        display_name = author_obj.get("display_name")
+        if isinstance(display_name, str) and display_name != "":
+            authors.append(display_name)
+    return authors
+
+
+def _extract_tags(item: Dict[str, Any]) -> List[str]:
+    tags: List[str] = []
+    for c in item.get("concepts", []):
+        name = (c or {}).get("display_name")
+        if isinstance(name, str) and name != "":
+            tags.append(name)
+    return tags
+
+
+def _extract_biblio(
+    item: Dict[str, Any],
+) -> tuple[Optional[str], Optional[str], Optional[str], Optional[str], Optional[str], Optional[datetime]]:
+    host_venue = item.get("host_venue", {})
+    biblio = item.get("biblio", {})
+    journal: Optional[str] = host_venue.get("display_name")
+    publisher: Optional[str] = host_venue.get("publisher")
+    pages = _stringify_pages(biblio)
+    volume = biblio.get("volume")
+    number = biblio.get("issue")
+    published_date = _parse_date(item.get("publication_date"))
+    return journal, publisher, pages, volume, number, published_date
+
+
+def _extract_comments(item: Dict[str, Any]) -> Optional[str]:
+    cited_by_count = item.get("cited_by_count")
+    if isinstance(cited_by_count, int):
+        return f"{cited_by_count} citations"
+    return None
+
+
 def response(resp):
     res = resp.json()
     results: List[Dict[str, Any]] = []
 
     for item in res.get("results", []):
-        # Prefer the landing page URL; fallback to OpenAlex work URL (id)
-        primary_location = item.get("primary_location", {})
-        host_venue = item.get("host_venue", {})
-        biblio = item.get("biblio", {})
-        concepts = item.get("concepts", [])
-        open_access = item.get("open_access", {})
-
-        landing_page_url: Optional[str] = primary_location.get("landing_page_url")
-        work_url: str = item.get("id", "")
-        url: str = landing_page_url or work_url
-
-        # Title and abstract
+        url, html_url, pdf_url = _extract_links(item)
         title: str = item.get("title", "")
-        content: Optional[str] = _reconstruct_abstract(item.get("abstract_inverted_index"))
-
-        # Authors
-        authorships = item.get("authorships", [])
-        authors: List[str] = []
-        for auth in authorships:
-            if not auth:
-                continue
-
-            author_obj = auth.get("author", {})
-            display_name = author_obj.get("display_name")
-            if isinstance(display_name, str) and display_name != "":
-                authors.append(display_name)
-
-        # Journal and publisher
-        journal: Optional[str] = host_venue.get("display_name")
-        publisher: Optional[str] = host_venue.get("publisher")
-
-        # DOI
-        doi: Optional[str] = _doi_to_plain(item.get("doi"))
-
-        # Links
-        pdf_url: Optional[str] = primary_location.get("pdf_url") or open_access.get("oa_url")
-        html_url: Optional[str] = landing_page_url
-
-        # Tags from concepts
-        tags: List[str] = []
-        for c in concepts:
-            name = (c or {}).get("display_name")
-            if isinstance(name, str) and name != "":
-                tags.append(name)
-
-        # Dates and biblio
-        published_date = _parse_date(item.get("publication_date"))
-        pages = _stringify_pages(biblio)
-        volume = biblio.get("volume")
-        number = biblio.get("issue")
-
-        # Type and comments
-        work_type: Optional[str] = item.get("type")
-        cited_by_count = item.get("cited_by_count")
-        comments: Optional[str] = None
-        if isinstance(cited_by_count, int):
-            comments = f"{cited_by_count} citations"
+        content: str = _reconstruct_abstract(item.get("abstract_inverted_index")) or ""
+        authors = _extract_authors(item)
+        journal, publisher, pages, volume, number, published_date = _extract_biblio(item)
+        doi = _doi_to_plain(item.get("doi"))
+        tags = _extract_tags(item) or None
+        comments = _extract_comments(item)
 
         results.append(
             {
                 "template": "paper.html",
                 "url": url,
                 "title": title,
-                "content": content or "",
+                "content": content,
                 "journal": journal,
                 "publisher": publisher,
                 "doi": doi,
-                "tags": tags or None,
+                "tags": tags,
                 "authors": authors,
                 "pdf_url": pdf_url,
                 "html_url": html_url,
@@ -197,7 +201,7 @@ def response(resp):
                 "pages": pages,
                 "volume": volume,
                 "number": number,
-                "type": work_type,
+                "type": item.get("type"),
                 "comments": comments,
             }
         )
