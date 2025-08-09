@@ -572,10 +572,8 @@ def index_error(output_format: str, error_message: str):
     # html
     sxng_request.errors.append(gettext('search error'))
     return render(
-        # fmt: off
         'index.html',
         selected_categories=get_selected_categories(sxng_request.preferences, sxng_request.form),
-        # fmt: on
     )
 
 
@@ -589,11 +587,9 @@ def index():
         return redirect(url_for('search') + query, 308)
 
     return render(
-        # fmt: off
         'index.html',
         selected_categories=get_selected_categories(sxng_request.preferences, sxng_request.form),
         current_locale = sxng_request.preferences.get_value("locale"),
-        # fmt: on
     )
 
 
@@ -637,10 +633,8 @@ def search():
     if not sxng_request.form.get('q'):
         if output_format == 'html':
             return render(
-                # fmt: off
                 'index.html',
                 selected_categories=get_selected_categories(sxng_request.preferences, sxng_request.form),
-                # fmt: on
             )
         return index_error(output_format, 'No query'), 400
 
@@ -754,7 +748,6 @@ def search():
     # when the user choice is "auto", search.search_query.lang contains the detected language
     # otherwise it is equals to search_query.lang
     return render(
-        # fmt: off
         'results.html',
         results = results,
         q=sxng_request.form['q'],
@@ -781,7 +774,6 @@ def search():
         timeout_limit = sxng_request.form.get('timeout_limit', None),
         timings = engine_timings_pairs,
         max_response_time = max_response_time
-        # fmt: on
     )
 
 
@@ -968,7 +960,6 @@ def preferences():
         }
 
     return render(
-        # fmt: off
         'preferences.html',
         preferences = True,
         selected_categories = get_selected_categories(sxng_request.preferences, sxng_request.form),
@@ -992,7 +983,6 @@ def preferences():
         preferences_url_params = sxng_request.preferences.get_as_url_params(),
         locked_preferences = get_setting("preferences.lock", []),
         doi_resolvers = get_setting("doi_resolvers", {}),
-        # fmt: on
     )
 
 
@@ -1147,7 +1137,6 @@ def stats():
 
     engine_stats['time'] = sorted(engine_stats['time'], reverse=reverse, key=get_key)
     return render(
-        # fmt: off
         'stats.html',
         sort_order = sort_order,
         engine_stats = engine_stats,
@@ -1155,7 +1144,6 @@ def stats():
         selected_engine_name = selected_engine_name,
         searx_git_branch = GIT_BRANCH,
         technical_report = technical_report,
-        # fmt: on
     )
 
 

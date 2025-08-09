@@ -400,8 +400,8 @@ class Preferences:
 
         super().__init__()
 
+        # fmt: off
         self.key_value_settings: dict[str, Setting] = {
-            # fmt: off
             'categories': MultipleChoiceSetting(
                 ['general'],
                 locked=is_locked('categories'),
@@ -488,8 +488,8 @@ class Preferences:
                 settings['ui']['url_formatting'],
                 choices=['pretty', 'full', 'host']
             ),
-            # fmt: on
         }
+        # fmt: on
 
         self.engines = EnginesSetting('engines', engines=engines.values())
         self.plugins = PluginsSetting('plugins', plugins=plugins)

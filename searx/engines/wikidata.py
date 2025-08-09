@@ -114,8 +114,8 @@ DUMMY_ENTITY_URLS = set(
 
 # https://www.w3.org/TR/sparql11-query/#rSTRING_LITERAL1
 # https://lists.w3.org/Archives/Public/public-rdf-dawg/2011OctDec/0175.html
+# fmt: off
 sparql_string_escape = get_string_replaces_function(
-    # fmt: off
     {
         '\t': '\\\t',
         '\n': '\\\n',
@@ -126,8 +126,8 @@ sparql_string_escape = get_string_replaces_function(
         '\'': '\\\'',
         '\\': '\\\\'
     }
-    # fmt: on
 )
+# fmt: on
 
 replace_http_by_https = get_string_replaces_function({'http:': 'https:'})
 
@@ -526,9 +526,7 @@ class WDAmountAttribute(WDAttribute):
     def get_where(self):
         return """  OPTIONAL { ?item p:{name} ?{name}Node .
     ?{name}Node rdf:type wikibase:BestRank ; ps:{name} ?{name} .
-    OPTIONAL { ?{name}Node psv:{name}/wikibase:quantityUnit ?{name}Unit. } }""".replace(
-            '{name}', self.name
-        )
+    OPTIONAL { ?{name}Node psv:{name}/wikibase:quantityUnit ?{name}Unit. } }""".replace('{name}', self.name)
 
     def get_group_by(self):
         return self.get_select()
@@ -562,9 +560,7 @@ class WDArticle(WDAttribute):
         return """OPTIONAL { ?article{language} schema:about ?item ;
              schema:inLanguage "{language}" ;
              schema:isPartOf <https://{language}.wikipedia.org/> ;
-             schema:name ?articleName{language} . }""".replace(
-            '{language}', self.language
-        )
+             schema:name ?articleName{language} . }""".replace('{language}', self.language)
 
     def get_group_by(self):
         return self.get_select()

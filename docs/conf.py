@@ -189,6 +189,7 @@ if PRIVACYPOLICY_URL:
 if CONTACT_URL:
     html_context["project_links"].append(ProjectLink("Contact", CONTACT_URL))
 
+# fmt: off
 html_sidebars = {
     "**": [
         "globaltoc.html",
@@ -198,6 +199,8 @@ html_sidebars = {
         "sourcelink.html"
     ],
 }
+# fmt: on
+
 singlehtml_sidebars = {"index": ["project.html", "localtoc.html"]}
 html_logo = "../client/simple/src/brand/searxng-wordmark.svg"
 html_title = "SearXNG Documentation ({})".format(VERSION_STRING)

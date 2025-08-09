@@ -235,10 +235,12 @@ def validate(
     ``schema_dict``.  Argument deprecated is a dictionary that maps deprecated
     configuration names to a messages::
 
+        ```
         deprecated = {
             "foo.bar" : "config 'foo.bar' is deprecated, use 'bar.foo'",
             "..."     : "..."
         }
+        ```
 
     The function returns a python tuple ``(is_valid, issue_list)``:
 
