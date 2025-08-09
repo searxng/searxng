@@ -147,7 +147,10 @@ def response(resp):
         authorships = item.get("authorships", [])
         authors: List[str] = []
         for auth in authorships:
-            author_obj = (auth or {}).get("author") or {}
+            if not auth:
+                continue
+                
+            author_obj = auth.get("author", {})
             display_name = author_obj.get("display_name")
             if isinstance(display_name, str) and display_name != "":
                 authors.append(display_name)
