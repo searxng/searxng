@@ -136,9 +136,7 @@ def response(resp):
 
         # Title and abstract
         title: str = item.get("title", "")
-        content: Optional[str] = _reconstruct_abstract(
-            item.get("abstract_inverted_index")
-        )
+        content: Optional[str] = _reconstruct_abstract(item.get("abstract_inverted_index"))
 
         # Authors
         authorships = item.get("authorships", [])
@@ -160,9 +158,7 @@ def response(resp):
         doi: Optional[str] = _doi_to_plain(item.get("doi"))
 
         # Links
-        pdf_url: Optional[str] = primary_location.get("pdf_url") or open_access.get(
-            "oa_url"
-        )
+        pdf_url: Optional[str] = primary_location.get("pdf_url") or open_access.get("oa_url")
         html_url: Optional[str] = landing_page_url
 
         # Tags from concepts
