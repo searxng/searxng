@@ -3,8 +3,9 @@
 DuckDuckGo Weather
 ~~~~~~~~~~~~~~~~~~
 """
+from __future__ import annotations
 
-from typing import TYPE_CHECKING
+import typing as t
 from json import loads
 from urllib.parse import quote
 
@@ -14,10 +15,11 @@ from searx.engines.duckduckgo import fetch_traits  # pylint: disable=unused-impo
 from searx.engines.duckduckgo import get_ddg_lang
 from searx.enginelib.traits import EngineTraits
 
-from searx.result_types import EngineResults, WeatherAnswer
+from searx.result_types import EngineResults
+from searx.extended_types import SXNG_Response
 from searx import weather
 
-if TYPE_CHECKING:
+if t.TYPE_CHECKING:
     import logging
 
     logger: logging.Logger
@@ -41,13 +43,13 @@ categories = ["weather"]
 base_url = "https://duckduckgo.com/js/spice/forecast/{query}/{lang}"
 
 # adapted from https://gist.github.com/mikesprague/048a93b832e2862050356ca233ef4dc1
-WEATHERKIT_TO_CONDITION = {
+WEATHERKIT_TO_CONDITION: dict[str, weather.WeatherConditionType] = {
     "BlowingDust": "fog",
-    "Clear": "clear",
+    "Clear": "clear sky",
     "Cloudy": "cloudy",
     "Foggy": "fog",
     "Haze": "fog",
-    "MostlyClear": "clear",
+    "MostlyClear": "clear sky",
     "MostlyCloudy": "partly cloudy",
     "PartlyCloudy": "partly cloudy",
     "Smoky": "fog",
@@ -79,8 +81,9 @@ WEATHERKIT_TO_CONDITION = {
 }
 
 
-def _weather_data(location, data):
-    return WeatherAnswer.Item(
+def _weather_data(location: weather.GeoLocation, data: dict[str, t.Any]):
+
+    return EngineResults.types.WeatherAnswer.Item(
         location=location,
         temperature=weather.Temperature(unit="°C", value=data['temperature']),
         condition=WEATHERKIT_TO_CONDITION[data["conditionCode"]],
@@ -93,7 +96,7 @@ def _weather_data(location, data):
     )
 
 
-def request(query, params):
+def request(query: str, params: dict[str, t.Any]):
 
     eng_region = traits.get_region(params['searxng_locale'], traits.all_locale)
     eng_lang = get_ddg_lang(traits, params['searxng_locale'])
@@ -108,7 +111,7 @@ def request(query, params):
     return params
 
 
-def response(resp):
+def response(resp: SXNG_Response):
     res = EngineResults()
 
     if resp.text.strip() == "ddg_spice_forecast();":
@@ -118,7 +121,7 @@ def response(resp):
 
     geoloc = weather.GeoLocation.by_query(resp.search_params["query"])
 
-    weather_answer = WeatherAnswer(
+    weather_answer = EngineResults.types.WeatherAnswer(
         current=_weather_data(geoloc, json_data["currentWeather"]),
         service="duckduckgo weather",
     )
