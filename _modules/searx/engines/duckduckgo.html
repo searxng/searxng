@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>searx.engines.duckduckgo &#8212; SearXNG Documentation (2025.8.9+341d718c7)</title>
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=6625fa76" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/searxng.css?v=52e4ff28" />
+    <script src="../../../_static/documentation_options.js?v=e8ca2aa3"></script>
+    <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script data-project="searxng" data-version="2025.8.9+341d718c7" src="../../../_static/describe_version.js?v=fa7f30d0"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">SearXNG Documentation (2025.8.9+341d718c7)</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" >Module code</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../engines.html" accesskey="U">searx.engines</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">searx.engines.duckduckgo</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for searx.engines.duckduckgo</h1><div class="highlight"><pre>
+<span></span><span class="c1"># SPDX-License-Identifier: AGPL-3.0-or-later</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">DuckDuckGo WEB</span>
+<span class="sd">~~~~~~~~~~~~~~</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">typing</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">urllib.parse</span><span class="w"> </span><span class="kn">import</span> <span class="n">quote_plus</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">babel</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">lxml.html</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">searx</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">locales</span><span class="p">,</span>
+    <span class="n">external_bang</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">searx.utils</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">eval_xpath</span><span class="p">,</span>
+    <span class="n">eval_xpath_getindex</span><span class="p">,</span>
+    <span class="n">extr</span><span class="p">,</span>
+    <span class="n">extract_text</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">searx.network</span><span class="w"> </span><span class="kn">import</span> <span class="n">get</span>  <span class="c1"># see https://github.com/searxng/searxng/issues/762</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">searx.enginelib.traits</span><span class="w"> </span><span class="kn">import</span> <span class="n">EngineTraits</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">searx.enginelib</span><span class="w"> </span><span class="kn">import</span> <span class="n">EngineCache</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">searx.exceptions</span><span class="w"> </span><span class="kn">import</span> <span class="n">SearxEngineCaptchaException</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">searx.result_types</span><span class="w"> </span><span class="kn">import</span> <span class="n">EngineResults</span>
+
+<span class="k">if</span> <span class="n">typing</span><span class="o">.</span><span class="n">TYPE_CHECKING</span><span class="p">:</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+
+    <span class="n">logger</span><span class="p">:</span> <span class="n">logging</span><span class="o">.</span><span class="n">Logger</span>
+
+<span class="n">traits</span><span class="p">:</span> <span class="n">EngineTraits</span>
+
+<span class="n">about</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;website&quot;</span><span class="p">:</span> <span class="s1">&#39;https://lite.duckduckgo.com/lite/&#39;</span><span class="p">,</span>
+    <span class="s2">&quot;wikidata_id&quot;</span><span class="p">:</span> <span class="s1">&#39;Q12805&#39;</span><span class="p">,</span>
+    <span class="s2">&quot;use_official_api&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="s2">&quot;require_api_key&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="s2">&quot;results&quot;</span><span class="p">:</span> <span class="s1">&#39;HTML&#39;</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="n">send_accept_language_header</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="sd">&quot;&quot;&quot;DuckDuckGo-Lite tries to guess user&#39;s preferred language from the HTTP</span>
+<span class="sd">``Accept-Language``.  Optional the user can select a region filter (but not a</span>
+<span class="sd">language).</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="c1"># engine dependent config</span>
+<span class="n">categories</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;general&#39;</span><span class="p">,</span> <span class="s1">&#39;web&#39;</span><span class="p">]</span>
+<span class="n">paging</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">time_range_support</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">safesearch</span> <span class="o">=</span> <span class="kc">True</span>  <span class="c1"># user can&#39;t select but the results are filtered</span>
+
+<span class="n">url</span> <span class="o">=</span> <span class="s2">&quot;https://html.duckduckgo.com/html/&quot;</span>
+
+<span class="n">time_range_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;day&#39;</span><span class="p">:</span> <span class="s1">&#39;d&#39;</span><span class="p">,</span> <span class="s1">&#39;week&#39;</span><span class="p">:</span> <span class="s1">&#39;w&#39;</span><span class="p">,</span> <span class="s1">&#39;month&#39;</span><span class="p">:</span> <span class="s1">&#39;m&#39;</span><span class="p">,</span> <span class="s1">&#39;year&#39;</span><span class="p">:</span> <span class="s1">&#39;y&#39;</span><span class="p">}</span>
+<span class="n">form_data</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;v&#39;</span><span class="p">:</span> <span class="s1">&#39;l&#39;</span><span class="p">,</span> <span class="s1">&#39;api&#39;</span><span class="p">:</span> <span class="s1">&#39;d.js&#39;</span><span class="p">,</span> <span class="s1">&#39;o&#39;</span><span class="p">:</span> <span class="s1">&#39;json&#39;</span><span class="p">}</span>
+
+<span class="n">_CACHE</span><span class="p">:</span> <span class="n">EngineCache</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># type: ignore</span>
+<span class="sd">&quot;&quot;&quot;Persistent (SQLite) key/value cache that deletes its values after ``expire``</span>
+<span class="sd">seconds.&quot;&quot;&quot;</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">get_cache</span><span class="p">():</span>
+    <span class="k">global</span> <span class="n">_CACHE</span>  <span class="c1"># pylint: disable=global-statement</span>
+    <span class="k">if</span> <span class="n">_CACHE</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">_CACHE</span> <span class="o">=</span> <span class="n">EngineCache</span><span class="p">(</span><span class="s2">&quot;duckduckgo&quot;</span><span class="p">)</span>  <span class="c1"># type:ignore</span>
+    <span class="k">return</span> <span class="n">_CACHE</span>
+
+
+<div class="viewcode-block" id="get_vqd">
+<a class="viewcode-back" href="../../../dev/engines/online/duckduckgo.html#searx.engines.duckduckgo.get_vqd">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_vqd</span><span class="p">(</span><span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">region</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">force_request</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Returns the ``vqd`` that fits to the *query*.</span>
+
+<span class="sd">    :param query: The query term</span>
+<span class="sd">    :param region: DDG&#39;s region code</span>
+<span class="sd">    :param force_request: force a request to get a vqd value from DDG</span>
+
+<span class="sd">    TL;DR; the ``vqd`` value is needed to pass DDG&#39;s bot protection and is used</span>
+<span class="sd">    by all request to DDG:</span>
+
+<span class="sd">    - DuckDuckGo Lite: ``https://lite.duckduckgo.com/lite`` (POST form data)</span>
+<span class="sd">    - DuckDuckGo Web: ``https://links.duckduckgo.com/d.js?q=...&amp;vqd=...``</span>
+<span class="sd">    - DuckDuckGo Images: ``https://duckduckgo.com/i.js??q=...&amp;vqd=...``</span>
+<span class="sd">    - DuckDuckGo Videos: ``https://duckduckgo.com/v.js??q=...&amp;vqd=...``</span>
+<span class="sd">    - DuckDuckGo News: ``https://duckduckgo.com/news.js??q=...&amp;vqd=...``</span>
+
+<span class="sd">    DDG&#39;s bot detection is sensitive to the ``vqd`` value.  For some search terms</span>
+<span class="sd">    (such as extremely long search terms that are often sent by bots), no ``vqd``</span>
+<span class="sd">    value can be determined.</span>
+
+<span class="sd">    If SearXNG cannot determine a ``vqd`` value, then no request should go out</span>
+<span class="sd">    to DDG.</span>
+
+<span class="sd">    .. attention::</span>
+
+<span class="sd">       A request with a wrong ``vqd`` value leads to DDG temporarily putting</span>
+<span class="sd">       SearXNG&#39;s IP on a block list.</span>
+
+<span class="sd">    Requests from IPs in this block list run into timeouts.  Not sure, but it</span>
+<span class="sd">    seems the block list is a sliding window: to get my IP rid from the bot list</span>
+<span class="sd">    I had to cool down my IP for 1h (send no requests from that IP to DDG).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">cache</span> <span class="o">=</span> <span class="n">get_cache</span><span class="p">()</span>
+    <span class="n">key</span> <span class="o">=</span> <span class="n">cache</span><span class="o">.</span><span class="n">secret_hash</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">query</span><span class="si">}</span><span class="s2">//</span><span class="si">{</span><span class="n">region</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">value</span> <span class="o">=</span> <span class="n">cache</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="n">key</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">force_request</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;vqd: re-use cached value: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">value</span>
+
+    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;vqd: request value from from duckduckgo.com&quot;</span><span class="p">)</span>
+    <span class="n">resp</span> <span class="o">=</span> <span class="n">get</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;https://duckduckgo.com/?q=</span><span class="si">{</span><span class="n">quote_plus</span><span class="p">(</span><span class="n">query</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">resp</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">200</span><span class="p">:</span>  <span class="c1"># type: ignore</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="n">extr</span><span class="p">(</span><span class="n">resp</span><span class="o">.</span><span class="n">text</span><span class="p">,</span> <span class="s1">&#39;vqd=&quot;&#39;</span><span class="p">,</span> <span class="s1">&#39;&quot;&#39;</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
+        <span class="k">if</span> <span class="n">value</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;vqd value from duckduckgo.com request: &#39;</span><span class="si">%s</span><span class="s2">&#39;&quot;</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;vqd: can&#39;t parse value from ddg response (return empty string)&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="s2">&quot;&quot;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;vqd: got HTTP </span><span class="si">%s</span><span class="s2"> from duckduckgo.com&quot;</span><span class="p">,</span> <span class="n">resp</span><span class="o">.</span><span class="n">status_code</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">value</span><span class="p">:</span>
+        <span class="n">cache</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">value</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;none vqd value from duckduckgo.com: HTTP </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">resp</span><span class="o">.</span><span class="n">status_code</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">value</span></div>
+
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">set_vqd</span><span class="p">(</span><span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">region</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+    <span class="n">cache</span> <span class="o">=</span> <span class="n">get_cache</span><span class="p">()</span>
+    <span class="n">key</span> <span class="o">=</span> <span class="n">cache</span><span class="o">.</span><span class="n">secret_hash</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">query</span><span class="si">}</span><span class="s2">//</span><span class="si">{</span><span class="n">region</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">cache</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">value</span><span class="p">,</span> <span class="n">expire</span><span class="o">=</span><span class="mi">3600</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="get_ddg_lang">
+<a class="viewcode-back" href="../../../dev/engines/online/duckduckgo.html#searx.engines.duckduckgo.get_ddg_lang">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_ddg_lang</span><span class="p">(</span><span class="n">eng_traits</span><span class="p">:</span> <span class="n">EngineTraits</span><span class="p">,</span> <span class="n">sxng_locale</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s1">&#39;en_US&#39;</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get DuckDuckGo&#39;s language identifier from SearXNG&#39;s locale.</span>
+
+<span class="sd">    DuckDuckGo defines its languages by region codes (see</span>
+<span class="sd">    :py:obj:`fetch_traits`).</span>
+
+<span class="sd">    To get region and language of a DDG service use:</span>
+
+<span class="sd">    .. code: python</span>
+
+<span class="sd">       eng_region = traits.get_region(params[&#39;searxng_locale&#39;], traits.all_locale)</span>
+<span class="sd">       eng_lang = get_ddg_lang(traits, params[&#39;searxng_locale&#39;])</span>
+
+<span class="sd">    It might confuse, but the ``l`` value of the cookie is what SearXNG calls</span>
+<span class="sd">    the *region*:</span>
+
+<span class="sd">    .. code:: python</span>
+
+<span class="sd">        # !ddi paris :es-AR --&gt; {&#39;ad&#39;: &#39;es_AR&#39;, &#39;ah&#39;: &#39;ar-es&#39;, &#39;l&#39;: &#39;ar-es&#39;}</span>
+<span class="sd">        params[&#39;cookies&#39;][&#39;ad&#39;] = eng_lang</span>
+<span class="sd">        params[&#39;cookies&#39;][&#39;ah&#39;] = eng_region</span>
+<span class="sd">        params[&#39;cookies&#39;][&#39;l&#39;] = eng_region</span>
+
+<span class="sd">    .. hint::</span>
+
+<span class="sd">       `DDG-lite &lt;https://lite.duckduckgo.com/lite&gt;`__ and the *no Javascript*</span>
+<span class="sd">       page https://html.duckduckgo.com/html do not offer a language selection</span>
+<span class="sd">       to the user, only a region can be selected by the user (``eng_region``</span>
+<span class="sd">       from the example above).  DDG-lite and *no Javascript* store the selected</span>
+<span class="sd">       region in a cookie::</span>
+
+<span class="sd">         params[&#39;cookies&#39;][&#39;kl&#39;] = eng_region  # &#39;ar-es&#39;</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">eng_traits</span><span class="o">.</span><span class="n">custom</span><span class="p">[</span><span class="s1">&#39;lang_region&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>  <span class="c1"># type: ignore</span>
+        <span class="n">sxng_locale</span><span class="p">,</span> <span class="n">eng_traits</span><span class="o">.</span><span class="n">get_language</span><span class="p">(</span><span class="n">sxng_locale</span><span class="p">,</span> <span class="n">default</span><span class="p">)</span>
+    <span class="p">)</span></div>
+
+
+
+<span class="n">ddg_reg_map</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;tw-tzh&#39;</span><span class="p">:</span> <span class="s1">&#39;zh_TW&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;hk-tzh&#39;</span><span class="p">:</span> <span class="s1">&#39;zh_HK&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;ct-ca&#39;</span><span class="p">:</span> <span class="s1">&#39;skip&#39;</span><span class="p">,</span>  <span class="c1"># ct-ca and es-ca both map to ca_ES</span>
+    <span class="s1">&#39;es-ca&#39;</span><span class="p">:</span> <span class="s1">&#39;ca_ES&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;id-en&#39;</span><span class="p">:</span> <span class="s1">&#39;id_ID&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;no-no&#39;</span><span class="p">:</span> <span class="s1">&#39;nb_NO&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;jp-jp&#39;</span><span class="p">:</span> <span class="s1">&#39;ja_JP&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;kr-kr&#39;</span><span class="p">:</span> <span class="s1">&#39;ko_KR&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;xa-ar&#39;</span><span class="p">:</span> <span class="s1">&#39;ar_SA&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;sl-sl&#39;</span><span class="p">:</span> <span class="s1">&#39;sl_SI&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;th-en&#39;</span><span class="p">:</span> <span class="s1">&#39;th_TH&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;vn-en&#39;</span><span class="p">:</span> <span class="s1">&#39;vi_VN&#39;</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="n">ddg_lang_map</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="c1"># use ar --&gt; ar_EG (Egypt&#39;s arabic)</span>
+    <span class="s2">&quot;ar_DZ&quot;</span><span class="p">:</span> <span class="s1">&#39;lang_region&#39;</span><span class="p">,</span>
+    <span class="s2">&quot;ar_JO&quot;</span><span class="p">:</span> <span class="s1">&#39;lang_region&#39;</span><span class="p">,</span>
+    <span class="s2">&quot;ar_SA&quot;</span><span class="p">:</span> <span class="s1">&#39;lang_region&#39;</span><span class="p">,</span>
+    <span class="c1"># use bn --&gt; bn_BD</span>
+    <span class="s1">&#39;bn_IN&#39;</span><span class="p">:</span> <span class="s1">&#39;lang_region&#39;</span><span class="p">,</span>
+    <span class="c1"># use de --&gt; de_DE</span>
+    <span class="s1">&#39;de_CH&#39;</span><span class="p">:</span> <span class="s1">&#39;lang_region&#39;</span><span class="p">,</span>
+    <span class="c1"># use en --&gt; en_US,</span>
+    <span class="s1">&#39;en_AU&#39;</span><span class="p">:</span> <span class="s1">&#39;lang_region&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;en_CA&#39;</span><span class="p">:</span> <span class="s1">&#39;lang_region&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;en_GB&#39;</span><span class="p">:</span> <span class="s1">&#39;lang_region&#39;</span><span class="p">,</span>
+    <span class="c1"># Esperanto</span>
+    <span class="s1">&#39;eo_XX&#39;</span><span class="p">:</span> <span class="s1">&#39;eo&#39;</span><span class="p">,</span>
+    <span class="c1"># use es --&gt; es_ES,</span>
+    <span class="s1">&#39;es_AR&#39;</span><span class="p">:</span> <span class="s1">&#39;lang_region&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;es_CL&#39;</span><span class="p">:</span> <span class="s1">&#39;lang_region&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;es_CO&#39;</span><span class="p">:</span> <span class="s1">&#39;lang_region&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;es_CR&#39;</span><span class="p">:</span> <span class="s1">&#39;lang_region&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;es_EC&#39;</span><span class="p">:</span> <span class="s1">&#39;lang_region&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;es_MX&#39;</span><span class="p">:</span> <span class="s1">&#39;lang_region&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;es_PE&#39;</span><span class="p">:</span> <span class="s1">&#39;lang_region&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;es_UY&#39;</span><span class="p">:</span> <span class="s1">&#39;lang_region&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;es_VE&#39;</span><span class="p">:</span> <span class="s1">&#39;lang_region&#39;</span><span class="p">,</span>
+    <span class="c1"># use fr --&gt; rf_FR</span>
+    <span class="s1">&#39;fr_CA&#39;</span><span class="p">:</span> <span class="s1">&#39;lang_region&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;fr_CH&#39;</span><span class="p">:</span> <span class="s1">&#39;lang_region&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;fr_BE&#39;</span><span class="p">:</span> <span class="s1">&#39;lang_region&#39;</span><span class="p">,</span>
+    <span class="c1"># use nl --&gt; nl_NL</span>
+    <span class="s1">&#39;nl_BE&#39;</span><span class="p">:</span> <span class="s1">&#39;lang_region&#39;</span><span class="p">,</span>
+    <span class="c1"># use pt --&gt; pt_PT</span>
+    <span class="s1">&#39;pt_BR&#39;</span><span class="p">:</span> <span class="s1">&#39;lang_region&#39;</span><span class="p">,</span>
+    <span class="c1"># skip these languages</span>
+    <span class="s1">&#39;od_IN&#39;</span><span class="p">:</span> <span class="s1">&#39;skip&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;io_XX&#39;</span><span class="p">:</span> <span class="s1">&#39;skip&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;tokipona_XX&#39;</span><span class="p">:</span> <span class="s1">&#39;skip&#39;</span><span class="p">,</span>
+<span class="p">}</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">quote_ddg_bangs</span><span class="p">(</span><span class="n">query</span><span class="p">):</span>
+    <span class="c1"># quote ddg bangs</span>
+    <span class="n">query_parts</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="c1"># for val in re.split(r&#39;(\s+)&#39;, query):</span>
+    <span class="k">for</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">re</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;(\s+)&#39;</span><span class="p">,</span> <span class="n">query</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">val</span><span class="o">.</span><span class="n">strip</span><span class="p">():</span>
+            <span class="k">continue</span>
+        <span class="k">if</span> <span class="n">val</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;!&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">external_bang</span><span class="o">.</span><span class="n">get_node</span><span class="p">(</span><span class="n">external_bang</span><span class="o">.</span><span class="n">EXTERNAL_BANGS</span><span class="p">,</span> <span class="n">val</span><span class="p">[</span><span class="mi">1</span><span class="p">:]):</span>
+            <span class="n">val</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;&#39;</span><span class="si">{</span><span class="n">val</span><span class="si">}</span><span class="s2">&#39;&quot;</span>
+        <span class="n">query_parts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
+    <span class="k">return</span> <span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">query_parts</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">request</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">params</span><span class="p">):</span>
+    <span class="n">query</span> <span class="o">=</span> <span class="n">quote_ddg_bangs</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">query</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">500</span><span class="p">:</span>
+        <span class="c1"># DDG does not accept queries with more than 499 chars</span>
+        <span class="n">params</span><span class="p">[</span><span class="s2">&quot;url&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">return</span>
+
+    <span class="n">eng_region</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">traits</span><span class="o">.</span><span class="n">get_region</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="s1">&#39;searxng_locale&#39;</span><span class="p">],</span> <span class="n">traits</span><span class="o">.</span><span class="n">all_locale</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
+
+    <span class="c1"># Note: The API is reverse-engineered from DuckDuckGo&#39;s HTML webpage</span>
+    <span class="c1"># (https://html.duckduckgo.com/html/) and may be subject to additional bot detection mechanisms</span>
+    <span class="c1"># and breaking changes in the future.</span>
+    <span class="c1">#</span>
+    <span class="c1"># The params[&#39;data&#39;] dictionary can have the following key parameters, in this order:</span>
+    <span class="c1"># - q (str): Search query string</span>
+    <span class="c1"># - b (str): Beginning parameter - empty string for first page requests</span>
+    <span class="c1"># - s (int): Search offset for pagination</span>
+    <span class="c1"># - nextParams (str): Continuation parameters from previous page response, typically empty</span>
+    <span class="c1"># - v (str): Typically &#39;l&#39; for subsequent pages</span>
+    <span class="c1"># - o (str): Output format, typically &#39;json&#39;</span>
+    <span class="c1"># - dc (int): Display count - value equal to offset (s) + 1</span>
+    <span class="c1"># - api (str): API endpoint identifier, typically &#39;d.js&#39;</span>
+    <span class="c1"># - vqd (str): Validation query digest</span>
+    <span class="c1"># - kl (str): Keyboard language/region code (e.g., &#39;en-us&#39;)</span>
+    <span class="c1"># - df (str): Time filter, maps to values like &#39;d&#39; (day), &#39;w&#39; (week), &#39;m&#39; (month), &#39;y&#39; (year)</span>
+
+    <span class="n">params</span><span class="p">[</span><span class="s1">&#39;data&#39;</span><span class="p">][</span><span class="s1">&#39;q&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">query</span>
+
+    <span class="k">if</span> <span class="n">params</span><span class="p">[</span><span class="s1">&#39;pageno&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">params</span><span class="p">[</span><span class="s1">&#39;data&#39;</span><span class="p">][</span><span class="s1">&#39;b&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="k">elif</span> <span class="n">params</span><span class="p">[</span><span class="s1">&#39;pageno&#39;</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="n">offset</span> <span class="o">=</span> <span class="mi">10</span> <span class="o">+</span> <span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="s1">&#39;pageno&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="mi">15</span>  <span class="c1"># Page 2 = 10, Page 3+ = 10 + n*15</span>
+        <span class="n">params</span><span class="p">[</span><span class="s1">&#39;data&#39;</span><span class="p">][</span><span class="s1">&#39;s&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">offset</span>
+        <span class="n">params</span><span class="p">[</span><span class="s1">&#39;data&#39;</span><span class="p">][</span><span class="s1">&#39;nextParams&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">form_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;nextParams&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+        <span class="n">params</span><span class="p">[</span><span class="s1">&#39;data&#39;</span><span class="p">][</span><span class="s1">&#39;v&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">form_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;v&#39;</span><span class="p">,</span> <span class="s1">&#39;l&#39;</span><span class="p">)</span>
+        <span class="n">params</span><span class="p">[</span><span class="s1">&#39;data&#39;</span><span class="p">][</span><span class="s1">&#39;o&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">form_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="s1">&#39;json&#39;</span><span class="p">)</span>
+        <span class="n">params</span><span class="p">[</span><span class="s1">&#39;data&#39;</span><span class="p">][</span><span class="s1">&#39;dc&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">offset</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="n">params</span><span class="p">[</span><span class="s1">&#39;data&#39;</span><span class="p">][</span><span class="s1">&#39;api&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">form_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;api&#39;</span><span class="p">,</span> <span class="s1">&#39;d.js&#39;</span><span class="p">)</span>
+
+        <span class="c1"># vqd is required to request other pages after the first one</span>
+        <span class="n">vqd</span> <span class="o">=</span> <span class="n">get_vqd</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">eng_region</span><span class="p">,</span> <span class="n">force_request</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">vqd</span><span class="p">:</span>
+            <span class="n">params</span><span class="p">[</span><span class="s1">&#39;data&#39;</span><span class="p">][</span><span class="s1">&#39;vqd&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">vqd</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># Don&#39;t try to call follow up pages without a vqd value.</span>
+            <span class="c1"># DDG recognizes this as a request from a bot. This lowers the</span>
+            <span class="c1"># reputation of the SearXNG IP and DDG starts to activate CAPTCHAs.</span>
+            <span class="n">params</span><span class="p">[</span><span class="s2">&quot;url&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="k">return</span>
+
+        <span class="k">if</span> <span class="n">params</span><span class="p">[</span><span class="s1">&#39;searxng_locale&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;zh&quot;</span><span class="p">):</span>
+            <span class="c1"># Some locales (at least China) do not have a &quot;next page&quot; button and DDG</span>
+            <span class="c1"># will return a HTTP/2 403 Forbidden for a request of such a page.</span>
+            <span class="n">params</span><span class="p">[</span><span class="s2">&quot;url&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="k">return</span>
+
+    <span class="c1"># Put empty kl in form data if language/region set to all</span>
+    <span class="k">if</span> <span class="n">eng_region</span> <span class="o">==</span> <span class="s2">&quot;wt-wt&quot;</span><span class="p">:</span>
+        <span class="n">params</span><span class="p">[</span><span class="s1">&#39;data&#39;</span><span class="p">][</span><span class="s1">&#39;kl&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">params</span><span class="p">[</span><span class="s1">&#39;data&#39;</span><span class="p">][</span><span class="s1">&#39;kl&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">eng_region</span>
+
+    <span class="n">params</span><span class="p">[</span><span class="s1">&#39;data&#39;</span><span class="p">][</span><span class="s1">&#39;df&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+    <span class="k">if</span> <span class="n">params</span><span class="p">[</span><span class="s1">&#39;time_range&#39;</span><span class="p">]</span> <span class="ow">in</span> <span class="n">time_range_dict</span><span class="p">:</span>
+        <span class="n">params</span><span class="p">[</span><span class="s1">&#39;data&#39;</span><span class="p">][</span><span class="s1">&#39;df&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">time_range_dict</span><span class="p">[</span><span class="n">params</span><span class="p">[</span><span class="s1">&#39;time_range&#39;</span><span class="p">]]</span>
+        <span class="n">params</span><span class="p">[</span><span class="s1">&#39;cookies&#39;</span><span class="p">][</span><span class="s1">&#39;df&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">time_range_dict</span><span class="p">[</span><span class="n">params</span><span class="p">[</span><span class="s1">&#39;time_range&#39;</span><span class="p">]]</span>
+
+    <span class="n">params</span><span class="p">[</span><span class="s1">&#39;cookies&#39;</span><span class="p">][</span><span class="s1">&#39;kl&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">eng_region</span>
+
+    <span class="n">params</span><span class="p">[</span><span class="s1">&#39;url&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">url</span>
+    <span class="n">params</span><span class="p">[</span><span class="s1">&#39;method&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;POST&#39;</span>
+
+    <span class="n">params</span><span class="p">[</span><span class="s1">&#39;headers&#39;</span><span class="p">][</span><span class="s1">&#39;Content-Type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;application/x-www-form-urlencoded&#39;</span>
+    <span class="n">params</span><span class="p">[</span><span class="s1">&#39;headers&#39;</span><span class="p">][</span><span class="s1">&#39;Referer&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">url</span>
+    <span class="n">params</span><span class="p">[</span><span class="s1">&#39;headers&#39;</span><span class="p">][</span><span class="s1">&#39;Sec-Fetch-Dest&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;document&quot;</span>
+    <span class="n">params</span><span class="p">[</span><span class="s1">&#39;headers&#39;</span><span class="p">][</span><span class="s1">&#39;Sec-Fetch-Mode&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;navigate&quot;</span>  <span class="c1"># at least this one is used by ddg&#39;s bot detection</span>
+    <span class="n">params</span><span class="p">[</span><span class="s1">&#39;headers&#39;</span><span class="p">][</span><span class="s1">&#39;Sec-Fetch-Site&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;same-origin&quot;</span>
+    <span class="n">params</span><span class="p">[</span><span class="s1">&#39;headers&#39;</span><span class="p">][</span><span class="s1">&#39;Sec-Fetch-User&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;?1&quot;</span>
+
+    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;param headers: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">params</span><span class="p">[</span><span class="s1">&#39;headers&#39;</span><span class="p">])</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;param data: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">params</span><span class="p">[</span><span class="s1">&#39;data&#39;</span><span class="p">])</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;param cookies: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">params</span><span class="p">[</span><span class="s1">&#39;cookies&#39;</span><span class="p">])</span>
+
+
+<div class="viewcode-block" id="is_ddg_captcha">
+<a class="viewcode-back" href="../../../dev/engines/online/duckduckgo.html#searx.engines.duckduckgo.is_ddg_captcha">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">is_ddg_captcha</span><span class="p">(</span><span class="n">dom</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;In case of CAPTCHA ddg response its own *not a Robot* dialog and is not</span>
+<span class="sd">    redirected to a CAPTCHA page.&quot;&quot;&quot;</span>
+
+    <span class="k">return</span> <span class="nb">bool</span><span class="p">(</span><span class="n">eval_xpath</span><span class="p">(</span><span class="n">dom</span><span class="p">,</span> <span class="s2">&quot;//form[@id=&#39;challenge-form&#39;]&quot;</span><span class="p">))</span></div>
+
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">response</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">EngineResults</span><span class="p">:</span>
+    <span class="n">results</span> <span class="o">=</span> <span class="n">EngineResults</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="n">resp</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">303</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">results</span>
+
+    <span class="n">doc</span> <span class="o">=</span> <span class="n">lxml</span><span class="o">.</span><span class="n">html</span><span class="o">.</span><span class="n">fromstring</span><span class="p">(</span><span class="n">resp</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">is_ddg_captcha</span><span class="p">(</span><span class="n">doc</span><span class="p">):</span>
+        <span class="c1"># set suspend time to zero is OK --&gt; ddg does not block the IP</span>
+        <span class="k">raise</span> <span class="n">SearxEngineCaptchaException</span><span class="p">(</span><span class="n">suspended_time</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;CAPTCHA (</span><span class="si">{</span><span class="n">resp</span><span class="o">.</span><span class="n">search_params</span><span class="p">[</span><span class="s1">&#39;data&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;kl&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">)</span>
+
+    <span class="n">form</span> <span class="o">=</span> <span class="n">eval_xpath</span><span class="p">(</span><span class="n">doc</span><span class="p">,</span> <span class="s1">&#39;//input[@name=&quot;vqd&quot;]/..&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">form</span><span class="p">):</span>
+        <span class="c1"># some locales (at least China) does not have a &quot;next page&quot; button</span>
+        <span class="n">form</span> <span class="o">=</span> <span class="n">form</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">form_vqd</span> <span class="o">=</span> <span class="n">eval_xpath</span><span class="p">(</span><span class="n">form</span><span class="p">,</span> <span class="s1">&#39;//input[@name=&quot;vqd&quot;]/@value&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">set_vqd</span><span class="p">(</span>
+            <span class="n">query</span><span class="o">=</span><span class="n">resp</span><span class="o">.</span><span class="n">search_params</span><span class="p">[</span><span class="s1">&#39;data&#39;</span><span class="p">][</span><span class="s1">&#39;q&#39;</span><span class="p">],</span>
+            <span class="n">region</span><span class="o">=</span><span class="n">resp</span><span class="o">.</span><span class="n">search_params</span><span class="p">[</span><span class="s1">&#39;data&#39;</span><span class="p">][</span><span class="s1">&#39;kl&#39;</span><span class="p">],</span>
+            <span class="n">value</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">form_vqd</span><span class="p">),</span>
+        <span class="p">)</span>
+
+    <span class="c1"># just select &quot;web-result&quot; and ignore results of class &quot;result--ad result--ad--small&quot;</span>
+    <span class="k">for</span> <span class="n">div_result</span> <span class="ow">in</span> <span class="n">eval_xpath</span><span class="p">(</span><span class="n">doc</span><span class="p">,</span> <span class="s1">&#39;//div[@id=&quot;links&quot;]/div[contains(@class, &quot;web-result&quot;)]&#39;</span><span class="p">):</span>
+
+        <span class="n">item</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">title</span> <span class="o">=</span> <span class="n">eval_xpath</span><span class="p">(</span><span class="n">div_result</span><span class="p">,</span> <span class="s1">&#39;.//h2/a&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">title</span><span class="p">:</span>
+            <span class="c1"># this is the &quot;No results.&quot; item in the result list</span>
+            <span class="k">continue</span>
+        <span class="n">item</span><span class="p">[</span><span class="s2">&quot;title&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">extract_text</span><span class="p">(</span><span class="n">title</span><span class="p">)</span>
+        <span class="n">item</span><span class="p">[</span><span class="s2">&quot;url&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">eval_xpath</span><span class="p">(</span><span class="n">div_result</span><span class="p">,</span> <span class="s1">&#39;.//h2/a/@href&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">item</span><span class="p">[</span><span class="s2">&quot;content&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">extract_text</span><span class="p">(</span>
+            <span class="n">eval_xpath_getindex</span><span class="p">(</span><span class="n">div_result</span><span class="p">,</span> <span class="s1">&#39;.//a[contains(@class, &quot;result__snippet&quot;)]&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="p">[])</span>
+        <span class="p">)</span>
+        <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+
+    <span class="n">zero_click_info_xpath</span> <span class="o">=</span> <span class="s1">&#39;//div[@id=&quot;zero_click_abstract&quot;]&#39;</span>
+    <span class="n">zero_click</span> <span class="o">=</span> <span class="n">extract_text</span><span class="p">(</span><span class="n">eval_xpath</span><span class="p">(</span><span class="n">doc</span><span class="p">,</span> <span class="n">zero_click_info_xpath</span><span class="p">))</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>  <span class="c1"># type: ignore</span>
+
+    <span class="k">if</span> <span class="n">zero_click</span> <span class="ow">and</span> <span class="p">(</span>
+        <span class="s2">&quot;Your IP address is&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">zero_click</span>
+        <span class="ow">and</span> <span class="s2">&quot;Your user agent:&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">zero_click</span>
+        <span class="ow">and</span> <span class="s2">&quot;URL Decoded:&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">zero_click</span>
+    <span class="p">):</span>
+        <span class="n">results</span><span class="o">.</span><span class="n">add</span><span class="p">(</span>
+            <span class="n">results</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">Answer</span><span class="p">(</span>
+                <span class="n">answer</span><span class="o">=</span><span class="n">zero_click</span><span class="p">,</span>
+                <span class="n">url</span><span class="o">=</span><span class="n">eval_xpath_getindex</span><span class="p">(</span><span class="n">doc</span><span class="p">,</span> <span class="s1">&#39;//div[@id=&quot;zero_click_abstract&quot;]/a/@href&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>  <span class="c1"># type: ignore</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">results</span>
+
+
+<div class="viewcode-block" id="fetch_traits">
+<a class="viewcode-back" href="../../../dev/engines/online/duckduckgo.html#searx.engines.duckduckgo.fetch_traits">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">fetch_traits</span><span class="p">(</span><span class="n">engine_traits</span><span class="p">:</span> <span class="n">EngineTraits</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Fetch languages &amp; regions from DuckDuckGo.</span>
+
+<span class="sd">    SearXNG&#39;s ``all`` locale maps DuckDuckGo&#39;s &quot;Alle regions&quot; (``wt-wt``).</span>
+<span class="sd">    DuckDuckGo&#39;s language &quot;Browsers preferred language&quot; (``wt_WT``) makes no</span>
+<span class="sd">    sense in a SearXNG request since SearXNG&#39;s ``all`` will not add a</span>
+<span class="sd">    ``Accept-Language`` HTTP header.  The value in ``engine_traits.all_locale``</span>
+<span class="sd">    is ``wt-wt`` (the region).</span>
+
+<span class="sd">    Beside regions DuckDuckGo also defines its languages by region codes.  By</span>
+<span class="sd">    example these are the english languages in DuckDuckGo:</span>
+
+<span class="sd">    - en_US</span>
+<span class="sd">    - en_AU</span>
+<span class="sd">    - en_CA</span>
+<span class="sd">    - en_GB</span>
+
+<span class="sd">    The function :py:obj:`get_ddg_lang` evaluates DuckDuckGo&#39;s language from</span>
+<span class="sd">    SearXNG&#39;s locale.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># pylint: disable=too-many-branches, too-many-statements, disable=import-outside-toplevel</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">searx.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">js_variable_to_python</span>
+
+    <span class="c1"># fetch regions</span>
+
+    <span class="n">engine_traits</span><span class="o">.</span><span class="n">all_locale</span> <span class="o">=</span> <span class="s1">&#39;wt-wt&#39;</span>
+
+    <span class="c1"># updated from u661.js to u.7669f071a13a7daa57cb / should be updated automatically?</span>
+    <span class="n">resp</span> <span class="o">=</span> <span class="n">get</span><span class="p">(</span><span class="s1">&#39;https://duckduckgo.com/dist/util/u.7669f071a13a7daa57cb.js&#39;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">resp</span><span class="o">.</span><span class="n">ok</span><span class="p">:</span>  <span class="c1"># type: ignore</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;ERROR: response from DuckDuckGo is not OK.&quot;</span><span class="p">)</span>
+
+    <span class="n">js_code</span> <span class="o">=</span> <span class="n">extr</span><span class="p">(</span><span class="n">resp</span><span class="o">.</span><span class="n">text</span><span class="p">,</span> <span class="s1">&#39;regions:&#39;</span><span class="p">,</span> <span class="s1">&#39;,snippetLengths&#39;</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
+
+    <span class="n">regions</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">js_code</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">eng_tag</span><span class="p">,</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">regions</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+
+        <span class="k">if</span> <span class="n">eng_tag</span> <span class="o">==</span> <span class="s1">&#39;wt-wt&#39;</span><span class="p">:</span>
+            <span class="n">engine_traits</span><span class="o">.</span><span class="n">all_locale</span> <span class="o">=</span> <span class="s1">&#39;wt-wt&#39;</span>
+            <span class="k">continue</span>
+
+        <span class="n">region</span> <span class="o">=</span> <span class="n">ddg_reg_map</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">eng_tag</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">region</span> <span class="o">==</span> <span class="s1">&#39;skip&#39;</span><span class="p">:</span>
+            <span class="k">continue</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">region</span><span class="p">:</span>
+            <span class="n">eng_territory</span><span class="p">,</span> <span class="n">eng_lang</span> <span class="o">=</span> <span class="n">eng_tag</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">)</span>
+            <span class="n">region</span> <span class="o">=</span> <span class="n">eng_lang</span> <span class="o">+</span> <span class="s1">&#39;_&#39;</span> <span class="o">+</span> <span class="n">eng_territory</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">sxng_tag</span> <span class="o">=</span> <span class="n">locales</span><span class="o">.</span><span class="n">region_tag</span><span class="p">(</span><span class="n">babel</span><span class="o">.</span><span class="n">Locale</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">region</span><span class="p">))</span>
+        <span class="k">except</span> <span class="n">babel</span><span class="o">.</span><span class="n">UnknownLocaleError</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;ERROR: </span><span class="si">%s</span><span class="s2"> (</span><span class="si">%s</span><span class="s2">) -&gt; </span><span class="si">%s</span><span class="s2"> is unknown by babel&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">eng_tag</span><span class="p">,</span> <span class="n">region</span><span class="p">))</span>
+            <span class="k">continue</span>
+
+        <span class="n">conflict</span> <span class="o">=</span> <span class="n">engine_traits</span><span class="o">.</span><span class="n">regions</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">sxng_tag</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">conflict</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">conflict</span> <span class="o">!=</span> <span class="n">eng_tag</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;CONFLICT: babel </span><span class="si">%s</span><span class="s2"> --&gt; </span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">sxng_tag</span><span class="p">,</span> <span class="n">conflict</span><span class="p">,</span> <span class="n">eng_tag</span><span class="p">))</span>
+            <span class="k">continue</span>
+        <span class="n">engine_traits</span><span class="o">.</span><span class="n">regions</span><span class="p">[</span><span class="n">sxng_tag</span><span class="p">]</span> <span class="o">=</span> <span class="n">eng_tag</span>
+
+    <span class="c1"># fetch languages</span>
+
+    <span class="n">engine_traits</span><span class="o">.</span><span class="n">custom</span><span class="p">[</span><span class="s1">&#39;lang_region&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="n">js_code</span> <span class="o">=</span> <span class="n">extr</span><span class="p">(</span><span class="n">resp</span><span class="o">.</span><span class="n">text</span><span class="p">,</span> <span class="s1">&#39;languages:&#39;</span><span class="p">,</span> <span class="s1">&#39;,regions&#39;</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
+
+    <span class="n">languages</span> <span class="o">=</span> <span class="n">js_variable_to_python</span><span class="p">(</span><span class="n">js_code</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">eng_lang</span><span class="p">,</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">languages</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+
+        <span class="k">if</span> <span class="n">eng_lang</span> <span class="o">==</span> <span class="s1">&#39;wt_WT&#39;</span><span class="p">:</span>
+            <span class="k">continue</span>
+
+        <span class="n">babel_tag</span> <span class="o">=</span> <span class="n">ddg_lang_map</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">eng_lang</span><span class="p">,</span> <span class="n">eng_lang</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">babel_tag</span> <span class="o">==</span> <span class="s1">&#39;skip&#39;</span><span class="p">:</span>
+            <span class="k">continue</span>
+
+        <span class="k">try</span><span class="p">:</span>
+
+            <span class="k">if</span> <span class="n">babel_tag</span> <span class="o">==</span> <span class="s1">&#39;lang_region&#39;</span><span class="p">:</span>
+                <span class="n">sxng_tag</span> <span class="o">=</span> <span class="n">locales</span><span class="o">.</span><span class="n">region_tag</span><span class="p">(</span><span class="n">babel</span><span class="o">.</span><span class="n">Locale</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">eng_lang</span><span class="p">))</span>
+                <span class="n">engine_traits</span><span class="o">.</span><span class="n">custom</span><span class="p">[</span><span class="s1">&#39;lang_region&#39;</span><span class="p">][</span><span class="n">sxng_tag</span><span class="p">]</span> <span class="o">=</span> <span class="n">eng_lang</span>
+                <span class="k">continue</span>
+
+            <span class="n">sxng_tag</span> <span class="o">=</span> <span class="n">locales</span><span class="o">.</span><span class="n">language_tag</span><span class="p">(</span><span class="n">babel</span><span class="o">.</span><span class="n">Locale</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">babel_tag</span><span class="p">))</span>
+
+        <span class="k">except</span> <span class="n">babel</span><span class="o">.</span><span class="n">UnknownLocaleError</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;ERROR: language </span><span class="si">%s</span><span class="s2"> (</span><span class="si">%s</span><span class="s2">) is unknown by babel&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">eng_lang</span><span class="p">))</span>
+            <span class="k">continue</span>
+
+        <span class="n">conflict</span> <span class="o">=</span> <span class="n">engine_traits</span><span class="o">.</span><span class="n">languages</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">sxng_tag</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">conflict</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">conflict</span> <span class="o">!=</span> <span class="n">eng_lang</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;CONFLICT: babel </span><span class="si">%s</span><span class="s2"> --&gt; </span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">sxng_tag</span><span class="p">,</span> <span class="n">conflict</span><span class="p">,</span> <span class="n">eng_lang</span><span class="p">))</span>
+            <span class="k">continue</span>
+        <span class="n">engine_traits</span><span class="o">.</span><span class="n">languages</span><span class="p">[</span><span class="n">sxng_tag</span><span class="p">]</span> <span class="o">=</span> <span class="n">eng_lang</span></div>
+
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+  <span id="sidebar-top"></span>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+  
+    
+            <p class="logo"><a href="../../../index.html">
+              <img class="logo" src="../../../_static/searxng-wordmark.svg" alt="Logo of SearXNG"/>
+            </a></p>
+  
+
+<h3><a href="../../../index.html">Table of Contents</a></h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../user/index.html">User information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../own-instance.html">Why use a private instance?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../admin/index.html">Administrator documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../dev/index.html">Developer documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../utils/index.html">DevOps tooling box</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/index.html">Source-Code</a></li>
+</ul>
+
+  <h3>Project Links</h3>
+  <ul>
+    <li><a href="https://github.com/searxng/searxng/tree/master">Source</a>
+  
+    <li><a href="https://github.com/searxng/searxng/wiki">Wiki</a>
+  
+    <li><a href="https://searx.space">Public instances</a>
+  
+    <li><a href="https://github.com/searxng/searxng/issues">Issue Tracker</a>
+  </ul><h3>Navigation</h3>
+<ul>
+  <li><a href="../../../index.html">Overview</a>
+    <ul>
+      <li><a href="../../index.html">Module code</a>
+        <ul>
+      <li><a href="../engines.html">searx.engines</a>
+        
+          
+          </ul>
+      </li></ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright SearXNG team.
+    </div>
+  </body>
+</html>
