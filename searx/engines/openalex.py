@@ -138,7 +138,7 @@ def response(resp):
         url: str = landing_page_url or work_url
 
         # Title and abstract
-        title: str = item.get("title") or ""
+        title: str = item.get("title", "")
         content: Optional[str] = _reconstruct_abstract(
             item.get("abstract_inverted_index")
         )
