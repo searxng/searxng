@@ -59,7 +59,7 @@ def _parse_date(value: Optional[str]) -> Optional[datetime]:
 
 
 def _doi_to_plain(doi_value: Optional[str]) -> Optional[str]:
-    if doi_value is None or doi_value == "":
+    if not doi_value:
         return None
     # OpenAlex `doi` field is commonly a full URL like https://doi.org/10.1234/abcd
     prefix = "https://doi.org/"
