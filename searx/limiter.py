@@ -93,13 +93,14 @@ Implementation
 """
 
 from __future__ import annotations
+from ipaddress import ip_address
 import sys
 
 from pathlib import Path
-from ipaddress import ip_address
 import flask
 import werkzeug
 
+import searx.compat
 from searx import (
     logger,
     valkeydb,
@@ -116,7 +117,6 @@ from searx.botdetection import (
     ip_limit,
     ip_lists,
     get_network,
-    get_real_ip,
     dump_request,
 )
 
@@ -124,25 +124,24 @@ from searx.botdetection import (
 # coherency, the logger is "limiter"
 logger = logger.getChild('limiter')
 
-CFG: config.Config = None  # type: ignore
+CFG: config.Config | None = None  # type: ignore
 _INSTALLED = False
 
 LIMITER_CFG_SCHEMA = Path(__file__).parent / "limiter.toml"
 """Base configuration (schema) of the botdetection."""
 
-CFG_DEPRECATED = {
-    # "dummy.old.foo": "config 'dummy.old.foo' exists only for tests.  Don't use it in your real project config."
-}
-
 
 def get_cfg() -> config.Config:
+    """Returns SearXNG's global limiter configuration."""
     global CFG  # pylint: disable=global-statement
 
     if CFG is None:
         from . import settings_loader  # pylint: disable=import-outside-toplevel
 
         cfg_file = (settings_loader.get_user_cfg_folder() or Path("/etc/searxng")) / "limiter.toml"
-        CFG = config.Config.from_toml(LIMITER_CFG_SCHEMA, cfg_file, CFG_DEPRECATED)
+        CFG = config.Config.from_toml(LIMITER_CFG_SCHEMA, cfg_file, searx.compat.LIMITER_CFG_DEPRECATED)
+        searx.compat.limiter_fix_cfg(CFG, cfg_file)
+
     return CFG
 
 
@@ -150,7 +149,7 @@ def filter_request(request: SXNG_Request) -> werkzeug.Response | None:
     # pylint: disable=too-many-return-statements
 
     cfg = get_cfg()
-    real_ip = ip_address(get_real_ip(request))
+    real_ip = ip_address(request.remote_addr)
     network = get_network(real_ip, cfg)
 
     if request.path == '/healthz':

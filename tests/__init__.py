@@ -89,4 +89,4 @@ class SearxTestCase(aiounittest.AsyncTestCase):
 
         # pylint: disable=attribute-defined-outside-init
         self.app = searx.webapp.app
-        self.client = searx.webapp.app.test_client()
+        self.client = self.app.test_client()

@@ -4,9 +4,10 @@ from __future__ import annotations
 import typing
 
 import re
+from ipaddress import ip_address
+
 from flask_babel import gettext
 
-from searx.botdetection._helpers import get_real_ip
 from searx.result_types import EngineResults
 
 from . import Plugin, PluginInfo
@@ -48,8 +49,10 @@ class SXNGPlugin(Plugin):
         if search.search_query.pageno > 1:
             return results
 
-        if self.ip_regex.search(search.search_query.query):
-            results.add(results.types.Answer(answer=gettext("Your IP is: ") + get_real_ip(request)))
+        if self.ip_regex.search(search.search_query.query) and request.remote_addr:
+            results.add(
+                results.types.Answer(answer=gettext("Your IP is: ") + ip_address(request.remote_addr).compressed)
+            )
 
         if self.ua_regex.match(search.search_query.query):
             results.add(results.types.Answer(answer=gettext("Your user-agent is: ") + str(request.user_agent)))

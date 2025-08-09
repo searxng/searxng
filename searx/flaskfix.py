@@ -3,7 +3,6 @@
 
 from urllib.parse import urlparse
 
-from werkzeug.middleware.proxy_fix import ProxyFix
 from werkzeug.serving import WSGIRequestHandler
 
 from searx import settings
@@ -73,5 +72,5 @@ class ReverseProxyPathFix:
 def patch_application(app):
     # serve pages with HTTP/1.1
     WSGIRequestHandler.protocol_version = "HTTP/{}".format(settings['server']['http_protocol_version'])
-    # patch app to handle non root url-s behind proxy & wsgi
-    app.wsgi_app = ReverseProxyPathFix(ProxyFix(app.wsgi_app))
+    # patch app to handle non root url-s behind proxy
+    app.wsgi_app = ReverseProxyPathFix(app.wsgi_app)

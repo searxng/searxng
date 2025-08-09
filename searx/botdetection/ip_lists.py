@@ -4,21 +4,22 @@
 Method ``ip_lists``
 -------------------
 
-The ``ip_lists`` method implements IP :py:obj:`block- <block_ip>` and
-:py:obj:`pass-lists <pass_ip>`.
+The ``ip_lists`` method implements :py:obj:`block-list <block_ip>` and
+:py:obj:`pass-list <pass_ip>`.
 
 .. code:: toml
 
    [botdetection.ip_lists]
 
    pass_ip = [
-    '167.235.158.251', # IPv4 of check.searx.space
-    '192.168.0.0/16',  # IPv4 private network
-    'fe80::/10'        # IPv6 linklocal
+     '167.235.158.251', # IPv4 of check.searx.space
+     '192.168.0.0/16',  # IPv4 private network
+     'fe80::/10',       # IPv6 linklocal
    ]
+
    block_ip = [
-      '93.184.216.34', # IPv4 of example.org
-      '257.1.1.1',     # invalid IP --> will be ignored, logged in ERROR class
+     '93.184.216.34',   # IPv4 of example.org
+     '257.1.1.1',       # invalid IP --> will be ignored, logged in ERROR class
    ]
 
 """
@@ -72,7 +73,6 @@ def block_ip(real_ip: IPv4Address | IPv6Address, cfg: config.Config) -> Tuple[bo
 def ip_is_subnet_of_member_in_list(
     real_ip: IPv4Address | IPv6Address, list_name: str, cfg: config.Config
 ) -> Tuple[bool, str]:
-
     for net in cfg.get(list_name, default=[]):
         try:
             net = ip_network(net, strict=False)

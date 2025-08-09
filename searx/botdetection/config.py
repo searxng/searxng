@@ -7,18 +7,31 @@ structured dictionaries.  The configuration schema is defined in a dictionary
 structure and the configuration data is given in a dictionary structure.
 """
 from __future__ import annotations
-from typing import Any
+import typing
 
 import copy
-import typing
 import logging
 import pathlib
 
 from ..compat import tomllib
 
-__all__ = ['Config', 'UNSET', 'SchemaIssue']
+__all__ = ['Config', 'UNSET', 'SchemaIssue', 'set_global_cfg', 'get_global_cfg']
 
 log = logging.getLogger(__name__)
+
+CFG: Config | None = None
+"""Global config of the botdetection."""
+
+
+def set_global_cfg(cfg: Config):
+    global CFG  # pylint: disable=global-statement
+    CFG = cfg
+
+
+def get_global_cfg() -> Config:
+    if CFG is None:
+        raise ValueError("Botdetection's config is not yet initialized.")
+    return CFG
 
 
 class FALSE:
@@ -57,7 +70,7 @@ class Config:
     UNSET = UNSET
 
     @classmethod
-    def from_toml(cls, schema_file: pathlib.Path, cfg_file: pathlib.Path, deprecated: dict) -> Config:
+    def from_toml(cls, schema_file: pathlib.Path, cfg_file: pathlib.Path, deprecated: dict[str, str]) -> Config:
 
         # init schema
 
@@ -80,7 +93,7 @@ class Config:
         cfg.update(upd_cfg)
         return cfg
 
-    def __init__(self, cfg_schema: typing.Dict, deprecated: typing.Dict[str, str]):
+    def __init__(self, cfg_schema: dict[str, typing.Any], deprecated: dict[str, str]):
         """Constructor of class Config.
 
         :param cfg_schema: Schema of the configuration
@@ -93,10 +106,10 @@ class Config:
         self.deprecated = deprecated
         self.cfg = copy.deepcopy(cfg_schema)
 
-    def __getitem__(self, key: str) -> Any:
+    def __getitem__(self, key: str) -> typing.Any:
         return self.get(key)
 
-    def validate(self, cfg: dict):
+    def validate(self, cfg: dict[str, typing.Any]):
         """Validation of dictionary ``cfg`` on :py:obj:`Config.SCHEMA`.
         Validation is done by :py:obj:`validate`."""
 
@@ -111,7 +124,7 @@ class Config:
         """Returns default value of field ``name`` in ``self.cfg_schema``."""
         return value(name, self.cfg_schema)
 
-    def get(self, name: str, default: Any = UNSET, replace: bool = True) -> Any:
+    def get(self, name: str, default: typing.Any = UNSET, replace: bool = True) -> typing.Any:
         """Returns the value to which ``name`` points in the configuration.
 
         If there is no such ``name`` in the config and the ``default`` is
@@ -214,8 +227,8 @@ def value(name: str, data_dict: dict):
 
 
 def validate(
-    schema_dict: typing.Dict, data_dict: typing.Dict, deprecated: typing.Dict[str, str]
-) -> typing.Tuple[bool, list]:
+    schema_dict: dict[str, typing.Any], data_dict: dict[str, typing.Any], deprecated: dict[str, str]
+) -> tuple[bool, list[str]]:
     """Deep validation of dictionary in ``data_dict`` against dictionary in
     ``schema_dict``.  Argument deprecated is a dictionary that maps deprecated
     configuration names to a messages::
