@@ -101,9 +101,21 @@ def request(query, params):
         "sort": "relevance_score:desc",
     }
 
-    # include mailto if configured for polite pool
-    if isinstance(globals().get("mailto"), str) and globals().get("mailto"):
-        args["mailto"] = globals()["mailto"]  # type: ignore[index]
+    # Language filter (expects ISO639-1 like 'fr', 'en')
+    language = params.get("language")
+    filters: List[str] = []
+    if isinstance(language, str) and language != "all":
+        iso2 = language.split("-")[0].split("_")[0]
+        if len(iso2) == 2:
+            filters.append(f"language:{iso2}")
+
+    if filters:
+        args["filter"] = ",".join(filters)
+
+    # include mailto if configured for polite pool; else use a sane default if provided in params
+    mailto_setting = params.get("mailto") or globals().get("mailto")
+    if isinstance(mailto_setting, str) and mailto_setting != "":
+        args["mailto"] = mailto_setting
 
     params["url"] = f"{search_url}?{urlencode(args)}"
     return params
