@@ -34,6 +34,7 @@ search_url = "https://api.openalex.org/works"
 # engines: - name: openalex; engine: openalex; mailto: "[email protected]"
 mailto = ""
 
+
 def _stringify_pages(biblio: Dict[str, Any]) -> Optional[str]:
     first_page = biblio.get("first_page")
     last_page = biblio.get("last_page")
@@ -109,10 +110,9 @@ def request(query, params):
     if filters:
         args["filter"] = ",".join(filters)
 
-    # include mailto if configured for polite pool; else use a sane default if provided in params
-    mailto_setting = params.get("mailto") or globals().get("mailto")
-    if isinstance(mailto_setting, str) and mailto_setting != "":
-        args["mailto"] = mailto_setting
+    # include mailto if configured for polite pool (engine module setting)
+    if isinstance(mailto, str) and mailto != "":
+        args["mailto"] = mailto
 
     params["url"] = f"{search_url}?{urlencode(args)}"
     return params
@@ -146,7 +146,7 @@ def response(resp):
         for auth in authorships:
             if not auth:
                 continue
-                
+
             author_obj = auth.get("author", {})
             display_name = author_obj.get("display_name")
             if isinstance(display_name, str) and display_name != "":
