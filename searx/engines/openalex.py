@@ -62,10 +62,7 @@ def _doi_to_plain(doi_value: Optional[str]) -> Optional[str]:
     if not doi_value:
         return None
     # OpenAlex `doi` field is commonly a full URL like https://doi.org/10.1234/abcd
-    prefix = "https://doi.org/"
-    if doi_value.startswith(prefix):
-        return doi_value[len(prefix) :]
-    return doi_value
+    return doi_value.removeprefix("https://doi.org/")
 
 
 def _reconstruct_abstract(
