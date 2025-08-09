@@ -127,11 +127,11 @@ def response(resp):
 
     for item in res.get("results", []):
         # Prefer the landing page URL; fallback to OpenAlex work URL (id)
-        primary_location = item.get("primary_location") or {}
-        host_venue = item.get("host_venue") or {}
-        biblio = item.get("biblio") or {}
-        concepts = item.get("concepts") or []
-        open_access = item.get("open_access") or {}
+        primary_location = item.get("primary_location", {})
+        host_venue = item.get("host_venue", {})
+        biblio = item.get("biblio", {})
+        concepts = item.get("concepts", [])
+        open_access = item.get("open_access", {})
 
         landing_page_url: Optional[str] = primary_location.get("landing_page_url")
         work_url: str = item.get("id", "")
