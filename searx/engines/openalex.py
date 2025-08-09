@@ -144,7 +144,7 @@ def response(resp):
         )
 
         # Authors
-        authorships = item.get("authorships") or []
+        authorships = item.get("authorships", [])
         authors: List[str] = []
         for auth in authorships:
             author_obj = (auth or {}).get("author") or {}
