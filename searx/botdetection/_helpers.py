@@ -1,6 +1,9 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 # pylint: disable=missing-module-docstring, invalid-name
 from __future__ import annotations
+import typing as t
+
+__all__ = ["log_error_only_once", "dump_request", "get_network", "logger", "too_many_requests"]
 
 from ipaddress import (
     IPv4Network,
@@ -8,20 +11,19 @@ from ipaddress import (
     IPv4Address,
     IPv6Address,
     ip_network,
-    ip_address,
 )
 import flask
 import werkzeug
 
 from searx import logger
-from searx.extended_types import SXNG_Request
 
-from . import config
+if t.TYPE_CHECKING:
+    from . import config
 
 logger = logger.getChild('botdetection')
 
 
-def dump_request(request: SXNG_Request):
+def dump_request(request: flask.Request):
     return (
         request.path
         + " || X-Forwarded-For: %s" % request.headers.get('X-Forwarded-For')
@@ -52,86 +54,33 @@ def too_many_requests(network: IPv4Network | IPv6Network, log_msg: str) -> werkz
 
 
 def get_network(real_ip: IPv4Address | IPv6Address, cfg: config.Config) -> IPv4Network | IPv6Network:
-    """Returns the (client) network of whether the real_ip is part of."""
+    """Returns the (client) network of whether the ``real_ip`` is part of.
 
+    The ``ipv4_prefix`` and ``ipv6_prefix`` define the number of leading bits in
+    an address that are compared to determine whether or not an address is part
+    of a (client) network.
+
+    .. code:: toml
+
+       [botdetection]
+
+       ipv4_prefix = 32
+       ipv6_prefix = 48
+
+    """
+
+    prefix: int = cfg["botdetection.ipv4_prefix"]
     if real_ip.version == 6:
-        prefix = cfg['real_ip.ipv6_prefix']
-    else:
-        prefix = cfg['real_ip.ipv4_prefix']
+        prefix: int = cfg["botdetection.ipv6_prefix"]
     network = ip_network(f"{real_ip}/{prefix}", strict=False)
     # logger.debug("get_network(): %s", network.compressed)
     return network
 
 
-_logged_errors = []
+_logged_errors: list[str] = []
 
 
-def _log_error_only_once(err_msg):
+def log_error_only_once(err_msg: str):
     if err_msg not in _logged_errors:
         logger.error(err_msg)
         _logged_errors.append(err_msg)
-
-
-def get_real_ip(request: SXNG_Request) -> str:
-    """Returns real IP of the request.  Since not all proxies set all the HTTP
-    headers and incoming headers can be faked it may happen that the IP cannot
-    be determined correctly.
-
-    .. sidebar:: :py:obj:`flask.Request.remote_addr`
-
-       SearXNG uses Werkzeug's ProxyFix_ (with it default ``x_for=1``).
-
-    This function tries to get the remote IP in the order listed below,
-    additional some tests are done and if inconsistencies or errors are
-    detected, they are logged.
-
-    The remote IP of the request is taken from (first match):
-
-    - X-Forwarded-For_ header
-    - `X-real-IP header <https://github.com/searxng/searxng/issues/1237#issuecomment-1147564516>`__
-    - :py:obj:`flask.Request.remote_addr`
-
-    .. _ProxyFix:
-       https://werkzeug.palletsprojects.com/middleware/proxy_fix/
-
-    .. _X-Forwarded-For:
-      https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Forwarded-For
-
-    """
-
-    forwarded_for = request.headers.get("X-Forwarded-For")
-    real_ip = request.headers.get('X-Real-IP')
-    remote_addr = request.remote_addr
-    # logger.debug(
-    #     "X-Forwarded-For: %s || X-Real-IP: %s || request.remote_addr: %s", forwarded_for, real_ip, remote_addr
-    # )
-
-    if not forwarded_for:
-        _log_error_only_once("X-Forwarded-For header is not set!")
-    else:
-        from . import cfg  # pylint: disable=import-outside-toplevel, cyclic-import
-
-        forwarded_for = [x.strip() for x in forwarded_for.split(',')]
-        x_for: int = cfg['real_ip.x_for']  # type: ignore
-        forwarded_for = forwarded_for[-min(len(forwarded_for), x_for)]
-
-    if not real_ip:
-        _log_error_only_once("X-Real-IP header is not set!")
-
-    if forwarded_for and real_ip and forwarded_for != real_ip:
-        logger.warning("IP from X-Real-IP (%s) is not equal to IP from X-Forwarded-For (%s)", real_ip, forwarded_for)
-
-    if forwarded_for and remote_addr and forwarded_for != remote_addr:
-        logger.warning(
-            "IP from WSGI environment (%s) is not equal to IP from X-Forwarded-For (%s)", remote_addr, forwarded_for
-        )
-
-    if real_ip and remote_addr and real_ip != remote_addr:
-        logger.warning("IP from WSGI environment (%s) is not equal to IP from X-Real-IP (%s)", remote_addr, real_ip)
-
-    request_ip = ip_address(forwarded_for or real_ip or remote_addr or '0.0.0.0')
-    if request_ip.version == 6 and request_ip.ipv4_mapped:
-        request_ip = request_ip.ipv4_mapped
-
-    # logger.debug("get_real_ip() -> %s", request_ip)
-    return str(request_ip)

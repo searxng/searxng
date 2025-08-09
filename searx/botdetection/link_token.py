@@ -43,16 +43,17 @@ from ipaddress import (
 
 import string
 import random
+import flask
 
-from searx import logger
-from searx import valkeydb
 from searx.valkeylib import secret_hash
-from searx.extended_types import SXNG_Request
 
 from ._helpers import (
     get_network,
-    get_real_ip,
+    logger,
 )
+
+from . import config
+from . import valkeydb
 
 TOKEN_LIVE_TIME = 600
 """Lifetime (sec) of limiter's CSS token."""
@@ -69,17 +70,14 @@ TOKEN_KEY = 'SearXNG_limiter.token'
 logger = logger.getChild('botdetection.link_token')
 
 
-def is_suspicious(network: IPv4Network | IPv6Network, request: SXNG_Request, renew: bool = False):
+def is_suspicious(network: IPv4Network | IPv6Network, request: flask.Request, renew: bool = False):
     """Checks whether a valid ping is exists for this (client) network, if not
     this request is rated as *suspicious*.  If a valid ping exists and argument
     ``renew`` is ``True`` the expire time of this ping is reset to
     :py:obj:`PING_LIVE_TIME`.
 
     """
-    valkey_client = valkeydb.client()
-    if not valkey_client:
-        return False
-
+    valkey_client = valkeydb.get_valkey_client()
     ping_key = get_ping_key(network, request)
     if not valkey_client.get(ping_key):
         logger.info("missing ping (IP: %s) / request: %s", network.compressed, ping_key)
@@ -92,28 +90,29 @@ def is_suspicious(network: IPv4Network | IPv6Network, request: SXNG_Request, ren
     return False
 
 
-def ping(request: SXNG_Request, token: str):
+def ping(request: flask.Request, token: str):
     """This function is called by a request to URL ``/client<token>.css``.  If
     ``token`` is valid a :py:obj:`PING_KEY` for the client is stored in the DB.
     The expire time of this ping-key is :py:obj:`PING_LIVE_TIME`.
 
     """
-    from . import valkey_client, cfg  # pylint: disable=import-outside-toplevel, cyclic-import
+    valkey_client = valkeydb.get_valkey_client()
+    cfg = config.get_global_cfg()
 
-    if not valkey_client:
-        return
     if not token_is_valid(token):
         return
 
-    real_ip = ip_address(get_real_ip(request))
+    real_ip = ip_address(request.remote_addr)  # type: ignore
     network = get_network(real_ip, cfg)
 
     ping_key = get_ping_key(network, request)
-    logger.debug("store ping_key for (client) network %s (IP %s) -> %s", network.compressed, real_ip, ping_key)
+    logger.debug(
+        "store ping_key for (client) network %s (IP %s) -> %s", network.compressed, real_ip.compressed, ping_key
+    )
     valkey_client.set(ping_key, 1, ex=PING_LIVE_TIME)
 
 
-def get_ping_key(network: IPv4Network | IPv6Network, request: SXNG_Request) -> str:
+def get_ping_key(network: IPv4Network | IPv6Network, request: flask.Request) -> str:
     """Generates a hashed key that fits (more or less) to a *WEB-browser
     session* in a network."""
     return (
@@ -134,20 +133,23 @@ def token_is_valid(token) -> bool:
 
 def get_token() -> str:
     """Returns current token.  If there is no currently active token a new token
-    is generated randomly and stored in the valkey DB.
+    is generated randomly and stored in the Valkey DB.  Without without a
+    database connection, string "12345678" is returned.
 
     - :py:obj:`TOKEN_LIVE_TIME`
     - :py:obj:`TOKEN_KEY`
 
     """
-    valkey_client = valkeydb.client()
-    if not valkey_client:
+    try:
+        valkey_client = valkeydb.get_valkey_client()
+    except ValueError:
         # This function is also called when limiter is inactive / no valkey DB
         # (see render function in webapp.py)
         return '12345678'
+
     token = valkey_client.get(TOKEN_KEY)
     if token:
-        token = token.decode('UTF-8')
+        token = token.decode('UTF-8')  # type: ignore
     else:
         token = ''.join(random.choice(string.ascii_lowercase + string.digits) for _ in range(16))
         valkey_client.set(TOKEN_KEY, token, ex=TOKEN_LIVE_TIME)
