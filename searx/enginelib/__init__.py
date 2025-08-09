@@ -252,7 +252,7 @@ class Engine:  # pylint: disable=too-few-public-methods
     display_error_messages: bool
     """Display error messages on the web UI."""
 
-    proxies: dict
+    proxies: dict[str, dict[str, str]]
     """Set proxies for a specific engine (YAML):
 
     .. code:: yaml
