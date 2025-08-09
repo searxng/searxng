@@ -20,15 +20,15 @@ if t.TYPE_CHECKING:
 
 
 class ProxyFix:
-    """A middleware like the ProxyFix_ class, where the `x_for` argument is
-    replaced by a method that determines the number of trusted proxies via
-    the `botdetection.trusted_proxies` setting.
+    """A middleware like the ProxyFix_ class, where the ``x_for`` argument is
+    replaced by a method that determines the number of trusted proxies via the
+    ``botdetection.trusted_proxies`` setting.
 
     .. sidebar:: :py:obj:`flask.Request.remote_addr`
 
        SearXNG uses Werkzeug's ProxyFix_ (with it default ``x_for=1``).
 
-    The remote IP (py:obj:`flask.Request.remote_addr`) of the request is taken
+    The remote IP (:py:obj:`flask.Request.remote_addr`) of the request is taken
     from (first match):
 
     - X-Forwarded-For_: If the header is set, the first untrusted IP that comes
