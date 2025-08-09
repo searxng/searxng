@@ -37,13 +37,13 @@ safesearch = False
 paging = True
 categories = ['news']
 
+# fmt: off
 # search-url
 search_url = (
-    # fmt: off
     'https://news.search.yahoo.com/search'
     '?{query}&b={offset}'
-    # fmt: on
 )
+# fmt: on
 
 AGO_RE = re.compile(r'([0-9]+)\s*(year|month|week|day|minute|hour)')
 AGO_TIMEDELTA = {

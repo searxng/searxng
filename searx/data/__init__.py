@@ -99,7 +99,7 @@ def ahmia_blacklist_loader() -> list[str]:
     """Load data from `ahmia_blacklist.txt` and return a list of MD5 values of onion
     names.  The MD5 values are fetched by::
 
-      searxng_extra/update/update_ahmia_blacklist.py
+      ``searxng_extra/update/update_ahmia_blacklist.py``
 
     This function is used by :py:mod:`searx.plugins.ahmia_filter`.
 
@@ -112,7 +112,7 @@ def gsa_useragents_loader() -> list[str]:
     """Load data from `gsa_useragents.txt` and return a list of user agents
     suitable for Google.  The user agents are fetched by::
 
-      searxng_extra/update/update_gsa_useragents.py
+      ``searxng_extra/update/update_gsa_useragents.py``
 
     This function is used by :py:mod:`searx.engines.google`.
 

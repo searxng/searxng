@@ -281,6 +281,7 @@ CREATE TABLE IF NOT EXISTS blob_map (
         "blob_map": DDL_BLOB_MAP,
     }
 
+    # fmt: off
     SQL_DROP_LEFTOVER_BLOBS = (
         "DELETE FROM blobs WHERE sha256 IN ("
         " SELECT b.sha256"
@@ -290,24 +291,31 @@ CREATE TABLE IF NOT EXISTS blob_map (
         "  WHERE bm.sha256 IS NULL)"
     )
     """Delete blobs.sha256 (BLOBs) no longer in blob_map.sha256."""
+    # fmt: on
 
+    # fmt: off
     SQL_ITER_BLOBS_SHA256_BYTES_C = (
         "SELECT b.sha256, b.bytes_c FROM blobs b"
         "  JOIN blob_map bm "
         "    ON b.sha256 = bm.sha256"
         " ORDER BY bm.m_time ASC"
     )
+    # fmt: on
 
+    # fmt: off
     SQL_INSERT_BLOBS = (
         "INSERT INTO blobs (sha256, bytes_c, mime, data) VALUES (?, ?, ?, ?)"
         "    ON CONFLICT (sha256) DO NOTHING"
-    )  # fmt: skip
+    )
+    # fmt: on
 
+    # fmt: off
     SQL_INSERT_BLOB_MAP = (
         "INSERT INTO blob_map (sha256, resolver, authority) VALUES (?, ?, ?)"
         "    ON CONFLICT DO UPDATE "
         "   SET sha256=excluded.sha256, m_time=strftime('%s', 'now')"
     )
+    # fmt: on
 
     def __init__(self, cfg: FaviconCacheConfig):
         """An instance of the favicon cache is build up from the configuration."""  #

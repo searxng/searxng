@@ -1,7 +1,7 @@
 {
   "build": {
     "args": {
-      "DEBIAN_CODENAME": "bookworm",
+      "DEBIAN_CODENAME": "bookworm"
     },
     "dockerfile": "Dockerfile"
   },
@@ -21,7 +21,7 @@
       "settings": {
         "files.autoSave": "off",
         "python.defaultInterpreterPath": "/workspaces/searxng/local/py3/bin/python3",
-        "python.formatting.blackPath": "/workspaces/searxng/local/py3/bin/black",
+        "python.formatting.ruffPath": "/workspaces/searxng/local/py3/bin/ruff",
         "python.linting.pylintPath": "/workspaces/searxng/local/py3/bin/pylint"
       }
     }

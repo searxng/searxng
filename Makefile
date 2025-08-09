@@ -40,7 +40,7 @@ clean: py.clean docs.clean node.clean nvm.clean go.clean test.clean
 
 
 PHONY += test ci.test test.shell
-test:    test.yamllint test.black test.pyright_modified test.pylint test.unit test.robot test.rst test.shell test.shfmt
+test:    test.yamllint test.ruff test.pyright_modified test.pylint test.unit test.robot test.rst test.shell test.shfmt
 ci.test: test test.pybabel
 test.shell:
 	$(Q)shellcheck -x -s dash \
@@ -58,7 +58,7 @@ test.shell:
 	$(Q)$(MTOOLS) build_msg TEST "$@ OK"
 
 PHONY += format
-format: format.python format.shell
+format: format.shell
 
 # wrap ./manage script
 
@@ -70,10 +70,10 @@ MANAGE += docker.build docker.buildx
 MANAGE += container.build container.test container.push
 MANAGE += gecko.driver
 MANAGE += node.env node.env.dev node.clean
-MANAGE += py.build py.clean
+MANAGE += py.build py.format py.clean
 MANAGE += pyenv pyenv.install pyenv.uninstall
-MANAGE += format.python format.shell
-MANAGE += test.yamllint test.pylint test.black test.pybabel test.unit test.coverage test.robot test.rst test.clean test.themes test.pyright test.pyright_modified test.shfmt
+MANAGE += format.shell
+MANAGE += test.yamllint test.pylint test.ruff test.pybabel test.unit test.coverage test.robot test.rst test.clean test.themes test.pyright test.pyright_modified test.shfmt
 MANAGE += themes.all themes.simple themes.simple.analyze themes.fix themes.lint themes.test
 MANAGE += static.build.commit static.build.drop static.build.restore
 MANAGE += nvm.install nvm.clean nvm.status nvm.nodejs
