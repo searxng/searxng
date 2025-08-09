@@ -1495,6 +1495,15 @@ engines:
       require_api_key: false
       results: JSON
 
+  - name: openalex
+    engine: openalex
+    shortcut: oa
+    # https://docs.searxng.org/dev/engines/online/openalex.html
+    # Recommended by OpenAlex: join the polite pool with an email address
+    # mailto: "[email protected]"
+    timeout: 5.0
+    disabled: true
+
   - name: openclipart
     engine: openclipart
     shortcut: ocl
