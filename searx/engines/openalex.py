@@ -78,8 +78,7 @@ def _reconstruct_abstract(
     for token, positions in abstract_inverted_index.items():
         for pos in positions:
             position_to_token[pos] = token
-            if pos > max_index:
-                max_index = pos
+            max_index = max(max_index, pos)
     if max_index < 0:
         return None
     ordered_tokens = [position_to_token.get(i, "") for i in range(0, max_index + 1)]
