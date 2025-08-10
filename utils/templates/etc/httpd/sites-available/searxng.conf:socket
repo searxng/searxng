@@ -24,10 +24,10 @@ LoadModule proxy_uwsgi_module   ${APACHE_MODULES}/mod_proxy_uwsgi.so
     ProxyPass unix:${SEARXNG_UWSGI_SOCKET}|uwsgi://uwsgi-uds-searxng/
 
     # see flaskfix.py
-    RequestHeader set X-Scheme %{REQUEST_SCHEME}s
+    RequestHeader set X-Forwarded-Proto %{REQUEST_SCHEME}s
     RequestHeader set X-Script-Name ${SEARXNG_URL_PATH}
 
-    # see limiter.py
+    # see botdetection/trusted_proxies.py
     RequestHeader set X-Real-IP %{REMOTE_ADDR}s
     RequestHeader append X-Forwarded-For %{REMOTE_ADDR}s
 
