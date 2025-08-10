@@ -59,7 +59,7 @@ class ReverseProxyPathFix:
             if path_info.startswith(script_name):
                 environ['PATH_INFO'] = path_info[len(script_name) :]
 
-        scheme = self.scheme or environ.get('HTTP_X_SCHEME', '')
+        scheme = self.scheme or environ.get('HTTP_X_SCHEME') or environ.get('HTTP_X_FORWARDED_PROTO')
         if scheme:
             environ['wsgi.url_scheme'] = scheme
 
