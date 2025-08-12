@@ -89,12 +89,13 @@ def request(query, params):
             query_params["paramList"] += f",timestamp_range={past}-{now}"
 
     params["url"] = f"{query_url}?{urlencode(query_params)}"
+    params["allow_redirects"] = False
     return params
 
 
 def response(resp):
     # Detect Baidu Captcha, it will redirect to wappass.baidu.com
-    if 'wappass.baidu.com' in str(resp.url):
+    if 'wappass.baidu.com/static/captcha' in resp.headers.get('Location', ''):
         raise SearxEngineCaptchaException()
 
     text = resp.text
