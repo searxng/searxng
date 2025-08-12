@@ -13,7 +13,7 @@ from html import unescape
 import time
 import json
 
-from searx.exceptions import SearxEngineAPIException
+from searx.exceptions import SearxEngineAPIException, SearxEngineCaptchaException
 from searx.utils import html_to_text
 
 about = {
@@ -93,6 +93,9 @@ def request(query, params):
 
 
 def response(resp):
+    # Detect Baidu Captcha, it will redirect to wappass.baidu.com
+    if 'wappass.baidu.com' in str(resp.url):
+        raise SearxEngineCaptchaException()
 
     text = resp.text
     if baidu_category == 'images':
