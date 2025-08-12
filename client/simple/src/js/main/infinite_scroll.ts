@@ -13,8 +13,6 @@ const loadNextPage = async (onlyImages: boolean, callback: () => void): Promise<
   const form = document.querySelector<HTMLFormElement>("#pagination form.next_page");
   assertElement(form);
 
-  const formData = new FormData(form);
-
   const action = searchForm.getAttribute("action");
   if (!action) {
     throw new Error("Form action not defined");
@@ -26,7 +24,7 @@ const loadNextPage = async (onlyImages: boolean, callback: () => void): Promise<
   paginationElement.replaceChildren(newLoadSpinner());
 
   try {
-    const res = await http("POST", action, formData);
+    const res = await http("POST", action, { body: new FormData(form) });
     const nextPage = await res.text();
     if (!nextPage) return;
 

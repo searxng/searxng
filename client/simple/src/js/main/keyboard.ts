@@ -414,7 +414,7 @@ const copyURLToClipboard = async (): Promise<void> => {
   }
 };
 
-listen("click", ".result", function (this: HTMLElement, event: Event) {
+listen("click", ".result", function (this: HTMLElement, event: PointerEvent) {
   if (!isElementInDetail(event.target as HTMLElement)) {
     highlightResult(this)(true, true);
 
@@ -427,18 +427,20 @@ listen("click", ".result", function (this: HTMLElement, event: Event) {
   }
 });
 
+// FIXME: Focus might also trigger Pointer event ^^^
 listen(
   "focus",
   ".result a",
-  (event: Event) => {
+  (event: FocusEvent) => {
     if (!isElementInDetail(event.target as HTMLElement)) {
       const resultElement = getResultElement(event.target as HTMLElement);
 
-      if (resultElement && !resultElement.getAttribute("data-vim-selected")) {
+      if (resultElement && !resultElement.hasAttribute("data-vim-selected")) {
         highlightResult(resultElement)(true);
       }
 
       if (resultElement && isImageResult(resultElement)) {
+        event.preventDefault();
         mutable.selectImage?.(resultElement);
       }
     }

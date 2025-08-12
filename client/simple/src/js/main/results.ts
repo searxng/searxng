@@ -1,16 +1,35 @@
 import "../../../node_modules/swiped-events/src/swiped-events.js";
 import { assertElement, listen, mutable, settings } from "../core/toolkit.ts";
 
-const loadImage = (imgSrc: string, onSuccess: () => void): void => {
-  // singleton image object, which is used for all loading processes of a detailed image
-  const imgLoader = new Image();
+let imgTimeoutID: number;
 
-  // set handlers in the on-properties
-  imgLoader.onload = (): void => {
-    onSuccess();
-  };
+const imageLoader = (resultElement: HTMLElement): void => {
+  if (imgTimeoutID) clearTimeout(imgTimeoutID);
 
-  imgLoader.src = imgSrc;
+  const imgElement = resultElement.querySelector<HTMLImageElement>(".result-images-source img");
+  if (!imgElement) return;
+
+  // use thumbnail until full image loads
+  const thumbnail = resultElement.querySelector<HTMLImageElement>(".image_thumbnail");
+  if (thumbnail) {
+    if (thumbnail.src === `${settings.theme_static_path}/img/img_load_error.svg`) return;
+
+    imgElement.onerror = (): void => {
+      imgElement.src = thumbnail.src;
+    };
+
+    imgElement.src = thumbnail.src;
+  }
+
+  const imgSource = imgElement.getAttribute("data-src");
+  if (!imgSource) return;
+
+  // unsafe nodejs specific, cast to https://developer.mozilla.org/en-US/docs/Web/API/Window/setTimeout#return_value
+  // https://github.com/searxng/searxng/pull/5073#discussion_r2265767231
+  imgTimeoutID = setTimeout(() => {
+    imgElement.src = imgSource;
+    imgElement.removeAttribute("data-src");
+  }, 1000) as unknown as number;
 };
 
 const imageThumbnails: NodeListOf<HTMLImageElement> =
@@ -45,29 +64,7 @@ mutable.selectImage = (resultElement: HTMLElement): void => {
   // if there is no element given by the caller, stop here
   if (!resultElement) return;
 
-  // find image element, if there is none, stop here
-  const img = resultElement.querySelector<HTMLImageElement>(".result-images-source img");
-  if (!img) return;
-
-  // <img src="" data-src="http://example.org/image.jpg">
-  const src = img.getAttribute("data-src");
-  if (!src) return;
-
-  // use thumbnail until full image loads
-  const thumbnail = resultElement.querySelector<HTMLImageElement>(".image_thumbnail");
-  if (thumbnail) {
-    img.src = thumbnail.src;
-  }
-
-  // load full size image
-  loadImage(src, () => {
-    img.src = src;
-    img.onerror = (): void => {
-      img.src = `${settings.theme_static_path}/img/img_load_error.svg`;
-    };
-
-    img.removeAttribute("data-src");
-  });
+  imageLoader(resultElement);
 };
 
 mutable.closeDetail = (): void => {

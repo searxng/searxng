@@ -4,6 +4,10 @@ ready(
   () => {
     import("../main/keyboard.ts");
     import("../main/search.ts");
+
+    if (settings.autocomplete) {
+      import("../main/autocomplete.ts");
+    }
   },
   { on: [endpoint === Endpoints.index] }
 );
@@ -17,6 +21,10 @@ ready(
 
     if (settings.infinite_scroll) {
       import("../main/infinite_scroll.ts");
+    }
+
+    if (settings.autocomplete) {
+      import("../main/autocomplete.ts");
     }
   },
   { on: [endpoint === Endpoints.results] }

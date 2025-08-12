@@ -11,10 +11,20 @@
     "dynamicImports": [
       "src/js/main/keyboard.ts",
       "src/js/main/search.ts",
+      "src/js/main/autocomplete.ts",
       "src/js/main/mapresult.ts",
       "src/js/main/results.ts",
       "src/js/main/infinite_scroll.ts",
       "src/js/main/preferences.ts"
+    ]
+  },
+  "src/js/main/autocomplete.ts": {
+    "file": "js/autocomplete.min.js",
+    "name": "autocomplete",
+    "src": "src/js/main/autocomplete.ts",
+    "isDynamicEntry": true,
+    "imports": [
+      "src/js/core/index.ts"
     ]
   },
   "src/js/main/infinite_scroll.ts": {

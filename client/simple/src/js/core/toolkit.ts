@@ -20,6 +20,11 @@ type Settings = {
   url_formatting?: "pretty" | "full" | "host";
 };
 
+type HTTPOptions = {
+  body?: BodyInit;
+  timeout?: number;
+};
+
 type ReadyOptions = {
   // all values must be truthy for the callback to be executed
   on?: (boolean | undefined)[];
@@ -72,12 +77,12 @@ export const assertElement: AssertElement = (element?: HTMLElement | null): asse
   }
 };
 
-export const http = async (method: string, url: string | URL, data?: BodyInit): Promise<Response> => {
+export const http = async (method: string, url: string | URL, options?: HTTPOptions): Promise<Response> => {
   const controller = new AbortController();
-  const timeoutId = setTimeout(() => controller.abort(), 30_000);
+  const timeoutId = setTimeout(() => controller.abort(), options?.timeout ?? 30_000);
 
   const res = await fetch(url, {
-    body: data,
+    body: options?.body,
     method: method,
     signal: controller.signal
   }).finally(() => clearTimeout(timeoutId));
