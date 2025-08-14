@@ -84,7 +84,7 @@ def response(resp) -> EngineResults:
                 content=result["description"],
                 thumbnail=result.get("thumbnail", {}).get("url", ""),
                 metadata=result.get("kicker", {}).get("name"),
-                publishedDate=datetime.strptime(result["display_time"], "%Y-%m-%dT%H:%M:%SZ"),
+                publishedDate=datetime.fromisoformat(result["display_time"]),
             )
         )
     return res
