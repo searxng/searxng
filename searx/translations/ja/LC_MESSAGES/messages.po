@@ -30,13 +30,14 @@
 # anmoti <anmoti@noreply.codeberg.org>, 2025.
 # return42 <return42@noreply.codeberg.org>, 2025.
 # norizou <norizou@noreply.codeberg.org>, 2025.
+# c2qd <c2qd@noreply.codeberg.org>, 2025.
 msgid ""
 msgstr ""
 "Project-Id-Version: searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-07-03 14:46+0000\n"
-"PO-Revision-Date: 2025-07-30 09:09+0000\n"
-"Last-Translator: return42 <return42@noreply.codeberg.org>\n"
+"PO-Revision-Date: 2025-08-15 07:10+0000\n"
+"Last-Translator: c2qd <c2qd@noreply.codeberg.org>\n"
 "Language-Team: Japanese <https://translate.codeberg.org/projects/searxng/"
 "searxng/ja/>\n"
 "Language: ja\n"
@@ -348,7 +349,7 @@ msgstr "雷雨"
 #. WEATHER_CONDITIONS
 #: searx/searxng.msg
 msgid "Rain showers and thunder"
-msgstr ""
+msgstr "にわか雨と雷"
 
 #. WEATHER_CONDITIONS
 #: searx/searxng.msg
@@ -408,17 +409,17 @@ msgstr "みぞれと雷"
 #. WEATHER_CONDITIONS
 #: searx/searxng.msg
 msgid "Sleet showers and thunder"
-msgstr ""
+msgstr "みぞれのにわか雨と雷"
 
 #. WEATHER_CONDITIONS
 #: searx/searxng.msg
 msgid "Sleet showers"
-msgstr ""
+msgstr "みぞれのにわか雨"
 
 #. WEATHER_CONDITIONS
 #: searx/searxng.msg
 msgid "Sleet"
-msgstr ""
+msgstr "みぞれ"
 
 #. WEATHER_CONDITIONS
 #: searx/searxng.msg
@@ -443,42 +444,42 @@ msgstr "激しいみぞれ"
 #. WEATHER_CONDITIONS
 #: searx/searxng.msg
 msgid "Light snow and thunder"
-msgstr ""
+msgstr "小雪と雷"
 
 #. WEATHER_CONDITIONS
 #: searx/searxng.msg
 msgid "Light snow showers and thunder"
-msgstr ""
+msgstr "小雪のにわか降雪と雷"
 
 #. WEATHER_CONDITIONS
 #: searx/searxng.msg
 msgid "Light snow showers"
-msgstr ""
+msgstr "小雪のにわか降雪"
 
 #. WEATHER_CONDITIONS
 #: searx/searxng.msg
 msgid "Light snow"
-msgstr ""
+msgstr "小雪"
 
 #. WEATHER_CONDITIONS
 #: searx/searxng.msg
 msgid "Snow and thunder"
-msgstr ""
+msgstr "雪と雷"
 
 #. WEATHER_CONDITIONS
 #: searx/searxng.msg
 msgid "Snow showers and thunder"
-msgstr ""
+msgstr "雪のにわか降雪と雷"
 
 #. WEATHER_CONDITIONS
 #: searx/searxng.msg
 msgid "Snow showers"
-msgstr ""
+msgstr "雪のにわか降雪"
 
 #. WEATHER_CONDITIONS
 #: searx/searxng.msg
 msgid "Snow"
-msgstr ""
+msgstr "雪"
 
 #. WEATHER_CONDITIONS
 #: searx/searxng.msg
@@ -753,7 +754,8 @@ msgstr "ハッシュプラグイン"
 msgid ""
 "Converts strings to different hash digests. Available functions: md5, "
 "sha1, sha224, sha256, sha384, sha512."
-msgstr ""
+msgstr "文字列を異なるハッシュダイジェストに変換します。使用可能な関数：md5、sha1、sh"
+"a224、sha256、sha384、sha512です。"
 
 #: searx/plugins/hash_plugin.py:64
 msgid "hash digest"
@@ -765,7 +767,7 @@ msgstr "ホスト名プラグイン"
 
 #: searx/plugins/hostnames.py:124
 msgid "Rewrite hostnames and remove or prioritize results based on the hostname"
-msgstr ""
+msgstr "ホスト名を書き換え、ホスト名に基づいて結果を削除または優先化"
 
 #: searx/plugins/oa_doi_rewrite.py:55
 msgid "Open Access DOI rewrite"
@@ -1152,7 +1154,7 @@ msgstr "類義語"
 
 #: searx/templates/simple/answer/weather.html:19
 msgid "Feels Like"
-msgstr ""
+msgstr "体感温度"
 
 #: searx/templates/simple/elements/answers.html:2
 msgid "Answers"
@@ -1332,7 +1334,7 @@ msgstr "自動補完"
 
 #: searx/templates/simple/preferences/autocomplete.html:15
 msgid "Show possible queries as you type"
-msgstr ""
+msgstr "入力中に可能な検索候補を表示する"
 
 #: searx/templates/simple/preferences/center_alignment.html:2
 msgid "Center Alignment"
@@ -1340,7 +1342,7 @@ msgstr "中央揃え"
 
 #: searx/templates/simple/preferences/center_alignment.html:14
 msgid "Display results in the center of the page (Oscar layout)."
-msgstr ""
+msgstr "結果をページ中央に表示します(Oscar レイアウト)。"
 
 #: searx/templates/simple/preferences/cookies.html:2
 msgid ""
@@ -1350,7 +1352,7 @@ msgstr "これはクッキーのリストで、これらの値はあなたのコ
 
 #: searx/templates/simple/preferences/cookies.html:3
 msgid "With this list, you can assess the transparency of SearXNG."
-msgstr ""
+msgstr "このリストを使うことで、SearXNGの透明性を評価できます。"
 
 #: searx/templates/simple/preferences/cookies.html:9
 msgid "Cookie name"
@@ -1408,7 +1410,8 @@ msgstr "DOI書き換えにて使用するサービスを選択"
 msgid ""
 "This tab does not exist in the user interface, but you can search with "
 "these engines via !bangs."
-msgstr ""
+msgstr "このタブはユーザーインターフェースには存在しませんが、これらの検索エンジンは "
+"!bangs を使って検索できます。"
 
 #: searx/templates/simple/preferences/engines.html:15
 msgid "Enable all"
@@ -1446,11 +1449,13 @@ msgstr "検索結果でfaviconに合いそうなものを表示する"
 msgid ""
 "These settings are stored in your cookies. This allows us not to store "
 "this data about you."
-msgstr ""
+msgstr "これらの設定はクッキーに保存されます。これにより、あなたに関するデータを当方"
+"で保存する必要がなくなります。"
 
 #: searx/templates/simple/preferences/footer.html:3
 msgid "These cookies serve your sole convenience; we don't use them to track you."
-msgstr ""
+msgstr "これらのクッキーは、お客様の利便性を向上させるものであり、お客様を追跡するた"
+"めに使用するものではありません。"
 
 #: searx/templates/simple/preferences/footer.html:6
 msgid "Save"
@@ -1484,7 +1489,7 @@ msgstr "画像プロキシ"
 
 #: searx/templates/simple/preferences/image_proxy.html:14
 msgid "Proxy image results through SearXNG"
-msgstr ""
+msgstr "SearXNGを経由した画像結果"
 
 #: searx/templates/simple/preferences/infinite_scroll.html:2
 msgid "Infinite scroll"
@@ -1494,7 +1499,7 @@ msgstr "無限スクロール"
 msgid ""
 "Automatically load the next page when scrolling to the bottom of the "
 "current page"
-msgstr ""
+msgstr "現在のページの下までスクロールすると、自動的に次のページを読み込む"
 
 #: searx/templates/simple/preferences/language.html:24
 msgid "What language do you prefer for search?"
@@ -1524,11 +1529,11 @@ msgstr "有効にすると、検索結果ページのタイトルにクエリが
 
 #: searx/templates/simple/preferences/results_on_new_tab.html:2
 msgid "Results in new tabs"
-msgstr ""
+msgstr "結果を新しいタブで開く"
 
 #: searx/templates/simple/preferences/results_on_new_tab.html:14
 msgid "Open result links in new browser tabs"
-msgstr ""
+msgstr "結果のリンクを新しいブラウザタブで開く"
 
 #: searx/templates/simple/preferences/safesearch.html:20
 msgid "Filter content"
@@ -1542,7 +1547,8 @@ msgstr "カテゴリ選択したら検索を実行"
 msgid ""
 "Perform a search immediately if a category is selected. Disable to select"
 " multiple categories"
-msgstr ""
+msgstr "カテゴリを選択したらすぐに検索を実行します。無効にすると複数のカテゴリを選択"
+"できます"
 
 #: searx/templates/simple/preferences/theme.html:2
 msgid "Theme"
@@ -1550,7 +1556,7 @@ msgstr "テーマ"
 
 #: searx/templates/simple/preferences/theme.html:14
 msgid "Change the layout of SearXNG"
-msgstr ""
+msgstr "SearXNGのレイアウトを変更する"
 
 #: searx/templates/simple/preferences/theme.html:19
 msgid "Theme style"
