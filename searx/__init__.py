@@ -10,7 +10,6 @@ from os.path import dirname, abspath
 import logging
 
 import msgspec
-import searx.unixthreadname  # pylint: disable=unused-import
 
 # Debug
 LOG_FORMAT_DEBUG: str = '%(levelname)-7s %(name)-30.30s: %(message)s'
