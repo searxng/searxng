@@ -41,6 +41,6 @@ jobs:
           write-comment: "false"
 
       - name: Upload SARIFs
-        uses: github/codeql-action/upload-sarif@a4e1a019f5e24960714ff6296aee04b736cbc3cf  # v3.29.6
+        uses: github/codeql-action/upload-sarif@df559355d593797519d70b90fc8edd5db049e7a2  # v3.29.9
         with:
           sarif_file: "./scout.sarif"
