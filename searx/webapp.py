@@ -1040,7 +1040,6 @@ def image_proxy():
         request_headers = {
             'User-Agent': gen_useragent(),
             'Accept': 'image/webp,*/*',
-            'Accept-Encoding': 'gzip, deflate',
             'Sec-GPC': '1',
             'DNT': '1',
         }

@@ -82,7 +82,6 @@ def _download_and_check_if_image(image_url: str) -> bool:
                     'User-Agent': gen_useragent(),
                     'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
                     'Accept-Language': 'en-US;q=0.5,en;q=0.3',
-                    'Accept-Encoding': 'gzip, deflate, br',
                     'DNT': '1',
                     'Connection': 'keep-alive',
                     'Upgrade-Insecure-Requests': '1',
