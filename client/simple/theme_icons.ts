@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: AGPL-3.0-or-later
+
 /**
  * Generate icons.html for the jinja templates of the simple theme.
  */

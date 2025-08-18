@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: AGPL-3.0-or-later
+
 import { listen } from "../core/toolkit.ts";
 
 listen("click", ".searxng_init_map", async function (this: HTMLElement, event: Event) {

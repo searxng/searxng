@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: AGPL-3.0-or-later
+
 import "../../../node_modules/swiped-events/src/swiped-events.js";
 import { assertElement, listen, mutable, settings } from "../core/toolkit.ts";
 

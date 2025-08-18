@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: AGPL-3.0-or-later
+
 import type { KeyBindingLayout } from "../main/keyboard.ts";
 
 // synced with searx/webapp.py get_client_settings
