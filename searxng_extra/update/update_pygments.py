@@ -16,9 +16,13 @@ from searx import searx_dir
 LESS_FILE = Path(searx_dir).parent / 'client/simple/generated/pygments.less'
 
 HEADER = f"""\
+// SPDX-License-Identifier: AGPL-3.0-or-later
+
 /*
    this file is generated automatically by searxng_extra/update/update_pygments.py
-   using pygments version {pygments.__version__}
+   using pygments version {pygments.__version__}:
+
+       ./manage templates.simple.pygments
 */
 
 """

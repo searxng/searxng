@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: AGPL-3.0-or-later
+
 import { Endpoints, endpoint, ready, settings } from "./toolkit.ts";
 
 ready(

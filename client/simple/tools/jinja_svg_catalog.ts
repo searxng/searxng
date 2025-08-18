@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: AGPL-3.0-or-later
+
 import fs from "node:fs";
 import { dirname, resolve } from "node:path";
 import { Edge } from "edge.js";
