@@ -28,30 +28,6 @@ class TestUtils(SearxTestCase):
         self.assertIsNotNone(utils.searxng_useragent())
         self.assertTrue(utils.searxng_useragent().startswith('SearXNG'))
 
-    def test_html_to_text(self):
-        html_str = """
-        <a href="/testlink" class="link_access_account">
-            <style>
-                .toto {
-                    color: red;
-                }
-            </style>
-            <span class="toto">
-                <span>
-                    <img src="test.jpg" />
-                </span>
-            </span>
-            <span class="titi">
-                            Test text
-            </span>
-            <script>value='dummy';</script>
-        </a>
-        """
-        self.assertIsInstance(utils.html_to_text(html_str), str)
-        self.assertIsNotNone(utils.html_to_text(html_str))
-        self.assertEqual(utils.html_to_text(html_str), "Test text")
-        self.assertEqual(utils.html_to_text(r"regexp: (?<![a-zA-Z]"), "regexp: (?<![a-zA-Z]")
-
     def test_extract_text(self):
         html_str = """
         <a href="/testlink" class="link_access_account">
@@ -99,46 +75,44 @@ class TestUtils(SearxTestCase):
         with self.assertRaises(Exception):
             utils.extract_url([], 'https://example.com')
 
-    def test_html_to_text_invalid(self):
-        _html = '<p><b>Lorem ipsum</i>dolor sit amet</p>'
-        self.assertEqual(utils.html_to_text(_html), "Lorem ipsum")
-
     def test_ecma_unscape(self):
         self.assertEqual(utils.ecma_unescape('text%20with%20space'), 'text with space')
         self.assertEqual(utils.ecma_unescape('text using %xx: %F3'), 'text using %xx: ó')
         self.assertEqual(utils.ecma_unescape('text using %u: %u5409, %u4E16%u754c'), 'text using %u: 吉, 世界')
 
-
-class TestHTMLTextExtractor(SearxTestCase):  # pylint: disable=missing-class-docstring
-
-    def setUp(self):
-        super().setUp()
-
-        self.html_text_extractor = utils._HTMLTextExtractor()  # pylint: disable=protected-access
-
-    def test__init__(self):
-        self.assertEqual(self.html_text_extractor.result, [])
-
     @parameterized.expand(
         [
-            ('xF', '\x0f'),
-            ('XF', '\x0f'),
-            ('97', 'a'),
+            ('Example <span id="42">#2</span>', 'Example #2'),
+            ('<style>.span { color: red; }</style><span>Example</span>', 'Example'),
+            (r'regexp: (?&lt;![a-zA-Z]', r'regexp: (?<![a-zA-Z]'),
+            (r'<p><b>Lorem ipsum </i>dolor sit amet</p>', 'Lorem ipsum </i>dolor sit amet</p>'),
+            (r'&#x3e &#x3c &#97', '> < a'),
         ]
     )
-    def test_handle_charref(self, charref: str, expected: str):
-        self.html_text_extractor.handle_charref(charref)
-        self.assertIn(expected, self.html_text_extractor.result)
+    def test_html_to_text(self, html_str: str, text_str: str):
+        self.assertEqual(utils.html_to_text(html_str), text_str)
 
-    def test_handle_entityref(self):
-        entity = 'test'
-        self.html_text_extractor.handle_entityref(entity)
-        self.assertIn(entity, self.html_text_extractor.result)
-
-    def test_invalid_html(self):
-        text = '<p><b>Lorem ipsum</i>dolor sit amet</p>'
-        with self.assertRaises(utils._HTMLTextExtractorException):  # pylint: disable=protected-access
-            self.html_text_extractor.feed(text)
+    def test_html_to_text_with_a_style_span(self):
+        html_str = """
+        <a href="/testlink" class="link_access_account">
+            <style>
+                .toto {
+                    color: red;
+                }
+            </style>
+            <span class="toto">
+                <span>
+                    <img src="test.jpg" />
+                </span>
+            </span>
+            <span class="titi">
+                            Test text
+            </span>
+            <script>value='dummy';</script>
+        </a>
+        """
+        self.assertIsInstance(utils.html_to_text(html_str), str)
+        self.assertEqual(utils.html_to_text(html_str), "Test text")
 
 
 class TestXPathUtils(SearxTestCase):  # pylint: disable=missing-class-docstring
