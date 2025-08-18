@@ -26,13 +26,14 @@
 # curtwheeler <curtwheeler@users.noreply.translate.codeberg.org>, 2025.
 # return42 <return42@noreply.codeberg.org>, 2025.
 # DZDevelopers <dzdevelopers@noreply.codeberg.org>, 2025.
+# youtherthyf <youtherthyf@noreply.codeberg.org>, 2025.
 msgid ""
 msgstr ""
 "Project-Id-Version: searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-07-03 14:46+0000\n"
-"PO-Revision-Date: 2025-07-30 09:09+0000\n"
-"Last-Translator: return42 <return42@noreply.codeberg.org>\n"
+"PO-Revision-Date: 2025-08-18 20:32+0000\n"
+"Last-Translator: youtherthyf <youtherthyf@noreply.codeberg.org>\n"
 "Language-Team: Arabic <https://translate.codeberg.org/projects/searxng/"
 "searxng/ar/>\n"
 "Language: ar\n"
@@ -325,32 +326,32 @@ msgstr "‌‌مطر خفيف ورعد"
 #. WEATHER_CONDITIONS
 #: searx/searxng.msg
 msgid "Light rain showers and thunder"
-msgstr ""
+msgstr "رعد و زخات مطر خفيفة"
 
 #. WEATHER_CONDITIONS
 #: searx/searxng.msg
 msgid "Light rain showers"
-msgstr ""
+msgstr "زخات مطر خفيفة"
 
 #. WEATHER_CONDITIONS
 #: searx/searxng.msg
 msgid "Light rain"
-msgstr ""
+msgstr "مطر خفيف"
 
 #. WEATHER_CONDITIONS
 #: searx/searxng.msg
 msgid "Rain and thunder"
-msgstr ""
+msgstr "مطر و رعد"
 
 #. WEATHER_CONDITIONS
 #: searx/searxng.msg
 msgid "Rain showers and thunder"
-msgstr ""
+msgstr "زخات مطر و رعد"
 
 #. WEATHER_CONDITIONS
 #: searx/searxng.msg
 msgid "Rain showers"
-msgstr ""
+msgstr "زخات مطر"
 
 #. WEATHER_CONDITIONS
 #: searx/searxng.msg
@@ -365,12 +366,12 @@ msgstr "مطر غزير و رعد"
 #. WEATHER_CONDITIONS
 #: searx/searxng.msg
 msgid "Heavy rain showers and thunder"
-msgstr ""
+msgstr "رعد و زخات مطر شديدة"
 
 #. WEATHER_CONDITIONS
 #: searx/searxng.msg
 msgid "Heavy rain showers"
-msgstr ""
+msgstr "زخات مطر شديدة"
 
 #. WEATHER_CONDITIONS
 #: searx/searxng.msg
@@ -440,62 +441,62 @@ msgstr ""
 #. WEATHER_CONDITIONS
 #: searx/searxng.msg
 msgid "Light snow and thunder"
-msgstr ""
+msgstr "رعد و ثلج خفيف"
 
 #. WEATHER_CONDITIONS
 #: searx/searxng.msg
 msgid "Light snow showers and thunder"
-msgstr ""
+msgstr "رعد و زخات ثلج خفيفة"
 
 #. WEATHER_CONDITIONS
 #: searx/searxng.msg
 msgid "Light snow showers"
-msgstr ""
+msgstr "زخات ثلج خفيفة"
 
 #. WEATHER_CONDITIONS
 #: searx/searxng.msg
 msgid "Light snow"
-msgstr ""
+msgstr "ثلج خفيف"
 
 #. WEATHER_CONDITIONS
 #: searx/searxng.msg
 msgid "Snow and thunder"
-msgstr ""
+msgstr "رعد و ثلج"
 
 #. WEATHER_CONDITIONS
 #: searx/searxng.msg
 msgid "Snow showers and thunder"
-msgstr ""
+msgstr "رعد و زخات ثلج"
 
 #. WEATHER_CONDITIONS
 #: searx/searxng.msg
 msgid "Snow showers"
-msgstr ""
+msgstr "زخات ثلج"
 
 #. WEATHER_CONDITIONS
 #: searx/searxng.msg
 msgid "Snow"
-msgstr ""
+msgstr "ثلج"
 
 #. WEATHER_CONDITIONS
 #: searx/searxng.msg
 msgid "Heavy snow and thunder"
-msgstr ""
+msgstr "رعد و ثلج شديد"
 
 #. WEATHER_CONDITIONS
 #: searx/searxng.msg
 msgid "Heavy snow showers and thunder"
-msgstr ""
+msgstr "رعد و زخات ثلج شديدة"
 
 #. WEATHER_CONDITIONS
 #: searx/searxng.msg
 msgid "Heavy snow showers"
-msgstr ""
+msgstr "زخات ثلج شديدة"
 
 #. WEATHER_CONDITIONS
 #: searx/searxng.msg
 msgid "Heavy snow"
-msgstr ""
+msgstr "ثلج شديد"
 
 #. SOCIAL_MEDIA_TERMS['SUBSCRIBERS']
 #: searx/engines/lemmy.py:85 searx/searxng.msg
@@ -755,6 +756,8 @@ msgid ""
 "Converts strings to different hash digests. Available functions: md5, "
 "sha1, sha224, sha256, sha384, sha512."
 msgstr ""
+"حول السلسلة إلي دالة تلبيد أخري. الدالات المتوفرة: md5, sha1, sha224, "
+"sha256, sha384, sha512."
 
 #: searx/plugins/hash_plugin.py:64
 msgid "hash digest"
@@ -767,6 +770,7 @@ msgstr "مُلحق لأسماء المضيفين (Hostnames)"
 #: searx/plugins/hostnames.py:124
 msgid "Rewrite hostnames and remove or prioritize results based on the hostname"
 msgstr ""
+"اعيد كتابة أسماء المضيفين و ازيل او ارفع اولاوية النتائج بنائا علي اسم المضيف"
 
 #: searx/plugins/oa_doi_rewrite.py:55
 msgid "Open Access DOI rewrite"
@@ -845,7 +849,7 @@ msgstr "التحويل بين الوحدات"
 #: searx/result_types/answer.py:224
 #, python-brace-format
 msgid "{location}: {temperature}, {condition}"
-msgstr ""
+msgstr "{مكان}:{حرارة},{وضع}"
 
 #: searx/templates/simple/404.html:4
 msgid "Page not found"
@@ -1341,7 +1345,7 @@ msgstr "تكملة تلقائية"
 
 #: searx/templates/simple/preferences/autocomplete.html:15
 msgid "Show possible queries as you type"
-msgstr ""
+msgstr "اظهر الإستعلامات الممكنة و انت تكتب"
 
 #: searx/templates/simple/preferences/center_alignment.html:2
 msgid "Center Alignment"
@@ -1349,7 +1353,7 @@ msgstr "محاذاة المركز"
 
 #: searx/templates/simple/preferences/center_alignment.html:14
 msgid "Display results in the center of the page (Oscar layout)."
-msgstr ""
+msgstr "اظهر النتائج في منتصف الصفحة (ترتيب اوسكار)."
 
 #: searx/templates/simple/preferences/cookies.html:2
 msgid ""
@@ -1361,7 +1365,7 @@ msgstr ""
 
 #: searx/templates/simple/preferences/cookies.html:3
 msgid "With this list, you can assess the transparency of SearXNG."
-msgstr ""
+msgstr "بهذه اللائحة, يمكنك مراجعة شفافية SearXNG."
 
 #: searx/templates/simple/preferences/cookies.html:9
 msgid "Cookie name"
@@ -1462,10 +1466,11 @@ msgid ""
 "These settings are stored in your cookies. This allows us not to store "
 "this data about you."
 msgstr ""
+"يتم تخزين هذه الإعدادات في الكعك. هذا يسمح لنا اللا نخزن هذه المعلومات عنك."
 
 #: searx/templates/simple/preferences/footer.html:3
 msgid "These cookies serve your sole convenience; we don't use them to track you."
-msgstr ""
+msgstr "هذا الكعك يخدم راحتك فقت; نحن لا نستخدمه لتعقبك."
 
 #: searx/templates/simple/preferences/footer.html:6
 msgid "Save"
@@ -1562,7 +1567,7 @@ msgstr "البحث في الفئة المحددة"
 msgid ""
 "Perform a search immediately if a category is selected. Disable to select"
 " multiple categories"
-msgstr ""
+msgstr "نفذ بحث فورا إذا تم تحديد فئة. اطفئ لتحديد فئات متعددة"
 
 #: searx/templates/simple/preferences/theme.html:2
 msgid "Theme"
@@ -1570,7 +1575,7 @@ msgstr "السمة"
 
 #: searx/templates/simple/preferences/theme.html:14
 msgid "Change the layout of SearXNG"
-msgstr ""
+msgstr "تغير واجهة مستخدم SearXNG"
 
 #: searx/templates/simple/preferences/theme.html:19
 msgid "Theme style"
