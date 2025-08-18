@@ -1,7 +1,11 @@
 {
   "node_modules/ol/ol.css": {
     "file": "css/ol.min.css",
-    "src": "node_modules/ol/ol.css"
+    "names": [
+      "ol.css"
+    ],
+    "src": "node_modules/ol/ol.css",
+    "isEntry": true
   },
   "src/js/core/index.ts": {
     "file": "js/searxng.core.min.js",
@@ -92,14 +96,26 @@
   },
   "src/less/rss.less": {
     "file": "css/rss.min.css",
-    "src": "src/less/rss.less"
+    "names": [
+      "rss.css"
+    ],
+    "src": "src/less/rss.less",
+    "isEntry": true
   },
   "src/less/style-ltr.less": {
     "file": "css/searxng-ltr.min.css",
-    "src": "src/less/style-ltr.less"
+    "names": [
+      "searxng-ltr.css"
+    ],
+    "src": "src/less/style-ltr.less",
+    "isEntry": true
   },
   "src/less/style-rtl.less": {
     "file": "css/searxng-rtl.min.css",
-    "src": "src/less/style-rtl.less"
+    "names": [
+      "searxng-rtl.css"
+    ],
+    "src": "src/less/style-rtl.less",
+    "isEntry": true
   }
 }
