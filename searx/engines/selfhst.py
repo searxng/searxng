@@ -14,12 +14,11 @@ about = {
 categories = ['images', 'icons']
 
 
-icons_list_url = 'https://cdn.selfh.st/directory/icons.json'
-icons_cdn_base_url = 'https://cdn.jsdelivr.net'
+cdn_base_url = 'https://cdn.jsdelivr.net/gh/selfhst/icons'
 
 
 def request(query, params):
-    params['url'] = icons_list_url
+    params['url'] = f"{cdn_base_url}/index.json"
     params['query'] = query
     return params
 
@@ -39,7 +38,7 @@ def response(resp):
                 img_format = format_name.lower()
                 break
 
-        img_src = f'{icons_cdn_base_url}/gh/selfhst/icons/{img_format}/{item["Reference"]}.{img_format}'
+        img_src = f'{cdn_base_url}/{img_format}/{item["Reference"]}.{img_format}'
         result = {
             'template': 'images.html',
             'url': img_src,
