@@ -40,6 +40,18 @@ if (!(isMobile || isResultsPage)) {
   qInput.focus();
 }
 
+// On mobile, move cursor to the end of the input on focus
+if (isMobile) {
+  listen("focus", qInput, () => {
+    // Defer cursor move until the next frame to prevent a visual jump
+    requestAnimationFrame(() => {
+      const end = qInput.value.length;
+      qInput.setSelectionRange(end, end);
+      qInput.scrollLeft = qInput.scrollWidth;
+    });
+  });
+}
+
 createClearButton(qInput);
 
 // Additionally to searching when selecting a new category, we also
