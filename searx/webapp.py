@@ -181,23 +181,31 @@ def _get_locale_rfc5646(locale):
 
 # code-highlighter
 @app.template_filter('code_highlighter')
-def code_highlighter(codelines, language=None):
+def code_highlighter(codelines, language=None, hl_lines=None, strip_whitespace=True, strip_new_lines=True):
     if not language:
         language = 'text'
 
     try:
-        # find lexer by programming language
-        lexer = get_lexer_by_name(language, stripall=True)
+        lexer = get_lexer_by_name(language, stripall=strip_whitespace, stripnl=strip_new_lines)
 
     except Exception as e:  # pylint: disable=broad-except
         logger.warning("pygments lexer: %s " % e)
         # if lexer is not found, using default one
-        lexer = get_lexer_by_name('text', stripall=True)
+        lexer = get_lexer_by_name('text', stripall=strip_whitespace, stripnl=strip_new_lines)
 
     html_code = ''
     tmp_code = ''
     last_line = None
     line_code_start = None
+
+    def offset_hl_lines(hl_lines, start):
+        """
+        hl_lines in pygments are expected to be relative to the input
+        """
+        if hl_lines is None:
+            return None
+
+        return [line - start + 1 for line in hl_lines]
 
     # parse lines
     for line, code in codelines:
@@ -208,7 +216,12 @@ def code_highlighter(codelines, language=None):
         if last_line is not None and last_line + 1 != line:
 
             # highlight last codepart
-            formatter = HtmlFormatter(linenos='inline', linenostart=line_code_start, cssclass="code-highlight")
+            formatter = HtmlFormatter(
+                linenos='inline',
+                linenostart=line_code_start,
+                cssclass="code-highlight",
+                hl_lines=offset_hl_lines(hl_lines, line_code_start),
+            )
             html_code = html_code + highlight(tmp_code, lexer, formatter)
 
             # reset conditions for next codepart
@@ -222,7 +235,12 @@ def code_highlighter(codelines, language=None):
         last_line = line
 
     # highlight last codepart
-    formatter = HtmlFormatter(linenos='inline', linenostart=line_code_start, cssclass="code-highlight")
+    formatter = HtmlFormatter(
+        linenos='inline',
+        linenostart=line_code_start,
+        cssclass="code-highlight",
+        hl_lines=offset_hl_lines(hl_lines, line_code_start),
+    )
     html_code = html_code + highlight(tmp_code, lexer, formatter)
 
     return html_code
