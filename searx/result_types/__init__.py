@@ -13,25 +13,38 @@
 
 from __future__ import annotations
 
-__all__ = ["Result", "MainResult", "KeyValue", "EngineResults", "AnswerSet", "Answer", "Translations", "WeatherAnswer"]
+__all__ = [
+    "Result",
+    "MainResult",
+    "KeyValue",
+    "EngineResults",
+    "AnswerSet",
+    "Answer",
+    "Translations",
+    "WeatherAnswer",
+    "Code",
+]
 
+import typing as t
 import abc
-
-from searx import enginelib
 
 from ._base import Result, MainResult, LegacyResult
 from .answer import AnswerSet, Answer, Translations, WeatherAnswer
 from .keyvalue import KeyValue
+from .code import Code
 
 
-class ResultList(list, abc.ABC):
+class ResultList(list, abc.ABC):  # pyright: ignore[reportMissingTypeArgument]
     """Base class of all result lists (abstract)."""
 
+    @t.final
     class types:  # pylint: disable=invalid-name
-        """The collection of result types (which have already been implemented)."""
+        """The collection of result types (which have already been
+        implemented)."""
 
         Answer = Answer
         KeyValue = KeyValue
+        Code = Code
         MainResult = MainResult
         Result = Result
         Translations = Translations
@@ -42,11 +55,11 @@ class ResultList(list, abc.ABC):
 
     def __init__(self):
         # pylint: disable=useless-parent-delegation
-        super().__init__()
+        super().__init__()  # pyright: ignore[reportUnknownMemberType]
 
     def add(self, result: Result | LegacyResult):
         """Add a :py:`Result` item to the result list."""
-        self.append(result)
+        self.append(result)  # pyright: ignore[reportUnknownMemberType]
 
 
 class EngineResults(ResultList):

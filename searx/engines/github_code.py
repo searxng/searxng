@@ -68,10 +68,8 @@ code blocks in a single file might be returned from the API).
 from __future__ import annotations
 
 import typing as t
-from urllib.parse import urlencode, urlparse
+from urllib.parse import urlencode
 
-from pygments.lexers import guess_lexer_for_filename
-from pygments.util import ClassNotFound
 from searx.result_types import EngineResults
 from searx.extended_types import SXNG_Response
 from searx.network import raise_for_httperror
@@ -162,26 +160,10 @@ def request(query: str, params: dict[str, t.Any]) -> None:
     params['raise_for_httperror'] = False
 
 
-def get_code_language_name(filename: str, code_snippet: str) -> str | None:
-    """Returns a code language name by pulling information from the filename if
-    possible otherwise by scanning the passed code snippet. In case there is any
-    parsing error just default to no syntax highlighting."""
-    try:
-        lexer = guess_lexer_for_filename(filename, _text=code_snippet)
-        if lexer is None:
-            return None
-        code_name_aliases = lexer.aliases
-        if len(code_name_aliases) == 0:
-            return None
-        return code_name_aliases[0]
-    except ClassNotFound:
-        return None
-
-
 def extract_code(code_matches: list[dict[str, t.Any]]) -> tuple[list[str], set[int]]:
     """
     Iterate over multiple possible matches, for each extract a code fragment.
-    GitHub additionally sends context for _word_ highlights; pygments supports
+    Github additionally sends context for _word_ highlights; pygments supports
     highlighting lines, as such we calculate which lines to highlight while
     traversing the text.
     """
@@ -231,18 +213,18 @@ def extract_code(code_matches: list[dict[str, t.Any]]) -> tuple[list[str], set[i
 
 
 def response(resp: SXNG_Response) -> EngineResults:
-    results = EngineResults()
+    res = EngineResults()
 
     if resp.status_code == 422:
         # on a invalid search term the status code 422 "Unprocessable Content"
         # is returned / e.g. search term is "user: foo" instead "user:foo"
-        return results
+        return res
     # raise for other errors
     raise_for_httperror(resp)
 
     for item in resp.json().get('items', []):
-        repo = item['repository']
-        text_matches = item['text_matches']
+        repo: dict[str, str] = item['repository']  # pyright: ignore[reportAny]
+        text_matches: list[dict[str, str]] = item['text_matches']  # pyright: ignore[reportAny]
         # ensure picking only the code contents in the blob
         code_matches = [
             match for match in text_matches if match["object_type"] == "FileContent" and match["property"] == "content"
@@ -251,22 +233,18 @@ def response(resp: SXNG_Response) -> EngineResults:
         if not ghc_highlight_matching_lines:
             highlighted_lines_index: set[int] = set()
 
-        code_snippet = "\n".join(lines)
+        res.add(
+            res.types.Code(
+                url=item["html_url"],  # pyright: ignore[reportAny]
+                title=f"{repo['full_name']} · {item['name']}",
+                filename=f"{item['path']}",
+                content=repo['description'],
+                repository=repo['html_url'],
+                codelines=[(i + 1, line) for (i, line) in enumerate(lines)],
+                hl_lines=highlighted_lines_index,
+                strip_whitespace=ghc_strip_whitespace,
+                strip_new_lines=ghc_strip_new_lines,
+            )
+        )
 
-        kwargs: dict[str, t.Any] = {
-            'template': 'code.html',
-            'url': item['html_url'],
-            'title': f"{repo['full_name']} · {item['path']}",
-            'content': repo['description'],
-            'repository': repo['html_url'],
-            'codelines': [(i + 1, line) for (i, line) in enumerate(lines)],
-            'hl_lines': highlighted_lines_index,
-            'code_language': get_code_language_name(filename=item['name'], code_snippet=code_snippet),
-            # important to set for highlighing
-            'strip_whitespace': ghc_strip_whitespace,
-            'strip_new_lines': ghc_strip_new_lines,
-            'parsed_url': urlparse(item['html_url']),
-        }
-        results.add(results.types.LegacyResult(**kwargs))
-
-    return results
+    return res

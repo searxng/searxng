@@ -142,29 +142,26 @@ class GithubCodeTests(SearxTestCase):
         results = self.ghc.response(response)
         expected_results = EngineResults()
         expected_results.add(
-            expected_results.types.LegacyResult(
-                **{
-                    'url': "https://github.com/folke/dot/blob/3140f4f5720c3cc6b5034c624eb7706f8533a82c/TODO.md",
-                    'title': "folke/dot · TODO.md",
-                    'content': "☕️   My Dot Files",
-                    'repository': "https://github.com/folke/dot",
-                    'codelines': [
-                        (1, "- [x] windows picker"),
-                        (2, "- [x] toggle cwd / root (LazyVim)"),
-                        (3, "- [x] dynamic workspace symbol"),
-                        (4, "- [x] smart stops working after custom"),
-                        (5, "- [x] edit in empty buffer"),
-                        (6, "- [x] support toggling line nr for preview"),
-                    ],
-                    'hl_lines': {2, 5, 6},
-                    'code_language': "markdown",
-                    'template': 'code.html',
-                    'strip_whitespace': False,
-                    'strip_new_lines': True,
-                    'parsed_url': urlparse(
-                        "https://github.com/folke/dot/blob/3140f4f5720c3cc6b5034c624eb7706f8533a82c/TODO.md"
-                    ),
-                }
+            expected_results.types.Code(
+                url="https://github.com/folke/dot/blob/3140f4f5720c3cc6b5034c624eb7706f8533a82c/TODO.md",
+                title="folke/dot · TODO.md",
+                content="☕️   My Dot Files",
+                repository="https://github.com/folke/dot",
+                codelines=[
+                    (1, "- [x] windows picker"),
+                    (2, "- [x] toggle cwd / root (LazyVim)"),
+                    (3, "- [x] dynamic workspace symbol"),
+                    (4, "- [x] smart stops working after custom"),
+                    (5, "- [x] edit in empty buffer"),
+                    (6, "- [x] support toggling line nr for preview"),
+                ],
+                hl_lines={2, 5, 6},
+                code_language="markdown",
+                strip_whitespace=False,
+                strip_new_lines=True,
+                parsed_url=urlparse(
+                    "https://github.com/folke/dot/blob/3140f4f5720c3cc6b5034c624eb7706f8533a82c/TODO.md"
+                ),
             )
         )
         self.assertEqual(results, expected_results)
