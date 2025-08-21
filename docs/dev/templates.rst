@@ -469,33 +469,6 @@ links : :py:class:`dict`
   Additional links in the form of ``{'link_name': 'http://example.com'}``
 
 
-.. _template code:
-
-``code.html``
--------------
-
-Displays result fields from:
-
-- :ref:`macro result_header` and
-- :ref:`macro result_sub_header`
-
-Additional fields used in the :origin:`code.html
-<searx/templates/simple/result_templates/code.html>`:
-
-content :  :py:class:`str`
-  Description of the code fragment.
-
-codelines : ``[line1, line2, ...]``
-  Lines of the code fragment.
-
-code_language : :py:class:`str`
-  Name of the code language, the value is passed to
-  :py:obj:`pygments.lexers.get_lexer_by_name`.
-
-repository : :py:class:`str`
-  URL of the repository of the code fragment.
-
-
 .. _template files:
 
 ``files.html``

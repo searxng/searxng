@@ -10,22 +10,28 @@
 {%- endif -%}
 {%- if result.repository -%}
   <p class="content">{{- '' -}}
-    {{ _('repo') }}: {{- ' ' -}}
+    {{ _('Repository') }}: {{- ' ' -}}
     <a href="{{ result.repository|safe }}"{{- ' ' -}}
-       {% if results_on_new_tab %}
-         target="_blank" {{- ' ' -}}
-         rel="noopener noreferrer"
-       {%- else -%}
-         rel="noreferrer"
-       {%- endif -%}
-       >
-       {{- result.repository -}}
+      {% if results_on_new_tab %}
+      target="_blank" {{- ' ' -}}
+      rel="noopener noreferrer"
+      {%- else -%}
+      rel="noreferrer"
+      {%- endif -%}
+    >
+      {{- result.repository -}}
     </a>{{- '' -}}
   </p>
 {%- endif -%}
 
+{%- if result.filename %}
+  <p class="content">
+    {{ _('Filename') }}: {{ result.filename|safe }}
+  </p>
+{% endif -%}
+
 <div dir="ltr" class="codelines">
-    {{- result.codelines|code_highlighter(result.code_language, result.hl_lines, result.strip_whitespace, result.strip_new_lines)|safe -}}
+    {{- result.HTML()|safe -}}
 </div>
 
 {{- result_sub_footer(result) -}}
