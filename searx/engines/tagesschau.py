@@ -15,16 +15,10 @@ This SearXNG engine uses the `/api2u/search`_ API.
 .. _OpenAPI: https://swagger.io/specification/
 
 """
-from typing import TYPE_CHECKING
 
 from datetime import datetime
 from urllib.parse import urlencode
 import re
-
-if TYPE_CHECKING:
-    import logging
-
-    logger: logging.Logger
 
 about = {
     'website': "https://tagesschau.de",

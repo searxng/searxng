@@ -10,7 +10,7 @@ trim_trailing_whitespace = true
 end_of_line = lf
 charset = utf-8
 
-[*.py]
+[{*.py,*.pyi}]
 # code formatter accepts length of 120, but editor should prefer 80
 max_line_length = 80
 

@@ -4,7 +4,7 @@
 from copy import copy
 
 import searx.search
-from searx.search import SearchQuery, EngineRef
+from searx.search.models import SearchQuery, EngineRef
 from searx import settings
 from tests import SearxTestCase
 

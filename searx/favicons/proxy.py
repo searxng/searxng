@@ -24,10 +24,10 @@ from .resolvers import DEFAULT_RESOLVER_MAP
 from . import cache
 
 DEFAULT_FAVICON_URL = {}
-CFG: FaviconProxyConfig = None  # type: ignore
+CFG: "FaviconProxyConfig" = None  # type: ignore
 
 
-def init(cfg: FaviconProxyConfig):
+def init(cfg: "FaviconProxyConfig"):
     global CFG  # pylint: disable=global-statement
     CFG = cfg
 

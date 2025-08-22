@@ -8,7 +8,6 @@ Arch Wiki blocks access to it.
 
 """
 
-from typing import TYPE_CHECKING
 from urllib.parse import urlencode, urljoin, urlparse
 import lxml
 import babel
@@ -16,13 +15,6 @@ import babel
 from searx.utils import extract_text, eval_xpath_list, eval_xpath_getindex
 from searx.enginelib.traits import EngineTraits
 from searx.locales import language_tag
-
-if TYPE_CHECKING:
-    import logging
-
-    logger: logging.Logger
-
-traits: EngineTraits
 
 
 about = {

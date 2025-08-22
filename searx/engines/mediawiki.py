@@ -32,21 +32,11 @@ Implementations
 ===============
 
 """
-from __future__ import annotations
-from typing import TYPE_CHECKING
 
 from datetime import datetime
 from urllib.parse import urlencode, quote
 
 from searx.utils import html_to_text
-from searx.enginelib.traits import EngineTraits
-
-if TYPE_CHECKING:
-    import logging
-
-    logger: logging.Logger
-
-traits: EngineTraits
 
 # about
 about = {

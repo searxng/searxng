@@ -32,10 +32,7 @@ from searx.engines.google import (
     ui_async,
     parse_data_images,
 )
-from searx.enginelib.traits import EngineTraits
 from searx.utils import get_embeded_stream_url
-
-traits: EngineTraits
 
 # about
 about = {

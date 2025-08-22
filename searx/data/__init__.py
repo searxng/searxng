@@ -4,27 +4,53 @@
   make data.all
 
 """
-from __future__ import annotations
+# pylint: disable=invalid-name
 
-__all__ = ["ahmia_blacklist_loader"]
+__all__ = ["ahmia_blacklist_loader", "data_dir", "get_cache"]
 
 import json
-import typing
+import typing as t
 
-from .core import log, data_dir
+from .core import log, data_dir, get_cache
 from .currencies import CurrenciesDB
 from .tracker_patterns import TrackerPatternsDB
 
-CURRENCIES: CurrenciesDB
-USER_AGENTS: dict[str, typing.Any]
-EXTERNAL_URLS: dict[str, typing.Any]
-WIKIDATA_UNITS: dict[str, typing.Any]
-EXTERNAL_BANGS: dict[str, typing.Any]
-OSM_KEYS_TAGS: dict[str, typing.Any]
-ENGINE_DESCRIPTIONS: dict[str, typing.Any]
-ENGINE_TRAITS: dict[str, typing.Any]
-LOCALES: dict[str, typing.Any]
+
+class UserAgentType(t.TypedDict):
+    """Data structure of ``useragents.json``"""
+
+    os: list[str]
+    ua: str
+    versions: list[str]
+
+
+class WikiDataUnitType(t.TypedDict):
+    """Data structure of an item in ``wikidata_units.json``"""
+
+    si_name: str
+    symbol: str
+    to_si_factor: float
+
+
+class LocalesType(t.TypedDict):
+    """Data structure of an item in ``locales.json``"""
+
+    LOCALE_NAMES: dict[str, str]
+    RTL_LOCALES: list[str]
+
+
+USER_AGENTS: UserAgentType
+WIKIDATA_UNITS: dict[str, WikiDataUnitType]
 TRACKER_PATTERNS: TrackerPatternsDB
+LOCALES: LocalesType
+CURRENCIES: CurrenciesDB
+
+EXTERNAL_URLS: dict[str, dict[str, dict[str, str | dict[str, str]]]]
+EXTERNAL_BANGS: dict[str, dict[str, t.Any]]
+OSM_KEYS_TAGS: dict[str, dict[str, t.Any]]
+ENGINE_DESCRIPTIONS: dict[str, dict[str, t.Any]]
+ENGINE_TRAITS: dict[str, dict[str, t.Any]]
+
 
 lazy_globals = {
     "CURRENCIES": CurrenciesDB(),
@@ -51,7 +77,7 @@ data_json_files = {
 }
 
 
-def __getattr__(name):
+def __getattr__(name: str) -> t.Any:
     # lazy init of the global objects
     if name not in lazy_globals:
         raise AttributeError(f"module {__name__!r} has no attribute {name!r}")
@@ -68,7 +94,7 @@ def __getattr__(name):
     return lazy_globals[name]
 
 
-def ahmia_blacklist_loader():
+def ahmia_blacklist_loader() -> list[str]:
     """Load data from `ahmia_blacklist.txt` and return a list of MD5 values of onion
     names.  The MD5 values are fetched by::
 

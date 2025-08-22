@@ -34,7 +34,7 @@ from .keyvalue import KeyValue
 from .code import Code
 
 
-class ResultList(list, abc.ABC):  # pyright: ignore[reportMissingTypeArgument]
+class ResultList(list[Result | LegacyResult], abc.ABC):
     """Base class of all result lists (abstract)."""
 
     @t.final
@@ -55,11 +55,11 @@ class ResultList(list, abc.ABC):  # pyright: ignore[reportMissingTypeArgument]
 
     def __init__(self):
         # pylint: disable=useless-parent-delegation
-        super().__init__()  # pyright: ignore[reportUnknownMemberType]
+        super().__init__()
 
     def add(self, result: Result | LegacyResult):
         """Add a :py:`Result` item to the result list."""
-        self.append(result)  # pyright: ignore[reportUnknownMemberType]
+        self.append(result)
 
 
 class EngineResults(ResultList):

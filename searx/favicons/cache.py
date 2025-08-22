@@ -17,8 +17,7 @@
 
 """
 
-from __future__ import annotations
-from typing import Literal
+import typing as t
 
 import os
 import abc
@@ -90,10 +89,11 @@ def init(cfg: "FaviconCacheConfig"):
         raise NotImplementedError(f"favicons db_type '{cfg.db_type}' is unknown")
 
 
+@t.final
 class FaviconCacheConfig(msgspec.Struct):  # pylint: disable=too-few-public-methods
     """Configuration of the favicon cache."""
 
-    db_type: Literal["sqlite", "mem"] = "sqlite"
+    db_type: t.Literal["sqlite", "mem"] = "sqlite"
     """Type of the database:
 
     ``sqlite``:
@@ -125,7 +125,7 @@ class FaviconCacheConfig(msgspec.Struct):  # pylint: disable=too-few-public-meth
     """Maintenance period in seconds / when :py:obj:`MAINTENANCE_MODE` is set to
     ``auto``."""
 
-    MAINTENANCE_MODE: Literal["auto", "off"] = "auto"
+    MAINTENANCE_MODE: t.Literal["auto", "off"] = "auto"
     """Type of maintenance mode
 
     ``auto``:
@@ -147,14 +147,14 @@ class FaviconCacheStats:
     domains: int | None = None
     resolvers: int | None = None
 
-    field_descr = (
+    field_descr: tuple[tuple[str, str, t.Callable[[int, int], str] | type], ...] = (
         ("favicons", "number of favicons in cache", humanize_number),
         ("bytes", "total size (approx. bytes) of cache", humanize_bytes),
         ("domains", "total number of domains in cache", humanize_number),
         ("resolvers", "number of resolvers", str),
     )
 
-    def __sub__(self, other) -> FaviconCacheStats:
+    def __sub__(self, other: "FaviconCacheStats") -> "FaviconCacheStats":
         if not isinstance(other, self.__class__):
             raise TypeError(f"unsupported operand type(s) for +: '{self.__class__}' and '{type(other)}'")
         kwargs = {}
@@ -166,17 +166,17 @@ class FaviconCacheStats:
                 kwargs[field] = self_val - other_val
             else:
                 kwargs[field] = self_val
-        return self.__class__(**kwargs)
+        return self.__class__(**kwargs)  # type: ignore
 
     def report(self, fmt: str = "{descr}: {val}\n"):
-        s = []
+        s: list[str] = []
         for field, descr, cast in self.field_descr:
-            val = getattr(self, field)
+            val: str | None = getattr(self, field)
             if val is None:
                 val = "--"
             else:
-                val = cast(val)
-            s.append(fmt.format(descr=descr, val=val))
+                val = cast(val)  # type: ignore
+            s.append(fmt.format(descr=descr, val=val))  # pyright: ignore[reportUnknownArgumentType]
         return "".join(s)
 
 
@@ -204,10 +204,11 @@ class FaviconCache(abc.ABC):
         on the state of the cache."""
 
     @abc.abstractmethod
-    def maintenance(self, force=False):
+    def maintenance(self, force: bool = False):
         """Performs maintenance on the cache"""
 
 
+@t.final
 class FaviconCacheNull(FaviconCache):
     """A dummy favicon cache that caches nothing / a fallback solution. The
     NullCache is used when more efficient caches such as the
@@ -227,11 +228,12 @@ class FaviconCacheNull(FaviconCache):
     def state(self):
         return FaviconCacheStats(favicons=0)
 
-    def maintenance(self, force=False):
+    def maintenance(self, force: bool = False):
         pass
 
 
-class FaviconCacheSQLite(sqlitedb.SQLiteAppl, FaviconCache):
+@t.final
+class FaviconCacheSQLite(sqlitedb.SQLiteAppl, FaviconCache):  # pyright: ignore[reportUnsafeMultipleInheritance]
     """Favicon cache that manages the favicon BLOBs in a SQLite DB.  The DB
     model in the SQLite DB is implemented using the abstract class
     :py:obj:`sqlitedb.SQLiteAppl`.
@@ -376,7 +378,7 @@ CREATE TABLE IF NOT EXISTS blob_map (
 
         return self.cfg.MAINTENANCE_PERIOD + self.properties.m_time("LAST_MAINTENANCE")
 
-    def maintenance(self, force=False):
+    def maintenance(self, force: bool = False):
 
         # Prevent parallel DB maintenance cycles from other DB connections
         # (e.g. in multi thread or process environments).
@@ -406,7 +408,7 @@ CREATE TABLE IF NOT EXISTS blob_map (
 
                 x = total_bytes - self.cfg.LIMIT_TOTAL_BYTES
                 c = 0
-                sha_list = []
+                sha_list: list[str] = []
                 for row in conn.execute(self.SQL_ITER_BLOBS_SHA256_BYTES_C):
                     sha256, bytes_c = row
                     sha_list.append(sha256)
@@ -424,7 +426,7 @@ CREATE TABLE IF NOT EXISTS blob_map (
         conn.execute("PRAGMA wal_checkpoint(TRUNCATE)")
         conn.close()
 
-    def _query_val(self, sql, default=None):
+    def _query_val(self, sql: str, default: t.Any = None):
         val = self.DB.execute(sql).fetchone()
         if val is not None:
             val = val[0]
@@ -441,6 +443,7 @@ CREATE TABLE IF NOT EXISTS blob_map (
         )
 
 
+@t.final
 class FaviconCacheMEM(FaviconCache):
     """Favicon cache in process' memory.  Its just a POC that stores the
     favicons in the memory of the process.
@@ -451,11 +454,11 @@ class FaviconCacheMEM(FaviconCache):
 
     """
 
-    def __init__(self, cfg):
+    def __init__(self, cfg: FaviconCacheConfig):
 
         self.cfg = cfg
-        self._data = {}
-        self._sha_mime = {}
+        self._data: dict[str, t.Any] = {}
+        self._sha_mime: dict[str, tuple[str, str | None]] = {}
 
     def __call__(self, resolver: str, authority: str) -> None | tuple[bytes | None, str | None]:
 
@@ -489,5 +492,5 @@ class FaviconCacheMEM(FaviconCache):
     def state(self):
         return FaviconCacheStats(favicons=len(self._data.keys()))
 
-    def maintenance(self, force=False):
+    def maintenance(self, force: bool = False):
         pass

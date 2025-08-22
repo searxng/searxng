@@ -22,8 +22,6 @@ paging = True
 base_url = "https://stract.com/beta/api"
 search_url = base_url + "/search"
 
-traits: EngineTraits
-
 
 def request(query, params):
     params['url'] = search_url

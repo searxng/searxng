@@ -18,14 +18,13 @@ Usage in a Flask app route:
 
 """
 
-from __future__ import annotations
-
 __all__ = ['InfoPage', 'InfoPageSet']
+
+import typing as t
 
 import os
 import os.path
 import logging
-import typing
 
 import urllib.parse
 from functools import cached_property
@@ -43,7 +42,7 @@ _INFO_FOLDER = os.path.abspath(os.path.dirname(__file__))
 INFO_PAGES: 'InfoPageSet'
 
 
-def __getattr__(name):
+def __getattr__(name: str):
     if name == 'INFO_PAGES':
         global INFO_PAGES  # pylint: disable=global-statement
         INFO_PAGES = InfoPageSet()
@@ -55,8 +54,8 @@ def __getattr__(name):
 class InfoPage:
     """A page of the :py:obj:`online documentation <InfoPageSet>`."""
 
-    def __init__(self, fname):
-        self.fname = fname
+    def __init__(self, fname: str):
+        self.fname: str = fname
 
     @cached_property
     def raw_content(self):
@@ -74,14 +73,14 @@ class InfoPage:
     @cached_property
     def title(self):
         """Title of the content (without any markup)"""
-        t = ""
+        _t = ""
         for l in self.raw_content.split('\n'):
             if l.startswith('# '):
-                t = l.strip('# ')
-        return t
+                _t = l.strip('# ')
+        return _t
 
     @cached_property
-    def html(self):
+    def html(self) -> str:
         """Render Markdown (CommonMark_) to HTML by using markdown-it-py_.
 
         .. _CommonMark: https://commonmark.org/
@@ -92,18 +91,18 @@ class InfoPage:
             MarkdownIt("commonmark", {"typographer": True}).enable(["replacements", "smartquotes"]).render(self.content)
         )
 
-    def get_ctx(self):
+    def get_ctx(self) -> dict[str, str]:
         """Jinja context to render :py:obj:`InfoPage.content`"""
 
-        def _md_link(name, url):
+        def _md_link(name: str, url: str):
             url = url_for(url, _external=True)
             return "[%s](%s)" % (name, url)
 
-        def _md_search(query):
+        def _md_search(query: str):
             url = '%s?q=%s' % (url_for('search', _external=True), urllib.parse.quote(query))
             return '[%s](%s)' % (query, url)
 
-        ctx = {}
+        ctx: dict[str, t.Any] = {}
         ctx['GIT_URL'] = GIT_URL
         ctx['get_setting'] = get_setting
         ctx['link'] = _md_link
@@ -125,31 +124,29 @@ class InfoPageSet:  # pylint: disable=too-few-public-methods
     :type info_folder: str
     """
 
-    def __init__(
-        self, page_class: typing.Optional[typing.Type[InfoPage]] = None, info_folder: typing.Optional[str] = None
-    ):
-        self.page_class = page_class or InfoPage
+    def __init__(self, page_class: type[InfoPage] | None = None, info_folder: str | None = None):
+        self.page_class: type[InfoPage] = page_class or InfoPage
         self.folder: str = info_folder or _INFO_FOLDER
         """location of the Markdown files"""
 
-        self.CACHE: typing.Dict[tuple, typing.Optional[InfoPage]] = {}
+        self.CACHE: dict[tuple[str, str], InfoPage | None] = {}
 
         self.locale_default: str = 'en'
         """default language"""
 
-        self.locales: typing.List[str] = [
+        self.locales: list[str] = [
             locale.replace('_', '-') for locale in os.listdir(_INFO_FOLDER) if locale.replace('_', '-') in LOCALE_NAMES
         ]
         """list of supported languages (aka locales)"""
 
-        self.toc: typing.List[str] = [
+        self.toc: list[str] = [
             'search-syntax',
             'about',
             'donate',
         ]
         """list of articles in the online documentation"""
 
-    def get_page(self, pagename: str, locale: typing.Optional[str] = None):
+    def get_page(self, pagename: str, locale: str | None = None):
         """Return ``pagename`` instance of :py:obj:`InfoPage`
 
         :param pagename: name of the page, a value from :py:obj:`InfoPageSet.toc`
@@ -184,7 +181,7 @@ class InfoPageSet:  # pylint: disable=too-few-public-methods
         self.CACHE[cache_key] = page
         return page
 
-    def iter_pages(self, locale: typing.Optional[str] = None, fallback_to_default=False):
+    def iter_pages(self, locale: str | None = None, fallback_to_default: bool = False):
         """Iterate over all pages of the TOC"""
         locale = locale or self.locale_default
         for page_name in self.toc:

@@ -1,12 +1,14 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 # pylint: disable=missing-module-docstring, global-statement
 
+import typing as t
+from types import TracebackType
+
 import asyncio
 import logging
 import random
 from ssl import SSLContext
 import threading
-from typing import Any, Dict
 
 import httpx
 from httpx_socks import AsyncProxyTransport
@@ -18,10 +20,13 @@ from searx import logger
 
 uvloop.install()
 
+CertTypes = str | tuple[str, str] | tuple[str, str, str]
+SslContextKeyType = tuple[str | None, CertTypes | None, bool, bool]
 
 logger = logger.getChild('searx.network.client')
-LOOP = None
-SSLCONTEXTS: Dict[Any, SSLContext] = {}
+LOOP: asyncio.AbstractEventLoop = None  # pyright: ignore[reportAssignmentType]
+
+SSLCONTEXTS: dict[SslContextKeyType, SSLContext] = {}
 
 
 def shuffle_ciphers(ssl_context: SSLContext):
@@ -47,8 +52,10 @@ def shuffle_ciphers(ssl_context: SSLContext):
     ssl_context.set_ciphers(":".join(sc_list + c_list))
 
 
-def get_sslcontexts(proxy_url=None, cert=None, verify=True, trust_env=True):
-    key = (proxy_url, cert, verify, trust_env)
+def get_sslcontexts(
+    proxy_url: str | None = None, cert: CertTypes | None = None, verify: bool = True, trust_env: bool = True
+) -> SSLContext:
+    key: SslContextKeyType = (proxy_url, cert, verify, trust_env)
     if key not in SSLCONTEXTS:
         SSLCONTEXTS[key] = httpx.create_ssl_context(verify, cert, trust_env)
     shuffle_ciphers(SSLCONTEXTS[key])
@@ -68,12 +75,12 @@ class AsyncHTTPTransportNoHttp(httpx.AsyncHTTPTransport):
     For reference: https://github.com/encode/httpx/issues/2298
     """
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args, **kwargs):  # type: ignore
         # pylint: disable=super-init-not-called
         # this on purpose if the base class is not called
         pass
 
-    async def handle_async_request(self, request):
+    async def handle_async_request(self, request: httpx.Request):
         raise httpx.UnsupportedProtocol('HTTP protocol is disabled')
 
     async def aclose(self) -> None:
@@ -84,9 +91,9 @@ class AsyncHTTPTransportNoHttp(httpx.AsyncHTTPTransport):
 
     async def __aexit__(
         self,
-        exc_type=None,
-        exc_value=None,
-        traceback=None,
+        exc_type: type[BaseException] | None = None,
+        exc_value: BaseException | None = None,
+        traceback: TracebackType | None = None,
     ) -> None:
         pass
 
@@ -97,18 +104,20 @@ class AsyncProxyTransportFixed(AsyncProxyTransport):
     Map python_socks exceptions to httpx.ProxyError exceptions
     """
 
-    async def handle_async_request(self, request):
+    async def handle_async_request(self, request: httpx.Request):
         try:
             return await super().handle_async_request(request)
         except ProxyConnectionError as e:
-            raise httpx.ProxyError("ProxyConnectionError: " + e.strerror, request=request) from e
+            raise httpx.ProxyError("ProxyConnectionError: " + str(e.strerror), request=request) from e
         except ProxyTimeoutError as e:
             raise httpx.ProxyError("ProxyTimeoutError: " + e.args[0], request=request) from e
         except ProxyError as e:
             raise httpx.ProxyError("ProxyError: " + e.args[0], request=request) from e
 
 
-def get_transport_for_socks_proxy(verify, http2, local_address, proxy_url, limit, retries):
+def get_transport_for_socks_proxy(
+    verify: bool, http2: bool, local_address: str, proxy_url: str, limit: httpx.Limits, retries: int
+):
     # support socks5h (requests compatibility):
     # https://requests.readthedocs.io/en/master/user/advanced/#socks
     # socks5://   hostname is resolved on client side
@@ -120,7 +129,7 @@ def get_transport_for_socks_proxy(verify, http2, local_address, proxy_url, limit
         rdns = True
 
     proxy_type, proxy_host, proxy_port, proxy_username, proxy_password = parse_proxy_url(proxy_url)
-    verify = get_sslcontexts(proxy_url, None, verify, True) if verify is True else verify
+    _verify = get_sslcontexts(proxy_url, None, verify, True) if verify is True else verify
     return AsyncProxyTransportFixed(
         proxy_type=proxy_type,
         proxy_host=proxy_host,
@@ -129,7 +138,7 @@ def get_transport_for_socks_proxy(verify, http2, local_address, proxy_url, limit
         password=proxy_password,
         rdns=rdns,
         loop=get_loop(),
-        verify=verify,
+        verify=_verify,
         http2=http2,
         local_address=local_address,
         limits=limit,
@@ -137,14 +146,16 @@ def get_transport_for_socks_proxy(verify, http2, local_address, proxy_url, limit
     )
 
 
-def get_transport(verify, http2, local_address, proxy_url, limit, retries):
-    verify = get_sslcontexts(None, None, verify, True) if verify is True else verify
+def get_transport(
+    verify: bool, http2: bool, local_address: str, proxy_url: str | None, limit: httpx.Limits, retries: int
+):
+    _verify = get_sslcontexts(None, None, verify, True) if verify is True else verify
     return httpx.AsyncHTTPTransport(
         # pylint: disable=protected-access
-        verify=verify,
+        verify=_verify,
         http2=http2,
         limits=limit,
-        proxy=httpx._config.Proxy(proxy_url) if proxy_url else None,
+        proxy=httpx._config.Proxy(proxy_url) if proxy_url else None,  # pyright: ignore[reportPrivateUsage]
         local_address=local_address,
         retries=retries,
     )
@@ -152,18 +163,18 @@ def get_transport(verify, http2, local_address, proxy_url, limit, retries):
 
 def new_client(
     # pylint: disable=too-many-arguments
-    enable_http,
-    verify,
-    enable_http2,
-    max_connections,
-    max_keepalive_connections,
-    keepalive_expiry,
-    proxies,
-    local_address,
-    retries,
-    max_redirects,
-    hook_log_response,
-):
+    enable_http: bool,
+    verify: bool,
+    enable_http2: bool,
+    max_connections: int,
+    max_keepalive_connections: int,
+    keepalive_expiry: float,
+    proxies: dict[str, str],
+    local_address: str,
+    retries: int,
+    max_redirects: int,
+    hook_log_response: t.Callable[..., t.Any] | None,
+) -> httpx.AsyncClient:
     limit = httpx.Limits(
         max_connections=max_connections,
         max_keepalive_connections=max_keepalive_connections,
@@ -171,6 +182,7 @@ def new_client(
     )
     # See https://www.python-httpx.org/advanced/#routing
     mounts = {}
+    mounts: None | (dict[str, t.Any | None]) = {}
     for pattern, proxy_url in proxies.items():
         if not enable_http and pattern.startswith('http://'):
             continue
@@ -198,7 +210,7 @@ def new_client(
     )
 
 
-def get_loop():
+def get_loop() -> asyncio.AbstractEventLoop:
     return LOOP
 
 

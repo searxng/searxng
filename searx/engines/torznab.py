@@ -47,10 +47,8 @@ Implementations
 ===============
 
 """
-from __future__ import annotations
-from typing import TYPE_CHECKING
 
-from typing import List, Dict, Any
+import typing as t
 from datetime import datetime
 from urllib.parse import quote
 from lxml import etree  # type: ignore
@@ -58,14 +56,12 @@ from lxml import etree  # type: ignore
 from searx.exceptions import SearxEngineAPIException
 from searx.utils import humanize_bytes
 
-if TYPE_CHECKING:
-    import httpx
-    import logging
+if t.TYPE_CHECKING:
+    from searx.extended_types import SXNG_Response
 
-    logger: logging.Logger
 
 # engine settings
-about: Dict[str, Any] = {
+about: dict[str, t.Any] = {
     "website": None,
     "wikidata_id": None,
     "official_api_documentation": "https://torznab.github.io/spec-1.3-draft",
@@ -73,7 +69,7 @@ about: Dict[str, Any] = {
     "require_api_key": False,
     "results": 'XML',
 }
-categories: List[str] = ['files']
+categories: list[str] = ['files']
 paging: bool = False
 time_range_support: bool = False
 
@@ -82,7 +78,7 @@ time_range_support: bool = False
 base_url: str = ''
 api_key: str = ''
 # https://newznab.readthedocs.io/en/latest/misc/api/#predefined-categories
-torznab_categories: List[str] = []
+torznab_categories: list[str] = []
 show_torrent_files: bool = False
 show_magnet_links: bool = True
 
@@ -93,7 +89,7 @@ def init(engine_settings=None):  # pylint: disable=unused-argument
         raise ValueError('missing torznab base_url')
 
 
-def request(query: str, params: Dict[str, Any]) -> Dict[str, Any]:
+def request(query: str, params: dict[str, t.Any]) -> dict[str, t.Any]:
     """Build the request params."""
     search_url: str = base_url + '?t=search&q={search_query}'
 
@@ -109,7 +105,7 @@ def request(query: str, params: Dict[str, Any]) -> Dict[str, Any]:
     return params
 
 
-def response(resp: httpx.Response) -> List[Dict[str, Any]]:
+def response(resp: "SXNG_Response") -> list[dict[str, t.Any]]:
     """Parse the XML response and return a list of results."""
     results = []
     search_results = etree.XML(resp.content)
@@ -122,13 +118,13 @@ def response(resp: httpx.Response) -> List[Dict[str, Any]]:
 
     item: etree.Element
     for item in channel.iterfind('item'):
-        result: Dict[str, Any] = build_result(item)
+        result: dict[str, t.Any] = build_result(item)
         results.append(result)
 
     return results
 
 
-def build_result(item: etree.Element) -> Dict[str, Any]:
+def build_result(item: etree.Element) -> dict[str, t.Any]:
     """Build a result from a XML item."""
 
     # extract attributes from XML
@@ -150,7 +146,7 @@ def build_result(item: etree.Element) -> Dict[str, Any]:
     peers = get_torznab_attribute(item, 'peers')
 
     # map attributes to SearXNG result
-    result: Dict[str, Any] = {
+    result: dict[str, t.Any] = {
         'template': 'torrent.html',
         'title': get_attribute(item, 'title'),
         'filesize': humanize_bytes(int(filesize)) if filesize else None,

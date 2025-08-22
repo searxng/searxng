@@ -26,8 +26,6 @@ Implementations
 
 """
 
-from typing import TYPE_CHECKING
-
 try:
     import mariadb  # pyright: ignore [reportMissingImports]
 except ImportError:
@@ -36,12 +34,6 @@ except ImportError:
     pass
 
 from searx.result_types import EngineResults
-
-if TYPE_CHECKING:
-    import logging
-
-    logger = logging.getLogger()
-
 
 engine_type = 'offline'
 

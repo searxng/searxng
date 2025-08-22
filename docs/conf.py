@@ -151,6 +151,7 @@ intersphinx_mapping = {
     "sphinx" : ("https://www.sphinx-doc.org/en/master/", None),
     "valkey": ('https://valkey-py.readthedocs.io/en/stable/', None),
     "pygments": ("https://pygments.org/", None),
+    "lxml": ('https://lxml.de/apidoc', None),
 }
 
 issues_github_path = "searxng/searxng"

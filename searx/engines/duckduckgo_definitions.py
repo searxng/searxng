@@ -13,8 +13,6 @@ most of the features are based on English terms.
 
 """
 
-from typing import TYPE_CHECKING
-
 from urllib.parse import urlencode, urlparse, urljoin
 from lxml import html
 
@@ -22,11 +20,6 @@ from searx.data import WIKIDATA_UNITS
 from searx.utils import extract_text, html_to_text, get_string_replaces_function
 from searx.external_urls import get_external_url, get_earth_coordinates_url, area_to_osm_zoom
 from searx.result_types import EngineResults
-
-if TYPE_CHECKING:
-    import logging
-
-    logger: logging.Logger
 
 # about
 about = {

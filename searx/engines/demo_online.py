@@ -15,29 +15,35 @@ list in ``settings.yml``:
 
 """
 
+import typing as t
+
 from json import loads
 from urllib.parse import urlencode
 from searx.result_types import EngineResults
 
-engine_type = 'online'
+if t.TYPE_CHECKING:
+    from searx.extended_types import SXNG_Response
+
+
+engine_type = "online"
 send_accept_language_header = True
-categories = ['general']
+categories = ["general"]
 disabled = True
 timeout = 2.0
-categories = ['images']
+categories = ["images"]
 paging = True
 page_size = 20
 
-search_api = 'https://api.artic.edu/api/v1/artworks/search?'
-image_api = 'https://www.artic.edu/iiif/2/'
+search_api = "https://api.artic.edu/api/v1/artworks/search?"
+image_api = "https://www.artic.edu/iiif/2/"
 
 about = {
-    "website": 'https://www.artic.edu',
-    "wikidata_id": 'Q239303',
-    "official_api_documentation": 'http://api.artic.edu/docs/',
+    "website": "https://www.artic.edu",
+    "wikidata_id": "Q239303",
+    "official_api_documentation": "http://api.artic.edu/docs/",
     "use_official_api": True,
     "require_api_key": False,
-    "results": 'JSON',
+    "results": "JSON",
 }
 
 
@@ -45,33 +51,30 @@ about = {
 _my_online_engine = None
 
 
-def init(engine_settings):
+def init(engine_settings: dict[str, t.Any]) -> None:
     """Initialization of the (online) engine.  If no initialization is needed, drop
-    this init function.
-
-    """
+    this init function."""
     global _my_online_engine  # pylint: disable=global-statement
-    _my_online_engine = engine_settings.get('name')
+    _my_online_engine = engine_settings.get("name")
 
 
-def request(query, params):
+def request(query: str, params: dict[str, t.Any]) -> None:
     """Build up the ``params`` for the online request.  In this example we build a
     URL to fetch images from `artic.edu <https://artic.edu>`__
 
     """
     args = urlencode(
         {
-            'q': query,
-            'page': params['pageno'],
-            'fields': 'id,title,artist_display,medium_display,image_id,date_display,dimensions,artist_titles',
-            'limit': page_size,
+            "q": query,
+            "page": params["pageno"],
+            "fields": "id,title,artist_display,medium_display,image_id,date_display,dimensions,artist_titles",
+            "limit": page_size,
         }
     )
-    params['url'] = search_api + args
-    return params
+    params["url"] = search_api + args
 
 
-def response(resp) -> EngineResults:
+def response(resp: "SXNG_Response") -> EngineResults:
     """Parse out the result items from the response.  In this example we parse the
     response from `api.artic.edu <https://artic.edu>`__ and filter out all
     images.
@@ -87,20 +90,20 @@ def response(resp) -> EngineResults:
         )
     )
 
-    for result in json_data['data']:
+    for result in json_data["data"]:
 
-        if not result['image_id']:
+        if not result["image_id"]:
             continue
 
-        res.append(
-            {
-                'url': 'https://artic.edu/artworks/%(id)s' % result,
-                'title': result['title'] + " (%(date_display)s) // %(artist_display)s" % result,
-                'content': "%(medium_display)s // %(dimensions)s" % result,
-                'author': ', '.join(result['artist_titles']),
-                'img_src': image_api + '/%(image_id)s/full/843,/0/default.jpg' % result,
-                'template': 'images.html',
-            }
-        )
+        kwargs: dict[str, t.Any] = {
+            "url": "https://artic.edu/artworks/%(id)s" % result,
+            "title": result["title"] + " (%(date_display)s) // %(artist_display)s" % result,
+            "content": "%(medium_display)s // %(dimensions)s" % result,
+            "author": ", ".join(result["artist_titles"]),
+            "img_src": image_api + "/%(image_id)s/full/843,/0/default.jpg" % result,
+            "template": "images.html",
+        }
+
+        res.add(res.types.LegacyResult(**kwargs))
 
     return res

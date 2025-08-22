@@ -1,10 +1,8 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 # pylint: disable=too-many-branches, unused-argument
-"""
-
-During the initialization phase, the plugin checks whether a ``hostnames:``
-configuration exists. If this is not the case, the plugin is not included
-in the PluginStorage (it is not available for selection).
+"""During the initialization phase, the plugin checks whether a ``hostnames:``
+configuration exists. If this is not the case, the plugin is not included in the
+PluginStorage (it is not available for selection).
 
 - ``hostnames.replace``: A **mapping** of regular expressions to hostnames to be
   replaced by other hostnames.
@@ -82,13 +80,12 @@ something like this:
 
 """
 
-from __future__ import annotations
-import typing
+import typing as t
 
 import re
 from urllib.parse import urlunparse, urlparse
 
-from flask_babel import gettext
+from flask_babel import gettext  # pyright: ignore[reportUnknownVariableType]
 
 from searx import settings
 from searx.result_types._base import MainResult, LegacyResult
@@ -97,13 +94,12 @@ from searx.plugins import Plugin, PluginInfo
 
 from ._core import log
 
-if typing.TYPE_CHECKING:
+if t.TYPE_CHECKING:
     import flask
     from searx.search import SearchWithPlugins
     from searx.extended_types import SXNG_Request
     from searx.result_types import Result
     from searx.plugins import PluginCfg
-
 
 REPLACE: dict[re.Pattern, str] = {}
 REMOVE: set = set()
@@ -125,7 +121,7 @@ class SXNGPlugin(Plugin):
             preference_section="general",
         )
 
-    def on_result(self, request: "SXNG_Request", search: "SearchWithPlugins", result: Result) -> bool:
+    def on_result(self, request: "SXNG_Request", search: "SearchWithPlugins", result: "Result") -> bool:
 
         for pattern in REMOVE:
             if result.parsed_url and pattern.search(result.parsed_url.netloc):

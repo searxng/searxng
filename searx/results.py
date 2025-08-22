@@ -1,11 +1,11 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 # pylint: disable=missing-module-docstring, missing-class-docstring
-from __future__ import annotations
+
+import typing as t
 
 import warnings
 from collections import defaultdict
 from threading import RLock
-from typing import List, NamedTuple, Set
 
 from searx import logger as log
 import searx.engines
@@ -14,7 +14,10 @@ from searx.result_types import Result, LegacyResult, MainResult
 from searx.result_types.answer import AnswerSet, BaseAnswer
 
 
-def calculate_score(result, priority) -> float:
+def calculate_score(
+    result: MainResult | LegacyResult,
+    priority: MainResult.PriorityType,
+) -> float:
     weight = 1.0
 
     for result_engine in result['engines']:
@@ -35,13 +38,13 @@ def calculate_score(result, priority) -> float:
     return score
 
 
-class Timing(NamedTuple):
+class Timing(t.NamedTuple):
     engine: str
     total: float
     load: float
 
 
-class UnresponsiveEngine(NamedTuple):
+class UnresponsiveEngine(t.NamedTuple):
     engine: str
     error_type: str
     suspended: bool
@@ -70,14 +73,16 @@ class ResultContainer:
         self.engine_data: dict[str, dict[str, str]] = defaultdict(dict)
         self._closed: bool = False
         self.paging: bool = False
-        self.unresponsive_engines: Set[UnresponsiveEngine] = set()
-        self.timings: List[Timing] = []
+        self.unresponsive_engines: set[UnresponsiveEngine] = set()
+        self.timings: list[Timing] = []
         self.redirect_url: str | None = None
-        self.on_result = lambda _: True
-        self._lock = RLock()
+        self.on_result: t.Callable[[Result | LegacyResult], bool] = lambda _: True
+        self._lock: RLock = RLock()
         self._main_results_sorted: list[MainResult | LegacyResult] = None  # type: ignore
 
-    def extend(self, engine_name: str | None, results):  # pylint: disable=too-many-branches
+    def extend(
+        self, engine_name: str | None, results: list[Result | LegacyResult]
+    ):  # pylint: disable=too-many-branches
         if self._closed:
             log.debug("container is closed, ignoring results: %s", results)
             return
@@ -165,7 +170,7 @@ class ResultContainer:
         if add_infobox:
             self.infoboxes.append(new_infobox)
 
-    def _merge_main_result(self, result: MainResult | LegacyResult, position):
+    def _merge_main_result(self, result: MainResult | LegacyResult, position: int):
         result_hash = hash(result)
 
         with self._lock:
@@ -203,8 +208,8 @@ class ResultContainer:
         results = sorted(self.main_results_map.values(), key=lambda x: x.score, reverse=True)
 
         # pass 2 : group results by category and template
-        gresults = []
-        categoryPositions = {}
+        gresults: list[MainResult | LegacyResult] = []
+        categoryPositions: dict[str, t.Any] = {}
         max_count = 8
         max_distance = 20
 
@@ -281,7 +286,7 @@ class ResultContainer:
                 return
             self.timings.append(Timing(engine_name, total=engine_time, load=page_load_time))
 
-    def get_timings(self):
+    def get_timings(self) -> list[Timing]:
         with self._lock:
             if not self._closed:
                 log.error("call to ResultContainer.get_timings before ResultContainer.close")
@@ -328,7 +333,7 @@ def merge_two_infoboxes(origin: LegacyResult, other: LegacyResult):
         if not origin.attributes:
             origin.attributes = other.attributes
         else:
-            attr_names_1 = set()
+            attr_names_1: set[str] = set()
             for attr in origin.attributes:
                 label = attr.get("label")
                 if label:

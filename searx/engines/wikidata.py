@@ -5,7 +5,6 @@ from :ref:`wikipedia engine`.
 """
 # pylint: disable=missing-class-docstring
 
-from typing import TYPE_CHECKING
 from hashlib import md5
 from urllib.parse import urlencode, unquote
 from json import loads
@@ -22,13 +21,6 @@ from searx.engines.wikipedia import (
     get_wiki_params,
 )
 from searx.enginelib.traits import EngineTraits
-
-if TYPE_CHECKING:
-    import logging
-
-    logger: logging.Logger
-
-traits: EngineTraits
 
 # about
 about = {
