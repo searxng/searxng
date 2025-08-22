@@ -36,10 +36,8 @@ Implementations
 ===============
 
 """
+import typing as t
 
-from __future__ import annotations
-
-import typing
 from urllib.parse import urlencode
 import babel
 from httpx import Response
@@ -48,13 +46,6 @@ from searx.enginelib.traits import EngineTraits
 from searx.locales import get_official_locales, language_tag, region_tag
 from searx.utils import eval_xpath_list
 from searx.result_types import EngineResults, MainResult
-
-if typing.TYPE_CHECKING:
-    import logging
-
-    logger = logging.getLogger()
-
-traits: EngineTraits
 
 search_url = "https://leta.mullvad.net"
 
@@ -80,7 +71,7 @@ time_range_dict = {
     "year": "y",
 }
 
-LetaEnginesType = typing.Literal["google", "brave"]
+LetaEnginesType = t.Literal["google", "brave"]
 """Engine types supported by mullvadleta."""
 
 leta_engine: LetaEnginesType = "google"
@@ -88,12 +79,12 @@ leta_engine: LetaEnginesType = "google"
 
 
 def init(_):
-    l = typing.get_args(LetaEnginesType)
+    l = t.get_args(LetaEnginesType)
     if leta_engine not in l:
         raise ValueError(f"leta_engine '{leta_engine}' is invalid, use one of {', '.join(l)}")
 
 
-class DataNodeQueryMetaDataIndices(typing.TypedDict):
+class DataNodeQueryMetaDataIndices(t.TypedDict):
     """Indices into query metadata."""
 
     success: int
@@ -112,7 +103,7 @@ class DataNodeQueryMetaDataIndices(typing.TypedDict):
     previous: int
 
 
-class DataNodeResultIndices(typing.TypedDict):
+class DataNodeResultIndices(t.TypedDict):
     """Indices into query resultsdata."""
 
     link: int

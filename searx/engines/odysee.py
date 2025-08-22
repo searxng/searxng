@@ -14,8 +14,6 @@ from searx.network import get
 from searx.locales import language_tag
 from searx.enginelib.traits import EngineTraits
 
-traits: EngineTraits
-
 # Engine metadata
 about = {
     "website": "https://odysee.com/",

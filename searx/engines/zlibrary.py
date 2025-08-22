@@ -32,27 +32,23 @@ Implementations
 ===============
 
 """
-from __future__ import annotations
-from typing import TYPE_CHECKING
-from typing import List, Dict, Any, Optional
+
+import typing as t
 from datetime import datetime
 from urllib.parse import quote
 from lxml import html
-from flask_babel import gettext
+from flask_babel import gettext  # pyright: ignore[reportUnknownVariableType]
 
 from searx.utils import extract_text, eval_xpath, eval_xpath_list
 from searx.enginelib.traits import EngineTraits
 from searx.data import ENGINE_TRAITS
 from searx.exceptions import SearxException
 
-if TYPE_CHECKING:
-    import httpx
-    import logging
-
-    logger: logging.Logger
+if t.TYPE_CHECKING:
+    from searx.extended_types import SXNG_Response
 
 # about
-about: Dict[str, Any] = {
+about: dict[str, t.Any] = {
     "website": "https://zlibrary-global.se",
     "wikidata_id": "Q104863992",
     "official_api_documentation": None,
@@ -61,7 +57,7 @@ about: Dict[str, Any] = {
     "results": "HTML",
 }
 
-categories: List[str] = ["files"]
+categories: list[str] = ["files"]
 paging: bool = True
 base_url: str = "https://zlibrary-global.se"
 
@@ -79,7 +75,7 @@ zlib_ext: str = ""
 """
 
 
-def init(engine_settings=None) -> None:  # pylint: disable=unused-argument
+def init(engine_settings: dict[str, t.Any] | None = None) -> None:  # pylint: disable=unused-argument
     """Check of engine's settings."""
     traits: EngineTraits = EngineTraits(**ENGINE_TRAITS["z-library"])
 
@@ -91,7 +87,7 @@ def init(engine_settings=None) -> None:  # pylint: disable=unused-argument
         raise ValueError(f"invalid setting year_to: {zlib_year_to}")
 
 
-def request(query: str, params: Dict[str, Any]) -> Dict[str, Any]:
+def request(query: str, params: dict[str, t.Any]) -> dict[str, t.Any]:
     lang: str = traits.get_language(params["language"], traits.all_locale)  # type: ignore
     search_url: str = (
         base_url
@@ -117,8 +113,8 @@ def domain_is_seized(dom):
     return bool(dom.xpath('//title') and "seized" in dom.xpath('//title')[0].text.lower())
 
 
-def response(resp: httpx.Response) -> List[Dict[str, Any]]:
-    results: List[Dict[str, Any]] = []
+def response(resp: "SXNG_Response") -> list[dict[str, t.Any]]:
+    results: list[dict[str, t.Any]] = []
     dom = html.fromstring(resp.text)
 
     if domain_is_seized(dom):
@@ -139,7 +135,7 @@ i18n_book_rating = gettext("Book rating")
 i18n_file_quality = gettext("File quality")
 
 
-def _parse_result(item) -> Dict[str, Any]:
+def _parse_result(item) -> dict[str, t.Any]:
 
     author_elements = eval_xpath_list(item, './/div[@class="authors"]//a[@itemprop="author"]')
 
@@ -152,7 +148,7 @@ def _parse_result(item) -> Dict[str, Any]:
         "type": _text(item, './/div[contains(@class, "property__file")]//div[contains(@class, "property_value")]'),
     }
 
-    thumbnail = _text(item, './/img[contains(@class, "cover")]/@data-src')
+    thumbnail: str = _text(item, './/img[contains(@class, "cover")]/@data-src')
     if not thumbnail.startswith('/'):
         result["thumbnail"] = thumbnail
 
@@ -199,7 +195,7 @@ def fetch_traits(engine_traits: EngineTraits) -> None:
         _use_old_values()
         return
 
-    if not resp.ok:  # type: ignore
+    if not resp.ok:
         raise RuntimeError("Response from zlibrary's search page is not OK.")
     dom = html.fromstring(resp.text)  # type: ignore
 
@@ -220,20 +216,20 @@ def fetch_traits(engine_traits: EngineTraits) -> None:
         engine_traits.custom["year_to"].append(year.get("value"))
 
     for ext in eval_xpath_list(dom, "//div[@id='advSearch-noJS']//select[@id='sf_extensions']/option"):
-        value: Optional[str] = ext.get("value")
+        value: str | None = ext.get("value")
         if value is None:
             value = ""
         engine_traits.custom["ext"].append(value)
 
     # Handle languages
     # Z-library uses English names for languages, so we need to map them to their respective locales
-    language_name_locale_map: Dict[str, babel.Locale] = {}
+    language_name_locale_map: dict[str, babel.Locale] = {}
     for locale in babel.core.localedata.locale_identifiers():  # type: ignore
         # Create a Locale object for the current locale
         loc = babel.Locale.parse(locale)
         if loc.english_name is None:
             continue
-        language_name_locale_map[loc.english_name.lower()] = loc  # type: ignore
+        language_name_locale_map[loc.english_name.lower()] = loc
 
     for x in eval_xpath_list(dom, "//div[@id='advSearch-noJS']//select[@id='sf_languages']/option"):
         eng_lang = x.get("value")

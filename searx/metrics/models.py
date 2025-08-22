@@ -1,6 +1,8 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 # pylint: disable=missing-module-docstring
 
+import typing as t
+
 import decimal
 import threading
 
@@ -135,16 +137,16 @@ class CounterStorage:  # pylint: disable=missing-class-docstring
 
     def clear(self):
         with self.lock:
-            self.counters = {}
+            self.counters: dict[t.Hashable, int] = {}
 
-    def configure(self, *args):
+    def configure(self, *args: str):
         with self.lock:
             self.counters[args] = 0
 
-    def get(self, *args):
+    def get(self, *args: str):
         return self.counters[args]
 
-    def add(self, value, *args):
+    def add(self, value: int, *args: str):
         with self.lock:
             self.counters[args] += value
 

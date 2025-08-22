@@ -5,7 +5,7 @@ import searx.plugins
 
 from searx.engines import engines
 from searx.preferences import Preferences
-from searx.search import EngineRef
+from searx.search.models import EngineRef
 from searx.webadapter import validate_engineref_list
 
 from tests import SearxTestCase

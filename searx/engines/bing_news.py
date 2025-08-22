@@ -9,7 +9,6 @@
 
 # pylint: disable=invalid-name
 
-from typing import TYPE_CHECKING
 from urllib.parse import urlencode
 
 from lxml import html
@@ -17,14 +16,6 @@ from lxml import html
 from searx.utils import eval_xpath, extract_text, eval_xpath_list, eval_xpath_getindex
 from searx.enginelib.traits import EngineTraits
 from searx.engines.bing import set_bing_cookies
-
-if TYPE_CHECKING:
-    import logging
-
-    logger: logging.Logger
-
-traits: EngineTraits
-
 
 # about
 about = {

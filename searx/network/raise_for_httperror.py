@@ -3,6 +3,7 @@
 
 """
 
+import typing as t
 from searx.exceptions import (
     SearxEngineCaptchaException,
     SearxEngineTooManyRequestsException,
@@ -10,8 +11,11 @@ from searx.exceptions import (
 )
 from searx import get_setting
 
+if t.TYPE_CHECKING:
+    from searx.extended_types import SXNG_Response
 
-def is_cloudflare_challenge(resp):
+
+def is_cloudflare_challenge(resp: "SXNG_Response"):
     if resp.status_code in [429, 503]:
         if ('__cf_chl_jschl_tk__=' in resp.text) or (
             '/cdn-cgi/challenge-platform/' in resp.text
@@ -24,11 +28,11 @@ def is_cloudflare_challenge(resp):
     return False
 
 
-def is_cloudflare_firewall(resp):
+def is_cloudflare_firewall(resp: "SXNG_Response"):
     return resp.status_code == 403 and '<span class="cf-error-code">1020</span>' in resp.text
 
 
-def raise_for_cloudflare_captcha(resp):
+def raise_for_cloudflare_captcha(resp: "SXNG_Response"):
     if resp.headers.get('Server', '').startswith('cloudflare'):
         if is_cloudflare_challenge(resp):
             # https://support.cloudflare.com/hc/en-us/articles/200170136-Understanding-Cloudflare-Challenge-Passage-Captcha-
@@ -44,19 +48,19 @@ def raise_for_cloudflare_captcha(resp):
             )
 
 
-def raise_for_recaptcha(resp):
+def raise_for_recaptcha(resp: "SXNG_Response"):
     if resp.status_code == 503 and '"https://www.google.com/recaptcha/' in resp.text:
         raise SearxEngineCaptchaException(
             message='ReCAPTCHA', suspended_time=get_setting('search.suspended_times.recaptcha_SearxEngineCaptcha')
         )
 
 
-def raise_for_captcha(resp):
+def raise_for_captcha(resp: "SXNG_Response"):
     raise_for_cloudflare_captcha(resp)
     raise_for_recaptcha(resp)
 
 
-def raise_for_httperror(resp):
+def raise_for_httperror(resp: "SXNG_Response") -> None:
     """Raise exception for an HTTP response is an error.
 
     Args:

@@ -1,9 +1,9 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 """Exception types raised by SearXNG modules.
 """
-from __future__ import annotations
 
-from typing import Optional, Union
+import typing as t
+from lxml.etree import XPath
 
 
 class SearxException(Exception):
@@ -13,21 +13,22 @@ class SearxException(Exception):
 class SearxParameterException(SearxException):
     """Raised when query miss a required parameter"""
 
-    def __init__(self, name, value):
+    def __init__(self, name: str, value: t.Any):
         if value == '' or value is None:
-            message = 'Empty ' + name + ' parameter'
+            message = f"Empty {name} parameter"
         else:
-            message = 'Invalid value "' + value + '" for parameter ' + name
+            message = f"Invalid value {value} for parameter {name}"
         super().__init__(message)
-        self.message = message
-        self.parameter_name = name
-        self.parameter_value = value
+        self.message: str = message
+        self.parameter_name: str = name
+        self.parameter_value: t.Any = value
 
 
+@t.final
 class SearxSettingsException(SearxException):
     """Error while loading the settings"""
 
-    def __init__(self, message: Union[str, Exception], filename: Optional[str]):
+    def __init__(self, message: str | Exception, filename: str | None):
         super().__init__(message)
         self.message = message
         self.filename = filename
@@ -40,11 +41,11 @@ class SearxEngineException(SearxException):
 class SearxXPathSyntaxException(SearxEngineException):
     """Syntax error in a XPATH"""
 
-    def __init__(self, xpath_spec, message):
+    def __init__(self, xpath_spec: str | XPath, message: str):
         super().__init__(str(xpath_spec) + " " + message)
-        self.message = message
+        self.message: str = message
         # str(xpath_spec) to deal with str and XPath instance
-        self.xpath_str = str(xpath_spec)
+        self.xpath_str: str = str(xpath_spec)
 
 
 class SearxEngineResponseException(SearxEngineException):
@@ -58,7 +59,7 @@ class SearxEngineAPIException(SearxEngineResponseException):
 class SearxEngineAccessDeniedException(SearxEngineResponseException):
     """The website is blocking the access"""
 
-    SUSPEND_TIME_SETTING = "search.suspended_times.SearxEngineAccessDenied"
+    SUSPEND_TIME_SETTING: str = "search.suspended_times.SearxEngineAccessDenied"
     """This settings contains the default suspended time (default 86400 sec / 1
     day)."""
 
@@ -74,8 +75,8 @@ class SearxEngineAccessDeniedException(SearxEngineResponseException):
         if suspended_time is None:
             suspended_time = self._get_default_suspended_time()
         super().__init__(message + ', suspended_time=' + str(suspended_time))
-        self.suspended_time = suspended_time
-        self.message = message
+        self.suspended_time: int = suspended_time
+        self.message: str = message
 
     def _get_default_suspended_time(self) -> int:
         from searx import get_setting  # pylint: disable=C0415
@@ -86,11 +87,11 @@ class SearxEngineAccessDeniedException(SearxEngineResponseException):
 class SearxEngineCaptchaException(SearxEngineAccessDeniedException):
     """The website has returned a CAPTCHA."""
 
-    SUSPEND_TIME_SETTING = "search.suspended_times.SearxEngineCaptcha"
+    SUSPEND_TIME_SETTING: str = "search.suspended_times.SearxEngineCaptcha"
     """This settings contains the default suspended time (default 86400 sec / 1
     day)."""
 
-    def __init__(self, suspended_time: int | None = None, message='CAPTCHA'):
+    def __init__(self, suspended_time: int | None = None, message: str = 'CAPTCHA'):
         super().__init__(message=message, suspended_time=suspended_time)
 
 
@@ -100,19 +101,19 @@ class SearxEngineTooManyRequestsException(SearxEngineAccessDeniedException):
     By default, SearXNG stops sending requests to this engine for 1 hour.
     """
 
-    SUSPEND_TIME_SETTING = "search.suspended_times.SearxEngineTooManyRequests"
+    SUSPEND_TIME_SETTING: str = "search.suspended_times.SearxEngineTooManyRequests"
     """This settings contains the default suspended time (default 3660 sec / 1
     hour)."""
 
-    def __init__(self, suspended_time: int | None = None, message='Too many request'):
+    def __init__(self, suspended_time: int | None = None, message: str = 'Too many request'):
         super().__init__(message=message, suspended_time=suspended_time)
 
 
 class SearxEngineXPathException(SearxEngineResponseException):
     """Error while getting the result of an XPath expression"""
 
-    def __init__(self, xpath_spec, message):
+    def __init__(self, xpath_spec: str | XPath, message: str):
         super().__init__(str(xpath_spec) + " " + message)
-        self.message = message
+        self.message: str = message
         # str(xpath_spec) to deal with str and XPath instance
-        self.xpath_str = str(xpath_spec)
+        self.xpath_str: str = str(xpath_spec)

@@ -4,11 +4,8 @@ DuckDuckGo WEB
 ~~~~~~~~~~~~~~
 """
 
-from __future__ import annotations
-
 import json
 import re
-import typing
 
 from urllib.parse import quote_plus
 
@@ -30,13 +27,6 @@ from searx.enginelib.traits import EngineTraits
 from searx.enginelib import EngineCache
 from searx.exceptions import SearxEngineCaptchaException
 from searx.result_types import EngineResults
-
-if typing.TYPE_CHECKING:
-    import logging
-
-    logger: logging.Logger
-
-traits: EngineTraits
 
 about = {
     "website": 'https://lite.duckduckgo.com/lite/',

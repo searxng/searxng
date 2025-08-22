@@ -1,11 +1,9 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 # pylint: disable=missing-module-docstring
 
-import typing
 import math
 import contextlib
 from timeit import default_timer
-from operator import itemgetter
 
 from searx.engines import engines
 from searx.openmetrics import OpenMetricsFamily
@@ -30,8 +28,8 @@ __all__ = [
 ENDPOINTS = {'search'}
 
 
-histogram_storage: typing.Optional[HistogramStorage] = None
-counter_storage: typing.Optional[CounterStorage] = None
+histogram_storage: HistogramStorage = None  # type: ignore
+counter_storage: CounterStorage = None  # type: ignore
 
 
 @contextlib.contextmanager
@@ -57,11 +55,11 @@ def histogram(*args, raise_on_not_found=True):
     return h
 
 
-def counter_inc(*args):
+def counter_inc(*args: str):
     counter_storage.add(1, *args)
 
 
-def counter_add(value, *args):
+def counter_add(value: int, *args: str):
     counter_storage.add(value, *args)
 
 
@@ -69,7 +67,7 @@ def counter(*args):
     return counter_storage.get(*args)
 
 
-def initialize(engine_names=None, enabled=True):
+def initialize(engine_names: list[str] | None = None, enabled: bool = True) -> None:
     """
     Initialize metrics
     """
@@ -174,7 +172,7 @@ def get_reliabilities(engline_name_list, checker_results):
     return reliabilities
 
 
-def get_engines_stats(engine_name_list):
+def get_engines_stats(engine_name_list: list[str]):
     assert counter_storage is not None
     assert histogram_storage is not None
 

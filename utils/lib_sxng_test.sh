@@ -73,7 +73,7 @@ test.pyright_modified() {
     if [ ${#pyrigth_files[@]} -eq 0 ]; then
         echo "there are no locally modified python files that could be checked"
     else
-        pyenv.cmd basedpyright "${pyrigth_files[@]}"
+        pyenv.cmd basedpyright --level warning "${pyrigth_files[@]}"
     fi
     # ignore exit value from basedpyright
     # dump_return $?
