@@ -85,7 +85,7 @@ class ModuleAnswerer(Answerer):
         return AnswererInfo(**kwargs)
 
 
-class AnswerStorage(dict):
+class AnswerStorage(dict):  # type: ignore
     """A storage for managing the *answerers* of SearXNG.  With the
     :py:obj:`AnswerStorage.ask`” method, a caller can ask questions to all
     *answerers* and receives a list of the results."""

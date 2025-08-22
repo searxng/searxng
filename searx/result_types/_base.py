@@ -38,7 +38,7 @@ WHITESPACE_REGEX = re.compile('( |\t|\n)+', re.M | re.U)
 UNKNOWN = object()
 
 
-def _normalize_url_fields(result: Result | LegacyResult):
+def _normalize_url_fields(result: "Result | LegacyResult"):
 
     # As soon we need LegacyResult not any longer, we can move this function to
     # method Result.normalize_result_fields
@@ -85,7 +85,7 @@ def _normalize_url_fields(result: Result | LegacyResult):
             ).geturl()
 
 
-def _normalize_text_fields(result: MainResult | LegacyResult):
+def _normalize_text_fields(result: "MainResult | LegacyResult"):
 
     # As soon we need LegacyResult not any longer, we can move this function to
     # method MainResult.normalize_result_fields
@@ -111,7 +111,9 @@ def _normalize_text_fields(result: MainResult | LegacyResult):
         result.content = ""
 
 
-def _filter_urls(result: Result | LegacyResult, filter_func: Callable[[Result | LegacyResult, str, str], str | bool]):
+def _filter_urls(
+    result: "Result | LegacyResult", filter_func: "Callable[[Result | LegacyResult, str, str], str | bool]"
+):
     # pylint: disable=too-many-branches, too-many-statements
 
     # As soon we need LegacyResult not any longer, we can move this function to
@@ -155,7 +157,7 @@ def _filter_urls(result: Result | LegacyResult, filter_func: Callable[[Result | 
         new_infobox_urls: list[dict[str, str]] = []
 
         for item in infobox_urls:
-            url_src = item.get("url")
+            url_src: str = item.get("url")
             if not url_src:
                 new_infobox_urls.append(item)
                 continue
@@ -179,15 +181,15 @@ def _filter_urls(result: Result | LegacyResult, filter_func: Callable[[Result | 
     #
     # The infobox has additional subsections for attributes, urls and relatedTopics:
 
-    infobox_attributes: list[dict[str, dict]] = getattr(result, "attributes", [])
+    infobox_attributes: list[dict[str, str | list[dict[str, str]]]] = getattr(result, "attributes", [])
 
     if infobox_attributes:
         # log.debug("filter_urls: infobox_attributes .. %s", infobox_attributes)
-        new_infobox_attributes: list[dict[str, dict]] = []
+        new_infobox_attributes: list[dict[str, str | list[dict[str, str]]]] = []
 
         for item in infobox_attributes:
             image = item.get("image", {})
-            url_src = image.get("src", "")
+            url_src: str = image.get("src", "")
             if not url_src:
                 new_infobox_attributes.append(item)
                 continue
@@ -215,7 +217,7 @@ def _filter_urls(result: Result | LegacyResult, filter_func: Callable[[Result | 
     result.normalize_result_fields()
 
 
-def _normalize_date_fields(result: MainResult | LegacyResult):
+def _normalize_date_fields(result: "MainResult | LegacyResult"):
 
     if result.publishedDate:  # do not try to get a date from an empty string or a None type
         try:  # test if publishedDate >= 1900 (datetime module bug)
@@ -264,7 +266,7 @@ class Result(msgspec.Struct, kw_only=True):
     def __post_init__(self):
         pass
 
-    def filter_urls(self, filter_func: Callable[[Result | LegacyResult, str, str], str | bool]):
+    def filter_urls(self, filter_func: "Callable[[Result | LegacyResult, str, str], str | bool]"):
         """A filter function is passed in the ``filter_func`` argument to
         filter and/or modify the URLs.
 
@@ -330,7 +332,7 @@ class Result(msgspec.Struct, kw_only=True):
     def as_dict(self):
         return {f: getattr(self, f) for f in self.__struct_fields__}
 
-    def defaults_from(self, other: Result):
+    def defaults_from(self, other: "Result"):
         """Fields not set in *self* will be updated from the field values of the
         *other*.
         """
@@ -412,7 +414,7 @@ class MainResult(Result):  # pylint: disable=missing-class-docstring
             self.engines.add(self.engine)
 
 
-class LegacyResult(dict):
+class LegacyResult(dict[str, typing.Any]):
     """A wrapper around a legacy result item.  The SearXNG core uses this class
     for untyped dictionaries / to be downward compatible.
 
@@ -550,11 +552,11 @@ class LegacyResult(dict):
         if self.engine:
             self.engines.add(self.engine)
 
-    def defaults_from(self, other: LegacyResult):
+    def defaults_from(self, other: "LegacyResult"):
         for k, v in other.items():
             if not self.get(k):
                 self[k] = v
 
-    def filter_urls(self, filter_func: Callable[[Result | LegacyResult, str, str], str | bool]):
+    def filter_urls(self, filter_func: "Callable[[Result | LegacyResult, str, str], str | bool]"):
         """See :py:obj:`Result.filter_urls`"""
         _filter_urls(self, filter_func=filter_func)

@@ -22,21 +22,23 @@ an example in which the command line is called in the development environment::
 -----
 
 """
-from __future__ import annotations
 
 __all__ = ["EngineCache", "Engine", "ENGINES_CACHE"]
 
-from typing import List, Callable, TYPE_CHECKING, Any
+import typing as t
+from collections.abc import Callable
+import logging
 import string
 import typer
 
-from ..cache import ExpireCache, ExpireCacheCfg
+from ..cache import ExpireCacheSQLite, ExpireCacheCfg
 
-if TYPE_CHECKING:
+if t.TYPE_CHECKING:
     from searx.enginelib import traits
+    from searx.enginelib.traits import EngineTraits
 
 
-ENGINES_CACHE = ExpireCache.build_cache(
+ENGINES_CACHE: ExpireCacheSQLite = ExpireCacheSQLite.build_cache(
     ExpireCacheCfg(
         name="ENGINES_CACHE",
         MAXHOLD_TIME=60 * 60 * 24 * 7,  # 7 days
@@ -62,7 +64,7 @@ def state():
     title = f"properties of {ENGINES_CACHE.cfg.name}"
     print(title)
     print("=" * len(title))
-    print(str(ENGINES_CACHE.properties))  # type: ignore
+    print(str(ENGINES_CACHE.properties))
 
 
 @app.command()
@@ -152,11 +154,11 @@ class EngineCache:
     """
 
     def __init__(self, engine_name: str, expire: int | None = None):
-        self.expire = expire or ENGINES_CACHE.cfg.MAXHOLD_TIME
+        self.expire: int = expire or ENGINES_CACHE.cfg.MAXHOLD_TIME
         _valid = "-_." + string.ascii_letters + string.digits
-        self.table_name = "".join([c if c in _valid else "_" for c in engine_name])
+        self.table_name: str = "".join([c if c in _valid else "_" for c in engine_name])
 
-    def set(self, key: str, value: Any, expire: int | None = None) -> bool:
+    def set(self, key: str, value: t.Any, expire: int | None = None) -> bool:
         return ENGINES_CACHE.set(
             key=key,
             value=value,
@@ -164,7 +166,7 @@ class EngineCache:
             ctx=self.table_name,
         )
 
-    def get(self, key: str, default=None) -> Any:
+    def get(self, key: str, default: t.Any = None) -> t.Any:
         return ENGINES_CACHE.get(key, default=default, ctx=self.table_name)
 
     def secret_hash(self, name: str | bytes) -> str:
@@ -180,6 +182,8 @@ class Engine:  # pylint: disable=too-few-public-methods
 
        This class is currently never initialized and only used for type hinting.
     """
+
+    logger: logging.Logger
 
     # Common options in the engine module
 
@@ -220,15 +224,15 @@ class Engine:  # pylint: disable=too-few-public-methods
         region: fr-BE
     """
 
-    fetch_traits: Callable
+    fetch_traits: "Callable[[EngineTraits, bool], None]"
     """Function to to fetch engine's traits from origin."""
 
-    traits: traits.EngineTraits
+    traits: "traits.EngineTraits"
     """Traits of the engine."""
 
     # settings.yml
 
-    categories: List[str]
+    categories: list[str]
     """Specifies to which :ref:`engine categories` the engine should be added."""
 
     name: str
@@ -269,7 +273,7 @@ class Engine:  # pylint: disable=too-few-public-methods
     inactive: bool
     """Remove the engine from the settings (*disabled & removed*)."""
 
-    about: dict
+    about: dict[str, dict[str, str]]
     """Additional fields describing the engine.
 
     .. code:: yaml
@@ -291,7 +295,7 @@ class Engine:  # pylint: disable=too-few-public-methods
     the user is used to build and send a ``Accept-Language`` header in the
     request to the origin search engine."""
 
-    tokens: List[str]
+    tokens: list[str]
     """A list of secret tokens to make this engine *private*, more details see
     :ref:`private engines`."""
 

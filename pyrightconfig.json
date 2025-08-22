@@ -6,14 +6,21 @@
     "searxng_extra",
     "tests"
   ],
+
   "reportAny" : "information",
-  "enableTypeIgnoreComments": true,
-  "reportIgnoreCommentWithoutRule": true,
+  "reportConstantRedefinition": false,
+  "reportIgnoreCommentWithoutRule": "information",
+  "reportImplicitOverride": false,
   "reportImplicitStringConcatenation": false,
+  "reportImportCycles": "warning",
+  "reportMissingTypeStubs": "information",
   "reportUninitializedInstanceVariable": false,
   "reportUnnecessaryIsInstance": false,
+  "reportUnnecessaryTypeIgnoreComment": "error",
   "reportUnreachable": "information",
   "reportUnusedCallResult": false,
+
+  "enableTypeIgnoreComments": true,
   "executionEnvironments": [
     {
       "root": "searx",
