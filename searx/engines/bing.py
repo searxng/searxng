@@ -26,7 +26,6 @@ category for the Chinese market.
 """
 # pylint: disable=too-many-branches, invalid-name
 
-from typing import TYPE_CHECKING
 import base64
 import re
 import time
@@ -39,13 +38,6 @@ from searx.utils import eval_xpath, extract_text, eval_xpath_list, eval_xpath_ge
 from searx.locales import language_tag, region_tag
 from searx.enginelib.traits import EngineTraits
 from searx.exceptions import SearxEngineAPIException
-
-if TYPE_CHECKING:
-    import logging
-
-    logger = logging.getLogger()
-
-traits: EngineTraits
 
 about = {
     "website": 'https://www.bing.com',

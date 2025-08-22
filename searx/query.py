@@ -9,7 +9,7 @@ from searx import settings
 from searx.sxng_locales import sxng_locales
 from searx.engines import categories, engines, engine_shortcuts
 from searx.external_bang import get_bang_definition_and_autocomplete
-from searx.search import EngineRef
+from searx.search.models import EngineRef
 from searx.webutils import VALID_LANGUAGE_CODE
 
 

@@ -17,8 +17,6 @@ from searx.locales import language_tag
 from searx.utils import html_to_text, humanize_number
 from searx.enginelib.traits import EngineTraits
 
-traits: EngineTraits
-
 about = {
     # pylint: disable=line-too-long
     "website": 'https://joinpeertube.org',

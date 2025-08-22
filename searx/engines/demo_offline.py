@@ -12,13 +12,14 @@ close to the implementation, its just a simple example.  To get in use of this
 
 """
 
+import typing as t
 import json
 
 from searx.result_types import EngineResults
 from searx.enginelib import EngineCache
 
-engine_type = 'offline'
-categories = ['general']
+engine_type = "offline"
+categories = ["general"]
 disabled = True
 timeout = 2.0
 
@@ -38,13 +39,13 @@ CACHE: EngineCache
 seconds."""
 
 
-def init(engine_settings):
+def init(engine_settings: dict[str, t.Any]) -> None:
     """Initialization of the (offline) engine.  The origin of this demo engine is a
     simple json string which is loaded in this example while the engine is
     initialized."""
     global _my_offline_engine, CACHE  # pylint: disable=global-statement
 
-    CACHE = EngineCache(engine_settings["name"])  # type:ignore
+    CACHE = EngineCache(engine_settings["name"])
 
     _my_offline_engine = (
         '[ {"value": "%s"}'
@@ -55,20 +56,22 @@ def init(engine_settings):
     )
 
 
-def search(query, request_params) -> EngineResults:
+def search(query: str, params: dict[str, t.Any]) -> EngineResults:
     """Query (offline) engine and return results.  Assemble the list of results
     from your local engine.  In this demo engine we ignore the 'query' term,
     usual you would pass the 'query' term to your local engine to filter out the
     results.
     """
     res = EngineResults()
-    count = CACHE.get("count", 0)
 
-    for row in json.loads(_my_offline_engine):
+    count: int = CACHE.get("count", 0)
+    data_rows: list[dict[str, str]] = json.loads(_my_offline_engine)
+
+    for row in data_rows:
         count += 1
         kvmap = {
             'query': query,
-            'language': request_params['searxng_locale'],
+            'language': params['searxng_locale'],
             'value': row.get("value"),
         }
         res.add(

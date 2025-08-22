@@ -1,8 +1,6 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 """Mojeek (general, images, news)"""
 
-from typing import TYPE_CHECKING
-
 from datetime import datetime
 from urllib.parse import urlencode
 from lxml import html
@@ -49,13 +47,6 @@ language_param = 'lb'
 region_param = 'arc'
 
 _delta_kwargs = {'day': 'days', 'week': 'weeks', 'month': 'months', 'year': 'years'}
-
-if TYPE_CHECKING:
-    import logging
-
-    logger = logging.getLogger()
-
-traits: EngineTraits
 
 
 def init(_):

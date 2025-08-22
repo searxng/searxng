@@ -124,7 +124,7 @@ from searx.botdetection import (
 # coherency, the logger is "limiter"
 logger = logger.getChild('limiter')
 
-CFG: config.Config | None = None  # type: ignore
+CFG: config.Config | None = None
 _INSTALLED = False
 
 LIMITER_CFG_SCHEMA = Path(__file__).parent / "limiter.toml"

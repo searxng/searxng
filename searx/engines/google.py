@@ -10,9 +10,6 @@ engines:
 - :ref:`google autocomplete`
 
 """
-from __future__ import annotations
-
-from typing import TYPE_CHECKING
 
 import re
 import random
@@ -30,13 +27,6 @@ from searx.network import get  # see https://github.com/searxng/searxng/issues/7
 from searx.exceptions import SearxEngineCaptchaException
 from searx.enginelib.traits import EngineTraits
 from searx.result_types import EngineResults
-
-if TYPE_CHECKING:
-    import logging
-
-    logger: logging.Logger
-
-traits: EngineTraits
 
 
 # about

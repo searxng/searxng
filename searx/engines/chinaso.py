@@ -54,7 +54,7 @@ Implementations
 
 """
 
-import typing
+import typing as t
 
 from urllib.parse import urlencode
 from datetime import datetime
@@ -76,7 +76,7 @@ time_range_support = True
 results_per_page = 10
 categories = []
 
-ChinasoCategoryType = typing.Literal['news', 'videos', 'images']
+ChinasoCategoryType = t.Literal['news', 'videos', 'images']
 """ChinaSo supports news, videos, images search.
 
 - ``news``: search for news
@@ -89,7 +89,7 @@ In the category ``news`` you can additionally filter by option
 chinaso_category = 'news'
 """Configure ChinaSo category (:py:obj:`ChinasoCategoryType`)."""
 
-ChinasoNewsSourceType = typing.Literal['CENTRAL', 'LOCAL', 'BUSINESS', 'EPAPER', 'all']
+ChinasoNewsSourceType = t.Literal['CENTRAL', 'LOCAL', 'BUSINESS', 'EPAPER', 'all']
 """Filtering ChinaSo-News results by source:
 
 - ``CENTRAL``: central publication
@@ -109,7 +109,7 @@ base_url = "https://www.chinaso.com"
 def init(_):
     if chinaso_category not in ('news', 'videos', 'images'):
         raise ValueError(f"Unsupported category: {chinaso_category}")
-    if chinaso_category == 'news' and chinaso_news_source not in typing.get_args(ChinasoNewsSourceType):
+    if chinaso_category == 'news' and chinaso_news_source not in t.get_args(ChinasoNewsSourceType):
         raise ValueError(f"Unsupported news source: {chinaso_news_source}")
 
 

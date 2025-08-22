@@ -78,9 +78,9 @@ Startpage's category (for Web-search, News, Videos, ..) is set by
 
 """
 # pylint: disable=too-many-statements
-from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any
+import typing as t
+
 from collections import OrderedDict
 import re
 from unicodedata import normalize, combining
@@ -97,13 +97,6 @@ from searx.exceptions import SearxEngineCaptchaException
 from searx.locales import region_tag
 from searx.enginelib.traits import EngineTraits
 from searx.enginelib import EngineCache
-
-if TYPE_CHECKING:
-    import logging
-
-    logger: logging.Logger
-
-traits: EngineTraits
 
 # about
 about = {
@@ -377,7 +370,7 @@ def _get_news_result(result):
     }
 
 
-def _get_image_result(result) -> dict[str, Any] | None:
+def _get_image_result(result) -> dict[str, t.Any] | None:
     url = result.get('altClickUrl')
     if not url:
         return None

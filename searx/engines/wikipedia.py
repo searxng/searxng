@@ -64,8 +64,6 @@ from searx import network as _network
 from searx import locales
 from searx.enginelib.traits import EngineTraits
 
-traits: EngineTraits
-
 # about
 about = {
     "website": 'https://www.wikipedia.org/',

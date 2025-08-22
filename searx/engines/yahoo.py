@@ -6,7 +6,6 @@ found in :py:obj:`lang2domain` URL ``<lang>.search.yahoo.com`` is used.
 
 """
 
-from typing import TYPE_CHECKING
 from urllib.parse import (
     unquote,
     urlencode,
@@ -19,14 +18,6 @@ from searx.utils import (
     extract_text,
     html_to_text,
 )
-from searx.enginelib.traits import EngineTraits
-
-traits: EngineTraits
-
-if TYPE_CHECKING:
-    import logging
-
-    logger: logging.Logger
 
 # about
 about = {

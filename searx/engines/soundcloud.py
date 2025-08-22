@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 import re
-import typing
 import datetime
 
 from urllib.parse import quote_plus, urlencode
@@ -13,11 +12,6 @@ from lxml import html
 
 from searx.network import get as http_get
 from searx.enginelib import EngineCache
-
-if typing.TYPE_CHECKING:
-    import logging
-
-    logger: logging.Logger
 
 about = {
     "website": "https://soundcloud.com",

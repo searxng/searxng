@@ -5,9 +5,6 @@
    https://de1.api.radio-browser.info/#Advanced_station_search
 
 """
-from __future__ import annotations
-
-import typing
 import random
 import socket
 from urllib.parse import urlencode
@@ -19,12 +16,6 @@ from searx.enginelib import EngineCache
 from searx.enginelib.traits import EngineTraits
 from searx.locales import language_tag
 
-if typing.TYPE_CHECKING:
-    import logging
-
-    logger = logging.getLogger()
-
-traits: EngineTraits
 
 about = {
     "website": 'https://www.radio-browser.info/',

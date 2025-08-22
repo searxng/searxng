@@ -37,16 +37,10 @@ Implementation
 """
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
 from datetime import datetime, timedelta
 from urllib.parse import urlencode
 
 import isodate
-
-if TYPE_CHECKING:
-    import logging
-
-    logger: logging.Logger
 
 about = {
     "website": "https://stock.adobe.com/",

@@ -64,8 +64,6 @@ from searx.utils import (
     get_embeded_stream_url,
 )
 
-traits: EngineTraits
-
 # about
 about = {
     "website": 'https://www.qwant.com/',

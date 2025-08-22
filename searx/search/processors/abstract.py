@@ -3,10 +3,12 @@
 
 """
 
+import typing as t
+
+import logging
 import threading
 from abc import abstractmethod, ABC
 from timeit import default_timer
-from typing import Dict, Union
 
 from searx import settings, logger
 from searx.engines import engines
@@ -15,8 +17,11 @@ from searx.metrics import histogram_observe, counter_inc, count_exception, count
 from searx.exceptions import SearxEngineAccessDeniedException, SearxEngineResponseException
 from searx.utils import get_engine_from_settings
 
+if t.TYPE_CHECKING:
+    from searx.enginelib import Engine
+
 logger = logger.getChild('searx.search.processor')
-SUSPENDED_STATUS: Dict[Union[int, str], 'SuspendedStatus'] = {}
+SUSPENDED_STATUS: dict[int | str, 'SuspendedStatus'] = {}
 
 
 class SuspendedStatus:
@@ -25,16 +30,16 @@ class SuspendedStatus:
     __slots__ = 'suspend_end_time', 'suspend_reason', 'continuous_errors', 'lock'
 
     def __init__(self):
-        self.lock = threading.Lock()
-        self.continuous_errors = 0
-        self.suspend_end_time = 0
-        self.suspend_reason = None
+        self.lock: threading.Lock = threading.Lock()
+        self.continuous_errors: int = 0
+        self.suspend_end_time: float = 0
+        self.suspend_reason: str = ""
 
     @property
     def is_suspended(self):
         return self.suspend_end_time >= default_timer()
 
-    def suspend(self, suspended_time, suspend_reason):
+    def suspend(self, suspended_time: int, suspend_reason: str):
         with self.lock:
             # update continuous_errors / suspend_end_time
             self.continuous_errors += 1
@@ -52,21 +57,21 @@ class SuspendedStatus:
             # reset the suspend variables
             self.continuous_errors = 0
             self.suspend_end_time = 0
-            self.suspend_reason = None
+            self.suspend_reason = ""
 
 
 class EngineProcessor(ABC):
     """Base classes used for all types of request processors."""
 
-    __slots__ = 'engine', 'engine_name', 'lock', 'suspended_status', 'logger'
+    __slots__ = 'engine', 'engine_name', 'suspended_status', 'logger'
 
-    def __init__(self, engine, engine_name: str):
-        self.engine = engine
-        self.engine_name = engine_name
-        self.logger = engines[engine_name].logger
+    def __init__(self, engine: "Engine|ModuleType", engine_name: str):
+        self.engine: "Engine" = engine
+        self.engine_name: str = engine_name
+        self.logger: logging.Logger = engines[engine_name].logger
         key = get_network(self.engine_name)
         key = id(key) if key else self.engine_name
-        self.suspended_status = SUSPENDED_STATUS.setdefault(key, SuspendedStatus())
+        self.suspended_status: SuspendedStatus = SUSPENDED_STATUS.setdefault(key, SuspendedStatus())
 
     def initialize(self):
         try:
@@ -135,7 +140,7 @@ class EngineProcessor(ABC):
             return True
         return False
 
-    def get_params(self, search_query, engine_category):
+    def get_params(self, search_query, engine_category) -> dict[str, t.Any]:
         """Returns a set of (see :ref:`request params <engine request arguments>`) or
         ``None`` if request is not supported.
 

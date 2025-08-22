@@ -4,10 +4,10 @@
 Search
 ======
 
-.. autoclass:: searx.search.EngineRef
+.. autoclass:: searx.search.models.EngineRef
   :members:
 
-.. autoclass:: searx.search.SearchQuery
+.. autoclass:: searx.search.models.SearchQuery
   :members:
 
 .. autoclass:: searx.search.Search

@@ -1,7 +1,8 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 # pylint: disable=missing-module-docstring, invalid-name
 
-import typing
+import typing as t
+
 import inspect
 from json import JSONDecodeError
 from urllib.parse import urlparse
@@ -16,7 +17,9 @@ from searx import searx_parent_dir, settings
 from searx.engines import engines
 
 
-errors_per_engines = {}
+errors_per_engines: dict[str, t.Any] = {}
+
+LogParametersType = tuple[str, ...]
 
 
 class ErrorContext:  # pylint: disable=missing-class-docstring
@@ -33,16 +36,24 @@ class ErrorContext:  # pylint: disable=missing-class-docstring
     )
 
     def __init__(  # pylint: disable=too-many-arguments
-        self, filename, function, line_no, code, exception_classname, log_message, log_parameters, secondary
+        self,
+        filename: str,
+        function: str,
+        line_no: int,
+        code: str,
+        exception_classname: str,
+        log_message: str,
+        log_parameters: LogParametersType,
+        secondary: bool,
     ):
-        self.filename = filename
-        self.function = function
-        self.line_no = line_no
-        self.code = code
-        self.exception_classname = exception_classname
-        self.log_message = log_message
-        self.log_parameters = log_parameters
-        self.secondary = secondary
+        self.filename: str = filename
+        self.function: str = function
+        self.line_no: int = line_no
+        self.code: str = code
+        self.exception_classname: str = exception_classname
+        self.log_message: str = log_message
+        self.log_parameters: LogParametersType = log_parameters
+        self.secondary: bool = secondary
 
     def __eq__(self, o) -> bool:  # pylint: disable=invalid-name
         if not isinstance(o, ErrorContext):
@@ -92,7 +103,7 @@ def add_error_context(engine_name: str, error_context: ErrorContext) -> None:
 
 def get_trace(traces):
     for trace in reversed(traces):
-        split_filename = trace.filename.split('/')
+        split_filename: list[str] = trace.filename.split('/')
         if '/'.join(split_filename[-3:-1]) == 'searx/engines':
             return trace
         if '/'.join(split_filename[-4:-1]) == 'searx/search/processors':
@@ -100,7 +111,7 @@ def get_trace(traces):
     return traces[-1]
 
 
-def get_hostname(exc: HTTPError) -> typing.Optional[None]:
+def get_hostname(exc: HTTPError) -> str | None:
     url = exc.request.url
     if url is None and exc.response is not None:
         url = exc.response.url
@@ -109,7 +120,7 @@ def get_hostname(exc: HTTPError) -> typing.Optional[None]:
 
 def get_request_exception_messages(
     exc: HTTPError,
-) -> typing.Tuple[typing.Optional[str], typing.Optional[str], typing.Optional[str]]:
+) -> tuple[str | None, str | None, str | None]:
     url = None
     status_code = None
     reason = None
@@ -128,7 +139,7 @@ def get_request_exception_messages(
     return (status_code, reason, hostname)
 
 
-def get_messages(exc, filename) -> typing.Tuple:  # pylint: disable=too-many-return-statements
+def get_messages(exc, filename) -> tuple[str, ...]:  # pylint: disable=too-many-return-statements
     if isinstance(exc, JSONDecodeError):
         return (exc.msg,)
     if isinstance(exc, TypeError):
@@ -157,7 +168,9 @@ def get_exception_classname(exc: Exception) -> str:
     return exc_module + '.' + exc_name
 
 
-def get_error_context(framerecords, exception_classname, log_message, log_parameters, secondary) -> ErrorContext:
+def get_error_context(
+    framerecords, exception_classname, log_message, log_parameters: LogParametersType, secondary: bool
+) -> ErrorContext:
     searx_frame = get_trace(framerecords)
     filename = searx_frame.filename
     if filename.startswith(searx_parent_dir):
@@ -183,7 +196,10 @@ def count_exception(engine_name: str, exc: Exception, secondary: bool = False) -
 
 
 def count_error(
-    engine_name: str, log_message: str, log_parameters: typing.Optional[typing.Tuple] = None, secondary: bool = False
+    engine_name: str,
+    log_message: str,
+    log_parameters: LogParametersType | None = None,
+    secondary: bool = False,
 ) -> None:
     if not settings['general']['enable_metrics']:
         return
