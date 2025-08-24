@@ -1,7 +1,6 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 """Calculate mathematical expressions using :py:obj:`ast.parse` (mode="eval")."""
 
-from __future__ import annotations
 import typing
 
 import ast

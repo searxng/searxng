@@ -1,7 +1,6 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 """Utility functions for the engines"""
 
-from __future__ import annotations
 
 import re
 import importlib

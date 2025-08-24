@@ -1,7 +1,6 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 # pylint: disable=missing-module-docstring, invalid-name
 
-from __future__ import annotations
 
 import os
 import pathlib

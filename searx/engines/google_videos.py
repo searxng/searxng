@@ -11,7 +11,6 @@
 .. _data URLs:
    https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/Data_URIs
 """
-from __future__ import annotations
 
 from urllib.parse import urlencode, urlparse, parse_qs
 from lxml import html

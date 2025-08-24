@@ -12,7 +12,7 @@ the User-Agent_ header is unset or matches the regular expression
 
 """
 
-from __future__ import annotations
+
 import re
 from ipaddress import (
     IPv4Network,

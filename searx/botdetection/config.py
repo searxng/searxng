@@ -6,7 +6,7 @@ The :py:class:`Config` class implements a configuration that is based on
 structured dictionaries.  The configuration schema is defined in a dictionary
 structure and the configuration data is given in a dictionary structure.
 """
-from __future__ import annotations
+
 import typing
 
 import copy

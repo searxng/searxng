@@ -5,7 +5,6 @@ Coordinates`_
 .. _SPARQL/WIKIDATA Precision, Units and Coordinates:
    https://en.wikibooks.org/wiki/SPARQL/WIKIDATA_Precision,_Units_and_Coordinates#Quantities
 """
-from __future__ import annotations
 
 __all__ = ["convert_from_si", "convert_to_si", "symbol_to_si"]
 

@@ -5,8 +5,6 @@
 ----
 """
 
-from __future__ import annotations
-
 __all__ = ["ExpireCacheCfg", "ExpireCacheStats", "ExpireCache", "ExpireCacheSQLite"]
 
 import abc
