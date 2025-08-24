@@ -2,6 +2,7 @@
 """Exception types raised by SearXNG modules.
 """
 
+
 import typing as t
 from lxml.etree import XPath
 

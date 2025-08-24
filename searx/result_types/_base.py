@@ -17,8 +17,6 @@
 """
 
 
-from __future__ import annotations
-
 __all__ = ["Result"]
 
 import re

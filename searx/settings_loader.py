@@ -17,8 +17,8 @@ to be loaded. The rules used for this can be found in the
 
 """
 
-from __future__ import annotations
 import typing as t
+
 import os.path
 from collections.abc import MutableMapping
 from itertools import filterfalse

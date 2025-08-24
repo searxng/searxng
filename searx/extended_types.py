@@ -20,7 +20,7 @@
 
 """
 # pylint: disable=invalid-name
-from __future__ import annotations
+
 
 __all__ = ["SXNG_Request", "sxng_request", "SXNG_Response"]
 
