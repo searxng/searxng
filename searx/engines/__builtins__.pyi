@@ -10,7 +10,6 @@ intended monkey patching of the engine modules.
    engine modules aren't converted to an engine class, these builtin types will
    still be needed.
 """
-from __future__ import annotations
 
 import logging
 from searx.enginelib import traits as _traits

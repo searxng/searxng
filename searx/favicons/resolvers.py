@@ -6,7 +6,6 @@ timeout``) and returns a tuple ``(data, mime)``.
 
 """
 
-from __future__ import annotations
 
 __all__ = ["DEFAULT_RESOLVER_MAP", "allesedv", "duckduckgo", "google", "yandex"]
 

@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 # pylint: disable=missing-module-docstring, invalid-name
-from __future__ import annotations
+
 import typing as t
 
 __all__ = ["log_error_only_once", "dump_request", "get_network", "logger", "too_many_requests"]

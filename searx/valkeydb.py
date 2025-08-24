@@ -17,7 +17,6 @@ A valkey DB connect can be tested by::
   >>>
 
 """
-from __future__ import annotations
 
 import os
 import pwd

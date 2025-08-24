@@ -9,7 +9,6 @@ To load traits from the persistence :py:obj:`EngineTraitsMap.from_data` can be
 used.
 """
 
-from __future__ import annotations
 
 import os
 import json

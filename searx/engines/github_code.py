@@ -65,7 +65,6 @@ code lines are just relabeled (starting from 1) and appended (a disjoint set of
 code blocks in a single file might be returned from the API).
 """
 
-from __future__ import annotations
 
 import typing as t
 from urllib.parse import urlencode

@@ -4,7 +4,6 @@ user searches for ``tor-check``.  It fetches the tor exit node list from
 :py:obj:`url_exit_list` and parses all the IPs into a list, then checks if the
 user's IP address is in it.
 """
-from __future__ import annotations
 from ipaddress import ip_address
 import typing
 

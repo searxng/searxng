@@ -4,7 +4,7 @@
 Implementations used for bot detection.
 
 """
-from __future__ import annotations
+
 
 __all__ = ["init", "dump_request", "get_network", "too_many_requests", "ProxyFix"]
 

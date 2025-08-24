@@ -35,7 +35,6 @@ Implementation
 ==============
 
 """
-from __future__ import annotations
 
 from datetime import datetime, timedelta
 from urllib.parse import urlencode

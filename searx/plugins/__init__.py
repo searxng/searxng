@@ -94,7 +94,6 @@ Implementation
    :members:
 """
 
-from __future__ import annotations
 
 __all__ = ["PluginInfo", "Plugin", "PluginStorage", "PluginCfg"]
 

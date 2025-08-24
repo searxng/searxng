@@ -92,7 +92,6 @@ Implementation
 
 """
 
-from __future__ import annotations
 from ipaddress import ip_address
 import sys
 
