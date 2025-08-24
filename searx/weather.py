@@ -20,6 +20,7 @@ import typing
 import base64
 import datetime
 import dataclasses
+import zoneinfo
 
 from urllib.parse import quote_plus
 
@@ -136,6 +137,10 @@ class GeoLocation:
     elevation: float  # Elevation above mean sea level of this location
     country_code: str  # 2-Character ISO-3166-1 alpha2 country code. E.g. DE for Germany
     timezone: str  # Time zone using time zone database definitions
+
+    @property
+    def zoneinfo(self) -> zoneinfo.ZoneInfo:
+        return zoneinfo.ZoneInfo(self.timezone)
 
     def __str__(self):
         return self.name
