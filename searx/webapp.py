@@ -2,7 +2,6 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 """WebApp"""
 # pylint: disable=use-dict-literal
-from __future__ import annotations
 
 import json
 import os

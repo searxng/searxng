@@ -1,7 +1,6 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 # pylint: disable=invalid-name, missing-module-docstring, missing-class-docstring
 
-from __future__ import annotations
 from abc import abstractmethod, ABC
 import re
 

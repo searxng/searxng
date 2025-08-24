@@ -1,7 +1,6 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 """Implementations for a favicon proxy"""
 
-from __future__ import annotations
 
 from typing import Callable
 

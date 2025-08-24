@@ -3,7 +3,6 @@
 
 """Test some code from module :py:obj:`searx.locales`"""
 
-from __future__ import annotations
 from parameterized import parameterized
 from searx import locales
 from searx.sxng_locales import sxng_locales

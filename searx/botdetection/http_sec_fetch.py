@@ -22,7 +22,7 @@ Metadata`_.  A request is filtered out in case of:
 """
 # pylint: disable=unused-argument
 
-from __future__ import annotations
+
 from ipaddress import (
     IPv4Network,
     IPv6Network,

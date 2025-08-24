@@ -1,7 +1,6 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 """Simple implementation to store TrackerPatterns data in a SQL database."""
 
-from __future__ import annotations
 import typing
 
 __all__ = ["TrackerPatternsDB"]

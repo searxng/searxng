@@ -7,7 +7,6 @@ No public instance offer a public API now
 - https://github.com/searxng/searxng/issues/2722#issuecomment-2884993248
 
 """
-from __future__ import annotations
 
 import time
 import random
