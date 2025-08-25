@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 """SensCritique (movies)
 """
-from __future__ import annotations
+
 
 from json import dumps, loads
 from typing import Any, Optional

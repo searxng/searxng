@@ -5,8 +5,6 @@
 ----
 """
 
-from __future__ import annotations
-
 __all__ = ["ExpireCacheCfg", "ExpireCacheStats", "ExpireCache", "ExpireCacheSQLite"]
 
 import abc
@@ -64,7 +62,7 @@ class ExpireCacheCfg(msgspec.Struct):  # pylint: disable=too-few-public-methods
       if required.
     """
 
-    password: bytes = get_setting("server.secret_key").encode()  # type: ignore
+    password: bytes = get_setting("server.secret_key").encode()
     """Password used by :py:obj:`ExpireCache.secret_hash`.
 
     The default password is taken from :ref:`secret_key <server.secret_key>`.
@@ -101,7 +99,7 @@ class ExpireCacheStats:
     def report(self):
         c_ctx = 0
         c_kv = 0
-        lines = []
+        lines: list[str] = []
 
         for ctx_name, kv_list in self.cached_items.items():
             c_ctx += 1
@@ -125,7 +123,7 @@ class ExpireCache(abc.ABC):
 
     cfg: ExpireCacheCfg
 
-    hash_token = "hash_token"
+    hash_token: str = "hash_token"
 
     @abc.abstractmethod
     def set(self, key: str, value: typing.Any, expire: int | None, ctx: str | None = None) -> bool:
@@ -148,7 +146,7 @@ class ExpireCache(abc.ABC):
         """
 
     @abc.abstractmethod
-    def get(self, key: str, default=None, ctx: str | None = None) -> typing.Any:
+    def get(self, key: str, default: typing.Any = None, ctx: str | None = None) -> typing.Any:
         """Return *value* of *key*.  If key is unset, ``None`` is returned."""
 
     @abc.abstractmethod
@@ -170,7 +168,7 @@ class ExpireCache(abc.ABC):
         about the status of the cache."""
 
     @staticmethod
-    def build_cache(cfg: ExpireCacheCfg) -> ExpireCache:
+    def build_cache(cfg: ExpireCacheCfg) -> "ExpireCacheSQLite":
         """Factory to build a caching instance.
 
         .. note::
@@ -222,18 +220,18 @@ class ExpireCacheSQLite(sqlitedb.SQLiteAppl, ExpireCache):
     - :py:obj:`ExpireCacheCfg.MAINTENANCE_MODE`
     """
 
-    DB_SCHEMA = 1
+    DB_SCHEMA: int = 1
 
     # The key/value tables will be created on demand by self.create_table
-    DDL_CREATE_TABLES = {}
+    DDL_CREATE_TABLES: dict[str, str] = {}
 
-    CACHE_TABLE_PREFIX = "CACHE-TABLE"
+    CACHE_TABLE_PREFIX: str = "CACHE-TABLE"
 
     def __init__(self, cfg: ExpireCacheCfg):
         """An instance of the SQLite expire cache is build up from a
         :py:obj:`config <ExpireCacheCfg>`."""
 
-        self.cfg = cfg
+        self.cfg: ExpireCacheCfg = cfg
         if cfg.db_url == ":memory:":
             log.critical("don't use SQLite DB in :memory: in production!!")
         super().__init__(cfg.db_url)
@@ -374,7 +372,7 @@ class ExpireCacheSQLite(sqlitedb.SQLiteAppl, ExpireCache):
 
         return True
 
-    def get(self, key: str, default=None, ctx: str | None = None) -> typing.Any:
+    def get(self, key: str, default: typing.Any = None, ctx: str | None = None) -> typing.Any:
         """Get value of ``key`` from table given by argument ``ctx``.  If
         ``ctx`` argument is ``None`` (the default), a table name is generated
         from the :py:obj:`ExpireCacheCfg.name`.  If ``key`` not exists (in
@@ -412,7 +410,7 @@ class ExpireCacheSQLite(sqlitedb.SQLiteAppl, ExpireCache):
                 yield row[0], self.deserialize(row[1])
 
     def state(self) -> ExpireCacheStats:
-        cached_items = {}
+        cached_items: dict[str, list[tuple[str, typing.Any, int]]] = {}
         for table in self.table_names:
             cached_items[table] = []
             for row in self.DB.execute(f"SELECT key, value, expire FROM {table}"):

@@ -8,7 +8,6 @@ an example in which the command line is called in the development environment::
   (py3) python -m searx.favicons --help
 """
 
-from __future__ import annotations
 
 __all__ = ["init", "favicon_url", "favicon_proxy"]
 

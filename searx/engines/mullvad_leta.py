@@ -37,7 +37,6 @@ Implementations
 
 """
 
-from __future__ import annotations
 
 import typing
 from urllib.parse import urlencode

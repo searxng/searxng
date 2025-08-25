@@ -1,25 +1,26 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 # pylint: disable=missing-module-docstring
-from __future__ import annotations
-import typing
+
+import typing as t
 from hashlib import md5
 
-from flask_babel import gettext
+from flask_babel import gettext  # pyright: ignore[reportUnknownVariableType]
 
 from searx.data import ahmia_blacklist_loader
 from searx import get_setting
 from searx.plugins import Plugin, PluginInfo
 
-if typing.TYPE_CHECKING:
+if t.TYPE_CHECKING:
     import flask
     from searx.search import SearchWithPlugins
     from searx.extended_types import SXNG_Request
     from searx.result_types import Result
     from searx.plugins import PluginCfg
 
-ahmia_blacklist: list = []
+ahmia_blacklist: list[str] = []
 
 
+@t.final
 class SXNGPlugin(Plugin):
     """Filter out onion results that appear in Ahmia's blacklist (See https://ahmia.fi/blacklist)."""
 
@@ -35,7 +36,7 @@ class SXNGPlugin(Plugin):
         )
 
     def on_result(
-        self, request: "SXNG_Request", search: "SearchWithPlugins", result: Result
+        self, request: "SXNG_Request", search: "SearchWithPlugins", result: "Result"
     ) -> bool:  # pylint: disable=unused-argument
         if not getattr(result, "is_onion", False) or not getattr(result, "parsed_url", False):
             return True

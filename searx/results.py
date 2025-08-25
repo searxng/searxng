@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 # pylint: disable=missing-module-docstring, missing-class-docstring
-from __future__ import annotations
+
 
 import warnings
 from collections import defaultdict

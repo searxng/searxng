@@ -5,7 +5,7 @@
    https://de1.api.radio-browser.info/#Advanced_station_search
 
 """
-from __future__ import annotations
+
 
 import typing
 import random

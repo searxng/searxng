@@ -78,7 +78,7 @@ Startpage's category (for Web-search, News, Videos, ..) is set by
 
 """
 # pylint: disable=too-many-statements
-from __future__ import annotations
+
 
 from typing import TYPE_CHECKING, Any
 from collections import OrderedDict

@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 # pylint: disable=missing-module-docstring, invalid-name
-from __future__ import annotations
+
 import typing as t
 
 __all__ = ["log_error_only_once", "dump_request", "get_network", "logger", "too_many_requests"]
@@ -53,7 +53,7 @@ def too_many_requests(network: IPv4Network | IPv6Network, log_msg: str) -> werkz
     return flask.make_response(('Too Many Requests', 429))
 
 
-def get_network(real_ip: IPv4Address | IPv6Address, cfg: config.Config) -> IPv4Network | IPv6Network:
+def get_network(real_ip: IPv4Address | IPv6Address, cfg: "config.Config") -> IPv4Network | IPv6Network:
     """Returns the (client) network of whether the ``real_ip`` is part of.
 
     The ``ipv4_prefix`` and ``ipv6_prefix`` define the number of leading bits in
@@ -71,7 +71,7 @@ def get_network(real_ip: IPv4Address | IPv6Address, cfg: config.Config) -> IPv4N
 
     prefix: int = cfg["botdetection.ipv4_prefix"]
     if real_ip.version == 6:
-        prefix: int = cfg["botdetection.ipv6_prefix"]
+        prefix = cfg["botdetection.ipv6_prefix"]
     network = ip_network(f"{real_ip}/{prefix}", strict=False)
     # logger.debug("get_network(): %s", network.compressed)
     return network
