@@ -65,17 +65,17 @@ def _normalize_url_fields(result: Result | LegacyResult):
 
         infobox_urls: list[dict[str, str]] = getattr(result, "urls", [])
         for item in infobox_urls:
-            _url = item.get("url")
-            if not _url:
+            _url_str = item.get("url")
+            if not _url_str:
                 continue
-            _url = urllib.parse.urlparse(_url)
+            _url = urllib.parse.urlparse(_url_str)
             item["url"] = _url._replace(
                 scheme=_url.scheme or "http",
                 # netloc=_url.netloc.replace("www.", ""),
                 path=_url.path,
             ).geturl()
 
-        infobox_id = getattr(result, "id", None)
+        infobox_id: str = getattr(result, "id", None)
         if infobox_id:
             _url = urllib.parse.urlparse(infobox_id)
             result.id = _url._replace(
