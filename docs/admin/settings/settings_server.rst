@@ -72,4 +72,4 @@
 .. _HTTP headers: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers
 
 ``default_http_headers`` :
-  Set additional HTTP headers, see `#755 <https://github.com/searx/searx/issues/715>`__
+  Set additional `HTTP headers`_, see `#755 <https://github.com/searx/searx/issues/715>`__
