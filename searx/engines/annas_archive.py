@@ -40,6 +40,7 @@ from lxml import html
 from searx.utils import extract_text, eval_xpath, eval_xpath_getindex, eval_xpath_list
 from searx.enginelib.traits import EngineTraits
 from searx.data import ENGINE_TRAITS
+from searx.exceptions import SearxEngineXPathException
 
 # about
 about: Dict[str, Any] = {
@@ -118,30 +119,29 @@ def response(resp) -> List[Dict[str, Optional[str]]]:
     results: List[Dict[str, Optional[str]]] = []
     dom = html.fromstring(resp.text)
 
-    for item in eval_xpath_list(dom, '//main//div[contains(@class, "h-[125]")]/a'):
-        results.append(_get_result(item))
-
-    # The rendering of the WEB page is very strange; except the first position
-    # all other positions of Anna's result page are enclosed in SGML comments.
-    # These comments are *uncommented* by some JS code, see query of class
-    # '.js-scroll-hidden' in Anna's HTML template:
+    # The rendering of the WEB page is strange; positions of Anna's result page
+    # are enclosed in SGML comments.  These comments are *uncommented* by some
+    # JS code, see query of class '.js-scroll-hidden' in Anna's HTML template:
     #   https://annas-software.org/AnnaArchivist/annas-archive/-/blob/main/allthethings/templates/macros/md5_list.html
 
-    for item in eval_xpath_list(dom, '//main//div[contains(@class, "js-scroll-hidden")]'):
-        item = html.fromstring(item.xpath('./comment()')[0].text)
-        results.append(_get_result(item))
-
+    for item in eval_xpath_list(dom, '//main//div[contains(@class, "js-aarecord-list-outer")]/div'):
+        try:
+            results.append(_get_result(item))
+        except SearxEngineXPathException:
+            pass
     return results
 
 
 def _get_result(item):
     return {
         'template': 'paper.html',
-        'url': base_url + extract_text(eval_xpath_getindex(item, './@href', 0)),
-        'title': extract_text(eval_xpath(item, './/h3/text()[1]')),
-        'publisher': extract_text(eval_xpath(item, './/div[contains(@class, "text-sm")]')),
-        'authors': [extract_text(eval_xpath(item, './/div[contains(@class, "italic")]'))],
-        'content': extract_text(eval_xpath(item, './/div[contains(@class, "text-xs")]')),
+        'url': base_url + extract_text(eval_xpath_getindex(item, './a/@href', 0)),
+        'title': extract_text(eval_xpath(item, './div//a[starts-with(@href, "/md5")]')),
+        'authors': [extract_text(eval_xpath_getindex(item, './/a[starts-with(@href, "/search")]', 0))],
+        'publisher': extract_text(
+            eval_xpath_getindex(item, './/a[starts-with(@href, "/search")]', 1, default=None), allow_none=True
+        ),
+        'content': extract_text(eval_xpath(item, './/div[contains(@class, "relative")]')),
         'thumbnail': extract_text(eval_xpath_getindex(item, './/img/@src', 0, default=None), allow_none=True),
     }
 
