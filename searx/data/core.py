@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 # pylint: disable=missing-module-docstring
-from __future__ import annotations
+
 
 import pathlib
 
@@ -9,9 +9,9 @@ from searx.cache import ExpireCacheCfg, ExpireCacheSQLite
 
 log = logger.getChild("data")
 
-data_dir = pathlib.Path(__file__).parent
+data_dir: pathlib.Path = pathlib.Path(__file__).parent
 
-_DATA_CACHE: ExpireCacheSQLite = None  # type: ignore
+_DATA_CACHE: ExpireCacheSQLite | None = None
 
 
 def get_cache():

@@ -28,7 +28,6 @@ template.
 """
 # pylint: disable=too-few-public-methods
 
-from __future__ import annotations
 
 __all__ = ["AnswerSet", "Answer", "Translations", "WeatherAnswer"]
 
@@ -119,7 +118,7 @@ class Translations(BaseAnswer, kw_only=True):
     """The template in :origin:`answer/translations.html
     <searx/templates/simple/answer/translations.html>`"""
 
-    translations: list[Translations.Item]
+    translations: "list[Translations.Item]"
     """List of translations."""
 
     def __post_init__(self):
@@ -158,10 +157,10 @@ class WeatherAnswer(BaseAnswer, kw_only=True):
     """The template is located at :origin:`answer/weather.html
     <searx/templates/simple/answer/weather.html>`"""
 
-    current: WeatherAnswer.Item
+    current: "WeatherAnswer.Item"
     """Current weather at ``location``."""
 
-    forecasts: list[WeatherAnswer.Item] = []
+    forecasts: "list[WeatherAnswer.Item]" = []
     """Weather forecasts for ``location``."""
 
     service: str = ""

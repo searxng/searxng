@@ -20,7 +20,6 @@
 
 """
 # pylint: disable=invalid-name
-from __future__ import annotations
 
 __all__ = ["SXNG_Request", "sxng_request", "SXNG_Response"]
 
@@ -61,6 +60,8 @@ class SXNG_Request(flask.Request):
     timings: list["searx.results.Timing"]
     """A list of :py:obj:`searx.results.Timing` of the engines, calculatid in
     and hold by :py:obj:`searx.results.ResultContainer.timings`."""
+
+    remote_addr: str
 
 
 #: A replacement for :py:obj:`flask.request` with type cast :py:`SXNG_Request`.

@@ -9,18 +9,17 @@ To load traits from the persistence :py:obj:`EngineTraitsMap.from_data` can be
 used.
 """
 
-from __future__ import annotations
 
 import os
 import json
 import dataclasses
 import types
-from typing import Dict, Literal, Iterable, Union, Callable, Optional, TYPE_CHECKING
-
+import typing as t
+import pathlib
 from searx import locales
 from searx.data import data_dir, ENGINE_TRAITS
 
-if TYPE_CHECKING:
+if t.TYPE_CHECKING:
     from . import Engine
 
 
@@ -28,7 +27,7 @@ class EngineTraitsEncoder(json.JSONEncoder):
     """Encodes :class:`EngineTraits` to a serializable object, see
     :class:`json.JSONEncoder`."""
 
-    def default(self, o):
+    def default(self, o: t.Any) -> t.Any:
         """Return dictionary of a :class:`EngineTraits` object."""
         if isinstance(o, EngineTraits):
             return o.__dict__
@@ -39,7 +38,7 @@ class EngineTraitsEncoder(json.JSONEncoder):
 class EngineTraits:
     """The class is intended to be instantiated for each engine."""
 
-    regions: Dict[str, str] = dataclasses.field(default_factory=dict)
+    regions: dict[str, str] = dataclasses.field(default_factory=dict)
     """Maps SearXNG's internal representation of a region to the one of the engine.
 
     SearXNG's internal representation can be parsed by babel and the value is
@@ -56,7 +55,7 @@ class EngineTraits:
           ...
     """
 
-    languages: Dict[str, str] = dataclasses.field(default_factory=dict)
+    languages: dict[str, str] = dataclasses.field(default_factory=dict)
     """Maps SearXNG's internal representation of a language to the one of the engine.
 
     SearXNG's internal representation can be parsed by babel and the value is
@@ -73,20 +72,20 @@ class EngineTraits:
           ...
     """
 
-    all_locale: Optional[str] = None
+    all_locale: str | None = None
     """To which locale value SearXNG's ``all`` language is mapped (shown a "Default
     language").
     """
 
-    data_type: Literal['traits_v1'] = 'traits_v1'
+    data_type: t.Literal['traits_v1'] = 'traits_v1'
     """Data type, default is 'traits_v1'.
     """
 
-    custom: Dict[str, Union[Dict[str, Dict], Iterable[str]]] = dataclasses.field(default_factory=dict)
+    custom: dict[str, t.Any] = dataclasses.field(default_factory=dict)
     """A place to store engine's custom traits, not related to the SearXNG core.
     """
 
-    def get_language(self, searxng_locale: str, default=None):
+    def get_language(self, searxng_locale: str, default: t.Any = None):
         """Return engine's language string that *best fits* to SearXNG's locale.
 
         :param searxng_locale: SearXNG's internal representation of locale
@@ -102,7 +101,7 @@ class EngineTraits:
             return self.all_locale
         return locales.get_engine_locale(searxng_locale, self.languages, default=default)
 
-    def get_region(self, searxng_locale: str, default=None):
+    def get_region(self, searxng_locale: str, default: t.Any = None) -> t.Any:
         """Return engine's region string that best fits to SearXNG's locale.
 
         :param searxng_locale: SearXNG's internal representation of locale
@@ -133,10 +132,10 @@ class EngineTraits:
 
     def copy(self):
         """Create a copy of the dataclass object."""
-        return EngineTraits(**dataclasses.asdict(self))
+        return EngineTraits(**dataclasses.asdict(self))  # type: ignore
 
     @classmethod
-    def fetch_traits(cls, engine: Engine) -> Union['EngineTraits', None]:
+    def fetch_traits(cls, engine: "Engine | types.ModuleType") -> "EngineTraits | None":
         """Call a function ``fetch_traits(engine_traits)`` from engines namespace to fetch
         and set properties from the origin engine in the object ``engine_traits``.  If
         function does not exists, ``None`` is returned.
@@ -150,7 +149,7 @@ class EngineTraits:
             fetch_traits(engine_traits)
         return engine_traits
 
-    def set_traits(self, engine: Engine):
+    def set_traits(self, engine: "Engine | types.ModuleType"):
         """Set traits from self object in a :py:obj:`.Engine` namespace.
 
         :param engine: engine instance build by :py:func:`searx.engines.load_engine`
@@ -161,14 +160,14 @@ class EngineTraits:
         else:
             raise TypeError('engine traits of type %s is unknown' % self.data_type)
 
-    def _set_traits_v1(self, engine: Engine):
+    def _set_traits_v1(self, engine: "Engine | types.ModuleType"):
         # For an engine, when there is `language: ...` in the YAML settings the engine
         # does support only this one language (region)::
         #
         #   - name: google italian
         #     engine: google
         #     language: it
-        #     region: it-IT                                      # type: ignore
+        #     region: it-IT
 
         traits = self.copy()
 
@@ -186,16 +185,16 @@ class EngineTraits:
                 raise ValueError(_msg % (engine.name, 'region', engine.region))
             traits.regions = {engine.region: regions[engine.region]}
 
-        engine.language_support = bool(traits.languages or traits.regions)
+        engine.language_support = bool(traits.languages or traits.regions)  # type: ignore
 
         # set the copied & modified traits in engine's namespace
-        engine.traits = traits
+        engine.traits = traits  # pyright: ignore[reportAttributeAccessIssue]
 
 
-class EngineTraitsMap(Dict[str, EngineTraits]):
+class EngineTraitsMap(dict[str, EngineTraits]):
     """A python dictionary to map :class:`EngineTraits` by engine name."""
 
-    ENGINE_TRAITS_FILE = (data_dir / 'engine_traits.json').resolve()
+    ENGINE_TRAITS_FILE: pathlib.Path = (data_dir / 'engine_traits.json').resolve()
     """File with persistence of the :py:obj:`EngineTraitsMap`."""
 
     def save_data(self):
@@ -212,7 +211,7 @@ class EngineTraitsMap(Dict[str, EngineTraits]):
         return obj
 
     @classmethod
-    def fetch_traits(cls, log: Callable) -> 'EngineTraitsMap':
+    def fetch_traits(cls, log: t.Callable[[str], None]) -> 'EngineTraitsMap':
         from searx import engines  # pylint: disable=cyclic-import, import-outside-toplevel
 
         names = list(engines.engines)
@@ -220,7 +219,7 @@ class EngineTraitsMap(Dict[str, EngineTraits]):
         obj = cls()
 
         for engine_name in names:
-            engine = engines.engines[engine_name]
+            engine: Engine | types.ModuleType = engines.engines[engine_name]
             traits = None
 
             # pylint: disable=broad-exception-caught
@@ -242,7 +241,7 @@ class EngineTraitsMap(Dict[str, EngineTraits]):
 
         return obj
 
-    def set_traits(self, engine: Engine | types.ModuleType):
+    def set_traits(self, engine: "Engine | types.ModuleType"):
         """Set traits in a :py:obj:`Engine` namespace.
 
         :param engine: engine instance build by :py:func:`searx.engines.load_engine`

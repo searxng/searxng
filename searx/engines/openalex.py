@@ -3,7 +3,6 @@
 #
 # Engine is documented in: docs/dev/engines/online/openalex.rst
 
-from __future__ import annotations
 
 import typing as t
 from datetime import datetime

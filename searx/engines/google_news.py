@@ -24,8 +24,6 @@ The google news API ignores some parameters from the common :ref:`google API`:
 .. _save: https://developers.google.com/custom-search/docs/xml_results#safesp
 """
 
-from typing import TYPE_CHECKING
-
 from urllib.parse import urlencode
 import base64
 from lxml import html
@@ -45,13 +43,6 @@ from searx.engines.google import (
     detect_google_sorry,
 )
 from searx.enginelib.traits import EngineTraits
-
-if TYPE_CHECKING:
-    import logging
-
-    logger: logging.Logger
-
-traits: EngineTraits
 
 # about
 about = {

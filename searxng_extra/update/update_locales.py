@@ -7,7 +7,6 @@
 - :py:obj:`searx.locales.LOCALE_NAMES`
 """
 # pylint: disable=invalid-name
-from __future__ import annotations
 
 from typing import Set
 import json

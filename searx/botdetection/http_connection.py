@@ -11,7 +11,7 @@ the Connection_ header is set to ``close``.
 
 """
 
-from __future__ import annotations
+
 from ipaddress import (
     IPv4Network,
     IPv6Network,

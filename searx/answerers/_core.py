@@ -1,7 +1,6 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 # pylint: disable=too-few-public-methods, missing-module-docstring
 
-from __future__ import annotations
 
 import abc
 import importlib
@@ -85,7 +84,7 @@ class ModuleAnswerer(Answerer):
         return AnswererInfo(**kwargs)
 
 
-class AnswerStorage(dict):
+class AnswerStorage(dict):  # type: ignore
     """A storage for managing the *answerers* of SearXNG.  With the
     :py:obj:`AnswerStorage.ask`” method, a caller can ask questions to all
     *answerers* and receives a list of the results."""

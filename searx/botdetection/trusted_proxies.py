@@ -3,7 +3,7 @@
 (:py:obj:`flask.request.remote_addr`) behind a proxy chain."""
 # pylint: disable=too-many-branches
 
-from __future__ import annotations
+
 import typing as t
 
 from collections import abc
@@ -19,6 +19,7 @@ if t.TYPE_CHECKING:
     from _typeshed.wsgi import WSGIEnvironment
 
 
+@t.final
 class ProxyFix:
     """A middleware like the ProxyFix_ class, where the ``x_for`` argument is
     replaced by a method that determines the number of trusted proxies via the
@@ -54,7 +55,7 @@ class ProxyFix:
 
     """
 
-    def __init__(self, wsgi_app: WSGIApplication) -> None:
+    def __init__(self, wsgi_app: "WSGIApplication") -> None:
         self.wsgi_app = wsgi_app
 
     def trusted_proxies(self) -> list[IPv4Network | IPv6Network]:
@@ -84,7 +85,7 @@ class ProxyFix:
         # fallback to first address
         return x_forwarded_for[0].compressed
 
-    def __call__(self, environ: WSGIEnvironment, start_response: StartResponse) -> abc.Iterable[bytes]:
+    def __call__(self, environ: "WSGIEnvironment", start_response: "StartResponse") -> abc.Iterable[bytes]:
         # pylint: disable=too-many-statements
 
         trusted_proxies = self.trusted_proxies()

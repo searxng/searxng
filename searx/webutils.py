@@ -1,7 +1,6 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 # pylint: disable=missing-module-docstring, invalid-name
 
-from __future__ import annotations
 
 import os
 import pathlib
@@ -67,7 +66,7 @@ exception_classname_to_text = {
 }
 
 
-def get_translated_errors(unresponsive_engines: Iterable[UnresponsiveEngine]):
+def get_translated_errors(unresponsive_engines: "Iterable[UnresponsiveEngine]"):
     translated_errors = []
 
     for unresponsive_engine in unresponsive_engines:
@@ -110,7 +109,7 @@ class CSVWriter:
             self.writerow(row)
 
 
-def write_csv_response(csv: CSVWriter, rc: ResultContainer) -> None:  # pylint: disable=redefined-outer-name
+def write_csv_response(csv: CSVWriter, rc: "ResultContainer") -> None:  # pylint: disable=redefined-outer-name
     """Write rows of the results to a query (``application/csv``) into a CSV
     table (:py:obj:`CSVWriter`).  First line in the table contain the column
     names.  The column "type" specifies the type, the following types are
@@ -157,7 +156,7 @@ class JSONEncoder(json.JSONEncoder):  # pylint: disable=missing-class-docstring
         return super().default(o)
 
 
-def get_json_response(sq: SearchQuery, rc: ResultContainer) -> str:
+def get_json_response(sq: "SearchQuery", rc: "ResultContainer") -> str:
     """Returns the JSON string of the results to a query (``application/json``)"""
     data = {
         'query': sq.query,
@@ -311,7 +310,7 @@ def searxng_l10n_timespan(dt: datetime) -> str:  # pylint: disable=invalid-name
 NO_SUBGROUPING = 'without further subgrouping'
 
 
-def group_engines_in_tab(engines: Iterable[Engine]) -> List[Tuple[str, Iterable[Engine]]]:
+def group_engines_in_tab(engines: "Iterable[Engine]") -> List[Tuple[str, "Iterable[Engine]"]]:
     """Groups an Iterable of engines by their first non tab category (first subgroup)"""
 
     def get_subgroup(eng):

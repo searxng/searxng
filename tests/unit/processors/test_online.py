@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 # pylint: disable=missing-module-docstring,disable=missing-class-docstring,invalid-name
 
-from searx.search import SearchQuery, EngineRef
+from searx.search.models import EngineRef, SearchQuery
 from searx.search.processors import online
 from searx import engines
 

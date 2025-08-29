@@ -2,7 +2,9 @@
 # pylint: disable=missing-module-docstring, too-few-public-methods
 
 # the public namespace has not yet been finally defined ..
-# __all__ = ["EngineRef", "SearchQuery"]
+# __all__ = [..., ]
+
+import typing as t
 
 import threading
 from timeit import default_timer
@@ -15,21 +17,27 @@ from searx import settings
 import searx.answerers
 import searx.plugins
 from searx.engines import load_engines
-from searx.extended_types import SXNG_Request
 from searx.external_bang import get_bang_url
-from searx.metrics import initialize as initialize_metrics, counter_inc, histogram_observe_time
+from searx.metrics import initialize as initialize_metrics, counter_inc
 from searx.network import initialize as initialize_network, check_network_configuration
 from searx.results import ResultContainer
 from searx.search.checker import initialize as initialize_checker
-from searx.search.models import SearchQuery
 from searx.search.processors import PROCESSORS, initialize as initialize_processors
 
-from .models import EngineRef, SearchQuery
+
+if t.TYPE_CHECKING:
+    from .models import SearchQuery
+    from searx.extended_types import SXNG_Request
 
 logger = logger.getChild('search')
 
 
-def initialize(settings_engines=None, enable_checker=False, check_network=False, enable_metrics=True):
+def initialize(
+    settings_engines: list[dict[str, t.Any]] = None,  # pyright: ignore[reportArgumentType]
+    enable_checker: bool = False,
+    check_network: bool = False,
+    enable_metrics: bool = True,
+):
     settings_engines = settings_engines or settings['engines']
     load_engines(settings_engines)
     initialize_network(settings_engines, settings['outgoing'])
@@ -44,27 +52,25 @@ def initialize(settings_engines=None, enable_checker=False, check_network=False,
 class Search:
     """Search information container"""
 
-    __slots__ = "search_query", "result_container", "start_time", "actual_timeout"
+    __slots__ = "search_query", "result_container", "start_time", "actual_timeout"  # type: ignore
 
-    def __init__(self, search_query: SearchQuery):
+    def __init__(self, search_query: "SearchQuery"):
         """Initialize the Search"""
         # init vars
         super().__init__()
-        self.search_query = search_query
-        self.result_container = ResultContainer()
-        self.start_time = None
-        self.actual_timeout = None
+        self.search_query: "SearchQuery" = search_query
+        self.result_container: ResultContainer = ResultContainer()
+        self.start_time: float | None = None
+        self.actual_timeout: float | None = None
 
-    def search_external_bang(self):
-        """
-        Check if there is a external bang.
-        If yes, update self.result_container and return True
-        """
+    def search_external_bang(self) -> bool:
+        """Check if there is a external bang.  If yes, update
+        self.result_container and return True."""
         if self.search_query.external_bang:
             self.result_container.redirect_url = get_bang_url(self.search_query)
 
-            # This means there was a valid bang and the
-            # rest of the search does not need to be continued
+            # This means there was a valid bang and the rest of the search does
+            # not need to be continued
             if isinstance(self.result_container.redirect_url, str):
                 return True
         return False
@@ -72,13 +78,13 @@ class Search:
     def search_answerers(self):
 
         results = searx.answerers.STORAGE.ask(self.search_query.query)
-        self.result_container.extend(None, results)
+        self.result_container.extend(None, results)  # pyright: ignore[reportArgumentType]
         return bool(results)
 
     # do search-request
-    def _get_requests(self):
+    def _get_requests(self) -> tuple[list[tuple[str, str, dict[str, t.Any]]], int]:
         # init vars
-        requests = []
+        requests: list[tuple[str, str, dict[str, t.Any]]] = []
 
         # max of all selected engine timeout
         default_timeout = 0
@@ -130,7 +136,7 @@ class Search:
 
         return requests, actual_timeout
 
-    def search_multiple_requests(self, requests):
+    def search_multiple_requests(self, requests: list[tuple[str, str, dict[str, t.Any]]]):
         # pylint: disable=protected-access
         search_id = str(uuid4())
 
@@ -181,7 +187,7 @@ class SearchWithPlugins(Search):
 
     __slots__ = 'user_plugins', 'request'
 
-    def __init__(self, search_query: SearchQuery, request: SXNG_Request, user_plugins: list[str]):
+    def __init__(self, search_query: "SearchQuery", request: "SXNG_Request", user_plugins: list[str]):
         super().__init__(search_query)
         self.user_plugins = user_plugins
         self.result_container.on_result = self._on_result

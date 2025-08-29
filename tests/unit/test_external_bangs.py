@@ -8,7 +8,7 @@ from searx.external_bang import (
     get_bang_definition_and_autocomplete,
     LEAF_KEY,
 )
-from searx.search import SearchQuery, EngineRef
+from searx.search.models import EngineRef, SearchQuery
 from tests import SearxTestCase
 
 

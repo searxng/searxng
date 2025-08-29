@@ -1,18 +1,20 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 """Searx preferences implementation.
 """
-from __future__ import annotations
 
 # pylint: disable=useless-object-inheritance
+
+import typing as t
 
 from base64 import urlsafe_b64encode, urlsafe_b64decode
 from zlib import compress, decompress
 from urllib.parse import parse_qs, urlencode
-from typing import Iterable, Dict, List, Optional
 from collections import OrderedDict
+from collections.abc import Iterable
 
 import flask
 import babel
+import babel.core
 
 import searx.plugins
 
@@ -27,7 +29,7 @@ from searx.webutils import VALID_LANGUAGE_CODE
 COOKIE_MAX_AGE = 60 * 60 * 24 * 365 * 5  # 5 years
 DOI_RESOLVERS = list(settings['doi_resolvers'])
 
-MAP_STR2BOOL: Dict[str, bool] = OrderedDict(
+MAP_STR2BOOL: dict[str, bool] = OrderedDict(
     [
         ('0', False),
         ('1', True),
@@ -47,10 +49,10 @@ class ValidationException(Exception):
 class Setting:
     """Base class of user settings"""
 
-    def __init__(self, default_value, locked: bool = False):
+    def __init__(self, default_value: t.Any, locked: bool = False):
         super().__init__()
-        self.value = default_value
-        self.locked = locked
+        self.value: t.Any = default_value
+        self.locked: bool = locked
 
     def parse(self, data: str):
         """Parse ``data`` and store the result at ``self.value``
@@ -80,9 +82,11 @@ class StringSetting(Setting):
 class EnumStringSetting(Setting):
     """Setting of a value which can only come from the given choices"""
 
-    def __init__(self, default_value: str, choices: Iterable[str], locked=False):
+    value: str
+
+    def __init__(self, default_value: str, choices: Iterable[str], locked: bool = False):
         super().__init__(default_value, locked)
-        self.choices = choices
+        self.choices: Iterable[str] = choices
         self._validate_selection(self.value)
 
     def _validate_selection(self, selection: str):
@@ -98,12 +102,12 @@ class EnumStringSetting(Setting):
 class MultipleChoiceSetting(Setting):
     """Setting of values which can only come from the given choices"""
 
-    def __init__(self, default_value: List[str], choices: Iterable[str], locked=False):
+    def __init__(self, default_value: list[str], choices: Iterable[str], locked: bool = False):
         super().__init__(default_value, locked)
-        self.choices = choices
+        self.choices: Iterable[str] = choices
         self._validate_selections(self.value)
 
-    def _validate_selections(self, selections: List[str]):
+    def _validate_selections(self, selections: list[str]):
         for item in selections:
             if item not in self.choices:
                 raise ValidationException('Invalid value: "{0}"'.format(selections))
@@ -111,14 +115,14 @@ class MultipleChoiceSetting(Setting):
     def parse(self, data: str):
         """Parse and validate ``data`` and store the result at ``self.value``"""
         if data == '':
-            self.value = []
+            self.value: list[str] = []
             return
 
         elements = data.split(',')
         self._validate_selections(elements)
         self.value = elements
 
-    def parse_form(self, data: List[str]):
+    def parse_form(self, data: list[str]):
         if self.locked:
             return
 
@@ -135,9 +139,9 @@ class MultipleChoiceSetting(Setting):
 class SetSetting(Setting):
     """Setting of values of type ``set`` (comma separated string)"""
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.values = set()
+    def __init__(self, *args, **kwargs):  # type: ignore
+        super().__init__(*args, **kwargs)  # type: ignore
+        self.values: set[str] = set()
 
     def get_value(self):
         """Returns a string with comma separated values."""
@@ -168,7 +172,9 @@ class SetSetting(Setting):
 class SearchLanguageSetting(EnumStringSetting):
     """Available choices may change, so user's value may not be in choices anymore"""
 
-    def _validate_selection(self, selection):
+    value: str
+
+    def _validate_selection(self, selection: str):
         if selection != '' and selection != 'auto' and not VALID_LANGUAGE_CODE.match(selection):
             raise ValidationException('Invalid language code: "{0}"'.format(selection))
 
@@ -192,9 +198,14 @@ class SearchLanguageSetting(EnumStringSetting):
 class MapSetting(Setting):
     """Setting of a value that has to be translated in order to be storable"""
 
-    def __init__(self, default_value, map: Dict[str, object], locked=False):  # pylint: disable=redefined-builtin
+    key: str
+    value: object
+
+    def __init__(
+        self, default_value: object, map: dict[str, object], locked: bool = False
+    ):  # pylint: disable=redefined-builtin
         super().__init__(default_value, locked)
-        self.map = map
+        self.map: dict[str, object] = map
 
         if self.value not in self.map.values():
             raise ValidationException('Invalid default value')
@@ -216,7 +227,10 @@ class MapSetting(Setting):
 class BooleanSetting(Setting):
     """Setting of a boolean value that has to be translated in order to be storable"""
 
-    def normalized_str(self, val):
+    value: bool
+    key: str
+
+    def normalized_str(self, val: t.Any) -> str:
         for v_str, v_obj in MAP_STR2BOOL.items():
             if val == v_obj:
                 return v_str
@@ -236,11 +250,11 @@ class BooleanSetting(Setting):
 class BooleanChoices:
     """Maps strings to booleans that are either true or false."""
 
-    def __init__(self, name: str, choices: Dict[str, bool], locked: bool = False):
-        self.name = name
-        self.choices = choices
-        self.locked = locked
-        self.default_choices = dict(choices)
+    def __init__(self, name: str, choices: dict[str, bool], locked: bool = False):
+        self.name: str = name
+        self.choices: dict[str, bool] = choices
+        self.locked: bool = locked
+        self.default_choices: dict[str, bool] = dict(choices)
 
     def transform_form_items(self, items):
         return items
@@ -257,7 +271,7 @@ class BooleanChoices:
             if enabled in self.choices:
                 self.choices[enabled] = True
 
-    def parse_form(self, items: List[str]):
+    def parse_form(self, items: list[str]):
         if self.locked:
             return
 
@@ -327,10 +341,10 @@ class ClientPref:
 
     # hint: searx.webapp.get_client_settings should be moved into this class
 
-    locale: babel.Locale
+    locale: babel.Locale | None
     """Locale preferred by the client."""
 
-    def __init__(self, locale: Optional[babel.Locale] = None):
+    def __init__(self, locale: babel.Locale | None = None):
         self.locale = locale
 
     @property
@@ -354,7 +368,7 @@ class ClientPref:
         if not al_header:
             return cls(locale=None)
 
-        pairs = []
+        pairs: list[tuple[babel.Locale, float]] = []
         for l in al_header.split(','):
             # fmt: off
             lang, qvalue = [_.strip() for _ in (l.split(';') + ['q=1',])[:2]]
@@ -387,7 +401,7 @@ class Preferences:
 
         super().__init__()
 
-        self.key_value_settings: Dict[str, Setting] = {
+        self.key_value_settings: dict[str, Setting] = {
             # fmt: off
             'categories': MultipleChoiceSetting(
                 ['general'],
@@ -516,7 +530,7 @@ class Preferences:
             dict_data[x] = y[0]
         self.parse_dict(dict_data)
 
-    def parse_dict(self, input_data: Dict[str, str]):
+    def parse_dict(self, input_data: dict[str, str]):
         """parse preferences from request (``flask.request.form``)"""
         for user_setting_name, user_setting in input_data.items():
             if user_setting_name in self.key_value_settings:
@@ -530,7 +544,7 @@ class Preferences:
             elif user_setting_name == 'tokens':
                 self.tokens.parse(user_setting)
 
-    def parse_form(self, input_data: Dict[str, str]):
+    def parse_form(self, input_data: dict[str, str]):
         """Parse formular (``<input>``) data from a ``flask.request.form``"""
         disabled_engines = []
         enabled_categories = []
@@ -554,12 +568,12 @@ class Preferences:
             elif user_setting_name == 'tokens':
                 self.tokens.parse_form(user_setting)
 
-        self.key_value_settings['categories'].parse_form(enabled_categories)
+        self.key_value_settings['categories'].parse_form(enabled_categories)  # type: ignore
         self.engines.parse_form(disabled_engines)
         self.plugins.parse_form(disabled_plugins)
 
     # cannot be used in case of engines or plugins
-    def get_value(self, user_setting_name: str):
+    def get_value(self, user_setting_name: str) -> t.Any:
         """Returns the value for ``user_setting_name``"""
         ret_val = None
         if user_setting_name in self.key_value_settings:

@@ -14,17 +14,11 @@ billion images `[tineye.com] <https://tineye.com/how>`_.
 
 """
 
-from typing import TYPE_CHECKING
 from urllib.parse import urlencode
 from datetime import datetime
 from flask_babel import gettext
 
 from searx.result_types import EngineResults
-
-if TYPE_CHECKING:
-    import logging
-
-    logger = logging.getLogger()
 
 about = {
     "website": 'https://tineye.com',

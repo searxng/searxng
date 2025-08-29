@@ -3,7 +3,6 @@
 DuckDuckGo Weather
 ~~~~~~~~~~~~~~~~~~
 """
-from __future__ import annotations
 
 import typing as t
 from json import loads
@@ -13,18 +12,10 @@ from dateutil import parser as date_parser
 
 from searx.engines.duckduckgo import fetch_traits  # pylint: disable=unused-import
 from searx.engines.duckduckgo import get_ddg_lang
-from searx.enginelib.traits import EngineTraits
 
 from searx.result_types import EngineResults
 from searx.extended_types import SXNG_Response
 from searx import weather
-
-if t.TYPE_CHECKING:
-    import logging
-
-    logger: logging.Logger
-
-traits: EngineTraits
 
 
 about = {

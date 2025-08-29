@@ -1,7 +1,6 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 """Implementations used for weather conditions and forecast."""
 # pylint: disable=too-few-public-methods
-from __future__ import annotations
 
 __all__ = [
     "symbol_url",
@@ -34,7 +33,7 @@ from searx.cache import ExpireCache, ExpireCacheCfg
 from searx.extended_types import sxng_request
 from searx.wikidata_units import convert_to_si, convert_from_si
 
-WEATHER_DATA_CACHE: ExpireCache = None  # type: ignore
+WEATHER_DATA_CACHE: ExpireCache | None = None
 """A simple cache for weather data (geo-locations, icons, ..)"""
 
 YR_WEATHER_SYMBOL_URL = "https://raw.githubusercontent.com/nrkno/yr-weather-symbols/refs/heads/master/symbols/outline"
@@ -90,7 +89,7 @@ def _get_sxng_locale_tag() -> str:
     return "en"
 
 
-def symbol_url(condition: WeatherConditionType) -> str | None:
+def symbol_url(condition: "WeatherConditionType") -> str | None:
     """Returns ``data:`` URL for the weather condition symbol or ``None`` if
     the condition is not of type :py:obj:`WeatherConditionType`.
 
@@ -168,7 +167,7 @@ class GeoLocation:
         return babel.Locale("en", territory="DE")
 
     @classmethod
-    def by_query(cls, search_term: str) -> GeoLocation:
+    def by_query(cls, search_term: str) -> "GeoLocation":
         """Factory method to get a GeoLocation object by a search term.  If no
         location can be determined for the search term, a :py:obj:`ValueError`
         is thrown.
@@ -182,10 +181,10 @@ class GeoLocation:
             geo_props = cls._query_open_meteo(search_term=search_term)
             cache.set(key=search_term, value=geo_props, expire=None, ctx=ctx)
 
-        return cls(**geo_props)
+        return cls(**geo_props)  # type: ignore
 
     @classmethod
-    def _query_open_meteo(cls, search_term: str) -> dict:
+    def _query_open_meteo(cls, search_term: str) -> dict[str, str]:
         url = f"https://geocoding-api.open-meteo.com/v1/search?name={quote_plus(search_term)}"
         resp = network.get(url, timeout=3)
         if resp.status_code != 200:
@@ -200,6 +199,7 @@ class GeoLocation:
 DateTimeFormats = typing.Literal["full", "long", "medium", "short"]
 
 
+@typing.final
 class DateTime:
     """Class to represent date & time.  Essentially, it is a wrapper that
     conveniently combines :py:obj:`datetime.datetime` and
@@ -226,6 +226,7 @@ class DateTime:
         return babel.dates.format_datetime(self.datetime, format=fmt, locale=locale)
 
 
+@typing.final
 class Temperature:
     """Class for converting temperature units and for string representation of
     measured values."""
@@ -293,6 +294,7 @@ class Temperature:
         return template.format(value=val_str, unit=unit)
 
 
+@typing.final
 class Pressure:
     """Class for converting pressure units and for string representation of
     measured values."""
@@ -335,6 +337,7 @@ class Pressure:
         return template.format(value=val_str, unit=unit)
 
 
+@typing.final
 class WindSpeed:
     """Class for converting speed or velocity units and for string
     representation of measured values.
@@ -384,6 +387,7 @@ class WindSpeed:
         return template.format(value=val_str, unit=unit)
 
 
+@typing.final
 class RelativeHumidity:
     """Amount of relative humidity in the air. The unit is ``%``"""
 
@@ -417,6 +421,7 @@ class RelativeHumidity:
         return template.format(value=val_str, unit=unit)
 
 
+@typing.final
 class Compass:
     """Class for converting compass points and azimuth values (360°)"""
 

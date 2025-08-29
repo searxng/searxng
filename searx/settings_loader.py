@@ -17,16 +17,18 @@ to be loaded. The rules used for this can be found in the
 
 """
 
-from __future__ import annotations
-
+import typing as t
 import os.path
-from collections.abc import Mapping
+from collections.abc import MutableMapping
 from itertools import filterfalse
 from pathlib import Path
 
 import yaml
 
 from searx.exceptions import SearxSettingsException
+
+JSONType: t.TypeAlias = dict[str, "JSONType"] | list["JSONType"] | str | int | float | bool | None
+SettingsType: t.TypeAlias = dict[str, JSONType]
 
 searx_dir = os.path.abspath(os.path.dirname(__file__))
 
@@ -35,7 +37,7 @@ DEFAULT_SETTINGS_FILE = Path(searx_dir) / SETTINGS_YAML
 """The :origin:`searx/settings.yml` file with all the default settings."""
 
 
-def load_yaml(file_name: str | Path):
+def load_yaml(file_name: str | Path) -> SettingsType:
     """Load YAML config from a file."""
     try:
         with open(file_name, 'r', encoding='utf-8') as settings_yaml:
@@ -46,7 +48,7 @@ def load_yaml(file_name: str | Path):
         raise SearxSettingsException(e, str(file_name)) from e
 
 
-def get_yaml_cfg(file_name: str | Path) -> dict:
+def get_yaml_cfg(file_name: str | Path) -> SettingsType:
     """Shortcut to load a YAML config from a file, located in the
 
     - :py:obj:`get_user_cfg_folder` or
@@ -113,23 +115,23 @@ def get_user_cfg_folder() -> Path | None:
     return folder
 
 
-def update_dict(default_dict, user_dict):
+def update_dict(default_dict: MutableMapping[str, t.Any], user_dict: MutableMapping[str, t.Any]):
     for k, v in user_dict.items():
-        if isinstance(v, Mapping):
-            default_dict[k] = update_dict(default_dict.get(k, {}), v)
+        if isinstance(v, MutableMapping):
+            default_dict[k] = update_dict(default_dict.get(k, {}), v)  # type: ignore
         else:
             default_dict[k] = v
     return default_dict
 
 
-def update_settings(default_settings: dict, user_settings: dict):
+def update_settings(default_settings: MutableMapping[str, t.Any], user_settings: MutableMapping[str, t.Any]):
     # pylint: disable=too-many-branches
 
     # merge everything except the engines
     for k, v in user_settings.items():
         if k not in ('use_default_settings', 'engines'):
-            if k in default_settings and isinstance(v, Mapping):
-                update_dict(default_settings[k], v)
+            if k in default_settings and isinstance(v, MutableMapping):
+                update_dict(default_settings[k], v)  # type: ignore
             else:
                 default_settings[k] = v
 
@@ -142,15 +144,15 @@ def update_settings(default_settings: dict, user_settings: dict):
         default_settings['plugins'] = plugins
 
     # parse the engines
-    remove_engines = None
-    keep_only_engines = None
-    use_default_settings = user_settings.get('use_default_settings')
+    remove_engines: None | list[str] = None
+    keep_only_engines: list[str] | None = None
+    use_default_settings: dict[str, t.Any] | None = user_settings.get('use_default_settings')
     if isinstance(use_default_settings, dict):
         remove_engines = use_default_settings.get('engines', {}).get('remove')
         keep_only_engines = use_default_settings.get('engines', {}).get('keep_only')
 
     if 'engines' in user_settings or remove_engines is not None or keep_only_engines is not None:
-        engines = default_settings['engines']
+        engines: list[dict[str, t.Any]] = default_settings['engines']
 
         # parse "use_default_settings.engines.remove"
         if remove_engines is not None:
@@ -165,7 +167,7 @@ def update_settings(default_settings: dict, user_settings: dict):
         if user_engines:
             engines_dict = dict((definition['name'], definition) for definition in engines)
             for user_engine in user_engines:
-                default_engine = engines_dict.get(user_engine['name'])
+                default_engine: dict[str, t.Any] | None = engines_dict.get(user_engine['name'])
                 if default_engine:
                     update_dict(default_engine, user_engine)
                 else:
@@ -177,9 +179,9 @@ def update_settings(default_settings: dict, user_settings: dict):
     return default_settings
 
 
-def is_use_default_settings(user_settings):
+def is_use_default_settings(user_settings: SettingsType) -> bool:
 
-    use_default_settings = user_settings.get('use_default_settings')
+    use_default_settings: bool | JSONType = user_settings.get('use_default_settings')
     if use_default_settings is True:
         return True
     if isinstance(use_default_settings, dict):
@@ -189,7 +191,7 @@ def is_use_default_settings(user_settings):
     raise ValueError('Invalid value for use_default_settings')
 
 
-def load_settings(load_user_settings=True) -> tuple[dict, str]:
+def load_settings(load_user_settings: bool = True) -> tuple[SettingsType, str]:
     """Function for loading the settings of the SearXNG application
     (:ref:`settings.yml <searxng settings.yml>`)."""
 

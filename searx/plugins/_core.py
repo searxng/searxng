@@ -1,7 +1,6 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 # pylint: disable=too-few-public-methods,missing-module-docstring
 
-from __future__ import annotations
 
 __all__ = ["PluginInfo", "Plugin", "PluginCfg", "PluginStorage"]
 
@@ -11,6 +10,7 @@ import inspect
 import logging
 import re
 import typing
+from collections.abc import Sequence
 
 from dataclasses import dataclass, field
 
@@ -89,7 +89,7 @@ class Plugin(abc.ABC):
 
     fqn: str = ""
 
-    def __init__(self, plg_cfg: PluginCfg) -> None:
+    def __init__(self, plg_cfg: "PluginCfg") -> None:
         super().__init__()
         if not self.fqn:
             self.fqn = self.__class__.__mro__[0].__module__
@@ -120,7 +120,7 @@ class Plugin(abc.ABC):
 
         return id(self)
 
-    def __eq__(self, other):
+    def __eq__(self, other: typing.Any):
         """py:obj:`Plugin` objects are equal if the hash values of the two
         objects are equal."""
 
@@ -166,7 +166,7 @@ class Plugin(abc.ABC):
         """
         return True
 
-    def post_search(self, request: SXNG_Request, search: "SearchWithPlugins") -> None | typing.Sequence[Result]:
+    def post_search(self, request: SXNG_Request, search: "SearchWithPlugins") -> None | Sequence[Result]:
         """Runs AFTER the search request.  Can return a list of
         :py:obj:`Result <searx.result_types._base.Result>` objects to be added to the
         final result list."""
@@ -207,7 +207,7 @@ class PluginStorage:
 
         return [p.info for p in self.plugin_list]
 
-    def load_settings(self, cfg: dict[str, dict]):
+    def load_settings(self, cfg: dict[str, dict[str, typing.Any]]):
         """Load plugins configured in SearXNG's settings :ref:`settings
         plugins`."""
 

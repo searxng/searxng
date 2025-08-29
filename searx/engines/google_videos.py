@@ -11,7 +11,6 @@
 .. _data URLs:
    https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/Data_URIs
 """
-from __future__ import annotations
 
 from urllib.parse import urlencode, urlparse, parse_qs
 from lxml import html
@@ -32,10 +31,7 @@ from searx.engines.google import (
     ui_async,
     parse_data_images,
 )
-from searx.enginelib.traits import EngineTraits
 from searx.utils import get_embeded_stream_url
-
-traits: EngineTraits
 
 # about
 about = {

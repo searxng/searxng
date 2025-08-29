@@ -7,7 +7,7 @@ from searx.exceptions import SearxParameterException
 from searx.webutils import VALID_LANGUAGE_CODE
 from searx.query import RawTextQuery
 from searx.engines import categories, engines
-from searx.search import SearchQuery, EngineRef
+from searx.search.models import SearchQuery, EngineRef
 from searx.preferences import Preferences, is_locked
 from searx.utils import detect_language
 

@@ -10,13 +10,15 @@ intended monkey patching of the engine modules.
    engine modules aren't converted to an engine class, these builtin types will
    still be needed.
 """
-from __future__ import annotations
 
 import logging
+from searx.enginelib import traits as _traits
 
 logger: logging.Logger
 supported_languages: str
 language_aliases: str
+language_support: bool
+traits: _traits.EngineTraits
 
 # from searx.engines.ENGINE_DEFAULT_ARGS
 about: dict[str, dict[str, str | None | bool]]

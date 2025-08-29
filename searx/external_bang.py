@@ -1,13 +1,20 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 # pylint: disable=missing-module-docstring
 
+__all__ = ["get_bang_url"]
+
+import typing as t
+
 from urllib.parse import quote_plus, urlparse
 from searx.data import EXTERNAL_BANGS
 
 LEAF_KEY = chr(16)
 
+if t.TYPE_CHECKING:
+    from searx.search.models import SearchQuery
 
-def get_node(external_bangs_db, bang):
+
+def get_node(external_bangs_db: dict[str, t.Any], bang: str):
     node = external_bangs_db['trie']
     after = ''
     before = ''
@@ -20,7 +27,7 @@ def get_node(external_bangs_db, bang):
     return node, before, after
 
 
-def get_bang_definition_and_ac(external_bangs_db, bang):
+def get_bang_definition_and_ac(external_bangs_db: dict[str, t.Any], bang: str):
     node, before, after = get_node(external_bangs_db, bang)
 
     bang_definition = None
@@ -39,7 +46,7 @@ def get_bang_definition_and_ac(external_bangs_db, bang):
     return bang_definition, bang_ac_list
 
 
-def resolve_bang_definition(bang_definition, query):
+def resolve_bang_definition(bang_definition: str, query: str) -> tuple[str, int]:
     url, rank = bang_definition.split(chr(1))
     if url.startswith('//'):
         url = 'https:' + url
@@ -54,7 +61,9 @@ def resolve_bang_definition(bang_definition, query):
     return (url, rank)
 
 
-def get_bang_definition_and_autocomplete(bang, external_bangs_db=None):  # pylint: disable=invalid-name
+def get_bang_definition_and_autocomplete(
+    bang: str, external_bangs_db: dict[str, t.Any] | None = None
+):  # pylint: disable=invalid-name
     if external_bangs_db is None:
         external_bangs_db = EXTERNAL_BANGS
 
@@ -81,7 +90,7 @@ def get_bang_definition_and_autocomplete(bang, external_bangs_db=None):  # pylin
     return bang_definition, new_autocomplete
 
 
-def get_bang_url(search_query, external_bangs_db=None):
+def get_bang_url(search_query: "SearchQuery", external_bangs_db: dict[str, t.Any] | None = None) -> str | None:
     """
     Redirects if the user supplied a correct bang search.
     :param search_query: This is a search_query object which contains preferences and the submitted queries.

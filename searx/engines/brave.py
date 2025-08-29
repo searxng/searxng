@@ -117,7 +117,7 @@ Implementations
 
 """
 
-from typing import Any, TYPE_CHECKING
+import typing as t
 
 from urllib.parse import (
     urlencode,
@@ -139,13 +139,7 @@ from searx.utils import (
 )
 from searx.enginelib.traits import EngineTraits
 from searx.result_types import EngineResults
-
-if TYPE_CHECKING:
-    import logging
-
-    logger: logging.Logger
-
-traits: EngineTraits
+from searx.extended_types import SXNG_Response
 
 about = {
     "website": 'https://search.brave.com/',
@@ -158,16 +152,18 @@ about = {
 
 base_url = "https://search.brave.com/"
 categories = []
-brave_category = 'search'
-Goggles = Any
+brave_category: t.Literal["search", "videos", "images", "news", "goggles"] = 'search'
 """Brave supports common web-search, videos, images, news, and goggles search.
 
 - ``search``: Common WEB search
 - ``videos``: search for videos
 - ``images``: search for images
 - ``news``: search for news
-- ``goggles``: Common WEB search with custom rules
+- ``goggles``: Common WEB search with custom rules, requires a :py:obj:`Goggles` URL.
 """
+
+Goggles: str = ""
+"""This should be a URL ending in ``.goggle``"""
 
 brave_spellcheck = False
 """Brave supports some kind of spell checking.  When activated, Brave tries to
@@ -192,7 +188,7 @@ time_range_support = False
 """Brave only supports time-range in :py:obj:`brave_category` ``search`` (UI
 category All) and in the goggles category."""
 
-time_range_map = {
+time_range_map: dict[str, str] = {
     'day': 'pd',
     'week': 'pw',
     'month': 'pm',
@@ -200,12 +196,12 @@ time_range_map = {
 }
 
 
-def request(query, params):
+def request(query: str, params: dict[str, t.Any]) -> None:
 
     # Don't accept br encoding / see https://github.com/searxng/searxng/pull/1787
     params['headers']['Accept-Encoding'] = 'gzip, deflate'
 
-    args = {
+    args: dict[str, t.Any] = {
         'q': query,
         'source': 'web',
     }
@@ -254,7 +250,7 @@ def _extract_published_date(published_date_raw):
         return None
 
 
-def response(resp) -> EngineResults:
+def response(resp: SXNG_Response) -> EngineResults:
 
     if brave_category in ('search', 'goggles'):
         return _parse_search(resp)
