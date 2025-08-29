@@ -25,8 +25,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-07-03 14:46+0000\n"
-"PO-Revision-Date: 2025-07-06 08:08+0000\n"
+"POT-Creation-Date: 2025-08-28 08:53+0000\n"
+"PO-Revision-Date: 2025-08-28 19:34+0000\n"
 "Last-Translator: kratos <makesocialfoss32@keemail.me>\n"
 "Language-Team: Hungarian <https://translate.codeberg.org/projects/searxng/"
 "searxng/hu/>\n"
@@ -35,7 +35,7 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.11.4\n"
+"X-Generator: Weblate 5.12.2\n"
 "Generated-By: Babel 2.17.0\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
@@ -184,7 +184,7 @@ msgid "Uptime"
 msgstr "Üzemidő"
 
 #. BRAND_CUSTOM_LINKS['ABOUT']
-#: searx/searxng.msg searx/templates/simple/base.html:49
+#: searx/searxng.msg searx/templates/simple/base.html:46
 msgid "About"
 msgstr "Névjegy"
 
@@ -199,12 +199,12 @@ msgid "Cloud cover"
 msgstr "Felhő borította"
 
 #. WEATHER_TERMS['CONDITION']
-#: searx/engines/duckduckgo_weather.py:45 searx/searxng.msg
+#: searx/searxng.msg
 msgid "Condition"
 msgstr "Állapot"
 
 #. WEATHER_TERMS['CURRENT CONDITION']
-#: searx/engines/duckduckgo_weather.py:118 searx/searxng.msg
+#: searx/searxng.msg
 msgid "Current condition"
 msgstr "Jelenlegi állapot"
 
@@ -214,23 +214,22 @@ msgid "Evening"
 msgstr "Este"
 
 #. WEATHER_TERMS['FEELS LIKE']
-#: searx/engines/duckduckgo_weather.py:53 searx/searxng.msg
+#: searx/searxng.msg
 msgid "Feels like"
 msgstr "érzetre"
 
 #. WEATHER_TERMS['HUMIDITY']
-#: searx/engines/duckduckgo_weather.py:64 searx/searxng.msg
-#: searx/templates/simple/answer/weather.html:29
+#: searx/searxng.msg searx/templates/simple/answer/weather.html:29
 msgid "Humidity"
 msgstr "Páratartalom"
 
 #. WEATHER_TERMS['MAX TEMP.']
-#: searx/engines/duckduckgo_weather.py:77 searx/searxng.msg
+#: searx/searxng.msg
 msgid "Max temp."
 msgstr "Maximum hőm."
 
 #. WEATHER_TERMS['MIN TEMP.']
-#: searx/engines/duckduckgo_weather.py:73 searx/searxng.msg
+#: searx/searxng.msg
 msgid "Min temp."
 msgstr "Minimum hőm."
 
@@ -255,34 +254,32 @@ msgid "Pressure"
 msgstr "Nyomás"
 
 #. WEATHER_TERMS['SUNRISE']
-#: searx/engines/duckduckgo_weather.py:81 searx/searxng.msg
+#: searx/searxng.msg
 msgid "Sunrise"
 msgstr "Napfelkelte"
 
 #. WEATHER_TERMS['SUNSET']
-#: searx/engines/duckduckgo_weather.py:82 searx/searxng.msg
+#: searx/searxng.msg
 msgid "Sunset"
 msgstr "Naplemente"
 
 #. WEATHER_TERMS['TEMPERATURE']
-#: searx/engines/duckduckgo_weather.py:48 searx/searxng.msg
-#: searx/templates/simple/answer/weather.html:17
+#: searx/searxng.msg searx/templates/simple/answer/weather.html:17
 msgid "Temperature"
 msgstr "Hőmérséklet"
 
 #. WEATHER_TERMS['UV INDEX']
-#: searx/engines/duckduckgo_weather.py:80 searx/searxng.msg
+#: searx/searxng.msg
 msgid "UV index"
 msgstr "UV terhelés"
 
 #. WEATHER_TERMS['VISIBILITY']
-#: searx/engines/duckduckgo_weather.py:62 searx/searxng.msg
+#: searx/searxng.msg
 msgid "Visibility"
 msgstr "Láthatóság"
 
 #. WEATHER_TERMS['WIND']
-#: searx/engines/duckduckgo_weather.py:58 searx/searxng.msg
-#: searx/templates/simple/answer/weather.html:23
+#: searx/searxng.msg searx/templates/simple/answer/weather.html:23
 msgid "Wind"
 msgstr "Szél"
 
@@ -552,93 +549,93 @@ msgstr "Lezárt"
 msgid "answered"
 msgstr "megválaszolt"
 
-#: searx/webapp.py:292
+#: searx/webapp.py:329
 msgid "No item found"
 msgstr "Nincs találat"
 
 #: searx/engines/qwant.py:291
-#: searx/templates/simple/result_templates/images.html:23 searx/webapp.py:294
+#: searx/templates/simple/result_templates/images.html:23 searx/webapp.py:331
 msgid "Source"
 msgstr "Forrás"
 
-#: searx/webapp.py:296
+#: searx/webapp.py:333
 msgid "Error loading the next page"
 msgstr "Hiba a következő oldal betöltése során"
 
-#: searx/webapp.py:447 searx/webapp.py:845
+#: searx/webapp.py:476 searx/webapp.py:874
 msgid "Invalid settings, please edit your preferences"
 msgstr "Érvénytelen beállítások, módosítsa őket"
 
-#: searx/webapp.py:463
+#: searx/webapp.py:492
 msgid "Invalid settings"
 msgstr "Érvénytelen beállítások"
 
-#: searx/webapp.py:540 searx/webapp.py:630
+#: searx/webapp.py:569 searx/webapp.py:659
 msgid "search error"
 msgstr "keresési hiba"
 
-#: searx/webutils.py:35
+#: searx/webutils.py:36
 msgid "timeout"
 msgstr "időtúllépés"
 
-#: searx/webutils.py:36
+#: searx/webutils.py:37
 msgid "parsing error"
 msgstr "feldolgozási hiba"
 
-#: searx/webutils.py:37
+#: searx/webutils.py:38
 msgid "HTTP protocol error"
 msgstr "HTTP protokollhiba"
 
-#: searx/webutils.py:38
+#: searx/webutils.py:39
 msgid "network error"
 msgstr "hálózati hiba"
 
-#: searx/webutils.py:39
+#: searx/webutils.py:40
 msgid "SSL error: certificate validation has failed"
 msgstr "SSL hiba: a tanúsítvány ellenőrzése nem sikerült"
 
-#: searx/webutils.py:41
+#: searx/webutils.py:42
 msgid "unexpected crash"
 msgstr "váratlan összeomlás"
 
-#: searx/webutils.py:48
+#: searx/webutils.py:49
 msgid "HTTP error"
 msgstr "HTTP hiba"
 
-#: searx/webutils.py:49
+#: searx/webutils.py:50
 msgid "HTTP connection error"
 msgstr "HTTP csatlakozási hiba"
 
-#: searx/webutils.py:55
+#: searx/webutils.py:56
 msgid "proxy error"
 msgstr "proxy hiba"
 
-#: searx/webutils.py:56
+#: searx/webutils.py:57
 msgid "CAPTCHA"
 msgstr "CAPTCHA"
 
-#: searx/webutils.py:57
+#: searx/webutils.py:58
 msgid "too many requests"
 msgstr "túl sok kérés"
 
-#: searx/webutils.py:58
+#: searx/webutils.py:59
 msgid "access denied"
 msgstr "hozzáférés megtagadva"
 
-#: searx/webutils.py:59
+#: searx/webutils.py:60
 msgid "server API error"
 msgstr "kiszolgáló API hiba"
 
-#: searx/webutils.py:78
+#: searx/webutils.py:79
 msgid "Suspended"
 msgstr "Felfüggesztve"
 
-#: searx/webutils.py:313
+#: searx/webutils.py:306
 #, python-brace-format
 msgid "{minutes} minute(s) ago"
 msgstr "{minutes} perce"
 
-#: searx/webutils.py:314
+#: searx/webutils.py:307
 #, python-brace-format
 msgid "{hours} hour(s), {minutes} minute(s) ago"
 msgstr "{hours} óra, {minutes} perce"
@@ -647,7 +644,7 @@ msgstr "{hours} óra, {minutes} perce"
 msgid "Generate different random values"
 msgstr "Különböző véletlen értékek előállítása"
 
-#: searx/answerers/statistics.py:36
+#: searx/answerers/statistics.py:37
 #, python-brace-format
 msgid "Compute {func} of the arguments"
 msgstr "A(z) {func} értékének kiszámítása az argumentumokból"
@@ -681,12 +678,11 @@ msgstr "szavazatok:"
 msgid "clicks"
 msgstr "kattintások"
 
-#: searx/engines/seekr.py:193 searx/engines/yummly.py:71
-#: searx/engines/zlibrary.py:137
+#: searx/engines/seekr.py:193 searx/engines/zlibrary.py:137
 msgid "Language"
 msgstr "Nyelv"
 
-#: searx/engines/semantic_scholar.py:101
+#: searx/engines/semantic_scholar.py:102
 #, python-brace-format
 msgid ""
 "{numCitations} citations from the year {firstCitationVelocityYear} to "
@@ -750,8 +746,8 @@ msgid ""
 "Converts strings to different hash digests. Available functions: md5, "
 "sha1, sha224, sha256, sha384, sha512."
 msgstr ""
-"A karakterláncokat különböző hash kivonatokra alakítja. Elérhető funkciók: "
-"md5, sha1, sha224, sha256, sha384, sha512."
+"A karakterláncokat különböző hash kivonatokra alakítja. Elérhető "
+"funkciók: md5, sha1, sha224, sha256, sha384, sha512."
 
 #: searx/plugins/hash_plugin.py:64
 msgid "hash digest"
@@ -764,8 +760,8 @@ msgstr "Kiszolgálónév modul"
 #: searx/plugins/hostnames.py:124
 msgid "Rewrite hostnames and remove or prioritize results based on the hostname"
 msgstr ""
-"A kiszolgálónevek átírása és az eredmények eltávolítása vagy rangsorolása a "
-"kiszolgálónév alapján"
+"A kiszolgálónevek átírása és az eredmények eltávolítása vagy rangsorolása"
+" a kiszolgálónév alapján"
 
 #: searx/plugins/oa_doi_rewrite.py:55
 msgid "Open Access DOI rewrite"
@@ -779,11 +775,11 @@ msgstr ""
 "Ha lehetséges, elkerüli a fizetőkapukat azáltal, hogy a kiadvány szabadon"
 " elérhető változatára irányítja át"
 
-#: searx/plugins/self_info.py:37
+#: searx/plugins/self_info.py:38
 msgid "Self Information"
 msgstr "Személyes információk"
 
-#: searx/plugins/self_info.py:39
+#: searx/plugins/self_info.py:40
 msgid ""
 "Displays your IP if the query is \"ip\" and your user agent if the query "
 "is \"user-agent\"."
@@ -791,13 +787,21 @@ msgstr ""
 "Megjeleníti az IP címet, ha a lekérdezés „ip”, valamint a felhasználói "
 "ügynököt, ha a lekérdezés „user-agent”."
 
-#: searx/plugins/self_info.py:52
+#: searx/plugins/self_info.py:54
 msgid "Your IP is: "
 msgstr "Az IP címed: "
 
-#: searx/plugins/self_info.py:55
+#: searx/plugins/self_info.py:58
 msgid "Your user-agent is: "
 msgstr "A felhasználói ügynököd: "
+
+#: searx/plugins/time_zone.py:34
+msgid "Timezones plugin"
+msgstr "Időzónák bővítmény"
+
+#: searx/plugins/time_zone.py:35
+msgid "Display the current time on different time zones."
+msgstr "Az aktuális idő megjelenítése különböző időzónákban."
 
 #: searx/plugins/tor_check.py:42
 msgid "Tor check plugin"
@@ -824,11 +828,11 @@ msgstr "Ön a Tor-t használja, és úgy tűnik, hogy külső IP-címmel rendelk
 msgid "You are not using Tor and you have the external IP address"
 msgstr "Ön nem használja a Tor-t és külső IP-címmel rendelkezik"
 
-#: searx/plugins/tracker_url_remover.py:35
+#: searx/plugins/tracker_url_remover.py:36
 msgid "Tracker URL remover"
 msgstr "Követők eltávolítása a webcímekből"
 
-#: searx/plugins/tracker_url_remover.py:36
+#: searx/plugins/tracker_url_remover.py:37
 msgid "Remove trackers arguments from the returned URL"
 msgstr ""
 "Eltávolítja a felhasználók követéshez használt argumentumokat a találatok"
@@ -860,45 +864,45 @@ msgstr "Ugrás a %(search_page)s."
 msgid "search page"
 msgstr "keresőoldalra"
 
-#: searx/templates/simple/base.html:53
+#: searx/templates/simple/base.html:50
 msgid "Donate"
 msgstr "Adományozás"
 
-#: searx/templates/simple/base.html:57
+#: searx/templates/simple/base.html:54
 #: searx/templates/simple/preferences.html:156
 msgid "Preferences"
 msgstr "Beállítások"
 
-#: searx/templates/simple/base.html:67
+#: searx/templates/simple/base.html:64
 msgid "Powered by"
 msgstr "Az oldalt kiszolgálja:"
 
-#: searx/templates/simple/base.html:67
+#: searx/templates/simple/base.html:64
 msgid "a privacy-respecting, open metasearch engine"
 msgstr "egy adatvédelmet tiszteletben tartó, nyílt forráskódú metakereső"
 
-#: searx/templates/simple/base.html:68
+#: searx/templates/simple/base.html:65
 #: searx/templates/simple/result_templates/packages.html:59
 msgid "Source code"
 msgstr "Forráskód"
 
-#: searx/templates/simple/base.html:69
+#: searx/templates/simple/base.html:66
 msgid "Issue tracker"
 msgstr "Hibajegykövető"
 
-#: searx/templates/simple/base.html:70 searx/templates/simple/stats.html:18
+#: searx/templates/simple/base.html:67 searx/templates/simple/stats.html:18
 msgid "Engine stats"
 msgstr "Keresőstatisztikák"
 
-#: searx/templates/simple/base.html:72
+#: searx/templates/simple/base.html:69
 msgid "Public instances"
 msgstr "Publikus példányok"
 
-#: searx/templates/simple/base.html:75
+#: searx/templates/simple/base.html:72
 msgid "Privacy policy"
 msgstr "Adatvédelmi irányelvek"
 
-#: searx/templates/simple/base.html:78
+#: searx/templates/simple/base.html:75
 msgid "Contact instance maintainer"
 msgstr "Kapcsolatfelvétel a példány karbantartójával"
 
@@ -1427,8 +1431,8 @@ msgid ""
 "This tab does not exist in the user interface, but you can search with "
 "these engines via !bangs."
 msgstr ""
-"Ez a fül nem létezik a felhasználói felületen, de ezekkel a keresőmotorokkal "
-"kereshet a !bang parancsok segítségével."
+"Ez a fül nem létezik a felhasználói felületen, de ezekkel a "
+"keresőmotorokkal kereshet a !bang parancsok segítségével."
 
 #: searx/templates/simple/preferences/engines.html:15
 msgid "Enable all"
@@ -1467,14 +1471,14 @@ msgid ""
 "These settings are stored in your cookies. This allows us not to store "
 "this data about you."
 msgstr ""
-"Ezeket a beállításokat a sütik tárolják. Ez lehetővé teszi számunkra, hogy "
-"ne tároljuk ezeket az adatokat Önről."
+"Ezeket a beállításokat a sütik tárolják. Ez lehetővé teszi számunkra, "
+"hogy ne tároljuk ezeket az adatokat Önről."
 
 #: searx/templates/simple/preferences/footer.html:3
 msgid "These cookies serve your sole convenience; we don't use them to track you."
 msgstr ""
-"Ezek a sütik kizárólag az Ön kényelmét szolgálják; nem arra használjuk őket, "
-"hogy nyomon kövessük Önt."
+"Ezek a sütik kizárólag az Ön kényelmét szolgálják; nem arra használjuk "
+"őket, hogy nyomon kövessük Önt."
 
 #: searx/templates/simple/preferences/footer.html:6
 msgid "Save"
@@ -1522,7 +1526,8 @@ msgid ""
 "Automatically load the next page when scrolling to the bottom of the "
 "current page"
 msgstr ""
-"A következő oldal automatikus betöltése az aktuális oldal aljára görgetéskor"
+"A következő oldal automatikus betöltése az aktuális oldal aljára "
+"görgetéskor"
 
 #: searx/templates/simple/preferences/language.html:24
 msgid "What language do you prefer for search?"

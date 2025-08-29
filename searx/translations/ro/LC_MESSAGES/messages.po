@@ -28,20 +28,19 @@
 # itsmrxyz <itsmrxyz@noreply.codeberg.org>, 2025.
 msgid ""
 msgstr ""
-"Project-Id-Version: searx\n"
+"Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-07-03 14:46+0000\n"
+"POT-Creation-Date: 2025-08-28 08:53+0000\n"
 "PO-Revision-Date: 2025-07-30 09:09+0000\n"
 "Last-Translator: return42 <return42@noreply.codeberg.org>\n"
-"Language-Team: Romanian <https://translate.codeberg.org/projects/searxng/"
-"searxng/ro/>\n"
 "Language: ro\n"
+"Language-Team: Romanian "
+"<https://translate.codeberg.org/projects/searxng/searxng/ro/>\n"
+"Plural-Forms: nplurals=3; plural=n==1 ? 0 : (n==0 || (n%100 > 0 && n%100 "
+"< 20)) ? 1 : 2;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=n==1 ? 0 : (n==0 || (n%100 > 0 && n%100 < "
-"20)) ? 1 : 2;\n"
-"X-Generator: Weblate 5.12.2\n"
 "Generated-By: Babel 2.17.0\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
@@ -190,7 +189,7 @@ msgid "Uptime"
 msgstr "Timpul de funcționare"
 
 #. BRAND_CUSTOM_LINKS['ABOUT']
-#: searx/searxng.msg searx/templates/simple/base.html:49
+#: searx/searxng.msg searx/templates/simple/base.html:46
 msgid "About"
 msgstr "Despre"
 
@@ -205,12 +204,12 @@ msgid "Cloud cover"
 msgstr "Nebulozitate"
 
 #. WEATHER_TERMS['CONDITION']
-#: searx/engines/duckduckgo_weather.py:45 searx/searxng.msg
+#: searx/searxng.msg
 msgid "Condition"
 msgstr "Condiție"
 
 #. WEATHER_TERMS['CURRENT CONDITION']
-#: searx/engines/duckduckgo_weather.py:118 searx/searxng.msg
+#: searx/searxng.msg
 msgid "Current condition"
 msgstr "Condiție curentă"
 
@@ -220,23 +219,22 @@ msgid "Evening"
 msgstr "Seara"
 
 #. WEATHER_TERMS['FEELS LIKE']
-#: searx/engines/duckduckgo_weather.py:53 searx/searxng.msg
+#: searx/searxng.msg
 msgid "Feels like"
 msgstr "Se simte ca"
 
 #. WEATHER_TERMS['HUMIDITY']
-#: searx/engines/duckduckgo_weather.py:64 searx/searxng.msg
-#: searx/templates/simple/answer/weather.html:29
+#: searx/searxng.msg searx/templates/simple/answer/weather.html:29
 msgid "Humidity"
 msgstr "Umiditate"
 
 #. WEATHER_TERMS['MAX TEMP.']
-#: searx/engines/duckduckgo_weather.py:77 searx/searxng.msg
+#: searx/searxng.msg
 msgid "Max temp."
 msgstr "Temperatură maximă."
 
 #. WEATHER_TERMS['MIN TEMP.']
-#: searx/engines/duckduckgo_weather.py:73 searx/searxng.msg
+#: searx/searxng.msg
 msgid "Min temp."
 msgstr "Temperatură minimă."
 
@@ -261,34 +259,32 @@ msgid "Pressure"
 msgstr "Presiune"
 
 #. WEATHER_TERMS['SUNRISE']
-#: searx/engines/duckduckgo_weather.py:81 searx/searxng.msg
+#: searx/searxng.msg
 msgid "Sunrise"
 msgstr "Răsărit"
 
 #. WEATHER_TERMS['SUNSET']
-#: searx/engines/duckduckgo_weather.py:82 searx/searxng.msg
+#: searx/searxng.msg
 msgid "Sunset"
 msgstr "Apus"
 
 #. WEATHER_TERMS['TEMPERATURE']
-#: searx/engines/duckduckgo_weather.py:48 searx/searxng.msg
-#: searx/templates/simple/answer/weather.html:17
+#: searx/searxng.msg searx/templates/simple/answer/weather.html:17
 msgid "Temperature"
 msgstr "Temperatură"
 
 #. WEATHER_TERMS['UV INDEX']
-#: searx/engines/duckduckgo_weather.py:80 searx/searxng.msg
+#: searx/searxng.msg
 msgid "UV index"
 msgstr "Index UV"
 
 #. WEATHER_TERMS['VISIBILITY']
-#: searx/engines/duckduckgo_weather.py:62 searx/searxng.msg
+#: searx/searxng.msg
 msgid "Visibility"
 msgstr "Vizibilitate"
 
 #. WEATHER_TERMS['WIND']
-#: searx/engines/duckduckgo_weather.py:58 searx/searxng.msg
-#: searx/templates/simple/answer/weather.html:23
+#: searx/searxng.msg searx/templates/simple/answer/weather.html:23
 msgid "Wind"
 msgstr "Vânt"
 
@@ -558,93 +554,93 @@ msgstr "închis"
 msgid "answered"
 msgstr "răspuns"
 
-#: searx/webapp.py:292
+#: searx/webapp.py:329
 msgid "No item found"
 msgstr "Niciun element găsit"
 
 #: searx/engines/qwant.py:291
-#: searx/templates/simple/result_templates/images.html:23 searx/webapp.py:294
+#: searx/templates/simple/result_templates/images.html:23 searx/webapp.py:331
 msgid "Source"
 msgstr "Sursă"
 
-#: searx/webapp.py:296
+#: searx/webapp.py:333
 msgid "Error loading the next page"
 msgstr "Eroare la încărcarea paginii următoare"
 
-#: searx/webapp.py:447 searx/webapp.py:845
+#: searx/webapp.py:476 searx/webapp.py:874
 msgid "Invalid settings, please edit your preferences"
 msgstr "Configurări nevalide, modificați preferințele"
 
-#: searx/webapp.py:463
+#: searx/webapp.py:492
 msgid "Invalid settings"
 msgstr "Configurări nevalide"
 
-#: searx/webapp.py:540 searx/webapp.py:630
+#: searx/webapp.py:569 searx/webapp.py:659
 msgid "search error"
 msgstr "eroare de căutare"
 
-#: searx/webutils.py:35
+#: searx/webutils.py:36
 msgid "timeout"
 msgstr "pauza"
 
-#: searx/webutils.py:36
+#: searx/webutils.py:37
 msgid "parsing error"
 msgstr "eroare de transpunere"
 
-#: searx/webutils.py:37
+#: searx/webutils.py:38
 msgid "HTTP protocol error"
 msgstr "eroare protocol HTTP"
 
-#: searx/webutils.py:38
+#: searx/webutils.py:39
 msgid "network error"
 msgstr "eroare rețea"
 
-#: searx/webutils.py:39
+#: searx/webutils.py:40
 msgid "SSL error: certificate validation has failed"
 msgstr "Eroare SSL: validarea certificatului a esuat"
 
-#: searx/webutils.py:41
+#: searx/webutils.py:42
 msgid "unexpected crash"
 msgstr "inchidere fortata neasteptata"
 
-#: searx/webutils.py:48
+#: searx/webutils.py:49
 msgid "HTTP error"
 msgstr "eroare HTTP"
 
-#: searx/webutils.py:49
+#: searx/webutils.py:50
 msgid "HTTP connection error"
 msgstr "eroare conexiune HTTP"
 
-#: searx/webutils.py:55
+#: searx/webutils.py:56
 msgid "proxy error"
 msgstr "eroare proxy"
 
-#: searx/webutils.py:56
+#: searx/webutils.py:57
 msgid "CAPTCHA"
 msgstr "CAPTCHA"
 
-#: searx/webutils.py:57
+#: searx/webutils.py:58
 msgid "too many requests"
 msgstr "Prea multe solicitări"
 
-#: searx/webutils.py:58
+#: searx/webutils.py:59
 msgid "access denied"
 msgstr "Acces interzis"
 
-#: searx/webutils.py:59
+#: searx/webutils.py:60
 msgid "server API error"
 msgstr "eroare la API pe Server"
 
-#: searx/webutils.py:78
+#: searx/webutils.py:79
 msgid "Suspended"
 msgstr "Întrerupt"
 
-#: searx/webutils.py:313
+#: searx/webutils.py:306
 #, python-brace-format
 msgid "{minutes} minute(s) ago"
 msgstr "{minutes} minut(e) în urmă"
 
-#: searx/webutils.py:314
+#: searx/webutils.py:307
 #, python-brace-format
 msgid "{hours} hour(s), {minutes} minute(s) ago"
 msgstr "{hours} oră(e), {minutes} minut(e) în urmă"
@@ -653,7 +649,7 @@ msgstr "{hours} oră(e), {minutes} minut(e) în urmă"
 msgid "Generate different random values"
 msgstr "Generează valori aleatoare diferite"
 
-#: searx/answerers/statistics.py:36
+#: searx/answerers/statistics.py:37
 #, python-brace-format
 msgid "Compute {func} of the arguments"
 msgstr "Calculați {func} argumentelor"
@@ -687,12 +683,11 @@ msgstr "voturi"
 msgid "clicks"
 msgstr "click-uri"
 
-#: searx/engines/seekr.py:193 searx/engines/yummly.py:71
-#: searx/engines/zlibrary.py:137
+#: searx/engines/seekr.py:193 searx/engines/zlibrary.py:137
 msgid "Language"
 msgstr "Limba"
 
-#: searx/engines/semantic_scholar.py:101
+#: searx/engines/semantic_scholar.py:102
 #, python-brace-format
 msgid ""
 "{numCitations} citations from the year {firstCitationVelocityYear} to "
@@ -770,8 +765,8 @@ msgstr "Pluginul Hostnames"
 #: searx/plugins/hostnames.py:124
 msgid "Rewrite hostnames and remove or prioritize results based on the hostname"
 msgstr ""
-"Rescrie hostname-urile și elimină sau prioritizează rezultatele pe baza a "
-"hostname"
+"Rescrie hostname-urile și elimină sau prioritizează rezultatele pe baza a"
+" hostname"
 
 #: searx/plugins/oa_doi_rewrite.py:55
 msgid "Open Access DOI rewrite"
@@ -785,11 +780,11 @@ msgstr ""
 "Evită „zidurile de plată” redirecționând către versiuni cu acces deschis "
 "ale publicațiilor când sunt disponibile"
 
-#: searx/plugins/self_info.py:37
+#: searx/plugins/self_info.py:38
 msgid "Self Information"
 msgstr "Informații despre sine"
 
-#: searx/plugins/self_info.py:39
+#: searx/plugins/self_info.py:40
 msgid ""
 "Displays your IP if the query is \"ip\" and your user agent if the query "
 "is \"user-agent\"."
@@ -797,13 +792,21 @@ msgstr ""
 "Afișează IP-ul dvs. dacă interogarea este „ip” și agentul de utilizator "
 "dacă interogarea este „user-agent”."
 
-#: searx/plugins/self_info.py:52
+#: searx/plugins/self_info.py:54
 msgid "Your IP is: "
 msgstr "IP-ul dumneavoastră este: "
 
-#: searx/plugins/self_info.py:55
+#: searx/plugins/self_info.py:58
 msgid "Your user-agent is: "
 msgstr "User-agent-ul dumneavoastră este: "
+
+#: searx/plugins/time_zone.py:34
+msgid "Timezones plugin"
+msgstr ""
+
+#: searx/plugins/time_zone.py:35
+msgid "Display the current time on different time zones."
+msgstr ""
 
 #: searx/plugins/tor_check.py:42
 msgid "Tor check plugin"
@@ -830,11 +833,11 @@ msgstr "Folosiți Tor și se pare că aveți adresa IP externă"
 msgid "You are not using Tor and you have the external IP address"
 msgstr "Nu utilizați Tor și aveți adresa IP externă"
 
-#: searx/plugins/tracker_url_remover.py:35
+#: searx/plugins/tracker_url_remover.py:36
 msgid "Tracker URL remover"
 msgstr "Eliminator de URL pentru urmăritor"
 
-#: searx/plugins/tracker_url_remover.py:36
+#: searx/plugins/tracker_url_remover.py:37
 msgid "Remove trackers arguments from the returned URL"
 msgstr "Elimină argumentele urmăritorului din URL-ul returnat"
 
@@ -864,45 +867,45 @@ msgstr "Navighează la %(search_page)s."
 msgid "search page"
 msgstr "pagină de căutare"
 
-#: searx/templates/simple/base.html:53
+#: searx/templates/simple/base.html:50
 msgid "Donate"
 msgstr "Donează"
 
-#: searx/templates/simple/base.html:57
+#: searx/templates/simple/base.html:54
 #: searx/templates/simple/preferences.html:156
 msgid "Preferences"
 msgstr "Preferințe"
 
-#: searx/templates/simple/base.html:67
+#: searx/templates/simple/base.html:64
 msgid "Powered by"
 msgstr "Motorizat de"
 
-#: searx/templates/simple/base.html:67
+#: searx/templates/simple/base.html:64
 msgid "a privacy-respecting, open metasearch engine"
 msgstr "motor de cautare gratuit ce respecta intimitatea"
 
-#: searx/templates/simple/base.html:68
+#: searx/templates/simple/base.html:65
 #: searx/templates/simple/result_templates/packages.html:59
 msgid "Source code"
 msgstr "Cod sursă"
 
-#: searx/templates/simple/base.html:69
+#: searx/templates/simple/base.html:66
 msgid "Issue tracker"
 msgstr "Urmăritor de probleme"
 
-#: searx/templates/simple/base.html:70 searx/templates/simple/stats.html:18
+#: searx/templates/simple/base.html:67 searx/templates/simple/stats.html:18
 msgid "Engine stats"
 msgstr "Statisticile motorului"
 
-#: searx/templates/simple/base.html:72
+#: searx/templates/simple/base.html:69
 msgid "Public instances"
 msgstr "Instanțe publice"
 
-#: searx/templates/simple/base.html:75
+#: searx/templates/simple/base.html:72
 msgid "Privacy policy"
 msgstr "Politica de Confidențialitate"
 
-#: searx/templates/simple/base.html:78
+#: searx/templates/simple/base.html:75
 msgid "Contact instance maintainer"
 msgstr "Contactați întreținătorul instanței"
 
@@ -1483,8 +1486,8 @@ msgstr ""
 #: searx/templates/simple/preferences/footer.html:3
 msgid "These cookies serve your sole convenience; we don't use them to track you."
 msgstr ""
-"Aceste cookie-uri sunt pentru confortul tău exclusiv; nu le folosim pentru a "
-"te urmări."
+"Aceste cookie-uri sunt pentru confortul tău exclusiv; nu le folosim "
+"pentru a te urmări."
 
 #: searx/templates/simple/preferences/footer.html:6
 msgid "Save"
@@ -1532,7 +1535,8 @@ msgid ""
 "Automatically load the next page when scrolling to the bottom of the "
 "current page"
 msgstr ""
-"Încarcă automat următoarea pagină când derulezi până în josul paginii curente"
+"Încarcă automat următoarea pagină când derulezi până în josul paginii "
+"curente"
 
 #: searx/templates/simple/preferences/language.html:24
 msgid "What language do you prefer for search?"
@@ -2397,3 +2401,4 @@ msgstr "ascunde video"
 
 #~ msgid "Change SearXNG layout"
 #~ msgstr "Schimbă aspectul la SearXNG"
+
