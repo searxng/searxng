@@ -148,6 +148,12 @@ def request(query, params):
         args['offset'] = (params['pageno'] - 1) * args['count']
 
     params['url'] = url + urlencode(args)
+    params['headers'] = {
+        "Accept": "application/json",
+        "Accept-Language": q_locale.replace("_", "-"),
+        "Referer": "https://www.qwant.com/",
+        "Origin": "https://www.qwant.com",
+    }
 
     return params
 
