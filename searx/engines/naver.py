@@ -16,6 +16,7 @@ from searx.utils import (
     html_to_text,
     parse_duration_string,
     js_variable_to_python,
+    get_embeded_stream_url,
 )
 
 # engine metadata
@@ -185,6 +186,8 @@ def parse_videos(data):
     dom = html.fromstring(data)
 
     for item in eval_xpath_list(dom, "//li[contains(@class, 'video_item')]"):
+        url = eval_xpath_getindex(item, ".//a[contains(@class, 'info_title')]/@href", 0)
+
         thumbnail = None
         try:
             thumbnail = eval_xpath_getindex(item, ".//img[contains(@class, 'thumb')]/@src", 0)
@@ -201,9 +204,10 @@ def parse_videos(data):
             {
                 "template": "videos.html",
                 "title": extract_text(eval_xpath(item, ".//a[contains(@class, 'info_title')]")),
-                "url": eval_xpath_getindex(item, ".//a[contains(@class, 'info_title')]/@href", 0),
+                "url": url,
                 "thumbnail": thumbnail,
-                'length': length,
+                "length": length,
+                "iframe_src": get_embeded_stream_url(url),
             }
         )
 
