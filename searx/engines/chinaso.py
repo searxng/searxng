@@ -54,7 +54,9 @@ Implementations
 
 """
 
+import base64
 import typing
+import secrets
 
 from urllib.parse import urlencode
 from datetime import datetime
@@ -140,6 +142,10 @@ def request(query, params):
     query_params.update(category_config[chinaso_category]['params'])
 
     params["url"] = f"{base_url}{category_config[chinaso_category]['endpoint']}?{urlencode(query_params)}"
+    cookie = {
+        "uid": base64.b64encode(secrets.token_bytes(16)).decode("utf-8"),
+    }
+    params["cookies"] = cookie
 
     return params
 
