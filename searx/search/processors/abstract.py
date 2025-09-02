@@ -144,6 +144,7 @@ class EngineProcessor(ABC):
         - A page-number > 1 when engine does not support paging.
         - A time range when the engine does not support time range.
         """
+
         # if paging is not supported, skip
         if search_query.pageno > 1 and not self.engine.paging:
             return None
