@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 """Typification of the *code* results.  Results of this type are rendered in
 the :origin:`code.html <searx/templates/simple/result_templates/code.html>`
-template.  For highlighting the code passages, Pygments is used.
+template.  For highlighting the code passages, Pygments_ is used.
 
 .. _Pygments:  https://pygments.org
 
@@ -44,20 +44,19 @@ def is_valid_language(code_language: str) -> bool:
 
 @t.final
 class Code(MainResult, kw_only=True):
-    """Simple table view which maps *key* names (first col) to *values*
-    (second col)."""
+    """Result type suitable for displaying code passages."""
 
     template: str = "code.html"
 
     repository: str | None = None
-    """A link related to a repository related to the *result*"""
+    """A link related to a repository related to the *result*."""
 
     codelines: list[tuple[int, str]] = []
     """A list of two digit tuples where the first item is the line number and
     the second item is the code line."""
 
     hl_lines: set[int] = set()
-    """A list of line numbers to highlight"""
+    """A list of line numbers to highlight."""
 
     code_language: str = "<guess>"
     """Pygment's short name of the lexer, e.g. ``text`` for the
@@ -84,15 +83,13 @@ class Code(MainResult, kw_only=True):
     its default is the filename."""
 
     strip_new_lines: bool = True
-    """Strip leading and trailing newlines for each returned fragment.
-    Single file might return multiple code fragments.
-    """
+    """Strip leading and trailing newlines for each returned fragment (default:
+    ``True``).  Single file might return multiple code fragments."""
 
     strip_whitespace: bool = False
-    """Strip all leading and trailing whitespace for each returned fragment.
-    Single file might return multiple code fragments. Enabling this might break
-    code indentation.
-    """
+    """Strip all leading and trailing whitespace for each returned fragment
+    (default: ``False``).  Single file might return multiple code fragments.
+    Enabling this might break code indentation."""
 
     def __post_init__(self):
         super().__post_init__()
