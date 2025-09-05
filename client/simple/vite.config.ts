@@ -36,12 +36,9 @@ const svg2svg_favicon_opts: Config = {
 export default {
   base: "/static/themes/simple/",
   publicDir: "static/",
-  mode: "production",
-  // mode: "development",
 
   build: {
     target: browserslistToEsbuild(manifest.browserslist),
-    cssTarget: browserslistToEsbuild(manifest.browserslist),
     manifest: "manifest.json",
     emptyOutDir: true,
     assetsDir: "",
@@ -49,7 +46,7 @@ export default {
 
     sourcemap: true,
 
-    rollupOptions: {
+    rolldownOptions: {
       input: {
         // build CSS files
         "searxng-ltr.css": `${PATH.src}/less/style-ltr.less`,
@@ -160,9 +157,5 @@ export default {
       targets: browserslistToTargets(manifest.browserslist)
     },
     devSourcemap: true
-  }, // end: css
-
-  experimental: {
-    enableNativePlugin: true
-  } // end: experimental
+  } // end: css
 } satisfies UserConfig;
