@@ -34,18 +34,19 @@
 # reis2724 <reis2724@noreply.codeberg.org>, 2025.
 msgid ""
 msgstr ""
-"Project-Id-Version:  searx\n"
+"Project-Id-Version: searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-08-28 08:53+0000\n"
-"PO-Revision-Date: 2025-08-19 23:09+0000\n"
-"Last-Translator: reis2724 <reis2724@noreply.codeberg.org>\n"
+"POT-Creation-Date: 2025-09-01 12:54+0000\n"
+"PO-Revision-Date: 2025-09-02 04:50+0000\n"
+"Last-Translator: return42 <return42@noreply.codeberg.org>\n"
+"Language-Team: Portuguese <https://translate.codeberg.org/projects/searxng/"
+"searxng/pt/>\n"
 "Language: pt\n"
-"Language-Team: Portuguese "
-"<https://translate.codeberg.org/projects/searxng/searxng/pt/>\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Weblate 5.12.2\n"
 "Generated-By: Babel 2.17.0\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
@@ -91,7 +92,7 @@ msgstr "vídeos"
 #. CATEGORY_NAMES['RADIO']
 #: searx/engines/radio_browser.py:151 searx/searxng.msg
 msgid "radio"
-msgstr "radio"
+msgstr "rádio"
 
 #. CATEGORY_NAMES['TV']
 #: searx/searxng.msg
@@ -749,7 +750,7 @@ msgstr "Calcular expressões matemáticas na barra de pesquisa"
 
 #: searx/plugins/hash_plugin.py:34
 msgid "Hash plugin"
-msgstr "Hash do plugin"
+msgstr "Plugin de hashes"
 
 #: searx/plugins/hash_plugin.py:36
 msgid ""
@@ -805,7 +806,7 @@ msgstr "O seu user-agent é: "
 
 #: searx/plugins/time_zone.py:34
 msgid "Timezones plugin"
-msgstr ""
+msgstr "plugin de fuso-horários"
 
 #: searx/plugins/time_zone.py:35
 msgid "Display the current time on different time zones."
@@ -813,16 +814,15 @@ msgstr ""
 
 #: searx/plugins/tor_check.py:42
 msgid "Tor check plugin"
-msgstr "Verificar plugin Tor"
+msgstr "Plugin para verificar tor"
 
 #: searx/plugins/tor_check.py:44
 msgid ""
 "This plugin checks if the address of the request is a Tor exit-node, and "
 "informs the user if it is; like check.torproject.org, but from SearXNG."
 msgstr ""
-"Este plug-in verifica se o endereço da solicitação é um nó de saída do "
-"Tor e informa ao usuário se for; como check.torproject.org, mas de "
-"SearXNG."
+"Este plug-in verifica se o endereço da conexão é um nó de saída de Tor e "
+"informa ao usuário se for; como check.torproject.org, mas de SearXNG."
 
 #: searx/plugins/tor_check.py:65
 msgid "Could not download the list of Tor exit-nodes from"
@@ -1131,6 +1131,7 @@ msgstr "Percentagem"
 msgid "Parameter"
 msgstr "Parâmetro"
 
+#: searx/templates/simple/result_templates/code.html:29
 #: searx/templates/simple/result_templates/files.html:36
 #: searx/templates/simple/stats.html:119
 msgid "Filename"
@@ -1640,8 +1641,8 @@ msgid "Change result URL formatting"
 msgstr "Alterar formatação do URL final"
 
 #: searx/templates/simple/result_templates/code.html:13
-msgid "repo"
-msgstr "repositório"
+msgid "Repository"
+msgstr "Repositório"
 
 #: searx/templates/simple/result_templates/default.html:6
 #: searx/templates/simple/result_templates/files.html:8
@@ -2400,3 +2401,5 @@ msgstr "esconder vídeo"
 #~ msgid "Change SearXNG layout"
 #~ msgstr "Mudar o layout do SearXNG"
 
+#~ msgid "repo"
+#~ msgstr "repositório"
