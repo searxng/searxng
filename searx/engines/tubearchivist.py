@@ -126,6 +126,10 @@ def request(query, params):
     if not query:
         return False
 
+    params.setdefault('headers', {})  # ensure the dict exists
+    params.setdefault('max_redirects', 3)
+    params.setdefault('soft_max_redirects', 3)
+    params['allow_redirects'] = True
     args = {'query': query}
     params['url'] = f"{base_url.rstrip('/')}/api/search?{urlencode(args)}"
     params['headers']['Authorization'] = f'Token {ta_token}'
