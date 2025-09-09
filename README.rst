@@ -3,15 +3,14 @@
 .. _metasearch engine: https://en.wikipedia.org/wiki/Metasearch_engine
 .. _Installation guide: https://docs.searxng.org/admin/installation.html
 .. _Configuration guide: https://docs.searxng.org/admin/settings/index.html
-.. _CONTRIBUTING: https://raw.githubusercontent.com/searxng/searxng/refs/heads/master/CONTRIBUTING.rst
-.. _LICENSE: https://raw.githubusercontent.com/searxng/searxng/refs/heads/master/LICENSE
+.. _CONTRIBUTING: https://github.com/searxng/searxng/blob/master/CONTRIBUTING.rst
+.. _LICENSE: https://github.com/searxng/searxng/blob/master/LICENSE
 
 .. figure:: https://raw.githubusercontent.com/searxng/searxng/master/client/simple/src/brand/searxng.svg
    :target: https://searxng.org
    :alt: SearXNG
    :width: 512px
 
-|
 
 SearXNG is a `metasearch engine`_. Users are neither tracked nor profiled.
 
@@ -24,7 +23,7 @@ SearXNG is a `metasearch engine`_. Users are neither tracked nor profiled.
    :alt: Documentation
 
 .. image:: https://img.shields.io/github/license/searxng/searxng?style=flat-square&label=license&color=3050ff&cacheSeconds=86400
-   :target: https://raw.githubusercontent.com/searxng/searxng/refs/heads/master/LICENSE
+   :target: https://github.com/searxng/searxng/blob/master/LICENSE
    :alt: License
 
 .. image:: https://img.shields.io/github/commit-activity/y/searxng/searxng/master?style=flat-square&label=commits&color=3050ff&cacheSeconds=3600
@@ -56,10 +55,10 @@ we have two official channels:
 Contributing
 ============
 
-See `CONTRIBUTING`_ for more details.
+See CONTRIBUTING_ for more details.
 
 License
 =======
 
 This project is licensed under the GNU Affero General Public License (AGPL-3.0).
-See `LICENSE`_ for more details.
+See LICENSE_ for more details.
