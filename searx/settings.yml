@@ -1984,13 +1984,13 @@ engines:
   #   query_fields: '' # query fields
   #   enable_http: true
 
-  # - name: springer nature
-  #   engine: springer
-  #   # get your API key from: https://dev.springernature.com/signup
-  #   # working API key, for test & debug: "a69685087d07eca9f13db62f65b8f601"
-  #   api_key: 'unset'
-  #   shortcut: springer
-  #   timeout: 15.0
+  - name: springer nature
+    engine: springer
+    shortcut: springer
+    timeout: 5
+    # read https://docs.searxng.org/dev/engines/online/springer.html
+    api_key: ""
+    inactive: true
 
   - name: startpage
     engine: startpage
