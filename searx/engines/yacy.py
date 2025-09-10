@@ -100,8 +100,11 @@ base_url: list | str = 'https://yacy.searchlab.eu'
 selected randomly.
 """
 
+# store the current engine's name so we can access it while getting the base_url
+_current_engine_name = None
 
-def init(_):
+def init(engine_settings):
+    global _current_engine_name
     valid_types = [
         'text',
         'image',
@@ -109,12 +112,14 @@ def init(_):
     ]
     if search_type not in valid_types:
         raise ValueError('search_type "%s" is  not one of %s' % (search_type, valid_types))
+    
+    _current_engine_name = engine_settings.get('name')
 
 
 def _base_url() -> str:
     from searx.engines import engines  # pylint: disable=import-outside-toplevel
 
-    url = engines['yacy'].base_url  # type: ignore
+    url = engines[_current_engine_name].base_url  # type: ignore
     if isinstance(url, list):
         url = random.choice(url)
     if url.endswith("/"):
