@@ -27,6 +27,7 @@ import babel
 import babel.numbers
 import babel.dates
 import babel.languages
+import flask_babel
 
 from searx import network
 from searx.cache import ExpireCache, ExpireCacheCfg
@@ -197,6 +198,7 @@ class GeoLocation:
 
 
 DateTimeFormats = typing.Literal["full", "long", "medium", "short"]
+DateTimeLocaleTypes = typing.Literal["UI"]
 
 
 @typing.final
@@ -205,6 +207,13 @@ class DateTime:
     conveniently combines :py:obj:`datetime.datetime` and
     :py:obj:`babel.dates.format_datetime`.  A conversion of time zones is not
     provided (in the current version).
+
+    The localized string representation can be obtained via the
+    :py:obj:`DateTime.l10n` and :py:obj:`DateTime.l10n_date` methods, where the
+    ``locale`` parameter defaults to the search language.  Alternatively, a
+    :py:obj:`GeoLocation` or a :py:obj:`babel.Locale` instance can be passed
+    directly. If the UI language is to be used, the string ``UI`` can be passed
+    as the value for the ``locale``.
     """
 
     def __init__(self, time: datetime.datetime):
@@ -216,14 +225,31 @@ class DateTime:
     def l10n(
         self,
         fmt: DateTimeFormats | str = "medium",
-        locale: babel.Locale | GeoLocation | None = None,
+        locale: DateTimeLocaleTypes | babel.Locale | GeoLocation | None = None,
     ) -> str:
         """Localized representation of date & time."""
-        if isinstance(locale, GeoLocation):
+        if isinstance(locale, str) and locale == "UI":
+            locale = flask_babel.get_locale()
+        elif isinstance(locale, GeoLocation):
             locale = locale.locale()
         elif locale is None:
             locale = babel.Locale.parse(_get_sxng_locale_tag(), sep='-')
         return babel.dates.format_datetime(self.datetime, format=fmt, locale=locale)
+
+    def l10n_date(
+        self,
+        fmt: DateTimeFormats | str = "medium",
+        locale: DateTimeLocaleTypes | babel.Locale | GeoLocation | None = None,
+    ) -> str:
+        """Localized representation of date."""
+
+        if isinstance(locale, str) and locale == "UI":
+            locale = flask_babel.get_locale()
+        elif isinstance(locale, GeoLocation):
+            locale = locale.locale()
+        elif locale is None:
+            locale = babel.Locale.parse(_get_sxng_locale_tag(), sep='-')
+        return babel.dates.format_date(self.datetime, format=fmt, locale=locale)
 
 
 @typing.final

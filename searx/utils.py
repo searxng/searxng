@@ -21,7 +21,8 @@ from datetime import timedelta
 from markdown_it import MarkdownIt
 
 from lxml import html
-from lxml.etree import ElementBase, XPath, XPathError, XPathSyntaxError
+from lxml.etree import XPath, XPathError, XPathSyntaxError
+from lxml.etree import ElementBase, _Element  # pyright: ignore[reportPrivateUsage]
 
 from searx import settings
 from searx.data import USER_AGENTS, data_dir
@@ -39,6 +40,9 @@ logger = logger.getChild('utils')
 XPathSpecType: t.TypeAlias = str | XPath
 """Type alias used by :py:obj:`searx.utils.get_xpath`,
 :py:obj:`searx.utils.eval_xpath` and other XPath selectors."""
+
+ElementType: t.TypeAlias = ElementBase | _Element
+
 
 _BLOCKED_TAGS = ('script', 'style')
 
@@ -204,15 +208,23 @@ def markdown_to_text(markdown_str: str) -> str:
 
 
 def extract_text(
-    xpath_results: list[ElementBase] | ElementBase | str | Number | bool | None,
+    xpath_results: list[ElementType] | ElementType | str | Number | bool | None,
     allow_none: bool = False,
 ) -> str | None:
     """Extract text from a lxml result
 
-    * if xpath_results is list, extract the text from each result and concat the list
-    * if xpath_results is a xml element, extract all the text node from it
-      ( text_content() method from lxml )
-    * if xpath_results is a string element, then it's already done
+    - If ``xpath_results`` is a list of :py:obj:`ElementType` objects, extract
+      the text from each result and concatenate the list in a string.
+
+    - If ``xpath_results`` is a :py:obj:`ElementType` object, extract all the
+      text node from it ( :py:obj:`lxml.html.tostring`, ``method="text"`` )
+
+    - If ``xpath_results`` is of type :py:obj:`str` or :py:obj:`Number`,
+      :py:obj:`bool` the string value is returned.
+
+    - If ``xpath_results`` is of type ``None`` a :py:obj:`ValueError` is raised,
+      except ``allow_none`` is ``True`` where ``None`` is returned.
+
     """
     if isinstance(xpath_results, list):
         # it's list of result : concat everything using recursive call
@@ -220,7 +232,7 @@ def extract_text(
         for e in xpath_results:
             result = result + (extract_text(e) or '')
         return result.strip()
-    if isinstance(xpath_results, ElementBase):
+    if isinstance(xpath_results, ElementType):
         # it's a element
         text: str = html.tostring(  # type: ignore
             xpath_results,  # pyright: ignore[reportArgumentType]
@@ -289,7 +301,7 @@ def normalize_url(url: str, base_url: str) -> str:
     return url
 
 
-def extract_url(xpath_results: list[ElementBase] | ElementBase | str | Number | bool | None, base_url: str) -> str:
+def extract_url(xpath_results: list[ElementType] | ElementType | str | Number | bool | None, base_url: str) -> str:
     """Extract and normalize URL from lxml Element
 
     Example:
@@ -520,7 +532,7 @@ def get_xpath(xpath_spec: XPathSpecType) -> XPath:
     raise TypeError('xpath_spec must be either a str or a lxml.etree.XPath')  # pyright: ignore[reportUnreachable]
 
 
-def eval_xpath(element: ElementBase, xpath_spec: XPathSpecType) -> t.Any:
+def eval_xpath(element: ElementType, xpath_spec: XPathSpecType) -> t.Any:
     """Equivalent of ``element.xpath(xpath_str)`` but compile ``xpath_str`` into
     a :py:obj:`lxml.etree.XPath` object once for all.  The return value of
     ``xpath(..)`` is complex, read `XPath return values`_ for more details.
@@ -548,12 +560,12 @@ def eval_xpath(element: ElementBase, xpath_spec: XPathSpecType) -> t.Any:
         raise SearxEngineXPathException(xpath_spec, arg) from e
 
 
-def eval_xpath_list(element: ElementBase, xpath_spec: XPathSpecType, min_len: int | None = None) -> list[t.Any]:
+def eval_xpath_list(element: ElementType, xpath_spec: XPathSpecType, min_len: int | None = None) -> list[t.Any]:
     """Same as :py:obj:`searx.utils.eval_xpath`, but additionally ensures the
     return value is a :py:obj:`list`.  The minimum length of the list is also
     checked (if ``min_len`` is set)."""
 
-    result = eval_xpath(element, xpath_spec)
+    result: list[t.Any] = eval_xpath(element, xpath_spec)
     if not isinstance(result, list):
         raise SearxEngineXPathException(xpath_spec, 'the result is not a list')
     if min_len is not None and min_len > len(result):
@@ -562,7 +574,7 @@ def eval_xpath_list(element: ElementBase, xpath_spec: XPathSpecType, min_len: in
 
 
 def eval_xpath_getindex(
-    element: ElementBase,
+    element: ElementType,
     xpath_spec: XPathSpecType,
     index: int,
     default: t.Any = _NOTSET,
