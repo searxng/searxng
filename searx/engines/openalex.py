@@ -1,14 +1,103 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-# pylint: disable=missing-module-docstring
-#
-# Engine is documented in: docs/dev/engines/online/openalex.rst
+"""The OpenAlex engine integrates the `OpenAlex`_ Works API to return scientific
+paper results using the :ref:`result_types.paper` class.  It is an "online" JSON
+engine that uses the official public API and does not require an API key.
 
+.. _OpenAlex: https://openalex.org
+.. _OpenAlex API overview: https://docs.openalex.org/how-to-use-the-api/api-overview
+
+Key features
+------------
+
+- Uses the official Works endpoint (JSON)
+- Paging support via ``page`` and ``per-page``
+- Relevance sorting (``sort=relevance_score:desc``)
+- Language filter support (maps SearXNG language to ``filter=language:<iso2>``)
+- Maps fields commonly used in scholarly results: title, authors, abstract
+  (reconstructed from inverted index), journal/venue, publisher, DOI, tags
+  (concepts), PDF/HTML links, pages, volume, issue, published date, and a short
+  citations comment
+- Supports OpenAlex "polite pool" by adding a ``mailto`` parameter
+
+
+Configuration
+=============
+
+Minimal example for :origin:`settings.yml <searx/settings.yml>`:
+
+.. code:: yaml
+
+   - name: openalex
+     engine: openalex
+     shortcut: oa
+     categories: science, scientific publications
+     timeout: 5.0
+     # Recommended by OpenAlex: join the polite pool with an email address
+     mailto: "[email protected]"
+
+Notes
+-----
+
+- The ``mailto`` key is optional but recommended by OpenAlex for better service.
+- Language is inherited from the user's UI language; when it is not ``all``, the
+  engine adds ``filter=language:<iso2>`` (e.g. ``language:fr``). If OpenAlex has
+  few results for that language, you may see fewer items.
+- Results typically include a main link. When the primary landing page from
+  OpenAlex is a DOI resolver, the engine will use that stable link. When an open
+  access link is available, it is exposed via the ``PDF`` and/or ``HTML`` links
+  in the result footer.
+
+
+What is returned
+================
+
+Each result uses the :ref:`result_types.paper` class and may include:
+
+- ``title`` and ``content`` (abstract; reconstructed from the inverted index)
+- ``authors`` (display names)
+- ``journal`` (host venue display name) and ``publisher``
+- ``doi`` (normalized to the plain DOI, without the ``https://doi.org/`` prefix)
+- ``tags`` (OpenAlex concepts display names)
+- ``pdf_url`` (Open access PDF if available) and ``html_url`` (landing page)
+- ``publishedDate`` (parsed from ``publication_date``)
+- ``pages``, ``volume``, ``number`` (issue)
+- ``type`` and a brief ``comments`` string with citation count
+
+
+Rate limits & polite pool
+=========================
+
+OpenAlex offers a free public API with generous daily limits. For extra courtesy
+and improved service quality, include a contact email in each request via
+``mailto``. You can set it directly in the engine configuration as shown above.
+See: `OpenAlex API overview`_.
+
+
+Troubleshooting
+===============
+
+- Few or no results in a non-English UI language:
+  Ensure the selected language has sufficient coverage at OpenAlex, or set the
+  UI language to English and retry.
+- Preference changes fail while testing locally:
+  Make sure your ``server.secret_key`` and ``server.base_url`` are set in your
+  instance settings so signed cookies work; see :ref:`settings server`.
+
+
+Implementation
+===============
+
+"""
 
 import typing as t
+
 from datetime import datetime
 from urllib.parse import urlencode
 from searx.result_types import EngineResults
-from searx.extended_types import SXNG_Response
+
+if t.TYPE_CHECKING:
+    from searx.extended_types import SXNG_Response
+    from searx.search.processors import OnlineParams
 
 # about
 about = {
@@ -31,7 +120,7 @@ search_url = "https://api.openalex.org/works"
 mailto = ""
 
 
-def request(query: str, params: dict[str, t.Any]) -> None:
+def request(query: str, params: "OnlineParams") -> None:
     # Build OpenAlex query using search parameter and paging
     args = {
         "search": query,
@@ -60,7 +149,7 @@ def request(query: str, params: dict[str, t.Any]) -> None:
     params["url"] = f"{search_url}?{urlencode(args)}"
 
 
-def response(resp: SXNG_Response) -> EngineResults:
+def response(resp: "SXNG_Response") -> EngineResults:
     data = resp.json()
     res = EngineResults()
 
@@ -71,12 +160,11 @@ def response(resp: SXNG_Response) -> EngineResults:
         authors = _extract_authors(item)
         journal, publisher, pages, volume, number, published_date = _extract_biblio(item)
         doi = _doi_to_plain(item.get("doi"))
-        tags = _extract_tags(item) or None
+        tags = _extract_tags(item)
         comments = _extract_comments(item)
 
         res.add(
-            res.types.LegacyResult(
-                template="paper.html",
+            res.types.Paper(
                 url=url,
                 title=title,
                 content=content,
@@ -99,7 +187,7 @@ def response(resp: SXNG_Response) -> EngineResults:
     return res
 
 
-def _stringify_pages(biblio: dict[str, t.Any]) -> str | None:
+def _stringify_pages(biblio: dict[str, t.Any]) -> str:
     first_page = biblio.get("first_page")
     last_page = biblio.get("last_page")
     if first_page and last_page:
@@ -108,7 +196,7 @@ def _stringify_pages(biblio: dict[str, t.Any]) -> str | None:
         return str(first_page)
     if last_page:
         return str(last_page)
-    return None
+    return ""
 
 
 def _parse_date(value: str | None) -> datetime | None:
@@ -123,9 +211,9 @@ def _parse_date(value: str | None) -> datetime | None:
     return None
 
 
-def _doi_to_plain(doi_value: str | None) -> str | None:
+def _doi_to_plain(doi_value: str | None) -> str:
     if not doi_value:
-        return None
+        return ""
     # OpenAlex `doi` field is commonly a full URL like https://doi.org/10.1234/abcd
     return doi_value.removeprefix("https://doi.org/")
 
@@ -151,14 +239,17 @@ def _reconstruct_abstract(
     return text if text != "" else None
 
 
-def _extract_links(item: dict[str, t.Any]) -> tuple[str, str | None, str | None]:
-    primary_location = item.get("primary_location", {})
-    landing_page_url: str | None = primary_location.get("landing_page_url")
+def _extract_links(item: dict[str, t.Any]) -> tuple[str, str, str]:
+    primary_location: dict[str, str] = item.get("primary_location", {})
+    open_access: dict[str, str] = item.get("open_access", {})
+
+    landing_page_url: str = primary_location.get("landing_page_url") or ""
     work_url: str = item.get("id", "")
+
     url: str = landing_page_url or work_url
-    open_access = item.get("open_access", {})
-    pdf_url: str | None = primary_location.get("pdf_url") or open_access.get("oa_url")
-    html_url: str | None = landing_page_url
+    html_url: str = landing_page_url
+    pdf_url: str = primary_location.get("pdf_url") or open_access.get("oa_url") or ""
+
     return url, html_url, pdf_url
 
 
@@ -185,20 +276,21 @@ def _extract_tags(item: dict[str, t.Any]) -> list[str]:
 
 def _extract_biblio(
     item: dict[str, t.Any],
-) -> tuple[str | None, str | None, str | None, str | None, str | None, datetime | None]:
-    host_venue = item.get("host_venue", {})
-    biblio = item.get("biblio", {})
-    journal: str | None = host_venue.get("display_name")
-    publisher: str | None = host_venue.get("publisher")
-    pages = _stringify_pages(biblio)
-    volume = biblio.get("volume")
-    number = biblio.get("issue")
+) -> tuple[str, str, str, str, str, datetime | None]:
+    host_venue: dict[str, str] = item.get("host_venue", {})
+    biblio: dict[str, str] = item.get("biblio", {})
+
+    journal: str = host_venue.get("display_name", "")
+    publisher: str = host_venue.get("publisher", "")
+    pages: str = _stringify_pages(biblio)
+    volume = biblio.get("volume", "")
+    number = biblio.get("issue", "")
     published_date = _parse_date(item.get("publication_date"))
     return journal, publisher, pages, volume, number, published_date
 
 
-def _extract_comments(item: dict[str, t.Any]) -> str | None:
+def _extract_comments(item: dict[str, t.Any]) -> str:
     cited_by_count = item.get("cited_by_count")
     if isinstance(cited_by_count, int):
         return f"{cited_by_count} citations"
-    return None
+    return ""
