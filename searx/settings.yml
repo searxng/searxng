@@ -1594,17 +1594,14 @@ engines:
     categories: videos
     piped_filter: videos
     timeout: 3.0
+    inactive: true
 
     # URL to use as link and for embeds
     frontend_url: https://srv.piped.video
     # Instance will be selected randomly, for more see https://piped-instances.kavin.rocks/
     backend_url:
-      - https://pipedapi.adminforge.de
-      - https://pipedapi.nosebs.ru
       - https://pipedapi.ducks.party
-      - https://pipedapi.reallyaweso.me
       - https://api.piped.private.coffee
-      - https://pipedapi.darkness.services
 
   - name: piped.music
     engine: piped
@@ -1613,6 +1610,7 @@ engines:
     categories: music
     piped_filter: music_songs
     timeout: 3.0
+    inactive: true
 
   - name: piratebay
     engine: piratebay
@@ -2492,14 +2490,9 @@ engines:
     engine: yacy
     categories: general
     search_type: text
+    # see https://github.com/searxng/searxng/pull/3631#issuecomment-2240903027
     base_url:
       - https://yacy.searchlab.eu
-      # see https://github.com/searxng/searxng/pull/3631#issuecomment-2240903027
-      # - https://search.kyun.li
-      # - https://yacy.securecomcorp.eu
-      # - https://yacy.myserv.ca
-      # - https://yacy.nsupdate.info
-      # - https://yacy.electroncash.de
     shortcut: ya
     disabled: true
     # if you aren't using HTTPS for your local yacy instance disable https
