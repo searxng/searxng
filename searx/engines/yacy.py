@@ -23,7 +23,8 @@ The engine has the following (additional) settings:
 - :py:obj:`search_type`
 
 The :py:obj:`base_url` has to be set in the engine named `yacy` and is used by
-all yacy engines.
+all yacy engines (unless an individual value for ``base_url`` is configured for
+the engine).
 
 .. code:: yaml
 
@@ -95,7 +96,7 @@ search_type = 'text'
 ``video`` are not yet implemented (Pull-Requests are welcome).
 """
 
-base_url: list | str = 'https://yacy.searchlab.eu'
+base_url: list[str] | str | None = None
 """The value is an URL or a list of URLs.  In the latter case instance will be
 selected randomly.
 """
@@ -114,7 +115,7 @@ def init(_):
 def _base_url() -> str:
     from searx.engines import engines  # pylint: disable=import-outside-toplevel
 
-    url = engines['yacy'].base_url  # type: ignore
+    url: list[str] | str = base_url or engines["yacy"].base_url  # type: ignore
     if isinstance(url, list):
         url = random.choice(url)
     if url.endswith("/"):
