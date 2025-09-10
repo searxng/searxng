@@ -659,12 +659,12 @@ engines:
     timeout: 30
     disabled: true
 
-  # - name: core.ac.uk
-  #   engine: core
-  #   categories: science
-  #   shortcut: cor
-  #   # get your API key from: https://core.ac.uk/api-keys/register/
-  #   api_key: 'unset'
+  - name: core.ac.uk
+    engine: core
+    shortcut: cor
+    # read https://docs.searxng.org/dev/engines/online/core.html
+    api_key: ""
+    inactive: true
 
   - name: cppreference
     engine: cppreference
