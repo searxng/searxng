@@ -179,3 +179,4 @@ features or generally made SearXNG better:
 - Tommaso Colella `<https://github.com/gioleppe>`
 - @AgentScrubbles
 - Filip Mikina `<https://github.com/fiffek>`
+- Daniel Vinci (xylobol) `<https://danielvinci.com>`
