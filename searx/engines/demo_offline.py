@@ -1,7 +1,12 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 """Within this module we implement a *demo offline engine*.  Do not look to
-close to the implementation, its just a simple example.  To get in use of this
-*demo* engine add the following entry to your engines list in ``settings.yml``:
+close to the implementation, its just a simple example.
+
+Configuration
+=============
+
+To get in use of this *demo* engine add the following entry to your engines list
+in ``settings.yml``:
 
 .. code:: yaml
 
@@ -10,6 +15,9 @@ close to the implementation, its just a simple example.  To get in use of this
     shortcut: demo
     disabled: false
 
+Implementations
+===============
+
 """
 
 import typing as t
@@ -17,6 +25,10 @@ import json
 
 from searx.result_types import EngineResults
 from searx.enginelib import EngineCache
+
+if t.TYPE_CHECKING:
+    from searx.search.processors import RequestParams
+
 
 engine_type = "offline"
 categories = ["general"]
@@ -28,7 +40,7 @@ about = {
     "official_api_documentation": None,
     "use_official_api": False,
     "require_api_key": False,
-    "results": 'JSON',
+    "results": "JSON",
 }
 
 # if there is a need for globals, use a leading underline
@@ -39,10 +51,14 @@ CACHE: EngineCache
 seconds."""
 
 
-def init(engine_settings: dict[str, t.Any]) -> None:
-    """Initialization of the (offline) engine.  The origin of this demo engine is a
-    simple json string which is loaded in this example while the engine is
-    initialized."""
+def setup(engine_settings: dict[str, t.Any]) -> bool:
+    """Dynamic setup of the engine settings.
+
+    The origin of this demo engine is a simple json string which is loaded in
+    this example while the engine is initialized.
+
+    For more details see :py:obj:`searx.enginelib.Engine.setup`.
+    """
     global _my_offline_engine, CACHE  # pylint: disable=global-statement
 
     CACHE = EngineCache(engine_settings["name"])
@@ -55,12 +71,23 @@ def init(engine_settings: dict[str, t.Any]) -> None:
         ']' % engine_settings.get('name')
     )
 
+    return True
 
-def search(query: str, params: dict[str, t.Any]) -> EngineResults:
+
+def init(engine_settings: dict[str, t.Any]) -> bool:  # pylint: disable=unused-argument
+    """Initialization of the engine.
+
+    For more details see :py:obj:`searx.enginelib.Engine.init`.
+    """
+    return True
+
+
+def search(query: str, params: "RequestParams") -> EngineResults:
     """Query (offline) engine and return results.  Assemble the list of results
-    from your local engine.  In this demo engine we ignore the 'query' term,
-    usual you would pass the 'query' term to your local engine to filter out the
-    results.
+    from your local engine.
+
+    In this demo engine we ignore the 'query' term, usual you would pass the
+    'query' term to your local engine to filter out the results.
     """
     res = EngineResults()
 

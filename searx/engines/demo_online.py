@@ -3,6 +3,9 @@
 close to the implementation, its just a simple example which queries `The Art
 Institute of Chicago <https://www.artic.edu>`_
 
+Configuration
+=============
+
 To get in use of this *demo* engine add the following entry to your engines
 list in ``settings.yml``:
 
@@ -13,16 +16,19 @@ list in ``settings.yml``:
     shortcut: demo
     disabled: false
 
+Implementations
+===============
+
 """
 
 import typing as t
 
-from json import loads
 from urllib.parse import urlencode
 from searx.result_types import EngineResults
 
 if t.TYPE_CHECKING:
     from searx.extended_types import SXNG_Response
+    from searx.search.processors import OnlineParams
 
 
 engine_type = "online"
@@ -34,7 +40,7 @@ categories = ["images"]
 paging = True
 page_size = 20
 
-search_api = "https://api.artic.edu/api/v1/artworks/search?"
+search_api = "https://api.artic.edu/api/v1/artworks/search"
 image_api = "https://www.artic.edu/iiif/2/"
 
 about = {
@@ -51,18 +57,25 @@ about = {
 _my_online_engine = None
 
 
-def init(engine_settings: dict[str, t.Any]) -> None:
-    """Initialization of the (online) engine.  If no initialization is needed, drop
-    this init function."""
+def setup(engine_settings: dict[str, t.Any]) -> bool:
+    """Dynamic setup of the engine settings.
+
+    For more details see :py:obj:`searx.enginelib.Engine.setup`."""
     global _my_online_engine  # pylint: disable=global-statement
     _my_online_engine = engine_settings.get("name")
+    return True
 
 
-def request(query: str, params: dict[str, t.Any]) -> None:
+def init(engine_settings: dict[str, t.Any]) -> bool:  # pylint: disable=unused-argument
+    """Initialization of the engine.
+
+    For more details see :py:obj:`searx.enginelib.Engine.init`."""
+    return True
+
+
+def request(query: str, params: "OnlineParams") -> None:
     """Build up the ``params`` for the online request.  In this example we build a
-    URL to fetch images from `artic.edu <https://artic.edu>`__
-
-    """
+    URL to fetch images from `artic.edu <https://artic.edu>`__."""
     args = urlencode(
         {
             "q": query,
@@ -71,7 +84,7 @@ def request(query: str, params: dict[str, t.Any]) -> None:
             "limit": page_size,
         }
     )
-    params["url"] = search_api + args
+    params["url"] = f"{search_api}?{args}"
 
 
 def response(resp: "SXNG_Response") -> EngineResults:
@@ -81,7 +94,7 @@ def response(resp: "SXNG_Response") -> EngineResults:
 
     """
     res = EngineResults()
-    json_data = loads(resp.text)
+    json_data = resp.json()
 
     res.add(
         res.types.Answer(
