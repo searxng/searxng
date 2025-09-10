@@ -362,7 +362,11 @@ class MainResult(Result):  # pylint: disable=missing-class-docstring
     """The date on which the object was published."""
 
     pubdate: str = ""
-    """String representation of :py:obj:`MainResult.publishedDate`"""
+    """String representation of :py:obj:`MainResult.publishedDate`
+
+    Deprecated: it is still partially used in the templates, but will one day be
+    completely eliminated.
+    """
 
     length: time.struct_time | None = None
     """Playing duration in seconds."""
