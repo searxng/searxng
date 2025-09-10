@@ -57,7 +57,7 @@ about = {
 _my_online_engine = None
 
 
-def setup(engine_settings: dict[str, t.Any]) -> bool:
+def setup(engine_settings: "OnlineParams") -> bool:
     """Dynamic setup of the engine settings.
 
     For more details see :py:obj:`searx.enginelib.Engine.setup`."""
