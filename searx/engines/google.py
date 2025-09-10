@@ -11,6 +11,8 @@ engines:
 
 """
 
+import typing as t
+
 import re
 import random
 import string
@@ -28,8 +30,10 @@ from searx.exceptions import SearxEngineCaptchaException
 from searx.enginelib.traits import EngineTraits
 from searx.result_types import EngineResults
 
+if t.TYPE_CHECKING:
+    from searx.extended_types import SXNG_Response
+    from searx.search.processors import OnlineParams
 
-# about
 about = {
     "website": 'https://www.google.com',
     "wikidata_id": 'Q9366',
@@ -89,7 +93,7 @@ def ui_async(start: int) -> str:
     return ",".join([arc_id, use_ac, _fmt])
 
 
-def get_google_info(params, eng_traits):
+def get_google_info(params: "OnlineParams", eng_traits: EngineTraits) -> dict[str, t.Any]:
     """Composing various (language) properties for the google engines (:ref:`google
     API`).
 
@@ -144,7 +148,7 @@ def get_google_info(params, eng_traits):
 
     """
 
-    ret_val = {
+    ret_val: dict[str, t.Any] = {
         'language': None,
         'country': None,
         'subdomain': None,
@@ -273,7 +277,7 @@ def detect_google_sorry(resp):
         raise SearxEngineCaptchaException()
 
 
-def request(query, params):
+def request(query: str, params: "OnlineParams") -> None:
     """Google search request"""
     # pylint: disable=line-too-long
     start = (params['pageno'] - 1) * 10
@@ -317,7 +321,6 @@ def request(query, params):
 
     params['cookies'] = google_info['cookies']
     params['headers'].update(google_info['headers'])
-    return params
 
 
 # =26;[3,"dimg_ZNMiZPCqE4apxc8P3a2tuAQ_137"]a87;data:image/jpeg;base64,/9j/4AAQSkZJRgABA
@@ -341,7 +344,7 @@ def parse_data_images(text: str):
     return data_image_map
 
 
-def response(resp) -> EngineResults:
+def response(resp: "SXNG_Response"):
     """Get response from google's search request"""
     # pylint: disable=too-many-branches, too-many-statements
     detect_google_sorry(resp)
