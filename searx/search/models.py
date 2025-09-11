@@ -24,42 +24,29 @@ class EngineRef:
         return hash((self.name, self.category))
 
 
+@typing.final
 class SearchQuery:
     """container for all the search parameters (query, language, etc...)"""
-
-    __slots__ = (
-        'query',
-        'engineref_list',
-        'lang',
-        'locale',
-        'safesearch',
-        'pageno',
-        'time_range',
-        'timeout_limit',
-        'external_bang',
-        'engine_data',
-        'redirect_to_first_result',
-    )
 
     def __init__(
         self,
         query: str,
-        engineref_list: typing.List[EngineRef],
+        engineref_list: list[EngineRef],
         lang: str = 'all',
-        safesearch: int = 0,
+        safesearch: typing.Literal[0, 1, 2] = 0,
         pageno: int = 1,
-        time_range: typing.Optional[str] = None,
-        timeout_limit: typing.Optional[float] = None,
-        external_bang: typing.Optional[str] = None,
-        engine_data: typing.Optional[typing.Dict[str, str]] = None,
-        redirect_to_first_result: typing.Optional[bool] = None,
+        time_range: typing.Literal["day", "week", "month", "year"] | None = None,
+        timeout_limit: float | None = None,
+        external_bang: str | None = None,
+        engine_data: dict[str, dict[str, str]] | None = None,
+        redirect_to_first_result: bool | None = None,
     ):  # pylint:disable=too-many-arguments
         self.query = query
         self.engineref_list = engineref_list
         self.lang = lang
-        self.safesearch = safesearch
+        self.safesearch: typing.Literal[0, 1, 2] = safesearch
         self.pageno = pageno
-        self.time_range = time_range
+        self.time_range: typing.Literal["day", "week", "month", "year"] | None = time_range
         self.timeout_limit = timeout_limit
         self.external_bang = external_bang
         self.engine_data = engine_data or {}

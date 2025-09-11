@@ -22,7 +22,6 @@ categories = ['general', 'translate']
 api_url = "https://api.mymemory.translated.net"
 web_url = "https://mymemory.translated.net"
 weight = 100
-https_support = True
 
 api_key = ''
 

@@ -3,7 +3,6 @@
 """
 
 from urllib.parse import urlunparse
-from json import dumps
 
 # about
 about = {
@@ -56,7 +55,7 @@ def request(query, params):
     query_data = query_data_template
     query_data["query"]["multi_match"]["query"] = query
     query_data["from"] = (params["pageno"] - 1) * number_of_results
-    params["data"] = dumps(query_data)
+    params["json"] = query_data
     return params
 
 

@@ -24,17 +24,6 @@ LogParametersType = tuple[str, ...]
 
 class ErrorContext:  # pylint: disable=missing-class-docstring
 
-    __slots__ = (
-        'filename',
-        'function',
-        'line_no',
-        'code',
-        'exception_classname',
-        'log_message',
-        'log_parameters',
-        'secondary',
-    )
-
     def __init__(  # pylint: disable=too-many-arguments
         self,
         filename: str,
@@ -159,7 +148,7 @@ def get_messages(exc, filename) -> tuple[str, ...]:  # pylint: disable=too-many-
     return ()
 
 
-def get_exception_classname(exc: Exception) -> str:
+def get_exception_classname(exc: BaseException) -> str:
     exc_class = exc.__class__
     exc_name = exc_class.__qualname__
     exc_module = exc_class.__module__
@@ -182,7 +171,7 @@ def get_error_context(
     return ErrorContext(filename, function, line_no, code, exception_classname, log_message, log_parameters, secondary)
 
 
-def count_exception(engine_name: str, exc: Exception, secondary: bool = False) -> None:
+def count_exception(engine_name: str, exc: BaseException, secondary: bool = False) -> None:
     if not settings['general']['enable_metrics']:
         return
     framerecords = inspect.trace()

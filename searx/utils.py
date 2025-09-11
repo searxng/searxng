@@ -410,38 +410,6 @@ def int_or_zero(num: list[str] | str) -> int:
     return convert_str_to_int(num)
 
 
-def is_valid_lang(lang: str) -> tuple[bool, str, str] | None:
-    """Return language code and name if lang describe a language.
-
-    Examples:
-        >>> is_valid_lang('zz')
-        None
-        >>> is_valid_lang('uk')
-        (True, 'uk', 'ukrainian')
-        >>> is_valid_lang(b'uk')
-        (True, 'uk', 'ukrainian')
-        >>> is_valid_lang('en')
-        (True, 'en', 'english')
-        >>> searx.utils.is_valid_lang('Español')
-        (True, 'es', 'spanish')
-        >>> searx.utils.is_valid_lang('Spanish')
-        (True, 'es', 'spanish')
-    """
-    if isinstance(lang, bytes):
-        lang = lang.decode()
-    is_abbr = len(lang) == 2
-    lang = lang.lower()
-    if is_abbr:
-        for l in sxng_locales:
-            if l[0][:2] == lang:
-                return (True, l[0][:2], l[3].lower())
-        return None
-    for l in sxng_locales:
-        if l[1].lower() == lang or l[3].lower() == lang:
-            return (True, l[0][:2], l[3].lower())
-    return None
-
-
 def load_module(filename: str, module_dir: str) -> types.ModuleType:
     modname = splitext(filename)[0]
     modpath = join(module_dir, filename)

@@ -1,8 +1,12 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 # pylint: disable=global-statement
 # pylint: disable=missing-module-docstring, missing-class-docstring
+
+__all__ = ["get_network"]
+
 import typing as t
-from collections.abc import Generator, AsyncIterator
+from collections.abc import Generator
+
 
 import atexit
 import asyncio
@@ -74,7 +78,7 @@ class Network:
         using_tor_proxy: bool = False,
         local_addresses: str | list[str] | None = None,
         retries: int = 0,
-        retry_on_http_error: None = None,
+        retry_on_http_error: bool = False,
         max_redirects: int = 30,
         logger_name: str = None,  # pyright: ignore[reportArgumentType]
     ):
@@ -232,14 +236,14 @@ class Network:
         return kwargs_clients
 
     @staticmethod
-    def extract_do_raise_for_httperror(kwargs):
+    def extract_do_raise_for_httperror(kwargs: dict[str, t.Any]):
         do_raise_for_httperror = True
         if 'raise_for_httperror' in kwargs:
             do_raise_for_httperror = kwargs['raise_for_httperror']
             del kwargs['raise_for_httperror']
         return do_raise_for_httperror
 
-    def patch_response(self, response: httpx.Response | SXNG_Response, do_raise_for_httperror: bool) -> SXNG_Response:
+    def patch_response(self, response: httpx.Response, do_raise_for_httperror: bool) -> SXNG_Response:
         if isinstance(response, httpx.Response):
             response = t.cast(SXNG_Response, response)
             # requests compatibility (response is not streamed)
@@ -255,7 +259,7 @@ class Network:
                     raise
         return response
 
-    def is_valid_response(self, response: SXNG_Response):
+    def is_valid_response(self, response: httpx.Response):
         # pylint: disable=too-many-boolean-expressions
         if (
             (self.retry_on_http_error is True and 400 <= response.status_code <= 599)
@@ -265,9 +269,7 @@ class Network:
             return False
         return True
 
-    async def call_client(
-        self, stream: bool, method: str, url: str, **kwargs: t.Any
-    ) -> AsyncIterator[SXNG_Response] | None:
+    async def call_client(self, stream: bool, method: str, url: str, **kwargs: t.Any) -> SXNG_Response:
         retries = self.retries
         was_disconnected = False
         do_raise_for_httperror = Network.extract_do_raise_for_httperror(kwargs)
@@ -278,9 +280,9 @@ class Network:
             client.cookies = httpx.Cookies(cookies)
             try:
                 if stream:
-                    response = client.stream(method, url, **kwargs)  # pyright: ignore[reportAny]
+                    response = client.stream(method, url, **kwargs)
                 else:
-                    response = await client.request(method, url, **kwargs)  # pyright: ignore[reportAny]
+                    response = await client.request(method, url, **kwargs)
                 if self.is_valid_response(response) or retries <= 0:
                     return self.patch_response(response, do_raise_for_httperror)
             except httpx.RemoteProtocolError as e:
@@ -298,7 +300,7 @@ class Network:
                     raise e
             retries -= 1
 
-    async def request(self, method: str, url: str, **kwargs):
+    async def request(self, method: str, url: str, **kwargs: t.Any) -> SXNG_Response:
         return await self.call_client(False, method, url, **kwargs)
 
     async def stream(self, method: str, url: str, **kwargs):
@@ -358,7 +360,7 @@ def initialize(
         'proxies': settings_outgoing['proxies'],
         'max_redirects': settings_outgoing['max_redirects'],
         'retries': settings_outgoing['retries'],
-        'retry_on_http_error': None,
+        'retry_on_http_error': False,
     }
 
     def new_network(params: dict[str, t.Any], logger_name: str | None = None):

@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 # pylint: disable=missing-module-docstring, global-statement
 
-__all__ = ["initialize", "check_network_configuration", "raise_for_httperror"]
+__all__ = ["get_network", "initialize", "check_network_configuration", "raise_for_httperror"]
 
 import typing as t
 
@@ -22,6 +22,8 @@ from .network import get_network, initialize, check_network_configuration  # pyl
 from .client import get_loop
 from .raise_for_httperror import raise_for_httperror
 
+if t.TYPE_CHECKING:
+    from searx.network.network import Network
 
 THREADLOCAL = threading.local()
 """Thread-local data is data for thread specific values."""
@@ -31,7 +33,7 @@ def reset_time_for_thread():
     THREADLOCAL.total_time = 0
 
 
-def get_time_for_thread():
+def get_time_for_thread() -> float | None:
     """returns thread's total time or None"""
     return THREADLOCAL.__dict__.get('total_time')
 
@@ -45,7 +47,7 @@ def set_context_network_name(network_name: str):
     THREADLOCAL.network = get_network(network_name)
 
 
-def get_context_network():
+def get_context_network() -> "Network":
     """If set return thread's network.
 
     If unset, return value from :py:obj:`get_network`.
@@ -68,7 +70,7 @@ def _record_http_time():
             THREADLOCAL.total_time += time_after_request - time_before_request
 
 
-def _get_timeout(start_time: float, kwargs):
+def _get_timeout(start_time: float, kwargs: t.Any) -> float:
     # pylint: disable=too-many-branches
 
     timeout: float | None
@@ -91,7 +93,7 @@ def _get_timeout(start_time: float, kwargs):
     return timeout
 
 
-def request(method, url, **kwargs) -> SXNG_Response:
+def request(method: str, url: str, **kwargs: t.Any) -> SXNG_Response:
     """same as requests/requests/api.py request(...)"""
     with _record_http_time() as start_time:
         network = get_context_network()
@@ -183,15 +185,15 @@ def head(url: str, **kwargs: t.Any) -> SXNG_Response:
     return request('head', url, **kwargs)
 
 
-def post(url: str, data=None, **kwargs: t.Any) -> SXNG_Response:
+def post(url: str, data: dict[str, t.Any] | None = None, **kwargs: t.Any) -> SXNG_Response:
     return request('post', url, data=data, **kwargs)
 
 
-def put(url: str, data=None, **kwargs: t.Any) -> SXNG_Response:
+def put(url: str, data: dict[str, t.Any] | None = None, **kwargs: t.Any) -> SXNG_Response:
     return request('put', url, data=data, **kwargs)
 
 
-def patch(url: str, data=None, **kwargs: t.Any) -> SXNG_Response:
+def patch(url: str, data: dict[str, t.Any] | None = None, **kwargs: t.Any) -> SXNG_Response:
     return request('patch', url, data=data, **kwargs)
 
 
@@ -250,7 +252,7 @@ def _close_response_method(self):
         continue
 
 
-def stream(method: str, url: str, **kwargs: t.Any) -> tuple[httpx.Response, Iterable[bytes]]:
+def stream(method: str, url: str, **kwargs: t.Any) -> tuple[SXNG_Response, Iterable[bytes]]:
     """Replace httpx.stream.
 
     Usage:

@@ -1,42 +1,71 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-"""Processors for engine-type: ``online_currency``
+"""Processor used for ``online_currency`` engines."""
 
-"""
+import typing as t
 
 import unicodedata
 import re
 
+import flask_babel
+import babel
+
 from searx.data import CURRENCIES
-from .online import OnlineProcessor
+from .online import OnlineProcessor, OnlineParams
 
-parser_re = re.compile('.*?(\\d+(?:\\.\\d+)?) ([^.0-9]+) (?:in|to) ([^.0-9]+)', re.I)
+if t.TYPE_CHECKING:
+    from .abstract import EngineProcessor
+    from searx.search.models import SearchQuery
 
 
-def normalize_name(name: str):
-    name = name.strip()
-    name = name.lower().replace('-', ' ').rstrip('s')
-    name = re.sub(' +', ' ', name)
-    return unicodedata.normalize('NFKD', name).lower()
+search_syntax = re.compile(r".*?(\d+(?:\.\d+)?) ([^.0-9]+) (?:in|to) ([^.0-9]+)", re.I)
+"""Search syntax used for from/to currency (e.g. ``10 usd to eur``)"""
+
+
+class CurrenciesParams(t.TypedDict):
+    """Currencies request parameters."""
+
+    amount: float
+    """Currency amount to be converted"""
+
+    to_iso4217: str
+    """ISO_4217_ alpha code of the currency used as the basis for conversion.
+
+    .. _ISO_4217: https://en.wikipedia.org/wiki/ISO_4217
+    """
+
+    from_iso4217: str
+    """ISO_4217_ alpha code of the currency to be converted."""
+
+    from_name: str
+    """Name of the currency used as the basis for conversion."""
+
+    to_name: str
+    """Name of the currency of the currency to be converted."""
+
+
+class OnlineCurrenciesParams(CurrenciesParams, OnlineParams):  # pylint: disable=duplicate-bases
+    """Request parameters of a ``online_currency`` engine."""
 
 
 class OnlineCurrencyProcessor(OnlineProcessor):
     """Processor class used by ``online_currency`` engines."""
 
-    engine_type = 'online_currency'
+    engine_type: str = "online_currency"
 
-    def initialize(self):
+    def initialize(self, callback: t.Callable[["EngineProcessor", bool], bool]):
         CURRENCIES.init()
-        super().initialize()
+        super().initialize(callback)
 
-    def get_params(self, search_query, engine_category):
-        """Returns a set of :ref:`request params <engine request online_currency>`
-        or ``None`` if search query does not match to :py:obj:`parser_re`."""
+    def get_params(self, search_query: "SearchQuery", engine_category: str) -> OnlineCurrenciesParams | None:
+        """Returns a dictionary with the :ref:`request params <engine request
+        online_currency>` (:py:obj:`OnlineCurrenciesParams`).  ``None`` is
+        returned if the search query does not match :py:obj:`search_syntax`."""
 
-        params = super().get_params(search_query, engine_category)
-        if params is None:
+        online_params: OnlineParams | None = super().get_params(search_query, engine_category)
+
+        if online_params is None:
             return None
-
-        m = parser_re.match(search_query.query)
+        m = search_syntax.match(search_query.query)
         if not m:
             return None
 
@@ -46,22 +75,46 @@ class OnlineCurrencyProcessor(OnlineProcessor):
         except ValueError:
             return None
 
-        from_currency = CURRENCIES.name_to_iso4217(normalize_name(from_currency))
-        to_currency = CURRENCIES.name_to_iso4217(normalize_name(to_currency))
+        # most often $ stands for USD
+        if from_currency == "$":
+            from_currency = "$ us"
 
-        params['amount'] = amount
-        params['from'] = from_currency
-        params['to'] = to_currency
-        params['from_name'] = CURRENCIES.iso4217_to_name(from_currency, "en")
-        params['to_name'] = CURRENCIES.iso4217_to_name(to_currency, "en")
-        return params
+        if to_currency == "$":
+            to_currency = "$ us"
 
-    def get_default_tests(self):
-        tests = {}
+        from_iso4217 = from_currency
+        if not CURRENCIES.is_iso4217(from_iso4217):
+            from_iso4217 = CURRENCIES.name_to_iso4217(_normalize_name(from_currency))
 
-        tests['currency'] = {
-            'matrix': {'query': '1337 usd in rmb'},
-            'result_container': ['has_answer'],
+        to_iso4217 = to_currency
+        if not CURRENCIES.is_iso4217(to_iso4217):
+            to_iso4217 = CURRENCIES.name_to_iso4217(_normalize_name(to_currency))
+
+        if from_iso4217 is None or to_iso4217 is None:
+            return None
+
+        ui_locale = flask_babel.get_locale() or babel.Locale.parse("en")
+        from_name: str = CURRENCIES.iso4217_to_name(
+            from_iso4217, ui_locale.language
+        )  # pyright: ignore[reportAssignmentType]
+        to_name: str = CURRENCIES.iso4217_to_name(
+            to_iso4217, ui_locale.language
+        )  # pyright: ignore[reportAssignmentType]
+
+        params: OnlineCurrenciesParams = {
+            **online_params,
+            "amount": amount,
+            "from_iso4217": from_iso4217,
+            "to_iso4217": to_iso4217,
+            "from_name": from_name,
+            "to_name": to_name,
         }
 
-        return tests
+        return params
+
+
+def _normalize_name(name: str):
+    name = name.strip()
+    name = name.lower().replace("-", " ")
+    name = re.sub(" +", " ", name)
+    return unicodedata.normalize("NFKD", name).lower()

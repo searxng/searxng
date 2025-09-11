@@ -1,8 +1,7 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 # pylint: disable=missing-module-docstring, too-few-public-methods
 
-# the public namespace has not yet been finally defined ..
-# __all__ = [..., ]
+__all__ = ["SearchWithPlugins"]
 
 import typing as t
 
@@ -22,7 +21,7 @@ from searx.metrics import initialize as initialize_metrics, counter_inc
 from searx.network import initialize as initialize_network, check_network_configuration
 from searx.results import ResultContainer
 from searx.search.checker import initialize as initialize_checker
-from searx.search.processors import PROCESSORS, initialize as initialize_processors
+from searx.search.processors import PROCESSORS
 
 
 if t.TYPE_CHECKING:
@@ -44,15 +43,13 @@ def initialize(
     if check_network:
         check_network_configuration()
     initialize_metrics([engine['name'] for engine in settings_engines], enable_metrics)
-    initialize_processors(settings_engines)
+    PROCESSORS.init(settings_engines)
     if enable_checker:
         initialize_checker()
 
 
 class Search:
     """Search information container"""
-
-    __slots__ = "search_query", "result_container", "start_time", "actual_timeout"  # type: ignore
 
     def __init__(self, search_query: "SearchQuery"):
         """Initialize the Search"""
@@ -184,8 +181,6 @@ class Search:
 
 class SearchWithPlugins(Search):
     """Inherit from the Search class, add calls to the plugins."""
-
-    __slots__ = 'user_plugins', 'request'
 
     def __init__(self, search_query: "SearchQuery", request: "SXNG_Request", user_plugins: list[str]):
         super().__init__(search_query)

@@ -30,6 +30,7 @@ import httpx
 if typing.TYPE_CHECKING:
     import searx.preferences
     import searx.results
+    from searx.search.processors import ParamTypes
 
 
 class SXNG_Request(flask.Request):
@@ -78,6 +79,8 @@ class SXNG_Response(httpx.Response):
        response = typing.cast(SXNG_Response, response)
        if response.ok:
           ...
+       query_was = search_params["query"]
     """
 
     ok: bool
+    search_params: "ParamTypes"
