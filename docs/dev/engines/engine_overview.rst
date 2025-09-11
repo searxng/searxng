@@ -144,9 +144,9 @@ parameters with default value can be redefined for special purposes.
    ====================== ============== ========================================================================
    url                    str            ``''``
    method                 str            ``'GET'``
-   headers                set            ``{}``
-   data                   set            ``{}``
-   cookies                set            ``{}``
+   headers                dict           ``{}``
+   data                   dict           ``{}``
+   cookies                dict           ``{}``
    verify                 bool           ``True``
    headers.User-Agent     str            a random User-Agent
    category               str            current category, like ``'general'``
@@ -226,9 +226,9 @@ following parameters can be used to specify a search request:
    =================== =========== ==========================================================================
    url                 str         requested url
    method              str         HTTP request method
-   headers             set         HTTP header information
-   data                set         HTTP data information
-   cookies             set         HTTP cookies
+   headers             dict        HTTP header information
+   data                dict        HTTP data information
+   cookies             dict        HTTP cookies
    verify              bool        Performing SSL-Validity check
    allow_redirects     bool        Follow redirects
    max_redirects       int         maximum redirects, hard limit
@@ -249,6 +249,3 @@ by templates.  For more details read section:
 
 - :ref:`simple theme templates`
 - :ref:`result types`
-
-
-

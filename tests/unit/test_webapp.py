@@ -24,7 +24,7 @@ class ViewsTestCase(SearxTestCase):  # pylint: disable=too-many-public-methods
         def dummy(*args, **kwargs):  # pylint: disable=unused-argument
             pass
 
-        self.setattr4test(searx.search.processors, 'initialize_processor', dummy)
+        self.setattr4test(searx.search.processors.PROCESSORS, 'init', dummy)
 
         # set some defaults
         test_results = [

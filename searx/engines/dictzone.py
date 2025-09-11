@@ -24,7 +24,6 @@ engine_type = 'online_dictionary'
 categories = ['general', 'translate']
 base_url = "https://dictzone.com"
 weight = 100
-https_support = True
 
 
 def request(query, params):  # pylint: disable=unused-argument

@@ -48,6 +48,7 @@ import searx.query
 import searx.search
 import searx.search.models
 import searx.webadapter
+from searx.search.processors import PROCESSORS
 
 EngineCategoriesVar = Optional[List[str]]
 
@@ -172,7 +173,7 @@ if __name__ == '__main__':
     searx.search.initialize_network(settings_engines, searx.settings['outgoing'])
     searx.search.check_network_configuration()
     searx.search.initialize_metrics([engine['name'] for engine in settings_engines])
-    searx.search.initialize_processors(settings_engines)
+    PROCESSORS.init(settings_engines)
     search_q = get_search_query(prog_args, engine_categories=engine_cs)
     res_dict = to_dict(search_q)
     sys.stdout.write(dumps(res_dict, sort_keys=True, indent=4, ensure_ascii=False, default=json_serial))

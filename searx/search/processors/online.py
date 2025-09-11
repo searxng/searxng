@@ -1,8 +1,9 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-"""Processors for engine-type: ``online``
+"""Processor used for ``online`` engines."""
 
-"""
-# pylint: disable=use-dict-literal
+__all__ = ["OnlineProcessor", "OnlineParams"]
+
+import typing as t
 
 from timeit import default_timer
 import asyncio
@@ -17,50 +18,132 @@ from searx.exceptions import (
     SearxEngineTooManyRequestsException,
 )
 from searx.metrics.error_recorder import count_error
-from .abstract import EngineProcessor
+from .abstract import EngineProcessor, RequestParams
+
+if t.TYPE_CHECKING:
+    from searx.search.models import SearchQuery
+    from searx.results import ResultContainer
+    from searx.result_types import EngineResults
 
 
-def default_request_params():
+class HTTPParams(t.TypedDict):
+    """HTTP request parameters"""
+
+    method: t.Literal["GET", "POST"]
+    """HTTP request method."""
+
+    headers: dict[str, str]
+    """HTTP header information."""
+
+    data: dict[str, str]
+    """Sending `form encoded data`_.
+
+    .. _form encoded data:
+       https://www.python-httpx.org/quickstart/#sending-form-encoded-data
+    """
+
+    json: dict[str, t.Any]
+    """`Sending `JSON encoded data`_.
+
+    .. _JSON encoded data:
+       https://www.python-httpx.org/quickstart/#sending-json-encoded-data
+    """
+
+    content: bytes
+    """`Sending `binary request data`_.
+
+    .. _binary request data:
+       https://www.python-httpx.org/quickstart/#sending-json-encoded-data
+    """
+
+    url: str
+    """Requested url."""
+
+    cookies: dict[str, str]
+    """HTTP cookies."""
+
+    allow_redirects: bool
+    """Follow redirects"""
+
+    max_redirects: int
+    """Maximum redirects, hard limit."""
+
+    soft_max_redirects: int
+    """Maximum redirects, soft limit. Record an error but don't stop the engine."""
+
+    verify: None | t.Literal[False] | str  # not sure str really works
+    """If not ``None``, it overrides the verify value defined in the network.  Use
+    ``False`` to accept any server certificate and use a path to file to specify a
+    server certificate"""
+
+    auth: str | None
+    """An authentication to use when sending requests."""
+
+    raise_for_httperror: bool
+    """Raise an exception if the `HTTP response status code`_ is ``>= 300``.
+
+    .. _HTTP response status code:
+        https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Status
+    """
+
+
+class OnlineParams(HTTPParams, RequestParams):
+    """Request parameters of a ``online`` engine."""
+
+
+def default_request_params() -> HTTPParams:
     """Default request parameters for ``online`` engines."""
     return {
-        # fmt: off
-        'method': 'GET',
-        'headers': {},
-        'data': {},
-        'url': '',
-        'cookies': {},
-        'auth': None
-        # fmt: on
+        "method": "GET",
+        "headers": {},
+        "data": {},
+        "json": {},
+        "content": b"",
+        "url": "",
+        "cookies": {},
+        "allow_redirects": False,
+        "max_redirects": 0,
+        "soft_max_redirects": 0,
+        "auth": None,
+        "verify": None,
+        "raise_for_httperror": True,
     }
 
 
 class OnlineProcessor(EngineProcessor):
     """Processor class for ``online`` engines."""
 
-    engine_type = 'online'
+    engine_type: str = "online"
 
-    def initialize(self):
+    def init_engine(self) -> bool:
+        """This method is called in a thread, and before the base method is
+        called, the network must be set up for the ``online`` engines."""
+        self.init_network_in_thread(start_time=default_timer(), timeout_limit=self.engine.timeout)
+        return super().init_engine()
+
+    def init_network_in_thread(self, start_time: float, timeout_limit: float):
         # set timeout for all HTTP requests
-        searx.network.set_timeout_for_thread(self.engine.timeout, start_time=default_timer())
+        searx.network.set_timeout_for_thread(timeout_limit, start_time=start_time)
         # reset the HTTP total time
         searx.network.reset_time_for_thread()
         # set the network
-        searx.network.set_context_network_name(self.engine_name)
-        super().initialize()
+        searx.network.set_context_network_name(self.engine.name)
 
-    def get_params(self, search_query, engine_category):
-        """Returns a set of :ref:`request params <engine request online>` or ``None``
-        if request is not supported.
-        """
-        params = super().get_params(search_query, engine_category)
-        if params is None:
-            return None
+    def get_params(self, search_query: "SearchQuery", engine_category: str) -> OnlineParams | None:
+        """Returns a dictionary with the :ref:`request params <engine request
+        online>` (:py:obj:`OnlineParams`), if the search condition is not
+        supported by the engine, ``None`` is returned."""
 
-        # add default params
-        params.update(default_request_params())
+        base_params: RequestParams | None = super().get_params(search_query, engine_category)
+        if base_params is None:
+            return base_params
+
+        params: OnlineParams = {**default_request_params(), **base_params}
+
+        headers = params["headers"]
 
         # add an user agent
-        params['headers']['User-Agent'] = gen_useragent()
+        headers["User-Agent"] = gen_useragent()
 
         # add Accept-Language header
         if self.engine.send_accept_language_header and search_query.locale:
@@ -71,73 +154,77 @@ class OnlineProcessor(EngineProcessor):
                     search_query.locale.territory,
                     search_query.locale.language,
                 )
-            params['headers']['Accept-Language'] = ac_lang
+            headers["Accept-Language"] = ac_lang
 
-        self.logger.debug('HTTP Accept-Language: %s', params['headers'].get('Accept-Language', ''))
+        self.logger.debug("HTTP Accept-Language: %s", headers.get("Accept-Language", ""))
         return params
 
-    def _send_http_request(self, params):
-        # create dictionary which contain all
-        # information about the request
-        request_args = dict(headers=params['headers'], cookies=params['cookies'], auth=params['auth'])
+    def _send_http_request(self, params: OnlineParams):
 
-        # verify
-        # if not None, it overrides the verify value defined in the network.
-        # use False to accept any server certificate
-        # use a path to file to specify a server certificate
-        verify = params.get('verify')
+        # create dictionary which contain all information about the request
+        request_args: dict[str, t.Any] = {
+            "headers": params["headers"],
+            "cookies": params["cookies"],
+            "auth": params["auth"],
+        }
+
+        verify = params.get("verify")
         if verify is not None:
-            request_args['verify'] = params['verify']
+            request_args["verify"] = verify
 
         # max_redirects
-        max_redirects = params.get('max_redirects')
+        max_redirects = params.get("max_redirects")
         if max_redirects:
-            request_args['max_redirects'] = max_redirects
+            request_args["max_redirects"] = max_redirects
 
         # allow_redirects
-        if 'allow_redirects' in params:
-            request_args['allow_redirects'] = params['allow_redirects']
+        if "allow_redirects" in params:
+            request_args["allow_redirects"] = params["allow_redirects"]
 
         # soft_max_redirects
-        soft_max_redirects = params.get('soft_max_redirects', max_redirects or 0)
+        soft_max_redirects: int = params.get("soft_max_redirects", max_redirects or 0)
 
         # raise_for_status
-        request_args['raise_for_httperror'] = params.get('raise_for_httperror', True)
+        request_args["raise_for_httperror"] = params.get("raise_for_httperror", True)
 
         # specific type of request (GET or POST)
-        if params['method'] == 'GET':
+        if params["method"] == "GET":
             req = searx.network.get
         else:
             req = searx.network.post
-
-        request_args['data'] = params['data']
+            if params["data"]:
+                request_args["data"] = params["data"]
+            if params["json"]:
+                request_args["json"] = params["json"]
+            if params["content"]:
+                request_args["content"] = params["content"]
 
         # send the request
-        response = req(params['url'], **request_args)
+        response = req(params["url"], **request_args)
 
         # check soft limit of the redirect count
         if len(response.history) > soft_max_redirects:
             # unexpected redirect : record an error
             # but the engine might still return valid results.
-            status_code = str(response.status_code or '')
-            reason = response.reason_phrase or ''
+            status_code = str(response.status_code or "")
+            reason = response.reason_phrase or ""
             hostname = response.url.host
             count_error(
-                self.engine_name,
-                '{} redirects, maximum: {}'.format(len(response.history), soft_max_redirects),
+                self.engine.name,
+                "{} redirects, maximum: {}".format(len(response.history), soft_max_redirects),
                 (status_code, reason, hostname),
                 secondary=True,
             )
 
         return response
 
-    def _search_basic(self, query, params):
+    def _search_basic(self, query: str, params: OnlineParams) -> "EngineResults|None":
         # update request parameters dependent on
         # search-engine (contained in engines folder)
         self.engine.request(query, params)
 
         # ignoring empty urls
-        if not params['url']:
+        if not params["url"]:
             return None
 
         # send request
@@ -147,13 +234,15 @@ class OnlineProcessor(EngineProcessor):
         response.search_params = params
         return self.engine.response(response)
 
-    def search(self, query, params, result_container, start_time, timeout_limit):
-        # set timeout for all HTTP requests
-        searx.network.set_timeout_for_thread(timeout_limit, start_time=start_time)
-        # reset the HTTP total time
-        searx.network.reset_time_for_thread()
-        # set the network
-        searx.network.set_context_network_name(self.engine_name)
+    def search(  # pyright: ignore[reportIncompatibleMethodOverride]
+        self,
+        query: str,
+        params: OnlineParams,
+        result_container: "ResultContainer",
+        start_time: float,
+        timeout_limit: float,
+    ):
+        self.init_network_in_thread(start_time, timeout_limit)
 
         try:
             # send requests and parse the results
@@ -162,7 +251,7 @@ class OnlineProcessor(EngineProcessor):
         except ssl.SSLError as e:
             # requests timeout (connect or read)
             self.handle_exception(result_container, e, suspend=True)
-            self.logger.error("SSLError {}, verify={}".format(e, searx.network.get_network(self.engine_name).verify))
+            self.logger.error("SSLError {}, verify={}".format(e, searx.network.get_network(self.engine.name).verify))
         except (httpx.TimeoutException, asyncio.TimeoutError) as e:
             # requests timeout (connect or read)
             self.handle_exception(result_container, e, suspend=True)
@@ -179,55 +268,13 @@ class OnlineProcessor(EngineProcessor):
                     default_timer() - start_time, timeout_limit, e
                 )
             )
-        except SearxEngineCaptchaException as e:
+        except (
+            SearxEngineCaptchaException,
+            SearxEngineTooManyRequestsException,
+            SearxEngineAccessDeniedException,
+        ) as e:
             self.handle_exception(result_container, e, suspend=True)
-            self.logger.exception('CAPTCHA')
-        except SearxEngineTooManyRequestsException as e:
-            self.handle_exception(result_container, e, suspend=True)
-            self.logger.exception('Too many requests')
-        except SearxEngineAccessDeniedException as e:
-            self.handle_exception(result_container, e, suspend=True)
-            self.logger.exception('SearXNG is blocked')
+            self.logger.exception(e.message)
         except Exception as e:  # pylint: disable=broad-except
             self.handle_exception(result_container, e)
-            self.logger.exception('exception : {0}'.format(e))
-
-    def get_default_tests(self):
-        tests = {}
-
-        tests['simple'] = {
-            'matrix': {'query': ('life', 'computer')},
-            'result_container': ['not_empty'],
-        }
-
-        if getattr(self.engine, 'paging', False):
-            tests['paging'] = {
-                'matrix': {'query': 'time', 'pageno': (1, 2, 3)},
-                'result_container': ['not_empty'],
-                'test': ['unique_results'],
-            }
-            if 'general' in self.engine.categories:
-                # avoid documentation about HTML tags (<time> and <input type="time">)
-                tests['paging']['matrix']['query'] = 'news'
-
-        if getattr(self.engine, 'time_range', False):
-            tests['time_range'] = {
-                'matrix': {'query': 'news', 'time_range': (None, 'day')},
-                'result_container': ['not_empty'],
-                'test': ['unique_results'],
-            }
-
-        if getattr(self.engine, 'traits', False):
-            tests['lang_fr'] = {
-                'matrix': {'query': 'paris', 'lang': 'fr'},
-                'result_container': ['not_empty', ('has_language', 'fr')],
-            }
-            tests['lang_en'] = {
-                'matrix': {'query': 'paris', 'lang': 'en'},
-                'result_container': ['not_empty', ('has_language', 'en')],
-            }
-
-        if getattr(self.engine, 'safesearch', False):
-            tests['safesearch'] = {'matrix': {'query': 'porn', 'safesearch': (0, 2)}, 'test': ['unique_results']}
-
-        return tests
+            self.logger.exception("exception : {0}".format(e))

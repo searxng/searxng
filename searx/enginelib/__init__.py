@@ -39,6 +39,7 @@ if t.TYPE_CHECKING:
     from searx.enginelib.traits import EngineTraits
     from searx.extended_types import SXNG_Response
     from searx.result_types import EngineResults
+    from searx.search.processors import OfflineParamTypes, OnlineParamTypes
 
 ENGINES_CACHE: ExpireCacheSQLite = ExpireCacheSQLite.build_cache(
     ExpireCacheCfg(
@@ -195,6 +196,10 @@ class Engine(abc.ABC):  # pylint: disable=too-few-public-methods
     paging: bool
     """Engine supports multiple pages."""
 
+    max_page: int = 0
+    """If the engine supports paging, then this is the value for the last page
+    that is still supported. ``0`` means unlimited numbers of pages."""
+
     time_range_support: bool
     """Engine supports search time range."""
 
@@ -304,14 +309,49 @@ class Engine(abc.ABC):  # pylint: disable=too-few-public-methods
     weight: int
     """Weighting of the results of this engine (:ref:`weight <settings engines>`)."""
 
-    def init(self, engine_settings: dict[str, t.Any]) -> None:  # pyright: ignore[reportUnusedParameter]
-        """Initialization of the engine. If no initialization is needed, drop
-        this init function."""
+    def setup(self, engine_settings: dict[str, t.Any]) -> bool:  # pylint: disable=unused-argument
+        """Dynamic setup of the engine settings.
+
+        With this method, the engine's setup is carried out.  For example, to
+        check or dynamically adapt the values handed over in the parameter
+        ``engine_settings``.  The return value (True/False) indicates whether
+        the setup was successful and the engine can be built or rejected.
+
+        The method is optional and is called synchronously as part of the
+        initialization of the service and is therefore only suitable for simple
+        (local) exams/changes at the engine setting.  The :py:obj:`Engine.init`
+        method must be used for longer tasks in which values of a remote must be
+        determined, for example.
+        """
+        return True
+
+    def init(self, engine_settings: dict[str, t.Any]) -> bool | None:  # pylint: disable=unused-argument
+        """Initialization of the engine.
+
+        The method is optional and asynchronous (in a thread).  It is suitable,
+        for example, for setting up a cache (for the engine) or for querying
+        values (required by the engine) from a remote.
+
+        Whether the initialization was successful can be indicated by the return
+        value ``True`` or even ``False``.
+
+        - If no return value is given from this init method (``None``), this is
+          equivalent to ``True``.
+
+        - If an exception is thrown as part of the initialization, this is
+          equivalent to ``False``.
+        """
+        return True
 
     @abc.abstractmethod
-    def request(self, query: str, params: dict[str, t.Any]) -> None:
-        """Build up the params for the online request."""
+    def search(self, query: str, params: "OfflineParamTypes") -> "EngineResults":
+        """Search method of the ``offline`` engines"""
+
+    @abc.abstractmethod
+    def request(self, query: str, params: "OnlineParamTypes") -> None:
+        """Method to build the parameters for the request of an ``online``
+        engine."""
 
     @abc.abstractmethod
     def response(self, resp: "SXNG_Response") -> "EngineResults":
-        """Parse out the result items from the response."""
+        """Method to parse the response of an ``online`` engine."""

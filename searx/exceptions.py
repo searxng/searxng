@@ -74,9 +74,9 @@ class SearxEngineAccessDeniedException(SearxEngineResponseException):
         """
         if suspended_time is None:
             suspended_time = self._get_default_suspended_time()
-        super().__init__(message + ', suspended_time=' + str(suspended_time))
+        self.message: str = f"{message} (suspended_time={suspended_time})"
         self.suspended_time: int = suspended_time
-        self.message: str = message
+        super().__init__(self.message)
 
     def _get_default_suspended_time(self) -> int:
         from searx import get_setting  # pylint: disable=C0415

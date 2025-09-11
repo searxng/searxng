@@ -51,7 +51,10 @@ ENGINE_DEFAULT_ARGS: dict[str, int | str | list[t.Any] | dict[str, t.Any] | bool
 DEFAULT_CATEGORY = 'other'
 
 categories: "dict[str, list[Engine|types.ModuleType]]" = {'general': []}
+
 engines: "dict[str, Engine | types.ModuleType]" = {}
+"""Global registered engine instances."""
+
 engine_shortcuts = {}
 """Simple map of registered *shortcuts* to name of the engine (or ``None``).
 
@@ -144,6 +147,9 @@ def load_engine(engine_data: dict[str, t.Any]) -> "Engine | types.ModuleType | N
 
     set_loggers(engine, engine_name)
 
+    if not call_engine_setup(engine, engine_data):
+        return None
+
     if not any(cat in settings['categories_as_tabs'] for cat in engine.categories):
         engine.categories.append(DEFAULT_CATEGORY)
 
@@ -221,6 +227,25 @@ def is_engine_active(engine: "Engine | types.ModuleType"):
         return False
 
     return True
+
+
+def call_engine_setup(engine: "Engine | types.ModuleType", engine_data: dict[str, t.Any]) -> bool:
+    setup_ok = False
+    setup_func = getattr(engine, "setup", None)
+
+    if setup_func is None:
+        setup_ok = True
+    elif not callable(setup_func):
+        logger.error("engine's setup method isn't a callable (is of type: %s)", type(setup_func))
+    else:
+        try:
+            setup_ok = engine.setup(engine_data)
+        except Exception as e:  # pylint: disable=broad-except
+            logger.exception('exception : {0}'.format(e))
+
+    if not setup_ok:
+        logger.error("%s: Engine setup was not successful, engine is set to inactive.", engine.name)
+    return setup_ok
 
 
 def register_engine(engine: "Engine | types.ModuleType"):
