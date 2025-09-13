@@ -23,8 +23,8 @@ msgstr ""
 "Project-Id-Version: searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-09-01 12:54+0000\n"
-"PO-Revision-Date: 2025-09-02 04:50+0000\n"
-"Last-Translator: return42 <return42@noreply.codeberg.org>\n"
+"PO-Revision-Date: 2025-09-14 00:25+0000\n"
+"Last-Translator: artnay <artnay@noreply.codeberg.org>\n"
 "Language-Team: Finnish <https://translate.codeberg.org/projects/searxng/"
 "searxng/fi/>\n"
 "Language: fi\n"
@@ -32,7 +32,7 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.12.2\n"
+"X-Generator: Weblate 5.13.2\n"
 "Generated-By: Babel 2.17.0\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
@@ -153,7 +153,7 @@ msgstr "web"
 #. CATEGORY_GROUPS['SCIENTIFIC PUBLICATIONS']
 #: searx/searxng.msg
 msgid "scientific publications"
-msgstr "Tieteelliset Julkaisut"
+msgstr "tieteelliset julkaisut"
 
 #. STYLE_NAMES['AUTO']
 #: searx/searxng.msg
@@ -223,12 +223,12 @@ msgstr "Kosteus"
 #. WEATHER_TERMS['MAX TEMP.']
 #: searx/searxng.msg
 msgid "Max temp."
-msgstr "Maksimi lämpötila."
+msgstr "Suurin lämpötila."
 
 #. WEATHER_TERMS['MIN TEMP.']
 #: searx/searxng.msg
 msgid "Min temp."
-msgstr "Minimi lämpötila."
+msgstr "Pienin lämpötila."
 
 #. WEATHER_TERMS['MORNING']
 #: searx/searxng.msg
@@ -268,7 +268,7 @@ msgstr "Lämpötila"
 #. WEATHER_TERMS['UV INDEX']
 #: searx/searxng.msg
 msgid "UV index"
-msgstr "UV indeksi"
+msgstr "UV-indeksi"
 
 #. WEATHER_TERMS['VISIBILITY']
 #: searx/searxng.msg
@@ -293,7 +293,7 @@ msgstr "Osittain pilvistä"
 #. WEATHER_CONDITIONS
 #: searx/searxng.msg
 msgid "Cloudy"
-msgstr "Pilvinen"
+msgstr "Pilvistä"
 
 #. WEATHER_CONDITIONS
 #: searx/searxng.msg
@@ -303,7 +303,7 @@ msgstr "Selkeää"
 #. WEATHER_CONDITIONS
 #: searx/searxng.msg
 msgid "Fog"
-msgstr "Sumu"
+msgstr "Sumuista"
 
 #. WEATHER_CONDITIONS
 #: searx/searxng.msg
@@ -463,7 +463,7 @@ msgstr ""
 #. WEATHER_CONDITIONS
 #: searx/searxng.msg
 msgid "Snow"
-msgstr ""
+msgstr "Lumisadetta"
 
 #. WEATHER_CONDITIONS
 #: searx/searxng.msg
@@ -524,7 +524,7 @@ msgstr "pisteet"
 #. SOCIAL_MEDIA_TERMS['TITLE']
 #: searx/searxng.msg
 msgid "title"
-msgstr "Otsikko"
+msgstr "otsikko"
 
 #. SOCIAL_MEDIA_TERMS['AUTHOR']
 #: searx/engines/hackernews.py:85 searx/searxng.msg
@@ -534,7 +534,7 @@ msgstr "tekijä"
 #. SOCIAL_MEDIA_TERMS['THREAD OPEN']
 #: searx/engines/discourse.py:149 searx/searxng.msg
 msgid "open"
-msgstr "Avaa"
+msgstr "avoin"
 
 #. SOCIAL_MEDIA_TERMS['THREAD CLOSED']
 #: searx/engines/discourse.py:149 searx/searxng.msg
@@ -685,7 +685,7 @@ msgid ""
 "{numCitations} citations from the year {firstCitationVelocityYear} to "
 "{lastCitationVelocityYear}"
 msgstr ""
-"{numCitations} Sitaatit vuodesta {firstCitationVelocityYear} vuoteen "
+"{numCitations} sitaattia vuodesta {firstCitationVelocityYear} vuoteen "
 "{lastCitationVelocityYear}"
 
 #: searx/engines/tineye.py:48
@@ -792,11 +792,11 @@ msgstr "Selaimesi tunnistetiedot: "
 
 #: searx/plugins/time_zone.py:34
 msgid "Timezones plugin"
-msgstr ""
+msgstr "Aikavyöhykkeiden liitännäinen"
 
 #: searx/plugins/time_zone.py:35
 msgid "Display the current time on different time zones."
-msgstr ""
+msgstr "Näytä aika eri aikavyöhykkeillä."
 
 #: searx/plugins/tor_check.py:42
 msgid "Tor check plugin"
@@ -924,7 +924,7 @@ msgstr "välimuistissa"
 
 #: searx/templates/simple/new_issue.html:64
 msgid "Start submitting a new issue on GitHub"
-msgstr "Avaa uusi issue GitHubissa"
+msgstr "Avaa uusi ongelma GitHubissa"
 
 #: searx/templates/simple/new_issue.html:66
 msgid "Please check for existing bugs about this engine on GitHub"
@@ -932,13 +932,12 @@ msgstr "Tarkista tämän hakukoneen tämänhetkiset ongelmat GitHubista"
 
 #: searx/templates/simple/new_issue.html:69
 msgid "I confirm there is no existing bug about the issue I encounter"
-msgstr "Vahvistan, että tästä bugista ei ole olemassaolevaa issue:ta"
+msgstr "Vahvistan, että tästä bugista ei ole olemassa ongelmaa"
 
 #: searx/templates/simple/new_issue.html:71
 msgid "If this is a public instance, please specify the URL in the bug report"
 msgstr ""
-"Jos kyseessä on julkinen instanssi, määritä sen URL-osoite "
-"vikailmoituksessa"
+"Jos kyseessä on julkinen palvelin, määritä sen URL-osoite vikailmoituksessa"
 
 #: searx/templates/simple/new_issue.html:72
 msgid "Submit a new issue on Github including the above information"
@@ -952,7 +951,7 @@ msgstr "Ei HTTPS-yhteyttä"
 #: searx/templates/simple/preferences.html:69
 #: searx/templates/simple/preferences.html:70
 msgid "View error logs and submit a bug report"
-msgstr "Katso virhelokit ja lähetä virhe raportti"
+msgstr "Katso virhelokit ja lähetä virheraportti"
 
 #: searx/templates/simple/preferences.html:74
 msgid "!bang for this engine"
@@ -960,7 +959,7 @@ msgstr "!bang tälle hakukoneelle"
 
 #: searx/templates/simple/preferences.html:80
 msgid "!bang for its categories"
-msgstr "!bang sen kategorioille"
+msgstr "!bang sen luokille"
 
 #: searx/templates/simple/preferences.html:102
 #: searx/templates/simple/stats.html:64
@@ -1283,7 +1282,7 @@ msgstr "Tuloksia ei löytynyt. Voit:"
 
 #: searx/templates/simple/messages/no_results.html:14
 msgid "There are no more results. You can try to:"
-msgstr "Tuloksia ei ole enään lisää. Voit yrittää:"
+msgstr "Ei enempää tuloksia. Voit yrittää:"
 
 #: searx/templates/simple/messages/no_results.html:19
 msgid "Refresh the page."
@@ -1299,7 +1298,7 @@ msgstr "Vaihtaa käytettävää hakukonetta asetuksista:"
 
 #: searx/templates/simple/messages/no_results.html:22
 msgid "Switch to another instance:"
-msgstr "Vaihtaa toiseen instanssiin:"
+msgstr "Vaihtaa toiseen palvelimeen:"
 
 #: searx/templates/simple/messages/no_results.html:24
 msgid "Search for another query or select another category."
@@ -1307,7 +1306,7 @@ msgstr "Hae toista kyselyä tai valitse toinen luokka."
 
 #: searx/templates/simple/messages/no_results.html:25
 msgid "Go back to the previous page using the previous page button."
-msgstr "Palaa edelliselle sivulle käyttäen edellinen sivu-nappia."
+msgstr "Palaa edelliselle sivulle käyttäen edellinen sivu -painiketta."
 
 #: searx/templates/simple/preferences/answerers.html:4
 #: searx/templates/simple/preferences/engines.html:23
@@ -1361,7 +1360,7 @@ msgstr ""
 
 #: searx/templates/simple/preferences/cookies.html:3
 msgid "With this list, you can assess the transparency of SearXNG."
-msgstr ""
+msgstr "Tämän listan perusteella voit arvioida SearXNG:n läpinäkyvyyttä."
 
 #: searx/templates/simple/preferences/cookies.html:9
 msgid "Cookie name"
@@ -1506,7 +1505,7 @@ msgstr "Kuvat välityspalvelimen kautta"
 
 #: searx/templates/simple/preferences/image_proxy.html:14
 msgid "Proxy image results through SearXNG"
-msgstr ""
+msgstr "Välitä kuvatulokset SearXNG-välityspalvelimen kautta"
 
 #: searx/templates/simple/preferences/infinite_scroll.html:2
 msgid "Infinite scroll"
@@ -1569,6 +1568,8 @@ msgid ""
 "Perform a search immediately if a category is selected. Disable to select"
 " multiple categories"
 msgstr ""
+"Suorita haku välittömästi, jos luokka on valittu. Poista käytöstä "
+"valitaksesi useita luokkia"
 
 #: searx/templates/simple/preferences/theme.html:2
 msgid "Theme"
