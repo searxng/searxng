@@ -102,7 +102,8 @@ container.build() {
 
         # shellcheck disable=SC2086
         "$container_engine" $params_build_builder \
-            --build-arg="TIMESTAMP_SETTINGS=$(git log -1 --format="%cd" --date=unix -- ./searx/settings.yml)" \
+            --build-arg="TIMESTAMP=$(git log -1 --date=format:'%Y%m%d%H%M.%S' --format='%ad')" \
+            --build-arg="TIMESTAMP_SETTINGS=$(git log -1 --date=format:'%Y%m%d%H%M.%S' --format='%ad' ./searx/settings.yml)" \
             --tag="localhost/$CONTAINER_IMAGE_ORGANIZATION/$CONTAINER_IMAGE_NAME:builder" \
             --file="./container/builder.dockerfile" \
             .

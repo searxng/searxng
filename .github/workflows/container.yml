@@ -104,8 +104,6 @@ jobs:
     needs: build-base
     strategy:
       fail-fast: false
-      # Faster runners first to cache arch independent wheels
-      max-parallel: 1
       matrix:
         include:
           - arch: amd64
@@ -121,8 +119,6 @@ jobs:
     permissions:
       # Organization GHCR
       packages: write
-      # Clean key cache step
-      actions: write
 
     outputs:
       docker_tag: ${{ steps.build.outputs.docker_tag }}
@@ -146,23 +142,12 @@ jobs:
           restore-keys: "python-${{ env.PYTHON_VERSION }}-${{ runner.arch }}-"
           path: "./local/"
 
-      - name: Restore cache container mounts
-        id: cache-container-mounts
-        uses: actions/cache/restore@0400d5f644dc74513175e3cd8d07132dd4860809  # v4.2.4
+      - name: Setup cache container uv
+        uses: actions/cache@0400d5f644dc74513175e3cd8d07132dd4860809  # v4.2.4
         with:
-          key: "container-mounts-${{ hashFiles('./container/*.dockerfile') }}"
-          restore-keys: "container-mounts-"
-          path: |
-            /var/tmp/buildah-cache/
-            /var/tmp/buildah-cache-*/
-
-      # https://github.com/actions/cache/pull/1308
-      - if: steps.cache-container-mounts.outputs.cache-hit == 'true'
-        name: Clean key cache container mounts
-        continue-on-error: true
-        env:
-          GH_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
-        run: gh cache delete container-mounts-${{ hashFiles('./container/*.dockerfile') }}
+          key: "container-uv-${{ matrix.arch }}-${{ hashFiles('./requirements*.txt') }}"
+          restore-keys: "container-uv-${{ matrix.arch }}-"
+          path: "/var/tmp/buildah-cache-1001/uv/"
 
       - if: ${{ matrix.emulation }}
         name: Setup QEMU
@@ -180,15 +165,6 @@ jobs:
         env:
           OVERRIDE_ARCH: "${{ matrix.arch }}"
         run: make podman.build
-
-      - if: always()
-        name: Save cache container mounts
-        uses: actions/cache/save@0400d5f644dc74513175e3cd8d07132dd4860809  # v4.2.4
-        with:
-          key: "container-mounts-${{ hashFiles('./container/*.dockerfile') }}"
-          path: |
-            /var/tmp/buildah-cache/
-            /var/tmp/buildah-cache-*/
 
   test:
     name: Test (${{ matrix.arch }})
