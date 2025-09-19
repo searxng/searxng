@@ -13,12 +13,8 @@ import threading
 import httpx
 from httpx_socks import AsyncProxyTransport
 from python_socks import parse_proxy_url, ProxyConnectionError, ProxyTimeoutError, ProxyError
-import uvloop
 
 from searx import logger
-
-
-uvloop.install()
 
 CertTypes = str | tuple[str, str] | tuple[str, str, str]
 SslContextKeyType = tuple[str | None, CertTypes | None, bool, bool]
