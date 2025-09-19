@@ -280,9 +280,9 @@ class Network:
             client.cookies = httpx.Cookies(cookies)
             try:
                 if stream:
-                    response = client.stream(method, url, **kwargs)
-                else:
-                    response = await client.request(method, url, **kwargs)
+                    return client.stream(method, url, **kwargs)
+
+                response = await client.request(method, url, **kwargs)
                 if self.is_valid_response(response) or retries <= 0:
                     return self.patch_response(response, do_raise_for_httperror)
             except httpx.RemoteProtocolError as e:
