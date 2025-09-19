@@ -85,15 +85,13 @@ container.build() {
         info_msg "Set \$DOCKER_TAG: $DOCKER_TAG"
         info_msg "Set \$GIT_URL: $GIT_URL"
 
-        timestamp_git=$(git log -1 --format='%ct')
-
         # change cmp to lockfile when available
         timestamp_requirements_main=$(git log -1 --format='%ct' ./requirements.txt)
         timestamp_requirements_server=$(git log -1 --format='%ct' ./requirements-server.txt)
-        if [[ "$timestamp_requirements_main" -lt "$timestamp_requirements_server" ]]; then
-            timestamp_venv="$timestamp_requirements_server"
-        else
+        if [[ "$timestamp_requirements_main" -ge "$timestamp_requirements_server" ]]; then
             timestamp_venv="$timestamp_requirements_main"
+        else
+            timestamp_venv="$timestamp_requirements_server"
         fi
 
         timestamp_searx_settings=$(git log -1 --format='%ct' ./searx/settings.yml)

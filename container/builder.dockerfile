@@ -9,8 +9,7 @@ RUN --mount=type=cache,id=uv,target=/root/.cache/uv set -eux -o pipefail; \
     uv venv; \
     uv pip install --no-managed-python --compile-bytecode --requirements ./requirements.txt --requirements ./requirements-server.txt; \
     uv cache prune --ci; \
-    find ./.venv/lib/python*/site-packages/*.dist-info/ -type f -name "RECORD" -print0 | \
-    xargs -0 -n1 -I{} sort -t, -k1,1 -o {} {}; \
+    find ./.venv/lib/python*/site-packages/*.dist-info/ -type f -name "RECORD" -exec sort -t, -k1,1 -o {} {} \;; \
     find ./.venv/ -exec touch -h --date="@$TIMESTAMP_VENV" {} +; \
     unset SOURCE_DATE_EPOCH
 
