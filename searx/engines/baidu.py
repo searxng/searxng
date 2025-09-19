@@ -96,7 +96,7 @@ def request(query, params):
 def response(resp):
     # Detect Baidu Captcha, it will redirect to wappass.baidu.com
     if 'wappass.baidu.com/static/captcha' in resp.headers.get('Location', ''):
-        raise SearxEngineCaptchaException()
+        raise SearxEngineCaptchaException(suspended_time=300, message="Baidu CAPTCHA detected. Please try again later.")
 
     text = resp.text
     if baidu_category == 'images':
