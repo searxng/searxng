@@ -13,6 +13,7 @@ RUN --mount=type=cache,id=uv,target=/root/.cache/uv set -eux -o pipefail; \
     find ./.venv/ -exec touch -h --date="@$TIMESTAMP_VENV" {} +; \
     unset SOURCE_DATE_EPOCH
 
+# use "--exclude=./searx/version_frozen.py" when actions/runner-images updates to Podman 5.0+
 COPY ./searx/ ./searx/
 
 ARG TIMESTAMP_SETTINGS="0"
