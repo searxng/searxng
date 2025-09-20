@@ -85,9 +85,20 @@ container.build() {
         info_msg "Set \$DOCKER_TAG: $DOCKER_TAG"
         info_msg "Set \$GIT_URL: $GIT_URL"
 
+        # change cmp to lockfile when available
+        timestamp_requirements_main=$(git log -1 --format='%ct' ./requirements.txt)
+        timestamp_requirements_server=$(git log -1 --format='%ct' ./requirements-server.txt)
+        if [[ "$timestamp_requirements_main" -ge "$timestamp_requirements_server" ]]; then
+            timestamp_venv="$timestamp_requirements_main"
+        else
+            timestamp_venv="$timestamp_requirements_server"
+        fi
+
+        timestamp_searx_settings=$(git log -1 --format='%ct' ./searx/settings.yml)
+
         if [ "$container_engine" = "podman" ]; then
-            params_build_builder="build --format=oci --platform=$platform --layers --identity-label=false"
-            params_build=$params_build_builder
+            params_build_builder="build --format=oci --platform=$platform --layers --identity-label=false --timestamp=$timestamp_venv"
+            params_build="build --format=oci --platform=$platform --layers --identity-label=false"
         else
             params_build_builder="build --platform=$platform"
             params_build=$params_build_builder
@@ -102,8 +113,8 @@ container.build() {
 
         # shellcheck disable=SC2086
         "$container_engine" $params_build_builder \
-            --build-arg="TIMESTAMP=$(git log -1 --date=format:'%Y%m%d%H%M.%S' --format='%ad')" \
-            --build-arg="TIMESTAMP_SETTINGS=$(git log -1 --date=format:'%Y%m%d%H%M.%S' --format='%ad' ./searx/settings.yml)" \
+            --build-arg="TIMESTAMP_VENV=$timestamp_venv" \
+            --build-arg="TIMESTAMP_SETTINGS=$timestamp_searx_settings" \
             --tag="localhost/$CONTAINER_IMAGE_ORGANIZATION/$CONTAINER_IMAGE_NAME:builder" \
             --file="./container/builder.dockerfile" \
             .
