@@ -62,6 +62,10 @@ container.build() {
     esac
     info_msg "Selected platform: $platform"
 
+    if [ "$container_engine" = "docker" ] && ! docker buildx version &>/dev/null; then
+        die 42 "docker buildx is not installed: https://docs.docker.com/go/buildx/"
+    fi
+
     pyenv.install
 
     (
