@@ -80,7 +80,14 @@ def request(query: str, params: "OnlineParams") -> None:
                 "name": "resourceGroups",
                 "requestHeaderDetails": {"commandName": "Microsoft.ResourceGraph"},
                 "content": {
-                    "query": f"ResourceContainers | where (name contains ('{query}'))|where (type =~ ('Microsoft.Resources/subscriptions/resourcegroups'))|project id,name,type,kind,subscriptionId,resourceGroup|extend matchscore = name startswith '{query}' | extend normalizedName = tolower(tostring(name)) | sort by matchscore desc, normalizedName asc | take 30"
+                    "query": f"ResourceContainers \
+                        | where (name contains ('{query}'))\
+                        | where (type =~ ('Microsoft.Resources/subscriptions/resourcegroups'))\
+                        | project id,name,type,kind,subscriptionId,resourceGroup\
+                        | extend matchscore = name startswith '{query}' \
+                        | extend normalizedName = tolower(tostring(name)) \
+                        | sort by matchscore desc, normalizedName asc \
+                        | take 30"
                 },
             },
             {
@@ -105,7 +112,8 @@ def response(resp: "SXNG_Response") -> EngineResults:
                 print(data)
                 res.add(
                     res.types.MainResult(
-                        url=f"https://portal.azure.com/#@/resource/subscriptions/{data['subscriptionId']}/resourceGroups/{data['name']}/overview",
+                        url="https://portal.azure.com/#@/resource"
+                        + f"/subscriptions/{data['subscriptionId']}/resourceGroups/{data['name']}/overview",
                         title=data["name"],
                         content=f"Resource Group in Subscription: {data['subscriptionId']}",
                     )
@@ -115,9 +123,12 @@ def response(resp: "SXNG_Response") -> EngineResults:
                 print(data)
                 res.add(
                     res.types.MainResult(
-                        url=f"https://portal.azure.com/#@/resource/subscriptions/{data['subscriptionId']}/resourceGroups/{data['resourceGroup']}/providers/{data['type']}/{data['name']}/overview",
+                        url="https://portal.azure.com/#@/resource"
+                        + f"/subscriptions/{data['subscriptionId']}/resourceGroups/{data['resourceGroup']}"
+                        + f"/providers/{data['type']}/{data['name']}/overview",
                         title=data["name"],
-                        content=f"Resource of type {data['type']} in Subscription: {data['subscriptionId']}, Resource Group: {data['resourceGroup']}",
+                        content=f"Resource of type {data['type']} in Subscription:"
+                        + f" {data['subscriptionId']}, Resource Group: {data['resourceGroup']}",
                     )
                 )
     return res
