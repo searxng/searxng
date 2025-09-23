@@ -1,10 +1,11 @@
-FROM ghcr.io/searxng/base:searxng AS dist
-
 ARG CONTAINER_IMAGE_ORGANIZATION="searxng"
 ARG CONTAINER_IMAGE_NAME="searxng"
 
-COPY --chown=searxng:searxng --from=localhost/$CONTAINER_IMAGE_ORGANIZATION/$CONTAINER_IMAGE_NAME:builder /usr/local/searxng/.venv/ ./.venv/
-COPY --chown=searxng:searxng --from=localhost/$CONTAINER_IMAGE_ORGANIZATION/$CONTAINER_IMAGE_NAME:builder /usr/local/searxng/searx/ ./searx/
+FROM localhost/$CONTAINER_IMAGE_ORGANIZATION/$CONTAINER_IMAGE_NAME:builder AS builder
+FROM ghcr.io/searxng/base:searxng AS dist
+
+COPY --chown=searxng:searxng --from=builder /usr/local/searxng/.venv/ ./.venv/
+COPY --chown=searxng:searxng --from=builder /usr/local/searxng/searx/ ./searx/
 COPY --chown=searxng:searxng ./container/ ./
 #COPY --chown=searxng:searxng ./searx/version_frozen.py ./searx/
 
