@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 """Simple implementation to store TrackerPatterns data in a SQL database."""
 
-import typing
+import typing as t
 
 __all__ = ["TrackerPatternsDB"]
 
@@ -14,9 +14,14 @@ from httpx import HTTPError
 from searx.data.core import get_cache, log
 from searx.network import get as http_get
 
+if t.TYPE_CHECKING:
+    from searx.cache import CacheRowType
+
+
 RuleType = tuple[str, list[str], list[str]]
 
 
+@t.final
 class TrackerPatternsDB:
     # pylint: disable=missing-class-docstring
 
@@ -31,9 +36,9 @@ class TrackerPatternsDB:
 
     class Fields:
         # pylint: disable=too-few-public-methods, invalid-name
-        url_regexp: typing.Final = 0  # URL (regular expression) match condition of the link
-        url_ignore: typing.Final = 1  # URL (regular expression) to ignore
-        del_args: typing.Final = 2  # list of URL arguments (regular expression) to delete
+        url_regexp: t.Final = 0  # URL (regular expression) match condition of the link
+        url_ignore: t.Final = 1  # URL (regular expression) to ignore
+        del_args: t.Final = 2  # list of URL arguments (regular expression) to delete
 
     def __init__(self):
         self.cache = get_cache()
@@ -49,19 +54,25 @@ class TrackerPatternsDB:
 
     def load(self):
         log.debug("init searx.data.TRACKER_PATTERNS")
-        for rule in self.iter_clear_list():
-            self.add(rule)
+        rows: "list[CacheRowType]" = []
 
-    def add(self, rule: RuleType):
-        self.cache.set(
-            key=rule[self.Fields.url_regexp],
-            value=(
+        for rule in self.iter_clear_list():
+            key = rule[self.Fields.url_regexp]
+            value = (
                 rule[self.Fields.url_ignore],
                 rule[self.Fields.del_args],
-            ),
-            ctx=self.ctx_name,
-            expire=None,
+            )
+            rows.append((key, value, None))
+
+        self.cache.setmany(rows, ctx=self.ctx_name)
+
+    def add(self, rule: RuleType):
+        key = rule[self.Fields.url_regexp]
+        value = (
+            rule[self.Fields.url_ignore],
+            rule[self.Fields.del_args],
         )
+        self.cache.set(key=key, value=value, ctx=self.ctx_name, expire=None)
 
     def rules(self) -> Iterator[RuleType]:
         self.init()
