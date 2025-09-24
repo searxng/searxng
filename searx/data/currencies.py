@@ -6,6 +6,7 @@ __all__ = ["CurrenciesDB"]
 import typing as t
 import json
 import pathlib
+import time
 
 from .core import get_cache, log
 
@@ -32,6 +33,7 @@ class CurrenciesDB:
         #     in /tmp and will be rebuild during the reboot anyway
 
     def load(self):
+        _start = time.time()
         log.debug("init searx.data.CURRENCIES")
         with open(self.json_file, encoding="utf-8") as f:
             data_dict: dict[str, dict[str, str]] = json.load(f)
@@ -39,6 +41,11 @@ class CurrenciesDB:
             self.cache.set(key=key, value=value, ctx=self.ctx_names, expire=None)
         for key, value in data_dict["iso4217"].items():
             self.cache.set(key=key, value=value, ctx=self.ctx_iso4217, expire=None)
+        log.debug(
+            "init searx.data.CURRENCIES added %s items in %s sec.",
+            len(data_dict["names"]) + len(data_dict["iso4217"]),
+            time.time() - _start,
+        )
 
     def name_to_iso4217(self, name: str) -> str | None:
         self.init()
