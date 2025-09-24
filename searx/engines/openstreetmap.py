@@ -446,7 +446,7 @@ def get_key_label(key_name, lang):
         # https://taginfo.openstreetmap.org/keys/currency#values
         currency = key_name.split(':')
         if len(currency) > 1:
-            o = CURRENCIES['iso4217'].get(currency[1])
+            o = CURRENCIES.iso4217_to_name(currency[1], lang)
             if o:
                 return get_label(o, lang).lower()
             return currency[1]
