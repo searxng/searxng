@@ -52,10 +52,6 @@ class OnlineCurrencyProcessor(OnlineProcessor):
 
     engine_type: str = "online_currency"
 
-    def initialize(self, callback: t.Callable[["EngineProcessor", bool], bool]):
-        CURRENCIES.init()
-        super().initialize(callback)
-
     def get_params(self, search_query: "SearchQuery", engine_category: str) -> OnlineCurrenciesParams | None:
         """Returns a dictionary with the :ref:`request params <engine request
         online_currency>` (:py:obj:`OnlineCurrenciesParams`).  ``None`` is
