@@ -1,7 +1,5 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-"""Unsplash
-
-"""
+"""Unsplash"""
 
 from urllib.parse import urlencode, urlparse, urlunparse, parse_qsl
 from json import loads

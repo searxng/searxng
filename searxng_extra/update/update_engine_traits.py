@@ -50,7 +50,7 @@ A list of five-digit tuples:
    Empty string for language tags.
 3. English language name (from :py:obj:`babel.core.Locale.english_name`)
 4. Unicode flag (emoji) that fits to SearXNG's internal region tag. Languages
-   are represented by a globe (\U0001F310)
+   are represented by a globe (\U0001f310)
 
 .. code:: python
 
@@ -68,11 +68,11 @@ A list of five-digit tuples:
 
 
 lang2emoji = {
-    'ha': '\U0001F1F3\U0001F1EA',  # Hausa / Niger
-    'bs': '\U0001F1E7\U0001F1E6',  # Bosnian / Bosnia & Herzegovina
-    'jp': '\U0001F1EF\U0001F1F5',  # Japanese
-    'ua': '\U0001F1FA\U0001F1E6',  # Ukrainian
-    'he': '\U0001F1EE\U0001F1F1',  # Hebrew
+    'ha': '\U0001f1f3\U0001f1ea',  # Hausa / Niger
+    'bs': '\U0001f1e7\U0001f1e6',  # Bosnian / Bosnia & Herzegovina
+    'jp': '\U0001f1ef\U0001f1f5',  # Japanese
+    'ua': '\U0001f1fa\U0001f1e6',  # Ukrainian
+    'he': '\U0001f1ee\U0001f1f1',  # Hebrew
 }
 
 
@@ -178,7 +178,7 @@ def get_unicode_flag(locale: babel.Locale):
         return emoji
 
     if not locale.territory:
-        return '\U0001F310'
+        return '\U0001f310'
 
     emoji = lang2emoji.get(locale.territory.lower())
     if emoji:

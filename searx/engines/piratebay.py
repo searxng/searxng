@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 """
- Piratebay (Videos, Music, Files)
+Piratebay (Videos, Music, Files)
 """
 
 from json import loads

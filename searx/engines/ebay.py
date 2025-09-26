@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 """
- Ebay (Videos, Music, Files)
+Ebay (Videos, Music, Files)
 """
 
 from urllib.parse import quote

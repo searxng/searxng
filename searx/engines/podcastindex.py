@@ -1,6 +1,5 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-"""Podcast Index
-"""
+"""Podcast Index"""
 
 from urllib.parse import quote_plus
 from datetime import datetime

@@ -1,6 +1,5 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-"""Chefkoch is a German database of recipes.
-"""
+"""Chefkoch is a German database of recipes."""
 
 from datetime import datetime
 from urllib.parse import urlencode

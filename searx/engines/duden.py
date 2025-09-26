@@ -1,7 +1,5 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-"""Duden
-
-"""
+"""Duden"""
 
 import re
 from urllib.parse import quote, urljoin

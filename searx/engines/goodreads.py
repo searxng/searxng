@@ -1,6 +1,5 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-"""Goodreads (books)
-"""
+"""Goodreads (books)"""
 
 from urllib.parse import urlencode
 

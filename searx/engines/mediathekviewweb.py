@@ -1,7 +1,5 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-"""MediathekViewWeb (API)
-
-"""
+"""MediathekViewWeb (API)"""
 
 import datetime
 from json import loads, dumps

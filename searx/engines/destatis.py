@@ -1,6 +1,5 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-"""DeStatis
-"""
+"""DeStatis"""
 
 from urllib.parse import urlencode
 from lxml import html

@@ -1,7 +1,5 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-"""Wolfram|Alpha (Science)
-
-"""
+"""Wolfram|Alpha (Science)"""
 
 from urllib.parse import urlencode
 

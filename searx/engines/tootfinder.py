@@ -1,6 +1,5 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-"""Tootfinder (social media)
-"""
+"""Tootfinder (social media)"""
 
 from datetime import datetime
 from json import loads

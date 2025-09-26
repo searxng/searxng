@@ -1,6 +1,5 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-"""Fyyd (podcasts)
-"""
+"""Fyyd (podcasts)"""
 
 from datetime import datetime
 from urllib.parse import urlencode

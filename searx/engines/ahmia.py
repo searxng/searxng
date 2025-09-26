@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 """
- Ahmia (Onions)
+Ahmia (Onions)
 """
 
 from urllib.parse import urlencode, urlparse, parse_qs

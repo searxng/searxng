@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 """
- INA (Videos)
+INA (Videos)
 """
 
 from html import unescape

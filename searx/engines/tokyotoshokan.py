@@ -1,7 +1,5 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-"""Tokyo Toshokan (A BitTorrent Library for Japanese Media)
-
-"""
+"""Tokyo Toshokan (A BitTorrent Library for Japanese Media)"""
 
 import re
 from datetime import datetime

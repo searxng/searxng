@@ -1,7 +1,5 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-"""OpenStreetMap (Map)
-
-"""
+"""OpenStreetMap (Map)"""
 
 import re
 import urllib.parse

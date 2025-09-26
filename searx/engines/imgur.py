@@ -1,6 +1,5 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-"""Imgur (images)
-"""
+"""Imgur (images)"""
 
 from urllib.parse import urlencode
 from lxml import html

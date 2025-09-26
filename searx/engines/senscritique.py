@@ -1,6 +1,5 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-"""SensCritique (movies)
-"""
+"""SensCritique (movies)"""
 
 import typing as t
 

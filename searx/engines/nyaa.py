@@ -1,7 +1,5 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-"""Nyaa.si (Anime Bittorrent tracker)
-
-"""
+"""Nyaa.si (Anime Bittorrent tracker)"""
 
 from urllib.parse import urlencode
 
