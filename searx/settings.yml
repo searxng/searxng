@@ -496,6 +496,14 @@ engines:
     shortcut: ask
     disabled: true
 
+  - name: azure
+    engine: azure
+    shortcut: az
+    tenant_id: 'your_tenant_id'
+    client_id: 'your_client_id'
+    client_secret: 'your_client_secret'
+    disabled: true
+    categories: [it, cloud]
   # tmp suspended:  dh key too small
   # - name: base
   #   engine: base
