@@ -1,6 +1,5 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-"""Exception types raised by SearXNG modules.
-"""
+"""Exception types raised by SearXNG modules."""
 
 import typing as t
 from lxml.etree import XPath

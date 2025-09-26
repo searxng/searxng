@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 """
- Doku Wiki
+Doku Wiki
 """
 
 from urllib.parse import urlencode

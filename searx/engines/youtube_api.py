@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 """
- Youtube (Videos)
+Youtube (Videos)
 """
 
 from json import loads

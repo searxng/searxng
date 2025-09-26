@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 """
- F-Droid (a repository of FOSS applications for Android)
+F-Droid (a repository of FOSS applications for Android)
 """
 
 from urllib.parse import urlencode

@@ -1,7 +1,5 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-"""Youtube (Videos)
-
-"""
+"""Youtube (Videos)"""
 
 from functools import reduce
 from json import loads, dumps

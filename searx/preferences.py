@@ -1,6 +1,5 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-"""Searx preferences implementation.
-"""
+"""Searx preferences implementation."""
 
 # pylint: disable=useless-object-inheritance
 

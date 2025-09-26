@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 """
- PDBe (Protein Data Bank in Europe)
+PDBe (Protein Data Bank in Europe)
 """
 
 from json import loads

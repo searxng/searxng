@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 """
- Frinkiac (Images)
+Frinkiac (Images)
 """
 
 from json import loads

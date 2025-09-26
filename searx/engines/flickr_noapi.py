@@ -1,7 +1,5 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-"""Flickr (Images)
-
-"""
+"""Flickr (Images)"""
 
 import json
 from time import time

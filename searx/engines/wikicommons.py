@@ -1,7 +1,5 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-"""Wikimedia Commons (images)
-
-"""
+"""Wikimedia Commons (images)"""
 
 import datetime
 

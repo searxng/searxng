@@ -1,8 +1,8 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 """
- Flickr (Images)
+Flickr (Images)
 
- More info on api-key : https://www.flickr.com/services/apps/create/
+More info on api-key : https://www.flickr.com/services/apps/create/
 """
 
 from json import loads

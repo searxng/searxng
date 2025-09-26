@@ -1,7 +1,5 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-"""BASE (Scholar publications)
-
-"""
+"""BASE (Scholar publications)"""
 from datetime import datetime
 import re
 

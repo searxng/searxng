@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 """
- Wikipedia (Web
+Wikipedia (Web
 """
 
 from urllib.parse import urlencode

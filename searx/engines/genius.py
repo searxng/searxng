@@ -1,8 +1,6 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 # pylint: disable=invalid-name
-"""Genius
-
-"""
+"""Genius"""
 
 from urllib.parse import urlencode
 from datetime import datetime

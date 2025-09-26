@@ -1,7 +1,5 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-"""Deviantart (Images)
-
-"""
+"""Deviantart (Images)"""
 
 import urllib.parse
 from lxml import html

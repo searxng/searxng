@@ -1,7 +1,5 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-"""Github (IT)
-
-"""
+"""Github (IT)"""
 
 from urllib.parse import urlencode
 from dateutil import parser

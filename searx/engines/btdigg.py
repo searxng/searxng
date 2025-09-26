@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 """
- BTDigg (Videos, Music, Files)
+BTDigg (Videos, Music, Files)
 """
 
 from urllib.parse import quote, urljoin

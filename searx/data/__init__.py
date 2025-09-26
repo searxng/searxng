@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 """This module holds the *data* created by::
 
-  make data.all
+make data.all
 
 """
 # pylint: disable=invalid-name

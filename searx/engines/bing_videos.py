@@ -1,7 +1,6 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 # pylint: disable=invalid-name
-"""Bing-Videos: description see :py:obj:`searx.engines.bing`.
-"""
+"""Bing-Videos: description see :py:obj:`searx.engines.bing`."""
 
 import json
 from urllib.parse import urlencode

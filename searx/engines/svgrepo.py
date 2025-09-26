@@ -1,6 +1,5 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-"""Svgrepo (icons)
-"""
+"""Svgrepo (icons)"""
 
 from lxml import html
 from searx.utils import extract_text, eval_xpath, eval_xpath_list

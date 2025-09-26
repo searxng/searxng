@@ -1,7 +1,5 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-"""Spotify (Music)
-
-"""
+"""Spotify (Music)"""
 
 from json import loads
 from urllib.parse import urlencode

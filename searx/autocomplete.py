@@ -1,7 +1,5 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-"""This module implements functions needed for the autocompleter.
-
-"""
+"""This module implements functions needed for the autocompleter."""
 # pylint: disable=use-dict-literal
 
 import json

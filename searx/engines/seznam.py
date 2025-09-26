@@ -1,7 +1,5 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-"""Seznam
-
-"""
+"""Seznam"""
 
 from urllib.parse import urlencode
 from lxml import html

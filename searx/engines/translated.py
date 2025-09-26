@@ -1,7 +1,5 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-"""MyMemory Translated
-
-"""
+"""MyMemory Translated"""
 
 import urllib.parse
 

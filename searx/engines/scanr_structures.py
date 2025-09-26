@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 """
- ScanR Structures (Science)
+ScanR Structures (Science)
 """
 
 from json import loads, dumps

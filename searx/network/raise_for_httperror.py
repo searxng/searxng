@@ -1,7 +1,5 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-"""Raise exception for an HTTP response is an error.
-
-"""
+"""Raise exception for an HTTP response is an error."""
 
 import typing as t
 from searx.exceptions import (

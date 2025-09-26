@@ -1,7 +1,5 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-"""1x (Images)
-
-"""
+"""1x (Images)"""
 
 from urllib.parse import urlencode, urljoin
 from lxml import html, etree
