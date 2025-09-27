@@ -127,14 +127,19 @@ class SQLiteAppl(abc.ABC):
         "check_same_thread": bool(SQLITE_THREADING_MODE != "serialized"),
         "cached_statements": 0,  # https://github.com/python/cpython/issues/118172
         # "uri": False,
-        "isolation_level": None,
+        # "isolation_level": "",
+        # "autocommit": sqlite3.LEGACY_TRANSACTION_CONTROL,
     }  # fmt:skip
     """Connection arguments (:py:obj:`sqlite3.connect`)
 
-    ``check_same_thread``:
+    ``check_same_thread``: *bool*
       Is disabled by default when :py:obj:`SQLITE_THREADING_MODE` is
-      ``serialized``.  The check is more of a hindrance in this case because it
-      would prevent a DB connector from being used in multiple threads.
+      `serialized`.  The check is more of a hindrance when threadsafety_ is
+      `serialized` because it would prevent a DB connector from being used in
+      multiple threads.
+
+      Is enabled when threadsafety_ is ``single-thread`` or ``multi-thread``
+      (when threads cannot share a connection PEP-0249_).
 
     ``cached_statements``:
       Is set to ``0`` by default.  Note: Python 3.12+ fetch result are not
@@ -149,6 +154,40 @@ class SQLiteAppl(abc.ABC):
 
       The workaround for SQLite3 multithreading cache inconsistency is to set
       option ``cached_statements`` to ``0`` by default.
+
+    ``isolation_level``: *unset*
+      If the connection attribute isolation_level_ is **not** ``None``, new
+      transactions are implicitly opened before ``execute()`` and
+      ``executemany()`` executes SQL- INSERT, UPDATE, DELETE, or REPLACE
+      statements `[1]`_.
+
+      By default, the value is not set, which means the default from Python is
+      used: Python's default is ``""``, which is an alias for ``"DEFERRED"``.
+
+    ``autocommit``: *unset*
+      Starting with Python 3.12 the DB connection has a ``autocommit`` attribute
+      and the recommended way of controlling transaction behaviour is through
+      this attribute `[2]`_.
+
+      By default, the value is not set, which means the default from Python is
+      used: Python's default is the constant LEGACY_TRANSACTION_CONTROL_:
+      Pre-Python 3.12 (non-PEP 249-compliant) transaction control, see
+      ``isolation_level`` above for more details.
+
+    .. _PEP-0249:
+        https://peps.python.org/pep-0249/#threadsafety
+    .. _threadsafety:
+        https://docs.python.org/3/library/sqlite3.html#sqlite3.threadsafety
+    .. _isolation_level:
+        https://docs.python.org/3/library/sqlite3.html#sqlite3.Connection.isolation_level
+    .. _[1]:
+        https://docs.python.org/3/library/sqlite3.html#sqlite3-transaction-control-isolation-level
+    .. _autocommit:
+        https://docs.python.org/3/library/sqlite3.html#sqlite3.Connection.autocommit
+    .. _[2]:
+        https://docs.python.org/3/library/sqlite3.html#transaction-control-via-the-autocommit-attribute
+    .. _LEGACY_TRANSACTION_CONTROL:
+        https://docs.python.org/3/library/sqlite3.html#sqlite3.LEGACY_TRANSACTION_CONTROL
     """
 
     def __init__(self, db_url: str):
