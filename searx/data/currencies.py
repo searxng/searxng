@@ -9,6 +9,9 @@ import pathlib
 
 from .core import get_cache, log
 
+if t.TYPE_CHECKING:
+    from searx.cache import CacheRowType
+
 
 @t.final
 class CurrenciesDB:
@@ -35,10 +38,11 @@ class CurrenciesDB:
         log.debug("init searx.data.CURRENCIES")
         with open(self.json_file, encoding="utf-8") as f:
             data_dict: dict[str, dict[str, str]] = json.load(f)
-        for key, value in data_dict["names"].items():
-            self.cache.set(key=key, value=value, ctx=self.ctx_names, expire=None)
-        for key, value in data_dict["iso4217"].items():
-            self.cache.set(key=key, value=value, ctx=self.ctx_iso4217, expire=None)
+
+        rows: "list[CacheRowType]" = [(k, v, None) for k, v in data_dict["names"].items()]
+        self.cache.setmany(rows, ctx=self.ctx_names)
+        rows = [(k, v, None) for k, v in data_dict["iso4217"].items()]
+        self.cache.setmany(rows, ctx=self.ctx_iso4217)
 
     def name_to_iso4217(self, name: str) -> str | None:
         self.init()
