@@ -11,4 +11,3 @@ developers.
    :maxdepth: 2
 
    update
-   standalone_searx.py
