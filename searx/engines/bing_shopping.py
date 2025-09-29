@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-"""Alibaba"""
+"""Bing Shopping"""
 
 from urllib.parse import quote
 
@@ -7,8 +7,8 @@ from lxml import html
 from searx.engines.xpath import extract_text
 
 about = {
-    "website": 'https://www.alibaba.com',
-    "wikidata_id": 'Q1359568',
+    "website": 'https://www.bing.com',
+    "wikidata_id": 'Q182496',
     "official_api_documentation": None,
     "use_official_api": False,
     "require_api_key": False,
@@ -18,19 +18,21 @@ about = {
 categories = ['shopping']
 paging = True
 
-search_url = 'https://www.alibaba.com/trade/search?fsb=y&IndexArea=product_en&CatId=&SearchText={query}&viewtype=G&page={pageno}'
+search_url = 'https://www.bing.com/shop?q={query}&first={pageno}'
 
-# XPath selectors - generic and robust for Alibaba
-results_xpath = '//div[contains(@class, "item-main")] | //div[contains(@class, "item-content")] | //div[contains(@data-aplus, "")]'
-url_xpath = './/a/@href'
-title_xpath = './/h2//a | .//a[contains(@class, "title")] | .//h2/a'
-content_xpath = './/div[contains(@class, "stitle")] | .//div[contains(@class, "desc")] | .//span[contains(text(), "MOQ")]'
-price_xpath = './/div[contains(@class, "price")]//span | .//span[contains(@class, "price")] | .//span[contains(text(), "$")]'
-thumbnail_xpath = './/img/@src'
+# XPath selectors for Bing Shopping
+results_xpath = '//div[contains(@class, "iusc")] | //div[contains(@class, "ius")] | //li[contains(@class, "iusc")]'
+url_xpath = './/a[contains(@href, "/shop/product")]/@href'
+title_xpath = './/h2//a | .//a[contains(@href, "/shop/product")] | .//div[contains(@class, "iusc")]//h2'
+content_xpath = './/div[contains(@class, "iusc")]//p | .//div[contains(@class, "b_caption")]//p | .//span[contains(@class, "b_secondaryText")]'
+price_xpath = './/span[contains(@class, "b_price")] | .//span[contains(@class, "price")] | .//span[contains(text(), "$")]'
+thumbnail_xpath = './/img[contains(@src, "http") or contains(@src, "data:image")]/@src'
 
 
 def request(query, params):
-    params['url'] = search_url.format(query=quote(query), pageno=params['pageno'])
+    # Bing uses 1-based indexing for first parameter
+    first = (params['pageno'] - 1) * 10 + 1
+    params['url'] = search_url.format(query=quote(query), pageno=first)
     return params
 
 
@@ -54,7 +56,7 @@ def response(resp):
             continue
 
         if url and not url.startswith('http'):
-            url = 'https://www.alibaba.com' + url
+            url = 'https://www.bing.com' + url
 
         if not url:
             continue

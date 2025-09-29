@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-"""Alibaba"""
+"""Baidu Shopping"""
 
 from urllib.parse import quote
 
@@ -7,8 +7,8 @@ from lxml import html
 from searx.engines.xpath import extract_text
 
 about = {
-    "website": 'https://www.alibaba.com',
-    "wikidata_id": 'Q1359568',
+    "website": 'https://www.baidu.com',
+    "wikidata_id": 'Q14772',
     "official_api_documentation": None,
     "use_official_api": False,
     "require_api_key": False,
@@ -18,19 +18,21 @@ about = {
 categories = ['shopping']
 paging = True
 
-search_url = 'https://www.alibaba.com/trade/search?fsb=y&IndexArea=product_en&CatId=&SearchText={query}&viewtype=G&page={pageno}'
+search_url = 'https://www.baidu.com/s?wd={query}&ie=utf-8&rsv_dl=0_right_fyb_pchot_20811&pn={pageno}'
 
-# XPath selectors - generic and robust for Alibaba
-results_xpath = '//div[contains(@class, "item-main")] | //div[contains(@class, "item-content")] | //div[contains(@data-aplus, "")]'
-url_xpath = './/a/@href'
-title_xpath = './/h2//a | .//a[contains(@class, "title")] | .//h2/a'
-content_xpath = './/div[contains(@class, "stitle")] | .//div[contains(@class, "desc")] | .//span[contains(text(), "MOQ")]'
-price_xpath = './/div[contains(@class, "price")]//span | .//span[contains(@class, "price")] | .//span[contains(text(), "$")]'
-thumbnail_xpath = './/img/@src'
+# XPath selectors for Baidu Shopping (using general search with shopping parameters)
+results_xpath = '//div[contains(@class, "result")] | //div[contains(@class, "c-container")]'
+url_xpath = './/h3//a/@href | .//a[contains(@class, "t")]/@href'
+title_xpath = './/h3//a | .//a[contains(@class, "t")]'
+content_xpath = './/div[contains(@class, "c-abstract")] | .//span[contains(@class, "c-abstract")] | .//p[contains(@class, "c-abstract")]'
+price_xpath = './/span[contains(text(), "¥")] | .//span[contains(text(), "价格")] | .//em[contains(text(), "¥")]'
+thumbnail_xpath = './/img[contains(@src, "http") or contains(@src, "data:image")]/@src'
 
 
 def request(query, params):
-    params['url'] = search_url.format(query=quote(query), pageno=params['pageno'])
+    # Baidu uses pn parameter for pagination (0-based, 10 results per page)
+    pn = (params['pageno'] - 1) * 10
+    params['url'] = search_url.format(query=quote(query), pageno=pn)
     return params
 
 
@@ -54,14 +56,14 @@ def response(resp):
             continue
 
         if url and not url.startswith('http'):
-            url = 'https://www.alibaba.com' + url
+            url = 'https://www.baidu.com' + url
 
         if not url:
             continue
 
-        # Format price
-        if price and not price.startswith('$'):
-            price = '$' + price.replace('from ', '').replace('to ', '')
+        # Format price - Baidu uses ¥ symbol
+        if price and not price.startswith('¥'):
+            price = '¥' + price.replace('from ', '').replace('to ', '')
 
         # Fix thumbnail URL
         if thumbnail and thumbnail.startswith('//'):

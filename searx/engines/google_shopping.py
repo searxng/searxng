@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-"""Alibaba"""
+"""Google Shopping"""
 
 from urllib.parse import quote
 
@@ -7,8 +7,8 @@ from lxml import html
 from searx.engines.xpath import extract_text
 
 about = {
-    "website": 'https://www.alibaba.com',
-    "wikidata_id": 'Q1359568',
+    "website": 'https://www.google.com',
+    "wikidata_id": 'Q9366',
     "official_api_documentation": None,
     "use_official_api": False,
     "require_api_key": False,
@@ -18,15 +18,15 @@ about = {
 categories = ['shopping']
 paging = True
 
-search_url = 'https://www.alibaba.com/trade/search?fsb=y&IndexArea=product_en&CatId=&SearchText={query}&viewtype=G&page={pageno}'
+search_url = 'https://www.google.com/search?tbm=shop&q={query}&start={pageno}0'
 
-# XPath selectors - generic and robust for Alibaba
-results_xpath = '//div[contains(@class, "item-main")] | //div[contains(@class, "item-content")] | //div[contains(@data-aplus, "")]'
-url_xpath = './/a/@href'
-title_xpath = './/h2//a | .//a[contains(@class, "title")] | .//h2/a'
-content_xpath = './/div[contains(@class, "stitle")] | .//div[contains(@class, "desc")] | .//span[contains(text(), "MOQ")]'
-price_xpath = './/div[contains(@class, "price")]//span | .//span[contains(@class, "price")] | .//span[contains(text(), "$")]'
-thumbnail_xpath = './/img/@src'
+# XPath selectors for Google Shopping
+results_xpath = '//div[contains(@class, "sh-dgr__gr-auto")] | //div[contains(@class, "sh-dlr__list-result")] | //div[contains(@data-docid, "")]'
+url_xpath = './/a[contains(@href, "/shopping/product/")]/@href'
+title_xpath = './/h3[contains(@class, "tAxDx")] | .//span[contains(@class, "A8OWCb")] | .//a[contains(@href, "/shopping/product/")]//span'
+content_xpath = './/div[contains(@class, "aULzUe")] | .//span[contains(@class, "a8Pemb")]'
+price_xpath = './/span[contains(@class, "a8Pemb")] | .//span[contains(@class, "T14wmb")] | .//span[contains(text(), "$")]'
+thumbnail_xpath = './/img[contains(@src, "data:image") or contains(@src, "http")]/@src'
 
 
 def request(query, params):
@@ -54,7 +54,7 @@ def response(resp):
             continue
 
         if url and not url.startswith('http'):
-            url = 'https://www.alibaba.com' + url
+            url = 'https://www.google.com' + url
 
         if not url:
             continue

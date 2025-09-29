@@ -336,6 +336,7 @@ categories_as_tabs:
   science:
   files:
   social media:
+  shopping:
 
 engines:
   - name: 360search
@@ -891,25 +892,31 @@ engines:
     engine: ebay
     shortcut: eb
     base_url: 'https://www.ebay.com'
-    disabled: true
+    disabled: false
     timeout: 5
 
-  - name: amazon
-    engine: amazon
-    shortcut: amz
-    disabled: true
+  - name: google shopping
+    engine: google_shopping
+    shortcut: goshop
+    disabled: false
     timeout: 5
 
-  - name: flipkart
-    engine: flipkart
-    shortcut: flk
-    disabled: true
+  - name: baidu shopping
+    engine: baidu_shopping
+    shortcut: bdshop
+    disabled: false
+    timeout: 5
+
+  - name: bing shopping
+    engine: bing_shopping
+    shortcut: bshop
+    disabled: false
     timeout: 5
 
   - name: alibaba
     engine: alibaba
     shortcut: ali
-    disabled: true
+    disabled: false
     timeout: 5
 
   - name: 1x
@@ -1097,6 +1104,7 @@ engines:
     engine: google_maps
     shortcut: gmap
     disabled: true
+
 
   - name: material icons
     engine: material_icons
@@ -2159,16 +2167,16 @@ engines:
     categories: general
     search_type: web
     shortcut: yd
-    disabled: true
-    inactive: true
+    disabled: false
+    timeout: 5
 
   - name: yandex images
     engine: yandex
     categories: images
     search_type: images
     shortcut: ydi
-    disabled: true
-    inactive: true
+    disabled: false
+    timeout: 5
 
   - name: yandex music
     engine: yandex_music

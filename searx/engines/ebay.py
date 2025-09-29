@@ -26,14 +26,15 @@ paging = True
 base_url = None
 search_url = '/sch/i.html?_nkw={query}&_sacat={pageno}'
 
+# Updated XPath selectors for current eBay HTML
 results_xpath = '//li[contains(@class, "s-item")]'
-url_xpath = './/a[@class="s-item__link"]/@href'
-title_xpath = './/h3[@class="s-item__title"]'
-content_xpath = './/div[@span="SECONDARY_INFO"]'
-price_xpath = './/div[contains(@class, "s-item__detail")]/span[@class="s-item__price"][1]/text()'
+url_xpath = './/a[contains(@class, "s-item__link")]/@href'
+title_xpath = './/h3[contains(@class, "s-item__title")]'
+content_xpath = './/div[contains(@class, "s-item__subtitle")]'
+price_xpath = './/span[contains(@class, "s-item__price")]/text()'
 shipping_xpath = './/span[contains(@class, "s-item__shipping")]/text()'
 source_country_xpath = './/span[contains(@class, "s-item__location")]/text()'
-thumbnail_xpath = './/img[@class="s-item__image-img"]/@src'
+thumbnail_xpath = './/img[contains(@class, "s-item__image-img")]/@src'
 
 
 def request(query, params):

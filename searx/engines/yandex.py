@@ -103,30 +103,60 @@ def response(resp):
             content_between_tags = extr(html_sample, '{"location":"/images/search/', 'false}}}')
             json_data = '{"location":"/images/search/' + content_between_tags + 'false}}}'
 
-        json_resp = loads(json_data)
+        try:
+            json_resp = loads(json_data)
+        except (ValueError, TypeError):
+            # JSON parsing failed, return empty results
+            return []
 
         results = []
-        for _, item_data in json_resp['initialState']['serpList']['items']['entities'].items():
-            title = item_data['snippet']['title']
-            source = item_data['snippet']['url']
-            thumb = item_data['image']
-            fullsize_image = item_data['viewerData']['dups'][0]['url']
-            height = item_data['viewerData']['dups'][0]['h']
-            width = item_data['viewerData']['dups'][0]['w']
-            filesize = item_data['viewerData']['dups'][0]['fileSizeInBytes']
-            humanized_filesize = humanize_bytes(filesize)
 
-            results.append(
-                {
-                    'title': title,
-                    'url': source,
-                    'img_src': fullsize_image,
-                    'filesize': humanized_filesize,
-                    'thumbnail_src': thumb,
-                    'template': 'images.html',
-                    'resolution': f'{width} x {height}',
-                }
-            )
+        # Safely navigate the nested JSON structure
+        try:
+            entities = json_resp.get('initialState', {}).get('serpList', {}).get('items', {}).get('entities', {})
+        except (AttributeError, KeyError):
+            return []
+
+        for _, item_data in entities.items():
+            try:
+                # Safely extract required fields with defaults
+                snippet = item_data.get('snippet', {})
+                title = snippet.get('title', '')
+                source = snippet.get('url', '')
+                thumb = item_data.get('image', '')
+
+                # Handle viewerData and dups safely
+                viewer_data = item_data.get('viewerData', {})
+                dups = viewer_data.get('dups', [])
+
+                if not dups:
+                    # Skip items without image data
+                    continue
+
+                dup_data = dups[0]
+                fullsize_image = dup_data.get('url', '')
+                height = dup_data.get('h', 0)
+                width = dup_data.get('w', 0)
+                filesize = dup_data.get('fileSizeInBytes', 0)
+                humanized_filesize = humanize_bytes(filesize) if filesize else ''
+
+                # Only add results with required data
+                if title and source and fullsize_image:
+                    results.append(
+                        {
+                            'title': title,
+                            'url': source,
+                            'img_src': fullsize_image,
+                            'filesize': humanized_filesize,
+                            'thumbnail_src': thumb,
+                            'template': 'images.html',
+                            'resolution': f'{width} x {height}',
+                        }
+                    )
+
+            except (KeyError, IndexError, TypeError):
+                # Skip malformed items
+                continue
 
         return results
 
