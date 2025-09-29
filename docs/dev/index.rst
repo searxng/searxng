@@ -7,7 +7,6 @@ Developer documentation
 
    quickstart
    commits
-   rtm_asdf
    contribution_guide
    extended_types
    engines/index
