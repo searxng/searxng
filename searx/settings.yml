@@ -513,6 +513,11 @@ engines:
     shortcut: bd
     disabled: true
 
+  - name: baidu maps
+    engine: baidu_maps
+    shortcut: bdmap
+    disabled: true
+
   - name: baidu images
     baidu_category: images
     categories: [images]
@@ -882,12 +887,12 @@ engines:
       require_api_key: false
       results: HTML
 
-  # - name: ebay
-  #   engine: ebay
-  #   shortcut: eb
-  #   base_url: 'https://www.ebay.com'
-  #   disabled: true
-  #   timeout: 5
+  - name: ebay
+    engine: ebay
+    shortcut: eb
+    base_url: 'https://www.ebay.com'
+    disabled: true
+    timeout: 5
 
   - name: 1x
     engine: www1x
