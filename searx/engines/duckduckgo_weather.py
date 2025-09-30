@@ -76,12 +76,12 @@ def _weather_data(location: weather.GeoLocation, data: dict[str, t.Any]):
 
     return EngineResults.types.WeatherAnswer.Item(
         location=location,
-        temperature=weather.Temperature(unit="°C", value=data['temperature']),
+        temperature=weather.Temperature(val=data['temperature'], unit="°C"),
         condition=WEATHERKIT_TO_CONDITION[data["conditionCode"]],
-        feels_like=weather.Temperature(unit="°C", value=data['temperatureApparent']),
+        feels_like=weather.Temperature(val=data['temperatureApparent'], unit="°C"),
         wind_from=weather.Compass(data["windDirection"]),
-        wind_speed=weather.WindSpeed(data["windSpeed"], unit="mi/h"),
-        pressure=weather.Pressure(data["pressure"], unit="hPa"),
+        wind_speed=weather.WindSpeed(val=data["windSpeed"], unit="mi/h"),
+        pressure=weather.Pressure(val=data["pressure"], unit="hPa"),
         humidity=weather.RelativeHumidity(data["humidity"] * 100),
         cloud_cover=data["cloudCover"] * 100,
     )

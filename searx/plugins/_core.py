@@ -1,7 +1,6 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 # pylint: disable=too-few-public-methods,missing-module-docstring
 
-
 __all__ = ["PluginInfo", "Plugin", "PluginCfg", "PluginStorage"]
 
 import abc
@@ -9,16 +8,17 @@ import importlib
 import inspect
 import logging
 import re
-import typing
-from collections.abc import Sequence
+
+import typing as t
+from collections.abc import Generator
 
 from dataclasses import dataclass, field
 
 from searx.extended_types import SXNG_Request
-from searx.result_types import Result
 
-if typing.TYPE_CHECKING:
+if t.TYPE_CHECKING:
     from searx.search import SearchWithPlugins
+    from searx.result_types import Result, EngineResults, LegacyResult  # pyright: ignore[reportPrivateLocalImportUsage]
     import flask
 
 log: logging.Logger = logging.getLogger("searx.plugins")
@@ -42,7 +42,7 @@ class PluginInfo:
     description: str
     """Short description of the *answerer*."""
 
-    preference_section: typing.Literal["general", "ui", "privacy", "query"] | None = "general"
+    preference_section: t.Literal["general", "ui", "privacy", "query"] | None = "general"
     """Section (tab/group) in the preferences where this plugin is shown to the
     user.
 
@@ -71,7 +71,7 @@ class Plugin(abc.ABC):
     id: str = ""
     """The ID (suffix) in the HTML form."""
 
-    active: typing.ClassVar[bool]
+    active: t.ClassVar[bool]
     """Plugin is enabled/disabled by default (:py:obj:`PluginCfg.active`)."""
 
     keywords: list[str] = []
@@ -109,7 +109,7 @@ class Plugin(abc.ABC):
             raise ValueError(f"plugin ID {self.id} contains invalid character (use lowercase ASCII)")
 
         if not getattr(self, "log", None):
-            pkg_name = inspect.getmodule(self.__class__).__package__  # type: ignore
+            pkg_name = inspect.getmodule(self.__class__).__package__  # pyright: ignore[reportOptionalMemberAccess]
             self.log = logging.getLogger(f"{pkg_name}.{self.id}")
 
     def __hash__(self) -> int:
@@ -120,7 +120,7 @@ class Plugin(abc.ABC):
 
         return id(self)
 
-    def __eq__(self, other: typing.Any):
+    def __eq__(self, other: t.Any):
         """py:obj:`Plugin` objects are equal if the hash values of the two
         objects are equal."""
 
@@ -146,7 +146,7 @@ class Plugin(abc.ABC):
         """
         return True
 
-    def on_result(self, request: SXNG_Request, search: "SearchWithPlugins", result: Result) -> bool:
+    def on_result(self, request: SXNG_Request, search: "SearchWithPlugins", result: "Result") -> bool:
         """Runs for each result of each engine and returns a boolean:
 
         - ``True`` to keep the result
@@ -166,7 +166,9 @@ class Plugin(abc.ABC):
         """
         return True
 
-    def post_search(self, request: SXNG_Request, search: "SearchWithPlugins") -> None | Sequence[Result]:
+    def post_search(
+        self, request: SXNG_Request, search: "SearchWithPlugins"
+    ) -> "None | list[Result | LegacyResult] | EngineResults":
         """Runs AFTER the search request.  Can return a list of
         :py:obj:`Result <searx.result_types._base.Result>` objects to be added to the
         final result list."""
@@ -196,7 +198,7 @@ class PluginStorage:
     def __init__(self):
         self.plugin_list = set()
 
-    def __iter__(self):
+    def __iter__(self) -> Generator[Plugin]:
         yield from self.plugin_list
 
     def __len__(self):
@@ -207,7 +209,7 @@ class PluginStorage:
 
         return [p.info for p in self.plugin_list]
 
-    def load_settings(self, cfg: dict[str, dict[str, typing.Any]]):
+    def load_settings(self, cfg: dict[str, dict[str, t.Any]]):
         """Load plugins configured in SearXNG's settings :ref:`settings
         plugins`."""
 
@@ -262,7 +264,7 @@ class PluginStorage:
                 break
         return ret
 
-    def on_result(self, request: SXNG_Request, search: "SearchWithPlugins", result: Result) -> bool:
+    def on_result(self, request: SXNG_Request, search: "SearchWithPlugins", result: "Result") -> bool:
 
         ret = True
         for plugin in [p for p in self.plugin_list if p.id in search.user_plugins]:

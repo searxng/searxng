@@ -16,6 +16,7 @@ from typing import Iterable, List, Tuple, TYPE_CHECKING
 from io import StringIO
 from codecs import getincrementalencoder
 
+import msgspec
 from flask_babel import gettext, format_date  # type: ignore
 
 from searx import logger, get_setting
@@ -147,6 +148,8 @@ def write_csv_response(csv: CSVWriter, rc: "ResultContainer") -> None:  # pylint
 
 class JSONEncoder(json.JSONEncoder):  # pylint: disable=missing-class-docstring
     def default(self, o):
+        if isinstance(o, msgspec.Struct):
+            return msgspec.to_builtins(o)
         if isinstance(o, datetime):
             return o.isoformat()
         if isinstance(o, timedelta):

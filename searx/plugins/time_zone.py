@@ -1,12 +1,11 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 # pylint: disable=missing-module-docstring
 
-from __future__ import annotations
 import typing as t
 
 import datetime
 
-from flask_babel import gettext  # type: ignore
+from flask_babel import gettext
 from searx.result_types import EngineResults
 from searx.weather import DateTime, GeoLocation
 
@@ -53,13 +52,13 @@ class SXNGPlugin(Plugin):
         search_term = " ".join(query_parts).strip()
 
         if not search_term:
-            date_time = DateTime(time=datetime.datetime.now())
+            date_time = DateTime(datetime.datetime.now())
             results.add(results.types.Answer(answer=date_time.l10n()))
             return results
 
         geo = GeoLocation.by_query(search_term=search_term)
         if geo:
-            date_time = DateTime(time=datetime.datetime.now(tz=geo.zoneinfo))
+            date_time = DateTime(datetime.datetime.now(tz=geo.zoneinfo))
             tz_name = geo.timezone.replace('_', ' ')
             results.add(
                 results.types.Answer(
