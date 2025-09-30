@@ -2,9 +2,9 @@
 
 import { listen } from "../core/toolkit.ts";
 
-listen("click", ".searxng_init_map", async function (this: HTMLElement, event: Event) {
+listen("click", ".zhensa_init_map", async function (this: HTMLElement, event: Event) {
   event.preventDefault();
-  this.classList.remove("searxng_init_map");
+  this.classList.remove("zhensa_init_map");
 
   const {
     View,

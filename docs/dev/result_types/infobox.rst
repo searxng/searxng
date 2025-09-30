@@ -12,7 +12,7 @@ Infobox Results
 The :ref:`area info box` is an area where addtional infos shown to the user.
 
 Fields used in the :origin:`infobox.html
-<searx/templates/simple/elements/infobox.html>`:
+<zhensa/templates/simple/elements/infobox.html>`:
 
 img_src: :py:class:`str`
   URL of a image or thumbnail that is displayed in the infobox.

@@ -40,7 +40,7 @@ in section :ref:`private engines`.
 MeiliSearch
 ===========
 
-.. automodule:: searx.engines.meilisearch
+.. automodule:: zhensa.engines.meilisearch
   :members:
 
 
@@ -49,7 +49,7 @@ MeiliSearch
 Elasticsearch
 =============
 
-.. automodule:: searx.engines.elasticsearch
+.. automodule:: zhensa.engines.elasticsearch
   :members:
 
 .. _engine solr:
@@ -57,6 +57,6 @@ Elasticsearch
 Solr
 ====
 
-.. automodule:: searx.engines.solr
+.. automodule:: zhensa.engines.solr
   :members:
 

@@ -4,5 +4,5 @@
 PubMed
 ======
 
-.. automodule:: searx.engines.pubmed
+.. automodule:: zhensa.engines.pubmed
    :members:

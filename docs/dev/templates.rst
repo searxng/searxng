@@ -7,7 +7,7 @@ Simple Theme Templates
 The simple template is complex, it consists of many different elements and also
 uses macros and include statements.  The following is a rough overview that we
 would like to give the developer at hand, details must still be taken from the
-:origin:`sources <searx/templates/simple/>`.
+:origin:`sources <zhensa/templates/simple/>`.
 
 A :ref:`result item <result types>` can be of different media types.  The media
 type of a result is defined by the :py:obj:`result_type.Result.template`.  To
@@ -34,7 +34,7 @@ Execpt ``image.html`` and some others this macro is used in nearly all result
 types in the :ref:`main result list`.
 
 Fields used in the template :origin:`macro result_header
-<searx/templates/simple/macros.html>`:
+<zhensa/templates/simple/macros.html>`:
 
 url :  :py:class:`str`
   Link URL of the result item.
@@ -55,7 +55,7 @@ Execpt ``image.html`` and some others this macro is used in nearly all result
 types in the :ref:`main result list`.
 
 Fields used in the template :origin:`macro result_sub_header
-<searx/templates/simple/macros.html>`:
+<zhensa/templates/simple/macros.html>`:
 
 publishedDate : :py:obj:`datetime.datetime`
   The date on which the object was published.
@@ -79,10 +79,10 @@ metadata : :py:class:`str`
 --------------------
 
 The ``engine_data_form`` macro is used in :origin:`results,html
-<searx/templates/simple/results.html>` in a HTML ``<form/>`` element.  The
+<zhensa/templates/simple/results.html>` in a HTML ``<form/>`` element.  The
 intention of this macro is to pass data of a engine from one :py:obj:`response
-<searx.engines.demo_online.response>` to the :py:obj:`searx.search.SearchQuery`
-of the next :py:obj:`request <searx.engines.demo_online.request>`.
+<zhensa.engines.demo_online.response>` to the :py:obj:`zhensa.search.SearchQuery`
+of the next :py:obj:`request <zhensa.engines.demo_online.request>`.
 
 To pass data, engine's response handler can append result items of typ
 ``engine_data``.  This is by example used to pass a token from the response to
@@ -109,7 +109,7 @@ Main Result List
 ================
 
 The **media types** of the **main result type** are the template files in
-the :origin:`result_templates <searx/templates/simple/result_templates>`.
+the :origin:`result_templates <zhensa/templates/simple/result_templates>`.
 
 .. _template default:
 
@@ -122,7 +122,7 @@ Displays result fields from:
 - :ref:`macro result_sub_header`
 
 Additional fields used in the :origin:`default.html
-<searx/templates/simple/result_templates/default.html>`:
+<zhensa/templates/simple/result_templates/default.html>`:
 
 content :  :py:class:`str`
   General text of the result item.
@@ -156,7 +156,7 @@ Image labels
 
 Clicking on the preview opens a gallery view in which all further metadata for
 the image is displayed.  Addition fields used in the :origin:`images.html
-<searx/templates/simple/result_templates/images.html>`:
+<zhensa/templates/simple/result_templates/images.html>`:
 
 img_src : :py:class:`str`
   URL of the full size image.
@@ -174,7 +174,7 @@ source : :py:class:`str`
   Source of the image.
 
 filesize: :py:class:`str`
-  Size of bytes in :py:obj:`human readable <searx.humanize_bytes>` notation
+  Size of bytes in :py:obj:`human readable <zhensa.humanize_bytes>` notation
   (e.g. ``MB`` for 1024 \* 1024 Bytes filesize).
 
 url : :py:class:`str`
@@ -192,7 +192,7 @@ Displays result fields from:
 - :ref:`macro result_sub_header`
 
 Additional fields used in the :origin:`videos.html
-<searx/templates/simple/result_templates/videos.html>`:
+<zhensa/templates/simple/result_templates/videos.html>`:
 
 iframe_src : :py:class:`str`
   URL of an embedded ``<iframe>`` / the frame is collapsible.
@@ -218,7 +218,7 @@ Displays result fields from:
 - :ref:`macro result_sub_header`
 
 Additional fields used in the :origin:`torrent.html
-<searx/templates/simple/result_templates/torrent.html>`:
+<zhensa/templates/simple/result_templates/torrent.html>`:
 
 magnetlink:
   URL of the `magnet link`_.
@@ -261,7 +261,7 @@ Displays result fields from:
 - :ref:`macro result_sub_header`
 
 Additional fields used in the :origin:`map.html
-<searx/templates/simple/result_templates/map.html>`:
+<zhensa/templates/simple/result_templates/map.html>`:
 
 content :  :py:class:`str`
   Description of the item.
@@ -371,7 +371,7 @@ Displays result fields from:
 - :ref:`macro result_header`
 
 Additional fields used in the :origin:`paper.html
-<searx/templates/simple/result_templates/paper.html>`:
+<zhensa/templates/simple/result_templates/paper.html>`:
 
 content :  :py:class:`str`
   An abstract or excerpt from the document.
@@ -433,7 +433,7 @@ Displays result fields from:
 - :ref:`macro result_header`
 
 Additional fields used in the :origin:`packages.html
-<searx/templates/simple/result_templates/packages.html>`:
+<zhensa/templates/simple/result_templates/packages.html>`:
 
 package_name : :py:class:`str`
   The name of the package.
@@ -480,7 +480,7 @@ Displays result fields from:
 - :ref:`macro result_sub_header`
 
 Additional fields used in the :origin:`code.html
-<searx/templates/simple/result_templates/files.html>`:
+<zhensa/templates/simple/result_templates/files.html>`:
 
 filename, size, time: :py:class:`str`
   Filename, Filesize and Date of the file.
@@ -512,7 +512,7 @@ Displays result fields from:
 - :ref:`macro result_sub_header`
 
 Additional fields used in the :origin:`products.html
-<searx/templates/simple/result_templates/products.html>`:
+<zhensa/templates/simple/result_templates/products.html>`:
 
 content :  :py:class:`str`
   Description of the product.

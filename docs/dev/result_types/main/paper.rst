@@ -4,4 +4,4 @@
 Paper Results
 =============
 
-.. automodule:: searx.result_types.paper
+.. automodule:: zhensa.result_types.paper

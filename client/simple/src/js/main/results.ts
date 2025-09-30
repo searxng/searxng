@@ -27,7 +27,7 @@ const imageLoader = (resultElement: HTMLElement): void => {
   if (!imgSource) return;
 
   // unsafe nodejs specific, cast to https://developer.mozilla.org/en-US/docs/Web/API/Window/setTimeout#return_value
-  // https://github.com/searxng/searxng/pull/5073#discussion_r2265767231
+  // https://github.com/zhenbah/zhensa/pull/5073#discussion_r2265767231
   imgTimeoutID = setTimeout(() => {
     imgElement.src = imgSource;
     imgElement.removeAttribute("data-src");

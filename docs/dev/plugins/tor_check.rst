@@ -4,5 +4,5 @@
 Tor check
 =========
 
-.. automodule:: searx.plugins.tor_check
+.. automodule:: zhensa.plugins.tor_check
    :members:

@@ -10,9 +10,9 @@ Buildhosts
    :backlinks: entry
 
 To get best results from build, it's recommend to install additional packages on
-build hosts (see :ref:`searxng.sh`).
+build hosts (see :ref:`zhensa.sh`).
 
-.. _searxng.sh install buildhost:
+.. _zhensa.sh install buildhost:
 
 Build and Development tools
 ===========================
@@ -21,21 +21,21 @@ To Install tools used by build and development tasks in once:
 
 .. tabs::
 
-  .. group-tab:: SearXNG's development tools
+  .. group-tab:: Zhensa's development tools
 
      .. code:: sh
 
-        $ sudo -H ./utils/searxng.sh install buildhost
+        $ sudo -H ./utils/zhensa.sh install buildhost
 
-This will install packages needed by SearXNG:
+This will install packages needed by Zhensa:
 
-.. kernel-include:: $DOCS_BUILD/includes/searxng.rst
+.. kernel-include:: $DOCS_BUILD/includes/zhensa.rst
    :start-after: START distro-packages
    :end-before: END distro-packages
 
 and packages needed to build documentation and run tests:
 
-.. kernel-include:: $DOCS_BUILD/includes/searxng.rst
+.. kernel-include:: $DOCS_BUILD/includes/zhensa.rst
    :start-after: START build-packages
    :end-before: END build-packages
 
@@ -81,7 +81,7 @@ If your docs build (``make docs.html``) shows warnings like this::
             display), check the imgmath_latex setting
 
 you need to install additional packages on your build host, to get better HTML
-output (:ref:`install buildhost <searxng.sh install buildhost>`).
+output (:ref:`install buildhost <zhensa.sh install buildhost>`).
 
 .. tabs::
 
@@ -136,7 +136,7 @@ Lint shell scripts
 .. _ShellCheck: https://github.com/koalaman/shellcheck
 
 To lint shell scripts we use ShellCheck_ - a shell script static analysis tool
-(:ref:`install buildhost <searxng.sh install buildhost>`).
+(:ref:`install buildhost <zhensa.sh install buildhost>`).
 
 .. SNIP sh lint requirements
 

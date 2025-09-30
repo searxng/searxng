@@ -3,14 +3,14 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "SearXNG",
+            "name": "Zhensa",
             "type": "python",
             "request": "launch",
-            "module": "searx.webapp",
+            "module": "zhensa.webapp",
             "env": {
                 "FLASK_APP": "webapp",
                 "FLASK_DEBUG": "1",
-                "SEARXNG_DEBUG": "1",
+                "ZHENSA_DEBUG": "1",
             },
             "args": [
                 "run"

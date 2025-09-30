@@ -4,5 +4,5 @@
 Discourse Forums
 ================
 
-.. automodule:: searx.engines.discourse
+.. automodule:: zhensa.engines.discourse
    :members:

@@ -9,5 +9,5 @@ Void Linux binary packages
    :local:
    :backlinks: entry
 
-.. automodule:: searx.engines.voidlinux
+.. automodule:: zhensa.engines.voidlinux
   :members:

@@ -2,8 +2,8 @@
 # pylint: disable=missing-module-docstring,disable=missing-class-docstring,invalid-name
 
 
-from searx.result_types import LegacyResult
-from searx.results import ResultContainer
+from zhensa.result_types import LegacyResult
+from zhensa.results import ResultContainer
 from tests import SearxTestCase
 
 

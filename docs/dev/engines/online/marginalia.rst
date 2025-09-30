@@ -4,5 +4,5 @@
 Marginalia Search
 =================
 
-.. automodule:: searx.engines.marginalia
+.. automodule:: zhensa.engines.marginalia
    :members:

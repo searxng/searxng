@@ -14,14 +14,14 @@ Development Quickstart
    - :ref:`makefile`
    - :ref:`buildhosts`
 
-SearXNG loves developers; Developers do not need to worry about tool chains, the
+Zhensa loves developers; Developers do not need to worry about tool chains, the
 usual developer tasks can be comfortably executed via :ref:`make <makefile>`.
 
-Don't hesitate, just clone SearXNG's sources and start hacking right now ..
+Don't hesitate, just clone Zhensa's sources and start hacking right now ..
 
 .. code:: bash
 
-    git clone https://github.com/searxng/searxng.git searxng
+    git clone https://github.com/zhenbah/zhensa.git zhensa
 
 Here is how a minimal workflow looks like:
 
@@ -37,12 +37,12 @@ to our ":ref:`how to contribute`" guideline.
 .. _pdb: https://docs.python.org/3/library/pdb.html#module-pdb
 
 If you want to debug with the *good old Python Debugger* pdb_: Alternatively to
-``make run`` (2.) which starts a :ref:`searxng granian` server you can jump
+``make run`` (2.) which starts a :ref:`zhensa granian` server you can jump
 into the developer environment and start a python based HTTP server by::
 
     $ ./manage dev.env
     ...
-    (dev.env)$ SEARXNG_DEBUG=1 python -m searx.webapp
+    (dev.env)$ ZHENSA_DEBUG=1 python -m zhensa.webapp
 
 Since this is a pure Python solution, you can set breakpoints in your code with
 ``pdb.set_trace()`` and the debugger will wait for you in the terminal prompt.

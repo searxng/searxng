@@ -19,14 +19,14 @@ NGINX
 .. _SCRIPT_NAME:
    https://werkzeug.palletsprojects.com/en/1.0.x/wsgi/#werkzeug.wsgi.get_script_name
 
-This section explains how to set up a SearXNG instance using the HTTP server nginx_.
+This section explains how to set up a Zhensa instance using the HTTP server nginx_.
 If you have used the :ref:`installation scripts` and do not have any special preferences
-you can install the :ref:`SearXNG site <nginx searxng site>` using
-:ref:`searxng.sh <searxng.sh overview>`:
+you can install the :ref:`Zhensa site <nginx zhensa site>` using
+:ref:`zhensa.sh <zhensa.sh overview>`:
 
 .. code:: bash
 
-   $ sudo -H ./utils/searxng.sh install nginx
+   $ sudo -H ./utils/zhensa.sh install nginx
 
 If you have special interests or problems with setting up nginx, the following
 section might give you some guidance.
@@ -124,30 +124,30 @@ depends on the linux distribution:
           include /etc/nginx/conf.d/*.conf;
 
 
-.. _nginx searxng site:
+.. _nginx zhensa site:
 
-NGINX's SearXNG site
+NGINX's Zhensa site
 ====================
 
-Now you have to create a configuration file (``searxng.conf``) for the SearXNG
+Now you have to create a configuration file (``zhensa.conf``) for the Zhensa
 site.  If nginx_ is new to you, the `nginx beginners guide`_ is a good starting
 point and the `Getting Started wiki`_ is always a good resource *to keep in the
 pocket*.
 
-Depending on what your SearXNG installation is listening on, you need a http or socket
+Depending on what your Zhensa installation is listening on, you need a http or socket
 communication to upstream.
 
 .. tabs::
 
    .. group-tab:: socket
 
-      .. kernel-include:: $DOCS_BUILD/includes/searxng.rst
+      .. kernel-include:: $DOCS_BUILD/includes/zhensa.rst
          :start-after: START nginx socket
          :end-before: END nginx socket
 
    .. group-tab:: http
 
-      .. kernel-include:: $DOCS_BUILD/includes/searxng.rst
+      .. kernel-include:: $DOCS_BUILD/includes/zhensa.rst
          :start-after: START nginx http
          :end-before: END nginx http
 
@@ -163,8 +163,8 @@ The :ref:`installation scripts` installs the :ref:`reference setup
 
       .. code:: bash
 
-         sudo -H ln -s /etc/nginx/sites-available/searxng.conf \
-                       /etc/nginx/sites-enabled/searxng.conf
+         sudo -H ln -s /etc/nginx/sites-available/zhensa.conf \
+                       /etc/nginx/sites-enabled/zhensa.conf
 
    .. group-tab:: Arch Linux
 
@@ -192,8 +192,8 @@ The :ref:`installation scripts` installs the :ref:`reference setup
 
       .. code:: bash
 
-         sudo -H ln -s /etc/nginx/default.apps-available/searxng.conf \
-                       /etc/nginx/default.d/searxng.conf
+         sudo -H ln -s /etc/nginx/default.apps-available/zhensa.conf \
+                       /etc/nginx/default.d/zhensa.conf
 
    .. group-tab::  Fedora / RHEL
 
@@ -208,8 +208,8 @@ The :ref:`installation scripts` installs the :ref:`reference setup
 
       .. code:: bash
 
-         sudo -H ln -s /etc/nginx/default.apps-available/searxng.conf \
-                       /etc/nginx/conf.d/searxng.conf
+         sudo -H ln -s /etc/nginx/default.apps-available/zhensa.conf \
+                       /etc/nginx/conf.d/zhensa.conf
 
 Restart services:
 
@@ -220,21 +220,21 @@ Restart services:
       .. code:: bash
 
          sudo -H systemctl restart nginx
-         sudo -H service uwsgi restart searxng
+         sudo -H service uwsgi restart zhensa
 
    .. group-tab:: Arch Linux
 
       .. code:: bash
 
          sudo -H systemctl restart nginx
-         sudo -H systemctl restart uwsgi@searxng
+         sudo -H systemctl restart uwsgi@zhensa
 
    .. group-tab:: Fedora / RHEL
 
       .. code:: bash
 
          sudo -H systemctl restart nginx
-         sudo -H touch /etc/uwsgi.d/searxng.ini
+         sudo -H touch /etc/uwsgi.d/zhensa.ini
 
 
 Disable logs

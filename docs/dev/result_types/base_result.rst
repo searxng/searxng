@@ -2,4 +2,4 @@
 Result
 ======
 
-.. automodule:: searx.result_types._base
+.. automodule:: zhensa.result_types._base

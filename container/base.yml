@@ -15,14 +15,14 @@ contents:
 entrypoint:
   command: /bin/sh -l
 
-work-dir: /usr/local/searxng/
+work-dir: /usr/local/zhensa/
 
 accounts:
   groups:
-    - groupname: searxng
+    - groupname: zhensa
       gid: 977
   users:
-    - username: searxng
+    - username: zhensa
       uid: 977
       shell: /bin/ash
 
@@ -31,26 +31,26 @@ environment:
   SSL_CERT_DIR: /etc/ssl/certs
   SSL_CERT_FILE: /etc/ssl/certs/ca-certificates.crt
   HISTFILE: /dev/null
-  CONFIG_PATH: /etc/searxng
-  DATA_PATH: /var/cache/searxng
+  CONFIG_PATH: /etc/zhensa
+  DATA_PATH: /var/cache/zhensa
 
 paths:
   # Workdir
-  - path: /usr/local/searxng/
+  - path: /usr/local/zhensa/
     type: directory
     uid: 977
     gid: 977
     permissions: 0o555
 
   # Config volume
-  - path: /etc/searxng/
+  - path: /etc/zhensa/
     type: directory
     uid: 977
     gid: 977
     permissions: 0o755
 
   # Data volume
-  - path: /var/cache/searxng/
+  - path: /var/cache/zhensa/
     type: directory
     uid: 977
     gid: 977

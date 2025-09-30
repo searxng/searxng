@@ -2,8 +2,8 @@
 # pylint: disable=missing-module-docstring,disable=missing-class-docstring,invalid-name
 
 from tests import SearxTestCase
-from searx import compat
-from searx.favicons.config import DEFAULT_CFG_TOML_PATH
+from zhensa import compat
+from zhensa.favicons.config import DEFAULT_CFG_TOML_PATH
 
 
 class CompatTest(SearxTestCase):

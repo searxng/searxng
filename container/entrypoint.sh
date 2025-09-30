@@ -51,17 +51,17 @@ EOF
 
     target_ownership=$(stat -c %U:%G "$target")
 
-    if [ "$target_ownership" != "searxng:searxng" ]; then
+    if [ "$target_ownership" != "zhensa:zhensa" ]; then
         if [ "${FORCE_OWNERSHIP:-true}" = true ] && [ "$(id -u)" -eq 0 ]; then
-            chown -R searxng:searxng "$target"
+            chown -R zhensa:zhensa "$target"
         else
             cat <<EOF
 !!!
 !!! WARNING
-!!! "$target" $type is not owned by "searxng:searxng"
-!!! This may cause issues when running SearXNG
+!!! "$target" $type is not owned by "zhensa:zhensa"
+!!! This may cause issues when running Zhensa
 !!!
-!!! Expected "searxng:searxng"
+!!! Expected "zhensa:zhensa"
 !!! Got "$target_ownership"
 !!!
 EOF
@@ -117,7 +117,7 @@ EOF
 }
 
 cat <<EOF
-SearXNG $SEARXNG_VERSION
+Zhensa $ZHENSA_VERSION
 EOF
 
 # Check for volume mounts
@@ -125,8 +125,8 @@ volume_handler "$CONFIG_PATH"
 volume_handler "$DATA_PATH"
 
 # Check for files
-config_handler "$SEARXNG_SETTINGS_PATH" "/usr/local/searxng/searx/settings.yml"
+config_handler "$ZHENSA_SETTINGS_PATH" "/usr/local/zhensa/zhensa/settings.yml"
 
 update-ca-certificates
 
-exec /usr/local/searxng/.venv/bin/granian searx.webapp:app
+exec /usr/local/zhensa/.venv/bin/granian zhensa.webapp:app

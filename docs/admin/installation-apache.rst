@@ -40,14 +40,14 @@ Apache
     https://httpd.apache.org/docs/current/mod/mod_proxy.html
 
 
-This section explains how to set up a SearXNG instance using the HTTP server Apache_.
+This section explains how to set up a Zhensa instance using the HTTP server Apache_.
 If you did use the :ref:`installation scripts` and do not have any special preferences
-you can install the :ref:`SearXNG site <apache searxng site>` using
-:ref:`searxng.sh <searxng.sh overview>`:
+you can install the :ref:`Zhensa site <apache zhensa site>` using
+:ref:`zhensa.sh <zhensa.sh overview>`:
 
 .. code:: bash
 
-   $ sudo -H ./utils/searxng.sh install apache
+   $ sudo -H ./utils/zhensa.sh install apache
 
 If you have special interests or problems with setting up Apache, the following
 section might give you some guidance.
@@ -245,14 +245,14 @@ Apache sites
 
    .. group-tab:: Ubuntu / debian
 
-      In :ref:`Debian's Apache layout` you create a ``searxng.conf`` with the
-      ``<Location /searxng >`` directive and save this file in the *sites
+      In :ref:`Debian's Apache layout` you create a ``zhensa.conf`` with the
+      ``<Location /zhensa >`` directive and save this file in the *sites
       available* folder at ``/etc/apache2/sites-available``.  To enable the
-      ``searxng.conf`` use :man:`a2ensite`:
+      ``zhensa.conf`` use :man:`a2ensite`:
 
       .. code:: bash
 
-         sudo -H a2ensite searxng.conf
+         sudo -H a2ensite zhensa.conf
 
    .. group-tab:: Arch Linux
 
@@ -275,8 +275,8 @@ Apache sites
 
       .. code:: bash
 
-         sudo -H ln -s /etc/httpd/sites-available/searxng.conf \
-                       /etc/httpd/sites-enabled/searxng.conf
+         sudo -H ln -s /etc/httpd/sites-available/zhensa.conf \
+                       /etc/httpd/sites-enabled/zhensa.conf
 
    .. group-tab::  Fedora / RHEL
 
@@ -299,13 +299,13 @@ Apache sites
 
       .. code:: bash
 
-         sudo -H ln -s /etc/httpd/sites-available/searxng.conf \
-                       /etc/httpd/sites-enabled/searxng.conf
+         sudo -H ln -s /etc/httpd/sites-available/zhensa.conf \
+                       /etc/httpd/sites-enabled/zhensa.conf
 
 
-.. _apache searxng site:
+.. _apache zhensa site:
 
-Apache's SearXNG site
+Apache's Zhensa site
 =====================
 
 .. _mod_uwsgi: https://uwsgi-docs.readthedocs.io/en/latest/Apache.html#mod-uwsgi
@@ -314,7 +314,7 @@ Apache's SearXNG site
 
    Use mod_proxy_uwsgi_ / don't use the old mod_uwsgi_ anymore.
 
-To proxy the incoming requests to the SearXNG instance Apache needs the
+To proxy the incoming requests to the Zhensa instance Apache needs the
 mod_proxy_ module (:ref:`apache modules`).
 
 .. sidebar:: HTTP headers
@@ -322,25 +322,25 @@ mod_proxy_ module (:ref:`apache modules`).
    With ProxyPreserveHost_ the incoming ``Host`` header is passed to the proxied
    host.
 
-Depending on what your SearXNG installation is listening on, you need a http
+Depending on what your Zhensa installation is listening on, you need a http
 mod_proxy_http_) or socket (mod_proxy_uwsgi_) communication to upstream.
 
 The :ref:`installation scripts` installs the :ref:`reference setup
 <use_default_settings.yml>` and a :ref:`uwsgi setup` that listens on a socket by default.
-You can install and activate your own ``searxng.conf`` like shown in
+You can install and activate your own ``zhensa.conf`` like shown in
 :ref:`apache sites`.
 
 .. tabs::
 
    .. group-tab:: socket
 
-      .. kernel-include:: $DOCS_BUILD/includes/searxng.rst
+      .. kernel-include:: $DOCS_BUILD/includes/zhensa.rst
          :start-after: START apache socket
          :end-before: END apache socket
 
    .. group-tab:: http
 
-      .. kernel-include:: $DOCS_BUILD/includes/searxng.rst
+      .. kernel-include:: $DOCS_BUILD/includes/zhensa.rst
          :start-after: START apache http
          :end-before: END apache http
 
@@ -355,21 +355,21 @@ Restart service:
       .. code:: bash
 
          sudo -H systemctl restart apache2
-         sudo -H service uwsgi restart searxng
+         sudo -H service uwsgi restart zhensa
 
    .. group-tab:: Arch Linux
 
       .. code:: bash
 
          sudo -H systemctl restart httpd
-         sudo -H systemctl restart uwsgi@searxng
+         sudo -H systemctl restart uwsgi@zhensa
 
    .. group-tab::  Fedora / RHEL
 
       .. code:: bash
 
          sudo -H systemctl restart httpd
-         sudo -H touch /etc/uwsgi.d/searxng.ini
+         sudo -H touch /etc/uwsgi.d/zhensa.ini
 
 
 disable logs
@@ -380,9 +380,9 @@ one of the lines and `restart apache`_:
 
 .. code:: apache
 
-   SetEnvIf Request_URI "/searxng" dontlog
+   SetEnvIf Request_URI "/zhensa" dontlog
    # CustomLog /dev/null combined env=dontlog
 
 The ``CustomLog`` directive disables logs for the entire (virtual) server, use it
-when the URL of the service does not have a path component (``/searxng``), so when
-SearXNG is located at root (``/``).
+when the URL of the service does not have a path component (``/zhensa``), so when
+Zhensa is located at root (``/``).

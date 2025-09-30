@@ -7,4 +7,4 @@ Answer Results
 The :ref:`area answer results` is an area in which additional information can
 be displayed.
 
-.. automodule:: searx.result_types.answer
+.. automodule:: zhensa.result_types.answer

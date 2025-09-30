@@ -20,7 +20,7 @@ SQL Engines
    Initial sponsored by `Search and Discovery Fund
    <https://nlnet.nl/discovery>`_ of `NLnet Foundation <https://nlnet.nl/>`_.
 
-With the *SQL engines* you can bind SQL databases into SearXNG.  The following
+With the *SQL engines* you can bind SQL databases into Zhensa.  The following
 Relational Database Management System (RDBMS) are supported:
 
 - :ref:`engine sqlite`
@@ -28,7 +28,7 @@ Relational Database Management System (RDBMS) are supported:
 - :ref:`engine mysql_server` & :ref:`engine mariadb_server`
 
 All of the engines above are just commented out in the :origin:`settings.yml
-<searx/settings.yml>`, as you have to set the required attributes for the
+<zhensa/settings.yml>`, as you have to set the required attributes for the
 engines, e.g. ``database:`` ...
 
 .. code:: yaml
@@ -40,12 +40,12 @@ engines, e.g. ``database:`` ...
      query_str: ...
 
 By default, the engines use the ``key-value`` template for displaying results /
-see :origin:`simple <searx/templates/simple/result_templates/key-value.html>`
+see :origin:`simple <zhensa/templates/simple/result_templates/key-value.html>`
 theme.  If you are not satisfied with the original result layout, you can use
 your own template, set ``result_template`` attribute to ``{template_name}`` and
 place the templates at::
 
-  searx/templates/{theme_name}/result_templates/{template_name}
+  zhensa/templates/{theme_name}/result_templates/{template_name}
 
 If you do not wish to expose these engines on a public instance, you can still
 add them and limit the access by setting ``tokens`` as described in section
@@ -56,12 +56,12 @@ Extra Dependencies
 ==================
 
 For using :ref:`engine postgresql` or :ref:`engine mysql_server` you need to
-install additional packages in Python's Virtual Environment of your SearXNG
-instance.  To switch into the environment (:ref:`searxng-src`) you can use
-:ref:`searxng.sh`::
+install additional packages in Python's Virtual Environment of your Zhensa
+instance.  To switch into the environment (:ref:`zhensa-src`) you can use
+:ref:`zhensa.sh`::
 
-  $ sudo utils/searxng.sh instance cmd bash
-  (searxng-pyenv)$ pip install ...
+  $ sudo utils/zhensa.sh instance cmd bash
+  (zhensa-pyenv)$ pip install ...
 
 
 Configure the engines
@@ -84,9 +84,9 @@ SQLite
 
 .. sidebar:: info
 
-   - :origin:`sqlite.py <searx/engines/sqlite.py>`
+   - :origin:`sqlite.py <zhensa/engines/sqlite.py>`
 
-.. automodule:: searx.engines.sqlite
+.. automodule:: zhensa.engines.sqlite
   :members:
 
 
@@ -99,10 +99,10 @@ PostgreSQL
 
 .. sidebar:: info
 
-   - :origin:`postgresql.py <searx/engines/postgresql.py>`
+   - :origin:`postgresql.py <zhensa/engines/postgresql.py>`
    - ``pip install`` `psycopg2-binary <psycopg2>`_
 
-.. automodule:: searx.engines.postgresql
+.. automodule:: zhensa.engines.postgresql
   :members:
 
 .. _engine mysql_server:
@@ -112,11 +112,11 @@ MySQL
 
 .. sidebar:: info
 
-   - :origin:`mysql_server.py <searx/engines/mysql_server.py>`
+   - :origin:`mysql_server.py <zhensa/engines/mysql_server.py>`
    - ``pip install`` :pypi:`mysql-connector-python <mysql-connector-python>`
 
 
-.. automodule:: searx.engines.mysql_server
+.. automodule:: zhensa.engines.mysql_server
   :members:
 
 .. _engine mariadb_server:
@@ -126,9 +126,9 @@ MariaDB
 
 .. sidebar:: info
 
-   - :origin:`mariadb_server.py <searx/engines/mariadb_server.py>`
+   - :origin:`mariadb_server.py <zhensa/engines/mariadb_server.py>`
    - ``pip install`` :pypi:`mariadb <mariadb>`
 
 
-.. automodule:: searx.engines.mariadb_server
+.. automodule:: zhensa.engines.mariadb_server
   :members:

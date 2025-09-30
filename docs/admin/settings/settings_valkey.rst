@@ -12,9 +12,9 @@
     https://valkey-py.readthedocs.io/en/stable/connections.html#valkey.Valkey.from_url
 
 A Valkey_ DB can be connected by an URL, in section :ref:`valkey db` you will
-find a description to test your valkey connection in SearXNG.
+find a description to test your valkey connection in Zhensa.
 
-``url`` : ``$SEARXNG_VALKEY_URL``
+``url`` : ``$ZHENSA_VALKEY_URL``
   URL to connect valkey database. `There are several ways to specify a database
   number`_::
 
@@ -24,12 +24,12 @@ find a description to test your valkey connection in SearXNG.
 
   When using sockets, don't forget to check the access rights on the socket::
 
-    ls -la /usr/local/searxng-valkey/run/valkey.sock
-    srwxrwx--- 1 searxng-valkey searxng-valkey ... /usr/local/searxng-valkey/run/valkey.sock
+    ls -la /usr/local/zhensa-valkey/run/valkey.sock
+    srwxrwx--- 1 zhensa-valkey zhensa-valkey ... /usr/local/zhensa-valkey/run/valkey.sock
 
-  In this example read/write access is given to the *searxng-valkey* group.  To
-  get access rights to valkey instance (the socket), your SearXNG (or even your
-  developer) account needs to be added to the *searxng-valkey* group.
+  In this example read/write access is given to the *zhensa-valkey* group.  To
+  get access rights to valkey instance (the socket), your Zhensa (or even your
+  developer) account needs to be added to the *zhensa-valkey* group.
 
 
 .. _Valkey Developer Notes:
@@ -49,5 +49,5 @@ or use:
 
 .. code:: sh
 
-   $ ./utils/searxng.sh install valkey
-   # restart your SearXNG instance
+   $ ./utils/zhensa.sh install valkey
+   # restart your Zhensa instance

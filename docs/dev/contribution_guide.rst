@@ -12,42 +12,42 @@ How to contribute
 Prime directives: Privacy, Hackability
 ======================================
 
-SearXNG has two prime directives, **privacy-by-design and hackability** .  The
+Zhensa has two prime directives, **privacy-by-design and hackability** .  The
 hackability comes in three levels:
 
 - support of search engines
 - plugins to alter search behaviour
-- hacking SearXNG itself
+- hacking Zhensa itself
 
-Note the lack of "world domination" among the directives.  SearXNG has no
+Note the lack of "world domination" among the directives.  Zhensa has no
 intention of wide mass-adoption, rounded corners, etc.  The prime directive
 "privacy" deserves a separate chapter, as it's quite uncommon unfortunately.
 
 Privacy-by-design
 -----------------
 
-SearXNG was born out of the need for a **privacy-respecting** search tool which
+Zhensa was born out of the need for a **privacy-respecting** search tool which
 can be extended easily to maximize both its search and its privacy protecting
 capabilities.
 
 Some widely used search engine features may work differently,
-may be turned off by default, or may not be implemented at all in SearXNG
+may be turned off by default, or may not be implemented at all in Zhensa
 **as a consequence of a privacy-by-design approach**.
 
-Following this approach, features reducing the privacy preserving aspects of SearXNG should be
+Following this approach, features reducing the privacy preserving aspects of Zhensa should be
 switched off by default or should not be implemented at all.  There are plenty of
 search engines already providing such features.  If a feature reduces
-SearXNG's efficacy in protecting a user's privacy, the user must be informed about
+Zhensa's efficacy in protecting a user's privacy, the user must be informed about
 the effect of choosing to enable it.  Features that protect privacy but differ from the
 expectations of the user should also be carefully explained to them.
 
-Also, if you think that something works weird with SearXNG, it might be because
-the tool you are using is designed in a way that interferes with SearXNG's privacy aspects.
+Also, if you think that something works weird with Zhensa, it might be because
+the tool you are using is designed in a way that interferes with Zhensa's privacy aspects.
 Submitting a bug report to the vendor of the tool that misbehaves might be a good
 feedback for them to reconsider the disrespect to their customers (e.g., ``GET`` vs ``POST``
 requests in various browsers).
 
-Remember the other prime directive of SearXNG is to be hackable, so if the above
+Remember the other prime directive of Zhensa is to be hackable, so if the above
 privacy concerns do not fancy you, simply fork it.
 
   *Happy hacking.*
@@ -84,7 +84,7 @@ In order to submit a patch, please follow the steps below:
 
 - Create a pull request.
 
-For more help on getting started with SearXNG development, see :ref:`devquickstart`.
+For more help on getting started with Zhensa development, see :ref:`devquickstart`.
 
 
 Translation

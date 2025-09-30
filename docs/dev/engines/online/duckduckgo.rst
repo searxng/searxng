@@ -9,14 +9,14 @@ DuckDuckGo Engines
    :local:
    :backlinks: entry
 
-.. automodule:: searx.engines.duckduckgo
+.. automodule:: zhensa.engines.duckduckgo
    :members:
 
-.. automodule:: searx.engines.duckduckgo_extra
+.. automodule:: zhensa.engines.duckduckgo_extra
    :members:
 
-.. automodule:: searx.engines.duckduckgo_definitions
+.. automodule:: zhensa.engines.duckduckgo_definitions
    :members:
 
-.. automodule:: searx.engines.duckduckgo_weather
+.. automodule:: zhensa.engines.duckduckgo_weather
    :members:

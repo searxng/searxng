@@ -4,5 +4,5 @@
 arXiv
 =====
 
-.. automodule:: searx.engines.arxiv
+.. automodule:: zhensa.engines.arxiv
    :members:

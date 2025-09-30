@@ -4,4 +4,4 @@
 Key-Value Results
 =================
 
-.. automodule:: searx.result_types.keyvalue
+.. automodule:: zhensa.result_types.keyvalue

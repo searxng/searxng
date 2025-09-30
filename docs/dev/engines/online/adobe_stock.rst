@@ -9,5 +9,5 @@ Adobe Stock
    :local:
    :backlinks: entry
 
-.. automodule:: searx.engines.adobe_stock
+.. automodule:: zhensa.engines.adobe_stock
    :members:

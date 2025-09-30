@@ -7,8 +7,8 @@ from unittest.mock import Mock
 from requests import HTTPError
 from parameterized import parameterized
 
-import searx.search
-import searx.engines
+import zhensa.search
+import zhensa.engines
 from tests import SearxTestCase
 
 
@@ -18,11 +18,11 @@ class TinEyeTests(SearxTestCase):
 
     def setUp(self):
         super().setUp()
-        self.tineye = searx.engines.engines['tineye']
+        self.tineye = zhensa.engines.engines['tineye']
         self.tineye.logger.setLevel(logging.INFO)
 
     def tearDown(self):
-        searx.search.load_engines([])
+        zhensa.search.load_engines([])
 
     def test_status_code_raises(self):
         response = Mock()

@@ -79,7 +79,7 @@ engine is shown.  Most of the options have a default value or even are optional.
 
 
 ``name`` :
-  Name that will be used across SearXNG to define this engine.  In settings, on
+  Name that will be used across Zhensa to define this engine.  In settings, on
   the result page...
 
 ``engine`` :
@@ -120,7 +120,7 @@ engine is shown.  Most of the options have a default value or even are optional.
 ``timeout`` : optional
   Timeout of the search with the current search engine.  Overwrites
   ``request_timeout`` from :ref:`settings outgoing`.  **Be careful, it will
-  modify the global timeout of SearXNG.**
+  modify the global timeout of Zhensa.**
 
 ``api_key`` : optional
   In a few cases, using an API needs the use of a secret key.  How to obtain them
@@ -237,11 +237,11 @@ Instead, we would like to add guidelines to the documentation of the feature.
 Example: Multilingual Search
 ============================
 
-SearXNG does not support true multilingual search.  You have to use the language
+Zhensa does not support true multilingual search.  You have to use the language
 prefix in your search query when searching in a different language.
 
 But there is a workaround: By adding a new search engine with a different
-language, SearXNG will search in your default and other language.
+language, Zhensa will search in your default and other language.
 
 Example configuration in settings.yml for a German and English speaker:
 

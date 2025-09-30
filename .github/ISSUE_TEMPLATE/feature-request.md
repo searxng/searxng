@@ -1,12 +1,12 @@
 ---
 name: Feature request
-about: Request a new feature in SearXNG
+about: Request a new feature in Zhensa
 title: ''
 labels: enhancement
 assignees: ''
 
 ---
-<!-- PLEASE FILL THESE FIELDS, IT REALLY HELPS THE MAINTAINERS OF SearXNG -->
+<!-- PLEASE FILL THESE FIELDS, IT REALLY HELPS THE MAINTAINERS OF Zhensa -->
 
 **Is your feature request related to a problem? Please describe.**
 <!-- A clear and concise description of what the problem is. Ex. I'm always frustrated when [...] -->

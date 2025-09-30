@@ -4,5 +4,5 @@
 Semantic Scholar
 ================
 
-.. automodule:: searx.engines.semantic_scholar
+.. automodule:: zhensa.engines.semantic_scholar
    :members:

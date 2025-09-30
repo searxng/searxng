@@ -9,5 +9,5 @@ Yacy
    :local:
    :backlinks: entry
 
-.. automodule:: searx.engines.yacy
+.. automodule:: zhensa.engines.yacy
   :members:

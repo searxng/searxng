@@ -9,5 +9,5 @@ Library of Congress
    :local:
    :backlinks: entry
 
-.. automodule:: searx.engines.loc
+.. automodule:: zhensa.engines.loc
   :members:

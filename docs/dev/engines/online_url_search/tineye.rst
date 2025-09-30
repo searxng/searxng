@@ -9,6 +9,6 @@ Tineye
    :local:
    :backlinks: entry
 
-.. automodule:: searx.engines.tineye
+.. automodule:: zhensa.engines.tineye
   :members:
 

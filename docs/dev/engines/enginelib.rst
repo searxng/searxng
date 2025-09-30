@@ -1,16 +1,16 @@
-.. _searx.enginelib:
+.. _zhensa.enginelib:
 
 ==============
 Engine Library
 ==============
 
-.. automodule:: searx.enginelib
+.. automodule:: zhensa.enginelib
    :members:
 
-.. _searx.enginelib.traits:
+.. _zhensa.enginelib.traits:
 
 Engine traits
 =============
 
-.. automodule:: searx.enginelib.traits
+.. automodule:: zhensa.enginelib.traits
    :members:

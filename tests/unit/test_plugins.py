@@ -4,18 +4,18 @@
 import babel
 from mock import Mock
 
-import searx
-import searx.plugins
-import searx.preferences
-import searx.results
+import zhensa
+import zhensa.plugins
+import zhensa.preferences
+import zhensa.results
 
-from searx.result_types import Result
-from searx.extended_types import sxng_request
+from zhensa.result_types import Result
+from zhensa.extended_types import sxng_request
 
 from tests import SearxTestCase
 
-plg_store = searx.plugins.PluginStorage()
-plg_store.load_settings(searx.get_setting("plugins"))
+plg_store = zhensa.plugins.PluginStorage()
+plg_store.load_settings(zhensa.get_setting("plugins"))
 
 
 def get_search_mock(query, **kwargs):
@@ -28,7 +28,7 @@ def get_search_mock(query, **kwargs):
     return Mock(
         search_query=Mock(query=query, **kwargs),
         user_plugins=user_plugins,
-        result_container=searx.results.ResultContainer(),
+        result_container=zhensa.results.ResultContainer(),
     )
 
 
@@ -46,10 +46,10 @@ def do_post_search(query, storage, **kwargs) -> Mock:
     return search
 
 
-class PluginMock(searx.plugins.Plugin):
+class PluginMock(zhensa.plugins.Plugin):
 
     def __init__(self, _id: str, name: str, active: bool):
-        plg_cfg = searx.plugins.PluginCfg(active=active)
+        plg_cfg = zhensa.plugins.PluginCfg(active=active)
         self.id = _id
         self._name = name
         super().__init__(plg_cfg)
@@ -65,7 +65,7 @@ class PluginMock(searx.plugins.Plugin):
         return False
 
     def info(self):
-        return searx.plugins.PluginInfo(
+        return zhensa.plugins.PluginInfo(
             id=self.id,
             name=self._name,
             description=f"Dummy plugin: {self.id}",
@@ -79,11 +79,11 @@ class PluginStorage(SearxTestCase):
         super().setUp()
         engines = {}
 
-        self.storage = searx.plugins.PluginStorage()
+        self.storage = zhensa.plugins.PluginStorage()
         self.storage.register(PluginMock("plg001", "first plugin", True))
         self.storage.register(PluginMock("plg002", "second plugin", True))
         self.storage.init(self.app)
-        self.pref = searx.preferences.Preferences(["simple"], ["general"], engines, self.storage)
+        self.pref = zhensa.preferences.Preferences(["simple"], ["general"], engines, self.storage)
         self.pref.parse_dict({"locale": "en"})
 
     def test_init(self):

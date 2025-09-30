@@ -55,15 +55,15 @@ Python environment (``make install``)
 
 We do no longer need to build up the virtualenv manually.  Jump into your git
 working tree and release a ``make install`` to get a virtualenv with a
-*developer install* of SearXNG (:origin:`setup.py`). ::
+*developer install* of Zhensa (:origin:`setup.py`). ::
 
-   $ cd ~/searxng-clone
+   $ cd ~/zhensa-clone
    $ make install
    PYENV     [virtualenv] installing ./requirements*.txt into local/py3
    ...
-   PYENV     [install] pip install --use-pep517 --no-build-isolation -e 'searx[test]'
+   PYENV     [install] pip install --use-pep517 --no-build-isolation -e 'zhensa[test]'
    ...
-   Successfully installed searxng-2023.7.19+a446dea1b
+   Successfully installed zhensa-2023.7.19+a446dea1b
 
 If you release ``make install`` multiple times the installation will only
 rebuild if the sha256 sum of the *requirement files* fails.  With other words:
@@ -78,9 +78,9 @@ the check fails if you edit the requirements listed in
    ...
    PYENV     [virtualenv] installing ./requirements*.txt into local/py3
    ...
-   PYENV     [install] pip install --use-pep517 --no-build-isolation -e 'searx[test]'
+   PYENV     [install] pip install --use-pep517 --no-build-isolation -e 'zhensa[test]'
    ...
-   Successfully installed searxng-2023.7.19+a446dea1b
+   Successfully installed zhensa-2023.7.19+a446dea1b
 
 .. sidebar:: drop environment
 
@@ -99,7 +99,7 @@ Node.js environment (``make node.env``)
 .. _nvm: https://github.com/nvm-sh
 .. _npm: https://www.npmjs.com/
 
-.. jinja:: searx
+.. jinja:: zhensa
 
    Node.js_ version {{version.node}} or higher is required to build the themes.
    If the requirement is not met, the build chain uses nvm_ (Node Version
@@ -123,9 +123,9 @@ setup.
      .. code:: sh
 
         $ LANG=C make nvm.install
-        INFO:  install (update) NVM at ./searxng/.nvm
+        INFO:  install (update) NVM at ./zhensa/.nvm
         INFO:  clone: https://github.com/nvm-sh/nvm.git
-          || Cloning into './searxng/.nvm'...
+          || Cloning into './zhensa/.nvm'...
         INFO:  checkout v0.39.4
           || HEAD is now at 8fbf8ab v0.39.4
 
@@ -153,16 +153,16 @@ setup.
 Install latest Node.js_ locally (uses nvm_)::
 
   $ make nvm.nodejs
-  INFO:  install (update) NVM at /share/searxng/.nvm
+  INFO:  install (update) NVM at /share/zhensa/.nvm
   INFO:  clone: https://github.com/nvm-sh/nvm.git
   ...
   Downloading and installing node v16.13.0...
   ...
-  INFO:  Node.js is installed at searxng/.nvm/versions/node/v16.13.0/bin/node
+  INFO:  Node.js is installed at zhensa/.nvm/versions/node/v16.13.0/bin/node
   INFO:  Node.js is version v16.13.0
-  INFO:  npm is installed at searxng/.nvm/versions/node/v16.13.0/bin/npm
+  INFO:  npm is installed at zhensa/.nvm/versions/node/v16.13.0/bin/npm
   INFO:  npm is version 8.1.0
-  INFO:  NVM is installed at searxng/.nvm
+  INFO:  NVM is installed at zhensa/.nvm
 
 .. _make run:
 
@@ -170,7 +170,7 @@ Install latest Node.js_ locally (uses nvm_)::
 ============
 
 To get up a running a developer instance simply call ``make run``.  This enables
-*debug* option in :origin:`searx/settings.yml`, starts a ``./searx/webapp.py``
+*debug* option in :origin:`zhensa/settings.yml`, starts a ``./zhensa/webapp.py``
 instance and opens the URL in your favorite WEB browser (:man:`xdg-open`)::
 
    $ make run
@@ -288,7 +288,7 @@ commit.
 .. _Pylint: https://www.pylint.org/
 
 Pylint_ is known as one of the best source-code, bug and quality checker for the
-Python programming language.  The pylint profile used in the SearXNG project is
+Python programming language.  The pylint profile used in the Zhensa project is
 found in project's root folder :origin:`.pylintrc`.
 
 .. _make search.checker:
@@ -305,15 +305,15 @@ by underline::
 
     make search.checker.google_news
 
-To see HTTP requests and more use SEARXNG_DEBUG::
+To see HTTP requests and more use ZHENSA_DEBUG::
 
-    make SEARXNG_DEBUG=1 search.checker.google_news
+    make ZHENSA_DEBUG=1 search.checker.google_news
 
 .. _3xx: https://en.wikipedia.org/wiki/List_of_HTTP_status_codes#3xx_redirection
 
 To filter out HTTP redirects (3xx_)::
 
-    make SEARXNG_DEBUG=1 search.checker.google_news | grep -A1 "HTTP/1.1\" 3[0-9][0-9]"
+    make ZHENSA_DEBUG=1 search.checker.google_news | grep -A1 "HTTP/1.1\" 3[0-9][0-9]"
     ...
     Engine google news                   Checking
     https://news.google.com:443 "GET /search?q=life&hl=en&lr=lang_en&ie=utf8&oe=utf8&ceid=US%3Aen&gl=US HTTP/1.1" 302 0

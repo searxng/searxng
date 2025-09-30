@@ -4,4 +4,4 @@
 Answerer Development
 ====================
 
-.. automodule:: searx.answerers
+.. automodule:: zhensa.answerers

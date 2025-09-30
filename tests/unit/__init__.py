@@ -7,4 +7,4 @@ from pathlib import Path
 # By default, in unit tests the user settings from
 # unit/settings/test_settings.yml are used.
 
-os.environ['SEARXNG_SETTINGS_PATH'] = str(Path(__file__).parent / "settings" / "test_settings.yml")
+os.environ['ZHENSA_SETTINGS_PATH'] = str(Path(__file__).parent / "settings" / "test_settings.yml")

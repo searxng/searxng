@@ -6,12 +6,12 @@ List of plugins
 
 Further reading ..
 
-- :ref:`SearXNG settings <settings plugins>`
+- :ref:`Zhensa settings <settings plugins>`
 - :ref:`dev plugin`
 
 .. _configured plugins:
 
-.. jinja:: searx
+.. jinja:: zhensa
 
    .. flat-table:: Plugins configured at built time (defaults)
       :header-rows: 1

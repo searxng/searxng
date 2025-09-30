@@ -9,5 +9,5 @@ Tagesschau API
    :local:
    :backlinks: entry
 
-.. automodule:: searx.engines.tagesschau
+.. automodule:: zhensa.engines.tagesschau
   :members:

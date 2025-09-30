@@ -11,26 +11,26 @@ source "$(dirname "${BASH_SOURCE[0]}")/utils/lib.sh"
 # shellcheck source=utils/lib.sh
 source "$(dirname "${BASH_SOURCE[0]}")/utils/lib_nvm.sh"
 
-# shellcheck source=utils/lib_sxng_container.sh
-source "$(dirname "${BASH_SOURCE[0]}")/utils/lib_sxng_container.sh"
+# shellcheck source=utils/lib_zhensa_container.sh
+source "$(dirname "${BASH_SOURCE[0]}")/utils/lib_zhensa_container.sh"
 
-# shellcheck source=utils/lib_sxng_data.sh
-source "$(dirname "${BASH_SOURCE[0]}")/utils/lib_sxng_data.sh"
+# shellcheck source=utils/lib_zhensa_data.sh
+source "$(dirname "${BASH_SOURCE[0]}")/utils/lib_zhensa_data.sh"
 
-# shellcheck source=utils/lib_sxng_weblate.sh
-source "$(dirname "${BASH_SOURCE[0]}")/utils/lib_sxng_weblate.sh"
+# shellcheck source=utils/lib_zhensa_weblate.sh
+source "$(dirname "${BASH_SOURCE[0]}")/utils/lib_zhensa_weblate.sh"
 
-# shellcheck source=utils/lib_sxng_static.sh
-source "$(dirname "${BASH_SOURCE[0]}")/utils/lib_sxng_static.sh"
+# shellcheck source=utils/lib_zhensa_static.sh
+source "$(dirname "${BASH_SOURCE[0]}")/utils/lib_zhensa_static.sh"
 
-# shellcheck source=utils/lib_sxng_node.sh
-source "$(dirname "${BASH_SOURCE[0]}")/utils/lib_sxng_node.sh"
+# shellcheck source=utils/lib_zhensa_node.sh
+source "$(dirname "${BASH_SOURCE[0]}")/utils/lib_zhensa_node.sh"
 
-# shellcheck source=utils/lib_sxng_themes.sh
-source "$(dirname "${BASH_SOURCE[0]}")/utils/lib_sxng_themes.sh"
+# shellcheck source=utils/lib_zhensa_themes.sh
+source "$(dirname "${BASH_SOURCE[0]}")/utils/lib_zhensa_themes.sh"
 
-# shellcheck source=utils/lib_sxng_test.sh
-source "$(dirname "${BASH_SOURCE[0]}")/utils/lib_sxng_test.sh"
+# shellcheck source=utils/lib_zhensa_test.sh
+source "$(dirname "${BASH_SOURCE[0]}")/utils/lib_zhensa_test.sh"
 
 # shellcheck source=utils/lib_govm.sh
 source "$(dirname "${BASH_SOURCE[0]}")/utils/lib_govm.sh"
@@ -38,27 +38,27 @@ source "$(dirname "${BASH_SOURCE[0]}")/utils/lib_govm.sh"
 # shellcheck source=utils/lib_valkey.sh
 source "$(dirname "${BASH_SOURCE[0]}")/utils/lib_valkey.sh"
 
-# shellcheck source=utils/lib_sxng_vite.sh
-source "$(dirname "${BASH_SOURCE[0]}")/utils/lib_sxng_vite.sh"
+# shellcheck source=utils/lib_zhensa_vite.sh
+source "$(dirname "${BASH_SOURCE[0]}")/utils/lib_zhensa_vite.sh"
 
 # add ./local dev tools from python (virtualenv), golang and nodejs
 PATH="${PY_ENV}/bin:${REPO_ROOT}/node_modules/.bin:${GOROOT}/bin:${GOPATH}/bin:${PATH}"
 
 # config
 
-PYOBJECTS="searx"
+PYOBJECTS="zhensa"
 PY_SETUP_EXTRAS='[test]'
 GECKODRIVER_VERSION="v0.36.0"
 # SPHINXOPTS=
 BLACK_OPTIONS=("--target-version" "py311" "--line-length" "120" "--skip-string-normalization")
-BLACK_TARGETS=("--exclude" "(searx/static|searx/languages.py)" "--include" 'searxng.msg|\.pyi?$' "searx" "searxng_extra" "tests")
+BLACK_TARGETS=("--exclude" "(zhensa/static|zhensa/languages.py)" "--include" 'zhensa.msg|\.pyi?$' "zhensa" "zhensa_extra" "tests")
 
 YAMLLINT_FILES=()
 while IFS= read -r line; do
     if [ "$line" != "tests/unit/settings/syntaxerror_settings.yml" ]; then
         YAMLLINT_FILES+=("$line")
     fi
-done <<<"$(git ls-files './tests/*.yml' './searx/*.yml' './utils/templates/etc/searxng/*.yml' '.github/*.yml' '.github/*/*.yml')"
+done <<<"$(git ls-files './tests/*.yml' './zhensa/*.yml' './utils/templates/etc/zhensa/*.yml' '.github/*.yml' '.github/*/*.yml')"
 
 RST_FILES=(
     'README.rst'
@@ -153,8 +153,8 @@ webapp.run() {
     SEARXNG_DEBUG=1 \
         GRANIAN_RELOAD="true" \
         GRANIAN_RELOAD_IGNORE_WORKER_FAILURE="true" \
-        GRANIAN_RELOAD_PATHS="./searx" \
-        GRANIAN_PROCESS_NAME="searxng" \
+        GRANIAN_RELOAD_PATHS="./zhensa" \
+        GRANIAN_PROCESS_NAME="zhensa" \
         GRANIAN_INTERFACE="wsgi" \
         GRANIAN_HOST="::" \
         GRANIAN_PORT="8888" \
@@ -162,7 +162,7 @@ webapp.run() {
         GRANIAN_BLOCKING_THREADS="4" \
         GRANIAN_WORKERS_KILL_TIMEOUT="30s" \
         GRANIAN_BLOCKING_THREADS_IDLE_TIMEOUT="5m" \
-        pyenv.cmd granian searx.webapp:app
+        pyenv.cmd granian zhensa.webapp:app
 }
 
 # shellcheck disable=SC2119
@@ -240,7 +240,7 @@ pyenv.install() {
     (
         set -e
         pyenv
-        build_msg PYENV "[install] pip install --use-pep517 --no-build-isolation -e 'searx${PY_SETUP_EXTRAS}'"
+        build_msg PYENV "[install] pip install --use-pep517 --no-build-isolation -e 'zhensa${PY_SETUP_EXTRAS}'"
         "${PY_ENV_BIN}/python" -m pip install --use-pep517 --no-build-isolation -e ".${PY_SETUP_EXTRAS}"
     )
     local exit_val=$?
@@ -274,8 +274,8 @@ docs.prebuild() {
         set -e
         [ "$VERBOSE" = "1" ] && set -x
         mkdir -p "${DOCS_BUILD}/includes"
-        ./utils/searxng.sh searxng.doc.rst >"${DOCS_BUILD}/includes/searxng.rst"
-        pyenv.cmd searxng_extra/docs_prebuild
+        ./utils/zhensa.sh zhensa.doc.rst >"${DOCS_BUILD}/includes/zhensa.rst"
+        pyenv.cmd zhensang_extra/docs_prebuild
     )
     dump_return $?
 }

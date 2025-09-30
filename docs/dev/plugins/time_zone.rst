@@ -4,5 +4,5 @@
 Time Zone
 =========
 
-.. automodule:: searx.plugins.time_zone
+.. automodule:: zhensa.plugins.time_zone
    :members:

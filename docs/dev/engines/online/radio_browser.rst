@@ -9,5 +9,5 @@ RadioBrowser
    :local:
    :backlinks: entry
 
-.. automodule:: searx.engines.radio_browser
+.. automodule:: zhensa.engines.radio_browser
    :members:

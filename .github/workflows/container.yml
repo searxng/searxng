@@ -27,7 +27,7 @@ env:
 jobs:
   build-base:
     if: |
-      (github.repository_owner == 'searxng' && github.event.workflow_run.conclusion == 'success')
+      (github.repository_owner == 'zhensa' && github.event.workflow_run.conclusion == 'success')
       || github.event_name == 'workflow_dispatch'
     name: Build base
     runs-on: ubuntu-24.04
@@ -36,18 +36,18 @@ jobs:
       packages: write
 
     steps:
-      - if: github.repository_owner == 'searxng'
+      - if: github.repository_owner == 'zhensa'
         name: Checkout
         uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8  # v5.0.0
         with:
           persist-credentials: "false"
 
-      - if: github.repository_owner == 'searxng'
+      - if: github.repository_owner == 'zhensa'
         name: Get date
         id: date
         run: echo "date=$(date +'%Y%m%d')" >>$GITHUB_OUTPUT
 
-      - if: github.repository_owner == 'searxng'
+      - if: github.repository_owner == 'zhensa'
         name: Check cache apko
         id: cache-apko
         uses: actions/cache/restore@0057852bfaa89a56745cba8c7296529d2fc39830  # v4.3.0
@@ -57,7 +57,7 @@ jobs:
           path: "/tmp/.apko/"
           lookup-only: true
 
-      - if: github.repository_owner == 'searxng' && steps.cache-apko.outputs.cache-hit != 'true'
+      - if: github.repository_owner == 'zhensa' && steps.cache-apko.outputs.cache-hit != 'true'
         name: Setup cache apko
         uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830  # v4.3.0
         with:
@@ -66,13 +66,13 @@ jobs:
           restore-keys: "apko-${{ steps.date.outputs.date }}-"
           path: "/tmp/.apko/"
 
-      - if: github.repository_owner == 'searxng' && steps.cache-apko.outputs.cache-hit != 'true'
+      - if: github.repository_owner == 'zhensa' && steps.cache-apko.outputs.cache-hit != 'true'
         name: Setup apko
         run: |
           eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
           brew install apko
 
-      - if: github.repository_owner == 'searxng' && steps.cache-apko.outputs.cache-hit != 'true'
+      - if: github.repository_owner == 'zhensa' && steps.cache-apko.outputs.cache-hit != 'true'
         name: Login to GHCR
         uses: docker/login-action@184bdaa0721073962dff0199f1fb9940f07167d1  # v3.5.0
         with:
@@ -80,25 +80,25 @@ jobs:
           username: "${{ github.repository_owner }}"
           password: "${{ secrets.GITHUB_TOKEN }}"
 
-      - if: github.repository_owner == 'searxng' && steps.cache-apko.outputs.cache-hit != 'true'
+      - if: github.repository_owner == 'zhensa' && steps.cache-apko.outputs.cache-hit != 'true'
         name: Build
         run: |
           eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 
-          apko publish ./container/base.yml ghcr.io/${{ github.repository_owner }}/base:searxng \
+          apko publish ./container/base.yml ghcr.io/${{ github.repository_owner }}/base:zhensa \
             --cache-dir=/tmp/.apko/ \
             --sbom=false \
             --vcs=false \
             --log-level=debug
 
-          apko publish ./container/base-builder.yml ghcr.io/${{ github.repository_owner }}/base:searxng-builder \
+          apko publish ./container/base-builder.yml ghcr.io/${{ github.repository_owner }}/base:zhensa-builder \
             --cache-dir=/tmp/.apko/ \
             --sbom=false \
             --vcs=false \
             --log-level=debug
 
   build:
-    if: github.repository_owner == 'searxng' || github.event_name == 'workflow_dispatch'
+    if: github.repository_owner == 'zhensa' || github.event_name == 'workflow_dispatch'
     name: Build (${{ matrix.arch }})
     runs-on: ${{ matrix.os }}
     needs: build-base
@@ -209,7 +209,7 @@ jobs:
         run: make container.test
 
   release:
-    if: github.repository_owner == 'searxng' && github.ref_name == 'master'
+    if: github.repository_owner == 'zhensa' && github.ref_name == 'master'
     name: Release
     runs-on: ubuntu-24.04-arm
     needs:

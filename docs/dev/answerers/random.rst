@@ -4,5 +4,5 @@
 Random
 ======
 
-.. autoclass:: searx.answerers.random.SXNGAnswerer
+.. autoclass:: zhensa.answerers.random.SXNGAnswerer
    :members:

@@ -5,13 +5,13 @@ from parameterized.parameterized import parameterized
 
 from flask_babel import gettext
 
-import searx.plugins
-import searx.preferences
-import searx.limiter
-import searx.botdetection
+import zhensa.plugins
+import zhensa.preferences
+import zhensa.limiter
+import zhensa.botdetection
 
-from searx.extended_types import sxng_request
-from searx.result_types import Answer
+from zhensa.extended_types import sxng_request
+from zhensa.result_types import Answer
 
 from tests import SearxTestCase
 from .test_plugins import do_post_search
@@ -23,14 +23,14 @@ class PluginIPSelfInfo(SearxTestCase):
         super().setUp()
         engines = {}
 
-        self.storage = searx.plugins.PluginStorage()
-        self.storage.load_settings({"searx.plugins.self_info.SXNGPlugin": {"active": True}})
+        self.storage = zhensa.plugins.PluginStorage()
+        self.storage.load_settings({"zhensa.plugins.self_info.SXNGPlugin": {"active": True}})
         self.storage.init(self.app)
-        self.pref = searx.preferences.Preferences(["simple"], ["general"], engines, self.storage)
+        self.pref = zhensa.preferences.Preferences(["simple"], ["general"], engines, self.storage)
         self.pref.parse_dict({"locale": "en"})
 
-        cfg = searx.limiter.get_cfg()
-        searx.botdetection.init(cfg, None)
+        cfg = zhensa.limiter.get_cfg()
+        zhensa.botdetection.init(cfg, None)
 
     def test_plugin_store_init(self):
         self.assertEqual(1, len(self.storage))
@@ -77,11 +77,11 @@ class PluginIPSelfInfo(SearxTestCase):
         answer = gettext("Your IP is: ") + "100::"
         headers = {}
         environ_overrides = {"REMOTE_ADDR": "1.2.3.4.5"}
-        with self.assertLogs("searx.botdetection", level="ERROR") as ctx:
+        with self.assertLogs("zhensa.botdetection", level="ERROR") as ctx:
             result = self.client.post("/search", data={"q": "ip"}, headers=headers, environ_overrides=environ_overrides)
             self.assertIn(answer, str(result.data))
         self.assertIn(
-            "ERROR:searx.botdetection:REMOTE_ADDR: '1.2.3.4.5' does not appear to be an IPv4 or IPv6 address / discard REMOTE_ADDR from WSGI environment",
+            "ERROR:zhensa.botdetection:REMOTE_ADDR: '1.2.3.4.5' does not appear to be an IPv4 or IPv6 address / discard REMOTE_ADDR from WSGI environment",
             ctx.output,
         )
 
@@ -91,11 +91,11 @@ class PluginIPSelfInfo(SearxTestCase):
         headers = {"X-Real-IP": "1.2.3.4.5", "X-Forwarded-For": "96.7.128.186, 127.0.0.1"}
         environ_overrides = {"REMOTE_ADDR": "127.0.0.1"}
 
-        with self.assertLogs("searx.botdetection", level="ERROR") as ctx:
+        with self.assertLogs("zhensa.botdetection", level="ERROR") as ctx:
             result = self.client.post("/search", data={"q": "ip"}, headers=headers, environ_overrides=environ_overrides)
             self.assertIn(answer, str(result.data))
         self.assertIn(
-            "ERROR:searx.botdetection:X-Real-IP: '1.2.3.4.5' does not appear to be an IPv4 or IPv6 address / discard HTTP_X_REAL_IP from WSGI environment",
+            "ERROR:zhensa.botdetection:X-Real-IP: '1.2.3.4.5' does not appear to be an IPv4 or IPv6 address / discard HTTP_X_REAL_IP from WSGI environment",
             ctx.output,
         )
 
@@ -107,11 +107,11 @@ class PluginIPSelfInfo(SearxTestCase):
             "X-Forwarded-For": "1.2.3.4, 1.2.3.4.5, 127.0.0.1",
             "X-Real-IP": "96.7.128.186",
         }
-        with self.assertLogs("searx.botdetection", level="ERROR") as ctx:
+        with self.assertLogs("zhensa.botdetection", level="ERROR") as ctx:
             result = self.client.post("/search", data={"q": "ip"}, headers=headers)
             self.assertIn(answer, str(result.data))
         self.assertIn(
-            "ERROR:searx.botdetection:X-Forwarded-For: '1.2.3.4.5' does not appear to be an IPv4 or IPv6 address / discard HTTP_X_FORWARDED_FOR from WSGI environment",
+            "ERROR:zhensa.botdetection:X-Forwarded-For: '1.2.3.4.5' does not appear to be an IPv4 or IPv6 address / discard HTTP_X_FORWARDED_FOR from WSGI environment",
             ctx.output,
         )
 

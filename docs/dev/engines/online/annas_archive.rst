@@ -9,5 +9,5 @@ Anna's Archive
    :local:
    :backlinks: entry
 
-.. automodule:: searx.engines.annas_archive
+.. automodule:: zhensa.engines.annas_archive
    :members:

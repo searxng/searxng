@@ -6,10 +6,10 @@
 # shellcheck source=utils/lib.sh
 . /dev/null
 
-REDIS_USER="searxng-redis"
-REDIS_GROUP="searxng-redis"
+REDIS_USER="zhensa-redis"
+REDIS_GROUP="zhensa-redis"
 
-REDIS_SERVICE_NAME="searxng-redis"
+REDIS_SERVICE_NAME="zhensa-redis"
 REDIS_SYSTEMD_UNIT="${SYSTEMD_UNITS}/${REDIS_SERVICE_NAME}.service"
 
 redis.help() {

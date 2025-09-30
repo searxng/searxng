@@ -9,6 +9,6 @@ Demo Offline Engine
    :local:
    :backlinks: entry
 
-.. automodule:: searx.engines.demo_offline
+.. automodule:: zhensa.engines.demo_offline
   :members:
 

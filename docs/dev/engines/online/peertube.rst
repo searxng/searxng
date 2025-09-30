@@ -15,7 +15,7 @@ Peertube Engines
 Peertube Video
 ==============
 
-.. automodule:: searx.engines.peertube
+.. automodule:: zhensa.engines.peertube
   :members:
 
 .. _sepiasearch engine:
@@ -23,5 +23,5 @@ Peertube Video
 SepiaSearch
 ===========
 
-.. automodule:: searx.engines.sepiasearch
+.. automodule:: zhensa.engines.sepiasearch
   :members:

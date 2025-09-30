@@ -9,5 +9,5 @@ Lemmy
    :local:
    :backlinks: entry
 
-.. automodule:: searx.engines.lemmy
+.. automodule:: zhensa.engines.lemmy
    :members:

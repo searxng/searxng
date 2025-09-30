@@ -9,15 +9,15 @@ Administrator documentation
    installation
    installation-docker
    installation-scripts
-   installation-searxng
+   installation-zhensa
    installation-granian
    installation-uwsgi
    installation-nginx
    installation-apache
-   update-searxng
+   update-zhensa
    answer-captcha
-   searx.favicons
-   searx.limiter
+   zhensa.favicons
+   zhensa.limiter
    api
    architecture
    plugins

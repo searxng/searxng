@@ -4,5 +4,5 @@
 OpenAlex
 ========
 
-.. automodule:: searx.engines.openalex
+.. automodule:: zhensa.engines.openalex
    :members:

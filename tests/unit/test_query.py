@@ -2,7 +2,7 @@
 # pylint: disable=missing-module-docstring,disable=missing-class-docstring,invalid-name
 
 from parameterized.parameterized import parameterized
-from searx.query import RawTextQuery
+from zhensa.query import RawTextQuery
 from tests import SearxTestCase
 
 

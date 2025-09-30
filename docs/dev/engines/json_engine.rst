@@ -9,5 +9,5 @@ JSON Engine
    :local:
    :backlinks: entry
 
-.. automodule:: searx.engines.json_engine
+.. automodule:: zhensa.engines.json_engine
   :members:

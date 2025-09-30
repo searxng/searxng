@@ -24,7 +24,7 @@ From this simple dict another dict is build up:
    {"url" : "!bang lorem ipsum ..", "title": "lorem ipsum" }
 
 and used in the template :origin:`suggestions.html
-<searx/templates/simple/elements/suggestions.html>`:
+<zhensa/templates/simple/elements/suggestions.html>`:
 
 .. code:: python
 
@@ -35,4 +35,4 @@ title : :py:class:`str`
   Suggested search term
 
 url : :py:class:`str`
-  Not really an URL, its the value to insert in a HTML form for a SearXNG query.
+  Not really an URL, its the value to insert in a HTML form for a Zhensa query.

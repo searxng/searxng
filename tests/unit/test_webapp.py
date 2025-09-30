@@ -5,13 +5,13 @@ import json
 import babel
 from mock import Mock
 
-import searx.webapp
-import searx.search
-import searx.search.processors
-from searx.result_types._base import MainResult
+import zhensa.webapp
+import zhensa.search
+import zhensa.search.processors
+from zhensa.result_types._base import MainResult
 
-from searx.results import Timing
-from searx.preferences import Preferences
+from zhensa.results import Timing
+from zhensa.preferences import Preferences
 from tests import SearxTestCase
 
 
@@ -24,7 +24,7 @@ class ViewsTestCase(SearxTestCase):  # pylint: disable=too-many-public-methods
         def dummy(*args, **kwargs):  # pylint: disable=unused-argument
             pass
 
-        self.setattr4test(searx.search.processors.PROCESSORS, 'init', dummy)
+        self.setattr4test(zhensa.search.processors.PROCESSORS, 'init', dummy)
 
         # set some defaults
         test_results = [
@@ -65,7 +65,7 @@ class ViewsTestCase(SearxTestCase):  # pylint: disable=too-many-public-methods
             )
             search_self.search_query.locale = babel.Locale.parse("en-US", sep='-')
 
-        self.setattr4test(searx.search.Search, 'search', search_mock)
+        self.setattr4test(zhensa.search.Search, 'search', search_mock)
 
         original_preferences_get_value = Preferences.get_value
 
@@ -83,7 +83,7 @@ class ViewsTestCase(SearxTestCase):  # pylint: disable=too-many-public-methods
         result = self.client.post('/')
         self.assertEqual(result.status_code, 200)
         self.assertIn(
-            b'<div class="title"><h1>SearXNG</h1></div>',
+            b'<div class="title"><h1>Zhensa</h1></div>',
             result.data,
         )
 
@@ -100,7 +100,7 @@ class ViewsTestCase(SearxTestCase):  # pylint: disable=too-many-public-methods
     def test_search_empty_html(self):
         result = self.client.post('/search', data={'q': ''})
         self.assertEqual(result.status_code, 200)
-        self.assertIn(b'<div class="title"><h1>SearXNG</h1></div>', result.data)
+        self.assertIn(b'<div class="title"><h1>Zhensa</h1></div>', result.data)
 
     def test_search_empty_json(self):
         result = self.client.post('/search', data={'q': '', 'format': 'json'})
@@ -159,7 +159,7 @@ class ViewsTestCase(SearxTestCase):  # pylint: disable=too-many-public-methods
     def test_search_rss(self):
         result = self.client.post('/search', data={'q': 'test', 'format': 'rss'})
 
-        self.assertIn(b'<description>Search results for "test" - SearXNG</description>', result.data)
+        self.assertIn(b'<description>Search results for "test" - Zhensa</description>', result.data)
 
         self.assertIn(b'<opensearch:totalResults>3</opensearch:totalResults>', result.data)
 
@@ -232,7 +232,7 @@ class ViewsTestCase(SearxTestCase):  # pylint: disable=too-many-public-methods
         result = self.client.get('/opensearch.xml')
         self.assertEqual(result.status_code, 200)
         self.assertIn(
-            b'<Description>SearXNG is a metasearch engine that respects your privacy.</Description>', result.data
+            b'<Description>Zhensa is a metasearch engine that respects your privacy.</Description>', result.data
         )
 
     def test_favicon(self):

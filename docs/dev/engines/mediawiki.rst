@@ -9,5 +9,5 @@ MediaWiki Engine
    :local:
    :backlinks: entry
 
-.. automodule:: searx.engines.mediawiki
+.. automodule:: zhensa.engines.mediawiki
   :members:

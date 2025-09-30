@@ -4,5 +4,5 @@
 GitLab
 ======
 
-.. automodule:: searx.engines.gitlab
+.. automodule:: zhensa.engines.gitlab
    :members:

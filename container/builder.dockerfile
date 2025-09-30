@@ -1,4 +1,4 @@
-FROM ghcr.io/searxng/base:searxng-builder AS builder
+FROM ghcr.io/zhensang/base:zhensang-builder AS builder
 
 COPY ./requirements.txt ./requirements-server.txt ./
 
@@ -19,17 +19,17 @@ RUN --mount=type=cache,id=uv,target=/root/.cache/uv set -eux -o pipefail; \
     find ./.venv/lib/python*/site-packages/*.dist-info/ -type f -name "RECORD" -exec sort -t, -k1,1 -o {} {} \;; \
     find ./.venv/ -exec touch -h --date="@$TIMESTAMP_VENV" {} +
 
-# use "--exclude=./searx/version_frozen.py" when actions/runner-images updates to Podman 5.0+
-COPY ./searx/ ./searx/
+# use "--exclude=./zhensa/version_frozen.py" when actions/runner-images updates to Podman 5.0+
+COPY ./zhensa/ ./zhensa/
 
 ARG TIMESTAMP_SETTINGS="0"
 
 RUN set -eux -o pipefail; \
-    python -m compileall -q -f -j 0 --invalidation-mode=unchecked-hash ./searx/; \
-    find ./searx/static/ -type f \
+    python -m compileall -q -f -j 0 --invalidation-mode=unchecked-hash ./zhensa/; \
+    find ./zhensa/static/ -type f \
     \( -name "*.html" -o -name "*.css" -o -name "*.js" -o -name "*.svg" \) \
     -exec gzip -9 -k {} + \
     -exec brotli -9 -k {} + \
     -exec gzip --test {}.gz + \
     -exec brotli --test {}.br +; \
-    touch -c --date="@$TIMESTAMP_SETTINGS" ./searx/settings.yml
+    touch -c --date="@$TIMESTAMP_SETTINGS" ./zhensa/settings.yml

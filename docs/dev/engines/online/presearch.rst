@@ -9,5 +9,5 @@ Presearch Engine
    :local:
    :backlinks: entry
 
-.. automodule:: searx.engines.presearch
+.. automodule:: zhensa.engines.presearch
    :members:

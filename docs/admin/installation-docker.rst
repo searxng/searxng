@@ -7,9 +7,9 @@ Installation container
 .. _Docker 101: https://docs.docker.com/get-started/docker-overview
 .. _Docker cheat sheet (PDF doc): https://docs.docker.com/get-started/docker_cheatsheet.pdf
 .. _Podman rootless containers: https://github.com/containers/podman/blob/main/docs/tutorials/rootless_tutorial.md
-.. _DockerHub mirror: https://hub.docker.com/r/searxng/searxng
-.. _GHCR mirror: https://ghcr.io/searxng/searxng
-.. _Docker compose: https://github.com/searxng/searxng-docker
+.. _DockerHub mirror: https://hub.docker.com/r/zhensa/zhensa
+.. _GHCR mirror: https://ghcr.io/zhensa/zhensa
+.. _Docker compose: https://github.com/zhenbah/zhensa-docker
 
 .. sidebar:: info
 
@@ -20,7 +20,7 @@ Installation container
 .. important::
 
    Understanding container architecture basics is essential for properly
-   maintaining your SearXNG instance.  This guide assumes familiarity with
+   maintaining your Zhensa instance.  This guide assumes familiarity with
    container concepts and provides deployment steps at a high level.
 
    If you're new to containers, we recommend learning the fundamentals at
@@ -74,13 +74,13 @@ Pull the latest image:
 
 .. code:: sh
 
-   $ docker pull docker.io/searxng/searxng:latest
+   $ docker pull docker.io/zhensa/zhensa:latest
 
 \.\. or if you want to lock in to a specific version:
 
 .. code:: sh
 
-   $ docker pull docker.io/searxng/searxng:2025.8.1-3d96414
+   $ docker pull docker.io/zhensa/zhensa:2025.8.1-3d96414
 
 .. _Container instancing:
 
@@ -96,17 +96,17 @@ Basic container instancing example:
 .. code:: sh
 
    # Create directories for configuration and persistent data
-   $ mkdir -p ./searxng/config/ ./searxng/data/
-   $ cd ./searxng/
+   $ mkdir -p ./zhensa/config/ ./zhensa/data/
+   $ cd ./zhensa/
 
    # Run the container
-   $ docker run --name searxng --replace -d \
+   $ docker run --name zhensa --replace -d \
        -p 8888:8080 \
-       -v "./config/:/etc/searxng/" \
-       -v "./data/:/var/cache/searxng/" \
-       docker.io/searxng/searxng:latest
+       -v "./config/:/etc/zhensa/" \
+       -v "./data/:/var/cache/zhensa/" \
+       docker.io/zhensa/zhensa:latest
 
-This will start SearXNG in the background, accessible at http://localhost:8888
+This will start Zhensa in the background, accessible at http://localhost:8888
 
 .. _Container management:
 
@@ -119,21 +119,21 @@ List running containers:
 
    $ docker container list
    CONTAINER ID  IMAGE  ...  CREATED        PORTS                   NAMES
-   1af574997e63  ...    ...  3 minutes ago  0.0.0.0:8888->8080/tcp  searxng
+   1af574997e63  ...    ...  3 minutes ago  0.0.0.0:8888->8080/tcp  zhensa
 
 Access the container shell (troubleshooting):
 
 .. code:: sh
 
-   $ docker container exec -it --user root searxng /bin/sh -l
-   1af574997e63:/usr/local/searxng#
+   $ docker container exec -it --user root zhensa /bin/sh -l
+   1af574997e63:/usr/local/zhensa#
 
 Stop and remove the container:
 
 .. code:: sh
 
-   $ docker container stop searxng
-   $ docker container rm searxng
+   $ docker container stop zhensa
+   $ docker container rm zhensa
 
 .. _Container volumes:
 
@@ -142,8 +142,8 @@ Volumes
 
 Two volumes are exposed that should be mounted to preserve its contents:
 
-- ``/etc/searxng``: Configuration files (settings.yml, etc.)
-- ``/var/cache/searxng``: Persistent data (faviconcache.db, etc.)
+- ``/etc/zhensa``: Configuration files (settings.yml, etc.)
+- ``/var/cache/zhensa``: Persistent data (faviconcache.db, etc.)
 
 .. _Container environment variables:
 
@@ -152,18 +152,18 @@ Environment variables
 
 The following environment variables can be configured:
 
-- ``$SEARXNG_*``: Controls the SearXNG configuration options, look out for
-  environment ``$SEARXNG_*`` in :ref:`settings server` and :ref:`settings
+- ``$ZHENSA_*``: Controls the Zhensa configuration options, look out for
+  environment ``$ZHENSA_*`` in :ref:`settings server` and :ref:`settings
   general`.
 - ``$GRANIAN_*``: Controls the :ref:`Granian server options <Granian configuration>`.
 - ``$FORCE_OWNERSHIP``: Ensures mounted volumes/files are owned by the
-  ``searxng:searxng`` user (default: ``true``)
+  ``zhensa:zhensa`` user (default: ``true``)
 
 Container internal paths (don't modify unless you know what you're doing):
 
-- ``$CONFIG_PATH``: Path to the SearXNG configuration directory (default: ``/etc/searxng``)
-- ``$SEARXNG_SETTINGS_PATH``: Path to the SearXNG settings file (default: ``$CONFIG_PATH/settings.yml``)
-- ``$DATA_PATH``: Path to the SearXNG data directory (default: ``/var/cache/searxng``)
+- ``$CONFIG_PATH``: Path to the Zhensa configuration directory (default: ``/etc/zhensa``)
+- ``$ZHENSA_SETTINGS_PATH``: Path to the Zhensa settings file (default: ``$CONFIG_PATH/settings.yml``)
+- ``$DATA_PATH``: Path to the Zhensa data directory (default: ``/var/cache/zhensa``)
 
 .. _Container custom certificates:
 
@@ -181,21 +181,21 @@ They will be available on container (re)start or when running
 Custom images
 =============
 
-To build your own SearXNG container image from source (please note, custom
+To build your own Zhensa container image from source (please note, custom
 container images are not officially supported):
 
 .. code:: sh
 
-   $ git clone https://github.com/searxng/searxng.git
-   $ cd ./searxng/
+   $ git clone https://github.com/zhenbah/zhensa.git
+   $ cd ./zhensa/
 
    # Run the container build script
    $ make container
 
    $ docker images
    REPOSITORY                 TAG                 IMAGE ID  CREATED             SIZE
-   localhost/searxng/searxng  2025.8.1-3d96414    ...       About a minute ago  183 MB
-   localhost/searxng/searxng  latest              ...       About a minute ago  183 MB
-   localhost/searxng/searxng  builder             ...       About a minute ago  524 MB
-   ghcr.io/searxng/base       searxng-builder     ...       2 days ago          378 MB
-   ghcr.io/searxng/base       searxng             ...       2 days ago          42.2 MB
+   localhost/zhensa/zhensa  2025.8.1-3d96414    ...       About a minute ago  183 MB
+   localhost/zhensa/zhensa  latest              ...       About a minute ago  183 MB
+   localhost/zhensa/zhensa  builder             ...       About a minute ago  524 MB
+   ghcr.io/zhensa/base       zhensa-builder     ...       2 days ago          378 MB
+   ghcr.io/zhensa/base       zhensa             ...       2 days ago          42.2 MB

@@ -4,4 +4,4 @@
 Code Results
 ============
 
-.. automodule:: searx.result_types.code
+.. automodule:: zhensa.result_types.code

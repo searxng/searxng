@@ -15,7 +15,7 @@ Wikimedia
 Wikipedia
 =========
 
-.. automodule:: searx.engines.wikipedia
+.. automodule:: zhensa.engines.wikipedia
   :members:
 
 .. _wikidata engine:
@@ -23,5 +23,5 @@ Wikipedia
 Wikidata
 =========
 
-.. automodule:: searx.engines.wikidata
+.. automodule:: zhensa.engines.wikidata
   :members:

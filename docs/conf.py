@@ -4,16 +4,16 @@ import  sys, os
 from pathlib import Path
 from pallets_sphinx_themes import ProjectLink
 
-from searx import get_setting
-from searx.version import VERSION_STRING, GIT_URL, GIT_BRANCH
+from zhensa import get_setting
+from zhensa.version import VERSION_STRING, GIT_URL, GIT_BRANCH
 
 # Project --------------------------------------------------------------
 
-project = 'SearXNG'
-copyright = 'SearXNG team'
-author = 'SearXNG team'
+project = 'Zhensa'
+copyright = 'Zhensa team'
+author = 'Zhensa team'
 release, version = VERSION_STRING, VERSION_STRING
-SEARXNG_URL = get_setting('server.base_url') or 'https://example.org/searxng'
+ZHENSA_URL = get_setting('server.base_url') or 'https://example.org/zhensa'
 ISSUE_URL = get_setting('brand.issue_url')
 DOCS_URL = get_setting('brand.docs_url')
 PUBLIC_INSTANCES = get_setting('brand.public_instances')
@@ -21,7 +21,7 @@ PRIVACYPOLICY_URL = get_setting('general.privacypolicy_url')
 CONTACT_URL = get_setting('general.contact_url')
 WIKI_URL = get_setting('brand.wiki_url')
 
-SOURCEDIR = Path(__file__).parent.parent / "searx"
+SOURCEDIR = Path(__file__).parent.parent / "zhensa"
 os.environ['SOURCEDIR'] = str(SOURCEDIR)
 
 # hint: sphinx.ext.viewcode won't highlight when 'highlight_language' [1] is set
@@ -40,31 +40,31 @@ numfig = True
 
 exclude_patterns = ['build-templates/*.rst', 'user/*.md']
 
-import searx.engines
-import searx.plugins
-import searx.webutils
+import zhensa.engines
+import zhensa.plugins
+import zhensa.webutils
 
-# import searx.webapp is needed to init the engines & plugins, to init a
+# import zhensa.webapp is needed to init the engines & plugins, to init a
 # (empty) secret_key is needed.
-searx.settings['server']['secret_key'] = ''
-import searx.webapp
+zhensa.settings['server']['secret_key'] = ''
+import zhensa.webapp
 
-searx.engines.load_engines(searx.settings['engines'])
+zhensa.engines.load_engines(zhensa.settings['engines'])
 
 jinja_contexts = {
-    'searx': {
-        'engines': searx.engines.engines,
-        'plugins': searx.plugins.STORAGE,
+    'zhensa': {
+        'engines': zhensa.engines.engines,
+        'plugins': zhensa.plugins.STORAGE,
         'version': {
             'node': os.getenv('NODE_MINIMUM_VERSION')
         },
-        'enabled_engine_count': sum(not x.disabled for x in searx.engines.engines.values()),
-        'categories': searx.engines.categories,
-        'categories_as_tabs': {c: searx.engines.categories[c] for c in searx.settings['categories_as_tabs']},
+        'enabled_engine_count': sum(not x.disabled for x in zhensa.engines.engines.values()),
+        'categories': zhensa.engines.categories,
+        'categories_as_tabs': {c: zhensa.engines.categories[c] for c in zhensa.settings['categories_as_tabs']},
     },
 }
 jinja_filters = {
-    'group_engines_in_tab': searx.webutils.group_engines_in_tab,
+    'group_engines_in_tab': zhensa.webutils.group_engines_in_tab,
 }
 
 # Let the Jinja template in configured_engines.rst access documented_modules
@@ -81,7 +81,7 @@ def setup(app):
 
     def source_read(app, docname, source):
         if docname == ENGINES_DOCNAME:
-            jinja_contexts['searx']['documented_modules'] = app.env.domains['py'].modules
+            jinja_contexts['zhensa']['documented_modules'] = app.env.domains['py'].modules
 
     app.connect('env-before-read-docs', before_read_docs)
     app.connect('source-read', source_read)
@@ -90,9 +90,9 @@ def setup(app):
 extlinks = {}
 
 # upstream links
-extlinks['wiki'] = ('https://github.com/searxng/searxng/wiki/%s', ' %s')
-extlinks['pull'] = ('https://github.com/searxng/searxng/pull/%s', 'PR %s')
-extlinks['pull-searx'] = ('https://github.com/searx/searx/pull/%s', 'PR %s')
+extlinks['wiki'] = ('https://github.com/zhenbah/zhensa/wiki/%s', ' %s')
+extlinks['pull'] = ('https://github.com/zhenbah/zhensa/pull/%s', 'PR %s')
+extlinks['pull-zhensa'] = ('https://github.com/zhenbah/zhensa/pull/%s', 'PR %s')
 
 # links to custom brand
 extlinks['origin'] = (GIT_URL + '/blob/' + GIT_BRANCH + '/%s', 'git://%s')
@@ -154,18 +154,18 @@ intersphinx_mapping = {
     "lxml": ('https://lxml.de/apidoc', None),
 }
 
-issues_github_path = "searxng/searxng"
+issues_github_path = "zhensa/zhensa"
 
 # HTML -----------------------------------------------------------------
 
-# https://searxng.github.io/searxng --> '/searxng/'
-# https://docs.searxng.org --> '/'
+# https://zhensa.github.io/zhensa --> '/zhensa/'
+# https://docs.zhensa.org --> '/'
 notfound_urls_prefix = '/'
 
 sys.path.append(os.path.abspath('_themes'))
 sys.path.insert(0, os.path.abspath("../"))
 html_theme_path = ['_themes']
-html_theme = "searxng"
+html_theme = "zhensa"
 
 # sphinx.ext.imgmath setup
 html_math_renderer = 'imgmath'
@@ -199,12 +199,12 @@ html_sidebars = {
     ],
 }
 singlehtml_sidebars = {"index": ["project.html", "localtoc.html"]}
-html_logo = "../client/simple/src/brand/searxng-wordmark.svg"
-html_title = "SearXNG Documentation ({})".format(VERSION_STRING)
+html_logo = "../client/simple/src/brand/zhensa-wordmark.svg"
+html_title = "Zhensa Documentation ({})".format(VERSION_STRING)
 html_show_sourcelink = True
 
 # LaTeX ----------------------------------------------------------------
 
 latex_documents = [
-    (master_doc, "searxng-{}.tex".format(VERSION_STRING), html_title, author, "manual")
+    (master_doc, "zhensa-{}.tex".format(VERSION_STRING), html_title, author, "manual")
 ]

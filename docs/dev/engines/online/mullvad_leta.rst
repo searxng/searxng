@@ -4,5 +4,5 @@
 Mullvad-Leta
 ============
 
-.. automodule:: searx.engines.mullvad_leta
+.. automodule:: zhensa.engines.mullvad_leta
    :members:

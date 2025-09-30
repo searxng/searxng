@@ -10,4 +10,4 @@ requested.
    :maxdepth: 2
    :glob:
 
-   searx.*
+   zhensa.*

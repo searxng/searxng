@@ -4,5 +4,5 @@
 Hugging Face
 ============
 
-.. automodule:: searx.engines.huggingface
+.. automodule:: zhensa.engines.huggingface
    :members:

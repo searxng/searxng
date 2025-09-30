@@ -1,9 +1,9 @@
-.. _searx.engines loader:
+.. _zhensa.engines loader:
 
 ========================
-SearXNG's engines loader
+Zhensa's engines loader
 ========================
 
-.. automodule:: searx.engines
+.. automodule:: zhensa.engines
   :members:
 

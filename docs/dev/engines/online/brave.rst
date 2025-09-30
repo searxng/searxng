@@ -9,5 +9,5 @@ Brave Engines
    :local:
    :backlinks: entry
 
-.. automodule:: searx.engines.brave
+.. automodule:: zhensa.engines.brave
   :members:

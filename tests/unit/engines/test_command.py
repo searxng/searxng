@@ -1,8 +1,8 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 # pylint: disable=missing-module-docstring,disable=missing-class-docstring,invalid-name
 
-from searx.engines import command as command_engine
-from searx.result_types import KeyValue
+from zhensa.engines import command as command_engine
+from zhensa.result_types import KeyValue
 
 from tests import SearxTestCase
 
@@ -25,51 +25,51 @@ class TestCommandEngine(SearxTestCase):
             self.assertEqual(results[i].kvmap["number"], str(expected.kvmap["number"]))
 
     def test_delimiter_parsing(self):
-        searx_logs = '''DEBUG:searx.webapp:static directory is /home/n/p/searx/searx/static
-DEBUG:searx.webapp:templates directory is /home/n/p/searx/searx/templates
-DEBUG:searx.engines:soundcloud engine: Starting background initialization
-DEBUG:searx.engines:wolframalpha engine: Starting background initialization
-DEBUG:searx.engines:locate engine: Starting background initialization
-DEBUG:searx.engines:regex search in files engine: Starting background initialization
+        zhensa_logs = '''DEBUG:zhensa.webapp:static directory is /home/n/p/zhensa/zhensa/static
+DEBUG:zhensa.webapp:templates directory is /home/n/p/zhensa/zhensa/templates
+DEBUG:zhensa.engines:soundcloud engine: Starting background initialization
+DEBUG:zhensa.engines:wolframalpha engine: Starting background initialization
+DEBUG:zhensa.engines:locate engine: Starting background initialization
+DEBUG:zhensa.engines:regex search in files engine: Starting background initialization
 DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): www.wolframalpha.com
 DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): soundcloud.com
-DEBUG:searx.engines:find engine: Starting background initialization
-DEBUG:searx.engines:pattern search in files engine: Starting background initialization
-DEBUG:searx.webapp:starting webserver on 127.0.0.1:8888
+DEBUG:zhensa.engines:find engine: Starting background initialization
+DEBUG:zhensa.engines:pattern search in files engine: Starting background initialization
+DEBUG:zhensa.webapp:starting webserver on 127.0.0.1:8888
 WARNING:werkzeug: * Debugger is active!
 INFO:werkzeug: * Debugger PIN: 299-578-362'''
         echo_engine = command_engine
-        echo_engine.command = ['echo', searx_logs]
+        echo_engine.command = ['echo', zhensa_logs]
         echo_engine.delimiter = {'chars': ':', 'keys': ['level', 'component', 'message']}
 
         page1 = [
             {
-                'component': 'searx.webapp',
-                'message': 'static directory is /home/n/p/searx/searx/static',
+                'component': 'zhensa.webapp',
+                'message': 'static directory is /home/n/p/zhensa/zhensa/static',
                 'level': 'DEBUG',
             },
             {
-                'component': 'searx.webapp',
-                'message': 'templates directory is /home/n/p/searx/searx/templates',
+                'component': 'zhensa.webapp',
+                'message': 'templates directory is /home/n/p/zhensa/zhensa/templates',
                 'level': 'DEBUG',
             },
             {
-                'component': 'searx.engines',
+                'component': 'zhensa.engines',
                 'message': 'soundcloud engine: Starting background initialization',
                 'level': 'DEBUG',
             },
             {
-                'component': 'searx.engines',
+                'component': 'zhensa.engines',
                 'message': 'wolframalpha engine: Starting background initialization',
                 'level': 'DEBUG',
             },
             {
-                'component': 'searx.engines',
+                'component': 'zhensa.engines',
                 'message': 'locate engine: Starting background initialization',
                 'level': 'DEBUG',
             },
             {
-                'component': 'searx.engines',
+                'component': 'zhensa.engines',
                 'message': 'regex search in files engine: Starting background initialization',
                 'level': 'DEBUG',
             },
@@ -84,19 +84,19 @@ INFO:werkzeug: * Debugger PIN: 299-578-362'''
                 'level': 'DEBUG',
             },
             {
-                'component': 'searx.engines',
+                'component': 'zhensa.engines',
                 'message': 'find engine: Starting background initialization',
                 'level': 'DEBUG',
             },
             {
-                'component': 'searx.engines',
+                'component': 'zhensa.engines',
                 'message': 'pattern search in files engine: Starting background initialization',
                 'level': 'DEBUG',
             },
         ]
         page2 = [
             {
-                'component': 'searx.webapp',
+                'component': 'zhensa.webapp',
                 'message': 'starting webserver on 127.0.0.1:8888',
                 'level': 'DEBUG',
             },

@@ -3,7 +3,7 @@
 
 import mock
 from parameterized.parameterized import parameterized
-from searx import webutils
+from zhensa import webutils
 from tests import SearxTestCase
 
 
@@ -11,10 +11,10 @@ class TestWebUtils(SearxTestCase):
 
     @parameterized.expand(
         [
-            ('https://searx.me/', 'https://searx.me/'),
-            ('https://searx.me/ű', 'https://searx.me/ű'),
-            ('https://searx.me/' + (100 * 'a'), 'https://searx.me/[...]aaaaaaaaaaaaaaaaa'),
-            ('https://searx.me/' + (100 * 'ű'), 'https://searx.me/[...]űűűűűűűűűűűűűűűűű'),
+            ('https://zhensa.me/', 'https://zhensa.me/'),
+            ('https://zhensa.me/ű', 'https://zhensa.me/ű'),
+            ('https://zhensa.me/' + (100 * 'a'), 'https://zhensa.me/[...]aaaaaaaaaaaaaaaaa'),
+            ('https://zhensa.me/' + (100 * 'ű'), 'https://zhensa.me/[...]űűűűűűűűűűűűűűűűű'),
         ]
     )
     def test_prettify_url(self, test_url: str, expected: str):

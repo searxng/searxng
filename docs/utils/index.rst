@@ -1,4 +1,4 @@
-.. _searx_utils:
+.. _zhensa_utils:
 .. _toolboxing:
 
 ==================
@@ -11,7 +11,7 @@ and developers.
 .. toctree::
    :maxdepth: 2
 
-   searxng.sh
+   zhensa.sh
 
 
 Common command environments
@@ -24,7 +24,7 @@ The scripts in our tooling box often dispose of common environments:
 ``FORCE_TIMEOUT`` : environment
   Sets timeout for interactive prompts. If you want to run a script in batch
   job, with defaults choices, set ``FORCE_TIMEOUT=0``.  By example; to install a
-  SearXNG server and nginx proxy use::
+  Zhensa server and nginx proxy use::
 
-    $ FORCE_TIMEOUT=0 ./utils/searxng.sh install all
-    $ FORCE_TIMEOUT=0 ./utils/searxng.sh install nginx
+    $ FORCE_TIMEOUT=0 ./utils/zhensa.sh install all
+    $ FORCE_TIMEOUT=0 ./utils/zhensa.sh install nginx

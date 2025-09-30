@@ -9,5 +9,5 @@ Torznab WebAPI
    :local:
    :backlinks: entry
 
-.. automodule:: searx.engines.torznab
+.. automodule:: zhensa.engines.torznab
    :members:

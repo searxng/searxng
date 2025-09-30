@@ -1,5 +1,5 @@
 ---
-name: Update searx.data
+name: Update zhensa.data
 
 # yamllint disable-line rule:truthy
 on:
@@ -19,7 +19,7 @@ env:
 
 jobs:
   data:
-    if: github.repository_owner == 'searxng'
+    if: github.repository_owner == 'zhensa'
     name: ${{ matrix.fetch }}
     runs-on: ubuntu-24.04-arm
     strategy:
@@ -60,22 +60,22 @@ jobs:
         run: make V=1 install
 
       - name: Fetch data
-        run: V=1 ./manage pyenv.cmd python "./searxng_extra/update/${{ matrix.fetch }}"
+        run: V=1 ./manage pyenv.cmd python "./zhensa_extra/update/${{ matrix.fetch }}"
 
       - name: Create PR
         id: cpr
         uses: peter-evans/create-pull-request@271a8d0340265f705b14b6d32b9829c1cb33d45e  # v7.0.8
         with:
-          author: "searxng-bot <searxng-bot@users.noreply.github.com>"
-          committer: "searxng-bot <searxng-bot@users.noreply.github.com>"
-          title: "[data] update searx.data - ${{ matrix.fetch }}"
-          commit-message: "[data] update searx.data - ${{ matrix.fetch }}"
+          author: "zhensa-bot <zhensa-bot@users.noreply.github.com>"
+          committer: "zhensa-bot <zhensa-bot@users.noreply.github.com>"
+          title: "[data] update zhensa.data - ${{ matrix.fetch }}"
+          commit-message: "[data] update zhensa.data - ${{ matrix.fetch }}"
           branch: "update_data_${{ matrix.fetch }}"
           delete-branch: "true"
           draft: "false"
           signoff: "false"
           body: |
-            [data] update searx.data - ${{ matrix.fetch }}
+            [data] update zhensa.data - ${{ matrix.fetch }}
           labels: |
             data
 

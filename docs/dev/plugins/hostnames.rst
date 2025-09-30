@@ -4,5 +4,5 @@
 Hostnames
 =========
 
-.. automodule:: searx.plugins.hostnames
+.. automodule:: zhensa.plugins.hostnames
    :members:

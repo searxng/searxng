@@ -4,5 +4,5 @@
 Statistics
 ==========
 
-.. autoclass:: searx.answerers.statistics.SXNGAnswerer
+.. autoclass:: zhensa.answerers.statistics.SXNGAnswerer
    :members:

@@ -9,5 +9,5 @@ Recoll Engine
    :local:
    :backlinks: entry
 
-.. automodule:: searx.engines.recoll
+.. automodule:: zhensa.engines.recoll
    :members:

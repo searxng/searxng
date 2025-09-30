@@ -4,5 +4,5 @@
 Self-Info
 =========
 
-.. autoclass:: searx.plugins.self_info.SXNGPlugin
+.. autoclass:: zhensa.plugins.self_info.SXNGPlugin
    :members:

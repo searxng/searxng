@@ -1,8 +1,8 @@
 # Security Policy
 
-We love responsible reports of (potential) security issues in SearXNG.
+We love responsible reports of (potential) security issues in Zhensa.
 
-You can contact us at security@searxng.org.
+You can contact us at security@zhensa.org.
 
 Be sure to provide as much information as possible and if found
 also reproduction steps of the identified vulnerability. Also

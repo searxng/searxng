@@ -4,5 +4,5 @@
 Calculator
 ==========
 
-.. automodule:: searx.plugins.calculator
+.. automodule:: zhensa.plugins.calculator
    :members:

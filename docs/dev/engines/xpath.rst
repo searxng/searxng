@@ -9,6 +9,6 @@ XPath Engine
    :local:
    :backlinks: entry
 
-.. automodule:: searx.engines.xpath
+.. automodule:: zhensa.engines.xpath
   :members:
 

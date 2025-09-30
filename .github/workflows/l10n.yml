@@ -26,7 +26,7 @@ env:
 
 jobs:
   update:
-    if: github.repository_owner == 'searxng' && github.event.workflow_run.conclusion == 'success'
+    if: github.repository_owner == 'zhensa' && github.event.workflow_run.conclusion == 'success'
     name: Update
     runs-on: ubuntu-24.04-arm
     permissions:
@@ -62,15 +62,15 @@ jobs:
 
       - name: Setup Git
         run: |
-          git config --global user.email "searxng-bot@users.noreply.github.com"
-          git config --global user.name "searxng-bot"
+          git config --global user.email "zhensa-bot@users.noreply.github.com"
+          git config --global user.name "zhensa-bot"
 
       - name: Update translations
         run: make V=1 weblate.push.translations
 
   pr:
     if: |
-      github.repository_owner == 'searxng'
+      github.repository_owner == 'zhensa'
       && (github.event_name == 'workflow_dispatch' || github.event_name == 'schedule')
     name: Pull Request
     runs-on: ubuntu-24.04-arm
@@ -109,8 +109,8 @@ jobs:
 
       - name: Setup Git
         run: |
-          git config --global user.email "searxng-bot@users.noreply.github.com"
-          git config --global user.name "searxng-bot"
+          git config --global user.email "zhensa-bot@users.noreply.github.com"
+          git config --global user.name "zhensa-bot"
 
       - name: Merge and push translation updates
         run: make V=1 weblate.translations.commit
@@ -119,8 +119,8 @@ jobs:
         id: cpr
         uses: peter-evans/create-pull-request@271a8d0340265f705b14b6d32b9829c1cb33d45e  # v7.0.8
         with:
-          author: "searxng-bot <searxng-bot@users.noreply.github.com>"
-          committer: "searxng-bot <searxng-bot@users.noreply.github.com>"
+          author: "zhensa-bot <zhensa-bot@users.noreply.github.com>"
+          committer: "zhensa-bot <zhensa-bot@users.noreply.github.com>"
           title: "[l10n] update translations from Weblate"
           commit-message: "[l10n] update translations from Weblate"
           branch: "translations_update"

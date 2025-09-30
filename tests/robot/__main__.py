@@ -11,7 +11,7 @@ import shutil
 
 from splinter import Browser
 
-import tests as searx_tests
+import tests as zhensa_tests
 from tests.robot import test_webapp
 
 
@@ -21,14 +21,14 @@ class SearxRobotLayer:
     def setUp(self):
         os.setpgrp()  # create new process group, become its leader
 
-        tests_path = pathlib.Path(searx_tests.__file__).resolve().parent
+        tests_path = pathlib.Path(zhensa_tests.__file__).resolve().parent
 
         # get program paths
-        webapp = str(tests_path.parent / 'searx' / 'webapp.py')
+        webapp = str(tests_path.parent / 'zhensa' / 'webapp.py')
         exe = 'python'
 
         # set robot settings path
-        os.environ['SEARXNG_SETTINGS_PATH'] = str(tests_path / 'robot' / 'settings_robot.yml')
+        os.environ['ZHENSA_SETTINGS_PATH'] = str(tests_path / 'robot' / 'settings_robot.yml')
 
         # run the server
         self.server = subprocess.Popen(  # pylint: disable=consider-using-with
@@ -40,7 +40,7 @@ class SearxRobotLayer:
     def tearDown(self):
         os.kill(self.server.pid, 9)
         # remove previously set environment variable
-        del os.environ['SEARXNG_SETTINGS_PATH']
+        del os.environ['ZHENSA_SETTINGS_PATH']
 
 
 def run_robot_tests(tests):

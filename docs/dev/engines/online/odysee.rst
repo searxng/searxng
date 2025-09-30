@@ -9,5 +9,5 @@ Odysee
    :local:
    :backlinks: entry
 
-.. automodule:: searx.engines.odysee
+.. automodule:: zhensa.engines.odysee
   :members:

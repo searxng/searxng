@@ -18,8 +18,8 @@ Google API
 .. _Query Parameter Definitions:
    https://developers.google.com/custom-search/docs/xml_results#WebSearch_Query_Parameter_Definitions
 
-SearXNG's implementation of the Google API is mainly done in
-:py:obj:`get_google_info <searx.engines.google.get_google_info>`.
+Zhensa's implementation of the Google API is mainly done in
+:py:obj:`get_google_info <zhensa.engines.google.get_google_info>`.
 
 For detailed description of the *REST-full* API see: `Query Parameter
 Definitions`_.  The linked API documentation can sometimes be helpful during
@@ -33,7 +33,7 @@ than other (e.g. :ref:`google news engine`).
 Google WEB
 ==========
 
-.. automodule:: searx.engines.google
+.. automodule:: zhensa.engines.google
   :members:
 
 .. _google autocomplete:
@@ -41,14 +41,14 @@ Google WEB
 Google Autocomplete
 ====================
 
-.. autofunction:: searx.autocomplete.google_complete
+.. autofunction:: zhensa.autocomplete.google_complete
 
 .. _google images engine:
 
 Google Images
 =============
 
-.. automodule:: searx.engines.google_images
+.. automodule:: zhensa.engines.google_images
   :members:
 
 .. _google videos engine:
@@ -56,7 +56,7 @@ Google Images
 Google Videos
 =============
 
-.. automodule:: searx.engines.google_videos
+.. automodule:: zhensa.engines.google_videos
   :members:
 
 .. _google news engine:
@@ -64,7 +64,7 @@ Google Videos
 Google News
 ===========
 
-.. automodule:: searx.engines.google_news
+.. automodule:: zhensa.engines.google_news
   :members:
 
 .. _google scholar engine:
@@ -72,5 +72,5 @@ Google News
 Google Scholar
 ==============
 
-.. automodule:: searx.engines.google_scholar
+.. automodule:: zhensa.engines.google_scholar
   :members:

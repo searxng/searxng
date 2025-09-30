@@ -8,8 +8,8 @@ from unittest.mock import patch
 
 from parameterized import parameterized
 
-from searx.exceptions import SearxSettingsException
-from searx import settings_loader
+from zhensa.exceptions import SearxSettingsException
+from zhensa import settings_loader
 from tests import SearxTestCase
 
 
@@ -62,19 +62,19 @@ class TestUserSettings(SearxTestCase):
         ]
     )
     def test_user_settings_not_found(self, path: str):
-        with patch.dict(os.environ, {'SEARXNG_SETTINGS_PATH': path}):
+        with patch.dict(os.environ, {'ZHENSA_SETTINGS_PATH': path}):
             with self.assertRaises(EnvironmentError):
                 _s, _m = settings_loader.load_settings()
 
     def test_user_settings(self):
-        with patch.dict(os.environ, {'SEARXNG_SETTINGS_PATH': _settings("user_settings_simple.yml")}):
+        with patch.dict(os.environ, {'ZHENSA_SETTINGS_PATH': _settings("user_settings_simple.yml")}):
             settings, msg = settings_loader.load_settings()
             self.assertTrue(msg.startswith('merge the default settings'))
             self.assertEqual(settings['server']['secret_key'], "user_secret_key")
             self.assertEqual(settings['server']['default_http_headers']['Custom-Header'], "Custom-Value")
 
     def test_user_settings_remove(self):
-        with patch.dict(os.environ, {'SEARXNG_SETTINGS_PATH': _settings("user_settings_remove.yml")}):
+        with patch.dict(os.environ, {'ZHENSA_SETTINGS_PATH': _settings("user_settings_remove.yml")}):
             settings, msg = settings_loader.load_settings()
             self.assertTrue(msg.startswith('merge the default settings'))
             self.assertEqual(settings['server']['secret_key'], "user_secret_key")
@@ -85,7 +85,7 @@ class TestUserSettings(SearxTestCase):
             self.assertIn('wikipedia', engine_names)
 
     def test_user_settings_remove2(self):
-        with patch.dict(os.environ, {'SEARXNG_SETTINGS_PATH': _settings("user_settings_remove2.yml")}):
+        with patch.dict(os.environ, {'ZHENSA_SETTINGS_PATH': _settings("user_settings_remove2.yml")}):
             settings, msg = settings_loader.load_settings()
             self.assertTrue(msg.startswith('merge the default settings'))
             self.assertEqual(settings['server']['secret_key'], "user_secret_key")
@@ -101,7 +101,7 @@ class TestUserSettings(SearxTestCase):
             self.assertEqual(newengine[0]['engine'], 'dummy')
 
     def test_user_settings_keep_only(self):
-        with patch.dict(os.environ, {'SEARXNG_SETTINGS_PATH': _settings("user_settings_keep_only.yml")}):
+        with patch.dict(os.environ, {'ZHENSA_SETTINGS_PATH': _settings("user_settings_keep_only.yml")}):
             settings, msg = settings_loader.load_settings()
             self.assertTrue(msg.startswith('merge the default settings'))
             engine_names = [engine['name'] for engine in settings['engines']]
@@ -110,7 +110,7 @@ class TestUserSettings(SearxTestCase):
             self.assertEqual(len(settings['engines'][2]), 1)
 
     def test_custom_settings(self):
-        with patch.dict(os.environ, {'SEARXNG_SETTINGS_PATH': _settings("user_settings.yml")}):
+        with patch.dict(os.environ, {'ZHENSA_SETTINGS_PATH': _settings("user_settings.yml")}):
             settings, msg = settings_loader.load_settings()
             self.assertTrue(msg.startswith('load the user settings from'))
             self.assertEqual(settings['server']['port'], 9000)

@@ -19,4 +19,4 @@ Developer documentation
    translation
    makefile
    reST
-   searxng_extra/index
+   zhensa_extra/index

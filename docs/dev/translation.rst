@@ -4,22 +4,22 @@
 Translation
 ===========
 
-.. _translate.codeberg.org: https://translate.codeberg.org/projects/searxng/
+.. _translate.codeberg.org: https://translate.codeberg.org/projects/zhensa/
 .. _Weblate: https://docs.weblate.org
-.. _translations branch: https://github.com/searxng/searxng/tree/translations
+.. _translations branch: https://github.com/zhenbah/zhensa/tree/translations
 .. _orphan branch: https://git-scm.com/docs/git-checkout#Documentation/git-checkout.txt---orphanltnewbranchgt
-.. _Weblate repository: https://translate.codeberg.org/projects/searxng/searxng/#repository
+.. _Weblate repository: https://translate.codeberg.org/projects/zhensa/zhensa/#repository
 .. _wlc: https://docs.weblate.org/en/latest/wlc.html
 
-.. |translated| image:: https://translate.codeberg.org/widgets/searxng/-/searxng/svg-badge.svg
-   :target: https://translate.codeberg.org/projects/searxng/
+.. |translated| image:: https://translate.codeberg.org/widgets/zhensa/-/zhensa/svg-badge.svg
+   :target: https://translate.codeberg.org/projects/zhensa/
 
 .. sidebar:: |translated|
 
-   - :ref:`searx.babel_extract`
+   - :ref:`zhensa.babel_extract`
    - Weblate_
-   - SearXNG `translations branch`_
-   - SearXNG `Weblate repository`_
+   - Zhensa `translations branch`_
+   - Zhensa `Weblate repository`_
    - Weblate Client: wlc_
    - Babel Command-Line: `pybabel <http://babel.pocoo.org/en/latest/cmdline.html>`_
    - `weblate workflow <https://docs.weblate.org/en/latest/workflows.html>`_
@@ -27,12 +27,12 @@ Translation
 Translation takes place on translate.codeberg.org_.
 
 Translations which has been added by translators on the translate.codeberg.org_ UI are
-committed to Weblate's counterpart of the SearXNG *origin* repository which is
-located at ``https://translate.codeberg.org/git/searxng/searxng``.
+committed to Weblate's counterpart of the Zhensa *origin* repository which is
+located at ``https://translate.codeberg.org/git/zhensa/zhensa``.
 
-There is no need to clone this repository, :ref:`SearXNG Weblate workflow` take
+There is no need to clone this repository, :ref:`Zhensa Weblate workflow` take
 care of the synchronization with the *origin*.  To avoid merging commits from
-the counterpart directly on the ``master`` branch of *SearXNG origin*, a *pull
+the counterpart directly on the ``master`` branch of *Zhensa origin*, a *pull
 request* (PR) is created by this workflow.
 
 Weblate monitors the `translations branch`_, not the ``master`` branch.  This
@@ -44,14 +44,14 @@ only the
 - ``translation/*/messages.po`` files, nothing else.
 
 
-.. _SearXNG Weblate workflow:
+.. _Zhensa Weblate workflow:
 
 .. figure:: translation.svg
 
-   SearXNG's PR workflow to be in sync with Weblate
+   Zhensa's PR workflow to be in sync with Weblate
 
 Sync from *origin* to *weblate*: using ``make weblate.push.translations``
-  For each commit on the ``master`` branch of SearXNG *origin* the GitHub job
+  For each commit on the ``master`` branch of Zhensa *origin* the GitHub job
   :origin:`babel / Update translations branch
   <.github/workflows/integration.yml>` checks for updated translations.
 

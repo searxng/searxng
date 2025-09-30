@@ -15,7 +15,7 @@ Bing Engines
 Bing WEB
 ========
 
-.. automodule:: searx.engines.bing
+.. automodule:: zhensa.engines.bing
   :members:
 
 .. _bing images engine:
@@ -23,7 +23,7 @@ Bing WEB
 Bing Images
 ===========
 
-.. automodule:: searx.engines.bing_images
+.. automodule:: zhensa.engines.bing_images
   :members:
 
 .. _bing videos engine:
@@ -31,7 +31,7 @@ Bing Images
 Bing Videos
 ===========
 
-.. automodule:: searx.engines.bing_videos
+.. automodule:: zhensa.engines.bing_videos
   :members:
 
 .. _bing news engine:
@@ -39,5 +39,5 @@ Bing Videos
 Bing News
 =========
 
-.. automodule:: searx.engines.bing_news
+.. automodule:: zhensa.engines.bing_news
   :members:

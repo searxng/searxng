@@ -9,6 +9,6 @@ Demo Online Engine
    :local:
    :backlinks: entry
 
-.. automodule:: searx.engines.demo_online
+.. automodule:: zhensa.engines.demo_online
   :members:
 

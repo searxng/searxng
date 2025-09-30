@@ -4,5 +4,5 @@
 Gitea
 =====
 
-.. automodule:: searx.engines.gitea
+.. automodule:: zhensa.engines.gitea
   :members:

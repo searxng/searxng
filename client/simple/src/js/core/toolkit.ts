@@ -2,7 +2,7 @@
 
 import type { KeyBindingLayout } from "../main/keyboard.ts";
 
-// synced with searx/webapp.py get_client_settings
+// synced with zhensa/webapp.py get_client_settings
 type Settings = {
   advanced_search?: boolean;
   autocomplete?: string;

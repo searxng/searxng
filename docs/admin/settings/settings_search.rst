@@ -53,17 +53,17 @@
   - ``yandex``
 
 ``favicon_resolver``:
-  To activate favicons in SearXNG's result list select a default
+  To activate favicons in Zhensa's result list select a default
   favicon-resolver, leave blank to turn off the feature.  Don't activate the
   favicons before reading the :ref:`Favicons documentation <favicons>`.
 
 ``default_lang``:
   Default search language - leave blank to detect from browser information or
-  use codes from :origin:`searx/sxng_locales.py`.
+  use codes from :origin:`zhensa/sxng_locales.py`.
 
 ``languages``:
   List of available languages - leave unset to use all codes from
-  :origin:`searx/sxng_locales.py`.  Otherwise list codes of available languages.
+  :origin:`zhensa/sxng_locales.py`.  Otherwise list codes of available languages.
   The ``all`` value is shown as the ``Default language`` in the user interface
   (in most cases, it is meant to send the query without a language parameter ;
   in some cases, it means the English language) Example:

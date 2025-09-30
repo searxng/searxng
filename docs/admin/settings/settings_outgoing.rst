@@ -42,11 +42,11 @@ Communication with search engines.
 ``request_timeout`` :
   Global timeout of the requests made to others engines in seconds.  A bigger
   timeout will allow to wait for answers from slow engines, but in consequence
-  will slow SearXNG reactivity (the result page may take the time specified in the
+  will slow Zhensa reactivity (the result page may take the time specified in the
   timeout to load).  Can be override by ``timeout`` in the :ref:`settings engines`.
 
 ``useragent_suffix`` :
-  Suffix to the user-agent SearXNG uses to send requests to others engines.  If an
+  Suffix to the user-agent Zhensa uses to send requests to others engines.  If an
   engine wish to block you, a contact info here may be useful to avoid that.
 
 .. _Pool limit configuration: https://www.python-httpx.org/advanced/#pool-limit-configuration
@@ -83,7 +83,7 @@ Communication with search engines.
   * ``[ 192.168.0.1, fe80::/126 ]``
 
 ``retries`` :
-  Number of retry in case of an HTTP error.  On each retry, SearXNG uses an
+  Number of retry in case of an HTTP error.  On each retry, Zhensa uses an
   different proxy and source ip.
 
 ``enable_http2`` :
@@ -96,7 +96,7 @@ Communication with search engines.
   Allow to specify a path to certificate.
   see `httpx verification defaults`_.
 
-  In addition to ``verify``, SearXNG supports the ``$SSL_CERT_FILE`` (for a file) and
+  In addition to ``verify``, Zhensa supports the ``$SSL_CERT_FILE`` (for a file) and
   ``$SSL_CERT_DIR`` (for a directory) OpenSSL variables.
   see `httpx ssl configuration`_.
 

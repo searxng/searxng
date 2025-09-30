@@ -1,14 +1,14 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 # pylint: disable=missing-module-docstring,disable=missing-class-docstring,invalid-name
 
-from searx.external_bang import (
+from zhensa.external_bang import (
     get_node,
     resolve_bang_definition,
     get_bang_url,
     get_bang_definition_and_autocomplete,
     LEAF_KEY,
 )
-from searx.search.models import EngineRef, SearchQuery
+from zhensa.search.models import EngineRef, SearchQuery
 from tests import SearxTestCase
 
 

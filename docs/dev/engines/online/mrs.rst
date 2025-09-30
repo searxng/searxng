@@ -9,5 +9,5 @@ Matrix Rooms Search (MRS)
    :local:
    :backlinks: entry
 
-.. automodule:: searx.engines.mrs
+.. automodule:: zhensa.engines.mrs
    :members:

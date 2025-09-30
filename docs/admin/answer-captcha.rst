@@ -3,7 +3,7 @@ Answer CAPTCHA from server's IP
 ===============================
 
 With a SSH tunnel we can send requests from server's IP and solve a CAPTCHA that
-blocks requests from this IP.  If your SearXNG instance is hosted at
+blocks requests from this IP.  If your Zhensa instance is hosted at
 ``example.org`` and your login is ``user`` you can setup a proxy simply by
 :man:`ssh`:
 
@@ -39,7 +39,7 @@ check the IP from the server is used:
 
 Now open the search engine that blocks requests from your server's IP.  If you
 have `issues with the qwant engine
-<https://github.com/searxng/searxng/issues/2011#issuecomment-1553317619>`__,
+<https://github.com/zhenbah/zhensa/issues/2011#issuecomment-1553317619>`__,
 solve the CAPTCHA from `qwant.com <https://www.qwant.com/>`__.
 
 -----

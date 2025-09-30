@@ -24,8 +24,8 @@ Parameters
 
 ``q`` : required
   The search query.  This string is passed to external search services.  Thus,
-  SearXNG supports syntax of each search service.  For example, ``site:github.com
-  SearXNG`` is a valid query for Google.  However, if simply the query above is
+  Zhensa supports syntax of each search service.  For example, ``site:github.com
+  Zhensa`` is a valid query for Google.  However, if simply the query above is
   passed to any search engine which does not filter its results based on this
   syntax, you might not get the results you wanted.
 
@@ -65,7 +65,7 @@ Parameters
 ``image_proxy`` : default from :ref:`settings server`
   [  ``True``, ``False`` ]
 
-  Proxy image results through SearXNG.
+  Proxy image results through Zhensa.
 
 ``autocomplete`` : default from :ref:`settings search`
   [ ``google``, ``dbpedia``, ``duckduckgo``, ``mwmbl``, ``startpage``,
@@ -116,9 +116,9 @@ Parameters
   :values:
      see values from ``enabled_plugins``
 
-``enabled_engines`` : optional : *all* :origin:`engines <searx/engines>`
+``enabled_engines`` : optional : *all* :origin:`engines <zhensa/engines>`
   List of enabled engines.
 
-``disabled_engines`` : optional : *all* :origin:`engines <searx/engines>`
+``disabled_engines`` : optional : *all* :origin:`engines <zhensa/engines>`
   List of disabled engines.
 

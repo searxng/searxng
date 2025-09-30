@@ -9,5 +9,5 @@ Moviepilot
    :local:
    :backlinks: entry
 
-.. automodule:: searx.engines.moviepilot
+.. automodule:: zhensa.engines.moviepilot
    :members:

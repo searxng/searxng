@@ -9,5 +9,5 @@ Yahoo Engine
    :local:
    :backlinks: entry
 
-.. automodule:: searx.engines.yahoo
+.. automodule:: zhensa.engines.yahoo
   :members:

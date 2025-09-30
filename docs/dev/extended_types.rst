@@ -4,4 +4,4 @@
 Extended Types
 ==============
 
-.. automodule:: searx.extended_types
+.. automodule:: zhensa.extended_types

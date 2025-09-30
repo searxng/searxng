@@ -9,5 +9,5 @@ Mastodon
    :local:
    :backlinks: entry
 
-.. automodule:: searx.engines.mastodon
+.. automodule:: zhensa.engines.mastodon
   :members:

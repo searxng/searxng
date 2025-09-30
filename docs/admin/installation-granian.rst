@@ -1,4 +1,4 @@
-.. _searxng granian:
+.. _zhensa granian:
 
 =======
 Granian
@@ -18,7 +18,7 @@ Granian
 
 .. note::
 
-   Granian will be the future replacement for :ref:`searxng uwsgi` in SearXNG.
+   Granian will be the future replacement for :ref:`zhensa uwsgi` in Zhensa.
    At the moment, it's only officially supported in the :ref:`installation
    container`.
 
@@ -28,7 +28,7 @@ Installation
 ============
 
 We only recommend installing Granian with pip, as officially documented. Run
-the following command in the Python environment of the SearXNG installation:
+the following command in the Python environment of the Zhensa installation:
 
 .. code:: sh
 

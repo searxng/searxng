@@ -4,5 +4,5 @@
 Crossref
 ========
 
-.. automodule:: searx.engines.crossref
+.. automodule:: zhensa.engines.crossref
    :members:

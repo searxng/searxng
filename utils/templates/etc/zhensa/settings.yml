@@ -1,0 +1,43 @@
+# Zhensa settings
+
+use_default_settings: true
+
+general:
+  debug: false
+  instance_name: "Zhensa"
+
+search:
+  safe_search: 2
+  autocomplete: 'duckduckgo'
+  formats:
+    - html
+
+server:
+  # Is overwritten by ${ZHENSA_SECRET}
+  secret_key: "ultrasecretkey"
+  limiter: true
+  image_proxy: true
+  # public URL of the instance, to ensure correct inbound links. Is overwritten
+  # by ${ZHENSA_BASE_URL}.
+  # base_url: http://example.com/location
+
+valkey:
+  # URL to connect valkey database. Is overwritten by ${ZHENSA_VALKEY_URL}.
+  url: valkey://localhost:6379/0
+
+# preferences:
+#   lock:
+#     - autocomplete
+#     - method
+
+# engines:
+#
+#   - name: fdroid
+#     disabled: false
+#
+#   - name: apk mirror
+#     disabled: false
+#
+#   - name: mediathekviewweb
+#     categories: TV
+#     disabled: false

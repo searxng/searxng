@@ -16,14 +16,14 @@ build.env.export() {
         GIT_URL="${GIT_URL%.git}"
     fi
 
-    SEARXNG_URL="$(python "${REPO_ROOT}/utils/get_setting.py" server.base_url)"
-    SEARXNG_PORT="$(python "${REPO_ROOT}/utils/get_setting.py" server.port)"
-    SEARXNG_BIND_ADDRESS="$(python "${REPO_ROOT}/utils/get_setting.py" server.bind_address)"
+    ZHENSA_URL="$(python "${REPO_ROOT}/utils/get_setting.py" server.base_url)"
+    ZHENSA_PORT="$(python "${REPO_ROOT}/utils/get_setting.py" server.port)"
+    ZHENSA_BIND_ADDRESS="$(python "${REPO_ROOT}/utils/get_setting.py" server.bind_address)"
     export GIT_URL
     export GIT_BRANCH
-    export SEARXNG_URL
-    export SEARXNG_PORT
-    export SEARXNG_BIND_ADDRESS
+    export ZHENSA_URL
+    export ZHENSA_PORT
+    export ZHENSA_BIND_ADDRESS
 
 }
 

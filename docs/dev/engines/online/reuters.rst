@@ -4,5 +4,5 @@
 Reuters
 =======
 
-.. automodule:: searx.engines.reuters
+.. automodule:: zhensa.engines.reuters
    :members:

@@ -19,10 +19,10 @@ const ROOT = "../../"; // root of the git repository
 
 const PATH = {
   brand: "src/brand/",
-  dist: resolve(ROOT, "searx/static/themes/simple/"),
+  dist: resolve(ROOT, "zhensa/static/themes/simple/"),
   modules: "node_modules/",
   src: "src/",
-  templates: resolve(ROOT, "searx/templates/simple/")
+  templates: resolve(ROOT, "zhensa/templates/simple/")
 } as const;
 
 const svg2svg_opts: Config = {
@@ -47,12 +47,12 @@ export default {
     rolldownOptions: {
       input: {
         // build CSS files
-        "searxng-ltr.css": `${PATH.src}/less/style-ltr.less`,
-        "searxng-rtl.css": `${PATH.src}/less/style-rtl.less`,
+        "zhensa-ltr.css": `${PATH.src}/less/style-ltr.less`,
+        "zhensa-rtl.css": `${PATH.src}/less/style-rtl.less`,
         "rss.css": `${PATH.src}/less/rss.less`,
 
         // build script files
-        "searxng.core": `${PATH.src}/js/core/index.ts`,
+        "zhensa.core": `${PATH.src}/js/core/index.ts`,
 
         // ol pkg
         ol: `${PATH.src}/js/pkg/ol.ts`,
@@ -122,15 +122,15 @@ export default {
       svg2svg_opts
     ),
 
-    // SearXNG brand (static)
+    // Zhensa brand (static)
     plg_svg2png([
       {
-        src: `${PATH.brand}/searxng-wordmark.svg`,
+        src: `${PATH.brand}/zhensa-wordmark.svg`,
         dest: `${PATH.dist}/img/favicon.png`
       },
       {
-        src: `${PATH.brand}/searxng.svg`,
-        dest: `${PATH.dist}/img/searxng.png`
+        src: `${PATH.brand}/zhensa.svg`,
+        dest: `${PATH.dist}/img/zhensa.png`
       }
     ]),
 
@@ -138,8 +138,8 @@ export default {
     plg_svg2svg(
       [
         {
-          src: `${PATH.brand}/searxng.svg`,
-          dest: `${PATH.dist}/img/searxng.svg`
+          src: `${PATH.brand}/zhensa.svg`,
+          dest: `${PATH.dist}/img/zhensa.svg`
         },
         {
           src: `${PATH.brand}/img_load_error.svg`,
@@ -153,7 +153,7 @@ export default {
     plg_svg2svg(
       [
         {
-          src: `${PATH.brand}/searxng-wordmark.svg`,
+          src: `${PATH.brand}/zhensa-wordmark.svg`,
           dest: `${PATH.dist}/img/favicon.svg`
         }
       ],
@@ -164,8 +164,8 @@ export default {
     plg_svg2svg(
       [
         {
-          src: `${PATH.brand}/searxng-wordmark.svg`,
-          dest: `${PATH.templates}/searxng-wordmark.min.svg`
+          src: `${PATH.brand}/zhensa-wordmark.svg`,
+          dest: `${PATH.templates}/zhensa-wordmark.min.svg`
         }
       ],
       svg2svg_opts

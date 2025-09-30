@@ -9,6 +9,6 @@ BT4G
    :local:
    :backlinks: entry
 
-.. automodule:: searx.engines.bt4g
+.. automodule:: zhensa.engines.bt4g
   :members:
 

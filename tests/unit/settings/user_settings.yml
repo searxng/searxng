@@ -1,6 +1,6 @@
 general:
   debug: false
-  instance_name: "SearXNG"
+  instance_name: "Zhensa"
 
 search:
   safe_search: 0
@@ -34,31 +34,31 @@ ui:
 
 plugins:
 
-  searx.plugins.calculator.SXNGPlugin:
+  zhensa.plugins.calculator.SXNGPlugin:
     active: true
 
-  searx.plugins.hash_plugin.SXNGPlugin:
+  zhensa.plugins.hash_plugin.SXNGPlugin:
     active: true
 
-  searx.plugins.self_info.SXNGPlugin:
+  zhensa.plugins.self_info.SXNGPlugin:
     active: true
 
-  searx.plugins.tracker_url_remover.SXNGPlugin:
+  zhensa.plugins.tracker_url_remover.SXNGPlugin:
     active: true
 
-  searx.plugins.unit_converter.SXNGPlugin:
+  zhensa.plugins.unit_converter.SXNGPlugin:
     active: true
 
-  searx.plugins.ahmia_filter.SXNGPlugin:
+  zhensa.plugins.ahmia_filter.SXNGPlugin:
     active: true
 
-  searx.plugins.hostnames.SXNGPlugin:
+  zhensa.plugins.hostnames.SXNGPlugin:
     active: true
 
-  searx.plugins.oa_doi_rewrite.SXNGPlugin:
+  zhensa.plugins.oa_doi_rewrite.SXNGPlugin:
     active: false
 
-  searx.plugins.tor_check.SXNGPlugin:
+  zhensa.plugins.tor_check.SXNGPlugin:
     active: false
 
 

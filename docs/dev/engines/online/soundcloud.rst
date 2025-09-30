@@ -9,5 +9,5 @@ Soundcloud
    :local:
    :backlinks: entry
 
-.. automodule:: searx.engines.soundcloud
+.. automodule:: zhensa.engines.soundcloud
    :members:

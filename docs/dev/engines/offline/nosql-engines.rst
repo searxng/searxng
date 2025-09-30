@@ -26,16 +26,16 @@ The following `NoSQL databases`_ are supported:
 - :ref:`engine mongodb`
 
 All of the engines above are just commented out in the :origin:`settings.yml
-<searx/settings.yml>`, as you have to set various options and install
+<zhensa/settings.yml>`, as you have to set various options and install
 dependencies before using them.
 
 By default, the engines use the ``key-value`` template for displaying results /
-see :origin:`simple <searx/templates/simple/result_templates/key-value.html>`
+see :origin:`simple <zhensa/templates/simple/result_templates/key-value.html>`
 theme.  If you are not satisfied with the original result layout, you can use
 your own template, set ``result_template`` attribute to ``{template_name}`` and
 place the templates at::
 
-  searx/templates/{theme_name}/result_templates/{template_name}
+  zhensa/templates/{theme_name}/result_templates/{template_name}
 
 Furthermore, if you do not wish to expose these engines on a public instance, you
 can still add them and limit the access by setting ``tokens`` as described in
@@ -46,12 +46,12 @@ Extra Dependencies
 ==================
 
 For using :ref:`engine valkey_server` or :ref:`engine mongodb` you need to
-install additional packages in Python's Virtual Environment of your SearXNG
-instance.  To switch into the environment (:ref:`searxng-src`) you can use
-:ref:`searxng.sh`::
+install additional packages in Python's Virtual Environment of your Zhensa
+instance.  To switch into the environment (:ref:`zhensa-src`) you can use
+:ref:`zhensa.sh`::
 
-  $ sudo utils/searxng.sh instance cmd bash
-  (searxng-pyenv)$ pip install ...
+  $ sudo utils/zhensa.sh instance cmd bash
+  (zhensa-pyenv)$ pip install ...
 
 
 Configure the engines
@@ -72,9 +72,9 @@ Valkey Server
 
    - ``pip install`` valkey_
    - valkey.io_
-   - :origin:`valkey_server.py <searx/engines/valkey_server.py>`
+   - :origin:`valkey_server.py <zhensa/engines/valkey_server.py>`
 
-.. automodule:: searx.engines.valkey_server
+.. automodule:: zhensa.engines.valkey_server
   :members:
 
 
@@ -89,8 +89,8 @@ MongoDB
 
    - ``pip install`` pymongo_
    - MongoDB_
-   - :origin:`mongodb.py <searx/engines/mongodb.py>`
+   - :origin:`mongodb.py <zhensa/engines/mongodb.py>`
 
 
-.. automodule:: searx.engines.mongodb
+.. automodule:: zhensa.engines.mongodb
   :members:

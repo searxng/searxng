@@ -9,5 +9,5 @@ Seekr Engines
    :local:
    :backlinks: entry
 
-.. automodule:: searx.engines.seekr
+.. automodule:: zhensa.engines.seekr
   :members:

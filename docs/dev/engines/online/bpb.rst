@@ -9,5 +9,5 @@ Bpb
    :local:
    :backlinks: entry
 
-.. automodule:: searx.engines.bpb
+.. automodule:: zhensa.engines.bpb
   :members:

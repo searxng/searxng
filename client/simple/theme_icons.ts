@@ -10,9 +10,9 @@ import type { Config as SvgoConfig } from "svgo";
 import { type IconSet, type JinjaMacro, jinja_svg_sets } from "./tools/jinja_svg_catalog.ts";
 
 const HERE = `${dirname(argv[1] || "")}/`;
-const dest: string = resolve(HERE, "../../searx/templates/simple/icons.html");
+const dest: string = resolve(HERE, "../../zhensa/templates/simple/icons.html");
 
-const searxng_jinja_macros: JinjaMacro[] = [
+const zhensa_jinja_macros: JinjaMacro[] = [
   { name: "icon", class: "sxng-icon-set" },
   { name: "icon_small", class: "sxng-icon-set-small" },
   { name: "icon_big", class: "sxng-icon-set-big" }
@@ -70,7 +70,7 @@ const simple_icons: IconSet[] = [
   },
   // some of the ionicons are not suitable for a dark theme, we fixed the svg
   // manually in src/svg/ionicons
-  // - https://github.com/searxng/searxng/pull/4284#issuecomment-2680550342
+  // - https://github.com/zhenbah/zhensa/pull/4284#issuecomment-2680550342
   {
     base: resolve(HERE, "src/svg/ionicons"),
     set: {
@@ -81,4 +81,4 @@ const simple_icons: IconSet[] = [
   }
 ];
 
-jinja_svg_sets(dest, searxng_jinja_macros, simple_icons);
+jinja_svg_sets(dest, zhensa_jinja_macros, simple_icons);

@@ -9,5 +9,5 @@ CORE
    :local:
    :backlinks: entry
 
-.. automodule:: searx.engines.core
+.. automodule:: zhensa.engines.core
    :members:

@@ -1,18 +1,18 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 # pylint: disable=missing-module-docstring,disable=missing-class-docstring,invalid-name
 
-"""Test some code from module :py:obj:`searx.locales`"""
+"""Test some code from module :py:obj:`zhensa.locales`"""
 
 from parameterized import parameterized
-from searx import locales
-from searx.sxng_locales import sxng_locales
+from zhensa import locales
+from zhensa.sxng_locales import sxng_locales
 from tests import SearxTestCase
 
 
 class TestLocales(SearxTestCase):
     """Implemented tests:
 
-    - :py:obj:`searx.locales.match_locale`
+    - :py:obj:`zhensa.locales.match_locale`
     """
 
     @classmethod
@@ -27,7 +27,7 @@ class TestLocales(SearxTestCase):
         ]
     )
     def test_locale_languages(self, locale: str):
-        # Test SearXNG search languages
+        # Test Zhensa search languages
         self.assertEqual(locales.match_locale(locale, self.locale_tag_list), locale)
 
     @parameterized.expand(
@@ -44,7 +44,7 @@ class TestLocales(SearxTestCase):
         ]
     )
     def test_match_region(self, locale: str, expected_locale: str):
-        # Test SearXNG search regions
+        # Test Zhensa search regions
         self.assertEqual(locales.match_locale(locale, self.locale_tag_list), expected_locale)
 
     @parameterized.expand(

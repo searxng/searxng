@@ -4,5 +4,5 @@
 Tube Archivist
 ==============
 
-.. automodule:: searx.engines.tubearchivist
+.. automodule:: zhensa.engines.tubearchivist
    :members:

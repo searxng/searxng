@@ -4,7 +4,7 @@
 import httpx
 from mock import patch
 
-from searx.network.network import Network, NETWORKS
+from zhensa.network.network import Network, NETWORKS
 from tests import SearxTestCase
 
 

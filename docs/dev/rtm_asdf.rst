@@ -19,7 +19,7 @@ If you have asdf installed you can install the runtimes of this project by:
 
 .. code:: bash
 
-   $ cd /path/to/searxng
+   $ cd /path/to/zhensa
    $ asdf install          # will install runtimes listed in .tool-versions
    ...
 

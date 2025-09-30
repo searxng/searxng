@@ -7,8 +7,8 @@ import lxml.etree
 from lxml import html
 from parameterized.parameterized import parameterized
 
-from searx.exceptions import SearxXPathSyntaxException, SearxEngineXPathException
-from searx import utils
+from zhensa.exceptions import SearxXPathSyntaxException, SearxEngineXPathException
+from zhensa import utils
 from tests import SearxTestCase
 
 
@@ -23,10 +23,10 @@ class TestUtils(SearxTestCase):
         self.assertIsNotNone(utils.gen_useragent())
         self.assertTrue(utils.gen_useragent().startswith('Mozilla'))
 
-    def test_searxng_useragent(self):
-        self.assertIsInstance(utils.searxng_useragent(), str)
-        self.assertIsNotNone(utils.searxng_useragent())
-        self.assertTrue(utils.searxng_useragent().startswith('SearXNG'))
+    def test_zhensa_useragent(self):
+        self.assertIsInstance(utils.zhensa_useragent(), str)
+        self.assertIsNotNone(utils.zhensa_useragent())
+        self.assertTrue(utils.zhensa_useragent().startswith('Zhensa'))
 
     def test_extract_text(self):
         html_str = """

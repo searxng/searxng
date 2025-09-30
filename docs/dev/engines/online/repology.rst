@@ -4,5 +4,5 @@
 Repology
 ========
 
-.. automodule:: searx.engines.repology
+.. automodule:: zhensa.engines.repology
    :members:

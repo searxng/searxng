@@ -1,4 +1,4 @@
-.. _searxng settings.yml:
+.. _zhensa settings.yml:
 
 ========
 Settings

@@ -4,9 +4,9 @@
 import flask
 from mock import Mock
 
-from searx import favicons
-from searx.locales import locales_initialize
-from searx.preferences import (
+from zhensa import favicons
+from zhensa.locales import locales_initialize
+from zhensa.preferences import (
     Setting,
     EnumStringSetting,
     MapSetting,
@@ -15,8 +15,8 @@ from searx.preferences import (
     PluginsSetting,
     ValidationException,
 )
-import searx.plugins
-from searx.preferences import Preferences
+import zhensa.plugins
+from zhensa.preferences import Preferences
 
 from tests import SearxTestCase
 from .test_plugins import PluginMock
@@ -116,14 +116,14 @@ class TestSettings(SearxTestCase):
     # plugins settings
 
     def test_plugins_setting_all_default_enabled(self):
-        storage = searx.plugins.PluginStorage()
+        storage = zhensa.plugins.PluginStorage()
         storage.register(PluginMock("plg001", "first plugin", True))
         storage.register(PluginMock("plg002", "second plugin", True))
         plgs_settings = PluginsSetting(False, storage)
         self.assertEqual(set(plgs_settings.get_enabled()), {"plg001", "plg002"})
 
     def test_plugins_setting_few_default_enabled(self):
-        storage = searx.plugins.PluginStorage()
+        storage = zhensa.plugins.PluginStorage()
         storage.register(PluginMock("plg001", "first plugin", True))
         storage.register(PluginMock("plg002", "second plugin", False))
         storage.register(PluginMock("plg003", "third plugin", True))
@@ -136,7 +136,7 @@ class TestPreferences(SearxTestCase):
     def setUp(self):
         super().setUp()
 
-        storage = searx.plugins.PluginStorage()
+        storage = zhensa.plugins.PluginStorage()
         self.preferences = Preferences(['simple'], ['general'], {}, storage)
 
     def test_encode(self):

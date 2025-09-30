@@ -4,5 +4,5 @@
 Github Code
 ===========
 
-.. automodule:: searx.engines.github_code
+.. automodule:: zhensa.engines.github_code
    :members:

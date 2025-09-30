@@ -6,20 +6,20 @@ Architecture
 
 .. sidebar:: Further reading
 
-   - Reverse Proxy: :ref:`Apache <apache searxng site>` & :ref:`nginx <nginx
-     searxng site>`
-   - uWSGI: :ref:`searxng uwsgi`
-   - SearXNG: :ref:`installation basic`
+   - Reverse Proxy: :ref:`Apache <apache zhensa site>` & :ref:`nginx <nginx
+     zhensa site>`
+   - uWSGI: :ref:`zhensa uwsgi`
+   - Zhensa: :ref:`installation basic`
 
 Herein you will find some hints and suggestions about typical architectures of
-SearXNG infrastructures.
+Zhensa infrastructures.
 
 .. _architecture uWSGI:
 
 uWSGI Setup
 ===========
 
-We start with a *reference* setup for public SearXNG instances which can be build
+We start with a *reference* setup for public Zhensa instances which can be build
 up and maintained by the scripts from our :ref:`toolboxing`.
 
 .. _arch public:
@@ -27,12 +27,12 @@ up and maintained by the scripts from our :ref:`toolboxing`.
 .. kernel-figure:: arch_public.dot
    :alt: arch_public.dot
 
-   Reference architecture of a public SearXNG setup.
+   Reference architecture of a public Zhensa setup.
 
 The reference installation activates ``server.limiter`` and
-``server.image_proxy`` (:origin:`/etc/searxng/settings.yml
-<utils/templates/etc/searxng/settings.yml>`)
+``server.image_proxy`` (:origin:`/etc/zhensa/settings.yml
+<utils/templates/etc/zhensa/settings.yml>`)
 
-.. literalinclude:: ../../utils/templates/etc/searxng/settings.yml
+.. literalinclude:: ../../utils/templates/etc/zhensa/settings.yml
    :language: yaml
    :end-before: # preferences:

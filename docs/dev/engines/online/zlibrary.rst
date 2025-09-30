@@ -9,5 +9,5 @@ Z-Library
    :local:
    :backlinks: entry
 
-.. automodule:: searx.engines.zlibrary
+.. automodule:: zhensa.engines.zlibrary
   :members:

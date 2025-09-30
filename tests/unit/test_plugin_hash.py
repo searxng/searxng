@@ -3,11 +3,11 @@
 
 from parameterized.parameterized import parameterized
 
-import searx.plugins
-import searx.preferences
+import zhensa.plugins
+import zhensa.preferences
 
-from searx.extended_types import sxng_request
-from searx.result_types import Answer
+from zhensa.extended_types import sxng_request
+from zhensa.result_types import Answer
 
 from tests import SearxTestCase
 from .test_plugins import do_post_search
@@ -38,10 +38,10 @@ class PluginHashTest(SearxTestCase):
         super().setUp()
         engines = {}
 
-        self.storage = searx.plugins.PluginStorage()
-        self.storage.load_settings({"searx.plugins.hash_plugin.SXNGPlugin": {"active": True}})
+        self.storage = zhensa.plugins.PluginStorage()
+        self.storage.load_settings({"zhensa.plugins.hash_plugin.SXNGPlugin": {"active": True}})
         self.storage.init(self.app)
-        self.pref = searx.preferences.Preferences(["simple"], ["general"], engines, self.storage)
+        self.pref = zhensa.preferences.Preferences(["simple"], ["general"], engines, self.storage)
         self.pref.parse_dict({"locale": "en"})
 
     def test_plugin_store_init(self):

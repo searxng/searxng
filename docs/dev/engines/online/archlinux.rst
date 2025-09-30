@@ -9,6 +9,6 @@ Arch Linux
    :local:
    :backlinks: entry
 
-.. automodule:: searx.engines.archlinux
+.. automodule:: zhensa.engines.archlinux
   :members:
 

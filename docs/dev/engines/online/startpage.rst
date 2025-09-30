@@ -9,5 +9,5 @@ Startpage Engines
    :local:
    :backlinks: entry
 
-.. automodule:: searx.engines.startpage
+.. automodule:: zhensa.engines.startpage
    :members:

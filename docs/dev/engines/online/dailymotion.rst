@@ -9,5 +9,5 @@ Dailymotion
    :local:
    :backlinks: entry
 
-.. automodule:: searx.engines.dailymotion
+.. automodule:: zhensa.engines.dailymotion
   :members:

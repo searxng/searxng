@@ -5,7 +5,7 @@ Result Types
 ============
 
 To understand the typification of the results, let's take a brief look at the
-structure of SearXNG ..  At its core, SearXNG is nothing more than an aggregator
+structure of Zhensa ..  At its core, Zhensa is nothing more than an aggregator
 that aggregates the results from various sources, renders them via templates and
 displays them to the user.
 
@@ -73,7 +73,7 @@ task, which we will only be able to accomplish gradually.
 The foundation for the typeless results was laid back in 2013 in the very first
 commit :commit:`ae9fb1d7d`, and the principle has not changed since then.  At
 the time, the approach was perfectly adequate, but we have since evolved and the
-demands on SearXNG increase with every feature request.
+demands on Zhensa increase with every feature request.
 
 **Motivation:** in the meantime, it has become very difficult to develop new
 features that require structural changes and it is especially hard for newcomers

@@ -4,4 +4,4 @@
 Plugin Development
 ==================
 
-.. automodule:: searx.plugins
+.. automodule:: zhensa.plugins

@@ -4,5 +4,5 @@
 Open Library
 ============
 
-.. automodule:: searx.engines.openlibrary
+.. automodule:: zhensa.engines.openlibrary
    :members:

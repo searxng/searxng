@@ -9,5 +9,5 @@ Piped
    :local:
    :backlinks: entry
 
-.. automodule:: searx.engines.piped
+.. automodule:: zhensa.engines.piped
   :members:

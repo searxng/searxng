@@ -9,5 +9,5 @@ Alpine Linux Packages
    :local:
    :backlinks: entry
 
-.. automodule:: searx.engines.alpinelinux
+.. automodule:: zhensa.engines.alpinelinux
    :members:

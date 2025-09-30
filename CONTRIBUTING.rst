@@ -1,26 +1,26 @@
 .. SPDX-License-Identifier: AGPL-3.0-or-later
 
-.. _Quickstart guide: https://docs.searxng.org/dev/quickstart.html
-.. _Commits guide: https://docs.searxng.org/dev/commits.html
-.. _Weblate: https://translate.codeberg.org/projects/searxng/searxng/
+.. _Quickstart guide: https://docs.zhensa.org/dev/quickstart.html
+.. _Commits guide: https://docs.zhensa.org/dev/commits.html
+.. _Weblate: https://translate.codeberg.org/projects/zhensa/zhensa/
 .. _GitHub Codespaces: https://docs.github.com/en/codespaces/overview
 .. _120 hours per month: https://github.com/settings/billing
 .. _list of existing Codespaces: https://github.com/codespaces
 
-Thank you for your interest in SearXNG.
+Thank you for your interest in Zhensa.
 
 Have a look at our `Quickstart guide`_, it's very easy to contribute.
 
 Further information on *how-to* can be found
-`here <https://docs.searxng.org/dev/index.html>`_.
+`here <https://docs.zhensa.org/dev/index.html>`_.
 
 Translations
 ============
 
-Help translate SearXNG at `Weblate`_.
+Help translate Zhensa at `Weblate`_.
 
-.. image:: https://translate.codeberg.org/widget/searxng/searxng/horizontal-auto.svg
-   :target: https://translate.codeberg.org/engage/searxng/
+.. image:: https://translate.codeberg.org/widget/zhensa/zhensa/horizontal-auto.svg
+   :target: https://translate.codeberg.org/engage/zhensa/
    :alt: Weblate
    :width: 768px
 
@@ -36,7 +36,7 @@ You can contribute from your browser using `GitHub Codespaces`_:
 - VSCode is going to start in the browser.
 - Wait for ``git pull && make install`` to appear and then disappear.
 - You have `120 hours per month`_ (see also your `list of existing Codespaces`_).
-- You can start SearXNG using ``make run`` in the terminal or by pressing ``Ctrl+Shift+B``.
+- You can start Zhensa using ``make run`` in the terminal or by pressing ``Ctrl+Shift+B``.
 
 How-to contribute
 =================
@@ -48,7 +48,7 @@ Please follow the provided PR template when writing a description for your
 changes.
 
 Do not take criticism personally. When you get feedback, it is about your work,
-not your character or personality. Keep in mind we all want to make SearXNG
+not your character or personality. Keep in mind we all want to make Zhensa
 better.
 
 When something is not clear, please ask questions to clear things up.

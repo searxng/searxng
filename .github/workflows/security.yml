@@ -16,7 +16,7 @@ permissions:
 
 jobs:
   container:
-    if: github.repository_owner == 'searxng'
+    if: github.repository_owner == 'zhensa'
     name: Container
     runs-on: ubuntu-24.04-arm
     permissions:
@@ -31,10 +31,10 @@ jobs:
       - name: Sync GHCS from Docker Scout
         uses: docker/scout-action@f8c776824083494ab0d56b8105ba2ca85c86e4de  # v1.18.2
         with:
-          organization: "searxng"
+          organization: "zhensa"
           dockerhub-user: "${{ secrets.DOCKERHUB_USERNAME }}"
           dockerhub-password: "${{ secrets.DOCKERHUB_TOKEN }}"
-          image: "registry://ghcr.io/searxng/searxng:latest"
+          image: "registry://ghcr.io/zhensa/zhensa:latest"
           command: "cves"
           sarif-file: "./scout.sarif"
           exit-code: "false"

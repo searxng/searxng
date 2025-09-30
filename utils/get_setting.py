@@ -14,7 +14,7 @@ repo_root = Path(__file__).resolve().parent.parent
 
 def main(setting_name):
 
-    settings_path = repo_root / "searx" / "settings.yml"
+    settings_path = repo_root / "zhensa" / "settings.yml"
     with open(settings_path) as f:
         settings = parse_yaml(f.read())
     print(get_setting_value(settings, setting_name))

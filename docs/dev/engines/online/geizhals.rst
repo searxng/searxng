@@ -4,5 +4,5 @@
 Geizhals
 ========
 
-.. automodule:: searx.engines.geizhals
+.. automodule:: zhensa.engines.geizhals
   :members:

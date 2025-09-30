@@ -20,16 +20,16 @@
       },
       "settings": {
         "files.autoSave": "off",
-        "python.defaultInterpreterPath": "/workspaces/searxng/local/py3/bin/python3",
-        "python.formatting.blackPath": "/workspaces/searxng/local/py3/bin/black",
-        "python.linting.pylintPath": "/workspaces/searxng/local/py3/bin/pylint"
+        "python.defaultInterpreterPath": "/workspaces/zhensa/local/py3/bin/python3",
+        "python.formatting.blackPath": "/workspaces/zhensa/local/py3/bin/black",
+        "python.linting.pylintPath": "/workspaces/zhensa/local/py3/bin/pylint"
       }
     }
   },
   "forwardPorts": [8000, 8888],
   "portsAttributes": {
     "8000": {"label": "Sphinx documentation"},
-    "8888": {"label": "SearXNG"}
+    "8888": {"label": "Zhensa"}
   },
   "postCreateCommand": "git pull && make install"
 }

@@ -4,5 +4,5 @@
 ChinaSo
 =======
 
-.. automodule:: searx.engines.chinaso
+.. automodule:: zhensa.engines.chinaso
    :members:

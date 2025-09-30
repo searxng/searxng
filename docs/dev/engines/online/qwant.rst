@@ -9,5 +9,5 @@ Qwant
    :local:
    :backlinks: entry
 
-.. automodule:: searx.engines.qwant
+.. automodule:: zhensa.engines.qwant
    :members:

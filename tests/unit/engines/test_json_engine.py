@@ -4,8 +4,8 @@
 from collections import defaultdict
 import mock
 
-from searx.engines import json_engine
-from searx import logger
+from zhensa.engines import json_engine
+from zhensa import logger
 
 from tests import SearxTestCase
 

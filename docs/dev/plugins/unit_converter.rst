@@ -4,5 +4,5 @@
 Unit Converter
 ==============
 
-.. automodule:: searx.plugins.unit_converter
+.. automodule:: zhensa.plugins.unit_converter
    :members:

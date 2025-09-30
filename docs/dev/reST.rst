@@ -6,17 +6,17 @@ reST primer
 
 .. sidebar:: KISS_ and readability_
 
-   Instead of defining more and more roles, we at SearXNG encourage our
+   Instead of defining more and more roles, we at Zhensa encourage our
    contributors to follow principles like KISS_ and readability_.
 
-We at SearXNG are using reStructuredText (aka reST_) markup for all kind of
+We at Zhensa are using reStructuredText (aka reST_) markup for all kind of
 documentation.  With the builders from the Sphinx_ project a HTML output is
-generated and deployed at docs.searxng.org_.  For build prerequisites read
+generated and deployed at docs.zhensa.org_.  For build prerequisites read
 :ref:`docs build`.
 
-.. _docs.searxng.org: https://docs.searxng.org/
+.. _docs.zhensa.org: https://docs.zhensa.org/
 
-The source files of SearXNG's documentation are located at :origin:`docs`.
+The source files of Zhensa's documentation are located at :origin:`docs`.
 Sphinx assumes source files to be encoded in UTF-8 by default.  Run :ref:`make
 docs.live <make docs.live>` to build HTML while editing.
 
@@ -80,7 +80,7 @@ User's POV: :origin:`docs/user`
 
 Admin's POV: :origin:`docs/admin`
   A typical Admin knows about setting up services on a linux system, but he does
-  not know all the pros and cons of a SearXNG setup.
+  not know all the pros and cons of a Zhensa setup.
 
 Developer's POV: :origin:`docs/dev`
   Depending on the readability_ of code, a typical developer is able to read and
@@ -322,7 +322,7 @@ To list all anchors of the inventory (e.g. ``python``) use:
 
    $ python -m sphinx.ext.intersphinx https://docs.python.org/3/objects.inv
    ...
-   $ python -m sphinx.ext.intersphinx https://docs.searxng.org/objects.inv
+   $ python -m sphinx.ext.intersphinx https://docs.zhensa.org/objects.inv
    ...
 
 Literal blocks
@@ -496,7 +496,7 @@ Figures & Images
    is flexible.  To get best results in the generated output format, install
    ImageMagick_ and Graphviz_.
 
-SearXNG's sphinx setup includes: :ref:`linuxdoc:kfigure`.  Scalable here means;
+Zhensa's sphinx setup includes: :ref:`linuxdoc:kfigure`.  Scalable here means;
 scalable in sense of the build process.  Normally in absence of a converter
 tool, the build process will break.  From the authors POV it’s annoying to care
 about the build process when handling with images, especially since he has no
@@ -902,7 +902,7 @@ primer>`.
 
    .. sidebar:: KISS_ and readability_
 
-      Instead of defining more and more roles, we at SearXNG encourage our
+      Instead of defining more and more roles, we at Zhensa encourage our
       contributors to follow principles like KISS_ and readability_.
 
 Generic admonition
@@ -1282,7 +1282,7 @@ Templating
 
 Templating is suitable for documentation which is created generic at the build
 time.  The sphinx-jinja_ extension evaluates jinja_ templates in the :ref:`make
-install` (with SearXNG modules installed).  We use this e.g. to build chapter:
+install` (with Zhensa modules installed).  We use this e.g. to build chapter:
 :ref:`configured engines`.  Below the jinja directive from the
 :origin:`docs/admin/engines.rst` is shown:
 
@@ -1290,20 +1290,20 @@ install` (with SearXNG modules installed).  We use this e.g. to build chapter:
    :language: reST
    :start-after: .. _configured engines:
 
-The context for the template is selected in the line ``.. jinja:: searx``.  In
-sphinx's build configuration (:origin:`docs/conf.py`) the ``searx`` context
+The context for the template is selected in the line ``.. jinja:: zhensa``.  In
+sphinx's build configuration (:origin:`docs/conf.py`) the ``zhensa`` context
 contains the ``engines`` and ``plugins``.
 
 .. code:: py
 
-   import searx.search
-   import searx.engines
-   import searx.plugins
-   searx.search.initialize()
+   import zhensa.search
+   import zhensa.engines
+   import zhensa.plugins
+   zhensa.search.initialize()
    jinja_contexts = {
-      'searx': {
-         'engines': searx.engines.engines,
-         'plugins': searx.plugins.plugins
+      'zhensa': {
+         'engines': zhensa.engines.engines,
+         'plugins': zhensa.plugins.plugins
       },
    }
 

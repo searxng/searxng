@@ -20,7 +20,7 @@ import { type Src2Dest, svg2png, svg2svg } from "./img.ts";
  */
 export const plg_svg2png = (items: Src2Dest[]): Plugin => {
   return {
-    name: "searxng-simple-svg2png",
+    name: "zhensa-simple-svg2png",
     apply: "build",
     writeBundle: () => {
       svg2png(items);
@@ -36,7 +36,7 @@ export const plg_svg2png = (items: Src2Dest[]): Plugin => {
  */
 export const plg_svg2svg = (items: Src2Dest[], svgo_opts: Config): Plugin => {
   return {
-    name: "searxng-simple-svg2svg",
+    name: "zhensa-simple-svg2svg",
     apply: "build",
     writeBundle: () => {
       svg2svg(items, svgo_opts);

@@ -9,5 +9,5 @@ Wallhaven
    :local:
    :backlinks: entry
 
-.. automodule:: searx.engines.wallhaven
+.. automodule:: zhensa.engines.wallhaven
   :members:

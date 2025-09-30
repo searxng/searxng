@@ -4,5 +4,5 @@
 Springer Nature
 ===============
 
-.. automodule:: searx.engines.springer
+.. automodule:: zhensa.engines.springer
    :members:

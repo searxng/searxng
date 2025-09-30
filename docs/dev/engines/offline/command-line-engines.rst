@@ -6,7 +6,7 @@ Command Line Engines
 
 .. sidebar:: info
 
-   - :origin:`command.py <searx/engines/command.py>`
+   - :origin:`command.py <zhensa/engines/command.py>`
    - :ref:`offline engines`
 
 .. contents::
@@ -19,5 +19,5 @@ Command Line Engines
    Initial sponsored by `Search and Discovery Fund
    <https://nlnet.nl/discovery>`_ of `NLnet Foundation <https://nlnet.nl/>`_.
 
-.. automodule:: searx.engines.command
+.. automodule:: zhensa.engines.command
   :members:

@@ -15,7 +15,7 @@ Mwmbl Engine
 Mwmbl WEB
 =========
 
-.. automodule:: searx.engines.mwmbl
+.. automodule:: zhensa.engines.mwmbl
   :members:
 
 
@@ -24,4 +24,4 @@ Mwmbl WEB
 Mwmbl Autocomplete
 ==================
 
-.. autofunction:: searx.autocomplete.mwmbl
+.. autofunction:: zhensa.autocomplete.mwmbl
