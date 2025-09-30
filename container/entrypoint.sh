@@ -117,16 +117,22 @@ EOF
 }
 
 cat <<EOF
-SearXNG $SEARXNG_VERSION
+SearXNG $__SEARXNG_VERSION
 EOF
 
 # Check for volume mounts
-volume_handler "$CONFIG_PATH"
-volume_handler "$DATA_PATH"
+volume_handler "$__SEARXNG_CONFIG_PATH"
+volume_handler "$__SEARXNG_DATA_PATH"
 
 # Check for files
-config_handler "$SEARXNG_SETTINGS_PATH" "/usr/local/searxng/searx/settings.yml"
+config_handler "$__SEARXNG_SETTINGS_PATH" "/usr/local/searxng/searx/settings.yml"
 
-update-ca-certificates
+# root only features
+if [ "$(id -u)" -eq 0 ]; then
+    update-ca-certificates
+fi
+
+# ENVs aliases
+export GRANIAN_PORT="${SEARXNG_PORT:-$GRANIAN_PORT}"
 
 exec /usr/local/searxng/.venv/bin/granian searx.webapp:app
