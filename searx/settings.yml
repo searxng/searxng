@@ -668,6 +668,13 @@ engines:
     timeout: 30
     disabled: true
 
+  - name: gemini
+    engine: gemini
+    shortcut: gem
+    # Links to Google Gemini web interface (no API key required)
+    timeout: 30
+    disabled: false
+
   - name: core.ac.uk
     engine: core
     shortcut: cor
