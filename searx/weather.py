@@ -14,11 +14,10 @@ __all__ = [
     "GeoLocation",
 ]
 
-import typing
+import typing as t
 
 import base64
 import datetime
-import dataclasses
 import zoneinfo
 
 from urllib.parse import quote_plus
@@ -27,7 +26,8 @@ import babel
 import babel.numbers
 import babel.dates
 import babel.languages
-import flask_babel
+import flask_babel  # pyright: ignore[reportMissingTypeStubs]
+import msgspec
 
 from searx import network
 from searx.cache import ExpireCache, ExpireCacheCfg
@@ -120,8 +120,7 @@ def symbol_url(condition: "WeatherConditionType") -> str | None:
     return data_url
 
 
-@dataclasses.dataclass
-class GeoLocation:
+class GeoLocation(msgspec.Struct, kw_only=True):
     """Minimal implementation of Geocoding."""
 
     # The type definition was based on the properties from the geocoding API of
@@ -176,6 +175,8 @@ class GeoLocation:
 
         ctx = "weather_geolocation_by_query"
         cache = get_WEATHER_DATA_CACHE()
+        # {'name': 'Berlin', 'latitude': 52.52437, 'longitude': 13.41053,
+        #  'elevation': 74.0, 'country_code': 'DE', 'timezone': 'Europe/Berlin'}
         geo_props = cache.get(search_term, ctx=ctx)
 
         if not geo_props:
@@ -194,15 +195,14 @@ class GeoLocation:
         if not results:
             raise ValueError(f"unknown geo location: '{search_term}'")
         location = results[0]
-        return {field.name: location[field.name] for field in dataclasses.fields(cls)}
+        return {field_name: location[field_name] for field_name in cls.__struct_fields__}
 
 
-DateTimeFormats = typing.Literal["full", "long", "medium", "short"]
-DateTimeLocaleTypes = typing.Literal["UI"]
+DateTimeFormats = t.Literal["full", "long", "medium", "short"]
+DateTimeLocaleTypes = t.Literal["UI"]
 
 
-@typing.final
-class DateTime:
+class DateTime(msgspec.Struct):
     """Class to represent date & time.  Essentially, it is a wrapper that
     conveniently combines :py:obj:`datetime.datetime` and
     :py:obj:`babel.dates.format_datetime`.  A conversion of time zones is not
@@ -216,8 +216,7 @@ class DateTime:
     as the value for the ``locale``.
     """
 
-    def __init__(self, time: datetime.datetime):
-        self.datetime = time
+    datetime: datetime.datetime
 
     def __str__(self):
         return self.l10n()
@@ -252,36 +251,35 @@ class DateTime:
         return babel.dates.format_date(self.datetime, format=fmt, locale=locale)
 
 
-@typing.final
-class Temperature:
+TemperatureUnits: t.TypeAlias = t.Literal["°C", "°F", "K"]
+
+
+class Temperature(msgspec.Struct, kw_only=True):
     """Class for converting temperature units and for string representation of
     measured values."""
 
-    si_name = "Q11579"
+    val: float
+    unit: TemperatureUnits
 
-    Units = typing.Literal["°C", "°F", "K"]
-    """Supported temperature units."""
+    si_name: t.ClassVar[str] = "Q11579"
+    units: t.ClassVar[list[str]] = list(t.get_args(TemperatureUnits))
 
-    units = list(typing.get_args(Units))
-
-    def __init__(self, value: float, unit: Units):
-        if unit not in self.units:
-            raise ValueError(f"invalid unit: {unit}")
-        self.si: float = convert_to_si(  # pylint: disable=invalid-name
-            si_name=self.si_name,
-            symbol=unit,
-            value=value,
-        )
+    def __post_init__(self):
+        if self.unit not in self.units:
+            raise ValueError(f"invalid unit: {self.unit}")
 
     def __str__(self):
         return self.l10n()
 
-    def value(self, unit: Units) -> float:
-        return convert_from_si(si_name=self.si_name, symbol=unit, value=self.si)
+    def value(self, unit: TemperatureUnits) -> float:
+        if unit == self.unit:
+            return self.val
+        si_val = convert_to_si(si_name=self.si_name, symbol=self.unit, value=self.val)
+        return convert_from_si(si_name=self.si_name, symbol=unit, value=si_val)
 
     def l10n(
         self,
-        unit: Units | None = None,
+        unit: TemperatureUnits | None = None,
         locale: babel.Locale | GeoLocation | None = None,
         template: str = "{value} {unit}",
         num_pattern: str = "#,##0",
@@ -320,33 +318,35 @@ class Temperature:
         return template.format(value=val_str, unit=unit)
 
 
-@typing.final
-class Pressure:
+PressureUnits: t.TypeAlias = t.Literal["Pa", "hPa", "cm Hg", "bar"]
+
+
+class Pressure(msgspec.Struct, kw_only=True):
     """Class for converting pressure units and for string representation of
     measured values."""
 
-    si_name = "Q44395"
+    val: float
+    unit: PressureUnits
 
-    Units = typing.Literal["Pa", "hPa", "cm Hg", "bar"]
-    """Supported units."""
+    si_name: t.ClassVar[str] = "Q44395"
+    units: t.ClassVar[list[str]] = list(t.get_args(PressureUnits))
 
-    units = list(typing.get_args(Units))
-
-    def __init__(self, value: float, unit: Units):
-        if unit not in self.units:
-            raise ValueError(f"invalid unit: {unit}")
-        # pylint: disable=invalid-name
-        self.si: float = convert_to_si(si_name=self.si_name, symbol=unit, value=value)
+    def __post_init__(self):
+        if self.unit not in self.units:
+            raise ValueError(f"invalid unit: {self.unit}")
 
     def __str__(self):
         return self.l10n()
 
-    def value(self, unit: Units) -> float:
-        return convert_from_si(si_name=self.si_name, symbol=unit, value=self.si)
+    def value(self, unit: PressureUnits) -> float:
+        if unit == self.unit:
+            return self.val
+        si_val = convert_to_si(si_name=self.si_name, symbol=self.unit, value=self.val)
+        return convert_from_si(si_name=self.si_name, symbol=unit, value=si_val)
 
     def l10n(
         self,
-        unit: Units | None = None,
+        unit: PressureUnits | None = None,
         locale: babel.Locale | GeoLocation | None = None,
         template: str = "{value} {unit}",
         num_pattern: str = "#,##0",
@@ -363,8 +363,10 @@ class Pressure:
         return template.format(value=val_str, unit=unit)
 
 
-@typing.final
-class WindSpeed:
+WindSpeedUnits: t.TypeAlias = t.Literal["m/s", "km/h", "kn", "mph", "mi/h", "Bft"]
+
+
+class WindSpeed(msgspec.Struct, kw_only=True):
     """Class for converting speed or velocity units and for string
     representation of measured values.
 
@@ -375,28 +377,28 @@ class WindSpeed:
        (55.6 m/s)
     """
 
-    si_name = "Q182429"
+    val: float
+    unit: WindSpeedUnits
 
-    Units = typing.Literal["m/s", "km/h", "kn", "mph", "mi/h", "Bft"]
-    """Supported units."""
+    si_name: t.ClassVar[str] = "Q182429"
+    units: t.ClassVar[list[str]] = list(t.get_args(WindSpeedUnits))
 
-    units = list(typing.get_args(Units))
-
-    def __init__(self, value: float, unit: Units):
-        if unit not in self.units:
-            raise ValueError(f"invalid unit: {unit}")
-        # pylint: disable=invalid-name
-        self.si: float = convert_to_si(si_name=self.si_name, symbol=unit, value=value)
+    def __post_init__(self):
+        if self.unit not in self.units:
+            raise ValueError(f"invalid unit: {self.unit}")
 
     def __str__(self):
         return self.l10n()
 
-    def value(self, unit: Units) -> float:
-        return convert_from_si(si_name=self.si_name, symbol=unit, value=self.si)
+    def value(self, unit: WindSpeedUnits) -> float:
+        if unit == self.unit:
+            return self.val
+        si_val = convert_to_si(si_name=self.si_name, symbol=self.unit, value=self.val)
+        return convert_from_si(si_name=self.si_name, symbol=unit, value=si_val)
 
     def l10n(
         self,
-        unit: Units | None = None,
+        unit: WindSpeedUnits | None = None,
         locale: babel.Locale | GeoLocation | None = None,
         template: str = "{value} {unit}",
         num_pattern: str = "#,##0",
@@ -413,23 +415,23 @@ class WindSpeed:
         return template.format(value=val_str, unit=unit)
 
 
-@typing.final
-class RelativeHumidity:
+RelativeHumidityUnits: t.TypeAlias = t.Literal["%"]
+
+
+class RelativeHumidity(msgspec.Struct):
     """Amount of relative humidity in the air. The unit is ``%``"""
 
-    Units = typing.Literal["%"]
-    """Supported unit."""
+    val: float
 
-    units = list(typing.get_args(Units))
-
-    def __init__(self, humidity: float):
-        self.humidity = humidity
+    # there exists only one unit (%) --> set "%" as the final value (constant)
+    unit: t.ClassVar["t.Final[RelativeHumidityUnits]"] = "%"
+    units: t.ClassVar[list[str]] = list(t.get_args(RelativeHumidityUnits))
 
     def __str__(self):
         return self.l10n()
 
     def value(self) -> float:
-        return self.humidity
+        return self.val
 
     def l10n(
         self,
@@ -447,45 +449,50 @@ class RelativeHumidity:
         return template.format(value=val_str, unit=unit)
 
 
-@typing.final
-class Compass:
+CompassPoint: t.TypeAlias = t.Literal[
+    "N", "NNE", "NE", "ENE", "E", "ESE", "SE", "SSE", "S", "SSW", "SW", "WSW", "W", "WNW", "NW", "NNW"
+]
+"""Compass point type definition"""
+
+CompassUnits: t.TypeAlias = t.Literal["°", "Point"]
+
+
+class Compass(msgspec.Struct):
     """Class for converting compass points and azimuth values (360°)"""
 
-    Units = typing.Literal["°", "Point"]
+    val: "float | int | CompassPoint"
+    unit: CompassUnits = "°"
 
-    Point = typing.Literal[
-        "N", "NNE", "NE", "ENE", "E", "ESE", "SE", "SSE", "S", "SSW", "SW", "WSW", "W", "WNW", "NW", "NNW"
-    ]
-    """Compass point type definition"""
-
-    TURN = 360.0
+    TURN: t.ClassVar[float] = 360.0
     """Full turn (360°)"""
 
-    POINTS = list(typing.get_args(Point))
+    POINTS: t.ClassVar[list[CompassPoint]] = list(t.get_args(CompassPoint))
     """Compass points."""
 
-    RANGE = TURN / len(POINTS)
+    RANGE: t.ClassVar[float] = TURN / len(POINTS)
     """Angle sector of a compass point"""
 
-    def __init__(self, azimuth: float | int | Point):
-        if isinstance(azimuth, str):
-            if azimuth not in self.POINTS:
-                raise ValueError(f"Invalid compass point: {azimuth}")
-            azimuth = self.POINTS.index(azimuth) * self.RANGE
-        self.azimuth = azimuth % self.TURN
+    def __post_init__(self):
+        if isinstance(self.val, str):
+            if self.val not in self.POINTS:
+                raise ValueError(f"Invalid compass point: {self.val}")
+            self.val = self.POINTS.index(self.val) * self.RANGE
+
+        self.val = self.val % self.TURN
+        self.unit = "°"
 
     def __str__(self):
         return self.l10n()
 
-    def value(self, unit: Units):
-        if unit == "Point":
-            return self.point(self.azimuth)
+    def value(self, unit: CompassUnits):
+        if unit == "Point" and isinstance(self.val, float):
+            return self.point(self.val)
         if unit == "°":
-            return self.azimuth
+            return self.val
         raise ValueError(f"unknown unit: {unit}")
 
     @classmethod
-    def point(cls, azimuth: float | int) -> Point:
+    def point(cls, azimuth: float | int) -> CompassPoint:
         """Returns the compass point to an azimuth value."""
         azimuth = azimuth % cls.TURN
         # The angle sector of a compass point starts 1/2 sector range before
@@ -496,7 +503,7 @@ class Compass:
 
     def l10n(
         self,
-        unit: Units = "Point",
+        unit: CompassUnits = "Point",
         locale: babel.Locale | GeoLocation | None = None,
         template: str = "{value}{unit}",
         num_pattern: str = "#,##0",
@@ -514,7 +521,7 @@ class Compass:
         return template.format(value=val_str, unit=unit)
 
 
-WeatherConditionType = typing.Literal[
+WeatherConditionType = t.Literal[
     # The capitalized string goes into to i18n/l10n (en: "Clear sky" -> de: "wolkenloser Himmel")
     "clear sky",
     "partly cloudy",
@@ -632,7 +639,7 @@ YR_WEATHER_SYMBOL_MAP = {
 if __name__ == "__main__":
 
     # test: fetch all symbols of the type catalog ..
-    for c in typing.get_args(WeatherConditionType):
+    for c in t.get_args(WeatherConditionType):
         symbol_url(condition=c)
 
     _cache = get_WEATHER_DATA_CACHE()

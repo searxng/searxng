@@ -1,6 +1,8 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 """wttr.in (weather forecast service)"""
 
+import typing as t
+
 from urllib.parse import quote
 from datetime import datetime
 
@@ -80,19 +82,19 @@ def request(query, params):
     return params
 
 
-def _weather_data(location: weather.GeoLocation, data: dict):
+def _weather_data(location: weather.GeoLocation, data: dict[str, t.Any]):
     # the naming between different data objects is inconsitent, thus temp_C and
     # tempC are possible
     tempC: float = data.get("temp_C") or data.get("tempC")  # type: ignore
 
     return WeatherAnswer.Item(
         location=location,
-        temperature=weather.Temperature(unit="°C", value=tempC),
+        temperature=weather.Temperature(val=tempC, unit="°C"),
         condition=WWO_TO_CONDITION[data["weatherCode"]],
-        feels_like=weather.Temperature(unit="°C", value=data["FeelsLikeC"]),
+        feels_like=weather.Temperature(val=data["FeelsLikeC"], unit="°C"),
         wind_from=weather.Compass(int(data["winddirDegree"])),
-        wind_speed=weather.WindSpeed(data["windspeedKmph"], unit="km/h"),
-        pressure=weather.Pressure(data["pressure"], unit="hPa"),
+        wind_speed=weather.WindSpeed(val=data["windspeedKmph"], unit="km/h"),
+        pressure=weather.Pressure(val=data["pressure"], unit="hPa"),
         humidity=weather.RelativeHumidity(data["humidity"]),
         cloud_cover=data["cloudcover"],
     )
