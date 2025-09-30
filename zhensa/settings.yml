@@ -95,7 +95,7 @@ server:
   # If your instance owns a /etc/zhensa/settings.yml file, then set the following
   # values there.
 
-  secret_key: "ultrasecretkey"  # Is overwritten by ${ZHENSA_SECRET}
+  secret_key: "a_very_long_random_secret_key_that_is_hard_to_guess_1234567890"  # Is overwritten by ${ZHENSA_SECRET}
   # Proxy image results through Zhensa. Is overwritten by ${ZHENSA_IMAGE_PROXY}
   image_proxy: false
   # 1.0 and 1.1 are supported
@@ -110,6 +110,9 @@ server:
     X-Download-Options: noopen
     X-Robots-Tag: noindex, nofollow
     Referrer-Policy: no-referrer
+    Content-Security-Policy: "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self'; connect-src 'self'"
+    X-Frame-Options: DENY
+    X-XSS-Protection: "1; mode=block"
 
 valkey:
   # URL to connect valkey database. Is overwritten by ${ZHENSA_VALKEY_URL}.
