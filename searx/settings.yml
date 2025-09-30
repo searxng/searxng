@@ -675,6 +675,20 @@ engines:
     timeout: 30
     disabled: false
 
+  - name: hugging chat
+    engine: huggingchat
+    shortcut: hfc
+    # Links to Hugging Face Chat web interface (no API key required)
+    timeout: 30
+    disabled: false
+
+  - name: andi search
+    engine: andi
+    shortcut: andi
+    # AI-powered search engine
+    timeout: 10
+    disabled: false
+
   - name: core.ac.uk
     engine: core
     shortcut: cor
