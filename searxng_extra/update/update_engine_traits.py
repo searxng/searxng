@@ -77,7 +77,14 @@ lang2emoji = {
 
 
 def main():
-    load_engines(settings['engines'])
+
+    engines_cfg = []
+
+    for eng_data in settings["engines"]:
+        eng_data["inactive"] = False
+        engines_cfg.append(eng_data)
+
+    load_engines(engines_cfg)
     # traits_map = EngineTraitsMap.from_data()
     traits_map = fetch_traits_map()
     sxng_tag_list = filter_locales(traits_map)
