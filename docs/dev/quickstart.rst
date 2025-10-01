@@ -23,6 +23,24 @@ Don't hesitate, just clone SearXNG's sources and start hacking right now ..
 
     git clone https://github.com/searxng/searxng.git searxng
 
+For the developer environment, `mise en place`_ is recommended:
+
+.. code:: sh
+
+   $ curl https://mise.run | sh
+
+The tools required for a developer environment are provided via `mise.toml`_,
+trust the project:
+
+.. code:: sh
+
+   $ mise trust
+
+.. _mise.toml:
+    https://github.com/searxng/searxng/blob/master/mise.toml
+.. _mise en place:
+    https://mise.jdx.dev/getting-started.html
+
 Here is how a minimal workflow looks like:
 
 1. *start* hacking
