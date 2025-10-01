@@ -67,7 +67,7 @@ def construct_body(result):
             )
         thumbnail = pdbe_preview_url.format(pdb_id=result['pdb_id'])
     except KeyError:
-        content = None
+        content = ""
         thumbnail = None
 
     # construct url for preview image

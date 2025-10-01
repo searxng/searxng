@@ -357,12 +357,12 @@ def merge_two_infoboxes(origin: LegacyResult, other: LegacyResult):
 def merge_two_main_results(origin: MainResult | LegacyResult, other: MainResult | LegacyResult):
     """Merges the values from ``other`` into ``origin``."""
 
-    if len(other.content) > len(origin.content):
+    if len(other.content or "") > len(origin.content or ""):
         # use content with more text
         origin.content = other.content
 
     # use title with more text
-    if len(other.title) > len(origin.title):
+    if len(other.title or "") > len(origin.title or ""):
         origin.title = other.title
 
     # merge all result's parameters not found in origin
