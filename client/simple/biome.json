@@ -1,18 +1,17 @@
 {
-  "$schema": "https://biomejs.dev/schemas/2.2.4/schema.json",
+  "$schema": "https://biomejs.dev/schemas/2.2.5/schema.json",
   "files": {
-    "includes": ["**", "!dist", "!node_modules"],
-    "ignoreUnknown": true
-  },
-  "vcs": {
-    "clientKind": "git",
-    "enabled": false,
-    "useIgnoreFile": true
+    "ignoreUnknown": true,
+    "includes": ["**", "!dist", "!node_modules"]
   },
   "assist": {
     "enabled": true,
     "actions": {
-      "recommended": true
+      "recommended": true,
+      "source": {
+        "useSortedAttributes": "on",
+        "useSortedProperties": "on"
+      }
     }
   },
   "formatter": {
@@ -47,7 +46,10 @@
         "useSingleJsDocAsterisk": "error"
       },
       "nursery": {
+        "noDeprecatedImports": "warn",
+        "noImportCycles": "warn",
         "noMisusedPromises": "warn",
+        "noUselessCatchBinding": "warn",
         "noUselessUndefined": "warn",
         "useExhaustiveSwitchCases": "warn",
         "useExplicitType": "warn"
