@@ -18,90 +18,16 @@ concurrency:
 
 permissions:
   contents: read
-  # Organization GHCR
   packages: read
 
 env:
   PYTHON_VERSION: "3.14"
 
 jobs:
-  build-base:
-    if: |
-      (github.repository_owner == 'searxng' && github.event.workflow_run.conclusion == 'success')
-      || github.event_name == 'workflow_dispatch'
-    name: Build base
-    runs-on: ubuntu-24.04
-    permissions:
-      # Organization GHCR
-      packages: write
-
-    steps:
-      - if: github.repository_owner == 'searxng'
-        name: Checkout
-        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8  # v5.0.0
-        with:
-          persist-credentials: "false"
-
-      - if: github.repository_owner == 'searxng'
-        name: Get date
-        id: date
-        run: echo "date=$(date +'%Y%m%d')" >>$GITHUB_OUTPUT
-
-      - if: github.repository_owner == 'searxng'
-        name: Check cache apko
-        id: cache-apko
-        uses: actions/cache/restore@0057852bfaa89a56745cba8c7296529d2fc39830  # v4.3.0
-        with:
-          # yamllint disable-line rule:line-length
-          key: "apko-${{ steps.date.outputs.date }}-${{ hashFiles('./container/base.yml', './container/base-builder.yml') }}"
-          path: "/tmp/.apko/"
-          lookup-only: true
-
-      - if: github.repository_owner == 'searxng' && steps.cache-apko.outputs.cache-hit != 'true'
-        name: Setup cache apko
-        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830  # v4.3.0
-        with:
-          # yamllint disable-line rule:line-length
-          key: "apko-${{ steps.date.outputs.date }}-${{ hashFiles('./container/base.yml', './container/base-builder.yml') }}"
-          restore-keys: "apko-${{ steps.date.outputs.date }}-"
-          path: "/tmp/.apko/"
-
-      - if: github.repository_owner == 'searxng' && steps.cache-apko.outputs.cache-hit != 'true'
-        name: Setup apko
-        run: |
-          eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
-          brew install apko
-
-      - if: github.repository_owner == 'searxng' && steps.cache-apko.outputs.cache-hit != 'true'
-        name: Login to GHCR
-        uses: docker/login-action@5e57cd118135c172c3672efd75eb46360885c0ef  # v3.6.0
-        with:
-          registry: "ghcr.io"
-          username: "${{ github.repository_owner }}"
-          password: "${{ secrets.GITHUB_TOKEN }}"
-
-      - if: github.repository_owner == 'searxng' && steps.cache-apko.outputs.cache-hit != 'true'
-        name: Build
-        run: |
-          eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
-
-          apko publish ./container/base.yml ghcr.io/${{ github.repository_owner }}/base:searxng \
-            --cache-dir=/tmp/.apko/ \
-            --sbom=false \
-            --vcs=false \
-            --log-level=debug
-
-          apko publish ./container/base-builder.yml ghcr.io/${{ github.repository_owner }}/base:searxng-builder \
-            --cache-dir=/tmp/.apko/ \
-            --sbom=false \
-            --vcs=false \
-            --log-level=debug
-
   build:
     if: github.repository_owner == 'searxng' || github.event_name == 'workflow_dispatch'
     name: Build (${{ matrix.arch }})
     runs-on: ${{ matrix.os }}
-    needs: build-base
     strategy:
       fail-fast: false
       matrix:
@@ -117,7 +43,6 @@ jobs:
             emulation: true
 
     permissions:
-      # Organization GHCR
       packages: write
 
     outputs:
@@ -217,7 +142,6 @@ jobs:
       - test
 
     permissions:
-      # Organization GHCR
       packages: write
 
     steps:
