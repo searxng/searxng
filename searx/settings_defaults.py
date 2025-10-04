@@ -10,7 +10,10 @@ import logging
 from base64 import b64decode
 from os.path import dirname, abspath
 
+import msgspec
+
 from typing_extensions import override
+from .brand import SettingsBrand
 from .sxng_locales import sxng_locales
 
 searx_dir = abspath(dirname(__file__))
@@ -138,19 +141,38 @@ class SettingsBytesValue(SettingsValue):
 def apply_schema(settings: dict[str, t.Any], schema: dict[str, t.Any], path_list: list[str]):
     error = False
     for key, value in schema.items():
-        if isinstance(value, SettingsValue):
+        if isinstance(value, type) and issubclass(value, msgspec.Struct):
+            try:
+                # Type Validation at runtime:
+                # https://jcristharif.com/msgspec/structs.html#type-validation
+                cfg_dict = settings.get(key)
+                cfg_json = msgspec.json.encode(cfg_dict)
+                settings[key] = msgspec.json.decode(cfg_json, type=value)
+            except msgspec.ValidationError as e:
+                # To get a more meaningful error message, we need to replace the
+                # `$` by the (doted) name space.  For example if ValidationError
+                # was raised for the field `name` in structure at `foo.bar`:
+                #     Expected `str`, got `int` - at `$.name`
+                # is converted to:
+                #     Expected `str`, got `int` - at `foo.bar.name`
+                msg = str(e)
+                msg = msg.replace("`$.", "`" + ".".join([*path_list, key]) + ".")
+                logger.error(msg)
+                error = True
+        elif isinstance(value, SettingsValue):
             try:
                 settings[key] = value(settings.get(key, _UNDEFINED))
             except Exception as e:  # pylint: disable=broad-except
                 # don't stop now: check other values
-                logger.error('%s: %s', '.'.join([*path_list, key]), e)
+                msg = ".".join([*path_list, key]) + f": {e}"
+                logger.error(msg)
                 error = True
         elif isinstance(value, dict):
             error = error or apply_schema(settings.setdefault(key, {}), schema[key], [*path_list, key])
         else:
             settings.setdefault(key, value)
     if len(path_list) == 0 and error:
-        raise ValueError('Invalid settings.yml')
+        raise ValueError("Invalid settings.yml")
     return error
 
 
@@ -164,14 +186,7 @@ SCHEMA: dict[str, t.Any] = {
         'enable_metrics': SettingsValue(bool, True),
         'open_metrics': SettingsValue(str, ''),
     },
-    'brand': {
-        'issue_url': SettingsValue(str, 'https://github.com/searxng/searxng/issues'),
-        'new_issue_url': SettingsValue(str, 'https://github.com/searxng/searxng/issues/new'),
-        'docs_url': SettingsValue(str, 'https://docs.searxng.org'),
-        'public_instances': SettingsValue((False, str), 'https://searx.space'),
-        'wiki_url': SettingsValue((False, str), 'https://github.com/searxng/searxng/wiki'),
-        'custom': SettingsValue(dict, {'links': {}}),
-    },
+    'brand': SettingsBrand,
     'search': {
         'safe_search': SettingsValue((0, 1, 2), 0),
         'autocomplete': SettingsValue(str, ''),

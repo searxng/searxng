@@ -9,6 +9,7 @@ from os.path import dirname, abspath
 
 import logging
 
+import msgspec
 import searx.unixthreadname  # pylint: disable=unused-import
 
 # Debug
@@ -76,20 +77,22 @@ def get_setting(name: str, default: t.Any = _unset) -> t.Any:
     settings and the ``default`` is unset, a :py:obj:`KeyError` is raised.
 
     """
-    value: dict[str, t.Any] = settings
+    value = settings
     for a in name.split('.'):
-        if isinstance(value, dict):
-            value = value.get(a, _unset)
+        if isinstance(value, msgspec.Struct):
+            value = getattr(value, a, _unset)
+        elif isinstance(value, dict):
+            value = value.get(a, _unset)  # pyright: ignore
         else:
-            value = _unset  # type: ignore
+            value = _unset
 
         if value is _unset:
             if default is _unset:
                 raise KeyError(name)
-            value = default  # type: ignore
+            value = default
             break
 
-    return value
+    return value  # pyright: ignore
 
 
 def _is_color_terminal():
