@@ -37,8 +37,8 @@ msgstr ""
 "Project-Id-Version: searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-09-01 12:54+0000\n"
-"PO-Revision-Date: 2025-09-02 04:50+0000\n"
-"Last-Translator: return42 <return42@noreply.codeberg.org>\n"
+"PO-Revision-Date: 2025-10-05 04:09+0000\n"
+"Last-Translator: 0ko <0ko@noreply.codeberg.org>\n"
 "Language-Team: Russian <https://translate.codeberg.org/projects/searxng/"
 "searxng/ru/>\n"
 "Language: ru\n"
@@ -48,7 +48,7 @@ msgstr ""
 "Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
 "n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || ("
 "n%100>=11 && n%100<=14)? 2 : 3);\n"
-"X-Generator: Weblate 5.12.2\n"
+"X-Generator: Weblate 5.13.2\n"
 "Generated-By: Babel 2.17.0\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
@@ -174,7 +174,7 @@ msgstr "научные публикации"
 #. STYLE_NAMES['AUTO']
 #: searx/searxng.msg
 msgid "auto"
-msgstr "автоматически"
+msgstr "как в системе"
 
 #. STYLE_NAMES['LIGHT']
 #: searx/searxng.msg
@@ -710,9 +710,8 @@ msgid ""
 "format. TinEye only supports images that are JPEG, PNG, GIF, BMP, TIFF or"
 " WebP."
 msgstr ""
-"Не удалось прочитать изображение по ссылке. Возможно это вызвано "
-"неподдерживаемым форматом файла. TinEye поддерживает только следующие "
-"форматы: JPEG, PNG, GIF, BMP, TIFF or WebP."
+"Не удалось прочитать изображение по ссылке. Возможно, этот формат не "
+"поддерживается. TinEye поддерживает только JPEG, PNG, GIF, BMP, TIFF or WebP."
 
 #: searx/engines/tineye.py:54
 msgid ""
@@ -759,8 +758,8 @@ msgid ""
 "Converts strings to different hash digests. Available functions: md5, "
 "sha1, sha224, sha256, sha384, sha512."
 msgstr ""
-"Конвертирует строки в разные хеш-суммы. Доступные функции: md5, sha1, "
-"sha224, sha256, sha384, sha512."
+"Считает хеш-суммы строк. Доступные хеш-функции: md5, sha1, sha224, sha256, "
+"sha384, sha512."
 
 #: searx/plugins/hash_plugin.py:64
 msgid "hash digest"
@@ -810,11 +809,11 @@ msgstr "Ваш браузер: "
 
 #: searx/plugins/time_zone.py:34
 msgid "Timezones plugin"
-msgstr ""
+msgstr "Плагин часовых поясов"
 
 #: searx/plugins/time_zone.py:35
 msgid "Display the current time on different time zones."
-msgstr ""
+msgstr "Показать текущее время в другом часовом поясе."
 
 #: searx/plugins/tor_check.py:42
 msgid "Tor check plugin"
@@ -946,7 +945,8 @@ msgstr "Создайте задачу на GitHub"
 
 #: searx/templates/simple/new_issue.html:66
 msgid "Please check for existing bugs about this engine on GitHub"
-msgstr "Пожалуйста, проверьте ныне существующие ошибки этого движка на GitHub"
+msgstr ""
+"Пожалуйста, ознакомьтесь с сообщениями о проблемах этого движка на GitHub"
 
 #: searx/templates/simple/new_issue.html:69
 msgid "I confirm there is no existing bug about the issue I encounter"
@@ -1569,8 +1569,8 @@ msgid ""
 "When enabled, the result page's title contains your query. Your browser "
 "can record this title"
 msgstr ""
-"Добавить поисковый запрос в заголовок страницы с результатами. Ваш "
-"браузер может сохранять этот заголовок"
+"Включать ваш запрос в заголовок страницы с результатами. Браузер может "
+"сохранять этот заголовок"
 
 #: searx/templates/simple/preferences/results_on_new_tab.html:2
 msgid "Results in new tabs"
