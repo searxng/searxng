@@ -27,6 +27,7 @@ import typing as t
 from urllib.parse import urlencode
 from datetime import datetime
 from lxml import html
+import httpx
 
 from searx.utils import (
     eval_xpath,
@@ -36,7 +37,7 @@ from searx.utils import (
     ElementType,
 )
 
-from searx.exceptions import SearxEngineCaptchaException
+from searx.exceptions import SearxEngineCaptchaException, SearxEngineAccessDeniedException
 
 from searx.engines.google import fetch_traits  # pylint: disable=unused-import
 from searx.engines.google import (
@@ -96,6 +97,15 @@ def request(query: str, params: "OnlineParams") -> None:
 
 def response(resp: "SXNG_Response") -> EngineResults:  # pylint: disable=too-many-locals
     """Parse response from Google Scholar"""
+
+    if resp.status_code in (301, 302, 303, 307, 308) and "Location" in resp.headers:
+        if "/sorry/index?continue" in resp.headers["Location"]:
+            # Our systems have detected unusual traffic from your computer
+            # network. Please try again later.
+            raise SearxEngineAccessDeniedException(
+                message="google_scholar: unusual traffic detected",
+            )
+        raise httpx.TooManyRedirects(f"location {resp.headers['Location'].split('?')[0]}")
 
     res = EngineResults()
     dom = html.fromstring(resp.text)
@@ -192,7 +202,7 @@ def detect_google_captcha(dom: ElementType):
     not redirected to ``sorry.google.com``.
     """
     if eval_xpath(dom, "//form[@id='gs_captcha_f']"):
-        raise SearxEngineCaptchaException()
+        raise SearxEngineCaptchaException(message="CAPTCHA (gs_captcha_f)")
 
 
 def parse_gs_a(text: str | None) -> tuple[list[str], str, str, datetime | None]:
