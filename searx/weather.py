@@ -255,7 +255,8 @@ class DateTime(msgspec.Struct):
         return babel.dates.format_date(self.datetime, format=fmt, locale=locale)
 
 
-TemperatureUnits: t.TypeAlias = t.Literal["°C", "°F", "K"]
+TemperatureUnit: t.TypeAlias = t.Literal["°C", "°F", "K"]
+TEMPERATURE_UNITS: t.Final[tuple[TemperatureUnit]] = t.get_args(TemperatureUnit)
 
 
 class Temperature(msgspec.Struct, kw_only=True):
@@ -263,19 +264,19 @@ class Temperature(msgspec.Struct, kw_only=True):
     measured values."""
 
     val: float
-    unit: TemperatureUnits
+    unit: TemperatureUnit
 
     si_name: t.ClassVar[str] = "Q11579"
-    units: t.ClassVar[list[str]] = list(t.get_args(TemperatureUnits))
+    UNITS: t.ClassVar[tuple[TemperatureUnit]] = TEMPERATURE_UNITS
 
     def __post_init__(self):
-        if self.unit not in self.units:
+        if self.unit not in self.UNITS:
             raise ValueError(f"invalid unit: {self.unit}")
 
     def __str__(self):
         return self.l10n()
 
-    def value(self, unit: TemperatureUnits) -> float:
+    def value(self, unit: TemperatureUnit) -> float:
         if unit == self.unit:
             return self.val
         si_val = convert_to_si(si_name=self.si_name, symbol=self.unit, value=self.val)
@@ -283,7 +284,7 @@ class Temperature(msgspec.Struct, kw_only=True):
 
     def l10n(
         self,
-        unit: TemperatureUnits | None = None,
+        unit: TemperatureUnit | None = None,
         locale: babel.Locale | GeoLocation | None = None,
         template: str = "{value} {unit}",
         num_pattern: str = "#,##0",
@@ -322,7 +323,8 @@ class Temperature(msgspec.Struct, kw_only=True):
         return template.format(value=val_str, unit=unit)
 
 
-PressureUnits: t.TypeAlias = t.Literal["Pa", "hPa", "cm Hg", "bar"]
+PressureUnit: t.TypeAlias = t.Literal["Pa", "hPa", "cm Hg", "bar"]
+PRESSURE_UNITS: t.Final[tuple[PressureUnit]] = t.get_args(PressureUnit)
 
 
 class Pressure(msgspec.Struct, kw_only=True):
@@ -330,19 +332,19 @@ class Pressure(msgspec.Struct, kw_only=True):
     measured values."""
 
     val: float
-    unit: PressureUnits
+    unit: PressureUnit
 
     si_name: t.ClassVar[str] = "Q44395"
-    units: t.ClassVar[list[str]] = list(t.get_args(PressureUnits))
+    UNITS: t.ClassVar[tuple[PressureUnit]] = PRESSURE_UNITS
 
     def __post_init__(self):
-        if self.unit not in self.units:
+        if self.unit not in self.UNITS:
             raise ValueError(f"invalid unit: {self.unit}")
 
     def __str__(self):
         return self.l10n()
 
-    def value(self, unit: PressureUnits) -> float:
+    def value(self, unit: PressureUnit) -> float:
         if unit == self.unit:
             return self.val
         si_val = convert_to_si(si_name=self.si_name, symbol=self.unit, value=self.val)
@@ -350,7 +352,7 @@ class Pressure(msgspec.Struct, kw_only=True):
 
     def l10n(
         self,
-        unit: PressureUnits | None = None,
+        unit: PressureUnit | None = None,
         locale: babel.Locale | GeoLocation | None = None,
         template: str = "{value} {unit}",
         num_pattern: str = "#,##0",
@@ -367,7 +369,8 @@ class Pressure(msgspec.Struct, kw_only=True):
         return template.format(value=val_str, unit=unit)
 
 
-WindSpeedUnits: t.TypeAlias = t.Literal["m/s", "km/h", "kn", "mph", "mi/h", "Bft"]
+WindSpeedUnit: t.TypeAlias = t.Literal["m/s", "km/h", "kn", "mph", "mi/h", "Bft"]
+WIND_SPEED_UNITS: t.Final[tuple[WindSpeedUnit]] = t.get_args(WindSpeedUnit)
 
 
 class WindSpeed(msgspec.Struct, kw_only=True):
@@ -382,19 +385,19 @@ class WindSpeed(msgspec.Struct, kw_only=True):
     """
 
     val: float
-    unit: WindSpeedUnits
+    unit: WindSpeedUnit
 
     si_name: t.ClassVar[str] = "Q182429"
-    units: t.ClassVar[list[str]] = list(t.get_args(WindSpeedUnits))
+    UNITS: t.ClassVar[tuple[WindSpeedUnit]] = WIND_SPEED_UNITS
 
     def __post_init__(self):
-        if self.unit not in self.units:
+        if self.unit not in self.UNITS:
             raise ValueError(f"invalid unit: {self.unit}")
 
     def __str__(self):
         return self.l10n()
 
-    def value(self, unit: WindSpeedUnits) -> float:
+    def value(self, unit: WindSpeedUnit) -> float:
         if unit == self.unit:
             return self.val
         si_val = convert_to_si(si_name=self.si_name, symbol=self.unit, value=self.val)
@@ -402,7 +405,7 @@ class WindSpeed(msgspec.Struct, kw_only=True):
 
     def l10n(
         self,
-        unit: WindSpeedUnits | None = None,
+        unit: WindSpeedUnit | None = None,
         locale: babel.Locale | GeoLocation | None = None,
         template: str = "{value} {unit}",
         num_pattern: str = "#,##0",
@@ -419,7 +422,8 @@ class WindSpeed(msgspec.Struct, kw_only=True):
         return template.format(value=val_str, unit=unit)
 
 
-RelativeHumidityUnits: t.TypeAlias = t.Literal["%"]
+RelativeHumidityUnit: t.TypeAlias = t.Literal["%"]
+RELATIVE_HUMIDITY_UNITS: t.Final[tuple[RelativeHumidityUnit]] = t.get_args(RelativeHumidityUnit)
 
 
 class RelativeHumidity(msgspec.Struct):
@@ -428,8 +432,12 @@ class RelativeHumidity(msgspec.Struct):
     val: float
 
     # there exists only one unit (%) --> set "%" as the final value (constant)
-    unit: t.ClassVar["t.Final[RelativeHumidityUnits]"] = "%"
-    units: t.ClassVar[list[str]] = list(t.get_args(RelativeHumidityUnits))
+    unit: t.ClassVar[RelativeHumidityUnit] = "%"
+    UNITS: t.ClassVar[tuple[RelativeHumidityUnit]] = RELATIVE_HUMIDITY_UNITS
+
+    def __post_init__(self):
+        if self.unit not in self.UNITS:
+            raise ValueError(f"invalid unit: {self.unit}")
 
     def __str__(self):
         return self.l10n()
@@ -457,20 +465,23 @@ CompassPoint: t.TypeAlias = t.Literal[
     "N", "NNE", "NE", "ENE", "E", "ESE", "SE", "SSE", "S", "SSW", "SW", "WSW", "W", "WNW", "NW", "NNW"
 ]
 """Compass point type definition"""
+COMPASS_POINTS: t.Final[tuple[CompassPoint]] = t.get_args(CompassPoint)
 
-CompassUnits: t.TypeAlias = t.Literal["°", "Point"]
+CompassUnit: t.TypeAlias = t.Literal["°", "Point"]
+COMPASS_UNITS: t.Final[tuple[CompassUnit]] = t.get_args(CompassUnit)
 
 
 class Compass(msgspec.Struct):
     """Class for converting compass points and azimuth values (360°)"""
 
     val: "float | int | CompassPoint"
-    unit: CompassUnits = "°"
+    unit: CompassUnit = "°"
+    UNITS: t.ClassVar[tuple[CompassUnit]] = COMPASS_UNITS
 
     TURN: t.ClassVar[float] = 360.0
     """Full turn (360°)"""
 
-    POINTS: t.ClassVar[list[CompassPoint]] = list(t.get_args(CompassPoint))
+    POINTS: t.ClassVar[tuple[CompassPoint]] = COMPASS_POINTS
     """Compass points."""
 
     RANGE: t.ClassVar[float] = TURN / len(POINTS)
@@ -488,7 +499,7 @@ class Compass(msgspec.Struct):
     def __str__(self):
         return self.l10n()
 
-    def value(self, unit: CompassUnits):
+    def value(self, unit: CompassUnit):
         if unit == "Point" and isinstance(self.val, float):
             return self.point(self.val)
         if unit == "°":
@@ -507,7 +518,7 @@ class Compass(msgspec.Struct):
 
     def l10n(
         self,
-        unit: CompassUnits = "Point",
+        unit: CompassUnit = "Point",
         locale: babel.Locale | GeoLocation | None = None,
         template: str = "{value}{unit}",
         num_pattern: str = "#,##0",
