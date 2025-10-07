@@ -1,6 +1,9 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 """Implementations for a favicon proxy"""
 
+# Struct fields aren't discovered in Python 3.14
+# - https://github.com/searxng/searxng/issues/5284
+from __future__ import annotations
 
 from typing import Callable
 
