@@ -25,14 +25,13 @@ jobs:
     name: Python ${{ matrix.python-version }}
     runs-on: ubuntu-24.04
     strategy:
-      fail-fast: false
       matrix:
         python-version:
           - "3.10"
           - "3.11"
           - "3.12"
           - "3.13"
-          - "3.14-dev"
+          - "3.14"
 
     steps:
       - name: Setup Python
@@ -56,7 +55,6 @@ jobs:
         run: make V=1 install
 
       - name: Run tests
-        continue-on-error: ${{ matrix.python-version == '3.14-dev' }}
         run: make V=1 ci.test
 
   theme:
