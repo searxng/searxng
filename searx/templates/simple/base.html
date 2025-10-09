@@ -51,7 +51,11 @@
         {%- endif -%}
       {%- endblock -%}
       {%- block linkto_preferences -%}
-        <a href="{{ url_for('preferences') }}" class="link_on_top_preferences">{{ icon_big('settings') }}<span>{{ _('Preferences') }}</span></a>
+        {%- if request.args.get('preferences') -%}
+          <a href="{{ url_for('preferences') }}?preferences={{ request.args.get('preferences') }}&preferences_preview_only=true" class="link_on_top_preferences">{{ icon_big('settings') }}<span>{{ _('Preferences') }}</span></a>
+        {%- else -%}
+          <a href="{{ url_for('preferences') }}" class="link_on_top_preferences">{{ icon_big('settings') }}<span>{{ _('Preferences') }}</span></a>
+        {%- endif -%}
       {%- endblock -%}
     </nav>
     {% block header %}
