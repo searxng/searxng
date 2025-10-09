@@ -155,6 +155,16 @@
 
   <h1>{{ _('Preferences') }}</h1>
 
+  {%- if request.args.get('preferences_preview_only') == 'true' -%}
+    <div class="dialog-warning-block">
+      <p>{{ _("This is a preview of the settings used by the 'Search URL' you used to get here.") }}</p>
+      <ul>
+        <li>{{ _('Press save to copy these preferences to your browser.') }}</li>
+        <li>{{ _('Click here to view your browser preferences instead:') }} <a href="{{ url_for('preferences') }}">/preferences</a></li>
+      </ul>
+    </div>
+  {%- endif -%}
+
   <form id="search_form" method="post" action="{{ url_for('preferences') }}" autocomplete="off">
     {{- tabs_open() -}}
 

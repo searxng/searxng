@@ -861,8 +861,11 @@ def preferences():
 
     # save preferences using the link the /preferences?preferences=...
     if sxng_request.args.get('preferences') or sxng_request.form.get('preferences'):
-        resp = make_response(redirect(url_for('index', _external=True)))
-        return sxng_request.preferences.save(resp)
+        # if preferences_preview_only is 'true', the prefs from the 'preferences' query are
+        # shown in the settings page, but they're not applied unless the user presses 'save'
+        if sxng_request.args.get('preferences_preview_only') != 'true':
+            resp = make_response(redirect(url_for('index', _external=True)))
+            return sxng_request.preferences.save(resp)
 
     # save preferences
     if sxng_request.method == 'POST':
