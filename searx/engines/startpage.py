@@ -128,7 +128,7 @@ time_range_support = True
 safesearch = True
 
 time_range_dict = {'day': 'd', 'week': 'w', 'month': 'm', 'year': 'y'}
-safesearch_dict = {0: '0', 1: '1', 2: '1'}
+safesearch_dict = {0: '1', 1: '0', 2: '0'}
 
 # search-url
 base_url = 'https://www.startpage.com'
