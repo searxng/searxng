@@ -100,7 +100,7 @@ Basic container instancing example:
    $ cd ./searxng/
 
    # Run the container
-   $ docker run --name searxng --replace -d \
+   $ docker run --name searxng -d \
        -p 8888:8080 \
        -v "./config/:/etc/searxng/" \
        -v "./data/:/var/cache/searxng/" \
