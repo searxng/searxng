@@ -18,7 +18,7 @@
     {%- if pageno == 1 -%}
       <li>{{ _("Refresh the page.") }}</li>{{- '' -}}
       <li>{{ _("Search for another query or select another category (above).") }}</li>{{- '' -}}
-      <li>{{ _("Change the search engine used in the preferences:") }} <a href="/preferences">/preferences</a></li>{{- '' -}}
+      <li>{{ _("Change the search engine used in the preferences:") }} <a href="{{ url_for('preferences') }}">/preferences</a></li>{{- '' -}}
       <li>{{ _("Switch to another instance:") }} <a href="https://searx.space">https://searx.space</a></li>{{- '' -}}
     {%- else -%}
       <li>{{ _("Search for another query or select another category.") }}</li>{{- '' -}}
