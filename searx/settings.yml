@@ -1426,14 +1426,14 @@ engines:
       results: JSON
 
   # https://docs.searxng.org/dev/engines/online/mullvad_leta.html
-  - name: mullvadleta
+  - name: mullvadleta-google
     engine: mullvad_leta
     disabled: true
     leta_engine: google
     categories: [general, web]
     shortcut: ml
 
-  - name: mullvadleta brave
+  - name: mullvadleta-brave
     engine: mullvad_leta
     network: mullvadleta
     disabled: true
