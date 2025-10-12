@@ -21,12 +21,12 @@ You can configure one Leta engine for Google and one for Brave:
 
 .. code:: yaml
 
-  - name: mullvadleta
+  - name: mullvadleta-google
     engine: mullvad_leta
     leta_engine: google
     shortcut: ml
 
-  - name: mullvadleta brave
+  - name: mullvadleta-brave
     engine: mullvad_leta
     network: mullvadleta  # use network from engine "mullvadleta" configured above
     leta_engine: brave
