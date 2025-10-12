@@ -28,7 +28,7 @@ You can configure one Leta engine for Google and one for Brave:
 
   - name: mullvadleta-brave
     engine: mullvad_leta
-    network: mullvadleta  # use network from engine "mullvadleta" configured above
+    network: mullvadleta-google  # use network from engine "mullvadleta-google" configured above
     leta_engine: brave
     shortcut: mlb
 
