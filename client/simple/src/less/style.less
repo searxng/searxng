@@ -169,6 +169,17 @@ article[data-vim-selected].category-social {
   .rounded-corners;
 }
 
+.image-label-bottom-right() {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  background: var(--color-image-resolution-background);
+  padding: 0.3rem 0.5rem;
+  font-size: 0.9rem;
+  color: var(--color-image-resolution-font);
+  border-top-left-radius: 0.3rem;
+}
+
 .result {
   margin: @results-margin 0;
   padding: @result-padding;
@@ -295,12 +306,22 @@ article[data-vim-selected].category-social {
     color: var(--color-result-description-highlight-font);
   }
 
-  img.thumbnail {
+  a.thumbnail_link {
+    position: relative;
+    margin-top: 0.6rem;
+    .ltr-margin-right(1rem);
     .ltr-float-left();
-    padding-top: 0.6rem;
-    .ltr-padding-right(1rem);
-    width: 7rem;
-    height: unset; // remove height value that was needed for lazy loading
+
+    img.thumbnail {
+      width: 7rem;
+      height: unset; // remove height value that was needed for lazy loading
+      display: block;
+    }
+
+    .thumbnail_length {
+      .image-label-bottom-right();
+      right: 6px;
+    }
   }
 
   .break {
@@ -391,23 +412,19 @@ article[data-vim-selected].category-social {
 }
 
 .result-videos {
-  img.thumbnail {
-    .ltr-float-left();
-    padding-top: 0.6rem;
-    .ltr-padding-right(1rem);
+  a.thumbnail_link img.thumbnail {
     width: 20rem;
-    height: unset; // remove height value that was needed for lazy loading
   }
-}
 
-.result-videos .content {
-  overflow: hidden;
-}
+  .content {
+    overflow: hidden;
+  }
 
-.result-videos .embedded-video iframe {
-  width: 100%;
-  aspect-ratio: 16 / 9;
-  padding: 10px 0 0 0;
+  .embedded-video iframe {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    padding: 10px 0 0 0;
+  }
 }
 
 @supports not (aspect-ratio: 1 / 1) {
@@ -472,14 +489,7 @@ article[data-vim-selected].category-social {
   }
 
   .image_resolution {
-    position: absolute;
-    right: 0;
-    bottom: 0;
-    background: var(--color-image-resolution-background);
-    padding: 0.3rem 0.5rem;
-    font-size: 0.9rem;
-    color: var(--color-image-resolution-font);
-    border-top-left-radius: 0.3rem;
+    .image-label-bottom-right();
   }
 
   span.title,

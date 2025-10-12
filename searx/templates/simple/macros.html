@@ -30,14 +30,15 @@
     {%- endfor %}
   </div>
   {{- result_close_link() -}}
-  {%- if result.thumbnail %}{{ result_open_link(result.url) }}<img class="thumbnail" src="{{ image_proxify(result.thumbnail) }}" title="{{ result.title|striptags }}" loading="lazy">{{ result_close_link() }}{% endif -%}
+  {%- if result.thumbnail %}{{ result_open_link(result.url, classes='thumbnail_link') }}<img class="thumbnail" src="{{ image_proxify(result.thumbnail) }}" title="{{ result.title|striptags }}" loading="lazy">{%- if result.length -%}<span class="thumbnail_length">{{ result.length }}</span>{%- endif -%}{{ result_close_link() }}{% endif -%}
   <h3>{{ result_link(result.url, result.title|safe) }}</h3>
 {%- endmacro -%}
 
 <!-- Draw result sub header -->
 {%- macro result_sub_header(result) -%}
   {%- if result.publishedDate %}<time class="published_date" datetime="{{ result.pubdate }}" >{{ result.publishedDate }}</time>{% endif -%}
-  {%- if result.length %}<div class="result_length">{{ _('Length') }}: {{ result.length }}</div>{% endif -%}
+  <!-- Length is displayed inside the thumbnail if there's any, so don't display it here a second time -->
+  {%- if result.length and not result.thumbnail %}<div class="result_length">{{ _('Length') }}: {{ result.length }}</div>{% endif -%}
   {%- if result.views %}<div class="result_views">{{ _('Views') }}: {{ result.views }}</div>{% endif -%}
   {%- if result.author %}<div class="result_author">{{ _('Author') }}: {{ result.author }}</div>{% endif -%}
   {%- if result.metadata %}<div class="highlight">{{ result.metadata|safe }}</div>{% endif -%}
