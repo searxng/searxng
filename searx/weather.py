@@ -506,15 +506,14 @@ class Compass(msgspec.Struct):
             return self.val
         raise ValueError(f"unknown unit: {unit}")
 
-    @classmethod
-    def point(cls, azimuth: float | int) -> CompassPoint:
+    def point(self, azimuth: float | int) -> CompassPoint:
         """Returns the compass point to an azimuth value."""
-        azimuth = azimuth % cls.TURN
+        azimuth = azimuth % self.TURN
         # The angle sector of a compass point starts 1/2 sector range before
         # and after compass point (example: "N" goes from -11.25° to +11.25°)
-        azimuth = azimuth - cls.RANGE / 2
-        idx = int(azimuth // cls.RANGE)
-        return cls.POINTS[idx]
+        azimuth = azimuth - self.RANGE / 2
+        idx = int(azimuth // self.RANGE)
+        return self.POINTS[idx]
 
     def l10n(
         self,
