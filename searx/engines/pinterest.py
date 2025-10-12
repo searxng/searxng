@@ -55,15 +55,18 @@ def response(resp):
         if result['type'] == 'story':
             continue
 
+        main_image = result['images']['orig']
         results.append(
             {
                 'template': 'images.html',
-                'url': result['link'] or f"{base_url}/pin/{result['id']}/",
+                'url': result.get('link') or f"{base_url}/pin/{result['id']}/",
                 'title': result.get('title') or result.get('grid_title'),
                 'content': (result.get('rich_summary') or {}).get('display_description') or "",
-                'img_src': result['images']['orig']['url'],
+                'img_src': main_image['url'],
                 'thumbnail_src': result['images']['236x']['url'],
                 'source': (result.get('rich_summary') or {}).get('site_name'),
+                'resolution': f"{main_image['width']}x{main_image['height']}",
+                'author': f"{result['pinner'].get('full_name')} ({result['pinner']['username']})",
             }
         )
 
