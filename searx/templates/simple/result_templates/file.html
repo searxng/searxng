@@ -1,0 +1,74 @@
+{% from "simple/macros.html" import result_header, result_sub_header, result_sub_footer, result_footer, result_link with context %}
+{% from "simple/icons.html" import icon_small %}
+
+{{ result_header(result, favicons, image_proxify) }}
+{{ result_sub_header(result) }}
+
+{% if result.abstract %}
+  <p class="abstract">{{ result.abstract|safe }}</p>
+{% endif -%}
+
+{%- if result.content %}
+  <p class="content">{{ result.content|safe }}</p>
+{% endif -%}
+
+<div class="attributes">
+  {% if result.author %}
+  <div>
+    <span>{{ _("Author") }}:</span>
+    <span>{{ result.author }}</span>
+  </div>
+  {% endif %}
+  {% if result.filename %}
+    <div>
+      <span>{{ _("Filename") }}:</span>
+      <span>{{ result.filename }}</span>
+    </div>
+  {% endif %}
+  {% if result.size %}
+    <div>
+      <span>{{ _("Filesize") }}:</span>
+      <span>{{ result.size }}</span>
+    </div>
+  {% endif %}
+  {% if result.time %}
+    <div>
+      <span>{{ _("Date") }}:</span>
+      <span>{{ result.time }}</span>
+    </div>
+  {% endif %}
+  {% if result.mimetype %}
+    <div>
+      <span>{{ _("Type") }}:</span>
+      <span>{{ result.mimetype }}</span>
+    </div>
+  {% endif %}
+</div>
+
+{% if result.embedded %}
+  {% if result.mtype in ("audio", "video") %}
+    <p class="altlink">
+      <a class="btn-collapse collapsed media-loader disabled_if_nojs"
+        data-target="#result-media-{{ index }}"
+        data-btn-text-collapsed="{{ _("show media") }}"
+        data-btn-text-not-collapsed="{{ _("hide media") }}"
+      >
+        {{ _("show media") }}
+      </a>
+    </p>
+    <div id="result-media-{{ index }}" class="embedded-{{ result.mtype }} invisible">
+      <{{ result.mtype }} controls preload="metadata" {% if result.thumbnail %}poster="{{ result.thumbnail }}" {%  endif %}>
+      <source src="{{result.embedded}}" type="{{ result.mtype }}/{{ result.subtype }}">
+      </{{ result.mtype }}>
+    </div>
+  {% else %}
+    <p class="altlink">
+      <a href="{{result.embedded }}" target="_blank" rel="noopener noreferrer" download>
+        {{  _("Download") }}
+      </a>
+    </p>
+  {% endif %}
+{% endif %}
+
+{{ result_sub_footer(result) }}
+{{ result_footer(result) }}
