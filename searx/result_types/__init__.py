@@ -23,6 +23,7 @@ __all__ = [
     "WeatherAnswer",
     "Code",
     "Paper",
+    "File",
 ]
 
 import typing as t
@@ -33,6 +34,7 @@ from .answer import AnswerSet, Answer, Translations, WeatherAnswer
 from .keyvalue import KeyValue
 from .code import Code
 from .paper import Paper
+from .file import File
 
 
 class ResultList(list[Result | LegacyResult], abc.ABC):
@@ -47,6 +49,7 @@ class ResultList(list[Result | LegacyResult], abc.ABC):
         KeyValue = KeyValue
         Code = Code
         Paper = Paper
+        File = File
         MainResult = MainResult
         Result = Result
         Translations = Translations
