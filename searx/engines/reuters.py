@@ -17,7 +17,6 @@ The engine has the following additional settings:
      shortcut: reu
      sort_order: "relevance"
 
-
 Implementations
 ===============
 
@@ -26,6 +25,7 @@ Implementations
 from json import dumps
 from urllib.parse import quote_plus
 from datetime import datetime, timedelta
+from dateutil import parser
 
 from searx.result_types import EngineResults
 
@@ -76,7 +76,11 @@ def request(query, params):
 def response(resp) -> EngineResults:
     res = EngineResults()
 
-    for result in resp.json().get("result", {}).get("articles", []):
+    resp_json = resp.json()
+    if not resp_json.get("result"):
+        return res
+
+    for result in resp_json["result"].get("articles", []):
         res.add(
             res.types.MainResult(
                 url=base_url + result["canonical_url"],
@@ -84,7 +88,7 @@ def response(resp) -> EngineResults:
                 content=result["description"],
                 thumbnail=result.get("thumbnail", {}).get("url", ""),
                 metadata=result.get("kicker", {}).get("name"),
-                publishedDate=datetime.fromisoformat(result["display_time"]),
+                publishedDate=parser.isoparse(result["display_time"]),
             )
         )
     return res
