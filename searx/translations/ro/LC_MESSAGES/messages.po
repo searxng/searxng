@@ -28,20 +28,19 @@
 # itsmrxyz <itsmrxyz@noreply.codeberg.org>, 2025.
 msgid ""
 msgstr ""
-"Project-Id-Version: searx\n"
+"Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-09-01 12:54+0000\n"
+"POT-Creation-Date: 2025-10-10 16:16+0000\n"
 "PO-Revision-Date: 2025-09-02 04:50+0000\n"
 "Last-Translator: return42 <return42@noreply.codeberg.org>\n"
-"Language-Team: Romanian <https://translate.codeberg.org/projects/searxng/"
-"searxng/ro/>\n"
 "Language: ro\n"
+"Language-Team: Romanian "
+"<https://translate.codeberg.org/projects/searxng/searxng/ro/>\n"
+"Plural-Forms: nplurals=3; plural=n==1 ? 0 : (n==0 || (n%100 > 0 && n%100 "
+"< 20)) ? 1 : 2;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=n==1 ? 0 : (n==0 || (n%100 > 0 && n%100 < "
-"20)) ? 1 : 2;\n"
-"X-Generator: Weblate 5.12.2\n"
 "Generated-By: Babel 2.17.0\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
@@ -85,7 +84,7 @@ msgid "videos"
 msgstr "videouri"
 
 #. CATEGORY_NAMES['RADIO']
-#: searx/engines/radio_browser.py:151 searx/searxng.msg
+#: searx/engines/radio_browser.py:142 searx/searxng.msg
 msgid "radio"
 msgstr "radio"
 
@@ -510,7 +509,7 @@ msgid "active users"
 msgstr "Utilizatori activi"
 
 #. SOCIAL_MEDIA_TERMS['COMMENTS']
-#: searx/engines/discourse.py:157 searx/engines/hackernews.py:82
+#: searx/engines/discourse.py:157 searx/engines/hackernews.py:81
 #: searx/engines/lemmy.py:130 searx/searxng.msg
 msgid "comments"
 msgstr "Comentarii"
@@ -526,7 +525,7 @@ msgid "community"
 msgstr "comunitate"
 
 #. SOCIAL_MEDIA_TERMS['POINTS']
-#: searx/engines/hackernews.py:82 searx/searxng.msg
+#: searx/engines/hackernews.py:81 searx/searxng.msg
 msgid "points"
 msgstr "Puncte"
 
@@ -536,7 +535,7 @@ msgid "title"
 msgstr "Titlu"
 
 #. SOCIAL_MEDIA_TERMS['AUTHOR']
-#: searx/engines/hackernews.py:85 searx/searxng.msg
+#: searx/engines/hackernews.py:84 searx/searxng.msg
 msgid "author"
 msgstr "autor"
 
@@ -555,28 +554,28 @@ msgstr "închis"
 msgid "answered"
 msgstr "răspuns"
 
-#: searx/webapp.py:329
+#: searx/webapp.py:328
 msgid "No item found"
 msgstr "Niciun element găsit"
 
-#: searx/engines/qwant.py:291
-#: searx/templates/simple/result_templates/images.html:23 searx/webapp.py:331
+#: searx/engines/qwant.py:289
+#: searx/templates/simple/result_templates/images.html:23 searx/webapp.py:330
 msgid "Source"
 msgstr "Sursă"
 
-#: searx/webapp.py:333
+#: searx/webapp.py:332
 msgid "Error loading the next page"
 msgstr "Eroare la încărcarea paginii următoare"
 
-#: searx/webapp.py:476 searx/webapp.py:874
+#: searx/webapp.py:475 searx/webapp.py:876
 msgid "Invalid settings, please edit your preferences"
 msgstr "Configurări nevalide, modificați preferințele"
 
-#: searx/webapp.py:492
+#: searx/webapp.py:491
 msgid "Invalid settings"
 msgstr "Configurări nevalide"
 
-#: searx/webapp.py:569 searx/webapp.py:659
+#: searx/webapp.py:568 searx/webapp.py:658
 msgid "search error"
 msgstr "eroare de căutare"
 
@@ -636,17 +635,17 @@ msgstr "eroare la API pe Server"
 msgid "Suspended"
 msgstr "Întrerupt"
 
-#: searx/webutils.py:306
+#: searx/webutils.py:308
 #, python-brace-format
 msgid "{minutes} minute(s) ago"
 msgstr "{minutes} minut(e) în urmă"
 
-#: searx/webutils.py:307
+#: searx/webutils.py:309
 #, python-brace-format
 msgid "{hours} hour(s), {minutes} minute(s) ago"
 msgstr "{hours} oră(e), {minutes} minut(e) în urmă"
 
-#: searx/answerers/random.py:69
+#: searx/answerers/random.py:68
 msgid "Generate different random values"
 msgstr "Generează valori aleatoare diferite"
 
@@ -655,7 +654,7 @@ msgstr "Generează valori aleatoare diferite"
 msgid "Compute {func} of the arguments"
 msgstr "Calculați {func} argumentelor"
 
-#: searx/engines/openstreetmap.py:158
+#: searx/engines/openstreetmap.py:156
 msgid "Show route in map .."
 msgstr "Arată ruta în hartă .."
 
@@ -668,27 +667,27 @@ msgstr "{title} (OBSOLETE)"
 msgid "This entry has been superseded by"
 msgstr "Această intrare a fost inlocuită de"
 
-#: searx/engines/qwant.py:293
+#: searx/engines/qwant.py:291
 msgid "Channel"
 msgstr "Canal"
 
-#: searx/engines/radio_browser.py:153
+#: searx/engines/radio_browser.py:144
 msgid "bitrate"
 msgstr "rata de biți"
 
-#: searx/engines/radio_browser.py:154
+#: searx/engines/radio_browser.py:145
 msgid "votes"
 msgstr "voturi"
 
-#: searx/engines/radio_browser.py:155
+#: searx/engines/radio_browser.py:146
 msgid "clicks"
 msgstr "click-uri"
 
-#: searx/engines/seekr.py:193 searx/engines/zlibrary.py:137
+#: searx/engines/seekr.py:193 searx/engines/zlibrary.py:78
 msgid "Language"
 msgstr "Limba"
 
-#: searx/engines/semantic_scholar.py:102
+#: searx/engines/semantic_scholar.py:141
 #, python-brace-format
 msgid ""
 "{numCitations} citations from the year {firstCitationVelocityYear} to "
@@ -697,7 +696,7 @@ msgstr ""
 "{numCitations} Citații din acest an {firstCitationVelocityYear} pâna la "
 "{lastCitationVelocityYear}"
 
-#: searx/engines/tineye.py:48
+#: searx/engines/tineye.py:42
 msgid ""
 "Could not read that image url. This may be due to an unsupported file "
 "format. TinEye only supports images that are JPEG, PNG, GIF, BMP, TIFF or"
@@ -707,7 +706,7 @@ msgstr ""
 "format de fișier nesuportat. TinEye suportă doar imagini care sunt JPEG, "
 "PNG,GIF, BMP, TIFF sau WebP."
 
-#: searx/engines/tineye.py:54
+#: searx/engines/tineye.py:48
 msgid ""
 "The image is too simple to find matches. TinEye requires a basic level of"
 " visual detail to successfully identify matches."
@@ -715,39 +714,39 @@ msgstr ""
 "Imaginea este prea simplă pentru a găsi potriviri. TinEye necesită cel "
 "putin un nivel minimal al detaliilor pentru a găsi cu succes potriviri."
 
-#: searx/engines/tineye.py:59
+#: searx/engines/tineye.py:53
 msgid "The image could not be downloaded."
 msgstr "Imaginea nu a putut fi descărcată."
 
-#: searx/engines/zlibrary.py:138
+#: searx/engines/zlibrary.py:79
 msgid "Book rating"
 msgstr "Recenzia cărții"
 
-#: searx/engines/zlibrary.py:139
+#: searx/engines/zlibrary.py:80
 msgid "File quality"
 msgstr "Calitatea fișierului"
 
-#: searx/plugins/ahmia_filter.py:32
+#: searx/plugins/ahmia_filter.py:33
 msgid "Ahmia blacklist"
 msgstr "Blacklist Ahmia"
 
-#: searx/plugins/ahmia_filter.py:33
+#: searx/plugins/ahmia_filter.py:34
 msgid "Filter out onion results that appear in Ahmia's blacklist."
 msgstr "Filtrarea rezultatelor .onion care apar în lista neagră a Ahmia"
 
-#: searx/plugins/calculator.py:38
+#: searx/plugins/calculator.py:37
 msgid "Basic Calculator"
 msgstr "Calculator de bază"
 
-#: searx/plugins/calculator.py:39
+#: searx/plugins/calculator.py:38
 msgid "Calculate mathematical expressions via the search bar"
 msgstr "Calculați expresii matematice prin bara de căutare"
 
-#: searx/plugins/hash_plugin.py:34
+#: searx/plugins/hash_plugin.py:33
 msgid "Hash plugin"
 msgstr "Plugin Hash"
 
-#: searx/plugins/hash_plugin.py:36
+#: searx/plugins/hash_plugin.py:35
 msgid ""
 "Converts strings to different hash digests. Available functions: md5, "
 "sha1, sha224, sha256, sha384, sha512."
@@ -755,25 +754,25 @@ msgstr ""
 "Convertește șiruri de caractere în diferite digeste hash. Funcții "
 "disponibile: md5, sha1, sha224, sha256, sha384, sha512."
 
-#: searx/plugins/hash_plugin.py:64
+#: searx/plugins/hash_plugin.py:63
 msgid "hash digest"
 msgstr "rezumat hash"
 
-#: searx/plugins/hostnames.py:123
+#: searx/plugins/hostnames.py:119
 msgid "Hostnames plugin"
 msgstr "Pluginul Hostnames"
 
-#: searx/plugins/hostnames.py:124
+#: searx/plugins/hostnames.py:120
 msgid "Rewrite hostnames and remove or prioritize results based on the hostname"
 msgstr ""
 "Rescrie hostname-urile și elimină sau prioritizează rezultatele pe baza a"
 " hostname"
 
-#: searx/plugins/oa_doi_rewrite.py:55
+#: searx/plugins/oa_doi_rewrite.py:54
 msgid "Open Access DOI rewrite"
 msgstr "Rescriere DOI cu acces deschis"
 
-#: searx/plugins/oa_doi_rewrite.py:56
+#: searx/plugins/oa_doi_rewrite.py:55
 msgid ""
 "Avoid paywalls by redirecting to open-access versions of publications "
 "when available"
@@ -781,11 +780,11 @@ msgstr ""
 "Evită „zidurile de plată” redirecționând către versiuni cu acces deschis "
 "ale publicațiilor când sunt disponibile"
 
-#: searx/plugins/self_info.py:38
+#: searx/plugins/self_info.py:37
 msgid "Self Information"
 msgstr "Informații despre sine"
 
-#: searx/plugins/self_info.py:40
+#: searx/plugins/self_info.py:39
 msgid ""
 "Displays your IP if the query is \"ip\" and your user agent if the query "
 "is \"user-agent\"."
@@ -793,27 +792,27 @@ msgstr ""
 "Afișează IP-ul dvs. dacă interogarea este „ip” și agentul de utilizator "
 "dacă interogarea este „user-agent”."
 
-#: searx/plugins/self_info.py:54
+#: searx/plugins/self_info.py:53
 msgid "Your IP is: "
 msgstr "IP-ul dumneavoastră este: "
 
-#: searx/plugins/self_info.py:58
+#: searx/plugins/self_info.py:57
 msgid "Your user-agent is: "
 msgstr "User-agent-ul dumneavoastră este: "
 
-#: searx/plugins/time_zone.py:34
+#: searx/plugins/time_zone.py:33
 msgid "Timezones plugin"
 msgstr ""
 
-#: searx/plugins/time_zone.py:35
+#: searx/plugins/time_zone.py:34
 msgid "Display the current time on different time zones."
 msgstr ""
 
-#: searx/plugins/tor_check.py:42
+#: searx/plugins/tor_check.py:41
 msgid "Tor check plugin"
 msgstr "Activeaza plugin Tor"
 
-#: searx/plugins/tor_check.py:44
+#: searx/plugins/tor_check.py:43
 msgid ""
 "This plugin checks if the address of the request is a Tor exit-node, and "
 "informs the user if it is; like check.torproject.org, but from SearXNG."
@@ -822,35 +821,35 @@ msgstr ""
 "și informează utilizatorul dacă este; la fel ca check.torproject.org, dar"
 " de la SearXNG."
 
-#: searx/plugins/tor_check.py:65
+#: searx/plugins/tor_check.py:64
 msgid "Could not download the list of Tor exit-nodes from"
 msgstr "Nu s-a putut descărca lista de noduri de ieșire Tor din"
 
-#: searx/plugins/tor_check.py:72
+#: searx/plugins/tor_check.py:71
 msgid "You are using Tor and it looks like you have the external IP address"
 msgstr "Folosiți Tor și se pare că aveți adresa IP externă"
 
-#: searx/plugins/tor_check.py:76
+#: searx/plugins/tor_check.py:75
 msgid "You are not using Tor and you have the external IP address"
 msgstr "Nu utilizați Tor și aveți adresa IP externă"
 
-#: searx/plugins/tracker_url_remover.py:36
+#: searx/plugins/tracker_url_remover.py:35
 msgid "Tracker URL remover"
 msgstr "Eliminator de URL pentru urmăritor"
 
-#: searx/plugins/tracker_url_remover.py:37
+#: searx/plugins/tracker_url_remover.py:36
 msgid "Remove trackers arguments from the returned URL"
 msgstr "Elimină argumentele urmăritorului din URL-ul returnat"
 
-#: searx/plugins/unit_converter.py:49
+#: searx/plugins/unit_converter.py:48
 msgid "Unit converter plugin"
 msgstr "Plugin de conversie a unităților"
 
-#: searx/plugins/unit_converter.py:50
+#: searx/plugins/unit_converter.py:49
 msgid "Convert between units"
 msgstr "Convertiți între unități"
 
-#: searx/result_types/answer.py:224
+#: searx/result_types/answer.py:226
 #, python-brace-format
 msgid "{location}: {temperature}, {condition}"
 msgstr "{location}: {temperature}, {condition}"
@@ -872,41 +871,41 @@ msgstr "pagină de căutare"
 msgid "Donate"
 msgstr "Donează"
 
-#: searx/templates/simple/base.html:54
+#: searx/templates/simple/base.html:55 searx/templates/simple/base.html:57
 #: searx/templates/simple/preferences.html:156
 msgid "Preferences"
 msgstr "Preferințe"
 
-#: searx/templates/simple/base.html:64
+#: searx/templates/simple/base.html:68
 msgid "Powered by"
 msgstr "Motorizat de"
 
-#: searx/templates/simple/base.html:64
+#: searx/templates/simple/base.html:68
 msgid "a privacy-respecting, open metasearch engine"
 msgstr "motor de cautare gratuit ce respecta intimitatea"
 
-#: searx/templates/simple/base.html:65
+#: searx/templates/simple/base.html:69
 #: searx/templates/simple/result_templates/packages.html:59
 msgid "Source code"
 msgstr "Cod sursă"
 
-#: searx/templates/simple/base.html:66
+#: searx/templates/simple/base.html:70
 msgid "Issue tracker"
 msgstr "Urmăritor de probleme"
 
-#: searx/templates/simple/base.html:67 searx/templates/simple/stats.html:18
+#: searx/templates/simple/base.html:71 searx/templates/simple/stats.html:18
 msgid "Engine stats"
 msgstr "Statisticile motorului"
 
-#: searx/templates/simple/base.html:69
+#: searx/templates/simple/base.html:73
 msgid "Public instances"
 msgstr "Instanțe publice"
 
-#: searx/templates/simple/base.html:72
+#: searx/templates/simple/base.html:76
 msgid "Privacy policy"
 msgstr "Politica de Confidențialitate"
 
-#: searx/templates/simple/base.html:75
+#: searx/templates/simple/base.html:79
 msgid "Contact instance maintainer"
 msgstr "Contactați întreținătorul instanței"
 
@@ -919,13 +918,14 @@ msgid "Length"
 msgstr "Lungime"
 
 #: searx/templates/simple/macros.html:41
+#: searx/templates/simple/result_templates/paper.html:74
 msgid "Views"
 msgstr "Afișări"
 
 #: searx/templates/simple/macros.html:42
 #: searx/templates/simple/result_templates/files.html:34
 #: searx/templates/simple/result_templates/images.html:19
-#: searx/templates/simple/result_templates/paper.html:6
+#: searx/templates/simple/result_templates/paper.html:14
 msgid "Author"
 msgstr "Autor"
 
@@ -1002,35 +1002,49 @@ msgstr "Testele verificatoare au eșuat "
 msgid "Errors:"
 msgstr "Erori:"
 
+#: searx/templates/simple/preferences.html:160
+msgid ""
+"This is a preview of the settings used by the 'Search URL' you used to "
+"get here."
+msgstr ""
+
+#: searx/templates/simple/preferences.html:162
+msgid "Press save to copy these preferences to your browser."
+msgstr ""
+
 #: searx/templates/simple/preferences.html:163
+msgid "Click here to view your browser preferences instead:"
+msgstr ""
+
+#: searx/templates/simple/preferences.html:173
 msgid "General"
 msgstr "Generale"
 
-#: searx/templates/simple/preferences.html:166
+#: searx/templates/simple/preferences.html:176
 msgid "Default categories"
 msgstr "Categorii implicite"
 
-#: searx/templates/simple/preferences.html:194
+#: searx/templates/simple/preferences.html:204
 msgid "User interface"
 msgstr "Interfața pentru utilizator"
 
-#: searx/templates/simple/preferences.html:217
+#: searx/templates/simple/preferences.html:227
 msgid "Privacy"
 msgstr "Confidențialitate"
 
-#: searx/templates/simple/preferences.html:232
+#: searx/templates/simple/preferences.html:242
 msgid "Engines"
 msgstr "Motoare de căutare"
 
-#: searx/templates/simple/preferences.html:234
+#: searx/templates/simple/preferences.html:244
 msgid "Currently used search engines"
 msgstr "Motoarele de căutare folosite curent"
 
-#: searx/templates/simple/preferences.html:243
+#: searx/templates/simple/preferences.html:253
 msgid "Special Queries"
 msgstr "Întrebări speciale"
 
-#: searx/templates/simple/preferences.html:251
+#: searx/templates/simple/preferences.html:261
 msgid "Cookies"
 msgstr "Cookie-uri"
 
@@ -1677,7 +1691,7 @@ msgid "Date"
 msgstr "Dată"
 
 #: searx/templates/simple/result_templates/files.html:42
-#: searx/templates/simple/result_templates/paper.html:24
+#: searx/templates/simple/result_templates/paper.html:44
 msgid "Type"
 msgstr "Tip"
 
@@ -1722,7 +1736,7 @@ msgid "Updated at"
 msgstr "Actualizat la"
 
 #: searx/templates/simple/result_templates/packages.html:30
-#: searx/templates/simple/result_templates/paper.html:25
+#: searx/templates/simple/result_templates/paper.html:50
 msgid "Tags"
 msgstr "Etichete"
 
@@ -1742,39 +1756,39 @@ msgstr "Proiect"
 msgid "Project homepage"
 msgstr "Pagina proiectului"
 
-#: searx/templates/simple/result_templates/paper.html:5
+#: searx/templates/simple/result_templates/paper.html:8
 msgid "Published date"
 msgstr "Data publicării"
 
-#: searx/templates/simple/result_templates/paper.html:9
+#: searx/templates/simple/result_templates/paper.html:20
 msgid "Journal"
 msgstr "Jurnal"
 
-#: searx/templates/simple/result_templates/paper.html:22
+#: searx/templates/simple/result_templates/paper.html:32
 msgid "Editor"
 msgstr "Editor"
 
-#: searx/templates/simple/result_templates/paper.html:23
+#: searx/templates/simple/result_templates/paper.html:38
 msgid "Publisher"
 msgstr "Editura"
 
-#: searx/templates/simple/result_templates/paper.html:26
+#: searx/templates/simple/result_templates/paper.html:56
 msgid "DOI"
 msgstr "DOI"
 
-#: searx/templates/simple/result_templates/paper.html:27
+#: searx/templates/simple/result_templates/paper.html:62
 msgid "ISSN"
 msgstr "ISSN"
 
-#: searx/templates/simple/result_templates/paper.html:28
+#: searx/templates/simple/result_templates/paper.html:68
 msgid "ISBN"
 msgstr "ISBN"
 
-#: searx/templates/simple/result_templates/paper.html:33
+#: searx/templates/simple/result_templates/paper.html:91
 msgid "PDF"
 msgstr "PDF"
 
-#: searx/templates/simple/result_templates/paper.html:34
+#: searx/templates/simple/result_templates/paper.html:92
 msgid "HTML"
 msgstr "HTML"
 
@@ -2406,3 +2420,4 @@ msgstr "ascunde video"
 
 #~ msgid "repo"
 #~ msgstr "arhive digitale"
+

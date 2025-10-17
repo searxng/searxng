@@ -16,9 +16,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-09-01 12:54+0000\n"
-"PO-Revision-Date: 2025-09-02 04:50+0000\n"
-"Last-Translator: return42 <return42@noreply.codeberg.org>\n"
+"POT-Creation-Date: 2025-10-10 16:16+0000\n"
+"PO-Revision-Date: 2025-10-12 05:09+0000\n"
+"Last-Translator: ghose <ghose@noreply.codeberg.org>\n"
 "Language-Team: Galician <https://translate.codeberg.org/projects/searxng/"
 "searxng/gl/>\n"
 "Language: gl\n"
@@ -26,7 +26,7 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.12.2\n"
+"X-Generator: Weblate 5.13.2\n"
 "Generated-By: Babel 2.17.0\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
@@ -70,7 +70,7 @@ msgid "videos"
 msgstr "vídeos"
 
 #. CATEGORY_NAMES['RADIO']
-#: searx/engines/radio_browser.py:151 searx/searxng.msg
+#: searx/engines/radio_browser.py:142 searx/searxng.msg
 msgid "radio"
 msgstr "radio"
 
@@ -495,7 +495,7 @@ msgid "active users"
 msgstr "usuarias activas"
 
 #. SOCIAL_MEDIA_TERMS['COMMENTS']
-#: searx/engines/discourse.py:157 searx/engines/hackernews.py:82
+#: searx/engines/discourse.py:157 searx/engines/hackernews.py:81
 #: searx/engines/lemmy.py:130 searx/searxng.msg
 msgid "comments"
 msgstr "comentarios"
@@ -511,7 +511,7 @@ msgid "community"
 msgstr "comunidade"
 
 #. SOCIAL_MEDIA_TERMS['POINTS']
-#: searx/engines/hackernews.py:82 searx/searxng.msg
+#: searx/engines/hackernews.py:81 searx/searxng.msg
 msgid "points"
 msgstr "puntos"
 
@@ -521,7 +521,7 @@ msgid "title"
 msgstr "título"
 
 #. SOCIAL_MEDIA_TERMS['AUTHOR']
-#: searx/engines/hackernews.py:85 searx/searxng.msg
+#: searx/engines/hackernews.py:84 searx/searxng.msg
 msgid "author"
 msgstr "autoría"
 
@@ -540,28 +540,28 @@ msgstr "fechado"
 msgid "answered"
 msgstr "respondido"
 
-#: searx/webapp.py:329
+#: searx/webapp.py:328
 msgid "No item found"
 msgstr "Non se atoparon elementos"
 
-#: searx/engines/qwant.py:291
-#: searx/templates/simple/result_templates/images.html:23 searx/webapp.py:331
+#: searx/engines/qwant.py:289
+#: searx/templates/simple/result_templates/images.html:23 searx/webapp.py:330
 msgid "Source"
 msgstr "Fonte"
 
-#: searx/webapp.py:333
+#: searx/webapp.py:332
 msgid "Error loading the next page"
 msgstr "Erro ao cargar a páxina seguinte"
 
-#: searx/webapp.py:476 searx/webapp.py:874
+#: searx/webapp.py:475 searx/webapp.py:876
 msgid "Invalid settings, please edit your preferences"
 msgstr "Axustes non válidos, por favor edita a configuración"
 
-#: searx/webapp.py:492
+#: searx/webapp.py:491
 msgid "Invalid settings"
 msgstr "Axustes non válidos"
 
-#: searx/webapp.py:569 searx/webapp.py:659
+#: searx/webapp.py:568 searx/webapp.py:658
 msgid "search error"
 msgstr "fallo na busca"
 
@@ -621,17 +621,17 @@ msgstr "erro na API do servidor"
 msgid "Suspended"
 msgstr "Suspendido"
 
-#: searx/webutils.py:306
+#: searx/webutils.py:308
 #, python-brace-format
 msgid "{minutes} minute(s) ago"
 msgstr "fai {minutes} minuto(s)"
 
-#: searx/webutils.py:307
+#: searx/webutils.py:309
 #, python-brace-format
 msgid "{hours} hour(s), {minutes} minute(s) ago"
 msgstr "fai {hours} hora(s), {minutes} minuto(s)"
 
-#: searx/answerers/random.py:69
+#: searx/answerers/random.py:68
 msgid "Generate different random values"
 msgstr "Xerar diferentes valores aleatorios"
 
@@ -640,7 +640,7 @@ msgstr "Xerar diferentes valores aleatorios"
 msgid "Compute {func} of the arguments"
 msgstr "Cálculo {func} dos argumentos"
 
-#: searx/engines/openstreetmap.py:158
+#: searx/engines/openstreetmap.py:156
 msgid "Show route in map .."
 msgstr "Mostrar ruta no mapa..."
 
@@ -653,27 +653,27 @@ msgstr "{title} (OBSOLETO)"
 msgid "This entry has been superseded by"
 msgstr "Esta entrada foi proporcionada por"
 
-#: searx/engines/qwant.py:293
+#: searx/engines/qwant.py:291
 msgid "Channel"
 msgstr "Canle"
 
-#: searx/engines/radio_browser.py:153
+#: searx/engines/radio_browser.py:144
 msgid "bitrate"
 msgstr "taxa de bits"
 
-#: searx/engines/radio_browser.py:154
+#: searx/engines/radio_browser.py:145
 msgid "votes"
 msgstr "votos"
 
-#: searx/engines/radio_browser.py:155
+#: searx/engines/radio_browser.py:146
 msgid "clicks"
 msgstr "clicks"
 
-#: searx/engines/seekr.py:193 searx/engines/zlibrary.py:137
+#: searx/engines/seekr.py:193 searx/engines/zlibrary.py:78
 msgid "Language"
 msgstr "Idioma"
 
-#: searx/engines/semantic_scholar.py:102
+#: searx/engines/semantic_scholar.py:141
 #, python-brace-format
 msgid ""
 "{numCitations} citations from the year {firstCitationVelocityYear} to "
@@ -682,7 +682,7 @@ msgstr ""
 "{numCitations} citas desde o ano {firstCitationVelocityYear} ao "
 "{lastCitationVelocityYear}"
 
-#: searx/engines/tineye.py:48
+#: searx/engines/tineye.py:42
 msgid ""
 "Could not read that image url. This may be due to an unsupported file "
 "format. TinEye only supports images that are JPEG, PNG, GIF, BMP, TIFF or"
@@ -692,7 +692,7 @@ msgstr ""
 "ficheiro non soportado. TinEye só soporta imaxes tipo JPEG, PNG, GIF, "
 "BMP, TIFF ou WebP."
 
-#: searx/engines/tineye.py:54
+#: searx/engines/tineye.py:48
 msgid ""
 "The image is too simple to find matches. TinEye requires a basic level of"
 " visual detail to successfully identify matches."
@@ -700,39 +700,39 @@ msgstr ""
 "A imaxe é demasiado simple para atopar coincidencias. TinEyes require un "
 "nivel de detalle básico para poder atopar coincidencias."
 
-#: searx/engines/tineye.py:59
+#: searx/engines/tineye.py:53
 msgid "The image could not be downloaded."
 msgstr "Non se puido descargar a imaxe."
 
-#: searx/engines/zlibrary.py:138
+#: searx/engines/zlibrary.py:79
 msgid "Book rating"
 msgstr "Valoración do libro"
 
-#: searx/engines/zlibrary.py:139
+#: searx/engines/zlibrary.py:80
 msgid "File quality"
 msgstr "Calidade do ficheiro"
 
-#: searx/plugins/ahmia_filter.py:32
+#: searx/plugins/ahmia_filter.py:33
 msgid "Ahmia blacklist"
 msgstr "Lista negra de Ahmia"
 
-#: searx/plugins/ahmia_filter.py:33
+#: searx/plugins/ahmia_filter.py:34
 msgid "Filter out onion results that appear in Ahmia's blacklist."
 msgstr "Filtrar os resultados de onion que aparecen na lista negra de Ahmia"
 
-#: searx/plugins/calculator.py:38
+#: searx/plugins/calculator.py:37
 msgid "Basic Calculator"
 msgstr "Calculadora básica"
 
-#: searx/plugins/calculator.py:39
+#: searx/plugins/calculator.py:38
 msgid "Calculate mathematical expressions via the search bar"
 msgstr "Calcular expresións matemáticas usando a barra de busca"
 
-#: searx/plugins/hash_plugin.py:34
+#: searx/plugins/hash_plugin.py:33
 msgid "Hash plugin"
 msgstr "Complemento de suma"
 
-#: searx/plugins/hash_plugin.py:36
+#: searx/plugins/hash_plugin.py:35
 msgid ""
 "Converts strings to different hash digests. Available functions: md5, "
 "sha1, sha224, sha256, sha384, sha512."
@@ -740,25 +740,25 @@ msgstr ""
 "Crea a suma de comprobación dunha cadea de texto . Funcións dispoñibles: "
 "md5, sha1, sha224, sha256, sha384, sha512."
 
-#: searx/plugins/hash_plugin.py:64
+#: searx/plugins/hash_plugin.py:63
 msgid "hash digest"
 msgstr "función hash"
 
-#: searx/plugins/hostnames.py:123
+#: searx/plugins/hostnames.py:119
 msgid "Hostnames plugin"
 msgstr "Complemento de nomes de servidor"
 
-#: searx/plugins/hostnames.py:124
+#: searx/plugins/hostnames.py:120
 msgid "Rewrite hostnames and remove or prioritize results based on the hostname"
 msgstr ""
 "Reescribir nomes de servidor e quitar ou priorizar resultados en función "
 "do nome de servidor"
 
-#: searx/plugins/oa_doi_rewrite.py:55
+#: searx/plugins/oa_doi_rewrite.py:54
 msgid "Open Access DOI rewrite"
 msgstr "Reescritura Open Access DOI"
 
-#: searx/plugins/oa_doi_rewrite.py:56
+#: searx/plugins/oa_doi_rewrite.py:55
 msgid ""
 "Avoid paywalls by redirecting to open-access versions of publications "
 "when available"
@@ -766,11 +766,11 @@ msgstr ""
 "Evitar valados de pago redirixindo a versións abertas das publicacións "
 "cando estean dispoñibles"
 
-#: searx/plugins/self_info.py:38
+#: searx/plugins/self_info.py:37
 msgid "Self Information"
 msgstr "Información propia"
 
-#: searx/plugins/self_info.py:40
+#: searx/plugins/self_info.py:39
 msgid ""
 "Displays your IP if the query is \"ip\" and your user agent if the query "
 "is \"user-agent\"."
@@ -778,27 +778,27 @@ msgstr ""
 "Mostra o teu IP se a consulta é «ip» e o User Agent se a consulta é "
 "«user-agent»."
 
-#: searx/plugins/self_info.py:54
+#: searx/plugins/self_info.py:53
 msgid "Your IP is: "
 msgstr "O teu IP: "
 
-#: searx/plugins/self_info.py:58
+#: searx/plugins/self_info.py:57
 msgid "Your user-agent is: "
 msgstr "O teu user-agent: "
 
-#: searx/plugins/time_zone.py:34
+#: searx/plugins/time_zone.py:33
 msgid "Timezones plugin"
 msgstr "Complemento de zonas horarias"
 
-#: searx/plugins/time_zone.py:35
+#: searx/plugins/time_zone.py:34
 msgid "Display the current time on different time zones."
 msgstr "Mostra a hora actual en diferentes zonas horarias."
 
-#: searx/plugins/tor_check.py:42
+#: searx/plugins/tor_check.py:41
 msgid "Tor check plugin"
 msgstr "Complemento para comprobar Tor"
 
-#: searx/plugins/tor_check.py:44
+#: searx/plugins/tor_check.py:43
 msgid ""
 "This plugin checks if the address of the request is a Tor exit-node, and "
 "informs the user if it is; like check.torproject.org, but from SearXNG."
@@ -807,35 +807,35 @@ msgstr ""
 "Tor, e informate de se o é; como check.torproject.org, pero desde "
 "SearXNG."
 
-#: searx/plugins/tor_check.py:65
+#: searx/plugins/tor_check.py:64
 msgid "Could not download the list of Tor exit-nodes from"
 msgstr "Non se descargou a lista de nodos de saída de Tor desde"
 
-#: searx/plugins/tor_check.py:72
+#: searx/plugins/tor_check.py:71
 msgid "You are using Tor and it looks like you have the external IP address"
 msgstr "Estás a usar Tor e semella que tes o enderezo IP de saída"
 
-#: searx/plugins/tor_check.py:76
+#: searx/plugins/tor_check.py:75
 msgid "You are not using Tor and you have the external IP address"
 msgstr "Non estás a usar Tor e tes o enderezo IP de saída"
 
-#: searx/plugins/tracker_url_remover.py:36
+#: searx/plugins/tracker_url_remover.py:35
 msgid "Tracker URL remover"
 msgstr "Eliminador de rastrexadores na URL"
 
-#: searx/plugins/tracker_url_remover.py:37
+#: searx/plugins/tracker_url_remover.py:36
 msgid "Remove trackers arguments from the returned URL"
 msgstr "Elimina os elementos de rastrexo da URL devolta"
 
-#: searx/plugins/unit_converter.py:49
+#: searx/plugins/unit_converter.py:48
 msgid "Unit converter plugin"
 msgstr "Complemento conversor de unidades"
 
-#: searx/plugins/unit_converter.py:50
+#: searx/plugins/unit_converter.py:49
 msgid "Convert between units"
 msgstr "Converter unidades"
 
-#: searx/result_types/answer.py:224
+#: searx/result_types/answer.py:226
 #, python-brace-format
 msgid "{location}: {temperature}, {condition}"
 msgstr "{location}: {temperature}, {condition}"
@@ -857,41 +857,41 @@ msgstr "páxina de busca"
 msgid "Donate"
 msgstr "Doar"
 
-#: searx/templates/simple/base.html:54
+#: searx/templates/simple/base.html:55 searx/templates/simple/base.html:57
 #: searx/templates/simple/preferences.html:156
 msgid "Preferences"
 msgstr "Axustes"
 
-#: searx/templates/simple/base.html:64
+#: searx/templates/simple/base.html:68
 msgid "Powered by"
 msgstr "Proporcionado por"
 
-#: searx/templates/simple/base.html:64
+#: searx/templates/simple/base.html:68
 msgid "a privacy-respecting, open metasearch engine"
 msgstr "metabuscador aberto que respecta a privacidade"
 
-#: searx/templates/simple/base.html:65
+#: searx/templates/simple/base.html:69
 #: searx/templates/simple/result_templates/packages.html:59
 msgid "Source code"
 msgstr "Código fonte"
 
-#: searx/templates/simple/base.html:66
+#: searx/templates/simple/base.html:70
 msgid "Issue tracker"
 msgstr "Seguimento de incidencias"
 
-#: searx/templates/simple/base.html:67 searx/templates/simple/stats.html:18
+#: searx/templates/simple/base.html:71 searx/templates/simple/stats.html:18
 msgid "Engine stats"
 msgstr "Estatísticas do buscador"
 
-#: searx/templates/simple/base.html:69
+#: searx/templates/simple/base.html:73
 msgid "Public instances"
 msgstr "Instancias públicas"
 
-#: searx/templates/simple/base.html:72
+#: searx/templates/simple/base.html:76
 msgid "Privacy policy"
 msgstr "Política de privacidade"
 
-#: searx/templates/simple/base.html:75
+#: searx/templates/simple/base.html:79
 msgid "Contact instance maintainer"
 msgstr "Contactar coa administración"
 
@@ -904,13 +904,14 @@ msgid "Length"
 msgstr "Duración"
 
 #: searx/templates/simple/macros.html:41
+#: searx/templates/simple/result_templates/paper.html:74
 msgid "Views"
 msgstr "Visualizacións"
 
 #: searx/templates/simple/macros.html:42
 #: searx/templates/simple/result_templates/files.html:34
 #: searx/templates/simple/result_templates/images.html:19
-#: searx/templates/simple/result_templates/paper.html:6
+#: searx/templates/simple/result_templates/paper.html:14
 msgid "Author"
 msgstr "Autoría"
 
@@ -979,35 +980,51 @@ msgstr "Test con fallo(s): "
 msgid "Errors:"
 msgstr "Erros:"
 
+#: searx/templates/simple/preferences.html:160
+msgid ""
+"This is a preview of the settings used by the 'Search URL' you used to "
+"get here."
+msgstr ""
+"Esta é unha vista previa dos axustes utilizados por «URL de busca» que antes "
+"tiñas aquí."
+
+#: searx/templates/simple/preferences.html:162
+msgid "Press save to copy these preferences to your browser."
+msgstr "Preme en gardar unha copia destas preferencias no teu navegador."
+
 #: searx/templates/simple/preferences.html:163
+msgid "Click here to view your browser preferences instead:"
+msgstr "Preme aquí se queres ver as preferencias do teu navegador:"
+
+#: searx/templates/simple/preferences.html:173
 msgid "General"
 msgstr "Xeral"
 
-#: searx/templates/simple/preferences.html:166
+#: searx/templates/simple/preferences.html:176
 msgid "Default categories"
 msgstr "Categorías por defecto"
 
-#: searx/templates/simple/preferences.html:194
+#: searx/templates/simple/preferences.html:204
 msgid "User interface"
 msgstr "Interface"
 
-#: searx/templates/simple/preferences.html:217
+#: searx/templates/simple/preferences.html:227
 msgid "Privacy"
 msgstr "Privacidade"
 
-#: searx/templates/simple/preferences.html:232
+#: searx/templates/simple/preferences.html:242
 msgid "Engines"
 msgstr "Motores"
 
-#: searx/templates/simple/preferences.html:234
+#: searx/templates/simple/preferences.html:244
 msgid "Currently used search engines"
 msgstr "Motores de busca utilizados actualmente"
 
-#: searx/templates/simple/preferences.html:243
+#: searx/templates/simple/preferences.html:253
 msgid "Special Queries"
 msgstr "Consultas especiais"
 
-#: searx/templates/simple/preferences.html:251
+#: searx/templates/simple/preferences.html:261
 msgid "Cookies"
 msgstr "Rastros"
 
@@ -1654,7 +1671,7 @@ msgid "Date"
 msgstr "Data"
 
 #: searx/templates/simple/result_templates/files.html:42
-#: searx/templates/simple/result_templates/paper.html:24
+#: searx/templates/simple/result_templates/paper.html:44
 msgid "Type"
 msgstr "Tipo"
 
@@ -1699,7 +1716,7 @@ msgid "Updated at"
 msgstr "Actualizado o"
 
 #: searx/templates/simple/result_templates/packages.html:30
-#: searx/templates/simple/result_templates/paper.html:25
+#: searx/templates/simple/result_templates/paper.html:50
 msgid "Tags"
 msgstr "Etiquetas"
 
@@ -1719,39 +1736,39 @@ msgstr "Proxecto"
 msgid "Project homepage"
 msgstr "Páxina web do proxecto"
 
-#: searx/templates/simple/result_templates/paper.html:5
+#: searx/templates/simple/result_templates/paper.html:8
 msgid "Published date"
 msgstr "Data de publicación"
 
-#: searx/templates/simple/result_templates/paper.html:9
+#: searx/templates/simple/result_templates/paper.html:20
 msgid "Journal"
 msgstr "Xornal"
 
-#: searx/templates/simple/result_templates/paper.html:22
+#: searx/templates/simple/result_templates/paper.html:32
 msgid "Editor"
 msgstr "Edición"
 
-#: searx/templates/simple/result_templates/paper.html:23
+#: searx/templates/simple/result_templates/paper.html:38
 msgid "Publisher"
 msgstr "Editorial"
 
-#: searx/templates/simple/result_templates/paper.html:26
+#: searx/templates/simple/result_templates/paper.html:56
 msgid "DOI"
 msgstr "DOI"
 
-#: searx/templates/simple/result_templates/paper.html:27
+#: searx/templates/simple/result_templates/paper.html:62
 msgid "ISSN"
 msgstr "ISSN"
 
-#: searx/templates/simple/result_templates/paper.html:28
+#: searx/templates/simple/result_templates/paper.html:68
 msgid "ISBN"
 msgstr "ISBN"
 
-#: searx/templates/simple/result_templates/paper.html:33
+#: searx/templates/simple/result_templates/paper.html:91
 msgid "PDF"
 msgstr "PDF"
 
-#: searx/templates/simple/result_templates/paper.html:34
+#: searx/templates/simple/result_templates/paper.html:92
 msgid "HTML"
 msgstr "HTML"
 
