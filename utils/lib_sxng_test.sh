@@ -42,7 +42,7 @@ test.pylint() {
         build_msg TEST "[pylint] ./searx ./searxng_extra ./tests"
         # shellcheck disable=SC2086
         pylint ${PYLINT_OPTIONS} ${PYLINT_VERBOSE} \
-            --ignore=searx/engines \
+            --ignore-paths=searx/engines \
             searx searx/searxng.msg \
             searxng_extra searxng_extra/docs_prebuild \
             tests
