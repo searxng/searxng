@@ -43,9 +43,12 @@ import babel
 from httpx import Response
 from lxml import html
 from searx.enginelib.traits import EngineTraits
+from searx.extended_types import SXNG_Response
+
 from searx.locales import get_official_locales, language_tag, region_tag
 from searx.utils import eval_xpath_list
 from searx.result_types import EngineResults, MainResult
+from searx.network import raise_for_httperror
 
 search_url = "https://leta.mullvad.net"
 
@@ -112,7 +115,8 @@ class DataNodeResultIndices(t.TypedDict):
     favicon: int
 
 
-def request(query: str, params: dict):
+def request(query: str, params: dict[str, t.Any]) -> None:
+    params["raise_for_httperror"] = False
     params["method"] = "GET"
     args = {
         "q": query,
@@ -136,10 +140,19 @@ def request(query: str, params: dict):
 
     params["url"] = f"{search_url}/search/__data.json?{urlencode(args)}"
 
-    return params
 
+def response(resp: SXNG_Response) -> EngineResults:
+    results = EngineResults()
 
-def response(resp: Response) -> EngineResults:
+    if resp.status_code in (403, 429):
+        # It doesn't matter if you're using Mullvad's VPN and a proper browser,
+        # you'll still get blocked for specific searches with a 403 or 429 HTTP
+        # status code.
+        # https://github.com/searxng/searxng/issues/5328#issue-3518337233
+        return results
+    # raise for other errors
+    raise_for_httperror(resp)
+
     json_response = resp.json()
 
     nodes = json_response["nodes"]
@@ -159,7 +172,6 @@ def response(resp: Response) -> EngineResults:
 
     query_items_indices = query_meta_data["items"]
 
-    results = EngineResults()
     for idx in data_nodes[query_items_indices]:
         query_item_indices: DataNodeResultIndices = data_nodes[idx]
         results.add(
