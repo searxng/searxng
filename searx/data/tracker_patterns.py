@@ -1,5 +1,6 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 """Simple implementation to store TrackerPatterns data in a SQL database."""
+# pylint: disable=too-many-branches
 
 import typing as t
 
@@ -136,18 +137,42 @@ class TrackerPatternsDB:
                 #    overlapping urlPattern like ".*"
                 continue
 
-            # remove tracker arguments from the url-query part
+            query_str: str = parsed_new_url.query
             query_args: list[tuple[str, str]] = list(parse_qsl(parsed_new_url.query))
 
-            for name, val in query_args.copy():
-                # remove URL arguments
+            if query_str and not query_args:
+                # The query argument for URLs like:
+                # - 'http://example.org?q='       --> query_str is 'q='
+                # - 'http://example.org?/foo/bar' --> query_str is 'foo/bar'
+                # is a simple string and not a key/value dict.
                 for pattern in rule[self.Fields.del_args]:
-                    if re.match(pattern, name):
-                        log.debug("TRACKER_PATTERNS: %s remove tracker arg: %s='%s'", parsed_new_url.netloc, name, val)
-                        query_args.remove((name, val))
+                    if re.match(pattern, query_str):
+                        log.debug("TRACKER_PATTERNS: %s remove tracker arg: '%s'", parsed_new_url.netloc, query_str)
+                        parsed_new_url = parsed_new_url._replace(query="")
+                        new_url = urlunparse(parsed_new_url)
+                        break
 
-            parsed_new_url = parsed_new_url._replace(query=urlencode(query_args))
-            new_url = urlunparse(parsed_new_url)
+                # Rule has been applied and the value of new_url has been
+                # updated. Continue with the next rule.
+                continue
+
+            if query_args:
+                # remove tracker arguments from the url-query part
+                for name, val in query_args.copy():
+                    # remove URL arguments
+                    for pattern in rule[self.Fields.del_args]:
+                        if re.match(pattern, name):
+                            log.debug(
+                                "TRACKER_PATTERNS: %s remove tracker arg: %s='%s'", parsed_new_url.netloc, name, val
+                            )
+                            query_args.remove((name, val))
+
+                parsed_new_url = parsed_new_url._replace(query=urlencode(query_args))
+                new_url = urlunparse(parsed_new_url)
+
+                # Rule has been applied and the value of new_url has been
+                # updated. Continue with the next rule.
+                continue
 
         if new_url != url:
             return new_url
