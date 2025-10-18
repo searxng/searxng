@@ -86,9 +86,52 @@ def response(resp) -> EngineResults:
                 url=base_url + result["canonical_url"],
                 title=result["web"],
                 content=result["description"],
-                thumbnail=result.get("thumbnail", {}).get("url", ""),
+                thumbnail=resize_url(result.get("thumbnail", {}), height=80),
                 metadata=result.get("kicker", {}).get("name"),
                 publishedDate=parser.isoparse(result["display_time"]),
             )
         )
     return res
+
+
+def resize_url(thumbnail: dict[str, str], width: int = 0, height: int = 0) -> str:
+    """Generates a URL for Reuter's thumbnail with the dimensions *width* and
+    *height*.  If no URL can be generated from the *thumbnail data*, an empty
+    string will be returned.
+
+    width: default is *unset* (``0``)
+      Image width in pixels (negative values are ignored). If only width is
+      specified, the height matches the original aspect ratio.
+
+    height: default is *unset* (``0``)
+      Image height in pixels (negative values are ignored). If only height is
+      specified, the width matches the original aspect ratio.
+
+    The file size of a full-size image is usually several MB; when reduced to a
+    height of, for example, 80 points, only a few KB remain!
+
+    Fields of the *thumbnail data* (``result.articles.[<int>].thumbnail``):
+
+    thumbnail.url:
+      Is a full-size image (>MB).
+
+    thumbnail.width & .height:
+      Dimensions of the full-size image.
+
+    thumbnail.resizer_url:
+      Reuters has a *resizer* `REST-API for the images`_, this is the URL of the
+      service. This URL includes the ``&auth`` argument, other arguments are
+      ``&width=<int>`` and ``&height=<int>``.
+
+    .. _REST-API for the images:
+        https://dev.arcxp.com/photo-center/image-resizer/resizer-v2-how-to-transform-images/#query-parameters
+    """
+
+    url = thumbnail.get("resizer_url")
+    if not url:
+        return ""
+    if int(width) > 0:
+        url += f"&width={int(width)}"
+    if int(height) > 0:
+        url += f"&height={int(height)}"
+    return url
