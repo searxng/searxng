@@ -63,6 +63,22 @@ engines:
     weight: 0.9
 
   # ==================================================
+  # Time Range Filtering Example
+  # ==================================================
+  - name: tencent_recent
+    engine: tencent
+    disabled: true
+    shortcut: tcrecent
+    categories: [general, web]
+    api_key: 'YOUR_SECRET_ID'
+    secret_key: 'YOUR_SECRET_KEY'
+    # Time range filtering (format: YYYY-MM-DD HH:MM:SS)
+    from_time: '2024-01-01 00:00:00'  # Start time (optional)
+    to_time: '2024-12-31 23:59:59'    # End time (optional)
+    timeout: 5.0
+    weight: 1.0
+
+  # ==================================================
   # Industry Filters (Premium Tier Only)
   # ==================================================
   
@@ -123,6 +139,16 @@ engines:
 #   - 'gov': Government and official sites
 #   - 'news': Authoritative media
 #   - 'acad': Academic resources
+#
+# Time Range Parameters (Optional):
+#   - from_time: Start time in format 'YYYY-MM-DD HH:MM:SS'
+#   - to_time: End time in format 'YYYY-MM-DD HH:MM:SS'
+#   - Both parameters are optional and can be used independently
+#   - Use these to filter results by publication date
+#
+# Site Parameter (Optional):
+#   - site: Domain name to restrict search (e.g., 'zhihu.com')
+#   - Only returns results from the specified website
 #
 # Quota Limits:
 #   - Basic tier: QPS 5, 1000/day

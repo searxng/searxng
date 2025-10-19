@@ -57,6 +57,68 @@ class TestTencentEngine(SearxTestCase):
         self.assertEqual(body['Cnt'], 30)
         self.assertEqual(body['Site'], 'zhihu.com')
 
+    def test_request_with_time_range(self):
+        """Test request with time range parameters"""
+        query = '新闻'
+        params = {
+            'engine_settings': {
+                'api_key': 'test_id',
+                'secret_key': 'test_key',
+                'mode': 0,
+                'from_time': '2024-01-01 00:00:00',
+                'to_time': '2024-12-31 23:59:59',
+            }
+        }
+
+        result = tencent.request(query, params)
+
+        body = json.loads(result['data'])
+        self.assertEqual(body['Query'], query)
+        self.assertEqual(body['FromTime'], '2024-01-01 00:00:00')
+        self.assertEqual(body['ToTime'], '2024-12-31 23:59:59')
+
+    def test_request_with_partial_time_range(self):
+        """Test request with only from_time parameter"""
+        query = '历史'
+        params = {
+            'engine_settings': {
+                'api_key': 'test_id',
+                'secret_key': 'test_key',
+                'mode': 0,
+                'from_time': '2024-01-01 00:00:00',
+            }
+        }
+
+        result = tencent.request(query, params)
+
+        body = json.loads(result['data'])
+        self.assertEqual(body['FromTime'], '2024-01-01 00:00:00')
+        self.assertNotIn('ToTime', body)
+
+    def test_request_with_all_optional_params(self):
+        """Test request with all optional parameters combined"""
+        query = '综合测试'
+        params = {
+            'engine_settings': {
+                'api_key': 'test_id',
+                'secret_key': 'test_key',
+                'mode': 1,
+                'cnt': 20,
+                'site': 'example.com',
+                'from_time': '2024-06-01 00:00:00',
+                'to_time': '2024-12-31 23:59:59',
+            }
+        }
+
+        result = tencent.request(query, params)
+
+        body = json.loads(result['data'])
+        self.assertEqual(body['Mode'], 1)
+        self.assertEqual(body['Cnt'], 20)
+        self.assertEqual(body['Site'], 'example.com')
+        self.assertEqual(body['FromTime'], '2024-06-01 00:00:00')
+        self.assertEqual(body['ToTime'], '2024-12-31 23:59:59')
+
     def test_response(self):
         """Test response parsing"""
         resp = Mock()

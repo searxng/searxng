@@ -92,6 +92,16 @@ Advanced Configurations
      shortcut: tczh
      site: 'zhihu.com'
 
+**Time Range Filtering:**
+
+.. code:: yaml
+
+   - name: tencent_recent
+     engine: tencent_engine
+     shortcut: tcrecent
+     from_time: '2024-01-01 00:00:00'  # Optional: Start time
+     to_time: '2024-12-31 23:59:59'    # Optional: End time
+
 **Industry Filtering (Premium):**
 
 .. code:: yaml
@@ -115,6 +125,37 @@ Advanced Configurations
      engine: tencent_engine
      shortcut: tcgov
      industry: 'gov'
+
+Configuration Parameters
+========================
+
+Required Parameters
+-------------------
+
+============= ======= ========================================================
+Parameter     Type    Description
+============= ======= ========================================================
+api_key       string  Tencent Cloud SecretId
+secret_key    string  Tencent Cloud SecretKey
+============= ======= ========================================================
+
+Optional Parameters
+-------------------
+
+============= ======= ========================================================
+Parameter     Type    Description
+============= ======= ========================================================
+mode          integer Search mode: 0=natural (default), 1=multimodal VR, 2=mixed
+cnt           integer Results count (10/20/30/40/50, premium tier for >10)
+site          string  Domain filter (e.g., 'zhihu.com')
+from_time     string  Start time in 'YYYY-MM-DD HH:MM:SS' format
+to_time       string  End time in 'YYYY-MM-DD HH:MM:SS' format
+industry      string  Industry filter: 'news', 'acad', 'gov' (premium only)
+timeout       float   Request timeout in seconds (default: 5.0)
+weight        float   Result ranking weight (default: 1.0)
+============= ======= ========================================================
+
+**Note:** The ``from_time`` and ``to_time`` parameters can be used independently or together to filter results by publication date.
 
 Usage
 =====

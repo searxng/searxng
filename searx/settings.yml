@@ -558,8 +558,12 @@ engines:
     # Get your API credentials from: https://cloud.tencent.com/product/wsa
     api_key: ""  # SecretId
     secret_key: ""  # SecretKey
+    # Optional parameters:
     # mode: 0  # 0-自然检索结果(默认), 1-多模态VR结果, 2-混合结果
     # cnt: 10  # 返回结果数量 (10/20/30/40/50, 仅限尊享版)
+    # site: ""  # 站点过滤 (例如: 'zhihu.com')
+    # from_time: ""  # 起始时间 (格式: 'YYYY-MM-DD HH:MM:SS')
+    # to_time: ""  # 结束时间 (格式: 'YYYY-MM-DD HH:MM:SS')
     disabled: true
     timeout: 5.0
     about:
