@@ -6,7 +6,7 @@ symbols and company information. It handles the special field name format used
 by Alpha Vantage API ("1. symbol", "2. name", etc.).
 """
 
-# 引擎元数据
+# Engine metadata
 about = {
     "website": "https://www.alphavantage.co/",
     "wikidata_id": "Q",
@@ -16,22 +16,21 @@ about = {
     "results": "JSON",
 }
 
-# 引擎配置
+# Engine configuration
 categories = ["finance"]
 paging = False
 language_support = False
 
-# API 配置（将从 settings.yml 中读取）
+# API configuration (read from settings.yml)
 base_url = "https://www.alphavantage.co/query"
 
 
-# 搜索函数
 def request(query, params):
-    """构建搜索请求"""
-    # 从 engine settings 获取 API key
+    """Build search request"""
+    # Get API key from engine settings
     api_key = params['engine_settings'].get('api_key', '')
     if not api_key:
-        # 如果没有 API key，返回空结果
+        # If no API key, return empty results
         params['url'] = None
         return params
 
@@ -46,25 +45,25 @@ def request(query, params):
 
 
 def response(resp):
-    """解析响应并返回结果"""
+    """Parse response and return results"""
     results = []
 
     try:
         json_data = resp.json()
 
-        # 检查是否有错误
+        # Check for errors
         if "Error Message" in json_data:
             return results
 
         if "Note" in json_data:
-            # API 限额达到
+            # API rate limit reached
             return results
 
-        # 获取搜索结果
+        # Get search results
         best_matches = json_data.get("bestMatches", [])
 
         for match in best_matches:
-            # 提取字段（处理特殊字段名）
+            # Extract fields (handle special field names)
             symbol = match.get("1. symbol", "")
             name = match.get("2. name", "")
             stock_type = match.get("3. type", "")
@@ -72,12 +71,11 @@ def response(resp):
             currency = match.get("8. currency", "")
             match_score = match.get("9. matchScore", "0")
 
-            # 构建结果
+            # Build result
             result = {
                 "title": f"{symbol} - {name}",
                 "content": f"{stock_type} | {region} | {currency}",
                 "url": f"https://finance.yahoo.com/quote/{symbol}",
-                # 额外信息
                 "metadata": f"Match Score: {float(match_score)*100:.0f}%",
             }
 
@@ -108,10 +106,10 @@ if __name__ == "__main__":
     print(f"URL: {test_params['url']}")
     print(f"Params: {test_params['data']}")
 
-    # 发送请求
+    # Send request
     api_response = requests.get(test_params["url"], params=test_params["data"], timeout=10)
 
-    # 解析结果
+    # Parse results
     class MockResponse:  # pylint: disable=too-few-public-methods
         """Mock response for testing"""
 

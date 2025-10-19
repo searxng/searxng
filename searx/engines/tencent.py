@@ -1,8 +1,8 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 """Tencent Cloud Web Search API Engine
 
-Tencent Cloud Web Search API (腾讯云联网搜索API) provides high-quality web search
-with excellent Chinese language support.
+Tencent Cloud Web Search API provides high-quality web search with excellent
+Chinese language support.
 
 API Documentation: https://cloud.tencent.com/document/product/1806/121811
 """
@@ -21,21 +21,21 @@ language_support = True
 time_range_support = False
 safesearch = False
 
-# API配置
+# API configuration
 base_url = 'https://wsa.tencentcloudapi.com'
 
 
 def sign(key, msg):
-    """生成签名"""
+    """Generate HMAC signature"""
     return hmac.new(key, msg.encode('utf-8'), hashlib.sha256).digest()
 
 
 def get_signature_v3(secret_id, secret_key, host, payload, timestamp):  # pylint: disable=too-many-locals
     """
-    生成腾讯云API v3签名
-    文档: https://cloud.tencent.com/document/api/1806/121815
+    Generate Tencent Cloud API v3 signature (TC3-HMAC-SHA256)
+    Documentation: https://cloud.tencent.com/document/api/1806/121815
     """
-    # 1. 拼接规范请求串
+    # 1. Build canonical request
     http_request_method = 'POST'
     canonical_uri = '/'
     canonical_querystring = ''
@@ -52,7 +52,7 @@ def get_signature_v3(secret_id, secret_key, host, payload, timestamp):  # pylint
         f'{hashed_request_payload}'
     )
 
-    # 2. 拼接待签名字符串
+    # 2. Build string to sign
     algorithm = 'TC3-HMAC-SHA256'
     date = datetime.utcfromtimestamp(timestamp).strftime('%Y-%m-%d')
     credential_scope = f'{date}/wsa/tc3_request'
@@ -60,13 +60,13 @@ def get_signature_v3(secret_id, secret_key, host, payload, timestamp):  # pylint
 
     string_to_sign = f'{algorithm}\n' f'{timestamp}\n' f'{credential_scope}\n' f'{hashed_canonical_request}'
 
-    # 3. 计算签名
+    # 3. Calculate signature
     secret_date = sign(f'TC3{secret_key}'.encode('utf-8'), date)
     secret_service = sign(secret_date, 'wsa')
     secret_signing = sign(secret_service, 'tc3_request')
     signature = hmac.new(secret_signing, string_to_sign.encode('utf-8'), hashlib.sha256).hexdigest()
 
-    # 4. 拼接Authorization
+    # 4. Build Authorization header
     authorization = (
         f'{algorithm} '
         f'Credential={secret_id}/{credential_scope}, '
@@ -78,42 +78,42 @@ def get_signature_v3(secret_id, secret_key, host, payload, timestamp):  # pylint
 
 
 def request(query, params):
-    """处理搜索请求"""
+    """Handle search request"""
 
-    # 从 engine_settings 获取配置
+    # Get configuration from engine_settings
     engine_settings = params.get('engine_settings', {})
     api_key = engine_settings.get('api_key', '')
     secret_key_param = engine_settings.get('secret_key', '')
-    mode = engine_settings.get('mode', 0)  # 0-自然检索结果(默认)
-    cnt = engine_settings.get('cnt', 10)  # 返回结果数量
+    mode = engine_settings.get('mode', 0)  # 0=natural search results (default)
+    cnt = engine_settings.get('cnt', 10)  # Number of results to return
 
     if not api_key or not secret_key_param:
-        # 如果没有配置 API key，返回空结果
+        # If no API key configured, return empty results
         params['url'] = None
         return params
 
-    # 准备请求参数
+    # Prepare request parameters
     timestamp = int(time.time())
     host = 'wsa.tencentcloudapi.com'
 
-    # 构建请求body
+    # Build request body
     request_body = {'Query': query, 'Mode': mode}
 
-    # 添加可选参数
+    # Add optional parameters
     if cnt and cnt > 10:
         request_body['Cnt'] = cnt
 
-    # 如果需要过滤特定域名
+    # Add site filtering if specified
     site = engine_settings.get('site', '')
     if site:
         request_body['Site'] = site
 
     payload = json.dumps(request_body)
 
-    # 生成签名
+    # Generate signature
     authorization = get_signature_v3(api_key, secret_key_param, host, payload, timestamp)
 
-    # 构建请求头
+    # Build request headers
     headers = {
         'Authorization': authorization,
         'Content-Type': 'application/json',
@@ -121,10 +121,10 @@ def request(query, params):
         'X-TC-Action': 'SearchPro',
         'X-TC-Version': '2025-05-08',
         'X-TC-Timestamp': str(timestamp),
-        'X-TC-Region': '',  # 不需要指定区域
+        'X-TC-Region': '',  # Region not required
     }
 
-    # 发送请求
+    # Send request
     params['url'] = f'https://{host}/'
     params['method'] = 'POST'
     params['headers'] = headers
@@ -134,30 +134,32 @@ def request(query, params):
 
 
 def response(resp):  # pylint: disable=too-many-branches
-    """处理API响应"""
+    """Handle API response"""
     results = []
 
     try:
         data = json.loads(resp.text)
 
-        # 检查是否有错误
+        # Check for response structure
         if 'Response' not in data:
             return results
 
         response_data = data['Response']
 
-        # 检查错误信息
+        # Check for API errors
         if 'Error' in response_data:
             error = response_data['Error']
-            error_msg = f"腾讯云API错误: {error.get('Code', 'Unknown')} - {error.get('Message', 'Unknown error')}"
+            error_code = error.get('Code', 'Unknown')
+            error_message = error.get('Message', 'Unknown error')
+            error_msg = f"Tencent Cloud API error: {error_code} - {error_message}"
             raise ValueError(error_msg)
 
-        # 解析搜索结果
+        # Parse search results
         pages = response_data.get('Pages', [])
 
         for page_str in pages:
             try:
-                # 每个page是一个JSON字符串
+                # Each page is a JSON string
                 page = json.loads(page_str)
 
                 result = {
@@ -166,7 +168,7 @@ def response(resp):  # pylint: disable=too-many-branches
                     'content': page.get('passage', page.get('content', '')),
                 }
 
-                # 添加可选字段
+                # Add optional fields
                 if 'date' in page:
                     result['publishedDate'] = page['date']
 
@@ -176,19 +178,19 @@ def response(resp):  # pylint: disable=too-many-branches
                 if 'images' in page and page['images']:
                     result['img_src'] = page['images'][0] if isinstance(page['images'], list) else page['images']
 
-                # 添加缩略图/favicon
+                # Add thumbnail/favicon
                 if 'favicon' in page and page['favicon']:
                     result['thumbnail'] = page['favicon']
 
-                # 添加相关性得分（如果有）
+                # Add relevance score if available
                 if 'score' in page:
-                    result['metadata'] = f"{result.get('metadata', '')} (相关性: {page['score']:.2f})".strip()
+                    result['metadata'] = f"{result.get('metadata', '')} (Relevance: {page['score']:.2f})".strip()
 
                 if result['url'] and result['title']:
                     results.append(result)
 
             except (json.JSONDecodeError, KeyError):
-                # 跳过格式错误的结果
+                # Skip malformed results
                 continue
 
     except json.JSONDecodeError:
@@ -196,6 +198,6 @@ def response(resp):  # pylint: disable=too-many-branches
     except ValueError:
         raise
     except Exception as exc:
-        raise ValueError(f'腾讯云搜索API错误: {str(exc)}') from exc
+        raise ValueError(f'Tencent Cloud Search API error: {str(exc)}') from exc
 
     return results
