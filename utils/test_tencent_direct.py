@@ -10,7 +10,7 @@ import time
 import hmac
 import hashlib
 import sys
-from datetime import datetime, timezone
+from datetime import datetime
 
 try:
     import requests
@@ -60,7 +60,7 @@ def get_signature_v3(secret_id, secret_key, payload, timestamp):
     
     # 2. 拼接待签名字符串
     algorithm = 'TC3-HMAC-SHA256'
-    date = datetime.fromtimestamp(timestamp, tz=timezone.utc).strftime('%Y-%m-%d')
+    date = datetime.utcfromtimestamp(timestamp).strftime('%Y-%m-%d')
     credential_scope = f'{date}/{TENCENT_SERVICE}/tc3_request'
     hashed_canonical_request = hashlib.sha256(canonical_request.encode('utf-8')).hexdigest()
     
@@ -87,17 +87,33 @@ def get_signature_v3(secret_id, secret_key, payload, timestamp):
     
     return authorization
 
-def test_tencent_api(query, secret_id, secret_key, mode=0):
+def test_tencent_api(query, secret_id, secret_key, mode=0, site=None, from_time=None, to_time=None):
     """Test Tencent Cloud API"""
     print(f"{Colors.BLUE}{'='*60}{Colors.NC}")
     print(f"{Colors.BLUE}Testing query: {query}{Colors.NC}")
     print(f"{Colors.BLUE}{'='*60}{Colors.NC}")
     print(f"Search mode: {mode} (0=natural/1=multimodal VR/2=mixed)")
+    if site:
+        print(f"Site filter: {site}")
+    if from_time:
+        print(f"From time: {from_time}")
+    if to_time:
+        print(f"To time: {to_time}")
     print()
 
     # Prepare request parameters
     timestamp = int(time.time())
-    payload = json.dumps({'Query': query, 'Mode': mode})
+    request_body = {'Query': query, 'Mode': mode}
+    
+    # Add optional parameters
+    if site:
+        request_body['Site'] = site
+    if from_time:
+        request_body['FromTime'] = from_time
+    if to_time:
+        request_body['ToTime'] = to_time
+    
+    payload = json.dumps(request_body)
 
     # Generate signature
     print(f"{Colors.YELLOW}Generating TC3-HMAC-SHA256 signature...{Colors.NC}")
@@ -267,6 +283,20 @@ def main():
                     print()
                     test_tencent_api(query, secret_id, secret_key, mode)
                     print()
+            
+            # Test optional parameters
+            advanced_test = input(f"{Colors.YELLOW}Test advanced filters (site, time range)? (y/N): {Colors.NC}").strip().lower()
+            if advanced_test == 'y':
+                print()
+                print(f"{Colors.BLUE}Testing site filter...{Colors.NC}")
+                test_tencent_api("人工智能", secret_id, secret_key, mode, site="zhihu.com")
+                print()
+                
+                print(f"{Colors.BLUE}Testing time range filter...{Colors.NC}")
+                test_tencent_api("科技新闻", secret_id, secret_key, mode, 
+                                from_time="2024-01-01 00:00:00", 
+                                to_time="2024-12-31 23:59:59")
+                print()
 
         # Summary
         print()

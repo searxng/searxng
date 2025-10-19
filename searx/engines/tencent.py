@@ -1,288 +1,30 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 """Tencent Cloud Web Search API Engine
 
-Tencent Cloud Web Search API provides high-quality web search with excellent
-Chinese language support.
+This engine uses the Tencent Cloud Web Search API to provide high-quality web
+search results with excellent Chinese language support. The API supports
+multiple search modes, site filtering, time range filtering, and industry
+filtering (premium tier only).
 
 API Documentation: https://cloud.tencent.com/document/product/1806/121811
 
-Configuration
-=============
+Configuration:
+- timeout: Recommended 10-15 seconds (API response can be slow with large result counts)
+- cnt: Number of results (10-50). Values >10 require premium tier and may increase response time
 
-All parameters from the official API documentation are supported:
+Usage with URL parameters:
+You can override settings.yml configuration by passing parameters in the URL:
+  
+  ?q=your_query&engine_data-tencent-mode=2&engine_data-tencent-cnt=50&engine_data-tencent-site=xueqiu.com&engine_data-tencent-from_time=20180101&engine_data-tencent-to_time=20181231
 
-Required:
-  - api_key (SecretId): Your Tencent Cloud API Secret ID
-  - secret_key: Your Tencent Cloud API Secret Key
+URL Parameters:
+- engine_data-tencent-mode: Search mode (0/1/2)
+- engine_data-tencent-cnt: Number of results (10-50)
+- engine_data-tencent-site: Site filter (e.g., xueqiu.com)
+- engine_data-tencent-from_time: Start time (YYYYMMDD like 20180101, or Unix timestamp like 1514764800)
+- engine_data-tencent-to_time: End time (YYYYMMDD like 20181231, or Unix timestamp like 1546300799)
 
-Optional:
-  - mode (int): Result type
-      * 0 = Natural search results (default)
-      * 1 = Multimodal VR results
-      * 2 = Mixed results (VR + natural)
-  - cnt (int): Number of results to return (10/20/30/40/50)
-      * Default: 10
-      * Values > 10 require Premium edition
-  - site (str): Domain-specific search (e.g., "zhihu.com")
-      * Only effective in mode=0 or mode=2
-  - from_time (int): Start time filter (Unix timestamp in seconds)
-      * Only effective in mode=0 or mode=2
-  - to_time (int): End time filter (Unix timestamp in seconds)
-      * Only effective in mode=0 or mode=2
-  - industry (str): Industry filter (Premium edition only)
-      * "gov" = Government agencies
-      * "news" = Authoritative media
-      * "acad" = Academic sources
-
-Example Configuration (settings.yml):
-
-.. code:: yaml
-
-  - name: tencent
-    engine: tencent
-    shortcut: tc
-    disabled: false
-    api_key: 'YOUR_SECRET_ID'
-    secret_key: 'YOUR_SECRET_KEY'
-    mode: 0
-    cnt: 10
-    # Optional filters
-    # site: 'zhihu.com'
-    # from_time: 1745498501
-    # to_time: 1745584901
-    # industry: 'news'
-
-Usage
-=====
-
-Parameter Usage
----------------
-
-All parameters are configured in settings.yml and automatically applied by the engine.
-Users do not need to manually specify parameters when searching.
-
-1. **Basic Search**:
-   Enter in search box: ``!tc keyword``
-   
-   Example: ``!tc artificial intelligence``
-
-2. **Site-Specific Search**:
-   After configuring ``site: 'zhihu.com'``, all searches are automatically limited to Zhihu
-   
-   Search: ``!tc machine learning`` → Only returns results from Zhihu
-
-3. **Time Filtering**:
-   After configuring ``from_time`` and ``to_time``, automatically filters content within the specified time range
-   
-   Note: Requires Unix timestamp in seconds
-   
-   Python conversion example:
-   ```python
-   from datetime import datetime
-   # 2025-01-01 00:00:00
-   timestamp = int(datetime(2025, 1, 1).timestamp())
-   ```
-
-4. **Industry Filtering** (Premium edition):
-   After configuring ``industry: 'news'``, automatically returns only authoritative media sources
-
-5. **Multimodal Search**:
-   After configuring ``mode: 1``, returns VR results combining images and text
-
-Multiple Engine Instances
--------------------------
-
-You can configure multiple engine instances for different purposes:
-
-.. code:: yaml
-
-  engines:
-    # General search
-    - name: tencent
-      engine: tencent
-      shortcut: tc
-      api_key: 'xxx'
-      secret_key: 'xxx'
-    
-    # Zhihu-specific search
-    - name: tencent_zhihu
-      engine: tencent
-      shortcut: tczh
-      api_key: 'xxx'
-      secret_key: 'xxx'
-      site: 'zhihu.com'
-    
-    # News search (authoritative media)
-    - name: tencent_news
-      engine: tencent
-      shortcut: tcnews
-      categories: [news]
-      api_key: 'xxx'
-      secret_key: 'xxx'
-      industry: 'news'
-      cnt: 20
-
-Then use different shortcuts when searching:
-- ``!tc keyword`` - General search
-- ``!tczh keyword`` - Search within Zhihu
-- ``!tcnews keyword`` - Authoritative media news
-
-Combining Parameters
---------------------
-
-Multiple parameters can be combined for precise search results:
-
-.. code:: yaml
-
-  - name: tencent_academic_recent
-    engine: tencent
-    shortcut: tcacad
-    api_key: 'xxx'
-    secret_key: 'xxx'
-    mode: 0
-    industry: 'acad'      # Academic sources only
-    from_time: 1735660800 # 2025-01-01
-    cnt: 30               # More results
-    
-Search: ``!tcacad quantum computing`` → Returns academic content after 2025
-
-Parameter Effectiveness Scope
-------------------------------
-
-Note: Some parameters are only effective in specific modes
-
-.. list-table::
-   :header-rows: 1
-   :widths: 20 20 20 20
-
-   * - Parameter
-     - mode=0 (Natural)
-     - mode=1 (VR)
-     - mode=2 (Mixed)
-   * - Site
-     - ✓
-     - ✗
-     - ✓ (natural part only)
-   * - FromTime
-     - ✓
-     - ✗
-     - ✓ (natural part only)
-   * - ToTime
-     - ✓
-     - ✗
-     - ✓ (natural part only)
-   * - Industry
-     - ✓
-     - ✗
-     - ✓ (natural part only)
-   * - Cnt
-     - ✓
-     - ✓
-     - ✓
-
-Dynamic Parameter Support
---------------------------
-
-**1. Site-Specific Search - Query Syntax**:
-
-In addition to static configuration in settings.yml, users can dynamically specify sites when searching:
-
-**Using site: syntax**:
-
-.. code:: text
-
-   !tc Python tutorial site:zhihu.com
-   !tc code examples site:github.com
-   !tc tech articles site:csdn.net
-
-The engine automatically recognizes ``site:`` syntax and applies site filtering.
-
-**Priority**: site: syntax in query > URL parameters > static settings in config file
-
-**Example**:
-
-.. code:: yaml
-
-   # Configure general engine (without static site)
-   - name: tencent
-     engine: tencent
-     shortcut: tc
-     api_key: 'xxx'
-     secret_key: 'xxx'
-
-When searching:
-
-- ``!tc Python`` - Search all websites
-- ``!tc Python site:zhihu.com`` - Search Zhihu only
-- ``!tc Python site:github.com`` - Search GitHub only
-- ``!tc Python site:stackoverflow.com`` - Search StackOverflow only
-
-**2. Time Range Selection - Interface Selector**:
-
-In addition to static ``from_time`` and ``to_time`` settings in config file, users can
-dynamically select time range in the search interface:
-
-1. Enter in search box: ``!tc keyword``
-2. Select time range in interface dropdown:
-   - Anytime
-   - Past day
-   - Past week
-   - Past month
-   - Past year
-3. Click search
-
-The engine automatically converts the interface selection to corresponding timestamp parameters.
-
-**Priority**: Interface time range selection > static time settings in config file
-
-**Example 1: Fully Dynamic (Recommended)**:
-
-.. code:: yaml
-
-  # Configure general engine without any filters
-  - name: tencent
-    engine: tencent
-    shortcut: tc
-    api_key: 'xxx'
-    secret_key: 'xxx'
-    # Do not set site, from_time/to_time for maximum flexibility
-
-Search examples:
-
-- ``!tc Python`` + select ``Past week`` in interface - All websites, past week
-- ``!tc Python site:github.com`` - GitHub, all time
-- ``!tc Python site:zhihu.com`` + select ``Past month`` - Zhihu, past month
-
-**Example 2: Combining Dynamic Parameters**:
-
-.. code:: text
-
-   !tc machine learning site:zhihu.com
-   # Then select "Past month" in interface
-   # Effect: Search machine learning content on Zhihu from the past month
-
-   !tc React hooks site:github.com
-   # Then select "Past year" in interface
-   # Effect: Search React hooks related code on GitHub from the past year
-
-**Example 3: Overriding Static Configuration**:
-
-.. code:: yaml
-
-  # Configure Zhihu-specific search (static site)
-  - name: tencent_zhihu
-    engine: tencent
-    shortcut: tczh
-    api_key: 'xxx'
-    secret_key: 'xxx'
-    site: 'zhihu.com'  # Static default value
-
-When searching:
-
-- ``!tczh Python`` - Search Zhihu (using static config)
-- ``!tczh Python site:github.com`` - Search GitHub (dynamic overrides static)
-
-This provides convenient defaults while retaining flexibility!
+Note: URL parameters take priority over settings.yml configuration.
 """
 
 import json
@@ -301,23 +43,45 @@ about = {
     "results": "JSON",
 }
 
+# Engine configuration
 engine_type = 'online'
 categories = ['general', 'web']
 paging = False
 language_support = True
-time_range_support = True  # Supports from_time and to_time parameters
+time_range_support = False
 safesearch = False
+timeout = 10.0  # Tencent API can be slow, increase default timeout
 
-# API configuration (will be overridden by settings.yml)
+# API configuration (set in settings.yml)
 base_url = 'https://wsa.tencentcloudapi.com'
-api_key = ''
-secret_key = ''
-mode = 0  # 0=Natural search (default), 1=Multimodal VR, 2=Mixed results
-cnt = 10  # Number of results (10/20/30/40/50, Premium edition required for >10)
-site = ''  # Domain-specific search
-from_time = 0  # Start time (Unix timestamp in seconds), 0 means not set
-to_time = 0  # End time (Unix timestamp in seconds), 0 means not set
-industry = ''  # Industry filter: gov=Government, news=Media, acad=Academic (Premium only)
+api_key = ''  # SecretId from Tencent Cloud (required)
+secret_key = ''  # SecretKey from Tencent Cloud (required)
+
+# Optional parameters (can be set in settings.yml):
+# - mode: Search mode (0=natural, 1=multimodal VR, 2=mixed), default: 0
+#     Note: mode=1 ignores time filters; mode=0 applies to all results; mode=2 applies to natural results
+# - cnt: Number of results (10/20/30/40/50), default: 10
+# - site: Site filter (e.g., "xueqiu.com")
+# - from_time: Start time filter, supports two formats:
+#     1. YYYYMMDD: e.g., 20180101 (will be converted to Unix timestamp at 00:00:00 UTC)
+#     2. Unix timestamp: e.g., 1514764800 (seconds since epoch)
+# - to_time: End time filter, supports two formats:
+#     1. YYYYMMDD: e.g., 20181231 (will be converted to Unix timestamp at 23:59:59 UTC)
+#     2. Unix timestamp: e.g., 1546300799 (seconds since epoch)
+# 
+# Example configuration:
+#   - name: tencent
+#     engine: tencent
+#     api_key: 'YOUR_KEY'
+#     secret_key: 'YOUR_SECRET'
+#     mode: 2
+#     cnt: 50
+#     site: 'xueqiu.com'
+#     from_time: 20180101      # YYYYMMDD format (auto-converted to timestamp)
+#     to_time: 20181231        # or use Unix timestamp: 1546300799
+#
+# These are NOT defined as module variables to avoid "missing required attribute" errors.
+# Use globals().get() with defaults in request function
 
 
 def sign(key, msg):
@@ -326,11 +90,11 @@ def sign(key, msg):
 
 
 def get_signature_v3(secret_id, secret_key, host, payload, timestamp):  # pylint: disable=too-many-locals
-    """
-    Generate Tencent Cloud API v3 signature (TC3-HMAC-SHA256)
+    """Generate Tencent Cloud API v3 signature (TC3-HMAC-SHA256).
+    
     Documentation: https://cloud.tencent.com/document/api/1806/121815
     """
-    # 1. Build canonical request
+    # Step 1: Build canonical request
     http_request_method = 'POST'
     canonical_uri = '/'
     canonical_querystring = ''
@@ -347,21 +111,26 @@ def get_signature_v3(secret_id, secret_key, host, payload, timestamp):  # pylint
         f'{hashed_request_payload}'
     )
 
-    # 2. Build string to sign
+    # Step 2: Build string to sign
     algorithm = 'TC3-HMAC-SHA256'
     date = datetime.fromtimestamp(timestamp, tz=timezone.utc).strftime('%Y-%m-%d')
     credential_scope = f'{date}/wsa/tc3_request'
     hashed_canonical_request = hashlib.sha256(canonical_request.encode('utf-8')).hexdigest()
 
-    string_to_sign = f'{algorithm}\n' f'{timestamp}\n' f'{credential_scope}\n' f'{hashed_canonical_request}'
+    string_to_sign = (
+        f'{algorithm}\n'
+        f'{timestamp}\n'
+        f'{credential_scope}\n'
+        f'{hashed_canonical_request}'
+    )
 
-    # 3. Calculate signature
+    # Step 3: Calculate signature
     secret_date = sign(f'TC3{secret_key}'.encode('utf-8'), date)
     secret_service = sign(secret_date, 'wsa')
     secret_signing = sign(secret_service, 'tc3_request')
     signature = hmac.new(secret_signing, string_to_sign.encode('utf-8'), hashlib.sha256).hexdigest()
 
-    # 4. Build Authorization header
+    # Step 4: Build Authorization header
     authorization = (
         f'{algorithm} '
         f'Credential={secret_id}/{credential_scope}, '
@@ -373,103 +142,82 @@ def get_signature_v3(secret_id, secret_key, host, payload, timestamp):  # pylint
 
 
 def request(query, params):
-    """Handle search request
+    """Build search request for Tencent Cloud API."""
     
-    Supports both static configuration (from settings.yml) and dynamic parameters
-    from search interface or query syntax.
-    
-    Dynamic parameter syntax:
-    - Time: Use interface time range selector
-    - Site: Use 'site:domain.com' in query, e.g., "!tc Python site:github.com"
-    """
-
-    # Get configuration from module-level variables (set by settings.yml)
-    # These variables are set by SearXNG when loading the engine
+    # Check if API credentials are configured
     if not api_key or not secret_key:
-        # If no API key configured, return empty results
+        # If no API credentials configured, return empty results
         params['url'] = None
         return params
+    
+    # Get engine_data from URL parameters (takes priority over settings.yml)
+    # URL format: ?q=test&engine_data-tencent-mode=2&engine_data-tencent-cnt=50
+    engine_data = params.get('engine_data', {})
+    
+    # Get optional parameters: URL params override settings.yml config
+    # Priority: URL params > settings.yml > defaults
+    search_mode = int(engine_data.get('mode', globals().get('mode', 0)))
+    result_count = int(engine_data.get('cnt', globals().get('cnt', 10)))
+    site_filter = engine_data.get('site', globals().get('site'))
+    start_time = engine_data.get('from_time', globals().get('from_time'))
+    end_time = engine_data.get('to_time', globals().get('to_time'))
+    
+    # Build request body
+    request_body = {
+        'Query': query,
+        'Mode': search_mode,
+    }
 
-    # Parse dynamic site parameter from query
-    # Support syntax: "keyword site:domain.com" or "site:domain.com keyword"
-    dynamic_site = None
-    clean_query = query
-    
-    # Check for site: syntax in query
-    import re
-    site_pattern = r'\bsite:(\S+)\b'
-    site_match = re.search(site_pattern, query, re.IGNORECASE)
-    if site_match:
-        dynamic_site = site_match.group(1)
-        # Remove site: part from query
-        clean_query = re.sub(site_pattern, '', query, flags=re.IGNORECASE).strip()
-    
-    # Prepare request parameters
+    # Add result count (API default is 10, but we explicitly set it if different)
+    if result_count != 10:
+        request_body['Cnt'] = result_count
+
+    # Add site filter
+    if site_filter:
+        request_body['Site'] = site_filter
+
+    # Add time range parameters
+    # API expects Unix timestamp (seconds since epoch)
+    # Input can be:
+    #   1. Unix timestamp (int): e.g., 1745498501
+    #   2. YYYYMMDD format (int/str): e.g., 20180101 or "20180101" -> converted to timestamp
+    if start_time:
+        try:
+            timestamp_val = int(start_time)
+            # If value looks like YYYYMMDD (8 digits, < 100000000), convert to timestamp
+            if timestamp_val < 100000000:
+                # Parse as YYYYMMDD and convert to timestamp
+                year = timestamp_val // 10000
+                month = (timestamp_val % 10000) // 100
+                day = timestamp_val % 100
+                dt = datetime(year, month, day, 0, 0, 0, tzinfo=timezone.utc)
+                request_body['FromTime'] = int(dt.timestamp())
+            else:
+                # Already a timestamp
+                request_body['FromTime'] = timestamp_val
+        except (ValueError, TypeError):
+            pass  # Skip invalid time values
+
+    if end_time:
+        try:
+            timestamp_val = int(end_time)
+            # If value looks like YYYYMMDD (8 digits, < 100000000), convert to timestamp
+            if timestamp_val < 100000000:
+                # Parse as YYYYMMDD and convert to timestamp (end of day)
+                year = timestamp_val // 10000
+                month = (timestamp_val % 10000) // 100
+                day = timestamp_val % 100
+                dt = datetime(year, month, day, 23, 59, 59, tzinfo=timezone.utc)
+                request_body['ToTime'] = int(dt.timestamp())
+            else:
+                # Already a timestamp
+                request_body['ToTime'] = timestamp_val
+        except (ValueError, TypeError):
+            pass  # Skip invalid time values
+
+    # Prepare request
     timestamp = int(time.time())
     host = 'wsa.tencentcloudapi.com'
-
-    # Build request body with cleaned query
-    request_body = {'Query': clean_query, 'Mode': mode}
-
-    # Add optional parameters
-    # Cnt: Number of results (10/20/30/40/50, Premium edition required for >10)
-    if cnt and cnt > 10:
-        request_body['Cnt'] = cnt
-
-    # Site: Domain-specific search (filters natural search results)
-    # Supports three methods (priority from high to low):
-    # 1. site: syntax in query (dynamic, highest priority)
-    # 2. URL parameter passing (dynamic)
-    # 3. Configuration file setting (static)
-    # Note: Invalid in mode=1; effective in mode=0/2
-    final_site = None
-    
-    if dynamic_site:
-        # Use site: syntax from query first
-        final_site = dynamic_site
-    elif params.get('engine_data', {}).get('tencent', {}).get('site'):
-        # Then use URL parameter
-        final_site = params['engine_data']['tencent']['site']
-    elif site:
-        # Finally use static setting from config file
-        final_site = site
-    
-    if final_site:
-        request_body['Site'] = final_site
-
-    # FromTime & ToTime: Time filtering (filters natural search results)
-    # Supports two methods:
-    # 1. Static settings from config file: from_time/to_time
-    # 2. Dynamic selection from user interface: time_range (higher priority)
-    if params.get('time_range'):
-        # User selected time range in search interface, convert to timestamp
-        range_map = {
-            'day': 86400,      # 1 day in seconds
-            'week': 604800,    # 7 days
-            'month': 2592000,  # 30 days
-            'year': 31536000   # 365 days
-        }
-        if params['time_range'] in range_map:
-            # Calculate start time (current time - time range)
-            request_body['FromTime'] = timestamp - range_map[params['time_range']]
-            request_body['ToTime'] = timestamp
-    else:
-        # Use static time range from config file
-        # FromTime: Start time (filters natural search results), precise to seconds
-        # Note: Invalid in mode=1; effective in mode=0/2
-        if from_time and from_time > 0:
-            request_body['FromTime'] = int(from_time)
-
-        # ToTime: End time (filters natural search results), precise to seconds
-        # Note: Invalid in mode=1; effective in mode=0/2
-        if to_time and to_time > 0:
-            request_body['ToTime'] = int(to_time)
-
-    # Industry: Industry filter (Premium edition only)
-    # gov=Government agencies, news=Authoritative media, acad=Academic
-    if industry and industry in ['gov', 'news', 'acad']:
-        request_body['Industry'] = industry
-
     payload = json.dumps(request_body)
 
     # Generate signature
@@ -483,10 +231,9 @@ def request(query, params):
         'X-TC-Action': 'SearchPro',
         'X-TC-Version': '2025-05-08',
         'X-TC-Timestamp': str(timestamp),
-        'X-TC-Region': '',  # Region not required
+        'X-TC-Region': '',
     }
 
-    # Send request
     params['url'] = f'https://{host}/'
     params['method'] = 'POST'
     params['headers'] = headers
@@ -495,84 +242,81 @@ def request(query, params):
     return params
 
 
-def response(resp):  # pylint: disable=too-many-branches
-    """Handle API response"""
+def response(resp):
+    """Parse API response and return search results."""
     results = []
 
     try:
-        data = json.loads(resp.text)
-
-        # Check for response structure
-        if 'Response' not in data:
-            return results
-
-        response_data = data['Response']
-
-        # Check for API errors
-        if 'Error' in response_data:
-            error = response_data['Error']
-            error_code = error.get('Code', 'Unknown')
-            error_message = error.get('Message', 'Unknown error')
-            error_msg = f"Tencent Cloud API error: {error_code} - {error_message}"
-            raise ValueError(error_msg)
-
-        # Parse search results
-        pages = response_data.get('Pages', [])
-
-        for page_str in pages:
-            try:
-                # Each page is a JSON string
-                page = json.loads(page_str)
-
-                result = {
-                    'url': page.get('url', ''),
-                    'title': page.get('title', ''),
-                    'content': page.get('passage', page.get('content', '')),
-                }
-
-                # Add optional fields - parse date string to datetime object
-                if 'date' in page and page['date']:
-                    # Try to parse the date string
-                    # Common formats: "2024-01-15", "2024-01-15 10:30:00", etc.
-                    date_str = page['date']
-                    try:
-                        # Try common date formats
-                        for date_format in ['%Y-%m-%d %H:%M:%S', '%Y-%m-%d', '%Y/%m/%d', '%Y-%m-%dT%H:%M:%S']:
-                            try:
-                                result['publishedDate'] = datetime.strptime(date_str, date_format)
-                                break
-                            except ValueError:
-                                continue
-                    except Exception:  # pylint: disable=broad-except
-                        # If parsing fails, skip the date field
-                        pass
-
-                if 'site' in page:
-                    result['metadata'] = page['site']
-
-                if 'images' in page and page['images']:
-                    result['img_src'] = page['images'][0] if isinstance(page['images'], list) else page['images']
-
-                # Add thumbnail/favicon
-                if 'favicon' in page and page['favicon']:
-                    result['thumbnail'] = page['favicon']
-
-                # Add relevance score if available
-                if 'score' in page:
-                    result['metadata'] = f"{result.get('metadata', '')} (Relevance: {page['score']:.2f})".strip()
-
-                if result['url'] and result['title']:
-                    results.append(result)
-
-            except (json.JSONDecodeError, KeyError):
-                # Skip malformed results
-                continue
-
+        data = resp.json()
     except json.JSONDecodeError:
         return results
-    except ValueError:
-        raise
-    except Exception as exc:
-        raise ValueError(f'Tencent Cloud Search API error: {str(exc)}') from exc
+
+    # Check response structure
+    if 'Response' not in data:
+        return results
+
+    response_data = data['Response']
+
+    # Check for API errors
+    if 'Error' in response_data:
+        error = response_data['Error']
+        error_code = error.get('Code', 'Unknown')
+        error_message = error.get('Message', 'Unknown error')
+        raise ValueError(f"Tencent Cloud API error: {error_code} - {error_message}")
+
+    # Parse search results
+    pages = response_data.get('Pages', [])
+
+    for page_str in pages:
+        try:
+            # Each page is a JSON string that needs to be parsed
+            page = json.loads(page_str)
+
+            url = page.get('url', '')
+            title = page.get('title', '')
+            
+            if not url or not title:
+                continue
+
+            # Build result dictionary
+            result = {
+                'url': url,
+                'title': title,
+                'content': page.get('passage', page.get('content', '')),
+            }
+
+            # Add optional fields
+            if 'date' in page:
+                try:
+                    # Parse date string to datetime object
+                    # Format: "2025-10-04 05:00:47"
+                    result['publishedDate'] = datetime.strptime(page['date'], '%Y-%m-%d %H:%M:%S')
+                except (ValueError, TypeError):
+                    # If date parsing fails, skip this field
+                    pass
+
+            if 'site' in page:
+                result['metadata'] = page['site']
+
+            if 'images' in page and page['images']:
+                if isinstance(page['images'], list):
+                    result['img_src'] = page['images'][0]
+                else:
+                    result['img_src'] = page['images']
+
+            if 'favicon' in page and page['favicon']:
+                result['thumbnail'] = page['favicon']
+
+            # Add relevance score to metadata
+            if 'score' in page:
+                metadata = result.get('metadata', '')
+                score_info = f"Relevance: {page['score']:.2f}"
+                result['metadata'] = f"{metadata} ({score_info})".strip()
+
+            results.append(result)
+
+        except (json.JSONDecodeError, KeyError):
+            # Skip malformed results
+            continue
 
     return results
