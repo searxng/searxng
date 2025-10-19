@@ -406,6 +406,22 @@ engines:
       require_api_key: false
       results: JSON
 
+  - name: alphavantage
+    engine: alphavantage
+    shortcut: av
+    categories: [finance]
+    # Get your free API key from: https://www.alphavantage.co/support/#api-key
+    api_key: ""
+    disabled: true
+    timeout: 5.0
+    about:
+      website: https://www.alphavantage.co/
+      wikidata_id: Q
+      official_api_documentation: https://www.alphavantage.co/documentation/
+      use_official_api: true
+      require_api_key: true
+      results: JSON
+
   - name: astrophysics data system
     engine: astrophysics_data_system
     shortcut: ads
@@ -534,6 +550,24 @@ engines:
     engine: baidu
     shortcut: bdk
     disabled: true
+
+  - name: tencent
+    engine: tencent
+    shortcut: tc
+    categories: [general, web]
+    # Get your API credentials from: https://cloud.tencent.com/product/wsa
+    api_key: ""  # SecretId
+    secret_key: ""  # SecretKey
+    # mode: 0  # 0-自然检索结果(默认), 1-多模态VR结果, 2-混合结果
+    # cnt: 10  # 返回结果数量 (10/20/30/40/50, 仅限尊享版)
+    disabled: true
+    timeout: 5.0
+    about:
+      website: https://cloud.tencent.com/product/wsa
+      official_api_documentation: https://cloud.tencent.com/document/product/1806/121811
+      use_official_api: true
+      require_api_key: true
+      results: JSON
 
   - name: wikipedia
     engine: wikipedia
