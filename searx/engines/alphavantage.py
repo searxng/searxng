@@ -17,7 +17,7 @@ about = {
 }
 
 # Engine configuration
-categories = ["finance"]
+categories = ["finance", "general"]  # Include general for easy access with !av shortcut
 paging = False
 language_support = False
 
