@@ -17,17 +17,17 @@ about = {
 }
 
 # Engine configuration
-categories = ["finance", "general"]  # Include general for easy access with !av shortcut
+categories = ["finance", "general"]  # Include general for !av shortcut
 paging = False
 language_support = False
 
-# API configuration (set in settings.yml)
+# API configuration (read from settings.yml)
 base_url = "https://www.alphavantage.co/query"
-api_key = ''  # Alpha Vantage API key
+api_key = ''  # Will be set by setup() function
 
 
 def setup(engine_settings):
-    """Initialization - validate API key is set"""
+    """Initialization - load API key from settings"""
     global api_key  # pylint: disable=global-statement
     
     key = engine_settings.get("api_key", "")
@@ -41,19 +41,24 @@ def setup(engine_settings):
 
 def request(query, params):
     """Build search request"""
+    from urllib.parse import urlencode
+    
     # Check if API key is configured
     if not api_key:
         # If no API key, return empty results
         params['url'] = None
         return params
 
-    params["url"] = base_url
-    params["method"] = "GET"
-    params["data"] = {
+    # For GET requests, parameters must be in the URL, not in params["data"]
+    query_params = {
         "function": "SYMBOL_SEARCH",
         "keywords": query,
         "apikey": api_key,
     }
+    
+    params["url"] = f"{base_url}?{urlencode(query_params)}"
+    params["method"] = "GET"
+    
     return params
 
 
@@ -84,6 +89,9 @@ def response(resp):
             currency = match.get("8. currency", "")
             match_score = match.get("9. matchScore", "0")
 
+            if not symbol or not name:
+                continue
+
             # Build result
             result = {
                 "title": f"{symbol} - {name}",
@@ -105,24 +113,22 @@ def response(resp):
 if __name__ == "__main__":
     import requests  # pylint: disable=import-outside-toplevel
 
-    # Set test API key (normally loaded from settings.yml)
-    api_key = 'EEPMIUJSP2LALKTM'
+    # Setup engine
+    setup({'api_key': 'EEPMIUJSP2LALKTM'})
     
     test_query = "AAPL"
     test_params = {
         "url": None,
         "method": "GET",
-        "data": {},
     }
 
     test_params = request(test_query, test_params)
 
     print(f"Testing Alpha Vantage engine with query: {test_query}")
     print(f"URL: {test_params['url']}")
-    print(f"Params: {test_params['data']}")
 
-    # Send request
-    api_response = requests.get(test_params["url"], params=test_params["data"], timeout=10)
+    # Send request (URL already has parameters)
+    api_response = requests.get(test_params["url"], timeout=10)
 
     # Parse results
     class MockResponse:  # pylint: disable=too-few-public-methods
