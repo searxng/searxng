@@ -21,14 +21,14 @@ categories = ["finance"]
 paging = False
 language_support = False
 
-# API configuration (read from settings.yml)
+# API configuration (set in settings.yml)
 base_url = "https://www.alphavantage.co/query"
+api_key = ''  # Alpha Vantage API key
 
 
 def request(query, params):
     """Build search request"""
-    # Get API key from engine settings
-    api_key = params['engine_settings'].get('api_key', '')
+    # Check if API key is configured
     if not api_key:
         # If no API key, return empty results
         params['url'] = None
@@ -92,12 +92,14 @@ def response(resp):
 if __name__ == "__main__":
     import requests  # pylint: disable=import-outside-toplevel
 
+    # Set test API key (normally loaded from settings.yml)
+    api_key = 'EEPMIUJSP2LALKTM'
+    
     test_query = "AAPL"
     test_params = {
         "url": None,
         "method": "GET",
         "data": {},
-        "engine_settings": {'api_key': 'EEPMIUJSP2LALKTM'},
     }
 
     test_params = request(test_query, test_params)

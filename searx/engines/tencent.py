@@ -7,13 +7,31 @@ multiple search modes, site filtering, time range filtering, and industry
 filtering (premium tier only).
 
 API Documentation: https://cloud.tencent.com/document/product/1806/121811
+
+Configuration:
+- timeout: Recommended 10-15 seconds (API response can be slow with large result counts)
+- cnt: Number of results (10-50). Values >10 require premium tier and may increase response time
+
+Usage with URL parameters:
+You can override settings.yml configuration by passing parameters in the URL:
+  
+  ?q=your_query&engine_data-tencent-mode=2&engine_data-tencent-cnt=50&engine_data-tencent-site=xueqiu.com&engine_data-tencent-from_time=20180101&engine_data-tencent-to_time=20181231
+
+URL Parameters:
+- engine_data-tencent-mode: Search mode (0/1/2)
+- engine_data-tencent-cnt: Number of results (10-50)
+- engine_data-tencent-site: Site filter (e.g., xueqiu.com)
+- engine_data-tencent-from_time: Start time (YYYYMMDD like 20180101, or Unix timestamp like 1514764800)
+- engine_data-tencent-to_time: End time (YYYYMMDD like 20181231, or Unix timestamp like 1546300799)
+
+Note: URL parameters take priority over settings.yml configuration.
 """
 
 import json
 import time
 import hmac
 import hashlib
-from datetime import datetime
+from datetime import datetime, timezone
 
 # Engine metadata
 about = {
@@ -32,9 +50,38 @@ paging = False
 language_support = True
 time_range_support = False
 safesearch = False
+timeout = 10.0  # Tencent API can be slow, increase default timeout
 
-# API configuration
+# API configuration (set in settings.yml)
 base_url = 'https://wsa.tencentcloudapi.com'
+api_key = ''  # SecretId from Tencent Cloud (required)
+secret_key = ''  # SecretKey from Tencent Cloud (required)
+
+# Optional parameters (can be set in settings.yml):
+# - mode: Search mode (0=natural, 1=multimodal VR, 2=mixed), default: 0
+#     Note: mode=1 ignores time filters; mode=0 applies to all results; mode=2 applies to natural results
+# - cnt: Number of results (10/20/30/40/50), default: 10
+# - site: Site filter (e.g., "xueqiu.com")
+# - from_time: Start time filter, supports two formats:
+#     1. YYYYMMDD: e.g., 20180101 (will be converted to Unix timestamp at 00:00:00 UTC)
+#     2. Unix timestamp: e.g., 1514764800 (seconds since epoch)
+# - to_time: End time filter, supports two formats:
+#     1. YYYYMMDD: e.g., 20181231 (will be converted to Unix timestamp at 23:59:59 UTC)
+#     2. Unix timestamp: e.g., 1546300799 (seconds since epoch)
+# 
+# Example configuration:
+#   - name: tencent
+#     engine: tencent
+#     api_key: 'YOUR_KEY'
+#     secret_key: 'YOUR_SECRET'
+#     mode: 2
+#     cnt: 50
+#     site: 'xueqiu.com'
+#     from_time: 20180101      # YYYYMMDD format (auto-converted to timestamp)
+#     to_time: 20181231        # or use Unix timestamp: 1546300799
+#
+# These are NOT defined as module variables to avoid "missing required attribute" errors.
+# Use globals().get() with defaults in request function
 
 
 def sign(key, msg):
@@ -66,7 +113,7 @@ def get_signature_v3(secret_id, secret_key, host, payload, timestamp):  # pylint
 
     # Step 2: Build string to sign
     algorithm = 'TC3-HMAC-SHA256'
-    date = datetime.utcfromtimestamp(timestamp).strftime('%Y-%m-%d')
+    date = datetime.fromtimestamp(timestamp, tz=timezone.utc).strftime('%Y-%m-%d')
     credential_scope = f'{date}/wsa/tc3_request'
     hashed_canonical_request = hashlib.sha256(canonical_request.encode('utf-8')).hexdigest()
 
@@ -96,42 +143,77 @@ def get_signature_v3(secret_id, secret_key, host, payload, timestamp):  # pylint
 
 def request(query, params):
     """Build search request for Tencent Cloud API."""
-
-    # Get configuration from engine_settings
-    engine_settings = params.get('engine_settings', {})
-    api_key = engine_settings.get('api_key', '')
-    secret_key = engine_settings.get('secret_key', '')
     
+    # Check if API credentials are configured
     if not api_key or not secret_key:
         # If no API credentials configured, return empty results
         params['url'] = None
         return params
-
-    # Get search mode (0=natural, 1=multimodal VR, 2=mixed)
-    mode = engine_settings.get('mode', 0)
+    
+    # Get engine_data from URL parameters (takes priority over settings.yml)
+    # URL format: ?q=test&engine_data-tencent-mode=2&engine_data-tencent-cnt=50
+    engine_data = params.get('engine_data', {})
+    
+    # Get optional parameters: URL params override settings.yml config
+    # Priority: URL params > settings.yml > defaults
+    search_mode = int(engine_data.get('mode', globals().get('mode', 0)))
+    result_count = int(engine_data.get('cnt', globals().get('cnt', 10)))
+    site_filter = engine_data.get('site', globals().get('site'))
+    start_time = engine_data.get('from_time', globals().get('from_time'))
+    end_time = engine_data.get('to_time', globals().get('to_time'))
     
     # Build request body
     request_body = {
         'Query': query,
-        'Mode': mode,
+        'Mode': search_mode,
     }
 
-    # Add optional parameters
-    cnt = engine_settings.get('cnt', 10)
-    if cnt > 10:
-        request_body['Cnt'] = cnt
+    # Add result count (API default is 10, but we explicitly set it if different)
+    if result_count != 10:
+        request_body['Cnt'] = result_count
 
-    site = engine_settings.get('site')
-    if site:
-        request_body['Site'] = site
+    # Add site filter
+    if site_filter:
+        request_body['Site'] = site_filter
 
-    from_time = engine_settings.get('from_time')
-    if from_time:
-        request_body['FromTime'] = from_time
+    # Add time range parameters
+    # API expects Unix timestamp (seconds since epoch)
+    # Input can be:
+    #   1. Unix timestamp (int): e.g., 1745498501
+    #   2. YYYYMMDD format (int/str): e.g., 20180101 or "20180101" -> converted to timestamp
+    if start_time:
+        try:
+            timestamp_val = int(start_time)
+            # If value looks like YYYYMMDD (8 digits, < 100000000), convert to timestamp
+            if timestamp_val < 100000000:
+                # Parse as YYYYMMDD and convert to timestamp
+                year = timestamp_val // 10000
+                month = (timestamp_val % 10000) // 100
+                day = timestamp_val % 100
+                dt = datetime(year, month, day, 0, 0, 0, tzinfo=timezone.utc)
+                request_body['FromTime'] = int(dt.timestamp())
+            else:
+                # Already a timestamp
+                request_body['FromTime'] = timestamp_val
+        except (ValueError, TypeError):
+            pass  # Skip invalid time values
 
-    to_time = engine_settings.get('to_time')
-    if to_time:
-        request_body['ToTime'] = to_time
+    if end_time:
+        try:
+            timestamp_val = int(end_time)
+            # If value looks like YYYYMMDD (8 digits, < 100000000), convert to timestamp
+            if timestamp_val < 100000000:
+                # Parse as YYYYMMDD and convert to timestamp (end of day)
+                year = timestamp_val // 10000
+                month = (timestamp_val % 10000) // 100
+                day = timestamp_val % 100
+                dt = datetime(year, month, day, 23, 59, 59, tzinfo=timezone.utc)
+                request_body['ToTime'] = int(dt.timestamp())
+            else:
+                # Already a timestamp
+                request_body['ToTime'] = timestamp_val
+        except (ValueError, TypeError):
+            pass  # Skip invalid time values
 
     # Prepare request
     timestamp = int(time.time())
@@ -205,7 +287,13 @@ def response(resp):
 
             # Add optional fields
             if 'date' in page:
-                result['publishedDate'] = page['date']
+                try:
+                    # Parse date string to datetime object
+                    # Format: "2025-10-04 05:00:47"
+                    result['publishedDate'] = datetime.strptime(page['date'], '%Y-%m-%d %H:%M:%S')
+                except (ValueError, TypeError):
+                    # If date parsing fails, skip this field
+                    pass
 
             if 'site' in page:
                 result['metadata'] = page['site']
