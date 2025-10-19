@@ -4,16 +4,17 @@
 test.help() {
     cat <<EOF
 test.:
-  yamllint  : lint YAML files (YAMLLINT_FILES)
-  pylint    : lint ./searx, ./searxng_extra and ./tests
-  pyright   : check Python types
-  black     : check Python code format
-  shfmt     : check Shell script code format
-  unit      : run unit tests
-  coverage  : run unit tests with coverage
-  robot     : run robot test
-  rst       : test .rst files incl. README.rst
-  clean     : clean intermediate test stuff
+  yamllint        : lint YAML files (YAMLLINT_FILES)
+  pylint          : lint ./searx, ./searxng_extra and ./tests
+  pyright         : check Python types
+  black           : check Python code format
+  shfmt           : check Shell script code format
+  unit            : run unit tests
+  coverage        : run unit tests with coverage
+  robot           : run robot test
+  rst             : test .rst files incl. README.rst
+  custom_engines  : test custom engines (requires API keys)
+  clean           : clean intermediate test stuff
 EOF
 }
 
@@ -144,4 +145,50 @@ test.clean() {
     build_msg CLEAN "test stuff"
     rm -rf geckodriver.log .coverage coverage/
     dump_return $?
+}
+
+test.custom_engines() {
+    # Test custom engines (Alpha Vantage and Tencent)
+    # This is a manual test that requires API keys to be configured
+    build_msg TEST "custom engines (requires API keys in settings.yml)"
+    
+    if ! command -v curl &> /dev/null || ! command -v jq &> /dev/null; then
+        warn_msg "curl and jq are required for custom engine tests"
+        return 1
+    fi
+    
+    local searxng_url="${1:-http://localhost:8888}"
+    local test_passed=0
+    local test_failed=0
+    
+    # Test Alpha Vantage if enabled
+    info_msg "Testing Alpha Vantage engine..."
+    if curl -s "${searxng_url}/search?q=AAPL&format=json&engines=alphavantage" | \
+       jq -e '.results | length > 0' &>/dev/null; then
+        info_msg "  Alpha Vantage: ${_Green}OK${_creset}"
+        test_passed=$((test_passed + 1))
+    else
+        warn_msg "  Alpha Vantage: disabled or no results"
+        test_failed=$((test_failed + 1))
+    fi
+    
+    # Test Tencent if enabled
+    info_msg "Testing Tencent engine..."
+    if curl -s "${searxng_url}/search?q=测试&format=json&engines=tencent" | \
+       jq -e '.results | length > 0' &>/dev/null; then
+        info_msg "  Tencent: ${_Green}OK${_creset}"
+        test_passed=$((test_passed + 1))
+    else
+        warn_msg "  Tencent: disabled or no results"
+        test_failed=$((test_failed + 1))
+    fi
+    
+    info_msg "Custom engines test: ${test_passed} passed, ${test_failed} failed"
+    
+    if [ $test_passed -eq 0 ]; then
+        warn_msg "No custom engines are configured. See CUSTOM_ENGINES.md for setup."
+        return 0  # Don't fail the build if engines are not configured
+    fi
+    
+    return 0
 }
