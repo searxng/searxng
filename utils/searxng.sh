@@ -492,6 +492,7 @@ pip install -U pip
 pip install -U setuptools
 pip install -U wheel
 pip install -U pyyaml
+pip install -U msgspec
 cd ${SEARXNG_SRC}
 pip install --use-pep517 --no-build-isolation -e .
 EOF
