@@ -26,6 +26,19 @@ base_url = "https://www.alphavantage.co/query"
 api_key = ''  # Alpha Vantage API key
 
 
+def setup(engine_settings):
+    """Initialization - validate API key is set"""
+    global api_key  # pylint: disable=global-statement
+    
+    key = engine_settings.get("api_key", "")
+    if key and key not in ("", "YOUR_API_KEY", "..."):
+        api_key = key
+        return True
+    
+    # Engine will be disabled if no valid API key
+    return False
+
+
 def request(query, params):
     """Build search request"""
     # Check if API key is configured

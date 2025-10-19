@@ -57,6 +57,23 @@ base_url = 'https://wsa.tencentcloudapi.com'
 api_key = ''  # SecretId from Tencent Cloud (required)
 secret_key = ''  # SecretKey from Tencent Cloud (required)
 
+
+def setup(engine_settings):
+    """Initialization - validate API credentials are set"""
+    global api_key, secret_key  # pylint: disable=global-statement
+    
+    key_id = engine_settings.get("api_key", "")
+    key_secret = engine_settings.get("secret_key", "")
+    
+    if key_id and key_secret and key_id not in ("", "YOUR_SECRET_ID", "..."):
+        api_key = key_id
+        secret_key = key_secret
+        return True
+    
+    # Engine will be disabled if no valid API credentials
+    return False
+
+
 # Optional parameters (can be set in settings.yml):
 # - mode: Search mode (0=natural, 1=multimodal VR, 2=mixed), default: 0
 #     Note: mode=1 ignores time filters; mode=0 applies to all results; mode=2 applies to natural results

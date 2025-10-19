@@ -29,6 +29,29 @@ class TestTencentEngine(SearxTestCase):
         for attr in ['mode', 'cnt', 'site', 'from_time', 'to_time']:
             if hasattr(tencent, attr):
                 delattr(tencent, attr)
+    
+    def test_setup_with_valid_credentials(self):
+        """Test setup function with valid credentials"""
+        engine_settings = {
+            'api_key': 'test_secret_id',
+            'secret_key': 'test_secret_key',
+        }
+        
+        result = tencent.setup(engine_settings)
+        
+        # Should return True and set global variables
+        self.assertTrue(result)
+        self.assertEqual(tencent.api_key, 'test_secret_id')
+        self.assertEqual(tencent.secret_key, 'test_secret_key')
+    
+    def test_setup_without_credentials(self):
+        """Test setup function without credentials"""
+        engine_settings = {}
+        
+        result = tencent.setup(engine_settings)
+        
+        # Should return False (engine will be disabled)
+        self.assertFalse(result)
 
     def test_request_with_valid_credentials(self):
         """Test request building with valid API credentials"""
