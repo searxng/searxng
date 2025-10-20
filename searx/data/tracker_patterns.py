@@ -1,5 +1,6 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 """Simple implementation to store TrackerPatterns data in a SQL database."""
+# pylint: disable=too-many-branches
 
 import typing as t
 
@@ -119,6 +120,12 @@ class TrackerPatternsDB:
 
         for rule in self.rules():
 
+            query_str: str = parsed_new_url.query
+            if not query_str:
+                # There are no more query arguments in the parsed_new_url on
+                # which rules can be applied, stop iterating over the rules.
+                break
+
             if not re.match(rule[self.Fields.url_regexp], new_url):
                 # no match / ignore pattern
                 continue
@@ -136,18 +143,32 @@ class TrackerPatternsDB:
                 #    overlapping urlPattern like ".*"
                 continue
 
-            # remove tracker arguments from the url-query part
             query_args: list[tuple[str, str]] = list(parse_qsl(parsed_new_url.query))
+            if query_args:
+                # remove tracker arguments from the url-query part
+                for name, val in query_args.copy():
+                    # remove URL arguments
+                    for pattern in rule[self.Fields.del_args]:
+                        if re.match(pattern, name):
+                            log.debug(
+                                "TRACKER_PATTERNS: %s remove tracker arg: %s='%s'", parsed_new_url.netloc, name, val
+                            )
+                            query_args.remove((name, val))
 
-            for name, val in query_args.copy():
-                # remove URL arguments
+                parsed_new_url = parsed_new_url._replace(query=urlencode(query_args))
+                new_url = urlunparse(parsed_new_url)
+
+            else:
+                # The query argument for URLs like:
+                # - 'http://example.org?q='       --> query_str is 'q=' and query_args is []
+                # - 'http://example.org?/foo/bar' --> query_str is 'foo/bar' and  query_args is []
+                # is a simple string and not a key/value dict.
                 for pattern in rule[self.Fields.del_args]:
-                    if re.match(pattern, name):
-                        log.debug("TRACKER_PATTERNS: %s remove tracker arg: %s='%s'", parsed_new_url.netloc, name, val)
-                        query_args.remove((name, val))
-
-            parsed_new_url = parsed_new_url._replace(query=urlencode(query_args))
-            new_url = urlunparse(parsed_new_url)
+                    if re.match(pattern, query_str):
+                        log.debug("TRACKER_PATTERNS: %s remove tracker arg: '%s'", parsed_new_url.netloc, query_str)
+                        parsed_new_url = parsed_new_url._replace(query="")
+                        new_url = urlunparse(parsed_new_url)
+                        break
 
         if new_url != url:
             return new_url
