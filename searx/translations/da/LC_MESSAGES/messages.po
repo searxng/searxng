@@ -17,19 +17,18 @@
 # return42 <return42@noreply.codeberg.org>, 2025.
 msgid ""
 msgstr ""
-"Project-Id-Version: searx\n"
+"Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-10-10 16:16+0000\n"
+"POT-Creation-Date: 2025-10-20 08:35+0000\n"
 "PO-Revision-Date: 2025-10-13 07:47+0000\n"
 "Last-Translator: AndersNordh <andersnordh@noreply.codeberg.org>\n"
-"Language-Team: Danish <https://translate.codeberg.org/projects/searxng/"
-"searxng/da/>\n"
 "Language: da\n"
+"Language-Team: Danish "
+"<https://translate.codeberg.org/projects/searxng/searxng/da/>\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.13.3\n"
 "Generated-By: Babel 2.17.0\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
@@ -903,23 +902,23 @@ msgstr "Kontakt tilbyderen af instansen"
 msgid "Click on the magnifier to perform search"
 msgstr "Klik på forstørrelsesglasset for at udføre søgning"
 
-#: searx/templates/simple/macros.html:40
+#: searx/templates/simple/macros.html:41
 msgid "Length"
 msgstr "Længde"
 
-#: searx/templates/simple/macros.html:41
+#: searx/templates/simple/macros.html:42
 #: searx/templates/simple/result_templates/paper.html:74
 msgid "Views"
 msgstr "Visninger"
 
-#: searx/templates/simple/macros.html:42
-#: searx/templates/simple/result_templates/files.html:34
+#: searx/templates/simple/macros.html:43
+#: searx/templates/simple/result_templates/file.html:18
 #: searx/templates/simple/result_templates/images.html:19
 #: searx/templates/simple/result_templates/paper.html:14
 msgid "Author"
 msgstr "Forfatter"
 
-#: searx/templates/simple/macros.html:50
+#: searx/templates/simple/macros.html:51
 msgid "cached"
 msgstr "cachet"
 
@@ -1140,7 +1139,7 @@ msgid "Parameter"
 msgstr "Parameter"
 
 #: searx/templates/simple/result_templates/code.html:29
-#: searx/templates/simple/result_templates/files.html:36
+#: searx/templates/simple/result_templates/file.html:24
 #: searx/templates/simple/stats.html:119
 msgid "Filename"
 msgstr "Filnavn"
@@ -1652,13 +1651,13 @@ msgid "Repository"
 msgstr "Repository"
 
 #: searx/templates/simple/result_templates/default.html:6
-#: searx/templates/simple/result_templates/files.html:8
-#: searx/templates/simple/result_templates/files.html:11
+#: searx/templates/simple/result_templates/file.html:53
+#: searx/templates/simple/result_templates/file.html:56
 msgid "show media"
 msgstr "vis media"
 
 #: searx/templates/simple/result_templates/default.html:6
-#: searx/templates/simple/result_templates/files.html:8
+#: searx/templates/simple/result_templates/file.html:54
 msgid "hide media"
 msgstr "skjul media"
 
@@ -1667,20 +1666,24 @@ msgstr "skjul media"
 msgid "This site did not provide any description."
 msgstr "Denne side gav ikke nogen beskrivelse."
 
-#: searx/templates/simple/result_templates/files.html:38
+#: searx/templates/simple/result_templates/file.html:30
 #: searx/templates/simple/result_templates/images.html:22
 #: searx/templates/simple/result_templates/torrent.html:18
 msgid "Filesize"
 msgstr "Filstørrelse"
 
-#: searx/templates/simple/result_templates/files.html:40
+#: searx/templates/simple/result_templates/file.html:36
 msgid "Date"
 msgstr "Dato"
 
-#: searx/templates/simple/result_templates/files.html:42
+#: searx/templates/simple/result_templates/file.html:42
 #: searx/templates/simple/result_templates/paper.html:44
 msgid "Type"
 msgstr "Type"
+
+#: searx/templates/simple/result_templates/file.html:67
+msgid "Download"
+msgstr ""
 
 #: searx/templates/simple/result_templates/images.html:20
 msgid "Resolution"
@@ -2393,3 +2396,4 @@ msgstr "skjul video"
 
 #~ msgid "repo"
 #~ msgstr "depot"
+

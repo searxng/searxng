@@ -29,7 +29,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-10-10 16:16+0000\n"
+"POT-Creation-Date: 2025-10-20 08:35+0000\n"
 "PO-Revision-Date: 2025-09-12 04:16+0000\n"
 "Last-Translator: eudemo <eudemo@noreply.codeberg.org>\n"
 "Language: ca\n"
@@ -905,23 +905,23 @@ msgstr "Contacteu amb el mantenidor de la instància"
 msgid "Click on the magnifier to perform search"
 msgstr "Feu clic en la lupa per a executar la cerca"
 
-#: searx/templates/simple/macros.html:40
+#: searx/templates/simple/macros.html:41
 msgid "Length"
 msgstr "Longitud"
 
-#: searx/templates/simple/macros.html:41
+#: searx/templates/simple/macros.html:42
 #: searx/templates/simple/result_templates/paper.html:74
 msgid "Views"
 msgstr "Vistes"
 
-#: searx/templates/simple/macros.html:42
-#: searx/templates/simple/result_templates/files.html:34
+#: searx/templates/simple/macros.html:43
+#: searx/templates/simple/result_templates/file.html:18
 #: searx/templates/simple/result_templates/images.html:19
 #: searx/templates/simple/result_templates/paper.html:14
 msgid "Author"
 msgstr "Autor"
 
-#: searx/templates/simple/macros.html:50
+#: searx/templates/simple/macros.html:51
 msgid "cached"
 msgstr "en memòria cau"
 
@@ -1140,7 +1140,7 @@ msgid "Parameter"
 msgstr "Paràmetre"
 
 #: searx/templates/simple/result_templates/code.html:29
-#: searx/templates/simple/result_templates/files.html:36
+#: searx/templates/simple/result_templates/file.html:24
 #: searx/templates/simple/stats.html:119
 msgid "Filename"
 msgstr "Nom de fitxer"
@@ -1640,13 +1640,13 @@ msgid "Repository"
 msgstr "Repositori"
 
 #: searx/templates/simple/result_templates/default.html:6
-#: searx/templates/simple/result_templates/files.html:8
-#: searx/templates/simple/result_templates/files.html:11
+#: searx/templates/simple/result_templates/file.html:53
+#: searx/templates/simple/result_templates/file.html:56
 msgid "show media"
 msgstr "mostra el contingut multimèdia"
 
 #: searx/templates/simple/result_templates/default.html:6
-#: searx/templates/simple/result_templates/files.html:8
+#: searx/templates/simple/result_templates/file.html:54
 msgid "hide media"
 msgstr "oculta el contingut multimèdia"
 
@@ -1655,20 +1655,24 @@ msgstr "oculta el contingut multimèdia"
 msgid "This site did not provide any description."
 msgstr "Aquest lloc no proporciona cap descripció."
 
-#: searx/templates/simple/result_templates/files.html:38
+#: searx/templates/simple/result_templates/file.html:30
 #: searx/templates/simple/result_templates/images.html:22
 #: searx/templates/simple/result_templates/torrent.html:18
 msgid "Filesize"
 msgstr "Mida del fitxer"
 
-#: searx/templates/simple/result_templates/files.html:40
+#: searx/templates/simple/result_templates/file.html:36
 msgid "Date"
 msgstr "Data"
 
-#: searx/templates/simple/result_templates/files.html:42
+#: searx/templates/simple/result_templates/file.html:42
 #: searx/templates/simple/result_templates/paper.html:44
 msgid "Type"
 msgstr "Tipus"
+
+#: searx/templates/simple/result_templates/file.html:67
+msgid "Download"
+msgstr ""
 
 #: searx/templates/simple/result_templates/images.html:20
 msgid "Resolution"

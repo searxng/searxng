@@ -19,19 +19,18 @@
 # return42 <return42@noreply.codeberg.org>, 2025.
 msgid ""
 msgstr ""
-"Project-Id-Version: searx\n"
+"Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-10-10 16:16+0000\n"
+"POT-Creation-Date: 2025-10-20 08:35+0000\n"
 "PO-Revision-Date: 2025-10-14 09:09+0000\n"
 "Last-Translator: Priit Jõerüüt <jrtcdbrg@noreply.codeberg.org>\n"
-"Language-Team: Estonian <https://translate.codeberg.org/projects/searxng/"
-"searxng/et/>\n"
 "Language: et\n"
+"Language-Team: Estonian "
+"<https://translate.codeberg.org/projects/searxng/searxng/et/>\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.13.3\n"
 "Generated-By: Babel 2.17.0\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
@@ -906,23 +905,23 @@ msgstr "Võta ühendust serveri haldajaga"
 msgid "Click on the magnifier to perform search"
 msgstr "Otsingu teostamiseks klõpsa luubile"
 
-#: searx/templates/simple/macros.html:40
+#: searx/templates/simple/macros.html:41
 msgid "Length"
 msgstr "Pikkus"
 
-#: searx/templates/simple/macros.html:41
+#: searx/templates/simple/macros.html:42
 #: searx/templates/simple/result_templates/paper.html:74
 msgid "Views"
 msgstr "Vaateid"
 
-#: searx/templates/simple/macros.html:42
-#: searx/templates/simple/result_templates/files.html:34
+#: searx/templates/simple/macros.html:43
+#: searx/templates/simple/result_templates/file.html:18
 #: searx/templates/simple/result_templates/images.html:19
 #: searx/templates/simple/result_templates/paper.html:14
 msgid "Author"
 msgstr "Autor"
 
-#: searx/templates/simple/macros.html:50
+#: searx/templates/simple/macros.html:51
 msgid "cached"
 msgstr "vahemälus"
 
@@ -996,8 +995,8 @@ msgid ""
 "This is a preview of the settings used by the 'Search URL' you used to "
 "get here."
 msgstr ""
-"See on valiku „Otsingu võrguaadress“ seadistuste eelvaade "
-"(samal viisil jõudsid ka siia)."
+"See on valiku „Otsingu võrguaadress“ seadistuste eelvaade (samal viisil "
+"jõudsid ka siia)."
 
 #: searx/templates/simple/preferences.html:162
 msgid "Press save to copy these preferences to your browser."
@@ -1143,7 +1142,7 @@ msgid "Parameter"
 msgstr "Parameeter"
 
 #: searx/templates/simple/result_templates/code.html:29
-#: searx/templates/simple/result_templates/files.html:36
+#: searx/templates/simple/result_templates/file.html:24
 #: searx/templates/simple/stats.html:119
 msgid "Filename"
 msgstr "Failinimi"
@@ -1650,13 +1649,13 @@ msgid "Repository"
 msgstr "Hoidla"
 
 #: searx/templates/simple/result_templates/default.html:6
-#: searx/templates/simple/result_templates/files.html:8
-#: searx/templates/simple/result_templates/files.html:11
+#: searx/templates/simple/result_templates/file.html:53
+#: searx/templates/simple/result_templates/file.html:56
 msgid "show media"
 msgstr "kuva meedia"
 
 #: searx/templates/simple/result_templates/default.html:6
-#: searx/templates/simple/result_templates/files.html:8
+#: searx/templates/simple/result_templates/file.html:54
 msgid "hide media"
 msgstr "peida meedia"
 
@@ -1665,20 +1664,24 @@ msgstr "peida meedia"
 msgid "This site did not provide any description."
 msgstr "See sait ei andnud mingit kirjeldust."
 
-#: searx/templates/simple/result_templates/files.html:38
+#: searx/templates/simple/result_templates/file.html:30
 #: searx/templates/simple/result_templates/images.html:22
 #: searx/templates/simple/result_templates/torrent.html:18
 msgid "Filesize"
 msgstr "Failisuurus"
 
-#: searx/templates/simple/result_templates/files.html:40
+#: searx/templates/simple/result_templates/file.html:36
 msgid "Date"
 msgstr "Kuupäev"
 
-#: searx/templates/simple/result_templates/files.html:42
+#: searx/templates/simple/result_templates/file.html:42
 #: searx/templates/simple/result_templates/paper.html:44
 msgid "Type"
 msgstr "Tüüp"
+
+#: searx/templates/simple/result_templates/file.html:67
+msgid "Download"
+msgstr ""
 
 #: searx/templates/simple/result_templates/images.html:20
 msgid "Resolution"
@@ -2378,3 +2381,4 @@ msgstr "peida video"
 
 #~ msgid "repo"
 #~ msgstr "hoidla"
+

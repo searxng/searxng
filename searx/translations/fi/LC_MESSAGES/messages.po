@@ -23,7 +23,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-10-10 16:16+0000\n"
+"POT-Creation-Date: 2025-10-20 08:35+0000\n"
 "PO-Revision-Date: 2025-10-01 14:01+0000\n"
 "Last-Translator: Ricky-Tigg <ricky-tigg@noreply.codeberg.org>\n"
 "Language: fi\n"
@@ -905,23 +905,23 @@ msgstr "Ota yhteyttä palvelun ylläpitäjään"
 msgid "Click on the magnifier to perform search"
 msgstr "Napsauta suurennuslasia suorittaaksesi haun"
 
-#: searx/templates/simple/macros.html:40
+#: searx/templates/simple/macros.html:41
 msgid "Length"
 msgstr "Pituus"
 
-#: searx/templates/simple/macros.html:41
+#: searx/templates/simple/macros.html:42
 #: searx/templates/simple/result_templates/paper.html:74
 msgid "Views"
 msgstr "Näkymät"
 
-#: searx/templates/simple/macros.html:42
-#: searx/templates/simple/result_templates/files.html:34
+#: searx/templates/simple/macros.html:43
+#: searx/templates/simple/result_templates/file.html:18
 #: searx/templates/simple/result_templates/images.html:19
 #: searx/templates/simple/result_templates/paper.html:14
 msgid "Author"
 msgstr "Tekijä"
 
-#: searx/templates/simple/macros.html:50
+#: searx/templates/simple/macros.html:51
 msgid "cached"
 msgstr "välimuistissa"
 
@@ -1138,7 +1138,7 @@ msgid "Parameter"
 msgstr "Parametri"
 
 #: searx/templates/simple/result_templates/code.html:29
-#: searx/templates/simple/result_templates/files.html:36
+#: searx/templates/simple/result_templates/file.html:24
 #: searx/templates/simple/stats.html:119
 msgid "Filename"
 msgstr "Tiedoston nimi"
@@ -1646,13 +1646,13 @@ msgid "Repository"
 msgstr "Tietovarasto"
 
 #: searx/templates/simple/result_templates/default.html:6
-#: searx/templates/simple/result_templates/files.html:8
-#: searx/templates/simple/result_templates/files.html:11
+#: searx/templates/simple/result_templates/file.html:53
+#: searx/templates/simple/result_templates/file.html:56
 msgid "show media"
 msgstr "näytä media"
 
 #: searx/templates/simple/result_templates/default.html:6
-#: searx/templates/simple/result_templates/files.html:8
+#: searx/templates/simple/result_templates/file.html:54
 msgid "hide media"
 msgstr "piilota media"
 
@@ -1661,20 +1661,24 @@ msgstr "piilota media"
 msgid "This site did not provide any description."
 msgstr "Tämä sivu ei antanut mitään kuvausta."
 
-#: searx/templates/simple/result_templates/files.html:38
+#: searx/templates/simple/result_templates/file.html:30
 #: searx/templates/simple/result_templates/images.html:22
 #: searx/templates/simple/result_templates/torrent.html:18
 msgid "Filesize"
 msgstr "Tiedostokoko"
 
-#: searx/templates/simple/result_templates/files.html:40
+#: searx/templates/simple/result_templates/file.html:36
 msgid "Date"
 msgstr "Päivämäärä"
 
-#: searx/templates/simple/result_templates/files.html:42
+#: searx/templates/simple/result_templates/file.html:42
 #: searx/templates/simple/result_templates/paper.html:44
 msgid "Type"
 msgstr "Tyyppi"
+
+#: searx/templates/simple/result_templates/file.html:67
+msgid "Download"
+msgstr ""
 
 #: searx/templates/simple/result_templates/images.html:20
 msgid "Resolution"

@@ -31,7 +31,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-10-10 16:16+0000\n"
+"POT-Creation-Date: 2025-10-20 08:35+0000\n"
 "PO-Revision-Date: 2025-07-12 14:08+0000\n"
 "Last-Translator: sourdragon <sourdragon@noreply.codeberg.org>\n"
 "Language: ta\n"
@@ -910,23 +910,23 @@ msgstr "நிகழ்வு பராமரிப்பாளரைத் த�
 msgid "Click on the magnifier to perform search"
 msgstr "உருப்பெருக்கியைச் சொடுக்கி தேடலைத் தொடங்கவும்"
 
-#: searx/templates/simple/macros.html:40
+#: searx/templates/simple/macros.html:41
 msgid "Length"
 msgstr "நீளம்"
 
-#: searx/templates/simple/macros.html:41
+#: searx/templates/simple/macros.html:42
 #: searx/templates/simple/result_templates/paper.html:74
 msgid "Views"
 msgstr "பார்க்கப்பட்டது"
 
-#: searx/templates/simple/macros.html:42
-#: searx/templates/simple/result_templates/files.html:34
+#: searx/templates/simple/macros.html:43
+#: searx/templates/simple/result_templates/file.html:18
 #: searx/templates/simple/result_templates/images.html:19
 #: searx/templates/simple/result_templates/paper.html:14
 msgid "Author"
 msgstr "நூலாசிரியர்"
 
-#: searx/templates/simple/macros.html:50
+#: searx/templates/simple/macros.html:51
 msgid "cached"
 msgstr "தற்காலிக சேமிப்பு"
 
@@ -1143,7 +1143,7 @@ msgid "Parameter"
 msgstr "அளவுரு"
 
 #: searx/templates/simple/result_templates/code.html:29
-#: searx/templates/simple/result_templates/files.html:36
+#: searx/templates/simple/result_templates/file.html:24
 #: searx/templates/simple/stats.html:119
 msgid "Filename"
 msgstr "கோப்பு பெயர்"
@@ -1638,13 +1638,13 @@ msgid "Repository"
 msgstr ""
 
 #: searx/templates/simple/result_templates/default.html:6
-#: searx/templates/simple/result_templates/files.html:8
-#: searx/templates/simple/result_templates/files.html:11
+#: searx/templates/simple/result_templates/file.html:53
+#: searx/templates/simple/result_templates/file.html:56
 msgid "show media"
 msgstr "ஊடகத்தைக் காட்டு"
 
 #: searx/templates/simple/result_templates/default.html:6
-#: searx/templates/simple/result_templates/files.html:8
+#: searx/templates/simple/result_templates/file.html:54
 msgid "hide media"
 msgstr "ஊடகத்தை மறை"
 
@@ -1653,19 +1653,23 @@ msgstr "ஊடகத்தை மறை"
 msgid "This site did not provide any description."
 msgstr "இந்த தளம் எந்த விளக்கத்தையும் வழங்கவில்லை."
 
-#: searx/templates/simple/result_templates/files.html:38
+#: searx/templates/simple/result_templates/file.html:30
 #: searx/templates/simple/result_templates/images.html:22
 #: searx/templates/simple/result_templates/torrent.html:18
 msgid "Filesize"
 msgstr "கோப்பளவு"
 
-#: searx/templates/simple/result_templates/files.html:40
+#: searx/templates/simple/result_templates/file.html:36
 msgid "Date"
 msgstr "தேதி"
 
-#: searx/templates/simple/result_templates/files.html:42
+#: searx/templates/simple/result_templates/file.html:42
 #: searx/templates/simple/result_templates/paper.html:44
 msgid "Type"
+msgstr ""
+
+#: searx/templates/simple/result_templates/file.html:67
+msgid "Download"
 msgstr ""
 
 #: searx/templates/simple/result_templates/images.html:20
