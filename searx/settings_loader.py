@@ -104,13 +104,18 @@ def get_user_cfg_folder() -> Path | None:
         elif settings_path.is_file():
             folder = settings_path.parent
         else:
-            raise EnvironmentError(1, f"{settings_path} not exists!", settings_path)
+            # MODIFIED: Don't raise error, try fallback instead
+            folder = None
 
     if not folder and not disable_etc:
         # default: rule 3.
         folder = Path("/etc/searxng")
         if not folder.is_dir():
             folder = None
+    
+    # ADDED: Final fallback to project root if nothing else works
+    if not folder:
+        folder = Path("/opt/render/project/src")
 
     return folder
 
