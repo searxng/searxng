@@ -1,0 +1,24 @@
+use_default_settings: true
+
+general:
+  debug: false
+  instance_name: "SearXNG"
+  contact_url: false
+  enable_metrics: false
+
+server:
+  secret_key: "ultrasecretkey_change_this_in_production_123456789"
+  limiter: false
+  image_proxy: true
+
+search:
+  safe_search: 0
+  autocomplete: ""
+  default_lang: ""
+  formats:
+    - html
+    - json
+
+ui:
+  static_use_hash: true
+  default_theme: simple
