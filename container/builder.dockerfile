@@ -19,8 +19,7 @@ RUN --mount=type=cache,id=uv,target=/root/.cache/uv set -eux -o pipefail; \
     find ./.venv/lib/python*/site-packages/*.dist-info/ -type f -name "RECORD" -exec sort -t, -k1,1 -o {} {} \;; \
     find ./.venv/ -exec touch -h --date="@$TIMESTAMP_VENV" {} +
 
-# use "--exclude=./searx/version_frozen.py" when actions/runner-images updates to Podman 5.0+
-COPY ./searx/ ./searx/
+COPY --exclude=./searx/version_frozen.py ./searx/ ./searx/
 
 ARG TIMESTAMP_SETTINGS="0"
 

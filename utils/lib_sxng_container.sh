@@ -37,6 +37,7 @@ container.build() {
         fi
     fi
     info_msg "Selected engine: $container_engine"
+    "$container_engine" version
 
     # Setup arch specific
     case $parch in
