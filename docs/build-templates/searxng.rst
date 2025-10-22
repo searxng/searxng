@@ -120,6 +120,7 @@ ${fedora_build}
        pip install -U setuptools
        pip install -U wheel
        pip install -U pyyaml
+       pip install -U msgspec
 
        # jump to SearXNG's working tree and install SearXNG into virtualenv
        (${SERVICE_USER})$ cd \"$SEARXNG_SRC\"
