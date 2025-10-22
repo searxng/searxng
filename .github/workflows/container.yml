@@ -33,12 +33,15 @@ jobs:
       matrix:
         include:
           - arch: amd64
+            march: amd64
             os: ubuntu-24.04
             emulation: false
           - arch: arm64
+            march: arm64
             os: ubuntu-24.04-arm
             emulation: false
           - arch: armv7
+            march: arm64
             os: ubuntu-24.04-arm
             emulation: true
 
@@ -50,6 +53,30 @@ jobs:
       git_url: ${{ steps.build.outputs.git_url }}
 
     steps:
+      # yamllint disable rule:line-length
+      - name: Setup podman
+        env:
+          PODMAN_VERSION: "v5.6.2"
+        run: |
+          # dpkg man-db trigger is very slow on GHA runners
+          # https://github.com/actions/runner-images/issues/10977
+          # https://github.com/actions/runner/issues/4030
+          sudo rm -f /var/lib/man-db/auto-update
+
+          sudo apt-get purge -y podman runc crun conmon
+
+          curl -fsSLO "https://github.com/mgoltzsche/podman-static/releases/download/${{ env.PODMAN_VERSION }}/podman-linux-${{ matrix.march }}.tar.gz"
+          curl -fsSLO "https://github.com/mgoltzsche/podman-static/releases/download/${{ env.PODMAN_VERSION }}/podman-linux-${{ matrix.march }}.tar.gz.asc"
+          gpg --keyserver hkps://keyserver.ubuntu.com --recv-keys 0CCF102C4F95D89E583FF1D4F8B5AF50344BB503
+          gpg --batch --verify "podman-linux-${{ matrix.march }}.tar.gz.asc" "podman-linux-${{ matrix.march }}.tar.gz"
+
+          tar -xzf "podman-linux-${{ matrix.march }}.tar.gz"
+          sudo cp -rfv ./podman-linux-${{ matrix.march }}/etc/. /etc/
+          sudo cp -rfv ./podman-linux-${{ matrix.march }}/usr/. /usr/
+
+          sudo sysctl -w kernel.apparmor_restrict_unprivileged_userns=0
+      # yamllint enable rule:line-length
+
       - name: Setup Python
         uses: actions/setup-python@e797f83bcb11b83ae66e0230d6156d7c80228e7c  # v6.0.0
         with:
@@ -68,12 +95,18 @@ jobs:
           restore-keys: "python-${{ env.PYTHON_VERSION }}-${{ runner.arch }}-"
           path: "./local/"
 
-      - name: Setup cache container uv
+      - name: Get date
+        id: date
+        run: echo "date=$(date +'%Y%m%d')" >>$GITHUB_OUTPUT
+
+      - name: Setup cache container
         uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830  # v4.3.0
         with:
-          key: "container-uv-${{ matrix.arch }}-${{ hashFiles('./requirements*.txt') }}"
-          restore-keys: "container-uv-${{ matrix.arch }}-"
-          path: "/var/tmp/buildah-cache-1001/uv/"
+          key: "container-${{ matrix.arch }}-${{ steps.date.outputs.date }}-${{ hashFiles('./requirements*.txt') }}"
+          restore-keys: |
+            "container-${{ matrix.arch }}-${{ steps.date.outputs.date }}-"
+            "container-${{ matrix.arch }}-"
+          path: "/var/tmp/buildah-cache-*/*"
 
       - if: ${{ matrix.emulation }}
         name: Setup QEMU
