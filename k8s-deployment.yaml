@@ -1,0 +1,261 @@
+---
+# Namespace pour SearXNG
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: searxng
+  labels:
+    name: searxng
+
+---
+# PersistentVolumeClaim pour la configuration
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: searxng-config-pvc
+  namespace: searxng
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+  # storageClassName: your-storage-class  # Décommentez et spécifiez votre storage class
+
+---
+# PersistentVolumeClaim pour les données
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: searxng-data-pvc
+  namespace: searxng
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi
+  # storageClassName: your-storage-class  # Décommentez et spécifiez votre storage class
+
+---
+# ConfigMap pour la configuration de SearXNG (optionnel)
+# Vous pouvez créer un ConfigMap à partir d'un fichier settings.yml existant:
+# kubectl create configmap searxng-settings --from-file=settings.yml -n searxng
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: searxng-env
+  namespace: searxng
+data:
+  GRANIAN_PORT: "8080"
+  GRANIAN_HOST: "::"
+  GRANIAN_BLOCKING_THREADS: "4"
+  GRANIAN_WORKERS_KILL_TIMEOUT: "30s"
+  GRANIAN_BLOCKING_THREADS_IDLE_TIMEOUT: "5m"
+
+---
+# Deployment pour SearXNG
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: searxng
+  namespace: searxng
+  labels:
+    app: searxng
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: searxng
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  template:
+    metadata:
+      labels:
+        app: searxng
+    spec:
+      securityContext:
+        fsGroup: 977
+        runAsUser: 977
+        runAsGroup: 977
+        runAsNonRoot: true
+      containers:
+      - name: searxng
+        image: searxng:latest  # Remplacez par votre image
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8080
+          name: http
+          protocol: TCP
+        envFrom:
+        - configMapRef:
+            name: searxng-env
+        env:
+        - name: CONFIG_PATH
+          value: "/etc/searxng"
+        - name: DATA_PATH
+          value: "/var/lib/searxng"
+        - name: SEARXNG_SETTINGS_PATH
+          value: "/etc/searxng/settings.yml"
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "100m"
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+        volumeMounts:
+        - name: config
+          mountPath: /etc/searxng
+        - name: data
+          mountPath: /var/lib/searxng
+        livenessProbe:
+          httpGet:
+            path: /healthz
+            port: 8080
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 3
+        readinessProbe:
+          httpGet:
+            path: /healthz
+            port: 8080
+          initialDelaySeconds: 10
+          periodSeconds: 5
+          timeoutSeconds: 3
+          failureThreshold: 3
+        startupProbe:
+          httpGet:
+            path: /healthz
+            port: 8080
+          initialDelaySeconds: 0
+          periodSeconds: 5
+          timeoutSeconds: 3
+          failureThreshold: 30
+      volumes:
+      - name: config
+        persistentVolumeClaim:
+          claimName: searxng-config-pvc
+      - name: data
+        persistentVolumeClaim:
+          claimName: searxng-data-pvc
+
+---
+# Service pour exposer SearXNG
+apiVersion: v1
+kind: Service
+metadata:
+  name: searxng
+  namespace: searxng
+  labels:
+    app: searxng
+spec:
+  type: ClusterIP
+  ports:
+  - port: 8080
+    targetPort: 8080
+    protocol: TCP
+    name: http
+  selector:
+    app: searxng
+
+---
+# HorizontalPodAutoscaler pour la mise à l'échelle automatique
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: searxng-hpa
+  namespace: searxng
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: searxng
+  minReplicas: 2
+  maxReplicas: 10
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 70
+  - type: Resource
+    resource:
+      name: memory
+      target:
+        type: Utilization
+        averageUtilization: 80
+
+---
+# Ingress pour exposer SearXNG (optionnel)
+# Adaptez selon votre Ingress Controller (nginx, traefik, etc.)
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: searxng-ingress
+  namespace: searxng
+  annotations:
+    # Annotations pour nginx-ingress
+    # nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    # nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+    # cert-manager.io/cluster-issuer: "letsencrypt-prod"
+
+    # Décommentez et adaptez selon votre Ingress Controller
+spec:
+  ingressClassName: nginx  # ou votre ingress class
+  rules:
+  - host: searxng.example.com  # Remplacez par votre domaine
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: searxng
+            port:
+              number: 8080
+  # tls:
+  # - hosts:
+  #   - searxng.example.com
+  #   secretName: searxng-tls
+
+---
+# PodDisruptionBudget pour garantir la disponibilité
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: searxng-pdb
+  namespace: searxng
+spec:
+  minAvailable: 1
+  selector:
+    matchLabels:
+      app: searxng
+
+---
+# NetworkPolicy pour la sécurité (optionnel)
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: searxng-netpol
+  namespace: searxng
+spec:
+  podSelector:
+    matchLabels:
+      app: searxng
+  policyTypes:
+  - Ingress
+  - Egress
+  ingress:
+  - from:
+    - namespaceSelector: {}
+    ports:
+    - protocol: TCP
+      port: 8080
+  egress:
+  - {}  # Autoriser tout le trafic sortant (pour les requêtes vers les moteurs de recherche)

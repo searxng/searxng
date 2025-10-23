@@ -1,5 +1,84 @@
-*
+# Git files
+.git
+.gitignore
+.gitattributes
+.github
 
-!container/entrypoint.sh
+# Documentation
+docs
+*.md
+*.rst
+AUTHORS.rst
+CHANGELOG.rst
+CONTRIBUTING.rst
+README.rst
+SECURITY.md
+PULL_REQUEST_TEMPLATE.md
+
+# Development tools
+.vscode
+.devcontainer
+.editorconfig
+.pylintrc
+.weblate
+.yamllint.yml
+.dir-locals-template.el
+.nvmrc
+.coveragerc
+pyrightconfig.json
+mise.toml
+
+# Tests
+tests
+requirements-dev.txt
+
+# Build artifacts
+*.pyc
+__pycache__
+*.pyo
+*.pyd
+.Python
+*.so
+*.egg
+*.egg-info
+dist
+build
+.eggs
+
+# IDE
+.idea
+*.swp
+*.swo
+*~
+
+# Logs
+*.log
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Node
+node_modules
+package.json
+package-lock.json
+
+# Go modules
+go.mod
+go.sum
+
+# Utils and scripts not needed in container
+utils
+manage
+Makefile
+
+# Client files (if not needed for runtime)
+client
+
+# Keep only what's needed
 !searx/**
-!requirements*.txt
+!requirements.txt
+!requirements-server.txt
+!babel.cfg
+!setup.py
+!container/entrypoint.sh

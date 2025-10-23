@@ -1,0 +1,94 @@
+# Exemple de configuration SearXNG pour Kubernetes
+# Ce fichier doit être adapté à vos besoins
+#
+# Pour l'utiliser avec Kubernetes:
+# kubectl create configmap searxng-settings --from-file=settings.yml=k8s-settings-example.yml -n searxng
+#
+# Pour plus d'options, consultez searx/settings.yml ou la documentation officielle:
+# https://docs.searxng.org/admin/settings/index.html
+
+general:
+  # L'instance sera désactivée si debug: false et secret_key n'est pas configurée
+  # Générez une clé secrète avec: openssl rand -hex 32
+  secret_key: "CHANGEME_ultrasecretkey"  # IMPORTANT: Changez cette valeur!
+
+  # Activer le mode debug uniquement pour le développement
+  debug: false
+
+  # URL de base de votre instance (utilisé pour les URLs absolues)
+  # instance_name: "SearXNG"
+
+server:
+  # Ces paramètres sont gérés par les variables d'environnement dans le Dockerfile
+  # bind_address: "::"
+  # port: 8080
+
+  # Clé secrète pour signer les cookies de session
+  secret_key: "CHANGEME_ultrasecretkey"  # IMPORTANT: Changez cette valeur!
+
+  # Limiter le débit de requêtes
+  limiter: true
+
+  # En-têtes HTTP personnalisés
+  http_protocol_version: "1.1"
+
+ui:
+  # Langue par défaut
+  default_locale: "fr"
+
+  # Thème par défaut
+  default_theme: simple
+
+  # Catégories de recherche affichées
+  default_categories:
+    - general
+    - images
+    - videos
+    - news
+    - map
+    - music
+
+search:
+  # Nombre de résultats par page
+  default_search_size: 10
+
+  # Nombre maximum de résultats par page
+  max_search_size: 20
+
+  # Formats de résultats disponibles
+  formats:
+    - html
+    - json
+
+# Paramètres Redis (si vous utilisez Redis pour le cache)
+redis:
+  # url: redis://redis-service:6379/0
+
+# Paramètres des moteurs de recherche
+# La liste complète est dans searx/settings.yml
+# Vous pouvez activer/désactiver des moteurs spécifiques ici
+
+# engines:
+#   - name: google
+#     engine: google
+#     shortcut: go
+#     disabled: false
+
+# Politiques de sécurité
+outgoing:
+  # Timeout pour les requêtes vers les moteurs de recherche
+  request_timeout: 3.0
+
+  # Nombre maximum de redirections
+  max_request_timeout: 15.0
+
+  # Pool de connexions
+  pool_connections: 100
+  pool_maxsize: 10
+
+# Protection contre les robots
+botdetection:
+  ip_limit:
+    # Nombre maximum de requêtes par IP
+    filter_link_local: true
+    link_token: true
