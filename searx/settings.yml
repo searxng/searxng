@@ -249,6 +249,23 @@ plugins:
   searx.plugins.tracker_url_remover.SXNGPlugin:
     active: true
 
+  searx.plugins.immobilier_cleaner.SXNGPlugin:
+    active: true
+
+
+# Configuration of the "Immobilier Cleaner plugin":
+#
+# Nettoie et structure les résultats de recherche immobilière française
+# Extrait automatiquement : prix, surface, nombre de pièces, localisation
+# Élimine le contenu parasité et retourne un JSON standardisé
+#
+# immobilier_cleaner:
+#   min_price: 0
+#   max_price: 10000000
+#   min_surface: 5
+#   max_surface: 10000
+#   filter_incomplete: true  # Filtrer les annonces sans prix ni localisation
+#
 
 # Configuration of the "Hostnames plugin":
 #
