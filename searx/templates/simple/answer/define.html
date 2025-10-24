@@ -24,6 +24,16 @@
         </dt>
       </div>
       <dd>
+        {%- if item.definitions -%}
+          <br>
+          <div class="section-title"><b>{{ _('Definitions') }}</b></div>
+          <ol class="definitions">
+            {%- for d in item.definitions -%}
+              <li>{{ d|safe }}</li>
+            {%- endfor -%}
+          </ol>
+        {%- endif -%}
+
         {%- if item.examples -%}
           <br>
           <div class="section-title"><b>{{ _('Examples') }}</b></div>
@@ -31,16 +41,6 @@
             {%- for ex in item.examples -%}
               {# ex is expected to be sanitized HTML #}
               <li>{{ ex|safe }}</li>
-            {%- endfor -%}
-          </ul>
-        {%- endif -%}
-
-        {%- if item.definitions -%}
-          <br>
-          <div class="section-title"><b>{{ _('Definitions') }}</b></div>
-          <ul class="definitions">
-            {%- for d in item.definitions -%}
-              <li>{{ d|safe }}</li>
             {%- endfor -%}
           </ul>
         {%- endif -%}
@@ -76,6 +76,25 @@
 </div>
 
 <style>
+  .answer ol,
+  .answer ul {
+    margin: 0.35em 0 0.6em 1.2em;
+    padding-left: 20px;
+    line-height: 1.55;
+  }
+
+  .answer li + li {
+    margin-top: 0.3em;
+  }
+
+  .answer li::marker {
+    font-size: 0.9em;
+  }
+
+  .answer li {
+    padding-left: 0.15em;  /* increases gap between bullet and text */
+  }
+
   .define-source-btn {
     display: inline-block;
     background: rgba(255, 255, 255, 0.08);
