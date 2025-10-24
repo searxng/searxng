@@ -47,7 +47,7 @@ if typing.TYPE_CHECKING:
 
 # ---------------------------------------  Definition Provider Functionality  ------------------------------------------
 
-
+# Internal dataclass for provider results storage
 @dataclass(eq=True, frozen=False)
 class Definition:
     """
@@ -324,7 +324,7 @@ class DefineHandler:
 
             items.append(
                 Translations.Item(
-                    text=word,  # now just "liquid"
+                    text=word,
                     transliteration=f"({pos})" if pos != "unknown" else "",
                     definitions=definitions_text,
                     examples=examples,
