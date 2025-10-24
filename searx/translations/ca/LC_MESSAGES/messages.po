@@ -27,18 +27,19 @@
 # eudemo <eudemo@noreply.codeberg.org>, 2025.
 msgid ""
 msgstr ""
-"Project-Id-Version:  searx\n"
+"Project-Id-Version: searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-10-10 16:16+0000\n"
-"PO-Revision-Date: 2025-09-12 04:16+0000\n"
-"Last-Translator: eudemo <eudemo@noreply.codeberg.org>\n"
+"POT-Creation-Date: 2025-10-20 08:35+0000\n"
+"PO-Revision-Date: 2025-10-22 02:09+0000\n"
+"Last-Translator: return42 <return42@noreply.codeberg.org>\n"
+"Language-Team: Catalan <https://translate.codeberg.org/projects/searxng/"
+"searxng/ca/>\n"
 "Language: ca\n"
-"Language-Team: Catalan "
-"<https://translate.codeberg.org/projects/searxng/searxng/ca/>\n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 5.13.3\n"
 "Generated-By: Babel 2.17.0\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
@@ -905,23 +906,23 @@ msgstr "Contacteu amb el mantenidor de la instància"
 msgid "Click on the magnifier to perform search"
 msgstr "Feu clic en la lupa per a executar la cerca"
 
-#: searx/templates/simple/macros.html:40
+#: searx/templates/simple/macros.html:41
 msgid "Length"
 msgstr "Longitud"
 
-#: searx/templates/simple/macros.html:41
+#: searx/templates/simple/macros.html:42
 #: searx/templates/simple/result_templates/paper.html:74
 msgid "Views"
 msgstr "Vistes"
 
-#: searx/templates/simple/macros.html:42
-#: searx/templates/simple/result_templates/files.html:34
+#: searx/templates/simple/macros.html:43
+#: searx/templates/simple/result_templates/file.html:18
 #: searx/templates/simple/result_templates/images.html:19
 #: searx/templates/simple/result_templates/paper.html:14
 msgid "Author"
 msgstr "Autor"
 
-#: searx/templates/simple/macros.html:50
+#: searx/templates/simple/macros.html:51
 msgid "cached"
 msgstr "en memòria cau"
 
@@ -998,11 +999,11 @@ msgstr ""
 
 #: searx/templates/simple/preferences.html:162
 msgid "Press save to copy these preferences to your browser."
-msgstr ""
+msgstr "Prem gravar per aquestes preferències al teu navegador."
 
 #: searx/templates/simple/preferences.html:163
 msgid "Click here to view your browser preferences instead:"
-msgstr ""
+msgstr "Clica aquí per veure en el seu lloc les preferències del navegador:"
 
 #: searx/templates/simple/preferences.html:173
 msgid "General"
@@ -1140,7 +1141,7 @@ msgid "Parameter"
 msgstr "Paràmetre"
 
 #: searx/templates/simple/result_templates/code.html:29
-#: searx/templates/simple/result_templates/files.html:36
+#: searx/templates/simple/result_templates/file.html:24
 #: searx/templates/simple/stats.html:119
 msgid "Filename"
 msgstr "Nom de fitxer"
@@ -1640,13 +1641,13 @@ msgid "Repository"
 msgstr "Repositori"
 
 #: searx/templates/simple/result_templates/default.html:6
-#: searx/templates/simple/result_templates/files.html:8
-#: searx/templates/simple/result_templates/files.html:11
+#: searx/templates/simple/result_templates/file.html:53
+#: searx/templates/simple/result_templates/file.html:56
 msgid "show media"
 msgstr "mostra el contingut multimèdia"
 
 #: searx/templates/simple/result_templates/default.html:6
-#: searx/templates/simple/result_templates/files.html:8
+#: searx/templates/simple/result_templates/file.html:54
 msgid "hide media"
 msgstr "oculta el contingut multimèdia"
 
@@ -1655,20 +1656,24 @@ msgstr "oculta el contingut multimèdia"
 msgid "This site did not provide any description."
 msgstr "Aquest lloc no proporciona cap descripció."
 
-#: searx/templates/simple/result_templates/files.html:38
+#: searx/templates/simple/result_templates/file.html:30
 #: searx/templates/simple/result_templates/images.html:22
 #: searx/templates/simple/result_templates/torrent.html:18
 msgid "Filesize"
 msgstr "Mida del fitxer"
 
-#: searx/templates/simple/result_templates/files.html:40
+#: searx/templates/simple/result_templates/file.html:36
 msgid "Date"
 msgstr "Data"
 
-#: searx/templates/simple/result_templates/files.html:42
+#: searx/templates/simple/result_templates/file.html:42
 #: searx/templates/simple/result_templates/paper.html:44
 msgid "Type"
 msgstr "Tipus"
+
+#: searx/templates/simple/result_templates/file.html:67
+msgid "Download"
+msgstr "Baixa"
 
 #: searx/templates/simple/result_templates/images.html:20
 msgid "Resolution"
@@ -2391,4 +2396,3 @@ msgstr "oculta el vídeo"
 
 #~ msgid "repo"
 #~ msgstr "repositori"
-

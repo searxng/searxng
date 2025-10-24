@@ -46,20 +46,22 @@
 # Atul_Eterno <atul_eterno@noreply.codeberg.org>, 2025.
 # realkendrick_fr <realkendrick_fr@noreply.codeberg.org>, 2025.
 # Carlos Solís <csolisr@azkware.net>, 2025.
+# jperegrinm <jperegrinm@noreply.codeberg.org>, 2025.
 msgid ""
 msgstr ""
-"Project-Id-Version:  searx\n"
+"Project-Id-Version: searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-10-10 16:16+0000\n"
-"PO-Revision-Date: 2025-09-02 04:50+0000\n"
-"Last-Translator: return42 <return42@noreply.codeberg.org>\n"
+"POT-Creation-Date: 2025-10-20 08:35+0000\n"
+"PO-Revision-Date: 2025-10-22 02:09+0000\n"
+"Last-Translator: jperegrinm <jperegrinm@noreply.codeberg.org>\n"
+"Language-Team: Spanish <https://translate.codeberg.org/projects/searxng/"
+"searxng/es/>\n"
 "Language: es\n"
-"Language-Team: Spanish "
-"<https://translate.codeberg.org/projects/searxng/searxng/es/>\n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 5.13.3\n"
 "Generated-By: Babel 2.17.0\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
@@ -932,23 +934,23 @@ msgstr "Contactar al mantenedor de la instancia"
 msgid "Click on the magnifier to perform search"
 msgstr "Haz clic en la lupa para realizar la búsqueda"
 
-#: searx/templates/simple/macros.html:40
+#: searx/templates/simple/macros.html:41
 msgid "Length"
 msgstr "Longitud"
 
-#: searx/templates/simple/macros.html:41
+#: searx/templates/simple/macros.html:42
 #: searx/templates/simple/result_templates/paper.html:74
 msgid "Views"
 msgstr "Visualizaciones"
 
-#: searx/templates/simple/macros.html:42
-#: searx/templates/simple/result_templates/files.html:34
+#: searx/templates/simple/macros.html:43
+#: searx/templates/simple/result_templates/file.html:18
 #: searx/templates/simple/result_templates/images.html:19
 #: searx/templates/simple/result_templates/paper.html:14
 msgid "Author"
 msgstr "Autor"
 
-#: searx/templates/simple/macros.html:50
+#: searx/templates/simple/macros.html:51
 msgid "cached"
 msgstr "en caché"
 
@@ -1020,14 +1022,16 @@ msgid ""
 "This is a preview of the settings used by the 'Search URL' you used to "
 "get here."
 msgstr ""
+"Esta es una vista previa de los ajustes usados por la URL de búsqueda que "
+"solías tener aquí."
 
 #: searx/templates/simple/preferences.html:162
 msgid "Press save to copy these preferences to your browser."
-msgstr ""
+msgstr "Pincha en guardar para copiar estos ajustes en tu navegador."
 
 #: searx/templates/simple/preferences.html:163
 msgid "Click here to view your browser preferences instead:"
-msgstr ""
+msgstr "Haz clic aquí para ver tus ajustes del navegador en su lugar:"
 
 #: searx/templates/simple/preferences.html:173
 msgid "General"
@@ -1165,7 +1169,7 @@ msgid "Parameter"
 msgstr "Parámetro"
 
 #: searx/templates/simple/result_templates/code.html:29
-#: searx/templates/simple/result_templates/files.html:36
+#: searx/templates/simple/result_templates/file.html:24
 #: searx/templates/simple/stats.html:119
 msgid "Filename"
 msgstr "Nombre de archivo"
@@ -1229,7 +1233,7 @@ msgstr "segundos"
 
 #: searx/templates/simple/elements/search_url.html:3
 msgid "Search URL"
-msgstr "URL de la búsqueda"
+msgstr "URL de búsqueda"
 
 #: searx/templates/simple/elements/search_url.html:4
 #: searx/templates/simple/preferences/cookies.html:54
@@ -1417,7 +1421,7 @@ msgstr "Valor"
 
 #: searx/templates/simple/preferences/cookies.html:23
 msgid "Search URL of the currently saved preferences"
-msgstr "Buscar URL de las preferencias guardadas actualmente"
+msgstr "URL de búsqueda de las preferencias guardadas actualmente"
 
 #: searx/templates/simple/preferences/cookies.html:32
 msgid ""
@@ -1678,13 +1682,13 @@ msgid "Repository"
 msgstr "Repositorio"
 
 #: searx/templates/simple/result_templates/default.html:6
-#: searx/templates/simple/result_templates/files.html:8
-#: searx/templates/simple/result_templates/files.html:11
+#: searx/templates/simple/result_templates/file.html:53
+#: searx/templates/simple/result_templates/file.html:56
 msgid "show media"
 msgstr "mostrar multimedia"
 
 #: searx/templates/simple/result_templates/default.html:6
-#: searx/templates/simple/result_templates/files.html:8
+#: searx/templates/simple/result_templates/file.html:54
 msgid "hide media"
 msgstr "ocultar multimedia"
 
@@ -1693,20 +1697,24 @@ msgstr "ocultar multimedia"
 msgid "This site did not provide any description."
 msgstr "Este sitio no provee ninguna descripción."
 
-#: searx/templates/simple/result_templates/files.html:38
+#: searx/templates/simple/result_templates/file.html:30
 #: searx/templates/simple/result_templates/images.html:22
 #: searx/templates/simple/result_templates/torrent.html:18
 msgid "Filesize"
 msgstr "Tamaño de archivo"
 
-#: searx/templates/simple/result_templates/files.html:40
+#: searx/templates/simple/result_templates/file.html:36
 msgid "Date"
 msgstr "Fecha"
 
-#: searx/templates/simple/result_templates/files.html:42
+#: searx/templates/simple/result_templates/file.html:42
 #: searx/templates/simple/result_templates/paper.html:44
 msgid "Type"
 msgstr "Tipo"
+
+#: searx/templates/simple/result_templates/file.html:67
+msgid "Download"
+msgstr "Descargar"
 
 #: searx/templates/simple/result_templates/images.html:20
 msgid "Resolution"
@@ -2437,4 +2445,3 @@ msgstr "ocultar video"
 
 #~ msgid "repo"
 #~ msgstr "repositorios"
-
