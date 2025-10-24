@@ -124,7 +124,7 @@ class Definition:
 class DefinitionProvider:
     """
     Root class for handling web IO and exposing a common interface.
-    Subclasses should implement `.definitions(word, lang="en") -> list[Definition]`.
+    Subclasses should implement `.lookup(word, lang="en") -> list[Definition]`.
     """
 
     # Override this
