@@ -9,9 +9,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-10-10 16:16+0000\n"
-"PO-Revision-Date: 2025-10-14 09:09+0000\n"
-"Last-Translator: aindriu80 <aindriu80@noreply.codeberg.org>\n"
+"POT-Creation-Date: 2025-10-20 08:35+0000\n"
+"PO-Revision-Date: 2025-10-22 02:09+0000\n"
+"Last-Translator: return42 <return42@noreply.codeberg.org>\n"
 "Language-Team: Irish <https://translate.codeberg.org/projects/searxng/"
 "searxng/ga/>\n"
 "Language: ga\n"
@@ -895,23 +895,23 @@ msgstr "Déan teagmháil le cothabhálaí sampla"
 msgid "Click on the magnifier to perform search"
 msgstr "Cliceáil ar an mhéadaitheoir chun cuardach a dhéanamh"
 
-#: searx/templates/simple/macros.html:40
+#: searx/templates/simple/macros.html:41
 msgid "Length"
 msgstr "Fad"
 
-#: searx/templates/simple/macros.html:41
+#: searx/templates/simple/macros.html:42
 #: searx/templates/simple/result_templates/paper.html:74
 msgid "Views"
 msgstr "Amharcanna"
 
-#: searx/templates/simple/macros.html:42
-#: searx/templates/simple/result_templates/files.html:34
+#: searx/templates/simple/macros.html:43
+#: searx/templates/simple/result_templates/file.html:18
 #: searx/templates/simple/result_templates/images.html:19
 #: searx/templates/simple/result_templates/paper.html:14
 msgid "Author"
 msgstr "Údar"
 
-#: searx/templates/simple/macros.html:50
+#: searx/templates/simple/macros.html:51
 msgid "cached"
 msgstr "taisceáilte"
 
@@ -983,8 +983,8 @@ msgid ""
 "This is a preview of the settings used by the 'Search URL' you used to "
 "get here."
 msgstr ""
-"Seo réamhamharc ar na socruithe a úsáideann an 'URL Cuardaigh' a d'úsáid tú "
-"chun teacht anseo."
+"Seo réamhamharc ar na socruithe a úsáideann an 'URL Cuardaigh' a d'úsáid "
+"tú chun teacht anseo."
 
 #: searx/templates/simple/preferences.html:162
 msgid "Press save to copy these preferences to your browser."
@@ -1130,7 +1130,7 @@ msgid "Parameter"
 msgstr "Paraiméadar"
 
 #: searx/templates/simple/result_templates/code.html:29
-#: searx/templates/simple/result_templates/files.html:36
+#: searx/templates/simple/result_templates/file.html:24
 #: searx/templates/simple/stats.html:119
 msgid "Filename"
 msgstr "Ainm comhaid"
@@ -1645,13 +1645,13 @@ msgid "Repository"
 msgstr "Stóras"
 
 #: searx/templates/simple/result_templates/default.html:6
-#: searx/templates/simple/result_templates/files.html:8
-#: searx/templates/simple/result_templates/files.html:11
+#: searx/templates/simple/result_templates/file.html:53
+#: searx/templates/simple/result_templates/file.html:56
 msgid "show media"
 msgstr "meáin taispeána"
 
 #: searx/templates/simple/result_templates/default.html:6
-#: searx/templates/simple/result_templates/files.html:8
+#: searx/templates/simple/result_templates/file.html:54
 msgid "hide media"
 msgstr "na meáin a cheilt"
 
@@ -1660,20 +1660,24 @@ msgstr "na meáin a cheilt"
 msgid "This site did not provide any description."
 msgstr "Níor thug an suíomh seo aon tuairisc ar fáil."
 
-#: searx/templates/simple/result_templates/files.html:38
+#: searx/templates/simple/result_templates/file.html:30
 #: searx/templates/simple/result_templates/images.html:22
 #: searx/templates/simple/result_templates/torrent.html:18
 msgid "Filesize"
 msgstr "Méid na Comhad"
 
-#: searx/templates/simple/result_templates/files.html:40
+#: searx/templates/simple/result_templates/file.html:36
 msgid "Date"
 msgstr "Dáta"
 
-#: searx/templates/simple/result_templates/files.html:42
+#: searx/templates/simple/result_templates/file.html:42
 #: searx/templates/simple/result_templates/paper.html:44
 msgid "Type"
 msgstr "Cineál"
+
+#: searx/templates/simple/result_templates/file.html:67
+msgid "Download"
+msgstr "Íoslódáil"
 
 #: searx/templates/simple/result_templates/images.html:20
 msgid "Resolution"

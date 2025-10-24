@@ -23,9 +23,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-10-10 16:16+0000\n"
-"PO-Revision-Date: 2025-10-14 09:09+0000\n"
-"Last-Translator: Raithlin <raithlin@noreply.codeberg.org>\n"
+"POT-Creation-Date: 2025-10-20 08:35+0000\n"
+"PO-Revision-Date: 2025-10-22 02:09+0000\n"
+"Last-Translator: return42 <return42@noreply.codeberg.org>\n"
 "Language-Team: Afrikaans <https://translate.codeberg.org/projects/searxng/"
 "searxng/af/>\n"
 "Language: af\n"
@@ -907,23 +907,23 @@ msgstr "Kontak instansie onderhouer"
 msgid "Click on the magnifier to perform search"
 msgstr "Kliek op die vergrootglas om 'n soektog te doen"
 
-#: searx/templates/simple/macros.html:40
+#: searx/templates/simple/macros.html:41
 msgid "Length"
 msgstr "Lengte"
 
-#: searx/templates/simple/macros.html:41
+#: searx/templates/simple/macros.html:42
 #: searx/templates/simple/result_templates/paper.html:74
 msgid "Views"
 msgstr "sienings"
 
-#: searx/templates/simple/macros.html:42
-#: searx/templates/simple/result_templates/files.html:34
+#: searx/templates/simple/macros.html:43
+#: searx/templates/simple/result_templates/file.html:18
 #: searx/templates/simple/result_templates/images.html:19
 #: searx/templates/simple/result_templates/paper.html:14
 msgid "Author"
 msgstr "Outeur"
 
-#: searx/templates/simple/macros.html:50
+#: searx/templates/simple/macros.html:51
 msgid "cached"
 msgstr "gekas"
 
@@ -997,8 +997,8 @@ msgid ""
 "This is a preview of the settings used by the 'Search URL' you used to "
 "get here."
 msgstr ""
-"Hierdie is 'n voorskou van die instellings wat gebruik word deur die 'Soek-"
-"URL' wat jy gebruik het om hierheen te kom."
+"Hierdie is 'n voorskou van die instellings wat gebruik word deur die "
+"'Soek-URL' wat jy gebruik het om hierheen te kom."
 
 #: searx/templates/simple/preferences.html:162
 msgid "Press save to copy these preferences to your browser."
@@ -1144,7 +1144,7 @@ msgid "Parameter"
 msgstr "Parameter"
 
 #: searx/templates/simple/result_templates/code.html:29
-#: searx/templates/simple/result_templates/files.html:36
+#: searx/templates/simple/result_templates/file.html:24
 #: searx/templates/simple/stats.html:119
 msgid "Filename"
 msgstr "Lêernaam"
@@ -1653,13 +1653,13 @@ msgid "Repository"
 msgstr "Bewaarplek"
 
 #: searx/templates/simple/result_templates/default.html:6
-#: searx/templates/simple/result_templates/files.html:8
-#: searx/templates/simple/result_templates/files.html:11
+#: searx/templates/simple/result_templates/file.html:53
+#: searx/templates/simple/result_templates/file.html:56
 msgid "show media"
 msgstr "media wys"
 
 #: searx/templates/simple/result_templates/default.html:6
-#: searx/templates/simple/result_templates/files.html:8
+#: searx/templates/simple/result_templates/file.html:54
 msgid "hide media"
 msgstr "versteek media"
 
@@ -1668,20 +1668,24 @@ msgstr "versteek media"
 msgid "This site did not provide any description."
 msgstr "Hierdie webwerf het geen beskrywing verskaf nie."
 
-#: searx/templates/simple/result_templates/files.html:38
+#: searx/templates/simple/result_templates/file.html:30
 #: searx/templates/simple/result_templates/images.html:22
 #: searx/templates/simple/result_templates/torrent.html:18
 msgid "Filesize"
 msgstr "Lêergrootte"
 
-#: searx/templates/simple/result_templates/files.html:40
+#: searx/templates/simple/result_templates/file.html:36
 msgid "Date"
 msgstr "Datum"
 
-#: searx/templates/simple/result_templates/files.html:42
+#: searx/templates/simple/result_templates/file.html:42
 #: searx/templates/simple/result_templates/paper.html:44
 msgid "Type"
 msgstr "Tik"
+
+#: searx/templates/simple/result_templates/file.html:67
+msgid "Download"
+msgstr "Laai af"
 
 #: searx/templates/simple/result_templates/images.html:20
 msgid "Resolution"
