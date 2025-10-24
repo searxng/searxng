@@ -121,7 +121,19 @@ listen("click", "#copy_url", async function (this: HTMLElement) {
   const target = this.parentElement?.querySelector<HTMLPreElement>("pre");
   assertElement(target);
 
-  await navigator.clipboard.writeText(target.innerText);
+  if (window.isSecureContext) {
+    await navigator.clipboard.writeText(target.innerText);
+  } else {
+    const selection = window.getSelection();
+    if (selection) {
+      const range = document.createRange();
+      range.selectNodeContents(target);
+      selection.removeAllRanges();
+      selection.addRange(range);
+      document.execCommand("copy");
+    }
+  }
+
   const copiedText = this.dataset.copiedText;
   if (copiedText) {
     this.innerText = copiedText;

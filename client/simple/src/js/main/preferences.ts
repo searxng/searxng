@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
-import { http, listen, settings } from "../core/toolkit.ts";
+import { assertElement, http, listen, settings } from "../core/toolkit.ts";
 
 let engineDescriptions: Record<string, [string, string]> | undefined;
 
@@ -52,19 +52,25 @@ for (const engine of disableAllEngines) {
   listen("click", engine, () => toggleEngines(false, engineToggles));
 }
 
-const copyHashButton: HTMLElement | null = document.querySelector<HTMLElement>("#copy-hash");
-if (copyHashButton) {
-  listen("click", copyHashButton, async (event: Event) => {
-    event.preventDefault();
+listen("click", "#copy-hash", async function (this: HTMLElement) {
+  const target = this.parentElement?.querySelector<HTMLPreElement>("pre");
+  assertElement(target);
 
-    const { copiedText, hash } = copyHashButton.dataset;
-    if (!(copiedText && hash)) return;
-
-    try {
-      await navigator.clipboard.writeText(hash);
-      copyHashButton.innerText = copiedText;
-    } catch (error) {
-      console.error("Failed to copy hash:", error);
+  if (window.isSecureContext) {
+    await navigator.clipboard.writeText(target.innerText);
+  } else {
+    const selection = window.getSelection();
+    if (selection) {
+      const range = document.createRange();
+      range.selectNodeContents(target);
+      selection.removeAllRanges();
+      selection.addRange(range);
+      document.execCommand("copy");
     }
-  });
-}
+  }
+
+  const copiedText = this.dataset.copiedText;
+  if (copiedText) {
+    this.innerText = copiedText;
+  }
+});
