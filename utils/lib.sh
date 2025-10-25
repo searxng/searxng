@@ -4,20 +4,30 @@
 # shellcheck disable=SC2059,SC1117
 
 # ubuntu, debian, arch, fedora, centos ...
-DIST_ID=$(
-    source /etc/os-release
-    echo "$ID"
-)
-# shellcheck disable=SC2034
-DIST_VERS=$(
-    source /etc/os-release
-    echo "$VERSION_ID"
-)
-# shellcheck disable=SC2034
-DIST_VERSION_CODENAME=$(
-    source /etc/os-release
-    echo "$VERSION_CODENAME"
-)
+# macOS compatibility: /etc/os-release doesn't exist on macOS
+if [ -f /etc/os-release ]; then
+    DIST_ID=$(
+        source /etc/os-release
+        echo "$ID"
+    )
+    # shellcheck disable=SC2034
+    DIST_VERS=$(
+        source /etc/os-release
+        echo "$VERSION_ID"
+    )
+    # shellcheck disable=SC2034
+    DIST_VERSION_CODENAME=$(
+        source /etc/os-release
+        echo "$VERSION_CODENAME"
+    )
+else
+    # macOS or other systems without /etc/os-release
+    DIST_ID="$(uname -s | tr '[:upper:]' '[:lower:]')"
+    # shellcheck disable=SC2034
+    DIST_VERS="$(uname -r)"
+    # shellcheck disable=SC2034
+    DIST_VERSION_CODENAME=""
+fi
 
 ADMIN_NAME="${ADMIN_NAME:-$(git config user.name)}"
 ADMIN_NAME="${ADMIN_NAME:-$USER}"
