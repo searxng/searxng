@@ -8,9 +8,16 @@ import os
 from os.path import dirname, abspath
 
 import logging
+import warnings
 
 import msgspec
 import searx.unixthreadname  # pylint: disable=unused-import
+
+# Suppress Python 3.12+ multiprocessing fork() deprecation warnings
+# The calculator plugin uses fork() in a controlled manner for timeout handling
+# See: https://github.com/searxng/searxng/issues/4159
+warnings.filterwarnings("ignore", category=DeprecationWarning, 
+                       message=".*multi-threaded.*fork.*")
 
 # Debug
 LOG_FORMAT_DEBUG: str = '%(levelname)-7s %(name)-30.30s: %(message)s'
