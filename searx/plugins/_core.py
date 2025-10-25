@@ -188,6 +188,9 @@ class PluginCfg:
     active: bool = False
     """Plugin is active by default and the user can *opt-out* in the preferences."""
 
+    parameters: dict[str, t.Any] = field(default_factory=dict)
+    """Arbitrary plugin parameters from settings.yml (plugin-specific)."""
+
 
 class PluginStorage:
     """A storage for managing the *plugins* of SearXNG."""

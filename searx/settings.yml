@@ -249,6 +249,15 @@ plugins:
   searx.plugins.tracker_url_remover.SXNGPlugin:
     active: true
 
+  # Spelling / Did you mean? plugin (disabled by default)
+  searx.plugins.spellcheck.SXNGPlugin:
+    active: false
+    # Spell check provider. 'google' uses Google Autocomplete for corrections.
+    # If Google is unavailable or undesired (privacy, disabled, network),
+    # remove this 'parameters' block or set provider: pyspellchecker.
+    parameters:
+      provider: google
+
 
 # Configuration of the "Hostnames plugin":
 #
