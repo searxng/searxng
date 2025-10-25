@@ -53,6 +53,7 @@ from searx.exceptions import (
     SearxEngineAPIException,
     SearxEngineTooManyRequestsException,
     SearxEngineCaptchaException,
+    SearxEngineAccessDeniedException,
 )
 from searx.network import raise_for_httperror
 from searx.enginelib.traits import EngineTraits
@@ -184,8 +185,12 @@ def parse_web_api(resp):
 
     results = []
 
-    # load JSON result
-    search_results = loads(resp.text)
+    # Try to load JSON result
+    try:
+        search_results = loads(resp.text)
+    except ValueError:
+        search_results = {}
+
     data = search_results.get('data', {})
 
     # check for an API error
@@ -195,6 +200,8 @@ def parse_web_api(resp):
             raise SearxEngineTooManyRequestsException()
         if search_results.get("data", {}).get("error_data", {}).get("captchaUrl") is not None:
             raise SearxEngineCaptchaException()
+        if resp.status_code == 403:
+            raise SearxEngineAccessDeniedException()
         msg = ",".join(data.get('message', ['unknown']))
         raise SearxEngineAPIException(f"{msg} ({error_code})")
 
