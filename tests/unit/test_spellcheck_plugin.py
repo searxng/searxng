@@ -100,13 +100,13 @@ def test_tokenize(text: str, expected: list[tuple[str, bool]]):
     assert _tokenize(text) == expected
 
 
-def test_google_provider_correct_query_returns_none_on_no_suggestions():
+def test_google_no_suggestions():
     provider = GoogleAutocompleteProvider()
     with patch("searx.plugins.spellcheck.search_autocomplete", return_value=[]):
         assert provider.correct_query("teh", "en-US") is None
 
 
-def test_google_provider_correct_query_prefers_close_match():
+def test_google_close_match():
     provider = GoogleAutocompleteProvider()
     with patch(
         "searx.plugins.spellcheck.search_autocomplete",
@@ -116,7 +116,7 @@ def test_google_provider_correct_query_prefers_close_match():
         assert provider.correct_query("teh", "en-US") == "the"
 
 
-def test_pyspell_provider_uses_backend_methods():
+def test_pyspell_provider_backend():
     fake = _FakeWordProvider(misspelled={"recieve"}, mapping={"recieve": "receive"})
     with patch.object(PySpellcheckerProvider, "__init__", return_value=None):
         p = PySpellcheckerProvider.__new__(PySpellcheckerProvider)  # type: ignore[misc]
@@ -136,7 +136,7 @@ def test_pyspell_provider_uses_backend_methods():
         assert p.correction("recieve") == "receive"
 
 
-def test_plugin_google_provider_flow():
+def test_plugin_google_flow():
     cfg = SimpleNamespace(parameters={"provider": "google"})
     plugin = SXNGPlugin(cfg)
 
@@ -152,7 +152,7 @@ def test_plugin_google_provider_flow():
         assert item.get("correction") == "vacuum cleaners"
 
 
-def test_plugin_pyspell_provider_flow_with_fallback_ui_locale():
+def test_plugin_pyspell_fallback():
     cfg = SimpleNamespace(parameters={"provider": "pyspellchecker"})
     plugin = SXNGPlugin(cfg)
 

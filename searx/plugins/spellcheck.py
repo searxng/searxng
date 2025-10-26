@@ -76,7 +76,7 @@ class WordCorrectionProvider(Protocol):
 
 
 @runtime_checkable
-class QuerySuggestionProvider(Protocol):
+class QuerySuggestionProvider(Protocol):  # pylint: disable=too-few-public-methods
     """Provider for whole-query correction."""
 
     def correct_query(self, query: str, sxng_locale: str) -> str | None:
@@ -177,7 +177,7 @@ class PySpellcheckerProvider:
         func = getattr(self._sc, "unknown", None)
         if not callable(func):
             return []
-        return func(candidates)
+        return func(candidates)  # pylint: disable=not-callable
 
     def correction(self, word: str) -> str | None:  # type: ignore[override]
         """Return the best correction for ``word``.
@@ -198,7 +198,7 @@ class PySpellcheckerProvider:
         func = getattr(self._sc, "correction", None)
         if not callable(func):
             return None
-        return func(word)
+        return func(word)  # pylint: disable=not-callable
 
 
 class GoogleAutocompleteProvider:
@@ -269,7 +269,7 @@ class GoogleAutocompleteProvider:
             score = similarity - penalty
             if sorted(s) == sorted(query):
                 score += 0.1
-            if best is None or score > best[0]:
+            if best is None or score > best[0]:  # pylint: disable=unsubscriptable-object
                 best = (score, s)
 
         # Conservative acceptance threshold
@@ -373,15 +373,41 @@ class SXNGPlugin(Plugin):
             Result list containing at most one legacy correction item.
         """
         results = EngineResults()
+        corrected = self._get_correction(request, search)
 
+        if corrected is not None:
+            results.add(results.types.LegacyResult({"correction": corrected}))
+
+        return results
+
+    def _get_correction(self, request: SXNG_Request, search: SearchWithPlugins) -> str | None:
+        """Get spelling correction for the search query.
+
+        Parameters
+        ----------
+        request : SXNG_Request
+            The current HTTP request with preferences.
+        search : SearchWithPlugins
+            The running search execution context.
+
+        Returns
+        -------
+        str or None
+            Corrected query if available, otherwise None.
+        """
         # Only check on first page
         if search.search_query.pageno > 1:
-            return results
+            return None
 
         query: str = search.search_query.query or ""
         if not query or len(query) < 2:
-            return results
+            return None
 
+        # Avoid touching bang-prefixed queries at the beginning (!yt ...)
+        if query.lstrip().startswith("!"):
+            return None
+
+        # Determine spellcheck language
         lang_pref: str | None = request.preferences.get_value("language")
         sc_lang: str | None = _is_supported_lang(lang_pref)
         if sc_lang is None:
@@ -389,27 +415,22 @@ class SXNGPlugin(Plugin):
             ui_locale: str | None = request.preferences.get_value("locale")
             if ui_locale:
                 sc_lang = _LANG_MAP.get(ui_locale.split("-")[0].lower())
+
         if sc_lang is None and self.provider_name != "google":
-            return results
+            return None
 
         provider = self._select_provider(sc_lang)
         if provider is None:
-            return results
+            return None
 
-        # Avoid touching bang-prefixed queries at the beginning (!yt ...)
-        if query.lstrip().startswith("!"):
-            return results
-
+        # Get correction from provider
         if isinstance(provider, GoogleAutocompleteProvider):
             corrected = provider.correct_query(query, request.preferences.get_value("locale") or "")
         else:
             corrected = self._correct_query(query, provider)  # type: ignore[arg-type]
-        if corrected is None or corrected == query:
-            return results
 
-        # Use legacy correction dict via EngineResults.types.LegacyResult
-        results.add(results.types.LegacyResult({"correction": corrected}))
-        return results
+        # Return correction only if it's different from original query
+        return corrected if corrected and corrected != query else None
 
     # --- helpers -----------------------------------------------------------------
 
