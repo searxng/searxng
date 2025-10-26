@@ -1,4 +1,5 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
+"""Tests for the spellcheck plugin."""
 
 from __future__ import annotations
 
@@ -87,7 +88,10 @@ def test_is_supported_lang(pref: str | None, expected: str | None):
 @parameterized.expand(
     [
         ("hello, world", [("hello,", True), (" ", False), ("world", True)]),
-        (" one  two ", [(" ", False), ("one", True), ("  ", False), ("two", True), (" ", False)]),
+        (
+            " one  two ",
+            [(" ", False), ("one", True), ("  ", False), ("two", True), (" ", False)],
+        ),
         ("a", [("a", True)]),
         ("", []),
     ]
@@ -98,14 +102,14 @@ def test_tokenize(text: str, expected: list[tuple[str, bool]]):
 
 def test_google_provider_correct_query_returns_none_on_no_suggestions():
     provider = GoogleAutocompleteProvider()
-    with patch("searx.autocomplete.search_autocomplete", return_value=[]):
+    with patch("searx.plugins.spellcheck.search_autocomplete", return_value=[]):
         assert provider.correct_query("teh", "en-US") is None
 
 
 def test_google_provider_correct_query_prefers_close_match():
     provider = GoogleAutocompleteProvider()
     with patch(
-        "searx.autocomplete.search_autocomplete",
+        "searx.plugins.spellcheck.search_autocomplete",
         return_value=["the", "tech", "ten"],
     ):
         # get_close_matches prefers the closest suggestion
@@ -117,7 +121,15 @@ def test_pyspell_provider_uses_backend_methods():
     with patch.object(PySpellcheckerProvider, "__init__", return_value=None):
         p = PySpellcheckerProvider.__new__(PySpellcheckerProvider)  # type: ignore[misc]
         # Inject fake backend object
-        object.__setattr__(p, "_sc", type("_B", (), {"unknown": fake.find_misspellings, "correction": fake.correction})())
+        object.__setattr__(
+            p,
+            "_sc",
+            type(
+                "_B",
+                (),
+                {"unknown": fake.find_misspellings, "correction": fake.correction},
+            )(),
+        )
         # unknown path
         assert list(p.find_misspellings(["recieve", "x"])) == ["recieve"]
         # correction path
@@ -155,13 +167,7 @@ def test_plugin_pyspell_provider_flow_with_fallback_ui_locale():
         assert results[0]["correction"].startswith("how to receive")
 
 
-@parameterized.expand(
-    [
-        (2, "teh"),  # not first page
-        (1, ""),     # empty
-        (1, "!")     # bang query
-    ]
-)
+@parameterized.expand([(2, "teh"), (1, ""), (1, "!")])  # not first page  # empty  # bang query
 def test_plugin_early_exits(pageno: int, query: str):
     cfg = SimpleNamespace(parameters={"provider": "google"})
     plugin = SXNGPlugin(cfg)
@@ -172,5 +178,3 @@ def test_plugin_early_exits(pageno: int, query: str):
             search=_make_search(query, pageno),
         )
         assert len(results) == 0
-
-

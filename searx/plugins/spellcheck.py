@@ -14,13 +14,20 @@ from __future__ import annotations
 import logging
 import re
 from dataclasses import dataclass
+from difflib import SequenceMatcher
 from functools import lru_cache
 from typing import TYPE_CHECKING, Protocol, runtime_checkable
 
 from flask_babel import gettext
 
+from searx.autocomplete import search_autocomplete
 from searx.plugins import Plugin, PluginInfo
 from searx.result_types import EngineResults
+
+try:
+    from spellchecker import SpellChecker  # type: ignore[unresolved-import]
+except ImportError:
+    SpellChecker = None  # type: ignore[misc]
 
 if TYPE_CHECKING:  # import only for typing
     from collections.abc import Iterable
@@ -50,7 +57,7 @@ class WordCorrectionProvider(Protocol):
         Iterable[str]
             Tokens detected as misspellings.
         """
-        ...
+        raise NotImplementedError
 
     def correction(self, word: str) -> str | None:
         """Return the best correction for a single word.
@@ -65,7 +72,7 @@ class WordCorrectionProvider(Protocol):
         str or None
             Suggested correction or ``None`` if unknown.
         """
-        ...
+        raise NotImplementedError
 
 
 @runtime_checkable
@@ -87,7 +94,7 @@ class QuerySuggestionProvider(Protocol):
         str or None
             Suggested query replacement, or ``None`` if not applicable.
         """
-        ...
+        raise NotImplementedError
 
 
 @dataclass(frozen=True)
@@ -111,9 +118,7 @@ SUPPORTED_LANGUAGES: tuple[_SupportedLanguage, ...] = (
 )
 
 
-_LANG_MAP: dict[str, str] = {
-    lang.code: lang.spellchecker_code for lang in SUPPORTED_LANGUAGES
-}
+_LANG_MAP: dict[str, str] = {lang.code: lang.spellchecker_code for lang in SUPPORTED_LANGUAGES}
 
 
 @lru_cache(maxsize=16)
@@ -130,18 +135,14 @@ def _load_spellchecker(lang_code: str):
     object | None
         The SpellChecker instance or None if unavailable.
     """
-    try:
-        from spellchecker import SpellChecker  # type: ignore[unresolved-import]
-    except ImportError as exc:
-        log.warning("pyspellchecker is not installed: %s", exc)
+    if SpellChecker is None:
+        log.warning("pyspellchecker is not installed")
         return None
 
     try:
         return SpellChecker(language=lang_code)
     except (OSError, ValueError, LookupError) as exc:
-        log.warning(
-            "pyspellchecker failed to initialize for language %s: %s", lang_code, exc
-        )
+        log.warning("pyspellchecker failed to initialize for language %s: %s", lang_code, exc)
         return None
 
 
@@ -206,12 +207,12 @@ class GoogleAutocompleteProvider:
     Implements optional ``correct_query``; word-level methods are no-ops.
     """
 
-    def find_misspellings(self, candidates: Iterable[str]) -> Iterable[str]:
+    def find_misspellings(self, _candidates: Iterable[str]) -> Iterable[str]:
         """Return an empty iterable; Google provider does not check words.
 
         Parameters
         ----------
-        candidates : Iterable[str]
+        _candidates : Iterable[str]
             Ignored.
 
         Returns
@@ -221,12 +222,12 @@ class GoogleAutocompleteProvider:
         """
         return []
 
-    def correction(self, word: str) -> str | None:
+    def correction(self, _word: str) -> str | None:
         """Return ``None``; Google provider does not correct single words.
 
         Parameters
         ----------
-        word : str
+        _word : str
             Ignored.
 
         Returns
@@ -252,9 +253,6 @@ class GoogleAutocompleteProvider:
             Suggested query if sufficiently similar and different;
             otherwise ``None``.
         """
-        from difflib import SequenceMatcher
-
-        from searx.autocomplete import search_autocomplete
 
         suggestions = search_autocomplete("google", query, sxng_locale) or []
         if not suggestions:
@@ -359,9 +357,7 @@ class SXNGPlugin(Plugin):
         provider = params.get("provider", "pyspellchecker")
         self.provider_name: str = str(provider)
 
-    def post_search(
-        self, request: SXNG_Request, search: SearchWithPlugins
-    ) -> EngineResults:
+    def post_search(self, request: SXNG_Request, search: SearchWithPlugins) -> EngineResults:
         """Compute spelling correction suggestions.
 
         Parameters
@@ -405,9 +401,7 @@ class SXNGPlugin(Plugin):
             return results
 
         if isinstance(provider, GoogleAutocompleteProvider):
-            corrected = provider.correct_query(
-                query, request.preferences.get_value("locale") or ""
-            )
+            corrected = provider.correct_query(query, request.preferences.get_value("locale") or "")
         else:
             corrected = self._correct_query(query, provider)  # type: ignore[arg-type]
         if corrected is None or corrected == query:
@@ -419,9 +413,7 @@ class SXNGPlugin(Plugin):
 
     # --- helpers -----------------------------------------------------------------
 
-    def _correct_query(
-        self, query: str, spellchecker: WordCorrectionProvider
-    ) -> str | None:
+    def _correct_query(self, query: str, spellchecker: WordCorrectionProvider) -> str | None:
         """Return a single corrected variant of the query or ``None``.
 
         Parameters
