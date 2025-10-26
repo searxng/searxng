@@ -18,10 +18,9 @@ Configuration (settings.yml):
 from __future__ import annotations
 
 import re
-import time
 import typing as t
 from dataclasses import field
-from datetime import UTC
+from datetime import UTC, datetime, timedelta
 
 from flask_babel import gettext
 from httpx import HTTPError
@@ -82,7 +81,7 @@ class StockChartAnswer(BaseAnswer, kw_only=True):
     currency: str = ""
     url: str | None = None
     timeframe_days: int = 7
-    market_data: list[dict] = field(default_factory=list)
+    market_data: list[dict] = field(default_factory=list)  # pylint: disable=invalid-field-call
 
     def __hash__(self) -> int:
         """Two charts for the same symbol are considered identical."""
@@ -123,15 +122,11 @@ def _normalize_identifier(raw_query: str) -> str | None:
     return None
 
 
-def _fetch_polygon_data(
-    symbol: str, token: str, days: int
-) -> dict[str, t.Any] | None:
+def _fetch_polygon_data(symbol: str, token: str, days: int) -> dict[str, t.Any] | None:
     """Fetch stock data from Polygon.io API.
 
     Returns the API response dict or None on error.
     """
-    from datetime import datetime, timedelta
-
     end_date = datetime.now(UTC)
     start_date = end_date - timedelta(days=days)
 
@@ -156,11 +151,6 @@ def _fetch_polygon_data(
         return None
 
 
-def _epoch_days_ago(days: int) -> int:
-    now = int(time.time())
-    return now - days * 24 * 60 * 60
-
-
 class SXNGPlugin(Plugin):
     """Show a small stock price chart for likely security identifiers.
 
@@ -181,9 +171,7 @@ class SXNGPlugin(Plugin):
         self.info = PluginInfo(
             id=self.id,
             name=gettext("Stock chart"),
-            description=gettext(
-                "Show a small historical price chart using Polygon.io."
-            ),
+            description=gettext("Show a small historical price chart using Polygon.io."),
             preference_section="query",
         )
 
@@ -194,9 +182,7 @@ class SXNGPlugin(Plugin):
         """Initialize plugin. Always enabled since users can provide their own token."""
         return True
 
-    def post_search(
-        self, request: SXNG_Request, search: SearchWithPlugins
-    ) -> EngineResults:
+    def post_search(self, request: SXNG_Request, search: SearchWithPlugins) -> EngineResults:
         """Produce a stock chart answer when the query looks like a security.
 
         Parameters
@@ -213,38 +199,25 @@ class SXNGPlugin(Plugin):
         """
         results = EngineResults()
 
-        if search.search_query.pageno > 1:
+        # Early validation checks
+        if (
+            search.search_query.pageno > 1
+            or not (token := request.preferences.get_value("stock_chart_token"))
+            or not (raw_q := search.search_query.query)
+            or not self._quick_accept.match(raw_q)
+            or not (ident := _normalize_identifier(raw_q))
+        ):
             return results
 
-        # Get user preferences (no server-side fallback)
-        token = request.preferences.get_value("stock_chart_token")
-        timeframe_days = request.preferences.get_value("stock_chart_timeframe")
-
-        # Use default timeframe if user hasn't set one
-        if timeframe_days is None:
-            timeframe_days = 7
-
-        if not token:
-            return results
-
-        raw_q = search.search_query.query
-        if not raw_q or not self._quick_accept.match(raw_q):
-            return results
-
-        ident = _normalize_identifier(raw_q)
-        if not ident:
-            return results
+        # Get timeframe preference with default
+        timeframe_days = request.preferences.get_value("stock_chart_timeframe") or 7
 
         # Use the identifier directly as the symbol for Polygon.io
         symbol = ident.upper()
 
         # Fetch stock data from Polygon.io
         data = _fetch_polygon_data(symbol, token, timeframe_days)
-        if not data or not data.get("results"):
-            return results
-
-        results_data = data["results"]
-        if not results_data:
+        if not data or not (results_data := data.get("results")):
             return results
 
         # Extract close prices and timestamps

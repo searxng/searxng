@@ -248,7 +248,9 @@ class IntegerSetting(Setting):
 
     value: int
 
-    def __init__(self, default_value: int, locked: bool = False, min_value: int | None = None, max_value: int | None = None):
+    def __init__(
+        self, default_value: int, locked: bool = False, min_value: int | None = None, max_value: int | None = None
+    ):
         super().__init__(default_value, locked)
         self.value: int = default_value
         self.min_value = min_value
@@ -258,8 +260,8 @@ class IntegerSetting(Setting):
         """Parse and validate ``data`` and store the result at ``self.value``"""
         try:
             self.value = int(data)
-        except ValueError:
-            raise ValidationException(f'Invalid integer value: "{data}"')
+        except ValueError as exc:
+            raise ValidationException(f'Invalid integer value: "{data}"') from exc
 
         if self.min_value is not None and self.value < self.min_value:
             raise ValidationException(f'Value {self.value} is below minimum {self.min_value}')
