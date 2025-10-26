@@ -20,7 +20,7 @@ from __future__ import annotations
 import re
 import typing as t
 from dataclasses import field
-from datetime import UTC, datetime, timedelta
+from datetime import datetime, timedelta, timezone
 
 from flask_babel import gettext
 from httpx import HTTPError
@@ -127,7 +127,7 @@ def _fetch_polygon_data(symbol: str, token: str, days: int) -> dict[str, t.Any] 
 
     Returns the API response dict or None on error.
     """
-    end_date = datetime.now(UTC)
+    end_date = datetime.now(timezone.utc)
     start_date = end_date - timedelta(days=days)
 
     start_str = start_date.strftime("%Y-%m-%d")
