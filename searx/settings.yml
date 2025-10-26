@@ -249,6 +249,9 @@ plugins:
   searx.plugins.tracker_url_remover.SXNGPlugin:
     active: true
 
+  searx.plugins.stock_chart.SXNGPlugin:
+    active: true
+
 
 # Configuration of the "Hostnames plugin":
 #
@@ -275,6 +278,15 @@ plugins:
 # '(.*\.)?youtube\.com$': 'yt.example.com'
 # '(.*\.)?youtu\.be$': 'yt.example.com'
 #
+# AI image filter configuration. Provide a curated list of domains and/or
+# regexes to block. Large lists may impact performance; prefer suffix matches.
+ai_image_filter:
+  # Optional local patterns; prefer remote sources for maintainability.
+  domains: []
+  # Optional remote blocklist sources (uBlacklist or plain patterns)
+  sources:
+    - https://raw.githubusercontent.com/laylavish/uBlockOrigin-HUGE-AI-Blocklist/refs/heads/main/list_uBlacklist.txt
+
 
 checker:
   # disable checker when in debug mode
