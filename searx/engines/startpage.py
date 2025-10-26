@@ -404,6 +404,10 @@ def _get_image_result(result) -> dict[str, t.Any] | None:
 def response(resp):
     categ = startpage_categ.capitalize()
     results_raw = '{' + extr(resp.text, f"React.createElement(UIStartpage.AppSerp{categ}, {{", '}})') + '}}'
+
+    if resp.headers.get('Location', '').startswith("https://www.startpage.com/sp/captcha"):
+        raise SearxEngineCaptchaException()
+
     results_json = loads(results_raw)
     results_obj = results_json.get('render', {}).get('presenter', {}).get('regions', {})
 
