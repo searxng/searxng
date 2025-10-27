@@ -23,7 +23,7 @@ paging = True
 # search-url
 base_url = 'https://www.deviantart.com'
 
-results_xpath = '//div[@class="_2pZkk"]/div/div/a'
+results_xpath = '//div[@class="V_S0t_"]/div/div/a'
 url_xpath = './@href'
 thumbnail_src_xpath = './div/img/@src'
 img_src_xpath = './div/img/@srcset'
