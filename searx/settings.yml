@@ -1027,6 +1027,7 @@ engines:
   - name: google
     engine: google
     shortcut: go
+    disabled: true
     # additional_tests:
     #   android: *test_android
 
@@ -1045,6 +1046,7 @@ engines:
   - name: google news
     engine: google_news
     shortcut: gon
+    disabled: true
     # additional_tests:
     #   android: *test_android
 
@@ -1437,7 +1439,6 @@ engines:
   # https://docs.searxng.org/dev/engines/online/mullvad_leta.html
   - name: mullvadleta
     engine: mullvad_leta
-    disabled: true
     leta_engine: google
     categories: [general, web]
     shortcut: ml
