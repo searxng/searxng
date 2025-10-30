@@ -117,7 +117,7 @@ EOF
 
 dev.env() {
     go.env.dev
-    nvm.env
+    nvm.ensure
     node.env.dev
 
     export GOENV
