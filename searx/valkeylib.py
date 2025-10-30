@@ -112,7 +112,7 @@ return c
 def incr_counter(client, name: str, limit: int = 0, expire: int = 0):
     """Increment a counter and return the new value.
 
-    If counter with valkey key ``SearXNG_counter_<name>`` does not exists it is
+    If counter with valkey key ``SearXNG_counter_<name>`` does not exist it is
     created with initial value 1 returned.  The replacement ``<name>`` is a
     *secret hash* of the value from argument ``name`` (see
     :py:func:`secret_hash`).
@@ -182,7 +182,7 @@ return result
 def incr_sliding_window(client, name: str, duration: int):
     """Increment a sliding-window counter and return the new value.
 
-    If counter with valkey key ``SearXNG_counter_<name>`` does not exists it is
+    If counter with valkey key ``SearXNG_counter_<name>`` does not exist it is
     created with initial value 1 returned.  The replacement ``<name>`` is a
     *secret hash* of the value from argument ``name`` (see
     :py:func:`secret_hash`).

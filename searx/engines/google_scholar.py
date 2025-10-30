@@ -4,8 +4,8 @@ text or metadata of scholarly literature across an array of publishing formats
 and disciplines.
 
 Compared to other Google services the Scholar engine has a simple GET REST-API
-and there does not exists ``async`` API.  Even though the API slightly vintage
-we can make use of the :ref:`google API` to assemble the arguments of the GET
+and an ``async`` API does not exist.  Even though the API slightly vintage we
+can make use of the :ref:`google API` to assemble the arguments of the GET
 request.
 
 Configuration

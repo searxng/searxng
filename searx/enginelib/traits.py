@@ -138,7 +138,7 @@ class EngineTraits:
     def fetch_traits(cls, engine: "Engine | types.ModuleType") -> "EngineTraits | None":
         """Call a function ``fetch_traits(engine_traits)`` from engines namespace to fetch
         and set properties from the origin engine in the object ``engine_traits``.  If
-        function does not exists, ``None`` is returned.
+        function does not exist, ``None`` is returned.
         """
 
         fetch_traits = getattr(engine, 'fetch_traits', None)

@@ -56,7 +56,7 @@ class ProcessorMap(dict[str, EngineProcessor]):
 
             eng_obj = engines.engines.get(eng_name)
             if eng_obj is None:
-                logger.warning("Engine of name '%s' does not exists.", eng_name)
+                logger.warning("Engine of name '%s' does not exist.", eng_name)
                 continue
 
             eng_type = getattr(eng_obj, "engine_type", "online")

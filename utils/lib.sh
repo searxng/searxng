@@ -52,7 +52,7 @@ DOT_CONFIG="${DOT_CONFIG:-${REPO_ROOT}/.config.sh}"
 
 source_dot_config() {
     if [[ ! -e "${DOT_CONFIG}" ]]; then
-        err_msg "configuration does not exists at: ${DOT_CONFIG}"
+        err_msg "configuration does not exist at: ${DOT_CONFIG}"
         return 42
     fi
     # shellcheck disable=SC1090
@@ -450,7 +450,7 @@ install_template() {
     [[ -n $variant ]] && info_msg "variant --> ${variant}"
 
     if [[ ! -f "${template_origin}" ]]; then
-        err_msg "${template_origin} does not exists"
+        err_msg "${template_origin} does not exist"
         err_msg "... can't install $dst"
         wait_key 30
         return 42

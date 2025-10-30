@@ -18,7 +18,7 @@ and there is at least one tag with a three letter language tag (ISO 639-2)::
 
   fil_PH --> fil_PH
 
-The locale code ``no_NO`` from Startpage does not exists and is mapped to
+The locale code ``no_NO`` from Startpage does not exist and is mapped to
 ``nb-NO``::
 
     babel.core.UnknownLocaleError: unknown locale 'no_NO'

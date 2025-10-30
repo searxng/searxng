@@ -173,7 +173,7 @@ class InfoPageSet:  # pylint: disable=too-few-public-methods
 
         fname = os.path.join(self.folder, locale.replace('-', '_'), pagename) + '.md'
         if not os.path.exists(fname):
-            logger.info('file %s does not exists', fname)
+            logger.info('file %s does not exist', fname)
             self.CACHE[cache_key] = None
             return None
 
