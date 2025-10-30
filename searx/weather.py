@@ -6,6 +6,11 @@
 # - https://github.com/searxng/searxng/issues/5284
 from __future__ import annotations
 
+# msgspec: note that if using PEP 563 “postponed evaluation of annotations”
+# (e.g. from __future__ import annotations) only the following spellings will
+# work: https://jcristharif.com/msgspec/structs.html#class-variables
+from typing import ClassVar
+
 __all__ = [
     "symbol_url",
     "Temperature",
@@ -266,8 +271,8 @@ class Temperature(msgspec.Struct, kw_only=True):
     val: float
     unit: TemperatureUnit
 
-    si_name: t.ClassVar[str] = "Q11579"
-    UNITS: t.ClassVar[tuple[TemperatureUnit]] = TEMPERATURE_UNITS
+    si_name: ClassVar[str] = "Q11579"
+    UNITS: ClassVar[tuple[TemperatureUnit]] = TEMPERATURE_UNITS
 
     def __post_init__(self):
         if self.unit not in self.UNITS:
@@ -334,8 +339,8 @@ class Pressure(msgspec.Struct, kw_only=True):
     val: float
     unit: PressureUnit
 
-    si_name: t.ClassVar[str] = "Q44395"
-    UNITS: t.ClassVar[tuple[PressureUnit]] = PRESSURE_UNITS
+    si_name: ClassVar[str] = "Q44395"
+    UNITS: ClassVar[tuple[PressureUnit]] = PRESSURE_UNITS
 
     def __post_init__(self):
         if self.unit not in self.UNITS:
@@ -387,8 +392,8 @@ class WindSpeed(msgspec.Struct, kw_only=True):
     val: float
     unit: WindSpeedUnit
 
-    si_name: t.ClassVar[str] = "Q182429"
-    UNITS: t.ClassVar[tuple[WindSpeedUnit]] = WIND_SPEED_UNITS
+    si_name: ClassVar[str] = "Q182429"
+    UNITS: ClassVar[tuple[WindSpeedUnit]] = WIND_SPEED_UNITS
 
     def __post_init__(self):
         if self.unit not in self.UNITS:
@@ -432,8 +437,8 @@ class RelativeHumidity(msgspec.Struct):
     val: float
 
     # there exists only one unit (%) --> set "%" as the final value (constant)
-    unit: t.ClassVar[RelativeHumidityUnit] = "%"
-    UNITS: t.ClassVar[tuple[RelativeHumidityUnit]] = RELATIVE_HUMIDITY_UNITS
+    unit: ClassVar[RelativeHumidityUnit] = "%"
+    UNITS: ClassVar[tuple[RelativeHumidityUnit]] = RELATIVE_HUMIDITY_UNITS
 
     def __post_init__(self):
         if self.unit not in self.UNITS:
@@ -476,15 +481,15 @@ class Compass(msgspec.Struct):
 
     val: "float | int | CompassPoint"
     unit: CompassUnit = "°"
-    UNITS: t.ClassVar[tuple[CompassUnit]] = COMPASS_UNITS
+    UNITS: ClassVar[tuple[CompassUnit]] = COMPASS_UNITS
 
-    TURN: t.ClassVar[float] = 360.0
+    TURN: ClassVar[float] = 360.0
     """Full turn (360°)"""
 
-    POINTS: t.ClassVar[tuple[CompassPoint]] = COMPASS_POINTS
+    POINTS: ClassVar[tuple[CompassPoint]] = COMPASS_POINTS
     """Compass points."""
 
-    RANGE: t.ClassVar[float] = TURN / len(POINTS)
+    RANGE: ClassVar[float] = TURN / len(POINTS)
     """Angle sector of a compass point"""
 
     def __post_init__(self):
