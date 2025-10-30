@@ -32,8 +32,8 @@ Known Quirks
 
 The implementation to support :py:obj:`paging <searx.enginelib.Engine.paging>`
 is based on the *nextpage* method of Seekr's REST API.  This feature is *next
-page driven* and plays well with the :ref:`infinite_scroll <settings ui>`
-setting in SearXNG but it does not really fit into SearXNG's UI to select a page
+page driven* and plays well with the :ref:`infinite_scroll <settings plugins>`
+plugin in SearXNG but it does not really fit into SearXNG's UI to select a page
 by number.
 
 Implementations

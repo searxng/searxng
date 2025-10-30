@@ -1,16 +1,16 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
-import type { KeyBindingLayout } from "../main/keyboard.ts";
+import type { KeyBindingLayout } from "./main/keyboard.ts";
 
 // synced with searx/webapp.py get_client_settings
 type Settings = {
+  plugins?: string[];
   advanced_search?: boolean;
   autocomplete?: string;
   autocomplete_min?: number;
   doi_resolver?: string;
   favicon_resolver?: string;
   hotkeys?: KeyBindingLayout;
-  infinite_scroll?: boolean;
   method?: "GET" | "POST";
   query_in_title?: boolean;
   results_on_new_tab?: boolean;
@@ -31,8 +31,6 @@ type ReadyOptions = {
   // all values must be truthy for the callback to be executed
   on?: (boolean | undefined)[];
 };
-
-type AssertElement = (element?: HTMLElement | null) => asserts element is HTMLElement;
 
 export type EndpointsKeys = keyof typeof Endpoints;
 
@@ -70,12 +68,6 @@ const getSettings = (): Settings => {
   } catch (error) {
     console.error("Failed to load client_settings:", error);
     return {};
-  }
-};
-
-export const assertElement: AssertElement = (element?: HTMLElement | null): asserts element is HTMLElement => {
-  if (!element) {
-    throw new Error("Bad assertion: DOM element not found");
   }
 };
 

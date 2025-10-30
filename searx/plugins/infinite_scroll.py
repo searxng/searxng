@@ -13,16 +13,16 @@ if t.TYPE_CHECKING:
 
 @t.final
 class SXNGPlugin(Plugin):
-    """Parses and solves mathematical expressions."""
+    """Automatically loads the next page when scrolling to bottom of the current page."""
 
-    id = "calculator"
+    id = "infiniteScroll"
 
     def __init__(self, plg_cfg: "PluginCfg") -> None:
         super().__init__(plg_cfg)
 
         self.info = PluginInfo(
             id=self.id,
-            name=gettext("Calculator"),
-            description=gettext("Parses and solves mathematical expressions."),
-            preference_section="query",
+            name=gettext("Infinite scroll"),
+            description=gettext("Automatically loads the next page when scrolling to bottom of the current page"),
+            preference_section="ui",
         )

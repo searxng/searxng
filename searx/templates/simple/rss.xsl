@@ -8,7 +8,7 @@
         <meta charset="UTF-8" />
         <meta http-equiv="x-ua-compatible" content="IE=edge,chrome=1" />
         <meta name="viewport" content="width=device-width,initial-scale=1" />
-	<link rel="stylesheet" href="{{ url_for('static', filename='css/rss.min.css') }}" type="text/css" media="screen"/>
+	<link rel="stylesheet" href="{{ url_for('static', filename='sxng-rss.min.css') }}" type="text/css" media="screen"/>
       </head>
       <body>
         <header>
