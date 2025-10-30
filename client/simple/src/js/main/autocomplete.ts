@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
-import { assertElement, http, listen, settings } from "../core/toolkit.ts";
+import { http, listen, settings } from "../core/toolkit.ts";
+import { assertElement } from "../core/util/assertElement.ts";
 
 const fetchResults = async (qInput: HTMLInputElement, query: string): Promise<void> => {
   try {
