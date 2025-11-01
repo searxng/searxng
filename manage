@@ -148,7 +148,12 @@ webapp.run() {
     ) &
     (
         sleep 3
-        xdg-open http://127.0.0.1:8888/
+        # macOS compatibility: use 'open' instead of 'xdg-open'
+        if command -v xdg-open &> /dev/null; then
+            xdg-open http://127.0.0.1:8888/
+        elif command -v open &> /dev/null; then
+            open http://127.0.0.1:8888/
+        fi
     ) &
     SEARXNG_DEBUG=1 \
         GRANIAN_RELOAD="true" \
