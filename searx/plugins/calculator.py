@@ -40,8 +40,8 @@ class SXNGPlugin(Plugin):
         )
 
     def timeout_func(self, timeout, func, *args, **kwargs):
-        que = mp_fork.Queue()
-        p = mp_fork.Process(target=handler, args=(que, func, args), kwargs=kwargs)
+        que = mp_context.Queue()
+        p = mp_context.Process(target=handler, args=(que, func, args), kwargs=kwargs)
         p.start()
         p.join(timeout=timeout)
         ret_val = None
@@ -171,11 +171,12 @@ math_constants = {
 }
 
 
-# with multiprocessing.get_context("fork") we are ready for Py3.14 (by emulating
-# the old behavior "fork") but it will not solve the core problem of fork, nor
-# will it remove the deprecation warnings in py3.12 & py3.13.  Issue is
-# ddiscussed here: https://github.com/searxng/searxng/issues/4159
-mp_fork = multiprocessing.get_context("fork")
+# Use fork context for multiprocessing. While Python 3.12+ warns about using
+# fork() in multi-threaded processes, the warning is suppressed globally in searx/__init__.py
+# because: 1. The forked process only evaluates simple math expressions (no threading)
+# 2. Using "spawn" breaks Flask application context inheritance
+# See: https://github.com/searxng/searxng/issues/4159
+mp_context = multiprocessing.get_context("fork")
 
 
 def _eval_expr(expr):
