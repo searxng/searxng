@@ -1,4 +1,8 @@
 {
+  "_defineProperty.min.js": {
+    "file": "js/defineProperty.min.js",
+    "name": "defineProperty"
+  },
   "node_modules/ol/ol.css": {
     "file": "css/ol.min.css",
     "names": [
@@ -13,12 +17,13 @@
     "src": "src/js/core/index.ts",
     "isEntry": true,
     "dynamicImports": [
+      "src/js/plugin/QueryPlugin.ts",
+      "src/js/plugin/InfiniteScrollPlugin.ts",
       "src/js/main/keyboard.ts",
       "src/js/main/search.ts",
       "src/js/main/autocomplete.ts",
       "src/js/main/mapresult.ts",
       "src/js/main/results.ts",
-      "src/js/main/infinite_scroll.ts",
       "src/js/main/preferences.ts"
     ]
   },
@@ -26,15 +31,6 @@
     "file": "js/autocomplete.min.js",
     "name": "autocomplete",
     "src": "src/js/main/autocomplete.ts",
-    "isDynamicEntry": true,
-    "imports": [
-      "src/js/core/index.ts"
-    ]
-  },
-  "src/js/main/infinite_scroll.ts": {
-    "file": "js/infinite_scroll.min.js",
-    "name": "infinite_scroll",
-    "src": "src/js/main/infinite_scroll.ts",
     "isDynamicEntry": true,
     "imports": [
       "src/js/core/index.ts"
@@ -92,7 +88,30 @@
     "file": "js/ol.min.js",
     "name": "ol",
     "src": "src/js/pkg/ol.ts",
-    "isEntry": true
+    "isEntry": true,
+    "imports": [
+      "_defineProperty.min.js"
+    ]
+  },
+  "src/js/plugin/InfiniteScrollPlugin.ts": {
+    "file": "js/InfiniteScrollPlugin.min.js",
+    "name": "InfiniteScrollPlugin",
+    "src": "src/js/plugin/InfiniteScrollPlugin.ts",
+    "isDynamicEntry": true,
+    "imports": [
+      "_defineProperty.min.js",
+      "src/js/core/index.ts"
+    ]
+  },
+  "src/js/plugin/QueryPlugin.ts": {
+    "file": "js/QueryPlugin.min.js",
+    "name": "QueryPlugin",
+    "src": "src/js/plugin/QueryPlugin.ts",
+    "isDynamicEntry": true,
+    "imports": [
+      "_defineProperty.min.js",
+      "src/js/core/index.ts"
+    ]
   },
   "src/less/rss.less": {
     "file": "css/rss.min.css",

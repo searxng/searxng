@@ -32,8 +32,6 @@ type ReadyOptions = {
   on?: (boolean | undefined)[];
 };
 
-type AssertElement = (element?: HTMLElement | null) => asserts element is HTMLElement;
-
 export type EndpointsKeys = keyof typeof Endpoints;
 
 export const Endpoints = {
@@ -70,12 +68,6 @@ const getSettings = (): Settings => {
   } catch (error) {
     console.error("Failed to load client_settings:", error);
     return {};
-  }
-};
-
-export const assertElement: AssertElement = (element?: HTMLElement | null): asserts element is HTMLElement => {
-  if (!element) {
-    throw new Error("Bad assertion: DOM element not found");
   }
 };
 
