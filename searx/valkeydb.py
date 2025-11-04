@@ -71,7 +71,7 @@ def initialize():
         if os.name == 'nt':
             _user = getpass.getuser()
             logger.exception("[%s] can't connect valkey DB ...", _user)
-        else if pwd:
+        elif pwd:
             _pw = pwd.getpwuid(os.getuid())
             logger.exception("[%s (%s)] can't connect valkey DB ...", _pw.pw_name, _pw.pw_uid)
         else:
