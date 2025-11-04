@@ -19,7 +19,16 @@ A valkey DB connect can be tested by::
 """
 
 import os
-import pwd
+
+if os.name == 'nt':  # Windows
+    import getpass
+else:
+    try:
+        import pwd
+    except ImportError:
+        pwd = None  # Or handle the missing module appropriately
+
+
 import logging
 import warnings
 
@@ -60,6 +69,12 @@ def initialize():
         return True
     except valkey.exceptions.ValkeyError:
         _CLIENT = None
-        _pw = pwd.getpwuid(os.getuid())
-        logger.exception("[%s (%s)] can't connect valkey DB ...", _pw.pw_name, _pw.pw_uid)
+        if os.name == 'nt':
+            _user = getpass.getuser()
+            logger.exception("[%s] can't connect valkey DB ...", _user)
+        else if pwd:
+            _pw = pwd.getpwuid(os.getuid())
+            logger.exception("[%s (%s)] can't connect valkey DB ...", _pw.pw_name, _pw.pw_uid)
+        else:
+            logger.exception("Can't connect valkey DB ...")
     return False
