@@ -12,13 +12,14 @@ Output file: :origin:`searx/data/ahmia_blacklist.txt` (:origin:`CI Update data
 
 import requests
 from searx.data import data_dir
+from searx.utils import searxng_useragent
 
 DATA_FILE = data_dir / 'ahmia_blacklist.txt'
 URL = 'https://ahmia.fi/blacklist/banned/'
 
 
 def fetch_ahmia_blacklist():
-    resp = requests.get(URL, timeout=3.0, headers={"User-Agent": "SearXNG"})
+    resp = requests.get(URL, timeout=3.0, headers={"User-Agent": searxng_useragent()})
     if resp.status_code != 200:
         # pylint: disable=broad-exception-raised
         raise Exception("Error fetching Ahmia blacklist, HTTP code " + str(resp.status_code))
