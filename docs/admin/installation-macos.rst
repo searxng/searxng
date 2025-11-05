@@ -17,7 +17,7 @@ Prerequisites
 System Requirements
 -------------------
 
-* macOS 11 (Big Sur) or later
+* macOS 11 (Big Sur) or later (older versions may work but are untested)
 * macOS 15.7.1 (Sequoia) tested and confirmed working
 * At least 4GB of RAM
 * 2GB of free disk space
@@ -62,35 +62,34 @@ Method 1: Docker Installation (Recommended)
 
 This is the easiest method for macOS users.
 
-Step 1: Clone the Docker Repository
+For complete Docker installation instructions, please refer to the `searxng-docker documentation <https://github.com/searxng/searxng-docker>`_.
+
+macOS-Specific Docker Considerations
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-::
+When using Docker on macOS, keep these platform-specific notes in mind:
 
-    cd ~/Documents
-    git clone https://github.com/searxng/searxng-docker.git
-    cd searxng-docker
+**Apple Silicon (M1/M2/M3) Users**
 
-Step 2: Configure Your Instance
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+* Ensure you download the Apple Silicon version of Docker Desktop
+* Docker Desktop automatically handles ARM64 architecture - no special configuration needed
 
-Edit the ``.env`` file::
+**Volume Mounting**
 
-    nano .env
+Docker Desktop on macOS has specific directory requirements. Keep your projects in:
 
-Set your instance name and other preferences.
+* ``~/Documents``
+* ``~/Desktop``  
+* ``~/Downloads``
+* Or add custom paths in Docker Desktop → Settings → Resources → File Sharing
 
-Step 3: Start SearXNG
-~~~~~~~~~~~~~~~~~~~~~
+**Port Conflicts**
 
-::
+Check for port conflicts before starting::
 
-    docker compose up -d
+    lsof -i :8080
 
-Step 4: Access Your Instance
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Open your browser and go to: http://localhost:8080
+If the port is in use, either kill the conflicting process or change the port in ``docker-compose.yml``.
 
 Method 2: Native Installation
 ------------------------------
@@ -145,33 +144,6 @@ File Permissions
 If you encounter permission errors::
 
     sudo chown -R $(whoami) ~/Documents/searxng-docker/
-
-Volume Mounting
----------------
-
-Docker Desktop on macOS has specific directory requirements for volume mounting. Keep your projects in:
-
-* ``~/Documents``
-* ``~/Desktop``
-* ``~/Downloads``
-* Or add custom paths in Docker Desktop → Settings → Resources → File Sharing
-
-Port Conflicts
---------------
-
-Common macOS services that might conflict with default ports:
-
-Port 8080 conflict check::
-
-    lsof -i :8080
-
-If the port is in use, either:
-
-1. Kill the conflicting process::
-
-    kill -9 <PID>
-
-2. Or change the port in ``docker-compose.yml``
 
 Firewall Configuration
 ----------------------
@@ -228,9 +200,7 @@ If you experience slow performance:
 Python Version Issues
 ---------------------
 
-macOS Sequoia 15.7.1 comes with Python 3.13.5. If you encounter compatibility issues:
-
-::
+macOS Sequoia 15.7.1 comes with Python 3.13.5. If you encounter compatibility issues::
 
     brew install python@3.11
     pip3.11 install -r requirements.txt
