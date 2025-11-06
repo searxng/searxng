@@ -35,7 +35,7 @@ content_xpath = './/div[@class="b-serp-item__content"]//div[@class="b-serp-item_
 
 
 def catch_bad_response(resp):
-    if resp.url.path.startswith('/showcaptcha'):
+    if resp.headers.get('x-yandex-captcha') == 'captcha':
         raise SearxEngineCaptchaException()
 
 
