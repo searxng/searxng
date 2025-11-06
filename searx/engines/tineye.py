@@ -73,7 +73,6 @@ def request(query, params):
     params['headers'].update(
         {
             'Connection': 'keep-alive',
-            'Accept-Encoding': 'gzip, defalte, br',
             'Host': 'tineye.com',
             'DNT': '1',
             'TE': 'trailers',

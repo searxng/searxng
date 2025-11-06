@@ -198,9 +198,6 @@ time_range_map: dict[str, str] = {
 
 def request(query: str, params: dict[str, t.Any]) -> None:
 
-    # Don't accept br encoding / see https://github.com/searxng/searxng/pull/1787
-    params['headers']['Accept-Encoding'] = 'gzip, deflate'
-
     args: dict[str, t.Any] = {
         'q': query,
         'source': 'web',
@@ -436,14 +433,11 @@ def fetch_traits(engine_traits: EngineTraits):
 
     engine_traits.custom["ui_lang"] = {}
 
-    headers = {
-        'Accept-Encoding': 'gzip, deflate',
-    }
     lang_map = {'no': 'nb'}  # norway
 
     # languages (UI)
 
-    resp = get('https://search.brave.com/settings', headers=headers)
+    resp = get('https://search.brave.com/settings')
 
     if not resp.ok:  # type: ignore
         print("ERROR: response from Brave is not OK.")
@@ -472,7 +466,7 @@ def fetch_traits(engine_traits: EngineTraits):
 
     # search regions of brave
 
-    resp = get('https://cdn.search.brave.com/serp/v2/_app/immutable/chunks/parameters.734c106a.js', headers=headers)
+    resp = get('https://cdn.search.brave.com/serp/v2/_app/immutable/chunks/parameters.734c106a.js')
 
     if not resp.ok:  # type: ignore
         print("ERROR: response from Brave is not OK.")
