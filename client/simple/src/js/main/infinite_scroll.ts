@@ -83,7 +83,7 @@ const observer: IntersectionObserver = new IntersectionObserver((entries: Inters
   if (paginationEntry?.isIntersecting) {
     observer.unobserve(paginationEntry.target);
 
-    loadNextPage(onlyImages, () => {
+    void loadNextPage(onlyImages, () => {
       const nextObservedElement = document.querySelector<HTMLElement>(observedSelector);
       if (nextObservedElement) {
         observer.observe(nextObservedElement);

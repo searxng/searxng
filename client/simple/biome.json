@@ -1,8 +1,8 @@
 {
-  "$schema": "https://biomejs.dev/schemas/2.3.2/schema.json",
+  "$schema": "https://biomejs.dev/schemas/2.3.4/schema.json",
   "files": {
     "ignoreUnknown": true,
-    "includes": ["**", "!!node_modules"]
+    "includes": ["**", "!node_modules"]
   },
   "assist": {
     "enabled": true,
@@ -15,9 +15,9 @@
     }
   },
   "formatter": {
+    "enabled": true,
     "bracketSameLine": false,
     "bracketSpacing": true,
-    "enabled": true,
     "formatWithErrors": false,
     "indentStyle": "space",
     "indentWidth": 2,
@@ -46,10 +46,13 @@
         "useSingleJsDocAsterisk": "error"
       },
       "nursery": {
+        "noContinue": "warn",
         "noDeprecatedImports": "warn",
+        "noFloatingPromises": "warn",
         "noImportCycles": "warn",
         "noIncrementDecrement": "warn",
         "noMisusedPromises": "warn",
+        "noParametersOnlyUsedInRecursion": "warn",
         "noUselessCatchBinding": "warn",
         "noUselessUndefined": "warn",
         "useExhaustiveSwitchCases": "warn",
@@ -99,7 +102,6 @@
           }
         },
         "useConsistentBuiltinInstantiation": "error",
-        "useConsistentCurlyBraces": "error",
         "useConsistentMemberAccessibility": {
           "level": "error",
           "options": {
@@ -162,9 +164,9 @@
     "formatter": {
       "attributePosition": "auto",
       "bracketSameLine": false,
-      "whitespaceSensitivity": "ignore",
       "indentScriptAndStyle": true,
-      "selfCloseVoidElements": "always"
+      "selfCloseVoidElements": "always",
+      "whitespaceSensitivity": "ignore"
     }
   }
 }
