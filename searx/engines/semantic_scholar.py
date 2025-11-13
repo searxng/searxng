@@ -66,7 +66,7 @@ def setup(engine_settings: dict[str, t.Any]) -> bool:
 def get_ui_version() -> str:
     ret_val: str = CACHE.get("X-S2-UI-Version")
     if not ret_val:
-        resp = get(base_url)
+        resp = get(base_url, timeout=3)
         if not resp.ok:
             raise RuntimeError("Can't determine Semantic Scholar UI version")
 

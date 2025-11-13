@@ -95,7 +95,7 @@ def authenticate(t_id: str, c_id: str, c_secret: str) -> str:
         "scope": "https://management.azure.com/.default",
     }
 
-    resp: SXNG_Response = http_post(url, body)
+    resp: SXNG_Response = http_post(url, body, timeout=5)
     if resp.status_code != 200:
         raise RuntimeError(f"Azure authentication failed (status {resp.status_code}): {resp.text}")
     return resp.json()["access_token"]
