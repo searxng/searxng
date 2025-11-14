@@ -1,0 +1,175 @@
+# Tencent Cloud Search API Engine Configuration Examples
+# Add these to your settings.yml engines section
+
+engines:
+  # ==================================================
+  # Basic Configuration - General Search
+  # ==================================================
+  - name: tencent
+    engine: tencent
+    disabled: false
+    shortcut: tc
+    categories: [general, web]
+    # Required: Get from https://console.cloud.tencent.com/cam/capi
+    api_key: 'YOUR_SECRET_ID'
+    secret_key: 'YOUR_SECRET_KEY'
+    # Optional parameters
+    mode: 0  # 0=natural results, 1=multimodal VR, 2=mixed
+    cnt: 10  # Results count (10/20/30/40/50, premium only for >10)
+    timeout: 5.0
+    weight: 1.2
+
+  # ==================================================
+  # Multimodal VR Search (Images + Text)
+  # ==================================================
+  - name: tencent_vr
+    engine: tencent
+    disabled: true
+    shortcut: tcvr
+    categories: [general, web]
+    api_key: 'YOUR_SECRET_ID'
+    secret_key: 'YOUR_SECRET_KEY'
+    mode: 1  # Multimodal VR results
+    timeout: 5.0
+    weight: 0.9
+
+  # ==================================================
+  # Mixed Results (Premium Feature)
+  # ==================================================
+  - name: tencent_mixed
+    engine: tencent
+    disabled: true
+    shortcut: tcmix
+    categories: [general, web]
+    api_key: 'YOUR_SECRET_ID'
+    secret_key: 'YOUR_SECRET_KEY'
+    mode: 2  # Mixed (VR + natural)
+    cnt: 30  # Premium tier only
+    timeout: 6.0
+    weight: 1.0
+
+  # ==================================================
+  # Site-Specific Search - Zhihu Example
+  # ==================================================
+  - name: tencent_zhihu
+    engine: tencent
+    disabled: true
+    shortcut: tczh
+    categories: [general]
+    api_key: 'YOUR_SECRET_ID'
+    secret_key: 'YOUR_SECRET_KEY'
+    site: 'zhihu.com'  # Only search within Zhihu
+    timeout: 5.0
+    weight: 0.9
+
+  # ==================================================
+  # Time Range Filtering Example
+  # ==================================================
+  - name: tencent_recent
+    engine: tencent
+    disabled: true
+    shortcut: tcrecent
+    categories: [general, web]
+    api_key: 'YOUR_SECRET_ID'
+    secret_key: 'YOUR_SECRET_KEY'
+    # Time range filtering (format: YYYY-MM-DD HH:MM:SS)
+    from_time: '2024-01-01 00:00:00'  # Start time (optional)
+    to_time: '2024-12-31 23:59:59'    # End time (optional)
+    timeout: 5.0
+    weight: 1.0
+
+  # ==================================================
+  # Industry Filters (Premium Tier Only)
+  # ==================================================
+  
+  # News from authoritative media
+  - name: tencent_news
+    engine: tencent
+    disabled: true
+    shortcut: tcnews
+    categories: [news]
+    api_key: 'YOUR_SECRET_ID'
+    secret_key: 'YOUR_SECRET_KEY'
+    industry: 'news'
+    timeout: 5.0
+    weight: 1.0
+
+  # Academic resources
+  - name: tencent_acad
+    engine: tencent
+    disabled: true
+    shortcut: tcacad
+    categories: [science]
+    api_key: 'YOUR_SECRET_ID'
+    secret_key: 'YOUR_SECRET_KEY'
+    industry: 'acad'
+    timeout: 6.0
+    weight: 1.0
+
+  # Government and official sites
+  - name: tencent_gov
+    engine: tencent
+    disabled: true
+    shortcut: tcgov
+    categories: [general]
+    api_key: 'YOUR_SECRET_ID'
+    secret_key: 'YOUR_SECRET_KEY'
+    industry: 'gov'
+    timeout: 5.0
+    weight: 1.0
+
+# ==================================================
+# Configuration Notes
+# ==================================================
+#
+# API Credentials:
+#   - Get SecretId and SecretKey from: https://console.cloud.tencent.com/cam/capi
+#   - Enable Web Search API: https://cloud.tencent.com/product/wsa
+#
+# Mode Parameter:
+#   - 0: Natural search results (recommended)
+#   - 1: Multimodal VR results
+#   - 2: Mixed results (VR + natural)
+#
+# Cnt Parameter (Results Count):
+#   - Basic tier: Only 10 results
+#   - Premium tier: 10/20/30/40/50 results
+#
+# Industry Parameter (Premium Only):
+#   - 'gov': Government and official sites
+#   - 'news': Authoritative media
+#   - 'acad': Academic resources
+#
+# Time Range Parameters (Optional):
+#   - from_time: Start time in format 'YYYY-MM-DD HH:MM:SS'
+#   - to_time: End time in format 'YYYY-MM-DD HH:MM:SS'
+#   - Both parameters are optional and can be used independently
+#   - Use these to filter results by publication date
+#
+# Site Parameter (Optional):
+#   - site: Domain name to restrict search (e.g., 'zhihu.com')
+#   - Only returns results from the specified website
+#
+# Quota Limits:
+#   - Basic tier: QPS 5, 1000/day
+#   - Premium tier: QPS 20, 10000/day
+#
+# Usage Examples:
+#   - Basic: !tc 搜索词
+#   - Multimodal: !tcvr 搜索词
+#   - Mixed: !tcmix 搜索词
+#   - Zhihu: !tczh 搜索词
+#   - News: !tcnews 搜索词
+#
+# Security:
+#   - Never commit credentials to version control
+#   - Consider using environment variables
+#   - Use Kubernetes Secrets for production
+#   - Set IP whitelist in Tencent Cloud console
+#   - Rotate API keys periodically
+#
+# Performance:
+#   - Enable caching to reduce API calls
+#   - Adjust timeout based on network
+#   - Set appropriate weight for result ordering
+
