@@ -28,6 +28,20 @@ search_type = ""
 base_url_web = 'https://yandex.com/search/site/'
 base_url_images = 'https://yandex.com/images/search'
 
+# Supported languages
+yandex_supported_langs = [
+    "ru",  # Russian
+    "en",  # English
+    "be",  # Belarusian
+    "fr",  # French
+    "de",  # German
+    "id",  # Indonesian
+    "kk",  # Kazakh
+    "tt",  # Tatar
+    "tr",  # Turkish
+    "uk",  # Ukrainian
+]
+
 results_xpath = '//li[contains(@class, "serp-item")]'
 url_xpath = './/a[@class="b-serp-item__title-link"]/@href'
 title_xpath = './/h3[@class="b-serp-item__title"]/a[@class="b-serp-item__title-link"]/span'
@@ -47,6 +61,10 @@ def request(query, params):
         "frame": "1",
         "searchid": "3131712",
     }
+
+    lang = params["language"].split("-")[0]
+    if lang in yandex_supported_langs:
+        query_params_web["lang"] = lang
 
     query_params_images = {
         "text": query,
