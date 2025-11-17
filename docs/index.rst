@@ -56,4 +56,34 @@ If you don't trust anyone, you can set up your own, see :ref:`installation`.
    utils/index
    src/index
 
+
+----------------
+Acknowledgements
+----------------
+
+The following organizations have provided SearXNG access to their paid plans at
+no cost:
+
+.. flat-table::
+   :widths: 1 1
+
+   * - .. image:: /assets/sponsors/docker.svg
+          :target: https://docker.com
+          :alt: Docker
+          :align: center
+          :height: 100 px
+
+     - .. image:: /assets/sponsors/tuta.svg
+          :target: https://tuta.com
+          :alt: Tuta
+          :align: center
+          :height: 100 px
+
+   * - .. image:: /assets/sponsors/browserstack.svg
+          :target: https://browserstack.com
+          :alt: BrowserStack
+          :align: center
+          :height: 100 px
+
+
 .. _searx.space: https://searx.space

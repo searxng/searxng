@@ -48,7 +48,7 @@ solve the CAPTCHA from `qwant.com <https://www.qwant.com/>`__.
 
   .. group-tab:: Firefox
 
-     .. kernel-figure:: answer-captcha/ffox-setting-proxy-socks.png
+     .. kernel-figure:: /assets/answer-captcha/ffox-setting-proxy-socks.png
         :alt: FFox proxy on SOCKS5, 127.0.0.1:8080
 
         Firefox's network settings
@@ -66,4 +66,3 @@ solve the CAPTCHA from `qwant.com <https://www.qwant.com/>`__.
 
    -N
       Do not execute a remote command.  This is useful for just forwarding ports.
-
