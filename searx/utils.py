@@ -741,7 +741,7 @@ def detect_language(text: str, threshold: float = 0.3, only_search_languages: bo
     return None
 
 
-def js_variable_to_python(js_variable: str) -> str:
+def js_variable_to_python(js_variable: str) -> t.Any:
     """Convert a javascript variable into JSON and then load the value
 
     It does not deal with all cases, but it is good enough for now.
@@ -813,7 +813,7 @@ def js_variable_to_python(js_variable: str) -> str:
     # {"a": "\"12\"","b": "13"}
     s = s.replace("',", "\",")
     # load the JSON and return the result
-    return json.loads(s)  # pyright: ignore[reportAny]
+    return json.loads(s)
 
 
 def parse_duration_string(duration_str: str) -> timedelta | None:
