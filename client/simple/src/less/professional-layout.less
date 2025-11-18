@@ -1,0 +1,297 @@
+// SPDX-License-Identifier: AGPL-3.0-or-later
+
+/*
+ * Professional Layout System
+ * Clean, structured, corporate-grade design
+ */
+
+// Professional spacing system (8px base grid)
+@space-xs: 0.5rem;    // 8px
+@space-sm: 0.75rem;   // 12px
+@space-md: 1rem;      // 16px
+@space-lg: 1.5rem;    // 24px
+@space-xl: 2rem;      // 32px
+@space-2xl: 3rem;     // 48px
+@space-3xl: 4rem;     // 64px
+
+// Professional border radius
+@radius-sm: 8px;
+@radius-md: 12px;
+@radius-lg: 16px;
+@radius-xl: 20px;
+
+// Container widths
+@container-narrow: 720px;
+@container-medium: 960px;
+@container-wide: 1200px;
+@container-full: 1440px;
+
+// Professional result cards layout
+article.result {
+  // Reset previous styling for professional look
+  border-radius: @radius-lg !important;
+  padding: @space-lg @space-xl !important;
+  margin-bottom: @space-lg !important;
+  background: var(--color-result-background);
+  border: 1px solid var(--color-result-border);
+
+  // Clean structure
+  display: flex;
+  flex-direction: column;
+  gap: @space-md;
+
+  // Professional title styling
+  h3 {
+    font-family: @font-display;
+    font-size: 1.25rem;
+    font-weight: 600;
+    line-height: 1.4;
+    letter-spacing: -0.01em;
+    margin: 0;
+    color: var(--color-result-link-font);
+
+    a {
+      color: inherit;
+      text-decoration: none;
+      transition: color 0.2s ease;
+
+      &:hover {
+        color: #0a84ff;
+      }
+    }
+  }
+
+  // URL line - professional mono font
+  .url_wrapper {
+    font-family: @font-mono;
+    font-size: 0.8125rem;
+    color: var(--color-result-engines-font);
+    opacity: 0.7;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: @space-xs;
+  }
+
+  // Content with proper line-height
+  .content {
+    font-size: 0.9375rem;
+    line-height: 1.6;
+    color: var(--color-base-font);
+    margin: 0;
+
+    b, strong {
+      font-weight: 600;
+      color: var(--color-result-description-highlight-font);
+    }
+  }
+
+  // Metadata row
+  .result-metadata {
+    display: flex;
+    align-items: center;
+    gap: @space-md;
+    font-size: 0.8125rem;
+    color: var(--color-result-engines-font);
+    margin-top: @space-sm;
+
+    .publishedDate {
+      font-style: normal;
+      opacity: 0.8;
+    }
+
+    .engines {
+      display: flex;
+      gap: @space-xs;
+      margin: 0;
+    }
+  }
+
+  @media (max-width: @phone) {
+    padding: @space-md @space-lg !important;
+  }
+}
+
+// Professional answer boxes
+#answers {
+  margin-bottom: @space-2xl;
+
+  article {
+    background: var(--color-answer-background);
+    border: 2px solid rgba(10, 132, 255, 0.2);
+    border-radius: @radius-xl;
+    padding: @space-xl;
+
+    h4 {
+      font-family: @font-display;
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin: 0 0 @space-lg 0;
+      color: #0a84ff;
+    }
+
+    .answer {
+      font-size: 1rem;
+      line-height: 1.7;
+      color: var(--color-answer-font);
+    }
+  }
+}
+
+// Professional search results grid
+#results {
+  max-width: @container-medium;
+  margin: 0 auto;
+  padding: @space-xl @space-lg;
+
+  @media (max-width: @tablet) {
+    max-width: 100%;
+    padding: @space-lg @space-md;
+  }
+
+  @media (max-width: @phone) {
+    padding: @space-md @space-sm;
+  }
+}
+
+// Clean sidebar layout
+#sidebar {
+  background: var(--color-sidebar-background);
+  border: 1px solid var(--color-sidebar-border);
+  border-radius: @radius-lg;
+  padding: @space-lg;
+  margin-bottom: @space-xl;
+
+  .infobox {
+    background: transparent;
+    border: none;
+    padding: 0;
+    margin-bottom: @space-lg;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+
+    h2 {
+      font-family: @font-display;
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin: 0 0 @space-md 0;
+      color: var(--color-base-font);
+    }
+
+    .infobox_part {
+      font-size: 0.9375rem;
+      line-height: 1.6;
+      margin-bottom: @space-sm;
+    }
+  }
+}
+
+// Professional header structure
+#search {
+  max-width: @container-medium;
+  margin: 0 auto @space-2xl;
+  padding: 0 @space-lg;
+
+  @media (max-width: @phone) {
+    padding: 0 @space-md;
+  }
+}
+
+// Clean category tabs
+#categories {
+  max-width: @container-medium;
+  margin: 0 auto @space-xl;
+  padding: 0 @space-lg;
+  display: flex;
+  gap: @space-sm;
+  overflow-x: auto;
+
+  .category {
+    padding: @space-sm @space-md;
+    border-radius: @radius-sm;
+    background: transparent;
+    border: 1px solid var(--color-result-border);
+    color: var(--color-base-font);
+    font-size: 0.875rem;
+    font-weight: 500;
+    white-space: nowrap;
+    transition: all 0.2s ease;
+
+    &:hover {
+      background: rgba(10, 132, 255, 0.1);
+      border-color: rgba(10, 132, 255, 0.3);
+    }
+
+    &.active {
+      background: #0a84ff;
+      border-color: #0a84ff;
+      color: #ffffff;
+    }
+  }
+
+  @media (max-width: @phone) {
+    padding: 0 @space-sm;
+  }
+}
+
+// Professional card shadows
+.card-shadow-sm {
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.card-shadow-md {
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.card-shadow-lg {
+  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+}
+
+// Professional transitions
+.transition-standard {
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.transition-smooth {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+// Professional grid system
+.grid-2col {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: @space-lg;
+
+  @media (max-width: @phone) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.grid-3col {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: @space-lg;
+
+  @media (max-width: @tablet) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @media (max-width: @phone) {
+    grid-template-columns: 1fr;
+  }
+}
+
+// Professional dividers
+.divider {
+  height: 1px;
+  background: var(--color-result-border);
+  margin: @space-xl 0;
+}
+
+.divider-thick {
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--color-result-border), transparent);
+  margin: @space-2xl 0;
+}
