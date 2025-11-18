@@ -132,6 +132,29 @@ article.result {
     padding: 2rem;
     position: relative;
     overflow: hidden;
+    border: 1px solid rgba(10, 132, 255, 0.2);
+    animation: answer-pulse 3s ease-in-out infinite;
+
+    // Animated gradient border
+    &::before {
+      content: "";
+      position: absolute;
+      inset: -2px;
+      border-radius: 20px;
+      padding: 2px;
+      background: linear-gradient(
+        135deg,
+        rgba(10, 132, 255, 0.4),
+        rgba(139, 92, 246, 0.4),
+        rgba(10, 132, 255, 0.4)
+      );
+      background-size: 200% 200%;
+      animation: gradient-flow 4s ease infinite;
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      pointer-events: none;
+    }
 
     h4 {
       background: linear-gradient(135deg, #0066ff 0%, #00ccff 100%);
@@ -139,12 +162,40 @@ article.result {
       -webkit-text-fill-color: transparent;
       background-clip: text;
       margin-bottom: 1rem;
+      animation: title-glow 2s ease-in-out infinite;
     }
 
     .answer {
       color: var(--color-answer-font);
       line-height: 1.8;
     }
+  }
+}
+
+@keyframes answer-pulse {
+  0%, 100% {
+    box-shadow: 0 4px 20px rgba(10, 132, 255, 0.1);
+  }
+  50% {
+    box-shadow: 0 8px 30px rgba(10, 132, 255, 0.2);
+  }
+}
+
+@keyframes gradient-flow {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+@keyframes title-glow {
+  0%, 100% {
+    filter: drop-shadow(0 0 2px rgba(10, 132, 255, 0.3));
+  }
+  50% {
+    filter: drop-shadow(0 0 8px rgba(10, 132, 255, 0.6));
   }
 }
 
