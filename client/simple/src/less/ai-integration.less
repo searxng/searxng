@@ -1,0 +1,449 @@
+// SPDX-License-Identifier: AGPL-3.0-or-later
+
+/*
+ * PROMINENT AI INTEGRATION - OpenAI / Anthropic / Ollama
+ * Highly visible AI-powered search enhancement
+ */
+
+// Main AI Panel - Always visible on results page
+#ai-panel {
+  position: fixed;
+  top: 120px;
+  right: 20px;
+  width: 380px;
+  max-height: calc(100vh - 140px);
+  background: linear-gradient(135deg,
+    rgba(139, 92, 246, 0.15) 0%,
+    rgba(10, 132, 255, 0.15) 100%
+  );
+  backdrop-filter: blur(20px);
+  border: 2px solid;
+  border-image: linear-gradient(135deg, #8b5cf6, #0a84ff) 1;
+  border-radius: 24px;
+  padding: 1.5rem;
+  box-shadow: 0 20px 60px rgba(139, 92, 246, 0.3);
+  z-index: 1000;
+  overflow-y: auto;
+  animation: ai-panel-slide-in 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  @media (max-width: @tablet) {
+    position: relative;
+    top: 0;
+    right: 0;
+    width: 100%;
+    margin-bottom: 2rem;
+  }
+
+  // AI Header with animated logo
+  .ai-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid rgba(139, 92, 246, 0.3);
+
+    .ai-logo {
+      width: 48px;
+      height: 48px;
+      background: linear-gradient(135deg, #8b5cf6, #0a84ff);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      animation: ai-logo-pulse 2s ease-in-out infinite;
+      box-shadow: 0 8px 24px rgba(139, 92, 246, 0.4);
+
+      &::before {
+        content: "🤖";
+      }
+    }
+
+    .ai-title {
+      flex: 1;
+
+      h3 {
+        margin: 0;
+        background: linear-gradient(135deg, #8b5cf6, #0a84ff);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        font-size: 1.5rem;
+        font-weight: 700;
+      }
+
+      .ai-subtitle {
+        font-size: 0.75rem;
+        color: var(--color-base-font);
+        opacity: 0.7;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+      }
+    }
+
+    .ai-status {
+      width: 12px;
+      height: 12px;
+      background: #30d158;
+      border-radius: 50%;
+      animation: ai-status-blink 2s ease-in-out infinite;
+      box-shadow: 0 0 20px #30d158;
+    }
+  }
+
+  // AI Provider Selection
+  .ai-provider {
+    margin-bottom: 1.5rem;
+
+    label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      color: var(--color-base-font);
+      font-size: 0.875rem;
+    }
+
+    .provider-buttons {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.5rem;
+
+      button {
+        padding: 0.75rem 0.5rem;
+        border: 2px solid rgba(139, 92, 246, 0.3);
+        border-radius: 12px;
+        background: rgba(139, 92, 246, 0.05);
+        color: var(--color-base-font);
+        font-weight: 600;
+        font-size: 0.75rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+
+        &:hover {
+          background: rgba(139, 92, 246, 0.15);
+          transform: translateY(-2px);
+        }
+
+        &.active {
+          background: linear-gradient(135deg, #8b5cf6, #0a84ff);
+          border-color: transparent;
+          color: #fff;
+          box-shadow: 0 4px 16px rgba(139, 92, 246, 0.4);
+        }
+      }
+    }
+  }
+
+  // AI Chat Interface
+  .ai-chat {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 16px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+
+    .ai-messages {
+      max-height: 300px;
+      overflow-y: auto;
+      margin-bottom: 1rem;
+
+      .ai-message {
+        padding: 0.75rem 1rem;
+        border-radius: 12px;
+        margin-bottom: 0.75rem;
+        animation: message-slide-in 0.3s ease;
+
+        &.user {
+          background: rgba(10, 132, 255, 0.2);
+          border-left: 3px solid #0a84ff;
+        }
+
+        &.ai {
+          background: rgba(139, 92, 246, 0.2);
+          border-left: 3px solid #8b5cf6;
+
+          &::before {
+            content: "🤖 AI:";
+            display: block;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+            background: linear-gradient(135deg, #8b5cf6, #0a84ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+          }
+        }
+      }
+    }
+
+    .ai-input-wrapper {
+      position: relative;
+
+      input {
+        width: 100%;
+        padding: 0.875rem 3rem 0.875rem 1rem;
+        border: 2px solid rgba(139, 92, 246, 0.3);
+        border-radius: 12px;
+        background: rgba(0, 0, 0, 0.2);
+        color: var(--color-base-font);
+        font-size: 0.875rem;
+
+        &:focus {
+          outline: none;
+          border-color: #8b5cf6;
+          box-shadow: 0 0 20px rgba(139, 92, 246, 0.3);
+        }
+      }
+
+      button {
+        position: absolute;
+        right: 0.5rem;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 36px;
+        height: 36px;
+        border: none;
+        border-radius: 8px;
+        background: linear-gradient(135deg, #8b5cf6, #0a84ff);
+        color: #fff;
+        cursor: pointer;
+        transition: all 0.2s ease;
+
+        &:hover {
+          transform: translateY(-50%) scale(1.1);
+          box-shadow: 0 4px 16px rgba(139, 92, 246, 0.5);
+        }
+
+        &::before {
+          content: "➤";
+        }
+      }
+    }
+  }
+
+  // AI Insights Section
+  .ai-insights {
+    background: rgba(139, 92, 246, 0.1);
+    border-radius: 16px;
+    padding: 1rem;
+    border: 1px solid rgba(139, 92, 246, 0.3);
+
+    h4 {
+      margin: 0 0 0.75rem 0;
+      font-size: 1rem;
+      background: linear-gradient(135deg, #8b5cf6, #0a84ff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+
+      &::before {
+        content: "✨";
+      }
+    }
+
+    .insight-item {
+      padding: 0.75rem;
+      background: rgba(0, 0, 0, 0.2);
+      border-radius: 10px;
+      margin-bottom: 0.5rem;
+      font-size: 0.875rem;
+      line-height: 1.6;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+  }
+}
+
+// Large AI Badge on Results
+.result-ai-badge {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: linear-gradient(135deg, #8b5cf6, #0a84ff);
+  color: #fff;
+  padding: 0.5rem 1rem;
+  border-radius: 12px;
+  font-weight: 700;
+  font-size: 0.875rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  box-shadow: 0 8px 24px rgba(139, 92, 246, 0.4);
+  animation: badge-pulse 2s ease-in-out infinite;
+  z-index: 10;
+
+  &::before {
+    content: "🤖";
+    font-size: 1.25rem;
+  }
+
+  .ai-score-value {
+    font-size: 1.125rem;
+    font-weight: 800;
+  }
+
+  &[data-score="high"] {
+    background: linear-gradient(135deg, #30d158, #10b981);
+  }
+
+  &[data-score="medium"] {
+    background: linear-gradient(135deg, #ffd60a, #f59e0b);
+  }
+
+  &[data-score="low"] {
+    background: linear-gradient(135deg, #ff453a, #ef4444);
+  }
+}
+
+// AI-Enhanced Search Box
+#search {
+  .ai-search-indicator {
+    position: absolute;
+    right: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    background: linear-gradient(135deg, #8b5cf6, #0a84ff);
+    color: #fff;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    animation: search-indicator-pulse 2s ease-in-out infinite;
+
+    &::before {
+      content: "🤖";
+    }
+  }
+}
+
+// Animations
+@keyframes ai-panel-slide-in {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes ai-logo-pulse {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow: 0 8px 24px rgba(139, 92, 246, 0.4);
+  }
+  50% {
+    transform: scale(1.1);
+    box-shadow: 0 12px 36px rgba(139, 92, 246, 0.6);
+  }
+}
+
+@keyframes ai-status-blink {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.3;
+  }
+}
+
+@keyframes badge-pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+@keyframes search-indicator-pulse {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(139, 92, 246, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 40px rgba(139, 92, 246, 0.8);
+  }
+}
+
+@keyframes message-slide-in {
+  from {
+    transform: translateY(10px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+// Floating AI Assistant Button (always visible)
+#ai-floating-button {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  width: 64px;
+  height: 64px;
+  background: linear-gradient(135deg, #8b5cf6, #0a84ff);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 32px;
+  cursor: pointer;
+  box-shadow: 0 12px 40px rgba(139, 92, 246, 0.5);
+  animation: float-bounce 3s ease-in-out infinite;
+  z-index: 9999;
+  border: 3px solid rgba(255, 255, 255, 0.2);
+
+  &::before {
+    content: "🤖";
+  }
+
+  &:hover {
+    transform: scale(1.1);
+    box-shadow: 0 16px 60px rgba(139, 92, 246, 0.7);
+  }
+
+  // Notification dot
+  &::after {
+    content: "";
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    width: 12px;
+    height: 12px;
+    background: #ff453a;
+    border-radius: 50%;
+    border: 2px solid #fff;
+    animation: notification-pulse 2s ease-in-out infinite;
+  }
+}
+
+@keyframes float-bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes notification-pulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.2);
+    opacity: 0.7;
+  }
+}

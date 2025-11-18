@@ -5,3 +5,4 @@ import "./router.ts";
 import "./toolkit.ts";
 import "./listener.ts";
 import "../ai-enhancer.ts";
+import "../ai-integration.ts";
