@@ -3,6 +3,10 @@
     "file": "js/chunk.min.js",
     "name": "chunk"
   },
+  "_defineProperty.min.js": {
+    "file": "js/defineProperty.min.js",
+    "name": "defineProperty"
+  },
   "node_modules/ol/ol.css": {
     "file": "css/ol.min.css",
     "name": "ol.css",
@@ -17,6 +21,9 @@
     "name": "searxng.core",
     "src": "src/js/core/index.ts",
     "isEntry": true,
+    "imports": [
+      "_defineProperty.min.js"
+    ],
     "dynamicImports": [
       "src/js/main/keyboard.ts",
       "src/js/main/search.ts",
@@ -97,7 +104,10 @@
     "file": "js/ol.min.js",
     "name": "ol",
     "src": "src/js/pkg/ol.ts",
-    "isEntry": true
+    "isEntry": true,
+    "imports": [
+      "_defineProperty.min.js"
+    ]
   },
   "src/less/rss.less": {
     "file": "css/rss.min.css",

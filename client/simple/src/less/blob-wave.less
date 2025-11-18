@@ -1,0 +1,343 @@
+// SPDX-License-Identifier: AGPL-3.0-or-later
+
+/*
+ * Blob-Wave Hybrid Animation System
+ * Organic, fluid, animated elements for premium UI
+ */
+
+// Blob-Wave Container
+.blob-wave-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+// Main Blob-Wave Element
+.blob-wave {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(60px);
+  opacity: 0.6;
+  animation: blob-float 20s ease-in-out infinite;
+  will-change: transform, border-radius;
+
+  // Multiple blob instances with different colors
+  &.blob-1 {
+    width: 400px;
+    height: 400px;
+    top: -10%;
+    left: -10%;
+    background: radial-gradient(circle,
+      rgba(0, 102, 255, 0.4) 0%,
+      rgba(0, 204, 255, 0.2) 50%,
+      rgba(0, 102, 255, 0) 100%
+    );
+    animation-delay: 0s;
+  }
+
+  &.blob-2 {
+    width: 500px;
+    height: 500px;
+    top: 50%;
+    right: -15%;
+    background: radial-gradient(circle,
+      rgba(139, 92, 246, 0.35) 0%,
+      rgba(236, 72, 153, 0.15) 50%,
+      rgba(139, 92, 246, 0) 100%
+    );
+    animation-delay: -7s;
+  }
+
+  &.blob-3 {
+    width: 350px;
+    height: 350px;
+    bottom: -10%;
+    left: 30%;
+    background: radial-gradient(circle,
+      rgba(16, 185, 129, 0.3) 0%,
+      rgba(59, 130, 246, 0.15) 50%,
+      rgba(16, 185, 129, 0) 100%
+    );
+    animation-delay: -14s;
+  }
+
+  @media (max-width: @phone) {
+    &.blob-1,
+    &.blob-2,
+    &.blob-3 {
+      width: 250px;
+      height: 250px;
+      filter: blur(40px);
+      opacity: 0.4;
+    }
+  }
+}
+
+// Blob floating animation with morphing
+@keyframes blob-float {
+  0%, 100% {
+    transform: translate(0, 0) scale(1) rotate(0deg);
+    border-radius: 50% 45% 48% 52%;
+  }
+
+  16.66% {
+    transform: translate(20px, -30px) scale(1.05) rotate(60deg);
+    border-radius: 45% 55% 52% 48%;
+  }
+
+  33.33% {
+    transform: translate(40px, -10px) scale(0.95) rotate(120deg);
+    border-radius: 52% 48% 45% 55%;
+  }
+
+  50% {
+    transform: translate(30px, 20px) scale(1.1) rotate(180deg);
+    border-radius: 48% 52% 55% 45%;
+  }
+
+  66.66% {
+    transform: translate(-10px, 30px) scale(0.9) rotate(240deg);
+    border-radius: 55% 45% 48% 52%;
+  }
+
+  83.33% {
+    transform: translate(-30px, 10px) scale(1.05) rotate(300deg);
+    border-radius: 45% 55% 52% 48%;
+  }
+}
+
+// Wave effect overlay
+.blob-wave-overlay {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background:
+    linear-gradient(transparent 0%, transparent 50%, rgba(0, 0, 0, 0.1) 100%);
+  animation: wave-flow 8s ease-in-out infinite;
+}
+
+@keyframes wave-flow {
+  0%, 100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-20px);
+  }
+}
+
+// Pulsing glow effect for blob centers
+.blob-pulse {
+  position: absolute;
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  background: radial-gradient(circle,
+    rgba(255, 255, 255, 0.1) 0%,
+    rgba(255, 255, 255, 0) 70%
+  );
+  animation: pulse-glow 4s ease-in-out infinite;
+}
+
+@keyframes pulse-glow {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.5;
+  }
+
+  50% {
+    transform: scale(1.3);
+    opacity: 0.8;
+  }
+}
+
+// Header blob wave (smaller, more subtle)
+.blob-wave-header {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 300px;
+  height: 300px;
+  border-radius: 50%;
+  filter: blur(50px);
+  opacity: 0.3;
+  background: radial-gradient(circle,
+    rgba(0, 102, 255, 0.4) 0%,
+    rgba(139, 92, 246, 0.2) 50%,
+    transparent 100%
+  );
+  animation: header-blob-float 15s ease-in-out infinite;
+  pointer-events: none;
+
+  @media (max-width: @phone) {
+    width: 150px;
+    height: 150px;
+    filter: blur(30px);
+    opacity: 0.2;
+  }
+}
+
+@keyframes header-blob-float {
+  0%, 100% {
+    transform: translate(0, 0) rotate(0deg);
+    border-radius: 50% 48% 52% 50%;
+  }
+
+  25% {
+    transform: translate(-15px, 10px) rotate(90deg);
+    border-radius: 48% 52% 50% 50%;
+  }
+
+  50% {
+    transform: translate(-10px, 20px) rotate(180deg);
+    border-radius: 52% 50% 48% 52%;
+  }
+
+  75% {
+    transform: translate(10px, 10px) rotate(270deg);
+    border-radius: 50% 52% 50% 48%;
+  }
+}
+
+// Interactive blob (follows cursor - to be implemented in JS)
+.blob-wave-interactive {
+  position: fixed;
+  width: 300px;
+  height: 300px;
+  border-radius: 50%;
+  filter: blur(70px);
+  opacity: 0.2;
+  background: radial-gradient(circle,
+    rgba(255, 255, 255, 0.3) 0%,
+    rgba(0, 102, 255, 0.15) 50%,
+    transparent 100%
+  );
+  pointer-events: none;
+  z-index: 9999;
+  transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+  mix-blend-mode: screen;
+
+  @media (max-width: @phone) {
+    display: none; // Disable on mobile for performance
+  }
+}
+
+// Liquid distortion effect
+.liquid-distortion {
+  animation: liquid-morph 10s ease-in-out infinite;
+}
+
+@keyframes liquid-morph {
+  0%, 100% {
+    border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+  }
+
+  20% {
+    border-radius: 30% 60% 70% 40% / 50% 60% 30% 60%;
+  }
+
+  40% {
+    border-radius: 70% 40% 50% 60% / 30% 40% 60% 50%;
+  }
+
+  60% {
+    border-radius: 40% 60% 60% 40% / 70% 30% 50% 60%;
+  }
+
+  80% {
+    border-radius: 50% 50% 40% 60% / 40% 70% 60% 50%;
+  }
+}
+
+// Shimmer effect for premium feel
+.shimmer-overlay {
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.1) 50%,
+    transparent 100%
+  );
+  animation: shimmer 3s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    left: -100%;
+  }
+
+  100% {
+    left: 100%;
+  }
+}
+
+// Particle system for added depth
+.particle-container {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.particle {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  animation: particle-float 20s linear infinite;
+
+  &:nth-child(1) {
+    left: 10%;
+    animation-delay: 0s;
+  }
+
+  &:nth-child(2) {
+    left: 30%;
+    animation-delay: -5s;
+  }
+
+  &:nth-child(3) {
+    left: 50%;
+    animation-delay: -10s;
+  }
+
+  &:nth-child(4) {
+    left: 70%;
+    animation-delay: -15s;
+  }
+
+  &:nth-child(5) {
+    left: 90%;
+    animation-delay: -20s;
+  }
+}
+
+@keyframes particle-float {
+  0% {
+    transform: translateY(100vh) scale(0);
+    opacity: 0;
+  }
+
+  10% {
+    opacity: 1;
+  }
+
+  90% {
+    opacity: 1;
+  }
+
+  100% {
+    transform: translateY(-100px) scale(1);
+    opacity: 0;
+  }
+}

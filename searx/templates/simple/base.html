@@ -28,6 +28,13 @@
   <link rel="apple-touch-icon" href="{{ url_for('static', filename='img/favicon.png') }}">
 </head>
 <body class="{{ endpoint }}_endpoint" >
+  <!-- Blob-Wave Background Animation -->
+  <div class="blob-wave-container">
+    <div class="blob-wave blob-1 liquid-distortion"></div>
+    <div class="blob-wave blob-2 liquid-distortion"></div>
+    <div class="blob-wave blob-3 liquid-distortion"></div>
+  </div>
+
   <main id="main_{{  self._TemplateReference__context.name|replace("simple/", "")|replace(".html", "") }}" class="{{body_class}}">
     {% if errors %}
         <div class="dialog-error" role="alert">

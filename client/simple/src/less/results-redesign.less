@@ -1,0 +1,294 @@
+// SPDX-License-Identifier: AGPL-3.0-or-later
+
+/*
+ * Premium Results Design - Card-based layout with gradients
+ */
+
+// Result container improvements
+#results {
+  position: relative;
+  z-index: 1;
+}
+
+// Individual result cards
+article.result {
+  position: relative;
+  background: var(--color-result-background);
+  border: 1px solid var(--color-result-border);
+  border-radius: 16px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: hidden;
+
+  &:hover {
+    transform: translateY(-4px);
+    border-color: rgba(10, 132, 255, 0.4);
+  }
+
+  // Result title with gradient
+  h3,
+  .result-title {
+    margin: 0 0 0.75rem 0;
+
+    a {
+      color: var(--color-result-link-font);
+      text-decoration: none;
+      transition: all 0.2s ease;
+
+      &:hover {
+        background: linear-gradient(135deg, #0066ff 0%, #00ccff 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+    }
+  }
+
+  // URL display
+  .url_wrapper {
+    color: var(--color-result-engines-font);
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+
+    .url {
+      color: var(--color-result-url-font);
+    }
+  }
+
+  // Result content/description
+  .content {
+    color: var(--color-base-font);
+    line-height: 1.7;
+    margin-bottom: 0.75rem;
+
+    // Highlighted search terms
+    b,
+    strong {
+      color: var(--color-result-description-highlight-font);
+      font-weight: 600;
+    }
+  }
+
+  // Metadata (engines, date, etc.)
+  .engines {
+    color: var(--color-result-engines-font);
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    margin-top: 1rem;
+
+    .engine-badge {
+      padding: 0.25rem 0.75rem;
+      border-radius: 8px;
+      background: var(--color-toolkit-badge-background);
+      color: var(--color-toolkit-badge-font);
+      font-weight: 500;
+      font-size: 0.75rem;
+    }
+  }
+
+  // Published date
+  .publishedDate {
+    color: var(--color-result-publishdate-font);
+    font-style: italic;
+    margin-top: 0.5rem;
+    font-size: 0.8125rem;
+  }
+}
+
+// Answer boxes - premium styling
+#answers {
+  margin-bottom: 2rem;
+
+  article {
+    background: var(--color-answer-background);
+    border-radius: 20px;
+    padding: 2rem;
+    position: relative;
+    overflow: hidden;
+
+    h4 {
+      background: linear-gradient(135deg, #0066ff 0%, #00ccff 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 1rem;
+    }
+
+    .answer {
+      color: var(--color-answer-font);
+      line-height: 1.8;
+    }
+  }
+}
+
+// Infoboxes - card design
+#infoboxes {
+  .infobox {
+    background: var(--color-result-background);
+    border-radius: 16px;
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+
+    h2 {
+      background: linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 1rem;
+    }
+
+    .infobox_part {
+      margin-bottom: 0.75rem;
+    }
+
+    img {
+      border-radius: 12px;
+      max-width: 100%;
+      height: auto;
+    }
+  }
+}
+
+// Suggestions with gradient accents
+#suggestions {
+  .suggestion {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    margin: 0.25rem;
+    border-radius: 12px;
+    background: var(--color-result-background);
+    border: 1px solid var(--color-result-border);
+    transition: all 0.2s ease;
+
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 102, 255, 0.2);
+    }
+
+    a {
+      color: var(--color-base-font);
+      text-decoration: none;
+    }
+  }
+}
+
+// AI-powered features
+
+// AI result summary
+.ai-summary {
+  background: linear-gradient(
+    135deg,
+    rgba(139, 92, 246, 0.1) 0%,
+    rgba(59, 130, 246, 0.05) 100%
+  );
+  border: 1px solid rgba(139, 92, 246, 0.2);
+  border-radius: 12px;
+  padding: 1rem 1.25rem;
+  margin-top: 0.75rem;
+  backdrop-filter: blur(10px);
+
+  .ai-summary-label {
+    background: linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    font-size: 0.875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+
+    &::before {
+      content: "✨";
+      font-size: 1rem;
+    }
+  }
+
+  .ai-summary-text {
+    color: var(--color-base-font);
+    line-height: 1.6;
+    font-style: italic;
+    font-size: 0.875rem;
+  }
+}
+
+// AI relevance score
+.ai-relevance-score {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.375rem 0.75rem;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.75rem;
+
+  .score-indicator {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    animation: pulse-glow 2s ease-in-out infinite;
+  }
+
+  &[data-score="high"] {
+    background: rgba(48, 209, 88, 0.15);
+    border: 1px solid rgba(48, 209, 88, 0.3);
+    color: #30d158;
+
+    .score-indicator {
+      background: #30d158;
+      box-shadow: 0 0 10px rgba(48, 209, 88, 0.5);
+    }
+  }
+
+  &[data-score="medium"] {
+    background: rgba(255, 214, 10, 0.15);
+    border: 1px solid rgba(255, 214, 10, 0.3);
+    color: #ffd60a;
+
+    .score-indicator {
+      background: #ffd60a;
+      box-shadow: 0 0 10px rgba(255, 214, 10, 0.5);
+    }
+  }
+
+  &[data-score="low"] {
+    background: rgba(255, 69, 58, 0.15);
+    border: 1px solid rgba(255, 69, 58, 0.3);
+    color: #ff453a;
+
+    .score-indicator {
+      background: #ff453a;
+      box-shadow: 0 0 10px rgba(255, 69, 58, 0.5);
+    }
+  }
+}
+
+// Responsive adjustments
+@media (max-width: @phone) {
+  article.result {
+    border-radius: 12px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+
+    &:hover {
+      transform: translateY(-2px);
+    }
+  }
+
+  #answers article {
+    border-radius: 12px;
+    padding: 1.25rem;
+  }
+
+  #infoboxes .infobox {
+    border-radius: 12px;
+    padding: 1rem;
+  }
+}
