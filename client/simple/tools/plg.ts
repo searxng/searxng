@@ -4,7 +4,7 @@
  * Custom vite plugins to build the web-client components of the simple theme.
  *
  * HINT:
- *   This is an inital implementation for the migration of the build process
+ *   This is an initial implementation for the migration of the build process
  *   from grunt to vite.  For fully support (vite: build & serve) more work is
  *   needed.
  */
