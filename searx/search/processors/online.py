@@ -35,7 +35,7 @@ class HTTPParams(t.TypedDict):
     headers: dict[str, str]
     """HTTP header information."""
 
-    data: dict[str, str]
+    data: dict[str, str | int | dict[str, str | int]]
     """Sending `form encoded data`_.
 
     .. _form encoded data:
@@ -56,7 +56,7 @@ class HTTPParams(t.TypedDict):
        https://www.python-httpx.org/quickstart/#sending-json-encoded-data
     """
 
-    url: str
+    url: str | None
     """Requested url."""
 
     cookies: dict[str, str]
@@ -200,7 +200,7 @@ class OnlineProcessor(EngineProcessor):
                 request_args["content"] = params["content"]
 
         # send the request
-        response = req(params["url"], **request_args)
+        response = req(params["url"], **request_args)  # pyright: ignore[reportArgumentType]
 
         # check soft limit of the redirect count
         if len(response.history) > soft_max_redirects:
