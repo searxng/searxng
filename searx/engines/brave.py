@@ -124,17 +124,17 @@ from urllib.parse import (
     urlparse,
 )
 
+import json
 from dateutil import parser
 from lxml import html
 
 from searx import locales
 from searx.utils import (
-    extr,
     extract_text,
-    eval_xpath,
     eval_xpath_list,
     eval_xpath_getindex,
     js_obj_str_to_python,
+    js_obj_str_to_json_str,
     get_embeded_stream_url,
 )
 from searx.enginelib.traits import EngineTraits
@@ -142,17 +142,17 @@ from searx.result_types import EngineResults
 from searx.extended_types import SXNG_Response
 
 about = {
-    "website": 'https://search.brave.com/',
-    "wikidata_id": 'Q22906900',
+    "website": "https://search.brave.com/",
+    "wikidata_id": "Q22906900",
     "official_api_documentation": None,
     "use_official_api": False,
     "require_api_key": False,
-    "results": 'HTML',
+    "results": "HTML",
 }
 
 base_url = "https://search.brave.com/"
 categories = []
-brave_category: t.Literal["search", "videos", "images", "news", "goggles"] = 'search'
+brave_category: t.Literal["search", "videos", "images", "news", "goggles"] = "search"
 """Brave supports common web-search, videos, images, news, and goggles search.
 
 - ``search``: Common WEB search
@@ -182,69 +182,84 @@ to do more won't return any result and you will most likely be flagged as a bot.
 """
 
 safesearch = True
-safesearch_map = {2: 'strict', 1: 'moderate', 0: 'off'}  # cookie: safesearch=off
+safesearch_map = {2: "strict", 1: "moderate", 0: "off"}  # cookie: safesearch=off
 
 time_range_support = False
 """Brave only supports time-range in :py:obj:`brave_category` ``search`` (UI
 category All) and in the goggles category."""
 
 time_range_map: dict[str, str] = {
-    'day': 'pd',
-    'week': 'pw',
-    'month': 'pm',
-    'year': 'py',
+    "day": "pd",
+    "week": "pw",
+    "month": "pm",
+    "year": "py",
 }
 
 
 def request(query: str, params: dict[str, t.Any]) -> None:
 
     args: dict[str, t.Any] = {
-        'q': query,
-        'source': 'web',
+        "q": query,
+        "source": "web",
     }
     if brave_spellcheck:
-        args['spellcheck'] = '1'
+        args["spellcheck"] = "1"
 
-    if brave_category in ('search', 'goggles'):
-        if params.get('pageno', 1) - 1:
-            args['offset'] = params.get('pageno', 1) - 1
-        if time_range_map.get(params['time_range']):
-            args['tf'] = time_range_map.get(params['time_range'])
+    if brave_category in ("search", "goggles"):
+        if params.get("pageno", 1) - 1:
+            args["offset"] = params.get("pageno", 1) - 1
+        if time_range_map.get(params["time_range"]):
+            args["tf"] = time_range_map.get(params["time_range"])
 
-    if brave_category == 'goggles':
-        args['goggles_id'] = Goggles
+    if brave_category == "goggles":
+        args["goggles_id"] = Goggles
 
     params["url"] = f"{base_url}{brave_category}?{urlencode(args)}"
+    logger.debug("url %s", params["url"])
 
     # set properties in the cookies
 
-    params['cookies']['safesearch'] = safesearch_map.get(params['safesearch'], 'off')
-    # the useLocation is IP based, we use cookie 'country' for the region
-    params['cookies']['useLocation'] = '0'
-    params['cookies']['summarizer'] = '0'
+    params["cookies"]["safesearch"] = safesearch_map.get(params["safesearch"], "off")
+    # the useLocation is IP based, we use cookie "country" for the region
+    params["cookies"]["useLocation"] = "0"
+    params["cookies"]["summarizer"] = "0"
 
-    engine_region = traits.get_region(params['searxng_locale'], 'all')
-    params['cookies']['country'] = engine_region.split('-')[-1].lower()  # type: ignore
+    engine_region = traits.get_region(params["searxng_locale"], "all")
+    params["cookies"]["country"] = engine_region.split("-")[-1].lower()  # type: ignore
 
-    ui_lang = locales.get_engine_locale(params['searxng_locale'], traits.custom["ui_lang"], 'en-us')
-    params['cookies']['ui_lang'] = ui_lang
-
-    logger.debug("cookies %s", params['cookies'])
-
-    params['headers']['Sec-Fetch-Dest'] = "document"
-    params['headers']['Sec-Fetch-Mode'] = "navigate"
-    params['headers']['Sec-Fetch-Site'] = "same-origin"
-    params['headers']['Sec-Fetch-User'] = "?1"
+    ui_lang = locales.get_engine_locale(params["searxng_locale"], traits.custom["ui_lang"], "en-us")
+    params["cookies"]["ui_lang"] = ui_lang
+    logger.debug("cookies %s", params["cookies"])
 
 
-def _extract_published_date(published_date_raw):
+def _extract_published_date(published_date_raw: str | None):
     if published_date_raw is None:
         return None
-
     try:
         return parser.parse(published_date_raw)
     except parser.ParserError:
         return None
+
+
+def extract_json_data(text: str) -> dict[str, t.Any]:
+    # Example script source containing the data:
+    #
+    # kit.start(app, element, {
+    #    node_ids: [0, 19],
+    #    data: [{type:"data",data: .... ["q","goggles_id"],route:1,url:1}}]
+    #          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    text = text[text.index("<script") : text.index("</script")]
+    if not text:
+        raise ValueError("can't find JS/JSON data in the given text")
+    start = text.index("data: [{")
+    end = text.rindex("}}]")
+    js_obj_str = text[start:end]
+    js_obj_str = "{" + js_obj_str + "}}]}"
+    # js_obj_str = js_obj_str.replace("\xa0", "")  # remove ASCII for &nbsp;
+    # js_obj_str = js_obj_str.replace(r"\u003C", "<").replace(r"\u003c", "<")  # fix broken HTML tags in strings
+    json_str = js_obj_str_to_json_str(js_obj_str)
+    data: dict[str, t.Any] = json.loads(json_str)
+    return data
 
 
 def response(resp: SXNG_Response) -> EngineResults:
@@ -261,11 +276,8 @@ def response(resp: SXNG_Response) -> EngineResults:
     #    node_ids: [0, 19],
     #    data: [{type:"data",data: .... ["q","goggles_id"],route:1,url:1}}]
     #          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    js_object = "[{" + extr(resp.text, "data: [{", "}}],") + "}}]"
-    json_data = js_obj_str_to_python(js_object)
-
-    # json_data is a list and at the second position (0,1) in this list we find the "response" data we need ..
-    json_resp = json_data[1]['data']['body']['response']
+    json_data: dict[str, t.Any] = extract_json_data(resp.text)
+    json_resp: dict[str, t.Any] = json_data['data'][1]["data"]['body']['response']
 
     if brave_category == 'images':
         return _parse_images(json_resp)
@@ -275,150 +287,121 @@ def response(resp: SXNG_Response) -> EngineResults:
     raise ValueError(f"Unsupported brave category: {brave_category}")
 
 
-def _parse_search(resp) -> EngineResults:
-    result_list = EngineResults()
-
+def _parse_search(resp: SXNG_Response) -> EngineResults:
+    res = EngineResults()
     dom = html.fromstring(resp.text)
 
-    # I doubt that Brave is still providing the "answer" class / I haven't seen
-    # answers in brave for a long time.
-    answer_tag = eval_xpath_getindex(dom, '//div[@class="answer"]', 0, default=None)
-    if answer_tag:
-        url = eval_xpath_getindex(dom, '//div[@id="featured_snippet"]/a[@class="result-header"]/@href', 0, default=None)
-        answer = extract_text(answer_tag)
-        if answer is not None:
-            result_list.add(result_list.types.Answer(answer=answer, url=url))
+    for result in eval_xpath_list(dom, "//div[contains(@class, 'snippet ')]"):
 
-    # xpath_results = '//div[contains(@class, "snippet fdb") and @data-type="web"]'
-    xpath_results = '//div[contains(@class, "snippet ")]'
-
-    for result in eval_xpath_list(dom, xpath_results):
-
-        url = eval_xpath_getindex(result, './/a[contains(@class, "h")]/@href', 0, default=None)
-        title_tag = eval_xpath_getindex(
-            result, './/a[contains(@class, "h")]//div[contains(@class, "title")]', 0, default=None
-        )
+        url: str | None = eval_xpath_getindex(result, ".//a/@href", 0, default=None)
+        title_tag = eval_xpath_getindex(result, ".//div[contains(@class, 'title')]", 0, default=None)
         if url is None or title_tag is None or not urlparse(url).netloc:  # partial url likely means it's an ad
             continue
 
-        content: str = extract_text(
-            eval_xpath_getindex(result, './/div[contains(@class, "snippet-description")]', 0, default='')
-        )  # type: ignore
-        pub_date_raw = eval_xpath(result, 'substring-before(.//div[contains(@class, "snippet-description")], "-")')
-        pub_date = _extract_published_date(pub_date_raw)
-        if pub_date and content.startswith(pub_date_raw):
-            content = content.lstrip(pub_date_raw).strip("- \n\t")
+        content: str = ""
+        pub_date = None
 
-        thumbnail = eval_xpath_getindex(result, './/img[contains(@class, "thumb")]/@src', 0, default='')
+        _content = eval_xpath_getindex(result, ".//div[contains(@class, 'content')]", 0, default="")
+        if len(_content):
+            content = extract_text(_content)  # type: ignore
+            _pub_date = extract_text(
+                eval_xpath_getindex(_content, ".//span[contains(@class, 't-secondary')]", 0, default="")
+            )
+            if _pub_date:
+                pub_date = _extract_published_date(_pub_date)
+                content = content.lstrip(_pub_date).strip("- \n\t")
 
-        item = {
-            'url': url,
-            'title': extract_text(title_tag),
-            'content': content,
-            'publishedDate': pub_date,
-            'thumbnail': thumbnail,
-        }
+        thumbnail: str = eval_xpath_getindex(result, ".//a[contains(@class, 'thumbnail')]//img/@src", 0, default="")
+
+        item = res.types.LegacyResult(
+            template="default.html",
+            url=url,
+            title=extract_text(title_tag),
+            content=content,
+            publishedDate=pub_date,
+            thumbnail=thumbnail,
+        )
+        res.add(item)
 
         video_tag = eval_xpath_getindex(
-            result, './/div[contains(@class, "video-snippet") and @data-macro="video"]', 0, default=None
+            result, ".//div[contains(@class, 'video-snippet') and @data-macro='video']", 0, default=[]
         )
-        if video_tag is not None:
-
+        if len(video_tag):
             # In my tests a video tag in the WEB search was most often not a
             # video, except the ones from youtube ..
-
             iframe_src = get_embeded_stream_url(url)
             if iframe_src:
-                item['iframe_src'] = iframe_src
-                item['template'] = 'videos.html'
-                item['thumbnail'] = eval_xpath_getindex(video_tag, './/img/@src', 0, default='')
-                pub_date_raw = extract_text(
-                    eval_xpath(video_tag, './/div[contains(@class, "snippet-attributes")]/div/text()')
-                )
-                item['publishedDate'] = _extract_published_date(pub_date_raw)
-            else:
-                item['thumbnail'] = eval_xpath_getindex(video_tag, './/img/@src', 0, default='')
+                item["iframe_src"] = iframe_src
+                item["template"] = "videos.html"
 
-        result_list.append(item)
-
-    return result_list
+    return res
 
 
-def _parse_news(resp) -> EngineResults:
-
-    result_list = EngineResults()
+def _parse_news(resp: SXNG_Response) -> EngineResults:
+    res = EngineResults()
     dom = html.fromstring(resp.text)
 
-    for result in eval_xpath_list(dom, '//div[contains(@class, "results")]//div[@data-type="news"]'):
+    for result in eval_xpath_list(dom, "//div[contains(@class, 'results')]//div[@data-type='news']"):
 
-        # import pdb
-        # pdb.set_trace()
-
-        url = eval_xpath_getindex(result, './/a[contains(@class, "result-header")]/@href', 0, default=None)
+        url = eval_xpath_getindex(result, ".//a[contains(@class, 'result-header')]/@href", 0, default=None)
         if url is None:
             continue
 
-        title = extract_text(eval_xpath_list(result, './/span[contains(@class, "snippet-title")]'))
-        content = extract_text(eval_xpath_list(result, './/p[contains(@class, "desc")]'))
-        thumbnail = eval_xpath_getindex(result, './/div[contains(@class, "image-wrapper")]//img/@src', 0, default='')
+        title = eval_xpath_list(result, ".//span[contains(@class, 'snippet-title')]")
+        content = eval_xpath_list(result, ".//p[contains(@class, 'desc')]")
+        thumbnail = eval_xpath_getindex(result, ".//div[contains(@class, 'image-wrapper')]//img/@src", 0, default="")
 
-        item = {
-            "url": url,
-            "title": title,
-            "content": content,
-            "thumbnail": thumbnail,
-        }
+        item = res.types.LegacyResult(
+            template="default.html",
+            url=url,
+            title=extract_text(title),
+            thumbnail=thumbnail,
+            content=extract_text(content),
+        )
+        res.add(item)
 
-        result_list.append(item)
-
-    return result_list
-
-
-def _parse_images(json_resp) -> EngineResults:
-    result_list = EngineResults()
-
-    for result in json_resp["results"]:
-        item = {
-            'url': result['url'],
-            'title': result['title'],
-            'content': result['description'],
-            'template': 'images.html',
-            'resolution': result['properties']['format'],
-            'source': result['source'],
-            'img_src': result['properties']['url'],
-            'thumbnail_src': result['thumbnail']['src'],
-        }
-        result_list.append(item)
-
-    return result_list
+    return res
 
 
-def _parse_videos(json_resp) -> EngineResults:
-    result_list = EngineResults()
+def _parse_images(json_resp: dict[str, t.Any]) -> EngineResults:
+    res = EngineResults()
 
     for result in json_resp["results"]:
+        item = res.types.LegacyResult(
+            template="images.html",
+            url=result["url"],
+            title=result["title"],
+            source=result["source"],
+            img_src=result["properties"]["url"],
+            thumbnail_src=result["thumbnail"]["src"],
+        )
+        res.add(item)
 
-        url = result['url']
-        item = {
-            'url': url,
-            'title': result['title'],
-            'content': result['description'],
-            'template': 'videos.html',
-            'length': result['video']['duration'],
-            'duration': result['video']['duration'],
-            'publishedDate': _extract_published_date(result['age']),
-        }
+    return res
 
-        if result['thumbnail'] is not None:
-            item['thumbnail'] = result['thumbnail']['src']
 
-        iframe_src = get_embeded_stream_url(url)
+def _parse_videos(json_resp: dict[str, t.Any]) -> EngineResults:
+    res = EngineResults()
+
+    for result in json_resp["results"]:
+        item = res.types.LegacyResult(
+            template="videos.html",
+            url=result["url"],
+            title=result["title"],
+            content=result["description"],
+            length=result["video"]["duration"],
+            duration=result["video"]["duration"],
+            publishedDate=_extract_published_date(result["age"]),
+        )
+        if result["thumbnail"] is not None:
+            item["thumbnail"] = result["thumbnail"]["src"]
+        iframe_src = get_embeded_stream_url(result["url"])
         if iframe_src:
-            item['iframe_src'] = iframe_src
+            item["iframe_src"] = iframe_src
 
-        result_list.append(item)
+        res.add(item)
 
-    return result_list
+    return res
 
 
 def fetch_traits(engine_traits: EngineTraits):
@@ -443,21 +426,21 @@ def fetch_traits(engine_traits: EngineTraits):
         print("ERROR: response from Brave is not OK.")
     dom = html.fromstring(resp.text)
 
-    for option in dom.xpath('//section//option[@value="en-us"]/../option'):
+    for option in dom.xpath("//section//option[@value='en-us']/../option"):
 
-        ui_lang = option.get('value')
+        ui_lang = option.get("value")
         try:
-            l = babel.Locale.parse(ui_lang, sep='-')
+            l = babel.Locale.parse(ui_lang, sep="-")
             if l.territory:
-                sxng_tag = region_tag(babel.Locale.parse(ui_lang, sep='-'))
+                sxng_tag = region_tag(babel.Locale.parse(ui_lang, sep="-"))
             else:
-                sxng_tag = language_tag(babel.Locale.parse(ui_lang, sep='-'))
+                sxng_tag = language_tag(babel.Locale.parse(ui_lang, sep="-"))
 
         except babel.UnknownLocaleError:
             print("ERROR: can't determine babel locale of Brave's (UI) language %s" % ui_lang)
             continue
 
-        conflict = engine_traits.custom["ui_lang"].get(sxng_tag)
+        conflict = engine_traits.custom["ui_lang"].get(sxng_tag)  # type: ignore
         if conflict:
             if conflict != ui_lang:
                 print("CONFLICT: babel %s --> %s, %s" % (sxng_tag, conflict, ui_lang))
@@ -466,26 +449,26 @@ def fetch_traits(engine_traits: EngineTraits):
 
     # search regions of brave
 
-    resp = get('https://cdn.search.brave.com/serp/v2/_app/immutable/chunks/parameters.734c106a.js')
+    resp = get("https://cdn.search.brave.com/serp/v2/_app/immutable/chunks/parameters.734c106a.js")
 
     if not resp.ok:
         print("ERROR: response from Brave is not OK.")
 
-    country_js = resp.text[resp.text.index("options:{all") + len('options:') :]
+    country_js = resp.text[resp.text.index("options:{all") + len("options:") :]
     country_js = country_js[: country_js.index("},k={default")]
     country_tags = js_obj_str_to_python(country_js)
 
     for k, v in country_tags.items():
-        if k == 'all':
-            engine_traits.all_locale = 'all'
+        if k == "all":
+            engine_traits.all_locale = "all"
             continue
-        country_tag = v['value']
+        country_tag = v["value"]
 
         # add official languages of the country ..
         for lang_tag in babel.languages.get_official_languages(country_tag, de_facto=True):
             lang_tag = lang_map.get(lang_tag, lang_tag)
-            sxng_tag = region_tag(babel.Locale.parse('%s_%s' % (lang_tag, country_tag.upper())))
-            # print("%-20s: %s <-- %s" % (v['label'], country_tag, sxng_tag))
+            sxng_tag = region_tag(babel.Locale.parse("%s_%s" % (lang_tag, country_tag.upper())))
+            # print("%-20s: %s <-- %s" % (v["label"], country_tag, sxng_tag))
 
             conflict = engine_traits.regions.get(sxng_tag)
             if conflict:
