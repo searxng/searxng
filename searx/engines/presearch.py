@@ -89,6 +89,9 @@ time_range_support = True
 send_accept_language_header = True
 categories = ["general", "web"]  # general, images, videos, news
 
+# HTTP2 requests immediately get blocked by a CAPTCHA
+enable_http2 = False
+
 search_type = "search"
 """must be any of ``search``, ``images``, ``videos``, ``news``"""
 
