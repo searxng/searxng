@@ -120,7 +120,7 @@ def fetch_traits(engine_traits: EngineTraits):
         'zh': 'Special:搜索',
     }
 
-    resp = get('https://wiki.archlinux.org/')
+    resp = get('https://wiki.archlinux.org/', timeout=3)
     if not resp.ok:  # type: ignore
         print("ERROR: response from wiki.archlinux.org is not OK.")
 

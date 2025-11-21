@@ -73,7 +73,7 @@ def request(query: str, params: "OnlineParams") -> None:
     )
     esearch_url = f"{eutils_api}/esearch.fcgi?{args}"
     # DTD: https://eutils.ncbi.nlm.nih.gov/eutils/dtd/20060628/esearch.dtd
-    esearch_resp: "SXNG_Response" = get(esearch_url)
+    esearch_resp: "SXNG_Response" = get(esearch_url, timeout=3)
     pmids_results = etree.XML(esearch_resp.content)
     pmids: list[str] = [i.text for i in pmids_results.xpath("//eSearchResult/IdList/Id")]
 

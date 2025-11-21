@@ -124,7 +124,7 @@ def get_client_id() -> str | None:
 
     client_id = ""
     url = "https://soundcloud.com"
-    resp = http_get(url, timeout=10)
+    resp = http_get(url, timeout=3)
 
     if not resp.ok:
         logger.error("init: GET %s failed", url)
