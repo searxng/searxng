@@ -2,11 +2,11 @@
 # pylint: disable=missing-module-docstring, invalid-name
 
 import gc
+import time
 import typing
 import types
 import functools
 import itertools
-from time import time
 from timeit import default_timer
 from urllib.parse import urlparse
 
@@ -66,15 +66,15 @@ def _download_and_check_if_image(image_url: str) -> bool:
     This function should not be called directly: use _is_url_image
     otherwise the cache of functools.lru_cache contains data: URL which might be huge.
     """
-    retry = 2
+    retry = 3
 
     while retry > 0:
-        a = time()
+        a = default_timer()
         try:
             # use "image_proxy" (avoid HTTP/2)
+            network.set_timeout_for_thread(2)
             network.set_context_network_name('image_proxy')
-            r, stream = network.stream(
-                'GET',
+            r = network.get(
                 image_url,
                 timeout=10.0,
                 allow_redirects=True,
@@ -89,19 +89,20 @@ def _download_and_check_if_image(image_url: str) -> bool:
                     'Cache-Control': 'max-age=0',
                 },
             )
-            r.close()
             if r.status_code == 200:
                 is_image = r.headers.get('content-type', '').startswith('image/')
             else:
                 is_image = False
             del r
-            del stream
             return is_image
         except httpx.TimeoutException:
-            logger.error('Timeout for %s: %i', image_url, int(time() - a))
+            logger.error('Timeout for %s: %i', image_url, int(default_timer() - a))
+            time.sleep(1)
             retry -= 1
-        except httpx.HTTPError:
-            logger.exception('Exception for %s', image_url)
+        except httpx.HTTPStatusError as e:
+            logger.error('Exception for %s: HTTP status=%i', image_url, e.response.status_code)
+        except httpx.HTTPError as e:
+            logger.error('Exception for %s: %s, %s', image_url, e.__class__.__name__, ",".join(e.args))
             return False
     return False
 
