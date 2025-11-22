@@ -1022,6 +1022,13 @@ def preferences():
 app.add_url_rule('/favicon_proxy', methods=['GET'], endpoint="favicon_proxy", view_func=favicons.favicon_proxy)
 
 
+@app.route('/curl_cffi_proxy', methods=['GET', 'POST'])
+def curl_cffi_proxy_route():
+    """curl_cffi proxy endpoint"""
+    from searx.proxy.curl_cffi_proxy import curl_cffi_proxy
+    return curl_cffi_proxy()
+
+
 @app.route('/image_proxy', methods=['GET'])
 def image_proxy():
     # pylint: disable=too-many-return-statements, too-many-branches
