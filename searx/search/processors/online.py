@@ -227,6 +227,22 @@ class OnlineProcessor(EngineProcessor):
         if not params["url"]:
             return None
 
+        # Automatically convert URL to curl_cffi_proxy URL (if enabled)
+        from searx.proxy.curl_cffi_proxy import curl_cffi_proxify, is_curl_cffi_proxy_enabled
+        if is_curl_cffi_proxy_enabled():
+            # Get browser fingerprint configuration (optional, from engine config or default)
+            impersonate = params.get('impersonate') or None
+            params["url"] = curl_cffi_proxify(
+                params["url"],
+                params.get("method", "GET"),
+                impersonate,
+                headers=params.get("headers"),
+                cookies=params.get("cookies"),
+                data=params.get("data"),
+                json_data=params.get("json"),
+                content=params.get("content")
+            )
+
         # send request
         response = self._send_http_request(params)
 
