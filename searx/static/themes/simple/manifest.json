@@ -1,107 +1,116 @@
 {
-  "_chunk.min.js": {
-    "file": "js/chunk.min.js",
-    "name": "chunk"
+  "_CDA9kEX0.min.js": {
+    "file": "chunk/CDA9kEX0.min.js",
+    "name": "getelement",
+    "imports": [
+      "_DTy0Buhn.min.js"
+    ]
   },
-  "node_modules/ol/ol.css": {
-    "file": "css/ol.min.css",
-    "name": "ol.css",
-    "names": [
-      "ol.css"
-    ],
-    "src": "node_modules/ol/ol.css",
-    "isEntry": true
+  "_DTy0Buhn.min.js": {
+    "file": "chunk/DTy0Buhn.min.js",
+    "name": "assertelement"
   },
-  "src/js/core/index.ts": {
-    "file": "js/searxng.core.min.js",
-    "name": "searxng.core",
-    "src": "src/js/core/index.ts",
+  "src/js/index.ts": {
+    "file": "sxng-core.min.js",
+    "name": "core",
+    "src": "src/js/index.ts",
     "isEntry": true,
     "dynamicImports": [
+      "src/js/plugin/MapView.ts",
+      "src/js/plugin/InfiniteScroll.ts",
+      "src/js/plugin/Calculator.ts",
       "src/js/main/keyboard.ts",
       "src/js/main/search.ts",
       "src/js/main/autocomplete.ts",
-      "src/js/main/mapresult.ts",
       "src/js/main/results.ts",
-      "src/js/main/infinite_scroll.ts",
       "src/js/main/preferences.ts"
     ]
   },
   "src/js/main/autocomplete.ts": {
-    "file": "js/autocomplete.min.js",
+    "file": "chunk/wI6oU2Fy.min.js",
     "name": "autocomplete",
     "src": "src/js/main/autocomplete.ts",
     "isDynamicEntry": true,
     "imports": [
-      "src/js/core/index.ts"
-    ]
-  },
-  "src/js/main/infinite_scroll.ts": {
-    "file": "js/infinite_scroll.min.js",
-    "name": "infinite_scroll",
-    "src": "src/js/main/infinite_scroll.ts",
-    "isDynamicEntry": true,
-    "imports": [
-      "src/js/core/index.ts"
+      "src/js/index.ts",
+      "_DTy0Buhn.min.js"
     ]
   },
   "src/js/main/keyboard.ts": {
-    "file": "js/keyboard.min.js",
+    "file": "chunk/DdiK8DMg.min.js",
     "name": "keyboard",
     "src": "src/js/main/keyboard.ts",
     "isDynamicEntry": true,
     "imports": [
-      "src/js/core/index.ts"
-    ]
-  },
-  "src/js/main/mapresult.ts": {
-    "file": "js/mapresult.min.js",
-    "name": "mapresult",
-    "src": "src/js/main/mapresult.ts",
-    "isDynamicEntry": true,
-    "imports": [
-      "src/js/core/index.ts"
-    ],
-    "dynamicImports": [
-      "src/js/pkg/ol.ts"
+      "src/js/index.ts",
+      "_DTy0Buhn.min.js"
     ]
   },
   "src/js/main/preferences.ts": {
-    "file": "js/preferences.min.js",
+    "file": "chunk/Cgssgldh.min.js",
     "name": "preferences",
     "src": "src/js/main/preferences.ts",
     "isDynamicEntry": true,
     "imports": [
-      "src/js/core/index.ts"
+      "src/js/index.ts",
+      "_DTy0Buhn.min.js"
     ]
   },
   "src/js/main/results.ts": {
-    "file": "js/results.min.js",
+    "file": "chunk/Bbv7Hbpb.min.js",
     "name": "results",
     "src": "src/js/main/results.ts",
     "isDynamicEntry": true,
     "imports": [
-      "src/js/core/index.ts"
+      "src/js/index.ts",
+      "_DTy0Buhn.min.js"
     ]
   },
   "src/js/main/search.ts": {
-    "file": "js/search.min.js",
+    "file": "chunk/BIa1VblD.min.js",
     "name": "search",
     "src": "src/js/main/search.ts",
     "isDynamicEntry": true,
     "imports": [
-      "src/js/core/index.ts"
+      "src/js/index.ts",
+      "_DTy0Buhn.min.js",
+      "_CDA9kEX0.min.js"
     ]
   },
-  "src/js/pkg/ol.ts": {
-    "file": "js/ol.min.js",
-    "name": "ol",
-    "src": "src/js/pkg/ol.ts",
-    "isEntry": true
+  "src/js/plugin/Calculator.ts": {
+    "file": "chunk/mKcwwal-.min.js",
+    "name": "calculator",
+    "src": "src/js/plugin/Calculator.ts",
+    "isDynamicEntry": true,
+    "imports": [
+      "src/js/index.ts",
+      "_DTy0Buhn.min.js",
+      "_CDA9kEX0.min.js"
+    ]
+  },
+  "src/js/plugin/InfiniteScroll.ts": {
+    "file": "chunk/DbcrTZmx.min.js",
+    "name": "infinitescroll",
+    "src": "src/js/plugin/InfiniteScroll.ts",
+    "isDynamicEntry": true,
+    "imports": [
+      "src/js/index.ts",
+      "_DTy0Buhn.min.js",
+      "_CDA9kEX0.min.js"
+    ]
+  },
+  "src/js/plugin/MapView.ts": {
+    "file": "chunk/CStJN0SC.min.js",
+    "name": "mapview",
+    "src": "src/js/plugin/MapView.ts",
+    "isDynamicEntry": true,
+    "imports": [
+      "src/js/index.ts"
+    ]
   },
   "src/less/rss.less": {
-    "file": "css/rss.min.css",
-    "name": "rss.css",
+    "file": "sxng-rss.min.css",
+    "name": "rss",
     "names": [
       "rss.css"
     ],
@@ -109,19 +118,19 @@
     "isEntry": true
   },
   "src/less/style-ltr.less": {
-    "file": "css/searxng-ltr.min.css",
-    "name": "searxng-ltr.css",
+    "file": "sxng-ltr.min.css",
+    "name": "ltr",
     "names": [
-      "searxng-ltr.css"
+      "ltr.css"
     ],
     "src": "src/less/style-ltr.less",
     "isEntry": true
   },
   "src/less/style-rtl.less": {
-    "file": "css/searxng-rtl.min.css",
-    "name": "searxng-rtl.css",
+    "file": "sxng-rtl.min.css",
+    "name": "rtl",
     "names": [
-      "searxng-rtl.css"
+      "rtl.css"
     ],
     "src": "src/less/style-rtl.less",
     "isEntry": true
