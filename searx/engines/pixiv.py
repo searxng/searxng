@@ -20,7 +20,7 @@ categories = ['images']
 
 # Search URL
 base_url = "https://www.pixiv.net/ajax/search/illustrations"
-pixiv_image_proxies: list = []
+pixiv_image_proxies: list[str] = []
 
 
 def request(query, params):

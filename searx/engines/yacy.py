@@ -96,7 +96,7 @@ search_type = 'text'
 ``video`` are not yet implemented (Pull-Requests are welcome).
 """
 
-base_url: list[str] | str | None = None
+base_url: list[str] | str = []
 """The value is an URL or a list of URLs.  In the latter case instance will be
 selected randomly.
 """

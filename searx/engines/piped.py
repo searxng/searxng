@@ -72,7 +72,7 @@ categories = []
 paging = True
 
 # search-url
-backend_url: list[str] | str | None = None
+backend_url: list[str] | str = []
 """Piped-Backend_: The core component behind Piped.  The value is an URL or a
 list of URLs.  In the latter case instance will be selected randomly.  For a
 complete list of official instances see Piped-Instances (`JSON
