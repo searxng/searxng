@@ -1,0 +1,29 @@
+[project]
+name = "searxng"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "babel==2.17.0",
+    "certifi==2025.11.12",
+    "curl-cffi>=0.5.10",
+    "fasttext-predict==0.9.2.4",
+    "flask==3.1.2",
+    "flask-babel==4.0.0",
+    "httpx-socks[asyncio]==0.10.0",
+    "httpx[http2]==0.28.1",
+    "isodate==0.7.2",
+    "jinja2==3.1.6",
+    "lxml==6.0.2",
+    "markdown-it-py==3.0.0",
+    "msgspec==0.19.0",
+    "pygments==2.19.2",
+    "python-dateutil==2.9.0.post0",
+    "pyyaml==6.0.3",
+    "tomli==2.3.0 ; python_full_version < '3.11'",
+    "typer-slim==0.20.0",
+    "typing-extensions==4.15.0",
+    "valkey==6.1.1",
+    "whitenoise==6.11.0",
+]

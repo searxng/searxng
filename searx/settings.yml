@@ -94,7 +94,7 @@ server:
   # If your instance owns a /etc/searxng/settings.yml file, then set the following
   # values there.
 
-  secret_key: "ultrasecretkey"  # Is overwritten by ${SEARXNG_SECRET}
+  secret_key: "soi0CoC8VMFR4cVomW0IbNg9exJ9myJgd5Fk3BCZvPA"  # Is overwritten by ${SEARXNG_SECRET}
   # Proxy image results through SearXNG. Is overwritten by ${SEARXNG_IMAGE_PROXY}
   image_proxy: false
   # 1.0 and 1.1 are supported
@@ -175,7 +175,7 @@ outgoing:
   # It is recommended to increase the timeout when using a proxy (proxies and curl_cffi_proxy may require more time).
   request_timeout: 3.0
   # the maximum timeout in seconds
-  # max_request_timeout: 10.0
+  max_request_timeout: 10.0
   # suffix of searxng_useragent, could contain information like an email address
   # to the administrator
   useragent_suffix: ""
