@@ -41,6 +41,7 @@ from datetime import date, timedelta
 from urllib.parse import urlencode
 
 from searx.result_types import EngineResults
+from searx.utils import html_to_text
 
 if t.TYPE_CHECKING:
     from searx.extended_types import SXNG_Response
@@ -133,11 +134,14 @@ def response(resp: "SXNG_Response") -> EngineResults:
         if mtype in ["image"] and subtype in ["bmp", "gif", "jpeg", "png"]:
             thumbnail = url
 
+        # remove HTML from snippet
+        content = html_to_text(result.get("snippet", ""))
+
         res.add(
             res.types.File(
                 title=result.get("label", ""),
                 url=url,
-                content=result.get("snippet", ""),
+                content=content,
                 size=result.get("size", ""),
                 filename=result.get("filename", ""),
                 abstract=result.get("abstract", ""),
