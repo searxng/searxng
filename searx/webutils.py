@@ -190,10 +190,7 @@ def get_static_file_list() -> list[str]:
                 # ignore hidden file
                 continue
             if f.is_file():
-                # Use pathlib.Path.as_posix() to convert path to POSIX format (forward slashes)
-                # This is the recommended professional method by pathlib, more reliable than manual replace
-                relative_path = f.relative_to(static_path)
-                file_list.append(relative_path.as_posix())
+                file_list.append(str(f.relative_to(static_path)))
             if f.is_dir():
                 _walk(f)
 
@@ -208,9 +205,7 @@ def get_result_templates(templates_path):
         if directory.endswith('result_templates'):
             for filename in files:
                 f = os.path.join(directory[templates_path_length:], filename)
-                # Use pathlib.Path.as_posix() to convert path to POSIX format (forward slashes)
-                # This is the recommended professional method by pathlib, more reliable than manual replace
-                result_templates.add(pathlib.Path(f).as_posix())
+                result_templates.add(f)
     return result_templates
 
 
