@@ -194,8 +194,8 @@ jobs:
         uses: docker/login-action@5e57cd118135c172c3672efd75eb46360885c0ef  # v3.6.0
         with:
           registry: "docker.io"
-          username: "${{ secrets.DOCKERHUB_USERNAME }}"
-          password: "${{ secrets.DOCKERHUB_TOKEN }}"
+          username: "${{ secrets.DOCKER_USER }}"
+          password: "${{ secrets.DOCKER_TOKEN }}"
 
       - name: Release
         env:

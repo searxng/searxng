@@ -32,8 +32,8 @@ jobs:
         uses: docker/scout-action@f8c776824083494ab0d56b8105ba2ca85c86e4de  # v1.18.2
         with:
           organization: "searxng"
-          dockerhub-user: "${{ secrets.DOCKERHUB_USERNAME }}"
-          dockerhub-password: "${{ secrets.DOCKERHUB_TOKEN }}"
+          dockerhub-user: "${{ secrets.DOCKER_USER }}"
+          dockerhub-password: "${{ secrets.DOCKER_TOKEN }}"
           image: "registry://ghcr.io/searxng/searxng:latest"
           command: "cves"
           sarif-file: "./scout.sarif"
