@@ -22,7 +22,7 @@ from searx.network import initialize as initialize_network, check_network_config
 from searx.results import ResultContainer
 from searx.search.checker import initialize as initialize_checker
 from searx.search.processors import PROCESSORS
-
+from searx.search.processors.abstract import RequestParams
 
 if t.TYPE_CHECKING:
     from .models import SearchQuery
@@ -79,16 +79,20 @@ class Search:
         return bool(results)
 
     # do search-request
-    def _get_requests(self) -> tuple[list[tuple[str, str, dict[str, t.Any]]], int]:
+    def _get_requests(self) -> tuple[list[tuple[str, str, RequestParams]], float]:
         # init vars
-        requests: list[tuple[str, str, dict[str, t.Any]]] = []
+        requests: list[tuple[str, str, RequestParams]] = []
 
         # max of all selected engine timeout
         default_timeout = 0
 
         # start search-request for all selected engines
         for engineref in self.search_query.engineref_list:
-            processor = PROCESSORS[engineref.name]
+            processor = PROCESSORS.get(engineref.name)
+            if not processor:
+                # engine does not exists; not yet or the 'init' method of the
+                # engine has been failed and the engine has not been registered.
+                continue
 
             # stop the request now if the engine is suspend
             if processor.extend_container_if_suspended(self.result_container):
@@ -133,7 +137,7 @@ class Search:
 
         return requests, actual_timeout
 
-    def search_multiple_requests(self, requests: list[tuple[str, str, dict[str, t.Any]]]):
+    def search_multiple_requests(self, requests: list[tuple[str, str, RequestParams]]):
         # pylint: disable=protected-access
         search_id = str(uuid4())
 
