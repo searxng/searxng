@@ -51,7 +51,6 @@ class ProcessorMap(dict[str, EngineProcessor]):
             eng_name: str = eng_settings["name"]
 
             if eng_settings.get("inactive", False) is True:
-                logger.info("Engine of name '%s' is inactive.", eng_name)
                 continue
 
             eng_obj = engines.engines.get(eng_name)

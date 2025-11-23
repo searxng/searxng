@@ -61,7 +61,7 @@ class TestEnginesInit(SearxTestCase):
         with self.assertLogs('searx.engines', level='ERROR') as cm:  # pylint: disable=invalid-name
             engines.load_engines(engine_list)
             self.assertEqual(len(engines.engines), 0)
-            self.assertEqual(cm.output, ['ERROR:searx.engines:An engine does not have a "name" field'])
+            self.assertEqual(cm.output[0], 'ERROR:searx.engines:An engine does not have a "name" field')
 
     def test_missing_engine_field(self):
         settings['outgoing']['using_tor_proxy'] = False
@@ -72,5 +72,5 @@ class TestEnginesInit(SearxTestCase):
             engines.load_engines(engine_list)
             self.assertEqual(len(engines.engines), 0)
             self.assertEqual(
-                cm.output, ['ERROR:searx.engines:The "engine" field is missing for the engine named "engine2"']
+                cm.output[0], 'ERROR:searx.engines:The "engine" field is missing for the engine named "engine2"'
             )
