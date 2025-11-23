@@ -77,6 +77,27 @@ class AsyncHTTPTransportNoHttp(httpx.AsyncHTTPTransport):
         pass
 
     async def handle_async_request(self, request: httpx.Request):
+        # Allow HTTP requests for local proxy URLs (for curl_cffi_proxy)
+        url_str = str(request.url)
+        # Check if it's a local proxy URL
+        if url_str.startswith('http://127.0.0.1') or url_str.startswith('http://localhost'):
+            from searx import settings
+            bind_address = settings.get('server', {}).get('bind_address', '127.0.0.1')
+            port = settings.get('server', {}).get('port', 8888)
+            # Check if it's a local proxy endpoint
+            local_patterns = [
+                f'http://127.0.0.1:{port}',
+                f'http://localhost:{port}',
+                f'http://{bind_address}:{port}',
+            ]
+            if any(url_str.startswith(pattern) for pattern in local_patterns):
+                # For local proxy URLs, use the default HTTP transport
+                # Create a temporary transport to handle this request
+                transport = httpx.AsyncHTTPTransport()
+                try:
+                    return await transport.handle_async_request(request)
+                finally:
+                    await transport.aclose()
         raise httpx.UnsupportedProtocol('HTTP protocol is disabled')
 
     async def aclose(self) -> None:
@@ -190,6 +211,16 @@ def new_client(
             mounts[pattern] = get_transport(verify, enable_http2, local_address, proxy_url, limit, retries)
 
     if not enable_http:
+        # Add special mount for local proxy URLs to allow HTTP
+        from searx import settings
+        bind_address = settings.get('server', {}).get('bind_address', '127.0.0.1')
+        port = settings.get('server', {}).get('port', 8888)
+        # Create HTTP-enabled transport for local proxy URLs
+        local_proxy_transport = get_transport(verify, enable_http2, local_address, None, limit, retries)
+        mounts[f'http://127.0.0.1:{port}/'] = local_proxy_transport
+        mounts[f'http://localhost:{port}/'] = local_proxy_transport
+        mounts[f'http://{bind_address}:{port}/'] = local_proxy_transport
+        # Other HTTP requests are still blocked
         mounts['http://'] = AsyncHTTPTransportNoHttp()
 
     transport = get_transport(verify, enable_http2, local_address, None, limit, retries)
