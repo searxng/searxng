@@ -31,7 +31,7 @@ paging = True
 time_range_support = True
 
 # base_url can be overwritten by a list of URLs in the settings.yml
-base_url: list | str = []
+base_url: list[str] | str = []
 
 
 def init(_):
