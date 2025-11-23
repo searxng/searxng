@@ -171,7 +171,8 @@ ui:
 # communication with search engines
 #
 outgoing:
-  # default timeout in seconds, can be override by engine
+  # Default timeout in seconds. Can be overridden by each engine.
+  # It is recommended to increase the timeout when using a proxy (proxies and curl_cffi_proxy may require more time).
   request_timeout: 3.0
   # the maximum timeout in seconds
   # max_request_timeout: 10.0
@@ -190,23 +191,35 @@ outgoing:
   # and https://www.python-httpx.org/compatibility/#ssl-configuration
   #  verify: ~/.mitmproxy/mitmproxy-ca-cert.cer
   #
-  # uncomment below section if you want to use a proxyq see: SOCKS proxies
+  # Uncomment the section below if you want to use a proxy; see: SOCKS proxies
   #   https://2.python-requests.org/en/latest/user/advanced/#proxies
-  # are also supported: see
+  # are also supported, see:
   #   https://2.python-requests.org/en/latest/user/advanced/#socks
   #
-  #  proxies:
-  #    all://:
-  #      - http://proxy1:8080
-  #      - http://proxy2:8080
+  # Configure proxy (HTTP/HTTPS proxy)
+  # proxies: http://127.0.0.1:10808
+  #
+  # If you need a SOCKS5 proxy, use:
+  # proxies: socks5://127.0.0.1:10808
+  #
+  # If you want to use multiple proxies (load balancing), use:
+  # proxies:
+  #   all://:
+  #     - http://127.0.0.1:10808
+  #     - http://127.0.0.1:10809
   #
   #  using_tor_proxy: true
   #
   # Extra seconds to add in order to account for the time taken by the proxy
+  # extra_proxy_timeout: 10
   #
-  #  extra_proxy_timeout: 10
+  # curl_cffi_proxy configuration (bypass anti-crawling detection)
+  # Use curl_cffi to simulate browser fingerprint and bypass anti-crawling detection
+  # curl_cffi_proxy:
+  #   enabled: true
+  #   impersonate: chrome110  # Browser fingerprint: chrome, chrome110, chrome107, firefox102, safari15_5, etc.
   #
-  # uncomment below section only if you have more than one network interface
+  # Uncomment the section below only if you have more than one network interface
   # which can be the source of outgoing search requests
   #
   #  source_ips:
