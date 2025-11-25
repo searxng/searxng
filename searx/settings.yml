@@ -2110,22 +2110,21 @@ engines:
     search_type: web
     shortcut: yd
     disabled: true
-    inactive: true
 
   - name: yandex images
     engine: yandex
+    network: yandex
     categories: images
     search_type: images
     shortcut: ydi
     disabled: true
-    inactive: true
 
   - name: yandex music
     engine: yandex_music
+    network: yandex
     shortcut: ydm
     disabled: true
     # https://yandex.com/support/music/access.html
-    inactive: true
 
   - name: yahoo
     engine: yahoo
