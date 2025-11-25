@@ -49,9 +49,14 @@ _BLOCKED_TAGS = ('script', 'style')
 _ECMA_UNESCAPE4_RE = re.compile(r'%u([0-9a-fA-F]{4})', re.UNICODE)
 _ECMA_UNESCAPE2_RE = re.compile(r'%([0-9a-fA-F]{2})', re.UNICODE)
 
-_JS_QUOTE_KEYS_RE = re.compile(r'([\{\s,])(\w+)(:)')
-_JS_VOID_RE = re.compile(r'void\s+[0-9]+|void\s*\([0-9]+\)')
-_JS_DECIMAL_RE = re.compile(r":\s*\.")
+_JS_STRING_DELIMITERS = re.compile(r'(["\'`])')
+_JS_QUOTE_KEYS_RE = re.compile(r'([\{\s,])([\$_\w][\$_\w0-9]*)(:)')
+_JS_VOID_OR_UNDEFINED_RE = re.compile(r'void\s+[0-9]+|void\s*\([0-9]+\)|undefined')
+_JS_DECIMAL_RE = re.compile(r"([\[\,:])\s*(\-?)\s*([0-9_]*)\.([0-9_]*)")
+_JS_DECIMAL2_RE = re.compile(r"([\[\,:])\s*(\-?)\s*([0-9_]+)")
+_JS_EXTRA_COMA_RE = re.compile(r"\s*,\s*([\]\}])")
+_JS_STRING_ESCAPE_RE = re.compile(r'\\(.)')
+_JSON_PASSTHROUGH_ESCAPES = R'"\bfnrtu'
 
 _XPATH_CACHE: dict[str, XPath] = {}
 _LANG_TO_LC_CACHE: dict[str, dict[str, str]] = {}
@@ -741,12 +746,53 @@ def detect_language(text: str, threshold: float = 0.3, only_search_languages: bo
     return None
 
 
-def js_variable_to_python(js_variable: str) -> t.Any:
+def _j2p_process_escape(match: re.Match[str]) -> str:
+    # deal with ECMA escape characters
+    _escape = match.group(1) or match.group(2)
+    return (
+        Rf'\{_escape}'
+        if _escape in _JSON_PASSTHROUGH_ESCAPES
+        else R'\u00' if _escape == 'x' else '' if _escape == '\n' else _escape
+    )
+
+
+def _j2p_decimal(match: re.Match[str]) -> str:
+    return (
+        match.group(1)
+        + match.group(2)
+        + (match.group(3).replace("_", "") or "0")
+        + "."
+        + (match.group(4).replace("_", "") or "0")
+    )
+
+
+def _j2p_decimal2(match: re.Match[str]) -> str:
+    return match.group(1) + match.group(2) + match.group(3).replace("_", "")
+
+
+def js_obj_str_to_python(js_obj_str: str) -> t.Any:
     """Convert a javascript variable into JSON and then load the value
 
     It does not deal with all cases, but it is good enough for now.
     chompjs has a better implementation.
     """
+    s = js_obj_str_to_json_str(js_obj_str)
+    # load the JSON and return the result
+    if s == "":
+        raise ValueError("js_obj_str can't be an empty string")
+    try:
+        return json.loads(s)
+    except json.JSONDecodeError as e:
+        logger.debug("Internal error: js_obj_str_to_python creates invalid JSON:\n%s", s)
+        raise ValueError("js_obj_str_to_python creates invalid JSON") from e
+
+
+def js_obj_str_to_json_str(js_obj_str: str) -> str:
+    if not isinstance(js_obj_str, str):
+        raise ValueError("js_obj_str must be of type str")
+    if js_obj_str == "":
+        raise ValueError("js_obj_str can't be an empty string")
+
     # when in_string is not None, it contains the character that has opened the string
     # either simple quote or double quote
     in_string = None
@@ -754,61 +800,78 @@ def js_variable_to_python(js_variable: str) -> t.Any:
     # r"""{ a:"f\"irst", c:'sec"ond'}"""
     # becomes
     # ['{ a:', '"', 'f\\', '"', 'irst', '"', ', c:', "'", 'sec', '"', 'ond', "'", '}']
-    parts = re.split(r'(["\'])', js_variable)
-    # previous part (to check the escape character antislash)
-    previous_p = ""
+    parts = _JS_STRING_DELIMITERS.split(js_obj_str)
+    # does the previous part ends with a backslash?
+    blackslash_just_before = False
     for i, p in enumerate(parts):
-        # parse characters inside a ECMA string
-        if in_string:
-            # we are in a JS string: replace the colon by a temporary character
-            # so quote_keys_regex doesn't have to deal with colon inside the JS strings
-            parts[i] = parts[i].replace(':', chr(1))
-            if in_string == "'":
-                # the JS string is delimited by simple quote.
-                # This is not supported by JSON.
-                # simple quote delimited string are converted to double quote delimited string
-                # here, inside a JS string, we escape the double quote
-                parts[i] = parts[i].replace('"', r'\"')
-
-        # deal with delimiters and escape character
-        if not in_string and p in ('"', "'"):
-            # we are not in string
-            # but p is double or simple quote
-            # that's the start of a new string
-            # replace simple quote by double quote
-            # (JSON doesn't support simple quote)
-            parts[i] = '"'
-            in_string = p
-            continue
-        if p == in_string:
-            # we are in a string and the current part MAY close the string
-            if len(previous_p) > 0 and previous_p[-1] == '\\':
-                # there is an antislash just before: the ECMA string continue
-                continue
-            # the current p close the string
-            # replace simple quote by double quote
-            parts[i] = '"'
+        if p == in_string and not blackslash_just_before:
+            # * the current part matches the character which has opened the string
+            # * there is no antislash just before
+            # --> the current part close the current string
             in_string = None
+            # replace simple quote and ` by double quote
+            # since JSON supports only double quote for string
+            parts[i] = '"'
 
-        if not in_string:
-            # replace void 0 by null
+        elif in_string:
+            # --> we are in a JS string
+            # replace the colon by a temporary character
+            # so _JS_QUOTE_KEYS_RE doesn't have to deal with colon inside the JS strings
+            p = p.replace(':', chr(1))
+            # replace JS escape sequences by JSON escape sequences
+            p = _JS_STRING_ESCAPE_RE.sub(_j2p_process_escape, p)
+            # the JS string is delimited by simple quote.
+            # This is not supported by JSON.
+            # simple quote delimited string are converted to double quote delimited string
+            # here, inside a JS string, we escape the double quote
+            if in_string == "'":
+                p = p.replace('"', r'\"')
+            parts[i] = p
+            # deal with the sequence blackslash then quote
+            # since js_obj_str splits on quote, we detect this case:
+            # * the previous part ends with a black slash
+            # * the current part is a single quote
+            # when detected the blackslash is removed on the previous part
+            if blackslash_just_before and p[:1] == "'":
+                parts[i - 1] = parts[i - 1][:-1]
+
+        elif in_string is None and p in ('"', "'", "`"):
+            # we are not in string but p is string delimiter
+            # --> that's the start of a new string
+            in_string = p
+            # replace simple quote by double quote
+            # since JSON supports only double quote for string
+            parts[i] = '"'
+
+        elif in_string is None:
+            # we are not in a string
+            # replace by null these values:
+            # * void 0
+            # * void(0)
+            # * undefined
             # https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/void
-            # we are sure there is no string in p
-            parts[i] = _JS_VOID_RE.sub("null", p)
-        # update previous_p
-        previous_p = p
+            p = _JS_VOID_OR_UNDEFINED_RE.sub("null", p)
+            # make sure there is a leading zero in front of float
+            p = _JS_DECIMAL_RE.sub(_j2p_decimal, p)
+            p = _JS_DECIMAL2_RE.sub(_j2p_decimal2, p)
+            # remove extra coma in a list or an object
+            # for example [1,2,3,] becomes [1,2,3]
+            p = _JS_EXTRA_COMA_RE.sub(lambda match: match.group(1), p)
+            parts[i] = p
+
+        # update for the next iteration
+        blackslash_just_before = len(p) > 0 and p[-1] == '\\'
+
     # join the string
     s = ''.join(parts)
-    # add quote around the key
+    # add quote arround the key
     # { a: 12 }
     # becomes
     # { "a": 12 }
     s = _JS_QUOTE_KEYS_RE.sub(r'\1"\2"\3', s)
-    s = _JS_DECIMAL_RE.sub(":0.", s)
-    # replace the surogate character by colon
-    s = s.replace(chr(1), ':')
-    # load the JSON and return the result
-    return json.loads(s)
+    # replace the surogate character by colon and strip whitespaces
+    s = s.replace(chr(1), ':').strip()
+    return s
 
 
 def parse_duration_string(duration_str: str) -> timedelta | None:

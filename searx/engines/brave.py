@@ -134,7 +134,7 @@ from searx.utils import (
     eval_xpath,
     eval_xpath_list,
     eval_xpath_getindex,
-    js_variable_to_python,
+    js_obj_str_to_python,
     get_embeded_stream_url,
 )
 from searx.enginelib.traits import EngineTraits
@@ -262,7 +262,7 @@ def response(resp: SXNG_Response) -> EngineResults:
     #    data: [{type:"data",data: .... ["q","goggles_id"],route:1,url:1}}]
     #          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
     js_object = "[{" + extr(resp.text, "data: [{", "}}],") + "}}]"
-    json_data = js_variable_to_python(js_object)
+    json_data = js_obj_str_to_python(js_object)
 
     # json_data is a list and at the second position (0,1) in this list we find the "response" data we need ..
     json_resp = json_data[1]['data']['body']['response']
@@ -439,9 +439,9 @@ def fetch_traits(engine_traits: EngineTraits):
 
     resp = get('https://search.brave.com/settings')
 
-    if not resp.ok:  # type: ignore
+    if not resp.ok:
         print("ERROR: response from Brave is not OK.")
-    dom = html.fromstring(resp.text)  # type: ignore
+    dom = html.fromstring(resp.text)
 
     for option in dom.xpath('//section//option[@value="en-us"]/../option'):
 
@@ -468,12 +468,12 @@ def fetch_traits(engine_traits: EngineTraits):
 
     resp = get('https://cdn.search.brave.com/serp/v2/_app/immutable/chunks/parameters.734c106a.js')
 
-    if not resp.ok:  # type: ignore
+    if not resp.ok:
         print("ERROR: response from Brave is not OK.")
 
-    country_js = resp.text[resp.text.index("options:{all") + len('options:') :]  # type: ignore
+    country_js = resp.text[resp.text.index("options:{all") + len('options:') :]
     country_js = country_js[: country_js.index("},k={default")]
-    country_tags = js_variable_to_python(country_js)
+    country_tags = js_obj_str_to_python(country_js)
 
     for k, v in country_tags.items():
         if k == 'all':

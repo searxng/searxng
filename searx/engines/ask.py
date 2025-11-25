@@ -50,7 +50,7 @@ def response(resp):
     pos = script.index(end_tag) + len(end_tag) - 1
     script = script[:pos]
 
-    json_resp = utils.js_variable_to_python(script)
+    json_resp = utils.js_obj_str_to_python(script)
 
     results = []
 

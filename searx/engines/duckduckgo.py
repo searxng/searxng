@@ -407,7 +407,7 @@ def fetch_traits(engine_traits: EngineTraits):
 
     """
     # pylint: disable=too-many-branches, too-many-statements, disable=import-outside-toplevel
-    from searx.utils import js_variable_to_python
+    from searx.utils import js_obj_str_to_python
 
     # fetch regions
 
@@ -455,7 +455,7 @@ def fetch_traits(engine_traits: EngineTraits):
 
     js_code = extr(resp.text, 'languages:', ',regions')  # type: ignore
 
-    languages = js_variable_to_python(js_code)
+    languages: dict[str, str] = js_obj_str_to_python(js_code)
     for eng_lang, name in languages.items():
 
         if eng_lang == 'wt_WT':
