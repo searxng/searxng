@@ -155,8 +155,15 @@ class OnlineProcessor(EngineProcessor):
                     search_query.locale.language,
                 )
             headers["Accept-Language"] = ac_lang
-
         self.logger.debug("HTTP Accept-Language: %s", headers.get("Accept-Language", ""))
+
+        # https://developer.mozilla.org/en-US/docs/Glossary/Fetch_metadata_request_header
+        headers["Sec-Fetch-Dest"] = "empty"
+        headers["Sec-Fetch-Mode"] = "cors"
+        headers["Sec-Fetch-Site"] = "same-origin"
+        headers["Sec-Fetch-User"] = "?1"
+        headers["Sec-GPC"] = "1"
+
         return params
 
     def _send_http_request(self, params: OnlineParams):
