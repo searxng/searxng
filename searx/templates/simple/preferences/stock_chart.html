@@ -1,0 +1,27 @@
+{%- if 'stock_chart_token' not in locked_preferences or 'stock_chart_timeframe' not in locked_preferences -%}
+  <fieldset>
+    <legend>{{ _('Stock Chart Plugin') }}</legend>
+    {%- if 'stock_chart_token' not in locked_preferences -%}
+      <div class="value">
+        <label for="stock_chart_token">{{ _('API Token') }}</label>
+        <input type="text"
+               id="stock_chart_token"
+               name="stock_chart_token"
+               value="{{ preferences.get_value('stock_chart_token') }}"
+               placeholder="{{ _('Enter your stock chart API token') }}"
+               autocomplete="off">
+        <label for="stock_chart_token">{{ _('Days to show') }}</label><br/>
+        <input type="number"
+               id="stock_chart_timeframe"
+               name="stock_chart_timeframe"
+               value="{{ preferences.get_value('stock_chart_timeframe') }}"
+               min="1"
+               max="365"
+               autocomplete="off">
+      </div>
+      <div class="description">
+        {{ _('Get a free API token from') }} <a href="https://polygon.io/" target="_blank" rel="noopener noreferrer">polygon.io</a>
+      </div>
+    {%- endif -%}
+  </fieldset>
+{%- endif -%}

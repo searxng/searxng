@@ -4,26 +4,23 @@
 # pylint: disable=useless-object-inheritance
 
 import typing as t
-
-from base64 import urlsafe_b64encode, urlsafe_b64decode
-from zlib import compress, decompress
-from urllib.parse import parse_qs, urlencode
+from base64 import urlsafe_b64decode, urlsafe_b64encode
 from collections import OrderedDict
 from collections.abc import Iterable
+from urllib.parse import parse_qs, urlencode
+from zlib import compress, decompress
 
-import flask
 import babel
 import babel.core
+import flask
 
 import searx.plugins
-
-from searx import settings, autocomplete, favicons
+from searx import autocomplete, favicons, settings
 from searx.enginelib import Engine
 from searx.engines import DEFAULT_CATEGORY
 from searx.extended_types import SXNG_Request
 from searx.locales import LOCALE_NAMES
 from searx.webutils import VALID_LANGUAGE_CODE
-
 
 COOKIE_MAX_AGE = 60 * 60 * 24 * 365 * 5  # 5 years
 DOI_RESOLVERS = list(settings['doi_resolvers'])
@@ -70,7 +67,8 @@ class Setting:
     def save(self, name: str, resp: flask.Response):
         """Save cookie ``name`` in the HTTP response object
 
-        If needed, its overwritten in the inheritance."""
+        If needed, its overwritten in the inheritance.
+        """
         resp.set_cookie(name, self.value, max_age=COOKIE_MAX_AGE)
 
 
@@ -90,7 +88,7 @@ class EnumStringSetting(Setting):
 
     def _validate_selection(self, selection: str):
         if selection not in self.choices:
-            raise ValidationException('Invalid value: "{0}"'.format(selection))
+            raise ValidationException(f'Invalid value: "{selection}"')
 
     def parse(self, data: str):
         """Parse and validate ``data`` and store the result at ``self.value``"""
@@ -109,7 +107,7 @@ class MultipleChoiceSetting(Setting):
     def _validate_selections(self, selections: list[str]):
         for item in selections:
             if item not in self.choices:
-                raise ValidationException('Invalid value: "{0}"'.format(selections))
+                raise ValidationException(f'Invalid value: "{selections}"')
 
     def parse(self, data: str):
         """Parse and validate ``data`` and store the result at ``self.value``"""
@@ -175,7 +173,7 @@ class SearchLanguageSetting(EnumStringSetting):
 
     def _validate_selection(self, selection: str):
         if selection != '' and selection != 'auto' and not VALID_LANGUAGE_CODE.match(selection):
-            raise ValidationException('Invalid language code: "{0}"'.format(selection))
+            raise ValidationException(f'Invalid language code: "{selection}"')
 
     def parse(self, data: str):
         """Parse and validate ``data`` and store the result at ``self.value``"""
@@ -211,9 +209,8 @@ class MapSetting(Setting):
 
     def parse(self, data: str):
         """Parse and validate ``data`` and store the result at ``self.value``"""
-
         if data not in self.map:
-            raise ValidationException('Invalid choice: {0}'.format(data))
+            raise ValidationException(f'Invalid choice: {data}')
         self.value = self.map[data]
         self.key = data  # pylint: disable=attribute-defined-outside-init
 
@@ -244,6 +241,37 @@ class BooleanSetting(Setting):
         """Save cookie ``name`` in the HTTP response object"""
         if hasattr(self, 'key'):
             resp.set_cookie(name, self.key, max_age=COOKIE_MAX_AGE)
+
+
+class IntegerSetting(Setting):
+    """Setting of integer values"""
+
+    value: int
+
+    def __init__(
+        self, default_value: int, locked: bool = False, min_value: int | None = None, max_value: int | None = None
+    ):
+        super().__init__(default_value, locked)
+        self.value: int = default_value
+        self.min_value = min_value
+        self.max_value = max_value
+
+    def parse(self, data: str):
+        """Parse and validate ``data`` and store the result at ``self.value``"""
+        try:
+            self.value = int(data)
+        except ValueError as exc:
+            raise ValidationException(f'Invalid integer value: "{data}"') from exc
+
+        if self.min_value is not None and self.value < self.min_value:
+            raise ValidationException(f'Value {self.value} is below minimum {self.min_value}')
+
+        if self.max_value is not None and self.value > self.max_value:
+            raise ValidationException(f'Value {self.value} is above maximum {self.max_value}')
+
+    def save(self, name: str, resp: flask.Response):
+        """Save cookie ``name`` in the HTTP response object"""
+        resp.set_cookie(name, str(self.value), max_age=COOKIE_MAX_AGE)
 
 
 class BooleanChoices:
@@ -290,8 +318,8 @@ class BooleanChoices:
         """Save cookie in the HTTP response object"""
         disabled_changed = (k for k in self.disabled if self.default_choices[k])
         enabled_changed = (k for k in self.enabled if not self.default_choices[k])
-        resp.set_cookie('disabled_{0}'.format(self.name), ','.join(disabled_changed), max_age=COOKIE_MAX_AGE)
-        resp.set_cookie('enabled_{0}'.format(self.name), ','.join(enabled_changed), max_age=COOKIE_MAX_AGE)
+        resp.set_cookie(f'disabled_{self.name}', ','.join(disabled_changed), max_age=COOKIE_MAX_AGE)
+        resp.set_cookie(f'enabled_{self.name}', ','.join(enabled_changed), max_age=COOKIE_MAX_AGE)
 
     def get_disabled(self):
         return self.transform_values(list(self.disabled))
@@ -307,9 +335,9 @@ class EnginesSetting(BooleanChoices):
         choices = {}
         for engine in engines:
             for category in engine.categories:
-                if not category in list(settings['categories_as_tabs'].keys()) + [DEFAULT_CATEGORY]:
+                if category not in list(settings['categories_as_tabs'].keys()) + [DEFAULT_CATEGORY]:
                     continue
-                choices['{}__{}'.format(engine.name, category)] = not engine.disabled
+                choices[f'{engine.name}__{category}'] = not engine.disabled
         super().__init__(default_value, choices)
 
     def transform_form_items(self, items):
@@ -492,6 +520,16 @@ class Preferences:
                 settings['ui']['url_formatting'],
                 choices=['pretty', 'full', 'host']
             ),
+            'stock_chart_token': StringSetting(
+                '',
+                locked=is_locked('stock_chart_token')
+            ),
+            'stock_chart_timeframe': IntegerSetting(
+                30,
+                locked=is_locked('stock_chart_timeframe'),
+                min_value=1,
+                max_value=365
+            ),
             # fmt: on
         }
 
@@ -522,7 +560,7 @@ class Preferences:
         return urlsafe_b64encode(compress(urlencode(settings_kv).encode())).decode()
 
     def parse_encoded_data(self, input_data: str):
-        """parse (base64) preferences from request (``flask.request.form['preferences']``)"""
+        """Parse (base64) preferences from request (``flask.request.form['preferences']``)"""
         bin_data = decompress(urlsafe_b64decode(input_data))
         dict_data = {}
         for x, y in parse_qs(bin_data.decode('ascii'), keep_blank_values=True).items():
@@ -530,7 +568,7 @@ class Preferences:
         self.parse_dict(dict_data)
 
     def parse_dict(self, input_data: dict[str, str]):
-        """parse preferences from request (``flask.request.form``)"""
+        """Parse preferences from request (``flask.request.form``)"""
         for user_setting_name, user_setting in input_data.items():
             if user_setting_name in self.key_value_settings:
                 if self.key_value_settings[user_setting_name].locked:
@@ -552,7 +590,7 @@ class Preferences:
         # boolean preferences are not sent by the form if they're false,
         # so we have to add them as false manually if they're not sent (then they would be true)
         for key, setting in self.key_value_settings.items():
-            if key not in input_data.keys() and isinstance(setting, BooleanSetting):
+            if key not in input_data and isinstance(setting, BooleanSetting):
                 input_data[key] = 'False'
 
         for user_setting_name, user_setting in input_data.items():
