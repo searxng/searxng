@@ -2,15 +2,6 @@
 """Implementations used for weather conditions and forecast."""
 # pylint: disable=too-few-public-methods
 
-# Struct fields aren't discovered in Python 3.14
-# - https://github.com/searxng/searxng/issues/5284
-from __future__ import annotations
-
-# msgspec: note that if using PEP 563 “postponed evaluation of annotations”
-# (e.g. from __future__ import annotations) only the following spellings will
-# work: https://jcristharif.com/msgspec/structs.html#class-variables
-from typing import ClassVar
-
 __all__ = [
     "symbol_url",
     "Temperature",
@@ -23,6 +14,10 @@ __all__ = [
     "GeoLocation",
 ]
 
+# msgspec: note that if using PEP 563 “postponed evaluation of annotations”
+# (e.g. from __future__ import annotations) only the following spellings will
+# work: https://jcristharif.com/msgspec/structs.html#class-variables
+from typing import ClassVar
 import typing as t
 
 import base64
