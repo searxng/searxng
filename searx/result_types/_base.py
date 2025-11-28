@@ -16,10 +16,6 @@
    :members:
 """
 
-# Struct fields aren't discovered in Python 3.14
-# - https://github.com/searxng/searxng/issues/5284
-from __future__ import annotations
-
 __all__ = ["Result"]
 
 import typing as t
