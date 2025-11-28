@@ -1,5 +1,5 @@
 {
-  "$schema": "https://biomejs.dev/schemas/2.3.7/schema.json",
+  "$schema": "https://biomejs.dev/schemas/2.3.8/schema.json",
   "files": {
     "ignoreUnknown": true,
     "includes": ["**", "!node_modules"]
@@ -35,12 +35,6 @@
       },
       "correctness": {
         "noGlobalDirnameFilename": "error",
-        "noUndeclaredVariables": {
-          "level": "error",
-          "options": {
-            "checkTypes": true
-          }
-        },
         "useImportExtensions": "error",
         "useJsonImportAttributes": "error",
         "useSingleJsDocAsterisk": "error"
@@ -48,11 +42,13 @@
       "nursery": {
         "noContinue": "warn",
         "noDeprecatedImports": "warn",
+        "noEqualsToNull": "warn",
         "noFloatingPromises": "warn",
         "noForIn": "warn",
         "noImportCycles": "warn",
         "noIncrementDecrement": "warn",
         "noMisusedPromises": "warn",
+        "noMultiStr": "warn",
         "noParametersOnlyUsedInRecursion": "warn",
         "noUselessCatchBinding": "warn",
         "noUselessUndefined": "warn",
@@ -159,16 +155,6 @@
       "quoteStyle": "double",
       "semicolons": "always",
       "trailingCommas": "none"
-    }
-  },
-  "html": {
-    "experimentalFullSupportEnabled": true,
-    "formatter": {
-      "attributePosition": "auto",
-      "bracketSameLine": false,
-      "indentScriptAndStyle": true,
-      "selfCloseVoidElements": "always",
-      "whitespaceSensitivity": "ignore"
     }
   }
 }
