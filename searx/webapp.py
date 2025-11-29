@@ -368,10 +368,10 @@ def get_pretty_url(parsed_url: urllib.parse.ParseResult):
 def get_client_settings():
     req_pref = sxng_request.preferences
     return {
+        'plugins': req_pref.plugins.get_enabled(),
         'autocomplete': req_pref.get_value('autocomplete'),
         'autocomplete_min': get_setting('search.autocomplete_min'),
         'method': req_pref.get_value('method'),
-        'infinite_scroll': req_pref.get_value('infinite_scroll'),
         'translations': get_translations(),
         'search_on_category_select': req_pref.get_value('search_on_category_select'),
         'hotkeys': req_pref.get_value('hotkeys'),

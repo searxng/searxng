@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
-import { assertElement, listen, mutable, settings } from "../core/toolkit.ts";
+import { listen, mutable, settings } from "../toolkit.ts";
+import { assertElement } from "../util/assertElement.ts";
 
 export type KeyBindingLayout = "default" | "vim";
 
