@@ -75,6 +75,11 @@ def request(query, params):
 
     params['url'] = f"{base_url}/search?{urlencode(args)}"
 
+    if search_type == "images":
+        # At least in the impersonate mode we have to overwrite the "Accept" header
+        # from curl_cffi default headers:
+        params["headers"]["Accept"] = "*/*"
+
     return params
 
 
