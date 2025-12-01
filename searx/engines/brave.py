@@ -301,7 +301,10 @@ def _parse_search(resp: SXNG_Response) -> EngineResults:
         content: str = ""
         pub_date = None
 
-        _content = eval_xpath_getindex(result, ".//div[contains(@class, 'content')]", 0, default="")
+        # there are other classes like 'site-name-content' we don't want to match,
+        # however only using contains(@class, 'content') would e.g. also match `site-name-content`
+        # thus, we explicitly also require the spaces as class separator
+        _content = eval_xpath_getindex(result, ".//div[contains(concat(' ', @class, ' '), ' content ')]", 0, default="")
         if len(_content):
             content = extract_text(_content)  # type: ignore
             _pub_date = extract_text(
