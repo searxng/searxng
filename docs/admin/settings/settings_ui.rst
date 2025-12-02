@@ -12,7 +12,6 @@
    ui:
      default_locale: ""
      query_in_title: false
-     infinite_scroll: false
      center_alignment: false
      cache_url: https://web.archive.org/web/
      default_theme: simple
@@ -31,9 +30,6 @@
 ``query_in_title`` :
   When true, the result page's titles contains the query it decreases the
   privacy, since the browser can records the page titles.
-
-``infinite_scroll``:
-  When true, automatically loads the next page when scrolling to bottom of the current page.
 
 ``center_alignment`` : default ``false``
   When enabled, the results are centered instead of being in the left (or RTL)

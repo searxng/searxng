@@ -124,8 +124,6 @@ ui:
   # query_in_title: When true, the result page's titles contains the query
   # it decreases the privacy, since the browser can records the page titles.
   query_in_title: false
-  # infinite_scroll: When true, automatically loads the next page when scrolling to bottom of the current page.
-  infinite_scroll: false
   # ui theme
   default_theme: simple
   # center the results ?
@@ -162,7 +160,6 @@ ui:
 #     - locale
 #     - theme
 #     - results_on_new_tab
-#     - infinite_scroll
 #     - search_on_category_select
 #     - method
 #     - image_proxy
@@ -214,6 +211,7 @@ outgoing:
   #    - 1.1.1.2
   #    - fe80::/126
 
+
 # Plugin configuration, for more details see
 #   https://docs.searxng.org/admin/settings/settings_plugins.html
 #
@@ -221,6 +219,9 @@ plugins:
 
   searx.plugins.calculator.SXNGPlugin:
     active: true
+
+  searx.plugins.infinite_scroll.SXNGPlugin:
+    active: false
 
   searx.plugins.hash_plugin.SXNGPlugin:
     active: true

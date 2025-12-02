@@ -69,6 +69,9 @@ The built-in plugins are all located in the namespace `searx.plugins`.
       searx.plugins.calculator.SXNGPlugin:
         active: true
 
+      searx.plugins.infinite_scroll.SXNGPlugin:
+        active: false
+
       searx.plugins.hash_plugin.SXNGPlugin:
         active: true
 
