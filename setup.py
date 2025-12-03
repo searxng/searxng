@@ -62,6 +62,7 @@ setup(
             'infopage/*/*',
             'static/themes/*',
             'static/themes/*/*',
+            'static/themes/*/*/*',
             'templates/*/*',
             'templates/*/*/*',
             'translations/*',
