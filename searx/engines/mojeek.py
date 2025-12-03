@@ -65,7 +65,8 @@ def request(query, params):
     if search_type:
         args['fmt'] = search_type
 
-    if search_type == '':
+    # setting the page number on the first page (i.e. s=0) triggers a rate-limit
+    if search_type == '' and params['pageno'] > 1:
         args['s'] = 10 * (params['pageno'] - 1)
 
     if params['time_range'] and search_type != 'images':
