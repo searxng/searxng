@@ -24,12 +24,6 @@ if typing.TYPE_CHECKING:
     from searx.plugins import PluginCfg
 
 
-name = ""
-description = gettext("")
-
-plugin_id = ""
-preference_section = ""
-
 CONVERT_KEYWORDS = ["in", "to", "as"]
 
 
