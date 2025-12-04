@@ -25,8 +25,7 @@ weblate.translations.worktree() {
             git remote add weblate https://translate.codeberg.org/git/searxng/searxng/
         fi
         if [ -d "${TRANSLATIONS_WORKTREE}" ]; then
-            pushd .
-            cd "${TRANSLATIONS_WORKTREE}"
+            pushd "${TRANSLATIONS_WORKTREE}"
             git reset --hard HEAD
             git pull origin translations
             popd
@@ -60,6 +59,8 @@ weblate.to.translations() {
         wlc pull
         wlc commit
 
+        set -x # https://github.com/searxng/searxng/issues/5490
+
         # get the translations in a worktree
         weblate.translations.worktree
 
@@ -85,12 +86,14 @@ weblate.translations.commit() {
         # lock change on weblate
         wlc lock
 
+        set -x # https://github.com/searxng/searxng/issues/5490
+
         # get translations branch in git worktree (TRANSLATIONS_WORKTREE)
         weblate.translations.worktree
-        existing_commit_hash=$(
-            cd "${TRANSLATIONS_WORKTREE}"
-            git log -n1 --pretty=format:'%h'
-        )
+
+        pushd "${TRANSLATIONS_WORKTREE}"
+        existing_commit_hash=$(git log -n1 --pretty=format:'%h')
+        popd
 
         # pull weblate commits
         weblate.to.translations
@@ -147,6 +150,9 @@ weblate.push.translations() {
     (
         set -e
         pyenv.activate
+
+        set -x # https://github.com/searxng/searxng/issues/5490
+
         # get translations branch in git worktree (TRANSLATIONS_WORKTREE)
         weblate.translations.worktree
 
