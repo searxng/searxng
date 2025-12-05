@@ -18,20 +18,19 @@
 # SecularSteve <secularsteve@noreply.codeberg.org>, 2025.
 msgid ""
 msgstr ""
-"Project-Id-Version: searx\n"
+"Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-10-20 08:35+0000\n"
+"POT-Creation-Date: 2025-12-05 10:19+0000\n"
 "PO-Revision-Date: 2025-10-22 02:09+0000\n"
 "Last-Translator: return42 <return42@noreply.codeberg.org>\n"
-"Language-Team: Serbian <https://translate.codeberg.org/projects/searxng/"
-"searxng/sr/>\n"
 "Language: sr\n"
+"Language-Team: Serbian "
+"<https://translate.codeberg.org/projects/searxng/searxng/sr/>\n"
+"Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
-"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
-"X-Generator: Weblate 5.13.3\n"
 "Generated-By: Babel 2.17.0\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
@@ -500,7 +499,7 @@ msgid "active users"
 msgstr "активни корисници"
 
 #. SOCIAL_MEDIA_TERMS['COMMENTS']
-#: searx/engines/discourse.py:157 searx/engines/hackernews.py:81
+#: searx/engines/discourse.py:157 searx/engines/hackernews.py:83
 #: searx/engines/lemmy.py:130 searx/searxng.msg
 msgid "comments"
 msgstr "коментари"
@@ -516,7 +515,7 @@ msgid "community"
 msgstr "заједница"
 
 #. SOCIAL_MEDIA_TERMS['POINTS']
-#: searx/engines/hackernews.py:81 searx/searxng.msg
+#: searx/engines/hackernews.py:83 searx/searxng.msg
 msgid "points"
 msgstr "поени"
 
@@ -526,7 +525,7 @@ msgid "title"
 msgstr "наслов"
 
 #. SOCIAL_MEDIA_TERMS['AUTHOR']
-#: searx/engines/hackernews.py:84 searx/searxng.msg
+#: searx/engines/hackernews.py:86 searx/searxng.msg
 msgid "author"
 msgstr "аутор"
 
@@ -549,7 +548,7 @@ msgstr "одговорено"
 msgid "No item found"
 msgstr "Ставка није пронађена"
 
-#: searx/engines/qwant.py:289
+#: searx/engines/qwant.py:299
 #: searx/templates/simple/result_templates/images.html:23 searx/webapp.py:330
 msgid "Source"
 msgstr "Извор"
@@ -558,15 +557,15 @@ msgstr "Извор"
 msgid "Error loading the next page"
 msgstr "Грешка приликом учитавања следеће странице"
 
-#: searx/webapp.py:475 searx/webapp.py:876
+#: searx/webapp.py:481 searx/webapp.py:882
 msgid "Invalid settings, please edit your preferences"
 msgstr "Неважеће поставке, молимо уредите свој избор"
 
-#: searx/webapp.py:491
+#: searx/webapp.py:497
 msgid "Invalid settings"
 msgstr "Неважећа подешавања"
 
-#: searx/webapp.py:568 searx/webapp.py:658
+#: searx/webapp.py:574 searx/webapp.py:664
 msgid "search error"
 msgstr "грешка у претрази"
 
@@ -658,7 +657,7 @@ msgstr "{title} (ЗАСТАРЕЛО)"
 msgid "This entry has been superseded by"
 msgstr "Овај унос је заменио"
 
-#: searx/engines/qwant.py:291
+#: searx/engines/qwant.py:301
 msgid "Channel"
 msgstr "Канал"
 
@@ -727,13 +726,13 @@ msgstr ""
 "Филтрирај резултате претраге за портове који се појављују на Ахмијиној "
 "црној листи."
 
-#: searx/plugins/calculator.py:37
-msgid "Basic Calculator"
-msgstr "Основни Калкулатор"
+#: searx/plugins/calculator.py:25
+msgid "Calculator"
+msgstr ""
 
-#: searx/plugins/calculator.py:38
-msgid "Calculate mathematical expressions via the search bar"
-msgstr "Израчунај математичке изразе кроз поље за претрагу"
+#: searx/plugins/calculator.py:26
+msgid "Parses and solves mathematical expressions."
+msgstr ""
 
 #: searx/plugins/hash_plugin.py:33
 msgid "Hash plugin"
@@ -760,6 +759,16 @@ msgid "Rewrite hostnames and remove or prioritize results based on the hostname"
 msgstr ""
 "Пребришите имена домаћина и уклоните или дајте приоритет резултатима на "
 "основу имена домаћина"
+
+#: searx/plugins/infinite_scroll.py:25
+msgid "Infinite scroll"
+msgstr "Бесконачно померање"
+
+#: searx/plugins/infinite_scroll.py:26
+msgid ""
+"Automatically loads the next page when scrolling to bottom of the current"
+" page"
+msgstr ""
 
 #: searx/plugins/oa_doi_rewrite.py:54
 msgid "Open Access DOI rewrite"
@@ -831,15 +840,15 @@ msgstr "Уклони трекер URL адресе"
 msgid "Remove trackers arguments from the returned URL"
 msgstr "Уклања аргументе трекера од повратне URL адресе"
 
-#: searx/plugins/unit_converter.py:48
+#: searx/plugins/unit_converter.py:42
 msgid "Unit converter plugin"
 msgstr "Додатак за конверзију јединица"
 
-#: searx/plugins/unit_converter.py:49
+#: searx/plugins/unit_converter.py:43
 msgid "Convert between units"
 msgstr "Конвертуј јединице"
 
-#: searx/result_types/answer.py:226
+#: searx/result_types/answer.py:223
 #, python-brace-format
 msgid "{location}: {temperature}, {condition}"
 msgstr "{location}: {temperature}, {condition}"
@@ -1010,23 +1019,23 @@ msgstr "Подразумеване категорије"
 msgid "User interface"
 msgstr "Кориснички интерфејс"
 
-#: searx/templates/simple/preferences.html:227
+#: searx/templates/simple/preferences.html:224
 msgid "Privacy"
 msgstr "Приватност"
 
-#: searx/templates/simple/preferences.html:242
+#: searx/templates/simple/preferences.html:239
 msgid "Engines"
 msgstr "Претраживачи"
 
-#: searx/templates/simple/preferences.html:244
+#: searx/templates/simple/preferences.html:241
 msgid "Currently used search engines"
 msgstr "Тренутно коришћени претраживачи"
 
-#: searx/templates/simple/preferences.html:253
+#: searx/templates/simple/preferences.html:250
 msgid "Special Queries"
 msgstr "Посебни упити"
 
-#: searx/templates/simple/preferences.html:261
+#: searx/templates/simple/preferences.html:258
 msgid "Cookies"
 msgstr "Колачићи"
 
@@ -1522,18 +1531,6 @@ msgstr "Прокси слика"
 #: searx/templates/simple/preferences/image_proxy.html:14
 msgid "Proxy image results through SearXNG"
 msgstr "Проксирајте резултате слика преко SearXNG-а"
-
-#: searx/templates/simple/preferences/infinite_scroll.html:2
-msgid "Infinite scroll"
-msgstr "Бесконачно померање"
-
-#: searx/templates/simple/preferences/infinite_scroll.html:14
-msgid ""
-"Automatically load the next page when scrolling to the bottom of the "
-"current page"
-msgstr ""
-"Аутоматски учитајте следећу страницу приликом померања до дна тренутне "
-"странице"
 
 #: searx/templates/simple/preferences/language.html:24
 msgid "What language do you prefer for search?"
@@ -2383,3 +2380,18 @@ msgstr "сакриј видео"
 
 #~ msgid "repo"
 #~ msgstr "репозиторијуми"
+
+#~ msgid "Basic Calculator"
+#~ msgstr "Основни Калкулатор"
+
+#~ msgid "Calculate mathematical expressions via the search bar"
+#~ msgstr "Израчунај математичке изразе кроз поље за претрагу"
+
+#~ msgid ""
+#~ "Automatically load the next page when"
+#~ " scrolling to the bottom of the "
+#~ "current page"
+#~ msgstr ""
+#~ "Аутоматски учитајте следећу страницу приликом"
+#~ " померања до дна тренутне странице"
+
