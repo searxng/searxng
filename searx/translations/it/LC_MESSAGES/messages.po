@@ -45,19 +45,18 @@
 # langckx <langckx@noreply.codeberg.org>, 2025.
 msgid ""
 msgstr ""
-"Project-Id-Version: searx\n"
+"Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-10-20 08:35+0000\n"
+"POT-Creation-Date: 2025-12-05 10:19+0000\n"
 "PO-Revision-Date: 2025-10-27 14:09+0000\n"
 "Last-Translator: langckx <langckx@noreply.codeberg.org>\n"
-"Language-Team: Italian <https://translate.codeberg.org/projects/searxng/"
-"searxng/it/>\n"
 "Language: it\n"
+"Language-Team: Italian "
+"<https://translate.codeberg.org/projects/searxng/searxng/it/>\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.13.3\n"
 "Generated-By: Babel 2.17.0\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
@@ -526,7 +525,7 @@ msgid "active users"
 msgstr "utenti attivi"
 
 #. SOCIAL_MEDIA_TERMS['COMMENTS']
-#: searx/engines/discourse.py:157 searx/engines/hackernews.py:81
+#: searx/engines/discourse.py:157 searx/engines/hackernews.py:83
 #: searx/engines/lemmy.py:130 searx/searxng.msg
 msgid "comments"
 msgstr "commenti"
@@ -542,7 +541,7 @@ msgid "community"
 msgstr "comunità"
 
 #. SOCIAL_MEDIA_TERMS['POINTS']
-#: searx/engines/hackernews.py:81 searx/searxng.msg
+#: searx/engines/hackernews.py:83 searx/searxng.msg
 msgid "points"
 msgstr "punti"
 
@@ -552,7 +551,7 @@ msgid "title"
 msgstr "titolo"
 
 #. SOCIAL_MEDIA_TERMS['AUTHOR']
-#: searx/engines/hackernews.py:84 searx/searxng.msg
+#: searx/engines/hackernews.py:86 searx/searxng.msg
 msgid "author"
 msgstr "autore"
 
@@ -575,7 +574,7 @@ msgstr "risposto"
 msgid "No item found"
 msgstr "Nessun oggetto trovato"
 
-#: searx/engines/qwant.py:289
+#: searx/engines/qwant.py:299
 #: searx/templates/simple/result_templates/images.html:23 searx/webapp.py:330
 msgid "Source"
 msgstr "Sorgente"
@@ -584,15 +583,15 @@ msgstr "Sorgente"
 msgid "Error loading the next page"
 msgstr "Errore di caricamento della pagina successiva"
 
-#: searx/webapp.py:475 searx/webapp.py:876
+#: searx/webapp.py:481 searx/webapp.py:882
 msgid "Invalid settings, please edit your preferences"
 msgstr "Impostazioni non valide, modifica le tue preferenze"
 
-#: searx/webapp.py:491
+#: searx/webapp.py:497
 msgid "Invalid settings"
 msgstr "Impostazioni non valide"
 
-#: searx/webapp.py:568 searx/webapp.py:658
+#: searx/webapp.py:574 searx/webapp.py:664
 msgid "search error"
 msgstr "errore di ricerca"
 
@@ -684,7 +683,7 @@ msgstr "{title} (OBSOLETO)"
 msgid "This entry has been superseded by"
 msgstr "Questa voce è stata sostituita da"
 
-#: searx/engines/qwant.py:291
+#: searx/engines/qwant.py:301
 msgid "Channel"
 msgstr "Canale"
 
@@ -752,13 +751,13 @@ msgstr "Blacklist Ahima"
 msgid "Filter out onion results that appear in Ahmia's blacklist."
 msgstr "Escludi i risultati onion che appaiono nella blacklist Ahmia."
 
-#: searx/plugins/calculator.py:37
-msgid "Basic Calculator"
-msgstr "Calcolatrice base"
+#: searx/plugins/calculator.py:25
+msgid "Calculator"
+msgstr ""
 
-#: searx/plugins/calculator.py:38
-msgid "Calculate mathematical expressions via the search bar"
-msgstr "Calcola espressioni matematiche nella barra di ricerca"
+#: searx/plugins/calculator.py:26
+msgid "Parses and solves mathematical expressions."
+msgstr ""
 
 #: searx/plugins/hash_plugin.py:33
 msgid "Hash plugin"
@@ -783,6 +782,16 @@ msgstr "Plugin dell'hostname"
 #: searx/plugins/hostnames.py:120
 msgid "Rewrite hostnames and remove or prioritize results based on the hostname"
 msgstr "Riscrivi hostname e rimuovi o prioritizza i risultati in base ad esso"
+
+#: searx/plugins/infinite_scroll.py:25
+msgid "Infinite scroll"
+msgstr "Scorrimento infinito"
+
+#: searx/plugins/infinite_scroll.py:26
+msgid ""
+"Automatically loads the next page when scrolling to bottom of the current"
+" page"
+msgstr ""
 
 #: searx/plugins/oa_doi_rewrite.py:54
 msgid "Open Access DOI rewrite"
@@ -856,15 +865,15 @@ msgstr "Rimuovi URL traccianti"
 msgid "Remove trackers arguments from the returned URL"
 msgstr "Rimuovi gli elementi traccianti dall'indirizzo URL riportato"
 
-#: searx/plugins/unit_converter.py:48
+#: searx/plugins/unit_converter.py:42
 msgid "Unit converter plugin"
 msgstr "Plug in convertitore unità"
 
-#: searx/plugins/unit_converter.py:49
+#: searx/plugins/unit_converter.py:43
 msgid "Convert between units"
 msgstr "Converti tra le unità"
 
-#: searx/result_types/answer.py:226
+#: searx/result_types/answer.py:223
 #, python-brace-format
 msgid "{location}: {temperature}, {condition}"
 msgstr "{location}: {temperature}, {condition}"
@@ -1020,8 +1029,8 @@ msgid ""
 "This is a preview of the settings used by the 'Search URL' you used to "
 "get here."
 msgstr ""
-"Questa è un'anteprima delle impostazioni utilizzate dal 'Search URL' che hai "
-"utilizzato per arrivare qui."
+"Questa è un'anteprima delle impostazioni utilizzate dal 'Search URL' che "
+"hai utilizzato per arrivare qui."
 
 #: searx/templates/simple/preferences.html:162
 msgid "Press save to copy these preferences to your browser."
@@ -1043,23 +1052,23 @@ msgstr "Categorie predefinite"
 msgid "User interface"
 msgstr "Interfaccia utente"
 
-#: searx/templates/simple/preferences.html:227
+#: searx/templates/simple/preferences.html:224
 msgid "Privacy"
 msgstr "Privacy"
 
-#: searx/templates/simple/preferences.html:242
+#: searx/templates/simple/preferences.html:239
 msgid "Engines"
 msgstr "Motori"
 
-#: searx/templates/simple/preferences.html:244
+#: searx/templates/simple/preferences.html:241
 msgid "Currently used search engines"
 msgstr "Motori di ricerca attualmente in uso"
 
-#: searx/templates/simple/preferences.html:253
+#: searx/templates/simple/preferences.html:250
 msgid "Special Queries"
 msgstr "Richieste speciali"
 
-#: searx/templates/simple/preferences.html:261
+#: searx/templates/simple/preferences.html:258
 msgid "Cookies"
 msgstr "Cookie"
 
@@ -1557,18 +1566,6 @@ msgstr "Proxy immagini"
 #: searx/templates/simple/preferences/image_proxy.html:14
 msgid "Proxy image results through SearXNG"
 msgstr "Intermedia le immagini trovate tramite SearXNG"
-
-#: searx/templates/simple/preferences/infinite_scroll.html:2
-msgid "Infinite scroll"
-msgstr "Scorrimento infinito"
-
-#: searx/templates/simple/preferences/infinite_scroll.html:14
-msgid ""
-"Automatically load the next page when scrolling to the bottom of the "
-"current page"
-msgstr ""
-"Carica automaticamente la prossima pagina quando scorri alla fine della "
-"pagina corrente"
 
 #: searx/templates/simple/preferences/language.html:24
 msgid "What language do you prefer for search?"
@@ -2438,3 +2435,19 @@ msgstr "nascondi video"
 
 #~ msgid "repo"
 #~ msgstr "ripostiglo"
+
+#~ msgid "Basic Calculator"
+#~ msgstr "Calcolatrice base"
+
+#~ msgid "Calculate mathematical expressions via the search bar"
+#~ msgstr "Calcola espressioni matematiche nella barra di ricerca"
+
+#~ msgid ""
+#~ "Automatically load the next page when"
+#~ " scrolling to the bottom of the "
+#~ "current page"
+#~ msgstr ""
+#~ "Carica automaticamente la prossima pagina "
+#~ "quando scorri alla fine della pagina "
+#~ "corrente"
+

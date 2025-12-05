@@ -51,19 +51,18 @@
 # Outbreak2096 <outbreak2096@noreply.codeberg.org>, 2025.
 msgid ""
 msgstr ""
-"Project-Id-Version: searx\n"
+"Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-10-20 08:35+0000\n"
+"POT-Creation-Date: 2025-12-05 10:19+0000\n"
 "PO-Revision-Date: 2025-10-22 02:09+0000\n"
 "Last-Translator: Outbreak2096 <outbreak2096@noreply.codeberg.org>\n"
-"Language-Team: Chinese (Simplified Han script) <https://"
-"translate.codeberg.org/projects/searxng/searxng/zh_Hans/>\n"
 "Language: zh_Hans_CN\n"
+"Language-Team: Chinese (Simplified Han script) "
+"<https://translate.codeberg.org/projects/searxng/searxng/zh_Hans/>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.13.3\n"
 "Generated-By: Babel 2.17.0\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
@@ -532,7 +531,7 @@ msgid "active users"
 msgstr "活跃用户"
 
 #. SOCIAL_MEDIA_TERMS['COMMENTS']
-#: searx/engines/discourse.py:157 searx/engines/hackernews.py:81
+#: searx/engines/discourse.py:157 searx/engines/hackernews.py:83
 #: searx/engines/lemmy.py:130 searx/searxng.msg
 msgid "comments"
 msgstr "评论"
@@ -548,7 +547,7 @@ msgid "community"
 msgstr "版块"
 
 #. SOCIAL_MEDIA_TERMS['POINTS']
-#: searx/engines/hackernews.py:81 searx/searxng.msg
+#: searx/engines/hackernews.py:83 searx/searxng.msg
 msgid "points"
 msgstr "积分"
 
@@ -558,7 +557,7 @@ msgid "title"
 msgstr "标题"
 
 #. SOCIAL_MEDIA_TERMS['AUTHOR']
-#: searx/engines/hackernews.py:84 searx/searxng.msg
+#: searx/engines/hackernews.py:86 searx/searxng.msg
 msgid "author"
 msgstr "作者"
 
@@ -581,7 +580,7 @@ msgstr "回答"
 msgid "No item found"
 msgstr "未找到项目"
 
-#: searx/engines/qwant.py:289
+#: searx/engines/qwant.py:299
 #: searx/templates/simple/result_templates/images.html:23 searx/webapp.py:330
 msgid "Source"
 msgstr "来源"
@@ -590,15 +589,15 @@ msgstr "来源"
 msgid "Error loading the next page"
 msgstr "载入下个页面时发生错误"
 
-#: searx/webapp.py:475 searx/webapp.py:876
+#: searx/webapp.py:481 searx/webapp.py:882
 msgid "Invalid settings, please edit your preferences"
 msgstr "无效设置，请编辑您的首选项"
 
-#: searx/webapp.py:491
+#: searx/webapp.py:497
 msgid "Invalid settings"
 msgstr "无效设置"
 
-#: searx/webapp.py:568 searx/webapp.py:658
+#: searx/webapp.py:574 searx/webapp.py:664
 msgid "search error"
 msgstr "搜索错误"
 
@@ -690,7 +689,7 @@ msgstr "{title} （已过时）"
 msgid "This entry has been superseded by"
 msgstr "此条目已被以下内容取代"
 
-#: searx/engines/qwant.py:291
+#: searx/engines/qwant.py:301
 msgid "Channel"
 msgstr "频道"
 
@@ -752,13 +751,13 @@ msgstr "Ahmia 黑名单"
 msgid "Filter out onion results that appear in Ahmia's blacklist."
 msgstr "过滤掉出现在 Ahmia 黑名单中的洋葱结果。"
 
-#: searx/plugins/calculator.py:37
-msgid "Basic Calculator"
-msgstr "基础计算器"
+#: searx/plugins/calculator.py:25
+msgid "Calculator"
+msgstr ""
 
-#: searx/plugins/calculator.py:38
-msgid "Calculate mathematical expressions via the search bar"
-msgstr "通过搜索栏计算数学表达式"
+#: searx/plugins/calculator.py:26
+msgid "Parses and solves mathematical expressions."
+msgstr ""
 
 #: searx/plugins/hash_plugin.py:33
 msgid "Hash plugin"
@@ -781,6 +780,16 @@ msgstr "主机名插件"
 #: searx/plugins/hostnames.py:120
 msgid "Rewrite hostnames and remove or prioritize results based on the hostname"
 msgstr "重写主机名并根据主机名移除或优先处理结果"
+
+#: searx/plugins/infinite_scroll.py:25
+msgid "Infinite scroll"
+msgstr "无限滚动"
+
+#: searx/plugins/infinite_scroll.py:26
+msgid ""
+"Automatically loads the next page when scrolling to bottom of the current"
+" page"
+msgstr ""
 
 #: searx/plugins/oa_doi_rewrite.py:54
 msgid "Open Access DOI rewrite"
@@ -848,15 +857,15 @@ msgstr "URL 跟踪参数移除工具"
 msgid "Remove trackers arguments from the returned URL"
 msgstr "从返回的 URL 中移除跟踪参数"
 
-#: searx/plugins/unit_converter.py:48
+#: searx/plugins/unit_converter.py:42
 msgid "Unit converter plugin"
 msgstr "单位转换器插件"
 
-#: searx/plugins/unit_converter.py:49
+#: searx/plugins/unit_converter.py:43
 msgid "Convert between units"
 msgstr "单位间转换"
 
-#: searx/result_types/answer.py:226
+#: searx/result_types/answer.py:223
 #, python-brace-format
 msgid "{location}: {temperature}, {condition}"
 msgstr "{location}：{temperature}，{condition}"
@@ -1027,23 +1036,23 @@ msgstr "默认类别"
 msgid "User interface"
 msgstr "用户界面"
 
-#: searx/templates/simple/preferences.html:227
+#: searx/templates/simple/preferences.html:224
 msgid "Privacy"
 msgstr "隐私"
 
-#: searx/templates/simple/preferences.html:242
+#: searx/templates/simple/preferences.html:239
 msgid "Engines"
 msgstr "搜索引擎"
 
-#: searx/templates/simple/preferences.html:244
+#: searx/templates/simple/preferences.html:241
 msgid "Currently used search engines"
 msgstr "目前使用的搜索引擎"
 
-#: searx/templates/simple/preferences.html:253
+#: searx/templates/simple/preferences.html:250
 msgid "Special Queries"
 msgstr "特殊查询"
 
-#: searx/templates/simple/preferences.html:261
+#: searx/templates/simple/preferences.html:258
 msgid "Cookies"
 msgstr "Cookie"
 
@@ -1526,16 +1535,6 @@ msgstr "图片代理"
 #: searx/templates/simple/preferences/image_proxy.html:14
 msgid "Proxy image results through SearXNG"
 msgstr "通过 SearXNG 代理图片结果"
-
-#: searx/templates/simple/preferences/infinite_scroll.html:2
-msgid "Infinite scroll"
-msgstr "无限滚动"
-
-#: searx/templates/simple/preferences/infinite_scroll.html:14
-msgid ""
-"Automatically load the next page when scrolling to the bottom of the "
-"current page"
-msgstr "滚动到当前页面底部时自动加载下一页"
 
 #: searx/templates/simple/preferences/language.html:24
 msgid "What language do you prefer for search?"
@@ -2323,3 +2322,16 @@ msgstr "隐藏视频"
 
 #~ msgid "repo"
 #~ msgstr "软件仓库"
+
+#~ msgid "Basic Calculator"
+#~ msgstr "基础计算器"
+
+#~ msgid "Calculate mathematical expressions via the search bar"
+#~ msgstr "通过搜索栏计算数学表达式"
+
+#~ msgid ""
+#~ "Automatically load the next page when"
+#~ " scrolling to the bottom of the "
+#~ "current page"
+#~ msgstr "滚动到当前页面底部时自动加载下一页"
+
