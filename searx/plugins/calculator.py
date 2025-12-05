@@ -13,7 +13,10 @@ if t.TYPE_CHECKING:
 
 @t.final
 class SXNGPlugin(Plugin):
-    """Parses and solves mathematical expressions."""
+    """
+    Parses and solves expressions. Can evaluate functions, do arithmetic and
+    handle units.
+    """
 
     id = "calculator"
 
@@ -23,6 +26,6 @@ class SXNGPlugin(Plugin):
         self.info = PluginInfo(
             id=self.id,
             name=gettext("Calculator"),
-            description=gettext("Parses and solves mathematical expressions."),
+            description=gettext("Parses and solves expressions."),
             preference_section="query",
         )
