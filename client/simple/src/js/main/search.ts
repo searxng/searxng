@@ -39,9 +39,11 @@ listen("input", searchInput, () => {
   searchReset.classList.toggle("empty", searchInput.value.length === 0);
 });
 
-listen("click", searchReset, () => {
-  searchReset.classList.add("empty");
+listen("click", searchReset, (event: MouseEvent) => {
+  event.preventDefault();
+  searchInput.value = "";
   searchInput.focus();
+  searchReset.classList.add("empty");
 });
 
 for (const button of categoryButtons) {
