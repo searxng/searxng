@@ -59,8 +59,6 @@ weblate.to.translations() {
         wlc pull
         wlc commit
 
-        set -x # https://github.com/searxng/searxng/issues/5490
-
         # get the translations in a worktree
         weblate.translations.worktree
 
@@ -85,8 +83,6 @@ weblate.translations.commit() {
         pyenv.activate
         # lock change on weblate
         wlc lock
-
-        set -x # https://github.com/searxng/searxng/issues/5490
 
         # get translations branch in git worktree (TRANSLATIONS_WORKTREE)
         weblate.translations.worktree
@@ -150,9 +146,6 @@ weblate.push.translations() {
     (
         set -e
         pyenv.activate
-
-        set -x # https://github.com/searxng/searxng/issues/5490
-
         # get translations branch in git worktree (TRANSLATIONS_WORKTREE)
         weblate.translations.worktree
 
