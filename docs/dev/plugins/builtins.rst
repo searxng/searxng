@@ -13,5 +13,4 @@ Built-in Plugins
    infinite_scroll
    self_info
    tor_check
-   unit_converter
    time_zone

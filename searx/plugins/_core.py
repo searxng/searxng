@@ -224,7 +224,9 @@ class PluginStorage:
 
             if cls is None:
                 msg = f"plugin {fqn} is not implemented"
-                raise ValueError(msg)
+                log.error(msg)
+                continue
+
             plg = cls(PluginCfg(**plg_settings))
             self.register(plg)
 

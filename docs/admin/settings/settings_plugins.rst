@@ -31,7 +31,7 @@ of plugins to be loaded, the value for ``plugins:`` in
 
 Following is an example that uses :ref:`settings use_default_settings` and only
 two plugins are registered: the calculator can be activated by the user and the
-unit converter is active by default.
+hash converter is active by default.
 
 
 .. code:: yaml
@@ -43,7 +43,7 @@ unit converter is active by default.
       searx.plugins.calculator.SXNGPlugin:
         active: false
 
-      searx.plugins.unit_converter.SXNGPlugin:
+      searx.plugins.hash_plugin.SXNGPlugin:
         active: true
 
 To prevent any plugins from loading, the following setting can be used:
@@ -79,9 +79,6 @@ The built-in plugins are all located in the namespace `searx.plugins`.
         active: true
 
       searx.plugins.tracker_url_remover.SXNGPlugin:
-        active: true
-
-      searx.plugins.unit_converter.SXNGPlugin:
         active: true
 
       searx.plugins.ahmia_filter.SXNGPlugin:
