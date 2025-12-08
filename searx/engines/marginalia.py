@@ -28,7 +28,7 @@ Implementations
 """
 
 import typing as t
-from urllib.parse import urlencode, quote_plus
+from urllib.parse import urlencode
 from searx.utils import searxng_useragent
 from searx.result_types import EngineResults
 from searx.extended_types import SXNG_Response
@@ -42,7 +42,7 @@ about = {
     "results": "JSON",
 }
 
-base_url = "https://api.marginalia.nu"
+base_url = "https://api2.marginalia-search.com"
 safesearch = True
 categories = ["general"]
 paging = False
@@ -85,13 +85,11 @@ class ApiSearchResults(t.TypedDict):
 
 def request(query: str, params: dict[str, t.Any]):
 
-    query_params = {
-        "count": results_per_page,
-        "nsfw": min(params["safesearch"], 1),
-    }
+    query_params = {"count": results_per_page, "nsfw": min(params["safesearch"], 1), "query": query}
 
-    params["url"] = f"{base_url}/{api_key}/search/{quote_plus(query)}?{urlencode(query_params)}"
+    params["url"] = f"{base_url}/search?{urlencode(query_params)}"
     params["headers"]["User-Agent"] = searxng_useragent()
+    params["headers"]["API-Key"] = api_key
 
 
 def response(resp: SXNG_Response):
