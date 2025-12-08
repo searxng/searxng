@@ -100,9 +100,25 @@ def _download_and_check_if_image(image_url: str) -> bool:
         except httpx.TimeoutException:
             logger.error('Timeout for %s: %i', image_url, int(time() - a))
             retry -= 1
-        except httpx.HTTPError:
-            logger.exception('Exception for %s', image_url)
-            return False
+        except httpx.NetworkError:
+            logger.error('NetworkError for %s', image_url)
+            retry = 0
+        except httpx.ProtocolError:
+            logger.exception('ProtocolError for %s', image_url)
+            retry = 0
+        except httpx.ProxyError:
+            logger.exception('ProxyError for %s', image_url)
+            retry = 0
+        except httpx.UnsupportedProtocol:
+            logger.exception('UnsupportedProtocol for %s', image_url)
+            retry = 0
+        except httpx.HTTPStatusError as httpStatusError:
+            status_code = httpStatusError.response.status_code
+            logger.exception('HTTPStatusError with response code %s for %s', status_code, image_url)
+            retry = 0
+        except httpx.RequestError:
+            logger.exception('RequestError for %s', image_url)
+            retry = 0
     return False
 
 
@@ -356,6 +372,7 @@ class Checker:  # pylint: disable=missing-class-docstring
 
     def __init__(self, processor: EngineProcessor):
         self.processor = processor
+        self.processor.log_engine_exc_info = False  # Remove exception information from errors to reduce verbosity
         self.tests = self.processor.get_tests()
         self.test_results = TestResults()
 
@@ -417,8 +434,10 @@ class Checker:  # pylint: disable=missing-class-docstring
         result_container_check.check_basic()
         return result_container_check
 
-    def run_test(self, test_name):
+    def run_test(self, test_name: str):
         test_parameters = self.tests[test_name]
+        #  Not really a warning, but an info log will not appear
+        logger.warning('---%s---', test_name)
         search_query_list = list(Checker.search_query_matrix_iterator(self.engineref_list, test_parameters['matrix']))
         rct_list = [self.get_result_container_tests(test_name, search_query) for search_query in search_query_list]
         stop_test = False
