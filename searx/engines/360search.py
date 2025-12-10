@@ -6,6 +6,11 @@ from urllib.parse import urlencode
 from lxml import html
 
 from searx.utils import extract_text
+from searx.network import get as http_get
+import typing as t
+
+if t.TYPE_CHECKING:
+    from searx.extended_types import SXNG_Response
 
 # Metadata
 about = {
@@ -27,8 +32,18 @@ time_range_dict = {'day': 'd', 'week': 'w', 'month': 'm', 'year': 'y'}
 # Base URL
 base_url = "https://www.so.com"
 
+def get_token(url: str) -> str:
+    print(url)
+    resp: SXNG_Response = http_get(url, timeout=10, allow_redirects=False)
+    headers = resp.headers
+    print("Cookies:")
+    cookie=headers['set-cookie'].split(";")[0]
+    
+    return cookie
+
 
 def request(query, params):
+
     query_params = {
         "pn": params["pageno"],
         "q": query,
@@ -36,12 +51,19 @@ def request(query, params):
 
     if time_range_dict.get(params['time_range']):
         query_params["adv_t"] = time_range_dict.get(params['time_range'])
-
     params["url"] = f"{base_url}/s?{urlencode(query_params)}"
+    # get token by calling the query page
+    print("query url:", params["url"])
+    cookie = get_token(params["url"])
+    params['headers'] = {'Cookie': cookie}
+
+    # print(resp.headers)
+
     return params
 
 
 def response(resp):
+    # print(resp.headers)
     dom = html.fromstring(resp.text)
     results = []
 
