@@ -6,6 +6,7 @@ import typing as t
 from urllib.parse import urlencode
 from lxml import html
 
+from searx.enginelib import EngineCache
 from searx.utils import extract_text
 from searx.network import get as http_get
 
@@ -31,14 +32,35 @@ time_range_dict = {'day': 'd', 'week': 'w', 'month': 'm', 'year': 'y'}
 
 # Base URL
 base_url = "https://www.so.com"
+cache_key = f"{base_url}-cookie"
+cookie_cache_expiration_seconds = 3600
+
+CACHE: EngineCache
+"""Persistent (SQLite) key/value cache that deletes its values after ``expire``
+seconds."""
 
 
-def get_token(url: str) -> str:
-    print(url)
+def setup(engine_settings: dict[str, t.Any]) -> bool:
+    """Initialization of the engine.
+
+    - Instantiate a cache for this engine (:py:obj:`CACHE`).
+
+    """
+    global CACHE  # pylint: disable=global-statement
+    # table name needs to be quoted to start with digits, so "cache" has been added to avoid sqlite complaining
+    CACHE = EngineCache("cache" + engine_settings["name"])
+    return True
+
+
+def get_cookie(url: str) -> str:
+
+    cookie: str | None = CACHE.get(cache_key)
+    if cookie:
+        return cookie
     resp: SXNG_Response = http_get(url, timeout=10, allow_redirects=False)
     headers = resp.headers
-    print("Cookies:")
     cookie = headers['set-cookie'].split(";")[0]
+    CACHE.set(key=cache_key, value=cookie, expire=cookie_cache_expiration_seconds)
 
     return cookie
 
@@ -55,7 +77,8 @@ def request(query, params):
     params["url"] = f"{base_url}/s?{urlencode(query_params)}"
     # get token by calling the query page
     print("query url:", params["url"])
-    cookie = get_token(params["url"])
+    cookie = get_cookie(params["url"])
+    print(cookie)
     params['headers'] = {'Cookie': cookie}
 
     # print(resp.headers)
