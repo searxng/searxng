@@ -477,14 +477,14 @@ engines:
     shortcut: ask
     disabled: true
 
-  # - name: azure
-  #   engine: azure
-  #   shortcut: az
-  #   categories: [it, cloud]
-  #   azure_tenant_id: "your_tenant_id"
-  #   azure_client_id: "your_client_id"
-  #   azure_client_secret: "your_client_secret"
-  #   disabled: true
+  - name: azure
+    engine: azure
+    shortcut: az
+    categories: [it, cloud]
+    azure_tenant_id: "your_tenant_id"
+    azure_client_id: "your_client_id"
+    azure_client_secret: "your_client_secret"
+    inactive: true
 
   # tmp suspended:  dh key too small
   # - name: base
@@ -646,7 +646,7 @@ engines:
     # cf_ai_model_assistant: 'prompts_for_assistant_role'
     # cf_ai_model_system: 'prompts_for_system_role'
     timeout: 30
-    disabled: true
+    inactive: true
 
   - name: core.ac.uk
     engine: core
@@ -780,20 +780,20 @@ engines:
       require_api_key: false
       results: HTML
 
-  # - name: elasticsearch
-  #   shortcut: els
-  #   engine: elasticsearch
-  #   base_url: http://localhost:9200
-  #   username: elastic
-  #   password: changeme
-  #   index: my-index
-  #   enable_http: true
-  #   # available options: match, simple_query_string, term, terms, custom
-  #   query_type: match
-  #   # if query_type is set to custom, provide your query here
-  #   # custom_query_json: {"query":{"match_all": {}}}
-  #   # show_metadata: false
-  #   disabled: true
+  - name: elasticsearch
+    shortcut: els
+    engine: elasticsearch
+    base_url: http://localhost:9200
+    username: elastic
+    password: changeme
+    index: my-index
+    enable_http: true
+    # available options: match, simple_query_string, term, terms, custom
+    query_type: match
+    # if query_type is set to custom, provide your query here
+    # custom_query_json: {"query":{"match_all": {}}}
+    # show_metadata: false
+    inactive: true
 
   - name: wikidata
     engine: wikidata
@@ -871,12 +871,12 @@ engines:
       require_api_key: false
       results: HTML
 
-  # - name: ebay
-  #   engine: ebay
-  #   shortcut: eb
-  #   base_url: 'https://www.ebay.com'
-  #   disabled: true
-  #   timeout: 5
+  - name: ebay
+    engine: ebay
+    shortcut: eb
+    base_url: 'https://www.ebay.com'
+    inactive: true
+    timeout: 5
 
   - name: 1x
     engine: www1x
@@ -897,12 +897,16 @@ engines:
   - name: flickr
     categories: images
     shortcut: fl
+    engine: flickr_noapi
+
+  - name: flickr_api
     # You can use the engine using the official stable API, but you need an API
     # key, see: https://www.flickr.com/services/apps/create/
-    # engine: flickr
-    # api_key: 'apikey' # required!
-    # Or you can use the html non-stable engine, activated by default
-    engine: flickr_noapi
+    engine: flickr
+    categories: images
+    shortcut: fla
+    api_key: 'apikey' # required!
+    inactive: true
 
   - name: free software directory
     engine: mediawiki
@@ -916,13 +920,13 @@ engines:
       website: https://directory.fsf.org/
       wikidata_id: Q2470288
 
-  # - name: freesound
-  #   engine: freesound
-  #   shortcut: fnd
-  #   disabled: true
-  #   timeout: 15.0
-  # API key required, see: https://freesound.org/docs/api/overview.html
-  #   api_key: MyAPIkey
+  - name: freesound
+    engine: freesound
+    shortcut: fnd
+    inactive: true
+    timeout: 15.0
+    # API key required, see: https://freesound.org/docs/api/overview.html
+    api_key: MyAPIkey
 
   - name: frinkiac
     engine: frinkiac
@@ -977,7 +981,7 @@ engines:
   - name: github code
     engine: github_code
     shortcut: ghc
-    disabled: true
+    inactive: true
     ghc_auth:
       # type is one of:
       # * none
@@ -1264,9 +1268,9 @@ engines:
     # https://github.com/LibreTranslate/LibreTranslate?tab=readme-ov-file#mirrors
     base_url:
       - https://libretranslate.com/translate
-    # api_key: abc123
+    api_key: ''
     shortcut: lt
-    disabled: true
+    inactive: true
 
   - name: lingva
     engine: lingva
@@ -1303,7 +1307,7 @@ engines:
     shortcut: mar
     # To get an API key, please follow the instructions at
     # - https://about.marginalia-search.com/article/api/
-    # api_key: ...
+    api_key: ''
     disabled: true
     inactive: true
 
@@ -2084,19 +2088,19 @@ engines:
   # engine in combination with Jackett opens the possibility to query a lot of
   # public and private indexers directly from SearXNG. More details at:
   # https://docs.searxng.org/dev/engines/online/torznab.html
-  #
-  # - name: Torznab EZTV
-  #   engine: torznab
-  #   shortcut: eztv
-  #   base_url: http://localhost:9117/api/v2.0/indexers/eztv/results/torznab
-  #   enable_http: true  # if using localhost
-  #   api_key: xxxxxxxxxxxxxxx
-  #   show_magnet_links: true
-  #   show_torrent_files: false
-  #   # https://github.com/Jackett/Jackett/wiki/Jackett-Categories
-  #   torznab_categories:  # optional
-  #     - 2000
-  #     - 5000
+  - name: Torznab EZTV
+    engine: torznab
+    shortcut: eztv
+    base_url: http://localhost:9117/api/v2.0/indexers/eztv/results/torznab
+    enable_http: true  # if using localhost
+    api_key: xxxxxxxxxxxxxxx
+    inactive: true
+    show_magnet_links: true
+    show_torrent_files: false
+    # https://github.com/Jackett/Jackett/wiki/Jackett-Categories
+    torznab_categories:  # optional
+      - 2000
+      - 5000
 
   # tmp suspended - too slow, too many errors
   #  - name: urbandictionary
@@ -2144,14 +2148,15 @@ engines:
 
   - name: youtube
     shortcut: yt
+    engine: youtube_noapi
+
+  - name: youtube_api
     # You can use the engine using the official stable API, but you need an API
     # key See: https://console.developers.google.com/project
-    #
-    # engine: youtube_api
-    # api_key: 'apikey' # required!
-    #
-    # Or you can use the html non-stable engine, activated by default
-    engine: youtube_noapi
+    engine: youtube_api
+    api_key: ''  # required!
+    shortcut: yta
+    inactive: true
 
   - name: dailymotion
     engine: dailymotion
@@ -2304,17 +2309,20 @@ engines:
 
   - name: wolframalpha
     shortcut: wa
-    # You can use the engine using the official stable API, but you need an API
-    # key.  See: https://products.wolframalpha.com/api/
-    #
-    # engine: wolframalpha_api
-    # api_key: ''
-    #
-    # Or you can use the html non-stable engine, activated by default
     engine: wolframalpha_noapi
     timeout: 6.0
     categories: general
     disabled: true
+
+  - name: wolframalpha_api
+    # You can use the engine using the official stable API, but you need an API
+    # key.  See: https://products.wolframalpha.com/api/
+    engine: wolframalpha_api
+    api_key: ''  # required!
+    shortcut: waa
+    timeout: 6.0
+    categories: general
+    inactive: true
 
   - name: dictzone
     engine: dictzone
@@ -2363,14 +2371,14 @@ engines:
     engine: seznam
     disabled: true
 
-  # - name: deepl
-  #   engine: deepl
-  #   shortcut: dpl
-  #   # You can use the engine using the official stable API, but you need an API key
-  #   # See: https://www.deepl.com/pro-api?cta=header-pro-api
-  #   api_key: ''  # required!
-  #   timeout: 5.0
-  #   disabled: true
+  - name: deepl
+    engine: deepl
+    shortcut: dpl
+    # You can use the engine using the official stable API, but you need an API key
+    # See: https://www.deepl.com/pro-api?cta=header-pro-api
+    api_key: ''  # required!
+    timeout: 5.0
+    inactive: true
 
   - name: mojeek
     shortcut: mjk
@@ -2583,9 +2591,9 @@ engines:
 
   - name: wallhaven
     engine: wallhaven
-    # api_key: abcdefghijklmnopqrstuvwxyz
+    api_key: abcdefghijklmnopqrstuvwxyz
     shortcut: wh
-    disabled: true
+    inactive: true
 
     # wikimini: online encyclopedia for children
     # The fulltext and title parameter is necessary for Wikimini because
