@@ -124,14 +124,17 @@ engine is shown.  Most of the options have a default value or even are optional.
 
 ``api_key`` : optional
   In a few cases, using an API needs the use of a secret key.  How to obtain them
-  is described in the file.
+  is described in the file.  Engines that require an API key are set to
+  ``inactive: true`` by default.  To enable such an engine, provide the API key
+  and set ``inactive: false``.
 
 ``disabled`` : optional
   To disable by default the engine, but not deleting it.  It will allow the user
   to manually activate it in the settings.
 
 ``inactive``: optional
-  Remove the engine from the settings (*disabled & removed*).
+  Remove the engine from the settings (*disabled & removed*).  Set by default to
+  ``true`` for engines that need an API key.
 
 ``language`` : optional
   If you want to use another language for a specific engine, you can define it
