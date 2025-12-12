@@ -89,7 +89,7 @@ jobs:
           fetch-depth: "0"
 
       - name: Setup cache Python
-        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830  # v4.3.0
+        uses: actions/cache@a7833574556fa59680c1b7cb190c1735db73ebf0  # v5.0.0
         with:
           key: "python-${{ env.PYTHON_VERSION }}-${{ runner.arch }}-${{ hashFiles('./requirements*.txt') }}"
           restore-keys: "python-${{ env.PYTHON_VERSION }}-${{ runner.arch }}-"
@@ -100,7 +100,7 @@ jobs:
         run: echo "date=$(date +'%Y%m%d')" >>$GITHUB_OUTPUT
 
       - name: Setup cache container
-        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830  # v4.3.0
+        uses: actions/cache@a7833574556fa59680c1b7cb190c1735db73ebf0  # v5.0.0
         with:
           key: "container-${{ matrix.arch }}-${{ steps.date.outputs.date }}-${{ hashFiles('./requirements*.txt') }}"
           restore-keys: |
