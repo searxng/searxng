@@ -34,20 +34,21 @@
 # 0ko <0ko@noreply.codeberg.org>, 2025.
 msgid ""
 msgstr ""
-"Project-Id-Version:  searx\n"
+"Project-Id-Version: searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-12-05 10:19+0000\n"
-"PO-Revision-Date: 2025-10-27 14:09+0000\n"
-"Last-Translator: 0ko <0ko@noreply.codeberg.org>\n"
+"PO-Revision-Date: 2025-12-11 17:10+0000\n"
+"Last-Translator: IcewindX <icewindx@noreply.codeberg.org>\n"
+"Language-Team: Russian <https://translate.codeberg.org/projects/searxng/"
+"searxng/ru/>\n"
 "Language: ru\n"
-"Language-Team: Russian "
-"<https://translate.codeberg.org/projects/searxng/searxng/ru/>\n"
-"Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
-"n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) "
-"|| (n%100>=11 && n%100<=14)? 2 : 3);\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=4; plural="
+"(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<12 || n%100>14) ? 1 "
+": n%10==0 || (n%10>=5 && n%10<=9) || (n%100>=11 && n%100<=14)? 2 : 3);\n"
+"X-Generator: Weblate 5.14.3\n"
 "Generated-By: Babel 2.17.0\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
@@ -743,11 +744,11 @@ msgstr "Отфильтровать найденные onion-ссылки, вхо
 
 #: searx/plugins/calculator.py:25
 msgid "Calculator"
-msgstr ""
+msgstr "Калькулятор"
 
 #: searx/plugins/calculator.py:26
 msgid "Parses and solves mathematical expressions."
-msgstr ""
+msgstr "Выполняет математические операции."
 
 #: searx/plugins/hash_plugin.py:33
 msgid "Hash plugin"
@@ -823,7 +824,7 @@ msgstr "Плагин часовых поясов"
 
 #: searx/plugins/time_zone.py:34
 msgid "Display the current time on different time zones."
-msgstr "Показать текущее время в другом часовом поясе."
+msgstr "Показывает текущее время в другом часовом поясе."
 
 #: searx/plugins/tor_check.py:41
 msgid "Tor check plugin"
@@ -856,7 +857,7 @@ msgstr "Убрать отслеживание URL"
 
 #: searx/plugins/tracker_url_remover.py:36
 msgid "Remove trackers arguments from the returned URL"
-msgstr "Удаление параметров для отслеживания пользователя из URL-адреса"
+msgstr "Удалять параметры отслеживания пользователя из URL-адреса"
 
 #: searx/plugins/unit_converter.py:42
 msgid "Unit converter plugin"
@@ -1067,7 +1068,7 @@ msgstr "Количество результатов"
 
 #: searx/templates/simple/results.html:36
 msgid "Info"
-msgstr "Информация"
+msgstr "Краткая информация"
 
 #: searx/templates/simple/results.html:77
 msgid "Back to top"
@@ -1229,7 +1230,7 @@ msgstr "сек."
 
 #: searx/templates/simple/elements/search_url.html:3
 msgid "Search URL"
-msgstr "Ссылка поиска"
+msgstr "Ссылка на поисковый запрос"
 
 #: searx/templates/simple/elements/search_url.html:4
 #: searx/templates/simple/preferences/cookies.html:54
@@ -1282,7 +1283,7 @@ msgstr "Умеренный"
 #: searx/templates/simple/filters/safesearch.html:4
 #: searx/templates/simple/preferences/safesearch.html:15
 msgid "None"
-msgstr "Нет"
+msgstr "Отключен"
 
 #: searx/templates/simple/filters/time_range.html:1
 #: searx/templates/simple/preferences/engines.html:28
@@ -1291,7 +1292,7 @@ msgstr "Временной диапазон"
 
 #: searx/templates/simple/filters/time_range.html:3
 msgid "Anytime"
-msgstr "Когда угодно"
+msgstr "Любой период"
 
 #: searx/templates/simple/filters/time_range.html:6
 msgid "Last day"
@@ -1343,15 +1344,17 @@ msgstr "Измените поисковую систему, указанную �
 
 #: searx/templates/simple/messages/no_results.html:22
 msgid "Switch to another instance:"
-msgstr "Поменяйте инстанцию на другую:"
+msgstr "Измените экземпляр Searxng на другой:"
 
 #: searx/templates/simple/messages/no_results.html:24
 msgid "Search for another query or select another category."
-msgstr "Найдите другой запрос или выберите другую категорию."
+msgstr "Выполните другой запрос или выберите другую категорию."
 
 #: searx/templates/simple/messages/no_results.html:25
 msgid "Go back to the previous page using the previous page button."
-msgstr "Вернитесь на предыдущую страницу с помощью кнопки предыдущей страницы."
+msgstr ""
+"Вернитесь на предыдущую страницу с помощью кнопки возврата на предыдущую "
+"страницу."
 
 #: searx/templates/simple/preferences/answerers.html:4
 #: searx/templates/simple/preferences/engines.html:23
@@ -1605,8 +1608,8 @@ msgid ""
 "Perform a search immediately if a category is selected. Disable to select"
 " multiple categories"
 msgstr ""
-"Выполнить поиск немедленно, если выбрана категория. Отключить, чтобы "
-"выбрать несколько категорий"
+"При выборе категории поиск выполняется немедленно. Отключите, чтобы выбрать "
+"несколько категорий"
 
 #: searx/templates/simple/preferences/theme.html:2
 msgid "Theme"
@@ -1614,7 +1617,7 @@ msgstr "Тема"
 
 #: searx/templates/simple/preferences/theme.html:14
 msgid "Change the layout of SearXNG"
-msgstr "Изменить раскладку интерфейса SearXNG"
+msgstr "Изменить тему интерфейса SearXNG"
 
 #: searx/templates/simple/preferences/theme.html:19
 msgid "Theme style"
@@ -2431,4 +2434,3 @@ msgstr "скрыть видео"
 #~ msgstr ""
 #~ "Автоматически загружать следующую страницу при"
 #~ " прокрутке текущей страницы вниз"
-
