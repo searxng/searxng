@@ -1,11 +1,17 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 # pylint: disable=invalid-name
 """360Search search engine for searxng"""
+import typing as t
 
 from urllib.parse import urlencode
 from lxml import html
 
+from searx.enginelib import EngineCache
 from searx.utils import extract_text
+from searx.network import get as http_get
+
+if t.TYPE_CHECKING:
+    from searx.extended_types import SXNG_Response
 
 # Metadata
 about = {
@@ -26,9 +32,41 @@ time_range_dict = {'day': 'd', 'week': 'w', 'month': 'm', 'year': 'y'}
 
 # Base URL
 base_url = "https://www.so.com"
+cache_key = f"{base_url}-cookie"
+cookie_cache_expiration_seconds = 3600
+
+CACHE: EngineCache
+"""Persistent (SQLite) key/value cache that deletes its values after ``expire``
+seconds."""
+
+
+def setup(engine_settings: dict[str, t.Any]) -> bool:
+    """Initialization of the engine.
+
+    - Instantiate a cache for this engine (:py:obj:`CACHE`).
+
+    """
+    global CACHE  # pylint: disable=global-statement
+    # table name needs to be quoted to start with digits, so "cache" has been added to avoid sqlite complaining
+    CACHE = EngineCache("cache" + engine_settings["name"])
+    return True
+
+
+def get_cookie(url: str) -> str:
+
+    cookie: str | None = CACHE.get(cache_key)
+    if cookie:
+        return cookie
+    resp: SXNG_Response = http_get(url, timeout=10, allow_redirects=False)
+    headers = resp.headers
+    cookie = headers['set-cookie'].split(";")[0]
+    CACHE.set(key=cache_key, value=cookie, expire=cookie_cache_expiration_seconds)
+
+    return cookie
 
 
 def request(query, params):
+
     query_params = {
         "pn": params["pageno"],
         "q": query,
@@ -36,12 +74,20 @@ def request(query, params):
 
     if time_range_dict.get(params['time_range']):
         query_params["adv_t"] = time_range_dict.get(params['time_range'])
-
     params["url"] = f"{base_url}/s?{urlencode(query_params)}"
+    # get token by calling the query page
+    print("query url:", params["url"])
+    cookie = get_cookie(params["url"])
+    print(cookie)
+    params['headers'] = {'Cookie': cookie}
+
+    # print(resp.headers)
+
     return params
 
 
 def response(resp):
+    # print(resp.headers)
     dom = html.fromstring(resp.text)
     results = []
 
