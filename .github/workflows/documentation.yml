@@ -57,7 +57,7 @@ jobs:
 
       - if: github.ref_name == 'master'
         name: Release
-        uses: JamesIves/github-pages-deploy-action@4a3abc783e1a24aeb44c16e869ad83caf6b4cc23  # v4.7.4
+        uses: JamesIves/github-pages-deploy-action@9d877eea73427180ae43cf98e8914934fe157a1a  # v4.7.6
         with:
           folder: "dist/docs"
           branch: "gh-pages"
