@@ -923,10 +923,10 @@ engines:
   - name: freesound
     engine: freesound
     shortcut: fnd
-    inactive: true
     timeout: 15.0
     # API key required, see: https://freesound.org/docs/api/overview.html
     # api_key: MyAPIkey
+    inactive: true
 
   - name: frinkiac
     engine: frinkiac
@@ -2094,13 +2094,13 @@ engines:
     # base_url: http://localhost:9117/api/v2.0/indexers/eztv/results/torznab
     # enable_http: true  # if using localhost
     # api_key: xxxxxxxxxxxxxxx
-    inactive: true
     show_magnet_links: true
     show_torrent_files: false
     # https://github.com/Jackett/Jackett/wiki/Jackett-Categories
     torznab_categories:  # optional
       - 2000
       - 5000
+    inactive: true
 
   # tmp suspended - too slow, too many errors
   #  - name: urbandictionary
