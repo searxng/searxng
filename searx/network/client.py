@@ -106,9 +106,9 @@ class AsyncProxyTransportFixed(AsyncProxyTransport):
         except ProxyConnectionError as e:
             raise httpx.ProxyError("ProxyConnectionError: " + str(e.strerror), request=request) from e
         except ProxyTimeoutError as e:
-            raise httpx.ProxyError("ProxyTimeoutError: " + e.args[0], request=request) from e
+            raise httpx.ProxyError("ProxyTimeoutError: " + str(e.args[0]), request=request) from e
         except ProxyError as e:
-            raise httpx.ProxyError("ProxyError: " + e.args[0], request=request) from e
+            raise httpx.ProxyError("ProxyError: " + str(e.args[0]), request=request) from e
 
 
 def get_transport_for_socks_proxy(
