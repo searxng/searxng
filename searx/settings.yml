@@ -481,9 +481,9 @@ engines:
     engine: azure
     shortcut: az
     categories: [it, cloud]
-    azure_tenant_id: "your_tenant_id"
-    azure_client_id: "your_client_id"
-    azure_client_secret: "your_client_secret"
+    # azure_tenant_id: "your_tenant_id"
+    # azure_client_id: "your_client_id"
+    # azure_client_secret: "your_client_secret"
     inactive: true
 
   # tmp suspended:  dh key too small
@@ -783,11 +783,11 @@ engines:
   - name: elasticsearch
     shortcut: els
     engine: elasticsearch
-    base_url: http://localhost:9200
-    username: elastic
-    password: changeme
-    index: my-index
-    enable_http: true
+    # base_url: http://localhost:9200
+    # username: elastic
+    # password: changeme
+    # index: my-index
+    # enable_http: true
     # available options: match, simple_query_string, term, terms, custom
     query_type: match
     # if query_type is set to custom, provide your query here
@@ -905,7 +905,7 @@ engines:
     engine: flickr
     categories: images
     shortcut: fla
-    api_key: 'apikey' # required!
+    # api_key: 'apikey' # required!
     inactive: true
 
   - name: free software directory
@@ -926,7 +926,7 @@ engines:
     inactive: true
     timeout: 15.0
     # API key required, see: https://freesound.org/docs/api/overview.html
-    api_key: MyAPIkey
+    # api_key: MyAPIkey
 
   - name: frinkiac
     engine: frinkiac
@@ -1268,7 +1268,7 @@ engines:
     # https://github.com/LibreTranslate/LibreTranslate?tab=readme-ov-file#mirrors
     base_url:
       - https://libretranslate.com/translate
-    api_key: ''
+    # api_key: ''
     shortcut: lt
     inactive: true
 
@@ -1307,7 +1307,7 @@ engines:
     shortcut: mar
     # To get an API key, please follow the instructions at
     # - https://about.marginalia-search.com/article/api/
-    api_key: ''
+    # api_key: ''
     disabled: true
     inactive: true
 
@@ -2091,9 +2091,9 @@ engines:
   - name: Torznab EZTV
     engine: torznab
     shortcut: eztv
-    base_url: http://localhost:9117/api/v2.0/indexers/eztv/results/torznab
-    enable_http: true  # if using localhost
-    api_key: xxxxxxxxxxxxxxx
+    # base_url: http://localhost:9117/api/v2.0/indexers/eztv/results/torznab
+    # enable_http: true  # if using localhost
+    # api_key: xxxxxxxxxxxxxxx
     inactive: true
     show_magnet_links: true
     show_torrent_files: false
@@ -2154,7 +2154,7 @@ engines:
     # You can use the engine using the official stable API, but you need an API
     # key See: https://console.developers.google.com/project
     engine: youtube_api
-    api_key: ''  # required!
+    # api_key: ''  # required!
     shortcut: yta
     inactive: true
 
@@ -2318,7 +2318,7 @@ engines:
     # You can use the engine using the official stable API, but you need an API
     # key.  See: https://products.wolframalpha.com/api/
     engine: wolframalpha_api
-    api_key: ''  # required!
+    # api_key: ''  # required!
     shortcut: waa
     timeout: 6.0
     categories: general
@@ -2376,7 +2376,7 @@ engines:
     shortcut: dpl
     # You can use the engine using the official stable API, but you need an API key
     # See: https://www.deepl.com/pro-api?cta=header-pro-api
-    api_key: ''  # required!
+    # api_key: ''  # required!
     timeout: 5.0
     inactive: true
 
@@ -2591,7 +2591,7 @@ engines:
 
   - name: wallhaven
     engine: wallhaven
-    api_key: abcdefghijklmnopqrstuvwxyz
+    # api_key: abcdefghijklmnopqrstuvwxyz
     shortcut: wh
     inactive: true
 

@@ -133,8 +133,8 @@ engine is shown.  Most of the options have a default value or even are optional.
   to manually activate it in the settings.
 
 ``inactive``: optional
-  Remove the engine from the settings (*disabled & removed*).  Set by default to
-  ``true`` for engines that need an API key.
+  Remove the engine from the settings (*disabled & removed*).  This defaults to ``true`` for engines
+  that require an API key, please see the ``api_key`` section if you want to enable such an engine.
 
 ``language`` : optional
   If you want to use another language for a specific engine, you can define it
