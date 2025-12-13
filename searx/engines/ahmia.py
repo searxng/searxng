@@ -44,8 +44,6 @@ name_token_xpath = '//form[@id="searchForm"]/input[@type="hidden"]/@name'
 value_token_xpath = '//form[@id="searchForm"]/input[@type="hidden"]/@value'
 
 CACHE: EngineCache
-"""Persistent (SQLite) key/value cache that deletes its values after ``expire``
-seconds."""
 
 
 def setup(engine_settings: dict[str, t.Any]) -> bool:
