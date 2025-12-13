@@ -27,7 +27,6 @@ Request:
 - :py:obj:`srenablerewrites`
 - :py:obj:`srsort`
 - :py:obj:`srprop`
-- :py:obj:`content_path`
 
 Implementations
 ===============
