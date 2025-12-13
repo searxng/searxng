@@ -433,6 +433,9 @@ engines:
   # Requires Tor
   - name: ahmia
     engine: ahmia
+    # Might do up to two requests to perform a search.
+    # Since Tor is already slow by nature, the timeout is set very high.
+    timeout: 20.0
     categories: onions
     enable_http: true
     shortcut: ah
