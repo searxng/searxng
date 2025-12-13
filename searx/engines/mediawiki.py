@@ -157,7 +157,7 @@ def response(resp):
         timestamp = result.get('timestamp')
 
         url = (
-            f"{base_url.rstrip('/')}".format(language=resp.search_params['language']) + content_path.rstrip('/') + '/' + quote(title.replace(' ', '_').encode())
+            base_url.format(language=resp.search_params['language']) + content_path.strip('/') + '/' + quote(title.replace(' ', '_').encode())
         )
         if sectiontitle:
             # in case of sectiontitle create a link to the section in the wiki page
