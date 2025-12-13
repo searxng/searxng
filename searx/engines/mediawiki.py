@@ -27,6 +27,7 @@ Request:
 - :py:obj:`srenablerewrites`
 - :py:obj:`srsort`
 - :py:obj:`srprop`
+- :py:obj:`content_path`
 
 Implementations
 ===============
@@ -99,6 +100,11 @@ The default path should work fine usually.
 timestamp_format = '%Y-%m-%dT%H:%M:%SZ'
 """The longhand version of MediaWiki time strings."""
 
+content_path: str = 'wiki/'
+"""The path to access wiki content.
+
+The default path should work fine usually.
+"""
 
 def request(query, params):
 
@@ -152,7 +158,7 @@ def response(resp):
         timestamp = result.get('timestamp')
 
         url = (
-            base_url.format(language=resp.search_params['language']) + 'wiki/' + quote(title.replace(' ', '_').encode())
+            base_url.format(language=resp.search_params['language']) + content_path.rstrip('/') + '/' + quote(title.replace(' ', '_').encode())
         )
         if sectiontitle:
             # in case of sectiontitle create a link to the section in the wiki page
