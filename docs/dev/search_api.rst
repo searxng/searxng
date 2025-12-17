@@ -4,14 +4,33 @@
 Search API
 ==========
 
-The search supports both ``GET`` and ``POST``.
+SearXNG supports querying via a simple HTTP API.
+Two endpoints, ``/`` and ``/search``, are supported for both GET and POST methods.
+The GET method expects parameters as URL query parameters, while the POST method expects parameters as form data.
 
-Furthermore, two endpoints ``/`` and ``/search`` are available for querying.
+If you want to consume the results as JSON, CSV, or RSS, you need to set the
+``format`` parameter accordingly. Supported formats are defined in settings.yml, under the ``search`` section.
+Requesting an unset format will return a 403 Forbidden error. Be aware that many public instances have these formats disabled. 
+You can still get HTML-formatted results and parse them yourself.
 
+
+Endpoints:
 
 ``GET /``
-
 ``GET /search``
+
+``POST /``
+``POST /search``
+
+example cURL calls:
+
+.. code-block:: bash
+
+   curl 'https://searx.example.org/search?q=searxng&format=json'
+
+   curl -X POST 'https://searx.example.org/search' -d 'q=searxng&format=csv'
+
+   curl -L -X POST -d 'q=searxng&format=json' 'https://searx.example.org/'
 
 Parameters
 ==========
