@@ -15,7 +15,7 @@
           {%- if timeout_limit -%}
             <input type="hidden" name="timeout_limit" value="{{ timeout_limit|e }}" >
           {%- endif -%}
-          <input type="submit" class="suggestion" role="link" value="&bull; {{ suggestion.title }}">
+          <input type="submit" class="suggestion" role="link" value="{{ suggestion.title }}">
         </form>
       {%- endfor -%}
     </div>
