@@ -135,9 +135,8 @@ listen("click", "#copy_url", async function (this: HTMLElement) {
     }
   }
 
-  const copiedText = this.dataset.copiedText;
-  if (copiedText) {
-    this.innerText = copiedText;
+  if (this.dataset.copiedText) {
+    this.innerText = this.dataset.copiedText;
   }
 });
 

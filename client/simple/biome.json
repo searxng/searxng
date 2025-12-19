@@ -1,5 +1,5 @@
 {
-  "$schema": "https://biomejs.dev/schemas/2.3.8/schema.json",
+  "$schema": "https://biomejs.dev/schemas/2.3.10/schema.json",
   "files": {
     "ignoreUnknown": true,
     "includes": ["**", "!node_modules"]
@@ -52,9 +52,12 @@
         "noParametersOnlyUsedInRecursion": "warn",
         "noUselessCatchBinding": "warn",
         "noUselessUndefined": "warn",
+        "useAwaitThenable": "off",
+        "useDestructuring": "warn",
         "useExhaustiveSwitchCases": "warn",
         "useExplicitType": "warn",
-        "useFind": "warn"
+        "useFind": "warn",
+        "useRegexpExec": "warn"
       },
       "performance": {
         "noAwaitInLoops": "error",

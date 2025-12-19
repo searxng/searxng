@@ -220,7 +220,7 @@ const highlightResult =
         // biome-ignore lint/complexity/noUselessSwitchCase: fallthrough is intended
         case "top":
         default:
-          next = results[0];
+          [next] = results;
       }
     }
 
@@ -343,7 +343,7 @@ const initHelpContent = (divElement: HTMLElement, keyBindings: typeof baseKeyBin
   const categories: Record<string, KeyBinding[]> = {};
 
   for (const binding of Object.values(keyBindings)) {
-    const cat = binding.cat;
+    const { cat } = binding;
     categories[cat] ??= [];
     categories[cat].push(binding);
   }
@@ -400,7 +400,7 @@ const toggleHelp = (keyBindings: typeof baseKeyBinding): void => {
       className: "dialog-modal"
     });
     initHelpContent(helpPanel, keyBindings);
-    const body = document.getElementsByTagName("body")[0];
+    const [body] = document.getElementsByTagName("body");
     if (body) {
       body.appendChild(helpPanel);
     }
