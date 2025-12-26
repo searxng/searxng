@@ -54,13 +54,13 @@ def setup(engine_settings: dict[str, t.Any]) -> bool:
 
 def get_cookie(url: str) -> str:
 
-    cookie: str | None = CACHE.get(cache_key)
+    cookie: str | None = CACHE.get(COOKIE_CACHE_KEY)
     if cookie:
         return cookie
     resp: SXNG_Response = http_get(url, timeout=10, allow_redirects=False)
     headers = resp.headers
     cookie = headers['set-cookie'].split(";")[0]
-    CACHE.set(key=cache_key, value=cookie, expire=COOKIE_CACHE_EXPIRATION_SECONDS)
+    CACHE.set(key=COOKIE_CACHE_KEY, value=cookie, expire=COOKIE_CACHE_EXPIRATION_SECONDS)
 
     return cookie
 
