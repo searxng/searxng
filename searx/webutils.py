@@ -22,6 +22,7 @@ from flask_babel import gettext, format_date  # type: ignore
 from searx import logger, get_setting
 
 from searx.engines import DEFAULT_CATEGORY
+from searx import favicons
 
 if TYPE_CHECKING:
     from searx.enginelib import Engine
@@ -164,13 +165,18 @@ def get_json_response(sq: "SearchQuery", rc: "ResultContainer") -> str:
     data = {
         'query': sq.query,
         'number_of_results': rc.number_of_results,
-        'results': [_.as_dict() for _ in rc.get_ordered_results()],
+        'results': [],
         'answers': [_.as_dict() for _ in rc.answers],
         'corrections': list(rc.corrections),
         'infoboxes': rc.infoboxes,
         'suggestions': list(rc.suggestions),
         'unresponsive_engines': get_translated_errors(rc.unresponsive_engines),
     }
+    for res in rc.get_ordered_results():
+        r = res.as_dict()
+        if res.parsed_url:
+            r['favicon_url'] = favicons.favicon_url(res.parsed_url.netloc)
+        data['results'].append(r)
     response = json.dumps(data, cls=JSONEncoder)
     return response
 
