@@ -1,0 +1,43 @@
+<div id="quick_summary" class="quick-summary-box" role="complementary" aria-labelledby="quick_summary-title">
+  <div class="quick-summary-header">
+    <h4 class="title" id="quick_summary-title">{{ _('AI Summary') }}</h4>
+    <button class="btn-collapse" id="collapse_quick_summary" type="button" aria-label="{{ _('Collapse') }}">
+      {%- from 'simple/icons.html' import icon_small -%}
+      {{ icon_small('navigate-down') }}
+    </button>
+  </div>
+  
+  <div class="quick-summary-body">
+    {% if quick_summary.pending %}
+      <div class="quick-summary-loading">
+        <span class="loader"></span>
+        <span>{{ _('Generating summary...') }}</span>
+      </div>
+    {% elif quick_summary.error %}
+      <div class="quick-summary-error" role="alert">
+        <p>{{ quick_summary.error }}</p>
+        <button id="retry_quick_summary" type="button">{{ _('Retry') }}</button>
+      </div>
+    {% else %}
+      <div class="quick-summary-content">
+        <div class="quick-summary-text">
+          {{ quick_summary.summary|safe }}
+        </div>
+        
+        {% if quick_summary.citations %}
+          <div class="quick-summary-citations">
+            <h5>{{ _('Sources') }}</h5>
+            <ul>
+              {% for citation in quick_summary.citations %}
+                <li>
+                  <sup><a href="#result-{{ citation.result_index }}" class="citation-link">[{{ citation.index }}]</a></sup>
+                  <a href="#result-{{ citation.result_index }}" class="citation-title">{{ citation.title }}</a>
+                </li>
+              {% endfor %}
+            </ul>
+          </div>
+        {% endif %}
+      </div>
+    {% endif %}
+  </div>
+</div>

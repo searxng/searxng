@@ -20,6 +20,9 @@ type Settings = {
   theme_static_path?: string;
   translations?: Record<string, string>;
   url_formatting?: "pretty" | "full" | "host";
+  quick_summary_enabled?: boolean;
+  quick_summary_max_results?: number;
+  quick_summary_model?: string;
 };
 
 type HTTPOptions = {

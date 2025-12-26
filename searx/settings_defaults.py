@@ -246,6 +246,13 @@ SCHEMA: dict[str, t.Any] = {
     'preferences': {
         'lock': SettingsValue(list, []),
     },
+    'quick_summary': {
+        'enabled': SettingsValue(bool, False),
+        'api_base_url': SettingsValue(str, ''),
+        'api_key': SettingsValue(str, ''),
+        'model': SettingsValue(str, 'gpt-4o-mini'),
+        'max_results': SettingsValue(int, 10),
+    },
     'outgoing': {
         'useragent_suffix': SettingsValue(str, ''),
         'request_timeout': SettingsValue(numbers.Real, 3.0),

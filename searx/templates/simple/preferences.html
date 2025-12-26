@@ -234,6 +234,12 @@
     {{- plugin_preferences('privacy') -}}
     {{- tab_footer() -}}
 
+    {# tab: AI Summary #}
+
+    {{- tab_header('maintab', 'ai_summary', _('AI Summary')) -}}
+    {%- include 'simple/preferences/quick_summary.html' -%}
+    {{- tab_footer() -}}
+
     {# tab: enignes #}
 
     {{- tab_header('maintab', 'engines', _('Engines')) -}}

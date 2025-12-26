@@ -1,0 +1,72 @@
+<fieldset>{{- '' -}}
+  <legend id="pref_quick_summary_enabled">{{ _('Quick Summary') }}</legend>{{- '' -}}
+  <p class="value">{{- '' -}}
+    <input type="checkbox" {{- ' ' -}}
+           name="quick_summary_enabled" {{- ' ' -}}
+           aria-labelledby="pref_quick_summary_enabled" {{- ' ' -}}
+           class="checkbox-onoff" {{- ' ' -}}
+           {%- if preferences.get_value('quick_summary_enabled') -%}
+             checked
+           {%- endif -%}{{- '' -}}
+           >{{- '' -}}
+  </p>{{- '' -}}
+  <div class="description">
+    {{- _('Enable AI-powered summary of search results') -}}
+  </div>{{- '' -}}
+</fieldset>{{- '' -}}
+
+<fieldset>{{- '' -}}
+  <legend id="pref_quick_summary_api">{{ _('API Configuration') }}</legend>{{- '' -}}
+  <div class="value">{{- '' -}}
+    <label for="pref_quick_summary_api_base_url">{{ _('API Base URL') }}</label>{{- '' -}}
+    <input type="text" {{- ' ' -}}
+           id="pref_quick_summary_api_base_url" {{- ' ' -}}
+           name="quick_summary_api_base_url" {{- ' ' -}}
+           aria-labelledby="pref_quick_summary_api" {{- ' ' -}}
+           value="{{ preferences.get_value('quick_summary_api_base_url') or '' }}" {{- ' ' -}}
+           placeholder="https://api.openai.com/v1"{{- '' -}}
+    >{{- '' -}}
+  </div>{{- '' -}}
+  <div class="value">{{- '' -}}
+    <label for="pref_quick_summary_api_key">{{ _('API Key') }}</label>{{- '' -}}
+    <input type="password" {{- ' ' -}}
+           id="pref_quick_summary_api_key" {{- ' ' -}}
+           name="quick_summary_api_key" {{- ' ' -}}
+           aria-labelledby="pref_quick_summary_api" {{- ' ' -}}
+           value="{{ preferences.get_value('quick_summary_api_key') or '' }}" {{- ' ' -}}
+           placeholder="{{ _('Enter your API key') }}"{{- '' -}}
+           >{{- '' -}}
+  </div>{{- '' -}}
+  <div class="value">{{- '' -}}
+    <label for="pref_quick_summary_model">{{ _('Model') }}</label>{{- '' -}}
+    <input type="text" {{- ' ' -}}
+           id="pref_quick_summary_model" {{- ' ' -}}
+           name="quick_summary_model" {{- ' ' -}}
+           aria-labelledby="pref_quick_summary_api" {{- ' ' -}}
+           value="{{ preferences.get_value('quick_summary_model') or '' }}" {{- ' ' -}}
+           placeholder="gpt-4o-mini"{{- '' -}}
+           >{{- '' -}}
+  </div>{{- '' -}}
+  <div class="description">
+    {{- _('Configure your OpenAI-compatible API endpoint and model') -}}
+  </div>{{- '' -}}
+</fieldset>{{- '' -}}
+
+<fieldset>{{- '' -}}
+  <legend id="pref_quick_summary_settings">{{ _('Summary Settings') }}</legend>{{- '' -}}
+  <div class="value">{{- '' -}}
+    <label for="pref_quick_summary_max_results">{{ _('Number of top results to summarize') }}</label>{{- '' -}}
+    <input type="number" {{- ' ' -}}
+           id="pref_quick_summary_max_results" {{- ' ' -}}
+           name="quick_summary_max_results" {{- ' ' -}}
+           aria-labelledby="pref_quick_summary_settings" {{- ' ' -}}
+           value="{{ preferences.get_value('quick_summary_max_results') or '' }}" {{- ' ' -}}
+           min="5" {{- ' ' -}}
+           max="20" {{- ' ' -}}
+           step="1"{{- '' -}}
+           >{{- '' -}}
+  </div>{{- '' -}}
+  <div class="description">
+    {{- _('Number of top results to summarize (5-20)') -}}
+  </div>{{- '' -}}
+</fieldset>{{- '' -}}
