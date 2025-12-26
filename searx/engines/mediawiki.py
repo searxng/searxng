@@ -105,6 +105,7 @@ content_path: str = 'wiki/'
 The default path should work fine usually.
 """
 
+
 def request(query, params):
 
     # write search-language back to params, required in response
