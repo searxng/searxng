@@ -32,7 +32,7 @@ time_range_dict = {'day': 'd', 'week': 'w', 'month': 'm', 'year': 'y'}
 
 # Base URL
 base_url = "https://www.so.com"
-cache_key = f"{base_url}-cookie"
+COOKIE_CACHE_KEY = "cookie"
 cookie_cache_expiration_seconds = 3600
 
 CACHE: EngineCache
