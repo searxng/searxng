@@ -9,9 +9,8 @@ Two endpoints, ``/`` and ``/search``, are supported for both GET and POST method
 The GET method expects parameters as URL query parameters, while the POST method expects parameters as form data.
 
 If you want to consume the results as JSON, CSV, or RSS, you need to set the
-``format`` parameter accordingly. Supported formats are defined in settings.yml, under the ``search`` section.
-Requesting an unset format will return a 403 Forbidden error. Be aware that many public instances have these formats disabled. 
-You can still get HTML-formatted results and parse them yourself.
+``format`` parameter accordingly. Supported formats are defined in ``settings.yml``, under the ``search`` section.
+Requesting an unset format will return a 403 Forbidden error. Be aware that many public instances have these formats disabled.
 
 
 Endpoints:
