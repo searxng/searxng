@@ -6,6 +6,7 @@ import typing as t
 from urllib.parse import urlencode
 from lxml import html
 
+from searx import logger
 from searx.enginelib import EngineCache
 from searx.utils import extract_text
 from searx.network import get as http_get
@@ -33,11 +34,10 @@ time_range_dict = {'day': 'd', 'week': 'w', 'month': 'm', 'year': 'y'}
 # Base URL
 base_url = "https://www.so.com"
 COOKIE_CACHE_KEY = "cookie"
-cookie_cache_expiration_seconds = 3600
+COOKIE_CACHE_EXPIRATION_SECONDS = 3600
 
 CACHE: EngineCache
-"""Persistent (SQLite) key/value cache that deletes its values after ``expire``
-seconds."""
+"""Stores cookies from 360search to avoid re-fetching them on every request."""
 
 
 def setup(engine_settings: dict[str, t.Any]) -> bool:
@@ -60,7 +60,7 @@ def get_cookie(url: str) -> str:
     resp: SXNG_Response = http_get(url, timeout=10, allow_redirects=False)
     headers = resp.headers
     cookie = headers['set-cookie'].split(";")[0]
-    CACHE.set(key=cache_key, value=cookie, expire=cookie_cache_expiration_seconds)
+    CACHE.set(key=cache_key, value=cookie, expire=COOKIE_CACHE_EXPIRATION_SECONDS)
 
     return cookie
 
@@ -76,18 +76,15 @@ def request(query, params):
         query_params["adv_t"] = time_range_dict.get(params['time_range'])
     params["url"] = f"{base_url}/s?{urlencode(query_params)}"
     # get token by calling the query page
-    print("query url:", params["url"])
+    logger.debug("querying url:", params["url"])
     cookie = get_cookie(params["url"])
-    print(cookie)
+    logger.debug(f"obtained cookie: {cookie}")
     params['headers'] = {'Cookie': cookie}
-
-    # print(resp.headers)
 
     return params
 
 
 def response(resp):
-    # print(resp.headers)
     dom = html.fromstring(resp.text)
     results = []
 
