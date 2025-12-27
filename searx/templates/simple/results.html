@@ -18,11 +18,15 @@
   {% set only_template = '' %}
 {% endif %}
 
-<div id="results" class="{{ only_template }}">
+ <div id="results" class="{{ only_template }}">
 
-  {%- if answers -%}
-    {%- include 'simple/elements/answers.html' -%}
+  {%- if quick_summary.enabled -%}
+    {%- include 'simple/elements/quick_summary.html' -%}
   {%- endif %}
+
+   {%- if answers -%}
+     {%- include 'simple/elements/answers.html' -%}
+   {%- endif %}
 
     <div id="sidebar">
 

@@ -34,7 +34,14 @@ ready(() => {
       where: [Endpoints.results]
     });
   }
-});
+
+  if (settings.quick_summary_enabled) {
+    load(() => import("./plugin/QuickSummary.ts").then(({ default: Plugin }) => new Plugin()), {
+      on: "endpoint",
+      where: [Endpoints.results]
+    });
+  }
+  });
 
 ready(
   () => {

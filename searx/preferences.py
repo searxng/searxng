@@ -486,7 +486,28 @@ class Preferences:
             ),
             'url_formatting': EnumStringSetting(
                 settings['ui']['url_formatting'],
+                locked=is_locked('url_formatting'),
                 choices=['pretty', 'full', 'host']
+            ),
+            'quick_summary_enabled': BooleanSetting(
+                settings.get('quick_summary', {}).get('enabled', False),
+                locked=is_locked('quick_summary_enabled')
+            ),
+            'quick_summary_api_base_url': StringSetting(
+                settings.get('quick_summary', {}).get('api_base_url', ''),
+                locked=is_locked('quick_summary_api_base_url')
+            ),
+            'quick_summary_api_key': StringSetting(
+                settings.get('quick_summary', {}).get('api_key', ''),
+                locked=is_locked('quick_summary_api_key')
+            ),
+            'quick_summary_model': StringSetting(
+                settings.get('quick_summary', {}).get('model', 'gpt-4o-mini'),
+                locked=is_locked('quick_summary_model')
+            ),
+            'quick_summary_max_results': StringSetting(
+                str(settings.get('quick_summary', {}).get('max_results', 10)),
+                locked=is_locked('quick_summary_max_results')
             ),
             # fmt: on
         }

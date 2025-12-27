@@ -96,7 +96,8 @@ from searx.preferences import (
 )
 import searx.answerers
 import searx.plugins
-
+import searx.quick_summary
+import asyncio
 
 from searx.metrics import get_engines_stats, get_engine_errors, get_reliabilities, histogram, counter, openmetrics
 from searx.flaskfix import patch_application
@@ -384,6 +385,9 @@ def get_client_settings():
         'safesearch': req_pref.get_value('safesearch'),
         'theme': req_pref.get_value('theme'),
         'doi_resolver': get_doi_resolver(),
+        'quick_summary_enabled': req_pref.get_value('quick_summary_enabled'),
+        'quick_summary_max_results': int(req_pref.get_value('quick_summary_max_results') or '10'),
+        'quick_summary_model': req_pref.get_value('quick_summary_model'),
     }
 
 
@@ -754,6 +758,14 @@ def search():
     # search_query.lang contains the user choice (all, auto, en, ...)
     # when the user choice is "auto", search.search_query.lang contains the detected language
     # otherwise it is equals to search_query.lang
+    
+    # Prepare quick summary data for async loading
+    quick_summary_data = {
+        'enabled': sxng_request.preferences.get_value('quick_summary_enabled'),
+        'pending': True,
+        'query': sxng_request.form.get('q', '')
+    }
+    
     return render(
         # fmt: off
         'results.html',
@@ -781,7 +793,8 @@ def search():
         ),
         timeout_limit = sxng_request.form.get('timeout_limit', None),
         timings = engine_timings_pairs,
-        max_response_time = max_response_time
+        max_response_time = max_response_time,
+        quick_summary = quick_summary_data
         # fmt: on
     )
 
@@ -856,6 +869,68 @@ def autocompleter():
 
     suggestions = escape(suggestions, False)
     return Response(suggestions, mimetype=mimetype)
+
+
+@app.route('/quick_summary', methods=['POST'])
+def quick_summary_endpoint():
+    """Endpoint to generate AI summary of search results."""
+    if sxng_request.method != 'POST':
+        return jsonify({'error': 'Method not allowed'}), 405
+
+    try:
+        data = json.loads(sxng_request.get_data(as_text=True))
+    except json.JSONDecodeError:
+        return jsonify({'error': 'Invalid JSON data'}), 400
+
+    query = data.get('q', '').strip()
+    results_data = data.get('results', [])
+
+    # Validate quick summary is enabled
+    if not sxng_request.preferences.get_value('quick_summary_enabled'):
+        return jsonify({'error': 'Quick summary is not enabled'}), 403
+
+    # Get API configuration from preferences
+    api_config = {
+        'api_base_url': sxng_request.preferences.get_value('quick_summary_api_base_url'),
+        'api_key': sxng_request.preferences.get_value('quick_summary_api_key'),
+        'model': sxng_request.preferences.get_value('quick_summary_model')
+    }
+
+    # Get max results setting
+    try:
+        max_results = int(sxng_request.preferences.get_value('quick_summary_max_results', '10'))
+        max_results = max(5, min(20, max_results))  # Clamp to 5-20
+    except (ValueError, TypeError):
+        max_results = 10
+
+    # Format results for LLM
+    results = []
+    for r in results_data:
+        if isinstance(r, dict):
+            results.append({
+                'title': r.get('title', ''),
+                'url': r.get('url', ''),
+                'content': r.get('content', '') or r.get('snippet', '')
+            })
+
+    # Generate summary using asyncio to call async function
+    try:
+        loop = asyncio.new_event_loop()
+        summary_data = loop.run_until_complete(
+            searx.quick_summary.generate_summary(
+                query=query,
+                results=results,
+                api_config=api_config,
+                max_results=max_results,
+                use_cache=True
+            )
+        )
+        loop.close()
+    except Exception as e:
+        logger.exception(f"Error generating quick summary: {e}")
+        return jsonify({'error': f'Failed to generate summary: {str(e)}'}), 500
+
+    return jsonify(summary_data)
 
 
 @app.route('/preferences', methods=['GET', 'POST'])
