@@ -14,6 +14,21 @@
 
 SearXNG is a `metasearch engine`_. Users are neither tracked nor profiled.
 
+✨ Enhanced Features
+===================
+
+This fork includes the **Quick Summary** feature - AI-powered intelligent summaries of your search results!
+
+**Quick Summary** leverages OpenAI-compatible APIs to generate concise, relevant summaries from your top search results, helping you find information faster without compromising privacy.
+
+Key enhancements:
+
+- 🤖 **AI-Powered Summaries**: Get instant summaries of search results
+- ⚙️ **Configurable**: Choose your preferred AI provider and model
+- 🔒 **Privacy-Focused**: Summaries are generated on-demand, your searches remain private
+- 🎨 **Seamless Integration**: Clean UI that fits naturally into the SearXNG experience
+- 🔧 **User Control**: Enable/disable through preferences
+
 .. image:: https://img.shields.io/badge/organization-3050ff?style=flat-square&logo=searxng&logoColor=fff&cacheSeconds=86400
    :target: https://github.com/searxng
    :alt: Organization
