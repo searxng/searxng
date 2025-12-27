@@ -1,8 +1,9 @@
 <div id="suggestions" role="complementary" aria-labelledby="suggestions-title">
   <details class="sidebar-collapsible">
     <summary class="title" id="suggestions-title">{{ _('Suggestions') }}</summary>
-    <div class="wrapper">
+    <ul class="wrapper">
       {%- for suggestion in suggestions -%}
+      <li>
         <form method="{{ method or 'POST' }}" action="{{ url_for('search') }}">
           <input type="hidden" name="q" value="{{ suggestion.url }}">
           {%- for category in selected_categories -%}
@@ -15,9 +16,10 @@
           {%- if timeout_limit -%}
             <input type="hidden" name="timeout_limit" value="{{ timeout_limit|e }}" >
           {%- endif -%}
-          <input type="submit" class="suggestion" role="link" value="&bull; {{ suggestion.title }}">
+          <input type="submit" class="suggestion" role="link" value="{{ suggestion.title }}">
         </form>
+      </li>
       {%- endfor -%}
-    </div>
+    </ul>
   </details>
 </div>
