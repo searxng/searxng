@@ -51,6 +51,7 @@ def request(query, params):
     }
 
     params["url"] = f"{base_url}?{urlencode(query_params)}"
+    params["headers"]["Referer"] = "https://www.bilibili.com"
     params["cookies"] = cookie
 
     return params
