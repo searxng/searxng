@@ -46,11 +46,9 @@ Further information on *how-to* can be found `here <https://docs.searxng.org/adm
 Connect
 =======
 
-If you have questions or want to connect with others in the community,
-we have two official channels:
+If you have questions or want to connect with others in the community:
 
 - `#searxng:matrix.org <https://matrix.to/#/#searxng:matrix.org>`_
-- `#searxng @ libera.chat <https://web.libera.chat/?channel=#searxng>`_ (bridged to Matrix)
 
 Contributing
 ============
