@@ -428,7 +428,7 @@ def int_or_zero(num: list[str] | str) -> int:
 
 
 def load_module(filename: str, module_dir: str) -> types.ModuleType:
-    modname = splitext(filename)[0]
+    modname,_ = splitext(filename)
     modpath = join(module_dir, filename)
     # and https://docs.python.org/3/library/importlib.html#importing-a-source-file-directly
     spec = importlib.util.spec_from_file_location(modname, modpath)
