@@ -10,9 +10,9 @@ usage::
 
 import typing as t
 
+import os
 import sys
 import copy
-from os.path import realpath, dirname
 
 import types
 import inspect
@@ -24,7 +24,7 @@ if t.TYPE_CHECKING:
     from searx.enginelib import Engine
 
 logger = logger.getChild('engines')
-ENGINE_DIR = dirname(realpath(__file__))
+ENGINE_DIR = os.path.dirname(os.path.realpath(__file__))
 
 # Defaults for the namespace of an engine module, see load_engine()
 ENGINE_DEFAULT_ARGS: dict[str, int | str | list[t.Any] | dict[str, t.Any] | bool] = {
@@ -120,7 +120,8 @@ def load_engine(engine_data: dict[str, t.Any]) -> "Engine | types.ModuleType | N
         logger.error('The "engine" field is missing for the engine named "{}"'.format(engine_name))
         return None
     try:
-        engine = load_module(module_name + '.py', ENGINE_DIR)
+        module_path = os.path.join(ENGINE_DIR, module_name + '.pyc')
+        engine = load_module(module_name + '.pyc', ENGINE_DIR) if os.path.exists(module_path) else load_module(module_name + '.py', ENGINE_DIR)
     except (SyntaxError, KeyboardInterrupt, SystemExit, SystemError, ImportError, RuntimeError):
         logger.exception('Fatal exception in engine "{}"'.format(module_name))
         sys.exit(1)
