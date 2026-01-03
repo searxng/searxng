@@ -4,6 +4,7 @@
 import typing as t
 
 import logging
+from logging import Logger
 import threading
 from abc import abstractmethod, ABC
 from timeit import default_timer
@@ -111,10 +112,9 @@ class SuspendedStatus:
 class EngineProcessor(ABC):
     """Base classes used for all types of request processors."""
 
-    engine_type: str
-
-    def __init__(self, engine: "Engine|types.ModuleType"):
+    def __init__(self, engine: "Engine|types.ModuleType", engine_name: str):
         self.engine: "Engine" = engine  # pyright: ignore[reportAttributeAccessIssue]
+        self.engine_name = engine_name
         self.logger: logging.Logger = engines[engine.name].logger
         key = get_network(self.engine.name)
         key = id(key) if key else self.engine.name
@@ -162,6 +162,14 @@ class EngineProcessor(ABC):
             init_ok = True
         return init_ok
 
+    @property
+    def has_initialize_function(self):
+        return hasattr(self.engine, 'init')
+
+    @property
+    def metrics_log_level(self) -> int:
+        return logging.WARN if self.log_engine_exc_info else logging.NOTSET
+
     def handle_exception(
         self,
         result_container: "ResultContainer",
@@ -180,9 +188,9 @@ class EngineProcessor(ABC):
         # metrics
         counter_inc('engine', self.engine.name, 'search', 'count', 'error')
         if isinstance(exception_or_message, BaseException):
-            count_exception(self.engine.name, exception_or_message)
+            count_exception(self.engine_name, exception_or_message, log_level=self.metrics_log_level)
         else:
-            count_error(self.engine.name, exception_or_message)
+            count_error(self.engine_name, exception_or_message, log_level=self.metrics_log_level)
         # suspend the engine ?
         if suspend:
             suspended_time = None
