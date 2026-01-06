@@ -368,6 +368,7 @@ engines:
     adobe_content_types: ["photo", "illustration", "zip_vector", "template", "3d", "image"]
     timeout: 6
     disabled: true
+    inactive: true
 
   - name: adobe stock video
     engine: adobe_stock
@@ -378,6 +379,7 @@ engines:
     adobe_content_types: ["video"]
     timeout: 6
     disabled: true
+    inactive: true
 
   - name: adobe stock audio
     engine: adobe_stock
@@ -388,6 +390,7 @@ engines:
     adobe_content_types: ["audio"]
     timeout: 6
     disabled: true
+    inactive: true
 
   - name: astrophysics data system
     engine: astrophysics_data_system
@@ -471,6 +474,7 @@ engines:
     engine: artic
     shortcut: arc
     timeout: 4.0
+    inactive: true
 
   - name: arxiv
     engine: arxiv
@@ -527,6 +531,7 @@ engines:
     # add "list" to the array to get results in the results list
     display_type: ["infobox"]
     categories: [general]
+    inactive: true
 
   - name: bilibili
     engine: bilibili
@@ -541,14 +546,17 @@ engines:
   - name: bing images
     engine: bing_images
     shortcut: bii
+    inactive: true
 
   - name: bing news
     engine: bing_news
     shortcut: bin
+    inactive: true
 
   - name: bing videos
     engine: bing_videos
     shortcut: biv
+    inactive: true
 
   - name: bitchute
     engine: bitchute
@@ -588,6 +596,7 @@ engines:
     engine: openverse
     categories: images
     shortcut: opv
+    inactive: true
 
   - name: media.ccc.de
     engine: ccc_media
@@ -812,6 +821,7 @@ engines:
   - name: duckduckgo
     engine: duckduckgo
     shortcut: ddg
+    inactive: true
 
   - name: duckduckgo images
     engine: duckduckgo_extra
@@ -819,6 +829,7 @@ engines:
     ddg_category: images
     shortcut: ddi
     disabled: true
+    inactive: true
 
   - name: duckduckgo videos
     engine: duckduckgo_extra
@@ -826,6 +837,7 @@ engines:
     ddg_category: videos
     shortcut: ddv
     disabled: true
+    inactive: true
 
   - name: duckduckgo news
     engine: duckduckgo_extra
@@ -833,6 +845,7 @@ engines:
     ddg_category: news
     shortcut: ddn
     disabled: true
+    inactive: true
 
   - name: duckduckgo weather
     engine: duckduckgo_weather
@@ -887,6 +900,7 @@ engines:
     shortcut: 1x
     timeout: 3.0
     disabled: true
+    inactive: true
 
   - name: fdroid
     engine: fdroid
@@ -902,6 +916,7 @@ engines:
     categories: images
     shortcut: fl
     engine: flickr_noapi
+    inactive: true
 
   - name: flickr_api
     # You can use the engine using the official stable API, but you need an API
