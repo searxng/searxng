@@ -571,13 +571,16 @@ article[data-vim-selected].category-social {
 
 #suggestions {
   .wrapper {
-    display: flex;
-    flex-flow: column;
-    justify-content: flex-end;
+    padding-left: 0;
+    margin: 0;
+    list-style-position: inside;
+
+    li::marker {
+      color: var(--color-result-link-font);
+    }
 
     form {
       display: inline-block;
-      flex: 1 1 50%;
     }
   }
 }
@@ -585,8 +588,8 @@ article[data-vim-selected].category-social {
 #suggestions,
 #infoboxes {
   input {
-    padding: 0;
-    margin: 3px;
+    padding: 3px;
+    margin: 0;
     font-size: 0.9em;
     display: inline-block;
     background: transparent;
