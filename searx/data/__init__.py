@@ -6,7 +6,7 @@ make data.all
 """
 # pylint: disable=invalid-name
 
-__all__ = ["ahmia_blacklist_loader", "data_dir", "get_cache"]
+__all__ = ["ahmia_blacklist_loader", "gsa_useragents_loader", "data_dir", "get_cache"]
 
 import json
 import typing as t
@@ -63,6 +63,7 @@ lazy_globals = {
     "ENGINE_TRAITS": None,
     "LOCALES": None,
     "TRACKER_PATTERNS": TrackerPatternsDB(),
+    "GSA_USER_AGENTS": None,
 }
 
 data_json_files = {
@@ -105,3 +106,24 @@ def ahmia_blacklist_loader() -> list[str]:
     """
     with open(data_dir / 'ahmia_blacklist.txt', encoding='utf-8') as f:
         return f.read().split()
+
+
+def gsa_useragents_loader() -> list[str]:
+    """Load data from `gsa_useragents.txt` and return a list of user agents
+    suitable for Google.  The user agents are fetched by::
+
+      searxng_extra/update/update_gsa_useragents.py
+
+    This function is used by :py:mod:`searx.engines.google`.
+
+    """
+    data = lazy_globals["GSA_USER_AGENTS"]
+    if data is not None:
+        return data
+
+    log.debug("init searx.data.%s", "GSA_USER_AGENTS")
+
+    with open(data_dir / 'gsa_useragents.txt', encoding='utf-8') as f:
+        lazy_globals["GSA_USER_AGENTS"] = f.read().splitlines()
+
+    return lazy_globals["GSA_USER_AGENTS"]
