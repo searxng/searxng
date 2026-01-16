@@ -942,6 +942,26 @@ engines:
     shortcut: frk
     disabled: true
 
+  - name: fynd
+    engine: xpath
+    search_url: https://fynd.bot/?search={query}&offset={pageno}
+    results_xpath: //div[contains(@class, "result-item")]
+    url_xpath: .//a/@href
+    title_xpath: .//div[contains(@class, "title-line")]
+    content_xpath: .//div[contains(@class, "description")]
+    thumbnail_xpath: .//img[contains(@class, "preview-img")]/@src
+    paging: true
+    first_page_num: 0
+    page_size: 10
+    categories: general
+    disabled: true
+    shortcut: fynd
+    about:
+      website: https://fynd.bot
+      use_official_api: false
+      require_api_key: false
+      results: HTML
+
   - name: fyyd
     engine: fyyd
     shortcut: fy
