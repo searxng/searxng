@@ -338,6 +338,9 @@ def _parse_search(resp: SXNG_Response) -> EngineResults:
                 item["iframe_src"] = iframe_src
                 item["template"] = "videos.html"
 
+    for suggestion in eval_xpath_list(dom, "//a[contains(@class, 'related-query')]"):
+        res.append(res.types.LegacyResult({'suggestion': extract_text(suggestion)}))
+
     return res
 
 
