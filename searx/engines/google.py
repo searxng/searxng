@@ -17,7 +17,7 @@ import re
 import random
 import string
 import time
-from urllib.parse import urlencode
+from urllib.parse import urlencode, unquote
 from lxml import html
 import babel
 import babel.core
@@ -373,7 +373,7 @@ def response(resp: "SXNG_Response"):
             if raw_url is None:
                 logger.debug('ignoring item from the result_xpath list: missing url of title "%s"', title)
                 continue
-            url = raw_url[7:].split('&sa=U')[0]  # remove the google redirector
+            url = unquote(raw_url[7:].split('&sa=U')[0])  # remove the google redirector
 
             content_nodes = eval_xpath(result, './/div[contains(@data-sncf, "1")]')
             for item in content_nodes:
