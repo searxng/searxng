@@ -34,6 +34,9 @@ Implementations
 ===============
 
 """
+
+import random
+
 import typing as t
 
 from urllib.parse import urlencode
@@ -66,7 +69,9 @@ categories = ["files", "books"]
 paging: bool = True
 
 # search-url
-base_url: str = "https://annas-archive.org"
+base_url: list[str] | str = []
+"""List of Anna's archive domains or a single domain (as string)."""
+
 aa_content: str = ""
 """Anan's search form field **Content** / possible values::
 
@@ -98,6 +103,9 @@ def setup(engine_settings: dict[str, t.Any]) -> bool:  # pylint: disable=unused-
     """Check of engine's settings."""
     traits = EngineTraits(**ENGINE_TRAITS["annas archive"])
 
+    if not base_url:
+        raise ValueError("missing required config `base_url`")
+
     if aa_content and aa_content not in traits.custom["content"]:
         raise ValueError(f"invalid setting content: {aa_content}")
 
@@ -108,6 +116,13 @@ def setup(engine_settings: dict[str, t.Any]) -> bool:  # pylint: disable=unused-
         raise ValueError(f"invalid setting ext: {aa_ext}")
 
     return True
+
+
+def get_base_url_choice() -> str:
+    if isinstance(base_url, list):
+        return random.choice(base_url)
+
+    return base_url
 
 
 def request(query: str, params: "OnlineParams") -> None:
@@ -122,7 +137,9 @@ def request(query: str, params: "OnlineParams") -> None:
     }
     # filter out None and empty values
     filtered_args = dict((k, v) for k, v in args.items() if v)
-    params["url"] = f"{base_url}/search?{urlencode(filtered_args)}"
+
+    params["base_url"] = get_base_url_choice()
+    params["url"] = f"{params['base_url']}/search?{urlencode(filtered_args)}"
 
 
 def response(resp: "SXNG_Response") -> EngineResults:
@@ -136,16 +153,16 @@ def response(resp: "SXNG_Response") -> EngineResults:
 
     for item in eval_xpath_list(dom, "//main//div[contains(@class, 'js-aarecord-list-outer')]/div"):
         try:
-            kwargs: dict[str, t.Any] = _get_result(item)
+            kwargs: dict[str, t.Any] = _get_result(item, resp.search_params["base_url"])
         except SearxEngineXPathException:
             continue
         res.add(res.types.Paper(**kwargs))
     return res
 
 
-def _get_result(item: ElementBase) -> dict[str, t.Any]:
+def _get_result(item: ElementBase, base_url_choice) -> dict[str, t.Any]:
     return {
-        "url": base_url + eval_xpath_getindex(item, "./a/@href", 0),
+        "url": base_url_choice + eval_xpath_getindex(item, "./a/@href", 0),
         "title": extract_text(eval_xpath(item, "./div//a[starts-with(@href, '/md5')]")),
         "authors": [extract_text(eval_xpath_getindex(item, ".//a[starts-with(@href, '/search')]", 0))],
         "publisher": extract_text(
@@ -169,7 +186,7 @@ def fetch_traits(engine_traits: EngineTraits):
     engine_traits.custom["ext"] = []
     engine_traits.custom["sort"] = []
 
-    resp = get(base_url + "/search")
+    resp = get(get_base_url_choice() + "/search")
     if not resp.ok:
         raise RuntimeError("Response from Anna's search page is not OK.")
     dom = html.fromstring(resp.text)
