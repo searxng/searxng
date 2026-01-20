@@ -56,7 +56,7 @@ def response(resp):
             except (ValueError, TypeError):
                 pass
 
-        length = parse_duration_string(album_info.get("subscriptionContent"))
+        length = parse_duration_string(album_info.get("subscriptContent"))
         results.append(
             {
                 'url': album_info.get("pageUrl", "").replace("http://", "https://"),
