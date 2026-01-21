@@ -276,7 +276,8 @@ class BooleanChoices:
 
         disabled = self.transform_form_items(items)
         for setting in self.choices:
-            self.choices[setting] = setting not in disabled
+            if setting in disabled:
+                self.choices[setting] = False
 
     @property
     def enabled(self):
