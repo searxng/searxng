@@ -1,11 +1,12 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 """iQiyi: A search engine for retrieving videos from iQiyi."""
 
+import typing
+
 from urllib.parse import urlencode
-from datetime import datetime
+from datetime import datetime, timedelta
 
 from searx.exceptions import SearxEngineAPIException
-from searx.utils import parse_duration_string
 
 about = {
     "website": "https://www.iqiyi.com/",
@@ -35,6 +36,28 @@ def request(query, params):
     return params
 
 
+def _result(video: dict[str, typing.Any], album_info: dict[str, typing.Any]):
+    length = timedelta(milliseconds=video.get("duration", 0))
+
+    published_date = None
+    release_time = album_info.get("releaseTime", {}).get("value")
+    if release_time:
+        try:
+            published_date = datetime.strptime(release_time, "%Y-%m-%d")
+        except (ValueError, TypeError):
+            pass
+
+    return {
+        'url': video.get("pageUrl", "").replace("http://", "https://"),
+        'title': video.get("title", ""),
+        'content': album_info.get("brief", {}).get("value", ""),
+        'template': 'videos.html',
+        'length': length,
+        'publishedDate': published_date,
+        'thumbnail': album_info.get("img", ""),
+    }
+
+
 def response(resp):
     try:
         data = resp.json()
@@ -47,26 +70,11 @@ def response(resp):
 
     for entry in data["data"]["templates"]:
         album_info = entry.get("albumInfo", {})
-
-        published_date = None
-        release_time = album_info.get("releaseTime", {}).get("value")
-        if release_time:
-            try:
-                published_date = datetime.strptime(release_time, "%Y-%m-%d")
-            except (ValueError, TypeError):
-                pass
-
-        length = parse_duration_string(album_info.get("subscriptContent"))
-        results.append(
-            {
-                'url': album_info.get("pageUrl", "").replace("http://", "https://"),
-                'title': album_info.get("title", ""),
-                'content': album_info.get("brief", {}).get("value", ""),
-                'template': 'videos.html',
-                'length': length,
-                'publishedDate': published_date,
-                'thumbnail': album_info.get("img", ""),
-            }
-        )
+        if "videos" in album_info:
+            for video in album_info["videos"]:
+                results.append(_result(video, album_info))
+        else:
+            # album only contains a single video
+            results.append(_result(album_info, album_info))
 
     return results
