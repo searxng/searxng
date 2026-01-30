@@ -45,7 +45,7 @@ jobs:
           persist-credentials: "false"
 
       - name: Setup cache Python
-        uses: actions/cache@8b402f58fbc84540c8b491a91e594a4576fec3d7  # v5.0.2
+        uses: actions/cache@cdf6c1fa76f9f475f3d7449005a359c84ca0f306  # v5.0.3
         with:
           key: "python-${{ matrix.python-version }}-${{ runner.arch }}-${{ hashFiles('./requirements*.txt') }}"
           restore-keys: "python-${{ matrix.python-version }}-${{ runner.arch }}-"
@@ -77,13 +77,13 @@ jobs:
           node-version-file: "./.nvmrc"
 
       - name: Setup cache Node.js
-        uses: actions/cache@8b402f58fbc84540c8b491a91e594a4576fec3d7  # v5.0.2
+        uses: actions/cache@cdf6c1fa76f9f475f3d7449005a359c84ca0f306  # v5.0.3
         with:
           key: "nodejs-${{ runner.arch }}-${{ hashFiles('./.nvmrc', './package.json') }}"
           path: "./client/simple/node_modules/"
 
       - name: Setup cache Python
-        uses: actions/cache@8b402f58fbc84540c8b491a91e594a4576fec3d7  # v5.0.2
+        uses: actions/cache@cdf6c1fa76f9f475f3d7449005a359c84ca0f306  # v5.0.3
         with:
           key: "python-${{ env.PYTHON_VERSION }}-${{ runner.arch }}-${{ hashFiles('./requirements*.txt') }}"
           restore-keys: "python-${{ env.PYTHON_VERSION }}-${{ runner.arch }}-"
