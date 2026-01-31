@@ -1,10 +1,15 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 """Sogou search engine for searxng"""
 
+import re
 from urllib.parse import urlencode
+from httpx import Response
 from lxml import html
 
+from searx.network import multi_requests, Request
+from searx.exceptions import SearxEngineCaptchaException
 from searx.utils import extract_text
+
 
 # Metadata
 about = {
@@ -26,6 +31,9 @@ time_range_dict = {'day': 'inttime_day', 'week': 'inttime_week', 'month': 'intti
 # Base URL
 base_url = "https://www.sogou.com"
 
+# meta
+META_RE = re.compile(r"""URL\s*=\s*['"]?(?P<url>[^'">]+)""")
+
 
 def request(query, params):
     query_params = {
@@ -38,31 +46,58 @@ def request(query, params):
         query_params["tsn"] = 1
 
     params["url"] = f"{base_url}/web?{urlencode(query_params)}"
+    params["allow_redirects"] = False
     return params
 
 
-def response(resp):
+def response(resp: Response):
+    if (
+        resp.status_code == 302
+        and resp.next_request is not None
+        and str(resp.next_request.url).startswith("http://www.sogou.com/antispider")
+    ):
+        raise SearxEngineCaptchaException()
+
     dom = html.fromstring(resp.text)
     results = []
 
-    for item in dom.xpath('//div[contains(@class, "vrwrap")]'):
+    url_to_resolve = []
+    url_to_result = []
+
+    for i, item in enumerate(dom.xpath('//div[contains(@class, "vrwrap")]')):
         title = extract_text(item.xpath('.//h3[contains(@class, "vr-title")]/a'))
         url = extract_text(item.xpath('.//h3[contains(@class, "vr-title")]/a/@href'))
 
-        if url.startswith("/link?url="):
-            url = f"{base_url}{url}"
+        if not title or not url:
+            continue
 
         content = extract_text(item.xpath('.//div[contains(@class, "text-layout")]//p[contains(@class, "star-wiki")]'))
         if not content:
             content = extract_text(item.xpath('.//div[contains(@class, "fz-mid space-txt")]'))
 
-        if title and url:
-            results.append(
-                {
-                    "title": title,
-                    "url": url,
-                    "content": content,
-                }
-            )
+        result = {
+            "title": title,
+            "url": url,
+            "content": content,
+        }
+
+        results.append(result)
+
+        if url.startswith("/link?url="):
+            url = f"{base_url}{url}"
+            url_to_resolve.append(url)
+            url_to_result.append(result)
+
+    #
+    request_list = [
+        Request.get(u, allow_redirects=False, headers=resp.search_params['headers']) for u in url_to_resolve
+    ]
+
+    response_list = multi_requests(request_list)
+    for i, redirect_response in enumerate(response_list):
+        if not isinstance(redirect_response, Exception):
+            m = META_RE.search(redirect_response.text)
+            if m:
+                url_to_result[i]['url'] = m.group("url")
 
     return results
