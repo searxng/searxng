@@ -56,13 +56,8 @@ jobs:
       # yamllint disable rule:line-length
       - name: Setup podman
         env:
-          PODMAN_VERSION: "v5.6.2"
+          PODMAN_VERSION: "v5.7.1"
         run: |
-          # dpkg man-db trigger is very slow on GHA runners
-          # https://github.com/actions/runner-images/issues/10977
-          # https://github.com/actions/runner/issues/4030
-          sudo rm -f /var/lib/man-db/auto-update
-
           sudo apt-get purge -y podman runc crun conmon
 
           curl -fsSLO "https://github.com/mgoltzsche/podman-static/releases/download/${{ env.PODMAN_VERSION }}/podman-linux-${{ matrix.march }}.tar.gz"
