@@ -99,11 +99,17 @@ class TestLocales(SearxTestCase):
 
     @parameterized.expand(
         [
-            ('fr-BE', ['fr-FR', 'fr-CA', 'nl-BE'], 'nl-BE'),  # A user selects region 'fr-BE' which should end in nl-BE
-            ('fr', ['fr-BE', 'fr-CH'], 'fr-BE'),  # A user selects fr with 2 locales,
-            # the get_engine_locale selects the locale by looking at the "population
-            # percent" and this percentage has an higher amount in BE (68.%)
-            # compared to CH (21%)
+            # approximation rule (*by territory*) -> territory has priority over the lang:
+            # A user selects region 'fr-BE' which should end in nl-BE
+            ('fr-BE', ['fr-FR', 'fr-CA', 'nl-BE'], 'nl-BE'),
+            # approximation rule (*by language*) -> Check in which territories
+            # the language has an official status and if one of these
+            # territories is supported:
+            # A user selects fr with 2 locales where fr is a offical language,
+            # the get_engine_locale selects the locale by looking at the
+            # "population percent" and this percentage has a higher amount in
+            # BE (population 38%) compared to IT (population 20).
+            ('fr', ['fr-BE', 'fr-IT'], 'fr-BE'),
         ]
     )
     def test_locale_optimized_territory(self, locale: str, locale_list: list[str], expected_locale: str):
