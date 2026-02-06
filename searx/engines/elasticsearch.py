@@ -154,14 +154,38 @@ def _terms_query(query):
 
 
 def _custom_query(query):
-    key, value = query.split(':')
-    custom_query = custom_query_json
+    key = value = None
+    if any(placeholder in custom_query_json for placeholder in ["{{KEY}}", "{{VALUE}}", "{{VALUES}}"]):
+        try:
+            key, value = query.split(':', maxsplit=1)
+        except Exception as e:
+            raise ValueError('query format must be "key:value"') from e
+        if not key:
+            raise ValueError('empty key from "key:value" query')
+    try:
+        custom_query = loads(custom_query_json)
+    except Exception as e:
+        raise ValueError('invalid custom_query string') from e
+    return _custom_query_r(query, key, value, custom_query)
+
+
+def _custom_query_r(query, key, value, custom_query):
+    new_query = {}
     for query_key, query_value in custom_query.items():
         if query_key == '{{KEY}}':
-            custom_query[key] = custom_query.pop(query_key)
-        if query_value == '{{VALUE}}':
-            custom_query[query_key] = value
-    return custom_query
+            query_key = key
+
+        if isinstance(query_value, dict):
+            query_value = _custom_query_r(query, key, value, query_value)
+        elif query_value == '{{VALUE}}':
+            query_value = value
+        elif query_value == '{{VALUES}}':
+            query_value = value.split(',')
+        elif query_value == '{{QUERY}}':
+            query_value = query
+
+        new_query[query_key] = query_value
+    return new_query
 
 
 def response(resp: SXNG_Response) -> EngineResults:
