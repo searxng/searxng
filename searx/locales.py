@@ -366,7 +366,7 @@ def get_engine_locale(searxng_locale: str, engine_locales: dict[str, str], defau
     if engine_locale is None:
         engine_locale = default
 
-    return default
+    return engine_locale
 
 
 def match_locale(searxng_locale: str, locale_tag_list: list[str], fallback: str | None = None) -> str | None:
