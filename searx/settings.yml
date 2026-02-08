@@ -72,10 +72,29 @@ search:
     # ReCAPTCHA
     recaptcha_SearxEngineCaptcha: 604800
 
-  # remove format to deny access, use lower case.
-  # formats: [html, csv, json, rss]
+  # Output formats available to users.
+  # To enable a format, add it to the list below (use lowercase).
+  # 
+  # Available formats:
+  #   - html: Web interface (always recommended)
+  #   - json: JSON API for programmatic access
+  #   - csv: CSV export for spreadsheets
+  #   - rss: RSS feeds for feed readers
+  #
+  # Security note: Enabling 'json' allows programmatic/API access.
+  # For public instances, consider enabling rate limiting (server.limiter: true)
+  # For private/local instances, json format is safe to enable.
+  #
+  # Example - Enable JSON API:
+  #   formats:
+  #     - html
+  #     - json
+  #
   formats:
     - html
+    # - json  # Uncomment to enable JSON API
+    # - csv   # Uncomment to enable CSV export
+    # - rss   # Uncomment to enable RSS feeds
 
 server:
   # Is overwritten by ${SEARXNG_PORT} and ${SEARXNG_BIND_ADDRESS}
