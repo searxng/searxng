@@ -88,18 +88,25 @@ def request(query, params):
         # don't ask why it is only sometimes / its M$ and they have never been
         # deterministic ;)
         'pq': query,
+        # TODO: Figure out how below parameters are populated
+        'sc': '0-0',
+		"sp": "-1",
+		"lq": "0",
+		"qs": "n",
+		"ghsh": "0",
+		"ghacc": "0",
+		"ghpl": "",
     }
 
     # To get correct page, arg first and this arg FORM is needed, the value PERE
     # is on page 2, on page 3 its PERE1 and on page 4 its PERE2 .. and so forth.
     # The 'first' arg should never send on page 1.
-
     if page > 1:
         query_params['first'] = _page_offset(page)  # see also arg FORM
-    if page == 2:
-        query_params['FORM'] = 'PERE'
-    elif page > 2:
-        query_params['FORM'] = 'PERE%s' % (page - 2)
+        if page == 2:
+            query_params['FORM'] = 'PERE'
+        else:  # page > 2:
+            query_params['FORM'] = 'PERE%s' % (page - 2)
 
     params['url'] = f'{base_url}?{urlencode(query_params)}'
 
