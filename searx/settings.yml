@@ -2420,12 +2420,15 @@ engines:
 
   - name: mojeek
     shortcut: mjk
+    network:
+      impersonate: "chrome"
     engine: mojeek
     categories: [general, web]
     disabled: true
 
   - name: mojeek images
     shortcut: mjkimg
+    network: mojeek
     engine: mojeek
     categories: [images, web]
     search_type: images
@@ -2434,6 +2437,7 @@ engines:
 
   - name: mojeek news
     shortcut: mjknews
+    network: mojeek
     engine: mojeek
     categories: [news, web]
     search_type: news
