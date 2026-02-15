@@ -23,10 +23,10 @@ export default class MapView extends Plugin {
   }
 
   protected async run(): Promise<void> {
-    const { leafletTarget: target, mapLon, mapLat, mapGeojson } = this.map.dataset;
+    const { leafletTarget: target, mapLon = "0", mapLat = "0", mapGeojson } = this.map.dataset;
 
-    const lon = Number.parseFloat(mapLon || "0");
-    const lat = Number.parseFloat(mapLat || "0");
+    const lon = Number.parseFloat(mapLon);
+    const lat = Number.parseFloat(mapLat);
     const view = new View({ maxZoom: 16, enableRotation: false });
     const map = new OlMap({
       target: target,
@@ -77,7 +77,10 @@ export default class MapView extends Plugin {
 
         map.addLayer(geoLayer);
 
-        view.fit(geoSource.getExtent(), { padding: [20, 20, 20, 20] });
+        const geoSourceExtent = geoSource.getExtent();
+        if (geoSourceExtent) {
+          view.fit(geoSourceExtent, { padding: [20, 20, 20, 20] });
+        }
       } catch (error) {
         console.error("Failed to create GeoJSON layer:", error);
       }
