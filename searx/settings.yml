@@ -2663,6 +2663,12 @@ engines:
     shortcut: wttr
     timeout: 9.0
 
+  - name: braveapi
+    engine: braveapi
+    # read https://docs.searxng.org/dev/engines/online/brave.html
+    api_key: ""
+    inactive: true
+
   - name: brave
     engine: brave
     shortcut: br
