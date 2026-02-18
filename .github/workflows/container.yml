@@ -87,7 +87,8 @@ jobs:
         uses: actions/cache@cdf6c1fa76f9f475f3d7449005a359c84ca0f306  # v5.0.3
         with:
           key: "python-${{ env.PYTHON_VERSION }}-${{ runner.arch }}-${{ hashFiles('./requirements*.txt') }}"
-          restore-keys: "python-${{ env.PYTHON_VERSION }}-${{ runner.arch }}-"
+          restore-keys: |
+            python-${{ env.PYTHON_VERSION }}-${{ runner.arch }}-
           path: "./local/"
 
       - name: Get date
@@ -99,8 +100,8 @@ jobs:
         with:
           key: "container-${{ matrix.arch }}-${{ steps.date.outputs.date }}-${{ hashFiles('./requirements*.txt') }}"
           restore-keys: |
-            "container-${{ matrix.arch }}-${{ steps.date.outputs.date }}-"
-            "container-${{ matrix.arch }}-"
+            container-${{ matrix.arch }}-${{ steps.date.outputs.date }}-
+            container-${{ matrix.arch }}-
           path: "/var/tmp/buildah-cache-*/*"
 
       - if: ${{ matrix.emulation }}
