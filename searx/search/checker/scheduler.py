@@ -36,7 +36,7 @@ def scheduler_function(start_after_from: int, start_after_to: int, every_from: i
     * to call this function is multiple workers
     * to kill workers at any time as long there is one at least one worker
     """
-    scheduler_now_script = SCHEDULER_LUA.open().read()
+    scheduler_now_script = SCHEDULER_LUA.read_text(encoding="utf-8")
     while True:
         # ask the Valkey script what to do
         # the script says
