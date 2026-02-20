@@ -82,9 +82,6 @@ max_page = 5
 """5 pages maximum (``&p=5``): Trying to do more just results in an improper
 redirect"""
 
-# Otherwise Qwant will return 403 if not set
-send_accept_language_header = True
-
 qwant_categ = None
 """One of ``web-lite`` (or ``web``), ``news``, ``images`` or ``videos``"""
 

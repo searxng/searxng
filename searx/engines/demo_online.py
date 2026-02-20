@@ -32,7 +32,7 @@ if t.TYPE_CHECKING:
 
 
 engine_type = "online"
-send_accept_language_header = True
+# send_accept_language_header = False
 categories = ["general"]
 disabled = True
 timeout = 2.0

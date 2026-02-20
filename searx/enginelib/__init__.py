@@ -298,9 +298,9 @@ class Engine(abc.ABC):  # pylint: disable=too-few-public-methods
     """Using tor proxy (``true``) or not (``false``) for this engine."""
 
     send_accept_language_header: bool
-    """When this option is activated, the language (locale) that is selected by
-    the user is used to build and send a ``Accept-Language`` header in the
-    request to the origin search engine."""
+    """When this option is activated (default), the language (locale) that is
+    selected by the user is used to build and send a ``Accept-Language`` header
+    in the request to the origin search engine."""
 
     tokens: list[str]
     """A list of secret tokens to make this engine *private*, more details see

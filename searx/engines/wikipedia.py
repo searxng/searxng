@@ -79,10 +79,6 @@ display_type = ["infobox"]
 one will add a hit to the result list.  The first one will show a hit in the
 info box.  Both values can be set, or one of the two can be set."""
 
-send_accept_language_header = True
-"""The HTTP ``Accept-Language`` header is needed for wikis where
-LanguageConverter_ is enabled."""
-
 list_of_wikipedias = 'https://meta.wikimedia.org/wiki/List_of_Wikipedias'
 """`List of all wikipedias <https://meta.wikimedia.org/wiki/List_of_Wikipedias>`_
 """
@@ -102,7 +98,7 @@ rest_v1_summary_url = 'https://{wiki_netloc}/api/rest_v1/page/summary/{title}'
   previews (fka. Hovercards, aka. Popups) on the web and link previews in the
   apps.
 
-HTTP ``Accept-Language`` header (:py:obj:`send_accept_language_header`):
+HTTP ``Accept-Language`` header (``send_accept_language_header``):
   The desired language variant code for wikis where LanguageConverter_ is
   enabled.
 

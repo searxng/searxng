@@ -19,8 +19,6 @@ about = {
     "results": "HTML",
 }
 
-send_accept_language_header = True
-
 play_categ = None  # apps|movies
 base_url = 'https://play.google.com'
 search_url = base_url + "/store/search?{query}&c={play_categ}"
