@@ -264,7 +264,7 @@ class EngineProcessor(ABC):
             "searxng_locale": search_query.lang,
         }
 
-        # deprecated / vintage --> use params["searxng_locale"]
+        # params["language"] is deprecated --> use params["searxng_locale"]
         #
         # Conditions related to engine's traits are implemented in engine.traits
         # module. Don't do "locale" decisions here in the abstract layer of the

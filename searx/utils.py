@@ -394,7 +394,7 @@ def convert_str_to_int(number_str: str) -> int:
     return 0
 
 
-def extr(txt: str, begin: str, end: str, default: str = ""):
+def extr(txt: str, begin: str, end: str, default: str = "") -> str:
     """Extract the string between ``begin`` and ``end`` from ``txt``
 
     :param txt:     String to search in
