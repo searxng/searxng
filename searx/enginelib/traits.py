@@ -85,7 +85,7 @@ class EngineTraits:
     """A place to store engine's custom traits, not related to the SearXNG core.
     """
 
-    def get_language(self, searxng_locale: str, default: t.Any = None):
+    def get_language(self, searxng_locale: str, default: str | None = None) -> str | None:
         """Return engine's language string that *best fits* to SearXNG's locale.
 
         :param searxng_locale: SearXNG's internal representation of locale
@@ -101,7 +101,7 @@ class EngineTraits:
             return self.all_locale
         return locales.get_engine_locale(searxng_locale, self.languages, default=default)
 
-    def get_region(self, searxng_locale: str, default: t.Any = None) -> t.Any:
+    def get_region(self, searxng_locale: str, default: str | None = None) -> str | None:
         """Return engine's region string that best fits to SearXNG's locale.
 
         :param searxng_locale: SearXNG's internal representation of locale
@@ -132,7 +132,7 @@ class EngineTraits:
 
     def copy(self):
         """Create a copy of the dataclass object."""
-        return EngineTraits(**dataclasses.asdict(self))  # type: ignore
+        return EngineTraits(**dataclasses.asdict(self))
 
     @classmethod
     def fetch_traits(cls, engine: "Engine | types.ModuleType") -> "EngineTraits | None":
@@ -149,7 +149,7 @@ class EngineTraits:
             fetch_traits(engine_traits)
         return engine_traits
 
-    def set_traits(self, engine: "Engine | types.ModuleType"):
+    def set_traits(self, engine: "Engine | types.ModuleType") -> None:
         """Set traits from self object in a :py:obj:`.Engine` namespace.
 
         :param engine: engine instance build by :py:func:`searx.engines.load_engine`
@@ -160,7 +160,7 @@ class EngineTraits:
         else:
             raise TypeError('engine traits of type %s is unknown' % self.data_type)
 
-    def _set_traits_v1(self, engine: "Engine | types.ModuleType"):
+    def _set_traits_v1(self, engine: "Engine | types.ModuleType") -> None:
         # For an engine, when there is `language: ...` in the YAML settings the engine
         # does support only this one language (region)::
         #
@@ -185,7 +185,7 @@ class EngineTraits:
                 raise ValueError(_msg % (engine.name, 'region', engine.region))
             traits.regions = {engine.region: regions[engine.region]}
 
-        engine.language_support = bool(traits.languages or traits.regions)  # type: ignore
+        engine.language_support = bool(traits.languages or traits.regions)
 
         # set the copied & modified traits in engine's namespace
         engine.traits = traits  # pyright: ignore[reportAttributeAccessIssue]
