@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
-import "ol/ol.css?inline";
+import "ol/ol.css";
 import { Feature, Map as OlMap, View } from "ol";
 import { GeoJSON } from "ol/format";
 import { Point } from "ol/geom";

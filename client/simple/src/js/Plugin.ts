@@ -23,7 +23,7 @@ export abstract class Plugin {
   protected constructor(id: string) {
     this.id = id;
 
-    void this.invoke();
+    queueMicrotask(() => this.invoke());
   }
 
   private async invoke(): Promise<void> {
