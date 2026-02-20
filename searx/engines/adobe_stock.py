@@ -52,7 +52,6 @@ about = {
 
 categories = []
 paging = True
-send_accept_language_header = True
 results_per_page = 10
 
 base_url = "https://stock.adobe.com"

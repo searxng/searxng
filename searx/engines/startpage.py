@@ -49,10 +49,15 @@ W3C recommends subtag over macrolanguage [2]_.
 Startpage languages
 ===================
 
-:py:obj:`send_accept_language_header`:
+HTTP ``Accept-Language`` header (``send_accept_language_header``):
   The displayed name in Startpage's settings page depend on the location of the
-  IP when ``Accept-Language`` HTTP header is unset.  In :py:obj:`fetch_traits`
-  we use::
+  IP when ``Accept-Language`` HTTP header is unset.
+
+  Startpage tries to guess user's language and territory from the HTTP
+  ``Accept-Language``.  Optional the user can select a search-language (can be
+  different to the UI language) and a region filter.
+
+  In :py:obj:`fetch_traits` we use::
 
     'Accept-Language': "en-US,en;q=0.5",
     ..
@@ -112,12 +117,6 @@ startpage_categ = 'web'
 """Startpage's category, visit :ref:`startpage categories`.
 """
 
-send_accept_language_header = True
-"""Startpage tries to guess user's language and territory from the HTTP
-``Accept-Language``.  Optional the user can select a search-language (can be
-different to the UI language) and a region filter.
-"""
-
 # engine dependent config
 categories = ['general', 'web']
 paging = True
@@ -163,14 +162,14 @@ def init(_):
 
     # hint: all three startpage engines (WEB, Images & News) can/should use the
     # same sc_code ..
-    CACHE = EngineCache("startpage")  # type:ignore
+    CACHE = EngineCache("startpage")
 
 
 sc_code_cache_sec = 3600
 """Time in seconds the sc-code is cached in memory :py:obj:`get_sc_code`."""
 
 
-def get_sc_code(searxng_locale, params):
+def get_sc_code(params):
     """Get an actual ``sc`` argument from Startpage's search form (HTML page).
 
     Startpage puts a ``sc`` argument on every HTML :py:obj:`search form
@@ -183,30 +182,14 @@ def get_sc_code(searxng_locale, params):
     :py:obj:`sc_code_cache_sec` seconds."""
 
     sc_code = CACHE.get("SC_CODE")
-
     if sc_code:
         logger.debug("get_sc_code: using cached value: %s", sc_code)
         return sc_code
 
-    headers = {**params['headers']}
-
-    # add Accept-Language header
-    if searxng_locale == 'all':
-        searxng_locale = 'en-US'
-    locale = babel.Locale.parse(searxng_locale, sep='-')
-
-    if send_accept_language_header:
-        ac_lang = locale.language
-        if locale.territory:
-            ac_lang = "%s-%s,%s;q=0.9,*;q=0.5" % (
-                locale.language,
-                locale.territory,
-                locale.language,
-            )
-        headers['Accept-Language'] = ac_lang
-
-    get_sc_url = base_url + '/'
+    get_sc_url = base_url + "/"
     logger.debug("get_sc_code: querying new sc timestamp @ %s", get_sc_url)
+
+    headers = {**params['headers']}
     logger.debug("get_sc_code: request headers: %s", headers)
     resp = get(get_sc_url, headers=headers)
 
@@ -214,19 +197,19 @@ def get_sc_code(searxng_locale, params):
     # ?? https://www.startpage.com/sp/cdn/images/filter-chevron.svg
     # ?? ping-back URL: https://www.startpage.com/sp/pb?sc=TLsB0oITjZ8F21
 
-    if str(resp.url).startswith('https://www.startpage.com/sp/captcha'):  # type: ignore
+    if str(resp.url).startswith('https://www.startpage.com/sp/captcha'):
         raise SearxEngineCaptchaException(
             message="get_sc_code: got redirected to https://www.startpage.com/sp/captcha",
         )
 
-    dom = lxml.html.fromstring(resp.text)  # type: ignore
+    dom = lxml.html.fromstring(resp.text)
 
     try:
         sc_code = eval_xpath(dom, search_form_xpath + '//input[@name="sc"]/@value')[0]
     except IndexError as exc:
         logger.debug("suspend startpage API --> https://github.com/searxng/searxng/pull/695")
         raise SearxEngineCaptchaException(
-            message="get_sc_code: [PR-695] querying new sc timestamp failed! (%s)" % resp.url,  # type: ignore
+            message="get_sc_code: [PR-695] querying new sc timestamp failed! (%s)" % resp.url,
         ) from exc
 
     sc_code = str(sc_code)
@@ -259,7 +242,7 @@ def request(query, params):
         'query': query,
         'cat': startpage_categ,
         't': 'device',
-        'sc': get_sc_code(params['searxng_locale'], params),  # hint: this func needs HTTP headers
+        'sc': get_sc_code(params),
         'with_date': time_range_dict.get(params['time_range'], ''),
         'abp': '1',
         'abd': '1',
@@ -437,10 +420,10 @@ def fetch_traits(engine_traits: EngineTraits):
     }
     resp = get('https://www.startpage.com/do/settings', headers=headers)
 
-    if not resp.ok:  # type: ignore
+    if not resp.ok:
         print("ERROR: response from Startpage is not OK.")
 
-    dom = lxml.html.fromstring(resp.text)  # type: ignore
+    dom = lxml.html.fromstring(resp.text)
 
     # regions
 
@@ -453,7 +436,7 @@ def fetch_traits(engine_traits: EngineTraits):
             continue
         babel_region_tag = {'no_NO': 'nb_NO'}.get(eng_tag, eng_tag)  # norway
 
-        if '-' in babel_region_tag:
+        if '-' in babel_region_tag:  # pyright: ignore[reportOperatorIssue]
             l, r = babel_region_tag.split('-')
             r = r.split('_')[-1]
             sxng_tag = region_tag(babel.Locale.parse(l + '_' + r, sep='_'))

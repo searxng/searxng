@@ -27,8 +27,6 @@ about = {
     "results": "JSON",
 }
 
-send_accept_language_header = True
-
 # engine dependent config
 categories = ["weather"]
 base_url = "https://duckduckgo.com/js/spice/forecast/{query}/{lang}"

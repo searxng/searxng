@@ -172,7 +172,6 @@ the UI of Brave the user gets warned about this, since we can not warn the user
 in SearXNG, the spellchecking is disabled by default.
 """
 
-send_accept_language_header = True
 paging = False
 """Brave only supports paging in :py:obj:`brave_category` ``search`` (UI
 category All) and in the goggles category."""

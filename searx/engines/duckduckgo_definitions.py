@@ -31,7 +31,6 @@ about = {
     "results": 'JSON',
 }
 
-send_accept_language_header = True
 
 URL = 'https://api.duckduckgo.com/' + '?{query}&format=json&pretty=0&no_redirect=1&d=1'
 

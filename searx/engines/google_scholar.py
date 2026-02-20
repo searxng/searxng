@@ -71,7 +71,6 @@ max_page = 50
 language_support = True
 time_range_support = True
 safesearch = False
-send_accept_language_header = True
 
 
 def request(query: str, params: "OnlineParams") -> None:

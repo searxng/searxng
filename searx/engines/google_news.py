@@ -64,7 +64,6 @@ time_range_support = False
 #
 #  safesearch : results are identical for safesearch=0 and safesearch=2
 safesearch = True
-# send_accept_language_header = True
 
 
 def request(query, params):

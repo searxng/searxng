@@ -56,7 +56,7 @@ Since the region is already "auto" by default, we only need to set the
 ``use_local_search_results`` cookie and send the ``Accept-Language`` header.  We
 have to set these values in both requests we send to Presearch; in the first
 request to get the request-ID from Presearch and in the final request to get the
-result list (see ``send_accept_language_header``).
+result list.
 
 The time format returned by Presearch varies depending on the language set.
 Multiple different formats can be supported by using ``dateutil`` parser, but
@@ -86,7 +86,6 @@ about = {
 paging = True
 safesearch = True
 time_range_support = True
-send_accept_language_header = True
 categories = ["general", "web"]  # general, images, videos, news
 
 # HTTP2 requests immediately get blocked by a CAPTCHA

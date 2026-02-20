@@ -33,7 +33,6 @@ about = {
 categories = ['general', 'web']
 paging = True
 time_range_support = True
-# send_accept_language_header = True
 
 time_range_dict = {'day': 'd', 'week': 'w', 'month': 'm'}
 safesearch_dict = {0: 'p', 1: 'i', 2: 'r'}

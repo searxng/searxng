@@ -43,7 +43,7 @@ ENGINE_DEFAULT_ARGS: dict[str, int | str | list[t.Any] | dict[str, t.Any] | bool
     "inactive": False,
     "about": {},
     "using_tor_proxy": False,
-    "send_accept_language_header": False,
+    "send_accept_language_header": True,
     "tokens": [],
     "max_page": 0,
 }

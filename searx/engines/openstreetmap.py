@@ -27,7 +27,6 @@ about = {
 categories = ['map']
 paging = False
 language_support = True
-send_accept_language_header = True
 
 # search-url
 base_url = 'https://nominatim.openstreetmap.org/'
