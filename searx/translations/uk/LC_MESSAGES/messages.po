@@ -22,24 +22,22 @@
 # return42 <return42@noreply.codeberg.org>, 2025.
 msgid ""
 msgstr ""
-"Project-Id-Version: searx\n"
+"Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-12-05 10:19+0000\n"
+"POT-Creation-Date: 2026-02-21 10:30+0000\n"
 "PO-Revision-Date: 2025-12-12 07:12+0000\n"
 "Last-Translator: SomeTr <sometr@noreply.codeberg.org>\n"
-"Language-Team: Ukrainian <https://translate.codeberg.org/projects/searxng/"
-"searxng/uk/>\n"
 "Language: uk\n"
+"Language-Team: Ukrainian "
+"<https://translate.codeberg.org/projects/searxng/searxng/uk/>\n"
+"Plural-Forms: nplurals=4; plural=(n % 1 == 0 && n % 10 == 1 && n % 100 !="
+" 11 ? 0 : n % 1 == 0 && n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n "
+"% 100 > 14) ? 1 : n % 1 == 0 && (n % 10 ==0 || (n % 10 >=5 && n % 10 <=9)"
+" || (n % 100 >=11 && n % 100 <=14 )) ? 2: 3);\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=4; plural=(n % 1 == 0 && n % 10 == 1 && n % 100 != 11 "
-"? 0 : n % 1 == 0 && n % 10 >= 2 && n % 10 <= 4 && "
-"(n % 100 < 12 || n % 100 > 14) ? 1 : n % 1 == 0 && "
-"(n % 10 ==0 || (n % 10 >=5 && n % 10 <=9) || (n % 100 >=11 && n % 100 <=14 ))"
-" ? 2: 3);\n"
-"X-Generator: Weblate 5.14.3\n"
-"Generated-By: Babel 2.17.0\n"
+"Generated-By: Babel 2.18.0\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
 #: searx/searxng.msg
@@ -681,10 +679,6 @@ msgstr "голоси"
 msgid "clicks"
 msgstr "кліки"
 
-#: searx/engines/seekr.py:193 searx/engines/zlibrary.py:78
-msgid "Language"
-msgstr "Мова"
-
 #: searx/engines/semantic_scholar.py:141
 #, python-brace-format
 msgid ""
@@ -715,6 +709,10 @@ msgstr ""
 #: searx/engines/tineye.py:53
 msgid "The image could not be downloaded."
 msgstr "Зображення неможливо завантажити."
+
+#: searx/engines/zlibrary.py:78
+msgid "Language"
+msgstr "Мова"
 
 #: searx/engines/zlibrary.py:79
 msgid "Book rating"
@@ -775,7 +773,8 @@ msgid ""
 "Automatically loads the next page when scrolling to bottom of the current"
 " page"
 msgstr ""
-"Автоматично завантажує наступну сторінку при прокручуванні до кінця поточної"
+"Автоматично завантажує наступну сторінку при прокручуванні до кінця "
+"поточної"
 
 #: searx/plugins/oa_doi_rewrite.py:54
 msgid "Open Access DOI rewrite"
@@ -948,7 +947,8 @@ msgstr "Створення нового повідомлення про проб
 #: searx/templates/simple/new_issue.html:66
 msgid "Please check for existing bugs about this engine on GitHub"
 msgstr ""
-"Будь ласка, перевірте наявність звіту про помилку для цього рушія на GitHub"
+"Будь ласка, перевірте наявність звіту про помилку для цього рушія на "
+"GitHub"
 
 #: searx/templates/simple/new_issue.html:69
 msgid "I confirm there is no existing bug about the issue I encounter"
@@ -2392,3 +2392,4 @@ msgstr "приховати відео"
 #~ msgstr ""
 #~ "Автоматичне завантаження наступної сторінки "
 #~ "при прокручуванні поточної до кінця"
+

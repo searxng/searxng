@@ -35,22 +35,21 @@
 # greatdng <greatdng@noreply.codeberg.org>, 2026.
 msgid ""
 msgstr ""
-"Project-Id-Version: searx\n"
+"Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-12-05 10:19+0000\n"
+"POT-Creation-Date: 2026-02-21 10:30+0000\n"
 "PO-Revision-Date: 2026-02-13 07:28+0000\n"
 "Last-Translator: greatdng <greatdng@noreply.codeberg.org>\n"
-"Language-Team: Russian <https://translate.codeberg.org/projects/searxng/"
-"searxng/ru/>\n"
 "Language: ru\n"
+"Language-Team: Russian "
+"<https://translate.codeberg.org/projects/searxng/searxng/ru/>\n"
+"Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) "
+"|| (n%100>=11 && n%100<=14)? 2 : 3);\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
-"n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || "
-"(n%100>=11 && n%100<=14)? 2 : 3);\n"
-"X-Generator: Weblate 5.15.2\n"
-"Generated-By: Babel 2.17.0\n"
+"Generated-By: Babel 2.18.0\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
 #: searx/searxng.msg
@@ -692,10 +691,6 @@ msgstr "голоса"
 msgid "clicks"
 msgstr "нажатия"
 
-#: searx/engines/seekr.py:193 searx/engines/zlibrary.py:78
-msgid "Language"
-msgstr "Язык"
-
 #: searx/engines/semantic_scholar.py:141
 #, python-brace-format
 msgid ""
@@ -726,6 +721,10 @@ msgstr ""
 #: searx/engines/tineye.py:53
 msgid "The image could not be downloaded."
 msgstr "Не удалось загрузить изображение."
+
+#: searx/engines/zlibrary.py:78
+msgid "Language"
+msgstr "Язык"
 
 #: searx/engines/zlibrary.py:79
 msgid "Book rating"
@@ -1611,8 +1610,8 @@ msgid ""
 "Perform a search immediately if a category is selected. Disable to select"
 " multiple categories"
 msgstr ""
-"При выборе категории поиск выполняется немедленно. Отключите, чтобы выбрать "
-"несколько категорий"
+"При выборе категории поиск выполняется немедленно. Отключите, чтобы "
+"выбрать несколько категорий"
 
 #: searx/templates/simple/preferences/theme.html:2
 msgid "Theme"
@@ -2437,3 +2436,4 @@ msgstr "скрыть видео"
 #~ msgstr ""
 #~ "Автоматически загружать следующую страницу при"
 #~ " прокрутке текущей страницы вниз"
+
