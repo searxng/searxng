@@ -159,14 +159,6 @@ class OnlineProcessor(EngineProcessor):
             headers["Accept-Language"] = f"{_l},{_l}-{_t};q=0.7,en;q=0.3"
         self.logger.debug("HTTP Accept-Language: %s", headers.get("Accept-Language", ""))
 
-        # https://developer.mozilla.org/en-US/docs/Glossary/Fetch_metadata_request_header
-        headers["Sec-Fetch-Dest"] = "document"
-        headers["Sec-Fetch-Mode"] = "navigate"
-        headers["Sec-Fetch-Site"] = "same-origin"
-        headers["Sec-Fetch-User"] = "?1"
-        # Sec-GPC is in an experimental state (FFox only)
-        # headers["Sec-GPC"] = "1"
-
         return params
 
     def _send_http_request(self, params: OnlineParams):

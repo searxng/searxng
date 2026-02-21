@@ -87,12 +87,6 @@ def request(query: str, params: "OnlineParams") -> None:
         params["url"] = None
         return
 
-    if params["pageno"] > 1 and ddg_category in ["videos", "news"]:
-        # DDG has limited results for videos and news and we got already all
-        # results from the first request.
-        params["url"] = None
-        return
-
     # HTTP headers
     # ============
 
@@ -101,11 +95,6 @@ def request(query: str, params: "OnlineParams") -> None:
     # reuse the vqd value, the UA header must be static.
     headers["User-Agent"] = _HTTP_User_Agent
     vqd = get_vqd(query=query, params=params) or fetch_vqd(query=query, params=params)
-
-    # Sec-Fetch-* headers are already set by the ``OnlineProcessor``.
-    # Overwrite the default Sec-Fetch-* headers to fit to a XHTMLRequest
-    headers["Sec-Fetch-Dest"] = "empty"
-    headers["Sec-Fetch-Mode"] = "cors"
 
     headers["Accept"] = "*/*"
     headers["Referer"] = "https://duckduckgo.com/"
