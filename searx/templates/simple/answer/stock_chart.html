@@ -1,0 +1,266 @@
+{#
+  Modern stock chart with professional styling and better UX.
+#}
+{% set prices = answer.closes %}
+{% set minp = prices|min %}
+{% set maxp = prices|max %}
+{% set price_range = (maxp - minp) or 1 %}
+{% set width = 300 %}
+{% set height = 120 %}
+
+<div class="stock-chart-container">
+  <div class="stock-header">
+    <div class="stock-symbol">{{ answer.symbol }}</div>
+    <div class="stock-price">
+      <span class="price-value">${{ '%.2f' % answer.last_price }}</span>
+      {% if answer.previous_close is not none %}
+        {% set delta = answer.last_price - answer.previous_close %}
+        {% set percent_change = (delta / answer.previous_close * 100) if answer.previous_close else 0 %}
+        {% set sign = '+' if delta >= 0 else '' %}
+        <span class="price-change {{ 'positive' if delta >= 0 else 'negative' }}">
+          {{ sign }}{{ '%.2f' % delta }} ({{ sign }}{{ '%.2f' % percent_change }}%)
+        </span>
+      {% endif %}
+    </div>
+  </div>
+
+  <div class="stock-chart">
+    {# Build SVG path with gradient #}
+    {% set step = (width - 20) / (prices|length - 1) %}
+    {% set path = [] %}
+    {% set area_path = [] %}
+      {% for p in prices %}
+        {% set x = 10 + loop.index0 * step %}
+        {% set y = height - 20 - ((p - minp) / price_range) * (height - 40) %}
+      {% if loop.first %}
+        {% set _ = path.append('M ' ~ x|string ~ ' ' ~ y|string) %}
+        {% set _ = area_path.append('M ' ~ x|string ~ ' ' ~ (height - 20)|string ~ ' L ' ~ x|string ~ ' ' ~ y|string) %}
+      {% else %}
+        {% set _ = path.append('L ' ~ x|string ~ ' ' ~ y|string) %}
+        {% set _ = area_path.append('L ' ~ x|string ~ ' ' ~ y|string) %}
+      {% endif %}
+    {% endfor %}
+    {% set _ = area_path.append('L ' ~ (10 + (prices|length - 1) * step)|string ~ ' ' ~ (height - 20)|string ~ ' Z') %}
+
+    <svg viewBox="0 0 {{ width }} {{ height }}" width="{{ width }}" height="{{ height }}" class="chart-svg">
+      <defs>
+        <linearGradient id="gradient-{{ answer.symbol }}" x1="0%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%" style="stop-color:var(--color-success);stop-opacity:0.3" />
+          <stop offset="100%" style="stop-color:var(--color-success);stop-opacity:0.05" />
+        </linearGradient>
+        <pattern id="grid-{{ answer.symbol }}" width="20" height="20" patternUnits="userSpaceOnUse">
+          <path d="M 20 0 L 0 0 0 20" fill="none" stroke="var(--color-base-20)" stroke-width="0.5" opacity="0.3"/>
+        </pattern>
+      </defs>
+
+      {# Grid background #}
+      <rect x="10" y="10" width="{{ width - 20 }}" height="{{ height - 20 }}" fill="url(#grid-{{ answer.symbol }})" />
+
+      {# Horizontal grid lines #}
+      {% for i in range(4) %}
+        {% set y = 10 + (i * (height - 40) / 3) %}
+        <line x1="10" y1="{{ y }}" x2="{{ width - 10 }}" y2="{{ y }}" stroke="var(--color-base-20)" stroke-width="0.5" opacity="0.4" />
+      {% endfor %}
+
+      {# Vertical grid lines #}
+      {% for i in range(5) %}
+        {% set x = 10 + (i * (width - 20) / 4) %}
+        <line x1="{{ x }}" y1="10" x2="{{ x }}" y2="{{ height - 10 }}" stroke="var(--color-base-20)" stroke-width="0.5" opacity="0.4" />
+      {% endfor %}
+
+      {# Area under the curve #}
+      <path d="{{ ' '.join(area_path) }}" fill="url(#gradient-{{ answer.symbol }})" />
+
+      {# Main line #}
+      <path d="{{ ' '.join(path) }}"
+            fill="none"
+            stroke="var(--color-success)"
+            stroke-width="2.5"
+            stroke-linecap="round"
+            stroke-linejoin="round" />
+
+      {# Data points #}
+      {% for p in prices %}
+        {% set x = 10 + loop.index0 * step %}
+        {% set y = height - 20 - ((p - minp) / price_range) * (height - 40) %}
+        <circle cx="{{ x }}" cy="{{ y }}" r="2" fill="var(--color-success)" opacity="0.8" />
+      {% endfor %}
+
+    </svg>
+  </div>
+
+  {# Statistics Table #}
+  <div class="stock-stats">
+    <div class="stats-grid">
+      <div class="stat-item">
+        <span class="stat-label">Open</span>
+        <span class="stat-value">${{ '%.2f' % answer.market_data[-1].o }}</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-label">High</span>
+        <span class="stat-value">${{ '%.2f' % answer.market_data[-1].h }}</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-label">Low</span>
+        <span class="stat-value">${{ '%.2f' % answer.market_data[-1].l }}</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-label">Volume</span>
+        <span class="stat-value">{{ '{:,.0f}'.format(answer.market_data[-1].v) }}</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-label">VWAP</span>
+        <span class="stat-value">${{ '%.2f' % answer.market_data[-1].vw }}</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-label">Transactions</span>
+        <span class="stat-value">{{ '{:,}'.format(answer.market_data[-1].n) }}</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="stock-footer">
+    <div class="stock-info">
+      <span class="timeframe">{{ answer.timeframe_days }}d</span>
+      <span class="data-points">{{ prices|length }} points</span>
+    </div>
+    <div class="stock-source">
+      <span class="source-label">Data: Polygon.io</span>
+    </div>
+  </div>
+</div>
+
+<style>
+.stock-chart-container {
+  background: var(--color-base-00);
+  border: 1px solid var(--color-base-20);
+  border-radius: 12px;
+  padding: 16px;
+  margin: 8px 0;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+}
+
+.stock-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.stock-symbol {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--color-base-80);
+}
+
+.stock-price {
+  text-align: right;
+}
+
+.price-value {
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--color-base-80);
+  display: block;
+}
+
+.price-change {
+  font-size: 14px;
+  font-weight: 500;
+  display: block;
+  margin-top: 2px;
+}
+
+.price-change.positive {
+  color: var(--color-success);
+}
+
+.price-change.negative {
+  color: var(--color-error);
+}
+
+.stock-chart {
+  margin: 8px 0;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.chart-svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.stock-stats {
+  margin: 12px 0;
+  padding: 12px;
+  background: var(--color-base-05);
+  border-radius: 8px;
+  border: 1px solid var(--color-base-15);
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+.stat-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 6px;
+  background: var(--color-base-00);
+  border-radius: 6px;
+  border: 1px solid var(--color-base-10);
+}
+
+.stat-label {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--color-base-60);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 2px;
+}
+
+.stat-value {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-base-80);
+}
+
+.stock-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 8px;
+  font-size: 12px;
+  color: var(--color-base-60);
+}
+
+.stock-info {
+  display: flex;
+  gap: 12px;
+}
+
+.timeframe, .data-points {
+  background: var(--color-base-10);
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-weight: 500;
+}
+
+.source-label {
+  font-weight: 500;
+}
+
+@media (prefers-color-scheme: dark) {
+  .stock-chart-container {
+    background: var(--color-base-10);
+    border-color: var(--color-base-30);
+  }
+}
+
+</style>
