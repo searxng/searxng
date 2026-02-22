@@ -277,53 +277,6 @@ plugins:
 # '(.*\.)?youtu\.be$': 'yt.example.com'
 #
 
-checker:
-  # disable checker when in debug mode
-  off_when_debug: true
-
-  # use "scheduling: {}" to disable scheduling
-  # scheduling: interval or int
-
-  # to activate the scheduler:
-  # * uncomment "scheduling" section
-  # * add "cache2 = name=searxngcache,items=2000,blocks=2000,blocksize=4096,bitmap=1"
-  #   to your uwsgi.ini
-
-  # scheduling:
-  #   start_after: [300, 1800]  # delay to start the first run of the checker
-  #   every: [86400, 90000]     # how often the checker runs
-
-  # additional tests: only for the YAML anchors (see the engines section)
-  #
-  additional_tests:
-    rosebud: &test_rosebud
-      matrix:
-        query: rosebud
-        lang: en
-      result_container:
-        - not_empty
-        - ['one_title_contains', 'citizen kane']
-      test:
-        - unique_results
-
-    android: &test_android
-      matrix:
-        query: ['android']
-        lang: ['en', 'de', 'fr', 'zh-CN']
-      result_container:
-        - not_empty
-        - ['one_title_contains', 'google']
-      test:
-        - unique_results
-
-  # tests: only for the YAML anchors (see the engines section)
-  tests:
-    infobox: &tests_infobox
-      infobox:
-        matrix:
-          query: ["linux", "new york", "bbc"]
-        result_container:
-          - has_infobox
 
 categories_as_tabs:
   general:
@@ -746,7 +699,6 @@ engines:
     shortcut: ddd
     weight: 2
     disabled: true
-    tests: *tests_infobox
 
   # cloudflare protected
   # - name: digbt
@@ -820,7 +772,6 @@ engines:
     weight: 2
     # add "list" to the array to get results in the results list
     display_type: ["infobox"]
-    tests: *tests_infobox
     categories: [general]
 
   - name: duckduckgo
@@ -1053,32 +1004,18 @@ engines:
   - name: google
     engine: google
     shortcut: go
-    # additional_tests:
-    #   android: *test_android
 
   - name: google images
     engine: google_images
     shortcut: goi
-    # additional_tests:
-    #   android: *test_android
-    #   dali:
-    #     matrix:
-    #       query: ['Dali Christ']
-    #       lang: ['en', 'de', 'fr', 'zh-CN']
-    #     result_container:
-    #       - ['one_title_contains', 'Salvador']
 
   - name: google news
     engine: google_news
     shortcut: gon
-    # additional_tests:
-    #   android: *test_android
 
   - name: google videos
     engine: google_videos
     shortcut: gov
-    # additional_tests:
-    #   android: *test_android
 
   - name: google scholar
     engine: google_scholar
@@ -1784,8 +1721,6 @@ engines:
     shortcut: qw
     categories: [general, web]
     disabled: true
-    additional_tests:
-      rosebud: *test_rosebud
 
   - name: qwant news
     qwant_categ: news
@@ -2021,8 +1956,6 @@ engines:
     shortcut: sp
     startpage_categ: web
     categories: [general, web]
-    additional_tests:
-      rosebud: *test_rosebud
 
   - name: startpage news
     engine: startpage
@@ -2245,8 +2178,6 @@ engines:
     base_url: "https://{language}.wikiquote.org/"
     search_type: text
     disabled: true
-    additional_tests:
-      rosebud: *test_rosebud
     about:
       website: https://www.wikiquote.org/
       wikidata_id: Q369
@@ -2273,16 +2204,6 @@ engines:
     about:
       website: https://species.wikimedia.org/
       wikidata_id: Q13679
-    tests:
-      wikispecies:
-        matrix:
-          query: "Campbell, L.I. et al. 2011: MicroRNAs"
-          lang: en
-        result_container:
-          - not_empty
-          - ['one_title_contains', 'Tardigrada']
-        test:
-          - unique_results
 
   - name: wiktionary
     engine: mediawiki

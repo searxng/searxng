@@ -118,7 +118,6 @@ from searx.valkeydb import initialize as valkey_initialize
 from searx.sxng_locales import sxng_locales
 import searx.search
 from searx.network import stream as http_stream, set_context_network_name
-from searx.search.checker import get_result as checker_get_result
 
 
 logger = logger.getChild('webapp')
@@ -929,23 +928,11 @@ def preferences():
     # reliabilities
     reliabilities = {}
     engine_errors = get_engine_errors(filtered_engines)
-    checker_results = checker_get_result()
-    checker_results = (
-        checker_results['engines'] if checker_results['status'] == 'ok' and 'engines' in checker_results else {}
-    )
     for _, e in filtered_engines.items():
-        checker_result = checker_results.get(e.name, {})
-        checker_success = checker_result.get('success', True)
         errors = engine_errors.get(e.name) or []
         if counter('engine', e.name, 'search', 'count', 'sent') == 0:
             # no request
             reliability = None
-        elif checker_success and not errors:
-            reliability = 100
-        elif 'simple' in checker_result.get('errors', {}):
-            # the basic (simple) test doesn't work: the engine is broken according to the checker
-            # even if there is no exception
-            reliability = 0
         else:
             # pylint: disable=consider-using-generator
             reliability = 100 - sum([error['percentage'] for error in errors if not error.get('secondary')])
@@ -953,10 +940,7 @@ def preferences():
         reliabilities[e.name] = {
             'reliability': reliability,
             'errors': [],
-            'checker': checker_results.get(e.name, {}).get('errors', {}).keys(),
         }
-        # keep the order of the list checker_results[e.name]['errors'] and deduplicate.
-        # the first element has the highest percentage rate.
         reliabilities_errors = []
         for error in errors:
             error_user_text = None
@@ -977,13 +961,6 @@ def preferences():
         )
         safesearch = e.safesearch
         time_range_support = e.time_range_support
-        for checker_test_name in checker_results.get(e.name, {}).get('errors', {}):
-            if supports_selected_language and checker_test_name.startswith('lang_'):
-                supports_selected_language = '?'
-            elif safesearch and checker_test_name == 'safesearch':
-                safesearch = '?'
-            elif time_range_support and checker_test_name == 'time_range':
-                time_range_support = '?'
         supports[e.name] = {
             'supports_selected_language': supports_selected_language,
             'safesearch': safesearch,
@@ -1133,13 +1110,8 @@ def stats():
         else:
             filtered_engines = [selected_engine_name]
 
-    checker_results = checker_get_result()
-    checker_results = (
-        checker_results['engines'] if checker_results['status'] == 'ok' and 'engines' in checker_results else {}
-    )
-
     engine_stats = get_engines_stats(filtered_engines)
-    engine_reliabilities = get_reliabilities(filtered_engines, checker_results)
+    engine_reliabilities = get_reliabilities(filtered_engines)
 
     if sort_order not in STATS_SORT_PARAMETERS:
         sort_order = 'name'
@@ -1194,12 +1166,6 @@ def stats_errors():
     return jsonify(result)
 
 
-@app.route('/stats/checker', methods=['GET'])
-def stats_checker():
-    result = checker_get_result()
-    return jsonify(result)
-
-
 @app.route('/metrics')
 def stats_open_metrics():
     password = settings['general'].get("open_metrics")
@@ -1212,13 +1178,8 @@ def stats_open_metrics():
 
     filtered_engines = dict(filter(lambda kv: sxng_request.preferences.validate_token(kv[1]), engines.items()))
 
-    checker_results = checker_get_result()
-    checker_results = (
-        checker_results['engines'] if checker_results['status'] == 'ok' and 'engines' in checker_results else {}
-    )
-
     engine_stats = get_engines_stats(filtered_engines)
-    engine_reliabilities = get_reliabilities(filtered_engines, checker_results)
+    engine_reliabilities = get_reliabilities(filtered_engines)
     metrics_text = openmetrics(engine_stats, engine_reliabilities)
 
     return Response(metrics_text, mimetype='text/plain')
@@ -1394,7 +1355,7 @@ def init():
     searx.plugins.initialize(app)
 
     metrics: bool = get_setting("general.enable_metrics")  # type: ignore
-    searx.search.initialize(enable_checker=True, check_network=True, enable_metrics=metrics)
+    searx.search.initialize(check_network=True, enable_metrics=metrics)
 
     limiter.initialize(app, settings)
     favicons.init()

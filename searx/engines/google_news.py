@@ -60,7 +60,7 @@ paging = False
 time_range_support = False
 
 # Google-News results are always *SafeSearch*. Option 'safesearch' is set to
-# False here, otherwise checker will report safesearch-errors::
+# False here.
 #
 #  safesearch : results are identical for safesearch=0 and safesearch=2
 safesearch = True

@@ -82,7 +82,6 @@ class SearxTestCase(aiounittest.AsyncTestCase):
         # - initialize searx.network, searx.metrics, searx.processors and searx.search.checker
 
         searx.search.initialize(
-            enable_checker=True,
             check_network=True,
             enable_metrics=searx.get_setting("general.enable_metrics"),  # type: ignore
         )

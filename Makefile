@@ -17,7 +17,6 @@ help:
 	@echo 'install        - developer install of SearxNG into virtualenv'
 	@echo 'uninstall      - uninstall developer installation'
 	@echo 'clean          - clean up working tree'
-	@echo 'search.checker - check search engines'
 	@echo 'test           - run shell & CI tests'
 	@echo 'test.shell     - test shell scripts'
 	@echo 'ci.test        - run CI tests'
@@ -39,12 +38,6 @@ clean: py.clean docs.clean node.clean nvm.clean go.clean test.clean
 	$(Q)find . -name '*~' -exec rm -f {} +
 	$(Q)find . -name '*.bak' -exec rm -f {} +
 
-PHONY += search.checker search.checker.%
-search.checker: install
-	$(Q)./manage pyenv.cmd searxng-checker -v
-
-search.checker.%: install
-	$(Q)./manage pyenv.cmd searxng-checker -v "$(subst _, ,$(patsubst search.checker.%,%,$@))"
 
 PHONY += test ci.test test.shell
 test:    test.yamllint test.black test.pyright_modified test.pylint test.unit test.robot test.rst test.shell test.shfmt

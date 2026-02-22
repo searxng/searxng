@@ -20,7 +20,6 @@ from searx.external_bang import get_bang_url
 from searx.metrics import initialize as initialize_metrics, counter_inc
 from searx.network import initialize as initialize_network, check_network_configuration
 from searx.results import ResultContainer
-from searx.search.checker import initialize as initialize_checker
 from searx.search.processors import PROCESSORS
 from searx.search.processors.abstract import RequestParams
 
@@ -33,7 +32,6 @@ logger = logger.getChild('search')
 
 def initialize(
     settings_engines: list[dict[str, t.Any]] = None,  # pyright: ignore[reportArgumentType]
-    enable_checker: bool = False,
     check_network: bool = False,
     enable_metrics: bool = True,
 ):
@@ -44,8 +42,6 @@ def initialize(
         check_network_configuration()
     initialize_metrics([engine['name'] for engine in settings_engines], enable_metrics)
     PROCESSORS.init(settings_engines)
-    if enable_checker:
-        initialize_checker()
 
 
 class Search:
