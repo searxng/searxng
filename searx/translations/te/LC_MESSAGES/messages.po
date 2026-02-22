@@ -18,7 +18,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-02-21 10:30+0000\n"
+"POT-Creation-Date: 2026-02-22 13:48+0000\n"
 "PO-Revision-Date: 2025-11-04 03:40+0000\n"
 "Last-Translator: krishna_medapati <krishna_medapati@noreply.codeberg.org>"
 "\n"
@@ -542,28 +542,28 @@ msgstr "క్లోస్డ్"
 msgid "answered"
 msgstr "సమాధానమిచ్చారు"
 
-#: searx/webapp.py:328
+#: searx/webapp.py:327
 msgid "No item found"
 msgstr "ఏమీ దొరకలేదు"
 
-#: searx/engines/qwant.py:299
-#: searx/templates/simple/result_templates/images.html:23 searx/webapp.py:330
+#: searx/engines/qwant.py:296
+#: searx/templates/simple/result_templates/images.html:23 searx/webapp.py:329
 msgid "Source"
 msgstr "మూలం"
 
-#: searx/webapp.py:332
+#: searx/webapp.py:331
 msgid "Error loading the next page"
 msgstr "తదుపరి పేజీని లోడ్ చేయడంలో లోపం"
 
-#: searx/webapp.py:481 searx/webapp.py:882
+#: searx/webapp.py:480 searx/webapp.py:881
 msgid "Invalid settings, please edit your preferences"
 msgstr "చెల్లని సెట్టింగ్‌లు, దయచేసి మీ ప్రాధాన్యతలను సవరించండి"
 
-#: searx/webapp.py:497
+#: searx/webapp.py:496
 msgid "Invalid settings"
 msgstr "చెల్లని అమరికలు"
 
-#: searx/webapp.py:574 searx/webapp.py:664
+#: searx/webapp.py:573 searx/webapp.py:663
 msgid "search error"
 msgstr "శోధనలో లోపము"
 
@@ -642,7 +642,7 @@ msgstr "విభిన్న యాదృచ్ఛిక విలువలన�
 msgid "Compute {func} of the arguments"
 msgstr ""
 
-#: searx/engines/openstreetmap.py:156
+#: searx/engines/openstreetmap.py:155
 msgid "Show route in map .."
 msgstr ""
 
@@ -655,7 +655,7 @@ msgstr "{title} (వాడుకలో లేదు)"
 msgid "This entry has been superseded by"
 msgstr "దీని ద్వారా ఈ ఎంట్రీ భర్తీ చేయబడింది"
 
-#: searx/engines/qwant.py:301
+#: searx/engines/qwant.py:298
 msgid "Channel"
 msgstr "ఛానెల్"
 
@@ -864,7 +864,7 @@ msgid "Donate"
 msgstr "దానం చేయండి"
 
 #: searx/templates/simple/base.html:55 searx/templates/simple/base.html:57
-#: searx/templates/simple/preferences.html:156
+#: searx/templates/simple/preferences.html:152
 msgid "Preferences"
 msgstr "అభిరుచులు"
 
@@ -925,23 +925,23 @@ msgstr "రచయిత"
 msgid "cached"
 msgstr "కాష్ చేయబడింది"
 
-#: searx/templates/simple/new_issue.html:64
+#: searx/templates/simple/new_issue.html:60
 msgid "Start submitting a new issue on GitHub"
 msgstr "GitHub లో కొత్త సంచికను సమర్పించడం ప్రారంభించండి"
 
-#: searx/templates/simple/new_issue.html:66
+#: searx/templates/simple/new_issue.html:62
 msgid "Please check for existing bugs about this engine on GitHub"
 msgstr "దయచేసి ఈ ఇంజిన్ గురించి ఇప్పటికే ఉన్న బగ్‌ల కోసం GitHubలో తనిఖీ చేయండి"
 
-#: searx/templates/simple/new_issue.html:69
+#: searx/templates/simple/new_issue.html:65
 msgid "I confirm there is no existing bug about the issue I encounter"
 msgstr "నేను ఎదుర్కొన్న సమస్యకు సంబంధించి బగ్ ఏదీ లేదని నేను ధృవీకరిస్తున్నాను"
 
-#: searx/templates/simple/new_issue.html:71
+#: searx/templates/simple/new_issue.html:67
 msgid "If this is a public instance, please specify the URL in the bug report"
 msgstr "ఇది పబ్లిక్ ఉదాహరణ అయితే, దయచేసి బగ్ నివేదికలో URL ని పేర్కొనండి"
 
-#: searx/templates/simple/new_issue.html:72
+#: searx/templates/simple/new_issue.html:68
 msgid "Submit a new issue on Github including the above information"
 msgstr "పై సమాచారంతో సహా Github పై కొత్త సంచికను సమర్పించండి"
 
@@ -978,57 +978,53 @@ msgstr "P80"
 msgid "P95"
 msgstr "P95"
 
-#: searx/templates/simple/preferences.html:136
-msgid "Failed checker test(s): "
-msgstr "విఫలమైన చెకర్ పరీక్ష(లు): "
-
-#: searx/templates/simple/preferences.html:138
+#: searx/templates/simple/preferences.html:134
 msgid "Errors:"
 msgstr "లోపాలు:"
 
-#: searx/templates/simple/preferences.html:160
+#: searx/templates/simple/preferences.html:156
 msgid ""
 "This is a preview of the settings used by the 'Search URL' you used to "
 "get here."
 msgstr ""
 
-#: searx/templates/simple/preferences.html:162
+#: searx/templates/simple/preferences.html:158
 msgid "Press save to copy these preferences to your browser."
 msgstr ""
 
-#: searx/templates/simple/preferences.html:163
+#: searx/templates/simple/preferences.html:159
 msgid "Click here to view your browser preferences instead:"
 msgstr ""
 
-#: searx/templates/simple/preferences.html:173
+#: searx/templates/simple/preferences.html:169
 msgid "General"
 msgstr "సాధారణ"
 
-#: searx/templates/simple/preferences.html:176
+#: searx/templates/simple/preferences.html:172
 msgid "Default categories"
 msgstr "నిష్క్రియ వర్గాలు"
 
-#: searx/templates/simple/preferences.html:204
+#: searx/templates/simple/preferences.html:200
 msgid "User interface"
 msgstr "వినియోగ మార్గము"
 
-#: searx/templates/simple/preferences.html:224
+#: searx/templates/simple/preferences.html:220
 msgid "Privacy"
 msgstr "ఆంతరంగికత"
 
-#: searx/templates/simple/preferences.html:239
+#: searx/templates/simple/preferences.html:235
 msgid "Engines"
 msgstr "యంత్రాలు"
 
-#: searx/templates/simple/preferences.html:241
+#: searx/templates/simple/preferences.html:237
 msgid "Currently used search engines"
 msgstr "ప్రస్తుతం ఉపయోగించబడుతున్న శోధన యంత్రాలు"
 
-#: searx/templates/simple/preferences.html:250
+#: searx/templates/simple/preferences.html:246
 msgid "Special Queries"
 msgstr "ప్రత్యేక ప్రశ్నలు"
 
-#: searx/templates/simple/preferences.html:258
+#: searx/templates/simple/preferences.html:254
 msgid "Cookies"
 msgstr "కుకీలు"
 
@@ -1148,18 +1144,6 @@ msgstr "ఫంక్షన్"
 #: searx/templates/simple/stats.html:121
 msgid "Code"
 msgstr "కోడ్"
-
-#: searx/templates/simple/stats.html:128
-msgid "Checker"
-msgstr "చెకర్"
-
-#: searx/templates/simple/stats.html:131
-msgid "Failed test"
-msgstr "పరీక్ష విఫలమైంది"
-
-#: searx/templates/simple/stats.html:132
-msgid "Comment(s)"
-msgstr "వ్యాఖ్య(లు)"
 
 #: searx/templates/simple/answer/translations.html:12
 #: searx/templates/simple/preferences/answerers.html:8
@@ -2369,4 +2353,16 @@ msgstr "వీడియోను దాచిపెట్టు"
 #~ " scrolling to the bottom of the "
 #~ "current page"
 #~ msgstr ""
+
+#~ msgid "Failed checker test(s): "
+#~ msgstr "విఫలమైన చెకర్ పరీక్ష(లు): "
+
+#~ msgid "Checker"
+#~ msgstr "చెకర్"
+
+#~ msgid "Failed test"
+#~ msgstr "పరీక్ష విఫలమైంది"
+
+#~ msgid "Comment(s)"
+#~ msgstr "వ్యాఖ్య(లు)"
 

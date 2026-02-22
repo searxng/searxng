@@ -21,7 +21,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-02-21 10:30+0000\n"
+"POT-Creation-Date: 2026-02-22 13:48+0000\n"
 "PO-Revision-Date: 2025-12-23 13:21+0000\n"
 "Last-Translator: Priit Jõerüüt <jrtcdbrg@noreply.codeberg.org>\n"
 "Language: et\n"
@@ -544,28 +544,28 @@ msgstr "suletud"
 msgid "answered"
 msgstr "vastatud"
 
-#: searx/webapp.py:328
+#: searx/webapp.py:327
 msgid "No item found"
 msgstr "Üksust ei leitud"
 
-#: searx/engines/qwant.py:299
-#: searx/templates/simple/result_templates/images.html:23 searx/webapp.py:330
+#: searx/engines/qwant.py:296
+#: searx/templates/simple/result_templates/images.html:23 searx/webapp.py:329
 msgid "Source"
 msgstr "Allikas"
 
-#: searx/webapp.py:332
+#: searx/webapp.py:331
 msgid "Error loading the next page"
 msgstr "Viga järgmise lehekülje laadimisel"
 
-#: searx/webapp.py:481 searx/webapp.py:882
+#: searx/webapp.py:480 searx/webapp.py:881
 msgid "Invalid settings, please edit your preferences"
 msgstr "Sobimatud seaded, palun muuda oma eelistusi"
 
-#: searx/webapp.py:497
+#: searx/webapp.py:496
 msgid "Invalid settings"
 msgstr "Sobimatud seaded"
 
-#: searx/webapp.py:574 searx/webapp.py:664
+#: searx/webapp.py:573 searx/webapp.py:663
 msgid "search error"
 msgstr "otsingu viga"
 
@@ -644,7 +644,7 @@ msgstr "Genereeri erinevaid juhuslikke väärtusi"
 msgid "Compute {func} of the arguments"
 msgstr "Arvuta argumentidest {func}"
 
-#: searx/engines/openstreetmap.py:156
+#: searx/engines/openstreetmap.py:155
 msgid "Show route in map .."
 msgstr "Näita teekonda kaardil..."
 
@@ -657,7 +657,7 @@ msgstr "{title} (VANANENUD)"
 msgid "This entry has been superseded by"
 msgstr "See üksus on asendatud"
 
-#: searx/engines/qwant.py:301
+#: searx/engines/qwant.py:298
 msgid "Channel"
 msgstr "Kanal"
 
@@ -874,7 +874,7 @@ msgid "Donate"
 msgstr "Anneta"
 
 #: searx/templates/simple/base.html:55 searx/templates/simple/base.html:57
-#: searx/templates/simple/preferences.html:156
+#: searx/templates/simple/preferences.html:152
 msgid "Preferences"
 msgstr "Eelistused"
 
@@ -935,27 +935,27 @@ msgstr "Autor"
 msgid "cached"
 msgstr "vahemälus"
 
-#: searx/templates/simple/new_issue.html:64
+#: searx/templates/simple/new_issue.html:60
 msgid "Start submitting a new issue on GitHub"
 msgstr "Alusta veateate või ettepaneku koostamist GitHubis"
 
-#: searx/templates/simple/new_issue.html:66
+#: searx/templates/simple/new_issue.html:62
 msgid "Please check for existing bugs about this engine on GitHub"
 msgstr ""
 "Eelnevalt palun uuri GitHubist olemasolevate selle otsingumootori "
 "sarnasete vigade kohta"
 
-#: searx/templates/simple/new_issue.html:69
+#: searx/templates/simple/new_issue.html:65
 msgid "I confirm there is no existing bug about the issue I encounter"
 msgstr ""
 "Ma kinnitan et mul ei ole olemasolevat viga probleemi kohta millega ma "
 "kokku puutun"
 
-#: searx/templates/simple/new_issue.html:71
+#: searx/templates/simple/new_issue.html:67
 msgid "If this is a public instance, please specify the URL in the bug report"
 msgstr "Palun täpsusta URL veateates, kui tegemist on avaliku serveriga"
 
-#: searx/templates/simple/new_issue.html:72
+#: searx/templates/simple/new_issue.html:68
 msgid "Submit a new issue on Github including the above information"
 msgstr "Esita Githubis uus viga või probleem, mis sisaldab ülaltoodud teavet"
 
@@ -992,15 +992,11 @@ msgstr "P80"
 msgid "P95"
 msgstr "P95"
 
-#: searx/templates/simple/preferences.html:136
-msgid "Failed checker test(s): "
-msgstr "Ebaõnnestunud kontrolleri test(id): "
-
-#: searx/templates/simple/preferences.html:138
+#: searx/templates/simple/preferences.html:134
 msgid "Errors:"
 msgstr "Vead:"
 
-#: searx/templates/simple/preferences.html:160
+#: searx/templates/simple/preferences.html:156
 msgid ""
 "This is a preview of the settings used by the 'Search URL' you used to "
 "get here."
@@ -1008,43 +1004,43 @@ msgstr ""
 "See on valiku „Otsingu võrguaadress“ seadistuste eelvaade (samal viisil "
 "jõudsid ka siia)."
 
-#: searx/templates/simple/preferences.html:162
+#: searx/templates/simple/preferences.html:158
 msgid "Press save to copy these preferences to your browser."
 msgstr "Klõpsi salvestusnuppu nende eelistuse kopeerimiseks veebibrauserisse."
 
-#: searx/templates/simple/preferences.html:163
+#: searx/templates/simple/preferences.html:159
 msgid "Click here to view your browser preferences instead:"
 msgstr "Klõpsides siin võid vaadata brauseri seadistusi:"
 
-#: searx/templates/simple/preferences.html:173
+#: searx/templates/simple/preferences.html:169
 msgid "General"
 msgstr "Üldine"
 
-#: searx/templates/simple/preferences.html:176
+#: searx/templates/simple/preferences.html:172
 msgid "Default categories"
 msgstr "Vaikimisi kategooriad"
 
-#: searx/templates/simple/preferences.html:204
+#: searx/templates/simple/preferences.html:200
 msgid "User interface"
 msgstr "Kasutajaliides"
 
-#: searx/templates/simple/preferences.html:224
+#: searx/templates/simple/preferences.html:220
 msgid "Privacy"
 msgstr "Privaatsus"
 
-#: searx/templates/simple/preferences.html:239
+#: searx/templates/simple/preferences.html:235
 msgid "Engines"
 msgstr "Otsingumootorid"
 
-#: searx/templates/simple/preferences.html:241
+#: searx/templates/simple/preferences.html:237
 msgid "Currently used search engines"
 msgstr "Hetkel kasutatud otsingumootorid"
 
-#: searx/templates/simple/preferences.html:250
+#: searx/templates/simple/preferences.html:246
 msgid "Special Queries"
 msgstr "Spetsiaalsed päringud"
 
-#: searx/templates/simple/preferences.html:258
+#: searx/templates/simple/preferences.html:254
 msgid "Cookies"
 msgstr "Küpsised"
 
@@ -1164,18 +1160,6 @@ msgstr "Funktsioon"
 #: searx/templates/simple/stats.html:121
 msgid "Code"
 msgstr "Kood"
-
-#: searx/templates/simple/stats.html:128
-msgid "Checker"
-msgstr "Kontrollija"
-
-#: searx/templates/simple/stats.html:131
-msgid "Failed test"
-msgstr "Ebaõnnestunud test"
-
-#: searx/templates/simple/stats.html:132
-msgid "Comment(s)"
-msgstr "Kommentaar(id)"
 
 #: searx/templates/simple/answer/translations.html:12
 #: searx/templates/simple/preferences/answerers.html:8
@@ -2393,4 +2377,16 @@ msgstr "peida video"
 #~ " scrolling to the bottom of the "
 #~ "current page"
 #~ msgstr "Kerides senise lehe lõppu kuvatakse järgmine leht automaatselt"
+
+#~ msgid "Failed checker test(s): "
+#~ msgstr "Ebaõnnestunud kontrolleri test(id): "
+
+#~ msgid "Checker"
+#~ msgstr "Kontrollija"
+
+#~ msgid "Failed test"
+#~ msgstr "Ebaõnnestunud test"
+
+#~ msgid "Comment(s)"
+#~ msgstr "Kommentaar(id)"
 

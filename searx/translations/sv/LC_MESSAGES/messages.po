@@ -36,7 +36,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-02-21 10:30+0000\n"
+"POT-Creation-Date: 2026-02-22 13:48+0000\n"
 "PO-Revision-Date: 2026-02-04 15:29+0000\n"
 "Last-Translator: AndersNordh <andersnordh@noreply.codeberg.org>\n"
 "Language: sv\n"
@@ -559,28 +559,28 @@ msgstr "stängd"
 msgid "answered"
 msgstr "svarad"
 
-#: searx/webapp.py:328
+#: searx/webapp.py:327
 msgid "No item found"
 msgstr "Inget hittades"
 
-#: searx/engines/qwant.py:299
-#: searx/templates/simple/result_templates/images.html:23 searx/webapp.py:330
+#: searx/engines/qwant.py:296
+#: searx/templates/simple/result_templates/images.html:23 searx/webapp.py:329
 msgid "Source"
 msgstr "Källa"
 
-#: searx/webapp.py:332
+#: searx/webapp.py:331
 msgid "Error loading the next page"
 msgstr "Fel vid laddning av nästa sida"
 
-#: searx/webapp.py:481 searx/webapp.py:882
+#: searx/webapp.py:480 searx/webapp.py:881
 msgid "Invalid settings, please edit your preferences"
 msgstr "Ogiltiga inställningar, vänligen redigerar dina inställningar"
 
-#: searx/webapp.py:497
+#: searx/webapp.py:496
 msgid "Invalid settings"
 msgstr "Ogiltiga inställningar"
 
-#: searx/webapp.py:574 searx/webapp.py:664
+#: searx/webapp.py:573 searx/webapp.py:663
 msgid "search error"
 msgstr "sökfel"
 
@@ -659,7 +659,7 @@ msgstr "Generera olika slumpmässiga värden"
 msgid "Compute {func} of the arguments"
 msgstr "Beräkna {func} för argument"
 
-#: searx/engines/openstreetmap.py:156
+#: searx/engines/openstreetmap.py:155
 msgid "Show route in map .."
 msgstr "Visa rutt på karta ..."
 
@@ -672,7 +672,7 @@ msgstr "{title} (FÖRÅLDRAD)"
 msgid "This entry has been superseded by"
 msgstr "Detta inlägg har ersatts av"
 
-#: searx/engines/qwant.py:301
+#: searx/engines/qwant.py:298
 msgid "Channel"
 msgstr "Kanal"
 
@@ -890,7 +890,7 @@ msgid "Donate"
 msgstr "Donera"
 
 #: searx/templates/simple/base.html:55 searx/templates/simple/base.html:57
-#: searx/templates/simple/preferences.html:156
+#: searx/templates/simple/preferences.html:152
 msgid "Preferences"
 msgstr "Inställningar"
 
@@ -951,25 +951,25 @@ msgstr "Upphovsman"
 msgid "cached"
 msgstr "cachad"
 
-#: searx/templates/simple/new_issue.html:64
+#: searx/templates/simple/new_issue.html:60
 msgid "Start submitting a new issue on GitHub"
 msgstr "Börja rapportera ett problem på Github"
 
-#: searx/templates/simple/new_issue.html:66
+#: searx/templates/simple/new_issue.html:62
 msgid "Please check for existing bugs about this engine on GitHub"
 msgstr "Vänligen kolla efter befintliga buggar om denna motor på GitHub"
 
-#: searx/templates/simple/new_issue.html:69
+#: searx/templates/simple/new_issue.html:65
 msgid "I confirm there is no existing bug about the issue I encounter"
 msgstr ""
 "Jag bekräftar att det inte finns någon befintlig bugg om problemet jag "
 "stöter på"
 
-#: searx/templates/simple/new_issue.html:71
+#: searx/templates/simple/new_issue.html:67
 msgid "If this is a public instance, please specify the URL in the bug report"
 msgstr "Om detta är en offentlig instans, vänligen ange URL:en i felrapporten"
 
-#: searx/templates/simple/new_issue.html:72
+#: searx/templates/simple/new_issue.html:68
 msgid "Submit a new issue on Github including the above information"
 msgstr "Skicka in ett nytt nummer på Github inklusive ovanstående information"
 
@@ -1006,15 +1006,11 @@ msgstr "P80"
 msgid "P95"
 msgstr "P95"
 
-#: searx/templates/simple/preferences.html:136
-msgid "Failed checker test(s): "
-msgstr "Underkända checker test(s): "
-
-#: searx/templates/simple/preferences.html:138
+#: searx/templates/simple/preferences.html:134
 msgid "Errors:"
 msgstr "Fel:"
 
-#: searx/templates/simple/preferences.html:160
+#: searx/templates/simple/preferences.html:156
 msgid ""
 "This is a preview of the settings used by the 'Search URL' you used to "
 "get here."
@@ -1022,43 +1018,43 @@ msgstr ""
 "Detta är en förhandsvisning av inställningarna använda av \"Sök URL:en\" "
 "du brukade få här."
 
-#: searx/templates/simple/preferences.html:162
+#: searx/templates/simple/preferences.html:158
 msgid "Press save to copy these preferences to your browser."
 msgstr "Tryck spara för att kopiera dessa inställningarna till din webbläsare."
 
-#: searx/templates/simple/preferences.html:163
+#: searx/templates/simple/preferences.html:159
 msgid "Click here to view your browser preferences instead:"
 msgstr "Klicka här för att visa din webbläsares inställningar istället:"
 
-#: searx/templates/simple/preferences.html:173
+#: searx/templates/simple/preferences.html:169
 msgid "General"
 msgstr "Allmänt"
 
-#: searx/templates/simple/preferences.html:176
+#: searx/templates/simple/preferences.html:172
 msgid "Default categories"
 msgstr "Standardkategorier"
 
-#: searx/templates/simple/preferences.html:204
+#: searx/templates/simple/preferences.html:200
 msgid "User interface"
 msgstr "Användargränssnitt"
 
-#: searx/templates/simple/preferences.html:224
+#: searx/templates/simple/preferences.html:220
 msgid "Privacy"
 msgstr "Sekretess"
 
-#: searx/templates/simple/preferences.html:239
+#: searx/templates/simple/preferences.html:235
 msgid "Engines"
 msgstr "Sökmotorer"
 
-#: searx/templates/simple/preferences.html:241
+#: searx/templates/simple/preferences.html:237
 msgid "Currently used search engines"
 msgstr "För närvarande använda sökmotorer"
 
-#: searx/templates/simple/preferences.html:250
+#: searx/templates/simple/preferences.html:246
 msgid "Special Queries"
 msgstr "Särskilda förfrågningar"
 
-#: searx/templates/simple/preferences.html:258
+#: searx/templates/simple/preferences.html:254
 msgid "Cookies"
 msgstr "Kakor"
 
@@ -1178,18 +1174,6 @@ msgstr "Funktion"
 #: searx/templates/simple/stats.html:121
 msgid "Code"
 msgstr "Kod"
-
-#: searx/templates/simple/stats.html:128
-msgid "Checker"
-msgstr "Kontrollera"
-
-#: searx/templates/simple/stats.html:131
-msgid "Failed test"
-msgstr "Misslyckade testet"
-
-#: searx/templates/simple/stats.html:132
-msgid "Comment(s)"
-msgstr "Kommentar(er)"
 
 #: searx/templates/simple/answer/translations.html:12
 #: searx/templates/simple/preferences/answerers.html:8
@@ -2425,4 +2409,16 @@ msgstr "göm video"
 #~ "Automatisk laddning av nästa sida vid"
 #~ " bläddring till botten av nuvarande "
 #~ "sida"
+
+#~ msgid "Failed checker test(s): "
+#~ msgstr "Underkända checker test(s): "
+
+#~ msgid "Checker"
+#~ msgstr "Kontrollera"
+
+#~ msgid "Failed test"
+#~ msgstr "Misslyckade testet"
+
+#~ msgid "Comment(s)"
+#~ msgstr "Kommentar(er)"
 

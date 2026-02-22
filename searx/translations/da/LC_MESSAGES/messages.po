@@ -19,7 +19,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-02-21 10:30+0000\n"
+"POT-Creation-Date: 2026-02-22 13:48+0000\n"
 "PO-Revision-Date: 2025-12-31 17:44+0000\n"
 "Last-Translator: AndersNordh <andersnordh@noreply.codeberg.org>\n"
 "Language: da\n"
@@ -542,28 +542,28 @@ msgstr "lukket"
 msgid "answered"
 msgstr "svaret"
 
-#: searx/webapp.py:328
+#: searx/webapp.py:327
 msgid "No item found"
 msgstr "Intet fundet"
 
-#: searx/engines/qwant.py:299
-#: searx/templates/simple/result_templates/images.html:23 searx/webapp.py:330
+#: searx/engines/qwant.py:296
+#: searx/templates/simple/result_templates/images.html:23 searx/webapp.py:329
 msgid "Source"
 msgstr "Kilde"
 
-#: searx/webapp.py:332
+#: searx/webapp.py:331
 msgid "Error loading the next page"
 msgstr "Fejl ved indlæsning af den næste side"
 
-#: searx/webapp.py:481 searx/webapp.py:882
+#: searx/webapp.py:480 searx/webapp.py:881
 msgid "Invalid settings, please edit your preferences"
 msgstr "Ugyldige indstillinger, redigér venligst dine valg"
 
-#: searx/webapp.py:497
+#: searx/webapp.py:496
 msgid "Invalid settings"
 msgstr "Ugyldig indstilling"
 
-#: searx/webapp.py:574 searx/webapp.py:664
+#: searx/webapp.py:573 searx/webapp.py:663
 msgid "search error"
 msgstr "søgefejl"
 
@@ -642,7 +642,7 @@ msgstr "Generér forskellige tilfældige værdier"
 msgid "Compute {func} of the arguments"
 msgstr "Beregn {func} af argumenterne"
 
-#: searx/engines/openstreetmap.py:156
+#: searx/engines/openstreetmap.py:155
 msgid "Show route in map .."
 msgstr "Vis rute på kort .."
 
@@ -655,7 +655,7 @@ msgstr "{title} (FORÆLDET)"
 msgid "This entry has been superseded by"
 msgstr "Denne værdi er blevet overskrevet af"
 
-#: searx/engines/qwant.py:301
+#: searx/engines/qwant.py:298
 msgid "Channel"
 msgstr "Kanal"
 
@@ -873,7 +873,7 @@ msgid "Donate"
 msgstr "Donere"
 
 #: searx/templates/simple/base.html:55 searx/templates/simple/base.html:57
-#: searx/templates/simple/preferences.html:156
+#: searx/templates/simple/preferences.html:152
 msgid "Preferences"
 msgstr "Indstillinger"
 
@@ -934,27 +934,27 @@ msgstr "Forfatter"
 msgid "cached"
 msgstr "cachet"
 
-#: searx/templates/simple/new_issue.html:64
+#: searx/templates/simple/new_issue.html:60
 msgid "Start submitting a new issue on GitHub"
 msgstr "Begynd at indsende et nyt problem på GitHub"
 
-#: searx/templates/simple/new_issue.html:66
+#: searx/templates/simple/new_issue.html:62
 msgid "Please check for existing bugs about this engine on GitHub"
 msgstr "Venligst tjek for eksisterende, relateret til denne søgemaskine, på GitHub"
 
-#: searx/templates/simple/new_issue.html:69
+#: searx/templates/simple/new_issue.html:65
 msgid "I confirm there is no existing bug about the issue I encounter"
 msgstr ""
 "Jeg bekræfter, at der ikke er nogen eksisterende sag relateret til det "
 "problem, jeg støder på"
 
-#: searx/templates/simple/new_issue.html:71
+#: searx/templates/simple/new_issue.html:67
 msgid "If this is a public instance, please specify the URL in the bug report"
 msgstr ""
 "Hvis det er en offentligt tilgængelige udgave, venligst tilføj URL'en i "
 "fejl rapporten"
 
-#: searx/templates/simple/new_issue.html:72
+#: searx/templates/simple/new_issue.html:68
 msgid "Submit a new issue on Github including the above information"
 msgstr "Udgiv en ny version på Github, med det overstående information inkluderet"
 
@@ -991,15 +991,11 @@ msgstr "P80"
 msgid "P95"
 msgstr "P95"
 
-#: searx/templates/simple/preferences.html:136
-msgid "Failed checker test(s): "
-msgstr "Fejlet checkertest(s): "
-
-#: searx/templates/simple/preferences.html:138
+#: searx/templates/simple/preferences.html:134
 msgid "Errors:"
 msgstr "Fejl:"
 
-#: searx/templates/simple/preferences.html:160
+#: searx/templates/simple/preferences.html:156
 msgid ""
 "This is a preview of the settings used by the 'Search URL' you used to "
 "get here."
@@ -1007,43 +1003,43 @@ msgstr ""
 "Dette er en forhåndsvisning af de indstillinger, der bruges af den 'Søge-"
 "URL', du brugte til at komme hertil."
 
-#: searx/templates/simple/preferences.html:162
+#: searx/templates/simple/preferences.html:158
 msgid "Press save to copy these preferences to your browser."
 msgstr "Tryk på Gem for at kopiere disse præferencer til din browser."
 
-#: searx/templates/simple/preferences.html:163
+#: searx/templates/simple/preferences.html:159
 msgid "Click here to view your browser preferences instead:"
 msgstr "Klik her for at se dine browserindstillinger i stedet:"
 
-#: searx/templates/simple/preferences.html:173
+#: searx/templates/simple/preferences.html:169
 msgid "General"
 msgstr "Generelt"
 
-#: searx/templates/simple/preferences.html:176
+#: searx/templates/simple/preferences.html:172
 msgid "Default categories"
 msgstr "Standardkategorier"
 
-#: searx/templates/simple/preferences.html:204
+#: searx/templates/simple/preferences.html:200
 msgid "User interface"
 msgstr "Brugerinterface"
 
-#: searx/templates/simple/preferences.html:224
+#: searx/templates/simple/preferences.html:220
 msgid "Privacy"
 msgstr "Privatliv"
 
-#: searx/templates/simple/preferences.html:239
+#: searx/templates/simple/preferences.html:235
 msgid "Engines"
 msgstr "Søgemaskiner"
 
-#: searx/templates/simple/preferences.html:241
+#: searx/templates/simple/preferences.html:237
 msgid "Currently used search engines"
 msgstr "Pt. anvendte søgemaskiner"
 
-#: searx/templates/simple/preferences.html:250
+#: searx/templates/simple/preferences.html:246
 msgid "Special Queries"
 msgstr "Specielle Søgetermer"
 
-#: searx/templates/simple/preferences.html:258
+#: searx/templates/simple/preferences.html:254
 msgid "Cookies"
 msgstr "Cookies"
 
@@ -1163,18 +1159,6 @@ msgstr "Funktion"
 #: searx/templates/simple/stats.html:121
 msgid "Code"
 msgstr "Kode"
-
-#: searx/templates/simple/stats.html:128
-msgid "Checker"
-msgstr "Kontrollør"
-
-#: searx/templates/simple/stats.html:131
-msgid "Failed test"
-msgstr "Fejlede tekst"
-
-#: searx/templates/simple/stats.html:132
-msgid "Comment(s)"
-msgstr "Kommentar(er)"
 
 #: searx/templates/simple/answer/translations.html:12
 #: searx/templates/simple/preferences/answerers.html:8
@@ -2411,4 +2395,16 @@ msgstr "skjul video"
 #~ "Indlæser automatisk den næste side, når"
 #~ " du ruller til bunden af den "
 #~ "aktuelle side"
+
+#~ msgid "Failed checker test(s): "
+#~ msgstr "Fejlet checkertest(s): "
+
+#~ msgid "Checker"
+#~ msgstr "Kontrollør"
+
+#~ msgid "Failed test"
+#~ msgstr "Fejlede tekst"
+
+#~ msgid "Comment(s)"
+#~ msgstr "Kommentar(er)"
 

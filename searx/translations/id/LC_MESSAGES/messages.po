@@ -24,7 +24,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-02-21 10:30+0000\n"
+"POT-Creation-Date: 2026-02-22 13:48+0000\n"
 "PO-Revision-Date: 2025-11-23 15:10+0000\n"
 "Last-Translator: rmdzn <rmdzn@noreply.codeberg.org>\n"
 "Language: id\n"
@@ -547,28 +547,28 @@ msgstr "Tertutup"
 msgid "answered"
 msgstr "dijawab"
 
-#: searx/webapp.py:328
+#: searx/webapp.py:327
 msgid "No item found"
 msgstr "Item tidak ditemukan"
 
-#: searx/engines/qwant.py:299
-#: searx/templates/simple/result_templates/images.html:23 searx/webapp.py:330
+#: searx/engines/qwant.py:296
+#: searx/templates/simple/result_templates/images.html:23 searx/webapp.py:329
 msgid "Source"
 msgstr "Sumber"
 
-#: searx/webapp.py:332
+#: searx/webapp.py:331
 msgid "Error loading the next page"
 msgstr "Gagal memuat laman berikutnya"
 
-#: searx/webapp.py:481 searx/webapp.py:882
+#: searx/webapp.py:480 searx/webapp.py:881
 msgid "Invalid settings, please edit your preferences"
 msgstr "Pengaturan takvalid. Mohon ubah preferensi Anda"
 
-#: searx/webapp.py:497
+#: searx/webapp.py:496
 msgid "Invalid settings"
 msgstr "Pengaturan takvalid"
 
-#: searx/webapp.py:574 searx/webapp.py:664
+#: searx/webapp.py:573 searx/webapp.py:663
 msgid "search error"
 msgstr "galat pencarian"
 
@@ -647,7 +647,7 @@ msgstr "Menghasilkan nilai-nilai acak yang berbeda"
 msgid "Compute {func} of the arguments"
 msgstr "Hitung {func} dari argumen"
 
-#: searx/engines/openstreetmap.py:156
+#: searx/engines/openstreetmap.py:155
 msgid "Show route in map .."
 msgstr "Tampilkan rute di peta .."
 
@@ -660,7 +660,7 @@ msgstr "{title} (USANG)"
 msgid "This entry has been superseded by"
 msgstr "Entri ini telah digantikan oleh"
 
-#: searx/engines/qwant.py:301
+#: searx/engines/qwant.py:298
 msgid "Channel"
 msgstr "Saluran"
 
@@ -874,7 +874,7 @@ msgid "Donate"
 msgstr "Berdonasi"
 
 #: searx/templates/simple/base.html:55 searx/templates/simple/base.html:57
-#: searx/templates/simple/preferences.html:156
+#: searx/templates/simple/preferences.html:152
 msgid "Preferences"
 msgstr "Preferensi"
 
@@ -935,25 +935,25 @@ msgstr "Penulis"
 msgid "cached"
 msgstr "tembolok"
 
-#: searx/templates/simple/new_issue.html:64
+#: searx/templates/simple/new_issue.html:60
 msgid "Start submitting a new issue on GitHub"
 msgstr "Mulai membuat isu baru di GitHub"
 
-#: searx/templates/simple/new_issue.html:66
+#: searx/templates/simple/new_issue.html:62
 msgid "Please check for existing bugs about this engine on GitHub"
 msgstr "Mohon periksa kutu pada mesin pencarian ini di GitHub"
 
-#: searx/templates/simple/new_issue.html:69
+#: searx/templates/simple/new_issue.html:65
 msgid "I confirm there is no existing bug about the issue I encounter"
 msgstr "Saya mengonfirmasi bahwa tidak ada kutu pada masalah yang saya alami"
 
-#: searx/templates/simple/new_issue.html:71
+#: searx/templates/simple/new_issue.html:67
 msgid "If this is a public instance, please specify the URL in the bug report"
 msgstr ""
 "Jika mesin pencarian yang Anda gunakan merupakan sebuah instansi publik, "
 "mohon berikan URL di laporan kutu"
 
-#: searx/templates/simple/new_issue.html:72
+#: searx/templates/simple/new_issue.html:68
 msgid "Submit a new issue on Github including the above information"
 msgstr "Laporkan sebuah masalah baru di Github yang mengandung informasi di atas"
 
@@ -990,15 +990,11 @@ msgstr "P80"
 msgid "P95"
 msgstr "P95"
 
-#: searx/templates/simple/preferences.html:136
-msgid "Failed checker test(s): "
-msgstr "Tes pemeriksa gagal: "
-
-#: searx/templates/simple/preferences.html:138
+#: searx/templates/simple/preferences.html:134
 msgid "Errors:"
 msgstr "Galat:"
 
-#: searx/templates/simple/preferences.html:160
+#: searx/templates/simple/preferences.html:156
 msgid ""
 "This is a preview of the settings used by the 'Search URL' you used to "
 "get here."
@@ -1006,43 +1002,43 @@ msgstr ""
 "Ini adalah pratinjau pengaturan yang digunakan oleh 'URL Pencarian' yang "
 "Anda gunakan untuk sampai ke sini."
 
-#: searx/templates/simple/preferences.html:162
+#: searx/templates/simple/preferences.html:158
 msgid "Press save to copy these preferences to your browser."
 msgstr "Klik simpan untuk menyalin preferensi berikut ke peramban Anda."
 
-#: searx/templates/simple/preferences.html:163
+#: searx/templates/simple/preferences.html:159
 msgid "Click here to view your browser preferences instead:"
 msgstr "Klik di sini untuk melihat preferensi peramban Anda saja:"
 
-#: searx/templates/simple/preferences.html:173
+#: searx/templates/simple/preferences.html:169
 msgid "General"
 msgstr "Umum"
 
-#: searx/templates/simple/preferences.html:176
+#: searx/templates/simple/preferences.html:172
 msgid "Default categories"
 msgstr "Kategori bawaan"
 
-#: searx/templates/simple/preferences.html:204
+#: searx/templates/simple/preferences.html:200
 msgid "User interface"
 msgstr "Antarmuka pengguna"
 
-#: searx/templates/simple/preferences.html:224
+#: searx/templates/simple/preferences.html:220
 msgid "Privacy"
 msgstr "Privasi"
 
-#: searx/templates/simple/preferences.html:239
+#: searx/templates/simple/preferences.html:235
 msgid "Engines"
 msgstr "Mesin"
 
-#: searx/templates/simple/preferences.html:241
+#: searx/templates/simple/preferences.html:237
 msgid "Currently used search engines"
 msgstr "Mesin pencari yang saat ini digunakan"
 
-#: searx/templates/simple/preferences.html:250
+#: searx/templates/simple/preferences.html:246
 msgid "Special Queries"
 msgstr "Pencarian Khusus"
 
-#: searx/templates/simple/preferences.html:258
+#: searx/templates/simple/preferences.html:254
 msgid "Cookies"
 msgstr "Kuki"
 
@@ -1162,18 +1158,6 @@ msgstr "Fungsi"
 #: searx/templates/simple/stats.html:121
 msgid "Code"
 msgstr "Kode"
-
-#: searx/templates/simple/stats.html:128
-msgid "Checker"
-msgstr "Pemeriksa"
-
-#: searx/templates/simple/stats.html:131
-msgid "Failed test"
-msgstr "Tes gagal"
-
-#: searx/templates/simple/stats.html:132
-msgid "Comment(s)"
-msgstr "Komentar"
 
 #: searx/templates/simple/answer/translations.html:12
 #: searx/templates/simple/preferences/answerers.html:8
@@ -2303,4 +2287,16 @@ msgstr "sembunyikan video"
 #~ "Muat laman berikutnya secara otomatis "
 #~ "saat menggulir ke bawah laman saat "
 #~ "ini"
+
+#~ msgid "Failed checker test(s): "
+#~ msgstr "Tes pemeriksa gagal: "
+
+#~ msgid "Checker"
+#~ msgstr "Pemeriksa"
+
+#~ msgid "Failed test"
+#~ msgstr "Tes gagal"
+
+#~ msgid "Comment(s)"
+#~ msgstr "Komentar"
 

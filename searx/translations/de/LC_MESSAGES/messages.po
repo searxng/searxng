@@ -32,7 +32,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-02-21 10:30+0000\n"
+"POT-Creation-Date: 2026-02-22 13:48+0000\n"
 "PO-Revision-Date: 2025-12-25 09:21+0000\n"
 "Last-Translator: Stzyxh <stzyxh@noreply.codeberg.org>\n"
 "Language: de\n"
@@ -555,28 +555,28 @@ msgstr "geschlossen"
 msgid "answered"
 msgstr "beantwortet"
 
-#: searx/webapp.py:328
+#: searx/webapp.py:327
 msgid "No item found"
 msgstr "Keine Einträge gefunden"
 
-#: searx/engines/qwant.py:299
-#: searx/templates/simple/result_templates/images.html:23 searx/webapp.py:330
+#: searx/engines/qwant.py:296
+#: searx/templates/simple/result_templates/images.html:23 searx/webapp.py:329
 msgid "Source"
 msgstr "Quelle"
 
-#: searx/webapp.py:332
+#: searx/webapp.py:331
 msgid "Error loading the next page"
 msgstr "Fehler beim Laden der nächsten Seite"
 
-#: searx/webapp.py:481 searx/webapp.py:882
+#: searx/webapp.py:480 searx/webapp.py:881
 msgid "Invalid settings, please edit your preferences"
 msgstr "Ungültige Einstellungen, bitte Einstellungen ändern"
 
-#: searx/webapp.py:497
+#: searx/webapp.py:496
 msgid "Invalid settings"
 msgstr "Ungültige Einstellungen"
 
-#: searx/webapp.py:574 searx/webapp.py:664
+#: searx/webapp.py:573 searx/webapp.py:663
 msgid "search error"
 msgstr "Suchfehler"
 
@@ -655,7 +655,7 @@ msgstr "Erzeugt diverse Zufallswerte"
 msgid "Compute {func} of the arguments"
 msgstr "Berechne {func} zu den Argumenten"
 
-#: searx/engines/openstreetmap.py:156
+#: searx/engines/openstreetmap.py:155
 msgid "Show route in map .."
 msgstr "Routenplaner .."
 
@@ -668,7 +668,7 @@ msgstr "{title} (OBSOLET)"
 msgid "This entry has been superseded by"
 msgstr "Dieser Eintrag wurde überschrieben von"
 
-#: searx/engines/qwant.py:301
+#: searx/engines/qwant.py:298
 msgid "Channel"
 msgstr "Kanal"
 
@@ -888,7 +888,7 @@ msgid "Donate"
 msgstr "Spenden"
 
 #: searx/templates/simple/base.html:55 searx/templates/simple/base.html:57
-#: searx/templates/simple/preferences.html:156
+#: searx/templates/simple/preferences.html:152
 msgid "Preferences"
 msgstr "Einstellungen"
 
@@ -949,27 +949,27 @@ msgstr "Autor"
 msgid "cached"
 msgstr "Im Cache"
 
-#: searx/templates/simple/new_issue.html:64
+#: searx/templates/simple/new_issue.html:60
 msgid "Start submitting a new issue on GitHub"
 msgstr "Fehlerbericht auf GitHub erstellen"
 
-#: searx/templates/simple/new_issue.html:66
+#: searx/templates/simple/new_issue.html:62
 msgid "Please check for existing bugs about this engine on GitHub"
 msgstr "Überprüfe bitte auf bereits existierende Fehlereinträge auf GitHub"
 
-#: searx/templates/simple/new_issue.html:69
+#: searx/templates/simple/new_issue.html:65
 msgid "I confirm there is no existing bug about the issue I encounter"
 msgstr ""
 "Ich bestätige, dass es für das Problem, auf das ich stoße, keinen "
 "existierenden Fehlereintrag gibt"
 
-#: searx/templates/simple/new_issue.html:71
+#: searx/templates/simple/new_issue.html:67
 msgid "If this is a public instance, please specify the URL in the bug report"
 msgstr ""
 "Wenn es sich um eine öffentliche Instanz handelt, gib bitte die URL in "
 "dem Fehlerbericht an"
 
-#: searx/templates/simple/new_issue.html:72
+#: searx/templates/simple/new_issue.html:68
 msgid "Submit a new issue on Github including the above information"
 msgstr ""
 "Erstelle mit den oben stehenden Informationen auf GitHub einen neuen "
@@ -1008,15 +1008,11 @@ msgstr "P80"
 msgid "P95"
 msgstr "P95"
 
-#: searx/templates/simple/preferences.html:136
-msgid "Failed checker test(s): "
-msgstr "Fehlgeschlagene(r) Checker-Test(s): "
-
-#: searx/templates/simple/preferences.html:138
+#: searx/templates/simple/preferences.html:134
 msgid "Errors:"
 msgstr "Fehler:"
 
-#: searx/templates/simple/preferences.html:160
+#: searx/templates/simple/preferences.html:156
 msgid ""
 "This is a preview of the settings used by the 'Search URL' you used to "
 "get here."
@@ -1024,47 +1020,47 @@ msgstr ""
 "Dies ist eine Vorschau der Einstellungen, die von der „Such-URL“ "
 "verwendet wurden, über die Sie hierher gelangt sind."
 
-#: searx/templates/simple/preferences.html:162
+#: searx/templates/simple/preferences.html:158
 msgid "Press save to copy these preferences to your browser."
 msgstr ""
 "Klicken Sie auf „Speichern“, um diese Einstellungen in Ihren Browser zu "
 "kopieren."
 
-#: searx/templates/simple/preferences.html:163
+#: searx/templates/simple/preferences.html:159
 msgid "Click here to view your browser preferences instead:"
 msgstr ""
 "Klicken Sie hier, um stattdessen Ihre gespeicherten Browser-Einstellungen"
 " anzuzeigen:"
 
-#: searx/templates/simple/preferences.html:173
+#: searx/templates/simple/preferences.html:169
 msgid "General"
 msgstr "Allgemein"
 
-#: searx/templates/simple/preferences.html:176
+#: searx/templates/simple/preferences.html:172
 msgid "Default categories"
 msgstr "Standardkategorien"
 
-#: searx/templates/simple/preferences.html:204
+#: searx/templates/simple/preferences.html:200
 msgid "User interface"
 msgstr "Benutzeroberfläche"
 
-#: searx/templates/simple/preferences.html:224
+#: searx/templates/simple/preferences.html:220
 msgid "Privacy"
 msgstr "Privatsphäre"
 
-#: searx/templates/simple/preferences.html:239
+#: searx/templates/simple/preferences.html:235
 msgid "Engines"
 msgstr "Suchmaschinen"
 
-#: searx/templates/simple/preferences.html:241
+#: searx/templates/simple/preferences.html:237
 msgid "Currently used search engines"
 msgstr "Aktuell benutzte Suchmaschinen"
 
-#: searx/templates/simple/preferences.html:250
+#: searx/templates/simple/preferences.html:246
 msgid "Special Queries"
 msgstr "Besondere Abfragen"
 
-#: searx/templates/simple/preferences.html:258
+#: searx/templates/simple/preferences.html:254
 msgid "Cookies"
 msgstr "Cookies"
 
@@ -1184,18 +1180,6 @@ msgstr "Funktion"
 #: searx/templates/simple/stats.html:121
 msgid "Code"
 msgstr "Code"
-
-#: searx/templates/simple/stats.html:128
-msgid "Checker"
-msgstr "Checker"
-
-#: searx/templates/simple/stats.html:131
-msgid "Failed test"
-msgstr "Test fehlgeschlagen"
-
-#: searx/templates/simple/stats.html:132
-msgid "Comment(s)"
-msgstr "Kommentar(e)"
 
 #: searx/templates/simple/answer/translations.html:12
 #: searx/templates/simple/preferences/answerers.html:8
@@ -2459,4 +2443,16 @@ msgstr "Video verstecken"
 #~ "Automatisches Laden der nächsten Seite "
 #~ "beim Scrollen zum Ende der aktuellen "
 #~ "Seite"
+
+#~ msgid "Failed checker test(s): "
+#~ msgstr "Fehlgeschlagene(r) Checker-Test(s): "
+
+#~ msgid "Checker"
+#~ msgstr "Checker"
+
+#~ msgid "Failed test"
+#~ msgstr "Test fehlgeschlagen"
+
+#~ msgid "Comment(s)"
+#~ msgstr "Kommentar(e)"
 
