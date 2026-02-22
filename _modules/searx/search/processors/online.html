@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>searx.search.processors.online &#8212; SearXNG Documentation (2026.2.22+191818b86)</title>
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=6625fa76" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/searxng.css?v=52e4ff28" />
+    <script src="../../../../_static/documentation_options.js?v=1b5d919e"></script>
+    <script src="../../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script data-project="searxng" data-version="2026.2.22+191818b86" src="../../../../_static/describe_version.js?v=fa7f30d0"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../../index.html">SearXNG Documentation (2026.2.22+191818b86)</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../../index.html" >Module code</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../../search.html" accesskey="U">searx.search</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">searx.search.processors.online</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for searx.search.processors.online</h1><div class="highlight"><pre>
+<span></span><span class="c1"># SPDX-License-Identifier: AGPL-3.0-or-later</span>
+<span class="sd">&quot;&quot;&quot;Processor used for ``online`` engines.&quot;&quot;&quot;</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;OnlineProcessor&quot;</span><span class="p">,</span> <span class="s2">&quot;OnlineParams&quot;</span><span class="p">]</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">t</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">timeit</span><span class="w"> </span><span class="kn">import</span> <span class="n">default_timer</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">asyncio</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">ssl</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">httpx</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">searx.network</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">searx.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">gen_useragent</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">searx.exceptions</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">SearxEngineAccessDeniedException</span><span class="p">,</span>
+    <span class="n">SearxEngineCaptchaException</span><span class="p">,</span>
+    <span class="n">SearxEngineTooManyRequestsException</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">searx.metrics.error_recorder</span><span class="w"> </span><span class="kn">import</span> <span class="n">count_error</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.abstract</span><span class="w"> </span><span class="kn">import</span> <span class="n">EngineProcessor</span><span class="p">,</span> <span class="n">RequestParams</span>
+
+<span class="k">if</span> <span class="n">t</span><span class="o">.</span><span class="n">TYPE_CHECKING</span><span class="p">:</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">searx.search.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">SearchQuery</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">searx.results</span><span class="w"> </span><span class="kn">import</span> <span class="n">ResultContainer</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">searx.result_types</span><span class="w"> </span><span class="kn">import</span> <span class="n">EngineResults</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">HTTPParams</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">TypedDict</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;HTTP request parameters&quot;&quot;&quot;</span>
+
+    <span class="n">method</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;GET&quot;</span><span class="p">,</span> <span class="s2">&quot;POST&quot;</span><span class="p">]</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;HTTP request method.&quot;&quot;&quot;</span>
+
+    <span class="n">headers</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;HTTP header information.&quot;&quot;&quot;</span>
+
+    <span class="n">data</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span> <span class="o">|</span> <span class="nb">int</span> <span class="o">|</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span> <span class="o">|</span> <span class="nb">int</span><span class="p">]]</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Sending `form encoded data`_.</span>
+
+<span class="sd">    .. _form encoded data:</span>
+<span class="sd">       https://www.python-httpx.org/quickstart/#sending-form-encoded-data</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">json</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">t</span><span class="o">.</span><span class="n">Any</span><span class="p">]</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;`Sending `JSON encoded data`_.</span>
+
+<span class="sd">    .. _JSON encoded data:</span>
+<span class="sd">       https://www.python-httpx.org/quickstart/#sending-json-encoded-data</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">content</span><span class="p">:</span> <span class="nb">bytes</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;`Sending `binary request data`_.</span>
+
+<span class="sd">    .. _binary request data:</span>
+<span class="sd">       https://www.python-httpx.org/quickstart/#sending-json-encoded-data</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">url</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Requested url.&quot;&quot;&quot;</span>
+
+    <span class="n">cookies</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;HTTP cookies.&quot;&quot;&quot;</span>
+
+    <span class="n">allow_redirects</span><span class="p">:</span> <span class="nb">bool</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Follow redirects&quot;&quot;&quot;</span>
+
+    <span class="n">max_redirects</span><span class="p">:</span> <span class="nb">int</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Maximum redirects, hard limit.&quot;&quot;&quot;</span>
+
+    <span class="n">soft_max_redirects</span><span class="p">:</span> <span class="nb">int</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Maximum redirects, soft limit. Record an error but don&#39;t stop the engine.&quot;&quot;&quot;</span>
+
+    <span class="n">verify</span><span class="p">:</span> <span class="kc">None</span> <span class="o">|</span> <span class="n">t</span><span class="o">.</span><span class="n">Literal</span><span class="p">[</span><span class="kc">False</span><span class="p">]</span> <span class="o">|</span> <span class="nb">str</span>  <span class="c1"># not sure str really works</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;If not ``None``, it overrides the verify value defined in the network.  Use</span>
+<span class="sd">    ``False`` to accept any server certificate and use a path to file to specify a</span>
+<span class="sd">    server certificate&quot;&quot;&quot;</span>
+
+    <span class="n">auth</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;An authentication to use when sending requests.&quot;&quot;&quot;</span>
+
+    <span class="n">raise_for_httperror</span><span class="p">:</span> <span class="nb">bool</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Raise an exception if the `HTTP response status code`_ is ``&gt;= 300``.</span>
+
+<span class="sd">    .. _HTTP response status code:</span>
+<span class="sd">        https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Status</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+
+<div class="viewcode-block" id="OnlineParams">
+<a class="viewcode-back" href="../../../../src/searx.search.processors.html#searx.search.processors.online.OnlineParams">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">OnlineParams</span><span class="p">(</span><span class="n">HTTPParams</span><span class="p">,</span> <span class="n">RequestParams</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Request parameters of a ``online`` engine.&quot;&quot;&quot;</span></div>
+
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">default_request_params</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">HTTPParams</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Default request parameters for ``online`` engines.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="s2">&quot;method&quot;</span><span class="p">:</span> <span class="s2">&quot;GET&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;headers&quot;</span><span class="p">:</span> <span class="p">{},</span>
+        <span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="p">{},</span>
+        <span class="s2">&quot;json&quot;</span><span class="p">:</span> <span class="p">{},</span>
+        <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="sa">b</span><span class="s2">&quot;&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;url&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;cookies&quot;</span><span class="p">:</span> <span class="p">{},</span>
+        <span class="s2">&quot;allow_redirects&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="s2">&quot;max_redirects&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="s2">&quot;soft_max_redirects&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="s2">&quot;auth&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="s2">&quot;verify&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="s2">&quot;raise_for_httperror&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="p">}</span>
+
+
+<div class="viewcode-block" id="OnlineProcessor">
+<a class="viewcode-back" href="../../../../src/searx.search.processors.html#searx.search.processors.online.OnlineProcessor">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">OnlineProcessor</span><span class="p">(</span><span class="n">EngineProcessor</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Processor class for ``online`` engines.&quot;&quot;&quot;</span>
+
+    <span class="n">engine_type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;online&quot;</span>
+
+<div class="viewcode-block" id="OnlineProcessor.init_engine">
+<a class="viewcode-back" href="../../../../src/searx.search.processors.html#searx.search.processors.online.OnlineProcessor.init_engine">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">init_engine</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;This method is called in a thread, and before the base method is</span>
+<span class="sd">        called, the network must be set up for the ``online`` engines.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">init_network_in_thread</span><span class="p">(</span><span class="n">start_time</span><span class="o">=</span><span class="n">default_timer</span><span class="p">(),</span> <span class="n">timeout_limit</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">engine</span><span class="o">.</span><span class="n">timeout</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">init_engine</span><span class="p">()</span></div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">init_network_in_thread</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">start_time</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">timeout_limit</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
+        <span class="c1"># set timeout for all HTTP requests</span>
+        <span class="n">searx</span><span class="o">.</span><span class="n">network</span><span class="o">.</span><span class="n">set_timeout_for_thread</span><span class="p">(</span><span class="n">timeout_limit</span><span class="p">,</span> <span class="n">start_time</span><span class="o">=</span><span class="n">start_time</span><span class="p">)</span>
+        <span class="c1"># reset the HTTP total time</span>
+        <span class="n">searx</span><span class="o">.</span><span class="n">network</span><span class="o">.</span><span class="n">reset_time_for_thread</span><span class="p">()</span>
+        <span class="c1"># set the network</span>
+        <span class="n">searx</span><span class="o">.</span><span class="n">network</span><span class="o">.</span><span class="n">set_context_network_name</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">engine</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+
+<div class="viewcode-block" id="OnlineProcessor.get_params">
+<a class="viewcode-back" href="../../../../src/searx.search.processors.html#searx.search.processors.online.OnlineProcessor.get_params">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_params</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">search_query</span><span class="p">:</span> <span class="s2">&quot;SearchQuery&quot;</span><span class="p">,</span> <span class="n">engine_category</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">OnlineParams</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns a dictionary with the :ref:`request params &lt;engine request</span>
+<span class="sd">        online&gt;` (:py:obj:`OnlineParams`), if the search condition is not</span>
+<span class="sd">        supported by the engine, ``None`` is returned.&quot;&quot;&quot;</span>
+
+        <span class="n">base_params</span><span class="p">:</span> <span class="n">RequestParams</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">get_params</span><span class="p">(</span><span class="n">search_query</span><span class="p">,</span> <span class="n">engine_category</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">base_params</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">base_params</span>
+
+        <span class="n">params</span><span class="p">:</span> <span class="n">OnlineParams</span> <span class="o">=</span> <span class="p">{</span><span class="o">**</span><span class="n">default_request_params</span><span class="p">(),</span> <span class="o">**</span><span class="n">base_params</span><span class="p">}</span>
+
+        <span class="n">headers</span> <span class="o">=</span> <span class="n">params</span><span class="p">[</span><span class="s2">&quot;headers&quot;</span><span class="p">]</span>
+        <span class="n">headers</span><span class="p">[</span><span class="s2">&quot;Accept-Encoding&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;gzip, deflate&quot;</span>
+        <span class="n">headers</span><span class="p">[</span><span class="s2">&quot;Cache-Control&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;no-cache&quot;</span>
+        <span class="n">headers</span><span class="p">[</span><span class="s2">&quot;DNT&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;1&quot;</span>
+        <span class="n">headers</span><span class="p">[</span><span class="s2">&quot;Connection&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;keep-alive&quot;</span>
+
+        <span class="c1"># add an user agent</span>
+        <span class="n">headers</span><span class="p">[</span><span class="s2">&quot;User-Agent&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">gen_useragent</span><span class="p">()</span>
+
+        <span class="c1"># add Accept-Language header</span>
+        <span class="c1"># https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Accept-Language</span>
+
+        <span class="n">headers</span><span class="p">[</span><span class="s2">&quot;Accept-Language&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;en,en-US;q=0.7,en;q=0.3&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">engine</span><span class="o">.</span><span class="n">send_accept_language_header</span> <span class="ow">and</span> <span class="n">search_query</span><span class="o">.</span><span class="n">locale</span><span class="p">:</span>
+            <span class="n">_l</span> <span class="o">=</span> <span class="n">search_query</span><span class="o">.</span><span class="n">locale</span><span class="o">.</span><span class="n">language</span>
+            <span class="n">_t</span> <span class="o">=</span> <span class="n">search_query</span><span class="o">.</span><span class="n">locale</span><span class="o">.</span><span class="n">territory</span> <span class="ow">or</span> <span class="n">_l</span>
+            <span class="n">headers</span><span class="p">[</span><span class="s2">&quot;Accept-Language&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">_l</span><span class="si">}</span><span class="s2">,</span><span class="si">{</span><span class="n">_l</span><span class="si">}</span><span class="s2">-</span><span class="si">{</span><span class="n">_t</span><span class="si">}</span><span class="s2">;q=0.7,en;q=0.3&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;HTTP Accept-Language: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">headers</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Accept-Language&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="n">params</span></div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_send_http_request</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">params</span><span class="p">:</span> <span class="n">OnlineParams</span><span class="p">):</span>
+
+        <span class="c1"># create dictionary which contain all information about the request</span>
+        <span class="n">request_args</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">t</span><span class="o">.</span><span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;headers&quot;</span><span class="p">:</span> <span class="n">params</span><span class="p">[</span><span class="s2">&quot;headers&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;cookies&quot;</span><span class="p">:</span> <span class="n">params</span><span class="p">[</span><span class="s2">&quot;cookies&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;auth&quot;</span><span class="p">:</span> <span class="n">params</span><span class="p">[</span><span class="s2">&quot;auth&quot;</span><span class="p">],</span>
+        <span class="p">}</span>
+
+        <span class="n">verify</span> <span class="o">=</span> <span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;verify&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">verify</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">request_args</span><span class="p">[</span><span class="s2">&quot;verify&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">verify</span>
+
+        <span class="c1"># max_redirects</span>
+        <span class="n">max_redirects</span> <span class="o">=</span> <span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;max_redirects&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">max_redirects</span><span class="p">:</span>
+            <span class="n">request_args</span><span class="p">[</span><span class="s2">&quot;max_redirects&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">max_redirects</span>
+
+        <span class="c1"># allow_redirects</span>
+        <span class="k">if</span> <span class="s2">&quot;allow_redirects&quot;</span> <span class="ow">in</span> <span class="n">params</span><span class="p">:</span>
+            <span class="n">request_args</span><span class="p">[</span><span class="s2">&quot;allow_redirects&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">params</span><span class="p">[</span><span class="s2">&quot;allow_redirects&quot;</span><span class="p">]</span>
+
+        <span class="c1"># soft_max_redirects</span>
+        <span class="n">soft_max_redirects</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;soft_max_redirects&quot;</span><span class="p">,</span> <span class="n">max_redirects</span> <span class="ow">or</span> <span class="mi">0</span><span class="p">)</span>
+
+        <span class="c1"># raise_for_status</span>
+        <span class="n">request_args</span><span class="p">[</span><span class="s2">&quot;raise_for_httperror&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;raise_for_httperror&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+
+        <span class="c1"># specific type of request (GET or POST)</span>
+        <span class="k">if</span> <span class="n">params</span><span class="p">[</span><span class="s2">&quot;method&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;GET&quot;</span><span class="p">:</span>
+            <span class="n">req</span> <span class="o">=</span> <span class="n">searx</span><span class="o">.</span><span class="n">network</span><span class="o">.</span><span class="n">get</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">req</span> <span class="o">=</span> <span class="n">searx</span><span class="o">.</span><span class="n">network</span><span class="o">.</span><span class="n">post</span>
+            <span class="k">if</span> <span class="n">params</span><span class="p">[</span><span class="s2">&quot;data&quot;</span><span class="p">]:</span>
+                <span class="n">request_args</span><span class="p">[</span><span class="s2">&quot;data&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">params</span><span class="p">[</span><span class="s2">&quot;data&quot;</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">params</span><span class="p">[</span><span class="s2">&quot;json&quot;</span><span class="p">]:</span>
+                <span class="n">request_args</span><span class="p">[</span><span class="s2">&quot;json&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">params</span><span class="p">[</span><span class="s2">&quot;json&quot;</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">params</span><span class="p">[</span><span class="s2">&quot;content&quot;</span><span class="p">]:</span>
+                <span class="n">request_args</span><span class="p">[</span><span class="s2">&quot;content&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">params</span><span class="p">[</span><span class="s2">&quot;content&quot;</span><span class="p">]</span>
+
+        <span class="c1"># send the request</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">req</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="s2">&quot;url&quot;</span><span class="p">],</span> <span class="o">**</span><span class="n">request_args</span><span class="p">)</span>  <span class="c1"># pyright: ignore[reportArgumentType]</span>
+
+        <span class="c1"># check soft limit of the redirect count</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">history</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">soft_max_redirects</span><span class="p">:</span>
+            <span class="c1"># unexpected redirect : record an error</span>
+            <span class="c1"># but the engine might still return valid results.</span>
+            <span class="n">status_code</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="ow">or</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+            <span class="n">reason</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">reason_phrase</span> <span class="ow">or</span> <span class="s2">&quot;&quot;</span>
+            <span class="n">hostname</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">url</span><span class="o">.</span><span class="n">host</span>
+            <span class="n">count_error</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">engine</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+                <span class="s2">&quot;</span><span class="si">{}</span><span class="s2"> redirects, maximum: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">history</span><span class="p">),</span> <span class="n">soft_max_redirects</span><span class="p">),</span>
+                <span class="p">(</span><span class="n">status_code</span><span class="p">,</span> <span class="n">reason</span><span class="p">,</span> <span class="n">hostname</span><span class="p">),</span>
+                <span class="n">secondary</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">response</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_search_basic</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">params</span><span class="p">:</span> <span class="n">OnlineParams</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;EngineResults|None&quot;</span><span class="p">:</span>
+        <span class="c1"># update request parameters dependent on</span>
+        <span class="c1"># search-engine (contained in engines folder)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">engine</span><span class="o">.</span><span class="n">request</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">params</span><span class="p">)</span>
+
+        <span class="c1"># ignoring empty urls</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">params</span><span class="p">[</span><span class="s2">&quot;url&quot;</span><span class="p">]:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+
+        <span class="c1"># send request</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_send_http_request</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+
+        <span class="c1"># parse the response</span>
+        <span class="n">response</span><span class="o">.</span><span class="n">search_params</span> <span class="o">=</span> <span class="n">params</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">engine</span><span class="o">.</span><span class="n">response</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">search</span><span class="p">(</span>  <span class="c1"># pyright: ignore[reportIncompatibleMethodOverride]</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">params</span><span class="p">:</span> <span class="n">OnlineParams</span><span class="p">,</span>
+        <span class="n">result_container</span><span class="p">:</span> <span class="s2">&quot;ResultContainer&quot;</span><span class="p">,</span>
+        <span class="n">start_time</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">timeout_limit</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">init_network_in_thread</span><span class="p">(</span><span class="n">start_time</span><span class="p">,</span> <span class="n">timeout_limit</span><span class="p">)</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="c1"># send requests and parse the results</span>
+            <span class="n">search_results</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_search_basic</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">params</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">extend_container</span><span class="p">(</span><span class="n">result_container</span><span class="p">,</span> <span class="n">start_time</span><span class="p">,</span> <span class="n">search_results</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">ssl</span><span class="o">.</span><span class="n">SSLError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="c1"># requests timeout (connect or read)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">handle_exception</span><span class="p">(</span><span class="n">result_container</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="n">suspend</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;SSLError </span><span class="si">{}</span><span class="s2">, verify=</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">searx</span><span class="o">.</span><span class="n">network</span><span class="o">.</span><span class="n">get_network</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">engine</span><span class="o">.</span><span class="n">name</span><span class="p">)</span><span class="o">.</span><span class="n">verify</span><span class="p">))</span>
+        <span class="k">except</span> <span class="p">(</span><span class="n">httpx</span><span class="o">.</span><span class="n">TimeoutException</span><span class="p">,</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">TimeoutError</span><span class="p">)</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="c1"># requests timeout (connect or read)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">handle_exception</span><span class="p">(</span><span class="n">result_container</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="n">suspend</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
+                <span class="s2">&quot;HTTP requests timeout (search duration : </span><span class="si">{0}</span><span class="s2"> s, timeout: </span><span class="si">{1}</span><span class="s2"> s) : </span><span class="si">{2}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                    <span class="n">default_timer</span><span class="p">()</span> <span class="o">-</span> <span class="n">start_time</span><span class="p">,</span> <span class="n">timeout_limit</span><span class="p">,</span> <span class="n">e</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
+        <span class="k">except</span> <span class="p">(</span><span class="n">httpx</span><span class="o">.</span><span class="n">HTTPError</span><span class="p">,</span> <span class="n">httpx</span><span class="o">.</span><span class="n">StreamError</span><span class="p">)</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="c1"># other requests exception</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">handle_exception</span><span class="p">(</span><span class="n">result_container</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="n">suspend</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span>
+                <span class="s2">&quot;requests exception (search duration : </span><span class="si">{0}</span><span class="s2"> s, timeout: </span><span class="si">{1}</span><span class="s2"> s) : </span><span class="si">{2}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                    <span class="n">default_timer</span><span class="p">()</span> <span class="o">-</span> <span class="n">start_time</span><span class="p">,</span> <span class="n">timeout_limit</span><span class="p">,</span> <span class="n">e</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
+        <span class="k">except</span> <span class="p">(</span>
+            <span class="n">SearxEngineCaptchaException</span><span class="p">,</span>
+            <span class="n">SearxEngineTooManyRequestsException</span><span class="p">,</span>
+            <span class="n">SearxEngineAccessDeniedException</span><span class="p">,</span>
+        <span class="p">)</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">handle_exception</span><span class="p">(</span><span class="n">result_container</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="n">suspend</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">message</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>  <span class="c1"># pylint: disable=broad-except</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">handle_exception</span><span class="p">(</span><span class="n">result_container</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s2">&quot;exception : </span><span class="si">{0}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">e</span><span class="p">))</span></div>
+
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+  <span id="sidebar-top"></span>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+  
+    
+            <p class="logo"><a href="../../../../index.html">
+              <img class="logo" src="../../../../_static/searxng-wordmark.svg" alt="Logo of SearXNG"/>
+            </a></p>
+  
+
+<h3><a href="../../../../index.html">Table of Contents</a></h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../user/index.html">User information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../own-instance.html">Why use a private instance?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../admin/index.html">Administrator documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../dev/index.html">Developer documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../utils/index.html">DevOps tooling box</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../src/index.html">Source-Code</a></li>
+</ul>
+
+  <h3>Project Links</h3>
+  <ul>
+    <li><a href="https://github.com/searxng/searxng/tree/master">Source</a>
+  
+    <li><a href="https://github.com/searxng/searxng/wiki">Wiki</a>
+  
+    <li><a href="https://searx.space">Public instances</a>
+  
+    <li><a href="https://github.com/searxng/searxng/issues">Issue Tracker</a>
+  </ul><h3>Navigation</h3>
+<ul>
+  <li><a href="../../../../index.html">Overview</a>
+    <ul>
+      <li><a href="../../../index.html">Module code</a>
+        <ul>
+      <li><a href="../../search.html">searx.search</a>
+        
+          
+          </ul>
+      </li></ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright SearXNG team.
+    </div>
+  </body>
+</html>

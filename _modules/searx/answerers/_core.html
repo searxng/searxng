@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>searx.answerers._core &#8212; SearXNG Documentation (2026.2.22+191818b86)</title>
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=6625fa76" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/searxng.css?v=52e4ff28" />
+    <script src="../../../_static/documentation_options.js?v=1b5d919e"></script>
+    <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script data-project="searxng" data-version="2026.2.22+191818b86" src="../../../_static/describe_version.js?v=fa7f30d0"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">SearXNG Documentation (2026.2.22+191818b86)</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" accesskey="U">Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">searx.answerers._core</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for searx.answerers._core</h1><div class="highlight"><pre>
+<span></span><span class="c1"># SPDX-License-Identifier: AGPL-3.0-or-later</span>
+<span class="c1"># pylint: disable=too-few-public-methods, missing-module-docstring</span>
+
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">abc</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">importlib</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pathlib</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">dataclasses</span><span class="w"> </span><span class="kn">import</span> <span class="n">dataclass</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">searx.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">load_module</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">searx.result_types.answer</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseAnswer</span>
+
+
+<span class="n">_default</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span>
+<span class="n">log</span><span class="p">:</span> <span class="n">logging</span><span class="o">.</span><span class="n">Logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s2">&quot;searx.answerers&quot;</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="AnswererInfo">
+<a class="viewcode-back" href="../../../dev/answerers/development.html#searx.answerers.AnswererInfo">[docs]</a>
+<span class="nd">@dataclass</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">AnswererInfo</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Object that holds information about an answerer, these infos are shown</span>
+<span class="sd">    to the user in the Preferences menu.</span>
+
+<span class="sd">    To be able to translate the information into other languages, the text must</span>
+<span class="sd">    be written in English and translated with :py:obj:`flask_babel.gettext`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Name of the *answerer*.&quot;&quot;&quot;</span>
+
+    <span class="n">description</span><span class="p">:</span> <span class="nb">str</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Short description of the *answerer*.&quot;&quot;&quot;</span>
+
+    <span class="n">examples</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;List of short examples of the usage / of query terms.&quot;&quot;&quot;</span>
+
+    <span class="n">keywords</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;See :py:obj:`Answerer.keywords`&quot;&quot;&quot;</span></div>
+
+
+
+<div class="viewcode-block" id="Answerer">
+<a class="viewcode-back" href="../../../dev/answerers/development.html#searx.answerers.Answerer">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">Answerer</span><span class="p">(</span><span class="n">abc</span><span class="o">.</span><span class="n">ABC</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Abstract base class of answerers.&quot;&quot;&quot;</span>
+
+    <span class="n">keywords</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Keywords to which the answerer has *answers*.&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="Answerer.answer">
+<a class="viewcode-back" href="../../../dev/answerers/development.html#searx.answerers.Answerer.answer">[docs]</a>
+    <span class="nd">@abc</span><span class="o">.</span><span class="n">abstractmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">answer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">BaseAnswer</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Function that returns a list of answers to the question/query.&quot;&quot;&quot;</span></div>
+
+
+<div class="viewcode-block" id="Answerer.info">
+<a class="viewcode-back" href="../../../dev/answerers/development.html#searx.answerers.Answerer.info">[docs]</a>
+    <span class="nd">@abc</span><span class="o">.</span><span class="n">abstractmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">info</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AnswererInfo</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Information about the *answerer*, see :py:obj:`AnswererInfo`.&quot;&quot;&quot;</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="ModuleAnswerer">
+<a class="viewcode-back" href="../../../dev/answerers/development.html#searx.answerers.ModuleAnswerer">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">ModuleAnswerer</span><span class="p">(</span><span class="n">Answerer</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A wrapper class for legacy *answerers* where the names (keywords, answer,</span>
+<span class="sd">    info) are implemented on the module level (not in a class).</span>
+
+<span class="sd">    .. note::</span>
+
+<span class="sd">       For internal use only!</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mod</span><span class="p">):</span>
+
+        <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;keywords&quot;</span><span class="p">,</span> <span class="s2">&quot;self_info&quot;</span><span class="p">,</span> <span class="s2">&quot;answer&quot;</span><span class="p">]:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">mod</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="kc">None</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">SystemExit</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">mod</span><span class="o">.</span><span class="n">keywords</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">SystemExit</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">module</span> <span class="o">=</span> <span class="n">mod</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">keywords</span> <span class="o">=</span> <span class="n">mod</span><span class="o">.</span><span class="n">keywords</span>  <span class="c1"># type: ignore</span>
+
+<div class="viewcode-block" id="ModuleAnswerer.answer">
+<a class="viewcode-back" href="../../../dev/answerers/development.html#searx.answerers.ModuleAnswerer.answer">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">answer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">BaseAnswer</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">module</span><span class="o">.</span><span class="n">answer</span><span class="p">(</span><span class="n">query</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="ModuleAnswerer.info">
+<a class="viewcode-back" href="../../../dev/answerers/development.html#searx.answerers.ModuleAnswerer.info">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">info</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AnswererInfo</span><span class="p">:</span>
+        <span class="n">kwargs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">module</span><span class="o">.</span><span class="n">self_info</span><span class="p">()</span>
+        <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;keywords&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">keywords</span>
+        <span class="k">return</span> <span class="n">AnswererInfo</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="AnswerStorage">
+<a class="viewcode-back" href="../../../dev/answerers/development.html#searx.answerers.AnswerStorage">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">AnswerStorage</span><span class="p">(</span><span class="nb">dict</span><span class="p">):</span>  <span class="c1"># type: ignore</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A storage for managing the *answerers* of SearXNG.  With the</span>
+<span class="sd">    :py:obj:`AnswerStorage.ask`” method, a caller can ask questions to all</span>
+<span class="sd">    *answerers* and receives a list of the results.&quot;&quot;&quot;</span>
+
+    <span class="n">answerer_list</span><span class="p">:</span> <span class="nb">set</span><span class="p">[</span><span class="n">Answerer</span><span class="p">]</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The list of :py:obj:`Answerer` in this storage.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">answerer_list</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+
+<div class="viewcode-block" id="AnswerStorage.load_builtins">
+<a class="viewcode-back" href="../../../dev/answerers/development.html#searx.answerers.AnswerStorage.load_builtins">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">load_builtins</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Loads ``answerer.py`` modules from the python packages in</span>
+<span class="sd">        :origin:`searx/answerers`.  The python modules are wrapped by</span>
+<span class="sd">        :py:obj:`ModuleAnswerer`.&quot;&quot;&quot;</span>
+
+        <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">_default</span><span class="o">.</span><span class="n">iterdir</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">f</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">):</span>
+                <span class="k">continue</span>
+
+            <span class="k">if</span> <span class="n">f</span><span class="o">.</span><span class="n">is_file</span><span class="p">()</span> <span class="ow">and</span> <span class="n">f</span><span class="o">.</span><span class="n">suffix</span> <span class="o">==</span> <span class="s2">&quot;.py&quot;</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">register_by_fqn</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;searx.answerers.</span><span class="si">{</span><span class="n">f</span><span class="o">.</span><span class="n">stem</span><span class="si">}</span><span class="s2">.SXNGAnswerer&quot;</span><span class="p">)</span>
+                <span class="k">continue</span>
+
+            <span class="c1"># for backward compatibility (if a fork has additional answerers)</span>
+
+            <span class="k">if</span> <span class="n">f</span><span class="o">.</span><span class="n">is_dir</span><span class="p">()</span> <span class="ow">and</span> <span class="p">(</span><span class="n">f</span> <span class="o">/</span> <span class="s2">&quot;answerer.py&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+                <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;answerer module </span><span class="si">{</span><span class="n">f</span><span class="si">}</span><span class="s2"> is deprecated / migrate to searx.answerers.Answerer&quot;</span><span class="p">,</span> <span class="ne">DeprecationWarning</span>
+                <span class="p">)</span>
+                <span class="n">mod</span> <span class="o">=</span> <span class="n">load_module</span><span class="p">(</span><span class="s2">&quot;answerer.py&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">f</span><span class="p">))</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">ModuleAnswerer</span><span class="p">(</span><span class="n">mod</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="AnswerStorage.register_by_fqn">
+<a class="viewcode-back" href="../../../dev/answerers/development.html#searx.answerers.AnswerStorage.register_by_fqn">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">register_by_fqn</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fqn</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Register a :py:obj:`Answerer` via its fully qualified class namen(FQN).&quot;&quot;&quot;</span>
+
+        <span class="n">mod_name</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">obj_name</span> <span class="o">=</span> <span class="n">fqn</span><span class="o">.</span><span class="n">rpartition</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)</span>
+        <span class="n">mod</span> <span class="o">=</span> <span class="n">importlib</span><span class="o">.</span><span class="n">import_module</span><span class="p">(</span><span class="n">mod_name</span><span class="p">)</span>
+        <span class="n">code_obj</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">mod</span><span class="p">,</span> <span class="n">obj_name</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">code_obj</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;answerer </span><span class="si">{</span><span class="n">fqn</span><span class="si">}</span><span class="s2"> is not implemented&quot;</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">critical</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">code_obj</span><span class="p">())</span></div>
+
+
+<div class="viewcode-block" id="AnswerStorage.register">
+<a class="viewcode-back" href="../../../dev/answerers/development.html#searx.answerers.AnswerStorage.register">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">register</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">answerer</span><span class="p">:</span> <span class="n">Answerer</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Register a :py:obj:`Answerer`.&quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">answerer_list</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">answerer</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">_kw</span> <span class="ow">in</span> <span class="n">answerer</span><span class="o">.</span><span class="n">keywords</span><span class="p">:</span>
+            <span class="bp">self</span><span class="p">[</span><span class="n">_kw</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">_kw</span><span class="p">,</span> <span class="p">[])</span>
+            <span class="bp">self</span><span class="p">[</span><span class="n">_kw</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">answerer</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="AnswerStorage.ask">
+<a class="viewcode-back" href="../../../dev/answerers/development.html#searx.answerers.AnswerStorage.ask">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">ask</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">BaseAnswer</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;An answerer is identified via keywords, if there is a keyword at the</span>
+<span class="sd">        first position in the ``query`` for which there is one or more</span>
+<span class="sd">        answerers, then these are called, whereby the entire ``query`` is passed</span>
+<span class="sd">        as argument to the answerer function.&quot;&quot;&quot;</span>
+
+        <span class="n">results</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">keyword</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">for</span> <span class="n">keyword</span> <span class="ow">in</span> <span class="n">query</span><span class="o">.</span><span class="n">split</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">keyword</span><span class="p">:</span>
+                <span class="k">break</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">keyword</span> <span class="ow">or</span> <span class="n">keyword</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">results</span>
+
+        <span class="k">for</span> <span class="n">answerer</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">[</span><span class="n">keyword</span><span class="p">]:</span>
+            <span class="k">for</span> <span class="n">answer</span> <span class="ow">in</span> <span class="n">answerer</span><span class="o">.</span><span class="n">answer</span><span class="p">(</span><span class="n">query</span><span class="p">):</span>
+                <span class="c1"># In case of *answers* prefix ``answerer:`` is set, see searx.result_types.Result</span>
+                <span class="n">answer</span><span class="o">.</span><span class="n">engine</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;answerer: </span><span class="si">{</span><span class="n">keyword</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">answer</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">results</span></div>
+
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">info</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">AnswererInfo</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">a</span><span class="o">.</span><span class="n">info</span><span class="p">()</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">answerer_list</span><span class="p">]</span></div>
+
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+  <span id="sidebar-top"></span>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+  
+    
+            <p class="logo"><a href="../../../index.html">
+              <img class="logo" src="../../../_static/searxng-wordmark.svg" alt="Logo of SearXNG"/>
+            </a></p>
+  
+
+<h3><a href="../../../index.html">Table of Contents</a></h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../user/index.html">User information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../own-instance.html">Why use a private instance?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../admin/index.html">Administrator documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../dev/index.html">Developer documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../utils/index.html">DevOps tooling box</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/index.html">Source-Code</a></li>
+</ul>
+
+  <h3>Project Links</h3>
+  <ul>
+    <li><a href="https://github.com/searxng/searxng/tree/master">Source</a>
+  
+    <li><a href="https://github.com/searxng/searxng/wiki">Wiki</a>
+  
+    <li><a href="https://searx.space">Public instances</a>
+  
+    <li><a href="https://github.com/searxng/searxng/issues">Issue Tracker</a>
+  </ul><h3>Navigation</h3>
+<ul>
+  <li><a href="../../../index.html">Overview</a>
+    <ul>
+      <li><a href="../../index.html">Module code</a>
+        
+          
+          </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright SearXNG team.
+    </div>
+  </body>
+</html>

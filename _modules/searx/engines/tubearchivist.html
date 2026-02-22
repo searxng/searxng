@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>searx.engines.tubearchivist &#8212; SearXNG Documentation (2026.2.22+191818b86)</title>
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=6625fa76" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/searxng.css?v=52e4ff28" />
+    <script src="../../../_static/documentation_options.js?v=1b5d919e"></script>
+    <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script data-project="searxng" data-version="2026.2.22+191818b86" src="../../../_static/describe_version.js?v=fa7f30d0"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">SearXNG Documentation (2026.2.22+191818b86)</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" >Module code</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../engines.html" accesskey="U">searx.engines</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">searx.engines.tubearchivist</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for searx.engines.tubearchivist</h1><div class="highlight"><pre>
+<span></span><span class="c1"># SPDX-License-Identifier: AGPL-3.0-or-later</span>
+<span class="sd">&quot;&quot;&quot;`Tube Archivist`_ - *Your self hosted YouTube media server.*</span>
+
+<span class="sd">.. _Tube Archivist: https://www.tubearchivist.com</span>
+
+<span class="sd">This engine connects with a self-hosted instance of `Tube Archivist`_ to allow</span>
+<span class="sd">searching for your hosted videos.</span>
+
+<span class="sd">`Tube Archivist`_ (TA) requires authentication for all image loads via cookie</span>
+<span class="sd">authentication.  What this means is that by default, SearXNG will have no way to</span>
+<span class="sd">pull images from TA (as there is no way to pass cookies in a URL string only).</span>
+
+<span class="sd">In the meantime while work is done on the TA side, this can be worked around by</span>
+<span class="sd">bypassing auth for images in TA by altering the default TA nginx file.</span>
+
+<span class="sd">This is located in the main tubearchivist docker container at::</span>
+
+<span class="sd">  /etc/nginx/sites-available/default</span>
+
+<span class="sd">It is **strongly** recommended first setting up the intial connection and</span>
+<span class="sd">verying searching works first with broken images, and then attempting this</span>
+<span class="sd">change.  This will limit any debugging to only images, rather than</span>
+<span class="sd">tokens/networking.</span>
+
+<span class="sd">Steps to enable **unauthenticated** metadata access for channels and videos:</span>
+
+<span class="sd">#. Perform any backups of TA before editing core configurations.</span>
+
+<span class="sd">#. Copy the contents of the file ``/etc/nginx/sites-available/default`` in the</span>
+<span class="sd">   TA docker container</span>
+
+<span class="sd">#. Edit ``location /cache/videos`` and ``location /cache/channels``.  Comment</span>
+<span class="sd">   out the line ``auth_request /api/ping/;`` to ``# auth_request /api/ping/;``.</span>
+
+<span class="sd">#. Save the file to wherever you normally store your docker configuration.</span>
+
+<span class="sd">#. Mount this new configuration over the default configuration.  With ``docker</span>
+<span class="sd">   run``, this would be::</span>
+
+<span class="sd">     -v ./your-new-config.yml:/etc/nginx/sites-available/default</span>
+
+<span class="sd">   With ``docker compose``, this would be::</span>
+
+<span class="sd">     - &quot;./your-new-config.yml:/etc/nginx/sites-available/default:ro&quot;</span>
+
+<span class="sd">#. Start the TA container.</span>
+
+<span class="sd">After these steps, double check that TA works as normal (nothing should be</span>
+<span class="sd">different on the TA side).  Searching again should now show images.</span>
+
+
+<span class="sd">Configuration</span>
+<span class="sd">=============</span>
+
+<span class="sd">The engine has the following required settings:</span>
+
+<span class="sd">- :py:obj:`base_url`</span>
+<span class="sd">- :py:obj:`ta_token`</span>
+
+<span class="sd">Optional settings:</span>
+
+<span class="sd">- :py:obj:`ta_link_to_mp4`</span>
+
+<span class="sd">.. code:: yaml</span>
+
+<span class="sd">  - name: tubearchivist</span>
+<span class="sd">    engine: tubearchivist</span>
+<span class="sd">    shortcut: tuba</span>
+<span class="sd">    base_url:</span>
+<span class="sd">    ta_token:</span>
+<span class="sd">    ta_link_to_mp4: true</span>
+
+<span class="sd">Implementations</span>
+<span class="sd">===============</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">urllib.parse</span><span class="w"> </span><span class="kn">import</span> <span class="n">urlencode</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">dateutil.parser</span><span class="w"> </span><span class="kn">import</span> <span class="n">parse</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">searx.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">html_to_text</span><span class="p">,</span> <span class="n">humanize_number</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">searx.result_types</span><span class="w"> </span><span class="kn">import</span> <span class="n">EngineResults</span>
+
+<span class="n">about</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="c1"># pylint: disable=line-too-long</span>
+    <span class="s2">&quot;website&quot;</span><span class="p">:</span> <span class="s1">&#39;https://www.tubearchivist.com&#39;</span><span class="p">,</span>
+    <span class="s2">&quot;official_api_documentation&quot;</span><span class="p">:</span> <span class="s1">&#39;https://docs.tubearchivist.com/api/introduction/&#39;</span><span class="p">,</span>
+    <span class="s2">&quot;use_official_api&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="s2">&quot;require_api_key&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="s2">&quot;results&quot;</span><span class="p">:</span> <span class="s1">&#39;JSON&#39;</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="c1"># engine dependent config</span>
+<span class="n">categories</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;videos&quot;</span><span class="p">]</span>
+<span class="n">paging</span> <span class="o">=</span> <span class="kc">True</span>
+
+<span class="n">base_url</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+<span class="sd">&quot;&quot;&quot;Base URL of the Tube Archivist instance.  Fill this in with your own</span>
+<span class="sd">Tube Archivist URL (``http://your-instance:port``).&quot;&quot;&quot;</span>
+
+<span class="n">ta_token</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+<span class="sd">&quot;&quot;&quot;The API key to use for Authorization_ header.  Can be found under:</span>
+
+<span class="sd">  :menuselection:`Settings --&gt; User --&gt; Admin Interface`.</span>
+
+<span class="sd">.. _Authorization: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Authorization</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="n">ta_link_to_mp4</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="sd">&quot;&quot;&quot;Optional, if true SearXNG will link directly to the mp4 of the video to play</span>
+<span class="sd">in the browser.  The default behavior is to link into TubeArchivist&#39;s interface</span>
+<span class="sd">directly.&quot;&quot;&quot;</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">absolute_url</span><span class="p">(</span><span class="n">relative_url</span><span class="p">):</span>
+    <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">base_url</span><span class="o">.</span><span class="n">rstrip</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)</span><span class="si">}{</span><span class="n">relative_url</span><span class="si">}</span><span class="s1">&#39;</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">init</span><span class="p">(</span><span class="n">_</span><span class="p">):</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">base_url</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;tubearchivist engine: base_url is unset&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">ta_token</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;tubearchivist engine: ta_token is unset&#39;</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">request</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">params</span><span class="p">):</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">query</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="n">args</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;query&#39;</span><span class="p">:</span> <span class="n">query</span><span class="p">}</span>
+    <span class="n">params</span><span class="p">[</span><span class="s1">&#39;url&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">base_url</span><span class="o">.</span><span class="n">rstrip</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2">/api/search?</span><span class="si">{</span><span class="n">urlencode</span><span class="p">(</span><span class="n">args</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="n">params</span><span class="p">[</span><span class="s1">&#39;headers&#39;</span><span class="p">][</span><span class="s1">&#39;Authorization&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;Token </span><span class="si">{</span><span class="n">ta_token</span><span class="si">}</span><span class="s1">&#39;</span>
+
+    <span class="k">return</span> <span class="n">params</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">response</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">EngineResults</span><span class="p">:</span>
+    <span class="n">results</span> <span class="o">=</span> <span class="n">EngineResults</span><span class="p">()</span>
+    <span class="n">video_response</span><span class="p">(</span><span class="n">resp</span><span class="p">,</span> <span class="n">results</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">results</span>
+
+
+<div class="viewcode-block" id="video_response">
+<a class="viewcode-back" href="../../../dev/engines/online/tubearchivist.html#searx.engines.tubearchivist.video_response">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">video_response</span><span class="p">(</span><span class="n">resp</span><span class="p">,</span> <span class="n">results</span><span class="p">:</span> <span class="n">EngineResults</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Parse video response from Tubearchivist instances.&quot;&quot;&quot;</span>
+
+    <span class="n">json_data</span> <span class="o">=</span> <span class="n">resp</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="s1">&#39;results&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">json_data</span><span class="p">:</span>
+        <span class="k">return</span>
+
+    <span class="k">for</span> <span class="n">channel_result</span> <span class="ow">in</span> <span class="n">json_data</span><span class="p">[</span><span class="s1">&#39;results&#39;</span><span class="p">][</span><span class="s1">&#39;channel_results&#39;</span><span class="p">]:</span>
+        <span class="n">channel_url</span> <span class="o">=</span> <span class="n">absolute_url</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;/channel/</span><span class="si">{</span><span class="n">channel_result</span><span class="p">[</span><span class="s2">&quot;channel_id&quot;</span><span class="p">]</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+
+        <span class="n">res</span> <span class="o">=</span> <span class="n">results</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">MainResult</span><span class="p">(</span>
+            <span class="n">url</span><span class="o">=</span><span class="n">channel_url</span><span class="p">,</span>
+            <span class="n">title</span><span class="o">=</span><span class="n">channel_result</span><span class="p">[</span><span class="s1">&#39;channel_name&#39;</span><span class="p">],</span>
+            <span class="n">content</span><span class="o">=</span><span class="n">html_to_text</span><span class="p">(</span><span class="n">channel_result</span><span class="p">[</span><span class="s1">&#39;channel_description&#39;</span><span class="p">]),</span>
+            <span class="n">author</span><span class="o">=</span><span class="n">channel_result</span><span class="p">[</span><span class="s1">&#39;channel_name&#39;</span><span class="p">],</span>
+            <span class="n">views</span><span class="o">=</span><span class="n">humanize_number</span><span class="p">(</span><span class="n">channel_result</span><span class="p">[</span><span class="s1">&#39;channel_subs&#39;</span><span class="p">]),</span>
+            <span class="n">thumbnail</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">absolute_url</span><span class="p">(</span><span class="n">channel_result</span><span class="p">[</span><span class="s2">&quot;channel_thumb_url&quot;</span><span class="p">])</span><span class="si">}</span><span class="s1">?auth=</span><span class="si">{</span><span class="n">ta_token</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="n">results</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">result</span><span class="o">=</span><span class="n">res</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">video_result</span> <span class="ow">in</span> <span class="n">json_data</span><span class="p">[</span><span class="s1">&#39;results&#39;</span><span class="p">][</span><span class="s1">&#39;video_results&#39;</span><span class="p">]:</span>
+        <span class="n">metadata</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">filter</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="p">[</span><span class="n">video_result</span><span class="p">[</span><span class="s1">&#39;channel&#39;</span><span class="p">][</span><span class="s1">&#39;channel_name&#39;</span><span class="p">],</span> <span class="o">*</span><span class="n">video_result</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;tags&#39;</span><span class="p">,</span> <span class="p">[])]))[:</span><span class="mi">5</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">ta_link_to_mp4</span><span class="p">:</span>
+            <span class="n">url</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">base_url</span><span class="o">.</span><span class="n">rstrip</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)</span><span class="si">}{</span><span class="n">video_result</span><span class="p">[</span><span class="s2">&quot;media_url&quot;</span><span class="p">]</span><span class="si">}</span><span class="s1">&#39;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">url</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">base_url</span><span class="o">.</span><span class="n">rstrip</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)</span><span class="si">}</span><span class="s1">/?videoId=</span><span class="si">{</span><span class="n">video_result</span><span class="p">[</span><span class="s2">&quot;youtube_id&quot;</span><span class="p">]</span><span class="si">}</span><span class="s1">&#39;</span>
+
+        <span class="c1"># a type for the video.html template is not yet implemented</span>
+        <span class="c1"># --&gt; using LegacyResult</span>
+
+        <span class="n">kwargs</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;template&#39;</span><span class="p">:</span> <span class="s1">&#39;videos.html&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;url&#39;</span><span class="p">:</span> <span class="n">url</span><span class="p">,</span>
+            <span class="s1">&#39;title&#39;</span><span class="p">:</span> <span class="n">video_result</span><span class="p">[</span><span class="s1">&#39;title&#39;</span><span class="p">],</span>
+            <span class="s1">&#39;content&#39;</span><span class="p">:</span> <span class="n">html_to_text</span><span class="p">(</span><span class="n">video_result</span><span class="p">[</span><span class="s1">&#39;description&#39;</span><span class="p">]),</span>
+            <span class="s1">&#39;author&#39;</span><span class="p">:</span> <span class="n">video_result</span><span class="p">[</span><span class="s1">&#39;channel&#39;</span><span class="p">][</span><span class="s1">&#39;channel_name&#39;</span><span class="p">],</span>
+            <span class="s1">&#39;length&#39;</span><span class="p">:</span> <span class="n">video_result</span><span class="p">[</span><span class="s1">&#39;player&#39;</span><span class="p">][</span><span class="s1">&#39;duration_str&#39;</span><span class="p">],</span>
+            <span class="s1">&#39;views&#39;</span><span class="p">:</span> <span class="n">humanize_number</span><span class="p">(</span><span class="n">video_result</span><span class="p">[</span><span class="s1">&#39;stats&#39;</span><span class="p">][</span><span class="s1">&#39;view_count&#39;</span><span class="p">]),</span>
+            <span class="s1">&#39;publishedDate&#39;</span><span class="p">:</span> <span class="n">parse</span><span class="p">(</span><span class="n">video_result</span><span class="p">[</span><span class="s1">&#39;published&#39;</span><span class="p">]),</span>
+            <span class="s1">&#39;thumbnail&#39;</span><span class="p">:</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">absolute_url</span><span class="p">(</span><span class="n">video_result</span><span class="p">[</span><span class="s2">&quot;vid_thumb_url&quot;</span><span class="p">])</span><span class="si">}</span><span class="s1">?auth=</span><span class="si">{</span><span class="n">ta_token</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;metadata&#39;</span><span class="p">:</span> <span class="s1">&#39; | &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">metadata</span><span class="p">),</span>
+        <span class="p">}</span>
+        <span class="n">results</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">results</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">LegacyResult</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">))</span></div>
+
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+  <span id="sidebar-top"></span>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+  
+    
+            <p class="logo"><a href="../../../index.html">
+              <img class="logo" src="../../../_static/searxng-wordmark.svg" alt="Logo of SearXNG"/>
+            </a></p>
+  
+
+<h3><a href="../../../index.html">Table of Contents</a></h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../user/index.html">User information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../own-instance.html">Why use a private instance?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../admin/index.html">Administrator documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../dev/index.html">Developer documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../utils/index.html">DevOps tooling box</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/index.html">Source-Code</a></li>
+</ul>
+
+  <h3>Project Links</h3>
+  <ul>
+    <li><a href="https://github.com/searxng/searxng/tree/master">Source</a>
+  
+    <li><a href="https://github.com/searxng/searxng/wiki">Wiki</a>
+  
+    <li><a href="https://searx.space">Public instances</a>
+  
+    <li><a href="https://github.com/searxng/searxng/issues">Issue Tracker</a>
+  </ul><h3>Navigation</h3>
+<ul>
+  <li><a href="../../../index.html">Overview</a>
+    <ul>
+      <li><a href="../../index.html">Module code</a>
+        <ul>
+      <li><a href="../engines.html">searx.engines</a>
+        
+          
+          </ul>
+      </li></ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright SearXNG team.
+    </div>
+  </body>
+</html>

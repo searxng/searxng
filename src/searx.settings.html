@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Settings Loader &#8212; SearXNG Documentation (2026.2.22+191818b86)</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=6625fa76" />
+    <link rel="stylesheet" type="text/css" href="../_static/searxng.css?v=52e4ff28" />
+    <script src="../_static/documentation_options.js?v=1b5d919e"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script data-project="searxng" data-version="2026.2.22+191818b86" src="../_static/describe_version.js?v=fa7f30d0"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="SQLite DB" href="searx.sqlitedb.html" />
+    <link rel="prev" title="Search processors" href="searx.search.processors.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="searx.sqlitedb.html" title="SQLite DB"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="searx.search.processors.html" title="Search processors"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">SearXNG Documentation (2026.2.22+191818b86)</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" accesskey="U">Source-Code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Settings Loader</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="module-searx.settings_loader">
+<span id="settings-loader"></span><span id="searx-settings-loader"></span><h1>Settings Loader<a class="headerlink" href="#module-searx.settings_loader" title="Link to this heading">¶</a></h1>
+<p>Implementations for loading configurations from YAML files.  This essentially
+includes the configuration of the (<a class="reference internal" href="../admin/settings/index.html#searxng-settings-yml"><span class="std std-ref">SearXNG appl</span></a>)
+server. The default configuration for the application server is loaded from the
+<a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/searx/settings.yml">DEFAULT_SETTINGS_FILE</a>.  This default
+configuration can be completely replaced or <a class="reference internal" href="../admin/installation-searxng.html#use-default-settings-yml"><span class="std std-ref">customized individually</span></a> and the <code class="docutils literal notranslate"><span class="pre">SEARXNG_SETTINGS_PATH</span></code> environment
+variable can be used to set the location from which the local customizations are
+to be loaded. The rules used for this can be found in the
+<a class="reference internal" href="#searx.settings_loader.get_user_cfg_folder" title="searx.settings_loader.get_user_cfg_folder"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_user_cfg_folder</span></code></a> function.</p>
+<ul class="simple">
+<li><p>By default, local configurations are expected in folder <code class="docutils literal notranslate"><span class="pre">/etc/searxng</span></code> from
+where applications can load them with the <a class="reference internal" href="#searx.settings_loader.get_yaml_cfg" title="searx.settings_loader.get_yaml_cfg"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_yaml_cfg</span></code></a> function.</p></li>
+<li><p>By default, customized <a class="reference internal" href="../admin/settings/index.html#searxng-settings-yml"><span class="std std-ref">SearXNG appl</span></a> settings are
+expected in a file named <code class="docutils literal notranslate"><span class="pre">settings.yml</span></code>.</p></li>
+</ul>
+<dl class="py data">
+<dt class="sig sig-object py" id="searx.settings_loader.DEFAULT_SETTINGS_FILE">
+<span class="sig-prename descclassname"><span class="pre">searx.settings_loader.</span></span><span class="sig-name descname"><span class="pre">DEFAULT_SETTINGS_FILE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">PosixPath('/home/runner/work/searxng/searxng/searx/settings.yml')</span></em><a class="headerlink" href="#searx.settings_loader.DEFAULT_SETTINGS_FILE" title="Link to this definition">¶</a></dt>
+<dd><p>The <a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/searx/settings.yml">git://searx/settings.yml</a> file with all the default settings.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="searx.settings_loader.load_yaml">
+<span class="sig-prename descclassname"><span class="pre">searx.settings_loader.</span></span><span class="sig-name descname"><span class="pre">load_yaml</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.14)"><span class="pre">Path</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.14)"><span class="pre">dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.14)"><span class="pre">dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.14)"><span class="pre">dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">JSONType</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><span class="pre">JSONType</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.14)"><span class="pre">dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">JSONType</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><span class="pre">JSONType</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/searx/settings_loader.html#load_yaml"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.settings_loader.load_yaml" title="Link to this definition">¶</a></dt>
+<dd><p>Load YAML config from a file.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="searx.settings_loader.get_yaml_cfg">
+<span class="sig-prename descclassname"><span class="pre">searx.settings_loader.</span></span><span class="sig-name descname"><span class="pre">get_yaml_cfg</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.14)"><span class="pre">Path</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.14)"><span class="pre">dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.14)"><span class="pre">dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.14)"><span class="pre">dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">JSONType</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><span class="pre">JSONType</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.14)"><span class="pre">dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">JSONType</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><span class="pre">JSONType</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/searx/settings_loader.html#get_yaml_cfg"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.settings_loader.get_yaml_cfg" title="Link to this definition">¶</a></dt>
+<dd><p>Shortcut to load a YAML config from a file, located in the</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#searx.settings_loader.get_user_cfg_folder" title="searx.settings_loader.get_user_cfg_folder"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_user_cfg_folder</span></code></a> or</p></li>
+<li><p>in the <code class="docutils literal notranslate"><span class="pre">searx</span></code> folder of the SearXNG installation</p></li>
+</ul>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="searx.settings_loader.get_user_cfg_folder">
+<span class="sig-prename descclassname"><span class="pre">searx.settings_loader.</span></span><span class="sig-name descname"><span class="pre">get_user_cfg_folder</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.14)"><span class="pre">Path</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span></span><a class="reference internal" href="../_modules/searx/settings_loader.html#get_user_cfg_folder"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.settings_loader.get_user_cfg_folder" title="Link to this definition">¶</a></dt>
+<dd><p>Returns folder where the local configurations are located.</p>
+<ol class="arabic">
+<li><p>If the <code class="docutils literal notranslate"><span class="pre">SEARXNG_SETTINGS_PATH</span></code> environment is set and points to a
+folder (e.g. <code class="docutils literal notranslate"><span class="pre">/etc/mysxng/</span></code>), all local configurations are expected in
+this folder.  The settings of the <a class="reference internal" href="../admin/settings/index.html#searxng-settings-yml"><span class="std std-ref">SearXNG appl</span></a> then expected in <code class="docutils literal notranslate"><span class="pre">settings.yml</span></code>
+(e.g. <code class="docutils literal notranslate"><span class="pre">/etc/mysxng/settings.yml</span></code>).</p></li>
+<li><p>If the <code class="docutils literal notranslate"><span class="pre">SEARXNG_SETTINGS_PATH</span></code> environment is set and points to a file
+(e.g. <code class="docutils literal notranslate"><span class="pre">/etc/mysxng/myinstance.yml</span></code>), this file contains the settings of
+the <a class="reference internal" href="../admin/settings/index.html#searxng-settings-yml"><span class="std std-ref">SearXNG appl</span></a> and the folder
+(e.g. <code class="docutils literal notranslate"><span class="pre">/etc/mysxng/</span></code>) is used for all other configurations.</p>
+<p>This type (<code class="docutils literal notranslate"><span class="pre">SEARXNG_SETTINGS_PATH</span></code> points to a file) is suitable for
+use cases in which different profiles of the <a class="reference internal" href="../admin/settings/index.html#searxng-settings-yml"><span class="std std-ref">SearXNG appl</span></a> are to be managed, such as in test scenarios.</p>
+</li>
+<li><p>If folder <code class="docutils literal notranslate"><span class="pre">/etc/searxng</span></code> exists, it is used.</p></li>
+</ol>
+<p>In case none of the above path exists, <code class="docutils literal notranslate"><span class="pre">None</span></code> is returned.  In case of
+environment <code class="docutils literal notranslate"><span class="pre">SEARXNG_SETTINGS_PATH</span></code> is set, but the (folder or file) does
+not exists, a <a class="reference external" href="https://docs.python.org/3/library/exceptions.html#EnvironmentError" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">EnvironmentError</span></code></a> is raised.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="searx.settings_loader.load_settings">
+<span class="sig-prename descclassname"><span class="pre">searx.settings_loader.</span></span><span class="sig-name descname"><span class="pre">load_settings</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">load_user_settings</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.14)"><span class="pre">dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.14)"><span class="pre">dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.14)"><span class="pre">dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">JSONType</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><span class="pre">JSONType</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.14)"><span class="pre">dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">JSONType</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><span class="pre">JSONType</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/searx/settings_loader.html#load_settings"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.settings_loader.load_settings" title="Link to this definition">¶</a></dt>
+<dd><p>Function for loading the settings of the SearXNG application
+(<a class="reference internal" href="../admin/settings/index.html#searxng-settings-yml"><span class="std std-ref">settings.yml</span></a>).</p>
+</dd></dl>
+
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+  <span id="sidebar-top"></span>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+  
+    
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/searxng-wordmark.svg" alt="Logo of SearXNG"/>
+            </a></p>
+  
+
+<h3><a href="../index.html">Table of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../user/index.html">User information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../own-instance.html">Why use a private instance?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../admin/index.html">Administrator documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev/index.html">Developer documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../utils/index.html">DevOps tooling box</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Source-Code</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="searx.babel_extract.html">Custom message extractor (i18n)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.botdetection.html">Bot Detection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.cache.html">Caches</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.exceptions.html">SearXNG Exceptions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.favicons.html">Favicons (source)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.infopage.html">Online <code class="docutils literal notranslate"><span class="pre">/info</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.locales.html">Locales</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.search.html">Search</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.search.processors.html">Search processors</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Settings Loader</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#searx.settings_loader.DEFAULT_SETTINGS_FILE"><code class="docutils literal notranslate"><span class="pre">DEFAULT_SETTINGS_FILE</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#searx.settings_loader.load_yaml"><code class="docutils literal notranslate"><span class="pre">load_yaml()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#searx.settings_loader.get_yaml_cfg"><code class="docutils literal notranslate"><span class="pre">get_yaml_cfg()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#searx.settings_loader.get_user_cfg_folder"><code class="docutils literal notranslate"><span class="pre">get_user_cfg_folder()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#searx.settings_loader.load_settings"><code class="docutils literal notranslate"><span class="pre">load_settings()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="searx.sqlitedb.html">SQLite DB</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.utils.html">Utility functions for the engines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.valkeydb.html">Valkey DB</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.valkeylib.html">Valkey Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.weather.html">Weather</a></li>
+</ul>
+</li>
+</ul>
+
+  <h3>Project Links</h3>
+  <ul>
+    <li><a href="https://github.com/searxng/searxng/tree/master">Source</a>
+  
+    <li><a href="https://github.com/searxng/searxng/wiki">Wiki</a>
+  
+    <li><a href="https://searx.space">Public instances</a>
+  
+    <li><a href="https://github.com/searxng/searxng/issues">Issue Tracker</a>
+  </ul><h3>Navigation</h3>
+<ul>
+  <li><a href="../index.html">Overview</a>
+    <ul>
+      <li><a href="index.html">Source-Code</a>
+        <ul>
+          <li>Previous: <a href="searx.search.processors.html" title="previous chapter">Search processors</a>
+          <li>Next: <a href="searx.sqlitedb.html" title="next chapter">SQLite DB</a></ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/src/searx.settings.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright SearXNG team.
+    </div>
+  </body>
+</html>

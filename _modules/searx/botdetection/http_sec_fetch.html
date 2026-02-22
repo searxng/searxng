@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>searx.botdetection.http_sec_fetch &#8212; SearXNG Documentation (2026.2.22+191818b86)</title>
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=6625fa76" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/searxng.css?v=52e4ff28" />
+    <script src="../../../_static/documentation_options.js?v=1b5d919e"></script>
+    <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script data-project="searxng" data-version="2026.2.22+191818b86" src="../../../_static/describe_version.js?v=fa7f30d0"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">SearXNG Documentation (2026.2.22+191818b86)</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" accesskey="U">Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">searx.botdetection.http_sec_fetch</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for searx.botdetection.http_sec_fetch</h1><div class="highlight"><pre>
+<span></span><span class="c1"># SPDX-License-Identifier: AGPL-3.0-or-later</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Method ``http_sec_fetch``</span>
+<span class="sd">-------------------------</span>
+
+<span class="sd">The ``http_sec_fetch`` method protect resources from web attacks with `Fetch</span>
+<span class="sd">Metadata`_.  A request is filtered out in case of:</span>
+
+<span class="sd">- http header Sec-Fetch-Mode_ is invalid</span>
+<span class="sd">- http header Sec-Fetch-Dest_ is invalid</span>
+
+<span class="sd">.. _Fetch Metadata:</span>
+<span class="sd">   https://developer.mozilla.org/en-US/docs/Glossary/Fetch_metadata_request_header</span>
+
+<span class="sd">.. _Sec-Fetch-Dest:</span>
+<span class="sd">   https://developer.mozilla.org/en-US/docs/Web/API/Request/destination</span>
+
+<span class="sd">.. _Sec-Fetch-Mode:</span>
+<span class="sd">   https://developer.mozilla.org/en-US/docs/Web/API/Request/mode</span>
+
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="c1"># pylint: disable=unused-argument</span>
+
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">ipaddress</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">IPv4Network</span><span class="p">,</span>
+    <span class="n">IPv6Network</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">flask</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">werkzeug</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">.</span><span class="w"> </span><span class="kn">import</span> <span class="n">config</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">._helpers</span><span class="w"> </span><span class="kn">import</span> <span class="n">logger</span>
+
+
+<div class="viewcode-block" id="is_browser_supported">
+<a class="viewcode-back" href="../../../src/searx.botdetection.html#searx.botdetection.http_sec_fetch.is_browser_supported">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">is_browser_supported</span><span class="p">(</span><span class="n">user_agent</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Check if the browser supports Sec-Fetch headers.</span>
+
+<span class="sd">    https://caniuse.com/mdn-http_headers_sec-fetch-dest</span>
+<span class="sd">    https://caniuse.com/mdn-http_headers_sec-fetch-mode</span>
+<span class="sd">    https://caniuse.com/mdn-http_headers_sec-fetch-site</span>
+
+<span class="sd">    Supported browsers:</span>
+<span class="sd">    - Chrome &gt;= 80</span>
+<span class="sd">    - Firefox &gt;= 90</span>
+<span class="sd">    - Safari &gt;= 16.4</span>
+<span class="sd">    - Edge (mirrors Chrome)</span>
+<span class="sd">    - Opera (mirrors Chrome)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">user_agent</span> <span class="o">=</span> <span class="n">user_agent</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+
+    <span class="c1"># Chrome/Chromium/Edge/Opera</span>
+    <span class="n">chrome_match</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;chrome/(\d+)&#39;</span><span class="p">,</span> <span class="n">user_agent</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">chrome_match</span><span class="p">:</span>
+        <span class="n">version</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">chrome_match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">version</span> <span class="o">&gt;=</span> <span class="mi">80</span>
+
+    <span class="c1"># Firefox</span>
+    <span class="n">firefox_match</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;firefox/(\d+)&#39;</span><span class="p">,</span> <span class="n">user_agent</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">firefox_match</span><span class="p">:</span>
+        <span class="n">version</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">firefox_match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">version</span> <span class="o">&gt;=</span> <span class="mi">90</span>
+
+    <span class="c1"># Safari</span>
+    <span class="n">safari_match</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;version/(\d+)\.(\d+)&#39;</span><span class="p">,</span> <span class="n">user_agent</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">safari_match</span><span class="p">:</span>
+        <span class="n">major</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">safari_match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+        <span class="n">minor</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">safari_match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">major</span> <span class="o">&gt;</span> <span class="mi">16</span> <span class="ow">or</span> <span class="p">(</span><span class="n">major</span> <span class="o">==</span> <span class="mi">16</span> <span class="ow">and</span> <span class="n">minor</span> <span class="o">&gt;=</span> <span class="mi">4</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="kc">False</span></div>
+
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">filter_request</span><span class="p">(</span>
+    <span class="n">network</span><span class="p">:</span> <span class="n">IPv4Network</span> <span class="o">|</span> <span class="n">IPv6Network</span><span class="p">,</span>
+    <span class="n">request</span><span class="p">:</span> <span class="n">flask</span><span class="o">.</span><span class="n">Request</span><span class="p">,</span>
+    <span class="n">cfg</span><span class="p">:</span> <span class="n">config</span><span class="o">.</span><span class="n">Config</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">werkzeug</span><span class="o">.</span><span class="n">Response</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">request</span><span class="o">.</span><span class="n">is_secure</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+            <span class="s2">&quot;Sec-Fetch cannot be verified for non-secure requests (HTTP headers are not set/sent by the client).&quot;</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="kc">None</span>
+
+    <span class="c1"># Only check Sec-Fetch headers for supported browsers</span>
+    <span class="n">user_agent</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">headers</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;User-Agent&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">is_browser_supported</span><span class="p">(</span><span class="n">user_agent</span><span class="p">):</span>
+        <span class="n">val</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">headers</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Sec-Fetch-Mode&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">val</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;navigate&#39;</span><span class="p">,</span> <span class="s1">&#39;cors&#39;</span><span class="p">):</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;invalid Sec-Fetch-Mode &#39;</span><span class="si">%s</span><span class="s2">&#39;&quot;</span><span class="p">,</span> <span class="n">val</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">flask</span><span class="o">.</span><span class="n">redirect</span><span class="p">(</span><span class="n">flask</span><span class="o">.</span><span class="n">url_for</span><span class="p">(</span><span class="s1">&#39;index&#39;</span><span class="p">),</span> <span class="n">code</span><span class="o">=</span><span class="mi">302</span><span class="p">)</span>
+
+        <span class="n">val</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">headers</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Sec-Fetch-Site&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">val</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;same-origin&#39;</span><span class="p">,</span> <span class="s1">&#39;same-site&#39;</span><span class="p">,</span> <span class="s1">&#39;none&#39;</span><span class="p">):</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;invalid Sec-Fetch-Site &#39;</span><span class="si">%s</span><span class="s2">&#39;&quot;</span><span class="p">,</span> <span class="n">val</span><span class="p">)</span>
+            <span class="n">flask</span><span class="o">.</span><span class="n">redirect</span><span class="p">(</span><span class="n">flask</span><span class="o">.</span><span class="n">url_for</span><span class="p">(</span><span class="s1">&#39;index&#39;</span><span class="p">),</span> <span class="n">code</span><span class="o">=</span><span class="mi">302</span><span class="p">)</span>
+
+        <span class="n">val</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">headers</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Sec-Fetch-Dest&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">val</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;document&#39;</span><span class="p">,</span> <span class="s1">&#39;empty&#39;</span><span class="p">):</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;invalid Sec-Fetch-Dest &#39;</span><span class="si">%s</span><span class="s2">&#39;&quot;</span><span class="p">,</span> <span class="n">val</span><span class="p">)</span>
+            <span class="n">flask</span><span class="o">.</span><span class="n">redirect</span><span class="p">(</span><span class="n">flask</span><span class="o">.</span><span class="n">url_for</span><span class="p">(</span><span class="s1">&#39;index&#39;</span><span class="p">),</span> <span class="n">code</span><span class="o">=</span><span class="mi">302</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="kc">None</span>
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+  <span id="sidebar-top"></span>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+  
+    
+            <p class="logo"><a href="../../../index.html">
+              <img class="logo" src="../../../_static/searxng-wordmark.svg" alt="Logo of SearXNG"/>
+            </a></p>
+  
+
+<h3><a href="../../../index.html">Table of Contents</a></h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../user/index.html">User information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../own-instance.html">Why use a private instance?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../admin/index.html">Administrator documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../dev/index.html">Developer documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../utils/index.html">DevOps tooling box</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/index.html">Source-Code</a></li>
+</ul>
+
+  <h3>Project Links</h3>
+  <ul>
+    <li><a href="https://github.com/searxng/searxng/tree/master">Source</a>
+  
+    <li><a href="https://github.com/searxng/searxng/wiki">Wiki</a>
+  
+    <li><a href="https://searx.space">Public instances</a>
+  
+    <li><a href="https://github.com/searxng/searxng/issues">Issue Tracker</a>
+  </ul><h3>Navigation</h3>
+<ul>
+  <li><a href="../../../index.html">Overview</a>
+    <ul>
+      <li><a href="../../index.html">Module code</a>
+        
+          
+          </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright SearXNG team.
+    </div>
+  </body>
+</html>

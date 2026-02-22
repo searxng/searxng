@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>searx.locales &#8212; SearXNG Documentation (2026.2.22+191818b86)</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=6625fa76" />
+    <link rel="stylesheet" type="text/css" href="../../_static/searxng.css?v=52e4ff28" />
+    <script src="../../_static/documentation_options.js?v=1b5d919e"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script data-project="searxng" data-version="2026.2.22+191818b86" src="../../_static/describe_version.js?v=fa7f30d0"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">SearXNG Documentation (2026.2.22+191818b86)</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">searx.locales</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for searx.locales</h1><div class="highlight"><pre>
+<span></span><span class="c1"># SPDX-License-Identifier: AGPL-3.0-or-later</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">SearXNG’s locale data</span>
+<span class="sd">=====================</span>
+
+<span class="sd">The variables :py:obj:`RTL_LOCALES` and :py:obj:`LOCALE_NAMES` are loaded from</span>
+<span class="sd">:origin:`searx/data/locales.json` / see :py:obj:`locales_initialize` and</span>
+<span class="sd">:ref:`update_locales.py`.</span>
+
+<span class="sd">.. hint::</span>
+
+<span class="sd">   Whenever the value of :py:obj:`ADDITIONAL_TRANSLATIONS` or</span>
+<span class="sd">   :py:obj:`LOCALE_BEST_MATCH` is modified, the</span>
+<span class="sd">   :origin:`searx/data/locales.json` needs to be rebuild::</span>
+
+<span class="sd">     ./manage data.locales</span>
+
+<span class="sd">SearXNG&#39;s locale codes</span>
+<span class="sd">======================</span>
+
+<span class="sd">.. automodule:: searx.sxng_locales</span>
+<span class="sd">   :members:</span>
+
+
+<span class="sd">SearXNG’s locale implementations</span>
+<span class="sd">================================</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">t</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">babel</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">babel.support</span><span class="w"> </span><span class="kn">import</span> <span class="n">Translations</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">babel.languages</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">babel.core</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">flask_babel</span>  <span class="c1"># pyright: ignore[reportMissingTypeStubs]</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">flask.ctx</span><span class="w"> </span><span class="kn">import</span> <span class="n">has_request_context</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">searx</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">data</span><span class="p">,</span>
+    <span class="n">logger</span><span class="p">,</span>
+    <span class="n">searx_dir</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">searx.extended_types</span><span class="w"> </span><span class="kn">import</span> <span class="n">sxng_request</span>
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logger</span><span class="o">.</span><span class="n">getChild</span><span class="p">(</span><span class="s1">&#39;locales&#39;</span><span class="p">)</span>
+
+
+<span class="c1"># safe before monkey patching flask_babel.get_translations</span>
+<span class="n">_flask_babel_get_translations</span> <span class="o">=</span> <span class="n">flask_babel</span><span class="o">.</span><span class="n">get_translations</span>
+
+<span class="n">LOCALE_NAMES</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="sd">&quot;&quot;&quot;Mapping of locales and their description.  Locales e.g. &#39;fr&#39; or &#39;pt-BR&#39; (see</span>
+<span class="sd">:py:obj:`locales_initialize`).</span>
+
+<span class="sd">:meta hide-value:</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="n">RTL_LOCALES</span><span class="p">:</span> <span class="nb">set</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+<span class="sd">&quot;&quot;&quot;List of *Right-To-Left* locales e.g. &#39;he&#39; or &#39;fa-IR&#39; (see</span>
+<span class="sd">:py:obj:`locales_initialize`).&quot;&quot;&quot;</span>
+
+<span class="n">ADDITIONAL_TRANSLATIONS</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;dv&quot;</span><span class="p">:</span> <span class="s2">&quot;ދިވެހި (Dhivehi)&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;oc&quot;</span><span class="p">:</span> <span class="s2">&quot;Occitan&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;szl&quot;</span><span class="p">:</span> <span class="s2">&quot;Ślōnski (Silesian)&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;pap&quot;</span><span class="p">:</span> <span class="s2">&quot;Papiamento&quot;</span><span class="p">,</span>
+<span class="p">}</span>
+<span class="sd">&quot;&quot;&quot;Additional languages SearXNG has translations for but not supported by</span>
+<span class="sd">python-babel (see :py:obj:`locales_initialize`).&quot;&quot;&quot;</span>
+
+<span class="n">LOCALE_BEST_MATCH</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;dv&quot;</span><span class="p">:</span> <span class="s2">&quot;si&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;oc&quot;</span><span class="p">:</span> <span class="s1">&#39;fr-FR&#39;</span><span class="p">,</span>
+    <span class="s2">&quot;szl&quot;</span><span class="p">:</span> <span class="s2">&quot;pl&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;nl-BE&quot;</span><span class="p">:</span> <span class="s2">&quot;nl&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;zh-HK&quot;</span><span class="p">:</span> <span class="s2">&quot;zh-Hant-TW&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;pap&quot;</span><span class="p">:</span> <span class="s2">&quot;pt-BR&quot;</span><span class="p">,</span>
+<span class="p">}</span>
+<span class="sd">&quot;&quot;&quot;Map a locale we do not have a translations for to a locale we have a</span>
+<span class="sd">translation for.  By example: use Taiwan version of the translation for Hong</span>
+<span class="sd">Kong.&quot;&quot;&quot;</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">localeselector</span><span class="p">():</span>
+    <span class="n">locale</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;en&#39;</span>
+    <span class="k">if</span> <span class="n">has_request_context</span><span class="p">():</span>
+        <span class="n">value</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">sxng_request</span><span class="o">.</span><span class="n">preferences</span><span class="o">.</span><span class="n">get_value</span><span class="p">(</span><span class="s1">&#39;locale&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">value</span><span class="p">:</span>
+            <span class="n">locale</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="c1"># first, set the language that is not supported by babel</span>
+    <span class="k">if</span> <span class="n">locale</span> <span class="ow">in</span> <span class="n">ADDITIONAL_TRANSLATIONS</span><span class="p">:</span>
+        <span class="n">sxng_request</span><span class="o">.</span><span class="n">form</span><span class="p">[</span><span class="s1">&#39;use-translation&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">locale</span>
+
+    <span class="c1"># second, map locale to a value python-babel supports</span>
+    <span class="n">locale</span> <span class="o">=</span> <span class="n">LOCALE_BEST_MATCH</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">locale</span><span class="p">,</span> <span class="n">locale</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">locale</span> <span class="o">==</span> <span class="s1">&#39;&#39;</span><span class="p">:</span>
+        <span class="c1"># if there is an error loading the preferences</span>
+        <span class="c1"># the locale is going to be &#39;&#39;</span>
+        <span class="n">locale</span> <span class="o">=</span> <span class="s1">&#39;en&#39;</span>
+
+    <span class="c1"># babel uses underscore instead of hyphen.</span>
+    <span class="n">locale</span> <span class="o">=</span> <span class="n">locale</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="s1">&#39;_&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">locale</span>
+
+
+<div class="viewcode-block" id="get_translations">
+<a class="viewcode-back" href="../../src/searx.locales.html#searx.locales.get_translations">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_translations</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Monkey patch of :py:obj:`flask_babel.get_translations`&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">has_request_context</span><span class="p">():</span>
+        <span class="n">use_translation</span> <span class="o">=</span> <span class="n">sxng_request</span><span class="o">.</span><span class="n">form</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;use-translation&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">use_translation</span> <span class="ow">in</span> <span class="n">ADDITIONAL_TRANSLATIONS</span><span class="p">:</span>
+            <span class="n">babel_ext</span> <span class="o">=</span> <span class="n">flask_babel</span><span class="o">.</span><span class="n">current_app</span><span class="o">.</span><span class="n">extensions</span><span class="p">[</span><span class="s1">&#39;babel&#39;</span><span class="p">]</span>
+            <span class="k">return</span> <span class="n">Translations</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">babel_ext</span><span class="o">.</span><span class="n">translation_directories</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">use_translation</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">_flask_babel_get_translations</span><span class="p">()</span></div>
+
+
+
+<span class="n">_TR_LOCALES</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+
+
+<div class="viewcode-block" id="get_translation_locales">
+<a class="viewcode-back" href="../../src/searx.locales.html#searx.locales.get_translation_locales">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_translation_locales</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Returns the list of translation locales (*underscore*).  The list is</span>
+<span class="sd">    generated from the translation folders in :origin:`searx/translations`&quot;&quot;&quot;</span>
+
+    <span class="k">global</span> <span class="n">_TR_LOCALES</span>  <span class="c1"># pylint:disable=global-statement</span>
+    <span class="k">if</span> <span class="n">_TR_LOCALES</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">_TR_LOCALES</span>
+
+    <span class="n">tr_locales</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">folder</span> <span class="ow">in</span> <span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="n">searx_dir</span><span class="p">)</span> <span class="o">/</span> <span class="s1">&#39;translations&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">iterdir</span><span class="p">():</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">folder</span><span class="o">.</span><span class="n">is_dir</span><span class="p">():</span>
+            <span class="k">continue</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">folder</span> <span class="o">/</span> <span class="s1">&#39;LC_MESSAGES&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">is_dir</span><span class="p">():</span>
+            <span class="k">continue</span>
+        <span class="n">tr_locales</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">folder</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+    <span class="n">_TR_LOCALES</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">tr_locales</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">_TR_LOCALES</span></div>
+
+
+
+<div class="viewcode-block" id="locales_initialize">
+<a class="viewcode-back" href="../../src/searx.locales.html#searx.locales.locales_initialize">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">locales_initialize</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Initialize locales environment of the SearXNG session.</span>
+
+<span class="sd">    - monkey patch :py:obj:`flask_babel.get_translations` by :py:obj:`get_translations`</span>
+<span class="sd">    - init global names :py:obj:`LOCALE_NAMES`, :py:obj:`RTL_LOCALES`</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">flask_babel</span><span class="o">.</span><span class="n">get_translations</span> <span class="o">=</span> <span class="n">get_translations</span>
+    <span class="n">LOCALE_NAMES</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">LOCALES</span><span class="p">[</span><span class="s2">&quot;LOCALE_NAMES&quot;</span><span class="p">])</span>
+    <span class="n">RTL_LOCALES</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">LOCALES</span><span class="p">[</span><span class="s2">&quot;RTL_LOCALES&quot;</span><span class="p">])</span></div>
+
+
+
+<div class="viewcode-block" id="region_tag">
+<a class="viewcode-back" href="../../src/searx.locales.html#searx.locales.region_tag">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">region_tag</span><span class="p">(</span><span class="n">locale</span><span class="p">:</span> <span class="n">babel</span><span class="o">.</span><span class="n">Locale</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Returns SearXNG&#39;s region tag from the locale (e.g. zh-TW , en-US).&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">locale</span><span class="o">.</span><span class="n">territory</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;babel.Locale </span><span class="si">%s</span><span class="s1">: missed a territory&#39;</span> <span class="o">%</span> <span class="n">locale</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">locale</span><span class="o">.</span><span class="n">language</span> <span class="o">+</span> <span class="s1">&#39;-&#39;</span> <span class="o">+</span> <span class="n">locale</span><span class="o">.</span><span class="n">territory</span></div>
+
+
+
+<div class="viewcode-block" id="language_tag">
+<a class="viewcode-back" href="../../src/searx.locales.html#searx.locales.language_tag">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">language_tag</span><span class="p">(</span><span class="n">locale</span><span class="p">:</span> <span class="n">babel</span><span class="o">.</span><span class="n">Locale</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Returns SearXNG&#39;s language tag from the locale and if exits, the tag</span>
+<span class="sd">    includes the script name (e.g. en, zh_Hant).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">sxng_lang</span> <span class="o">=</span> <span class="n">locale</span><span class="o">.</span><span class="n">language</span>
+    <span class="k">if</span> <span class="n">locale</span><span class="o">.</span><span class="n">script</span><span class="p">:</span>
+        <span class="n">sxng_lang</span> <span class="o">+=</span> <span class="s1">&#39;_&#39;</span> <span class="o">+</span> <span class="n">locale</span><span class="o">.</span><span class="n">script</span>
+    <span class="k">return</span> <span class="n">sxng_lang</span></div>
+
+
+
+<div class="viewcode-block" id="get_locale">
+<a class="viewcode-back" href="../../src/searx.locales.html#searx.locales.get_locale">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_locale</span><span class="p">(</span><span class="n">locale_tag</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">babel</span><span class="o">.</span><span class="n">Locale</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Returns a :py:obj:`babel.Locale` object parsed from argument</span>
+<span class="sd">    ``locale_tag``&quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">locale</span> <span class="o">=</span> <span class="n">babel</span><span class="o">.</span><span class="n">Locale</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">locale_tag</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;-&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">locale</span>
+
+    <span class="k">except</span> <span class="n">babel</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">UnknownLocaleError</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span></div>
+
+
+
+<div class="viewcode-block" id="get_official_locales">
+<a class="viewcode-back" href="../../src/searx.locales.html#searx.locales.get_official_locales">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_official_locales</span><span class="p">(</span>
+    <span class="n">territory</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">languages</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">regional</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">de_facto</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">set</span><span class="p">[</span><span class="n">babel</span><span class="o">.</span><span class="n">Locale</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Returns a list of :py:obj:`babel.Locale` with languages from</span>
+<span class="sd">    :py:obj:`babel.languages.get_official_languages`.</span>
+
+<span class="sd">    :param territory: The territory (country or region) code.</span>
+
+<span class="sd">    :param languages: A list of language codes the languages from</span>
+<span class="sd">      :py:obj:`babel.languages.get_official_languages` should be in</span>
+<span class="sd">      (intersection).  If this argument is ``None``, all official languages in</span>
+<span class="sd">      this territory are used.</span>
+
+<span class="sd">    :param regional: If the regional flag is set, then languages which are</span>
+<span class="sd">      regionally official are also returned.</span>
+
+<span class="sd">    :param de_facto: If the de_facto flag is set to `False`, then languages</span>
+<span class="sd">      which are “de facto” official are not returned.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">ret_val</span><span class="p">:</span> <span class="nb">set</span><span class="p">[</span><span class="n">babel</span><span class="o">.</span><span class="n">Locale</span><span class="p">]</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+    <span class="n">o_languages</span> <span class="o">=</span> <span class="n">babel</span><span class="o">.</span><span class="n">languages</span><span class="o">.</span><span class="n">get_official_languages</span><span class="p">(</span><span class="n">territory</span><span class="p">,</span> <span class="n">regional</span><span class="o">=</span><span class="n">regional</span><span class="p">,</span> <span class="n">de_facto</span><span class="o">=</span><span class="n">de_facto</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">languages</span><span class="p">:</span>
+        <span class="n">languages</span> <span class="o">=</span> <span class="p">[</span><span class="n">l</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="n">languages</span><span class="p">]</span>
+        <span class="n">o_languages</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">l</span> <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="n">o_languages</span> <span class="k">if</span> <span class="n">l</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="n">languages</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">lang</span> <span class="ow">in</span> <span class="n">o_languages</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">locale</span> <span class="o">=</span> <span class="n">babel</span><span class="o">.</span><span class="n">Locale</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">lang</span> <span class="o">+</span> <span class="s1">&#39;_&#39;</span> <span class="o">+</span> <span class="n">territory</span><span class="p">)</span>
+            <span class="n">ret_val</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">locale</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">babel</span><span class="o">.</span><span class="n">UnknownLocaleError</span><span class="p">:</span>
+            <span class="k">continue</span>
+
+    <span class="k">return</span> <span class="n">ret_val</span></div>
+
+
+
+<div class="viewcode-block" id="get_engine_locale">
+<a class="viewcode-back" href="../../src/searx.locales.html#searx.locales.get_engine_locale">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_engine_locale</span><span class="p">(</span><span class="n">searxng_locale</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">engine_locales</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span> <span class="n">default</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return engine&#39;s language (aka locale) string that best fits to argument</span>
+<span class="sd">    ``searxng_locale``.</span>
+
+<span class="sd">    Argument ``engine_locales`` is a python dict that maps *SearXNG locales* to</span>
+<span class="sd">    corresponding *engine locales*::</span>
+
+<span class="sd">      &lt;engine&gt;: {</span>
+<span class="sd">          # SearXNG string : engine-string</span>
+<span class="sd">          &#39;ca-ES&#39;          : &#39;ca_ES&#39;,</span>
+<span class="sd">          &#39;fr-BE&#39;          : &#39;fr_BE&#39;,</span>
+<span class="sd">          &#39;fr-CA&#39;          : &#39;fr_CA&#39;,</span>
+<span class="sd">          &#39;fr-CH&#39;          : &#39;fr_CH&#39;,</span>
+<span class="sd">          &#39;fr&#39;             : &#39;fr_FR&#39;,</span>
+<span class="sd">          ...</span>
+<span class="sd">          &#39;pl-PL&#39;          : &#39;pl_PL&#39;,</span>
+<span class="sd">          &#39;pt-PT&#39;          : &#39;pt_PT&#39;</span>
+<span class="sd">          ..</span>
+<span class="sd">          &#39;zh&#39;             : &#39;zh&#39;</span>
+<span class="sd">          &#39;zh_Hans&#39;        : &#39;zh&#39;</span>
+<span class="sd">          &#39;zh_Hant&#39;        : &#39;zh_TW&#39;</span>
+<span class="sd">      }</span>
+
+<span class="sd">    .. hint::</span>
+
+<span class="sd">       The *SearXNG locale* string has to be known by babel!</span>
+
+<span class="sd">    If there is no direct 1:1 mapping, this functions tries to narrow down</span>
+<span class="sd">    engine&#39;s language (locale).  If no value can be determined by these</span>
+<span class="sd">    approximation attempts the ``default`` value is returned.</span>
+
+<span class="sd">    Assumptions:</span>
+
+<span class="sd">    A. When user select a language the results should be optimized according to</span>
+<span class="sd">       the selected language.</span>
+
+<span class="sd">    B. When user select a language and a territory the results should be</span>
+<span class="sd">       optimized with first priority on territory and second on language.</span>
+
+<span class="sd">    First approximation rule (*by territory*):</span>
+
+<span class="sd">      When the user selects a locale with territory (and a language), the</span>
+<span class="sd">      territory has priority over the language.  If any of the official languages</span>
+<span class="sd">      in the territory is supported by the engine (``engine_locales``) it will</span>
+<span class="sd">      be used.</span>
+
+<span class="sd">    Second approximation rule (*by language*):</span>
+
+<span class="sd">      If &quot;First approximation rule&quot; brings no result or the user selects only a</span>
+<span class="sd">      language without a territory.  Check in which territories the language</span>
+<span class="sd">      has an official status and if one of these territories is supported by the</span>
+<span class="sd">      engine.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># pylint: disable=too-many-branches, too-many-return-statements</span>
+
+    <span class="n">engine_locale</span> <span class="o">=</span> <span class="n">engine_locales</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">searxng_locale</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">engine_locale</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="c1"># There was a 1:1 mapping (e.g. a region &quot;fr-BE --&gt; fr_BE&quot; or a language</span>
+        <span class="c1"># &quot;zh --&gt; zh&quot;), no need to narrow language-script nor territory.</span>
+        <span class="k">return</span> <span class="n">engine_locale</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">locale</span> <span class="o">=</span> <span class="n">babel</span><span class="o">.</span><span class="n">Locale</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">searxng_locale</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;-&#39;</span><span class="p">)</span>
+    <span class="k">except</span> <span class="n">babel</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">UnknownLocaleError</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">locale</span> <span class="o">=</span> <span class="n">babel</span><span class="o">.</span><span class="n">Locale</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">searxng_locale</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="k">except</span> <span class="n">babel</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">UnknownLocaleError</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">default</span>
+
+    <span class="n">searxng_lang</span> <span class="o">=</span> <span class="n">language_tag</span><span class="p">(</span><span class="n">locale</span><span class="p">)</span>
+    <span class="n">engine_locale</span> <span class="o">=</span> <span class="n">engine_locales</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">searxng_lang</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">engine_locale</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="c1"># There was a 1:1 mapping (e.g. &quot;zh-HK --&gt; zh_Hant&quot; or &quot;zh-CN --&gt; zh_Hans&quot;)</span>
+        <span class="k">return</span> <span class="n">engine_locale</span>
+
+    <span class="c1"># SearXNG&#39;s selected locale is not supported by the engine ..</span>
+
+    <span class="k">if</span> <span class="n">locale</span><span class="o">.</span><span class="n">territory</span><span class="p">:</span>
+        <span class="c1"># Try to narrow by *official* languages in the territory (??-XX).</span>
+
+        <span class="k">for</span> <span class="n">official_language</span> <span class="ow">in</span> <span class="n">babel</span><span class="o">.</span><span class="n">languages</span><span class="o">.</span><span class="n">get_official_languages</span><span class="p">(</span><span class="n">locale</span><span class="o">.</span><span class="n">territory</span><span class="p">,</span> <span class="n">de_facto</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+            <span class="n">searxng_locale</span> <span class="o">=</span> <span class="n">official_language</span> <span class="o">+</span> <span class="s1">&#39;-&#39;</span> <span class="o">+</span> <span class="n">locale</span><span class="o">.</span><span class="n">territory</span>
+            <span class="n">engine_locale</span> <span class="o">=</span> <span class="n">engine_locales</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">searxng_locale</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">engine_locale</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">engine_locale</span>
+
+    <span class="c1"># Engine does not support one of the official languages in the territory or</span>
+    <span class="c1"># there is only a language selected without a territory.</span>
+
+    <span class="c1"># Now lets have a look if the searxng_lang (the language selected by the</span>
+    <span class="c1"># user) is a official language in other territories.  If so, check if</span>
+    <span class="c1"># engine does support the searxng_lang in this other territory.</span>
+
+    <span class="k">if</span> <span class="n">locale</span><span class="o">.</span><span class="n">language</span><span class="p">:</span>
+
+        <span class="n">terr_lang_dict</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">t</span><span class="o">.</span><span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">territory</span><span class="p">:</span> <span class="nb">str</span>
+        <span class="n">langs</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">t</span><span class="o">.</span><span class="n">Any</span><span class="p">]]</span>
+        <span class="k">for</span> <span class="n">territory</span><span class="p">,</span> <span class="n">langs</span> <span class="ow">in</span> <span class="n">babel</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">get_global</span><span class="p">(</span><span class="s2">&quot;territory_languages&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">_lang</span> <span class="o">=</span> <span class="n">langs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">searxng_lang</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">_lang</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">_lang</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;official_status&#39;</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="n">terr_lang_dict</span><span class="p">[</span><span class="n">territory</span><span class="p">]</span> <span class="o">=</span> <span class="n">_lang</span>
+
+        <span class="c1"># first: check fr-FR, de-DE .. is supported by the engine</span>
+        <span class="c1"># exception: &#39;en&#39; --&gt; &#39;en-US&#39;</span>
+
+        <span class="n">territory</span> <span class="o">=</span> <span class="n">locale</span><span class="o">.</span><span class="n">language</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">territory</span> <span class="o">==</span> <span class="s1">&#39;EN&#39;</span><span class="p">:</span>
+            <span class="n">territory</span> <span class="o">=</span> <span class="s1">&#39;US&#39;</span>
+
+        <span class="k">if</span> <span class="n">terr_lang_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">territory</span><span class="p">):</span>
+            <span class="n">searxng_locale</span> <span class="o">=</span> <span class="n">locale</span><span class="o">.</span><span class="n">language</span> <span class="o">+</span> <span class="s1">&#39;-&#39;</span> <span class="o">+</span> <span class="n">territory</span>
+            <span class="n">engine_locale</span> <span class="o">=</span> <span class="n">engine_locales</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">searxng_locale</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">engine_locale</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">engine_locale</span>
+
+        <span class="c1"># second: sort by population_percent and take first match</span>
+
+        <span class="c1"># drawback of &quot;population percent&quot;: if there is a territory with a</span>
+        <span class="c1">#   small number of people (e.g 100) but the majority speaks the</span>
+        <span class="c1">#   language, then the percentage might be 100% (--&gt; 100 people) but in</span>
+        <span class="c1">#   a different territory with more people (e.g. 10.000) where only 10%</span>
+        <span class="c1">#   speak the language the total amount of speaker is higher (--&gt; 200</span>
+        <span class="c1">#   people).</span>
+        <span class="c1">#</span>
+        <span class="c1">#   By example: The population of Saint-Martin is 33.000, of which 100%</span>
+        <span class="c1">#   speak French, but this is less than the 30% of the approximately 2.5</span>
+        <span class="c1">#   million Belgian citizens</span>
+        <span class="c1">#</span>
+        <span class="c1">#   - &#39;fr-MF&#39;, &#39;population_percent&#39;: 100.0, &#39;official_status&#39;: &#39;official&#39;</span>
+        <span class="c1">#   - &#39;fr-BE&#39;, &#39;population_percent&#39;: 38.0, &#39;official_status&#39;: &#39;official&#39;</span>
+
+        <span class="n">terr_lang_list</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">t</span><span class="o">.</span><span class="n">Any</span><span class="p">]]]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">terr_lang_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">terr_lang_list</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">))</span>
+
+        <span class="k">for</span> <span class="n">territory</span><span class="p">,</span> <span class="n">_lang</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">terr_lang_list</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">item</span><span class="p">:</span> <span class="n">item</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="s1">&#39;population_percent&#39;</span><span class="p">],</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+            <span class="n">searxng_locale</span> <span class="o">=</span> <span class="n">locale</span><span class="o">.</span><span class="n">language</span> <span class="o">+</span> <span class="s1">&#39;-&#39;</span> <span class="o">+</span> <span class="n">territory</span>
+            <span class="n">engine_locale</span> <span class="o">=</span> <span class="n">engine_locales</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">searxng_locale</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">engine_locale</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">engine_locale</span>
+
+    <span class="c1"># No luck: narrow by &quot;language from territory&quot; and &quot;territory from language&quot;</span>
+    <span class="c1"># does not fit to a locale supported by the engine.</span>
+
+    <span class="k">if</span> <span class="n">engine_locale</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">engine_locale</span> <span class="o">=</span> <span class="n">default</span>
+
+    <span class="k">return</span> <span class="n">engine_locale</span></div>
+
+
+
+<div class="viewcode-block" id="match_locale">
+<a class="viewcode-back" href="../../src/searx.locales.html#searx.locales.match_locale">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">match_locale</span><span class="p">(</span><span class="n">searxng_locale</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">locale_tag_list</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">fallback</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return tag from ``locale_tag_list`` that best fits to ``searxng_locale``.</span>
+
+<span class="sd">    :param str searxng_locale: SearXNG&#39;s internal representation of locale (de,</span>
+<span class="sd">        de-DE, fr-BE, zh, zh-CN, zh-TW ..).</span>
+
+<span class="sd">    :param list locale_tag_list: The list of locale tags to select from</span>
+
+<span class="sd">    :param str fallback: fallback locale tag (if unset --&gt; ``None``)</span>
+
+<span class="sd">    The rules to find a match are implemented in :py:obj:`get_engine_locale`,</span>
+<span class="sd">    the ``engine_locales`` is build up by :py:obj:`build_engine_locales`.</span>
+
+<span class="sd">    .. hint::</span>
+
+<span class="sd">       The *SearXNG locale* string and the members of ``locale_tag_list`` has to</span>
+<span class="sd">       be known by babel!  The :py:obj:`ADDITIONAL_TRANSLATIONS` are used in the</span>
+<span class="sd">       UI and are not known by babel --&gt; will be ignored.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># searxng_locale = &#39;es&#39;</span>
+    <span class="c1"># locale_tag_list = [&#39;es-AR&#39;, &#39;es-ES&#39;, &#39;es-MX&#39;]</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">searxng_locale</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">fallback</span>
+
+    <span class="n">locale</span> <span class="o">=</span> <span class="n">get_locale</span><span class="p">(</span><span class="n">searxng_locale</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">locale</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">fallback</span>
+
+    <span class="c1"># normalize to a SearXNG locale that can be passed to get_engine_locale</span>
+
+    <span class="n">searxng_locale</span> <span class="o">=</span> <span class="n">language_tag</span><span class="p">(</span><span class="n">locale</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">locale</span><span class="o">.</span><span class="n">territory</span><span class="p">:</span>
+        <span class="n">searxng_locale</span> <span class="o">=</span> <span class="n">region_tag</span><span class="p">(</span><span class="n">locale</span><span class="p">)</span>
+
+    <span class="c1"># clean up locale_tag_list</span>
+
+    <span class="n">tag_list</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">tag</span> <span class="ow">in</span> <span class="n">locale_tag_list</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">tag</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;all&#39;</span><span class="p">,</span> <span class="s1">&#39;auto&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">tag</span> <span class="ow">in</span> <span class="n">ADDITIONAL_TRANSLATIONS</span><span class="p">:</span>
+            <span class="k">continue</span>
+        <span class="n">tag_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">tag</span><span class="p">)</span>
+
+    <span class="c1"># emulate fetch_traits</span>
+    <span class="n">engine_locales</span> <span class="o">=</span> <span class="n">build_engine_locales</span><span class="p">(</span><span class="n">tag_list</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">get_engine_locale</span><span class="p">(</span><span class="n">searxng_locale</span><span class="p">,</span> <span class="n">engine_locales</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="n">fallback</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="build_engine_locales">
+<a class="viewcode-back" href="../../src/searx.locales.html#searx.locales.build_engine_locales">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">build_engine_locales</span><span class="p">(</span><span class="n">tag_list</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;From a list of locale tags a dictionary is build that can be passed by</span>
+<span class="sd">    argument ``engine_locales`` to :py:obj:`get_engine_locale`.  This function</span>
+<span class="sd">    is mainly used by :py:obj:`match_locale` and is similar to what the</span>
+<span class="sd">    ``fetch_traits(..)`` function of engines do.</span>
+
+<span class="sd">    If there are territory codes in the ``tag_list`` that have a *script code*</span>
+<span class="sd">    additional keys are added to the returned dictionary.</span>
+
+<span class="sd">    .. code:: python</span>
+
+<span class="sd">       &gt;&gt;&gt; import locales</span>
+<span class="sd">       &gt;&gt;&gt; engine_locales = locales.build_engine_locales([&#39;en&#39;, &#39;en-US&#39;, &#39;zh&#39;, &#39;zh-CN&#39;, &#39;zh-TW&#39;])</span>
+<span class="sd">       &gt;&gt;&gt; engine_locales</span>
+<span class="sd">       {</span>
+<span class="sd">           &#39;en&#39;: &#39;en&#39;, &#39;en-US&#39;: &#39;en-US&#39;,</span>
+<span class="sd">           &#39;zh&#39;: &#39;zh&#39;, &#39;zh-CN&#39;: &#39;zh-CN&#39;, &#39;zh_Hans&#39;: &#39;zh-CN&#39;,</span>
+<span class="sd">           &#39;zh-TW&#39;: &#39;zh-TW&#39;, &#39;zh_Hant&#39;: &#39;zh-TW&#39;</span>
+<span class="sd">       }</span>
+<span class="sd">       &gt;&gt;&gt; get_engine_locale(&#39;zh-Hans&#39;, engine_locales)</span>
+<span class="sd">       &#39;zh-CN&#39;</span>
+
+<span class="sd">    This function is a good example to understand the language/region model</span>
+<span class="sd">    of SearXNG:</span>
+
+<span class="sd">      SearXNG only distinguishes between **search languages** and **search</span>
+<span class="sd">      regions**, by adding the *script-tags*, languages with *script-tags* can</span>
+<span class="sd">      be assigned to the **regions** that SearXNG supports.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">engine_locales</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="k">for</span> <span class="n">tag</span> <span class="ow">in</span> <span class="n">tag_list</span><span class="p">:</span>
+        <span class="n">locale</span> <span class="o">=</span> <span class="n">get_locale</span><span class="p">(</span><span class="n">tag</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">locale</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;build_engine_locales: skip locale tag </span><span class="si">%s</span><span class="s2"> / unknown by babel&quot;</span><span class="p">,</span> <span class="n">tag</span><span class="p">)</span>
+            <span class="k">continue</span>
+        <span class="k">if</span> <span class="n">locale</span><span class="o">.</span><span class="n">territory</span><span class="p">:</span>
+            <span class="n">engine_locales</span><span class="p">[</span><span class="n">region_tag</span><span class="p">(</span><span class="n">locale</span><span class="p">)]</span> <span class="o">=</span> <span class="n">tag</span>
+            <span class="k">if</span> <span class="n">locale</span><span class="o">.</span><span class="n">script</span><span class="p">:</span>
+                <span class="n">engine_locales</span><span class="p">[</span><span class="n">language_tag</span><span class="p">(</span><span class="n">locale</span><span class="p">)]</span> <span class="o">=</span> <span class="n">tag</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">engine_locales</span><span class="p">[</span><span class="n">language_tag</span><span class="p">(</span><span class="n">locale</span><span class="p">)]</span> <span class="o">=</span> <span class="n">tag</span>
+    <span class="k">return</span> <span class="n">engine_locales</span></div>
+
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+  <span id="sidebar-top"></span>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+  
+    
+            <p class="logo"><a href="../../index.html">
+              <img class="logo" src="../../_static/searxng-wordmark.svg" alt="Logo of SearXNG"/>
+            </a></p>
+  
+
+<h3><a href="../../index.html">Table of Contents</a></h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../user/index.html">User information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../own-instance.html">Why use a private instance?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../admin/index.html">Administrator documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dev/index.html">Developer documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../utils/index.html">DevOps tooling box</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../src/index.html">Source-Code</a></li>
+</ul>
+
+  <h3>Project Links</h3>
+  <ul>
+    <li><a href="https://github.com/searxng/searxng/tree/master">Source</a>
+  
+    <li><a href="https://github.com/searxng/searxng/wiki">Wiki</a>
+  
+    <li><a href="https://searx.space">Public instances</a>
+  
+    <li><a href="https://github.com/searxng/searxng/issues">Issue Tracker</a>
+  </ul><h3>Navigation</h3>
+<ul>
+  <li><a href="../../index.html">Overview</a>
+    <ul>
+      <li><a href="../index.html">Module code</a>
+        
+          
+          </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright SearXNG team.
+    </div>
+  </body>
+</html>

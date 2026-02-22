@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>searx.settings_loader &#8212; SearXNG Documentation (2026.2.22+191818b86)</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=6625fa76" />
+    <link rel="stylesheet" type="text/css" href="../../_static/searxng.css?v=52e4ff28" />
+    <script src="../../_static/documentation_options.js?v=1b5d919e"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script data-project="searxng" data-version="2026.2.22+191818b86" src="../../_static/describe_version.js?v=fa7f30d0"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">SearXNG Documentation (2026.2.22+191818b86)</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">searx.settings_loader</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for searx.settings_loader</h1><div class="highlight"><pre>
+<span></span><span class="c1"># SPDX-License-Identifier: AGPL-3.0-or-later</span>
+<span class="sd">&quot;&quot;&quot;Implementations for loading configurations from YAML files.  This essentially</span>
+<span class="sd">includes the configuration of the (:ref:`SearXNG appl &lt;searxng settings.yml&gt;`)</span>
+<span class="sd">server. The default configuration for the application server is loaded from the</span>
+<span class="sd">:origin:`DEFAULT_SETTINGS_FILE &lt;searx/settings.yml&gt;`.  This default</span>
+<span class="sd">configuration can be completely replaced or :ref:`customized individually</span>
+<span class="sd">&lt;use_default_settings.yml&gt;` and the ``SEARXNG_SETTINGS_PATH`` environment</span>
+<span class="sd">variable can be used to set the location from which the local customizations are</span>
+<span class="sd">to be loaded. The rules used for this can be found in the</span>
+<span class="sd">:py:obj:`get_user_cfg_folder` function.</span>
+
+<span class="sd">- By default, local configurations are expected in folder ``/etc/searxng`` from</span>
+<span class="sd">  where applications can load them with the :py:obj:`get_yaml_cfg` function.</span>
+
+<span class="sd">- By default, customized :ref:`SearXNG appl &lt;searxng settings.yml&gt;` settings are</span>
+<span class="sd">  expected in a file named ``settings.yml``.</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">t</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os.path</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">collections.abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">MutableMapping</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">itertools</span><span class="w"> </span><span class="kn">import</span> <span class="n">filterfalse</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">yaml</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">searx.exceptions</span><span class="w"> </span><span class="kn">import</span> <span class="n">SearxSettingsException</span>
+
+<span class="n">JSONType</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">TypeAlias</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="s2">&quot;JSONType&quot;</span><span class="p">]</span> <span class="o">|</span> <span class="nb">list</span><span class="p">[</span><span class="s2">&quot;JSONType&quot;</span><span class="p">]</span> <span class="o">|</span> <span class="nb">str</span> <span class="o">|</span> <span class="nb">int</span> <span class="o">|</span> <span class="nb">float</span> <span class="o">|</span> <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span>
+<span class="n">SettingsType</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">TypeAlias</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">JSONType</span><span class="p">]</span>
+
+<span class="n">searx_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="vm">__file__</span><span class="p">))</span>
+
+<span class="n">SETTINGS_YAML</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s2">&quot;settings.yml&quot;</span><span class="p">)</span>
+<span class="n">DEFAULT_SETTINGS_FILE</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">searx_dir</span><span class="p">)</span> <span class="o">/</span> <span class="n">SETTINGS_YAML</span>
+<span class="sd">&quot;&quot;&quot;The :origin:`searx/settings.yml` file with all the default settings.&quot;&quot;&quot;</span>
+
+
+<div class="viewcode-block" id="load_yaml">
+<a class="viewcode-back" href="../../src/searx.settings.html#searx.settings_loader.load_yaml">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">load_yaml</span><span class="p">(</span><span class="n">file_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Path</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SettingsType</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Load YAML config from a file.&quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">file_name</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">settings_yaml</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">yaml</span><span class="o">.</span><span class="n">safe_load</span><span class="p">(</span><span class="n">settings_yaml</span><span class="p">)</span> <span class="ow">or</span> <span class="p">{}</span>
+    <span class="k">except</span> <span class="ne">IOError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">SearxSettingsException</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">file_name</span><span class="p">))</span> <span class="kn">from</span><span class="w"> </span><span class="nn">e</span>
+    <span class="k">except</span> <span class="n">yaml</span><span class="o">.</span><span class="n">YAMLError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">SearxSettingsException</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">file_name</span><span class="p">))</span> <span class="kn">from</span><span class="w"> </span><span class="nn">e</span></div>
+
+
+
+<div class="viewcode-block" id="get_yaml_cfg">
+<a class="viewcode-back" href="../../src/searx.settings.html#searx.settings_loader.get_yaml_cfg">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_yaml_cfg</span><span class="p">(</span><span class="n">file_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Path</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SettingsType</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Shortcut to load a YAML config from a file, located in the</span>
+
+<span class="sd">    - :py:obj:`get_user_cfg_folder` or</span>
+<span class="sd">    - in the ``searx`` folder of the SearXNG installation</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">folder</span> <span class="o">=</span> <span class="n">get_user_cfg_folder</span><span class="p">()</span> <span class="ow">or</span> <span class="n">Path</span><span class="p">(</span><span class="n">searx_dir</span><span class="p">)</span>
+    <span class="n">fname</span> <span class="o">=</span> <span class="n">folder</span> <span class="o">/</span> <span class="n">file_name</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">fname</span><span class="o">.</span><span class="n">is_file</span><span class="p">():</span>
+        <span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;File </span><span class="si">{</span><span class="n">fname</span><span class="si">}</span><span class="s2"> does not exist!&quot;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">load_yaml</span><span class="p">(</span><span class="n">fname</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="get_user_cfg_folder">
+<a class="viewcode-back" href="../../src/searx.settings.html#searx.settings_loader.get_user_cfg_folder">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_user_cfg_folder</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">Path</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Returns folder where the local configurations are located.</span>
+
+<span class="sd">    1. If the ``SEARXNG_SETTINGS_PATH`` environment is set and points to a</span>
+<span class="sd">       folder (e.g. ``/etc/mysxng/``), all local configurations are expected in</span>
+<span class="sd">       this folder.  The settings of the :ref:`SearXNG appl &lt;searxng</span>
+<span class="sd">       settings.yml&gt;` then expected in ``settings.yml``</span>
+<span class="sd">       (e.g. ``/etc/mysxng/settings.yml``).</span>
+
+<span class="sd">    2. If the ``SEARXNG_SETTINGS_PATH`` environment is set and points to a file</span>
+<span class="sd">       (e.g. ``/etc/mysxng/myinstance.yml``), this file contains the settings of</span>
+<span class="sd">       the :ref:`SearXNG appl &lt;searxng settings.yml&gt;` and the folder</span>
+<span class="sd">       (e.g. ``/etc/mysxng/``) is used for all other configurations.</span>
+
+<span class="sd">       This type (``SEARXNG_SETTINGS_PATH`` points to a file) is suitable for</span>
+<span class="sd">       use cases in which different profiles of the :ref:`SearXNG appl &lt;searxng</span>
+<span class="sd">       settings.yml&gt;` are to be managed, such as in test scenarios.</span>
+
+<span class="sd">    3. If folder ``/etc/searxng`` exists, it is used.</span>
+
+<span class="sd">    In case none of the above path exists, ``None`` is returned.  In case of</span>
+<span class="sd">    environment ``SEARXNG_SETTINGS_PATH`` is set, but the (folder or file) does</span>
+<span class="sd">    not exists, a :py:obj:`EnvironmentError` is raised.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">folder</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">settings_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;SEARXNG_SETTINGS_PATH&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Disable default /etc/searxng is intended exclusively for internal testing purposes</span>
+    <span class="c1"># and is therefore not documented!</span>
+    <span class="n">disable_etc</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;SEARXNG_DISABLE_ETC_SETTINGS&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;1&#39;</span><span class="p">,</span> <span class="s1">&#39;true&#39;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">settings_path</span><span class="p">:</span>
+        <span class="c1"># rule 1. and 2.</span>
+        <span class="n">settings_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">settings_path</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">settings_path</span><span class="o">.</span><span class="n">is_dir</span><span class="p">():</span>
+            <span class="n">folder</span> <span class="o">=</span> <span class="n">settings_path</span>
+        <span class="k">elif</span> <span class="n">settings_path</span><span class="o">.</span><span class="n">is_file</span><span class="p">():</span>
+            <span class="n">folder</span> <span class="o">=</span> <span class="n">settings_path</span><span class="o">.</span><span class="n">parent</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">EnvironmentError</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">settings_path</span><span class="si">}</span><span class="s2"> not exists!&quot;</span><span class="p">,</span> <span class="n">settings_path</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">folder</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">disable_etc</span><span class="p">:</span>
+        <span class="c1"># default: rule 3.</span>
+        <span class="n">folder</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s2">&quot;/etc/searxng&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">folder</span><span class="o">.</span><span class="n">is_dir</span><span class="p">():</span>
+            <span class="n">folder</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">return</span> <span class="n">folder</span></div>
+
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">update_dict</span><span class="p">(</span><span class="n">default_dict</span><span class="p">:</span> <span class="n">MutableMapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">t</span><span class="o">.</span><span class="n">Any</span><span class="p">],</span> <span class="n">user_dict</span><span class="p">:</span> <span class="n">MutableMapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">t</span><span class="o">.</span><span class="n">Any</span><span class="p">]):</span>
+    <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">user_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">MutableMapping</span><span class="p">):</span>
+            <span class="n">default_dict</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">update_dict</span><span class="p">(</span><span class="n">default_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="p">{}),</span> <span class="n">v</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">default_dict</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span>
+    <span class="k">return</span> <span class="n">default_dict</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">update_settings</span><span class="p">(</span><span class="n">default_settings</span><span class="p">:</span> <span class="n">MutableMapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">t</span><span class="o">.</span><span class="n">Any</span><span class="p">],</span> <span class="n">user_settings</span><span class="p">:</span> <span class="n">MutableMapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">t</span><span class="o">.</span><span class="n">Any</span><span class="p">]):</span>
+    <span class="c1"># pylint: disable=too-many-branches</span>
+
+    <span class="c1"># merge everything except the engines</span>
+    <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">user_settings</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">k</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;use_default_settings&#39;</span><span class="p">,</span> <span class="s1">&#39;engines&#39;</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">default_settings</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">MutableMapping</span><span class="p">):</span>
+                <span class="n">update_dict</span><span class="p">(</span><span class="n">default_settings</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">v</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">default_settings</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span>
+
+    <span class="n">categories_as_tabs</span> <span class="o">=</span> <span class="n">user_settings</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;categories_as_tabs&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">categories_as_tabs</span><span class="p">:</span>
+        <span class="n">default_settings</span><span class="p">[</span><span class="s1">&#39;categories_as_tabs&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">categories_as_tabs</span>
+
+    <span class="n">plugins</span> <span class="o">=</span> <span class="n">user_settings</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;plugins&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">plugins</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">default_settings</span><span class="p">[</span><span class="s1">&#39;plugins&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">plugins</span>
+
+    <span class="c1"># parse the engines</span>
+    <span class="n">remove_engines</span><span class="p">:</span> <span class="kc">None</span> <span class="o">|</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">keep_only_engines</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">use_default_settings</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">t</span><span class="o">.</span><span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">user_settings</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;use_default_settings&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">use_default_settings</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+        <span class="n">remove_engines</span> <span class="o">=</span> <span class="n">use_default_settings</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;engines&#39;</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;remove&#39;</span><span class="p">)</span>
+        <span class="n">keep_only_engines</span> <span class="o">=</span> <span class="n">use_default_settings</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;engines&#39;</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;keep_only&#39;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="s1">&#39;engines&#39;</span> <span class="ow">in</span> <span class="n">user_settings</span> <span class="ow">or</span> <span class="n">remove_engines</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">keep_only_engines</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">engines</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">t</span><span class="o">.</span><span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="n">default_settings</span><span class="p">[</span><span class="s1">&#39;engines&#39;</span><span class="p">]</span>
+
+        <span class="c1"># parse &quot;use_default_settings.engines.remove&quot;</span>
+        <span class="k">if</span> <span class="n">remove_engines</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">engines</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">filterfalse</span><span class="p">(</span><span class="k">lambda</span> <span class="n">engine</span><span class="p">:</span> <span class="p">(</span><span class="n">engine</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">))</span> <span class="ow">in</span> <span class="n">remove_engines</span><span class="p">,</span> <span class="n">engines</span><span class="p">))</span>
+
+        <span class="c1"># parse &quot;use_default_settings.engines.keep_only&quot;</span>
+        <span class="k">if</span> <span class="n">keep_only_engines</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">engines</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">engine</span><span class="p">:</span> <span class="p">(</span><span class="n">engine</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">))</span> <span class="ow">in</span> <span class="n">keep_only_engines</span><span class="p">,</span> <span class="n">engines</span><span class="p">))</span>
+
+        <span class="c1"># parse &quot;engines&quot;</span>
+        <span class="n">user_engines</span> <span class="o">=</span> <span class="n">user_settings</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;engines&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">user_engines</span><span class="p">:</span>
+            <span class="n">engines_dict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">((</span><span class="n">definition</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">],</span> <span class="n">definition</span><span class="p">)</span> <span class="k">for</span> <span class="n">definition</span> <span class="ow">in</span> <span class="n">engines</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">user_engine</span> <span class="ow">in</span> <span class="n">user_engines</span><span class="p">:</span>
+                <span class="n">default_engine</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">t</span><span class="o">.</span><span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">engines_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">user_engine</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">])</span>
+                <span class="k">if</span> <span class="n">default_engine</span><span class="p">:</span>
+                    <span class="n">update_dict</span><span class="p">(</span><span class="n">default_engine</span><span class="p">,</span> <span class="n">user_engine</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">engines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">user_engine</span><span class="p">)</span>
+
+        <span class="c1"># store the result</span>
+        <span class="n">default_settings</span><span class="p">[</span><span class="s1">&#39;engines&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">engines</span>
+
+    <span class="k">return</span> <span class="n">default_settings</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">is_use_default_settings</span><span class="p">(</span><span class="n">user_settings</span><span class="p">:</span> <span class="n">SettingsType</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+
+    <span class="n">use_default_settings</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="n">JSONType</span> <span class="o">=</span> <span class="n">user_settings</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;use_default_settings&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">use_default_settings</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">True</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">use_default_settings</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+        <span class="k">return</span> <span class="kc">True</span>
+    <span class="k">if</span> <span class="n">use_default_settings</span> <span class="ow">is</span> <span class="kc">False</span> <span class="ow">or</span> <span class="n">use_default_settings</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">False</span>
+    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Invalid value for use_default_settings&#39;</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="load_settings">
+<a class="viewcode-back" href="../../src/searx.settings.html#searx.settings_loader.load_settings">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">load_settings</span><span class="p">(</span><span class="n">load_user_settings</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">SettingsType</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Function for loading the settings of the SearXNG application</span>
+<span class="sd">    (:ref:`settings.yml &lt;searxng settings.yml&gt;`).&quot;&quot;&quot;</span>
+
+    <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;load the default settings from </span><span class="si">{</span><span class="n">DEFAULT_SETTINGS_FILE</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="n">cfg</span> <span class="o">=</span> <span class="n">load_yaml</span><span class="p">(</span><span class="n">DEFAULT_SETTINGS_FILE</span><span class="p">)</span>
+    <span class="n">cfg_folder</span> <span class="o">=</span> <span class="n">get_user_cfg_folder</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">load_user_settings</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">cfg_folder</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">cfg</span><span class="p">,</span> <span class="n">msg</span>
+
+    <span class="n">settings_yml</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;SEARXNG_SETTINGS_PATH&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">settings_yml</span> <span class="ow">and</span> <span class="n">Path</span><span class="p">(</span><span class="n">settings_yml</span><span class="p">)</span><span class="o">.</span><span class="n">is_file</span><span class="p">():</span>
+        <span class="c1"># see get_user_cfg_folder() --&gt; SEARXNG_SETTINGS_PATH points to a file</span>
+        <span class="n">settings_yml</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">settings_yml</span><span class="p">)</span><span class="o">.</span><span class="n">name</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c1"># see get_user_cfg_folder() --&gt; SEARXNG_SETTINGS_PATH points to a folder</span>
+        <span class="n">settings_yml</span> <span class="o">=</span> <span class="n">SETTINGS_YAML</span>
+
+    <span class="n">cfg_file</span> <span class="o">=</span> <span class="n">cfg_folder</span> <span class="o">/</span> <span class="n">settings_yml</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">cfg_file</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+        <span class="k">return</span> <span class="n">cfg</span><span class="p">,</span> <span class="n">msg</span>
+
+    <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;load the user settings from </span><span class="si">{</span><span class="n">cfg_file</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="n">user_cfg</span> <span class="o">=</span> <span class="n">load_yaml</span><span class="p">(</span><span class="n">cfg_file</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">is_use_default_settings</span><span class="p">(</span><span class="n">user_cfg</span><span class="p">):</span>
+        <span class="c1"># the user settings are merged with the default configuration</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;merge the default settings ( </span><span class="si">{</span><span class="n">DEFAULT_SETTINGS_FILE</span><span class="si">}</span><span class="s2"> ) and the user settings ( </span><span class="si">{</span><span class="n">cfg_file</span><span class="si">}</span><span class="s2"> )&quot;</span>
+        <span class="n">update_settings</span><span class="p">(</span><span class="n">cfg</span><span class="p">,</span> <span class="n">user_cfg</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">cfg</span> <span class="o">=</span> <span class="n">user_cfg</span>
+
+    <span class="k">return</span> <span class="n">cfg</span><span class="p">,</span> <span class="n">msg</span></div>
+
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+  <span id="sidebar-top"></span>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+  
+    
+            <p class="logo"><a href="../../index.html">
+              <img class="logo" src="../../_static/searxng-wordmark.svg" alt="Logo of SearXNG"/>
+            </a></p>
+  
+
+<h3><a href="../../index.html">Table of Contents</a></h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../user/index.html">User information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../own-instance.html">Why use a private instance?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../admin/index.html">Administrator documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dev/index.html">Developer documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../utils/index.html">DevOps tooling box</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../src/index.html">Source-Code</a></li>
+</ul>
+
+  <h3>Project Links</h3>
+  <ul>
+    <li><a href="https://github.com/searxng/searxng/tree/master">Source</a>
+  
+    <li><a href="https://github.com/searxng/searxng/wiki">Wiki</a>
+  
+    <li><a href="https://searx.space">Public instances</a>
+  
+    <li><a href="https://github.com/searxng/searxng/issues">Issue Tracker</a>
+  </ul><h3>Navigation</h3>
+<ul>
+  <li><a href="../../index.html">Overview</a>
+    <ul>
+      <li><a href="../index.html">Module code</a>
+        
+          
+          </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright SearXNG team.
+    </div>
+  </body>
+</html>

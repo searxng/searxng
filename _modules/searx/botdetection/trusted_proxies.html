@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>searx.botdetection.trusted_proxies &#8212; SearXNG Documentation (2026.2.22+191818b86)</title>
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=6625fa76" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/searxng.css?v=52e4ff28" />
+    <script src="../../../_static/documentation_options.js?v=1b5d919e"></script>
+    <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script data-project="searxng" data-version="2026.2.22+191818b86" src="../../../_static/describe_version.js?v=fa7f30d0"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">SearXNG Documentation (2026.2.22+191818b86)</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" accesskey="U">Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">searx.botdetection.trusted_proxies</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for searx.botdetection.trusted_proxies</h1><div class="highlight"><pre>
+<span></span><span class="c1"># SPDX-License-Identifier: AGPL-3.0-or-later</span>
+<span class="sd">&quot;&quot;&quot;Implementation of a middleware to determine the real IP of an HTTP request</span>
+<span class="sd">(:py:obj:`flask.request.remote_addr`) behind a proxy chain.&quot;&quot;&quot;</span>
+<span class="c1"># pylint: disable=too-many-branches</span>
+
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">t</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">abc</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">ipaddress</span><span class="w"> </span><span class="kn">import</span> <span class="n">IPv4Address</span><span class="p">,</span> <span class="n">IPv6Address</span><span class="p">,</span> <span class="n">ip_address</span><span class="p">,</span> <span class="n">ip_network</span><span class="p">,</span> <span class="n">IPv4Network</span><span class="p">,</span> <span class="n">IPv6Network</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">werkzeug.http</span><span class="w"> </span><span class="kn">import</span> <span class="n">parse_list_header</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">.</span><span class="w"> </span><span class="kn">import</span> <span class="n">config</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">._helpers</span><span class="w"> </span><span class="kn">import</span> <span class="n">log_error_only_once</span><span class="p">,</span> <span class="n">logger</span>
+
+<span class="k">if</span> <span class="n">t</span><span class="o">.</span><span class="n">TYPE_CHECKING</span><span class="p">:</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">_typeshed.wsgi</span><span class="w"> </span><span class="kn">import</span> <span class="n">StartResponse</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">_typeshed.wsgi</span><span class="w"> </span><span class="kn">import</span> <span class="n">WSGIApplication</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">_typeshed.wsgi</span><span class="w"> </span><span class="kn">import</span> <span class="n">WSGIEnvironment</span>
+
+
+<div class="viewcode-block" id="ProxyFix">
+<a class="viewcode-back" href="../../../src/searx.botdetection.html#searx.botdetection.ProxyFix">[docs]</a>
+<span class="nd">@t</span><span class="o">.</span><span class="n">final</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">ProxyFix</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A middleware like the ProxyFix_ class, where the ``x_for`` argument is</span>
+<span class="sd">    replaced by a method that determines the number of trusted proxies via the</span>
+<span class="sd">    ``botdetection.trusted_proxies`` setting.</span>
+
+<span class="sd">    .. sidebar:: :py:obj:`flask.Request.remote_addr`</span>
+
+<span class="sd">       SearXNG uses Werkzeug&#39;s ProxyFix_ (with it default ``x_for=1``).</span>
+
+<span class="sd">    The remote IP (:py:obj:`flask.Request.remote_addr`) of the request is taken</span>
+<span class="sd">    from (first match):</span>
+
+<span class="sd">    - X-Forwarded-For_: If the header is set, the first untrusted IP that comes</span>
+<span class="sd">      before the IPs that are still part of the ``botdetection.trusted_proxies``</span>
+<span class="sd">      is used.</span>
+
+<span class="sd">    - `X-Real-IP &lt;https://github.com/searxng/searxng/issues/1237#issuecomment-1147564516&gt;`__:</span>
+<span class="sd">      If X-Forwarded-For_ is not set, `X-Real-IP` is used</span>
+<span class="sd">      (``botdetection.trusted_proxies`` is ignored).</span>
+
+<span class="sd">    If none of the header is set, the REMOTE_ADDR_ from the WSGI layer is used.</span>
+<span class="sd">    If (for whatever reasons) none IP can be determined, an error message is</span>
+<span class="sd">    displayed and ``100::`` is used instead (:rfc:`6666`).</span>
+
+<span class="sd">    .. _ProxyFix:</span>
+<span class="sd">       https://werkzeug.palletsprojects.com/middleware/proxy_fix/</span>
+
+<span class="sd">    .. _X-Forwarded-For:</span>
+<span class="sd">       https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Forwarded-For</span>
+
+<span class="sd">    .. _REMOTE_ADDR:</span>
+<span class="sd">       https://wsgi.readthedocs.io/en/latest/proposals-2.0.html#making-some-keys-required</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">wsgi_app</span><span class="p">:</span> <span class="s2">&quot;WSGIApplication&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">wsgi_app</span> <span class="o">=</span> <span class="n">wsgi_app</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">trusted_proxies</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">IPv4Network</span> <span class="o">|</span> <span class="n">IPv6Network</span><span class="p">]:</span>
+        <span class="n">cfg</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">get_global_cfg</span><span class="p">()</span>
+        <span class="n">proxy_list</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">cfg</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;botdetection.trusted_proxies&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="p">[])</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">ip_network</span><span class="p">(</span><span class="n">net</span><span class="p">,</span> <span class="n">strict</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="k">for</span> <span class="n">net</span> <span class="ow">in</span> <span class="n">proxy_list</span><span class="p">]</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">trusted_remote_addr</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">x_forwarded_for</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">IPv4Address</span> <span class="o">|</span> <span class="n">IPv6Address</span><span class="p">],</span>
+        <span class="n">trusted_proxies</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">IPv4Network</span> <span class="o">|</span> <span class="n">IPv6Network</span><span class="p">],</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="c1"># always rtl</span>
+        <span class="k">for</span> <span class="n">addr</span> <span class="ow">in</span> <span class="nb">reversed</span><span class="p">(</span><span class="n">x_forwarded_for</span><span class="p">):</span>
+            <span class="n">trust</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+
+            <span class="k">for</span> <span class="n">net</span> <span class="ow">in</span> <span class="n">trusted_proxies</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">addr</span><span class="o">.</span><span class="n">version</span> <span class="o">==</span> <span class="n">net</span><span class="o">.</span><span class="n">version</span> <span class="ow">and</span> <span class="n">addr</span> <span class="ow">in</span> <span class="n">net</span><span class="p">:</span>
+                    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;trust proxy </span><span class="si">%s</span><span class="s2"> (member of </span><span class="si">%s</span><span class="s2">)&quot;</span><span class="p">,</span> <span class="n">addr</span><span class="p">,</span> <span class="n">net</span><span class="p">)</span>
+                    <span class="n">trust</span> <span class="o">=</span> <span class="kc">True</span>
+                    <span class="k">break</span>
+
+            <span class="c1"># client address</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">trust</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">addr</span><span class="o">.</span><span class="n">compressed</span>
+
+        <span class="c1"># fallback to first address</span>
+        <span class="k">return</span> <span class="n">x_forwarded_for</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">compressed</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">environ</span><span class="p">:</span> <span class="s2">&quot;WSGIEnvironment&quot;</span><span class="p">,</span> <span class="n">start_response</span><span class="p">:</span> <span class="s2">&quot;StartResponse&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">abc</span><span class="o">.</span><span class="n">Iterable</span><span class="p">[</span><span class="nb">bytes</span><span class="p">]:</span>
+        <span class="c1"># pylint: disable=too-many-statements</span>
+
+        <span class="n">trusted_proxies</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">trusted_proxies</span><span class="p">()</span>
+
+        <span class="c1"># We do not rely on the REMOTE_ADDR from the WSGI environment / the</span>
+        <span class="c1"># variable is first removed from the WSGI environment and explicitly set</span>
+        <span class="c1"># in this function!</span>
+
+        <span class="n">orig_remote_addr</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">environ</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;REMOTE_ADDR&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Validate the IPs involved in this game and delete all invalid ones</span>
+        <span class="c1"># from the WSGI environment.</span>
+
+        <span class="k">if</span> <span class="n">orig_remote_addr</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">addr</span> <span class="o">=</span> <span class="n">ip_address</span><span class="p">(</span><span class="n">orig_remote_addr</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">addr</span><span class="o">.</span><span class="n">version</span> <span class="o">==</span> <span class="mi">6</span> <span class="ow">and</span> <span class="n">addr</span><span class="o">.</span><span class="n">ipv4_mapped</span><span class="p">:</span>
+                    <span class="n">addr</span> <span class="o">=</span> <span class="n">addr</span><span class="o">.</span><span class="n">ipv4_mapped</span>
+                <span class="n">orig_remote_addr</span> <span class="o">=</span> <span class="n">addr</span><span class="o">.</span><span class="n">compressed</span>
+            <span class="k">except</span> <span class="ne">ValueError</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;REMOTE_ADDR: </span><span class="si">%s</span><span class="s2"> / discard REMOTE_ADDR from WSGI environment&quot;</span><span class="p">,</span> <span class="n">exc</span><span class="p">)</span>
+                <span class="n">orig_remote_addr</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="n">x_real_ip</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;HTTP_X_REAL_IP&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">x_real_ip</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">addr</span> <span class="o">=</span> <span class="n">ip_address</span><span class="p">(</span><span class="n">x_real_ip</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">addr</span><span class="o">.</span><span class="n">version</span> <span class="o">==</span> <span class="mi">6</span> <span class="ow">and</span> <span class="n">addr</span><span class="o">.</span><span class="n">ipv4_mapped</span><span class="p">:</span>
+                    <span class="n">addr</span> <span class="o">=</span> <span class="n">addr</span><span class="o">.</span><span class="n">ipv4_mapped</span>
+                <span class="n">x_real_ip</span> <span class="o">=</span> <span class="n">addr</span><span class="o">.</span><span class="n">compressed</span>
+            <span class="k">except</span> <span class="ne">ValueError</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;X-Real-IP: </span><span class="si">%s</span><span class="s2"> / discard HTTP_X_REAL_IP from WSGI environment&quot;</span><span class="p">,</span> <span class="n">exc</span><span class="p">)</span>
+                <span class="n">environ</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;HTTP_X_REAL_IP&quot;</span><span class="p">)</span>
+                <span class="n">x_real_ip</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="n">x_forwarded_for</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">IPv4Address</span> <span class="o">|</span> <span class="n">IPv6Address</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">if</span> <span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;HTTP_X_FORWARDED_FOR&quot;</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">x_for_ip</span> <span class="ow">in</span> <span class="n">parse_list_header</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;HTTP_X_FORWARDED_FOR&quot;</span><span class="p">))):</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">addr</span> <span class="o">=</span> <span class="n">ip_address</span><span class="p">(</span><span class="n">x_for_ip</span><span class="p">)</span>
+                <span class="k">except</span> <span class="ne">ValueError</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
+                    <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;X-Forwarded-For: </span><span class="si">%s</span><span class="s2"> / discard HTTP_X_FORWARDED_FOR from WSGI environment&quot;</span><span class="p">,</span> <span class="n">exc</span><span class="p">)</span>
+                    <span class="n">environ</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;HTTP_X_FORWARDED_FOR&quot;</span><span class="p">)</span>
+                    <span class="n">x_forwarded_for</span> <span class="o">=</span> <span class="p">[]</span>
+                    <span class="k">break</span>
+
+                <span class="k">if</span> <span class="n">addr</span><span class="o">.</span><span class="n">version</span> <span class="o">==</span> <span class="mi">6</span> <span class="ow">and</span> <span class="n">addr</span><span class="o">.</span><span class="n">ipv4_mapped</span><span class="p">:</span>
+                    <span class="n">addr</span> <span class="o">=</span> <span class="n">addr</span><span class="o">.</span><span class="n">ipv4_mapped</span>
+                <span class="n">x_forwarded_for</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">addr</span><span class="p">)</span>
+
+        <span class="c1"># log questionable WSGI environments</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">x_forwarded_for</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">x_real_ip</span><span class="p">:</span>
+            <span class="n">log_error_only_once</span><span class="p">(</span><span class="s2">&quot;X-Forwarded-For nor X-Real-IP header is set!&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">x_forwarded_for</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">trusted_proxies</span><span class="p">:</span>
+            <span class="n">log_error_only_once</span><span class="p">(</span><span class="s2">&quot;missing botdetection.trusted_proxies config&quot;</span><span class="p">)</span>
+            <span class="c1"># without trusted_proxies, this variable is useless for determining</span>
+            <span class="c1"># the real IP</span>
+            <span class="n">x_forwarded_for</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="c1"># securing the WSGI environment variables that are adjusted</span>
+
+        <span class="n">environ</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s2">&quot;botdetection.trusted_proxies.orig&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;REMOTE_ADDR&quot;</span><span class="p">:</span> <span class="n">orig_remote_addr</span><span class="p">}})</span>
+
+        <span class="c1"># determine *the real IP*</span>
+
+        <span class="k">if</span> <span class="n">x_forwarded_for</span><span class="p">:</span>
+            <span class="n">environ</span><span class="p">[</span><span class="s2">&quot;REMOTE_ADDR&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">trusted_remote_addr</span><span class="p">(</span><span class="n">x_forwarded_for</span><span class="p">,</span> <span class="n">trusted_proxies</span><span class="p">)</span>
+
+        <span class="k">elif</span> <span class="n">x_real_ip</span><span class="p">:</span>
+            <span class="n">environ</span><span class="p">[</span><span class="s2">&quot;REMOTE_ADDR&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">x_real_ip</span>
+
+        <span class="k">elif</span> <span class="n">orig_remote_addr</span><span class="p">:</span>
+            <span class="n">environ</span><span class="p">[</span><span class="s2">&quot;REMOTE_ADDR&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">orig_remote_addr</span>
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;No remote IP could be determined, use black-hole address: 100::&quot;</span><span class="p">)</span>
+            <span class="n">environ</span><span class="p">[</span><span class="s2">&quot;REMOTE_ADDR&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;100::&quot;</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">_</span> <span class="o">=</span> <span class="n">ip_address</span><span class="p">(</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;REMOTE_ADDR&quot;</span><span class="p">])</span>
+        <span class="k">except</span> <span class="ne">ValueError</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;REMOTE_ADDR: </span><span class="si">%s</span><span class="s2">, use black-hole address: 100::&quot;</span><span class="p">,</span> <span class="n">exc</span><span class="p">)</span>
+            <span class="n">environ</span><span class="p">[</span><span class="s2">&quot;REMOTE_ADDR&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;100::&quot;</span>
+
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;final REMOTE_ADDR is: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">environ</span><span class="p">[</span><span class="s2">&quot;REMOTE_ADDR&quot;</span><span class="p">])</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">wsgi_app</span><span class="p">(</span><span class="n">environ</span><span class="p">,</span> <span class="n">start_response</span><span class="p">)</span></div>
+
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+  <span id="sidebar-top"></span>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+  
+    
+            <p class="logo"><a href="../../../index.html">
+              <img class="logo" src="../../../_static/searxng-wordmark.svg" alt="Logo of SearXNG"/>
+            </a></p>
+  
+
+<h3><a href="../../../index.html">Table of Contents</a></h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../user/index.html">User information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../own-instance.html">Why use a private instance?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../admin/index.html">Administrator documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../dev/index.html">Developer documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../utils/index.html">DevOps tooling box</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/index.html">Source-Code</a></li>
+</ul>
+
+  <h3>Project Links</h3>
+  <ul>
+    <li><a href="https://github.com/searxng/searxng/tree/master">Source</a>
+  
+    <li><a href="https://github.com/searxng/searxng/wiki">Wiki</a>
+  
+    <li><a href="https://searx.space">Public instances</a>
+  
+    <li><a href="https://github.com/searxng/searxng/issues">Issue Tracker</a>
+  </ul><h3>Navigation</h3>
+<ul>
+  <li><a href="../../../index.html">Overview</a>
+    <ul>
+      <li><a href="../../index.html">Module code</a>
+        
+          
+          </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright SearXNG team.
+    </div>
+  </body>
+</html>

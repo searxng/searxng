@@ -1,0 +1,1089 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>searx.utils &#8212; SearXNG Documentation (2026.2.22+191818b86)</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=6625fa76" />
+    <link rel="stylesheet" type="text/css" href="../../_static/searxng.css?v=52e4ff28" />
+    <script src="../../_static/documentation_options.js?v=1b5d919e"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script data-project="searxng" data-version="2026.2.22+191818b86" src="../../_static/describe_version.js?v=fa7f30d0"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">SearXNG Documentation (2026.2.22+191818b86)</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">searx.utils</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for searx.utils</h1><div class="highlight"><pre>
+<span></span><span class="c1"># SPDX-License-Identifier: AGPL-3.0-or-later</span>
+<span class="sd">&quot;&quot;&quot;Utility functions for the engines&quot;&quot;&quot;</span>
+
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">importlib</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">importlib.util</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">types</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">t</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">collections.abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">MutableMapping</span><span class="p">,</span> <span class="n">Callable</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">numbers</span><span class="w"> </span><span class="kn">import</span> <span class="n">Number</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">os.path</span><span class="w"> </span><span class="kn">import</span> <span class="n">splitext</span><span class="p">,</span> <span class="n">join</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">random</span><span class="w"> </span><span class="kn">import</span> <span class="n">choice</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">html.parser</span><span class="w"> </span><span class="kn">import</span> <span class="n">HTMLParser</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">html</span><span class="w"> </span><span class="kn">import</span> <span class="n">escape</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">urllib.parse</span><span class="w"> </span><span class="kn">import</span> <span class="n">urljoin</span><span class="p">,</span> <span class="n">urlparse</span><span class="p">,</span> <span class="n">parse_qs</span><span class="p">,</span> <span class="n">urlencode</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">timedelta</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">markdown_it</span><span class="w"> </span><span class="kn">import</span> <span class="n">MarkdownIt</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">lxml</span><span class="w"> </span><span class="kn">import</span> <span class="n">html</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">lxml.etree</span><span class="w"> </span><span class="kn">import</span> <span class="n">XPath</span><span class="p">,</span> <span class="n">XPathError</span><span class="p">,</span> <span class="n">XPathSyntaxError</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">lxml.etree</span><span class="w"> </span><span class="kn">import</span> <span class="n">ElementBase</span><span class="p">,</span> <span class="n">_Element</span>  <span class="c1"># pyright: ignore[reportPrivateUsage]</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">searx</span><span class="w"> </span><span class="kn">import</span> <span class="n">settings</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">searx.data</span><span class="w"> </span><span class="kn">import</span> <span class="n">USER_AGENTS</span><span class="p">,</span> <span class="n">data_dir</span><span class="p">,</span> <span class="n">gsa_useragents_loader</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">searx.version</span><span class="w"> </span><span class="kn">import</span> <span class="n">VERSION_TAG</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">searx.sxng_locales</span><span class="w"> </span><span class="kn">import</span> <span class="n">sxng_locales</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">searx.exceptions</span><span class="w"> </span><span class="kn">import</span> <span class="n">SearxXPathSyntaxException</span><span class="p">,</span> <span class="n">SearxEngineXPathException</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">searx</span><span class="w"> </span><span class="kn">import</span> <span class="n">logger</span>
+
+<span class="k">if</span> <span class="n">t</span><span class="o">.</span><span class="n">TYPE_CHECKING</span><span class="p">:</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">fasttext.FastText</span>  <span class="c1"># type: ignore</span>
+
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logger</span><span class="o">.</span><span class="n">getChild</span><span class="p">(</span><span class="s1">&#39;utils&#39;</span><span class="p">)</span>
+
+<span class="n">XPathSpecType</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">TypeAlias</span> <span class="o">=</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">XPath</span>
+<span class="sd">&quot;&quot;&quot;Type alias used by :py:obj:`searx.utils.get_xpath`,</span>
+<span class="sd">:py:obj:`searx.utils.eval_xpath` and other XPath selectors.&quot;&quot;&quot;</span>
+
+<span class="n">ElementType</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">TypeAlias</span> <span class="o">=</span> <span class="n">ElementBase</span> <span class="o">|</span> <span class="n">_Element</span>
+
+
+<span class="n">_BLOCKED_TAGS</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;script&#39;</span><span class="p">,</span> <span class="s1">&#39;style&#39;</span><span class="p">)</span>
+
+<span class="n">_ECMA_UNESCAPE4_RE</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;</span><span class="si">%u</span><span class="s1">([0-9a-fA-F]</span><span class="si">{4}</span><span class="s1">)&#39;</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">UNICODE</span><span class="p">)</span>
+<span class="n">_ECMA_UNESCAPE2_RE</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;%([0-9a-fA-F]</span><span class="si">{2}</span><span class="s1">)&#39;</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">UNICODE</span><span class="p">)</span>
+
+<span class="n">_JS_STRING_DELIMITERS</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;([&quot;</span><span class="se">\&#39;</span><span class="s1">`])&#39;</span><span class="p">)</span>
+<span class="n">_JS_QUOTE_KEYS_RE</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;([\{\s,])([\$_\w][\$_\w0-9]*)(:)&#39;</span><span class="p">)</span>
+<span class="n">_JS_VOID_OR_UNDEFINED_RE</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;void\s+[0-9]+|void\s*\([0-9]+\)|undefined&#39;</span><span class="p">)</span>
+<span class="n">_JS_DECIMAL_RE</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;([\[\,:])\s*(\-?)\s*([0-9_]*)\.([0-9_]*)&quot;</span><span class="p">)</span>
+<span class="n">_JS_DECIMAL2_RE</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;([\[\,:])\s*(\-?)\s*([0-9_]+)&quot;</span><span class="p">)</span>
+<span class="n">_JS_EXTRA_COMA_RE</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;\s*,\s*([\]\}])&quot;</span><span class="p">)</span>
+<span class="n">_JS_STRING_ESCAPE_RE</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;</span><span class="se">\\</span><span class="s1">(.)&#39;</span><span class="p">)</span>
+<span class="n">_JSON_PASSTHROUGH_ESCAPES</span> <span class="o">=</span> <span class="sa">R</span><span class="s1">&#39;&quot;\bfnrtu&#39;</span>
+
+<span class="n">_XPATH_CACHE</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">XPath</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="n">_LANG_TO_LC_CACHE</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="p">{}</span>
+
+<span class="n">_FASTTEXT_MODEL</span><span class="p">:</span> <span class="s2">&quot;fasttext.FastText._FastText | None&quot;</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># pyright: ignore[reportPrivateUsage]</span>
+<span class="sd">&quot;&quot;&quot;fasttext model to predict language of a search term&quot;&quot;&quot;</span>
+
+<span class="n">SEARCH_LANGUAGE_CODES</span> <span class="o">=</span> <span class="nb">frozenset</span><span class="p">([</span><span class="n">searxng_locale</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">searxng_locale</span> <span class="ow">in</span> <span class="n">sxng_locales</span><span class="p">])</span>
+<span class="sd">&quot;&quot;&quot;Languages supported by most searxng engines (:py:obj:`searx.sxng_locales.sxng_locales`).&quot;&quot;&quot;</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">_NotSetClass</span><span class="p">:</span>  <span class="c1"># pylint: disable=too-few-public-methods</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Internal class for this module, do not create instance of this class.</span>
+<span class="sd">    Replace the None value, allow explicitly pass None as a function argument&quot;&quot;&quot;</span>
+
+
+<span class="n">_NOTSET</span> <span class="o">=</span> <span class="n">_NotSetClass</span><span class="p">()</span>
+
+
+<div class="viewcode-block" id="searxng_useragent">
+<a class="viewcode-back" href="../../src/searx.utils.html#searx.utils.searxng_useragent">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">searxng_useragent</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return the SearXNG User Agent&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;SearXNG/</span><span class="si">{</span><span class="n">VERSION_TAG</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;outgoing&#39;</span><span class="p">][</span><span class="s1">&#39;useragent_suffix&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span></div>
+
+
+
+<div class="viewcode-block" id="gen_useragent">
+<a class="viewcode-back" href="../../src/searx.utils.html#searx.utils.gen_useragent">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">gen_useragent</span><span class="p">(</span><span class="n">os_string</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return a random browser User Agent</span>
+
+<span class="sd">    See searx/data/useragents.json</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">USER_AGENTS</span><span class="p">[</span><span class="s1">&#39;ua&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+        <span class="n">os</span><span class="o">=</span><span class="n">os_string</span> <span class="ow">or</span> <span class="n">choice</span><span class="p">(</span><span class="n">USER_AGENTS</span><span class="p">[</span><span class="s1">&#39;os&#39;</span><span class="p">]),</span>
+        <span class="n">version</span><span class="o">=</span><span class="n">choice</span><span class="p">(</span><span class="n">USER_AGENTS</span><span class="p">[</span><span class="s1">&#39;versions&#39;</span><span class="p">]),</span>
+    <span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="gen_gsa_useragent">
+<a class="viewcode-back" href="../../src/searx.utils.html#searx.utils.gen_gsa_useragent">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">gen_gsa_useragent</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return a random GSA User Agent suitable for Google</span>
+
+<span class="sd">    See searx/data/gsa_useragents.txt</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">choice</span><span class="p">(</span><span class="n">gsa_useragents_loader</span><span class="p">())</span></div>
+
+
+
+<div class="viewcode-block" id="HTMLTextExtractor">
+<a class="viewcode-back" href="../../src/searx.utils.html#searx.utils.HTMLTextExtractor">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">HTMLTextExtractor</span><span class="p">(</span><span class="n">HTMLParser</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Internal class to extract text from HTML&quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">HTMLParser</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">result</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tags</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">handle_starttag</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tag</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">attrs</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">]])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tags</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">tag</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">tag</span> <span class="o">==</span> <span class="s1">&#39;br&#39;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">handle_endtag</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tag</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">tags</span><span class="p">:</span>
+            <span class="k">return</span>
+
+        <span class="k">if</span> <span class="n">tag</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tags</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&lt;/</span><span class="si">{</span><span class="n">tag</span><span class="si">}</span><span class="s2">&gt;&quot;</span><span class="p">)</span>
+            <span class="k">return</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">tags</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">is_valid_tag</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">tags</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">tags</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">_BLOCKED_TAGS</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">handle_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_valid_tag</span><span class="p">():</span>
+            <span class="k">return</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">handle_charref</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_valid_tag</span><span class="p">():</span>
+            <span class="k">return</span>
+        <span class="k">if</span> <span class="n">name</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="s1">&#39;X&#39;</span><span class="p">):</span>
+            <span class="n">codepoint</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">name</span><span class="p">[</span><span class="mi">1</span><span class="p">:],</span> <span class="mi">16</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">codepoint</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">chr</span><span class="p">(</span><span class="n">codepoint</span><span class="p">))</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">handle_entityref</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_valid_tag</span><span class="p">():</span>
+            <span class="k">return</span>
+        <span class="c1"># codepoint = htmlentitydefs.name2codepoint[name]</span>
+        <span class="c1"># self.result.append(chr(codepoint))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_text</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">result</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">error</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="c1"># error handle is needed in &lt;py3.10</span>
+        <span class="c1"># https://github.com/python/cpython/pull/8562/files</span>
+        <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">(</span><span class="n">message</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="html_to_text">
+<a class="viewcode-back" href="../../src/searx.utils.html#searx.utils.html_to_text">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">html_to_text</span><span class="p">(</span><span class="n">html_str</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Extract text from a HTML string</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        * html_str (str): string HTML</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        * str: extracted text</span>
+
+<span class="sd">    Examples:</span>
+<span class="sd">        &gt;&gt;&gt; html_to_text(&#39;Example &lt;span id=&quot;42&quot;&gt;#2&lt;/span&gt;&#39;)</span>
+<span class="sd">        &#39;Example #2&#39;</span>
+
+<span class="sd">        &gt;&gt;&gt; html_to_text(&#39;&lt;style&gt;.span { color: red; }&lt;/style&gt;&lt;span&gt;Example&lt;/span&gt;&#39;)</span>
+<span class="sd">        &#39;Example&#39;</span>
+
+<span class="sd">        &gt;&gt;&gt; html_to_text(r&#39;regexp: (?&amp;lt;![a-zA-Z]&#39;)</span>
+<span class="sd">        &#39;regexp: (?&lt;![a-zA-Z]&#39;</span>
+
+<span class="sd">        &gt;&gt;&gt; html_to_text(r&#39;&lt;p&gt;&lt;b&gt;Lorem ipsum &lt;/i&gt;dolor sit amet&lt;/p&gt;&#39;)</span>
+<span class="sd">        &#39;Lorem ipsum &lt;/i&gt;dolor sit amet&lt;/p&gt;&#39;</span>
+
+<span class="sd">        &gt;&gt;&gt; html_to_text(r&#39;&amp;#x3e &amp;#x3c &amp;#97&#39;)</span>
+<span class="sd">        &#39;&gt; &lt; a&#39;</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">html_str</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s2">&quot;&quot;</span>
+    <span class="n">html_str</span> <span class="o">=</span> <span class="n">html_str</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span> <span class="s1">&#39; &#39;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\r</span><span class="s1">&#39;</span><span class="p">,</span> <span class="s1">&#39; &#39;</span><span class="p">)</span>
+    <span class="n">html_str</span> <span class="o">=</span> <span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">html_str</span><span class="o">.</span><span class="n">split</span><span class="p">())</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="n">HTMLTextExtractor</span><span class="p">()</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">s</span><span class="o">.</span><span class="n">feed</span><span class="p">(</span><span class="n">html_str</span><span class="p">)</span>
+        <span class="n">s</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+    <span class="k">except</span> <span class="ne">AssertionError</span><span class="p">:</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="n">HTMLTextExtractor</span><span class="p">()</span>
+        <span class="n">s</span><span class="o">.</span><span class="n">feed</span><span class="p">(</span><span class="n">escape</span><span class="p">(</span><span class="n">html_str</span><span class="p">,</span> <span class="n">quote</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+        <span class="n">s</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">s</span><span class="o">.</span><span class="n">get_text</span><span class="p">()</span></div>
+
+
+
+<div class="viewcode-block" id="markdown_to_text">
+<a class="viewcode-back" href="../../src/searx.utils.html#searx.utils.markdown_to_text">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">markdown_to_text</span><span class="p">(</span><span class="n">markdown_str</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Extract text from a Markdown string</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        * markdown_str (str): string Markdown</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        * str: extracted text</span>
+
+<span class="sd">    Examples:</span>
+<span class="sd">        &gt;&gt;&gt; markdown_to_text(&#39;[example](https://example.com)&#39;)</span>
+<span class="sd">        &#39;example&#39;</span>
+
+<span class="sd">        &gt;&gt;&gt; markdown_to_text(&#39;## Headline&#39;)</span>
+<span class="sd">        &#39;Headline&#39;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">html_str</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">MarkdownIt</span><span class="p">(</span><span class="s2">&quot;commonmark&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;typographer&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">})</span><span class="o">.</span><span class="n">enable</span><span class="p">([</span><span class="s2">&quot;replacements&quot;</span><span class="p">,</span> <span class="s2">&quot;smartquotes&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="n">markdown_str</span><span class="p">)</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">html_to_text</span><span class="p">(</span><span class="n">html_str</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="extract_text">
+<a class="viewcode-back" href="../../src/searx.utils.html#searx.utils.extract_text">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">extract_text</span><span class="p">(</span>
+    <span class="n">xpath_results</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">ElementType</span><span class="p">]</span> <span class="o">|</span> <span class="n">ElementType</span> <span class="o">|</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Number</span> <span class="o">|</span> <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">allow_none</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Extract text from a lxml result</span>
+
+<span class="sd">    - If ``xpath_results`` is a list of :py:obj:`ElementType` objects, extract</span>
+<span class="sd">      the text from each result and concatenate the list in a string.</span>
+
+<span class="sd">    - If ``xpath_results`` is a :py:obj:`ElementType` object, extract all the</span>
+<span class="sd">      text node from it ( :py:obj:`lxml.html.tostring`, ``method=&quot;text&quot;`` )</span>
+
+<span class="sd">    - If ``xpath_results`` is of type :py:obj:`str` or :py:obj:`Number`,</span>
+<span class="sd">      :py:obj:`bool` the string value is returned.</span>
+
+<span class="sd">    - If ``xpath_results`` is of type ``None`` a :py:obj:`ValueError` is raised,</span>
+<span class="sd">      except ``allow_none`` is ``True`` where ``None`` is returned.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">xpath_results</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+        <span class="c1"># it&#39;s list of result : concat everything using recursive call</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+        <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">xpath_results</span><span class="p">:</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="n">result</span> <span class="o">+</span> <span class="p">(</span><span class="n">extract_text</span><span class="p">(</span><span class="n">e</span><span class="p">)</span> <span class="ow">or</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">result</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">xpath_results</span><span class="p">,</span> <span class="n">ElementType</span><span class="p">):</span>
+        <span class="c1"># it&#39;s a element</span>
+        <span class="n">text</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">html</span><span class="o">.</span><span class="n">tostring</span><span class="p">(</span>  <span class="c1"># type: ignore</span>
+            <span class="n">xpath_results</span><span class="p">,</span>  <span class="c1"># pyright: ignore[reportArgumentType]</span>
+            <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;unicode&#39;</span><span class="p">,</span>
+            <span class="n">method</span><span class="o">=</span><span class="s1">&#39;text&#39;</span><span class="p">,</span>
+            <span class="n">with_tail</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">text</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span> <span class="s1">&#39; &#39;</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
+        <span class="k">return</span> <span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">())</span>  <span class="c1"># type: ignore</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">xpath_results</span><span class="p">,</span> <span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">Number</span><span class="p">,</span> <span class="nb">bool</span><span class="p">)):</span>
+        <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">xpath_results</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">xpath_results</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">allow_none</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span>
+    <span class="k">if</span> <span class="n">xpath_results</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">allow_none</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;extract_text(None, allow_none=False)&#39;</span><span class="p">)</span>
+    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;unsupported type&#39;</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="normalize_url">
+<a class="viewcode-back" href="../../src/searx.utils.html#searx.utils.normalize_url">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">normalize_url</span><span class="p">(</span><span class="n">url</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">base_url</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Normalize URL: add protocol, join URL with base_url, add trailing slash if there is no path</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        * url (str): Relative URL</span>
+<span class="sd">        * base_url (str): Base URL, it must be an absolute URL.</span>
+
+<span class="sd">    Example:</span>
+<span class="sd">        &gt;&gt;&gt; normalize_url(&#39;https://example.com&#39;, &#39;http://example.com/&#39;)</span>
+<span class="sd">        &#39;https://example.com/&#39;</span>
+<span class="sd">        &gt;&gt;&gt; normalize_url(&#39;//example.com&#39;, &#39;http://example.com/&#39;)</span>
+<span class="sd">        &#39;http://example.com/&#39;</span>
+<span class="sd">        &gt;&gt;&gt; normalize_url(&#39;//example.com&#39;, &#39;https://example.com/&#39;)</span>
+<span class="sd">        &#39;https://example.com/&#39;</span>
+<span class="sd">        &gt;&gt;&gt; normalize_url(&#39;/path?a=1&#39;, &#39;https://example.com&#39;)</span>
+<span class="sd">        &#39;https://example.com/path?a=1&#39;</span>
+<span class="sd">        &gt;&gt;&gt; normalize_url(&#39;&#39;, &#39;https://example.com&#39;)</span>
+<span class="sd">        &#39;https://example.com/&#39;</span>
+<span class="sd">        &gt;&gt;&gt; normalize_url(&#39;/test&#39;, &#39;/path&#39;)</span>
+<span class="sd">        raise ValueError</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        * lxml.etree.ParserError</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        * str: normalized URL</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">url</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;//&#39;</span><span class="p">):</span>
+        <span class="c1"># add http or https to this kind of url //example.com/</span>
+        <span class="n">parsed_search_url</span> <span class="o">=</span> <span class="n">urlparse</span><span class="p">(</span><span class="n">base_url</span><span class="p">)</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{0}</span><span class="s1">:</span><span class="si">{1}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">parsed_search_url</span><span class="o">.</span><span class="n">scheme</span> <span class="ow">or</span> <span class="s1">&#39;http&#39;</span><span class="p">,</span> <span class="n">url</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">url</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">):</span>
+        <span class="c1"># fix relative url to the search engine</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="n">urljoin</span><span class="p">(</span><span class="n">base_url</span><span class="p">,</span> <span class="n">url</span><span class="p">)</span>
+
+    <span class="c1"># fix relative urls that fall through the crack</span>
+    <span class="k">if</span> <span class="s1">&#39;://&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">url</span><span class="p">:</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="n">urljoin</span><span class="p">(</span><span class="n">base_url</span><span class="p">,</span> <span class="n">url</span><span class="p">)</span>
+
+    <span class="n">parsed_url</span> <span class="o">=</span> <span class="n">urlparse</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+
+    <span class="c1"># add a / at this end of the url if there is no path</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">parsed_url</span><span class="o">.</span><span class="n">netloc</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Cannot parse url&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">parsed_url</span><span class="o">.</span><span class="n">path</span><span class="p">:</span>
+        <span class="n">url</span> <span class="o">+=</span> <span class="s1">&#39;/&#39;</span>
+
+    <span class="k">return</span> <span class="n">url</span></div>
+
+
+
+<div class="viewcode-block" id="extract_url">
+<a class="viewcode-back" href="../../src/searx.utils.html#searx.utils.extract_url">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">extract_url</span><span class="p">(</span><span class="n">xpath_results</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">ElementType</span><span class="p">]</span> <span class="o">|</span> <span class="n">ElementType</span> <span class="o">|</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Number</span> <span class="o">|</span> <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">base_url</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Extract and normalize URL from lxml Element</span>
+
+<span class="sd">    Example:</span>
+<span class="sd">        &gt;&gt;&gt; def f(s, search_url):</span>
+<span class="sd">        &gt;&gt;&gt;    return searx.utils.extract_url(html.fromstring(s), search_url)</span>
+<span class="sd">        &gt;&gt;&gt; f(&#39;&lt;span id=&quot;42&quot;&gt;https://example.com&lt;/span&gt;&#39;, &#39;http://example.com/&#39;)</span>
+<span class="sd">        &#39;https://example.com/&#39;</span>
+<span class="sd">        &gt;&gt;&gt; f(&#39;https://example.com&#39;, &#39;http://example.com/&#39;)</span>
+<span class="sd">        &#39;https://example.com/&#39;</span>
+<span class="sd">        &gt;&gt;&gt; f(&#39;//example.com&#39;, &#39;http://example.com/&#39;)</span>
+<span class="sd">        &#39;http://example.com/&#39;</span>
+<span class="sd">        &gt;&gt;&gt; f(&#39;//example.com&#39;, &#39;https://example.com/&#39;)</span>
+<span class="sd">        &#39;https://example.com/&#39;</span>
+<span class="sd">        &gt;&gt;&gt; f(&#39;/path?a=1&#39;, &#39;https://example.com&#39;)</span>
+<span class="sd">        &#39;https://example.com/path?a=1&#39;</span>
+<span class="sd">        &gt;&gt;&gt; f(&#39;&#39;, &#39;https://example.com&#39;)</span>
+<span class="sd">        raise lxml.etree.ParserError</span>
+<span class="sd">        &gt;&gt;&gt; searx.utils.extract_url([], &#39;https://example.com&#39;)</span>
+<span class="sd">        raise ValueError</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        * ValueError</span>
+<span class="sd">        * lxml.etree.ParserError</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        * str: normalized URL</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">xpath_results</span> <span class="o">==</span> <span class="p">[]:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Empty url resultset&#39;</span><span class="p">)</span>
+
+    <span class="n">url</span> <span class="o">=</span> <span class="n">extract_text</span><span class="p">(</span><span class="n">xpath_results</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">url</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">normalize_url</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">base_url</span><span class="p">)</span>
+    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;URL not found&#39;</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="dict_subset">
+<a class="viewcode-back" href="../../src/searx.utils.html#searx.utils.dict_subset">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">dict_subset</span><span class="p">(</span><span class="n">dictionary</span><span class="p">:</span> <span class="n">MutableMapping</span><span class="p">[</span><span class="n">t</span><span class="o">.</span><span class="n">Any</span><span class="p">,</span> <span class="n">t</span><span class="o">.</span><span class="n">Any</span><span class="p">],</span> <span class="n">properties</span><span class="p">:</span> <span class="nb">set</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">MutableMapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">t</span><span class="o">.</span><span class="n">Any</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Extract a subset of a dict</span>
+
+<span class="sd">    Examples:</span>
+<span class="sd">        &gt;&gt;&gt; dict_subset({&#39;A&#39;: &#39;a&#39;, &#39;B&#39;: &#39;b&#39;, &#39;C&#39;: &#39;c&#39;}, [&#39;A&#39;, &#39;C&#39;])</span>
+<span class="sd">        {&#39;A&#39;: &#39;a&#39;, &#39;C&#39;: &#39;c&#39;}</span>
+<span class="sd">        &gt;&gt;&gt; &gt;&gt; dict_subset({&#39;A&#39;: &#39;a&#39;, &#39;B&#39;: &#39;b&#39;, &#39;C&#39;: &#39;c&#39;}, [&#39;A&#39;, &#39;D&#39;])</span>
+<span class="sd">        {&#39;A&#39;: &#39;a&#39;}</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">dictionary</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">properties</span> <span class="k">if</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">dictionary</span><span class="p">}</span></div>
+
+
+
+<div class="viewcode-block" id="humanize_bytes">
+<a class="viewcode-back" href="../../src/searx.utils.html#searx.utils.humanize_bytes">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">humanize_bytes</span><span class="p">(</span><span class="n">size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="nb">float</span><span class="p">,</span> <span class="n">precision</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Determine the *human readable* value of bytes on 1024 base (1KB=1024B).&quot;&quot;&quot;</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;B &#39;</span><span class="p">,</span> <span class="s1">&#39;KB&#39;</span><span class="p">,</span> <span class="s1">&#39;MB&#39;</span><span class="p">,</span> <span class="s1">&#39;GB&#39;</span><span class="p">,</span> <span class="s1">&#39;TB&#39;</span><span class="p">]</span>
+
+    <span class="n">x</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+    <span class="n">p</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">while</span> <span class="n">size</span> <span class="o">&gt;</span> <span class="mi">1024</span> <span class="ow">and</span> <span class="n">p</span> <span class="o">&lt;</span> <span class="n">x</span><span class="p">:</span>
+        <span class="n">p</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="n">size</span> <span class="o">=</span> <span class="n">size</span> <span class="o">/</span> <span class="mf">1024.0</span>
+    <span class="k">return</span> <span class="s2">&quot;</span><span class="si">%.*f</span><span class="s2"> </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">precision</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">s</span><span class="p">[</span><span class="n">p</span><span class="p">])</span></div>
+
+
+
+<div class="viewcode-block" id="humanize_number">
+<a class="viewcode-back" href="../../src/searx.utils.html#searx.utils.humanize_number">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">humanize_number</span><span class="p">(</span><span class="n">size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="nb">float</span><span class="p">,</span> <span class="n">precision</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Determine the *human readable* value of a decimal number.&quot;&quot;&quot;</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="s1">&#39;K&#39;</span><span class="p">,</span> <span class="s1">&#39;M&#39;</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">,</span> <span class="s1">&#39;T&#39;</span><span class="p">]</span>
+
+    <span class="n">x</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+    <span class="n">p</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">while</span> <span class="n">size</span> <span class="o">&gt;</span> <span class="mi">1000</span> <span class="ow">and</span> <span class="n">p</span> <span class="o">&lt;</span> <span class="n">x</span><span class="p">:</span>
+        <span class="n">p</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="n">size</span> <span class="o">=</span> <span class="n">size</span> <span class="o">/</span> <span class="mf">1000.0</span>
+    <span class="k">return</span> <span class="s2">&quot;</span><span class="si">%.*f%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">precision</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">s</span><span class="p">[</span><span class="n">p</span><span class="p">])</span></div>
+
+
+
+<div class="viewcode-block" id="convert_str_to_int">
+<a class="viewcode-back" href="../../src/searx.utils.html#searx.utils.convert_str_to_int">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">convert_str_to_int</span><span class="p">(</span><span class="n">number_str</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert number_str to int or 0 if number_str is not a number.&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">number_str</span><span class="o">.</span><span class="n">isdigit</span><span class="p">():</span>
+        <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">number_str</span><span class="p">)</span>
+    <span class="k">return</span> <span class="mi">0</span></div>
+
+
+
+<div class="viewcode-block" id="extr">
+<a class="viewcode-back" href="../../src/searx.utils.html#searx.utils.extr">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">extr</span><span class="p">(</span><span class="n">txt</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">begin</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">end</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">default</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Extract the string between ``begin`` and ``end`` from ``txt``</span>
+
+<span class="sd">    :param txt:     String to search in</span>
+<span class="sd">    :param begin:   First string to be searched for</span>
+<span class="sd">    :param end:     Second string to be searched for after ``begin``</span>
+<span class="sd">    :param default: Default value if one of ``begin`` or ``end`` is not</span>
+<span class="sd">                    found.  Defaults to an empty string.</span>
+<span class="sd">    :return: The string between the two search-strings ``begin`` and ``end``.</span>
+<span class="sd">             If at least one of ``begin`` or ``end`` is not found, the value of</span>
+<span class="sd">             ``default`` is returned.</span>
+
+<span class="sd">    Examples:</span>
+<span class="sd">      &gt;&gt;&gt; extr(&quot;abcde&quot;, &quot;a&quot;, &quot;e&quot;)</span>
+<span class="sd">      &quot;bcd&quot;</span>
+<span class="sd">      &gt;&gt;&gt; extr(&quot;abcde&quot;, &quot;a&quot;, &quot;z&quot;, deafult=&quot;nothing&quot;)</span>
+<span class="sd">      &quot;nothing&quot;</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># From https://github.com/mikf/gallery-dl/blob/master/gallery_dl/text.py#L129</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">first</span> <span class="o">=</span> <span class="n">txt</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">begin</span><span class="p">)</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">begin</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">txt</span><span class="p">[</span><span class="n">first</span> <span class="p">:</span> <span class="n">txt</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">end</span><span class="p">,</span> <span class="n">first</span><span class="p">)]</span>
+    <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">default</span></div>
+
+
+
+<div class="viewcode-block" id="int_or_zero">
+<a class="viewcode-back" href="../../src/searx.utils.html#searx.utils.int_or_zero">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">int_or_zero</span><span class="p">(</span><span class="n">num</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert num to int or 0. num can be either a str or a list.</span>
+<span class="sd">    If num is a list, the first element is converted to int (or return 0 if the list is empty).</span>
+<span class="sd">    If num is a str, see convert_str_to_int</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">num</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">num</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mi">0</span>
+        <span class="n">num</span> <span class="o">=</span> <span class="n">num</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">convert_str_to_int</span><span class="p">(</span><span class="n">num</span><span class="p">)</span></div>
+
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">load_module</span><span class="p">(</span><span class="n">filename</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">module_dir</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">types</span><span class="o">.</span><span class="n">ModuleType</span><span class="p">:</span>
+    <span class="n">modname</span> <span class="o">=</span> <span class="n">splitext</span><span class="p">(</span><span class="n">filename</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">modpath</span> <span class="o">=</span> <span class="n">join</span><span class="p">(</span><span class="n">module_dir</span><span class="p">,</span> <span class="n">filename</span><span class="p">)</span>
+    <span class="c1"># and https://docs.python.org/3/library/importlib.html#importing-a-source-file-directly</span>
+    <span class="n">spec</span> <span class="o">=</span> <span class="n">importlib</span><span class="o">.</span><span class="n">util</span><span class="o">.</span><span class="n">spec_from_file_location</span><span class="p">(</span><span class="n">modname</span><span class="p">,</span> <span class="n">modpath</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">spec</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error loading &#39;</span><span class="si">{</span><span class="n">modpath</span><span class="si">}</span><span class="s2">&#39; module&quot;</span><span class="p">)</span>
+    <span class="n">module</span> <span class="o">=</span> <span class="n">importlib</span><span class="o">.</span><span class="n">util</span><span class="o">.</span><span class="n">module_from_spec</span><span class="p">(</span><span class="n">spec</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">spec</span><span class="o">.</span><span class="n">loader</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error loading &#39;</span><span class="si">{</span><span class="n">modpath</span><span class="si">}</span><span class="s2">&#39; module&quot;</span><span class="p">)</span>
+    <span class="n">spec</span><span class="o">.</span><span class="n">loader</span><span class="o">.</span><span class="n">exec_module</span><span class="p">(</span><span class="n">module</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">module</span>
+
+
+<div class="viewcode-block" id="to_string">
+<a class="viewcode-back" href="../../src/searx.utils.html#searx.utils.to_string">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">to_string</span><span class="p">(</span><span class="n">obj</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert obj to its string representation.&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">obj</span>
+    <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s1">&#39;__str__&#39;</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
+    <span class="k">return</span> <span class="nb">repr</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="ecma_unescape">
+<a class="viewcode-back" href="../../src/searx.utils.html#searx.utils.ecma_unescape">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">ecma_unescape</span><span class="p">(</span><span class="n">string</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Python implementation of the unescape javascript function</span>
+
+<span class="sd">    https://www.ecma-international.org/ecma-262/6.0/#sec-unescape-string</span>
+<span class="sd">    https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Objets_globaux/unescape</span>
+
+<span class="sd">    Examples:</span>
+<span class="sd">        &gt;&gt;&gt; ecma_unescape(&#39;%u5409&#39;)</span>
+<span class="sd">        &#39;吉&#39;</span>
+<span class="sd">        &gt;&gt;&gt; ecma_unescape(&#39;%20&#39;)</span>
+<span class="sd">        &#39; &#39;</span>
+<span class="sd">        &gt;&gt;&gt; ecma_unescape(&#39;%F3&#39;)</span>
+<span class="sd">        &#39;ó&#39;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># &quot;%u5409&quot; becomes &quot;吉&quot;</span>
+    <span class="n">string</span> <span class="o">=</span> <span class="n">_ECMA_UNESCAPE4_RE</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="k">lambda</span> <span class="n">e</span><span class="p">:</span> <span class="nb">chr</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="mi">16</span><span class="p">)),</span> <span class="n">string</span><span class="p">)</span>
+    <span class="c1"># &quot;%20&quot; becomes &quot; &quot;, &quot;%F3&quot; becomes &quot;ó&quot;</span>
+    <span class="n">string</span> <span class="o">=</span> <span class="n">_ECMA_UNESCAPE2_RE</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="k">lambda</span> <span class="n">e</span><span class="p">:</span> <span class="nb">chr</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="mi">16</span><span class="p">)),</span> <span class="n">string</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">string</span></div>
+
+
+
+<div class="viewcode-block" id="remove_pua_from_str">
+<a class="viewcode-back" href="../../src/searx.utils.html#searx.utils.remove_pua_from_str">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">remove_pua_from_str</span><span class="p">(</span><span class="n">string</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Removes unicode&#39;s &quot;PRIVATE USE CHARACTER&quot;s (PUA_) from a string.</span>
+
+<span class="sd">    .. _PUA: https://en.wikipedia.org/wiki/Private_Use_Areas</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">pua_ranges</span> <span class="o">=</span> <span class="p">((</span><span class="mh">0xE000</span><span class="p">,</span> <span class="mh">0xF8FF</span><span class="p">),</span> <span class="p">(</span><span class="mh">0xF0000</span><span class="p">,</span> <span class="mh">0xFFFFD</span><span class="p">),</span> <span class="p">(</span><span class="mh">0x100000</span><span class="p">,</span> <span class="mh">0x10FFFD</span><span class="p">))</span>
+    <span class="n">s</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">string</span><span class="p">:</span>
+        <span class="n">i</span> <span class="o">=</span> <span class="nb">ord</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">a</span> <span class="o">&lt;=</span> <span class="n">i</span> <span class="o">&lt;=</span> <span class="n">b</span> <span class="k">for</span> <span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span> <span class="ow">in</span> <span class="n">pua_ranges</span><span class="p">):</span>
+            <span class="k">continue</span>
+        <span class="n">s</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
+    <span class="k">return</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">s</span><span class="p">)</span></div>
+
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">get_string_replaces_function</span><span class="p">(</span><span class="n">replaces</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">[[</span><span class="nb">str</span><span class="p">],</span> <span class="nb">str</span><span class="p">]:</span>
+    <span class="n">rep</span> <span class="o">=</span> <span class="p">{</span><span class="n">re</span><span class="o">.</span><span class="n">escape</span><span class="p">(</span><span class="n">k</span><span class="p">):</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">replaces</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+    <span class="n">pattern</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s2">&quot;|&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">rep</span><span class="o">.</span><span class="n">keys</span><span class="p">()))</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">func</span><span class="p">(</span><span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">pattern</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="k">lambda</span> <span class="n">m</span><span class="p">:</span> <span class="n">rep</span><span class="p">[</span><span class="n">re</span><span class="o">.</span><span class="n">escape</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">0</span><span class="p">))],</span> <span class="n">text</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">func</span>
+
+
+<div class="viewcode-block" id="get_engine_from_settings">
+<a class="viewcode-back" href="../../src/searx.utils.html#searx.utils.get_engine_from_settings">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_engine_from_settings</span><span class="p">(</span><span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return engine configuration from settings.yml of a given engine name&quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="s1">&#39;engines&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">settings</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">{}</span>
+
+    <span class="k">for</span> <span class="n">engine</span> <span class="ow">in</span> <span class="n">settings</span><span class="p">[</span><span class="s1">&#39;engines&#39;</span><span class="p">]:</span>
+        <span class="k">if</span> <span class="s1">&#39;name&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">engine</span><span class="p">:</span>
+            <span class="k">continue</span>
+        <span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="n">engine</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]:</span>
+            <span class="k">return</span> <span class="n">engine</span>
+
+    <span class="k">return</span> <span class="p">{}</span></div>
+
+
+
+<div class="viewcode-block" id="get_xpath">
+<a class="viewcode-back" href="../../src/searx.utils.html#searx.utils.get_xpath">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_xpath</span><span class="p">(</span><span class="n">xpath_spec</span><span class="p">:</span> <span class="n">XPathSpecType</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">XPath</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return cached compiled :py:obj:`lxml.etree.XPath` object.</span>
+
+<span class="sd">    ``TypeError``:</span>
+<span class="sd">      Raised when ``xpath_spec`` is neither a :py:obj:`str` nor a</span>
+<span class="sd">      :py:obj:`lxml.etree.XPath`.</span>
+
+<span class="sd">    ``SearxXPathSyntaxException``:</span>
+<span class="sd">      Raised when there is a syntax error in the *XPath* selector (``str``).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">xpath_spec</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">_XPATH_CACHE</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">xpath_spec</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">result</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">result</span> <span class="o">=</span> <span class="n">XPath</span><span class="p">(</span><span class="n">xpath_spec</span><span class="p">)</span>
+            <span class="k">except</span> <span class="n">XPathSyntaxError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">SearxXPathSyntaxException</span><span class="p">(</span><span class="n">xpath_spec</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">msg</span><span class="p">))</span> <span class="kn">from</span><span class="w"> </span><span class="nn">e</span>
+            <span class="n">_XPATH_CACHE</span><span class="p">[</span><span class="n">xpath_spec</span><span class="p">]</span> <span class="o">=</span> <span class="n">result</span>
+        <span class="k">return</span> <span class="n">result</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">xpath_spec</span><span class="p">,</span> <span class="n">XPath</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">xpath_spec</span>
+
+    <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">&#39;xpath_spec must be either a str or a lxml.etree.XPath&#39;</span><span class="p">)</span>  <span class="c1"># pyright: ignore[reportUnreachable]</span></div>
+
+
+
+<div class="viewcode-block" id="eval_xpath">
+<a class="viewcode-back" href="../../src/searx.utils.html#searx.utils.eval_xpath">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">eval_xpath</span><span class="p">(</span><span class="n">element</span><span class="p">:</span> <span class="n">ElementType</span><span class="p">,</span> <span class="n">xpath_spec</span><span class="p">:</span> <span class="n">XPathSpecType</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">t</span><span class="o">.</span><span class="n">Any</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Equivalent of ``element.xpath(xpath_str)`` but compile ``xpath_str`` into</span>
+<span class="sd">    a :py:obj:`lxml.etree.XPath` object once for all.  The return value of</span>
+<span class="sd">    ``xpath(..)`` is complex, read `XPath return values`_ for more details.</span>
+
+<span class="sd">    .. _XPath return values:</span>
+<span class="sd">        https://lxml.de/xpathxslt.html#xpath-return-values</span>
+
+<span class="sd">    ``TypeError``:</span>
+<span class="sd">      Raised when ``xpath_spec`` is neither a :py:obj:`str` nor a</span>
+<span class="sd">      :py:obj:`lxml.etree.XPath`.</span>
+
+<span class="sd">    ``SearxXPathSyntaxException``:</span>
+<span class="sd">      Raised when there is a syntax error in the *XPath* selector (``str``).</span>
+
+<span class="sd">    ``SearxEngineXPathException:``</span>
+<span class="sd">      Raised when the XPath can&#39;t be evaluated (masked</span>
+<span class="sd">      :py:obj:`lxml.etree..XPathError`).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">xpath</span><span class="p">:</span> <span class="n">XPath</span> <span class="o">=</span> <span class="n">get_xpath</span><span class="p">(</span><span class="n">xpath_spec</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="c1"># https://lxml.de/xpathxslt.html#xpath-return-values</span>
+        <span class="k">return</span> <span class="n">xpath</span><span class="p">(</span><span class="n">element</span><span class="p">)</span>
+    <span class="k">except</span> <span class="n">XPathError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="n">arg</span> <span class="o">=</span> <span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">e</span><span class="o">.</span><span class="n">args</span><span class="p">])</span>
+        <span class="k">raise</span> <span class="n">SearxEngineXPathException</span><span class="p">(</span><span class="n">xpath_spec</span><span class="p">,</span> <span class="n">arg</span><span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">e</span></div>
+
+
+
+<div class="viewcode-block" id="eval_xpath_list">
+<a class="viewcode-back" href="../../src/searx.utils.html#searx.utils.eval_xpath_list">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">eval_xpath_list</span><span class="p">(</span><span class="n">element</span><span class="p">:</span> <span class="n">ElementType</span><span class="p">,</span> <span class="n">xpath_spec</span><span class="p">:</span> <span class="n">XPathSpecType</span><span class="p">,</span> <span class="n">min_len</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">t</span><span class="o">.</span><span class="n">Any</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Same as :py:obj:`searx.utils.eval_xpath`, but additionally ensures the</span>
+<span class="sd">    return value is a :py:obj:`list`.  The minimum length of the list is also</span>
+<span class="sd">    checked (if ``min_len`` is set).&quot;&quot;&quot;</span>
+
+    <span class="n">result</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">t</span><span class="o">.</span><span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="n">eval_xpath</span><span class="p">(</span><span class="n">element</span><span class="p">,</span> <span class="n">xpath_spec</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="n">SearxEngineXPathException</span><span class="p">(</span><span class="n">xpath_spec</span><span class="p">,</span> <span class="s1">&#39;the result is not a list&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">min_len</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">min_len</span> <span class="o">&gt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">result</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="n">SearxEngineXPathException</span><span class="p">(</span><span class="n">xpath_spec</span><span class="p">,</span> <span class="s1">&#39;len(xpath_str) &lt; &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">min_len</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">result</span></div>
+
+
+
+<div class="viewcode-block" id="eval_xpath_getindex">
+<a class="viewcode-back" href="../../src/searx.utils.html#searx.utils.eval_xpath_getindex">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">eval_xpath_getindex</span><span class="p">(</span>
+    <span class="n">element</span><span class="p">:</span> <span class="n">ElementType</span><span class="p">,</span>
+    <span class="n">xpath_spec</span><span class="p">:</span> <span class="n">XPathSpecType</span><span class="p">,</span>
+    <span class="n">index</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="n">default</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Any</span> <span class="o">=</span> <span class="n">_NOTSET</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">t</span><span class="o">.</span><span class="n">Any</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Same as :py:obj:`searx.utils.eval_xpath_list`, but returns item on</span>
+<span class="sd">    position ``index`` from the list (index starts with ``0``).</span>
+
+<span class="sd">    The exceptions known from :py:obj:`searx.utils.eval_xpath` are thrown. If a</span>
+<span class="sd">    default is specified, this is returned if an element at position ``index``</span>
+<span class="sd">    could not be determined.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">result</span> <span class="o">=</span> <span class="n">eval_xpath_list</span><span class="p">(</span><span class="n">element</span><span class="p">,</span> <span class="n">xpath_spec</span><span class="p">)</span>
+    <span class="k">if</span> <span class="o">-</span><span class="nb">len</span><span class="p">(</span><span class="n">result</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="n">index</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">result</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">result</span><span class="p">[</span><span class="n">index</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">default</span> <span class="o">==</span> <span class="n">_NOTSET</span><span class="p">:</span>
+        <span class="c1"># raise an SearxEngineXPathException instead of IndexError to record</span>
+        <span class="c1"># xpath_spec</span>
+        <span class="k">raise</span> <span class="n">SearxEngineXPathException</span><span class="p">(</span><span class="n">xpath_spec</span><span class="p">,</span> <span class="s1">&#39;index &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">index</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39; not found&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">default</span></div>
+
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_get_fasttext_model</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="s2">&quot;fasttext.FastText._FastText&quot;</span><span class="p">:</span>  <span class="c1"># pyright: ignore[reportPrivateUsage]</span>
+    <span class="k">global</span> <span class="n">_FASTTEXT_MODEL</span>  <span class="c1"># pylint: disable=global-statement</span>
+    <span class="k">if</span> <span class="n">_FASTTEXT_MODEL</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">fasttext</span>  <span class="c1"># pylint: disable=import-outside-toplevel</span>
+
+        <span class="c1"># Monkey patch: prevent fasttext from showing a (useless) warning when loading a model.</span>
+        <span class="n">fasttext</span><span class="o">.</span><span class="n">FastText</span><span class="o">.</span><span class="n">eprint</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="kc">None</span>  <span class="c1"># type: ignore</span>
+        <span class="n">_FASTTEXT_MODEL</span> <span class="o">=</span> <span class="n">fasttext</span><span class="o">.</span><span class="n">load_model</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">data_dir</span> <span class="o">/</span> <span class="s1">&#39;lid.176.ftz&#39;</span><span class="p">))</span>  <span class="c1"># type: ignore</span>
+    <span class="k">return</span> <span class="n">_FASTTEXT_MODEL</span>
+
+
+<div class="viewcode-block" id="get_embeded_stream_url">
+<a class="viewcode-back" href="../../src/searx.utils.html#searx.utils.get_embeded_stream_url">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_embeded_stream_url</span><span class="p">(</span><span class="n">url</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Converts a standard video URL into its embed format. Supported services include Youtube,</span>
+<span class="sd">    Facebook, Instagram, TikTok, Dailymotion, and Bilibili.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">parsed_url</span> <span class="o">=</span> <span class="n">urlparse</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+    <span class="n">iframe_src</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="c1"># YouTube</span>
+    <span class="k">if</span> <span class="n">parsed_url</span><span class="o">.</span><span class="n">netloc</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;www.youtube.com&#39;</span><span class="p">,</span> <span class="s1">&#39;youtube.com&#39;</span><span class="p">]</span> <span class="ow">and</span> <span class="n">parsed_url</span><span class="o">.</span><span class="n">path</span> <span class="o">==</span> <span class="s1">&#39;/watch&#39;</span> <span class="ow">and</span> <span class="n">parsed_url</span><span class="o">.</span><span class="n">query</span><span class="p">:</span>
+        <span class="n">video_id</span> <span class="o">=</span> <span class="n">parse_qs</span><span class="p">(</span><span class="n">parsed_url</span><span class="o">.</span><span class="n">query</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;v&#39;</span><span class="p">,</span> <span class="p">[])</span>
+        <span class="k">if</span> <span class="n">video_id</span><span class="p">:</span>
+            <span class="n">iframe_src</span> <span class="o">=</span> <span class="s1">&#39;https://www.youtube-nocookie.com/embed/&#39;</span> <span class="o">+</span> <span class="n">video_id</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="c1"># Facebook</span>
+    <span class="k">elif</span> <span class="n">parsed_url</span><span class="o">.</span><span class="n">netloc</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;www.facebook.com&#39;</span><span class="p">,</span> <span class="s1">&#39;facebook.com&#39;</span><span class="p">]:</span>
+        <span class="n">encoded_href</span> <span class="o">=</span> <span class="n">urlencode</span><span class="p">({</span><span class="s1">&#39;href&#39;</span><span class="p">:</span> <span class="n">url</span><span class="p">})</span>
+        <span class="n">iframe_src</span> <span class="o">=</span> <span class="s1">&#39;https://www.facebook.com/plugins/video.php?allowfullscreen=true&amp;&#39;</span> <span class="o">+</span> <span class="n">encoded_href</span>
+
+    <span class="c1"># Instagram</span>
+    <span class="k">elif</span> <span class="n">parsed_url</span><span class="o">.</span><span class="n">netloc</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;www.instagram.com&#39;</span><span class="p">,</span> <span class="s1">&#39;instagram.com&#39;</span><span class="p">]</span> <span class="ow">and</span> <span class="n">parsed_url</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;/p/&#39;</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">parsed_url</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">):</span>
+            <span class="n">iframe_src</span> <span class="o">=</span> <span class="n">url</span> <span class="o">+</span> <span class="s1">&#39;embed&#39;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">iframe_src</span> <span class="o">=</span> <span class="n">url</span> <span class="o">+</span> <span class="s1">&#39;/embed&#39;</span>
+
+    <span class="c1"># TikTok</span>
+    <span class="k">elif</span> <span class="p">(</span>
+        <span class="n">parsed_url</span><span class="o">.</span><span class="n">netloc</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;www.tiktok.com&#39;</span><span class="p">,</span> <span class="s1">&#39;tiktok.com&#39;</span><span class="p">]</span>
+        <span class="ow">and</span> <span class="n">parsed_url</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;/@&#39;</span><span class="p">)</span>
+        <span class="ow">and</span> <span class="s1">&#39;/video/&#39;</span> <span class="ow">in</span> <span class="n">parsed_url</span><span class="o">.</span><span class="n">path</span>
+    <span class="p">):</span>
+        <span class="n">path_parts</span> <span class="o">=</span> <span class="n">parsed_url</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;/video/&#39;</span><span class="p">)</span>
+        <span class="n">video_id</span> <span class="o">=</span> <span class="n">path_parts</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">iframe_src</span> <span class="o">=</span> <span class="s1">&#39;https://www.tiktok.com/embed/&#39;</span> <span class="o">+</span> <span class="n">video_id</span>
+
+    <span class="c1"># Dailymotion</span>
+    <span class="k">elif</span> <span class="n">parsed_url</span><span class="o">.</span><span class="n">netloc</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;www.dailymotion.com&#39;</span><span class="p">,</span> <span class="s1">&#39;dailymotion.com&#39;</span><span class="p">]</span> <span class="ow">and</span> <span class="n">parsed_url</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;/video/&#39;</span><span class="p">):</span>
+        <span class="n">path_parts</span> <span class="o">=</span> <span class="n">parsed_url</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">path_parts</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+            <span class="n">video_id</span> <span class="o">=</span> <span class="n">path_parts</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+            <span class="n">iframe_src</span> <span class="o">=</span> <span class="s1">&#39;https://www.dailymotion.com/embed/video/&#39;</span> <span class="o">+</span> <span class="n">video_id</span>
+
+    <span class="c1"># Bilibili</span>
+    <span class="k">elif</span> <span class="n">parsed_url</span><span class="o">.</span><span class="n">netloc</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;www.bilibili.com&#39;</span><span class="p">,</span> <span class="s1">&#39;bilibili.com&#39;</span><span class="p">]</span> <span class="ow">and</span> <span class="n">parsed_url</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;/video/&#39;</span><span class="p">):</span>
+        <span class="n">path_parts</span> <span class="o">=</span> <span class="n">parsed_url</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)</span>
+
+        <span class="n">video_id</span> <span class="o">=</span> <span class="n">path_parts</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+        <span class="n">param_key</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="n">video_id</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;av&#39;</span><span class="p">):</span>
+            <span class="n">video_id</span> <span class="o">=</span> <span class="n">video_id</span><span class="p">[</span><span class="mi">2</span><span class="p">:]</span>
+            <span class="n">param_key</span> <span class="o">=</span> <span class="s1">&#39;aid&#39;</span>
+        <span class="k">elif</span> <span class="n">video_id</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;BV&#39;</span><span class="p">):</span>
+            <span class="n">param_key</span> <span class="o">=</span> <span class="s1">&#39;bvid&#39;</span>
+
+        <span class="n">iframe_src</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="sa">f</span><span class="s1">&#39;https://player.bilibili.com/player.html?</span><span class="si">{</span><span class="n">param_key</span><span class="si">}</span><span class="s1">=</span><span class="si">{</span><span class="n">video_id</span><span class="si">}</span><span class="s1">&amp;high_quality=1&amp;autoplay=false&amp;danmaku=0&#39;</span>
+        <span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">iframe_src</span></div>
+
+
+
+<div class="viewcode-block" id="detect_language">
+<a class="viewcode-back" href="../../src/searx.utils.html#searx.utils.detect_language">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">detect_language</span><span class="p">(</span><span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">threshold</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.3</span><span class="p">,</span> <span class="n">only_search_languages</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Detect the language of the ``text`` parameter.</span>
+
+<span class="sd">    :param str text: The string whose language is to be detected.</span>
+
+<span class="sd">    :param float threshold: Threshold filters the returned labels by a threshold</span>
+<span class="sd">        on probability.  A choice of 0.3 will return labels with at least 0.3</span>
+<span class="sd">        probability.</span>
+
+<span class="sd">    :param bool only_search_languages: If ``True``, returns only supported</span>
+<span class="sd">        SearXNG search languages.  see :py:obj:`searx.languages`</span>
+
+<span class="sd">    :rtype: str, None</span>
+<span class="sd">    :returns:</span>
+<span class="sd">        The detected language code or ``None``. See below.</span>
+
+<span class="sd">    :raises ValueError: If ``text`` is not a string.</span>
+
+<span class="sd">    The language detection is done by using `a fork`_ of the fastText_ library</span>
+<span class="sd">    (`python fasttext`_). fastText_ distributes the `language identification</span>
+<span class="sd">    model`_, for reference:</span>
+
+<span class="sd">    - `FastText.zip: Compressing text classification models`_</span>
+<span class="sd">    - `Bag of Tricks for Efficient Text Classification`_</span>
+
+<span class="sd">    The `language identification model`_ support the language codes</span>
+<span class="sd">    (ISO-639-3)::</span>
+
+<span class="sd">        af als am an ar arz as ast av az azb ba bar bcl be bg bh bn bo bpy br bs</span>
+<span class="sd">        bxr ca cbk ce ceb ckb co cs cv cy da de diq dsb dty dv el eml en eo es</span>
+<span class="sd">        et eu fa fi fr frr fy ga gd gl gn gom gu gv he hi hif hr hsb ht hu hy ia</span>
+<span class="sd">        id ie ilo io is it ja jbo jv ka kk km kn ko krc ku kv kw ky la lb lez li</span>
+<span class="sd">        lmo lo lrc lt lv mai mg mhr min mk ml mn mr mrj ms mt mwl my myv mzn nah</span>
+<span class="sd">        nap nds ne new nl nn no oc or os pa pam pfl pl pms pnb ps pt qu rm ro ru</span>
+<span class="sd">        rue sa sah sc scn sco sd sh si sk sl so sq sr su sv sw ta te tg th tk tl</span>
+<span class="sd">        tr tt tyv ug uk ur uz vec vep vi vls vo wa war wuu xal xmf yi yo yue zh</span>
+
+<span class="sd">    By using ``only_search_languages=True`` the `language identification model`_</span>
+<span class="sd">    is harmonized with the SearXNG&#39;s language (locale) model.  General</span>
+<span class="sd">    conditions of SearXNG&#39;s locale model are:</span>
+
+<span class="sd">    a. SearXNG&#39;s locale of a query is passed to the</span>
+<span class="sd">       :py:obj:`searx.locales.get_engine_locale` to get a language and/or region</span>
+<span class="sd">       code that is used by an engine.</span>
+
+<span class="sd">    b. Most of SearXNG&#39;s engines do not support all the languages from `language</span>
+<span class="sd">       identification model`_ and there is also a discrepancy in the ISO-639-3</span>
+<span class="sd">       (fasttext) and ISO-639-2 (SearXNG)handling.  Further more, in SearXNG the</span>
+<span class="sd">       locales like ``zh-TH`` (``zh-CN``) are mapped to ``zh_Hant``</span>
+<span class="sd">       (``zh_Hans``) while the `language identification model`_ reduce both to</span>
+<span class="sd">       ``zh``.</span>
+
+<span class="sd">    .. _a fork: https://github.com/searxng/fasttext-predict</span>
+<span class="sd">    .. _fastText: https://fasttext.cc/</span>
+<span class="sd">    .. _python fasttext: https://pypi.org/project/fasttext/</span>
+<span class="sd">    .. _language identification model: https://fasttext.cc/docs/en/language-identification.html</span>
+<span class="sd">    .. _Bag of Tricks for Efficient Text Classification: https://arxiv.org/abs/1607.01759</span>
+<span class="sd">    .. _`FastText.zip: Compressing text classification models`: https://arxiv.org/abs/1612.03651</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;text must a str&#39;</span><span class="p">)</span>  <span class="c1"># pyright: ignore[reportUnreachable]</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="n">_get_fasttext_model</span><span class="p">()</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">text</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span> <span class="s1">&#39; &#39;</span><span class="p">),</span> <span class="n">k</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">threshold</span><span class="o">=</span><span class="n">threshold</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">r</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">r</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">r</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>  <span class="c1"># type: ignore</span>
+        <span class="n">language</span> <span class="o">=</span> <span class="n">r</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;__label__&#39;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>  <span class="c1"># type: ignore</span>
+        <span class="k">if</span> <span class="n">only_search_languages</span> <span class="ow">and</span> <span class="n">language</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">SEARCH_LANGUAGE_CODES</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        <span class="k">return</span> <span class="n">language</span>  <span class="c1"># type: ignore</span>
+    <span class="k">return</span> <span class="kc">None</span></div>
+
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_j2p_process_escape</span><span class="p">(</span><span class="n">match</span><span class="p">:</span> <span class="n">re</span><span class="o">.</span><span class="n">Match</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="c1"># deal with ECMA escape characters</span>
+    <span class="n">_escape</span> <span class="o">=</span> <span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="ow">or</span> <span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">(</span>
+        <span class="sa">Rf</span><span class="s1">&#39;\</span><span class="si">{</span><span class="n">_escape</span><span class="si">}</span><span class="s1">&#39;</span>
+        <span class="k">if</span> <span class="n">_escape</span> <span class="ow">in</span> <span class="n">_JSON_PASSTHROUGH_ESCAPES</span>
+        <span class="k">else</span> <span class="sa">R</span><span class="s1">&#39;\u00&#39;</span> <span class="k">if</span> <span class="n">_escape</span> <span class="o">==</span> <span class="s1">&#39;x&#39;</span> <span class="k">else</span> <span class="s1">&#39;&#39;</span> <span class="k">if</span> <span class="n">_escape</span> <span class="o">==</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="k">else</span> <span class="n">_escape</span>
+    <span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_j2p_decimal</span><span class="p">(</span><span class="n">match</span><span class="p">:</span> <span class="n">re</span><span class="o">.</span><span class="n">Match</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="k">return</span> <span class="p">(</span>
+        <span class="k">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        <span class="o">+</span> <span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+        <span class="o">+</span> <span class="p">(</span><span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="s2">&quot;0&quot;</span><span class="p">)</span>
+        <span class="o">+</span> <span class="s2">&quot;.&quot;</span>
+        <span class="o">+</span> <span class="p">(</span><span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="s2">&quot;0&quot;</span><span class="p">)</span>
+    <span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_j2p_decimal2</span><span class="p">(</span><span class="n">match</span><span class="p">:</span> <span class="n">re</span><span class="o">.</span><span class="n">Match</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="k">return</span> <span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="js_obj_str_to_python">
+<a class="viewcode-back" href="../../src/searx.utils.html#searx.utils.js_obj_str_to_python">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">js_obj_str_to_python</span><span class="p">(</span><span class="n">js_obj_str</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">t</span><span class="o">.</span><span class="n">Any</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert a javascript variable into JSON and then load the value</span>
+
+<span class="sd">    It does not deal with all cases, but it is good enough for now.</span>
+<span class="sd">    chompjs has a better implementation.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="n">js_obj_str_to_json_str</span><span class="p">(</span><span class="n">js_obj_str</span><span class="p">)</span>
+    <span class="c1"># load the JSON and return the result</span>
+    <span class="k">if</span> <span class="n">s</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;js_obj_str can&#39;t be an empty string&quot;</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+    <span class="k">except</span> <span class="n">json</span><span class="o">.</span><span class="n">JSONDecodeError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Internal error: js_obj_str_to_python creates invalid JSON:</span><span class="se">\n</span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">s</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;js_obj_str_to_python creates invalid JSON&quot;</span><span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">e</span></div>
+
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">js_obj_str_to_json_str</span><span class="p">(</span><span class="n">js_obj_str</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">js_obj_str</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;js_obj_str must be of type str&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">js_obj_str</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;js_obj_str can&#39;t be an empty string&quot;</span><span class="p">)</span>
+
+    <span class="c1"># when in_string is not None, it contains the character that has opened the string</span>
+    <span class="c1"># either simple quote or double quote</span>
+    <span class="n">in_string</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="c1"># cut the string:</span>
+    <span class="c1"># r&quot;&quot;&quot;{ a:&quot;f\&quot;irst&quot;, c:&#39;sec&quot;ond&#39;}&quot;&quot;&quot;</span>
+    <span class="c1"># becomes</span>
+    <span class="c1"># [&#39;{ a:&#39;, &#39;&quot;&#39;, &#39;f\\&#39;, &#39;&quot;&#39;, &#39;irst&#39;, &#39;&quot;&#39;, &#39;, c:&#39;, &quot;&#39;&quot;, &#39;sec&#39;, &#39;&quot;&#39;, &#39;ond&#39;, &quot;&#39;&quot;, &#39;}&#39;]</span>
+    <span class="n">parts</span> <span class="o">=</span> <span class="n">_JS_STRING_DELIMITERS</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">js_obj_str</span><span class="p">)</span>
+    <span class="c1"># does the previous part ends with a backslash?</span>
+    <span class="n">blackslash_just_before</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">p</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">parts</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">p</span> <span class="o">==</span> <span class="n">in_string</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">blackslash_just_before</span><span class="p">:</span>
+            <span class="c1"># * the current part matches the character which has opened the string</span>
+            <span class="c1"># * there is no antislash just before</span>
+            <span class="c1"># --&gt; the current part close the current string</span>
+            <span class="n">in_string</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="c1"># replace simple quote and ` by double quote</span>
+            <span class="c1"># since JSON supports only double quote for string</span>
+            <span class="n">parts</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;&quot;&#39;</span>
+
+        <span class="k">elif</span> <span class="n">in_string</span><span class="p">:</span>
+            <span class="c1"># --&gt; we are in a JS string</span>
+            <span class="c1"># replace the colon by a temporary character</span>
+            <span class="c1"># so _JS_QUOTE_KEYS_RE doesn&#39;t have to deal with colon inside the JS strings</span>
+            <span class="n">p</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;:&#39;</span><span class="p">,</span> <span class="nb">chr</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+            <span class="c1"># replace JS escape sequences by JSON escape sequences</span>
+            <span class="n">p</span> <span class="o">=</span> <span class="n">_JS_STRING_ESCAPE_RE</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="n">_j2p_process_escape</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span>
+            <span class="c1"># the JS string is delimited by simple quote.</span>
+            <span class="c1"># This is not supported by JSON.</span>
+            <span class="c1"># simple quote delimited string are converted to double quote delimited string</span>
+            <span class="c1"># here, inside a JS string, we escape the double quote</span>
+            <span class="k">if</span> <span class="n">in_string</span> <span class="o">==</span> <span class="s2">&quot;&#39;&quot;</span><span class="p">:</span>
+                <span class="n">p</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;&quot;&#39;</span><span class="p">,</span> <span class="sa">r</span><span class="s1">&#39;\&quot;&#39;</span><span class="p">)</span>
+            <span class="n">parts</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">p</span>
+            <span class="c1"># deal with the sequence blackslash then quote</span>
+            <span class="c1"># since js_obj_str splits on quote, we detect this case:</span>
+            <span class="c1"># * the previous part ends with a black slash</span>
+            <span class="c1"># * the current part is a single quote</span>
+            <span class="c1"># when detected the blackslash is removed on the previous part</span>
+            <span class="k">if</span> <span class="n">blackslash_just_before</span> <span class="ow">and</span> <span class="n">p</span><span class="p">[:</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;&#39;&quot;</span><span class="p">:</span>
+                <span class="n">parts</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">parts</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">][:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+        <span class="k">elif</span> <span class="n">in_string</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">p</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;&quot;&#39;</span><span class="p">,</span> <span class="s2">&quot;&#39;&quot;</span><span class="p">,</span> <span class="s2">&quot;`&quot;</span><span class="p">):</span>
+            <span class="c1"># we are not in string but p is string delimiter</span>
+            <span class="c1"># --&gt; that&#39;s the start of a new string</span>
+            <span class="n">in_string</span> <span class="o">=</span> <span class="n">p</span>
+            <span class="c1"># replace simple quote by double quote</span>
+            <span class="c1"># since JSON supports only double quote for string</span>
+            <span class="n">parts</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;&quot;&#39;</span>
+
+        <span class="k">elif</span> <span class="n">in_string</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="c1"># we are not in a string</span>
+            <span class="c1"># replace by null these values:</span>
+            <span class="c1"># * void 0</span>
+            <span class="c1"># * void(0)</span>
+            <span class="c1"># * undefined</span>
+            <span class="c1"># https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/void</span>
+            <span class="n">p</span> <span class="o">=</span> <span class="n">_JS_VOID_OR_UNDEFINED_RE</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s2">&quot;null&quot;</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span>
+            <span class="c1"># make sure there is a leading zero in front of float</span>
+            <span class="n">p</span> <span class="o">=</span> <span class="n">_JS_DECIMAL_RE</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="n">_j2p_decimal</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span>
+            <span class="n">p</span> <span class="o">=</span> <span class="n">_JS_DECIMAL2_RE</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="n">_j2p_decimal2</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span>
+            <span class="c1"># remove extra coma in a list or an object</span>
+            <span class="c1"># for example [1,2,3,] becomes [1,2,3]</span>
+            <span class="n">p</span> <span class="o">=</span> <span class="n">_JS_EXTRA_COMA_RE</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="k">lambda</span> <span class="n">match</span><span class="p">:</span> <span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="n">p</span><span class="p">)</span>
+            <span class="n">parts</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">p</span>
+
+        <span class="c1"># update for the next iteration</span>
+        <span class="n">blackslash_just_before</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">p</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">p</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;</span><span class="se">\\</span><span class="s1">&#39;</span>
+
+    <span class="c1"># join the string</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">parts</span><span class="p">)</span>
+    <span class="c1"># add quote arround the key</span>
+    <span class="c1"># { a: 12 }</span>
+    <span class="c1"># becomes</span>
+    <span class="c1"># { &quot;a&quot;: 12 }</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="n">_JS_QUOTE_KEYS_RE</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;\1&quot;\2&quot;\3&#39;</span><span class="p">,</span> <span class="n">s</span><span class="p">)</span>
+    <span class="c1"># replace the surogate character by colon and strip whitespaces</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="nb">chr</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="s1">&#39;:&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">s</span>
+
+
+<div class="viewcode-block" id="parse_duration_string">
+<a class="viewcode-back" href="../../src/searx.utils.html#searx.utils.parse_duration_string">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">parse_duration_string</span><span class="p">(</span><span class="n">duration_str</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">timedelta</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Parse a time string in format MM:SS or HH:MM:SS and convert it to a `timedelta` object.</span>
+
+<span class="sd">    Returns None if the provided string doesn&#39;t match any of the formats.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">duration_str</span> <span class="o">=</span> <span class="n">duration_str</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">duration_str</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="c1"># prepending [&quot;00&quot;] here inits hours to 0 if they are not provided</span>
+        <span class="n">time_parts</span> <span class="o">=</span> <span class="p">([</span><span class="s2">&quot;00&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="n">duration_str</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;:&quot;</span><span class="p">))[:</span><span class="mi">3</span><span class="p">]</span>
+        <span class="n">hours</span><span class="p">,</span> <span class="n">minutes</span><span class="p">,</span> <span class="n">seconds</span> <span class="o">=</span> <span class="nb">map</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="n">time_parts</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">hours</span><span class="o">=</span><span class="n">hours</span><span class="p">,</span> <span class="n">minutes</span><span class="o">=</span><span class="n">minutes</span><span class="p">,</span> <span class="n">seconds</span><span class="o">=</span><span class="n">seconds</span><span class="p">)</span>
+
+    <span class="k">except</span> <span class="p">(</span><span class="ne">ValueError</span><span class="p">,</span> <span class="ne">TypeError</span><span class="p">):</span>
+        <span class="k">pass</span>
+
+    <span class="k">return</span> <span class="kc">None</span></div>
+
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+  <span id="sidebar-top"></span>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+  
+    
+            <p class="logo"><a href="../../index.html">
+              <img class="logo" src="../../_static/searxng-wordmark.svg" alt="Logo of SearXNG"/>
+            </a></p>
+  
+
+<h3><a href="../../index.html">Table of Contents</a></h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../user/index.html">User information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../own-instance.html">Why use a private instance?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../admin/index.html">Administrator documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dev/index.html">Developer documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../utils/index.html">DevOps tooling box</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../src/index.html">Source-Code</a></li>
+</ul>
+
+  <h3>Project Links</h3>
+  <ul>
+    <li><a href="https://github.com/searxng/searxng/tree/master">Source</a>
+  
+    <li><a href="https://github.com/searxng/searxng/wiki">Wiki</a>
+  
+    <li><a href="https://searx.space">Public instances</a>
+  
+    <li><a href="https://github.com/searxng/searxng/issues">Issue Tracker</a>
+  </ul><h3>Navigation</h3>
+<ul>
+  <li><a href="../../index.html">Overview</a>
+    <ul>
+      <li><a href="../index.html">Module code</a>
+        
+          
+          </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright SearXNG team.
+    </div>
+  </body>
+</html>

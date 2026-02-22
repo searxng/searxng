@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Github Code &#8212; SearXNG Documentation (2026.2.22+191818b86)</title>
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=6625fa76" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/searxng.css?v=52e4ff28" />
+    <script src="../../../_static/documentation_options.js?v=1b5d919e"></script>
+    <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script data-project="searxng" data-version="2026.2.22+191818b86" src="../../../_static/describe_version.js?v=fa7f30d0"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="GitLab" href="gitlab.html" />
+    <link rel="prev" title="Gitea" href="gitea.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="gitlab.html" title="GitLab"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="gitea.html" title="Gitea"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">SearXNG Documentation (2026.2.22+191818b86)</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" >Developer documentation</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../index.html" accesskey="U">Engine Implementations</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Github Code</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="module-searx.engines.github_code">
+<span id="github-code"></span><span id="github-code-engine"></span><h1>Github Code<a class="headerlink" href="#module-searx.engines.github_code" title="Link to this heading">¶</a></h1>
+<p>GitHub code search with <a class="reference external" href="https://docs.github.com/en/search-github/getting-started-with-searching-on-github/understanding-the-search-syntax">search syntax</a> as described in <a class="reference external" href="https://docs.github.com/en/rest/search/search?apiVersion=2022-11-28#constructing-a-search-query">Constructing a
+search query</a> in the documentation of GitHub’s REST API.</p>
+<section id="configuration">
+<h2>Configuration<a class="headerlink" href="#configuration" title="Link to this heading">¶</a></h2>
+<p>The engine has the following mandatory setting:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#searx.engines.github_code.ghc_auth" title="searx.engines.github_code.ghc_auth"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ghc_auth</span></code></a>
+Change the authentication method used when using the API, defaults to none.</p></li>
+</ul>
+<p>Optional settings are:</p>
+<ul class="simple">
+<li><dl class="simple">
+<dt><a class="reference internal" href="#searx.engines.github_code.ghc_highlight_matching_lines" title="searx.engines.github_code.ghc_highlight_matching_lines"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ghc_highlight_matching_lines</span></code></a></dt><dd><p>Control the highlighting of the matched text (turns off/on).</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><a class="reference internal" href="#searx.engines.github_code.ghc_strip_new_lines" title="searx.engines.github_code.ghc_strip_new_lines"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ghc_strip_new_lines</span></code></a></dt><dd><p>Strip new lines at the start or end of each code fragment.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><a class="reference internal" href="#searx.engines.github_code.ghc_strip_whitespace" title="searx.engines.github_code.ghc_strip_whitespace"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ghc_strip_whitespace</span></code></a></dt><dd><p>Strip any whitespace at the start or end of each code fragment.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><a class="reference internal" href="#searx.engines.github_code.ghc_insert_block_separator" title="searx.engines.github_code.ghc_insert_block_separator"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ghc_insert_block_separator</span></code></a></dt><dd><p>Add a <cite>…</cite> between each code fragment before merging them.</p>
+</dd>
+</dl>
+</li>
+</ul>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">github code</span>
+<span class="w">  </span><span class="nt">engine</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">github_code</span>
+<span class="w">  </span><span class="nt">shortcut</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ghc</span>
+<span class="w">  </span><span class="nt">ghc_auth</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;none&quot;</span>
+
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">github code</span>
+<span class="w">  </span><span class="nt">engine</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">github_code</span>
+<span class="w">  </span><span class="nt">shortcut</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ghc</span>
+<span class="w">  </span><span class="nt">ghc_auth</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;personal_access_token&quot;</span>
+<span class="w">    </span><span class="nt">token</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;&lt;token&gt;&quot;</span>
+<span class="w">  </span><span class="nt">ghc_highlight_matching_lines</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">  </span><span class="nt">ghc_strip_whitespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">  </span><span class="nt">ghc_strip_new_lines</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+
+
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">github code</span>
+<span class="w">  </span><span class="nt">engine</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">github_code</span>
+<span class="w">  </span><span class="nt">shortcut</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ghc</span>
+<span class="w">  </span><span class="nt">ghc_auth</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;bearer&quot;</span>
+<span class="w">    </span><span class="nt">token</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;&lt;token&gt;&quot;</span>
+</pre></div>
+</div>
+</section>
+<section id="implementation">
+<h2>Implementation<a class="headerlink" href="#implementation" title="Link to this heading">¶</a></h2>
+<p>GitHub does not return the code line indices alongside the code fragment in the
+search API. Since these are not super important for the user experience all the
+code lines are just relabeled (starting from 1) and appended (a disjoint set of
+code blocks in a single file might be returned from the API).</p>
+</section>
+<dl class="py data">
+<dt class="sig sig-object py" id="searx.engines.github_code.ghc_auth">
+<span class="sig-prename descclassname"><span class="pre">searx.engines.github_code.</span></span><span class="sig-name descname"><span class="pre">ghc_auth</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'token':</span> <span class="pre">'',</span> <span class="pre">'type':</span> <span class="pre">'none'}</span></em><a class="headerlink" href="#searx.engines.github_code.ghc_auth" title="Link to this definition">¶</a></dt>
+<dd><p>Change the method of authenticating to the github API.</p>
+<p><code class="docutils literal notranslate"><span class="pre">type</span></code> needs to be one of <code class="docutils literal notranslate"><span class="pre">none</span></code>, <code class="docutils literal notranslate"><span class="pre">personal_access_token</span></code>, or <code class="docutils literal notranslate"><span class="pre">bearer</span></code>.
+When type is not <cite>none</cite> a token is expected to be passed as well in
+<code class="docutils literal notranslate"><span class="pre">auth.token</span></code>.</p>
+<p>If there is any privacy concerns about generating a token, one can use the API
+without authentication.  The calls will be heavily rate limited, this is what the
+API returns on such calls:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">API</span> <span class="n">rate</span> <span class="n">limit</span> <span class="n">exceeded</span> <span class="k">for</span> <span class="o">&lt;</span><span class="n">redacted</span> <span class="n">ip</span><span class="o">&gt;.</span>
+<span class="p">(</span><span class="n">But</span> <span class="n">here</span><span class="s1">&#39;s the good news: Authenticated requests get a higher rate limit)</span>
+</pre></div>
+</div>
+<p>The personal access token or a bearer for an org or a group can be generated [in
+the <a class="reference external" href="https://docs.github.com/en/rest/search/search?apiVersion=2022-11-28#search-code--fine-grained-access-tokens">GitHub settings</a>.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="searx.engines.github_code.ghc_highlight_matching_lines">
+<span class="sig-prename descclassname"><span class="pre">searx.engines.github_code.</span></span><span class="sig-name descname"><span class="pre">ghc_highlight_matching_lines</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">True</span></em><a class="headerlink" href="#searx.engines.github_code.ghc_highlight_matching_lines" title="Link to this definition">¶</a></dt>
+<dd><p>Highlight the matching code lines.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="searx.engines.github_code.ghc_strip_new_lines">
+<span class="sig-prename descclassname"><span class="pre">searx.engines.github_code.</span></span><span class="sig-name descname"><span class="pre">ghc_strip_new_lines</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">True</span></em><a class="headerlink" href="#searx.engines.github_code.ghc_strip_new_lines" title="Link to this definition">¶</a></dt>
+<dd><p>Strip leading and trailing newlines for each returned fragment.
+Single file might return multiple code fragments.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="searx.engines.github_code.ghc_strip_whitespace">
+<span class="sig-prename descclassname"><span class="pre">searx.engines.github_code.</span></span><span class="sig-name descname"><span class="pre">ghc_strip_whitespace</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></em><a class="headerlink" href="#searx.engines.github_code.ghc_strip_whitespace" title="Link to this definition">¶</a></dt>
+<dd><p>Strip all leading and trailing whitespace for each returned fragment.
+Single file might return multiple code fragments. Enabling this might break
+code indentation.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="searx.engines.github_code.ghc_api_version">
+<span class="sig-prename descclassname"><span class="pre">searx.engines.github_code.</span></span><span class="sig-name descname"><span class="pre">ghc_api_version</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'2022-11-28'</span></em><a class="headerlink" href="#searx.engines.github_code.ghc_api_version" title="Link to this definition">¶</a></dt>
+<dd><p>The version of the GitHub REST API.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="searx.engines.github_code.ghc_insert_block_separator">
+<span class="sig-prename descclassname"><span class="pre">searx.engines.github_code.</span></span><span class="sig-name descname"><span class="pre">ghc_insert_block_separator</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></em><a class="headerlink" href="#searx.engines.github_code.ghc_insert_block_separator" title="Link to this definition">¶</a></dt>
+<dd><p>Each file possibly consists of more than one code block that matches the
+search, if this is set to true, the blocks will be separated with <code class="docutils literal notranslate"><span class="pre">...</span></code> line.
+This might break the lexer and thus result in the lack of code highlighting.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="searx.engines.github_code.extract_code">
+<span class="sig-prename descclassname"><span class="pre">searx.engines.github_code.</span></span><span class="sig-name descname"><span class="pre">extract_code</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">code_matches</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.14)"><span class="pre">dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.14)"><span class="pre">Any</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#set" title="(in Python v3.14)"><span class="pre">set</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../_modules/searx/engines/github_code.html#extract_code"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.engines.github_code.extract_code" title="Link to this definition">¶</a></dt>
+<dd><p>Iterate over multiple possible matches, for each extract a code fragment.
+Github additionally sends context for _word_ highlights; pygments supports
+highlighting lines, as such we calculate which lines to highlight while
+traversing the text.</p>
+</dd></dl>
+
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+  <span id="sidebar-top"></span>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+  
+    
+            <p class="logo"><a href="../../../index.html">
+              <img class="logo" src="../../../_static/searxng-wordmark.svg" alt="Logo of SearXNG"/>
+            </a></p>
+  
+
+<h3><a href="../../../index.html">Table of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../user/index.html">User information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../own-instance.html">Why use a private instance?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../admin/index.html">Administrator documentation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">Developer documentation</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../quickstart.html">Development Quickstart</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../commits.html">Git Commits &amp; Change Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../contribution_guide.html">How to contribute</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../extended_types.html">Extended Types</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">Engine Implementations</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../enginelib.html">Engine Library</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../engines.html">SearXNG’s engines loader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../engine_overview.html">Engine Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../index.html#resultlist-and-engines">ResultList and engines</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="../index.html#engine-types">Engine Types</a><ul class="current">
+<li class="toctree-l4 current"><a class="reference internal" href="../index.html#online-engines">Online Engines</a><ul class="current">
+<li class="toctree-l5"><a class="reference internal" href="../demo/demo_online.html">Demo Online Engine</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../xpath.html">XPath Engine</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../mediawiki.html">MediaWiki Engine</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../json_engine.html">JSON Engine</a></li>
+<li class="toctree-l5"><a class="reference internal" href="adobe_stock.html">Adobe Stock</a></li>
+<li class="toctree-l5"><a class="reference internal" href="alpinelinux.html">Alpine Linux Packages</a></li>
+<li class="toctree-l5"><a class="reference internal" href="annas_archive.html">Anna’s Archive</a></li>
+<li class="toctree-l5"><a class="reference internal" href="archlinux.html">Arch Linux</a></li>
+<li class="toctree-l5"><a class="reference internal" href="arxiv.html">arXiv</a></li>
+<li class="toctree-l5"><a class="reference internal" href="astrophysics_data_system.html">Astrophysics Data System (ADS)</a></li>
+<li class="toctree-l5"><a class="reference internal" href="azure.html">Azure Resources</a></li>
+<li class="toctree-l5"><a class="reference internal" href="bing.html">Bing Engines</a></li>
+<li class="toctree-l5"><a class="reference internal" href="bpb.html">Bpb</a></li>
+<li class="toctree-l5"><a class="reference internal" href="brave.html">Brave Engines</a></li>
+<li class="toctree-l5"><a class="reference internal" href="bt4g.html">BT4G</a></li>
+<li class="toctree-l5"><a class="reference internal" href="chinaso.html">ChinaSo</a></li>
+<li class="toctree-l5"><a class="reference internal" href="core.html">CORE</a></li>
+<li class="toctree-l5"><a class="reference internal" href="crossref.html">Crossref</a></li>
+<li class="toctree-l5"><a class="reference internal" href="dailymotion.html">Dailymotion</a></li>
+<li class="toctree-l5"><a class="reference internal" href="discourse.html">Discourse Forums</a></li>
+<li class="toctree-l5"><a class="reference internal" href="duckduckgo.html">DuckDuckGo Engines</a></li>
+<li class="toctree-l5"><a class="reference internal" href="geizhals.html">Geizhals</a></li>
+<li class="toctree-l5"><a class="reference internal" href="gitea.html">Gitea</a></li>
+<li class="toctree-l5 current"><a class="current reference internal" href="#">Github Code</a></li>
+<li class="toctree-l5"><a class="reference internal" href="gitlab.html">GitLab</a></li>
+<li class="toctree-l5"><a class="reference internal" href="google.html">Google Engines</a></li>
+<li class="toctree-l5"><a class="reference internal" href="huggingface.html">Hugging Face</a></li>
+<li class="toctree-l5"><a class="reference internal" href="lemmy.html">Lemmy</a></li>
+<li class="toctree-l5"><a class="reference internal" href="loc.html">Library of Congress</a></li>
+<li class="toctree-l5"><a class="reference internal" href="marginalia.html">Marginalia Search</a></li>
+<li class="toctree-l5"><a class="reference internal" href="mastodon.html">Mastodon</a></li>
+<li class="toctree-l5"><a class="reference internal" href="moviepilot.html">Moviepilot</a></li>
+<li class="toctree-l5"><a class="reference internal" href="mrs.html">Matrix Rooms Search (MRS)</a></li>
+<li class="toctree-l5"><a class="reference internal" href="mwmbl.html">Mwmbl Engine</a></li>
+<li class="toctree-l5"><a class="reference internal" href="odysee.html">Odysee</a></li>
+<li class="toctree-l5"><a class="reference internal" href="openalex.html">OpenAlex</a></li>
+<li class="toctree-l5"><a class="reference internal" href="openlibrary.html">Open Library</a></li>
+<li class="toctree-l5"><a class="reference internal" href="peertube.html">Peertube Engines</a></li>
+<li class="toctree-l5"><a class="reference internal" href="piped.html">Piped</a></li>
+<li class="toctree-l5"><a class="reference internal" href="presearch.html">Presearch Engine</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pubmed.html">PubMed</a></li>
+<li class="toctree-l5"><a class="reference internal" href="qwant.html">Qwant</a></li>
+<li class="toctree-l5"><a class="reference internal" href="radio_browser.html">RadioBrowser</a></li>
+<li class="toctree-l5"><a class="reference internal" href="recoll.html">Recoll Engine</a></li>
+<li class="toctree-l5"><a class="reference internal" href="repology.html">Repology</a></li>
+<li class="toctree-l5"><a class="reference internal" href="reuters.html">Reuters</a></li>
+<li class="toctree-l5"><a class="reference internal" href="semantic_scholar.html">Semantic Scholar</a></li>
+<li class="toctree-l5"><a class="reference internal" href="soundcloud.html">Soundcloud</a></li>
+<li class="toctree-l5"><a class="reference internal" href="sourcehut.html">Sourcehut</a></li>
+<li class="toctree-l5"><a class="reference internal" href="springer.html">Springer Nature</a></li>
+<li class="toctree-l5"><a class="reference internal" href="startpage.html">Startpage Engines</a></li>
+<li class="toctree-l5"><a class="reference internal" href="tagesschau.html">Tagesschau API</a></li>
+<li class="toctree-l5"><a class="reference internal" href="torznab.html">Torznab WebAPI</a></li>
+<li class="toctree-l5"><a class="reference internal" href="tubearchivist.html">Tube Archivist</a></li>
+<li class="toctree-l5"><a class="reference internal" href="void.html">Void Linux binary packages</a></li>
+<li class="toctree-l5"><a class="reference internal" href="wallhaven.html">Wallhaven</a></li>
+<li class="toctree-l5"><a class="reference internal" href="wikipedia.html">Wikimedia</a></li>
+<li class="toctree-l5"><a class="reference internal" href="yacy.html">Yacy</a></li>
+<li class="toctree-l5"><a class="reference internal" href="yahoo.html">Yahoo Engine</a></li>
+<li class="toctree-l5"><a class="reference internal" href="zlibrary.html">Z-Library</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../index.html#offline-engines">Offline Engines</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../index.html#online-url-search">Online URL Search</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../index.html#online-currency">Online Currency</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../index.html#online-dictionary">Online Dictionary</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../result_types/index.html">Result Types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../templates.html">Simple Theme Templates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../search_api.html">Search API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../plugins/index.html">Plugins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../answerers/index.html">Answerers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../translation.html">Translation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../makefile.html">Makefile &amp; <code class="docutils literal notranslate"><span class="pre">./manage</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../reST.html">reST primer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../searxng_extra/index.html">Tooling box <code class="docutils literal notranslate"><span class="pre">searxng_extra</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../utils/index.html">DevOps tooling box</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/index.html">Source-Code</a></li>
+</ul>
+
+  <h3>Project Links</h3>
+  <ul>
+    <li><a href="https://github.com/searxng/searxng/tree/master">Source</a>
+  
+    <li><a href="https://github.com/searxng/searxng/wiki">Wiki</a>
+  
+    <li><a href="https://searx.space">Public instances</a>
+  
+    <li><a href="https://github.com/searxng/searxng/issues">Issue Tracker</a>
+  </ul><h3>Navigation</h3>
+<ul>
+  <li><a href="../../../index.html">Overview</a>
+    <ul>
+      <li><a href="../../index.html">Developer documentation</a>
+        <ul>
+      <li><a href="../index.html">Engine Implementations</a>
+        <ul>
+          <li>Previous: <a href="gitea.html" title="previous chapter">Gitea</a>
+          <li>Next: <a href="gitlab.html" title="next chapter">GitLab</a></ul>
+      </li></ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../../_sources/dev/engines/online/github_code.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright SearXNG team.
+    </div>
+  </body>
+</html>

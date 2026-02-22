@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Online /info &#8212; SearXNG Documentation (2026.2.22+191818b86)</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=6625fa76" />
+    <link rel="stylesheet" type="text/css" href="../_static/searxng.css?v=52e4ff28" />
+    <script src="../_static/documentation_options.js?v=1b5d919e"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script data-project="searxng" data-version="2026.2.22+191818b86" src="../_static/describe_version.js?v=fa7f30d0"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Locales" href="searx.locales.html" />
+    <link rel="prev" title="Favicons (source)" href="searx.favicons.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="searx.locales.html" title="Locales"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="searx.favicons.html" title="Favicons (source)"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">SearXNG Documentation (2026.2.22+191818b86)</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" accesskey="U">Source-Code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Online <code class="docutils literal notranslate"><span class="pre">/info</span></code></a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="module-searx.infopage">
+<span id="online-info"></span><span id="searx-infopage"></span><h1>Online <code class="docutils literal notranslate"><span class="pre">/info</span></code><a class="headerlink" href="#module-searx.infopage" title="Link to this heading">¶</a></h1>
+<p>Render SearXNG instance documentation.</p>
+<p>Usage in a Flask app route:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">searx</span><span class="w"> </span><span class="kn">import</span> <span class="n">infopage</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">searx.extended_types</span><span class="w"> </span><span class="kn">import</span> <span class="n">sxng_request</span>
+
+<span class="n">_INFO_PAGES</span> <span class="o">=</span> <span class="n">infopage</span><span class="o">.</span><span class="n">InfoPageSet</span><span class="p">(</span><span class="n">infopage</span><span class="o">.</span><span class="n">MistletoePage</span><span class="p">)</span>
+
+<span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/info/&lt;pagename&gt;&#39;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;GET&#39;</span><span class="p">])</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">info</span><span class="p">(</span><span class="n">pagename</span><span class="p">):</span>
+
+    <span class="n">locale</span> <span class="o">=</span> <span class="n">sxng_request</span><span class="o">.</span><span class="n">preferences</span><span class="o">.</span><span class="n">get_value</span><span class="p">(</span><span class="s1">&#39;locale&#39;</span><span class="p">)</span>
+    <span class="n">page</span> <span class="o">=</span> <span class="n">_INFO_PAGES</span><span class="o">.</span><span class="n">get_page</span><span class="p">(</span><span class="n">pagename</span><span class="p">,</span> <span class="n">locale</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="py class">
+<dt class="sig sig-object py" id="searx.infopage.InfoPage">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">searx.infopage.</span></span><span class="sig-name descname"><span class="pre">InfoPage</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fname</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/searx/infopage.html#InfoPage"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.infopage.InfoPage" title="Link to this definition">¶</a></dt>
+<dd><p>A page of the <a class="reference internal" href="#searx.infopage.InfoPageSet" title="searx.infopage.InfoPageSet"><code class="xref py py-obj docutils literal notranslate"><span class="pre">online</span> <span class="pre">documentation</span></code></a>.</p>
+<dl class="py property">
+<dt class="sig sig-object py" id="searx.infopage.InfoPage.raw_content">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">raw_content</span></span><a class="reference internal" href="../_modules/searx/infopage.html#InfoPage.raw_content"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.infopage.InfoPage.raw_content" title="Link to this definition">¶</a></dt>
+<dd><p>Raw content of the page (without any jinja rendering)</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="searx.infopage.InfoPage.content">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">content</span></span><a class="reference internal" href="../_modules/searx/infopage.html#InfoPage.content"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.infopage.InfoPage.content" title="Link to this definition">¶</a></dt>
+<dd><p>Content of the page (rendered in a Jinja context)</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="searx.infopage.InfoPage.title">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">title</span></span><a class="reference internal" href="../_modules/searx/infopage.html#InfoPage.title"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.infopage.InfoPage.title" title="Link to this definition">¶</a></dt>
+<dd><p>Title of the content (without any markup)</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="searx.infopage.InfoPage.html">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">html</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></em><a class="reference internal" href="../_modules/searx/infopage.html#InfoPage.html"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.infopage.InfoPage.html" title="Link to this definition">¶</a></dt>
+<dd><p>Render Markdown (<a class="reference external" href="https://commonmark.org/">CommonMark</a>) to HTML by using <a class="reference external" href="https://github.com/executablebooks/markdown-it-py">markdown-it-py</a>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="searx.infopage.InfoPage.get_ctx">
+<span class="sig-name descname"><span class="pre">get_ctx</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.14)"><span class="pre">dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/searx/infopage.html#InfoPage.get_ctx"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.infopage.InfoPage.get_ctx" title="Link to this definition">¶</a></dt>
+<dd><p>Jinja context to render <a class="reference internal" href="#searx.infopage.InfoPage.content" title="searx.infopage.InfoPage.content"><code class="xref py py-obj docutils literal notranslate"><span class="pre">InfoPage.content</span></code></a></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="searx.infopage.InfoPageSet">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">searx.infopage.</span></span><span class="sig-name descname"><span class="pre">InfoPageSet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">page_class</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#type" title="(in Python v3.14)"><span class="pre">type</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#searx.infopage.InfoPage" title="searx.infopage.InfoPage"><span class="pre">InfoPage</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">info_folder</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/searx/infopage.html#InfoPageSet"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.infopage.InfoPageSet" title="Link to this definition">¶</a></dt>
+<dd><p>Cached rendering of the online documentation a SearXNG instance has.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>page_class</strong> (<a class="reference internal" href="#searx.infopage.InfoPage" title="searx.infopage.InfoPage"><code class="xref py py-obj docutils literal notranslate"><span class="pre">InfoPage</span></code></a>) – render online documentation by <a class="reference internal" href="#searx.infopage.InfoPage" title="searx.infopage.InfoPage"><code class="xref py py-obj docutils literal notranslate"><span class="pre">InfoPage</span></code></a> parser.</p></li>
+<li><p><strong>info_folder</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – information directory</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="searx.infopage.InfoPageSet.folder">
+<span class="sig-name descname"><span class="pre">folder</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></em><a class="headerlink" href="#searx.infopage.InfoPageSet.folder" title="Link to this definition">¶</a></dt>
+<dd><p>location of the Markdown files</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="searx.infopage.InfoPageSet.locale_default">
+<span class="sig-name descname"><span class="pre">locale_default</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></em><a class="headerlink" href="#searx.infopage.InfoPageSet.locale_default" title="Link to this definition">¶</a></dt>
+<dd><p>default language</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="searx.infopage.InfoPageSet.locales">
+<span class="sig-name descname"><span class="pre">locales</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#searx.infopage.InfoPageSet.locales" title="Link to this definition">¶</a></dt>
+<dd><p>list of supported languages (aka locales)</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="searx.infopage.InfoPageSet.toc">
+<span class="sig-name descname"><span class="pre">toc</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#searx.infopage.InfoPageSet.toc" title="Link to this definition">¶</a></dt>
+<dd><p>list of articles in the online documentation</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="searx.infopage.InfoPageSet.get_page">
+<span class="sig-name descname"><span class="pre">get_page</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pagename</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">locale</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/searx/infopage.html#InfoPageSet.get_page"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.infopage.InfoPageSet.get_page" title="Link to this definition">¶</a></dt>
+<dd><p>Return <code class="docutils literal notranslate"><span class="pre">pagename</span></code> instance of <a class="reference internal" href="#searx.infopage.InfoPage" title="searx.infopage.InfoPage"><code class="xref py py-obj docutils literal notranslate"><span class="pre">InfoPage</span></code></a></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pagename</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – name of the page, a value from <a class="reference internal" href="#searx.infopage.InfoPageSet.toc" title="searx.infopage.InfoPageSet.toc"><code class="xref py py-obj docutils literal notranslate"><span class="pre">InfoPageSet.toc</span></code></a></p></li>
+<li><p><strong>locale</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – language of the page, e.g. <code class="docutils literal notranslate"><span class="pre">en</span></code>, <code class="docutils literal notranslate"><span class="pre">zh_Hans_CN</span></code>
+(default: <code class="xref py py-obj docutils literal notranslate"><span class="pre">InfoPageSet.i18n_origin</span></code>)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="searx.infopage.InfoPageSet.iter_pages">
+<span class="sig-name descname"><span class="pre">iter_pages</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">locale</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fallback_to_default</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/searx/infopage.html#InfoPageSet.iter_pages"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.infopage.InfoPageSet.iter_pages" title="Link to this definition">¶</a></dt>
+<dd><p>Iterate over all pages of the TOC</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+  <span id="sidebar-top"></span>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+  
+    
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/searxng-wordmark.svg" alt="Logo of SearXNG"/>
+            </a></p>
+  
+
+<h3><a href="../index.html">Table of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../user/index.html">User information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../own-instance.html">Why use a private instance?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../admin/index.html">Administrator documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev/index.html">Developer documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../utils/index.html">DevOps tooling box</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Source-Code</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="searx.babel_extract.html">Custom message extractor (i18n)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.botdetection.html">Bot Detection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.cache.html">Caches</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.exceptions.html">SearXNG Exceptions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.favicons.html">Favicons (source)</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Online <code class="docutils literal notranslate"><span class="pre">/info</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#searx.infopage.InfoPage"><code class="docutils literal notranslate"><span class="pre">InfoPage</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#searx.infopage.InfoPage.raw_content"><code class="docutils literal notranslate"><span class="pre">InfoPage.raw_content</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#searx.infopage.InfoPage.content"><code class="docutils literal notranslate"><span class="pre">InfoPage.content</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#searx.infopage.InfoPage.title"><code class="docutils literal notranslate"><span class="pre">InfoPage.title</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#searx.infopage.InfoPage.html"><code class="docutils literal notranslate"><span class="pre">InfoPage.html</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#searx.infopage.InfoPage.get_ctx"><code class="docutils literal notranslate"><span class="pre">InfoPage.get_ctx()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#searx.infopage.InfoPageSet"><code class="docutils literal notranslate"><span class="pre">InfoPageSet</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#searx.infopage.InfoPageSet.folder"><code class="docutils literal notranslate"><span class="pre">InfoPageSet.folder</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#searx.infopage.InfoPageSet.locale_default"><code class="docutils literal notranslate"><span class="pre">InfoPageSet.locale_default</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#searx.infopage.InfoPageSet.locales"><code class="docutils literal notranslate"><span class="pre">InfoPageSet.locales</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#searx.infopage.InfoPageSet.toc"><code class="docutils literal notranslate"><span class="pre">InfoPageSet.toc</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#searx.infopage.InfoPageSet.get_page"><code class="docutils literal notranslate"><span class="pre">InfoPageSet.get_page()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#searx.infopage.InfoPageSet.iter_pages"><code class="docutils literal notranslate"><span class="pre">InfoPageSet.iter_pages()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="searx.locales.html">Locales</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.search.html">Search</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.search.processors.html">Search processors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.settings.html">Settings Loader</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.sqlitedb.html">SQLite DB</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.utils.html">Utility functions for the engines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.valkeydb.html">Valkey DB</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.valkeylib.html">Valkey Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.weather.html">Weather</a></li>
+</ul>
+</li>
+</ul>
+
+  <h3>Project Links</h3>
+  <ul>
+    <li><a href="https://github.com/searxng/searxng/tree/master">Source</a>
+  
+    <li><a href="https://github.com/searxng/searxng/wiki">Wiki</a>
+  
+    <li><a href="https://searx.space">Public instances</a>
+  
+    <li><a href="https://github.com/searxng/searxng/issues">Issue Tracker</a>
+  </ul><h3>Navigation</h3>
+<ul>
+  <li><a href="../index.html">Overview</a>
+    <ul>
+      <li><a href="index.html">Source-Code</a>
+        <ul>
+          <li>Previous: <a href="searx.favicons.html" title="previous chapter">Favicons (source)</a>
+          <li>Next: <a href="searx.locales.html" title="next chapter">Locales</a></ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/src/searx.infopage.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright SearXNG team.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>SearXNG maintenance &#8212; SearXNG Documentation (2026.2.22+191818b86)</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=6625fa76" />
+    <link rel="stylesheet" type="text/css" href="../_static/searxng.css?v=52e4ff28" />
+    <script src="../_static/documentation_options.js?v=1b5d919e"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script data-project="searxng" data-version="2026.2.22+191818b86" src="../_static/describe_version.js?v=fa7f30d0"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Answer CAPTCHA from server’s IP" href="answer-captcha.html" />
+    <link rel="prev" title="Apache" href="installation-apache.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="answer-captcha.html" title="Answer CAPTCHA from server’s IP"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="installation-apache.html" title="Apache"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">SearXNG Documentation (2026.2.22+191818b86)</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" accesskey="U">Administrator documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">SearXNG maintenance</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="searxng-maintenance">
+<span id="id1"></span><h1>SearXNG maintenance<a class="headerlink" href="#searxng-maintenance" title="Link to this heading">¶</a></h1>
+<aside class="sidebar">
+<p class="sidebar-title">further read</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="../utils/index.html#toolboxing"><span class="std std-ref">DevOps tooling box</span></a></p></li>
+<li><p><a class="reference internal" href="installation-uwsgi.html#uwsgi-maintenance"><span class="std std-ref">uWSGI maintenance</span></a></p></li>
+</ul>
+</aside>
+<nav class="contents local" id="contents">
+<ul class="simple">
+<li><p><a class="reference internal" href="#how-to-update" id="id3">How to update</a></p></li>
+<li><p><a class="reference internal" href="#how-to-inspect-debug" id="id4">How to inspect &amp; debug</a></p></li>
+<li><p><a class="reference internal" href="#migrate-and-stay-tuned" id="id5">Migrate and stay tuned!</a></p>
+<ul>
+<li><p><a class="reference internal" href="#check-after-installation" id="id6">Check after Installation</a></p></li>
+</ul>
+</li>
+</ul>
+</nav>
+<section id="how-to-update">
+<span id="update-searxng"></span><h2><a class="toc-backref" href="#id3" role="doc-backlink">How to update</a><a class="headerlink" href="#how-to-update" title="Link to this heading">¶</a></h2>
+<p>How to update depends on the <a class="reference internal" href="installation.html#installation"><span class="std std-ref">Installation</span></a> method.  If you have used the
+<a class="reference internal" href="installation-scripts.html#installation-scripts"><span class="std std-ref">Installation Script</span></a>, use the <code class="docutils literal notranslate"><span class="pre">update</span></code> command from the <a class="reference internal" href="../utils/searxng.sh.html#searxng-sh"><span class="std std-ref">utils/searxng.sh</span></a>
+script.</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>-H<span class="w"> </span>./utils/searxng.sh<span class="w"> </span>instance<span class="w"> </span>update
+</pre></div>
+</div>
+</section>
+<section id="how-to-inspect-debug">
+<span id="inspect-searxng"></span><h2><a class="toc-backref" href="#id4" role="doc-backlink">How to inspect &amp; debug</a><a class="headerlink" href="#how-to-inspect-debug" title="Link to this heading">¶</a></h2>
+<p>How to debug depends on the <a class="reference internal" href="installation.html#installation"><span class="std std-ref">Installation</span></a> method.  If you have used the
+<a class="reference internal" href="installation-scripts.html#installation-scripts"><span class="std std-ref">Installation Script</span></a>, use the <code class="docutils literal notranslate"><span class="pre">inspect</span></code> command from the <a class="reference internal" href="../utils/searxng.sh.html#searxng-sh"><span class="std std-ref">utils/searxng.sh</span></a>
+script.</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>-H<span class="w"> </span>./utils/searxng.sh<span class="w"> </span>instance<span class="w"> </span>inspect
+</pre></div>
+</div>
+</section>
+<section id="migrate-and-stay-tuned">
+<span id="id2"></span><h2><a class="toc-backref" href="#id5" role="doc-backlink">Migrate and stay tuned!</a><a class="headerlink" href="#migrate-and-stay-tuned" title="Link to this heading">¶</a></h2>
+<aside class="sidebar">
+<p class="sidebar-title">info</p>
+<ul class="simple">
+<li><p><a class="extlink-pull reference external" href="https://github.com/searxng/searxng/pull/1332">PR 1332</a></p></li>
+<li><p><a class="extlink-pull reference external" href="https://github.com/searxng/searxng/pull/456">PR 456</a></p></li>
+<li><p><a class="extlink-pull reference external" href="https://github.com/searxng/searxng/pull/446#issuecomment-954730358">A comment about rolling release</a></p></li>
+</ul>
+</aside>
+<p>SearXNG is a <em>rolling release</em>; each commit to the master branch is a release.
+SearXNG is growing rapidly, the services and opportunities are change every now
+and then, to name just a few:</p>
+<ul class="simple">
+<li><p>Bot protection has been switched from filtron to SearXNG’s <a class="reference internal" href="searx.limiter.html#limiter"><span class="std std-ref">limiter</span></a>, this requires a <a class="reference internal" href="settings/settings_valkey.html#settings-valkey"><span class="std std-ref">Valkey</span></a> database.</p></li>
+</ul>
+<p>To stay tuned and get in use of the new features, instance maintainers have to
+update the SearXNG code regularly (see <a class="reference internal" href="#update-searxng"><span class="std std-ref">How to update</span></a>).  As the above
+examples show, this is not always enough, sometimes services have to be set up
+or reconfigured and sometimes services that are no longer needed should be
+uninstalled.</p>
+<p>Here you will find a list of changes that affect the infrastructure.  Please
+check to what extent it is necessary to update your installations:</p>
+<dl class="simple">
+<dt><a class="extlink-pull reference external" href="https://github.com/searxng/searxng/pull/1595">PR 1595</a>: <code class="docutils literal notranslate"><span class="pre">[fix]</span> <span class="pre">uWSGI:</span> <span class="pre">increase</span> <span class="pre">buffer-size</span></code></dt><dd><p>Re-install uWSGI (<a class="reference internal" href="../utils/searxng.sh.html#searxng-sh"><span class="std std-ref">utils/searxng.sh</span></a>) or fix your uWSGI <code class="docutils literal notranslate"><span class="pre">searxng.ini</span></code>
+file manually.</p>
+</dd>
+</dl>
+<section id="check-after-installation">
+<h3><a class="toc-backref" href="#id6" role="doc-backlink">Check after Installation</a><a class="headerlink" href="#check-after-installation" title="Link to this heading">¶</a></h3>
+<p>Once you have done your installation, you can run a SearXNG <em>check</em> procedure,
+to see if there are some left overs.  In this example there exists a <em>old</em>
+<code class="docutils literal notranslate"><span class="pre">/etc/searx/settings.yml</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ sudo -H ./utils/searxng.sh instance check
+
+SearXNG checks
+--------------
+ERROR: settings.yml in /etc/searx/ is deprecated, move file to folder /etc/searxng/
+...
+INFO    searx.valkeydb                 : connecting to Valkey db=0 path=&#39;/usr/local/searxng-valkey/run/valkey.sock&#39;
+INFO    searx.valkeydb                 : connected to Valkey
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+  <span id="sidebar-top"></span>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+  
+    
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/searxng-wordmark.svg" alt="Logo of SearXNG"/>
+            </a></p>
+  
+
+<h3><a href="../index.html">Table of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../user/index.html">User information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../own-instance.html">Why use a private instance?</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Administrator documentation</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="settings/index.html">Settings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation-docker.html">Installation container</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation-scripts.html">Installation Script</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation-searxng.html">Step by step installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation-granian.html">Granian</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation-uwsgi.html">uWSGI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation-nginx.html">NGINX</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation-apache.html">Apache</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">SearXNG maintenance</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#how-to-update">How to update</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#how-to-inspect-debug">How to inspect &amp; debug</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#migrate-and-stay-tuned">Migrate and stay tuned!</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#check-after-installation">Check after Installation</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="answer-captcha.html">Answer CAPTCHA from server’s IP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.favicons.html">Favicons</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.limiter.html">Limiter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html">Administration API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="architecture.html">Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plugins.html">List of plugins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="buildhosts.html">Buildhosts</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../dev/index.html">Developer documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../utils/index.html">DevOps tooling box</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../src/index.html">Source-Code</a></li>
+</ul>
+
+  <h3>Project Links</h3>
+  <ul>
+    <li><a href="https://github.com/searxng/searxng/tree/master">Source</a>
+  
+    <li><a href="https://github.com/searxng/searxng/wiki">Wiki</a>
+  
+    <li><a href="https://searx.space">Public instances</a>
+  
+    <li><a href="https://github.com/searxng/searxng/issues">Issue Tracker</a>
+  </ul><h3>Navigation</h3>
+<ul>
+  <li><a href="../index.html">Overview</a>
+    <ul>
+      <li><a href="index.html">Administrator documentation</a>
+        <ul>
+          <li>Previous: <a href="installation-apache.html" title="previous chapter">Apache</a>
+          <li>Next: <a href="answer-captcha.html" title="next chapter">Answer CAPTCHA from server’s IP</a></ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/admin/update-searxng.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright SearXNG team.
+    </div>
+  </body>
+</html>

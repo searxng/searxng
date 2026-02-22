@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>searx.plugins.tor_check &#8212; SearXNG Documentation (2026.2.22+191818b86)</title>
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=6625fa76" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/searxng.css?v=52e4ff28" />
+    <script src="../../../_static/documentation_options.js?v=1b5d919e"></script>
+    <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script data-project="searxng" data-version="2026.2.22+191818b86" src="../../../_static/describe_version.js?v=fa7f30d0"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">SearXNG Documentation (2026.2.22+191818b86)</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" accesskey="U">Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">searx.plugins.tor_check</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for searx.plugins.tor_check</h1><div class="highlight"><pre>
+<span></span><span class="c1"># SPDX-License-Identifier: AGPL-3.0-or-later</span>
+<span class="sd">&quot;&quot;&quot;A plugin to check if the ip address of the request is a Tor exit-node if the</span>
+<span class="sd">user searches for ``tor-check``.  It fetches the tor exit node list from</span>
+<span class="sd">:py:obj:`url_exit_list` and parses all the IPs into a list, then checks if the</span>
+<span class="sd">user&#39;s IP address is in it.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">ipaddress</span><span class="w"> </span><span class="kn">import</span> <span class="n">ip_address</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">typing</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">flask_babel</span><span class="w"> </span><span class="kn">import</span> <span class="n">gettext</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">httpx</span><span class="w"> </span><span class="kn">import</span> <span class="n">HTTPError</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">searx.network</span><span class="w"> </span><span class="kn">import</span> <span class="n">get</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">searx.plugins</span><span class="w"> </span><span class="kn">import</span> <span class="n">Plugin</span><span class="p">,</span> <span class="n">PluginInfo</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">searx.result_types</span><span class="w"> </span><span class="kn">import</span> <span class="n">EngineResults</span>
+
+<span class="k">if</span> <span class="n">typing</span><span class="o">.</span><span class="n">TYPE_CHECKING</span><span class="p">:</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">searx.search</span><span class="w"> </span><span class="kn">import</span> <span class="n">SearchWithPlugins</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">searx.extended_types</span><span class="w"> </span><span class="kn">import</span> <span class="n">SXNG_Request</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">searx.plugins</span><span class="w"> </span><span class="kn">import</span> <span class="n">PluginCfg</span>
+
+
+<span class="c1"># Regex for exit node addresses in the list.</span>
+<span class="n">reg</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;(?&lt;=ExitAddress )\S+&quot;</span><span class="p">)</span>
+
+<span class="n">url_exit_list</span> <span class="o">=</span> <span class="s2">&quot;https://check.torproject.org/exit-addresses&quot;</span>
+<span class="sd">&quot;&quot;&quot;URL to load Tor exit list from.&quot;&quot;&quot;</span>
+
+
+<div class="viewcode-block" id="SXNGPlugin">
+<a class="viewcode-back" href="../../../dev/plugins/tor_check.html#searx.plugins.tor_check.SXNGPlugin">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">SXNGPlugin</span><span class="p">(</span><span class="n">Plugin</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Rewrite hostnames, remove results or prioritize them.&quot;&quot;&quot;</span>
+
+    <span class="nb">id</span> <span class="o">=</span> <span class="s2">&quot;tor_check&quot;</span>
+    <span class="n">keywords</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;tor-check&quot;</span><span class="p">,</span> <span class="s2">&quot;tor_check&quot;</span><span class="p">,</span> <span class="s2">&quot;torcheck&quot;</span><span class="p">,</span> <span class="s2">&quot;tor&quot;</span><span class="p">,</span> <span class="s2">&quot;tor check&quot;</span><span class="p">]</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">plg_cfg</span><span class="p">:</span> <span class="s2">&quot;PluginCfg&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">plg_cfg</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">info</span> <span class="o">=</span> <span class="n">PluginInfo</span><span class="p">(</span>
+            <span class="nb">id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
+            <span class="n">name</span><span class="o">=</span><span class="n">gettext</span><span class="p">(</span><span class="s2">&quot;Tor check plugin&quot;</span><span class="p">),</span>
+            <span class="n">description</span><span class="o">=</span><span class="n">gettext</span><span class="p">(</span>
+                <span class="s2">&quot;This plugin checks if the address of the request is a Tor exit-node, and&quot;</span>
+                <span class="s2">&quot; informs the user if it is; like check.torproject.org, but from SearXNG.&quot;</span>
+            <span class="p">),</span>
+            <span class="n">preference_section</span><span class="o">=</span><span class="s2">&quot;query&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+
+<div class="viewcode-block" id="SXNGPlugin.post_search">
+<a class="viewcode-back" href="../../../dev/plugins/tor_check.html#searx.plugins.tor_check.SXNGPlugin.post_search">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">post_search</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">:</span> <span class="s2">&quot;SXNG_Request&quot;</span><span class="p">,</span> <span class="n">search</span><span class="p">:</span> <span class="s2">&quot;SearchWithPlugins&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">EngineResults</span><span class="p">:</span>
+        <span class="n">results</span> <span class="o">=</span> <span class="n">EngineResults</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="n">search</span><span class="o">.</span><span class="n">search_query</span><span class="o">.</span><span class="n">pageno</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">results</span>
+
+        <span class="k">if</span> <span class="n">search</span><span class="o">.</span><span class="n">search_query</span><span class="o">.</span><span class="n">query</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">keywords</span><span class="p">:</span>
+
+            <span class="c1"># Request the list of tor exit nodes.</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">resp</span> <span class="o">=</span> <span class="n">get</span><span class="p">(</span><span class="n">url_exit_list</span><span class="p">)</span>
+                <span class="n">node_list</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">reg</span><span class="p">,</span> <span class="n">resp</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
+
+            <span class="k">except</span> <span class="n">HTTPError</span><span class="p">:</span>
+                <span class="c1"># No answer, return error</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="n">gettext</span><span class="p">(</span><span class="s2">&quot;Could not download the list of Tor exit-nodes from&quot;</span><span class="p">)</span>
+                <span class="n">results</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">results</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">Answer</span><span class="p">(</span><span class="n">answer</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">msg</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">url_exit_list</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">))</span>
+                <span class="k">return</span> <span class="n">results</span>
+
+            <span class="n">real_ip</span> <span class="o">=</span> <span class="n">ip_address</span><span class="p">(</span><span class="n">address</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">remote_addr</span><span class="p">))</span><span class="o">.</span><span class="n">compressed</span>
+
+            <span class="k">if</span> <span class="n">real_ip</span> <span class="ow">in</span> <span class="n">node_list</span><span class="p">:</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="n">gettext</span><span class="p">(</span><span class="s2">&quot;You are using Tor and it looks like you have the external IP address&quot;</span><span class="p">)</span>
+                <span class="n">results</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">results</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">Answer</span><span class="p">(</span><span class="n">answer</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">msg</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">real_ip</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">))</span>
+
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="n">gettext</span><span class="p">(</span><span class="s2">&quot;You are not using Tor and you have the external IP address&quot;</span><span class="p">)</span>
+                <span class="n">results</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">results</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">Answer</span><span class="p">(</span><span class="n">answer</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">msg</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">real_ip</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="n">results</span></div>
+</div>
+
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+  <span id="sidebar-top"></span>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+  
+    
+            <p class="logo"><a href="../../../index.html">
+              <img class="logo" src="../../../_static/searxng-wordmark.svg" alt="Logo of SearXNG"/>
+            </a></p>
+  
+
+<h3><a href="../../../index.html">Table of Contents</a></h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../user/index.html">User information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../own-instance.html">Why use a private instance?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../admin/index.html">Administrator documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../dev/index.html">Developer documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../utils/index.html">DevOps tooling box</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/index.html">Source-Code</a></li>
+</ul>
+
+  <h3>Project Links</h3>
+  <ul>
+    <li><a href="https://github.com/searxng/searxng/tree/master">Source</a>
+  
+    <li><a href="https://github.com/searxng/searxng/wiki">Wiki</a>
+  
+    <li><a href="https://searx.space">Public instances</a>
+  
+    <li><a href="https://github.com/searxng/searxng/issues">Issue Tracker</a>
+  </ul><h3>Navigation</h3>
+<ul>
+  <li><a href="../../../index.html">Overview</a>
+    <ul>
+      <li><a href="../../index.html">Module code</a>
+        
+          
+          </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright SearXNG team.
+    </div>
+  </body>
+</html>

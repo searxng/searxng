@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>searx.answerers.statistics &#8212; SearXNG Documentation (2026.2.22+191818b86)</title>
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=6625fa76" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/searxng.css?v=52e4ff28" />
+    <script src="../../../_static/documentation_options.js?v=1b5d919e"></script>
+    <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script data-project="searxng" data-version="2026.2.22+191818b86" src="../../../_static/describe_version.js?v=fa7f30d0"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">SearXNG Documentation (2026.2.22+191818b86)</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" accesskey="U">Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">searx.answerers.statistics</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for searx.answerers.statistics</h1><div class="highlight"><pre>
+<span></span><span class="c1"># SPDX-License-Identifier: AGPL-3.0-or-later</span>
+<span class="c1"># pylint: disable=missing-module-docstring</span>
+
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">functools</span><span class="w"> </span><span class="kn">import</span> <span class="n">reduce</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">operator</span><span class="w"> </span><span class="kn">import</span> <span class="n">mul</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">babel</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">babel.numbers</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">flask_babel</span><span class="w"> </span><span class="kn">import</span> <span class="n">gettext</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">searx.extended_types</span><span class="w"> </span><span class="kn">import</span> <span class="n">sxng_request</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">searx.result_types</span><span class="w"> </span><span class="kn">import</span> <span class="n">Answer</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">searx.result_types.answer</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseAnswer</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">.</span><span class="w"> </span><span class="kn">import</span> <span class="n">Answerer</span><span class="p">,</span> <span class="n">AnswererInfo</span>
+
+<span class="n">kw2func</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">(</span><span class="s2">&quot;min&quot;</span><span class="p">,</span> <span class="nb">min</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">&quot;max&quot;</span><span class="p">,</span> <span class="nb">max</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">&quot;avg&quot;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">args</span><span class="p">:</span> <span class="nb">sum</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="p">)),</span>
+    <span class="p">(</span><span class="s2">&quot;sum&quot;</span><span class="p">,</span> <span class="nb">sum</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">&quot;prod&quot;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">args</span><span class="p">:</span> <span class="n">reduce</span><span class="p">(</span><span class="n">mul</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="mi">1</span><span class="p">)),</span>
+    <span class="p">(</span><span class="s2">&quot;range&quot;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">args</span><span class="p">:</span> <span class="nb">max</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="o">-</span> <span class="nb">min</span><span class="p">(</span><span class="n">args</span><span class="p">)),</span>
+<span class="p">]</span>
+
+
+<div class="viewcode-block" id="SXNGAnswerer">
+<a class="viewcode-back" href="../../../dev/answerers/statistics.html#searx.answerers.statistics.SXNGAnswerer">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">SXNGAnswerer</span><span class="p">(</span><span class="n">Answerer</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Statistics functions&quot;&quot;&quot;</span>
+
+    <span class="n">keywords</span> <span class="o">=</span> <span class="p">[</span><span class="n">kw</span> <span class="k">for</span> <span class="n">kw</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">kw2func</span><span class="p">]</span>
+
+<div class="viewcode-block" id="SXNGAnswerer.info">
+<a class="viewcode-back" href="../../../dev/answerers/statistics.html#searx.answerers.statistics.SXNGAnswerer.info">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">info</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="k">return</span> <span class="n">AnswererInfo</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="n">gettext</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__doc__</span><span class="p">),</span>
+            <span class="n">description</span><span class="o">=</span><span class="n">gettext</span><span class="p">(</span><span class="s2">&quot;Compute </span><span class="si">{func}</span><span class="s2"> of the arguments&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">func</span><span class="o">=</span><span class="s1">&#39;/&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">keywords</span><span class="p">))),</span>
+            <span class="n">keywords</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">keywords</span><span class="p">,</span>
+            <span class="n">examples</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;avg 123 548 2.04 24.2&quot;</span><span class="p">],</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="SXNGAnswerer.answer">
+<a class="viewcode-back" href="../../../dev/answerers/statistics.html#searx.answerers.statistics.SXNGAnswerer.answer">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">answer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">BaseAnswer</span><span class="p">]:</span>
+
+        <span class="n">results</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">parts</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">parts</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">results</span>
+
+        <span class="n">ui_locale</span> <span class="o">=</span> <span class="n">babel</span><span class="o">.</span><span class="n">Locale</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">sxng_request</span><span class="o">.</span><span class="n">preferences</span><span class="o">.</span><span class="n">get_value</span><span class="p">(</span><span class="s1">&#39;locale&#39;</span><span class="p">),</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;-&#39;</span><span class="p">)</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">args</span> <span class="o">=</span> <span class="p">[</span><span class="n">babel</span><span class="o">.</span><span class="n">numbers</span><span class="o">.</span><span class="n">parse_decimal</span><span class="p">(</span><span class="n">num</span><span class="p">,</span> <span class="n">ui_locale</span><span class="p">,</span> <span class="n">numbering_system</span><span class="o">=</span><span class="s2">&quot;latn&quot;</span><span class="p">)</span> <span class="k">for</span> <span class="n">num</span> <span class="ow">in</span> <span class="n">parts</span><span class="p">[</span><span class="mi">1</span><span class="p">:]]</span>
+        <span class="k">except</span><span class="p">:</span>  <span class="c1"># pylint: disable=bare-except</span>
+            <span class="c1"># seems one of the args is not a float type, can&#39;t be converted to float</span>
+            <span class="k">return</span> <span class="n">results</span>
+
+        <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">func</span> <span class="ow">in</span> <span class="n">kw2func</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">k</span> <span class="o">==</span> <span class="n">parts</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+                <span class="n">res</span> <span class="o">=</span> <span class="n">func</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
+                <span class="n">res</span> <span class="o">=</span> <span class="n">babel</span><span class="o">.</span><span class="n">numbers</span><span class="o">.</span><span class="n">format_decimal</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="n">locale</span><span class="o">=</span><span class="n">ui_locale</span><span class="p">)</span>
+                <span class="n">f_str</span> <span class="o">=</span> <span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">babel</span><span class="o">.</span><span class="n">numbers</span><span class="o">.</span><span class="n">format_decimal</span><span class="p">(</span><span class="n">arg</span><span class="p">,</span> <span class="n">locale</span><span class="o">=</span><span class="n">ui_locale</span><span class="p">)</span> <span class="k">for</span> <span class="n">arg</span> <span class="ow">in</span> <span class="n">args</span><span class="p">)</span>
+                <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Answer</span><span class="p">(</span><span class="n">answer</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;[</span><span class="si">{</span><span class="n">ui_locale</span><span class="si">}</span><span class="s2">] </span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2">(</span><span class="si">{</span><span class="n">f_str</span><span class="si">}</span><span class="s2">) = </span><span class="si">{</span><span class="n">res</span><span class="si">}</span><span class="s2"> &quot;</span><span class="p">))</span>
+                <span class="k">break</span>
+
+        <span class="k">return</span> <span class="n">results</span></div>
+</div>
+
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+  <span id="sidebar-top"></span>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+  
+    
+            <p class="logo"><a href="../../../index.html">
+              <img class="logo" src="../../../_static/searxng-wordmark.svg" alt="Logo of SearXNG"/>
+            </a></p>
+  
+
+<h3><a href="../../../index.html">Table of Contents</a></h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../user/index.html">User information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../own-instance.html">Why use a private instance?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../admin/index.html">Administrator documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../dev/index.html">Developer documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../utils/index.html">DevOps tooling box</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/index.html">Source-Code</a></li>
+</ul>
+
+  <h3>Project Links</h3>
+  <ul>
+    <li><a href="https://github.com/searxng/searxng/tree/master">Source</a>
+  
+    <li><a href="https://github.com/searxng/searxng/wiki">Wiki</a>
+  
+    <li><a href="https://searx.space">Public instances</a>
+  
+    <li><a href="https://github.com/searxng/searxng/issues">Issue Tracker</a>
+  </ul><h3>Navigation</h3>
+<ul>
+  <li><a href="../../../index.html">Overview</a>
+    <ul>
+      <li><a href="../../index.html">Module code</a>
+        
+          
+          </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright SearXNG team.
+    </div>
+  </body>
+</html>

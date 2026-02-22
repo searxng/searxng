@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>searx.result_types.answer &#8212; SearXNG Documentation (2026.2.22+191818b86)</title>
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=6625fa76" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/searxng.css?v=52e4ff28" />
+    <script src="../../../_static/documentation_options.js?v=1b5d919e"></script>
+    <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script data-project="searxng" data-version="2026.2.22+191818b86" src="../../../_static/describe_version.js?v=fa7f30d0"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">SearXNG Documentation (2026.2.22+191818b86)</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" >Module code</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../result_types.html" accesskey="U">searx.result_types</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">searx.result_types.answer</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for searx.result_types.answer</h1><div class="highlight"><pre>
+<span></span><span class="c1"># SPDX-License-Identifier: AGPL-3.0-or-later</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Typification of the *answer* results.  Results of this type are rendered in</span>
+<span class="sd">the :origin:`answers.html &lt;searx/templates/simple/elements/answers.html&gt;`</span>
+<span class="sd">template.</span>
+
+<span class="sd">----</span>
+
+<span class="sd">.. autoclass:: BaseAnswer</span>
+<span class="sd">   :members:</span>
+<span class="sd">   :show-inheritance:</span>
+
+<span class="sd">.. autoclass:: Answer</span>
+<span class="sd">   :members:</span>
+<span class="sd">   :show-inheritance:</span>
+
+<span class="sd">.. autoclass:: Translations</span>
+<span class="sd">   :members:</span>
+<span class="sd">   :show-inheritance:</span>
+
+<span class="sd">.. autoclass:: WeatherAnswer</span>
+<span class="sd">   :members:</span>
+<span class="sd">   :show-inheritance:</span>
+
+<span class="sd">.. autoclass:: AnswerSet</span>
+<span class="sd">   :members:</span>
+<span class="sd">   :show-inheritance:</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="c1"># pylint: disable=too-few-public-methods</span>
+
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;AnswerSet&quot;</span><span class="p">,</span> <span class="s2">&quot;Answer&quot;</span><span class="p">,</span> <span class="s2">&quot;Translations&quot;</span><span class="p">,</span> <span class="s2">&quot;WeatherAnswer&quot;</span><span class="p">]</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">flask_babel</span><span class="w"> </span><span class="kn">import</span> <span class="n">gettext</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">msgspec</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">searx</span><span class="w"> </span><span class="kn">import</span> <span class="n">weather</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">._base</span><span class="w"> </span><span class="kn">import</span> <span class="n">Result</span>
+
+
+<div class="viewcode-block" id="BaseAnswer">
+<a class="viewcode-back" href="../../../dev/result_types/answer.html#searx.result_types.answer.BaseAnswer">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">BaseAnswer</span><span class="p">(</span><span class="n">Result</span><span class="p">,</span> <span class="n">kw_only</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Base class of all answer types.  It is not intended to build instances of</span>
+<span class="sd">    this class (aka *abstract*).&quot;&quot;&quot;</span></div>
+
+
+
+<div class="viewcode-block" id="AnswerSet">
+<a class="viewcode-back" href="../../../dev/result_types/answer.html#searx.result_types.answer.AnswerSet">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">AnswerSet</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Aggregator for :py:obj:`BaseAnswer` items in a result container.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_answerlist</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_answerlist</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__bool__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">bool</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_answerlist</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">add</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">answer</span><span class="p">:</span> <span class="n">BaseAnswer</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">a_hash</span> <span class="o">=</span> <span class="nb">hash</span><span class="p">(</span><span class="n">answer</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_answerlist</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">hash</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="o">==</span> <span class="n">a_hash</span><span class="p">:</span>
+                <span class="k">return</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_answerlist</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">answer</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Sort items in this set and iterate over the items.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_answerlist</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">answer</span><span class="p">:</span> <span class="n">answer</span><span class="o">.</span><span class="n">template</span><span class="p">)</span>
+        <span class="k">yield from</span> <span class="bp">self</span><span class="o">.</span><span class="n">_answerlist</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__contains__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">answer</span><span class="p">:</span> <span class="n">BaseAnswer</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="n">a_hash</span> <span class="o">=</span> <span class="nb">hash</span><span class="p">(</span><span class="n">answer</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_answerlist</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">hash</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="o">==</span> <span class="n">a_hash</span><span class="p">:</span>
+                <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">return</span> <span class="kc">False</span></div>
+
+
+
+<div class="viewcode-block" id="Answer">
+<a class="viewcode-back" href="../../../dev/result_types/answer.html#searx.result_types.answer.Answer">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">Answer</span><span class="p">(</span><span class="n">BaseAnswer</span><span class="p">,</span> <span class="n">kw_only</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Simple answer type where the *answer* is a simple string with an optional</span>
+<span class="sd">    :py:obj:`url field &lt;Result.url&gt;` field to link a resource (article, map, ..)</span>
+<span class="sd">    related to the answer.&quot;&quot;&quot;</span>
+
+    <span class="n">template</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;answer/legacy.html&quot;</span>
+
+    <span class="n">answer</span><span class="p">:</span> <span class="nb">str</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Text of the answer.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__hash__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The hash value of field *answer* is the hash value of the</span>
+<span class="sd">        :py:obj:`Answer` object.  :py:obj:`Answer &lt;Result.__eq__&gt;` objects are</span>
+<span class="sd">        equal, when the hash values of both objects are equal.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">hash</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">answer</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="Translations">
+<a class="viewcode-back" href="../../../dev/result_types/answer.html#searx.result_types.answer.Translations">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">Translations</span><span class="p">(</span><span class="n">BaseAnswer</span><span class="p">,</span> <span class="n">kw_only</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Answer type with a list of translations.</span>
+
+<span class="sd">    The items in the list of :py:obj:`Translations.translations` are of type</span>
+<span class="sd">    :py:obj:`Translations.Item`:</span>
+
+<span class="sd">    .. code:: python</span>
+
+<span class="sd">       def response(resp):</span>
+<span class="sd">           results = []</span>
+<span class="sd">           ...</span>
+<span class="sd">           foo_1 = Translations.Item(</span>
+<span class="sd">               text=&quot;foobar&quot;,</span>
+<span class="sd">               synonyms=[&quot;bar&quot;, &quot;foo&quot;],</span>
+<span class="sd">               examples=[&quot;foo and bar are placeholders&quot;],</span>
+<span class="sd">           )</span>
+<span class="sd">           foo_url=&quot;https://www.deepl.com/de/translator#en/de/foo&quot;</span>
+<span class="sd">           ...</span>
+<span class="sd">           Translations(results=results, translations=[foo], url=foo_url)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">template</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;answer/translations.html&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The template in :origin:`answer/translations.html</span>
+<span class="sd">    &lt;searx/templates/simple/answer/translations.html&gt;`&quot;&quot;&quot;</span>
+
+    <span class="n">translations</span><span class="p">:</span> <span class="s2">&quot;list[Translations.Item]&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;List of translations.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">__post_init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">translations</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Translation does not have an item in the list translations&quot;</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Translations.Item">
+<a class="viewcode-back" href="../../../dev/result_types/answer.html#searx.result_types.answer.Translations.Item">[docs]</a>
+    <span class="k">class</span><span class="w"> </span><span class="nc">Item</span><span class="p">(</span><span class="n">msgspec</span><span class="o">.</span><span class="n">Struct</span><span class="p">,</span> <span class="n">kw_only</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;A single element of the translations / a translation.  A translation</span>
+<span class="sd">        consists of at least a mandatory ``text`` property (the translation) ,</span>
+<span class="sd">        optional properties such as *definitions*, *synonyms* and *examples* are</span>
+<span class="sd">        possible.&quot;&quot;&quot;</span>
+
+        <span class="n">text</span><span class="p">:</span> <span class="nb">str</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Translated text.&quot;&quot;&quot;</span>
+
+        <span class="n">transliteration</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Transliteration_ of the requested translation.</span>
+
+<span class="sd">        .. _Transliteration: https://en.wikipedia.org/wiki/Transliteration</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">examples</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;List of examples for the requested translation.&quot;&quot;&quot;</span>
+
+        <span class="n">definitions</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;List of definitions for the requested translation.&quot;&quot;&quot;</span>
+
+        <span class="n">synonyms</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;List of synonyms for the requested translation.&quot;&quot;&quot;</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="WeatherAnswer">
+<a class="viewcode-back" href="../../../dev/result_types/answer.html#searx.result_types.answer.WeatherAnswer">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">WeatherAnswer</span><span class="p">(</span><span class="n">BaseAnswer</span><span class="p">,</span> <span class="n">kw_only</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Answer type for weather data.&quot;&quot;&quot;</span>
+
+    <span class="n">template</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;answer/weather.html&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The template is located at :origin:`answer/weather.html</span>
+<span class="sd">    &lt;searx/templates/simple/answer/weather.html&gt;`&quot;&quot;&quot;</span>
+
+    <span class="n">current</span><span class="p">:</span> <span class="s2">&quot;WeatherAnswer.Item&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Current weather at ``location``.&quot;&quot;&quot;</span>
+
+    <span class="n">forecasts</span><span class="p">:</span> <span class="s2">&quot;list[WeatherAnswer.Item]&quot;</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Weather forecasts for ``location``.&quot;&quot;&quot;</span>
+
+    <span class="n">service</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Weather service from which this information was provided.&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="WeatherAnswer.Item">
+<a class="viewcode-back" href="../../../dev/result_types/answer.html#searx.result_types.answer.WeatherAnswer.Item">[docs]</a>
+    <span class="k">class</span><span class="w"> </span><span class="nc">Item</span><span class="p">(</span><span class="n">msgspec</span><span class="o">.</span><span class="n">Struct</span><span class="p">,</span> <span class="n">kw_only</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Weather parameters valid for a specific point in time.&quot;&quot;&quot;</span>
+
+        <span class="n">location</span><span class="p">:</span> <span class="n">weather</span><span class="o">.</span><span class="n">GeoLocation</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The geo-location the weather data is from (e.g. `Berlin, Germany`).&quot;&quot;&quot;</span>
+
+        <span class="n">temperature</span><span class="p">:</span> <span class="n">weather</span><span class="o">.</span><span class="n">Temperature</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Air temperature at 2m above the ground.&quot;&quot;&quot;</span>
+
+        <span class="n">condition</span><span class="p">:</span> <span class="n">weather</span><span class="o">.</span><span class="n">WeatherConditionType</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Standardized designations that summarize the weather situation</span>
+<span class="sd">        (e.g. ``light sleet showers and thunder``).&quot;&quot;&quot;</span>
+
+        <span class="c1"># optional fields</span>
+
+        <span class="n">datetime</span><span class="p">:</span> <span class="n">weather</span><span class="o">.</span><span class="n">DateTime</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Time of the forecast - not needed for the current weather.&quot;&quot;&quot;</span>
+
+        <span class="n">summary</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;One-liner about the weather forecast / current weather conditions.</span>
+<span class="sd">        If unset, a summary is build up from temperature and current weather</span>
+<span class="sd">        conditions.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">feels_like</span><span class="p">:</span> <span class="n">weather</span><span class="o">.</span><span class="n">Temperature</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Apparent temperature, the temperature equivalent perceived by</span>
+<span class="sd">        humans, caused by the combined effects of air temperature, relative</span>
+<span class="sd">        humidity and wind speed.  The measure is most commonly applied to the</span>
+<span class="sd">        perceived outdoor temperature.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">pressure</span><span class="p">:</span> <span class="n">weather</span><span class="o">.</span><span class="n">Pressure</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Air pressure at sea level (e.g. 1030 hPa) &quot;&quot;&quot;</span>
+
+        <span class="n">humidity</span><span class="p">:</span> <span class="n">weather</span><span class="o">.</span><span class="n">RelativeHumidity</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Amount of relative humidity in the air at 2m above the ground. The</span>
+<span class="sd">        unit is ``%``, e.g. 60%)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">wind_from</span><span class="p">:</span> <span class="n">weather</span><span class="o">.</span><span class="n">Compass</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The directon which moves towards / direction the wind is coming from.&quot;&quot;&quot;</span>
+
+        <span class="n">wind_speed</span><span class="p">:</span> <span class="n">weather</span><span class="o">.</span><span class="n">WindSpeed</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Speed of wind / wind speed at 10m above the ground (10 min average).&quot;&quot;&quot;</span>
+
+        <span class="n">cloud_cover</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Amount of sky covered by clouds / total cloud cover for all heights</span>
+<span class="sd">        (cloudiness, unit: %)&quot;&quot;&quot;</span>
+
+        <span class="c1"># attributes: dict[str, str | int] = {}</span>
+        <span class="c1"># &quot;&quot;&quot;Key-Value dict of additional typeless weather attributes.&quot;&quot;&quot;</span>
+
+        <span class="k">def</span><span class="w"> </span><span class="nf">__post_init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">summary</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">summary</span> <span class="o">=</span> <span class="n">gettext</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{location}</span><span class="s2">: </span><span class="si">{temperature}</span><span class="s2">, </span><span class="si">{condition}</span><span class="s2">&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                    <span class="n">location</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">location</span><span class="p">,</span>
+                    <span class="n">temperature</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">temperature</span><span class="p">,</span>
+                    <span class="n">condition</span><span class="o">=</span><span class="n">gettext</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">condition</span><span class="o">.</span><span class="n">capitalize</span><span class="p">()),</span>
+                <span class="p">)</span>
+
+        <span class="nd">@property</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">url</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">            </span><span class="sd">&quot;&quot;&quot;Determines a `data URL`_ with a symbol for the weather</span>
+<span class="sd">            conditions.  If no symbol can be assigned, ``None`` is returned.</span>
+
+<span class="sd">            .. _data URL:</span>
+<span class="sd">               https://developer.mozilla.org/en-US/docs/Web/URI/Reference/Schemes/data</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="k">return</span> <span class="n">weather</span><span class="o">.</span><span class="n">symbol_url</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">condition</span><span class="p">)</span></div>
+</div>
+
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+  <span id="sidebar-top"></span>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+  
+    
+            <p class="logo"><a href="../../../index.html">
+              <img class="logo" src="../../../_static/searxng-wordmark.svg" alt="Logo of SearXNG"/>
+            </a></p>
+  
+
+<h3><a href="../../../index.html">Table of Contents</a></h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../user/index.html">User information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../own-instance.html">Why use a private instance?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../admin/index.html">Administrator documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../dev/index.html">Developer documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../utils/index.html">DevOps tooling box</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/index.html">Source-Code</a></li>
+</ul>
+
+  <h3>Project Links</h3>
+  <ul>
+    <li><a href="https://github.com/searxng/searxng/tree/master">Source</a>
+  
+    <li><a href="https://github.com/searxng/searxng/wiki">Wiki</a>
+  
+    <li><a href="https://searx.space">Public instances</a>
+  
+    <li><a href="https://github.com/searxng/searxng/issues">Issue Tracker</a>
+  </ul><h3>Navigation</h3>
+<ul>
+  <li><a href="../../../index.html">Overview</a>
+    <ul>
+      <li><a href="../../index.html">Module code</a>
+        <ul>
+      <li><a href="../result_types.html">searx.result_types</a>
+        
+          
+          </ul>
+      </li></ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright SearXNG team.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>searx.engines &#8212; SearXNG Documentation (2026.2.22+191818b86)</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=6625fa76" />
+    <link rel="stylesheet" type="text/css" href="../../_static/searxng.css?v=52e4ff28" />
+    <script src="../../_static/documentation_options.js?v=1b5d919e"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script data-project="searxng" data-version="2026.2.22+191818b86" src="../../_static/describe_version.js?v=fa7f30d0"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">SearXNG Documentation (2026.2.22+191818b86)</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">searx.engines</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for searx.engines</h1><div class="highlight"><pre>
+<span></span><span class="c1"># SPDX-License-Identifier: AGPL-3.0-or-later</span>
+<span class="sd">&quot;&quot;&quot;Load and initialize the ``engines``, see :py:func:`load_engines` and register</span>
+<span class="sd">:py:obj:`engine_shortcuts`.</span>
+
+<span class="sd">usage::</span>
+
+<span class="sd">    load_engines( settings[&#39;engines&#39;] )</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">t</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">copy</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">os.path</span><span class="w"> </span><span class="kn">import</span> <span class="n">realpath</span><span class="p">,</span> <span class="n">dirname</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">types</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">inspect</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">searx</span><span class="w"> </span><span class="kn">import</span> <span class="n">logger</span><span class="p">,</span> <span class="n">settings</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">searx.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">load_module</span>
+
+<span class="k">if</span> <span class="n">t</span><span class="o">.</span><span class="n">TYPE_CHECKING</span><span class="p">:</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">searx.enginelib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Engine</span>
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logger</span><span class="o">.</span><span class="n">getChild</span><span class="p">(</span><span class="s1">&#39;engines&#39;</span><span class="p">)</span>
+<span class="n">ENGINE_DIR</span> <span class="o">=</span> <span class="n">dirname</span><span class="p">(</span><span class="n">realpath</span><span class="p">(</span><span class="vm">__file__</span><span class="p">))</span>
+
+<span class="c1"># Defaults for the namespace of an engine module, see load_engine()</span>
+<span class="n">ENGINE_DEFAULT_ARGS</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span> <span class="o">|</span> <span class="nb">str</span> <span class="o">|</span> <span class="nb">list</span><span class="p">[</span><span class="n">t</span><span class="o">.</span><span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">t</span><span class="o">.</span><span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="c1"># Common options in the engine module</span>
+    <span class="s2">&quot;engine_type&quot;</span><span class="p">:</span> <span class="s2">&quot;online&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;paging&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="s2">&quot;time_range_support&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="s2">&quot;safesearch&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="c1"># settings.yml</span>
+    <span class="s2">&quot;categories&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;general&quot;</span><span class="p">],</span>
+    <span class="s2">&quot;enable_http&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="s2">&quot;shortcut&quot;</span><span class="p">:</span> <span class="s2">&quot;-&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;timeout&quot;</span><span class="p">:</span> <span class="n">settings</span><span class="p">[</span><span class="s2">&quot;outgoing&quot;</span><span class="p">][</span><span class="s2">&quot;request_timeout&quot;</span><span class="p">],</span>
+    <span class="s2">&quot;display_error_messages&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="s2">&quot;disabled&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="s2">&quot;inactive&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="s2">&quot;about&quot;</span><span class="p">:</span> <span class="p">{},</span>
+    <span class="s2">&quot;using_tor_proxy&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="s2">&quot;send_accept_language_header&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="s2">&quot;tokens&quot;</span><span class="p">:</span> <span class="p">[],</span>
+    <span class="s2">&quot;max_page&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+<span class="p">}</span>
+<span class="c1"># set automatically when an engine does not have any tab category</span>
+<span class="n">DEFAULT_CATEGORY</span> <span class="o">=</span> <span class="s1">&#39;other&#39;</span>
+
+<span class="n">categories</span><span class="p">:</span> <span class="s2">&quot;dict[str, list[Engine|types.ModuleType]]&quot;</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;general&#39;</span><span class="p">:</span> <span class="p">[]}</span>
+
+<span class="n">engines</span><span class="p">:</span> <span class="s2">&quot;dict[str, Engine | types.ModuleType]&quot;</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="sd">&quot;&quot;&quot;Global registered engine instances.&quot;&quot;&quot;</span>
+
+<span class="n">engine_shortcuts</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="sd">&quot;&quot;&quot;Simple map of registered *shortcuts* to name of the engine (or ``None``).</span>
+
+<span class="sd">::</span>
+
+<span class="sd">    engine_shortcuts[engine.shortcut] = engine.name</span>
+
+<span class="sd">:meta hide-value:</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">check_engine_module</span><span class="p">(</span><span class="n">module</span><span class="p">:</span> <span class="n">types</span><span class="o">.</span><span class="n">ModuleType</span><span class="p">):</span>
+    <span class="c1"># probe unintentional name collisions / for example name collisions caused</span>
+    <span class="c1"># by import statements in the engine module ..</span>
+
+    <span class="c1"># network: https://github.com/searxng/searxng/issues/762#issuecomment-1605323861</span>
+    <span class="n">obj</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">module</span><span class="p">,</span> <span class="s1">&#39;network&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">obj</span> <span class="ow">and</span> <span class="n">inspect</span><span class="o">.</span><span class="n">ismodule</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;type of </span><span class="si">{</span><span class="n">module</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s1">.network is a module (</span><span class="si">{</span><span class="n">obj</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s1">), expected a string&#39;</span>
+        <span class="c1"># logger.error(msg)</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="load_engine">
+<a class="viewcode-back" href="../../dev/engines/engines.html#searx.engines.load_engine">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">load_engine</span><span class="p">(</span><span class="n">engine_data</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">t</span><span class="o">.</span><span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="s2">&quot;Engine | types.ModuleType | None&quot;</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Load engine from ``engine_data``.</span>
+
+<span class="sd">    :param dict engine_data:  Attributes from YAML ``settings:engines/&lt;engine&gt;``</span>
+<span class="sd">    :return: initialized namespace of the ``&lt;engine&gt;``.</span>
+
+<span class="sd">    1. create a namespace and load module of the ``&lt;engine&gt;``</span>
+<span class="sd">    2. update namespace with the defaults from :py:obj:`ENGINE_DEFAULT_ARGS`</span>
+<span class="sd">    3. update namespace with values from ``engine_data``</span>
+
+<span class="sd">    If engine *is active*, return namespace of the engine, otherwise return</span>
+<span class="sd">    ``None``.</span>
+
+<span class="sd">    This function also returns ``None`` if initialization of the namespace fails</span>
+<span class="sd">    for one of the following reasons:</span>
+
+<span class="sd">    - engine name contains underscore</span>
+<span class="sd">    - engine name is not lowercase</span>
+<span class="sd">    - required attribute is not set :py:func:`is_missing_required_attributes`</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># pylint: disable=too-many-return-statements</span>
+
+    <span class="n">engine_name</span> <span class="o">=</span> <span class="n">engine_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">engine_name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;An engine does not have a &quot;name&quot; field&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">None</span>
+    <span class="k">if</span> <span class="s1">&#39;_&#39;</span> <span class="ow">in</span> <span class="n">engine_name</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;Engine name contains underscore: &quot;</span><span class="si">{}</span><span class="s1">&quot;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">engine_name</span><span class="p">))</span>
+        <span class="k">return</span> <span class="kc">None</span>
+
+    <span class="k">if</span> <span class="n">engine_name</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">!=</span> <span class="n">engine_name</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s1">&#39;Engine name is not lowercase: &quot;</span><span class="si">{}</span><span class="s1">&quot;, converting to lowercase&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">engine_name</span><span class="p">))</span>
+        <span class="n">engine_name</span> <span class="o">=</span> <span class="n">engine_name</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+        <span class="n">engine_data</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">engine_name</span>
+
+    <span class="c1"># load_module</span>
+    <span class="n">module_name</span> <span class="o">=</span> <span class="n">engine_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;engine&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">module_name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;The &quot;engine&quot; field is missing for the engine named &quot;</span><span class="si">{}</span><span class="s1">&quot;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">engine_name</span><span class="p">))</span>
+        <span class="k">return</span> <span class="kc">None</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">engine</span> <span class="o">=</span> <span class="n">load_module</span><span class="p">(</span><span class="n">module_name</span> <span class="o">+</span> <span class="s1">&#39;.py&#39;</span><span class="p">,</span> <span class="n">ENGINE_DIR</span><span class="p">)</span>
+    <span class="k">except</span> <span class="p">(</span><span class="ne">SyntaxError</span><span class="p">,</span> <span class="ne">KeyboardInterrupt</span><span class="p">,</span> <span class="ne">SystemExit</span><span class="p">,</span> <span class="ne">SystemError</span><span class="p">,</span> <span class="ne">ImportError</span><span class="p">,</span> <span class="ne">RuntimeError</span><span class="p">):</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s1">&#39;Fatal exception in engine &quot;</span><span class="si">{}</span><span class="s1">&quot;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">module_name</span><span class="p">))</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">BaseException</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s1">&#39;Cannot load engine &quot;</span><span class="si">{}</span><span class="s1">&quot;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">module_name</span><span class="p">))</span>
+        <span class="k">return</span> <span class="kc">None</span>
+
+    <span class="n">check_engine_module</span><span class="p">(</span><span class="n">engine</span><span class="p">)</span>
+    <span class="n">update_engine_attributes</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">engine_data</span><span class="p">)</span>
+    <span class="n">update_attributes_for_tor</span><span class="p">(</span><span class="n">engine</span><span class="p">)</span>
+
+    <span class="c1"># avoid cyclic imports</span>
+    <span class="c1"># pylint: disable=import-outside-toplevel</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">searx.enginelib.traits</span><span class="w"> </span><span class="kn">import</span> <span class="n">EngineTraitsMap</span>
+
+    <span class="n">trait_map</span> <span class="o">=</span> <span class="n">EngineTraitsMap</span><span class="o">.</span><span class="n">from_data</span><span class="p">()</span>
+    <span class="n">trait_map</span><span class="o">.</span><span class="n">set_traits</span><span class="p">(</span><span class="n">engine</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">is_engine_active</span><span class="p">(</span><span class="n">engine</span><span class="p">):</span>
+        <span class="k">return</span> <span class="kc">None</span>
+
+    <span class="k">if</span> <span class="n">is_missing_required_attributes</span><span class="p">(</span><span class="n">engine</span><span class="p">):</span>
+        <span class="k">return</span> <span class="kc">None</span>
+
+    <span class="n">set_loggers</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">engine_name</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">call_engine_setup</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">engine_data</span><span class="p">):</span>
+        <span class="k">return</span> <span class="kc">None</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">any</span><span class="p">(</span><span class="n">cat</span> <span class="ow">in</span> <span class="n">settings</span><span class="p">[</span><span class="s1">&#39;categories_as_tabs&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">cat</span> <span class="ow">in</span> <span class="n">engine</span><span class="o">.</span><span class="n">categories</span><span class="p">):</span>
+        <span class="n">engine</span><span class="o">.</span><span class="n">categories</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">DEFAULT_CATEGORY</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">engine</span></div>
+
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">set_loggers</span><span class="p">(</span><span class="n">engine</span><span class="p">:</span> <span class="s2">&quot;Engine|types.ModuleType&quot;</span><span class="p">,</span> <span class="n">engine_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+    <span class="c1"># set the logger for engine</span>
+    <span class="n">engine</span><span class="o">.</span><span class="n">logger</span> <span class="o">=</span> <span class="n">logger</span><span class="o">.</span><span class="n">getChild</span><span class="p">(</span><span class="n">engine_name</span><span class="p">)</span>
+    <span class="c1"># the engine may have load some other engines</span>
+    <span class="c1"># may sure the logger is initialized</span>
+    <span class="c1"># use sys.modules.copy() to avoid &quot;RuntimeError: dictionary changed size during iteration&quot;</span>
+    <span class="c1"># see https://github.com/python/cpython/issues/89516</span>
+    <span class="c1"># and https://docs.python.org/3.10/library/sys.html#sys.modules</span>
+    <span class="n">modules</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">module_name</span><span class="p">,</span> <span class="n">module</span> <span class="ow">in</span> <span class="n">modules</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="k">if</span> <span class="p">(</span>
+            <span class="n">module_name</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;searx.engines&quot;</span><span class="p">)</span>
+            <span class="ow">and</span> <span class="n">module_name</span> <span class="o">!=</span> <span class="s2">&quot;searx.engines.__init__&quot;</span>
+            <span class="ow">and</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">module</span><span class="p">,</span> <span class="s2">&quot;logger&quot;</span><span class="p">)</span>
+        <span class="p">):</span>
+            <span class="n">module_engine_name</span> <span class="o">=</span> <span class="n">module_name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">module</span><span class="o">.</span><span class="n">logger</span> <span class="o">=</span> <span class="n">logger</span><span class="o">.</span><span class="n">getChild</span><span class="p">(</span><span class="n">module_engine_name</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">update_engine_attributes</span><span class="p">(</span><span class="n">engine</span><span class="p">:</span> <span class="s2">&quot;Engine | types.ModuleType&quot;</span><span class="p">,</span> <span class="n">engine_data</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">t</span><span class="o">.</span><span class="n">Any</span><span class="p">]):</span>
+    <span class="c1"># set engine attributes from engine_data</span>
+    <span class="k">for</span> <span class="n">param_name</span><span class="p">,</span> <span class="n">param_value</span> <span class="ow">in</span> <span class="n">engine_data</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">param_name</span> <span class="o">==</span> <span class="s1">&#39;categories&#39;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">param_value</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+                <span class="n">param_value</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="o">.</span><span class="n">strip</span><span class="p">,</span> <span class="n">param_value</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">)))</span>
+            <span class="n">engine</span><span class="o">.</span><span class="n">categories</span> <span class="o">=</span> <span class="n">param_value</span>  <span class="c1"># type: ignore</span>
+        <span class="k">elif</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="s1">&#39;about&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">param_name</span> <span class="o">==</span> <span class="s1">&#39;about&#39;</span><span class="p">:</span>
+            <span class="n">engine</span><span class="o">.</span><span class="n">about</span> <span class="o">=</span> <span class="p">{</span><span class="o">**</span><span class="n">engine</span><span class="o">.</span><span class="n">about</span><span class="p">,</span> <span class="o">**</span><span class="n">engine_data</span><span class="p">[</span><span class="s1">&#39;about&#39;</span><span class="p">]}</span>  <span class="c1"># type: ignore</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="nb">setattr</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">param_name</span><span class="p">,</span> <span class="n">param_value</span><span class="p">)</span>
+
+    <span class="c1"># set default attributes</span>
+    <span class="k">for</span> <span class="n">arg_name</span><span class="p">,</span> <span class="n">arg_value</span> <span class="ow">in</span> <span class="n">ENGINE_DEFAULT_ARGS</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">arg_name</span><span class="p">):</span>
+            <span class="nb">setattr</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">arg_name</span><span class="p">,</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">arg_value</span><span class="p">))</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">update_attributes_for_tor</span><span class="p">(</span><span class="n">engine</span><span class="p">:</span> <span class="s2">&quot;Engine | types.ModuleType&quot;</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">using_tor_proxy</span><span class="p">(</span><span class="n">engine</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="s1">&#39;onion_url&#39;</span><span class="p">):</span>
+        <span class="n">engine</span><span class="o">.</span><span class="n">search_url</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">onion_url</span> <span class="o">+</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="s1">&#39;search_path&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
+        <span class="n">engine</span><span class="o">.</span><span class="n">timeout</span> <span class="o">+=</span> <span class="n">settings</span><span class="p">[</span><span class="s1">&#39;outgoing&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;extra_proxy_timeout&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
+
+
+<div class="viewcode-block" id="is_missing_required_attributes">
+<a class="viewcode-back" href="../../dev/engines/engines.html#searx.engines.is_missing_required_attributes">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">is_missing_required_attributes</span><span class="p">(</span><span class="n">engine</span><span class="p">:</span> <span class="s2">&quot;Engine | types.ModuleType&quot;</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;An attribute is required when its name doesn&#39;t start with ``_`` (underline).</span>
+<span class="sd">    Required attributes must not be ``None``.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">missing</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="k">for</span> <span class="n">engine_attr</span> <span class="ow">in</span> <span class="nb">dir</span><span class="p">(</span><span class="n">engine</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">engine_attr</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">engine_attr</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;Missing engine config attribute: &quot;</span><span class="si">{0}</span><span class="s1">.</span><span class="si">{1}</span><span class="s1">&quot;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">engine</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">engine_attr</span><span class="p">))</span>
+            <span class="n">missing</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="k">return</span> <span class="n">missing</span></div>
+
+
+
+<div class="viewcode-block" id="using_tor_proxy">
+<a class="viewcode-back" href="../../dev/engines/engines.html#searx.engines.using_tor_proxy">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">using_tor_proxy</span><span class="p">(</span><span class="n">engine</span><span class="p">:</span> <span class="s2">&quot;Engine | types.ModuleType&quot;</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return True if the engine configuration declares to use Tor.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">settings</span><span class="p">[</span><span class="s1">&#39;outgoing&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;using_tor_proxy&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="s1">&#39;using_tor_proxy&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span></div>
+
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">is_engine_active</span><span class="p">(</span><span class="n">engine</span><span class="p">:</span> <span class="s2">&quot;Engine | types.ModuleType&quot;</span><span class="p">):</span>
+    <span class="c1"># check if engine is inactive</span>
+    <span class="k">if</span> <span class="n">engine</span><span class="o">.</span><span class="n">inactive</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="c1"># exclude onion engines if not using tor</span>
+    <span class="k">if</span> <span class="s1">&#39;onions&#39;</span> <span class="ow">in</span> <span class="n">engine</span><span class="o">.</span><span class="n">categories</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">using_tor_proxy</span><span class="p">(</span><span class="n">engine</span><span class="p">):</span>
+        <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="k">return</span> <span class="kc">True</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">call_engine_setup</span><span class="p">(</span><span class="n">engine</span><span class="p">:</span> <span class="s2">&quot;Engine | types.ModuleType&quot;</span><span class="p">,</span> <span class="n">engine_data</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">t</span><span class="o">.</span><span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="n">setup_ok</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">setup_func</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="s2">&quot;setup&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">setup_func</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">setup_ok</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="k">elif</span> <span class="ow">not</span> <span class="nb">callable</span><span class="p">(</span><span class="n">setup_func</span><span class="p">):</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;engine&#39;s setup method isn&#39;t a callable (is of type: </span><span class="si">%s</span><span class="s2">)&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="n">setup_func</span><span class="p">))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">setup_ok</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">setup</span><span class="p">(</span><span class="n">engine_data</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>  <span class="c1"># pylint: disable=broad-except</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s1">&#39;exception : </span><span class="si">{0}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">setup_ok</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2">: Engine setup was not successful, engine is set to inactive.&quot;</span><span class="p">,</span> <span class="n">engine</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">setup_ok</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">register_engine</span><span class="p">(</span><span class="n">engine</span><span class="p">:</span> <span class="s2">&quot;Engine | types.ModuleType&quot;</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">engine</span><span class="o">.</span><span class="n">name</span> <span class="ow">in</span> <span class="n">engines</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;Engine config error: ambiguous name: </span><span class="si">{0}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">engine</span><span class="o">.</span><span class="n">name</span><span class="p">))</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">engines</span><span class="p">[</span><span class="n">engine</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">engine</span>
+
+    <span class="k">if</span> <span class="n">engine</span><span class="o">.</span><span class="n">shortcut</span> <span class="ow">in</span> <span class="n">engine_shortcuts</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;Engine config error: ambiguous shortcut: </span><span class="si">{0}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">engine</span><span class="o">.</span><span class="n">shortcut</span><span class="p">))</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">engine_shortcuts</span><span class="p">[</span><span class="n">engine</span><span class="o">.</span><span class="n">shortcut</span><span class="p">]</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">name</span>
+
+    <span class="k">for</span> <span class="n">category_name</span> <span class="ow">in</span> <span class="n">engine</span><span class="o">.</span><span class="n">categories</span><span class="p">:</span>
+        <span class="n">categories</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="n">category_name</span><span class="p">,</span> <span class="p">[])</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">engine</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="load_engines">
+<a class="viewcode-back" href="../../dev/engines/engines.html#searx.engines.load_engines">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">load_engines</span><span class="p">(</span><span class="n">engine_list</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">t</span><span class="o">.</span><span class="n">Any</span><span class="p">]]):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;usage: ``engine_list = settings[&#39;engines&#39;]``&quot;&quot;&quot;</span>
+    <span class="n">engines</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+    <span class="n">engine_shortcuts</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+    <span class="n">categories</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+    <span class="n">categories</span><span class="p">[</span><span class="s1">&#39;general&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">engine_data</span> <span class="ow">in</span> <span class="n">engine_list</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">engine_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;inactive&quot;</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="k">continue</span>
+        <span class="n">engine</span> <span class="o">=</span> <span class="n">load_engine</span><span class="p">(</span><span class="n">engine_data</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">engine</span><span class="p">:</span>
+            <span class="n">register_engine</span><span class="p">(</span><span class="n">engine</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># if an engine can&#39;t be loaded (if for example the engine is missing</span>
+            <span class="c1"># tor or some other requirements) its set to inactive!</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;loading engine </span><span class="si">%s</span><span class="s2"> failed: set engine to inactive!&quot;</span><span class="p">,</span> <span class="n">engine_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="s2">&quot;???&quot;</span><span class="p">))</span>
+            <span class="n">engine_data</span><span class="p">[</span><span class="s2">&quot;inactive&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="k">return</span> <span class="n">engines</span></div>
+
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+  <span id="sidebar-top"></span>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+  
+    
+            <p class="logo"><a href="../../index.html">
+              <img class="logo" src="../../_static/searxng-wordmark.svg" alt="Logo of SearXNG"/>
+            </a></p>
+  
+
+<h3><a href="../../index.html">Table of Contents</a></h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../user/index.html">User information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../own-instance.html">Why use a private instance?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../admin/index.html">Administrator documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dev/index.html">Developer documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../utils/index.html">DevOps tooling box</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../src/index.html">Source-Code</a></li>
+</ul>
+
+  <h3>Project Links</h3>
+  <ul>
+    <li><a href="https://github.com/searxng/searxng/tree/master">Source</a>
+  
+    <li><a href="https://github.com/searxng/searxng/wiki">Wiki</a>
+  
+    <li><a href="https://searx.space">Public instances</a>
+  
+    <li><a href="https://github.com/searxng/searxng/issues">Issue Tracker</a>
+  </ul><h3>Navigation</h3>
+<ul>
+  <li><a href="../../index.html">Overview</a>
+    <ul>
+      <li><a href="../index.html">Module code</a>
+        
+          
+          </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright SearXNG team.
+    </div>
+  </body>
+</html>

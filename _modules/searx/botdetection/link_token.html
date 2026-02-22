@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>searx.botdetection.link_token &#8212; SearXNG Documentation (2026.2.22+191818b86)</title>
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=6625fa76" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/searxng.css?v=52e4ff28" />
+    <script src="../../../_static/documentation_options.js?v=1b5d919e"></script>
+    <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script data-project="searxng" data-version="2026.2.22+191818b86" src="../../../_static/describe_version.js?v=fa7f30d0"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">SearXNG Documentation (2026.2.22+191818b86)</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" accesskey="U">Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">searx.botdetection.link_token</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for searx.botdetection.link_token</h1><div class="highlight"><pre>
+<span></span><span class="c1"># SPDX-License-Identifier: AGPL-3.0-or-later</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Method ``link_token``</span>
+<span class="sd">---------------------</span>
+
+<span class="sd">The ``link_token`` method evaluates a request as :py:obj:`suspicious</span>
+<span class="sd">&lt;is_suspicious&gt;` if the URL ``/client&lt;token&gt;.css`` is not requested by the</span>
+<span class="sd">client.  By adding a random component (the token) in the URL, a bot can not send</span>
+<span class="sd">a ping by request a static URL.</span>
+
+<span class="sd">.. note::</span>
+
+<span class="sd">   This method requires a valkey DB and needs a HTTP X-Forwarded-For_ header.</span>
+
+<span class="sd">To get in use of this method a flask URL route needs to be added:</span>
+
+<span class="sd">.. code:: python</span>
+
+<span class="sd">   @app.route(&#39;/client&lt;token&gt;.css&#39;, methods=[&#39;GET&#39;, &#39;POST&#39;])</span>
+<span class="sd">   def client_token(token=None):</span>
+<span class="sd">       link_token.ping(request, token)</span>
+<span class="sd">       return Response(&#39;&#39;, mimetype=&#39;text/css&#39;)</span>
+
+<span class="sd">And in the HTML template from flask a stylesheet link is needed (the value of</span>
+<span class="sd">``link_token`` comes from :py:obj:`get_token`):</span>
+
+<span class="sd">.. code:: html</span>
+
+<span class="sd">   &lt;link rel=&quot;stylesheet&quot;</span>
+<span class="sd">         href=&quot;{{ url_for(&#39;client_token&#39;, token=link_token) }}&quot;</span>
+<span class="sd">         type=&quot;text/css&quot; &gt;</span>
+
+<span class="sd">.. _X-Forwarded-For:</span>
+<span class="sd">   https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Forwarded-For</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">ipaddress</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">IPv4Network</span><span class="p">,</span>
+    <span class="n">IPv6Network</span><span class="p">,</span>
+    <span class="n">ip_address</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">string</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">random</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">flask</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">searx.valkeylib</span><span class="w"> </span><span class="kn">import</span> <span class="n">secret_hash</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">._helpers</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">get_network</span><span class="p">,</span>
+    <span class="n">logger</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">.</span><span class="w"> </span><span class="kn">import</span> <span class="n">config</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.</span><span class="w"> </span><span class="kn">import</span> <span class="n">valkeydb</span>
+
+<span class="n">TOKEN_LIVE_TIME</span> <span class="o">=</span> <span class="mi">600</span>
+<span class="sd">&quot;&quot;&quot;Lifetime (sec) of limiter&#39;s CSS token.&quot;&quot;&quot;</span>
+
+<span class="n">PING_LIVE_TIME</span> <span class="o">=</span> <span class="mi">3600</span>
+<span class="sd">&quot;&quot;&quot;Lifetime (sec) of the ping-key from a client (request)&quot;&quot;&quot;</span>
+
+<span class="n">PING_KEY</span> <span class="o">=</span> <span class="s1">&#39;SearXNG_limiter.ping&#39;</span>
+<span class="sd">&quot;&quot;&quot;Prefix of all ping-keys generated by :py:obj:`get_ping_key`&quot;&quot;&quot;</span>
+
+<span class="n">TOKEN_KEY</span> <span class="o">=</span> <span class="s1">&#39;SearXNG_limiter.token&#39;</span>
+<span class="sd">&quot;&quot;&quot;Key for which the current token is stored in the DB&quot;&quot;&quot;</span>
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logger</span><span class="o">.</span><span class="n">getChild</span><span class="p">(</span><span class="s1">&#39;botdetection.link_token&#39;</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="is_suspicious">
+<a class="viewcode-back" href="../../../src/searx.botdetection.html#searx.botdetection.link_token.is_suspicious">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">is_suspicious</span><span class="p">(</span><span class="n">network</span><span class="p">:</span> <span class="n">IPv4Network</span> <span class="o">|</span> <span class="n">IPv6Network</span><span class="p">,</span> <span class="n">request</span><span class="p">:</span> <span class="n">flask</span><span class="o">.</span><span class="n">Request</span><span class="p">,</span> <span class="n">renew</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Checks whether a valid ping is exists for this (client) network, if not</span>
+<span class="sd">    this request is rated as *suspicious*.  If a valid ping exists and argument</span>
+<span class="sd">    ``renew`` is ``True`` the expire time of this ping is reset to</span>
+<span class="sd">    :py:obj:`PING_LIVE_TIME`.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">valkey_client</span> <span class="o">=</span> <span class="n">valkeydb</span><span class="o">.</span><span class="n">get_valkey_client</span><span class="p">()</span>
+    <span class="n">ping_key</span> <span class="o">=</span> <span class="n">get_ping_key</span><span class="p">(</span><span class="n">network</span><span class="p">,</span> <span class="n">request</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">valkey_client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">ping_key</span><span class="p">):</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;missing ping (IP: </span><span class="si">%s</span><span class="s2">) / request: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">network</span><span class="o">.</span><span class="n">compressed</span><span class="p">,</span> <span class="n">ping_key</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">True</span>
+
+    <span class="k">if</span> <span class="n">renew</span><span class="p">:</span>
+        <span class="n">valkey_client</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">ping_key</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">ex</span><span class="o">=</span><span class="n">PING_LIVE_TIME</span><span class="p">)</span>
+
+    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;found ping for (client) network </span><span class="si">%s</span><span class="s2"> -&gt; </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">network</span><span class="o">.</span><span class="n">compressed</span><span class="p">,</span> <span class="n">ping_key</span><span class="p">)</span>
+    <span class="k">return</span> <span class="kc">False</span></div>
+
+
+
+<div class="viewcode-block" id="ping">
+<a class="viewcode-back" href="../../../src/searx.botdetection.html#searx.botdetection.link_token.ping">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">ping</span><span class="p">(</span><span class="n">request</span><span class="p">:</span> <span class="n">flask</span><span class="o">.</span><span class="n">Request</span><span class="p">,</span> <span class="n">token</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;This function is called by a request to URL ``/client&lt;token&gt;.css``.  If</span>
+<span class="sd">    ``token`` is valid a :py:obj:`PING_KEY` for the client is stored in the DB.</span>
+<span class="sd">    The expire time of this ping-key is :py:obj:`PING_LIVE_TIME`.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">valkey_client</span> <span class="o">=</span> <span class="n">valkeydb</span><span class="o">.</span><span class="n">get_valkey_client</span><span class="p">()</span>
+    <span class="n">cfg</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">get_global_cfg</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">token_is_valid</span><span class="p">(</span><span class="n">token</span><span class="p">):</span>
+        <span class="k">return</span>
+
+    <span class="n">real_ip</span> <span class="o">=</span> <span class="n">ip_address</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">remote_addr</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
+    <span class="n">network</span> <span class="o">=</span> <span class="n">get_network</span><span class="p">(</span><span class="n">real_ip</span><span class="p">,</span> <span class="n">cfg</span><span class="p">)</span>
+
+    <span class="n">ping_key</span> <span class="o">=</span> <span class="n">get_ping_key</span><span class="p">(</span><span class="n">network</span><span class="p">,</span> <span class="n">request</span><span class="p">)</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span>
+        <span class="s2">&quot;store ping_key for (client) network </span><span class="si">%s</span><span class="s2"> (IP </span><span class="si">%s</span><span class="s2">) -&gt; </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">network</span><span class="o">.</span><span class="n">compressed</span><span class="p">,</span> <span class="n">real_ip</span><span class="o">.</span><span class="n">compressed</span><span class="p">,</span> <span class="n">ping_key</span>
+    <span class="p">)</span>
+    <span class="n">valkey_client</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">ping_key</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">ex</span><span class="o">=</span><span class="n">PING_LIVE_TIME</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="get_ping_key">
+<a class="viewcode-back" href="../../../src/searx.botdetection.html#searx.botdetection.link_token.get_ping_key">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_ping_key</span><span class="p">(</span><span class="n">network</span><span class="p">:</span> <span class="n">IPv4Network</span> <span class="o">|</span> <span class="n">IPv6Network</span><span class="p">,</span> <span class="n">request</span><span class="p">:</span> <span class="n">flask</span><span class="o">.</span><span class="n">Request</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Generates a hashed key that fits (more or less) to a *WEB-browser</span>
+<span class="sd">    session* in a network.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="p">(</span>
+        <span class="n">PING_KEY</span>
+        <span class="o">+</span> <span class="s2">&quot;[&quot;</span>
+        <span class="o">+</span> <span class="n">secret_hash</span><span class="p">(</span>
+            <span class="n">network</span><span class="o">.</span><span class="n">compressed</span> <span class="o">+</span> <span class="n">request</span><span class="o">.</span><span class="n">headers</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;Accept-Language&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="n">request</span><span class="o">.</span><span class="n">headers</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;User-Agent&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+        <span class="p">)</span>
+        <span class="o">+</span> <span class="s2">&quot;]&quot;</span>
+    <span class="p">)</span></div>
+
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">token_is_valid</span><span class="p">(</span><span class="n">token</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="n">valid</span> <span class="o">=</span> <span class="n">token</span> <span class="o">==</span> <span class="n">get_token</span><span class="p">()</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;token is valid --&gt; </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">valid</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">valid</span>
+
+
+<div class="viewcode-block" id="get_token">
+<a class="viewcode-back" href="../../../src/searx.botdetection.html#searx.botdetection.link_token.get_token">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_token</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Returns current token.  If there is no currently active token a new token</span>
+<span class="sd">    is generated randomly and stored in the Valkey DB.  Without without a</span>
+<span class="sd">    database connection, string &quot;12345678&quot; is returned.</span>
+
+<span class="sd">    - :py:obj:`TOKEN_LIVE_TIME`</span>
+<span class="sd">    - :py:obj:`TOKEN_KEY`</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">valkey_client</span> <span class="o">=</span> <span class="n">valkeydb</span><span class="o">.</span><span class="n">get_valkey_client</span><span class="p">()</span>
+    <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+        <span class="c1"># This function is also called when limiter is inactive / no valkey DB</span>
+        <span class="c1"># (see render function in webapp.py)</span>
+        <span class="k">return</span> <span class="s1">&#39;12345678&#39;</span>
+
+    <span class="n">token</span> <span class="o">=</span> <span class="n">valkey_client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">TOKEN_KEY</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">token</span><span class="p">:</span>
+        <span class="n">token</span> <span class="o">=</span> <span class="n">token</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;UTF-8&#39;</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">token</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">string</span><span class="o">.</span><span class="n">ascii_lowercase</span> <span class="o">+</span> <span class="n">string</span><span class="o">.</span><span class="n">digits</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">16</span><span class="p">))</span>
+        <span class="n">valkey_client</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">TOKEN_KEY</span><span class="p">,</span> <span class="n">token</span><span class="p">,</span> <span class="n">ex</span><span class="o">=</span><span class="n">TOKEN_LIVE_TIME</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">token</span></div>
+
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+  <span id="sidebar-top"></span>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+  
+    
+            <p class="logo"><a href="../../../index.html">
+              <img class="logo" src="../../../_static/searxng-wordmark.svg" alt="Logo of SearXNG"/>
+            </a></p>
+  
+
+<h3><a href="../../../index.html">Table of Contents</a></h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../user/index.html">User information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../own-instance.html">Why use a private instance?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../admin/index.html">Administrator documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../dev/index.html">Developer documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../utils/index.html">DevOps tooling box</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/index.html">Source-Code</a></li>
+</ul>
+
+  <h3>Project Links</h3>
+  <ul>
+    <li><a href="https://github.com/searxng/searxng/tree/master">Source</a>
+  
+    <li><a href="https://github.com/searxng/searxng/wiki">Wiki</a>
+  
+    <li><a href="https://searx.space">Public instances</a>
+  
+    <li><a href="https://github.com/searxng/searxng/issues">Issue Tracker</a>
+  </ul><h3>Navigation</h3>
+<ul>
+  <li><a href="../../../index.html">Overview</a>
+    <ul>
+      <li><a href="../../index.html">Module code</a>
+        
+          
+          </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright SearXNG team.
+    </div>
+  </body>
+</html>

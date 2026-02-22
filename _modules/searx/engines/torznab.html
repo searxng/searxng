@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>searx.engines.torznab &#8212; SearXNG Documentation (2026.2.22+191818b86)</title>
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=6625fa76" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/searxng.css?v=52e4ff28" />
+    <script src="../../../_static/documentation_options.js?v=1b5d919e"></script>
+    <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script data-project="searxng" data-version="2026.2.22+191818b86" src="../../../_static/describe_version.js?v=fa7f30d0"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">SearXNG Documentation (2026.2.22+191818b86)</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" >Module code</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../engines.html" accesskey="U">searx.engines</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">searx.engines.torznab</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for searx.engines.torznab</h1><div class="highlight"><pre>
+<span></span><span class="c1"># SPDX-License-Identifier: AGPL-3.0-or-later</span>
+<span class="sd">&quot;&quot;&quot;Torznab_ is an API specification that provides a standardized way to query</span>
+<span class="sd">torrent site for content. It is used by a number of torrent applications,</span>
+<span class="sd">including Prowlarr_ and Jackett_.</span>
+
+<span class="sd">Using this engine together with Prowlarr_ or Jackett_ allows you to search</span>
+<span class="sd">a huge number of torrent sites which are not directly supported.</span>
+
+<span class="sd">Configuration</span>
+<span class="sd">=============</span>
+
+<span class="sd">The engine has the following settings:</span>
+
+<span class="sd">``base_url``:</span>
+<span class="sd">  Torznab endpoint URL.</span>
+
+<span class="sd">``api_key``:</span>
+<span class="sd">  The API key to use for authentication.</span>
+
+<span class="sd">``torznab_categories``:</span>
+<span class="sd">  The categories to use for searching. This is a list of category IDs.  See</span>
+<span class="sd">  Prowlarr-categories_ or Jackett-categories_ for more information.</span>
+
+<span class="sd">``show_torrent_files``:</span>
+<span class="sd">  Whether to show the torrent file in the search results.  Be careful as using</span>
+<span class="sd">  this with Prowlarr_ or Jackett_ leaks the API key.  This should be used only</span>
+<span class="sd">  if you are querying a Torznab endpoint without authentication or if the</span>
+<span class="sd">  instance is private.  Be aware that private trackers may ban you if you share</span>
+<span class="sd">  the torrent file.  Defaults to ``false``.</span>
+
+<span class="sd">``show_magnet_links``:</span>
+<span class="sd">  Whether to show the magnet link in the search results.  Be aware that private</span>
+<span class="sd">  trackers may ban you if you share the magnet link.  Defaults to ``true``.</span>
+
+<span class="sd">.. _Torznab:</span>
+<span class="sd">   https://torznab.github.io/spec-1.3-draft/index.html</span>
+<span class="sd">.. _Prowlarr:</span>
+<span class="sd">   https://github.com/Prowlarr/Prowlarr</span>
+<span class="sd">.. _Jackett:</span>
+<span class="sd">   https://github.com/Jackett/Jackett</span>
+<span class="sd">.. _Prowlarr-categories:</span>
+<span class="sd">   https://wiki.servarr.com/en/prowlarr/cardigann-yml-definition#categories</span>
+<span class="sd">.. _Jackett-categories:</span>
+<span class="sd">   https://github.com/Jackett/Jackett/wiki/Jackett-Categories</span>
+
+<span class="sd">Implementations</span>
+<span class="sd">===============</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">t</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">urllib.parse</span><span class="w"> </span><span class="kn">import</span> <span class="n">quote</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">lxml</span><span class="w"> </span><span class="kn">import</span> <span class="n">etree</span>  <span class="c1"># type: ignore</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">searx.exceptions</span><span class="w"> </span><span class="kn">import</span> <span class="n">SearxEngineAPIException</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">searx.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">humanize_bytes</span>
+
+<span class="k">if</span> <span class="n">t</span><span class="o">.</span><span class="n">TYPE_CHECKING</span><span class="p">:</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">searx.extended_types</span><span class="w"> </span><span class="kn">import</span> <span class="n">SXNG_Response</span>
+
+
+<span class="c1"># engine settings</span>
+<span class="n">about</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">t</span><span class="o">.</span><span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;website&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="s2">&quot;wikidata_id&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="s2">&quot;official_api_documentation&quot;</span><span class="p">:</span> <span class="s2">&quot;https://torznab.github.io/spec-1.3-draft&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;use_official_api&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="s2">&quot;require_api_key&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="s2">&quot;results&quot;</span><span class="p">:</span> <span class="s1">&#39;XML&#39;</span><span class="p">,</span>
+<span class="p">}</span>
+<span class="n">categories</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;files&#39;</span><span class="p">]</span>
+<span class="n">paging</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="n">time_range_support</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+
+<span class="c1"># defined in settings.yml</span>
+<span class="c1"># example (Jackett): &quot;http://localhost:9117/api/v2.0/indexers/all/results/torznab&quot;</span>
+<span class="n">base_url</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+<span class="n">api_key</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+<span class="c1"># https://newznab.readthedocs.io/en/latest/misc/api/#predefined-categories</span>
+<span class="n">torznab_categories</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">show_torrent_files</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="n">show_magnet_links</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>
+
+
+<div class="viewcode-block" id="init">
+<a class="viewcode-back" href="../../../dev/engines/online/torznab.html#searx.engines.torznab.init">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">init</span><span class="p">(</span><span class="n">engine_settings</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>  <span class="c1"># pylint: disable=unused-argument</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Initialize the engine.&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">base_url</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;missing torznab base_url&#39;</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="request">
+<a class="viewcode-back" href="../../../dev/engines/online/torznab.html#searx.engines.torznab.request">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">request</span><span class="p">(</span><span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">params</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">t</span><span class="o">.</span><span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">t</span><span class="o">.</span><span class="n">Any</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Build the request params.&quot;&quot;&quot;</span>
+    <span class="n">search_url</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">base_url</span> <span class="o">+</span> <span class="s1">&#39;?t=search&amp;q=</span><span class="si">{search_query}</span><span class="s1">&#39;</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">api_key</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">search_url</span> <span class="o">+=</span> <span class="s1">&#39;&amp;apikey=</span><span class="si">{api_key}</span><span class="s1">&#39;</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">torznab_categories</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">search_url</span> <span class="o">+=</span> <span class="s1">&#39;&amp;cat=</span><span class="si">{torznab_categories}</span><span class="s1">&#39;</span>
+
+    <span class="n">params</span><span class="p">[</span><span class="s1">&#39;url&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">search_url</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+        <span class="n">search_query</span><span class="o">=</span><span class="n">quote</span><span class="p">(</span><span class="n">query</span><span class="p">),</span> <span class="n">api_key</span><span class="o">=</span><span class="n">api_key</span><span class="p">,</span> <span class="n">torznab_categories</span><span class="o">=</span><span class="s2">&quot;,&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="nb">str</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">torznab_categories</span><span class="p">])</span>
+    <span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">params</span></div>
+
+
+
+<div class="viewcode-block" id="response">
+<a class="viewcode-back" href="../../../dev/engines/online/torznab.html#searx.engines.torznab.response">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">response</span><span class="p">(</span><span class="n">resp</span><span class="p">:</span> <span class="s2">&quot;SXNG_Response&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">t</span><span class="o">.</span><span class="n">Any</span><span class="p">]]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Parse the XML response and return a list of results.&quot;&quot;&quot;</span>
+    <span class="n">results</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">search_results</span> <span class="o">=</span> <span class="n">etree</span><span class="o">.</span><span class="n">XML</span><span class="p">(</span><span class="n">resp</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
+
+    <span class="c1"># handle errors:  https://newznab.readthedocs.io/en/latest/misc/api/#newznab-error-codes</span>
+    <span class="k">if</span> <span class="n">search_results</span><span class="o">.</span><span class="n">tag</span> <span class="o">==</span> <span class="s2">&quot;error&quot;</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">SearxEngineAPIException</span><span class="p">(</span><span class="n">search_results</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;description&quot;</span><span class="p">))</span>
+
+    <span class="n">channel</span><span class="p">:</span> <span class="n">etree</span><span class="o">.</span><span class="n">Element</span> <span class="o">=</span> <span class="n">search_results</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="n">item</span><span class="p">:</span> <span class="n">etree</span><span class="o">.</span><span class="n">Element</span>
+    <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">channel</span><span class="o">.</span><span class="n">iterfind</span><span class="p">(</span><span class="s1">&#39;item&#39;</span><span class="p">):</span>
+        <span class="n">result</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">t</span><span class="o">.</span><span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="n">build_result</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+        <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">results</span></div>
+
+
+
+<div class="viewcode-block" id="build_result">
+<a class="viewcode-back" href="../../../dev/engines/online/torznab.html#searx.engines.torznab.build_result">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">build_result</span><span class="p">(</span><span class="n">item</span><span class="p">:</span> <span class="n">etree</span><span class="o">.</span><span class="n">Element</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">t</span><span class="o">.</span><span class="n">Any</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Build a result from a XML item.&quot;&quot;&quot;</span>
+
+    <span class="c1"># extract attributes from XML</span>
+    <span class="c1"># see https://torznab.github.io/spec-1.3-draft/torznab/Specification-v1.3.html#predefined-attributes</span>
+    <span class="n">enclosure</span><span class="p">:</span> <span class="n">etree</span><span class="o">.</span><span class="n">Element</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">item</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;enclosure&#39;</span><span class="p">)</span>
+    <span class="n">enclosure_url</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">if</span> <span class="n">enclosure</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">enclosure_url</span> <span class="o">=</span> <span class="n">enclosure</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;url&#39;</span><span class="p">)</span>
+
+    <span class="n">filesize</span> <span class="o">=</span> <span class="n">get_attribute</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="s1">&#39;size&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">filesize</span> <span class="ow">and</span> <span class="n">enclosure</span><span class="p">:</span>
+        <span class="n">filesize</span> <span class="o">=</span> <span class="n">enclosure</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;length&#39;</span><span class="p">)</span>
+
+    <span class="n">guid</span> <span class="o">=</span> <span class="n">get_attribute</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="s1">&#39;guid&#39;</span><span class="p">)</span>
+    <span class="n">comments</span> <span class="o">=</span> <span class="n">get_attribute</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="s1">&#39;comments&#39;</span><span class="p">)</span>
+    <span class="n">pubDate</span> <span class="o">=</span> <span class="n">get_attribute</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="s1">&#39;pubDate&#39;</span><span class="p">)</span>
+    <span class="n">seeders</span> <span class="o">=</span> <span class="n">get_torznab_attribute</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="s1">&#39;seeders&#39;</span><span class="p">)</span>
+    <span class="n">leechers</span> <span class="o">=</span> <span class="n">get_torznab_attribute</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="s1">&#39;leechers&#39;</span><span class="p">)</span>
+    <span class="n">peers</span> <span class="o">=</span> <span class="n">get_torznab_attribute</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="s1">&#39;peers&#39;</span><span class="p">)</span>
+
+    <span class="c1"># map attributes to SearXNG result</span>
+    <span class="n">result</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">t</span><span class="o">.</span><span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;template&#39;</span><span class="p">:</span> <span class="s1">&#39;torrent.html&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;title&#39;</span><span class="p">:</span> <span class="n">get_attribute</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="s1">&#39;title&#39;</span><span class="p">),</span>
+        <span class="s1">&#39;filesize&#39;</span><span class="p">:</span> <span class="n">humanize_bytes</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">filesize</span><span class="p">))</span> <span class="k">if</span> <span class="n">filesize</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="s1">&#39;files&#39;</span><span class="p">:</span> <span class="n">get_attribute</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="s1">&#39;files&#39;</span><span class="p">),</span>
+        <span class="s1">&#39;seed&#39;</span><span class="p">:</span> <span class="n">seeders</span><span class="p">,</span>
+        <span class="s1">&#39;leech&#39;</span><span class="p">:</span> <span class="n">_map_leechers</span><span class="p">(</span><span class="n">leechers</span><span class="p">,</span> <span class="n">seeders</span><span class="p">,</span> <span class="n">peers</span><span class="p">),</span>
+        <span class="s1">&#39;url&#39;</span><span class="p">:</span> <span class="n">_map_result_url</span><span class="p">(</span><span class="n">guid</span><span class="p">,</span> <span class="n">comments</span><span class="p">),</span>
+        <span class="s1">&#39;publishedDate&#39;</span><span class="p">:</span> <span class="n">_map_published_date</span><span class="p">(</span><span class="n">pubDate</span><span class="p">),</span>
+        <span class="s1">&#39;torrentfile&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="s1">&#39;magnetlink&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">}</span>
+
+    <span class="n">link</span> <span class="o">=</span> <span class="n">get_attribute</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="s1">&#39;link&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">show_torrent_files</span><span class="p">:</span>
+        <span class="n">result</span><span class="p">[</span><span class="s1">&#39;torrentfile&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">_map_torrent_file</span><span class="p">(</span><span class="n">link</span><span class="p">,</span> <span class="n">enclosure_url</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">show_magnet_links</span><span class="p">:</span>
+        <span class="n">magneturl</span> <span class="o">=</span> <span class="n">get_torznab_attribute</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="s1">&#39;magneturl&#39;</span><span class="p">)</span>
+        <span class="n">result</span><span class="p">[</span><span class="s1">&#39;magnetlink&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">_map_magnet_link</span><span class="p">(</span><span class="n">magneturl</span><span class="p">,</span> <span class="n">guid</span><span class="p">,</span> <span class="n">enclosure_url</span><span class="p">,</span> <span class="n">link</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">result</span></div>
+
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_map_result_url</span><span class="p">(</span><span class="n">guid</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">comments</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">guid</span> <span class="ow">and</span> <span class="n">guid</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;http&#39;</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">guid</span>
+    <span class="k">if</span> <span class="n">comments</span> <span class="ow">and</span> <span class="n">comments</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;http&#39;</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">comments</span>
+    <span class="k">return</span> <span class="kc">None</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_map_leechers</span><span class="p">(</span><span class="n">leechers</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">seeders</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">peers</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">leechers</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">leechers</span>
+    <span class="k">if</span> <span class="n">seeders</span> <span class="ow">and</span> <span class="n">peers</span><span class="p">:</span>
+        <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">peers</span><span class="p">)</span> <span class="o">-</span> <span class="nb">int</span><span class="p">(</span><span class="n">seeders</span><span class="p">))</span>
+    <span class="k">return</span> <span class="kc">None</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_map_published_date</span><span class="p">(</span><span class="n">pubDate</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">datetime</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">pubDate</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">pubDate</span><span class="p">,</span> <span class="s1">&#39;</span><span class="si">%a</span><span class="s1">, </span><span class="si">%d</span><span class="s1"> %b %Y %H:%M:%S %z&#39;</span><span class="p">)</span>
+        <span class="k">except</span> <span class="p">(</span><span class="ne">ValueError</span><span class="p">,</span> <span class="ne">TypeError</span><span class="p">)</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;ignore exception (publishedDate): </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span>
+    <span class="k">return</span> <span class="kc">None</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_map_torrent_file</span><span class="p">(</span><span class="n">link</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">enclosure_url</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">link</span> <span class="ow">and</span> <span class="n">link</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;http&#39;</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">link</span>
+    <span class="k">if</span> <span class="n">enclosure_url</span> <span class="ow">and</span> <span class="n">enclosure_url</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;http&#39;</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">enclosure_url</span>
+    <span class="k">return</span> <span class="kc">None</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_map_magnet_link</span><span class="p">(</span>
+    <span class="n">magneturl</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">guid</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">enclosure_url</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">link</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">magneturl</span> <span class="ow">and</span> <span class="n">magneturl</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;magnet&#39;</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">magneturl</span>
+    <span class="k">if</span> <span class="n">guid</span> <span class="ow">and</span> <span class="n">guid</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;magnet&#39;</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">guid</span>
+    <span class="k">if</span> <span class="n">enclosure_url</span> <span class="ow">and</span> <span class="n">enclosure_url</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;magnet&#39;</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">enclosure_url</span>
+    <span class="k">if</span> <span class="n">link</span> <span class="ow">and</span> <span class="n">link</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;magnet&#39;</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">link</span>
+    <span class="k">return</span> <span class="kc">None</span>
+
+
+<div class="viewcode-block" id="get_attribute">
+<a class="viewcode-back" href="../../../dev/engines/online/torznab.html#searx.engines.torznab.get_attribute">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_attribute</span><span class="p">(</span><span class="n">item</span><span class="p">:</span> <span class="n">etree</span><span class="o">.</span><span class="n">Element</span><span class="p">,</span> <span class="n">property_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get attribute from item.&quot;&quot;&quot;</span>
+    <span class="n">property_element</span><span class="p">:</span> <span class="n">etree</span><span class="o">.</span><span class="n">Element</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">item</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">property_name</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">property_element</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">property_element</span><span class="o">.</span><span class="n">text</span>
+    <span class="k">return</span> <span class="kc">None</span></div>
+
+
+
+<div class="viewcode-block" id="get_torznab_attribute">
+<a class="viewcode-back" href="../../../dev/engines/online/torznab.html#searx.engines.torznab.get_torznab_attribute">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_torznab_attribute</span><span class="p">(</span><span class="n">item</span><span class="p">:</span> <span class="n">etree</span><span class="o">.</span><span class="n">Element</span><span class="p">,</span> <span class="n">attribute_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get torznab special attribute from item.&quot;&quot;&quot;</span>
+    <span class="n">element</span><span class="p">:</span> <span class="n">etree</span><span class="o">.</span><span class="n">Element</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">item</span><span class="o">.</span><span class="n">find</span><span class="p">(</span>
+        <span class="s1">&#39;.//torznab:attr[@name=&quot;</span><span class="si">{attribute_name}</span><span class="s1">&quot;]&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">attribute_name</span><span class="o">=</span><span class="n">attribute_name</span><span class="p">),</span>
+        <span class="p">{</span><span class="s1">&#39;torznab&#39;</span><span class="p">:</span> <span class="s1">&#39;http://torznab.com/schemas/2015/feed&#39;</span><span class="p">},</span>
+    <span class="p">)</span>
+    <span class="k">if</span> <span class="n">element</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">element</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;value&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="kc">None</span></div>
+
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+  <span id="sidebar-top"></span>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+  
+    
+            <p class="logo"><a href="../../../index.html">
+              <img class="logo" src="../../../_static/searxng-wordmark.svg" alt="Logo of SearXNG"/>
+            </a></p>
+  
+
+<h3><a href="../../../index.html">Table of Contents</a></h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../user/index.html">User information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../own-instance.html">Why use a private instance?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../admin/index.html">Administrator documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../dev/index.html">Developer documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../utils/index.html">DevOps tooling box</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/index.html">Source-Code</a></li>
+</ul>
+
+  <h3>Project Links</h3>
+  <ul>
+    <li><a href="https://github.com/searxng/searxng/tree/master">Source</a>
+  
+    <li><a href="https://github.com/searxng/searxng/wiki">Wiki</a>
+  
+    <li><a href="https://searx.space">Public instances</a>
+  
+    <li><a href="https://github.com/searxng/searxng/issues">Issue Tracker</a>
+  </ul><h3>Navigation</h3>
+<ul>
+  <li><a href="../../../index.html">Overview</a>
+    <ul>
+      <li><a href="../../index.html">Module code</a>
+        <ul>
+      <li><a href="../engines.html">searx.engines</a>
+        
+          
+          </ul>
+      </li></ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright SearXNG team.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Translation &#8212; SearXNG Documentation (2026.2.22+191818b86)</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=6625fa76" />
+    <link rel="stylesheet" type="text/css" href="../_static/searxng.css?v=52e4ff28" />
+    <script src="../_static/documentation_options.js?v=1b5d919e"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script data-project="searxng" data-version="2026.2.22+191818b86" src="../_static/describe_version.js?v=fa7f30d0"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Makefile &amp; ./manage" href="makefile.html" />
+    <link rel="prev" title="Statistics" href="answerers/statistics.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="makefile.html" title="Makefile &amp; ./manage"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="answerers/statistics.html" title="Statistics"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">SearXNG Documentation (2026.2.22+191818b86)</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" accesskey="U">Developer documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Translation</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="translation">
+<span id="id1"></span><h1>Translation<a class="headerlink" href="#translation" title="Link to this heading">¶</a></h1>
+<aside class="sidebar">
+<p class="sidebar-title"><a class="reference external" href="https://translate.codeberg.org/projects/searxng/"><img alt="translated" src="https://translate.codeberg.org/widgets/searxng/-/searxng/svg-badge.svg" /></a></p>
+<ul class="simple">
+<li><p><a class="reference internal" href="../src/searx.babel_extract.html#searx-babel-extract"><span class="std std-ref">Custom message extractor (i18n)</span></a></p></li>
+<li><p><a class="reference external" href="https://docs.weblate.org">Weblate</a></p></li>
+<li><p>SearXNG <a class="reference external" href="https://github.com/searxng/searxng/tree/translations">translations branch</a></p></li>
+<li><p>SearXNG <a class="reference external" href="https://translate.codeberg.org/projects/searxng/searxng/#repository">Weblate repository</a></p></li>
+<li><p>Weblate Client: <a class="reference external" href="https://docs.weblate.org/en/latest/wlc.html">wlc</a></p></li>
+<li><p>Babel Command-Line: <a class="reference external" href="http://babel.pocoo.org/en/latest/cmdline.html">pybabel</a></p></li>
+<li><p><a class="reference external" href="https://docs.weblate.org/en/latest/workflows.html">weblate workflow</a></p></li>
+</ul>
+</aside>
+<p>Translation takes place on <a class="reference external" href="https://translate.codeberg.org/projects/searxng/">translate.codeberg.org</a>.</p>
+<p>Translations which has been added by translators on the <a class="reference external" href="https://translate.codeberg.org/projects/searxng/">translate.codeberg.org</a> UI are
+committed to Weblate’s counterpart of the SearXNG <em>origin</em> repository which is
+located at <code class="docutils literal notranslate"><span class="pre">https://translate.codeberg.org/git/searxng/searxng</span></code>.</p>
+<p>There is no need to clone this repository, <a class="reference internal" href="#searxng-weblate-workflow"><span class="std std-ref">SearXNG’s PR workflow to be in sync with Weblate</span></a> take
+care of the synchronization with the <em>origin</em>.  To avoid merging commits from
+the counterpart directly on the <code class="docutils literal notranslate"><span class="pre">master</span></code> branch of <em>SearXNG origin</em>, a <em>pull
+request</em> (PR) is created by this workflow.</p>
+<p>Weblate monitors the <a class="reference external" href="https://github.com/searxng/searxng/tree/translations">translations branch</a>, not the <code class="docutils literal notranslate"><span class="pre">master</span></code> branch.  This
+branch is an <a class="reference external" href="https://git-scm.com/docs/git-checkout#Documentation/git-checkout.txt---orphanltnewbranchgt">orphan branch</a>, decoupled from the master branch (we already know
+orphan branches from the <code class="docutils literal notranslate"><span class="pre">gh-pages</span></code>).  The <a class="reference external" href="https://github.com/searxng/searxng/tree/translations">translations branch</a> contains
+only the</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">translation/messages.pot</span></code> and the</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">translation/*/messages.po</span></code> files, nothing else.</p></li>
+</ul>
+<figure class="align-default" id="id3">
+<span id="searxng-weblate-workflow"></span><img alt="../_images/translation.svg" src="../_images/translation.svg" />
+<figcaption>
+<p><span class="caption-number">Fig. 3 </span><span class="caption-text">SearXNG’s PR workflow to be in sync with Weblate</span><a class="headerlink" href="#id3" title="Link to this image">¶</a></p>
+</figcaption>
+</figure>
+<dl class="simple">
+<dt>Sync from <em>origin</em> to <em>weblate</em>: using <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">weblate.push.translations</span></code></dt><dd><p>For each commit on the <code class="docutils literal notranslate"><span class="pre">master</span></code> branch of SearXNG <em>origin</em> the GitHub job
+<a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/.github/workflows/integration.yml">babel / Update translations branch</a> checks for updated translations.</p>
+</dd>
+<dt>Sync from <em>weblate</em> to <em>origin</em>: using <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">weblate.translations.commit</span></code></dt><dd><p>Every Friday, the GitHub workflow <a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/.github/workflows/translations-update.yml">babel / create PR for additions from
+weblate</a> creates a PR with the
+updated translation files:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">translation/messages.pot</span></code>,</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">translation/*/messages.po</span></code> and</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">translation/*/messages.mo</span></code></p></li>
+</ul>
+</dd>
+</dl>
+<section id="id2">
+<h2>wlc<a class="headerlink" href="#id2" title="Link to this heading">¶</a></h2>
+<p>All weblate integration is done by GitHub workflows, but if you want to use <a class="reference external" href="https://docs.weblate.org/en/latest/wlc.html">wlc</a>,
+copy this content into <a class="reference external" href="https://docs.weblate.org/en/latest/wlc.html#wlc-config">wlc configuration</a> in your HOME <code class="docutils literal notranslate"><span class="pre">~/.config/weblate</span></code></p>
+<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="k">[keys]</span>
+<span class="na">https</span><span class="o">:</span><span class="s">//translate.codeberg.org/api/ = APIKEY</span>
+</pre></div>
+</div>
+<p>Replace <code class="docutils literal notranslate"><span class="pre">APIKEY</span></code> by your <a class="reference external" href="https://translate.codeberg.org/accounts/profile/#api">API key</a>.</p>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+  <span id="sidebar-top"></span>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+  
+    
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/searxng-wordmark.svg" alt="Logo of SearXNG"/>
+            </a></p>
+  
+
+<h3><a href="../index.html">Table of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../user/index.html">User information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../own-instance.html">Why use a private instance?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../admin/index.html">Administrator documentation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Developer documentation</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html">Development Quickstart</a></li>
+<li class="toctree-l2"><a class="reference internal" href="commits.html">Git Commits &amp; Change Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contribution_guide.html">How to contribute</a></li>
+<li class="toctree-l2"><a class="reference internal" href="extended_types.html">Extended Types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="engines/index.html">Engine Implementations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="result_types/index.html">Result Types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="templates.html">Simple Theme Templates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="search_api.html">Search API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plugins/index.html">Plugins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="answerers/index.html">Answerers</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Translation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id2">wlc</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="makefile.html">Makefile &amp; <code class="docutils literal notranslate"><span class="pre">./manage</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="reST.html">reST primer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searxng_extra/index.html">Tooling box <code class="docutils literal notranslate"><span class="pre">searxng_extra</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../utils/index.html">DevOps tooling box</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../src/index.html">Source-Code</a></li>
+</ul>
+
+  <h3>Project Links</h3>
+  <ul>
+    <li><a href="https://github.com/searxng/searxng/tree/master">Source</a>
+  
+    <li><a href="https://github.com/searxng/searxng/wiki">Wiki</a>
+  
+    <li><a href="https://searx.space">Public instances</a>
+  
+    <li><a href="https://github.com/searxng/searxng/issues">Issue Tracker</a>
+  </ul><h3>Navigation</h3>
+<ul>
+  <li><a href="../index.html">Overview</a>
+    <ul>
+      <li><a href="index.html">Developer documentation</a>
+        <ul>
+          <li>Previous: <a href="answerers/statistics.html" title="previous chapter">Statistics</a>
+          <li>Next: <a href="makefile.html" title="next chapter">Makefile &amp; <code class="docutils literal notranslate"><span class="pre">./manage</span></code></a></ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/dev/translation.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright SearXNG team.
+    </div>
+  </body>
+</html>

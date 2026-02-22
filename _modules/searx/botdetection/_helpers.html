@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>searx.botdetection._helpers &#8212; SearXNG Documentation (2026.2.22+191818b86)</title>
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=6625fa76" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/searxng.css?v=52e4ff28" />
+    <script src="../../../_static/documentation_options.js?v=1b5d919e"></script>
+    <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script data-project="searxng" data-version="2026.2.22+191818b86" src="../../../_static/describe_version.js?v=fa7f30d0"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">SearXNG Documentation (2026.2.22+191818b86)</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" accesskey="U">Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">searx.botdetection._helpers</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for searx.botdetection._helpers</h1><div class="highlight"><pre>
+<span></span><span class="c1"># SPDX-License-Identifier: AGPL-3.0-or-later</span>
+<span class="c1"># pylint: disable=missing-module-docstring, invalid-name</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">t</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;log_error_only_once&quot;</span><span class="p">,</span> <span class="s2">&quot;dump_request&quot;</span><span class="p">,</span> <span class="s2">&quot;get_network&quot;</span><span class="p">,</span> <span class="s2">&quot;logger&quot;</span><span class="p">,</span> <span class="s2">&quot;too_many_requests&quot;</span><span class="p">]</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">ipaddress</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">IPv4Network</span><span class="p">,</span>
+    <span class="n">IPv6Network</span><span class="p">,</span>
+    <span class="n">IPv4Address</span><span class="p">,</span>
+    <span class="n">IPv6Address</span><span class="p">,</span>
+    <span class="n">ip_network</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">flask</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">werkzeug</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">searx</span><span class="w"> </span><span class="kn">import</span> <span class="n">logger</span>
+
+<span class="k">if</span> <span class="n">t</span><span class="o">.</span><span class="n">TYPE_CHECKING</span><span class="p">:</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">.</span><span class="w"> </span><span class="kn">import</span> <span class="n">config</span>
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logger</span><span class="o">.</span><span class="n">getChild</span><span class="p">(</span><span class="s1">&#39;botdetection&#39;</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">dump_request</span><span class="p">(</span><span class="n">request</span><span class="p">:</span> <span class="n">flask</span><span class="o">.</span><span class="n">Request</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">(</span>
+        <span class="n">request</span><span class="o">.</span><span class="n">path</span>
+        <span class="o">+</span> <span class="s2">&quot; || X-Forwarded-For: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">request</span><span class="o">.</span><span class="n">headers</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;X-Forwarded-For&#39;</span><span class="p">)</span>
+        <span class="o">+</span> <span class="s2">&quot; || X-Real-IP: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">request</span><span class="o">.</span><span class="n">headers</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;X-Real-IP&#39;</span><span class="p">)</span>
+        <span class="o">+</span> <span class="s2">&quot; || form: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">request</span><span class="o">.</span><span class="n">form</span>
+        <span class="o">+</span> <span class="s2">&quot; || Accept: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">request</span><span class="o">.</span><span class="n">headers</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;Accept&#39;</span><span class="p">)</span>
+        <span class="o">+</span> <span class="s2">&quot; || Accept-Language: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">request</span><span class="o">.</span><span class="n">headers</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;Accept-Language&#39;</span><span class="p">)</span>
+        <span class="o">+</span> <span class="s2">&quot; || Accept-Encoding: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">request</span><span class="o">.</span><span class="n">headers</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;Accept-Encoding&#39;</span><span class="p">)</span>
+        <span class="o">+</span> <span class="s2">&quot; || Content-Type: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">request</span><span class="o">.</span><span class="n">headers</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;Content-Type&#39;</span><span class="p">)</span>
+        <span class="o">+</span> <span class="s2">&quot; || Content-Length: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">request</span><span class="o">.</span><span class="n">headers</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;Content-Length&#39;</span><span class="p">)</span>
+        <span class="o">+</span> <span class="s2">&quot; || Connection: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">request</span><span class="o">.</span><span class="n">headers</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;Connection&#39;</span><span class="p">)</span>
+        <span class="o">+</span> <span class="s2">&quot; || User-Agent: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">request</span><span class="o">.</span><span class="n">headers</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;User-Agent&#39;</span><span class="p">)</span>
+        <span class="o">+</span> <span class="s2">&quot; || Sec-Fetch-Site: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">request</span><span class="o">.</span><span class="n">headers</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;Sec-Fetch-Site&#39;</span><span class="p">)</span>
+        <span class="o">+</span> <span class="s2">&quot; || Sec-Fetch-Mode: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">request</span><span class="o">.</span><span class="n">headers</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;Sec-Fetch-Mode&#39;</span><span class="p">)</span>
+        <span class="o">+</span> <span class="s2">&quot; || Sec-Fetch-Dest: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">request</span><span class="o">.</span><span class="n">headers</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;Sec-Fetch-Dest&#39;</span><span class="p">)</span>
+    <span class="p">)</span>
+
+
+<div class="viewcode-block" id="too_many_requests">
+<a class="viewcode-back" href="../../../src/searx.botdetection.html#searx.botdetection.too_many_requests">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">too_many_requests</span><span class="p">(</span><span class="n">network</span><span class="p">:</span> <span class="n">IPv4Network</span> <span class="o">|</span> <span class="n">IPv6Network</span><span class="p">,</span> <span class="n">log_msg</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">werkzeug</span><span class="o">.</span><span class="n">Response</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Returns a HTTP 429 response object and writes a ERROR message to the</span>
+<span class="sd">    &#39;botdetection&#39; logger.  This function is used in part by the filter methods</span>
+<span class="sd">    to return the default ``Too Many Requests`` response.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;BLOCK </span><span class="si">%s</span><span class="s2">: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">network</span><span class="o">.</span><span class="n">compressed</span><span class="p">,</span> <span class="n">log_msg</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">flask</span><span class="o">.</span><span class="n">make_response</span><span class="p">((</span><span class="s1">&#39;Too Many Requests&#39;</span><span class="p">,</span> <span class="mi">429</span><span class="p">))</span></div>
+
+
+
+<div class="viewcode-block" id="get_network">
+<a class="viewcode-back" href="../../../src/searx.botdetection.html#searx.botdetection.get_network">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_network</span><span class="p">(</span><span class="n">real_ip</span><span class="p">:</span> <span class="n">IPv4Address</span> <span class="o">|</span> <span class="n">IPv6Address</span><span class="p">,</span> <span class="n">cfg</span><span class="p">:</span> <span class="s2">&quot;config.Config&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">IPv4Network</span> <span class="o">|</span> <span class="n">IPv6Network</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Returns the (client) network of whether the ``real_ip`` is part of.</span>
+
+<span class="sd">    The ``ipv4_prefix`` and ``ipv6_prefix`` define the number of leading bits in</span>
+<span class="sd">    an address that are compared to determine whether or not an address is part</span>
+<span class="sd">    of a (client) network.</span>
+
+<span class="sd">    .. code:: toml</span>
+
+<span class="sd">       [botdetection]</span>
+
+<span class="sd">       ipv4_prefix = 32</span>
+<span class="sd">       ipv6_prefix = 48</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">prefix</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">cfg</span><span class="p">[</span><span class="s2">&quot;botdetection.ipv4_prefix&quot;</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">real_ip</span><span class="o">.</span><span class="n">version</span> <span class="o">==</span> <span class="mi">6</span><span class="p">:</span>
+        <span class="n">prefix</span> <span class="o">=</span> <span class="n">cfg</span><span class="p">[</span><span class="s2">&quot;botdetection.ipv6_prefix&quot;</span><span class="p">]</span>
+    <span class="n">network</span> <span class="o">=</span> <span class="n">ip_network</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">real_ip</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">prefix</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">strict</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="c1"># logger.debug(&quot;get_network(): %s&quot;, network.compressed)</span>
+    <span class="k">return</span> <span class="n">network</span></div>
+
+
+
+<span class="n">_logged_errors</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">log_error_only_once</span><span class="p">(</span><span class="n">err_msg</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">err_msg</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">_logged_errors</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">err_msg</span><span class="p">)</span>
+        <span class="n">_logged_errors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">err_msg</span><span class="p">)</span>
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+  <span id="sidebar-top"></span>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+  
+    
+            <p class="logo"><a href="../../../index.html">
+              <img class="logo" src="../../../_static/searxng-wordmark.svg" alt="Logo of SearXNG"/>
+            </a></p>
+  
+
+<h3><a href="../../../index.html">Table of Contents</a></h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../user/index.html">User information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../own-instance.html">Why use a private instance?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../admin/index.html">Administrator documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../dev/index.html">Developer documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../utils/index.html">DevOps tooling box</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/index.html">Source-Code</a></li>
+</ul>
+
+  <h3>Project Links</h3>
+  <ul>
+    <li><a href="https://github.com/searxng/searxng/tree/master">Source</a>
+  
+    <li><a href="https://github.com/searxng/searxng/wiki">Wiki</a>
+  
+    <li><a href="https://searx.space">Public instances</a>
+  
+    <li><a href="https://github.com/searxng/searxng/issues">Issue Tracker</a>
+  </ul><h3>Navigation</h3>
+<ul>
+  <li><a href="../../../index.html">Overview</a>
+    <ul>
+      <li><a href="../../index.html">Module code</a>
+        
+          
+          </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright SearXNG team.
+    </div>
+  </body>
+</html>

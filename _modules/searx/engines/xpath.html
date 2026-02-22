@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>searx.engines.xpath &#8212; SearXNG Documentation (2026.2.22+191818b86)</title>
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=6625fa76" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/searxng.css?v=52e4ff28" />
+    <script src="../../../_static/documentation_options.js?v=1b5d919e"></script>
+    <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script data-project="searxng" data-version="2026.2.22+191818b86" src="../../../_static/describe_version.js?v=fa7f30d0"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">SearXNG Documentation (2026.2.22+191818b86)</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" >Module code</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../engines.html" accesskey="U">searx.engines</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">searx.engines.xpath</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for searx.engines.xpath</h1><div class="highlight"><pre>
+<span></span><span class="c1"># SPDX-License-Identifier: AGPL-3.0-or-later</span>
+<span class="sd">&quot;&quot;&quot;The XPath engine is a *generic* engine with which it is possible to configure</span>
+<span class="sd">engines in the settings.</span>
+
+<span class="sd">.. _XPath selector: https://quickref.me/xpath.html#xpath-selectors</span>
+
+<span class="sd">Configuration</span>
+<span class="sd">=============</span>
+
+<span class="sd">Request:</span>
+
+<span class="sd">- :py:obj:`search_url`</span>
+<span class="sd">- :py:obj:`lang_all`</span>
+<span class="sd">- :py:obj:`soft_max_redirects`</span>
+<span class="sd">- :py:obj:`method`</span>
+<span class="sd">- :py:obj:`request_body`</span>
+<span class="sd">- :py:obj:`cookies`</span>
+<span class="sd">- :py:obj:`headers`</span>
+
+<span class="sd">Paging:</span>
+
+<span class="sd">- :py:obj:`paging`</span>
+<span class="sd">- :py:obj:`page_size`</span>
+<span class="sd">- :py:obj:`first_page_num`</span>
+
+<span class="sd">Time Range:</span>
+
+<span class="sd">- :py:obj:`time_range_support`</span>
+<span class="sd">- :py:obj:`time_range_url`</span>
+<span class="sd">- :py:obj:`time_range_map`</span>
+
+<span class="sd">Safe-Search:</span>
+
+<span class="sd">- :py:obj:`safe_search_support`</span>
+<span class="sd">- :py:obj:`safe_search_map`</span>
+
+<span class="sd">Response:</span>
+
+<span class="sd">- :py:obj:`no_result_for_http_status`</span>
+
+<span class="sd">`XPath selector`_:</span>
+
+<span class="sd">- :py:obj:`results_xpath`</span>
+<span class="sd">- :py:obj:`url_xpath`</span>
+<span class="sd">- :py:obj:`title_xpath`</span>
+<span class="sd">- :py:obj:`content_xpath`</span>
+<span class="sd">- :py:obj:`thumbnail_xpath`</span>
+<span class="sd">- :py:obj:`suggestion_xpath`</span>
+
+
+<span class="sd">Example</span>
+<span class="sd">=======</span>
+
+<span class="sd">Here is a simple example of a XPath engine configured in the :ref:`settings</span>
+<span class="sd">engines` section, further read :ref:`engines-dev`.</span>
+
+<span class="sd">.. code:: yaml</span>
+
+<span class="sd">  - name : bitbucket</span>
+<span class="sd">    engine : xpath</span>
+<span class="sd">    paging : True</span>
+<span class="sd">    search_url : https://bitbucket.org/repo/all/{pageno}?name={query}</span>
+<span class="sd">    url_xpath : //article[@class=&quot;repo-summary&quot;]//a[@class=&quot;repo-link&quot;]/@href</span>
+<span class="sd">    title_xpath : //article[@class=&quot;repo-summary&quot;]//a[@class=&quot;repo-link&quot;]</span>
+<span class="sd">    content_xpath : //article[@class=&quot;repo-summary&quot;]/p</span>
+
+<span class="sd">Implementations</span>
+<span class="sd">===============</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">urllib.parse</span><span class="w"> </span><span class="kn">import</span> <span class="n">urlencode</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">lxml</span><span class="w"> </span><span class="kn">import</span> <span class="n">html</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">searx.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">extract_text</span><span class="p">,</span> <span class="n">extract_url</span><span class="p">,</span> <span class="n">eval_xpath</span><span class="p">,</span> <span class="n">eval_xpath_list</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">searx.network</span><span class="w"> </span><span class="kn">import</span> <span class="n">raise_for_httperror</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">searx.result_types</span><span class="w"> </span><span class="kn">import</span> <span class="n">EngineResults</span>
+
+<span class="n">search_url</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Search URL of the engine.  Example::</span>
+
+<span class="sd">    https://example.org/?search={query}&amp;page={pageno}{time_range}{safe_search}</span>
+
+<span class="sd">Replacements are:</span>
+
+<span class="sd">``{query}``:</span>
+<span class="sd">  Search terms from user.</span>
+
+<span class="sd">``{pageno}``:</span>
+<span class="sd">  Page number if engine supports paging :py:obj:`paging`</span>
+
+<span class="sd">``{lang}``:</span>
+<span class="sd">  ISO 639-1 language code (en, de, fr ..)</span>
+
+<span class="sd">``{time_range}``:</span>
+<span class="sd">  :py:obj:`URL parameter &lt;time_range_url&gt;` if engine :py:obj:`supports time</span>
+<span class="sd">  range &lt;time_range_support&gt;`.  The value for the parameter is taken from</span>
+<span class="sd">  :py:obj:`time_range_map`.</span>
+
+<span class="sd">``{safe_search}``:</span>
+<span class="sd">  Safe-search :py:obj:`URL parameter &lt;safe_search_map&gt;` if engine</span>
+<span class="sd">  :py:obj:`supports safe-search &lt;safe_search_support&gt;`.  The ``{safe_search}``</span>
+<span class="sd">  replacement is taken from the :py:obj:`safes_search_map`.  Filter results::</span>
+
+<span class="sd">      0: none, 1: moderate, 2:strict</span>
+
+<span class="sd">  If not supported, the URL parameter is an empty string.</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="n">lang_all</span> <span class="o">=</span> <span class="s1">&#39;en&#39;</span>
+<span class="sd">&#39;&#39;&#39;Replacement ``{lang}`` in :py:obj:`search_url` if language ``all`` is</span>
+<span class="sd">selected.</span>
+<span class="sd">&#39;&#39;&#39;</span>
+
+<span class="n">no_result_for_http_status</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="sd">&#39;&#39;&#39;Return empty result for these HTTP status codes instead of throwing an error.</span>
+
+<span class="sd">.. code:: yaml</span>
+
+<span class="sd">    no_result_for_http_status: []</span>
+<span class="sd">&#39;&#39;&#39;</span>
+
+<span class="n">soft_max_redirects</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="sd">&#39;&#39;&#39;Maximum redirects, soft limit. Record an error but don&#39;t stop the engine&#39;&#39;&#39;</span>
+
+<span class="n">results_xpath</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+<span class="sd">&#39;&#39;&#39;`XPath selector`_ for the list of result items&#39;&#39;&#39;</span>
+
+<span class="n">url_xpath</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="sd">&#39;&#39;&#39;`XPath selector`_ of result&#39;s ``url``.&#39;&#39;&#39;</span>
+
+<span class="n">content_xpath</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="sd">&#39;&#39;&#39;`XPath selector`_ of result&#39;s ``content``.&#39;&#39;&#39;</span>
+
+<span class="n">title_xpath</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="sd">&#39;&#39;&#39;`XPath selector`_ of result&#39;s ``title``.&#39;&#39;&#39;</span>
+
+<span class="n">thumbnail_xpath</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="sd">&#39;&#39;&#39;`XPath selector`_ of result&#39;s ``thumbnail``.&#39;&#39;&#39;</span>
+
+<span class="n">suggestion_xpath</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+<span class="sd">&#39;&#39;&#39;`XPath selector`_ of result&#39;s ``suggestion``.&#39;&#39;&#39;</span>
+
+<span class="n">cached_xpath</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+<span class="n">cached_url</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+
+<span class="n">cookies</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="sd">&#39;&#39;&#39;Some engines might offer different result based on cookies.</span>
+<span class="sd">Possible use-case: To set safesearch cookie.&#39;&#39;&#39;</span>
+
+<span class="n">headers</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="sd">&#39;&#39;&#39;Some engines might offer different result based headers.  Possible use-case:</span>
+<span class="sd">To set header to moderate.&#39;&#39;&#39;</span>
+
+<span class="n">method</span> <span class="o">=</span> <span class="s1">&#39;GET&#39;</span>
+<span class="sd">&#39;&#39;&#39;Some engines might require to do POST requests for search.&#39;&#39;&#39;</span>
+
+<span class="n">request_body</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+<span class="sd">&#39;&#39;&#39;The body of the request.  This can only be used if different :py:obj:`method`</span>
+<span class="sd">is set, e.g. ``POST``.  For formatting see the documentation of :py:obj:`search_url`::</span>
+
+<span class="sd">    search={query}&amp;page={pageno}{time_range}{safe_search}</span>
+<span class="sd">&#39;&#39;&#39;</span>
+
+<span class="n">paging</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="sd">&#39;&#39;&#39;Engine supports paging [True or False].&#39;&#39;&#39;</span>
+
+<span class="n">page_size</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="sd">&#39;&#39;&#39;Number of results on each page.  Only needed if the site requires not a page</span>
+<span class="sd">number, but an offset.&#39;&#39;&#39;</span>
+
+<span class="n">first_page_num</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="sd">&#39;&#39;&#39;Number of the first page (usually 0 or 1).&#39;&#39;&#39;</span>
+
+<span class="n">time_range_support</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="sd">&#39;&#39;&#39;Engine supports search time range.&#39;&#39;&#39;</span>
+
+<span class="n">time_range_url</span> <span class="o">=</span> <span class="s1">&#39;&amp;hours=</span><span class="si">{time_range_val}</span><span class="s1">&#39;</span>
+<span class="sd">&#39;&#39;&#39;Time range URL parameter in the in :py:obj:`search_url`.  If no time range is</span>
+<span class="sd">requested by the user, the URL parameter is an empty string.  The</span>
+<span class="sd">``{time_range_val}`` replacement is taken from the :py:obj:`time_range_map`.</span>
+
+<span class="sd">.. code:: yaml</span>
+
+<span class="sd">    time_range_url : &#39;&amp;days={time_range_val}&#39;</span>
+<span class="sd">&#39;&#39;&#39;</span>
+
+<span class="n">time_range_map</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;day&#39;</span><span class="p">:</span> <span class="mi">24</span><span class="p">,</span>
+    <span class="s1">&#39;week&#39;</span><span class="p">:</span> <span class="mi">24</span> <span class="o">*</span> <span class="mi">7</span><span class="p">,</span>
+    <span class="s1">&#39;month&#39;</span><span class="p">:</span> <span class="mi">24</span> <span class="o">*</span> <span class="mi">30</span><span class="p">,</span>
+    <span class="s1">&#39;year&#39;</span><span class="p">:</span> <span class="mi">24</span> <span class="o">*</span> <span class="mi">365</span><span class="p">,</span>
+<span class="p">}</span>
+<span class="sd">&#39;&#39;&#39;Maps time range value from user to ``{time_range_val}`` in</span>
+<span class="sd">:py:obj:`time_range_url`.</span>
+
+<span class="sd">.. code:: yaml</span>
+
+<span class="sd">    time_range_map:</span>
+<span class="sd">      day: 1</span>
+<span class="sd">      week: 7</span>
+<span class="sd">      month: 30</span>
+<span class="sd">      year: 365</span>
+<span class="sd">&#39;&#39;&#39;</span>
+
+<span class="n">safe_search_support</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="sd">&#39;&#39;&#39;Engine supports safe-search.&#39;&#39;&#39;</span>
+
+<span class="n">safe_search_map</span> <span class="o">=</span> <span class="p">{</span><span class="mi">0</span><span class="p">:</span> <span class="s1">&#39;&amp;filter=none&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span> <span class="s1">&#39;&amp;filter=moderate&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="p">:</span> <span class="s1">&#39;&amp;filter=strict&#39;</span><span class="p">}</span>
+<span class="sd">&#39;&#39;&#39;Maps safe-search value to ``{safe_search}`` in :py:obj:`search_url`.</span>
+
+<span class="sd">.. code:: yaml</span>
+
+<span class="sd">    safesearch: true</span>
+<span class="sd">    safes_search_map:</span>
+<span class="sd">      0: &#39;&amp;filter=none&#39;</span>
+<span class="sd">      1: &#39;&amp;filter=moderate&#39;</span>
+<span class="sd">      2: &#39;&amp;filter=strict&#39;</span>
+
+<span class="sd">&#39;&#39;&#39;</span>
+
+
+<div class="viewcode-block" id="request">
+<a class="viewcode-back" href="../../../dev/engines/xpath.html#searx.engines.xpath.request">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">request</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">params</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;Build request parameters (see :ref:`engine request`).&#39;&#39;&#39;</span>
+    <span class="n">lang</span> <span class="o">=</span> <span class="n">lang_all</span>
+    <span class="k">if</span> <span class="n">params</span><span class="p">[</span><span class="s1">&#39;language&#39;</span><span class="p">]</span> <span class="o">!=</span> <span class="s1">&#39;all&#39;</span><span class="p">:</span>
+        <span class="n">lang</span> <span class="o">=</span> <span class="n">params</span><span class="p">[</span><span class="s1">&#39;language&#39;</span><span class="p">][:</span><span class="mi">2</span><span class="p">]</span>
+
+    <span class="n">time_range</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+    <span class="k">if</span> <span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;time_range&#39;</span><span class="p">):</span>
+        <span class="n">time_range_val</span> <span class="o">=</span> <span class="n">time_range_map</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;time_range&#39;</span><span class="p">))</span>
+        <span class="n">time_range</span> <span class="o">=</span> <span class="n">time_range_url</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">time_range_val</span><span class="o">=</span><span class="n">time_range_val</span><span class="p">)</span>
+
+    <span class="n">safe_search</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+    <span class="k">if</span> <span class="n">params</span><span class="p">[</span><span class="s1">&#39;safesearch&#39;</span><span class="p">]:</span>
+        <span class="n">safe_search</span> <span class="o">=</span> <span class="n">safe_search_map</span><span class="p">[</span><span class="n">params</span><span class="p">[</span><span class="s1">&#39;safesearch&#39;</span><span class="p">]]</span>
+
+    <span class="n">fargs</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;query&#39;</span><span class="p">:</span> <span class="n">urlencode</span><span class="p">({</span><span class="s1">&#39;q&#39;</span><span class="p">:</span> <span class="n">query</span><span class="p">})[</span><span class="mi">2</span><span class="p">:],</span>
+        <span class="s1">&#39;lang&#39;</span><span class="p">:</span> <span class="n">lang</span><span class="p">,</span>
+        <span class="s1">&#39;pageno&#39;</span><span class="p">:</span> <span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="s1">&#39;pageno&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">page_size</span> <span class="o">+</span> <span class="n">first_page_num</span><span class="p">,</span>
+        <span class="s1">&#39;time_range&#39;</span><span class="p">:</span> <span class="n">time_range</span><span class="p">,</span>
+        <span class="s1">&#39;safe_search&#39;</span><span class="p">:</span> <span class="n">safe_search</span><span class="p">,</span>
+    <span class="p">}</span>
+
+    <span class="n">params</span><span class="p">[</span><span class="s1">&#39;cookies&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">cookies</span><span class="p">)</span>
+    <span class="n">params</span><span class="p">[</span><span class="s1">&#39;headers&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">headers</span><span class="p">)</span>
+
+    <span class="n">params</span><span class="p">[</span><span class="s1">&#39;url&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">search_url</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">**</span><span class="n">fargs</span><span class="p">)</span>
+    <span class="n">params</span><span class="p">[</span><span class="s1">&#39;method&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">method</span>
+
+    <span class="k">if</span> <span class="n">request_body</span><span class="p">:</span>
+        <span class="c1"># don&#39;t url-encode the query if it&#39;s in the request body</span>
+        <span class="n">fargs</span><span class="p">[</span><span class="s1">&#39;query&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">query</span>
+        <span class="n">params</span><span class="p">[</span><span class="s1">&#39;data&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">request_body</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">**</span><span class="n">fargs</span><span class="p">)</span>
+
+    <span class="n">params</span><span class="p">[</span><span class="s1">&#39;soft_max_redirects&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">soft_max_redirects</span>
+    <span class="n">params</span><span class="p">[</span><span class="s1">&#39;raise_for_httperror&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
+
+    <span class="k">return</span> <span class="n">params</span></div>
+
+
+
+<div class="viewcode-block" id="response">
+<a class="viewcode-back" href="../../../dev/engines/xpath.html#searx.engines.xpath.response">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">response</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">EngineResults</span><span class="p">:</span>  <span class="c1"># pylint: disable=too-many-branches</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Scrap *results* from the response (see :ref:`result types`).&quot;&quot;&quot;</span>
+    <span class="n">results</span> <span class="o">=</span> <span class="n">EngineResults</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="n">no_result_for_http_status</span> <span class="ow">and</span> <span class="n">resp</span><span class="o">.</span><span class="n">status_code</span> <span class="ow">in</span> <span class="n">no_result_for_http_status</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">results</span>
+
+    <span class="n">raise_for_httperror</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">resp</span><span class="o">.</span><span class="n">text</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">results</span>
+
+    <span class="n">dom</span> <span class="o">=</span> <span class="n">html</span><span class="o">.</span><span class="n">fromstring</span><span class="p">(</span><span class="n">resp</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+    <span class="n">is_onion</span> <span class="o">=</span> <span class="s1">&#39;onions&#39;</span> <span class="ow">in</span> <span class="n">categories</span>
+
+    <span class="k">if</span> <span class="n">results_xpath</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">eval_xpath_list</span><span class="p">(</span><span class="n">dom</span><span class="p">,</span> <span class="n">results_xpath</span><span class="p">):</span>
+
+            <span class="n">url</span> <span class="o">=</span> <span class="n">extract_url</span><span class="p">(</span><span class="n">eval_xpath_list</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">url_xpath</span><span class="p">,</span> <span class="n">min_len</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span> <span class="n">search_url</span><span class="p">)</span>
+            <span class="n">title</span> <span class="o">=</span> <span class="n">extract_text</span><span class="p">(</span><span class="n">eval_xpath_list</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">title_xpath</span><span class="p">,</span> <span class="n">min_len</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span>
+            <span class="n">content</span> <span class="o">=</span> <span class="n">extract_text</span><span class="p">(</span><span class="n">eval_xpath_list</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">content_xpath</span><span class="p">))</span>
+            <span class="n">tmp_result</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;url&#39;</span><span class="p">:</span> <span class="n">url</span><span class="p">,</span> <span class="s1">&#39;title&#39;</span><span class="p">:</span> <span class="n">title</span><span class="p">,</span> <span class="s1">&#39;content&#39;</span><span class="p">:</span> <span class="n">content</span><span class="p">}</span>
+
+            <span class="c1"># add thumbnail if available</span>
+            <span class="k">if</span> <span class="n">thumbnail_xpath</span><span class="p">:</span>
+                <span class="n">thumbnail_xpath_result</span> <span class="o">=</span> <span class="n">eval_xpath_list</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">thumbnail_xpath</span><span class="p">)</span>
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">thumbnail_xpath_result</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="n">tmp_result</span><span class="p">[</span><span class="s1">&#39;thumbnail&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">extract_url</span><span class="p">(</span><span class="n">thumbnail_xpath_result</span><span class="p">,</span> <span class="n">search_url</span><span class="p">)</span>
+
+            <span class="c1"># add alternative cached url if available</span>
+            <span class="k">if</span> <span class="n">cached_xpath</span><span class="p">:</span>
+                <span class="n">tmp_result</span><span class="p">[</span><span class="s1">&#39;cached_url&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">cached_url</span> <span class="o">+</span> <span class="n">extract_text</span><span class="p">(</span><span class="n">eval_xpath_list</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">cached_xpath</span><span class="p">,</span> <span class="n">min_len</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span>
+
+            <span class="k">if</span> <span class="n">is_onion</span><span class="p">:</span>
+                <span class="n">tmp_result</span><span class="p">[</span><span class="s1">&#39;is_onion&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+
+            <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">tmp_result</span><span class="p">)</span>
+
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">cached_xpath</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">url</span><span class="p">,</span> <span class="n">title</span><span class="p">,</span> <span class="n">content</span><span class="p">,</span> <span class="n">cached</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span>
+                <span class="p">(</span><span class="n">extract_url</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">search_url</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">eval_xpath_list</span><span class="p">(</span><span class="n">dom</span><span class="p">,</span> <span class="n">url_xpath</span><span class="p">)),</span>
+                <span class="nb">map</span><span class="p">(</span><span class="n">extract_text</span><span class="p">,</span> <span class="n">eval_xpath_list</span><span class="p">(</span><span class="n">dom</span><span class="p">,</span> <span class="n">title_xpath</span><span class="p">)),</span>
+                <span class="nb">map</span><span class="p">(</span><span class="n">extract_text</span><span class="p">,</span> <span class="n">eval_xpath_list</span><span class="p">(</span><span class="n">dom</span><span class="p">,</span> <span class="n">content_xpath</span><span class="p">)),</span>
+                <span class="nb">map</span><span class="p">(</span><span class="n">extract_text</span><span class="p">,</span> <span class="n">eval_xpath_list</span><span class="p">(</span><span class="n">dom</span><span class="p">,</span> <span class="n">cached_xpath</span><span class="p">)),</span>
+            <span class="p">):</span>
+                <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                    <span class="p">{</span>
+                        <span class="s1">&#39;url&#39;</span><span class="p">:</span> <span class="n">url</span><span class="p">,</span>
+                        <span class="s1">&#39;title&#39;</span><span class="p">:</span> <span class="n">title</span><span class="p">,</span>
+                        <span class="s1">&#39;content&#39;</span><span class="p">:</span> <span class="n">content</span><span class="p">,</span>
+                        <span class="s1">&#39;cached_url&#39;</span><span class="p">:</span> <span class="n">cached_url</span> <span class="o">+</span> <span class="n">cached</span><span class="p">,</span>
+                        <span class="s1">&#39;is_onion&#39;</span><span class="p">:</span> <span class="n">is_onion</span><span class="p">,</span>
+                    <span class="p">}</span>
+                <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">url</span><span class="p">,</span> <span class="n">title</span><span class="p">,</span> <span class="n">content</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span>
+                <span class="p">(</span><span class="n">extract_url</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">search_url</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">eval_xpath_list</span><span class="p">(</span><span class="n">dom</span><span class="p">,</span> <span class="n">url_xpath</span><span class="p">)),</span>
+                <span class="nb">map</span><span class="p">(</span><span class="n">extract_text</span><span class="p">,</span> <span class="n">eval_xpath_list</span><span class="p">(</span><span class="n">dom</span><span class="p">,</span> <span class="n">title_xpath</span><span class="p">)),</span>
+                <span class="nb">map</span><span class="p">(</span><span class="n">extract_text</span><span class="p">,</span> <span class="n">eval_xpath_list</span><span class="p">(</span><span class="n">dom</span><span class="p">,</span> <span class="n">content_xpath</span><span class="p">)),</span>
+            <span class="p">):</span>
+                <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s1">&#39;url&#39;</span><span class="p">:</span> <span class="n">url</span><span class="p">,</span> <span class="s1">&#39;title&#39;</span><span class="p">:</span> <span class="n">title</span><span class="p">,</span> <span class="s1">&#39;content&#39;</span><span class="p">:</span> <span class="n">content</span><span class="p">,</span> <span class="s1">&#39;is_onion&#39;</span><span class="p">:</span> <span class="n">is_onion</span><span class="p">})</span>
+
+    <span class="k">if</span> <span class="n">suggestion_xpath</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">suggestion</span> <span class="ow">in</span> <span class="n">eval_xpath</span><span class="p">(</span><span class="n">dom</span><span class="p">,</span> <span class="n">suggestion_xpath</span><span class="p">):</span>
+            <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s1">&#39;suggestion&#39;</span><span class="p">:</span> <span class="n">extract_text</span><span class="p">(</span><span class="n">suggestion</span><span class="p">)})</span>
+
+    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;found </span><span class="si">%s</span><span class="s2"> results&quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">results</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">results</span></div>
+
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+  <span id="sidebar-top"></span>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+  
+    
+            <p class="logo"><a href="../../../index.html">
+              <img class="logo" src="../../../_static/searxng-wordmark.svg" alt="Logo of SearXNG"/>
+            </a></p>
+  
+
+<h3><a href="../../../index.html">Table of Contents</a></h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../user/index.html">User information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../own-instance.html">Why use a private instance?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../admin/index.html">Administrator documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../dev/index.html">Developer documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../utils/index.html">DevOps tooling box</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/index.html">Source-Code</a></li>
+</ul>
+
+  <h3>Project Links</h3>
+  <ul>
+    <li><a href="https://github.com/searxng/searxng/tree/master">Source</a>
+  
+    <li><a href="https://github.com/searxng/searxng/wiki">Wiki</a>
+  
+    <li><a href="https://searx.space">Public instances</a>
+  
+    <li><a href="https://github.com/searxng/searxng/issues">Issue Tracker</a>
+  </ul><h3>Navigation</h3>
+<ul>
+  <li><a href="../../../index.html">Overview</a>
+    <ul>
+      <li><a href="../../index.html">Module code</a>
+        <ul>
+      <li><a href="../engines.html">searx.engines</a>
+        
+          
+          </ul>
+      </li></ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright SearXNG team.
+    </div>
+  </body>
+</html>

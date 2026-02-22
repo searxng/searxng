@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>searx.plugins.hostnames &#8212; SearXNG Documentation (2026.2.22+191818b86)</title>
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=6625fa76" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/searxng.css?v=52e4ff28" />
+    <script src="../../../_static/documentation_options.js?v=1b5d919e"></script>
+    <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script data-project="searxng" data-version="2026.2.22+191818b86" src="../../../_static/describe_version.js?v=fa7f30d0"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">SearXNG Documentation (2026.2.22+191818b86)</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" accesskey="U">Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">searx.plugins.hostnames</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for searx.plugins.hostnames</h1><div class="highlight"><pre>
+<span></span><span class="c1"># SPDX-License-Identifier: AGPL-3.0-or-later</span>
+<span class="c1"># pylint: disable=too-many-branches, unused-argument</span>
+<span class="sd">&quot;&quot;&quot;During the initialization phase, the plugin checks whether a ``hostnames:``</span>
+<span class="sd">configuration exists. If this is not the case, the plugin is not included in the</span>
+<span class="sd">PluginStorage (it is not available for selection).</span>
+
+<span class="sd">- ``hostnames.replace``: A **mapping** of regular expressions to hostnames to be</span>
+<span class="sd">  replaced by other hostnames.</span>
+
+<span class="sd">  .. code:: yaml</span>
+
+<span class="sd">     hostnames:</span>
+<span class="sd">       replace:</span>
+<span class="sd">         &#39;(.*\\.)?youtube\\.com$&#39;: &#39;invidious.example.com&#39;</span>
+<span class="sd">         &#39;(.*\\.)?youtu\\.be$&#39;: &#39;invidious.example.com&#39;</span>
+<span class="sd">         ...</span>
+
+<span class="sd">- ``hostnames.remove``: A **list** of regular expressions of the hostnames whose</span>
+<span class="sd">  results should be taken from the results list.</span>
+
+<span class="sd">  .. code:: yaml</span>
+
+<span class="sd">     hostnames:</span>
+<span class="sd">       remove:</span>
+<span class="sd">         - &#39;(.*\\.)?facebook.com$&#39;</span>
+<span class="sd">         - ...</span>
+
+<span class="sd">- ``hostnames.high_priority``: A **list** of regular expressions for hostnames</span>
+<span class="sd">  whose result should be given higher priority. The results from these hosts are</span>
+<span class="sd">  arranged higher in the results list.</span>
+
+<span class="sd">  .. code:: yaml</span>
+
+<span class="sd">     hostnames:</span>
+<span class="sd">       high_priority:</span>
+<span class="sd">         - &#39;(.*\\.)?wikipedia.org$&#39;</span>
+<span class="sd">         - ...</span>
+
+<span class="sd">- ``hostnames.lower_priority``: A **list** of regular expressions for hostnames</span>
+<span class="sd">  whose result should be given lower priority. The results from these hosts are</span>
+<span class="sd">  arranged lower in the results list.</span>
+
+<span class="sd">  .. code:: yaml</span>
+
+<span class="sd">     hostnames:</span>
+<span class="sd">       low_priority:</span>
+<span class="sd">         - &#39;(.*\\.)?google(\\..*)?$&#39;</span>
+<span class="sd">         - ...</span>
+
+<span class="sd">If the URL matches the pattern of ``high_priority`` AND ``low_priority``, the</span>
+<span class="sd">higher priority wins over the lower priority.</span>
+
+<span class="sd">Alternatively, you can also specify a file name for the **mappings** or</span>
+<span class="sd">**lists** to load these from an external file:</span>
+
+<span class="sd">.. code:: yaml</span>
+
+<span class="sd">   hostnames:</span>
+<span class="sd">     replace: &#39;rewrite-hosts.yml&#39;</span>
+<span class="sd">     remove:</span>
+<span class="sd">       - &#39;(.*\\.)?facebook.com$&#39;</span>
+<span class="sd">       - ...</span>
+<span class="sd">     low_priority:</span>
+<span class="sd">       - &#39;(.*\\.)?google(\\..*)?$&#39;</span>
+<span class="sd">       - ...</span>
+<span class="sd">     high_priority:</span>
+<span class="sd">       - &#39;(.*\\.)?wikipedia.org$&#39;</span>
+<span class="sd">       - ...</span>
+
+<span class="sd">The ``rewrite-hosts.yml`` from the example above must be in the folder in which</span>
+<span class="sd">the ``settings.yml`` file is already located (``/etc/searxng``). The file then</span>
+<span class="sd">only contains the lists or the mapping tables without further information on the</span>
+<span class="sd">namespaces.  In the example above, this would be a mapping table that looks</span>
+<span class="sd">something like this:</span>
+
+<span class="sd">.. code:: yaml</span>
+
+<span class="sd">   &#39;(.*\\.)?youtube\\.com$&#39;: &#39;invidious.example.com&#39;</span>
+<span class="sd">   &#39;(.*\\.)?youtu\\.be$&#39;: &#39;invidious.example.com&#39;</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">t</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">urllib.parse</span><span class="w"> </span><span class="kn">import</span> <span class="n">urlunparse</span><span class="p">,</span> <span class="n">urlparse</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">flask_babel</span><span class="w"> </span><span class="kn">import</span> <span class="n">gettext</span>  <span class="c1"># pyright: ignore[reportUnknownVariableType]</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">searx</span><span class="w"> </span><span class="kn">import</span> <span class="n">settings</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">searx.result_types._base</span><span class="w"> </span><span class="kn">import</span> <span class="n">MainResult</span><span class="p">,</span> <span class="n">LegacyResult</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">searx.settings_loader</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_yaml_cfg</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">searx.plugins</span><span class="w"> </span><span class="kn">import</span> <span class="n">Plugin</span><span class="p">,</span> <span class="n">PluginInfo</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">._core</span><span class="w"> </span><span class="kn">import</span> <span class="n">log</span>
+
+<span class="k">if</span> <span class="n">t</span><span class="o">.</span><span class="n">TYPE_CHECKING</span><span class="p">:</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">flask</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">searx.search</span><span class="w"> </span><span class="kn">import</span> <span class="n">SearchWithPlugins</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">searx.extended_types</span><span class="w"> </span><span class="kn">import</span> <span class="n">SXNG_Request</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">searx.result_types</span><span class="w"> </span><span class="kn">import</span> <span class="n">Result</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">searx.plugins</span><span class="w"> </span><span class="kn">import</span> <span class="n">PluginCfg</span>
+
+<span class="n">REPLACE</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="n">re</span><span class="o">.</span><span class="n">Pattern</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="n">REMOVE</span><span class="p">:</span> <span class="nb">set</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+<span class="n">HIGH</span><span class="p">:</span> <span class="nb">set</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+<span class="n">LOW</span><span class="p">:</span> <span class="nb">set</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+
+
+<div class="viewcode-block" id="SXNGPlugin">
+<a class="viewcode-back" href="../../../dev/plugins/hostnames.html#searx.plugins.hostnames.SXNGPlugin">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">SXNGPlugin</span><span class="p">(</span><span class="n">Plugin</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Rewrite hostnames, remove results or prioritize them.&quot;&quot;&quot;</span>
+
+    <span class="nb">id</span> <span class="o">=</span> <span class="s2">&quot;hostnames&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">plg_cfg</span><span class="p">:</span> <span class="s2">&quot;PluginCfg&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">plg_cfg</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">info</span> <span class="o">=</span> <span class="n">PluginInfo</span><span class="p">(</span>
+            <span class="nb">id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
+            <span class="n">name</span><span class="o">=</span><span class="n">gettext</span><span class="p">(</span><span class="s2">&quot;Hostnames plugin&quot;</span><span class="p">),</span>
+            <span class="n">description</span><span class="o">=</span><span class="n">gettext</span><span class="p">(</span><span class="s2">&quot;Rewrite hostnames and remove or prioritize results based on the hostname&quot;</span><span class="p">),</span>
+            <span class="n">preference_section</span><span class="o">=</span><span class="s2">&quot;general&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+
+<div class="viewcode-block" id="SXNGPlugin.on_result">
+<a class="viewcode-back" href="../../../dev/plugins/hostnames.html#searx.plugins.hostnames.SXNGPlugin.on_result">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">on_result</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">:</span> <span class="s2">&quot;SXNG_Request&quot;</span><span class="p">,</span> <span class="n">search</span><span class="p">:</span> <span class="s2">&quot;SearchWithPlugins&quot;</span><span class="p">,</span> <span class="n">result</span><span class="p">:</span> <span class="s2">&quot;Result&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+
+        <span class="k">for</span> <span class="n">pattern</span> <span class="ow">in</span> <span class="n">REMOVE</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">result</span><span class="o">.</span><span class="n">parsed_url</span> <span class="ow">and</span> <span class="n">pattern</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">parsed_url</span><span class="o">.</span><span class="n">netloc</span><span class="p">):</span>
+                <span class="c1"># if the link (parsed_url) of the result match, then remove the</span>
+                <span class="c1"># result from the result list, in any other case, the result</span>
+                <span class="c1"># remains in the list / see final &quot;return True&quot; below.</span>
+                <span class="c1"># log.debug(&quot;FIXME: remove [url/parsed_url] %s %s&quot;, pattern.pattern, result.url)</span>
+                <span class="k">return</span> <span class="kc">False</span>
+
+        <span class="n">result</span><span class="o">.</span><span class="n">filter_urls</span><span class="p">(</span><span class="n">filter_url_field</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="p">(</span><span class="n">MainResult</span><span class="p">,</span> <span class="n">LegacyResult</span><span class="p">)):</span>
+            <span class="k">for</span> <span class="n">pattern</span> <span class="ow">in</span> <span class="n">LOW</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">result</span><span class="o">.</span><span class="n">parsed_url</span> <span class="ow">and</span> <span class="n">pattern</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">parsed_url</span><span class="o">.</span><span class="n">netloc</span><span class="p">):</span>
+                    <span class="n">result</span><span class="o">.</span><span class="n">priority</span> <span class="o">=</span> <span class="s2">&quot;low&quot;</span>
+
+            <span class="k">for</span> <span class="n">pattern</span> <span class="ow">in</span> <span class="n">HIGH</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">result</span><span class="o">.</span><span class="n">parsed_url</span> <span class="ow">and</span> <span class="n">pattern</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">parsed_url</span><span class="o">.</span><span class="n">netloc</span><span class="p">):</span>
+                    <span class="n">result</span><span class="o">.</span><span class="n">priority</span> <span class="o">=</span> <span class="s2">&quot;high&quot;</span>
+
+        <span class="k">return</span> <span class="kc">True</span></div>
+
+
+<div class="viewcode-block" id="SXNGPlugin.init">
+<a class="viewcode-back" href="../../../dev/plugins/hostnames.html#searx.plugins.hostnames.SXNGPlugin.init">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">init</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">app</span><span class="p">:</span> <span class="s2">&quot;flask.Flask&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>  <span class="c1"># pylint: disable=unused-argument</span>
+        <span class="k">global</span> <span class="n">REPLACE</span><span class="p">,</span> <span class="n">REMOVE</span><span class="p">,</span> <span class="n">HIGH</span><span class="p">,</span> <span class="n">LOW</span>  <span class="c1"># pylint: disable=global-statement</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">settings</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">):</span>
+            <span class="c1"># Remove plugin, if there isn&#39;t a &quot;hostnames:&quot; setting</span>
+            <span class="k">return</span> <span class="kc">False</span>
+
+        <span class="n">REPLACE</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_load_regular_expressions</span><span class="p">(</span><span class="s2">&quot;replace&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="p">{}</span>  <span class="c1"># type: ignore</span>
+        <span class="n">REMOVE</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_load_regular_expressions</span><span class="p">(</span><span class="s2">&quot;remove&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">set</span><span class="p">()</span>  <span class="c1"># type: ignore</span>
+        <span class="n">HIGH</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_load_regular_expressions</span><span class="p">(</span><span class="s2">&quot;high_priority&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">set</span><span class="p">()</span>  <span class="c1"># type: ignore</span>
+        <span class="n">LOW</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_load_regular_expressions</span><span class="p">(</span><span class="s2">&quot;low_priority&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">set</span><span class="p">()</span>  <span class="c1"># type: ignore</span>
+
+        <span class="k">return</span> <span class="kc">True</span></div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_load_regular_expressions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">settings_key</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="n">re</span><span class="o">.</span><span class="n">Pattern</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="nb">set</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">setting_value</span> <span class="o">=</span> <span class="n">settings</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">settings_key</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">setting_value</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+
+        <span class="c1"># load external file with configuration</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">setting_value</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="n">setting_value</span> <span class="o">=</span> <span class="n">get_yaml_cfg</span><span class="p">(</span><span class="n">setting_value</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">setting_value</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+            <span class="k">return</span> <span class="p">{</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">r</span><span class="p">)</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">setting_value</span><span class="p">}</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">setting_value</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+            <span class="k">return</span> <span class="p">{</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">p</span><span class="p">):</span> <span class="n">r</span> <span class="k">for</span> <span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">r</span><span class="p">)</span> <span class="ow">in</span> <span class="n">setting_value</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+
+        <span class="k">return</span> <span class="kc">None</span></div>
+
+
+
+<div class="viewcode-block" id="filter_url_field">
+<a class="viewcode-back" href="../../../dev/plugins/hostnames.html#searx.plugins.hostnames.filter_url_field">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">filter_url_field</span><span class="p">(</span><span class="n">result</span><span class="p">:</span> <span class="s2">&quot;Result|LegacyResult&quot;</span><span class="p">,</span> <span class="n">field_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">url_src</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span> <span class="o">|</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Returns bool ``True`` to use URL unchanged (``False`` to ignore URL).</span>
+<span class="sd">    If URL should be modified, the returned string is the new URL to use.&quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">url_src</span><span class="p">:</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;missing a URL in field </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">field_name</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">True</span>
+
+    <span class="n">url_src_parsed</span> <span class="o">=</span> <span class="n">urlparse</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="n">url_src</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">pattern</span> <span class="ow">in</span> <span class="n">REMOVE</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">pattern</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">url_src_parsed</span><span class="o">.</span><span class="n">netloc</span><span class="p">):</span>
+            <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="k">for</span> <span class="n">pattern</span><span class="p">,</span> <span class="n">replacement</span> <span class="ow">in</span> <span class="n">REPLACE</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">pattern</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">url_src_parsed</span><span class="o">.</span><span class="n">netloc</span><span class="p">):</span>
+            <span class="n">new_url</span> <span class="o">=</span> <span class="n">url_src_parsed</span><span class="o">.</span><span class="n">_replace</span><span class="p">(</span><span class="n">netloc</span><span class="o">=</span><span class="n">pattern</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="n">replacement</span><span class="p">,</span> <span class="n">url_src_parsed</span><span class="o">.</span><span class="n">netloc</span><span class="p">))</span>
+            <span class="n">new_url</span> <span class="o">=</span> <span class="n">urlunparse</span><span class="p">(</span><span class="n">new_url</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">new_url</span>
+
+    <span class="k">return</span> <span class="kc">True</span></div>
+
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+  <span id="sidebar-top"></span>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+  
+    
+            <p class="logo"><a href="../../../index.html">
+              <img class="logo" src="../../../_static/searxng-wordmark.svg" alt="Logo of SearXNG"/>
+            </a></p>
+  
+
+<h3><a href="../../../index.html">Table of Contents</a></h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../user/index.html">User information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../own-instance.html">Why use a private instance?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../admin/index.html">Administrator documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../dev/index.html">Developer documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../utils/index.html">DevOps tooling box</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/index.html">Source-Code</a></li>
+</ul>
+
+  <h3>Project Links</h3>
+  <ul>
+    <li><a href="https://github.com/searxng/searxng/tree/master">Source</a>
+  
+    <li><a href="https://github.com/searxng/searxng/wiki">Wiki</a>
+  
+    <li><a href="https://searx.space">Public instances</a>
+  
+    <li><a href="https://github.com/searxng/searxng/issues">Issue Tracker</a>
+  </ul><h3>Navigation</h3>
+<ul>
+  <li><a href="../../../index.html">Overview</a>
+    <ul>
+      <li><a href="../../index.html">Module code</a>
+        
+          
+          </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright SearXNG team.
+    </div>
+  </body>
+</html>

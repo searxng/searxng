@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>settings.yml &#8212; SearXNG Documentation (2026.2.22+191818b86)</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=6625fa76" />
+    <link rel="stylesheet" type="text/css" href="../../_static/searxng.css?v=52e4ff28" />
+    <script src="../../_static/documentation_options.js?v=1b5d919e"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script data-project="searxng" data-version="2026.2.22+191818b86" src="../../_static/describe_version.js?v=fa7f30d0"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="engines:" href="settings_engines.html" />
+    <link rel="prev" title="Settings" href="index.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="settings_engines.html" title="engines:"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Settings"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">SearXNG Documentation (2026.2.22+191818b86)</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >Administrator documentation</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="index.html" accesskey="U">Settings</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href=""><code class="docutils literal notranslate"><span class="pre">settings.yml</span></code></a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="settings-yml">
+<span id="id1"></span><h1><code class="docutils literal notranslate"><span class="pre">settings.yml</span></code><a class="headerlink" href="#settings-yml" title="Link to this heading">¶</a></h1>
+<p>This page describe the options possibilities of the <a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/searx/settings.yml">git://searx/settings.yml</a>
+file.</p>
+<aside class="sidebar">
+<p class="sidebar-title">Further reading ..</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="../installation-searxng.html#use-default-settings-yml"><span class="std std-ref">Configuration</span></a></p></li>
+<li><p><a class="reference internal" href="../../dev/search_api.html#search-api"><span class="std std-ref">Search API</span></a></p></li>
+</ul>
+</aside>
+<nav class="contents local" id="contents">
+<ul class="simple">
+<li><p><a class="reference internal" href="#settings-yml-location" id="id2">settings.yml location</a></p></li>
+<li><p><a class="reference internal" href="#use-default-settings" id="id3">use_default_settings</a></p></li>
+</ul>
+</nav>
+<section id="settings-yml-location">
+<span id="settings-location"></span><h2><a class="toc-backref" href="#id2" role="doc-backlink">settings.yml location</a><a class="headerlink" href="#settings-yml-location" title="Link to this heading">¶</a></h2>
+<p>The initial <code class="docutils literal notranslate"><span class="pre">settings.yml</span></code> we be load from these locations:</p>
+<ol class="arabic simple">
+<li><p>the full path specified in the <code class="docutils literal notranslate"><span class="pre">SEARXNG_SETTINGS_PATH</span></code> environment variable.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">/etc/searxng/settings.yml</span></code></p></li>
+</ol>
+<p>If these files don’t exist (or are empty or can’t be read), SearXNG uses the
+<a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/searx/settings.yml">git://searx/settings.yml</a> file.  Read <a class="reference internal" href="#settings-use-default-settings"><span class="std std-ref">use_default_settings</span></a> to
+see how you can simplify your <em>user defined</em> <code class="docutils literal notranslate"><span class="pre">settings.yml</span></code>.</p>
+</section>
+<section id="use-default-settings">
+<span id="settings-use-default-settings"></span><h2><a class="toc-backref" href="#id3" role="doc-backlink">use_default_settings</a><a class="headerlink" href="#use-default-settings" title="Link to this heading">¶</a></h2>
+<aside class="sidebar">
+<p class="sidebar-title"><code class="docutils literal notranslate"><span class="pre">use_default_settings:</span> <span class="pre">true</span></code></p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#settings-location"><span class="std std-ref">settings.yml location</span></a></p></li>
+<li><p><a class="reference internal" href="../installation-searxng.html#use-default-settings-yml"><span class="std std-ref">Configuration</span></a></p></li>
+<li><p><a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/utils/templates/etc/searxng/settings.yml">/etc/searxng/settings.yml</a></p></li>
+</ul>
+</aside>
+<p>The user defined <code class="docutils literal notranslate"><span class="pre">settings.yml</span></code> is loaded from the <a class="reference internal" href="#settings-location"><span class="std std-ref">settings.yml location</span></a>
+and can relied on the default configuration <a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/searx/settings.yml">git://searx/settings.yml</a> using:</p>
+<blockquote>
+<div><p><code class="docutils literal notranslate"><span class="pre">use_default_settings:</span> <span class="pre">true</span></code></p>
+</div></blockquote>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">server:</span></code></dt><dd><p>In the following example, the actual settings are the default settings defined
+in <a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/searx/settings.yml">git://searx/settings.yml</a> with the exception of the <code class="docutils literal notranslate"><span class="pre">secret_key</span></code> and
+the <code class="docutils literal notranslate"><span class="pre">bind_address</span></code>:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">use_default_settings</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="nt">server</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">secret_key</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;ultrasecretkey&quot;</span><span class="w">   </span><span class="c1"># change this!</span>
+<span class="w">    </span><span class="nt">bind_address</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;[::]&quot;</span>
+</pre></div>
+</div>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">engines:</span></code></dt><dd><p>With <code class="docutils literal notranslate"><span class="pre">use_default_settings:</span> <span class="pre">true</span></code>, each settings can be override in a
+similar way, the <code class="docutils literal notranslate"><span class="pre">engines</span></code> section is merged according to the engine
+<code class="docutils literal notranslate"><span class="pre">name</span></code>.  In this example, SearXNG will load all the default engines, will
+enable the <code class="docutils literal notranslate"><span class="pre">bing</span></code> engine and define a <a class="reference internal" href="settings_engines.html#private-engines"><span class="std std-ref">token</span></a> for
+the arch linux engine:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">use_default_settings</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="nt">server</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">secret_key</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;ultrasecretkey&quot;</span><span class="w">   </span><span class="c1"># change this!</span>
+<span class="nt">engines</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">arch linux wiki</span>
+<span class="w">    </span><span class="nt">tokens</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&#39;$ecretValue&#39;</span><span class="p p-Indicator">]</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">bing</span>
+<span class="w">    </span><span class="nt">disabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+</pre></div>
+</div>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">engines:</span></code> / <code class="docutils literal notranslate"><span class="pre">remove:</span></code></dt><dd><p>It is possible to remove some engines from the default settings. The following
+example is similar to the above one, but SearXNG doesn’t load the the google
+engine:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">use_default_settings</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">engines</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">remove</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">google</span>
+<span class="nt">server</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">secret_key</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;ultrasecretkey&quot;</span><span class="w">   </span><span class="c1"># change this!</span>
+<span class="nt">engines</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">arch linux wiki</span>
+<span class="w">    </span><span class="nt">tokens</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&#39;$ecretValue&#39;</span><span class="p p-Indicator">]</span>
+</pre></div>
+</div>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">engines:</span></code> / <code class="docutils literal notranslate"><span class="pre">keep_only:</span></code></dt><dd><p>As an alternative, it is possible to specify the engines to keep. In the
+following example, SearXNG has only two engines:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">use_default_settings</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">engines</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">keep_only</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">google</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">duckduckgo</span>
+<span class="nt">server</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">secret_key</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;ultrasecretkey&quot;</span><span class="w">   </span><span class="c1"># change this!</span>
+<span class="nt">engines</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">google</span>
+<span class="w">    </span><span class="nt">tokens</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&#39;$ecretValue&#39;</span><span class="p p-Indicator">]</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">duckduckgo</span>
+<span class="w">    </span><span class="nt">tokens</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&#39;$ecretValue&#39;</span><span class="p p-Indicator">]</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+  <span id="sidebar-top"></span>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+  
+    
+            <p class="logo"><a href="../../index.html">
+              <img class="logo" src="../../_static/searxng-wordmark.svg" alt="Logo of SearXNG"/>
+            </a></p>
+  
+
+<h3><a href="../../index.html">Table of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../user/index.html">User information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../own-instance.html">Why use a private instance?</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Administrator documentation</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Settings</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#"><code class="docutils literal notranslate"><span class="pre">settings.yml</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#settings-yml-location">settings.yml location</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#use-default-settings">use_default_settings</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="settings_engines.html"><code class="docutils literal notranslate"><span class="pre">engines:</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="settings_brand.html"><code class="docutils literal notranslate"><span class="pre">brand:</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="settings_general.html"><code class="docutils literal notranslate"><span class="pre">general:</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="settings_search.html"><code class="docutils literal notranslate"><span class="pre">search:</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="settings_server.html"><code class="docutils literal notranslate"><span class="pre">server:</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="settings_ui.html"><code class="docutils literal notranslate"><span class="pre">ui:</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="settings_redis.html"><code class="docutils literal notranslate"><span class="pre">redis:</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="settings_valkey.html"><code class="docutils literal notranslate"><span class="pre">valkey:</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="settings_outgoing.html"><code class="docutils literal notranslate"><span class="pre">outgoing:</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="settings_categories_as_tabs.html"><code class="docutils literal notranslate"><span class="pre">categories_as_tabs:</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="settings_plugins.html"><code class="docutils literal notranslate"><span class="pre">plugins:</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation-docker.html">Installation container</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation-scripts.html">Installation Script</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation-searxng.html">Step by step installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation-granian.html">Granian</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation-uwsgi.html">uWSGI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation-nginx.html">NGINX</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation-apache.html">Apache</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../update-searxng.html">SearXNG maintenance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../answer-captcha.html">Answer CAPTCHA from server’s IP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../searx.favicons.html">Favicons</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../searx.limiter.html">Limiter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html">Administration API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../architecture.html">Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../plugins.html">List of plugins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../buildhosts.html">Buildhosts</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../dev/index.html">Developer documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../utils/index.html">DevOps tooling box</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../src/index.html">Source-Code</a></li>
+</ul>
+
+  <h3>Project Links</h3>
+  <ul>
+    <li><a href="https://github.com/searxng/searxng/tree/master">Source</a>
+  
+    <li><a href="https://github.com/searxng/searxng/wiki">Wiki</a>
+  
+    <li><a href="https://searx.space">Public instances</a>
+  
+    <li><a href="https://github.com/searxng/searxng/issues">Issue Tracker</a>
+  </ul><h3>Navigation</h3>
+<ul>
+  <li><a href="../../index.html">Overview</a>
+    <ul>
+      <li><a href="../index.html">Administrator documentation</a>
+        <ul>
+      <li><a href="index.html">Settings</a>
+        <ul>
+          <li>Previous: <a href="index.html" title="previous chapter">Settings</a>
+          <li>Next: <a href="settings_engines.html" title="next chapter"><code class="docutils literal notranslate"><span class="pre">engines:</span></code></a></ul>
+      </li></ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/admin/settings/settings.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright SearXNG team.
+    </div>
+  </body>
+</html>

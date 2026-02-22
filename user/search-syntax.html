@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Search syntax &#8212; SearXNG Documentation (2026.2.22+191818b86)</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=6625fa76" />
+    <link rel="stylesheet" type="text/css" href="../_static/searxng.css?v=52e4ff28" />
+    <script src="../_static/documentation_options.js?v=1b5d919e"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script data-project="searxng" data-version="2026.2.22+191818b86" src="../_static/describe_version.js?v=fa7f30d0"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Configured Engines" href="configured_engines.html" />
+    <link rel="prev" title="User information" href="index.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="configured_engines.html" title="Configured Engines"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="User information"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">SearXNG Documentation (2026.2.22+191818b86)</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" accesskey="U">User information</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Search syntax</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="search-syntax">
+<span id="search-syntax"></span><h1>Search syntax<a class="headerlink" href="#search-syntax" title="Link to this heading">¶</a></h1>
+<p>SearXNG comes with a search syntax by which you can modify the categories,
+engines, languages, and more.  See the <code class="docutils literal notranslate"><span class="pre">preferences</span></code> for
+the list of engines, categories, and languages.</p>
+<section id="select-engine-and-category">
+<h2><code class="docutils literal notranslate"><span class="pre">!</span></code> Select engine and category<a class="headerlink" href="#select-engine-and-category" title="Link to this heading">¶</a></h2>
+<p>To set category and/or engine names, use a <code class="docutils literal notranslate"><span class="pre">!</span></code> prefix.  To give a few examples:</p>
+<ul class="simple">
+<li><p>Search Wikipedia for <strong>paris</strong>:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">!wp</span> <span class="pre">paris</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">!wikipedia</span> <span class="pre">paris</span></code></p></li>
+</ul>
+</li>
+<li><p>Search in category <strong>map</strong> for <strong>paris</strong>:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">!map</span> <span class="pre">paris</span></code></p></li>
+</ul>
+</li>
+<li><p>Image search</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">!images</span> <span class="pre">Wau</span> <span class="pre">Holland</span></code></p></li>
+</ul>
+</li>
+</ul>
+<p>Abbreviations of the engines and languages are also accepted.  Engine/category
+modifiers are chainable and inclusive.  For example, <code class="docutils literal notranslate"><span class="pre">!map</span> <span class="pre">!ddg</span> <span class="pre">!wp</span> <span class="pre">paris</span></code> searches in the map category and searches DuckDuckGo and Wikipedia for <strong>paris</strong>.</p>
+</section>
+<section id="select-language">
+<h2><code class="docutils literal notranslate"><span class="pre">:</span></code> Select language<a class="headerlink" href="#select-language" title="Link to this heading">¶</a></h2>
+<p>To select a language filter use a <code class="docutils literal notranslate"><span class="pre">:</span></code> prefix.  To give an example:</p>
+<ul class="simple">
+<li><p>Search Wikipedia with a custom language:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">:fr</span> <span class="pre">!wp</span> <span class="pre">Wau</span> <span class="pre">Holland</span></code></p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="bang-external-bangs">
+<h2><code class="docutils literal notranslate"><span class="pre">!!&lt;bang&gt;</span></code> External bangs<a class="headerlink" href="#bang-external-bangs" title="Link to this heading">¶</a></h2>
+<p>SearXNG supports the external bangs from <a class="reference external" href="https://duckduckgo.com/bang">DuckDuckGo</a>.  To directly jump to a
+external search page use the <code class="docutils literal notranslate"><span class="pre">!!</span></code> prefix.  To give an example:</p>
+<ul class="simple">
+<li><p>Search Wikipedia with a custom language:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">!!wfr</span> <span class="pre">Wau</span> <span class="pre">Holland</span></code></p></li>
+</ul>
+</li>
+</ul>
+<p>Please note that your search will be performed directly in the external search
+engine.  SearXNG cannot protect your privacy with this.</p>
+</section>
+<section id="automatic-redirect">
+<h2><code class="docutils literal notranslate"><span class="pre">!!</span></code> automatic redirect<a class="headerlink" href="#automatic-redirect" title="Link to this heading">¶</a></h2>
+<p>When including <code class="docutils literal notranslate"><span class="pre">!!</span></code> within your search query (separated by spaces), you will
+automatically be redirected to the first result.  This behavior is comparable to
+the “Feeling Lucky” feature from DuckDuckGo.  To give an example:</p>
+<ul class="simple">
+<li><p>Search for a query and get redirected to the first result</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">!!</span> <span class="pre">Wau</span> <span class="pre">Holland</span></code></p></li>
+</ul>
+</li>
+</ul>
+<p>Please keep in mind that the result you are being redirected to can’t be
+verified for trustworthiness and SearXNG cannot protect your personal privacy
+when using this feature.  Use it at your own risk.</p>
+</section>
+<section id="special-queries">
+<h2>Special Queries<a class="headerlink" href="#special-queries" title="Link to this heading">¶</a></h2>
+<p>In the <code class="docutils literal notranslate"><span class="pre">preferences</span></code> page you find keywords for
+<em>special queries</em>.  To give a few examples:</p>
+<ul class="simple">
+<li><p>Generate a random UUID</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">random</span> <span class="pre">uuid</span></code></p></li>
+</ul>
+</li>
+<li><p>Find the average</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">avg</span> <span class="pre">123</span> <span class="pre">548</span> <span class="pre">2.04</span> <span class="pre">24.2</span></code></p></li>
+</ul>
+</li>
+<li><p>Show the <em>user agent</em> of your browser (needs to be activated)</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">user-agent</span></code></p></li>
+</ul>
+</li>
+<li><p>Convert strings to different hash digests (needs to be activated)</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">md5</span> <span class="pre">lorem</span> <span class="pre">ipsum</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">sha512</span> <span class="pre">lorem</span> <span class="pre">ipsum</span></code></p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+  <span id="sidebar-top"></span>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+  
+    
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/searxng-wordmark.svg" alt="Logo of SearXNG"/>
+            </a></p>
+  
+
+<h3><a href="../index.html">Table of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">User information</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Search syntax</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#select-engine-and-category"><code class="docutils literal notranslate"><span class="pre">!</span></code> Select engine and category</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#select-language"><code class="docutils literal notranslate"><span class="pre">:</span></code> Select language</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#bang-external-bangs"><code class="docutils literal notranslate"><span class="pre">!!&lt;bang&gt;</span></code> External bangs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#automatic-redirect"><code class="docutils literal notranslate"><span class="pre">!!</span></code> automatic redirect</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#special-queries">Special Queries</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="configured_engines.html">Configured Engines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="about.html">About SearXNG</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../own-instance.html">Why use a private instance?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../admin/index.html">Administrator documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev/index.html">Developer documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../utils/index.html">DevOps tooling box</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../src/index.html">Source-Code</a></li>
+</ul>
+
+  <h3>Project Links</h3>
+  <ul>
+    <li><a href="https://github.com/searxng/searxng/tree/master">Source</a>
+  
+    <li><a href="https://github.com/searxng/searxng/wiki">Wiki</a>
+  
+    <li><a href="https://searx.space">Public instances</a>
+  
+    <li><a href="https://github.com/searxng/searxng/issues">Issue Tracker</a>
+  </ul><h3>Navigation</h3>
+<ul>
+  <li><a href="../index.html">Overview</a>
+    <ul>
+      <li><a href="index.html">User information</a>
+        <ul>
+          <li>Previous: <a href="index.html" title="previous chapter">User information</a>
+          <li>Next: <a href="configured_engines.html" title="next chapter">Configured Engines</a></ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/user/search-syntax.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright SearXNG team.
+    </div>
+  </body>
+</html>

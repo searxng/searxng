@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Developer documentation &#8212; SearXNG Documentation (2026.2.22+191818b86)</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=6625fa76" />
+    <link rel="stylesheet" type="text/css" href="../_static/searxng.css?v=52e4ff28" />
+    <script src="../_static/documentation_options.js?v=1b5d919e"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script data-project="searxng" data-version="2026.2.22+191818b86" src="../_static/describe_version.js?v=fa7f30d0"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Development Quickstart" href="quickstart.html" />
+    <link rel="prev" title="Buildhosts" href="../admin/buildhosts.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="quickstart.html" title="Development Quickstart"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="../admin/buildhosts.html" title="Buildhosts"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">SearXNG Documentation (2026.2.22+191818b86)</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Developer documentation</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="developer-documentation">
+<h1>Developer documentation<a class="headerlink" href="#developer-documentation" title="Link to this heading">¶</a></h1>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Development Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commits.html">Git Commits &amp; Change Management</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contribution_guide.html">How to contribute</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="contribution_guide.html#prime-directives-privacy-hackability">Prime directives: Privacy, Hackability</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contribution_guide.html#code">Code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contribution_guide.html#translation">Translation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contribution_guide.html#documentation">Documentation</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="extended_types.html">Extended Types</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="extended_types.html#searx.extended_types.sxng_request"><code class="docutils literal notranslate"><span class="pre">sxng_request</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="extended_types.html#searx.extended_types.SXNG_Request"><code class="docutils literal notranslate"><span class="pre">SXNG_Request</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="extended_types.html#searx.extended_types.SXNG_Response"><code class="docutils literal notranslate"><span class="pre">SXNG_Response</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="engines/index.html">Engine Implementations</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="engines/enginelib.html">Engine Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="engines/engines.html">SearXNG’s engines loader</a></li>
+<li class="toctree-l2"><a class="reference internal" href="engines/engine_overview.html">Engine Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="engines/index.html#resultlist-and-engines">ResultList and engines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="engines/index.html#engine-types">Engine Types</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="result_types/index.html">Result Types</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="result_types/base_result.html">Result</a></li>
+<li class="toctree-l2"><a class="reference internal" href="result_types/main_result.html">Main Search Results</a></li>
+<li class="toctree-l2"><a class="reference internal" href="result_types/answer.html">Answer Results</a></li>
+<li class="toctree-l2"><a class="reference internal" href="result_types/correction.html">Correction Results</a></li>
+<li class="toctree-l2"><a class="reference internal" href="result_types/suggestion.html">Suggestion Results</a></li>
+<li class="toctree-l2"><a class="reference internal" href="result_types/infobox.html">Infobox Results</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="templates.html">Simple Theme Templates</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="templates.html#result-template-macros">Result template macros</a></li>
+<li class="toctree-l2"><a class="reference internal" href="templates.html#main-result-list">Main Result List</a></li>
+<li class="toctree-l2"><a class="reference internal" href="templates.html#answer-results">Answer results</a></li>
+<li class="toctree-l2"><a class="reference internal" href="templates.html#suggestion-results">Suggestion results</a></li>
+<li class="toctree-l2"><a class="reference internal" href="templates.html#correction-results">Correction results</a></li>
+<li class="toctree-l2"><a class="reference internal" href="templates.html#infobox-results">Infobox results</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="search_api.html">Search API</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="search_api.html#parameters">Parameters</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="plugins/index.html">Plugins</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="plugins/development.html">Plugin Development</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plugins/builtins.html">Built-in Plugins</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="answerers/index.html">Answerers</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="answerers/development.html">Answerer Development</a></li>
+<li class="toctree-l2"><a class="reference internal" href="answerers/builtins.html">Built-in Answerers</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="translation.html">Translation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="translation.html#id2">wlc</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="makefile.html">Makefile &amp; <code class="docutils literal notranslate"><span class="pre">./manage</span></code></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="makefile.html#python-environment-make-install">Python environment (<code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">install</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="makefile.html#node-js-environment-make-node-env">Node.js environment (<code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">node.env</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="makefile.html#make-run"><code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">run</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="makefile.html#make-format"><code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">format</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="makefile.html#make-clean"><code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">clean</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="makefile.html#make-docs"><code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">docs</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="makefile.html#make-test"><code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">test</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="makefile.html#make-themes"><code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">themes.*</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="makefile.html#make-static-build"><code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">static.build.*</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="makefile.html#manage-go-help"><code class="docutils literal notranslate"><span class="pre">./manage</span> <span class="pre">go.help</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="reST.html">reST primer</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="reST.html#soft-skills">Soft skills</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reST.html#basic-inline-markup">Basic inline markup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reST.html#basic-article-structure">Basic article structure</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reST.html#anchors-links">Anchors &amp; Links</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reST.html#literal-blocks">Literal blocks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reST.html#unicode-substitution">Unicode substitution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reST.html#roles">Roles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reST.html#figures-images">Figures &amp; Images</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reST.html#list-markups">List markups</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reST.html#admonitions">Admonitions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reST.html#tables">Tables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reST.html#templating">Templating</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reST.html#tabbed-views">Tabbed views</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reST.html#math-equations">Math equations</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="searxng_extra/index.html">Tooling box <code class="docutils literal notranslate"><span class="pre">searxng_extra</span></code></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="searxng_extra/update.html"><code class="docutils literal notranslate"><span class="pre">searxng_extra/update/</span></code></a></li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+  <span id="sidebar-top"></span>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+  
+    
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/searxng-wordmark.svg" alt="Logo of SearXNG"/>
+            </a></p>
+  
+
+<h3><a href="../index.html">Table of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../user/index.html">User information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../own-instance.html">Why use a private instance?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../admin/index.html">Administrator documentation</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Developer documentation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html">Development Quickstart</a></li>
+<li class="toctree-l2"><a class="reference internal" href="commits.html">Git Commits &amp; Change Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contribution_guide.html">How to contribute</a></li>
+<li class="toctree-l2"><a class="reference internal" href="extended_types.html">Extended Types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="engines/index.html">Engine Implementations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="result_types/index.html">Result Types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="templates.html">Simple Theme Templates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="search_api.html">Search API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plugins/index.html">Plugins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="answerers/index.html">Answerers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="translation.html">Translation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="makefile.html">Makefile &amp; <code class="docutils literal notranslate"><span class="pre">./manage</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="reST.html">reST primer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searxng_extra/index.html">Tooling box <code class="docutils literal notranslate"><span class="pre">searxng_extra</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../utils/index.html">DevOps tooling box</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../src/index.html">Source-Code</a></li>
+</ul>
+
+  <h3>Project Links</h3>
+  <ul>
+    <li><a href="https://github.com/searxng/searxng/tree/master">Source</a>
+  
+    <li><a href="https://github.com/searxng/searxng/wiki">Wiki</a>
+  
+    <li><a href="https://searx.space">Public instances</a>
+  
+    <li><a href="https://github.com/searxng/searxng/issues">Issue Tracker</a>
+  </ul><h3>Navigation</h3>
+<ul>
+  <li><a href="../index.html">Overview</a>
+    <ul>
+          <li>Previous: <a href="../admin/buildhosts.html" title="previous chapter">Buildhosts</a>
+          <li>Next: <a href="quickstart.html" title="next chapter">Development Quickstart</a>
+    </ul>
+  </li>
+</ul>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/dev/index.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright SearXNG team.
+    </div>
+  </body>
+</html>

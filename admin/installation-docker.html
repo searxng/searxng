@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Installation container &#8212; SearXNG Documentation (2026.2.22+191818b86)</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=6625fa76" />
+    <link rel="stylesheet" type="text/css" href="../_static/searxng.css?v=52e4ff28" />
+    <script src="../_static/documentation_options.js?v=1b5d919e"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script data-project="searxng" data-version="2026.2.22+191818b86" src="../_static/describe_version.js?v=fa7f30d0"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Installation Script" href="installation-scripts.html" />
+    <link rel="prev" title="Installation" href="installation.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="installation-scripts.html" title="Installation Script"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="installation.html" title="Installation"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">SearXNG Documentation (2026.2.22+191818b86)</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" accesskey="U">Administrator documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Installation container</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="installation-container">
+<span id="id1"></span><h1>Installation container<a class="headerlink" href="#installation-container" title="Link to this heading">¶</a></h1>
+<aside class="sidebar">
+<p class="sidebar-title">info</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://docs.docker.com/get-started/docker-overview">Docker 101</a></p></li>
+<li><p><a class="reference external" href="https://docs.docker.com/get-started/docker_cheatsheet.pdf">Docker cheat sheet (PDF doc)</a></p></li>
+<li><p><a class="reference external" href="https://github.com/containers/podman/blob/main/docs/tutorials/rootless_tutorial.md">Podman rootless containers</a></p></li>
+</ul>
+</aside>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>Understanding container architecture basics is essential for properly
+maintaining your SearXNG instance.  This guide assumes familiarity with
+container concepts and provides deployment steps at a high level.</p>
+<p>If you’re new to containers, we recommend learning the fundamentals at
+<a class="reference external" href="https://docs.docker.com/get-started/docker-overview">Docker 101</a> before proceeding.</p>
+</div>
+<p>Container images are the basis for deployments in containerized environments,
+<a class="reference external" href="https://github.com/searxng/searxng-docker">Docker compose</a>, Kubernetes and more.</p>
+<section id="installation">
+<span id="container-installation"></span><h2>Installation<a class="headerlink" href="#installation" title="Link to this heading">¶</a></h2>
+<section id="prerequisites">
+<span id="container-prerequisites"></span><h3>Prerequisites<a class="headerlink" href="#prerequisites" title="Link to this heading">¶</a></h3>
+<p>You need a working Docker or Podman installation on your system.  Choose the
+option that works best for your environment:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://docs.docker.com/get-docker/">Docker</a> (recommended for most users)</p></li>
+<li><p><a class="reference external" href="https://podman.io/docs/installation">Podman</a></p></li>
+</ul>
+<p>In the case of Docker, you need to add the user running the container to the
+<code class="docutils literal notranslate"><span class="pre">docker</span></code> group and restart the session:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>sudo<span class="w"> </span>usermod<span class="w"> </span>-aG<span class="w"> </span>docker<span class="w"> </span><span class="nv">$USER</span>
+</pre></div>
+</div>
+<p>In the case of Podman, no additional steps are generally required, but there
+are some considerations when running <a class="reference external" href="https://github.com/containers/podman/blob/main/docs/tutorials/rootless_tutorial.md">Podman rootless containers</a>.</p>
+</section>
+<section id="pulling-images">
+<span id="container-pulling-images"></span><h3>Pulling images<a class="headerlink" href="#pulling-images" title="Link to this heading">¶</a></h3>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>DockerHub now applies rate limits to unauthenticated image pulls.  If you
+are affected by this, you can use the <a class="reference external" href="https://ghcr.io/searxng/searxng">GHCR mirror</a> instead.</p>
+</div>
+<p>The official images are mirrored at:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://hub.docker.com/r/searxng/searxng">DockerHub mirror</a></p></li>
+<li><p><a class="reference external" href="https://ghcr.io/searxng/searxng">GHCR mirror</a> (GitHub Container Registry)</p></li>
+</ul>
+<p>Pull the latest image:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>docker<span class="w"> </span>pull<span class="w"> </span>docker.io/searxng/searxng:latest
+</pre></div>
+</div>
+<p>.. or if you want to lock in to a specific version:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>docker<span class="w"> </span>pull<span class="w"> </span>docker.io/searxng/searxng:2025.8.1-3d96414
+</pre></div>
+</div>
+</section>
+</section>
+<section id="instancing">
+<span id="container-instancing"></span><h2>Instancing<a class="headerlink" href="#instancing" title="Link to this heading">¶</a></h2>
+<p>This section is intended for advanced users who need custom deployments.  We
+recommend using <a class="reference external" href="https://github.com/searxng/searxng-docker">Docker compose</a>, which provides a preconfigured environment
+with sensible defaults.</p>
+<p>Basic container instancing example:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create directories for configuration and persistent data</span>
+$<span class="w"> </span>mkdir<span class="w"> </span>-p<span class="w"> </span>./searxng/config/<span class="w"> </span>./searxng/data/
+$<span class="w"> </span><span class="nb">cd</span><span class="w"> </span>./searxng/
+
+<span class="c1"># Run the container</span>
+$<span class="w"> </span>docker<span class="w"> </span>run<span class="w"> </span>--name<span class="w"> </span>searxng<span class="w"> </span>-d<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>-p<span class="w"> </span><span class="m">8888</span>:8080<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>-v<span class="w"> </span><span class="s2">&quot;./config/:/etc/searxng/&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>-v<span class="w"> </span><span class="s2">&quot;./data/:/var/cache/searxng/&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>docker.io/searxng/searxng:latest
+</pre></div>
+</div>
+<p>This will start SearXNG in the background, accessible at <a class="reference external" href="http://localhost:8888">http://localhost:8888</a></p>
+<section id="management">
+<span id="container-management"></span><h3>Management<a class="headerlink" href="#management" title="Link to this heading">¶</a></h3>
+<p>List running containers:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>docker<span class="w"> </span>container<span class="w"> </span>list
+CONTAINER<span class="w"> </span>ID<span class="w">  </span>IMAGE<span class="w">  </span>...<span class="w">  </span>CREATED<span class="w">        </span>PORTS<span class="w">                   </span>NAMES
+1af574997e63<span class="w">  </span>...<span class="w">    </span>...<span class="w">  </span><span class="m">3</span><span class="w"> </span>minutes<span class="w"> </span>ago<span class="w">  </span><span class="m">0</span>.0.0.0:8888-&gt;8080/tcp<span class="w">  </span>searxng
+</pre></div>
+</div>
+<p>Access the container shell (troubleshooting):</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>docker<span class="w"> </span>container<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-it<span class="w"> </span>--user<span class="w"> </span>root<span class="w"> </span>searxng<span class="w"> </span>/bin/sh<span class="w"> </span>-l
+1af574997e63:/usr/local/searxng#
+</pre></div>
+</div>
+<p>Stop and remove the container:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>docker<span class="w"> </span>container<span class="w"> </span>stop<span class="w"> </span>searxng
+$<span class="w"> </span>docker<span class="w"> </span>container<span class="w"> </span>rm<span class="w"> </span>searxng
+</pre></div>
+</div>
+</section>
+</section>
+<section id="volumes">
+<span id="container-volumes"></span><h2>Volumes<a class="headerlink" href="#volumes" title="Link to this heading">¶</a></h2>
+<p>Two volumes are exposed that should be mounted to preserve its contents:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">/etc/searxng</span></code>: Configuration files (settings.yml, etc.)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">/var/cache/searxng</span></code>: Persistent data (faviconcache.db, etc.)</p></li>
+</ul>
+</section>
+<section id="environment-variables">
+<span id="container-environment-variables"></span><h2>Environment variables<a class="headerlink" href="#environment-variables" title="Link to this heading">¶</a></h2>
+<p>The following environment variables can be configured:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">$SEARXNG_*</span></code>: Controls the SearXNG configuration options, look out for
+environment <code class="docutils literal notranslate"><span class="pre">$SEARXNG_*</span></code> in <a class="reference internal" href="settings/settings_server.html#settings-server"><span class="std std-ref">server:</span></a> and <a class="reference internal" href="settings/settings_general.html#settings-general"><span class="std std-ref">general:</span></a>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">$GRANIAN_*</span></code>: Controls the <a class="reference internal" href="installation-granian.html#granian-configuration"><span class="std std-ref">Granian server options</span></a>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">$FORCE_OWNERSHIP</span></code>: Ensures mounted volumes/files are owned by the
+<code class="docutils literal notranslate"><span class="pre">searxng:searxng</span></code> user (default: <code class="docutils literal notranslate"><span class="pre">true</span></code>)</p></li>
+</ul>
+<p>Container internal paths (don’t modify unless you know what you’re doing):</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">$CONFIG_PATH</span></code>: Path to the SearXNG configuration directory (default: <code class="docutils literal notranslate"><span class="pre">/etc/searxng</span></code>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">$SEARXNG_SETTINGS_PATH</span></code>: Path to the SearXNG settings file (default: <code class="docutils literal notranslate"><span class="pre">$CONFIG_PATH/settings.yml</span></code>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">$DATA_PATH</span></code>: Path to the SearXNG data directory (default: <code class="docutils literal notranslate"><span class="pre">/var/cache/searxng</span></code>)</p></li>
+</ul>
+</section>
+<section id="custom-certificates">
+<span id="container-custom-certificates"></span><h2>Custom certificates<a class="headerlink" href="#custom-certificates" title="Link to this heading">¶</a></h2>
+<p>You can mount <code class="docutils literal notranslate"><span class="pre">/usr/local/share/ca-certificates/</span></code> folder to add/remove
+additional certificates as needed.</p>
+<p>They will be available on container (re)start or when running
+<code class="docutils literal notranslate"><span class="pre">update-ca-certificates</span></code> in the container shell.</p>
+</section>
+<section id="custom-images">
+<span id="container-custom-images"></span><h2>Custom images<a class="headerlink" href="#custom-images" title="Link to this heading">¶</a></h2>
+<p>To build your own SearXNG container image from source (please note, custom
+container images are not officially supported):</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/searxng/searxng.git
+$<span class="w"> </span><span class="nb">cd</span><span class="w"> </span>./searxng/
+
+<span class="c1"># Run the container build script</span>
+$<span class="w"> </span>make<span class="w"> </span>container
+
+$<span class="w"> </span>docker<span class="w"> </span>images
+REPOSITORY<span class="w">                 </span>TAG<span class="w">                 </span>IMAGE<span class="w"> </span>ID<span class="w">  </span>CREATED<span class="w">             </span>SIZE
+localhost/searxng/searxng<span class="w">  </span><span class="m">2025</span>.8.1-3d96414<span class="w">    </span>...<span class="w">       </span>About<span class="w"> </span>a<span class="w"> </span>minute<span class="w"> </span>ago<span class="w">  </span><span class="m">183</span><span class="w"> </span>MB
+localhost/searxng/searxng<span class="w">  </span>latest<span class="w">              </span>...<span class="w">       </span>About<span class="w"> </span>a<span class="w"> </span>minute<span class="w"> </span>ago<span class="w">  </span><span class="m">183</span><span class="w"> </span>MB
+localhost/searxng/searxng<span class="w">  </span>builder<span class="w">             </span>...<span class="w">       </span>About<span class="w"> </span>a<span class="w"> </span>minute<span class="w"> </span>ago<span class="w">  </span><span class="m">524</span><span class="w"> </span>MB
+ghcr.io/searxng/base<span class="w">       </span>searxng-builder<span class="w">     </span>...<span class="w">       </span><span class="m">2</span><span class="w"> </span>days<span class="w"> </span>ago<span class="w">          </span><span class="m">378</span><span class="w"> </span>MB
+ghcr.io/searxng/base<span class="w">       </span>searxng<span class="w">             </span>...<span class="w">       </span><span class="m">2</span><span class="w"> </span>days<span class="w"> </span>ago<span class="w">          </span><span class="m">42</span>.2<span class="w"> </span>MB
+</pre></div>
+</div>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+  <span id="sidebar-top"></span>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+  
+    
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/searxng-wordmark.svg" alt="Logo of SearXNG"/>
+            </a></p>
+  
+
+<h3><a href="../index.html">Table of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../user/index.html">User information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../own-instance.html">Why use a private instance?</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Administrator documentation</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="settings/index.html">Settings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Installation container</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#installation">Installation</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#prerequisites">Prerequisites</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pulling-images">Pulling images</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#instancing">Instancing</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#management">Management</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#volumes">Volumes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#environment-variables">Environment variables</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#custom-certificates">Custom certificates</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#custom-images">Custom images</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="installation-scripts.html">Installation Script</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation-searxng.html">Step by step installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation-granian.html">Granian</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation-uwsgi.html">uWSGI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation-nginx.html">NGINX</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation-apache.html">Apache</a></li>
+<li class="toctree-l2"><a class="reference internal" href="update-searxng.html">SearXNG maintenance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="answer-captcha.html">Answer CAPTCHA from server’s IP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.favicons.html">Favicons</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.limiter.html">Limiter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html">Administration API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="architecture.html">Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plugins.html">List of plugins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="buildhosts.html">Buildhosts</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../dev/index.html">Developer documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../utils/index.html">DevOps tooling box</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../src/index.html">Source-Code</a></li>
+</ul>
+
+  <h3>Project Links</h3>
+  <ul>
+    <li><a href="https://github.com/searxng/searxng/tree/master">Source</a>
+  
+    <li><a href="https://github.com/searxng/searxng/wiki">Wiki</a>
+  
+    <li><a href="https://searx.space">Public instances</a>
+  
+    <li><a href="https://github.com/searxng/searxng/issues">Issue Tracker</a>
+  </ul><h3>Navigation</h3>
+<ul>
+  <li><a href="../index.html">Overview</a>
+    <ul>
+      <li><a href="index.html">Administrator documentation</a>
+        <ul>
+          <li>Previous: <a href="installation.html" title="previous chapter">Installation</a>
+          <li>Next: <a href="installation-scripts.html" title="next chapter">Installation Script</a></ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/admin/installation-docker.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright SearXNG team.
+    </div>
+  </body>
+</html>

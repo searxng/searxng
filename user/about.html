@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>About SearXNG &#8212; SearXNG Documentation (2026.2.22+191818b86)</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=6625fa76" />
+    <link rel="stylesheet" type="text/css" href="../_static/searxng.css?v=52e4ff28" />
+    <script src="../_static/documentation_options.js?v=1b5d919e"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script data-project="searxng" data-version="2026.2.22+191818b86" src="../_static/describe_version.js?v=fa7f30d0"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Why use a private instance?" href="../own-instance.html" />
+    <link rel="prev" title="Configured Engines" href="configured_engines.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../own-instance.html" title="Why use a private instance?"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="configured_engines.html" title="Configured Engines"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">SearXNG Documentation (2026.2.22+191818b86)</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" accesskey="U">User information</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">About SearXNG</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="about-searxng">
+<span id="about-searxng"></span><h1>About SearXNG<a class="headerlink" href="#about-searxng" title="Link to this heading">¶</a></h1>
+<p>SearXNG is a <a class="reference external" href="https://en.wikipedia.org/wiki/Metasearch_engine">metasearch engine</a>, aggregating the results of other
+<code class="docutils literal notranslate"><span class="pre">search</span> <span class="pre">engines</span></code> while not storing information about
+its users.</p>
+<p>The SearXNG project is driven by an open community. Come join us on Matrix if
+you have questions or just want to chat about SearXNG at <a class="reference external" href="https://matrix.to/#/#searxng:matrix.org">#searxng:matrix.org</a></p>
+<p>Make SearXNG better:</p>
+<ul class="simple">
+<li><p>You can improve SearXNG translations at <a class="reference external" href="https://translate.codeberg.org/projects/searxng/">Weblate</a>, or…</p></li>
+<li><p>Track development, send contributions, and report issues at <a class="reference external" href="https://github.com/searxng/searxng">SearXNG sources</a>.</p></li>
+<li><p>To get further information, visit SearXNG’s project documentation at <a class="reference external" href="https://docs.searxng.org/">SearXNG
+docs</a>.</p></li>
+</ul>
+<section id="why-use-it">
+<h2>Why use it?<a class="headerlink" href="#why-use-it" title="Link to this heading">¶</a></h2>
+<ul class="simple">
+<li><p>SearXNG may not offer you as personalized results as Google, but it doesn’t
+generate a profile about you.</p></li>
+<li><p>SearXNG doesn’t care about what you search for, never shares anything with a
+third-party, and can’t be used to compromise you.</p></li>
+<li><p>SearXNG is free software; the code is 100% open, and everyone is welcome to
+make it better.</p></li>
+</ul>
+<p>If you do care about privacy, want to be a conscious user, or otherwise believe
+in digital freedom, make SearXNG your default search engine or run it on your
+own server!</p>
+</section>
+<section id="how-do-i-set-it-as-the-default-search-engine">
+<h2>How do I set it as the default search engine?<a class="headerlink" href="#how-do-i-set-it-as-the-default-search-engine" title="Link to this heading">¶</a></h2>
+<p>SearXNG supports <a class="reference external" href="https://github.com/dewitt/opensearch/blob/master/opensearch-1-1-draft-6.md">OpenSearch</a>.  For more information on changing your default
+search engine, see your browser’s documentation:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://support.mozilla.org/en-US/kb/add-or-remove-search-engine-firefox">Firefox</a></p></li>
+<li><p><a class="reference external" href="https://support.microsoft.com/en-us/help/4028574/microsoft-edge-change-the-default-search-engine">Microsoft Edge</a> - Behind the link, you will also find some useful instructions
+for Chrome and Safari.</p></li>
+<li><p><a class="reference external" href="https://www.chromium.org/tab-to-search">Chromium</a>-based browsers only add websites that the user navigates to without
+a path.</p></li>
+</ul>
+<p>When adding a search engine, there must be no duplicates with the same name.  If
+you encounter a problem where you cannot add the search engine, you can either:</p>
+<ul class="simple">
+<li><p>Remove the duplicate (default name: SearXNG) or</p></li>
+<li><p>Contact the owner to give the instance a different name from the default.</p></li>
+</ul>
+</section>
+<section id="how-does-it-work">
+<h2>How does it work?<a class="headerlink" href="#how-does-it-work" title="Link to this heading">¶</a></h2>
+<p>SearXNG is a fork of the well-known <a class="reference external" href="https://github.com/searx/searx">searx</a> <a class="reference external" href="https://en.wikipedia.org/wiki/Metasearch_engine">metasearch engine</a> which was
+inspired by the <a class="reference external" href="https://beniz.github.io/seeks/">Seeks project</a>.  It provides basic privacy by mixing your
+queries with searches on other platforms without storing search data.  SearXNG
+can be added to your browser’s search bar; moreover, it can be set as the
+default search engine.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">stats</span> <span class="pre">page</span></code> contains some useful anonymous usage
+statistics about the engines used.</p>
+</section>
+<section id="how-can-i-make-it-my-own">
+<h2>How can I make it my own?<a class="headerlink" href="#how-can-i-make-it-my-own" title="Link to this heading">¶</a></h2>
+<p>SearXNG appreciates your concern regarding logs, so take the code from the
+<a class="reference external" href="https://github.com/searxng/searxng">SearXNG sources</a> and run it yourself!</p>
+<p>Add your instance to this <a class="reference external" href="https://searx.space">list of public
+instances</a> to help other people
+reclaim their privacy and make the internet freer.  The more decentralized the
+internet is, the more freedom we have!</p>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+  <span id="sidebar-top"></span>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+  
+    
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/searxng-wordmark.svg" alt="Logo of SearXNG"/>
+            </a></p>
+  
+
+<h3><a href="../index.html">Table of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">User information</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="search-syntax.html">Search syntax</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configured_engines.html">Configured Engines</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">About SearXNG</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#why-use-it">Why use it?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#how-do-i-set-it-as-the-default-search-engine">How do I set it as the default search engine?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#how-does-it-work">How does it work?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#how-can-i-make-it-my-own">How can I make it my own?</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../own-instance.html">Why use a private instance?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../admin/index.html">Administrator documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev/index.html">Developer documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../utils/index.html">DevOps tooling box</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../src/index.html">Source-Code</a></li>
+</ul>
+
+  <h3>Project Links</h3>
+  <ul>
+    <li><a href="https://github.com/searxng/searxng/tree/master">Source</a>
+  
+    <li><a href="https://github.com/searxng/searxng/wiki">Wiki</a>
+  
+    <li><a href="https://searx.space">Public instances</a>
+  
+    <li><a href="https://github.com/searxng/searxng/issues">Issue Tracker</a>
+  </ul><h3>Navigation</h3>
+<ul>
+  <li><a href="../index.html">Overview</a>
+    <ul>
+      <li><a href="index.html">User information</a>
+        <ul>
+          <li>Previous: <a href="configured_engines.html" title="previous chapter">Configured Engines</a>
+          <li>Next: <a href="../own-instance.html" title="next chapter">Why use a private instance?</a></ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/user/about.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright SearXNG team.
+    </div>
+  </body>
+</html>

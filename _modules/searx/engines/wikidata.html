@@ -1,0 +1,938 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>searx.engines.wikidata &#8212; SearXNG Documentation (2026.2.22+191818b86)</title>
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=6625fa76" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/searxng.css?v=52e4ff28" />
+    <script src="../../../_static/documentation_options.js?v=1b5d919e"></script>
+    <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script data-project="searxng" data-version="2026.2.22+191818b86" src="../../../_static/describe_version.js?v=fa7f30d0"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">SearXNG Documentation (2026.2.22+191818b86)</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" >Module code</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../engines.html" accesskey="U">searx.engines</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">searx.engines.wikidata</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for searx.engines.wikidata</h1><div class="highlight"><pre>
+<span></span><span class="c1"># SPDX-License-Identifier: AGPL-3.0-or-later</span>
+<span class="sd">&quot;&quot;&quot;This module implements the Wikidata engine.  Some implementations are shared</span>
+<span class="sd">from :ref:`wikipedia engine`.</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="c1"># pylint: disable=missing-class-docstring</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">hashlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">md5</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">urllib.parse</span><span class="w"> </span><span class="kn">import</span> <span class="n">urlencode</span><span class="p">,</span> <span class="n">unquote</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">json</span><span class="w"> </span><span class="kn">import</span> <span class="n">loads</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">dateutil.parser</span><span class="w"> </span><span class="kn">import</span> <span class="n">isoparse</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">babel.dates</span><span class="w"> </span><span class="kn">import</span> <span class="n">format_datetime</span><span class="p">,</span> <span class="n">format_date</span><span class="p">,</span> <span class="n">format_time</span><span class="p">,</span> <span class="n">get_datetime_format</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">searx.data</span><span class="w"> </span><span class="kn">import</span> <span class="n">WIKIDATA_UNITS</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">searx.network</span><span class="w"> </span><span class="kn">import</span> <span class="n">post</span><span class="p">,</span> <span class="n">get</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">searx.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">searxng_useragent</span><span class="p">,</span> <span class="n">get_string_replaces_function</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">searx.external_urls</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_external_url</span><span class="p">,</span> <span class="n">get_earth_coordinates_url</span><span class="p">,</span> <span class="n">area_to_osm_zoom</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">searx.engines.wikipedia</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">fetch_wikimedia_traits</span><span class="p">,</span>
+    <span class="n">get_wiki_params</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">searx.enginelib.traits</span><span class="w"> </span><span class="kn">import</span> <span class="n">EngineTraits</span>
+
+<span class="c1"># about</span>
+<span class="n">about</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;website&quot;</span><span class="p">:</span> <span class="s1">&#39;https://wikidata.org/&#39;</span><span class="p">,</span>
+    <span class="s2">&quot;wikidata_id&quot;</span><span class="p">:</span> <span class="s1">&#39;Q2013&#39;</span><span class="p">,</span>
+    <span class="s2">&quot;official_api_documentation&quot;</span><span class="p">:</span> <span class="s1">&#39;https://query.wikidata.org/&#39;</span><span class="p">,</span>
+    <span class="s2">&quot;use_official_api&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="s2">&quot;require_api_key&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="s2">&quot;results&quot;</span><span class="p">:</span> <span class="s1">&#39;JSON&#39;</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="n">display_type</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;infobox&quot;</span><span class="p">]</span>
+<span class="sd">&quot;&quot;&quot;A list of display types composed from ``infobox`` and ``list``.  The latter</span>
+<span class="sd">one will add a hit to the result list.  The first one will show a hit in the</span>
+<span class="sd">info box.  Both values can be set, or one of the two can be set.&quot;&quot;&quot;</span>
+
+
+<span class="c1"># SPARQL</span>
+<span class="n">SPARQL_ENDPOINT_URL</span> <span class="o">=</span> <span class="s1">&#39;https://query.wikidata.org/sparql&#39;</span>
+<span class="n">SPARQL_EXPLAIN_URL</span> <span class="o">=</span> <span class="s1">&#39;https://query.wikidata.org/bigdata/namespace/wdq/sparql?explain&#39;</span>
+<span class="n">WIKIDATA_PROPERTIES</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;P434&#39;</span><span class="p">:</span> <span class="s1">&#39;MusicBrainz&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;P435&#39;</span><span class="p">:</span> <span class="s1">&#39;MusicBrainz&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;P436&#39;</span><span class="p">:</span> <span class="s1">&#39;MusicBrainz&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;P966&#39;</span><span class="p">:</span> <span class="s1">&#39;MusicBrainz&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;P345&#39;</span><span class="p">:</span> <span class="s1">&#39;IMDb&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;P2397&#39;</span><span class="p">:</span> <span class="s1">&#39;YouTube&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;P1651&#39;</span><span class="p">:</span> <span class="s1">&#39;YouTube&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;P2002&#39;</span><span class="p">:</span> <span class="s1">&#39;Twitter&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;P2013&#39;</span><span class="p">:</span> <span class="s1">&#39;Facebook&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;P2003&#39;</span><span class="p">:</span> <span class="s1">&#39;Instagram&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;P4033&#39;</span><span class="p">:</span> <span class="s1">&#39;Mastodon&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;P11947&#39;</span><span class="p">:</span> <span class="s1">&#39;Lemmy&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;P12622&#39;</span><span class="p">:</span> <span class="s1">&#39;PeerTube&#39;</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="c1"># SERVICE wikibase:mwapi : https://www.mediawiki.org/wiki/Wikidata_Query_Service/User_Manual/MWAPI</span>
+<span class="c1"># SERVICE wikibase:label: https://en.wikibooks.org/wiki/SPARQL/SERVICE_-_Label#Manual_Label_SERVICE</span>
+<span class="c1"># https://en.wikibooks.org/wiki/SPARQL/WIKIDATA_Precision,_Units_and_Coordinates</span>
+<span class="c1"># https://www.mediawiki.org/wiki/Wikibase/Indexing/RDF_Dump_Format#Data_model</span>
+<span class="c1"># optimization:</span>
+<span class="c1"># * https://www.wikidata.org/wiki/Wikidata:SPARQL_query_service/query_optimization</span>
+<span class="c1"># * https://github.com/blazegraph/database/wiki/QueryHints</span>
+<span class="n">QUERY_TEMPLATE</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">SELECT ?item ?itemLabel ?itemDescription ?lat ?long %SELECT%</span>
+<span class="s2">WHERE</span>
+<span class="s2">{</span>
+<span class="s2">  SERVICE wikibase:mwapi {</span>
+<span class="s2">        bd:serviceParam wikibase:endpoint &quot;www.wikidata.org&quot;;</span>
+<span class="s2">        wikibase:api &quot;EntitySearch&quot;;</span>
+<span class="s2">        wikibase:limit 1;</span>
+<span class="s2">        mwapi:search &quot;%QUERY%&quot;;</span>
+<span class="s2">        mwapi:language &quot;%LANGUAGE%&quot;.</span>
+<span class="s2">        ?item wikibase:apiOutputItem mwapi:item.</span>
+<span class="s2">  }</span>
+<span class="s2">  hint:Prior hint:runFirst &quot;true&quot;.</span>
+
+<span class="s2">  %WHERE%</span>
+
+<span class="s2">  SERVICE wikibase:label {</span>
+<span class="s2">      bd:serviceParam wikibase:language &quot;%LANGUAGE%,en&quot;.</span>
+<span class="s2">      ?item rdfs:label ?itemLabel .</span>
+<span class="s2">      ?item schema:description ?itemDescription .</span>
+<span class="s2">      %WIKIBASE_LABELS%</span>
+<span class="s2">  }</span>
+
+<span class="s2">}</span>
+<span class="s2">GROUP BY ?item ?itemLabel ?itemDescription ?lat ?long </span><span class="si">%G</span><span class="s2">ROUP_BY%</span>
+<span class="s2">&quot;&quot;&quot;</span>
+
+<span class="c1"># Get the calendar names and the property names</span>
+<span class="n">QUERY_PROPERTY_NAMES</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">SELECT ?item ?name</span>
+<span class="s2">WHERE {</span>
+<span class="s2">    {</span>
+<span class="s2">      SELECT ?item</span>
+<span class="s2">      WHERE { ?item wdt:P279* wd:Q12132 }</span>
+<span class="s2">    } UNION {</span>
+<span class="s2">      VALUES ?item { %ATTRIBUTES% }</span>
+<span class="s2">    }</span>
+<span class="s2">    OPTIONAL { ?item rdfs:label ?name. }</span>
+<span class="s2">}</span>
+<span class="s2">&quot;&quot;&quot;</span>
+
+<span class="c1"># see the property &quot;dummy value&quot; of https://www.wikidata.org/wiki/Q2013 (Wikidata)</span>
+<span class="c1"># hard coded here to avoid to an additional SPARQL request when the server starts</span>
+<span class="n">DUMMY_ENTITY_URLS</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span>
+    <span class="s2">&quot;http://www.wikidata.org/entity/&quot;</span> <span class="o">+</span> <span class="n">wid</span> <span class="k">for</span> <span class="n">wid</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;Q4115189&quot;</span><span class="p">,</span> <span class="s2">&quot;Q13406268&quot;</span><span class="p">,</span> <span class="s2">&quot;Q15397819&quot;</span><span class="p">,</span> <span class="s2">&quot;Q17339402&quot;</span><span class="p">)</span>
+<span class="p">)</span>
+
+
+<span class="c1"># https://www.w3.org/TR/sparql11-query/#rSTRING_LITERAL1</span>
+<span class="c1"># https://lists.w3.org/Archives/Public/public-rdf-dawg/2011OctDec/0175.html</span>
+<span class="n">sparql_string_escape</span> <span class="o">=</span> <span class="n">get_string_replaces_function</span><span class="p">(</span>
+    <span class="c1"># fmt: off</span>
+    <span class="p">{</span>
+        <span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">:</span> <span class="s1">&#39;</span><span class="se">\\\t</span><span class="s1">&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">:</span> <span class="s1">&#39;</span><span class="se">\\\n</span><span class="s1">&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;</span><span class="se">\r</span><span class="s1">&#39;</span><span class="p">:</span> <span class="s1">&#39;</span><span class="se">\\\r</span><span class="s1">&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;</span><span class="se">\b</span><span class="s1">&#39;</span><span class="p">:</span> <span class="s1">&#39;</span><span class="se">\\\b</span><span class="s1">&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;</span><span class="se">\f</span><span class="s1">&#39;</span><span class="p">:</span> <span class="s1">&#39;</span><span class="se">\\\f</span><span class="s1">&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;</span><span class="se">\&quot;</span><span class="s1">&#39;</span><span class="p">:</span> <span class="s1">&#39;</span><span class="se">\\\&quot;</span><span class="s1">&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;</span><span class="se">\&#39;</span><span class="s1">&#39;</span><span class="p">:</span> <span class="s1">&#39;</span><span class="se">\\\&#39;</span><span class="s1">&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;</span><span class="se">\\</span><span class="s1">&#39;</span><span class="p">:</span> <span class="s1">&#39;</span><span class="se">\\\\</span><span class="s1">&#39;</span>
+    <span class="p">}</span>
+    <span class="c1"># fmt: on</span>
+<span class="p">)</span>
+
+<span class="n">replace_http_by_https</span> <span class="o">=</span> <span class="n">get_string_replaces_function</span><span class="p">({</span><span class="s1">&#39;http:&#39;</span><span class="p">:</span> <span class="s1">&#39;https:&#39;</span><span class="p">})</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">get_headers</span><span class="p">():</span>
+    <span class="c1"># user agent: https://www.mediawiki.org/wiki/Wikidata_Query_Service/User_Manual#Query_limits</span>
+    <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;Accept&#39;</span><span class="p">:</span> <span class="s1">&#39;application/sparql-results+json&#39;</span><span class="p">,</span> <span class="s1">&#39;User-Agent&#39;</span><span class="p">:</span> <span class="n">searxng_useragent</span><span class="p">()}</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">get_label_for_entity</span><span class="p">(</span><span class="n">entity_id</span><span class="p">,</span> <span class="n">language</span><span class="p">):</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="n">WIKIDATA_PROPERTIES</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">entity_id</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="n">WIKIDATA_PROPERTIES</span><span class="o">.</span><span class="n">get</span><span class="p">((</span><span class="n">entity_id</span><span class="p">,</span> <span class="n">language</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="n">WIKIDATA_PROPERTIES</span><span class="o">.</span><span class="n">get</span><span class="p">((</span><span class="n">entity_id</span><span class="p">,</span> <span class="n">language</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]))</span>
+    <span class="k">if</span> <span class="n">name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="n">WIKIDATA_PROPERTIES</span><span class="o">.</span><span class="n">get</span><span class="p">((</span><span class="n">entity_id</span><span class="p">,</span> <span class="s1">&#39;en&#39;</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="n">entity_id</span>
+    <span class="k">return</span> <span class="n">name</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">send_wikidata_query</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;GET&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">method</span> <span class="o">==</span> <span class="s1">&#39;GET&#39;</span><span class="p">:</span>
+        <span class="c1"># query will be cached by wikidata</span>
+        <span class="n">http_response</span> <span class="o">=</span> <span class="n">get</span><span class="p">(</span><span class="n">SPARQL_ENDPOINT_URL</span> <span class="o">+</span> <span class="s1">&#39;?&#39;</span> <span class="o">+</span> <span class="n">urlencode</span><span class="p">({</span><span class="s1">&#39;query&#39;</span><span class="p">:</span> <span class="n">query</span><span class="p">}),</span> <span class="n">headers</span><span class="o">=</span><span class="n">get_headers</span><span class="p">(),</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c1"># query won&#39;t be cached by wikidata</span>
+        <span class="n">http_response</span> <span class="o">=</span> <span class="n">post</span><span class="p">(</span><span class="n">SPARQL_ENDPOINT_URL</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;query&#39;</span><span class="p">:</span> <span class="n">query</span><span class="p">},</span> <span class="n">headers</span><span class="o">=</span><span class="n">get_headers</span><span class="p">(),</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">http_response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">!=</span> <span class="mi">200</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;SPARQL endpoint error </span><span class="si">%s</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">http_response</span><span class="o">.</span><span class="n">content</span><span class="o">.</span><span class="n">decode</span><span class="p">())</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;request time </span><span class="si">%s</span><span class="s1">&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">http_response</span><span class="o">.</span><span class="n">elapsed</span><span class="p">))</span>
+    <span class="n">http_response</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">loads</span><span class="p">(</span><span class="n">http_response</span><span class="o">.</span><span class="n">content</span><span class="o">.</span><span class="n">decode</span><span class="p">())</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">request</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">params</span><span class="p">):</span>
+
+    <span class="n">eng_tag</span><span class="p">,</span> <span class="n">_wiki_netloc</span> <span class="o">=</span> <span class="n">get_wiki_params</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="s1">&#39;searxng_locale&#39;</span><span class="p">],</span> <span class="n">traits</span><span class="p">)</span>
+    <span class="n">query</span><span class="p">,</span> <span class="n">attributes</span> <span class="o">=</span> <span class="n">get_query</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">eng_tag</span><span class="p">)</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;request --&gt; language </span><span class="si">%s</span><span class="s2"> // len(attributes): </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">eng_tag</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">attributes</span><span class="p">))</span>
+
+    <span class="n">params</span><span class="p">[</span><span class="s1">&#39;method&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;POST&#39;</span>
+    <span class="n">params</span><span class="p">[</span><span class="s1">&#39;url&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">SPARQL_ENDPOINT_URL</span>
+    <span class="n">params</span><span class="p">[</span><span class="s1">&#39;data&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;query&#39;</span><span class="p">:</span> <span class="n">query</span><span class="p">}</span>
+    <span class="n">params</span><span class="p">[</span><span class="s1">&#39;headers&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">get_headers</span><span class="p">()</span>
+    <span class="n">params</span><span class="p">[</span><span class="s1">&#39;language&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">eng_tag</span>
+    <span class="n">params</span><span class="p">[</span><span class="s1">&#39;attributes&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">attributes</span>
+
+    <span class="k">return</span> <span class="n">params</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">response</span><span class="p">(</span><span class="n">resp</span><span class="p">):</span>
+
+    <span class="n">results</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">jsonresponse</span> <span class="o">=</span> <span class="n">loads</span><span class="p">(</span><span class="n">resp</span><span class="o">.</span><span class="n">content</span><span class="o">.</span><span class="n">decode</span><span class="p">())</span>
+
+    <span class="n">language</span> <span class="o">=</span> <span class="n">resp</span><span class="o">.</span><span class="n">search_params</span><span class="p">[</span><span class="s1">&#39;language&#39;</span><span class="p">]</span>
+    <span class="n">attributes</span> <span class="o">=</span> <span class="n">resp</span><span class="o">.</span><span class="n">search_params</span><span class="p">[</span><span class="s1">&#39;attributes&#39;</span><span class="p">]</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;request --&gt; language </span><span class="si">%s</span><span class="s2"> // len(attributes): </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">language</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">attributes</span><span class="p">))</span>
+
+    <span class="n">seen_entities</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">jsonresponse</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;results&#39;</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;bindings&#39;</span><span class="p">,</span> <span class="p">[]):</span>
+        <span class="n">attribute_result</span> <span class="o">=</span> <span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="n">value</span><span class="p">[</span><span class="s1">&#39;value&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">result</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+        <span class="n">entity_url</span> <span class="o">=</span> <span class="n">attribute_result</span><span class="p">[</span><span class="s1">&#39;item&#39;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">entity_url</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">seen_entities</span> <span class="ow">and</span> <span class="n">entity_url</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">DUMMY_ENTITY_URLS</span><span class="p">:</span>
+            <span class="n">seen_entities</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">entity_url</span><span class="p">)</span>
+            <span class="n">results</span> <span class="o">+=</span> <span class="n">get_results</span><span class="p">(</span><span class="n">attribute_result</span><span class="p">,</span> <span class="n">attributes</span><span class="p">,</span> <span class="n">language</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;The SPARQL request returns duplicate entities: </span><span class="si">%s</span><span class="s1">&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">attribute_result</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="n">results</span>
+
+
+<span class="n">_IMG_SRC_DEFAULT_URL_PREFIX</span> <span class="o">=</span> <span class="s2">&quot;https://commons.wikimedia.org/wiki/Special:FilePath/&quot;</span>
+<span class="n">_IMG_SRC_NEW_URL_PREFIX</span> <span class="o">=</span> <span class="s2">&quot;https://upload.wikimedia.org/wikipedia/commons/thumb/&quot;</span>
+
+
+<div class="viewcode-block" id="get_thumbnail">
+<a class="viewcode-back" href="../../../dev/engines/online/wikipedia.html#searx.engines.wikidata.get_thumbnail">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_thumbnail</span><span class="p">(</span><span class="n">img_src</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get Thumbnail image from wikimedia commons</span>
+
+<span class="sd">    Images from commons.wikimedia.org are (HTTP) redirected to</span>
+<span class="sd">    upload.wikimedia.org.  The redirected URL can be calculated by this</span>
+<span class="sd">    function.</span>
+
+<span class="sd">    - https://stackoverflow.com/a/33691240</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;get_thumbnail(): </span><span class="si">%s</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">img_src</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">img_src</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">_IMG_SRC_DEFAULT_URL_PREFIX</span> <span class="ow">in</span> <span class="n">img_src</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">0</span><span class="p">]:</span>
+        <span class="n">img_src_name</span> <span class="o">=</span> <span class="n">unquote</span><span class="p">(</span><span class="n">img_src</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">_IMG_SRC_DEFAULT_URL_PREFIX</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;?&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;%20&quot;</span><span class="p">,</span> <span class="s2">&quot;_&quot;</span><span class="p">))</span>
+        <span class="n">img_src_name_first</span> <span class="o">=</span> <span class="n">img_src_name</span>
+        <span class="n">img_src_name_second</span> <span class="o">=</span> <span class="n">img_src_name</span>
+
+        <span class="k">if</span> <span class="s2">&quot;.svg&quot;</span> <span class="ow">in</span> <span class="n">img_src_name</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">0</span><span class="p">]:</span>
+            <span class="n">img_src_name_second</span> <span class="o">=</span> <span class="n">img_src_name</span> <span class="o">+</span> <span class="s2">&quot;.png&quot;</span>
+
+        <span class="n">img_src_size</span> <span class="o">=</span> <span class="n">img_src</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">_IMG_SRC_DEFAULT_URL_PREFIX</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;?&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">img_src_size</span> <span class="o">=</span> <span class="n">img_src_size</span><span class="p">[</span><span class="n">img_src_size</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">&quot;=&quot;</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span> <span class="p">:</span> <span class="n">img_src_size</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">&quot;&amp;&quot;</span><span class="p">)]</span>
+        <span class="n">img_src_name_md5</span> <span class="o">=</span> <span class="n">md5</span><span class="p">(</span><span class="n">img_src_name</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span>
+        <span class="n">img_src</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">_IMG_SRC_NEW_URL_PREFIX</span>
+            <span class="o">+</span> <span class="n">img_src_name_md5</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="o">+</span> <span class="s2">&quot;/&quot;</span>
+            <span class="o">+</span> <span class="n">img_src_name_md5</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">2</span><span class="p">]</span>
+            <span class="o">+</span> <span class="s2">&quot;/&quot;</span>
+            <span class="o">+</span> <span class="n">img_src_name_first</span>
+            <span class="o">+</span> <span class="s2">&quot;/&quot;</span>
+            <span class="o">+</span> <span class="n">img_src_size</span>
+            <span class="o">+</span> <span class="s2">&quot;px-&quot;</span>
+            <span class="o">+</span> <span class="n">img_src_name_second</span>
+        <span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;get_thumbnail() redirected: </span><span class="si">%s</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">img_src</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">img_src</span></div>
+
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">get_results</span><span class="p">(</span><span class="n">attribute_result</span><span class="p">,</span> <span class="n">attributes</span><span class="p">,</span> <span class="n">language</span><span class="p">):</span>
+    <span class="c1"># pylint: disable=too-many-branches</span>
+    <span class="n">results</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">infobox_title</span> <span class="o">=</span> <span class="n">attribute_result</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;itemLabel&#39;</span><span class="p">)</span>
+    <span class="n">infobox_id</span> <span class="o">=</span> <span class="n">attribute_result</span><span class="p">[</span><span class="s1">&#39;item&#39;</span><span class="p">]</span>
+    <span class="n">infobox_id_lang</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">infobox_urls</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">infobox_attributes</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">infobox_content</span> <span class="o">=</span> <span class="n">attribute_result</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;itemDescription&#39;</span><span class="p">,</span> <span class="p">[])</span>
+    <span class="n">img_src</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">img_src_priority</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="k">for</span> <span class="n">attribute</span> <span class="ow">in</span> <span class="n">attributes</span><span class="p">:</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="n">attribute</span><span class="o">.</span><span class="n">get_str</span><span class="p">(</span><span class="n">attribute_result</span><span class="p">,</span> <span class="n">language</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">value</span> <span class="o">!=</span> <span class="s1">&#39;&#39;</span><span class="p">:</span>
+            <span class="n">attribute_type</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span><span class="n">attribute</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">attribute_type</span> <span class="ow">in</span> <span class="p">(</span><span class="n">WDURLAttribute</span><span class="p">,</span> <span class="n">WDArticle</span><span class="p">):</span>
+                <span class="c1"># get_select() method : there is group_concat(distinct ...;separator=&quot;, &quot;)</span>
+                <span class="c1"># split the value here</span>
+                <span class="k">for</span> <span class="n">url</span> <span class="ow">in</span> <span class="n">value</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;, &#39;</span><span class="p">):</span>
+                    <span class="n">infobox_urls</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s1">&#39;title&#39;</span><span class="p">:</span> <span class="n">attribute</span><span class="o">.</span><span class="n">get_label</span><span class="p">(</span><span class="n">language</span><span class="p">),</span> <span class="s1">&#39;url&#39;</span><span class="p">:</span> <span class="n">url</span><span class="p">,</span> <span class="o">**</span><span class="n">attribute</span><span class="o">.</span><span class="n">kwargs</span><span class="p">})</span>
+                    <span class="c1"># &quot;normal&quot; results (not infobox) include official website and Wikipedia links.</span>
+                    <span class="k">if</span> <span class="s2">&quot;list&quot;</span> <span class="ow">in</span> <span class="n">display_type</span> <span class="ow">and</span> <span class="p">(</span><span class="n">attribute</span><span class="o">.</span><span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;official&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">attribute_type</span> <span class="o">==</span> <span class="n">WDArticle</span><span class="p">):</span>
+                        <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s1">&#39;title&#39;</span><span class="p">:</span> <span class="n">infobox_title</span><span class="p">,</span> <span class="s1">&#39;url&#39;</span><span class="p">:</span> <span class="n">url</span><span class="p">,</span> <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="n">infobox_content</span><span class="p">})</span>
+
+                    <span class="c1"># update the infobox_id with the wikipedia URL</span>
+                    <span class="c1"># first the local wikipedia URL, and as fallback the english wikipedia URL</span>
+                    <span class="k">if</span> <span class="n">attribute_type</span> <span class="o">==</span> <span class="n">WDArticle</span> <span class="ow">and</span> <span class="p">(</span>
+                        <span class="p">(</span><span class="n">attribute</span><span class="o">.</span><span class="n">language</span> <span class="o">==</span> <span class="s1">&#39;en&#39;</span> <span class="ow">and</span> <span class="n">infobox_id_lang</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">or</span> <span class="n">attribute</span><span class="o">.</span><span class="n">language</span> <span class="o">!=</span> <span class="s1">&#39;en&#39;</span>
+                    <span class="p">):</span>
+                        <span class="n">infobox_id_lang</span> <span class="o">=</span> <span class="n">attribute</span><span class="o">.</span><span class="n">language</span>
+                        <span class="n">infobox_id</span> <span class="o">=</span> <span class="n">url</span>
+            <span class="k">elif</span> <span class="n">attribute_type</span> <span class="o">==</span> <span class="n">WDImageAttribute</span><span class="p">:</span>
+                <span class="c1"># this attribute is an image.</span>
+                <span class="c1"># replace the current image only the priority is lower</span>
+                <span class="c1"># (the infobox contain only one image).</span>
+                <span class="k">if</span> <span class="n">attribute</span><span class="o">.</span><span class="n">priority</span> <span class="o">&gt;</span> <span class="n">img_src_priority</span><span class="p">:</span>
+                    <span class="n">img_src</span> <span class="o">=</span> <span class="n">get_thumbnail</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+                    <span class="n">img_src_priority</span> <span class="o">=</span> <span class="n">attribute</span><span class="o">.</span><span class="n">priority</span>
+            <span class="k">elif</span> <span class="n">attribute_type</span> <span class="o">==</span> <span class="n">WDGeoAttribute</span><span class="p">:</span>
+                <span class="c1"># geocoordinate link</span>
+                <span class="c1"># use the area to get the OSM zoom</span>
+                <span class="c1"># Note: ignore the unit (must be km² otherwise the calculation is wrong)</span>
+                <span class="c1"># Should use normalized value p:P2046/psn:P2046/wikibase:quantityAmount</span>
+                <span class="n">area</span> <span class="o">=</span> <span class="n">attribute_result</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;P2046&#39;</span><span class="p">)</span>
+                <span class="n">osm_zoom</span> <span class="o">=</span> <span class="n">area_to_osm_zoom</span><span class="p">(</span><span class="n">area</span><span class="p">)</span> <span class="k">if</span> <span class="n">area</span> <span class="k">else</span> <span class="mi">19</span>
+                <span class="n">url</span> <span class="o">=</span> <span class="n">attribute</span><span class="o">.</span><span class="n">get_geo_url</span><span class="p">(</span><span class="n">attribute_result</span><span class="p">,</span> <span class="n">osm_zoom</span><span class="o">=</span><span class="n">osm_zoom</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">url</span><span class="p">:</span>
+                    <span class="n">infobox_urls</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s1">&#39;title&#39;</span><span class="p">:</span> <span class="n">attribute</span><span class="o">.</span><span class="n">get_label</span><span class="p">(</span><span class="n">language</span><span class="p">),</span> <span class="s1">&#39;url&#39;</span><span class="p">:</span> <span class="n">url</span><span class="p">,</span> <span class="s1">&#39;entity&#39;</span><span class="p">:</span> <span class="n">attribute</span><span class="o">.</span><span class="n">name</span><span class="p">})</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">infobox_attributes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                    <span class="p">{</span><span class="s1">&#39;label&#39;</span><span class="p">:</span> <span class="n">attribute</span><span class="o">.</span><span class="n">get_label</span><span class="p">(</span><span class="n">language</span><span class="p">),</span> <span class="s1">&#39;value&#39;</span><span class="p">:</span> <span class="n">value</span><span class="p">,</span> <span class="s1">&#39;entity&#39;</span><span class="p">:</span> <span class="n">attribute</span><span class="o">.</span><span class="n">name</span><span class="p">}</span>
+                <span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">infobox_id</span><span class="p">:</span>
+        <span class="n">infobox_id</span> <span class="o">=</span> <span class="n">replace_http_by_https</span><span class="p">(</span><span class="n">infobox_id</span><span class="p">)</span>
+
+    <span class="c1"># add the wikidata URL at the end</span>
+    <span class="n">infobox_urls</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s1">&#39;title&#39;</span><span class="p">:</span> <span class="s1">&#39;Wikidata&#39;</span><span class="p">,</span> <span class="s1">&#39;url&#39;</span><span class="p">:</span> <span class="n">attribute_result</span><span class="p">[</span><span class="s1">&#39;item&#39;</span><span class="p">]})</span>
+
+    <span class="k">if</span> <span class="p">(</span>
+        <span class="s2">&quot;list&quot;</span> <span class="ow">in</span> <span class="n">display_type</span>
+        <span class="ow">and</span> <span class="n">img_src</span> <span class="ow">is</span> <span class="kc">None</span>
+        <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">infobox_attributes</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span>
+        <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">infobox_urls</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span>
+        <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">infobox_content</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span>
+    <span class="p">):</span>
+        <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s1">&#39;url&#39;</span><span class="p">:</span> <span class="n">infobox_urls</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;url&#39;</span><span class="p">],</span> <span class="s1">&#39;title&#39;</span><span class="p">:</span> <span class="n">infobox_title</span><span class="p">,</span> <span class="s1">&#39;content&#39;</span><span class="p">:</span> <span class="n">infobox_content</span><span class="p">})</span>
+    <span class="k">elif</span> <span class="s2">&quot;infobox&quot;</span> <span class="ow">in</span> <span class="n">display_type</span><span class="p">:</span>
+        <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+            <span class="p">{</span>
+                <span class="s1">&#39;infobox&#39;</span><span class="p">:</span> <span class="n">infobox_title</span><span class="p">,</span>
+                <span class="s1">&#39;id&#39;</span><span class="p">:</span> <span class="n">infobox_id</span><span class="p">,</span>
+                <span class="s1">&#39;content&#39;</span><span class="p">:</span> <span class="n">infobox_content</span><span class="p">,</span>
+                <span class="s1">&#39;img_src&#39;</span><span class="p">:</span> <span class="n">img_src</span><span class="p">,</span>
+                <span class="s1">&#39;urls&#39;</span><span class="p">:</span> <span class="n">infobox_urls</span><span class="p">,</span>
+                <span class="s1">&#39;attributes&#39;</span><span class="p">:</span> <span class="n">infobox_attributes</span><span class="p">,</span>
+            <span class="p">}</span>
+        <span class="p">)</span>
+    <span class="k">return</span> <span class="n">results</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">get_query</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">language</span><span class="p">):</span>
+    <span class="n">attributes</span> <span class="o">=</span> <span class="n">get_attributes</span><span class="p">(</span><span class="n">language</span><span class="p">)</span>
+    <span class="n">select</span> <span class="o">=</span> <span class="p">[</span><span class="n">a</span><span class="o">.</span><span class="n">get_select</span><span class="p">()</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">attributes</span><span class="p">]</span>
+    <span class="n">where</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">s</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">s</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">,</span> <span class="p">[</span><span class="n">a</span><span class="o">.</span><span class="n">get_where</span><span class="p">()</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">attributes</span><span class="p">]))</span>
+    <span class="n">wikibase_label</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">s</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">s</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">,</span> <span class="p">[</span><span class="n">a</span><span class="o">.</span><span class="n">get_wikibase_label</span><span class="p">()</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">attributes</span><span class="p">]))</span>
+    <span class="n">group_by</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">s</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">s</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">,</span> <span class="p">[</span><span class="n">a</span><span class="o">.</span><span class="n">get_group_by</span><span class="p">()</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">attributes</span><span class="p">]))</span>
+    <span class="n">query</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">QUERY_TEMPLATE</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;%QUERY%&#39;</span><span class="p">,</span> <span class="n">sparql_string_escape</span><span class="p">(</span><span class="n">query</span><span class="p">))</span>
+        <span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;%SELECT%&#39;</span><span class="p">,</span> <span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">select</span><span class="p">))</span>
+        <span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;%WHERE%&#39;</span><span class="p">,</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">  &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">where</span><span class="p">))</span>
+        <span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;%WIKIBASE_LABELS%&#39;</span><span class="p">,</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">      &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">wikibase_label</span><span class="p">))</span>
+        <span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%G</span><span class="s1">ROUP_BY%&#39;</span><span class="p">,</span> <span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">group_by</span><span class="p">))</span>
+        <span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;%LANGUAGE%&#39;</span><span class="p">,</span> <span class="n">language</span><span class="p">)</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">query</span><span class="p">,</span> <span class="n">attributes</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">get_attributes</span><span class="p">(</span><span class="n">language</span><span class="p">):</span>
+    <span class="c1"># pylint: disable=too-many-statements</span>
+    <span class="n">attributes</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">add_value</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
+        <span class="n">attributes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">WDAttribute</span><span class="p">(</span><span class="n">name</span><span class="p">))</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">add_amount</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
+        <span class="n">attributes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">WDAmountAttribute</span><span class="p">(</span><span class="n">name</span><span class="p">))</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">add_label</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
+        <span class="n">attributes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">WDLabelAttribute</span><span class="p">(</span><span class="n">name</span><span class="p">))</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">add_url</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">url_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">url_path_prefix</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">attributes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">WDURLAttribute</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">url_id</span><span class="p">,</span> <span class="n">url_path_prefix</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">))</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">add_image</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">url_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">priority</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+        <span class="n">attributes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">WDImageAttribute</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">url_id</span><span class="p">,</span> <span class="n">priority</span><span class="p">))</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">add_date</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
+        <span class="n">attributes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">WDDateAttribute</span><span class="p">(</span><span class="n">name</span><span class="p">))</span>
+
+    <span class="c1"># Dates</span>
+    <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="p">[</span>
+        <span class="s1">&#39;P571&#39;</span><span class="p">,</span>  <span class="c1"># inception date</span>
+        <span class="s1">&#39;P576&#39;</span><span class="p">,</span>  <span class="c1"># dissolution date</span>
+        <span class="s1">&#39;P580&#39;</span><span class="p">,</span>  <span class="c1"># start date</span>
+        <span class="s1">&#39;P582&#39;</span><span class="p">,</span>  <span class="c1"># end date</span>
+        <span class="s1">&#39;P569&#39;</span><span class="p">,</span>  <span class="c1"># date of birth</span>
+        <span class="s1">&#39;P570&#39;</span><span class="p">,</span>  <span class="c1"># date of death</span>
+        <span class="s1">&#39;P619&#39;</span><span class="p">,</span>  <span class="c1"># date of spacecraft launch</span>
+        <span class="s1">&#39;P620&#39;</span><span class="p">,</span>
+    <span class="p">]:</span>  <span class="c1"># date of spacecraft landing</span>
+        <span class="n">add_date</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="p">[</span>
+        <span class="s1">&#39;P27&#39;</span><span class="p">,</span>  <span class="c1"># country of citizenship</span>
+        <span class="s1">&#39;P495&#39;</span><span class="p">,</span>  <span class="c1"># country of origin</span>
+        <span class="s1">&#39;P17&#39;</span><span class="p">,</span>  <span class="c1"># country</span>
+        <span class="s1">&#39;P159&#39;</span><span class="p">,</span>
+    <span class="p">]:</span>  <span class="c1"># headquarters location</span>
+        <span class="n">add_label</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+
+    <span class="c1"># Places</span>
+    <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="p">[</span>
+        <span class="s1">&#39;P36&#39;</span><span class="p">,</span>  <span class="c1"># capital</span>
+        <span class="s1">&#39;P35&#39;</span><span class="p">,</span>  <span class="c1"># head of state</span>
+        <span class="s1">&#39;P6&#39;</span><span class="p">,</span>  <span class="c1"># head of government</span>
+        <span class="s1">&#39;P122&#39;</span><span class="p">,</span>  <span class="c1"># basic form of government</span>
+        <span class="s1">&#39;P37&#39;</span><span class="p">,</span>
+    <span class="p">]:</span>  <span class="c1"># official language</span>
+        <span class="n">add_label</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+
+    <span class="n">add_value</span><span class="p">(</span><span class="s1">&#39;P1082&#39;</span><span class="p">)</span>  <span class="c1"># population</span>
+    <span class="n">add_amount</span><span class="p">(</span><span class="s1">&#39;P2046&#39;</span><span class="p">)</span>  <span class="c1"># area</span>
+    <span class="n">add_amount</span><span class="p">(</span><span class="s1">&#39;P281&#39;</span><span class="p">)</span>  <span class="c1"># postal code</span>
+    <span class="n">add_label</span><span class="p">(</span><span class="s1">&#39;P38&#39;</span><span class="p">)</span>  <span class="c1"># currency</span>
+    <span class="n">add_amount</span><span class="p">(</span><span class="s1">&#39;P2048&#39;</span><span class="p">)</span>  <span class="c1"># height (building)</span>
+
+    <span class="c1"># Media</span>
+    <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="p">[</span>
+        <span class="s1">&#39;P400&#39;</span><span class="p">,</span>  <span class="c1"># platform (videogames, computing)</span>
+        <span class="s1">&#39;P50&#39;</span><span class="p">,</span>  <span class="c1"># author</span>
+        <span class="s1">&#39;P170&#39;</span><span class="p">,</span>  <span class="c1"># creator</span>
+        <span class="s1">&#39;P57&#39;</span><span class="p">,</span>  <span class="c1"># director</span>
+        <span class="s1">&#39;P175&#39;</span><span class="p">,</span>  <span class="c1"># performer</span>
+        <span class="s1">&#39;P178&#39;</span><span class="p">,</span>  <span class="c1"># developer</span>
+        <span class="s1">&#39;P162&#39;</span><span class="p">,</span>  <span class="c1"># producer</span>
+        <span class="s1">&#39;P176&#39;</span><span class="p">,</span>  <span class="c1"># manufacturer</span>
+        <span class="s1">&#39;P58&#39;</span><span class="p">,</span>  <span class="c1"># screenwriter</span>
+        <span class="s1">&#39;P272&#39;</span><span class="p">,</span>  <span class="c1"># production company</span>
+        <span class="s1">&#39;P264&#39;</span><span class="p">,</span>  <span class="c1"># record label</span>
+        <span class="s1">&#39;P123&#39;</span><span class="p">,</span>  <span class="c1"># publisher</span>
+        <span class="s1">&#39;P449&#39;</span><span class="p">,</span>  <span class="c1"># original network</span>
+        <span class="s1">&#39;P750&#39;</span><span class="p">,</span>  <span class="c1"># distributed by</span>
+        <span class="s1">&#39;P86&#39;</span><span class="p">,</span>
+    <span class="p">]:</span>  <span class="c1"># composer</span>
+        <span class="n">add_label</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+
+    <span class="n">add_date</span><span class="p">(</span><span class="s1">&#39;P577&#39;</span><span class="p">)</span>  <span class="c1"># publication date</span>
+    <span class="n">add_label</span><span class="p">(</span><span class="s1">&#39;P136&#39;</span><span class="p">)</span>  <span class="c1"># genre (music, film, artistic...)</span>
+    <span class="n">add_label</span><span class="p">(</span><span class="s1">&#39;P364&#39;</span><span class="p">)</span>  <span class="c1"># original language</span>
+    <span class="n">add_value</span><span class="p">(</span><span class="s1">&#39;P212&#39;</span><span class="p">)</span>  <span class="c1"># ISBN-13</span>
+    <span class="n">add_value</span><span class="p">(</span><span class="s1">&#39;P957&#39;</span><span class="p">)</span>  <span class="c1"># ISBN-10</span>
+    <span class="n">add_label</span><span class="p">(</span><span class="s1">&#39;P275&#39;</span><span class="p">)</span>  <span class="c1"># copyright license</span>
+    <span class="n">add_label</span><span class="p">(</span><span class="s1">&#39;P277&#39;</span><span class="p">)</span>  <span class="c1"># programming language</span>
+    <span class="n">add_value</span><span class="p">(</span><span class="s1">&#39;P348&#39;</span><span class="p">)</span>  <span class="c1"># version</span>
+    <span class="n">add_label</span><span class="p">(</span><span class="s1">&#39;P840&#39;</span><span class="p">)</span>  <span class="c1"># narrative location</span>
+
+    <span class="c1"># Languages</span>
+    <span class="n">add_value</span><span class="p">(</span><span class="s1">&#39;P1098&#39;</span><span class="p">)</span>  <span class="c1"># number of speakers</span>
+    <span class="n">add_label</span><span class="p">(</span><span class="s1">&#39;P282&#39;</span><span class="p">)</span>  <span class="c1"># writing system</span>
+    <span class="n">add_label</span><span class="p">(</span><span class="s1">&#39;P1018&#39;</span><span class="p">)</span>  <span class="c1"># language regulatory body</span>
+    <span class="n">add_value</span><span class="p">(</span><span class="s1">&#39;P218&#39;</span><span class="p">)</span>  <span class="c1"># language code (ISO 639-1)</span>
+
+    <span class="c1"># Other</span>
+    <span class="n">add_label</span><span class="p">(</span><span class="s1">&#39;P169&#39;</span><span class="p">)</span>  <span class="c1"># ceo</span>
+    <span class="n">add_label</span><span class="p">(</span><span class="s1">&#39;P112&#39;</span><span class="p">)</span>  <span class="c1"># founded by</span>
+    <span class="n">add_label</span><span class="p">(</span><span class="s1">&#39;P1454&#39;</span><span class="p">)</span>  <span class="c1"># legal form (company, organization)</span>
+    <span class="n">add_label</span><span class="p">(</span><span class="s1">&#39;P137&#39;</span><span class="p">)</span>  <span class="c1"># operator (service, facility, ...)</span>
+    <span class="n">add_label</span><span class="p">(</span><span class="s1">&#39;P1029&#39;</span><span class="p">)</span>  <span class="c1"># crew members (tripulation)</span>
+    <span class="n">add_label</span><span class="p">(</span><span class="s1">&#39;P225&#39;</span><span class="p">)</span>  <span class="c1"># taxon name</span>
+    <span class="n">add_value</span><span class="p">(</span><span class="s1">&#39;P274&#39;</span><span class="p">)</span>  <span class="c1"># chemical formula</span>
+    <span class="n">add_label</span><span class="p">(</span><span class="s1">&#39;P1346&#39;</span><span class="p">)</span>  <span class="c1"># winner (sports, contests, ...)</span>
+    <span class="n">add_value</span><span class="p">(</span><span class="s1">&#39;P1120&#39;</span><span class="p">)</span>  <span class="c1"># number of deaths</span>
+    <span class="n">add_value</span><span class="p">(</span><span class="s1">&#39;P498&#39;</span><span class="p">)</span>  <span class="c1"># currency code (ISO 4217)</span>
+
+    <span class="c1"># URL</span>
+    <span class="n">add_url</span><span class="p">(</span><span class="s1">&#39;P856&#39;</span><span class="p">,</span> <span class="n">official</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>  <span class="c1"># official website</span>
+    <span class="n">attributes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">WDArticle</span><span class="p">(</span><span class="n">language</span><span class="p">))</span>  <span class="c1"># wikipedia (user language)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">language</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;en&#39;</span><span class="p">):</span>
+        <span class="n">attributes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">WDArticle</span><span class="p">(</span><span class="s1">&#39;en&#39;</span><span class="p">))</span>  <span class="c1"># wikipedia (english)</span>
+
+    <span class="n">add_url</span><span class="p">(</span><span class="s1">&#39;P1324&#39;</span><span class="p">)</span>  <span class="c1"># source code repository</span>
+    <span class="n">add_url</span><span class="p">(</span><span class="s1">&#39;P1581&#39;</span><span class="p">)</span>  <span class="c1"># blog</span>
+    <span class="n">add_url</span><span class="p">(</span><span class="s1">&#39;P434&#39;</span><span class="p">,</span> <span class="n">url_id</span><span class="o">=</span><span class="s1">&#39;musicbrainz_artist&#39;</span><span class="p">)</span>
+    <span class="n">add_url</span><span class="p">(</span><span class="s1">&#39;P435&#39;</span><span class="p">,</span> <span class="n">url_id</span><span class="o">=</span><span class="s1">&#39;musicbrainz_work&#39;</span><span class="p">)</span>
+    <span class="n">add_url</span><span class="p">(</span><span class="s1">&#39;P436&#39;</span><span class="p">,</span> <span class="n">url_id</span><span class="o">=</span><span class="s1">&#39;musicbrainz_release_group&#39;</span><span class="p">)</span>
+    <span class="n">add_url</span><span class="p">(</span><span class="s1">&#39;P966&#39;</span><span class="p">,</span> <span class="n">url_id</span><span class="o">=</span><span class="s1">&#39;musicbrainz_label&#39;</span><span class="p">)</span>
+    <span class="n">add_url</span><span class="p">(</span><span class="s1">&#39;P345&#39;</span><span class="p">,</span> <span class="n">url_id</span><span class="o">=</span><span class="s1">&#39;imdb_id&#39;</span><span class="p">)</span>
+    <span class="n">add_url</span><span class="p">(</span><span class="s1">&#39;P2397&#39;</span><span class="p">,</span> <span class="n">url_id</span><span class="o">=</span><span class="s1">&#39;youtube_channel&#39;</span><span class="p">)</span>
+    <span class="n">add_url</span><span class="p">(</span><span class="s1">&#39;P1651&#39;</span><span class="p">,</span> <span class="n">url_id</span><span class="o">=</span><span class="s1">&#39;youtube_video&#39;</span><span class="p">)</span>
+    <span class="n">add_url</span><span class="p">(</span><span class="s1">&#39;P2002&#39;</span><span class="p">,</span> <span class="n">url_id</span><span class="o">=</span><span class="s1">&#39;twitter_profile&#39;</span><span class="p">)</span>
+    <span class="n">add_url</span><span class="p">(</span><span class="s1">&#39;P2013&#39;</span><span class="p">,</span> <span class="n">url_id</span><span class="o">=</span><span class="s1">&#39;facebook_profile&#39;</span><span class="p">)</span>
+    <span class="n">add_url</span><span class="p">(</span><span class="s1">&#39;P2003&#39;</span><span class="p">,</span> <span class="n">url_id</span><span class="o">=</span><span class="s1">&#39;instagram_profile&#39;</span><span class="p">)</span>
+
+    <span class="c1"># Fediverse</span>
+    <span class="n">add_url</span><span class="p">(</span><span class="s1">&#39;P4033&#39;</span><span class="p">,</span> <span class="n">url_path_prefix</span><span class="o">=</span><span class="s1">&#39;/@&#39;</span><span class="p">)</span>  <span class="c1"># Mastodon user</span>
+    <span class="n">add_url</span><span class="p">(</span><span class="s1">&#39;P11947&#39;</span><span class="p">,</span> <span class="n">url_path_prefix</span><span class="o">=</span><span class="s1">&#39;/c/&#39;</span><span class="p">)</span>  <span class="c1"># Lemmy community</span>
+    <span class="n">add_url</span><span class="p">(</span><span class="s1">&#39;P12622&#39;</span><span class="p">,</span> <span class="n">url_path_prefix</span><span class="o">=</span><span class="s1">&#39;/c/&#39;</span><span class="p">)</span>  <span class="c1"># PeerTube channel</span>
+
+    <span class="c1"># Map</span>
+    <span class="n">attributes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">WDGeoAttribute</span><span class="p">(</span><span class="s1">&#39;P625&#39;</span><span class="p">))</span>
+
+    <span class="c1"># Image</span>
+    <span class="n">add_image</span><span class="p">(</span><span class="s1">&#39;P15&#39;</span><span class="p">,</span> <span class="n">priority</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">url_id</span><span class="o">=</span><span class="s1">&#39;wikimedia_image&#39;</span><span class="p">)</span>  <span class="c1"># route map</span>
+    <span class="n">add_image</span><span class="p">(</span><span class="s1">&#39;P242&#39;</span><span class="p">,</span> <span class="n">priority</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">url_id</span><span class="o">=</span><span class="s1">&#39;wikimedia_image&#39;</span><span class="p">)</span>  <span class="c1"># locator map</span>
+    <span class="n">add_image</span><span class="p">(</span><span class="s1">&#39;P154&#39;</span><span class="p">,</span> <span class="n">priority</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">url_id</span><span class="o">=</span><span class="s1">&#39;wikimedia_image&#39;</span><span class="p">)</span>  <span class="c1"># logo</span>
+    <span class="n">add_image</span><span class="p">(</span><span class="s1">&#39;P18&#39;</span><span class="p">,</span> <span class="n">priority</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">url_id</span><span class="o">=</span><span class="s1">&#39;wikimedia_image&#39;</span><span class="p">)</span>  <span class="c1"># image</span>
+    <span class="n">add_image</span><span class="p">(</span><span class="s1">&#39;P41&#39;</span><span class="p">,</span> <span class="n">priority</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">url_id</span><span class="o">=</span><span class="s1">&#39;wikimedia_image&#39;</span><span class="p">)</span>  <span class="c1"># flag</span>
+    <span class="n">add_image</span><span class="p">(</span><span class="s1">&#39;P2716&#39;</span><span class="p">,</span> <span class="n">priority</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">url_id</span><span class="o">=</span><span class="s1">&#39;wikimedia_image&#39;</span><span class="p">)</span>  <span class="c1"># collage</span>
+    <span class="n">add_image</span><span class="p">(</span><span class="s1">&#39;P2910&#39;</span><span class="p">,</span> <span class="n">priority</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span> <span class="n">url_id</span><span class="o">=</span><span class="s1">&#39;wikimedia_image&#39;</span><span class="p">)</span>  <span class="c1"># icon</span>
+
+    <span class="k">return</span> <span class="n">attributes</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">WDAttribute</span><span class="p">:</span>
+    <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">,)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_select</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s1">&#39;(group_concat(distinct ?</span><span class="si">{name}</span><span class="s1">;separator=&quot;, &quot;) as ?</span><span class="si">{name}</span><span class="s1">s)&#39;</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{name}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_label</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">language</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">get_label_for_entity</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">language</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_where</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">&quot;OPTIONAL { ?item wdt:</span><span class="si">{name}</span><span class="s2"> ?</span><span class="si">{name}</span><span class="s2"> . }&quot;</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{name}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_wikibase_label</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_group_by</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_str</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">result</span><span class="p">,</span> <span class="n">language</span><span class="p">):</span>  <span class="c1"># pylint: disable=unused-argument</span>
+        <span class="k">return</span> <span class="n">result</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">+</span> <span class="s1">&#39;s&#39;</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s1">&#39;&lt;&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;:&#39;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">+</span> <span class="s1">&#39;&gt;&#39;</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">WDAmountAttribute</span><span class="p">(</span><span class="n">WDAttribute</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_select</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s1">&#39;?</span><span class="si">{name}</span><span class="s1"> ?</span><span class="si">{name}</span><span class="s1">Unit&#39;</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{name}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_where</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">&quot;&quot;&quot;  OPTIONAL { ?item p:</span><span class="si">{name}</span><span class="s2"> ?</span><span class="si">{name}</span><span class="s2">Node .</span>
+<span class="s2">    ?</span><span class="si">{name}</span><span class="s2">Node rdf:type wikibase:BestRank ; ps:</span><span class="si">{name}</span><span class="s2"> ?</span><span class="si">{name}</span><span class="s2"> .</span>
+<span class="s2">    OPTIONAL { ?</span><span class="si">{name}</span><span class="s2">Node psv:</span><span class="si">{name}</span><span class="s2">/wikibase:quantityUnit ?</span><span class="si">{name}</span><span class="s2">Unit. } }&quot;&quot;&quot;</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span>
+            <span class="s1">&#39;</span><span class="si">{name}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_group_by</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_select</span><span class="p">()</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_str</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">result</span><span class="p">,</span> <span class="n">language</span><span class="p">):</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+        <span class="n">unit</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">+</span> <span class="s2">&quot;Unit&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">unit</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">unit</span> <span class="o">=</span> <span class="n">unit</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;http://www.wikidata.org/entity/&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">value</span> <span class="o">+</span> <span class="s2">&quot; &quot;</span> <span class="o">+</span> <span class="n">get_label_for_entity</span><span class="p">(</span><span class="n">unit</span><span class="p">,</span> <span class="n">language</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">value</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">WDArticle</span><span class="p">(</span><span class="n">WDAttribute</span><span class="p">):</span>
+
+    <span class="vm">__slots__</span> <span class="o">=</span> <span class="s1">&#39;language&#39;</span><span class="p">,</span> <span class="s1">&#39;kwargs&#39;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">language</span><span class="p">,</span> <span class="n">kwargs</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="s1">&#39;wikipedia&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">language</span> <span class="o">=</span> <span class="n">language</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">kwargs</span> <span class="o">=</span> <span class="n">kwargs</span> <span class="ow">or</span> <span class="p">{}</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_label</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">language</span><span class="p">):</span>
+        <span class="c1"># language parameter is ignored</span>
+        <span class="k">return</span> <span class="s2">&quot;Wikipedia (</span><span class="si">{language}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{language}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">language</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_select</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">&quot;?article</span><span class="si">{language}</span><span class="s2"> ?articleName</span><span class="si">{language}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{language}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">language</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_where</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">&quot;&quot;&quot;OPTIONAL { ?article</span><span class="si">{language}</span><span class="s2"> schema:about ?item ;</span>
+<span class="s2">             schema:inLanguage &quot;</span><span class="si">{language}</span><span class="s2">&quot; ;</span>
+<span class="s2">             schema:isPartOf &lt;https://</span><span class="si">{language}</span><span class="s2">.wikipedia.org/&gt; ;</span>
+<span class="s2">             schema:name ?articleName</span><span class="si">{language}</span><span class="s2"> . }&quot;&quot;&quot;</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span>
+            <span class="s1">&#39;</span><span class="si">{language}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">language</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_group_by</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_select</span><span class="p">()</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_str</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">result</span><span class="p">,</span> <span class="n">language</span><span class="p">):</span>
+        <span class="n">key</span> <span class="o">=</span> <span class="s1">&#39;article</span><span class="si">{language}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{language}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">language</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">result</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">WDLabelAttribute</span><span class="p">(</span><span class="n">WDAttribute</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_select</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s1">&#39;(group_concat(distinct ?</span><span class="si">{name}</span><span class="s1">Label;separator=&quot;, &quot;) as ?</span><span class="si">{name}</span><span class="s1">Labels)&#39;</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{name}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_where</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">&quot;OPTIONAL { ?item wdt:</span><span class="si">{name}</span><span class="s2"> ?</span><span class="si">{name}</span><span class="s2"> . }&quot;</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{name}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_wikibase_label</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">&quot;?</span><span class="si">{name}</span><span class="s2"> rdfs:label ?</span><span class="si">{name}</span><span class="s2">Label .&quot;</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{name}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_str</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">result</span><span class="p">,</span> <span class="n">language</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">result</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">+</span> <span class="s1">&#39;Labels&#39;</span><span class="p">)</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">WDURLAttribute</span><span class="p">(</span><span class="n">WDAttribute</span><span class="p">):</span>
+
+    <span class="n">HTTP_WIKIMEDIA_IMAGE</span> <span class="o">=</span> <span class="s1">&#39;http://commons.wikimedia.org/wiki/Special:FilePath/&#39;</span>
+
+    <span class="vm">__slots__</span> <span class="o">=</span> <span class="s1">&#39;url_id&#39;</span><span class="p">,</span> <span class="s1">&#39;url_path_prefix&#39;</span><span class="p">,</span> <span class="s1">&#39;kwargs&#39;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">url_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">url_path_prefix</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">kwargs</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :param url_id: ID matching one key in ``external_urls.json`` for</span>
+<span class="sd">            converting IDs to full URLs.</span>
+
+<span class="sd">        :param url_path_prefix: Path prefix if the values are of format</span>
+<span class="sd">            ``account@domain``.  If provided, value are rewritten to</span>
+<span class="sd">            ``https://&lt;domain&gt;&lt;url_path_prefix&gt;&lt;account&gt;``.  For example::</span>
+
+<span class="sd">              WDURLAttribute(&#39;P4033&#39;, url_path_prefix=&#39;/@&#39;)</span>
+
+<span class="sd">            Adds Property `P4033 &lt;https://www.wikidata.org/wiki/Property:P4033&gt;`_</span>
+<span class="sd">            to the wikidata query.  This field might return for example</span>
+<span class="sd">            ``libreoffice@fosstodon.org`` and the URL built from this is then:</span>
+
+<span class="sd">            - account: ``libreoffice``</span>
+<span class="sd">            - domain: ``fosstodon.org``</span>
+<span class="sd">            - result url: https://fosstodon.org/@libreoffice</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">url_id</span> <span class="o">=</span> <span class="n">url_id</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">url_path_prefix</span> <span class="o">=</span> <span class="n">url_path_prefix</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">kwargs</span> <span class="o">=</span> <span class="n">kwargs</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_str</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">result</span><span class="p">,</span> <span class="n">language</span><span class="p">):</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">+</span> <span class="s1">&#39;s&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">value</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+
+        <span class="n">value</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">url_id</span><span class="p">:</span>
+            <span class="n">url_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">url_id</span>
+            <span class="k">if</span> <span class="n">value</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">WDURLAttribute</span><span class="o">.</span><span class="n">HTTP_WIKIMEDIA_IMAGE</span><span class="p">):</span>
+                <span class="n">value</span> <span class="o">=</span> <span class="n">value</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">WDURLAttribute</span><span class="o">.</span><span class="n">HTTP_WIKIMEDIA_IMAGE</span><span class="p">)</span> <span class="p">:]</span>
+                <span class="n">url_id</span> <span class="o">=</span> <span class="s1">&#39;wikimedia_image&#39;</span>
+            <span class="k">return</span> <span class="n">get_external_url</span><span class="p">(</span><span class="n">url_id</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">url_path_prefix</span><span class="p">:</span>
+            <span class="p">[</span><span class="n">account</span><span class="p">,</span> <span class="n">domain</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s2">&quot;@ &quot;</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">value</span><span class="o">.</span><span class="n">rsplit</span><span class="p">(</span><span class="s1">&#39;@&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)]</span>
+            <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;https://</span><span class="si">{</span><span class="n">domain</span><span class="si">}{</span><span class="bp">self</span><span class="o">.</span><span class="n">url_path_prefix</span><span class="si">}{</span><span class="n">account</span><span class="si">}</span><span class="s2">&quot;</span>
+
+        <span class="k">return</span> <span class="n">value</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">WDGeoAttribute</span><span class="p">(</span><span class="n">WDAttribute</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_label</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">language</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">&quot;OpenStreetMap&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_select</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">&quot;?</span><span class="si">{name}</span><span class="s2">Lat ?</span><span class="si">{name}</span><span class="s2">Long&quot;</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{name}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_where</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">&quot;&quot;&quot;OPTIONAL { ?item p:</span><span class="si">{name}</span><span class="s2">/psv:</span><span class="si">{name}</span><span class="s2"> [</span>
+<span class="s2">    wikibase:geoLatitude ?</span><span class="si">{name}</span><span class="s2">Lat ;</span>
+<span class="s2">    wikibase:geoLongitude ?</span><span class="si">{name}</span><span class="s2">Long ] }&quot;&quot;&quot;</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span>
+            <span class="s1">&#39;</span><span class="si">{name}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_group_by</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_select</span><span class="p">()</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_str</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">result</span><span class="p">,</span> <span class="n">language</span><span class="p">):</span>
+        <span class="n">latitude</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">+</span> <span class="s1">&#39;Lat&#39;</span><span class="p">)</span>
+        <span class="n">longitude</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">+</span> <span class="s1">&#39;Long&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">latitude</span> <span class="ow">and</span> <span class="n">longitude</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">latitude</span> <span class="o">+</span> <span class="s1">&#39; &#39;</span> <span class="o">+</span> <span class="n">longitude</span>
+        <span class="k">return</span> <span class="kc">None</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_geo_url</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">result</span><span class="p">,</span> <span class="n">osm_zoom</span><span class="o">=</span><span class="mi">19</span><span class="p">):</span>
+        <span class="n">latitude</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">+</span> <span class="s1">&#39;Lat&#39;</span><span class="p">)</span>
+        <span class="n">longitude</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">+</span> <span class="s1">&#39;Long&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">latitude</span> <span class="ow">and</span> <span class="n">longitude</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">get_earth_coordinates_url</span><span class="p">(</span><span class="n">latitude</span><span class="p">,</span> <span class="n">longitude</span><span class="p">,</span> <span class="n">osm_zoom</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">None</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">WDImageAttribute</span><span class="p">(</span><span class="n">WDURLAttribute</span><span class="p">):</span>
+
+    <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;priority&#39;</span><span class="p">,)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">url_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">priority</span><span class="o">=</span><span class="mi">100</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">url_id</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">priority</span> <span class="o">=</span> <span class="n">priority</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">WDDateAttribute</span><span class="p">(</span><span class="n">WDAttribute</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_select</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s1">&#39;?</span><span class="si">{name}</span><span class="s1"> ?</span><span class="si">{name}</span><span class="s1">timePrecision ?</span><span class="si">{name}</span><span class="s1">timeZone ?</span><span class="si">{name}</span><span class="s1">timeCalendar&#39;</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{name}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_where</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># To remove duplicate, add</span>
+        <span class="c1"># FILTER NOT EXISTS { ?item p:{name}/psv:{name}/wikibase:timeValue ?{name}bis FILTER (?{name}bis &lt; ?{name}) }</span>
+        <span class="c1"># this filter is too slow, so the response function ignore duplicate results</span>
+        <span class="c1"># (see the seen_entities variable)</span>
+        <span class="k">return</span> <span class="s2">&quot;&quot;&quot;OPTIONAL { ?item p:</span><span class="si">{name}</span><span class="s2">/psv:</span><span class="si">{name}</span><span class="s2"> [</span>
+<span class="s2">    wikibase:timeValue ?</span><span class="si">{name}</span><span class="s2"> ;</span>
+<span class="s2">    wikibase:timePrecision ?</span><span class="si">{name}</span><span class="s2">timePrecision ;</span>
+<span class="s2">    wikibase:timeTimezone ?</span><span class="si">{name}</span><span class="s2">timeZone ;</span>
+<span class="s2">    wikibase:timeCalendarModel ?</span><span class="si">{name}</span><span class="s2">timeCalendar ] . }</span>
+<span class="s2">    hint:Prior hint:rangeSafe true;&quot;&quot;&quot;</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span>
+            <span class="s1">&#39;</span><span class="si">{name}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_group_by</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_select</span><span class="p">()</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">format_8</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">locale</span><span class="p">):</span>  <span class="c1"># pylint: disable=unused-argument</span>
+        <span class="c1"># precision: less than a year</span>
+        <span class="k">return</span> <span class="n">value</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">format_9</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">locale</span><span class="p">):</span>
+        <span class="n">year</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+        <span class="c1"># precision: year</span>
+        <span class="k">if</span> <span class="n">year</span> <span class="o">&lt;</span> <span class="mi">1584</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">year</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">year</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">year</span><span class="p">)</span>
+        <span class="n">timestamp</span> <span class="o">=</span> <span class="n">isoparse</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">format_date</span><span class="p">(</span><span class="n">timestamp</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;yyyy&#39;</span><span class="p">,</span> <span class="n">locale</span><span class="o">=</span><span class="n">locale</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">format_10</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">locale</span><span class="p">):</span>
+        <span class="c1"># precision: month</span>
+        <span class="n">timestamp</span> <span class="o">=</span> <span class="n">isoparse</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">format_date</span><span class="p">(</span><span class="n">timestamp</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;MMMM y&#39;</span><span class="p">,</span> <span class="n">locale</span><span class="o">=</span><span class="n">locale</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">format_11</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">locale</span><span class="p">):</span>
+        <span class="c1"># precision: day</span>
+        <span class="n">timestamp</span> <span class="o">=</span> <span class="n">isoparse</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">format_date</span><span class="p">(</span><span class="n">timestamp</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;full&#39;</span><span class="p">,</span> <span class="n">locale</span><span class="o">=</span><span class="n">locale</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">format_13</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">locale</span><span class="p">):</span>
+        <span class="n">timestamp</span> <span class="o">=</span> <span class="n">isoparse</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+        <span class="c1"># precision: minute</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="n">get_datetime_format</span><span class="p">(</span><span class="nb">format</span><span class="p">,</span> <span class="n">locale</span><span class="o">=</span><span class="n">locale</span><span class="p">)</span>
+            <span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;&#39;&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+            <span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{0}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">format_time</span><span class="p">(</span><span class="n">timestamp</span><span class="p">,</span> <span class="s1">&#39;full&#39;</span><span class="p">,</span> <span class="n">tzinfo</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">locale</span><span class="o">=</span><span class="n">locale</span><span class="p">))</span>
+            <span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{1}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">format_date</span><span class="p">(</span><span class="n">timestamp</span><span class="p">,</span> <span class="s1">&#39;short&#39;</span><span class="p">,</span> <span class="n">locale</span><span class="o">=</span><span class="n">locale</span><span class="p">))</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">format_14</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">locale</span><span class="p">):</span>
+        <span class="c1"># precision: second.</span>
+        <span class="k">return</span> <span class="n">format_datetime</span><span class="p">(</span><span class="n">isoparse</span><span class="p">(</span><span class="n">value</span><span class="p">),</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;full&#39;</span><span class="p">,</span> <span class="n">locale</span><span class="o">=</span><span class="n">locale</span><span class="p">)</span>
+
+    <span class="n">DATE_FORMAT</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;0&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;format_8&#39;</span><span class="p">,</span> <span class="mi">1000000000</span><span class="p">),</span>
+        <span class="s1">&#39;1&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;format_8&#39;</span><span class="p">,</span> <span class="mi">100000000</span><span class="p">),</span>
+        <span class="s1">&#39;2&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;format_8&#39;</span><span class="p">,</span> <span class="mi">10000000</span><span class="p">),</span>
+        <span class="s1">&#39;3&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;format_8&#39;</span><span class="p">,</span> <span class="mi">1000000</span><span class="p">),</span>
+        <span class="s1">&#39;4&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;format_8&#39;</span><span class="p">,</span> <span class="mi">100000</span><span class="p">),</span>
+        <span class="s1">&#39;5&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;format_8&#39;</span><span class="p">,</span> <span class="mi">10000</span><span class="p">),</span>
+        <span class="s1">&#39;6&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;format_8&#39;</span><span class="p">,</span> <span class="mi">1000</span><span class="p">),</span>
+        <span class="s1">&#39;7&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;format_8&#39;</span><span class="p">,</span> <span class="mi">100</span><span class="p">),</span>
+        <span class="s1">&#39;8&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;format_8&#39;</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span>
+        <span class="s1">&#39;9&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;format_9&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>  <span class="c1"># year</span>
+        <span class="s1">&#39;10&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;format_10&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>  <span class="c1"># month</span>
+        <span class="s1">&#39;11&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;format_11&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>  <span class="c1"># day</span>
+        <span class="s1">&#39;12&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;format_13&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>  <span class="c1"># hour (not supported by babel, display minute)</span>
+        <span class="s1">&#39;13&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;format_13&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>  <span class="c1"># minute</span>
+        <span class="s1">&#39;14&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;format_14&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>  <span class="c1"># second</span>
+    <span class="p">}</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_str</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">result</span><span class="p">,</span> <span class="n">language</span><span class="p">):</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">value</span> <span class="o">==</span> <span class="s1">&#39;&#39;</span> <span class="ow">or</span> <span class="n">value</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        <span class="n">precision</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">+</span> <span class="s1">&#39;timePrecision&#39;</span><span class="p">)</span>
+        <span class="n">date_format</span> <span class="o">=</span> <span class="n">WDDateAttribute</span><span class="o">.</span><span class="n">DATE_FORMAT</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">precision</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">date_format</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">format_method</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">date_format</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+            <span class="n">precision</span> <span class="o">=</span> <span class="n">date_format</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">precision</span> <span class="o">&gt;=</span> <span class="mi">1</span><span class="p">:</span>
+                    <span class="n">t</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">value</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">):</span>
+                        <span class="n">value</span> <span class="o">=</span> <span class="s1">&#39;-&#39;</span> <span class="o">+</span> <span class="n">t</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">value</span> <span class="o">=</span> <span class="n">t</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="k">return</span> <span class="n">format_method</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">language</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>  <span class="c1"># pylint: disable=broad-except</span>
+                <span class="k">return</span> <span class="n">value</span>
+        <span class="k">return</span> <span class="n">value</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">debug_explain_wikidata_query</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;GET&#39;</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">method</span> <span class="o">==</span> <span class="s1">&#39;GET&#39;</span><span class="p">:</span>
+        <span class="n">http_response</span> <span class="o">=</span> <span class="n">get</span><span class="p">(</span><span class="n">SPARQL_EXPLAIN_URL</span> <span class="o">+</span> <span class="s1">&#39;&amp;&#39;</span> <span class="o">+</span> <span class="n">urlencode</span><span class="p">({</span><span class="s1">&#39;query&#39;</span><span class="p">:</span> <span class="n">query</span><span class="p">}),</span> <span class="n">headers</span><span class="o">=</span><span class="n">get_headers</span><span class="p">())</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">http_response</span> <span class="o">=</span> <span class="n">post</span><span class="p">(</span><span class="n">SPARQL_EXPLAIN_URL</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;query&#39;</span><span class="p">:</span> <span class="n">query</span><span class="p">},</span> <span class="n">headers</span><span class="o">=</span><span class="n">get_headers</span><span class="p">())</span>
+    <span class="n">http_response</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">http_response</span><span class="o">.</span><span class="n">content</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">init</span><span class="p">(</span><span class="n">engine_settings</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>  <span class="c1"># pylint: disable=unused-argument</span>
+    <span class="c1"># WIKIDATA_PROPERTIES : add unit symbols</span>
+    <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">WIKIDATA_UNITS</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="n">WIKIDATA_PROPERTIES</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span><span class="p">[</span><span class="s1">&#39;symbol&#39;</span><span class="p">]</span>
+
+    <span class="c1"># WIKIDATA_PROPERTIES : add property labels</span>
+    <span class="n">wikidata_property_names</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">attribute</span> <span class="ow">in</span> <span class="n">get_attributes</span><span class="p">(</span><span class="s1">&#39;en&#39;</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">attribute</span><span class="p">)</span> <span class="ow">in</span> <span class="p">(</span><span class="n">WDAttribute</span><span class="p">,</span> <span class="n">WDAmountAttribute</span><span class="p">,</span> <span class="n">WDURLAttribute</span><span class="p">,</span> <span class="n">WDDateAttribute</span><span class="p">,</span> <span class="n">WDLabelAttribute</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">attribute</span><span class="o">.</span><span class="n">name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">WIKIDATA_PROPERTIES</span><span class="p">:</span>
+                <span class="n">wikidata_property_names</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;wd:&quot;</span> <span class="o">+</span> <span class="n">attribute</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+    <span class="n">query</span> <span class="o">=</span> <span class="n">QUERY_PROPERTY_NAMES</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;%ATTRIBUTES%&#39;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">wikidata_property_names</span><span class="p">))</span>
+    <span class="n">jsonresponse</span> <span class="o">=</span> <span class="n">send_wikidata_query</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">jsonresponse</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;results&#39;</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;bindings&#39;</span><span class="p">,</span> <span class="p">{}):</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">][</span><span class="s1">&#39;value&#39;</span><span class="p">]</span>
+        <span class="n">lang</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">][</span><span class="s1">&#39;xml:lang&#39;</span><span class="p">]</span>
+        <span class="n">entity_id</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="s1">&#39;item&#39;</span><span class="p">][</span><span class="s1">&#39;value&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;http://www.wikidata.org/entity/&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+        <span class="n">WIKIDATA_PROPERTIES</span><span class="p">[(</span><span class="n">entity_id</span><span class="p">,</span> <span class="n">lang</span><span class="p">)]</span> <span class="o">=</span> <span class="n">name</span><span class="o">.</span><span class="n">capitalize</span><span class="p">()</span>
+
+
+<div class="viewcode-block" id="fetch_traits">
+<a class="viewcode-back" href="../../../dev/engines/online/wikipedia.html#searx.engines.wikidata.fetch_traits">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">fetch_traits</span><span class="p">(</span><span class="n">engine_traits</span><span class="p">:</span> <span class="n">EngineTraits</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Uses languages evaluated from :py:obj:`wikipedia.fetch_wikimedia_traits</span>
+<span class="sd">    &lt;searx.engines.wikipedia.fetch_wikimedia_traits&gt;` and removes</span>
+
+<span class="sd">    - ``traits.custom[&#39;wiki_netloc&#39;]``: wikidata does not have net-locations for</span>
+<span class="sd">      the languages and the list of all</span>
+
+<span class="sd">    - ``traits.custom[&#39;WIKIPEDIA_LANGUAGES&#39;]``: not used in the wikipedia engine</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">fetch_wikimedia_traits</span><span class="p">(</span><span class="n">engine_traits</span><span class="p">)</span>
+    <span class="n">engine_traits</span><span class="o">.</span><span class="n">custom</span><span class="p">[</span><span class="s1">&#39;wiki_netloc&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">engine_traits</span><span class="o">.</span><span class="n">custom</span><span class="p">[</span><span class="s1">&#39;WIKIPEDIA_LANGUAGES&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span></div>
+
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+  <span id="sidebar-top"></span>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+  
+    
+            <p class="logo"><a href="../../../index.html">
+              <img class="logo" src="../../../_static/searxng-wordmark.svg" alt="Logo of SearXNG"/>
+            </a></p>
+  
+
+<h3><a href="../../../index.html">Table of Contents</a></h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../user/index.html">User information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../own-instance.html">Why use a private instance?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../admin/index.html">Administrator documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../dev/index.html">Developer documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../utils/index.html">DevOps tooling box</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/index.html">Source-Code</a></li>
+</ul>
+
+  <h3>Project Links</h3>
+  <ul>
+    <li><a href="https://github.com/searxng/searxng/tree/master">Source</a>
+  
+    <li><a href="https://github.com/searxng/searxng/wiki">Wiki</a>
+  
+    <li><a href="https://searx.space">Public instances</a>
+  
+    <li><a href="https://github.com/searxng/searxng/issues">Issue Tracker</a>
+  </ul><h3>Navigation</h3>
+<ul>
+  <li><a href="../../../index.html">Overview</a>
+    <ul>
+      <li><a href="../../index.html">Module code</a>
+        <ul>
+      <li><a href="../engines.html">searx.engines</a>
+        
+          
+          </ul>
+      </li></ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright SearXNG team.
+    </div>
+  </body>
+</html>

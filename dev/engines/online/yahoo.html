@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Yahoo Engine &#8212; SearXNG Documentation (2026.2.22+191818b86)</title>
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=6625fa76" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/searxng.css?v=52e4ff28" />
+    <script src="../../../_static/documentation_options.js?v=1b5d919e"></script>
+    <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script data-project="searxng" data-version="2026.2.22+191818b86" src="../../../_static/describe_version.js?v=fa7f30d0"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="Z-Library" href="zlibrary.html" />
+    <link rel="prev" title="Yacy" href="yacy.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="zlibrary.html" title="Z-Library"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="yacy.html" title="Yacy"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">SearXNG Documentation (2026.2.22+191818b86)</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" >Developer documentation</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../index.html" accesskey="U">Engine Implementations</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Yahoo Engine</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="yahoo-engine">
+<span id="id1"></span><h1>Yahoo Engine<a class="headerlink" href="#yahoo-engine" title="Link to this heading">¶</a></h1>
+<p id="module-searx.engines.yahoo">Yahoo Search (Web)</p>
+<p>Languages are supported by mapping the language to a domain.  If domain is not
+found in <a class="reference internal" href="#searx.engines.yahoo.lang2domain" title="searx.engines.yahoo.lang2domain"><code class="xref py py-obj docutils literal notranslate"><span class="pre">lang2domain</span></code></a> URL <code class="docutils literal notranslate"><span class="pre">&lt;lang&gt;.search.yahoo.com</span></code> is used.</p>
+<dl class="py data">
+<dt class="sig sig-object py" id="searx.engines.yahoo.region2domain">
+<span class="sig-prename descclassname"><span class="pre">searx.engines.yahoo.</span></span><span class="sig-name descname"><span class="pre">region2domain</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'AR':</span> <span class="pre">'ar.search.yahoo.com',</span> <span class="pre">'BR':</span> <span class="pre">'br.search.yahoo.com',</span> <span class="pre">'CA':</span> <span class="pre">'ca.search.yahoo.com',</span> <span class="pre">'CL':</span> <span class="pre">'cl.search.yahoo.com',</span> <span class="pre">'CO':</span> <span class="pre">'co.search.yahoo.com',</span> <span class="pre">'DE':</span> <span class="pre">'de.search.yahoo.com',</span> <span class="pre">'ES':</span> <span class="pre">'espanol.search.yahoo.com',</span> <span class="pre">'FR':</span> <span class="pre">'fr.search.yahoo.com',</span> <span class="pre">'GB':</span> <span class="pre">'uk.search.yahoo.com',</span> <span class="pre">'HK':</span> <span class="pre">'hk.search.yahoo.com',</span> <span class="pre">'IN':</span> <span class="pre">'in.search.yahoo.com',</span> <span class="pre">'MX':</span> <span class="pre">'mx.search.yahoo.com',</span> <span class="pre">'PE':</span> <span class="pre">'pe.search.yahoo.com',</span> <span class="pre">'PH':</span> <span class="pre">'ph.search.yahoo.com',</span> <span class="pre">'SG':</span> <span class="pre">'sg.search.yahoo.com',</span> <span class="pre">'TH':</span> <span class="pre">'th.search.yahoo.com',</span> <span class="pre">'TW':</span> <span class="pre">'tw.search.yahoo.com',</span> <span class="pre">'UK':</span> <span class="pre">'uk.search.yahoo.com',</span> <span class="pre">'VE':</span> <span class="pre">'ve.search.yahoo.com'}</span></em><a class="headerlink" href="#searx.engines.yahoo.region2domain" title="Link to this definition">¶</a></dt>
+<dd><p>Map regions to domain</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="searx.engines.yahoo.lang2domain">
+<span class="sig-prename descclassname"><span class="pre">searx.engines.yahoo.</span></span><span class="sig-name descname"><span class="pre">lang2domain</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'any':</span> <span class="pre">'search.yahoo.com',</span> <span class="pre">'bg':</span> <span class="pre">'search.yahoo.com',</span> <span class="pre">'cs':</span> <span class="pre">'search.yahoo.com',</span> <span class="pre">'da':</span> <span class="pre">'search.yahoo.com',</span> <span class="pre">'el':</span> <span class="pre">'search.yahoo.com',</span> <span class="pre">'en':</span> <span class="pre">'search.yahoo.com',</span> <span class="pre">'et':</span> <span class="pre">'search.yahoo.com',</span> <span class="pre">'he':</span> <span class="pre">'search.yahoo.com',</span> <span class="pre">'hr':</span> <span class="pre">'search.yahoo.com',</span> <span class="pre">'ja':</span> <span class="pre">'search.yahoo.com',</span> <span class="pre">'ko':</span> <span class="pre">'search.yahoo.com',</span> <span class="pre">'sk':</span> <span class="pre">'search.yahoo.com',</span> <span class="pre">'sl':</span> <span class="pre">'search.yahoo.com',</span> <span class="pre">'zh_chs':</span> <span class="pre">'hk.search.yahoo.com',</span> <span class="pre">'zh_cht':</span> <span class="pre">'tw.search.yahoo.com'}</span></em><a class="headerlink" href="#searx.engines.yahoo.lang2domain" title="Link to this definition">¶</a></dt>
+<dd><p>Map language to domain</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="searx.engines.yahoo.build_sb_cookie">
+<span class="sig-prename descclassname"><span class="pre">searx.engines.yahoo.</span></span><span class="sig-name descname"><span class="pre">build_sb_cookie</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cookie_params</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/searx/engines/yahoo.html#build_sb_cookie"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.engines.yahoo.build_sb_cookie" title="Link to this definition">¶</a></dt>
+<dd><p>Build sB cookie parameter from provided parameters.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>cookie_params</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.14)"><em>dict</em></a>) – Dictionary of cookie parameters</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Formatted cookie string</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)">str</a></p>
+</dd>
+</dl>
+<dl>
+<dt>Example:</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">cookie_params</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;v&#39;</span><span class="p">:</span> <span class="s1">&#39;1&#39;</span><span class="p">,</span> <span class="s1">&#39;vm&#39;</span><span class="p">:</span> <span class="s1">&#39;p&#39;</span><span class="p">,</span> <span class="s1">&#39;fl&#39;</span><span class="p">:</span> <span class="s1">&#39;1&#39;</span><span class="p">,</span> <span class="s1">&#39;vl&#39;</span><span class="p">:</span> <span class="s1">&#39;lang_fr&#39;</span><span class="p">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">build_sb_cookie</span><span class="p">(</span><span class="n">cookie_params</span><span class="p">)</span>
+<span class="go">&#39;v=1&amp;vm=p&amp;fl=1&amp;vl=lang_fr&#39;</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="searx.engines.yahoo.request">
+<span class="sig-prename descclassname"><span class="pre">searx.engines.yahoo.</span></span><span class="sig-name descname"><span class="pre">request</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">query</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">params</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/searx/engines/yahoo.html#request"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.engines.yahoo.request" title="Link to this definition">¶</a></dt>
+<dd><p>Build Yahoo search request.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="searx.engines.yahoo.parse_url">
+<span class="sig-prename descclassname"><span class="pre">searx.engines.yahoo.</span></span><span class="sig-name descname"><span class="pre">parse_url</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">url_string</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/searx/engines/yahoo.html#parse_url"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.engines.yahoo.parse_url" title="Link to this definition">¶</a></dt>
+<dd><p>remove yahoo-specific tracking-url</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="searx.engines.yahoo.response">
+<span class="sig-prename descclassname"><span class="pre">searx.engines.yahoo.</span></span><span class="sig-name descname"><span class="pre">response</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">resp</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/searx/engines/yahoo.html#response"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.engines.yahoo.response" title="Link to this definition">¶</a></dt>
+<dd><p>parse response</p>
+</dd></dl>
+
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+  <span id="sidebar-top"></span>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+  
+    
+            <p class="logo"><a href="../../../index.html">
+              <img class="logo" src="../../../_static/searxng-wordmark.svg" alt="Logo of SearXNG"/>
+            </a></p>
+  
+
+<h3><a href="../../../index.html">Table of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../user/index.html">User information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../own-instance.html">Why use a private instance?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../admin/index.html">Administrator documentation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">Developer documentation</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../quickstart.html">Development Quickstart</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../commits.html">Git Commits &amp; Change Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../contribution_guide.html">How to contribute</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../extended_types.html">Extended Types</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">Engine Implementations</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../enginelib.html">Engine Library</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../engines.html">SearXNG’s engines loader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../engine_overview.html">Engine Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../index.html#resultlist-and-engines">ResultList and engines</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="../index.html#engine-types">Engine Types</a><ul class="current">
+<li class="toctree-l4 current"><a class="reference internal" href="../index.html#online-engines">Online Engines</a><ul class="current">
+<li class="toctree-l5"><a class="reference internal" href="../demo/demo_online.html">Demo Online Engine</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../xpath.html">XPath Engine</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../mediawiki.html">MediaWiki Engine</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../json_engine.html">JSON Engine</a></li>
+<li class="toctree-l5"><a class="reference internal" href="adobe_stock.html">Adobe Stock</a></li>
+<li class="toctree-l5"><a class="reference internal" href="alpinelinux.html">Alpine Linux Packages</a></li>
+<li class="toctree-l5"><a class="reference internal" href="annas_archive.html">Anna’s Archive</a></li>
+<li class="toctree-l5"><a class="reference internal" href="archlinux.html">Arch Linux</a></li>
+<li class="toctree-l5"><a class="reference internal" href="arxiv.html">arXiv</a></li>
+<li class="toctree-l5"><a class="reference internal" href="astrophysics_data_system.html">Astrophysics Data System (ADS)</a></li>
+<li class="toctree-l5"><a class="reference internal" href="azure.html">Azure Resources</a></li>
+<li class="toctree-l5"><a class="reference internal" href="bing.html">Bing Engines</a></li>
+<li class="toctree-l5"><a class="reference internal" href="bpb.html">Bpb</a></li>
+<li class="toctree-l5"><a class="reference internal" href="brave.html">Brave Engines</a></li>
+<li class="toctree-l5"><a class="reference internal" href="bt4g.html">BT4G</a></li>
+<li class="toctree-l5"><a class="reference internal" href="chinaso.html">ChinaSo</a></li>
+<li class="toctree-l5"><a class="reference internal" href="core.html">CORE</a></li>
+<li class="toctree-l5"><a class="reference internal" href="crossref.html">Crossref</a></li>
+<li class="toctree-l5"><a class="reference internal" href="dailymotion.html">Dailymotion</a></li>
+<li class="toctree-l5"><a class="reference internal" href="discourse.html">Discourse Forums</a></li>
+<li class="toctree-l5"><a class="reference internal" href="duckduckgo.html">DuckDuckGo Engines</a></li>
+<li class="toctree-l5"><a class="reference internal" href="geizhals.html">Geizhals</a></li>
+<li class="toctree-l5"><a class="reference internal" href="gitea.html">Gitea</a></li>
+<li class="toctree-l5"><a class="reference internal" href="github_code.html">Github Code</a></li>
+<li class="toctree-l5"><a class="reference internal" href="gitlab.html">GitLab</a></li>
+<li class="toctree-l5"><a class="reference internal" href="google.html">Google Engines</a></li>
+<li class="toctree-l5"><a class="reference internal" href="huggingface.html">Hugging Face</a></li>
+<li class="toctree-l5"><a class="reference internal" href="lemmy.html">Lemmy</a></li>
+<li class="toctree-l5"><a class="reference internal" href="loc.html">Library of Congress</a></li>
+<li class="toctree-l5"><a class="reference internal" href="marginalia.html">Marginalia Search</a></li>
+<li class="toctree-l5"><a class="reference internal" href="mastodon.html">Mastodon</a></li>
+<li class="toctree-l5"><a class="reference internal" href="moviepilot.html">Moviepilot</a></li>
+<li class="toctree-l5"><a class="reference internal" href="mrs.html">Matrix Rooms Search (MRS)</a></li>
+<li class="toctree-l5"><a class="reference internal" href="mwmbl.html">Mwmbl Engine</a></li>
+<li class="toctree-l5"><a class="reference internal" href="odysee.html">Odysee</a></li>
+<li class="toctree-l5"><a class="reference internal" href="openalex.html">OpenAlex</a></li>
+<li class="toctree-l5"><a class="reference internal" href="openlibrary.html">Open Library</a></li>
+<li class="toctree-l5"><a class="reference internal" href="peertube.html">Peertube Engines</a></li>
+<li class="toctree-l5"><a class="reference internal" href="piped.html">Piped</a></li>
+<li class="toctree-l5"><a class="reference internal" href="presearch.html">Presearch Engine</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pubmed.html">PubMed</a></li>
+<li class="toctree-l5"><a class="reference internal" href="qwant.html">Qwant</a></li>
+<li class="toctree-l5"><a class="reference internal" href="radio_browser.html">RadioBrowser</a></li>
+<li class="toctree-l5"><a class="reference internal" href="recoll.html">Recoll Engine</a></li>
+<li class="toctree-l5"><a class="reference internal" href="repology.html">Repology</a></li>
+<li class="toctree-l5"><a class="reference internal" href="reuters.html">Reuters</a></li>
+<li class="toctree-l5"><a class="reference internal" href="semantic_scholar.html">Semantic Scholar</a></li>
+<li class="toctree-l5"><a class="reference internal" href="soundcloud.html">Soundcloud</a></li>
+<li class="toctree-l5"><a class="reference internal" href="sourcehut.html">Sourcehut</a></li>
+<li class="toctree-l5"><a class="reference internal" href="springer.html">Springer Nature</a></li>
+<li class="toctree-l5"><a class="reference internal" href="startpage.html">Startpage Engines</a></li>
+<li class="toctree-l5"><a class="reference internal" href="tagesschau.html">Tagesschau API</a></li>
+<li class="toctree-l5"><a class="reference internal" href="torznab.html">Torznab WebAPI</a></li>
+<li class="toctree-l5"><a class="reference internal" href="tubearchivist.html">Tube Archivist</a></li>
+<li class="toctree-l5"><a class="reference internal" href="void.html">Void Linux binary packages</a></li>
+<li class="toctree-l5"><a class="reference internal" href="wallhaven.html">Wallhaven</a></li>
+<li class="toctree-l5"><a class="reference internal" href="wikipedia.html">Wikimedia</a></li>
+<li class="toctree-l5"><a class="reference internal" href="yacy.html">Yacy</a></li>
+<li class="toctree-l5 current"><a class="current reference internal" href="#">Yahoo Engine</a></li>
+<li class="toctree-l5"><a class="reference internal" href="zlibrary.html">Z-Library</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../index.html#offline-engines">Offline Engines</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../index.html#online-url-search">Online URL Search</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../index.html#online-currency">Online Currency</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../index.html#online-dictionary">Online Dictionary</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../result_types/index.html">Result Types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../templates.html">Simple Theme Templates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../search_api.html">Search API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../plugins/index.html">Plugins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../answerers/index.html">Answerers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../translation.html">Translation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../makefile.html">Makefile &amp; <code class="docutils literal notranslate"><span class="pre">./manage</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../reST.html">reST primer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../searxng_extra/index.html">Tooling box <code class="docutils literal notranslate"><span class="pre">searxng_extra</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../utils/index.html">DevOps tooling box</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/index.html">Source-Code</a></li>
+</ul>
+
+  <h3>Project Links</h3>
+  <ul>
+    <li><a href="https://github.com/searxng/searxng/tree/master">Source</a>
+  
+    <li><a href="https://github.com/searxng/searxng/wiki">Wiki</a>
+  
+    <li><a href="https://searx.space">Public instances</a>
+  
+    <li><a href="https://github.com/searxng/searxng/issues">Issue Tracker</a>
+  </ul><h3>Navigation</h3>
+<ul>
+  <li><a href="../../../index.html">Overview</a>
+    <ul>
+      <li><a href="../../index.html">Developer documentation</a>
+        <ul>
+      <li><a href="../index.html">Engine Implementations</a>
+        <ul>
+          <li>Previous: <a href="yacy.html" title="previous chapter">Yacy</a>
+          <li>Next: <a href="zlibrary.html" title="next chapter">Z-Library</a></ul>
+      </li></ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../../_sources/dev/engines/online/yahoo.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright SearXNG team.
+    </div>
+  </body>
+</html>

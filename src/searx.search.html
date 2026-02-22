@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Search &#8212; SearXNG Documentation (2026.2.22+191818b86)</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=6625fa76" />
+    <link rel="stylesheet" type="text/css" href="../_static/searxng.css?v=52e4ff28" />
+    <script src="../_static/documentation_options.js?v=1b5d919e"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script data-project="searxng" data-version="2026.2.22+191818b86" src="../_static/describe_version.js?v=fa7f30d0"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Search processors" href="searx.search.processors.html" />
+    <link rel="prev" title="Locales" href="searx.locales.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="searx.search.processors.html" title="Search processors"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="searx.locales.html" title="Locales"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">SearXNG Documentation (2026.2.22+191818b86)</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" accesskey="U">Source-Code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Search</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="search">
+<span id="searx-search"></span><h1>Search<a class="headerlink" href="#search" title="Link to this heading">¶</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="searx.search.models.EngineRef">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">searx.search.models.</span></span><span class="sig-name descname"><span class="pre">EngineRef</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">category</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/searx/search/models.html#EngineRef"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.search.models.EngineRef" title="Link to this definition">¶</a></dt>
+<dd><p>Reference by names to an engine and category</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="searx.search.models.SearchQuery">
+<em class="property"><span class="k"><span class="pre">final</span></span><span class="w"> </span><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">searx.search.models.</span></span><span class="sig-name descname"><span class="pre">SearchQuery</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">query</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">engineref_list</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#searx.search.models.EngineRef" title="searx.search.models.EngineRef"><span class="pre">EngineRef</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lang</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'all'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">safesearch</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Literal" title="(in Python v3.14)"><span class="pre">Literal</span></a><span class="p"><span class="pre">[</span></span><span class="m"><span class="pre">0</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="m"><span class="pre">1</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="m"><span class="pre">2</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pageno</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time_range</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Literal" title="(in Python v3.14)"><span class="pre">Literal</span></a><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'day'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'week'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'month'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'year'</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timeout_limit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">external_bang</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">engine_data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.14)"><span class="pre">dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.14)"><span class="pre">dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">redirect_to_first_result</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/searx/search/models.html#SearchQuery"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.search.models.SearchQuery" title="Link to this definition">¶</a></dt>
+<dd><p>container for all the search parameters (query, language, etc…)</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="searx.search.Search">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">searx.search.</span></span><span class="sig-name descname"><span class="pre">Search</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">search_query</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#searx.search.models.SearchQuery" title="searx.search.models.SearchQuery"><span class="pre">SearchQuery</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/searx/search.html#Search"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.search.Search" title="Link to this definition">¶</a></dt>
+<dd><p>Search information container</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="searx.search.Search.search_query">
+<span class="sig-name descname"><span class="pre">search_query</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">searx.search.SearchQuery</span></em><a class="headerlink" href="#searx.search.Search.search_query" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="searx.search.Search.result_container">
+<span class="sig-name descname"><span class="pre">result_container</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">searx.results.ResultContainer</span></em><a class="headerlink" href="#searx.search.Search.result_container" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="searx.search.Search.search">
+<span class="sig-name descname"><span class="pre">search</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">searx.results.ResultContainer</span></span></span><a class="reference internal" href="../_modules/searx/search.html#Search.search"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.search.Search.search" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="searx.search.SearchWithPlugins">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">searx.search.</span></span><span class="sig-name descname"><span class="pre">SearchWithPlugins</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">search_query</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#searx.search.models.SearchQuery" title="searx.search.models.SearchQuery"><span class="pre">SearchQuery</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">request</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../dev/extended_types.html#searx.extended_types.SXNG_Request" title="searx.extended_types.SXNG_Request"><span class="pre">SXNG_Request</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">user_plugins</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/searx/search.html#SearchWithPlugins"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.search.SearchWithPlugins" title="Link to this definition">¶</a></dt>
+<dd><p>Inherit from the Search class, add calls to the plugins.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="searx.search.SearchWithPlugins.search_query">
+<span class="sig-name descname"><span class="pre">search_query</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">searx.search.SearchQuery</span></em><a class="headerlink" href="#searx.search.SearchWithPlugins.search_query" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="searx.search.SearchWithPlugins.result_container">
+<span class="sig-name descname"><span class="pre">result_container</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">searx.results.ResultContainer</span></em><a class="headerlink" href="#searx.search.SearchWithPlugins.result_container" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="searx.search.SearchWithPlugins.ordered_plugin_list">
+<span class="sig-name descname"><span class="pre">ordered_plugin_list</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a></em><a class="headerlink" href="#searx.search.SearchWithPlugins.ordered_plugin_list" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="searx.search.SearchWithPlugins.request">
+<span class="sig-name descname"><span class="pre">request</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">flask.request</span></em><a class="headerlink" href="#searx.search.SearchWithPlugins.request" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="searx.search.SearchWithPlugins.search">
+<span class="sig-name descname"><span class="pre">search</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">searx.results.ResultContainer</span></span></span><a class="reference internal" href="../_modules/searx/search.html#SearchWithPlugins.search"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.search.SearchWithPlugins.search" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+  <span id="sidebar-top"></span>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+  
+    
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/searxng-wordmark.svg" alt="Logo of SearXNG"/>
+            </a></p>
+  
+
+<h3><a href="../index.html">Table of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../user/index.html">User information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../own-instance.html">Why use a private instance?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../admin/index.html">Administrator documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev/index.html">Developer documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../utils/index.html">DevOps tooling box</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Source-Code</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="searx.babel_extract.html">Custom message extractor (i18n)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.botdetection.html">Bot Detection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.cache.html">Caches</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.exceptions.html">SearXNG Exceptions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.favicons.html">Favicons (source)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.infopage.html">Online <code class="docutils literal notranslate"><span class="pre">/info</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.locales.html">Locales</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Search</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#searx.search.models.EngineRef"><code class="docutils literal notranslate"><span class="pre">EngineRef</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#searx.search.models.SearchQuery"><code class="docutils literal notranslate"><span class="pre">SearchQuery</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#searx.search.Search"><code class="docutils literal notranslate"><span class="pre">Search</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#searx.search.Search.search_query"><code class="docutils literal notranslate"><span class="pre">Search.search_query</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#searx.search.Search.result_container"><code class="docutils literal notranslate"><span class="pre">Search.result_container</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#searx.search.Search.search"><code class="docutils literal notranslate"><span class="pre">Search.search()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#searx.search.SearchWithPlugins"><code class="docutils literal notranslate"><span class="pre">SearchWithPlugins</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#searx.search.SearchWithPlugins.search_query"><code class="docutils literal notranslate"><span class="pre">SearchWithPlugins.search_query</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#searx.search.SearchWithPlugins.result_container"><code class="docutils literal notranslate"><span class="pre">SearchWithPlugins.result_container</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#searx.search.SearchWithPlugins.ordered_plugin_list"><code class="docutils literal notranslate"><span class="pre">SearchWithPlugins.ordered_plugin_list</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#searx.search.SearchWithPlugins.request"><code class="docutils literal notranslate"><span class="pre">SearchWithPlugins.request</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#searx.search.SearchWithPlugins.search"><code class="docutils literal notranslate"><span class="pre">SearchWithPlugins.search()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="searx.search.processors.html">Search processors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.settings.html">Settings Loader</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.sqlitedb.html">SQLite DB</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.utils.html">Utility functions for the engines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.valkeydb.html">Valkey DB</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.valkeylib.html">Valkey Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.weather.html">Weather</a></li>
+</ul>
+</li>
+</ul>
+
+  <h3>Project Links</h3>
+  <ul>
+    <li><a href="https://github.com/searxng/searxng/tree/master">Source</a>
+  
+    <li><a href="https://github.com/searxng/searxng/wiki">Wiki</a>
+  
+    <li><a href="https://searx.space">Public instances</a>
+  
+    <li><a href="https://github.com/searxng/searxng/issues">Issue Tracker</a>
+  </ul><h3>Navigation</h3>
+<ul>
+  <li><a href="../index.html">Overview</a>
+    <ul>
+      <li><a href="index.html">Source-Code</a>
+        <ul>
+          <li>Previous: <a href="searx.locales.html" title="previous chapter">Locales</a>
+          <li>Next: <a href="searx.search.processors.html" title="next chapter">Search processors</a></ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/src/searx.search.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright SearXNG team.
+    </div>
+  </body>
+</html>

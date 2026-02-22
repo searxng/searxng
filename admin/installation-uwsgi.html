@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>uWSGI &#8212; SearXNG Documentation (2026.2.22+191818b86)</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=6625fa76" />
+    <link rel="stylesheet" type="text/css" href="../_static/searxng.css?v=52e4ff28" />
+    <link rel="stylesheet" type="text/css" href="../_static/tabs.css?v=a5c4661c" />
+    <script src="../_static/documentation_options.js?v=1b5d919e"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script data-project="searxng" data-version="2026.2.22+191818b86" src="../_static/describe_version.js?v=fa7f30d0"></script>
+    <script src="../_static/tabs.js?v=3030b3cb"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="NGINX" href="installation-nginx.html" />
+    <link rel="prev" title="Granian" href="installation-granian.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="installation-nginx.html" title="NGINX"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="installation-granian.html" title="Granian"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">SearXNG Documentation (2026.2.22+191818b86)</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" accesskey="U">Administrator documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">uWSGI</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="uwsgi">
+<span id="searxng-uwsgi"></span><h1>uWSGI<a class="headerlink" href="#uwsgi" title="Link to this heading">¶</a></h1>
+<aside class="sidebar">
+<p class="sidebar-title">further reading</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://www.freedesktop.org/software/systemd/man/systemd.unit.html">systemd.unit</a></p></li>
+<li><p><a class="reference external" href="https://uwsgi-docs.readthedocs.io/en/latest/Emperor.html">uWSGI Emperor</a></p></li>
+</ul>
+</aside>
+<nav class="contents local" id="contents">
+<ul class="simple">
+<li><p><a class="reference internal" href="#origin-uwsgi" id="id7">Origin uWSGI</a></p></li>
+<li><p><a class="reference internal" href="#distributors" id="id8">Distributors</a></p>
+<ul>
+<li><p><a class="reference internal" href="#debian-s-uwsgi-layout" id="id9">Debian’s uWSGI layout</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#uwsgi-maintenance" id="id10">uWSGI maintenance</a></p></li>
+<li><p><a class="reference internal" href="#uwsgi-setup" id="id11">uWSGI setup</a></p></li>
+<li><p><a class="reference internal" href="#pitfalls-of-the-tyrant-mode" id="id12">Pitfalls of the Tyrant mode</a></p></li>
+</ul>
+</nav>
+<section id="origin-uwsgi">
+<h2><a class="toc-backref" href="#id7" role="doc-backlink">Origin uWSGI</a><a class="headerlink" href="#origin-uwsgi" title="Link to this heading">¶</a></h2>
+<p>How uWSGI is implemented by distributors varies. The uWSGI project itself
+recommends two methods:</p>
+<ol class="arabic simple">
+<li><p><a class="reference external" href="https://www.freedesktop.org/software/systemd/man/systemd.unit.html">systemd.unit</a> template file as described here <a class="reference external" href="https://uwsgi-docs.readthedocs.io/en/latest/Systemd.html#one-service-per-app-in-systemd">One service per app in systemd</a>:</p></li>
+</ol>
+<blockquote>
+<div><p>There is one <a class="reference external" href="http://0pointer.de/blog/projects/instances.html">systemd unit template</a> on the system installed and one <a class="reference external" href="https://uwsgi-docs.readthedocs.io/en/latest/Configuration.html#ini-files">uwsgi
+ini file</a> per uWSGI-app placed at dedicated locations.  Take archlinux and a
+<code class="docutils literal notranslate"><span class="pre">searxng.ini</span></code> as example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">systemd</span> <span class="n">template</span> <span class="n">unit</span><span class="p">:</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">systemd</span><span class="o">/</span><span class="n">system</span><span class="o">/</span><span class="n">uwsgi</span><span class="o">@.</span><span class="n">service</span>
+        <span class="n">contains</span><span class="p">:</span> <span class="p">[</span><span class="n">Service</span><span class="p">]</span>
+                  <span class="n">ExecStart</span><span class="o">=/</span><span class="n">usr</span><span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">uwsgi</span> <span class="o">--</span><span class="n">ini</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">uwsgi</span><span class="o">/%</span><span class="n">I</span><span class="o">.</span><span class="n">ini</span>
+
+<span class="n">SearXNG</span> <span class="n">application</span><span class="p">:</span>   <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">uwsgi</span><span class="o">/</span><span class="n">searxng</span><span class="o">.</span><span class="n">ini</span>
+        <span class="n">links</span> <span class="n">to</span><span class="p">:</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">uwsgi</span><span class="o">/</span><span class="n">apps</span><span class="o">-</span><span class="n">available</span><span class="o">/</span><span class="n">searxng</span><span class="o">.</span><span class="n">ini</span>
+</pre></div>
+</div>
+<p>The SearXNG app (template <code class="docutils literal notranslate"><span class="pre">/etc/uwsgi/%I.ini</span></code>) can be maintained as known
+from common systemd units:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>systemctl<span class="w"> </span><span class="nb">enable</span><span class="w">  </span>uwsgi@searxng
+$<span class="w"> </span>systemctl<span class="w"> </span>start<span class="w">   </span>uwsgi@searxng
+$<span class="w"> </span>systemctl<span class="w"> </span>restart<span class="w"> </span>uwsgi@searxng
+$<span class="w"> </span>systemctl<span class="w"> </span>stop<span class="w">    </span>uwsgi@searxng
+</pre></div>
+</div>
+</div></blockquote>
+<ol class="arabic simple" start="2">
+<li><p>The <a class="reference external" href="https://uwsgi-docs.readthedocs.io/en/latest/Emperor.html">uWSGI Emperor</a> which fits for maintaining a large range of uwsgi
+apps and there is a <a class="reference external" href="https://uwsgi-docs.readthedocs.io/en/latest/Emperor.html#tyrant-mode-secure-multi-user-hosting">Tyrant mode</a> to secure multi-user hosting.</p></li>
+</ol>
+<blockquote>
+<div><p>The Emperor mode is a special uWSGI instance that will monitor specific
+events.  The Emperor mode (the service) is started by a (common, not template)
+systemd unit.</p>
+<p>The Emperor service will scan specific directories for <a class="reference external" href="https://uwsgi-docs.readthedocs.io/en/latest/Configuration.html#ini-files">uwsgi ini file</a>s
+(also know as <em>vassals</em>).  If a <em>vassal</em> is added, removed or the timestamp is
+modified, a corresponding action takes place: a new uWSGI instance is started,
+reload or stopped.  Take Fedora and a <code class="docutils literal notranslate"><span class="pre">searxng.ini</span></code> as example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">to</span> <span class="n">install</span> <span class="o">&amp;</span> <span class="n">start</span> <span class="n">SearXNG</span> <span class="n">instance</span> <span class="n">create</span> <span class="o">--&gt;</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">uwsgi</span><span class="o">.</span><span class="n">d</span><span class="o">/</span><span class="n">searxng</span><span class="o">.</span><span class="n">ini</span>
+<span class="n">to</span> <span class="n">reload</span> <span class="n">the</span> <span class="n">instance</span> <span class="n">edit</span> <span class="n">timestamp</span>      <span class="o">--&gt;</span> <span class="n">touch</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">uwsgi</span><span class="o">.</span><span class="n">d</span><span class="o">/</span><span class="n">searxng</span><span class="o">.</span><span class="n">ini</span>
+<span class="n">to</span> <span class="n">stop</span> <span class="n">instance</span> <span class="n">remove</span> <span class="n">ini</span>                <span class="o">--&gt;</span> <span class="n">rm</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">uwsgi</span><span class="o">.</span><span class="n">d</span><span class="o">/</span><span class="n">searxng</span><span class="o">.</span><span class="n">ini</span>
+</pre></div>
+</div>
+</div></blockquote>
+</section>
+<section id="distributors">
+<h2><a class="toc-backref" href="#id8" role="doc-backlink">Distributors</a><a class="headerlink" href="#distributors" title="Link to this heading">¶</a></h2>
+<p>The <a class="reference external" href="https://uwsgi-docs.readthedocs.io/en/latest/Emperor.html">uWSGI Emperor</a> mode and <a class="reference external" href="http://0pointer.de/blog/projects/instances.html">systemd unit template</a> is what the distributors
+mostly offer their users, even if they differ in the way they implement both
+modes and their defaults.  Another point they might differ in is the packaging of
+plugins (if so, compare <a class="reference internal" href="installation-searxng.html#install-packages"><span class="std std-ref">Install packages</span></a>) and what the default python
+interpreter is (python2 vs. python3).</p>
+<p>While archlinux does not start a uWSGI service by default, Fedora (RHEL) starts
+a Emperor in <a class="reference external" href="https://uwsgi-docs.readthedocs.io/en/latest/Emperor.html#tyrant-mode-secure-multi-user-hosting">Tyrant mode</a> by default (you should have read <a class="reference internal" href="#uwsgi-tyrant-mode-pitfalls"><span class="std std-ref">Pitfalls of the Tyrant mode</span></a>).  Worth to know; debian (ubuntu) follow a complete different
+approach, read see <a class="reference internal" href="#debian-s-uwsgi-layout"><span class="std std-ref">Debian’s uWSGI layout</span></a>.</p>
+<section id="debian-s-uwsgi-layout">
+<span id="id1"></span><h3><a class="toc-backref" href="#id9" role="doc-backlink">Debian’s uWSGI layout</a><a class="headerlink" href="#debian-s-uwsgi-layout" title="Link to this heading">¶</a></h3>
+<p>Be aware, Debian’s uWSGI layout is quite different from the standard uWSGI
+configuration.  Your are familiar with <a class="reference internal" href="installation-apache.html#debian-s-apache-layout"><span class="std std-ref">Debian’s Apache layout</span></a>? .. they do a
+similar thing for the uWSGI infrastructure. The folders are:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">uwsgi</span><span class="o">/</span><span class="n">apps</span><span class="o">-</span><span class="n">available</span><span class="o">/</span>
+<span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">uwsgi</span><span class="o">/</span><span class="n">apps</span><span class="o">-</span><span class="n">enabled</span><span class="o">/</span>
+</pre></div>
+</div>
+<p>The <a class="reference external" href="https://uwsgi-docs.readthedocs.io/en/latest/Configuration.html#ini-files">uwsgi ini file</a> is enabled by a symbolic link:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ln</span> <span class="o">-</span><span class="n">s</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">uwsgi</span><span class="o">/</span><span class="n">apps</span><span class="o">-</span><span class="n">available</span><span class="o">/</span><span class="n">searxng</span><span class="o">.</span><span class="n">ini</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">uwsgi</span><span class="o">/</span><span class="n">apps</span><span class="o">-</span><span class="n">enabled</span><span class="o">/</span>
+</pre></div>
+</div>
+<p>More details can be found in the <a class="reference external" href="https://salsa.debian.org/uwsgi-team/uwsgi/-/raw/debian/latest/debian/uwsgi.README.Debian">uwsgi.README.Debian</a>
+(<code class="docutils literal notranslate"><span class="pre">/usr/share/doc/uwsgi/README.Debian.gz</span></code>).  Some commands you should know on
+Debian:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Commands recognized by init.d script
+====================================
+
+You can issue to init.d script following commands:
+  * start        | starts daemon
+  * stop         | stops daemon
+  * reload       | sends to daemon SIGHUP signal
+  * force-reload | sends to daemon SIGTERM signal
+  * restart      | issues &#39;stop&#39;, then &#39;start&#39; commands
+  * status       | shows status of daemon instance (running/not running)
+
+&#39;status&#39; command must be issued with exactly one argument: &#39;&lt;confname&gt;&#39;.
+
+Controlling specific instances of uWSGI
+=======================================
+
+You could control specific instance(s) by issuing:
+
+    SYSTEMCTL_SKIP_REDIRECT=1 service uwsgi &lt;command&gt; &lt;confname&gt; &lt;confname&gt;...
+
+where:
+  * &lt;command&gt; is one of &#39;start&#39;, &#39;stop&#39; etc.
+  * &lt;confname&gt; is the name of configuration file (without extension)
+
+For example, this is how instance for /etc/uwsgi/apps-enabled/hello.xml is
+started:
+
+    SYSTEMCTL_SKIP_REDIRECT=1 service uwsgi start hello
+</pre></div>
+</div>
+</section>
+</section>
+<section id="uwsgi-maintenance">
+<span id="id2"></span><h2><a class="toc-backref" href="#id10" role="doc-backlink">uWSGI maintenance</a><a class="headerlink" href="#uwsgi-maintenance" title="Link to this heading">¶</a></h2>
+<div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-0-VWJ1bnR1IC8gZGViaWFu" aria-selected="true" class="sphinx-tabs-tab group-tab" id="tab-0-VWJ1bnR1IC8gZGViaWFu" name="VWJ1bnR1IC8gZGViaWFu" role="tab" tabindex="0">Ubuntu / debian</button><button aria-controls="panel-0-QXJjaCBMaW51eA==" aria-selected="false" class="sphinx-tabs-tab group-tab" id="tab-0-QXJjaCBMaW51eA==" name="QXJjaCBMaW51eA==" role="tab" tabindex="-1">Arch Linux</button><button aria-controls="panel-0-RmVkb3JhIC8gUkhFTA==" aria-selected="false" class="sphinx-tabs-tab group-tab" id="tab-0-RmVkb3JhIC8gUkhFTA==" name="RmVkb3JhIC8gUkhFTA==" role="tab" tabindex="-1">Fedora / RHEL</button></div><div aria-labelledby="tab-0-VWJ1bnR1IC8gZGViaWFu" class="sphinx-tabs-panel group-tab" id="panel-0-VWJ1bnR1IC8gZGViaWFu" name="VWJ1bnR1IC8gZGViaWFu" role="tabpanel" tabindex="0"><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># init.d --&gt; /usr/share/doc/uwsgi/README.Debian.gz</span>
+<span class="c1"># For uWSGI debian uses the LSB init process, this might be changed</span>
+<span class="c1"># one day, see https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=833067</span>
+
+create<span class="w">     </span>/etc/uwsgi/apps-available/searxng.ini
+enable:<span class="w">    </span>sudo<span class="w"> </span>-H<span class="w"> </span>ln<span class="w"> </span>-s<span class="w"> </span>/etc/uwsgi/apps-available/searxng.ini<span class="w"> </span>/etc/uwsgi/apps-enabled/
+start:<span class="w">     </span>sudo<span class="w"> </span>-H<span class="w"> </span>service<span class="w"> </span>uwsgi<span class="w"> </span>start<span class="w">   </span>searxng
+restart:<span class="w">   </span>sudo<span class="w"> </span>-H<span class="w"> </span>service<span class="w"> </span>uwsgi<span class="w"> </span>restart<span class="w"> </span>searxng
+stop:<span class="w">      </span>sudo<span class="w"> </span>-H<span class="w"> </span>service<span class="w"> </span>uwsgi<span class="w"> </span>stop<span class="w">    </span>searxng
+disable:<span class="w">   </span>sudo<span class="w"> </span>-H<span class="w"> </span>rm<span class="w"> </span>/etc/uwsgi/apps-enabled/searxng.ini
+</pre></div>
+</div>
+</div><div aria-labelledby="tab-0-QXJjaCBMaW51eA==" class="sphinx-tabs-panel group-tab" hidden="true" id="panel-0-QXJjaCBMaW51eA==" name="QXJjaCBMaW51eA==" role="tabpanel" tabindex="0"><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># systemd --&gt; /usr/lib/systemd/system/uwsgi@.service</span>
+<span class="c1"># For uWSGI archlinux uses systemd template units, see</span>
+<span class="c1"># - http://0pointer.de/blog/projects/instances.html</span>
+<span class="c1"># - https://uwsgi-docs.readthedocs.io/en/latest/Systemd.html#one-service-per-app-in-systemd</span>
+
+create:<span class="w">    </span>/etc/uwsgi/searxng.ini
+enable:<span class="w">    </span>sudo<span class="w"> </span>-H<span class="w"> </span>systemctl<span class="w"> </span><span class="nb">enable</span><span class="w">   </span>uwsgi@searxng
+start:<span class="w">     </span>sudo<span class="w"> </span>-H<span class="w"> </span>systemctl<span class="w"> </span>start<span class="w">    </span>uwsgi@searxng
+restart:<span class="w">   </span>sudo<span class="w"> </span>-H<span class="w"> </span>systemctl<span class="w"> </span>restart<span class="w">  </span>uwsgi@searxng
+stop:<span class="w">      </span>sudo<span class="w"> </span>-H<span class="w"> </span>systemctl<span class="w"> </span>stop<span class="w">     </span>uwsgi@searxng
+disable:<span class="w">   </span>sudo<span class="w"> </span>-H<span class="w"> </span>systemctl<span class="w"> </span>disable<span class="w">  </span>uwsgi@searxng
+</pre></div>
+</div>
+</div><div aria-labelledby="tab-0-RmVkb3JhIC8gUkhFTA==" class="sphinx-tabs-panel group-tab" hidden="true" id="panel-0-RmVkb3JhIC8gUkhFTA==" name="RmVkb3JhIC8gUkhFTA==" role="tabpanel" tabindex="0"><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># systemd --&gt; /usr/lib/systemd/system/uwsgi.service</span>
+<span class="c1"># The unit file starts uWSGI in emperor mode (/etc/uwsgi.ini), see</span>
+<span class="c1"># - https://uwsgi-docs.readthedocs.io/en/latest/Emperor.html</span>
+
+create:<span class="w">    </span>/etc/uwsgi.d/searxng.ini
+restart:<span class="w">   </span>sudo<span class="w"> </span>-H<span class="w"> </span>touch<span class="w"> </span>/etc/uwsgi.d/searxng.ini
+disable:<span class="w">   </span>sudo<span class="w"> </span>-H<span class="w"> </span>rm<span class="w"> </span>/etc/uwsgi.d/searxng.ini
+</pre></div>
+</div>
+</div></div>
+</section>
+<section id="uwsgi-setup">
+<span id="id3"></span><h2><a class="toc-backref" href="#id11" role="doc-backlink">uWSGI setup</a><a class="headerlink" href="#uwsgi-setup" title="Link to this heading">¶</a></h2>
+<p>Create the configuration ini-file according to your distribution and restart the
+uwsgi application.  As shown below, the <a class="reference internal" href="installation-scripts.html#installation-scripts"><span class="std std-ref">Installation Script</span></a> installs by
+default a uWSGI setup that listens on a socket.</p>
+<div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-1-VWJ1bnR1IC8gZGViaWFu" aria-selected="true" class="sphinx-tabs-tab group-tab" id="tab-1-VWJ1bnR1IC8gZGViaWFu" name="VWJ1bnR1IC8gZGViaWFu" role="tab" tabindex="0">Ubuntu / debian</button><button aria-controls="panel-1-QXJjaCBMaW51eA==" aria-selected="false" class="sphinx-tabs-tab group-tab" id="tab-1-QXJjaCBMaW51eA==" name="QXJjaCBMaW51eA==" role="tab" tabindex="-1">Arch Linux</button><button aria-controls="panel-1-RmVkb3JhIC8gUkhFTA==" aria-selected="false" class="sphinx-tabs-tab group-tab" id="tab-1-RmVkb3JhIC8gUkhFTA==" name="RmVkb3JhIC8gUkhFTA==" role="tab" tabindex="-1">Fedora / RHEL</button></div><div aria-labelledby="tab-1-VWJ1bnR1IC8gZGViaWFu" class="sphinx-tabs-panel group-tab" id="panel-1-VWJ1bnR1IC8gZGViaWFu" name="VWJ1bnR1IC8gZGViaWFu" role="tabpanel" tabindex="0"><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># -*- mode: conf; coding: utf-8  -*-</span>
+<span class="o">[</span>uwsgi<span class="o">]</span>
+
+<span class="c1"># uWSGI core</span>
+<span class="c1"># ----------</span>
+<span class="c1">#</span>
+<span class="c1"># https://uwsgi-docs.readthedocs.io/en/latest/Options.html#uwsgi-core</span>
+
+<span class="c1"># Who will run the code / Hint: in emperor-tyrant mode uid &amp; gid setting will be</span>
+<span class="c1"># ignored [1].  Mode emperor-tyrant is the default on fedora (/etc/uwsgi.ini).</span>
+<span class="c1">#</span>
+<span class="c1"># [1] https://uwsgi-docs.readthedocs.io/en/latest/Emperor.html#tyrant-mode-secure-multi-user-hosting</span>
+<span class="c1">#</span>
+<span class="nv">uid</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>searxng
+<span class="nv">gid</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>searxng
+
+<span class="c1"># set (python) default encoding UTF-8</span>
+<span class="nv">env</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">LANG</span><span class="o">=</span>C.UTF-8
+<span class="nv">env</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">LANGUAGE</span><span class="o">=</span>C.UTF-8
+<span class="nv">env</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">LC_ALL</span><span class="o">=</span>C.UTF-8
+
+<span class="c1"># chdir to specified directory before apps loading</span>
+<span class="nv">chdir</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>/usr/local/searxng/searxng-src/searx
+
+<span class="c1"># SearXNG configuration (settings.yml)</span>
+<span class="nv">env</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">SEARXNG_SETTINGS_PATH</span><span class="o">=</span>/etc/searxng/settings.yml
+
+<span class="c1"># disable logging for privacy</span>
+disable-logging<span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span>
+
+<span class="c1"># The right granted on the created socket</span>
+chmod-socket<span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">666</span>
+
+<span class="c1"># Plugin to use and interpreter config</span>
+single-interpreter<span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span>
+
+<span class="c1"># enable master process</span>
+<span class="nv">master</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span>
+
+<span class="c1"># load apps in each worker instead of the master</span>
+lazy-apps<span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span>
+
+<span class="c1"># load uWSGI plugins</span>
+<span class="nv">plugin</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>python3,http
+
+<span class="c1"># By default the Python plugin does not initialize the GIL.  This means your</span>
+<span class="c1"># app-generated threads will not run.  If you need threads, remember to enable</span>
+<span class="c1"># them with enable-threads.  Running uWSGI in multithreading mode (with the</span>
+<span class="c1"># threads options) will automatically enable threading support. This *strange*</span>
+<span class="c1"># default behaviour is for performance reasons.</span>
+enable-threads<span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span>
+
+<span class="c1"># Number of workers (usually CPU count)</span>
+<span class="nv">workers</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>%k
+<span class="nv">threads</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">4</span>
+
+<span class="c1"># plugin: python</span>
+<span class="c1"># --------------</span>
+<span class="c1">#</span>
+<span class="c1"># https://uwsgi-docs.readthedocs.io/en/latest/Options.html#plugin-python</span>
+
+<span class="c1"># load a WSGI module</span>
+<span class="nv">module</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>searx.webapp
+
+<span class="c1"># set PYTHONHOME/virtualenv</span>
+<span class="nv">virtualenv</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>/usr/local/searxng/searx-pyenv
+
+<span class="c1"># add directory (or glob) to pythonpath</span>
+<span class="nv">pythonpath</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>/usr/local/searxng/searxng-src
+
+
+<span class="c1"># speak to upstream</span>
+<span class="c1"># -----------------</span>
+
+<span class="nv">socket</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>/usr/local/searxng/run/socket
+buffer-size<span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">8192</span>
+
+offload-threads<span class="w"> </span><span class="o">=</span><span class="w"> </span>%k
+</pre></div>
+</div>
+</div><div aria-labelledby="tab-1-QXJjaCBMaW51eA==" class="sphinx-tabs-panel group-tab" hidden="true" id="panel-1-QXJjaCBMaW51eA==" name="QXJjaCBMaW51eA==" role="tabpanel" tabindex="0"><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># -*- mode: conf; coding: utf-8  -*-</span>
+<span class="o">[</span>uwsgi<span class="o">]</span>
+
+<span class="c1"># uWSGI core</span>
+<span class="c1"># ----------</span>
+<span class="c1">#</span>
+<span class="c1"># https://uwsgi-docs.readthedocs.io/en/latest/Options.html#uwsgi-core</span>
+
+<span class="c1"># Who will run the code</span>
+<span class="nv">uid</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>searxng
+<span class="nv">gid</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>searxng
+
+<span class="c1"># set (python) default encoding UTF-8</span>
+<span class="nv">env</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">LANG</span><span class="o">=</span>C.UTF-8
+<span class="nv">env</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">LANGUAGE</span><span class="o">=</span>C.UTF-8
+<span class="nv">env</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">LC_ALL</span><span class="o">=</span>C.UTF-8
+
+<span class="c1"># chdir to specified directory before apps loading</span>
+<span class="nv">chdir</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>/usr/local/searxng/searxng-src/searx
+
+<span class="c1"># SearXNG configuration (settings.yml)</span>
+<span class="nv">env</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">SEARXNG_SETTINGS_PATH</span><span class="o">=</span>/etc/searxng/settings.yml
+
+<span class="c1"># disable logging for privacy</span>
+<span class="nv">logger</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>systemd
+disable-logging<span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span>
+
+<span class="c1"># The right granted on the created socket</span>
+chmod-socket<span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">666</span>
+
+<span class="c1"># Plugin to use and interpreter config</span>
+single-interpreter<span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span>
+
+<span class="c1"># enable master process</span>
+<span class="nv">master</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span>
+
+<span class="c1"># load apps in each worker instead of the master</span>
+lazy-apps<span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span>
+
+<span class="c1"># load uWSGI plugins</span>
+<span class="nv">plugin</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>python
+
+<span class="c1"># By default the Python plugin does not initialize the GIL.  This means your</span>
+<span class="c1"># app-generated threads will not run.  If you need threads, remember to enable</span>
+<span class="c1"># them with enable-threads.  Running uWSGI in multithreading mode (with the</span>
+<span class="c1"># threads options) will automatically enable threading support. This *strange*</span>
+<span class="c1"># default behaviour is for performance reasons.</span>
+enable-threads<span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span>
+
+<span class="c1"># Number of workers (usually CPU count)</span>
+<span class="nv">workers</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>%k
+<span class="nv">threads</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">4</span>
+
+<span class="c1"># plugin: python</span>
+<span class="c1"># --------------</span>
+<span class="c1">#</span>
+<span class="c1"># https://uwsgi-docs.readthedocs.io/en/latest/Options.html#plugin-python</span>
+
+<span class="c1"># load a WSGI module</span>
+<span class="nv">module</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>searx.webapp
+
+<span class="c1"># set PYTHONHOME/virtualenv</span>
+<span class="nv">virtualenv</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>/usr/local/searxng/searx-pyenv
+
+<span class="c1"># add directory (or glob) to pythonpath</span>
+<span class="nv">pythonpath</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>/usr/local/searxng/searxng-src
+
+
+<span class="c1"># speak to upstream</span>
+<span class="c1"># -----------------</span>
+
+<span class="nv">socket</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>/usr/local/searxng/run/socket
+buffer-size<span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">8192</span>
+
+offload-threads<span class="w"> </span><span class="o">=</span><span class="w"> </span>%k
+</pre></div>
+</div>
+</div><div aria-labelledby="tab-1-RmVkb3JhIC8gUkhFTA==" class="sphinx-tabs-panel group-tab" hidden="true" id="panel-1-RmVkb3JhIC8gUkhFTA==" name="RmVkb3JhIC8gUkhFTA==" role="tabpanel" tabindex="0"><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># -*- mode: conf; coding: utf-8  -*-</span>
+<span class="o">[</span>uwsgi<span class="o">]</span>
+
+<span class="c1"># uWSGI core</span>
+<span class="c1"># ----------</span>
+<span class="c1">#</span>
+<span class="c1"># https://uwsgi-docs.readthedocs.io/en/latest/Options.html#uwsgi-core</span>
+
+<span class="c1"># Who will run the code / Hint: in emperor-tyrant mode uid &amp; gid setting will be</span>
+<span class="c1"># ignored [1].  Mode emperor-tyrant is the default on fedora (/etc/uwsgi.ini).</span>
+<span class="c1">#</span>
+<span class="c1"># [1] https://uwsgi-docs.readthedocs.io/en/latest/Emperor.html#tyrant-mode-secure-multi-user-hosting</span>
+<span class="c1">#</span>
+<span class="nv">uid</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>searxng
+<span class="nv">gid</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>searxng
+
+<span class="c1"># set (python) default encoding UTF-8</span>
+<span class="nv">env</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">LANG</span><span class="o">=</span>C.UTF-8
+<span class="nv">env</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">LANGUAGE</span><span class="o">=</span>C.UTF-8
+<span class="nv">env</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">LC_ALL</span><span class="o">=</span>C.UTF-8
+
+<span class="c1"># chdir to specified directory before apps loading</span>
+<span class="nv">chdir</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>/usr/local/searxng/searxng-src/searx
+
+<span class="c1"># SearXNG configuration (settings.yml)</span>
+<span class="nv">env</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">SEARXNG_SETTINGS_PATH</span><span class="o">=</span>/etc/searxng/settings.yml
+
+<span class="c1"># disable logging for privacy</span>
+disable-logging<span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span>
+
+<span class="c1"># The right granted on the created socket</span>
+chmod-socket<span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">666</span>
+
+<span class="c1"># Plugin to use and interpreter config</span>
+single-interpreter<span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span>
+
+<span class="c1"># enable master process</span>
+<span class="nv">master</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span>
+
+<span class="c1"># load apps in each worker instead of the master</span>
+lazy-apps<span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span>
+
+<span class="c1"># load uWSGI plugins</span>
+<span class="nv">plugin</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>python3,http
+
+<span class="c1"># By default the Python plugin does not initialize the GIL.  This means your</span>
+<span class="c1"># app-generated threads will not run.  If you need threads, remember to enable</span>
+<span class="c1"># them with enable-threads.  Running uWSGI in multithreading mode (with the</span>
+<span class="c1"># threads options) will automatically enable threading support. This *strange*</span>
+<span class="c1"># default behaviour is for performance reasons.</span>
+enable-threads<span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span>
+
+<span class="c1"># Number of workers (usually CPU count)</span>
+<span class="nv">workers</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>%k
+<span class="nv">threads</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">4</span>
+
+<span class="c1"># plugin: python</span>
+<span class="c1"># --------------</span>
+<span class="c1">#</span>
+<span class="c1"># https://uwsgi-docs.readthedocs.io/en/latest/Options.html#plugin-python</span>
+
+<span class="c1"># load a WSGI module</span>
+<span class="nv">module</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>searx.webapp
+
+<span class="c1"># set PYTHONHOME/virtualenv</span>
+<span class="nv">virtualenv</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>/usr/local/searxng/searx-pyenv
+
+<span class="c1"># add directory (or glob) to pythonpath</span>
+<span class="nv">pythonpath</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>/usr/local/searxng/searxng-src
+
+
+<span class="c1"># speak to upstream</span>
+<span class="c1"># -----------------</span>
+
+<span class="nv">socket</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>/usr/local/searxng/run/socket
+buffer-size<span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">8192</span>
+
+offload-threads<span class="w"> </span><span class="o">=</span><span class="w"> </span>%k
+</pre></div>
+</div>
+</div></div>
+</section>
+<section id="pitfalls-of-the-tyrant-mode">
+<span id="uwsgi-tyrant-mode-pitfalls"></span><h2><a class="toc-backref" href="#id12" role="doc-backlink">Pitfalls of the Tyrant mode</a><a class="headerlink" href="#pitfalls-of-the-tyrant-mode" title="Link to this heading">¶</a></h2>
+<p>The implementation of the process owners and groups in the <a class="reference external" href="https://uwsgi-docs.readthedocs.io/en/latest/Emperor.html#tyrant-mode-secure-multi-user-hosting">Tyrant mode</a> is
+somewhat unusual and requires special consideration.  In <a class="reference external" href="https://uwsgi-docs.readthedocs.io/en/latest/Emperor.html#tyrant-mode-secure-multi-user-hosting">Tyrant mode</a> mode the
+Emperor will run the vassal using the UID/GID of the vassal configuration file
+(user and group of the app <code class="docutils literal notranslate"><span class="pre">.ini</span></code> file).</p>
+<p>Without option <code class="docutils literal notranslate"><span class="pre">emperor-tyrant-initgroups=true</span></code> in <code class="docutils literal notranslate"><span class="pre">/etc/uwsgi.ini</span></code> the
+process won’t get the additional groups, but this option is not available in
+2.0.x branch (see <a class="reference external" href="https://github.com/unbit/uwsgi/issues/2099">#2099&#64;uWSGI</a>) the feature <a class="reference external" href="https://github.com/unbit/uwsgi/pull/752">#752&#64;uWSGI</a> has been merged (on
+Oct. 2014) to the master branch of uWSGI but had never been released; the last
+major release is from Dec. 2013, since the there had been only bugfix releases
+(see <a class="reference external" href="https://github.com/unbit/uwsgi/issues/2425">#2425uWSGI</a>). To shorten up:</p>
+<blockquote>
+<div><p><strong>In Tyrant mode, there is no way to get additional groups, and the uWSGI
+process misses additional permissions that may be needed.</strong></p>
+</div></blockquote>
+<p>For example on Fedora (RHEL): If you try to install a valkey DB with socket
+communication and you want to connect to it from the SearXNG uWSGI, you will see a
+<em>Permission denied</em> in the log of your instance:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>ERROR:searx.valkeydb: [searxng (993)] can&#39;t connect valkey DB ...
+ERROR:searx.valkeydb:   Error 13 connecting to unix socket: /usr/local/searxng-valkey/run/valkey.sock. Permission denied.
+ERROR:searx.plugins.limiter: init limiter DB failed!!!
+</pre></div>
+</div>
+<p>Even if your <em>searxng</em> user of the uWSGI process is added to additional groups
+to give access to the socket from the valkey DB:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ groups searxng
+searxng : searxng searxng-valkey
+</pre></div>
+</div>
+<p>To see the effective groups of the uwsgi process, you have to look at the status
+of the process, by example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ ps -aef | grep &#39;/usr/sbin/uwsgi --ini searxng.ini&#39;
+searxng       93      92  0 12:43 ?        00:00:00 /usr/sbin/uwsgi --ini searxng.ini
+searxng      186      93  0 12:44 ?        00:00:01 /usr/sbin/uwsgi --ini searxng.ini
+</pre></div>
+</div>
+<p>Here you can see that the additional “Groups” of PID 186 are unset (missing gid
+of <code class="docutils literal notranslate"><span class="pre">searxng-valkey</span></code>):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ cat /proc/186/task/186/status
+...
+Uid:      993     993     993     993
+Gid:      993     993     993     993
+FDSize:   128
+Groups:
+...
+</pre></div>
+</div>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+  <span id="sidebar-top"></span>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+  
+    
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/searxng-wordmark.svg" alt="Logo of SearXNG"/>
+            </a></p>
+  
+
+<h3><a href="../index.html">Table of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../user/index.html">User information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../own-instance.html">Why use a private instance?</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Administrator documentation</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="settings/index.html">Settings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation-docker.html">Installation container</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation-scripts.html">Installation Script</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation-searxng.html">Step by step installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation-granian.html">Granian</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">uWSGI</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#origin-uwsgi">Origin uWSGI</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#distributors">Distributors</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#debian-s-uwsgi-layout">Debian’s uWSGI layout</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#uwsgi-maintenance">uWSGI maintenance</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#uwsgi-setup">uWSGI setup</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pitfalls-of-the-tyrant-mode">Pitfalls of the Tyrant mode</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="installation-nginx.html">NGINX</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation-apache.html">Apache</a></li>
+<li class="toctree-l2"><a class="reference internal" href="update-searxng.html">SearXNG maintenance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="answer-captcha.html">Answer CAPTCHA from server’s IP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.favicons.html">Favicons</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.limiter.html">Limiter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html">Administration API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="architecture.html">Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plugins.html">List of plugins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="buildhosts.html">Buildhosts</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../dev/index.html">Developer documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../utils/index.html">DevOps tooling box</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../src/index.html">Source-Code</a></li>
+</ul>
+
+  <h3>Project Links</h3>
+  <ul>
+    <li><a href="https://github.com/searxng/searxng/tree/master">Source</a>
+  
+    <li><a href="https://github.com/searxng/searxng/wiki">Wiki</a>
+  
+    <li><a href="https://searx.space">Public instances</a>
+  
+    <li><a href="https://github.com/searxng/searxng/issues">Issue Tracker</a>
+  </ul><h3>Navigation</h3>
+<ul>
+  <li><a href="../index.html">Overview</a>
+    <ul>
+      <li><a href="index.html">Administrator documentation</a>
+        <ul>
+          <li>Previous: <a href="installation-granian.html" title="previous chapter">Granian</a>
+          <li>Next: <a href="installation-nginx.html" title="next chapter">NGINX</a></ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/admin/installation-uwsgi.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright SearXNG team.
+    </div>
+  </body>
+</html>

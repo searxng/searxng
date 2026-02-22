@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>searx.favicons.proxy &#8212; SearXNG Documentation (2026.2.22+191818b86)</title>
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=6625fa76" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/searxng.css?v=52e4ff28" />
+    <script src="../../../_static/documentation_options.js?v=1b5d919e"></script>
+    <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script data-project="searxng" data-version="2026.2.22+191818b86" src="../../../_static/describe_version.js?v=fa7f30d0"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">SearXNG Documentation (2026.2.22+191818b86)</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" accesskey="U">Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">searx.favicons.proxy</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for searx.favicons.proxy</h1><div class="highlight"><pre>
+<span></span><span class="c1"># SPDX-License-Identifier: AGPL-3.0-or-later</span>
+<span class="sd">&quot;&quot;&quot;Implementations for a favicon proxy&quot;&quot;&quot;</span>
+
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Callable</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">importlib</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">base64</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pathlib</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">urllib.parse</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">flask</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">httpx</span><span class="w"> </span><span class="kn">import</span> <span class="n">HTTPError</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">msgspec</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">searx</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_setting</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">searx.webutils</span><span class="w"> </span><span class="kn">import</span> <span class="n">new_hmac</span><span class="p">,</span> <span class="n">is_hmac_of</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">searx.exceptions</span><span class="w"> </span><span class="kn">import</span> <span class="n">SearxEngineResponseException</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">searx.extended_types</span><span class="w"> </span><span class="kn">import</span> <span class="n">sxng_request</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">.resolvers</span><span class="w"> </span><span class="kn">import</span> <span class="n">DEFAULT_RESOLVER_MAP</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.</span><span class="w"> </span><span class="kn">import</span> <span class="n">cache</span>
+
+<span class="n">DEFAULT_FAVICON_URL</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="n">CFG</span><span class="p">:</span> <span class="s2">&quot;FaviconProxyConfig&quot;</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># type: ignore</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">init</span><span class="p">(</span><span class="n">cfg</span><span class="p">:</span> <span class="s2">&quot;FaviconProxyConfig&quot;</span><span class="p">):</span>
+    <span class="k">global</span> <span class="n">CFG</span>  <span class="c1"># pylint: disable=global-statement</span>
+    <span class="n">CFG</span> <span class="o">=</span> <span class="n">cfg</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_initial_resolver_map</span><span class="p">():</span>
+    <span class="n">d</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">get_setting</span><span class="p">(</span><span class="s2">&quot;search.favicon_resolver&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
+    <span class="k">if</span> <span class="n">name</span><span class="p">:</span>
+        <span class="n">func</span> <span class="o">=</span> <span class="n">DEFAULT_RESOLVER_MAP</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">func</span><span class="p">:</span>
+            <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="n">name</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;searx.favicons.resolvers.</span><span class="si">{</span><span class="n">func</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">}</span>
+    <span class="k">return</span> <span class="n">d</span>
+
+
+<div class="viewcode-block" id="FaviconProxyConfig">
+<a class="viewcode-back" href="../../../src/searx.favicons.html#searx.favicons.FaviconProxyConfig">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">FaviconProxyConfig</span><span class="p">(</span><span class="n">msgspec</span><span class="o">.</span><span class="n">Struct</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Configuration of the favicon proxy.&quot;&quot;&quot;</span>
+
+    <span class="n">max_age</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">60</span> <span class="o">*</span> <span class="mi">60</span> <span class="o">*</span> <span class="mi">24</span> <span class="o">*</span> <span class="mi">7</span>  <span class="c1"># seven days</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;HTTP header Cache-Control_ ``max-age``</span>
+
+<span class="sd">    .. _Cache-Control: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cache-Control</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">secret_key</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">get_setting</span><span class="p">(</span><span class="s2">&quot;server.secret_key&quot;</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;By default, the value from :ref:`server.secret_key &lt;settings server&gt;`</span>
+<span class="sd">    setting is used.&quot;&quot;&quot;</span>
+
+    <span class="n">resolver_timeout</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">get_setting</span><span class="p">(</span><span class="s2">&quot;outgoing.request_timeout&quot;</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Timeout which the resolvers should not exceed, is usually passed to the</span>
+<span class="sd">    outgoing request of the resolver.  By default, the value from</span>
+<span class="sd">    :ref:`outgoing.request_timeout &lt;settings outgoing&gt;` setting is used.&quot;&quot;&quot;</span>
+
+    <span class="n">resolver_map</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">msgspec</span><span class="o">.</span><span class="n">field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="n">_initial_resolver_map</span><span class="p">)</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The resolver_map is a key / value dictionary where the key is the name of</span>
+<span class="sd">    the resolver and the value is the fully qualifying name (fqn) of resolver&#39;s</span>
+<span class="sd">    function (the callable).  The resolvers from the python module</span>
+<span class="sd">    :py:obj:`searx.favicons.resolver` are available by default.&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="FaviconProxyConfig.get_resolver">
+<a class="viewcode-back" href="../../../src/searx.favicons.html#searx.favicons.FaviconProxyConfig.get_resolver">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_resolver</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the callable object (function) of the resolver with the</span>
+<span class="sd">        ``name``.  If no resolver is registered for the ``name``, ``None`` is</span>
+<span class="sd">        returned.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">fqn</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">resolver_map</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">fqn</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        <span class="n">mod_name</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">func_name</span> <span class="o">=</span> <span class="n">fqn</span><span class="o">.</span><span class="n">rpartition</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)</span>
+        <span class="n">mod</span> <span class="o">=</span> <span class="n">importlib</span><span class="o">.</span><span class="n">import_module</span><span class="p">(</span><span class="n">mod_name</span><span class="p">)</span>
+        <span class="n">func</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">mod</span><span class="p">,</span> <span class="n">func_name</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">func</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;resolver </span><span class="si">{</span><span class="n">fqn</span><span class="si">}</span><span class="s2"> is not implemented&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">func</span></div>
+
+
+    <span class="n">favicon_path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">get_setting</span><span class="p">(</span><span class="s2">&quot;ui.static_path&quot;</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;/themes/</span><span class="si">{theme}</span><span class="s2">/img/empty_favicon.svg&quot;</span>  <span class="c1"># type: ignore</span>
+    <span class="n">favicon_mime_type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;image/svg+xml&quot;</span>
+
+<div class="viewcode-block" id="FaviconProxyConfig.favicon">
+<a class="viewcode-back" href="../../../src/searx.favicons.html#searx.favicons.FaviconProxyConfig.favicon">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">favicon</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">replacements</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns pathname and mimetype of the default favicon.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">favicon_path</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">**</span><span class="n">replacements</span><span class="p">)),</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">favicon_mime_type</span><span class="p">,</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="FaviconProxyConfig.favicon_data_url">
+<a class="viewcode-back" href="../../../src/searx.favicons.html#searx.favicons.FaviconProxyConfig.favicon_data_url">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">favicon_data_url</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">replacements</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns data image URL of the default favicon.&quot;&quot;&quot;</span>
+
+        <span class="n">cache_key</span> <span class="o">=</span> <span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">x</span><span class="si">}</span><span class="s2">:</span><span class="si">{</span><span class="n">replacements</span><span class="p">[</span><span class="n">x</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">replacements</span><span class="o">.</span><span class="n">keys</span><span class="p">()),</span> <span class="n">key</span><span class="o">=</span><span class="nb">str</span><span class="p">))</span>
+        <span class="n">data_url</span> <span class="o">=</span> <span class="n">DEFAULT_FAVICON_URL</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">cache_key</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">data_url</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">data_url</span>
+
+        <span class="n">fav</span><span class="p">,</span> <span class="n">mimetype</span> <span class="o">=</span> <span class="n">CFG</span><span class="o">.</span><span class="n">favicon</span><span class="p">(</span><span class="o">**</span><span class="n">replacements</span><span class="p">)</span>
+        <span class="c1"># hint: encoding utf-8 limits favicons to be a SVG image</span>
+        <span class="k">with</span> <span class="n">fav</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">data_url</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+
+        <span class="n">data_url</span> <span class="o">=</span> <span class="n">urllib</span><span class="o">.</span><span class="n">parse</span><span class="o">.</span><span class="n">quote</span><span class="p">(</span><span class="n">data_url</span><span class="p">)</span>
+        <span class="n">data_url</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;data:</span><span class="si">{</span><span class="n">mimetype</span><span class="si">}</span><span class="s2">;utf8,</span><span class="si">{</span><span class="n">data_url</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="n">DEFAULT_FAVICON_URL</span><span class="p">[</span><span class="n">cache_key</span><span class="p">]</span> <span class="o">=</span> <span class="n">data_url</span>
+        <span class="k">return</span> <span class="n">data_url</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="favicon_proxy">
+<a class="viewcode-back" href="../../../src/searx.favicons.html#searx.favicons.favicon_proxy">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">favicon_proxy</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;REST API of SearXNG&#39;s favicon proxy service</span>
+
+<span class="sd">    ::</span>
+
+<span class="sd">        /favicon_proxy?authority=&lt;...&gt;&amp;h=&lt;...&gt;</span>
+
+<span class="sd">    ``authority``:</span>
+<span class="sd">      Domain name :rfc:`3986` / see :py:obj:`favicon_url`</span>
+
+<span class="sd">    ``h``:</span>
+<span class="sd">      HMAC :rfc:`2104`, build up from the :ref:`server.secret_key &lt;settings</span>
+<span class="sd">      server&gt;` setting.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">authority</span> <span class="o">=</span> <span class="n">sxng_request</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;authority&#39;</span><span class="p">)</span>
+
+    <span class="c1"># malformed request or RFC 3986 authority</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">authority</span> <span class="ow">or</span> <span class="s2">&quot;/&quot;</span> <span class="ow">in</span> <span class="n">authority</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="mi">400</span>
+
+    <span class="c1"># malformed request / does not have authorisation</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">is_hmac_of</span><span class="p">(</span>
+        <span class="n">CFG</span><span class="o">.</span><span class="n">secret_key</span><span class="p">,</span>
+        <span class="n">authority</span><span class="o">.</span><span class="n">encode</span><span class="p">(),</span>
+        <span class="n">sxng_request</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;h&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">),</span>
+    <span class="p">):</span>
+        <span class="k">return</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="mi">400</span>
+
+    <span class="n">resolver</span> <span class="o">=</span> <span class="n">sxng_request</span><span class="o">.</span><span class="n">preferences</span><span class="o">.</span><span class="n">get_value</span><span class="p">(</span><span class="s1">&#39;favicon_resolver&#39;</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
+    <span class="c1"># if resolver is empty or not valid, just return HTTP 400.</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">resolver</span> <span class="ow">or</span> <span class="n">resolver</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">CFG</span><span class="o">.</span><span class="n">resolver_map</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+        <span class="k">return</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="mi">400</span>
+
+    <span class="n">data</span><span class="p">,</span> <span class="n">mime</span> <span class="o">=</span> <span class="n">search_favicon</span><span class="p">(</span><span class="n">resolver</span><span class="p">,</span> <span class="n">authority</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">data</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">mime</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">resp</span> <span class="o">=</span> <span class="n">flask</span><span class="o">.</span><span class="n">Response</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">mimetype</span><span class="o">=</span><span class="n">mime</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
+        <span class="n">resp</span><span class="o">.</span><span class="n">headers</span><span class="p">[</span><span class="s1">&#39;Cache-Control&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;max-age=</span><span class="si">{</span><span class="n">CFG</span><span class="o">.</span><span class="n">max_age</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">return</span> <span class="n">resp</span>
+
+    <span class="c1"># return default favicon from static path</span>
+    <span class="n">theme</span> <span class="o">=</span> <span class="n">sxng_request</span><span class="o">.</span><span class="n">preferences</span><span class="o">.</span><span class="n">get_value</span><span class="p">(</span><span class="s2">&quot;theme&quot;</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
+    <span class="n">fav</span><span class="p">,</span> <span class="n">mimetype</span> <span class="o">=</span> <span class="n">CFG</span><span class="o">.</span><span class="n">favicon</span><span class="p">(</span><span class="n">theme</span><span class="o">=</span><span class="n">theme</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">flask</span><span class="o">.</span><span class="n">send_from_directory</span><span class="p">(</span><span class="n">fav</span><span class="o">.</span><span class="n">parent</span><span class="p">,</span> <span class="n">fav</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">mimetype</span><span class="o">=</span><span class="n">mimetype</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="search_favicon">
+<a class="viewcode-back" href="../../../src/searx.favicons.html#searx.favicons.search_favicon">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">search_favicon</span><span class="p">(</span><span class="n">resolver</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">authority</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="kc">None</span> <span class="o">|</span> <span class="nb">bytes</span><span class="p">,</span> <span class="kc">None</span> <span class="o">|</span> <span class="nb">str</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Sends the request to the favicon resolver and returns a tuple for the</span>
+<span class="sd">    favicon.  The tuple consists of ``(data, mime)``, if the resolver has not</span>
+<span class="sd">    determined a favicon, both values are ``None``.</span>
+
+<span class="sd">    ``data``:</span>
+<span class="sd">      Binary data of the favicon.</span>
+
+<span class="sd">    ``mime``:</span>
+<span class="sd">      Mime type of the favicon.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">data</span><span class="p">,</span> <span class="n">mime</span> <span class="o">=</span> <span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+
+    <span class="n">func</span> <span class="o">=</span> <span class="n">CFG</span><span class="o">.</span><span class="n">get_resolver</span><span class="p">(</span><span class="n">resolver</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">func</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">data</span><span class="p">,</span> <span class="n">mime</span>
+
+    <span class="c1"># to avoid superfluous requests to the resolver, first look in the cache</span>
+    <span class="n">data_mime</span> <span class="o">=</span> <span class="n">cache</span><span class="o">.</span><span class="n">CACHE</span><span class="p">(</span><span class="n">resolver</span><span class="p">,</span> <span class="n">authority</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">data_mime</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">data_mime</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">data</span><span class="p">,</span> <span class="n">mime</span> <span class="o">=</span> <span class="n">func</span><span class="p">(</span><span class="n">authority</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">CFG</span><span class="o">.</span><span class="n">resolver_timeout</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">data</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">mime</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">data</span><span class="p">,</span> <span class="n">mime</span> <span class="o">=</span> <span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+
+    <span class="k">except</span> <span class="p">(</span><span class="n">HTTPError</span><span class="p">,</span> <span class="n">SearxEngineResponseException</span><span class="p">):</span>
+        <span class="k">pass</span>
+
+    <span class="n">cache</span><span class="o">.</span><span class="n">CACHE</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">resolver</span><span class="p">,</span> <span class="n">authority</span><span class="p">,</span> <span class="n">mime</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">data</span><span class="p">,</span> <span class="n">mime</span></div>
+
+
+
+<div class="viewcode-block" id="favicon_url">
+<a class="viewcode-back" href="../../../src/searx.favicons.html#searx.favicons.favicon_url">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">favicon_url</span><span class="p">(</span><span class="n">authority</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Function to generate the image URL used for favicons in SearXNG&#39;s result</span>
+<span class="sd">    lists.  The ``authority`` argument (aka netloc / :rfc:`3986`) is usually a</span>
+<span class="sd">    (sub-) domain name.  This function is used in the HTML (jinja) templates.</span>
+
+<span class="sd">    .. code:: html</span>
+
+<span class="sd">       &lt;div class=&quot;favicon&quot;&gt;</span>
+<span class="sd">          &lt;img src=&quot;{{ favicon_url(result.parsed_url.netloc) }}&quot;&gt;</span>
+<span class="sd">       &lt;/div&gt;</span>
+
+<span class="sd">    The returned URL is a route to :py:obj:`favicon_proxy` REST API.</span>
+
+<span class="sd">    If the favicon is already in the cache, the returned URL is a `data URL`_</span>
+<span class="sd">    (something like ``data:image/png;base64,...``).  By generating a data url from</span>
+<span class="sd">    the :py:obj:`.cache.FaviconCache`, additional HTTP roundtripps via the</span>
+<span class="sd">    :py:obj:`favicon_proxy` are saved.  However, it must also be borne in mind</span>
+<span class="sd">    that data urls are not cached in the client (web browser).</span>
+
+<span class="sd">    .. _data URL: https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/Data_URLs</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">resolver</span> <span class="o">=</span> <span class="n">sxng_request</span><span class="o">.</span><span class="n">preferences</span><span class="o">.</span><span class="n">get_value</span><span class="p">(</span><span class="s1">&#39;favicon_resolver&#39;</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
+    <span class="c1"># if resolver is empty or not valid, just return nothing.</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">resolver</span> <span class="ow">or</span> <span class="n">resolver</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">CFG</span><span class="o">.</span><span class="n">resolver_map</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+        <span class="k">return</span> <span class="s2">&quot;&quot;</span>
+
+    <span class="n">data_mime</span> <span class="o">=</span> <span class="n">cache</span><span class="o">.</span><span class="n">CACHE</span><span class="p">(</span><span class="n">resolver</span><span class="p">,</span> <span class="n">authority</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">data_mime</span> <span class="o">==</span> <span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="c1"># we have already checked, the resolver does not have a favicon</span>
+        <span class="n">theme</span> <span class="o">=</span> <span class="n">sxng_request</span><span class="o">.</span><span class="n">preferences</span><span class="o">.</span><span class="n">get_value</span><span class="p">(</span><span class="s2">&quot;theme&quot;</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
+        <span class="k">return</span> <span class="n">CFG</span><span class="o">.</span><span class="n">favicon_data_url</span><span class="p">(</span><span class="n">theme</span><span class="o">=</span><span class="n">theme</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">data_mime</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">data</span><span class="p">,</span> <span class="n">mime</span> <span class="o">=</span> <span class="n">data_mime</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;data:</span><span class="si">{</span><span class="n">mime</span><span class="si">}</span><span class="s2">;base64,</span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">base64</span><span class="o">.</span><span class="n">b64encode</span><span class="p">(</span><span class="n">data</span><span class="p">),</span><span class="w"> </span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>  <span class="c1"># type: ignore</span>
+
+    <span class="n">h</span> <span class="o">=</span> <span class="n">new_hmac</span><span class="p">(</span><span class="n">CFG</span><span class="o">.</span><span class="n">secret_key</span><span class="p">,</span> <span class="n">authority</span><span class="o">.</span><span class="n">encode</span><span class="p">())</span>
+    <span class="n">proxy_url</span> <span class="o">=</span> <span class="n">flask</span><span class="o">.</span><span class="n">url_for</span><span class="p">(</span><span class="s1">&#39;favicon_proxy&#39;</span><span class="p">)</span>
+    <span class="n">query</span> <span class="o">=</span> <span class="n">urllib</span><span class="o">.</span><span class="n">parse</span><span class="o">.</span><span class="n">urlencode</span><span class="p">({</span><span class="s2">&quot;authority&quot;</span><span class="p">:</span> <span class="n">authority</span><span class="p">,</span> <span class="s2">&quot;h&quot;</span><span class="p">:</span> <span class="n">h</span><span class="p">})</span>
+    <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">proxy_url</span><span class="si">}</span><span class="s2">?</span><span class="si">{</span><span class="n">query</span><span class="si">}</span><span class="s2">&quot;</span></div>
+
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+  <span id="sidebar-top"></span>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+  
+    
+            <p class="logo"><a href="../../../index.html">
+              <img class="logo" src="../../../_static/searxng-wordmark.svg" alt="Logo of SearXNG"/>
+            </a></p>
+  
+
+<h3><a href="../../../index.html">Table of Contents</a></h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../user/index.html">User information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../own-instance.html">Why use a private instance?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../admin/index.html">Administrator documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../dev/index.html">Developer documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../utils/index.html">DevOps tooling box</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/index.html">Source-Code</a></li>
+</ul>
+
+  <h3>Project Links</h3>
+  <ul>
+    <li><a href="https://github.com/searxng/searxng/tree/master">Source</a>
+  
+    <li><a href="https://github.com/searxng/searxng/wiki">Wiki</a>
+  
+    <li><a href="https://searx.space">Public instances</a>
+  
+    <li><a href="https://github.com/searxng/searxng/issues">Issue Tracker</a>
+  </ul><h3>Navigation</h3>
+<ul>
+  <li><a href="../../../index.html">Overview</a>
+    <ul>
+      <li><a href="../../index.html">Module code</a>
+        
+          
+          </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright SearXNG team.
+    </div>
+  </body>
+</html>

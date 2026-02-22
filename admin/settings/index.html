@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Settings &#8212; SearXNG Documentation (2026.2.22+191818b86)</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=6625fa76" />
+    <link rel="stylesheet" type="text/css" href="../../_static/searxng.css?v=52e4ff28" />
+    <script src="../../_static/documentation_options.js?v=1b5d919e"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script data-project="searxng" data-version="2026.2.22+191818b86" src="../../_static/describe_version.js?v=fa7f30d0"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="settings.yml" href="settings.html" />
+    <link rel="prev" title="Administrator documentation" href="../index.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="settings.html" title="settings.yml"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="../index.html" title="Administrator documentation"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">SearXNG Documentation (2026.2.22+191818b86)</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Administrator documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Settings</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="settings">
+<span id="searxng-settings-yml"></span><h1>Settings<a class="headerlink" href="#settings" title="Link to this heading">¶</a></h1>
+<aside class="sidebar">
+<p class="sidebar-title">Further reading ..</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="../../dev/engines/engine_overview.html#engine-settings"><span class="std std-ref">Engine settings.yml</span></a></p></li>
+<li><p><a class="reference internal" href="../../dev/engines/engine_overview.html#engine-file"><span class="std std-ref">Engine File</span></a></p></li>
+</ul>
+</aside>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="settings.html"><code class="docutils literal notranslate"><span class="pre">settings.yml</span></code></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="settings.html#settings-yml-location">settings.yml location</a></li>
+<li class="toctree-l2"><a class="reference internal" href="settings.html#use-default-settings">use_default_settings</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="settings_engines.html"><code class="docutils literal notranslate"><span class="pre">engines:</span></code></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="settings_engines.html#private-engines-tokens">Private Engines (<code class="docutils literal notranslate"><span class="pre">tokens</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="settings_engines.html#example-multilingual-search">Example: Multilingual Search</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="settings_brand.html"><code class="docutils literal notranslate"><span class="pre">brand:</span></code></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="settings_brand.html#searx.brand.SettingsBrand"><code class="docutils literal notranslate"><span class="pre">SettingsBrand</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="settings_general.html"><code class="docutils literal notranslate"><span class="pre">general:</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="settings_search.html"><code class="docutils literal notranslate"><span class="pre">search:</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="settings_server.html"><code class="docutils literal notranslate"><span class="pre">server:</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="settings_ui.html"><code class="docutils literal notranslate"><span class="pre">ui:</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="settings_redis.html"><code class="docutils literal notranslate"><span class="pre">redis:</span></code></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="settings_redis.html#redis-developer-notes">Redis Developer Notes</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="settings_valkey.html"><code class="docutils literal notranslate"><span class="pre">valkey:</span></code></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="settings_valkey.html#valkey-developer-notes">Valkey Developer Notes</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="settings_outgoing.html"><code class="docutils literal notranslate"><span class="pre">outgoing:</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="settings_categories_as_tabs.html"><code class="docutils literal notranslate"><span class="pre">categories_as_tabs:</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="settings_plugins.html"><code class="docutils literal notranslate"><span class="pre">plugins:</span></code></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="settings_plugins.html#built-in-plugins">built-in plugins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="settings_plugins.html#external-plugins">external plugins</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+  <span id="sidebar-top"></span>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+  
+    
+            <p class="logo"><a href="../../index.html">
+              <img class="logo" src="../../_static/searxng-wordmark.svg" alt="Logo of SearXNG"/>
+            </a></p>
+  
+
+<h3><a href="../../index.html">Table of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../user/index.html">User information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../own-instance.html">Why use a private instance?</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Administrator documentation</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Settings</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="settings.html"><code class="docutils literal notranslate"><span class="pre">settings.yml</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="settings_engines.html"><code class="docutils literal notranslate"><span class="pre">engines:</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="settings_brand.html"><code class="docutils literal notranslate"><span class="pre">brand:</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="settings_general.html"><code class="docutils literal notranslate"><span class="pre">general:</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="settings_search.html"><code class="docutils literal notranslate"><span class="pre">search:</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="settings_server.html"><code class="docutils literal notranslate"><span class="pre">server:</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="settings_ui.html"><code class="docutils literal notranslate"><span class="pre">ui:</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="settings_redis.html"><code class="docutils literal notranslate"><span class="pre">redis:</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="settings_valkey.html"><code class="docutils literal notranslate"><span class="pre">valkey:</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="settings_outgoing.html"><code class="docutils literal notranslate"><span class="pre">outgoing:</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="settings_categories_as_tabs.html"><code class="docutils literal notranslate"><span class="pre">categories_as_tabs:</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="settings_plugins.html"><code class="docutils literal notranslate"><span class="pre">plugins:</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation-docker.html">Installation container</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation-scripts.html">Installation Script</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation-searxng.html">Step by step installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation-granian.html">Granian</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation-uwsgi.html">uWSGI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation-nginx.html">NGINX</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation-apache.html">Apache</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../update-searxng.html">SearXNG maintenance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../answer-captcha.html">Answer CAPTCHA from server’s IP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../searx.favicons.html">Favicons</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../searx.limiter.html">Limiter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html">Administration API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../architecture.html">Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../plugins.html">List of plugins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../buildhosts.html">Buildhosts</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../dev/index.html">Developer documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../utils/index.html">DevOps tooling box</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../src/index.html">Source-Code</a></li>
+</ul>
+
+  <h3>Project Links</h3>
+  <ul>
+    <li><a href="https://github.com/searxng/searxng/tree/master">Source</a>
+  
+    <li><a href="https://github.com/searxng/searxng/wiki">Wiki</a>
+  
+    <li><a href="https://searx.space">Public instances</a>
+  
+    <li><a href="https://github.com/searxng/searxng/issues">Issue Tracker</a>
+  </ul><h3>Navigation</h3>
+<ul>
+  <li><a href="../../index.html">Overview</a>
+    <ul>
+      <li><a href="../index.html">Administrator documentation</a>
+        <ul>
+          <li>Previous: <a href="../index.html" title="previous chapter">Administrator documentation</a>
+          <li>Next: <a href="settings.html" title="next chapter"><code class="docutils literal notranslate"><span class="pre">settings.yml</span></code></a></ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/admin/settings/index.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright SearXNG team.
+    </div>
+  </body>
+</html>

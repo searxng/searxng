@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>SearXNG Exceptions &#8212; SearXNG Documentation (2026.2.22+191818b86)</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=6625fa76" />
+    <link rel="stylesheet" type="text/css" href="../_static/searxng.css?v=52e4ff28" />
+    <script src="../_static/documentation_options.js?v=1b5d919e"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script data-project="searxng" data-version="2026.2.22+191818b86" src="../_static/describe_version.js?v=fa7f30d0"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Favicons (source)" href="searx.favicons.html" />
+    <link rel="prev" title="Caches" href="searx.cache.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="searx.favicons.html" title="Favicons (source)"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="searx.cache.html" title="Caches"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">SearXNG Documentation (2026.2.22+191818b86)</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" accesskey="U">Source-Code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">SearXNG Exceptions</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="module-searx.exceptions">
+<span id="searxng-exceptions"></span><span id="searx-exceptions"></span><h1>SearXNG Exceptions<a class="headerlink" href="#module-searx.exceptions" title="Link to this heading">¶</a></h1>
+<p>Exception types raised by SearXNG modules.</p>
+<dl class="py exception">
+<dt class="sig sig-object py" id="searx.exceptions.SearxException">
+<em class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">searx.exceptions.</span></span><span class="sig-name descname"><span class="pre">SearxException</span></span><a class="reference internal" href="../_modules/searx/exceptions.html#SearxException"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.exceptions.SearxException" title="Link to this definition">¶</a></dt>
+<dd><p>Base SearXNG exception.</p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="searx.exceptions.SearxParameterException">
+<em class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">searx.exceptions.</span></span><span class="sig-name descname"><span class="pre">SearxParameterException</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.14)"><span class="pre">Any</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/searx/exceptions.html#SearxParameterException"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.exceptions.SearxParameterException" title="Link to this definition">¶</a></dt>
+<dd><p>Raised when query miss a required parameter</p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="searx.exceptions.SearxSettingsException">
+<em class="property"><span class="k"><span class="pre">final</span></span><span class="w"> </span><span class="k"><span class="pre">exception</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">searx.exceptions.</span></span><span class="sig-name descname"><span class="pre">SearxSettingsException</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#Exception" title="(in Python v3.14)"><span class="pre">Exception</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/searx/exceptions.html#SearxSettingsException"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.exceptions.SearxSettingsException" title="Link to this definition">¶</a></dt>
+<dd><p>Error while loading the settings</p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="searx.exceptions.SearxEngineException">
+<em class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">searx.exceptions.</span></span><span class="sig-name descname"><span class="pre">SearxEngineException</span></span><a class="reference internal" href="../_modules/searx/exceptions.html#SearxEngineException"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.exceptions.SearxEngineException" title="Link to this definition">¶</a></dt>
+<dd><p>Error inside an engine</p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="searx.exceptions.SearxXPathSyntaxException">
+<em class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">searx.exceptions.</span></span><span class="sig-name descname"><span class="pre">SearxXPathSyntaxException</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xpath_spec</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">XPath</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/searx/exceptions.html#SearxXPathSyntaxException"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.exceptions.SearxXPathSyntaxException" title="Link to this definition">¶</a></dt>
+<dd><p>Syntax error in a XPATH</p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="searx.exceptions.SearxEngineResponseException">
+<em class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">searx.exceptions.</span></span><span class="sig-name descname"><span class="pre">SearxEngineResponseException</span></span><a class="reference internal" href="../_modules/searx/exceptions.html#SearxEngineResponseException"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.exceptions.SearxEngineResponseException" title="Link to this definition">¶</a></dt>
+<dd><p>Impossible to parse the result of an engine</p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="searx.exceptions.SearxEngineAPIException">
+<em class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">searx.exceptions.</span></span><span class="sig-name descname"><span class="pre">SearxEngineAPIException</span></span><a class="reference internal" href="../_modules/searx/exceptions.html#SearxEngineAPIException"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.exceptions.SearxEngineAPIException" title="Link to this definition">¶</a></dt>
+<dd><p>The website has returned an application error</p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="searx.exceptions.SearxEngineAccessDeniedException">
+<em class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">searx.exceptions.</span></span><span class="sig-name descname"><span class="pre">SearxEngineAccessDeniedException</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">suspended_time</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'Access</span> <span class="pre">denied'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/searx/exceptions.html#SearxEngineAccessDeniedException"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.exceptions.SearxEngineAccessDeniedException" title="Link to this definition">¶</a></dt>
+<dd><p>The website is blocking the access</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="searx.exceptions.SearxEngineAccessDeniedException.SUSPEND_TIME_SETTING">
+<span class="sig-name descname"><span class="pre">SUSPEND_TIME_SETTING</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'search.suspended_times.SearxEngineAccessDenied'</span></em><a class="headerlink" href="#searx.exceptions.SearxEngineAccessDeniedException.SUSPEND_TIME_SETTING" title="Link to this definition">¶</a></dt>
+<dd><p>This settings contains the default suspended time (default 86400 sec / 1
+day).</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="searx.exceptions.SearxEngineCaptchaException">
+<em class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">searx.exceptions.</span></span><span class="sig-name descname"><span class="pre">SearxEngineCaptchaException</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">suspended_time</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'CAPTCHA'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/searx/exceptions.html#SearxEngineCaptchaException"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.exceptions.SearxEngineCaptchaException" title="Link to this definition">¶</a></dt>
+<dd><p>The website has returned a CAPTCHA.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="searx.exceptions.SearxEngineCaptchaException.SUSPEND_TIME_SETTING">
+<span class="sig-name descname"><span class="pre">SUSPEND_TIME_SETTING</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'search.suspended_times.SearxEngineCaptcha'</span></em><a class="headerlink" href="#searx.exceptions.SearxEngineCaptchaException.SUSPEND_TIME_SETTING" title="Link to this definition">¶</a></dt>
+<dd><p>This settings contains the default suspended time (default 86400 sec / 1
+day).</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="searx.exceptions.SearxEngineTooManyRequestsException">
+<em class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">searx.exceptions.</span></span><span class="sig-name descname"><span class="pre">SearxEngineTooManyRequestsException</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">suspended_time</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'Too</span> <span class="pre">many</span> <span class="pre">request'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/searx/exceptions.html#SearxEngineTooManyRequestsException"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.exceptions.SearxEngineTooManyRequestsException" title="Link to this definition">¶</a></dt>
+<dd><p>The website has returned a Too Many Request status code</p>
+<p>By default, SearXNG stops sending requests to this engine for 1 hour.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="searx.exceptions.SearxEngineTooManyRequestsException.SUSPEND_TIME_SETTING">
+<span class="sig-name descname"><span class="pre">SUSPEND_TIME_SETTING</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'search.suspended_times.SearxEngineTooManyRequests'</span></em><a class="headerlink" href="#searx.exceptions.SearxEngineTooManyRequestsException.SUSPEND_TIME_SETTING" title="Link to this definition">¶</a></dt>
+<dd><p>This settings contains the default suspended time (default 3660 sec / 1
+hour).</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="searx.exceptions.SearxEngineXPathException">
+<em class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">searx.exceptions.</span></span><span class="sig-name descname"><span class="pre">SearxEngineXPathException</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xpath_spec</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">XPath</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/searx/exceptions.html#SearxEngineXPathException"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.exceptions.SearxEngineXPathException" title="Link to this definition">¶</a></dt>
+<dd><p>Error while getting the result of an XPath expression</p>
+</dd></dl>
+
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+  <span id="sidebar-top"></span>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+  
+    
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/searxng-wordmark.svg" alt="Logo of SearXNG"/>
+            </a></p>
+  
+
+<h3><a href="../index.html">Table of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../user/index.html">User information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../own-instance.html">Why use a private instance?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../admin/index.html">Administrator documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev/index.html">Developer documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../utils/index.html">DevOps tooling box</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Source-Code</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="searx.babel_extract.html">Custom message extractor (i18n)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.botdetection.html">Bot Detection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.cache.html">Caches</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">SearXNG Exceptions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#searx.exceptions.SearxException"><code class="docutils literal notranslate"><span class="pre">SearxException</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#searx.exceptions.SearxParameterException"><code class="docutils literal notranslate"><span class="pre">SearxParameterException</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#searx.exceptions.SearxSettingsException"><code class="docutils literal notranslate"><span class="pre">SearxSettingsException</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#searx.exceptions.SearxEngineException"><code class="docutils literal notranslate"><span class="pre">SearxEngineException</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#searx.exceptions.SearxXPathSyntaxException"><code class="docutils literal notranslate"><span class="pre">SearxXPathSyntaxException</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#searx.exceptions.SearxEngineResponseException"><code class="docutils literal notranslate"><span class="pre">SearxEngineResponseException</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#searx.exceptions.SearxEngineAPIException"><code class="docutils literal notranslate"><span class="pre">SearxEngineAPIException</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#searx.exceptions.SearxEngineAccessDeniedException"><code class="docutils literal notranslate"><span class="pre">SearxEngineAccessDeniedException</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#searx.exceptions.SearxEngineAccessDeniedException.SUSPEND_TIME_SETTING"><code class="docutils literal notranslate"><span class="pre">SearxEngineAccessDeniedException.SUSPEND_TIME_SETTING</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#searx.exceptions.SearxEngineCaptchaException"><code class="docutils literal notranslate"><span class="pre">SearxEngineCaptchaException</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#searx.exceptions.SearxEngineCaptchaException.SUSPEND_TIME_SETTING"><code class="docutils literal notranslate"><span class="pre">SearxEngineCaptchaException.SUSPEND_TIME_SETTING</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#searx.exceptions.SearxEngineTooManyRequestsException"><code class="docutils literal notranslate"><span class="pre">SearxEngineTooManyRequestsException</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#searx.exceptions.SearxEngineTooManyRequestsException.SUSPEND_TIME_SETTING"><code class="docutils literal notranslate"><span class="pre">SearxEngineTooManyRequestsException.SUSPEND_TIME_SETTING</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#searx.exceptions.SearxEngineXPathException"><code class="docutils literal notranslate"><span class="pre">SearxEngineXPathException</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="searx.favicons.html">Favicons (source)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.infopage.html">Online <code class="docutils literal notranslate"><span class="pre">/info</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.locales.html">Locales</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.search.html">Search</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.search.processors.html">Search processors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.settings.html">Settings Loader</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.sqlitedb.html">SQLite DB</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.utils.html">Utility functions for the engines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.valkeydb.html">Valkey DB</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.valkeylib.html">Valkey Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.weather.html">Weather</a></li>
+</ul>
+</li>
+</ul>
+
+  <h3>Project Links</h3>
+  <ul>
+    <li><a href="https://github.com/searxng/searxng/tree/master">Source</a>
+  
+    <li><a href="https://github.com/searxng/searxng/wiki">Wiki</a>
+  
+    <li><a href="https://searx.space">Public instances</a>
+  
+    <li><a href="https://github.com/searxng/searxng/issues">Issue Tracker</a>
+  </ul><h3>Navigation</h3>
+<ul>
+  <li><a href="../index.html">Overview</a>
+    <ul>
+      <li><a href="index.html">Source-Code</a>
+        <ul>
+          <li>Previous: <a href="searx.cache.html" title="previous chapter">Caches</a>
+          <li>Next: <a href="searx.favicons.html" title="next chapter">Favicons (source)</a></ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/src/searx.exceptions.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright SearXNG team.
+    </div>
+  </body>
+</html>

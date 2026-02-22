@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Tineye &#8212; SearXNG Documentation (2026.2.22+191818b86)</title>
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=6625fa76" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/searxng.css?v=52e4ff28" />
+    <script src="../../../_static/documentation_options.js?v=1b5d919e"></script>
+    <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script data-project="searxng" data-version="2026.2.22+191818b86" src="../../../_static/describe_version.js?v=fa7f30d0"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="Result Types" href="../../result_types/index.html" />
+    <link rel="prev" title="SQL Engines" href="../offline/sql-engines.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../../result_types/index.html" title="Result Types"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="../offline/sql-engines.html" title="SQL Engines"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">SearXNG Documentation (2026.2.22+191818b86)</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" >Developer documentation</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../index.html" accesskey="U">Engine Implementations</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Tineye</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="tineye">
+<span id="tineye-engine"></span><h1>Tineye<a class="headerlink" href="#tineye" title="Link to this heading">¶</a></h1>
+<p id="module-searx.engines.tineye">This engine implements <em>Tineye - reverse image search</em></p>
+<p>Using TinEye, you can search by image or perform what we call a reverse image
+search.  You can do that by uploading an image or searching by URL. You can also
+simply drag and drop your images to start your search.  TinEye constantly crawls
+the web and adds images to its index.  Today, the TinEye index is over 50.2
+billion images <a class="reference external" href="https://tineye.com/how">[tineye.com]</a>.</p>
+<div class="admonition hint">
+<p class="admonition-title">Hint</p>
+<p>This SearXNG engine only supports <em>‘searching by URL’</em> and it does not use
+the official API <a class="reference external" href="https://api.tineye.com/python/docs/">[api.tineye.com]</a>.</p>
+</div>
+<dl class="py data">
+<dt class="sig sig-object py" id="searx.engines.tineye.engine_type">
+<span class="sig-prename descclassname"><span class="pre">searx.engines.tineye.</span></span><span class="sig-name descname"><span class="pre">engine_type</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'online_url_search'</span></em><a class="headerlink" href="#searx.engines.tineye.engine_type" title="Link to this definition">¶</a></dt>
+<dd><p><a class="reference internal" href="../../../src/searx.search.processors.html#module-searx.search.processors.online_url_search" title="searx.search.processors.online_url_search"><code class="xref py py-obj docutils literal notranslate"><span class="pre">searx.search.processors.online_url_search</span></code></a></p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="searx.engines.tineye.FORMAT_NOT_SUPPORTED">
+<span class="sig-prename descclassname"><span class="pre">searx.engines.tineye.</span></span><span class="sig-name descname"><span class="pre">FORMAT_NOT_SUPPORTED</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'Could</span> <span class="pre">not</span> <span class="pre">read</span> <span class="pre">that</span> <span class="pre">image</span> <span class="pre">url.</span> <span class="pre">This</span> <span class="pre">may</span> <span class="pre">be</span> <span class="pre">due</span> <span class="pre">to</span> <span class="pre">an</span> <span class="pre">unsupported</span> <span class="pre">file</span> <span class="pre">format.</span> <span class="pre">TinEye</span> <span class="pre">only</span> <span class="pre">supports</span> <span class="pre">images</span> <span class="pre">that</span> <span class="pre">are</span> <span class="pre">JPEG,</span> <span class="pre">PNG,</span> <span class="pre">GIF,</span> <span class="pre">BMP,</span> <span class="pre">TIFF</span> <span class="pre">or</span> <span class="pre">WebP.'</span></em><a class="headerlink" href="#searx.engines.tineye.FORMAT_NOT_SUPPORTED" title="Link to this definition">¶</a></dt>
+<dd><p>TinEye error message</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="searx.engines.tineye.NO_SIGNATURE_ERROR">
+<span class="sig-prename descclassname"><span class="pre">searx.engines.tineye.</span></span><span class="sig-name descname"><span class="pre">NO_SIGNATURE_ERROR</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'The</span> <span class="pre">image</span> <span class="pre">is</span> <span class="pre">too</span> <span class="pre">simple</span> <span class="pre">to</span> <span class="pre">find</span> <span class="pre">matches.</span> <span class="pre">TinEye</span> <span class="pre">requires</span> <span class="pre">a</span> <span class="pre">basic</span> <span class="pre">level</span> <span class="pre">of</span> <span class="pre">visual</span> <span class="pre">detail</span> <span class="pre">to</span> <span class="pre">successfully</span> <span class="pre">identify</span> <span class="pre">matches.'</span></em><a class="headerlink" href="#searx.engines.tineye.NO_SIGNATURE_ERROR" title="Link to this definition">¶</a></dt>
+<dd><p>TinEye error message</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="searx.engines.tineye.DOWNLOAD_ERROR">
+<span class="sig-prename descclassname"><span class="pre">searx.engines.tineye.</span></span><span class="sig-name descname"><span class="pre">DOWNLOAD_ERROR</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'The</span> <span class="pre">image</span> <span class="pre">could</span> <span class="pre">not</span> <span class="pre">be</span> <span class="pre">downloaded.'</span></em><a class="headerlink" href="#searx.engines.tineye.DOWNLOAD_ERROR" title="Link to this definition">¶</a></dt>
+<dd><p>TinEye error message</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="searx.engines.tineye.request">
+<span class="sig-prename descclassname"><span class="pre">searx.engines.tineye.</span></span><span class="sig-name descname"><span class="pre">request</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">query</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">params</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/searx/engines/tineye.html#request"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.engines.tineye.request" title="Link to this definition">¶</a></dt>
+<dd><p>Build TinEye HTTP request using <code class="docutils literal notranslate"><span class="pre">search_urls</span></code> of a <a class="reference internal" href="#searx.engines.tineye.engine_type" title="searx.engines.tineye.engine_type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">engine_type</span></code></a>.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="searx.engines.tineye.parse_tineye_match">
+<span class="sig-prename descclassname"><span class="pre">searx.engines.tineye.</span></span><span class="sig-name descname"><span class="pre">parse_tineye_match</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">match_json</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/searx/engines/tineye.html#parse_tineye_match"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.engines.tineye.parse_tineye_match" title="Link to this definition">¶</a></dt>
+<dd><p>Takes parsed JSON from the API server and turns it into a <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dict</span></code></a>
+object.</p>
+<p>Attributes <a class="reference external" href="https://github.com/TinEye/pytineye/blob/main/pytineye/api.py">(class Match)</a></p>
+<ul class="simple">
+<li><p><cite>image_url</cite>, link to the result image.</p></li>
+<li><p><cite>domain</cite>, domain this result was found on.</p></li>
+<li><p><cite>score</cite>, a number (0 to 100) that indicates how closely the images match.</p></li>
+<li><p><cite>width</cite>, image width in pixels.</p></li>
+<li><p><cite>height</cite>, image height in pixels.</p></li>
+<li><p><cite>size</cite>, image area in pixels.</p></li>
+<li><p><cite>format</cite>, image format.</p></li>
+<li><p><cite>filesize</cite>, image size in bytes.</p></li>
+<li><p><cite>overlay</cite>, overlay URL.</p></li>
+<li><p><cite>tags</cite>, whether this match belongs to a collection or stock domain.</p></li>
+<li><p><cite>backlinks</cite>, a list of Backlink objects pointing to the original websites
+and image URLs. List items are instances of <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dict</span></code></a>, (<a class="reference external" href="https://github.com/TinEye/pytineye/blob/main/pytineye/api.py">Backlink</a>):</p>
+<ul>
+<li><p><cite>url</cite>, the image URL to the image.</p></li>
+<li><p><cite>backlink</cite>, the original website URL.</p></li>
+<li><p><cite>crawl_date</cite>, the date the image was crawled.</p></li>
+</ul>
+</li>
+</ul>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="searx.engines.tineye.response">
+<span class="sig-prename descclassname"><span class="pre">searx.engines.tineye.</span></span><span class="sig-name descname"><span class="pre">response</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">resp</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="../index.html#searx.result_types.EngineResults" title="searx.result_types.EngineResults"><span class="pre">EngineResults</span></a></span></span><a class="reference internal" href="../../../_modules/searx/engines/tineye.html#response"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.engines.tineye.response" title="Link to this definition">¶</a></dt>
+<dd><p>Parse HTTP response from TinEye.</p>
+</dd></dl>
+
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+  <span id="sidebar-top"></span>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+  
+    
+            <p class="logo"><a href="../../../index.html">
+              <img class="logo" src="../../../_static/searxng-wordmark.svg" alt="Logo of SearXNG"/>
+            </a></p>
+  
+
+<h3><a href="../../../index.html">Table of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../user/index.html">User information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../own-instance.html">Why use a private instance?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../admin/index.html">Administrator documentation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">Developer documentation</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../quickstart.html">Development Quickstart</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../commits.html">Git Commits &amp; Change Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../contribution_guide.html">How to contribute</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../extended_types.html">Extended Types</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">Engine Implementations</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../enginelib.html">Engine Library</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../engines.html">SearXNG’s engines loader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../engine_overview.html">Engine Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../index.html#resultlist-and-engines">ResultList and engines</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="../index.html#engine-types">Engine Types</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="../index.html#online-engines">Online Engines</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../index.html#offline-engines">Offline Engines</a></li>
+<li class="toctree-l4 current"><a class="reference internal" href="../index.html#online-url-search">Online URL Search</a><ul class="current">
+<li class="toctree-l5 current"><a class="current reference internal" href="#">Tineye</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../index.html#online-currency">Online Currency</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../index.html#online-dictionary">Online Dictionary</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../result_types/index.html">Result Types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../templates.html">Simple Theme Templates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../search_api.html">Search API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../plugins/index.html">Plugins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../answerers/index.html">Answerers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../translation.html">Translation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../makefile.html">Makefile &amp; <code class="docutils literal notranslate"><span class="pre">./manage</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../reST.html">reST primer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../searxng_extra/index.html">Tooling box <code class="docutils literal notranslate"><span class="pre">searxng_extra</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../utils/index.html">DevOps tooling box</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/index.html">Source-Code</a></li>
+</ul>
+
+  <h3>Project Links</h3>
+  <ul>
+    <li><a href="https://github.com/searxng/searxng/tree/master">Source</a>
+  
+    <li><a href="https://github.com/searxng/searxng/wiki">Wiki</a>
+  
+    <li><a href="https://searx.space">Public instances</a>
+  
+    <li><a href="https://github.com/searxng/searxng/issues">Issue Tracker</a>
+  </ul><h3>Navigation</h3>
+<ul>
+  <li><a href="../../../index.html">Overview</a>
+    <ul>
+      <li><a href="../../index.html">Developer documentation</a>
+        <ul>
+      <li><a href="../index.html">Engine Implementations</a>
+        <ul>
+          <li>Previous: <a href="../offline/sql-engines.html" title="previous chapter">SQL Engines</a>
+          <li>Next: <a href="../../result_types/index.html" title="next chapter">Result Types</a></ul>
+      </li></ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../../_sources/dev/engines/online_url_search/tineye.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright SearXNG team.
+    </div>
+  </body>
+</html>

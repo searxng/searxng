@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>MediaWiki Engine &#8212; SearXNG Documentation (2026.2.22+191818b86)</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=6625fa76" />
+    <link rel="stylesheet" type="text/css" href="../../_static/searxng.css?v=52e4ff28" />
+    <script src="../../_static/documentation_options.js?v=1b5d919e"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script data-project="searxng" data-version="2026.2.22+191818b86" src="../../_static/describe_version.js?v=fa7f30d0"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="JSON Engine" href="json_engine.html" />
+    <link rel="prev" title="XPath Engine" href="xpath.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="json_engine.html" title="JSON Engine"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="xpath.html" title="XPath Engine"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">SearXNG Documentation (2026.2.22+191818b86)</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >Developer documentation</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="index.html" accesskey="U">Engine Implementations</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">MediaWiki Engine</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="mediawiki-engine">
+<span id="id1"></span><h1>MediaWiki Engine<a class="headerlink" href="#mediawiki-engine" title="Link to this heading">¶</a></h1>
+<nav class="contents local" id="contents">
+<ul class="simple">
+<li><p><a class="reference internal" href="#configuration" id="id2">Configuration</a></p></li>
+<li><p><a class="reference internal" href="#implementations" id="id3">Implementations</a></p></li>
+</ul>
+</nav>
+<p id="module-searx.engines.mediawiki">The MediaWiki engine is a <em>generic</em> engine to <strong>query</strong> Wikimedia wikis by
+the <a class="reference external" href="https://www.mediawiki.org/wiki/API:Main_page">MediaWiki Action API</a>.  For a <a class="reference external" href="https://www.mediawiki.org/w/api.php?action=help&amp;modules=query">query action</a> all Wikimedia wikis have
+endpoints that follow this pattern:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>https://{base_url}/w/api.php?action=query&amp;list=search&amp;format=json
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>In its actual state, this engine is implemented to parse JSON result
+(<a class="reference external" href="https://www.mediawiki.org/w/api.php?action=help&amp;modules=json">format=json</a>) from a search query (<a class="reference external" href="https://www.mediawiki.org/w/api.php?action=help&amp;modules=query%2Bsearch">list=search</a>).  If you need other
+<code class="docutils literal notranslate"><span class="pre">action</span></code> and <code class="docutils literal notranslate"><span class="pre">list</span></code> types ask SearXNG developers to extend the
+implementation according to your needs.</p>
+</div>
+<section id="configuration">
+<h2><a class="toc-backref" href="#id2" role="doc-backlink">Configuration</a><a class="headerlink" href="#configuration" title="Link to this heading">¶</a></h2>
+<p>Request:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#searx.engines.mediawiki.base_url" title="searx.engines.mediawiki.base_url"><code class="xref py py-obj docutils literal notranslate"><span class="pre">base_url</span></code></a></p></li>
+<li><p><a class="reference internal" href="#searx.engines.mediawiki.search_type" title="searx.engines.mediawiki.search_type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">search_type</span></code></a></p></li>
+<li><p><a class="reference internal" href="#searx.engines.mediawiki.srenablerewrites" title="searx.engines.mediawiki.srenablerewrites"><code class="xref py py-obj docutils literal notranslate"><span class="pre">srenablerewrites</span></code></a></p></li>
+<li><p><a class="reference internal" href="#searx.engines.mediawiki.srsort" title="searx.engines.mediawiki.srsort"><code class="xref py py-obj docutils literal notranslate"><span class="pre">srsort</span></code></a></p></li>
+<li><p><a class="reference internal" href="#searx.engines.mediawiki.srprop" title="searx.engines.mediawiki.srprop"><code class="xref py py-obj docutils literal notranslate"><span class="pre">srprop</span></code></a></p></li>
+</ul>
+</section>
+<section id="implementations">
+<h2><a class="toc-backref" href="#id3" role="doc-backlink">Implementations</a><a class="headerlink" href="#implementations" title="Link to this heading">¶</a></h2>
+</section>
+<dl class="py data">
+<dt class="sig sig-object py" id="searx.engines.mediawiki.search_type">
+<span class="sig-prename descclassname"><span class="pre">searx.engines.mediawiki.</span></span><span class="sig-name descname"><span class="pre">search_type</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'nearmatch'</span></em><a class="headerlink" href="#searx.engines.mediawiki.search_type" title="Link to this definition">¶</a></dt>
+<dd><p>Which type of search to perform.  One of the following values: <code class="docutils literal notranslate"><span class="pre">nearmatch</span></code>,
+<code class="docutils literal notranslate"><span class="pre">text</span></code> or <code class="docutils literal notranslate"><span class="pre">title</span></code>.</p>
+<p>See <code class="docutils literal notranslate"><span class="pre">srwhat</span></code> argument in <a class="reference external" href="https://www.mediawiki.org/w/api.php?action=help&amp;modules=query%2Bsearch">list=search</a> documentation.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="searx.engines.mediawiki.srenablerewrites">
+<span class="sig-prename descclassname"><span class="pre">searx.engines.mediawiki.</span></span><span class="sig-name descname"><span class="pre">srenablerewrites</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">True</span></em><a class="headerlink" href="#searx.engines.mediawiki.srenablerewrites" title="Link to this definition">¶</a></dt>
+<dd><p>Enable internal query rewriting (Type: boolean).  Some search backends can
+rewrite the query into another which is thought to provide better results, for
+instance by correcting spelling errors.</p>
+<p>See <code class="docutils literal notranslate"><span class="pre">srenablerewrites</span></code> argument in <a class="reference external" href="https://www.mediawiki.org/w/api.php?action=help&amp;modules=query%2Bsearch">list=search</a> documentation.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="searx.engines.mediawiki.srsort">
+<span class="sig-prename descclassname"><span class="pre">searx.engines.mediawiki.</span></span><span class="sig-name descname"><span class="pre">srsort</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'relevance'</span></em><a class="headerlink" href="#searx.engines.mediawiki.srsort" title="Link to this definition">¶</a></dt>
+<dd><p>Set the sort order of returned results.  One of the following values:
+<code class="docutils literal notranslate"><span class="pre">create_timestamp_asc</span></code>, <code class="docutils literal notranslate"><span class="pre">create_timestamp_desc</span></code>, <code class="docutils literal notranslate"><span class="pre">incoming_links_asc</span></code>,
+<code class="docutils literal notranslate"><span class="pre">incoming_links_desc</span></code>, <code class="docutils literal notranslate"><span class="pre">just_match</span></code>, <code class="docutils literal notranslate"><span class="pre">last_edit_asc</span></code>, <code class="docutils literal notranslate"><span class="pre">last_edit_desc</span></code>,
+<code class="docutils literal notranslate"><span class="pre">none</span></code>, <code class="docutils literal notranslate"><span class="pre">random</span></code>, <code class="docutils literal notranslate"><span class="pre">relevance</span></code>, <code class="docutils literal notranslate"><span class="pre">user_random</span></code>.</p>
+<p>See <code class="docutils literal notranslate"><span class="pre">srenablerewrites</span></code> argument in <a class="reference external" href="https://www.mediawiki.org/w/api.php?action=help&amp;modules=query%2Bsearch">list=search</a> documentation.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="searx.engines.mediawiki.srprop">
+<span class="sig-prename descclassname"><span class="pre">searx.engines.mediawiki.</span></span><span class="sig-name descname"><span class="pre">srprop</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'sectiontitle|snippet|timestamp|categorysnippet'</span></em><a class="headerlink" href="#searx.engines.mediawiki.srprop" title="Link to this definition">¶</a></dt>
+<dd><p>Which properties to return.</p>
+<p>See <code class="docutils literal notranslate"><span class="pre">srprop</span></code> argument in <a class="reference external" href="https://www.mediawiki.org/w/api.php?action=help&amp;modules=query%2Bsearch">list=search</a> documentation.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="searx.engines.mediawiki.base_url">
+<span class="sig-prename descclassname"><span class="pre">searx.engines.mediawiki.</span></span><span class="sig-name descname"><span class="pre">base_url</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'https://{language}.wikipedia.org/'</span></em><a class="headerlink" href="#searx.engines.mediawiki.base_url" title="Link to this definition">¶</a></dt>
+<dd><p>Base URL of the Wikimedia wiki.</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">{language}</span></code>:</dt><dd><p>ISO 639-1 language code (en, de, fr ..) of the search language.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="searx.engines.mediawiki.api_path">
+<span class="sig-prename descclassname"><span class="pre">searx.engines.mediawiki.</span></span><span class="sig-name descname"><span class="pre">api_path</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'w/api.php'</span></em><a class="headerlink" href="#searx.engines.mediawiki.api_path" title="Link to this definition">¶</a></dt>
+<dd><p>The path the PHP api is listening on.</p>
+<p>The default path should work fine usually.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="searx.engines.mediawiki.timestamp_format">
+<span class="sig-prename descclassname"><span class="pre">searx.engines.mediawiki.</span></span><span class="sig-name descname"><span class="pre">timestamp_format</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'%Y-%m-%dT%H:%M:%SZ'</span></em><a class="headerlink" href="#searx.engines.mediawiki.timestamp_format" title="Link to this definition">¶</a></dt>
+<dd><p>The longhand version of MediaWiki time strings.</p>
+</dd></dl>
+
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+  <span id="sidebar-top"></span>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+  
+    
+            <p class="logo"><a href="../../index.html">
+              <img class="logo" src="../../_static/searxng-wordmark.svg" alt="Logo of SearXNG"/>
+            </a></p>
+  
+
+<h3><a href="../../index.html">Table of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../user/index.html">User information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../own-instance.html">Why use a private instance?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../admin/index.html">Administrator documentation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Developer documentation</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../quickstart.html">Development Quickstart</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../commits.html">Git Commits &amp; Change Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contribution_guide.html">How to contribute</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../extended_types.html">Extended Types</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Engine Implementations</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="enginelib.html">Engine Library</a></li>
+<li class="toctree-l3"><a class="reference internal" href="engines.html">SearXNG’s engines loader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="engine_overview.html">Engine Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="index.html#resultlist-and-engines">ResultList and engines</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="index.html#engine-types">Engine Types</a><ul class="current">
+<li class="toctree-l4 current"><a class="reference internal" href="index.html#online-engines">Online Engines</a><ul class="current">
+<li class="toctree-l5"><a class="reference internal" href="demo/demo_online.html">Demo Online Engine</a></li>
+<li class="toctree-l5"><a class="reference internal" href="xpath.html">XPath Engine</a></li>
+<li class="toctree-l5 current"><a class="current reference internal" href="#">MediaWiki Engine</a></li>
+<li class="toctree-l5"><a class="reference internal" href="json_engine.html">JSON Engine</a></li>
+<li class="toctree-l5"><a class="reference internal" href="online/adobe_stock.html">Adobe Stock</a></li>
+<li class="toctree-l5"><a class="reference internal" href="online/alpinelinux.html">Alpine Linux Packages</a></li>
+<li class="toctree-l5"><a class="reference internal" href="online/annas_archive.html">Anna’s Archive</a></li>
+<li class="toctree-l5"><a class="reference internal" href="online/archlinux.html">Arch Linux</a></li>
+<li class="toctree-l5"><a class="reference internal" href="online/arxiv.html">arXiv</a></li>
+<li class="toctree-l5"><a class="reference internal" href="online/astrophysics_data_system.html">Astrophysics Data System (ADS)</a></li>
+<li class="toctree-l5"><a class="reference internal" href="online/azure.html">Azure Resources</a></li>
+<li class="toctree-l5"><a class="reference internal" href="online/bing.html">Bing Engines</a></li>
+<li class="toctree-l5"><a class="reference internal" href="online/bpb.html">Bpb</a></li>
+<li class="toctree-l5"><a class="reference internal" href="online/brave.html">Brave Engines</a></li>
+<li class="toctree-l5"><a class="reference internal" href="online/bt4g.html">BT4G</a></li>
+<li class="toctree-l5"><a class="reference internal" href="online/chinaso.html">ChinaSo</a></li>
+<li class="toctree-l5"><a class="reference internal" href="online/core.html">CORE</a></li>
+<li class="toctree-l5"><a class="reference internal" href="online/crossref.html">Crossref</a></li>
+<li class="toctree-l5"><a class="reference internal" href="online/dailymotion.html">Dailymotion</a></li>
+<li class="toctree-l5"><a class="reference internal" href="online/discourse.html">Discourse Forums</a></li>
+<li class="toctree-l5"><a class="reference internal" href="online/duckduckgo.html">DuckDuckGo Engines</a></li>
+<li class="toctree-l5"><a class="reference internal" href="online/geizhals.html">Geizhals</a></li>
+<li class="toctree-l5"><a class="reference internal" href="online/gitea.html">Gitea</a></li>
+<li class="toctree-l5"><a class="reference internal" href="online/github_code.html">Github Code</a></li>
+<li class="toctree-l5"><a class="reference internal" href="online/gitlab.html">GitLab</a></li>
+<li class="toctree-l5"><a class="reference internal" href="online/google.html">Google Engines</a></li>
+<li class="toctree-l5"><a class="reference internal" href="online/huggingface.html">Hugging Face</a></li>
+<li class="toctree-l5"><a class="reference internal" href="online/lemmy.html">Lemmy</a></li>
+<li class="toctree-l5"><a class="reference internal" href="online/loc.html">Library of Congress</a></li>
+<li class="toctree-l5"><a class="reference internal" href="online/marginalia.html">Marginalia Search</a></li>
+<li class="toctree-l5"><a class="reference internal" href="online/mastodon.html">Mastodon</a></li>
+<li class="toctree-l5"><a class="reference internal" href="online/moviepilot.html">Moviepilot</a></li>
+<li class="toctree-l5"><a class="reference internal" href="online/mrs.html">Matrix Rooms Search (MRS)</a></li>
+<li class="toctree-l5"><a class="reference internal" href="online/mwmbl.html">Mwmbl Engine</a></li>
+<li class="toctree-l5"><a class="reference internal" href="online/odysee.html">Odysee</a></li>
+<li class="toctree-l5"><a class="reference internal" href="online/openalex.html">OpenAlex</a></li>
+<li class="toctree-l5"><a class="reference internal" href="online/openlibrary.html">Open Library</a></li>
+<li class="toctree-l5"><a class="reference internal" href="online/peertube.html">Peertube Engines</a></li>
+<li class="toctree-l5"><a class="reference internal" href="online/piped.html">Piped</a></li>
+<li class="toctree-l5"><a class="reference internal" href="online/presearch.html">Presearch Engine</a></li>
+<li class="toctree-l5"><a class="reference internal" href="online/pubmed.html">PubMed</a></li>
+<li class="toctree-l5"><a class="reference internal" href="online/qwant.html">Qwant</a></li>
+<li class="toctree-l5"><a class="reference internal" href="online/radio_browser.html">RadioBrowser</a></li>
+<li class="toctree-l5"><a class="reference internal" href="online/recoll.html">Recoll Engine</a></li>
+<li class="toctree-l5"><a class="reference internal" href="online/repology.html">Repology</a></li>
+<li class="toctree-l5"><a class="reference internal" href="online/reuters.html">Reuters</a></li>
+<li class="toctree-l5"><a class="reference internal" href="online/semantic_scholar.html">Semantic Scholar</a></li>
+<li class="toctree-l5"><a class="reference internal" href="online/soundcloud.html">Soundcloud</a></li>
+<li class="toctree-l5"><a class="reference internal" href="online/sourcehut.html">Sourcehut</a></li>
+<li class="toctree-l5"><a class="reference internal" href="online/springer.html">Springer Nature</a></li>
+<li class="toctree-l5"><a class="reference internal" href="online/startpage.html">Startpage Engines</a></li>
+<li class="toctree-l5"><a class="reference internal" href="online/tagesschau.html">Tagesschau API</a></li>
+<li class="toctree-l5"><a class="reference internal" href="online/torznab.html">Torznab WebAPI</a></li>
+<li class="toctree-l5"><a class="reference internal" href="online/tubearchivist.html">Tube Archivist</a></li>
+<li class="toctree-l5"><a class="reference internal" href="online/void.html">Void Linux binary packages</a></li>
+<li class="toctree-l5"><a class="reference internal" href="online/wallhaven.html">Wallhaven</a></li>
+<li class="toctree-l5"><a class="reference internal" href="online/wikipedia.html">Wikimedia</a></li>
+<li class="toctree-l5"><a class="reference internal" href="online/yacy.html">Yacy</a></li>
+<li class="toctree-l5"><a class="reference internal" href="online/yahoo.html">Yahoo Engine</a></li>
+<li class="toctree-l5"><a class="reference internal" href="online/zlibrary.html">Z-Library</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="index.html#offline-engines">Offline Engines</a></li>
+<li class="toctree-l4"><a class="reference internal" href="index.html#online-url-search">Online URL Search</a></li>
+<li class="toctree-l4"><a class="reference internal" href="index.html#online-currency">Online Currency</a></li>
+<li class="toctree-l4"><a class="reference internal" href="index.html#online-dictionary">Online Dictionary</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../result_types/index.html">Result Types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../templates.html">Simple Theme Templates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../search_api.html">Search API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../plugins/index.html">Plugins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../answerers/index.html">Answerers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../translation.html">Translation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../makefile.html">Makefile &amp; <code class="docutils literal notranslate"><span class="pre">./manage</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reST.html">reST primer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../searxng_extra/index.html">Tooling box <code class="docutils literal notranslate"><span class="pre">searxng_extra</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../utils/index.html">DevOps tooling box</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../src/index.html">Source-Code</a></li>
+</ul>
+
+  <h3>Project Links</h3>
+  <ul>
+    <li><a href="https://github.com/searxng/searxng/tree/master">Source</a>
+  
+    <li><a href="https://github.com/searxng/searxng/wiki">Wiki</a>
+  
+    <li><a href="https://searx.space">Public instances</a>
+  
+    <li><a href="https://github.com/searxng/searxng/issues">Issue Tracker</a>
+  </ul><h3>Navigation</h3>
+<ul>
+  <li><a href="../../index.html">Overview</a>
+    <ul>
+      <li><a href="../index.html">Developer documentation</a>
+        <ul>
+      <li><a href="index.html">Engine Implementations</a>
+        <ul>
+          <li>Previous: <a href="xpath.html" title="previous chapter">XPath Engine</a>
+          <li>Next: <a href="json_engine.html" title="next chapter">JSON Engine</a></ul>
+      </li></ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/dev/engines/mediawiki.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright SearXNG team.
+    </div>
+  </body>
+</html>

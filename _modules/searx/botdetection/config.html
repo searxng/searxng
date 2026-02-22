@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>searx.botdetection.config &#8212; SearXNG Documentation (2026.2.22+191818b86)</title>
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=6625fa76" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/searxng.css?v=52e4ff28" />
+    <script src="../../../_static/documentation_options.js?v=1b5d919e"></script>
+    <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script data-project="searxng" data-version="2026.2.22+191818b86" src="../../../_static/describe_version.js?v=fa7f30d0"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">SearXNG Documentation (2026.2.22+191818b86)</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" accesskey="U">Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">searx.botdetection.config</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for searx.botdetection.config</h1><div class="highlight"><pre>
+<span></span><span class="c1"># SPDX-License-Identifier: AGPL-3.0-or-later</span>
+<span class="sd">&quot;&quot;&quot;Configuration class :py:class:`Config` with deep-update, schema validation</span>
+<span class="sd">and deprecated names.</span>
+
+<span class="sd">The :py:class:`Config` class implements a configuration that is based on</span>
+<span class="sd">structured dictionaries.  The configuration schema is defined in a dictionary</span>
+<span class="sd">structure and the configuration data is given in a dictionary structure.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">typing</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">copy</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pathlib</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">..compat</span><span class="w"> </span><span class="kn">import</span> <span class="n">tomllib</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Config&#39;</span><span class="p">,</span> <span class="s1">&#39;UNSET&#39;</span><span class="p">,</span> <span class="s1">&#39;SchemaIssue&#39;</span><span class="p">,</span> <span class="s1">&#39;set_global_cfg&#39;</span><span class="p">,</span> <span class="s1">&#39;get_global_cfg&#39;</span><span class="p">]</span>
+
+<span class="n">log</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+<span class="n">CFG</span><span class="p">:</span> <span class="s2">&quot;Config | None&quot;</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="sd">&quot;&quot;&quot;Global config of the botdetection.&quot;&quot;&quot;</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">set_global_cfg</span><span class="p">(</span><span class="n">cfg</span><span class="p">:</span> <span class="s2">&quot;Config&quot;</span><span class="p">):</span>
+    <span class="k">global</span> <span class="n">CFG</span>  <span class="c1"># pylint: disable=global-statement</span>
+    <span class="n">CFG</span> <span class="o">=</span> <span class="n">cfg</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">get_global_cfg</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="s2">&quot;Config&quot;</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">CFG</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Botdetection&#39;s config is not yet initialized.&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">CFG</span>
+
+
+<span class="nd">@typing</span><span class="o">.</span><span class="n">final</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">FALSE</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Class of ``False`` singleton&quot;&quot;&quot;</span>
+
+    <span class="c1"># pylint: disable=multiple-statements</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">msg</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">msg</span> <span class="o">=</span> <span class="n">msg</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__bool__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">msg</span>
+
+    <span class="fm">__repr__</span> <span class="o">=</span> <span class="fm">__str__</span>
+
+
+<span class="n">UNSET</span> <span class="o">=</span> <span class="n">FALSE</span><span class="p">(</span><span class="s1">&#39;&lt;UNSET&gt;&#39;</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="SchemaIssue">
+<a class="viewcode-back" href="../../../src/searx.botdetection.html#searx.botdetection.config.SchemaIssue">[docs]</a>
+<span class="nd">@typing</span><span class="o">.</span><span class="n">final</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">SchemaIssue</span><span class="p">(</span><span class="ne">ValueError</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Exception to store and/or raise a message from a schema issue.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">level</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Literal</span><span class="p">[</span><span class="s1">&#39;warn&#39;</span><span class="p">,</span> <span class="s1">&#39;invalid&#39;</span><span class="p">],</span> <span class="n">msg</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">level</span> <span class="o">=</span> <span class="n">level</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;[cfg schema </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">level</span><span class="si">}</span><span class="s2">] </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span></div>
+
+
+
+<div class="viewcode-block" id="Config">
+<a class="viewcode-back" href="../../../src/searx.botdetection.html#searx.botdetection.config.Config">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">Config</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Base class used for configuration&quot;&quot;&quot;</span>
+
+    <span class="n">UNSET</span><span class="p">:</span> <span class="nb">object</span> <span class="o">=</span> <span class="n">UNSET</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">from_toml</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">schema_file</span><span class="p">:</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">,</span> <span class="n">cfg_file</span><span class="p">:</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">,</span> <span class="n">deprecated</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="s2">&quot;Config&quot;</span><span class="p">:</span>
+
+        <span class="c1"># init schema</span>
+
+        <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;load schema file: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">schema_file</span><span class="p">)</span>
+        <span class="n">cfg</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span><span class="n">cfg_schema</span><span class="o">=</span><span class="n">toml_load</span><span class="p">(</span><span class="n">schema_file</span><span class="p">),</span> <span class="n">deprecated</span><span class="o">=</span><span class="n">deprecated</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">cfg_file</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;missing config file: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">cfg_file</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">cfg</span>
+
+        <span class="c1"># load configuration</span>
+
+        <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;load config file: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">cfg_file</span><span class="p">)</span>
+        <span class="n">upd_cfg</span> <span class="o">=</span> <span class="n">toml_load</span><span class="p">(</span><span class="n">cfg_file</span><span class="p">)</span>
+
+        <span class="n">is_valid</span><span class="p">,</span> <span class="n">issue_list</span> <span class="o">=</span> <span class="n">cfg</span><span class="o">.</span><span class="n">validate</span><span class="p">(</span><span class="n">upd_cfg</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">msg</span> <span class="ow">in</span> <span class="n">issue_list</span><span class="p">:</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">msg</span><span class="p">))</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">is_valid</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;schema of </span><span class="si">{</span><span class="n">cfg_file</span><span class="si">}</span><span class="s2"> is invalid!&quot;</span><span class="p">)</span>
+        <span class="n">cfg</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">upd_cfg</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">cfg</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cfg_schema</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">typing</span><span class="o">.</span><span class="n">Any</span><span class="p">],</span> <span class="n">deprecated</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Constructor of class Config.</span>
+
+<span class="sd">        :param cfg_schema: Schema of the configuration</span>
+<span class="sd">        :param deprecated: dictionary that maps deprecated configuration names to a messages</span>
+
+<span class="sd">        These values are needed for validation, see :py:obj:`validate`.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cfg_schema</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">typing</span><span class="o">.</span><span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="n">cfg_schema</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">deprecated</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">deprecated</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cfg</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">typing</span><span class="o">.</span><span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">cfg_schema</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Any</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Config.validate">
+<a class="viewcode-back" href="../../../src/searx.botdetection.html#searx.botdetection.config.Config.validate">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">validate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cfg</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">typing</span><span class="o">.</span><span class="n">Any</span><span class="p">]):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Validation of dictionary ``cfg`` on :py:obj:`Config.SCHEMA`.</span>
+<span class="sd">        Validation is done by :py:obj:`validate`.&quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="n">validate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cfg_schema</span><span class="p">,</span> <span class="n">cfg</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">deprecated</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Config.update">
+<a class="viewcode-back" href="../../../src/searx.botdetection.html#searx.botdetection.config.Config.update">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">upd_cfg</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">typing</span><span class="o">.</span><span class="n">Any</span><span class="p">]):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Update this configuration by ``upd_cfg``.&quot;&quot;&quot;</span>
+
+        <span class="n">dict_deepupdate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cfg</span><span class="p">,</span> <span class="n">upd_cfg</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Config.default">
+<a class="viewcode-back" href="../../../src/searx.botdetection.html#searx.botdetection.config.Config.default">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">default</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns default value of field ``name`` in ``self.cfg_schema``.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">value</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">cfg_schema</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Config.get">
+<a class="viewcode-back" href="../../../src/searx.botdetection.html#searx.botdetection.config.Config.get">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">default</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Any</span> <span class="o">=</span> <span class="n">UNSET</span><span class="p">,</span> <span class="n">replace</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Any</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the value to which ``name`` points in the configuration.</span>
+
+<span class="sd">        If there is no such ``name`` in the config and the ``default`` is</span>
+<span class="sd">        :py:obj:`UNSET`, a :py:obj:`KeyError` is raised.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">parent</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_parent_dict</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+        <span class="n">val</span> <span class="o">=</span> <span class="n">parent</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">UNSET</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">val</span> <span class="ow">is</span> <span class="n">UNSET</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">default</span> <span class="ow">is</span> <span class="n">UNSET</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+            <span class="n">val</span> <span class="o">=</span> <span class="n">default</span>
+
+        <span class="k">if</span> <span class="n">replace</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="n">val</span> <span class="o">=</span> <span class="n">val</span> <span class="o">%</span> <span class="bp">self</span>
+        <span class="k">return</span> <span class="n">val</span></div>
+
+
+<div class="viewcode-block" id="Config.set">
+<a class="viewcode-back" href="../../../src/searx.botdetection.html#searx.botdetection.config.Config.set">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">val</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Any</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set the value to which ``name`` points in the configuration.</span>
+
+<span class="sd">        If there is no such ``name`` in the config, a :py:obj:`KeyError` is</span>
+<span class="sd">        raised.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">parent</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_parent_dict</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+        <span class="n">parent</span><span class="p">[</span><span class="n">name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]]</span> <span class="o">=</span> <span class="n">val</span></div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_get_parent_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">typing</span><span class="o">.</span><span class="n">Any</span><span class="p">]:</span>
+        <span class="n">parent_name</span> <span class="o">=</span> <span class="s1">&#39;.&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+        <span class="k">if</span> <span class="n">parent_name</span><span class="p">:</span>
+            <span class="n">parent</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">typing</span><span class="o">.</span><span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span><span class="p">(</span><span class="n">parent_name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">cfg</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">parent</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cfg</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">parent</span> <span class="ow">is</span> <span class="n">UNSET</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)):</span>
+            <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="n">parent_name</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">parent</span>
+
+<div class="viewcode-block" id="Config.path">
+<a class="viewcode-back" href="../../../src/searx.botdetection.html#searx.botdetection.config.Config.path">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">path</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">default</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Any</span> <span class="o">=</span> <span class="n">UNSET</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get a :py:class:`pathlib.Path` object from a config string.&quot;&quot;&quot;</span>
+
+        <span class="n">val</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">default</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">val</span> <span class="ow">is</span> <span class="n">UNSET</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">default</span> <span class="ow">is</span> <span class="n">UNSET</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">default</span>
+        <span class="k">return</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">val</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="Config.pyobj">
+<a class="viewcode-back" href="../../../src/searx.botdetection.html#searx.botdetection.config.Config.pyobj">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">pyobj</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">default</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Any</span> <span class="o">=</span> <span class="n">UNSET</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get python object referred by full qualiffied name (FQN) in the config</span>
+<span class="sd">        string.&quot;&quot;&quot;</span>
+
+        <span class="n">fqn</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">default</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">fqn</span> <span class="ow">is</span> <span class="n">UNSET</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">default</span> <span class="ow">is</span> <span class="n">UNSET</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">default</span>
+        <span class="p">(</span><span class="n">modulename</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">fqn</span><span class="p">)</span><span class="o">.</span><span class="n">rsplit</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">m</span> <span class="o">=</span> <span class="nb">__import__</span><span class="p">(</span><span class="n">modulename</span><span class="p">,</span> <span class="p">{},</span> <span class="p">{},</span> <span class="p">[</span><span class="n">name</span><span class="p">],</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span></div>
+</div>
+
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">toml_load</span><span class="p">(</span><span class="n">file_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">):</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">file_name</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">tomllib</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+    <span class="k">except</span> <span class="n">tomllib</span><span class="o">.</span><span class="n">TOMLDecodeError</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">exc</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span> <span class="s1">&#39; &#39;</span><span class="p">)</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2">: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">file_name</span><span class="p">,</span> <span class="n">msg</span><span class="p">)</span>
+        <span class="k">raise</span>
+
+
+<span class="c1"># working with dictionaries</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">value</span><span class="p">(</span><span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">data_dict</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">typing</span><span class="o">.</span><span class="n">Any</span><span class="p">]):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Returns the value to which ``name`` points in the ``dat_dict``.</span>
+
+<span class="sd">    .. code: python</span>
+
+<span class="sd">        &gt;&gt;&gt; data_dict = {</span>
+<span class="sd">                &quot;foo&quot;: {&quot;bar&quot;: 1 },</span>
+<span class="sd">                &quot;bar&quot;: {&quot;foo&quot;: 2 },</span>
+<span class="sd">                &quot;foobar&quot;: [1, 2, 3],</span>
+<span class="sd">            }</span>
+<span class="sd">        &gt;&gt;&gt; value(&#39;foobar&#39;, data_dict)</span>
+<span class="sd">        [1, 2, 3]</span>
+<span class="sd">        &gt;&gt;&gt; value(&#39;foo.bar&#39;, data_dict)</span>
+<span class="sd">        1</span>
+<span class="sd">        &gt;&gt;&gt; value(&#39;foo.bar.xxx&#39;, data_dict)</span>
+<span class="sd">        &lt;UNSET&gt;</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">ret_val</span> <span class="o">=</span> <span class="n">data_dict</span>
+    <span class="k">for</span> <span class="n">part</span> <span class="ow">in</span> <span class="n">name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">ret_val</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+            <span class="n">ret_val</span> <span class="o">=</span> <span class="n">ret_val</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">part</span><span class="p">,</span> <span class="n">UNSET</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">ret_val</span> <span class="ow">is</span> <span class="n">UNSET</span><span class="p">:</span>
+            <span class="k">break</span>
+    <span class="k">return</span> <span class="n">ret_val</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">validate</span><span class="p">(</span>
+    <span class="n">schema_dict</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">typing</span><span class="o">.</span><span class="n">Any</span><span class="p">],</span> <span class="n">data_dict</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">typing</span><span class="o">.</span><span class="n">Any</span><span class="p">],</span> <span class="n">deprecated</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">bool</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="n">SchemaIssue</span><span class="p">]]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Deep validation of dictionary in ``data_dict`` against dictionary in</span>
+<span class="sd">    ``schema_dict``.  Argument deprecated is a dictionary that maps deprecated</span>
+<span class="sd">    configuration names to a messages::</span>
+
+<span class="sd">        deprecated = {</span>
+<span class="sd">            &quot;foo.bar&quot; : &quot;config &#39;foo.bar&#39; is deprecated, use &#39;bar.foo&#39;&quot;,</span>
+<span class="sd">            &quot;...&quot;     : &quot;...&quot;</span>
+<span class="sd">        }</span>
+
+<span class="sd">    The function returns a python tuple ``(is_valid, issue_list)``:</span>
+
+<span class="sd">    ``is_valid``:</span>
+<span class="sd">      A bool value indicating ``data_dict`` is valid or not.</span>
+
+<span class="sd">    ``issue_list``:</span>
+<span class="sd">      A list of messages (:py:obj:`SchemaIssue`) from the validation::</span>
+
+<span class="sd">          [schema warn] data_dict: deprecated &#39;fontlib.foo&#39;: &lt;DEPRECATED[&#39;foo.bar&#39;]&gt;</span>
+<span class="sd">          [schema invalid] data_dict: key unknown &#39;fontlib.foo&#39;</span>
+<span class="sd">          [schema invalid] data_dict: type mismatch &#39;fontlib.foo&#39;: expected ..., is ...</span>
+
+<span class="sd">    If ``schema_dict`` or ``data_dict`` is not a dictionary type a</span>
+<span class="sd">    :py:obj:`SchemaIssue` is raised.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">names</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">is_valid</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="n">issue_list</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">SchemaIssue</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">schema_dict</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="n">SchemaIssue</span><span class="p">(</span><span class="s1">&#39;invalid&#39;</span><span class="p">,</span> <span class="s2">&quot;schema_dict is not a dict type&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data_dict</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="n">SchemaIssue</span><span class="p">(</span><span class="s1">&#39;invalid&#39;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;data_dict issue</span><span class="si">{</span><span class="s1">&#39;.&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">names</span><span class="p">)</span><span class="si">}</span><span class="s2"> is not a dict type&quot;</span><span class="p">)</span>
+
+    <span class="n">is_valid</span><span class="p">,</span> <span class="n">issue_list</span> <span class="o">=</span> <span class="n">_validate</span><span class="p">(</span><span class="n">names</span><span class="p">,</span> <span class="n">issue_list</span><span class="p">,</span> <span class="n">schema_dict</span><span class="p">,</span> <span class="n">data_dict</span><span class="p">,</span> <span class="n">deprecated</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">is_valid</span><span class="p">,</span> <span class="n">issue_list</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_validate</span><span class="p">(</span>
+    <span class="n">names</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+    <span class="n">issue_list</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">SchemaIssue</span><span class="p">],</span>
+    <span class="n">schema_dict</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">typing</span><span class="o">.</span><span class="n">Any</span><span class="p">],</span>
+    <span class="n">data_dict</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">typing</span><span class="o">.</span><span class="n">Any</span><span class="p">],</span>
+    <span class="n">deprecated</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">bool</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="n">SchemaIssue</span><span class="p">]]:</span>
+
+    <span class="n">is_valid</span> <span class="o">=</span> <span class="kc">True</span>
+
+    <span class="n">data_value</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">typing</span><span class="o">.</span><span class="n">Any</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">data_value</span> <span class="ow">in</span> <span class="n">data_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+
+        <span class="n">names</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;.&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">names</span><span class="p">)</span>
+
+        <span class="n">deprecated_msg</span> <span class="o">=</span> <span class="n">deprecated</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+        <span class="c1"># print(&quot;XXX %s: key %s //   data_value: %s&quot; % (name, key, data_value))</span>
+        <span class="k">if</span> <span class="n">deprecated_msg</span><span class="p">:</span>
+            <span class="n">issue_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">SchemaIssue</span><span class="p">(</span><span class="s1">&#39;warn&#39;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;data_dict &#39;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">&#39;: deprecated - </span><span class="si">{</span><span class="n">deprecated_msg</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">))</span>
+
+        <span class="n">schema_value</span> <span class="o">=</span> <span class="n">value</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">schema_dict</span><span class="p">)</span>
+        <span class="c1"># print(&quot;YYY %s: key %s // schema_value: %s&quot; % (name, key, schema_value))</span>
+        <span class="k">if</span> <span class="n">schema_value</span> <span class="ow">is</span> <span class="n">UNSET</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">deprecated_msg</span><span class="p">:</span>
+                <span class="n">issue_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">SchemaIssue</span><span class="p">(</span><span class="s1">&#39;invalid&#39;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;data_dict &#39;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">&#39;: key unknown in schema_dict&quot;</span><span class="p">))</span>
+                <span class="n">is_valid</span> <span class="o">=</span> <span class="kc">False</span>
+
+        <span class="k">elif</span> <span class="nb">type</span><span class="p">(</span><span class="n">schema_value</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">type</span><span class="p">(</span><span class="n">data_value</span><span class="p">):</span>  <span class="c1"># pylint: disable=unidiomatic-typecheck</span>
+            <span class="n">issue_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                <span class="n">SchemaIssue</span><span class="p">(</span>
+                    <span class="s1">&#39;invalid&#39;</span><span class="p">,</span>
+                    <span class="p">(</span><span class="sa">f</span><span class="s2">&quot;data_dict: type mismatch &#39;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">&#39;:&quot;</span> <span class="sa">f</span><span class="s2">&quot; expected </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">schema_value</span><span class="p">)</span><span class="si">}</span><span class="s2">, is: </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">data_value</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">),</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
+            <span class="n">is_valid</span> <span class="o">=</span> <span class="kc">False</span>
+
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data_value</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+            <span class="n">_valid</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">_validate</span><span class="p">(</span><span class="n">names</span><span class="p">,</span> <span class="n">issue_list</span><span class="p">,</span> <span class="n">schema_dict</span><span class="p">,</span> <span class="n">data_value</span><span class="p">,</span> <span class="n">deprecated</span><span class="p">)</span>
+            <span class="n">is_valid</span> <span class="o">=</span> <span class="n">is_valid</span> <span class="ow">and</span> <span class="n">_valid</span>
+        <span class="n">names</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
+
+    <span class="k">return</span> <span class="n">is_valid</span><span class="p">,</span> <span class="n">issue_list</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">dict_deepupdate</span><span class="p">(</span><span class="n">base_dict</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">typing</span><span class="o">.</span><span class="n">Any</span><span class="p">],</span> <span class="n">upd_dict</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">typing</span><span class="o">.</span><span class="n">Any</span><span class="p">],</span> <span class="n">names</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Deep-update of dictionary in ``base_dict`` by dictionary in ``upd_dict``.</span>
+
+<span class="sd">    For each ``upd_key`` &amp; ``upd_val`` pair in ``upd_dict``:</span>
+
+<span class="sd">    0. If types of ``base_dict[upd_key]`` and ``upd_val`` do not match raise a</span>
+<span class="sd">       :py:obj:`TypeError`.</span>
+
+<span class="sd">    1. If ``base_dict[upd_key]`` is a dict: recursively deep-update it by ``upd_val``.</span>
+
+<span class="sd">    2. If ``base_dict[upd_key]`` not exist: set ``base_dict[upd_key]`` from a</span>
+<span class="sd">       (deep-) copy of ``upd_val``.</span>
+
+<span class="sd">    3. If ``upd_val`` is a list, extend list in ``base_dict[upd_key]`` by the</span>
+<span class="sd">       list in ``upd_val``.</span>
+
+<span class="sd">    4. If ``upd_val`` is a set, update set in ``base_dict[upd_key]`` by set in</span>
+<span class="sd">       ``upd_val``.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># pylint: disable=too-many-branches</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">base_dict</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;argument &#39;base_dict&#39; is not a dictionary type&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">upd_dict</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;argument &#39;upd_dict&#39; is not a dictionary type&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">names</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">names</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">for</span> <span class="n">upd_key</span><span class="p">,</span> <span class="n">upd_val</span> <span class="ow">in</span> <span class="n">upd_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="c1"># For each upd_key &amp; upd_val pair in upd_dict:</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">upd_val</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+
+            <span class="k">if</span> <span class="n">upd_key</span> <span class="ow">in</span> <span class="n">base_dict</span><span class="p">:</span>
+                <span class="c1"># if base_dict[upd_key] exists, recursively deep-update it</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">base_dict</span><span class="p">[</span><span class="n">upd_key</span><span class="p">],</span> <span class="nb">dict</span><span class="p">):</span>
+                    <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;type mismatch </span><span class="si">{</span><span class="s1">&#39;.&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">names</span><span class="p">)</span><span class="si">}</span><span class="s2">: is not a dict type in base_dict&quot;</span><span class="p">)</span>
+                <span class="n">dict_deepupdate</span><span class="p">(</span>
+                    <span class="n">base_dict</span><span class="p">[</span><span class="n">upd_key</span><span class="p">],</span>
+                    <span class="n">upd_val</span><span class="p">,</span>  <span class="c1"># pyright: ignore[reportUnknownArgumentType]</span>
+                    <span class="n">names</span>
+                    <span class="o">+</span> <span class="p">[</span>
+                        <span class="n">upd_key</span><span class="p">,</span>
+                    <span class="p">],</span>
+                <span class="p">)</span>
+
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># if base_dict[upd_key] not exist, set base_dict[upd_key] from deepcopy of upd_val</span>
+                <span class="n">base_dict</span><span class="p">[</span><span class="n">upd_key</span><span class="p">]</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">upd_val</span><span class="p">)</span>  <span class="c1"># pyright: ignore[reportUnknownArgumentType]</span>
+
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">upd_val</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+
+            <span class="k">if</span> <span class="n">upd_key</span> <span class="ow">in</span> <span class="n">base_dict</span><span class="p">:</span>
+                <span class="c1"># if base_dict[upd_key] exists, base_dict[up_key] is extended by</span>
+                <span class="c1"># the list from upd_val</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">base_dict</span><span class="p">[</span><span class="n">upd_key</span><span class="p">],</span> <span class="nb">list</span><span class="p">):</span>
+                    <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;type mismatch </span><span class="si">{</span><span class="s1">&#39;.&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">names</span><span class="p">)</span><span class="si">}</span><span class="s2">: is not a list type in base_dict&quot;</span><span class="p">)</span>
+                <span class="n">base_dict</span><span class="p">[</span><span class="n">upd_key</span><span class="p">]</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">upd_val</span><span class="p">)</span>
+
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># if base_dict[upd_key] doesn&#39;t exists, set base_dict[key] from a deepcopy of the</span>
+                <span class="c1"># list in upd_val.</span>
+                <span class="n">base_dict</span><span class="p">[</span><span class="n">upd_key</span><span class="p">]</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">upd_val</span><span class="p">)</span>  <span class="c1"># pyright: ignore[reportUnknownArgumentType]</span>
+
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">upd_val</span><span class="p">,</span> <span class="nb">set</span><span class="p">):</span>
+
+            <span class="k">if</span> <span class="n">upd_key</span> <span class="ow">in</span> <span class="n">base_dict</span><span class="p">:</span>
+                <span class="c1"># if base_dict[upd_key] exists, base_dict[up_key] is updated by the set in upd_val</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">base_dict</span><span class="p">[</span><span class="n">upd_key</span><span class="p">],</span> <span class="nb">set</span><span class="p">):</span>
+                    <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;type mismatch </span><span class="si">{</span><span class="s1">&#39;.&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">names</span><span class="p">)</span><span class="si">}</span><span class="s2">: is not a set type in base_dict&quot;</span><span class="p">)</span>
+                <span class="n">base_dict</span><span class="p">[</span><span class="n">upd_key</span><span class="p">]</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">upd_val</span><span class="o">.</span><span class="n">copy</span><span class="p">())</span>
+
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># if base_dict[upd_key] doesn&#39;t exists, set base_dict[upd_key] from a copy of the</span>
+                <span class="c1"># set in upd_val</span>
+                <span class="n">base_dict</span><span class="p">[</span><span class="n">upd_key</span><span class="p">]</span> <span class="o">=</span> <span class="n">upd_val</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># for any other type of upd_val replace or add base_dict[upd_key] by a copy</span>
+            <span class="c1"># of upd_val</span>
+            <span class="n">base_dict</span><span class="p">[</span><span class="n">upd_key</span><span class="p">]</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">upd_val</span><span class="p">)</span>
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+  <span id="sidebar-top"></span>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+  
+    
+            <p class="logo"><a href="../../../index.html">
+              <img class="logo" src="../../../_static/searxng-wordmark.svg" alt="Logo of SearXNG"/>
+            </a></p>
+  
+
+<h3><a href="../../../index.html">Table of Contents</a></h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../user/index.html">User information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../own-instance.html">Why use a private instance?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../admin/index.html">Administrator documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../dev/index.html">Developer documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../utils/index.html">DevOps tooling box</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/index.html">Source-Code</a></li>
+</ul>
+
+  <h3>Project Links</h3>
+  <ul>
+    <li><a href="https://github.com/searxng/searxng/tree/master">Source</a>
+  
+    <li><a href="https://github.com/searxng/searxng/wiki">Wiki</a>
+  
+    <li><a href="https://searx.space">Public instances</a>
+  
+    <li><a href="https://github.com/searxng/searxng/issues">Issue Tracker</a>
+  </ul><h3>Navigation</h3>
+<ul>
+  <li><a href="../../../index.html">Overview</a>
+    <ul>
+      <li><a href="../../index.html">Module code</a>
+        
+          
+          </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright SearXNG team.
+    </div>
+  </body>
+</html>

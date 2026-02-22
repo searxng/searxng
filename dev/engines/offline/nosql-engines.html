@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>NoSQL databases &#8212; SearXNG Documentation (2026.2.22+191818b86)</title>
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=6625fa76" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/searxng.css?v=52e4ff28" />
+    <script src="../../../_static/documentation_options.js?v=1b5d919e"></script>
+    <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script data-project="searxng" data-version="2026.2.22+191818b86" src="../../../_static/describe_version.js?v=fa7f30d0"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="Local Search APIs" href="search-indexer-engines.html" />
+    <link rel="prev" title="Command Line Engines" href="command-line-engines.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="search-indexer-engines.html" title="Local Search APIs"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="command-line-engines.html" title="Command Line Engines"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">SearXNG Documentation (2026.2.22+191818b86)</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" >Developer documentation</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../index.html" accesskey="U">Engine Implementations</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">NoSQL databases</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="nosql-databases">
+<span id="nosql-engines"></span><h1>NoSQL databases<a class="headerlink" href="#nosql-databases" title="Link to this heading">¶</a></h1>
+<aside class="sidebar">
+<p class="sidebar-title">further read</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://en.wikipedia.org/wiki/NoSQL">NoSQL databases</a></p></li>
+<li><p><a class="reference external" href="https://valkey.io/">valkey.io</a></p></li>
+<li><p><a class="reference external" href="https://www.mongodb.com">MongoDB</a></p></li>
+</ul>
+</aside>
+<nav class="contents local" id="contents">
+<ul class="simple">
+<li><p><a class="reference internal" href="#extra-dependencies" id="id6">Extra Dependencies</a></p></li>
+<li><p><a class="reference internal" href="#configure-the-engines" id="id7">Configure the engines</a></p>
+<ul>
+<li><p><a class="reference internal" href="#valkey-server" id="id8">Valkey Server</a></p></li>
+<li><p><a class="reference internal" href="#engine-mongodb" id="id9">MongoDB</a></p></li>
+</ul>
+</li>
+</ul>
+</nav>
+<aside class="sidebar">
+<p class="sidebar-title">info</p>
+<p>Initial sponsored by <a class="reference external" href="https://nlnet.nl/discovery">Search and Discovery Fund</a> of <a class="reference external" href="https://nlnet.nl/">NLnet Foundation</a>.</p>
+</aside>
+<p>The following <a class="reference external" href="https://en.wikipedia.org/wiki/NoSQL">NoSQL databases</a> are supported:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#engine-valkey-server"><span class="std std-ref">Valkey Server</span></a></p></li>
+<li><p><a class="reference internal" href="#engine-mongodb"><span class="std std-ref">MongoDB</span></a></p></li>
+</ul>
+<p>All of the engines above are just commented out in the <a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/searx/settings.yml">settings.yml</a>, as you have to set various options and install
+dependencies before using them.</p>
+<p>By default, the engines use the <code class="docutils literal notranslate"><span class="pre">key-value</span></code> template for displaying results /
+see <a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/searx/templates/simple/result_templates/key-value.html">simple</a>
+theme.  If you are not satisfied with the original result layout, you can use
+your own template, set <code class="docutils literal notranslate"><span class="pre">result_template</span></code> attribute to <code class="docutils literal notranslate"><span class="pre">{template_name}</span></code> and
+place the templates at:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">searx</span><span class="o">/</span><span class="n">templates</span><span class="o">/</span><span class="p">{</span><span class="n">theme_name</span><span class="p">}</span><span class="o">/</span><span class="n">result_templates</span><span class="o">/</span><span class="p">{</span><span class="n">template_name</span><span class="p">}</span>
+</pre></div>
+</div>
+<p>Furthermore, if you do not wish to expose these engines on a public instance, you
+can still add them and limit the access by setting <code class="docutils literal notranslate"><span class="pre">tokens</span></code> as described in
+section <a class="reference internal" href="../../../admin/settings/settings_engines.html#private-engines"><span class="std std-ref">Private Engines (tokens)</span></a>.</p>
+<section id="extra-dependencies">
+<h2><a class="toc-backref" href="#id6" role="doc-backlink">Extra Dependencies</a><a class="headerlink" href="#extra-dependencies" title="Link to this heading">¶</a></h2>
+<p>For using <a class="reference internal" href="#engine-valkey-server"><span class="std std-ref">Valkey Server</span></a> or <a class="reference internal" href="#engine-mongodb"><span class="std std-ref">MongoDB</span></a> you need to
+install additional packages in Python’s Virtual Environment of your SearXNG
+instance.  To switch into the environment (<a class="reference internal" href="../../../admin/installation-searxng.html#searxng-src"><span class="std std-ref">Install SearXNG &amp; dependencies</span></a>) you can use
+<a class="reference internal" href="../../../utils/searxng.sh.html#searxng-sh"><span class="std std-ref">utils/searxng.sh</span></a>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ sudo utils/searxng.sh instance cmd bash
+(searxng-pyenv)$ pip install ...
+</pre></div>
+</div>
+</section>
+<section id="configure-the-engines">
+<h2><a class="toc-backref" href="#id7" role="doc-backlink">Configure the engines</a><a class="headerlink" href="#configure-the-engines" title="Link to this heading">¶</a></h2>
+<p><a class="reference external" href="https://en.wikipedia.org/wiki/NoSQL">NoSQL databases</a> are used for storing arbitrary data without first defining
+their structure.</p>
+<section id="valkey-server">
+<span id="engine-valkey-server"></span><h3><a class="toc-backref" href="#id8" role="doc-backlink">Valkey Server</a><a class="headerlink" href="#valkey-server" title="Link to this heading">¶</a></h3>
+<aside class="sidebar">
+<p class="sidebar-title">info</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span></code> <a class="reference external" href="https://github.com/andymccurdy/valkey-py#installation">valkey</a></p></li>
+<li><p><a class="reference external" href="https://valkey.io/">valkey.io</a></p></li>
+<li><p><a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/searx/engines/valkey_server.py">valkey_server.py</a></p></li>
+</ul>
+</aside>
+<p id="module-searx.engines.valkey_server">Valkey is an open source (BSD licensed), in-memory data structure (key value
+based) store.  Before configuring the <code class="docutils literal notranslate"><span class="pre">valkey_server</span></code> engine, you must install
+the dependency <a class="reference external" href="https://github.com/andymccurdy/valkey-py#installation">valkey</a>.</p>
+<section id="configuration">
+<h4>Configuration<a class="headerlink" href="#configuration" title="Link to this heading">¶</a></h4>
+<p>Select a database to search in and set its index in the option <code class="docutils literal notranslate"><span class="pre">db</span></code>.  You can
+either look for exact matches or use partial keywords to find what you are
+looking for by configuring <code class="docutils literal notranslate"><span class="pre">exact_match_only</span></code>.</p>
+</section>
+<section id="example">
+<h4>Example<a class="headerlink" href="#example" title="Link to this heading">¶</a></h4>
+<p>Below is an example configuration:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="c1"># Required dependency: valkey</span>
+
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">myvalkey</span>
+<span class="w">  </span><span class="nt">shortcut </span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">rds</span>
+<span class="w">  </span><span class="nt">engine</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">valkey_server</span>
+<span class="w">  </span><span class="nt">exact_match_only</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+<span class="w">  </span><span class="nt">host</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;127.0.0.1&#39;</span>
+<span class="w">  </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">6379</span>
+<span class="w">  </span><span class="nt">enable_http</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">  </span><span class="nt">password</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;&#39;</span>
+<span class="w">  </span><span class="nt">db</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0</span>
+</pre></div>
+</div>
+</section>
+<section id="implementations">
+<h4>Implementations<a class="headerlink" href="#implementations" title="Link to this heading">¶</a></h4>
+</section>
+</section>
+<section id="engine-mongodb">
+<span id="id2"></span><h3><a class="toc-backref" href="#id9" role="doc-backlink">MongoDB</a><a class="headerlink" href="#engine-mongodb" title="Link to this heading">¶</a></h3>
+<aside class="sidebar">
+<p class="sidebar-title">info</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span></code> <a class="reference external" href="https://github.com/mongodb/mongo-python-driver#installation">pymongo</a></p></li>
+<li><p><a class="reference external" href="https://www.mongodb.com">MongoDB</a></p></li>
+<li><p><a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/searx/engines/mongodb.py">mongodb.py</a></p></li>
+</ul>
+</aside>
+<p id="module-searx.engines.mongodb"><a class="reference external" href="https://www.mongodb.com">MongoDB</a> is a document based database program that handles JSON like data.
+Before configuring the <code class="docutils literal notranslate"><span class="pre">mongodb</span></code> engine, you must install the dependency
+<a class="reference external" href="https://github.com/mongodb/mongo-python-driver#installation">pymongo</a>.</p>
+<section id="id3">
+<h4>Configuration<a class="headerlink" href="#id3" title="Link to this heading">¶</a></h4>
+<p>In order to query <a class="reference external" href="https://www.mongodb.com">MongoDB</a>, you have to select a <code class="docutils literal notranslate"><span class="pre">database</span></code> and a
+<code class="docutils literal notranslate"><span class="pre">collection</span></code>.  Furthermore, you have to select a <code class="docutils literal notranslate"><span class="pre">key</span></code> that is going to be
+searched.  <a class="reference external" href="https://www.mongodb.com">MongoDB</a> also supports the option <code class="docutils literal notranslate"><span class="pre">exact_match_only</span></code>, so configure
+it as you wish.</p>
+</section>
+<section id="id4">
+<h4>Example<a class="headerlink" href="#id4" title="Link to this heading">¶</a></h4>
+<p>Below is an example configuration for using a MongoDB collection:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="c1"># MongoDB engine</span>
+<span class="c1"># Required dependency: pymongo</span>
+
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mymongo</span>
+<span class="w">  </span><span class="nt">engine</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mongodb</span>
+<span class="w">  </span><span class="nt">shortcut</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">md</span>
+<span class="w">  </span><span class="nt">exact_match_only</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+<span class="w">  </span><span class="nt">host</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;127.0.0.1&#39;</span>
+<span class="w">  </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">27017</span>
+<span class="w">  </span><span class="nt">enable_http</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">  </span><span class="nt">results_per_page</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">20</span>
+<span class="w">  </span><span class="nt">database</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;business&#39;</span>
+<span class="w">  </span><span class="nt">collection</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;reviews&#39;</span><span class="w">  </span><span class="c1"># name of the db collection</span>
+<span class="w">  </span><span class="nt">key</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;name&#39;</span><span class="w">            </span><span class="c1"># key in the collection to search for</span>
+</pre></div>
+</div>
+</section>
+<section id="id5">
+<h4>Implementations<a class="headerlink" href="#id5" title="Link to this heading">¶</a></h4>
+</section>
+</section>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+  <span id="sidebar-top"></span>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+  
+    
+            <p class="logo"><a href="../../../index.html">
+              <img class="logo" src="../../../_static/searxng-wordmark.svg" alt="Logo of SearXNG"/>
+            </a></p>
+  
+
+<h3><a href="../../../index.html">Table of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../user/index.html">User information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../own-instance.html">Why use a private instance?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../admin/index.html">Administrator documentation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">Developer documentation</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../quickstart.html">Development Quickstart</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../commits.html">Git Commits &amp; Change Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../contribution_guide.html">How to contribute</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../extended_types.html">Extended Types</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">Engine Implementations</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../enginelib.html">Engine Library</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../engines.html">SearXNG’s engines loader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../engine_overview.html">Engine Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../index.html#resultlist-and-engines">ResultList and engines</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="../index.html#engine-types">Engine Types</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="../index.html#online-engines">Online Engines</a></li>
+<li class="toctree-l4 current"><a class="reference internal" href="../index.html#offline-engines">Offline Engines</a><ul class="current">
+<li class="toctree-l5"><a class="reference internal" href="../offline_concept.html">Offline Concept</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../demo/demo_offline.html">Demo Offline Engine</a></li>
+<li class="toctree-l5"><a class="reference internal" href="command-line-engines.html">Command Line Engines</a></li>
+<li class="toctree-l5 current"><a class="current reference internal" href="#">NoSQL databases</a></li>
+<li class="toctree-l5"><a class="reference internal" href="search-indexer-engines.html">Local Search APIs</a></li>
+<li class="toctree-l5"><a class="reference internal" href="sql-engines.html">SQL Engines</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../index.html#online-url-search">Online URL Search</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../index.html#online-currency">Online Currency</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../index.html#online-dictionary">Online Dictionary</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../result_types/index.html">Result Types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../templates.html">Simple Theme Templates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../search_api.html">Search API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../plugins/index.html">Plugins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../answerers/index.html">Answerers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../translation.html">Translation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../makefile.html">Makefile &amp; <code class="docutils literal notranslate"><span class="pre">./manage</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../reST.html">reST primer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../searxng_extra/index.html">Tooling box <code class="docutils literal notranslate"><span class="pre">searxng_extra</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../utils/index.html">DevOps tooling box</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/index.html">Source-Code</a></li>
+</ul>
+
+  <h3>Project Links</h3>
+  <ul>
+    <li><a href="https://github.com/searxng/searxng/tree/master">Source</a>
+  
+    <li><a href="https://github.com/searxng/searxng/wiki">Wiki</a>
+  
+    <li><a href="https://searx.space">Public instances</a>
+  
+    <li><a href="https://github.com/searxng/searxng/issues">Issue Tracker</a>
+  </ul><h3>Navigation</h3>
+<ul>
+  <li><a href="../../../index.html">Overview</a>
+    <ul>
+      <li><a href="../../index.html">Developer documentation</a>
+        <ul>
+      <li><a href="../index.html">Engine Implementations</a>
+        <ul>
+          <li>Previous: <a href="command-line-engines.html" title="previous chapter">Command Line Engines</a>
+          <li>Next: <a href="search-indexer-engines.html" title="next chapter">Local Search APIs</a></ul>
+      </li></ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../../_sources/dev/engines/offline/nosql-engines.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright SearXNG team.
+    </div>
+  </body>
+</html>

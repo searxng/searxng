@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>searx.plugins._core &#8212; SearXNG Documentation (2026.2.22+191818b86)</title>
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=6625fa76" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/searxng.css?v=52e4ff28" />
+    <script src="../../../_static/documentation_options.js?v=1b5d919e"></script>
+    <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script data-project="searxng" data-version="2026.2.22+191818b86" src="../../../_static/describe_version.js?v=fa7f30d0"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">SearXNG Documentation (2026.2.22+191818b86)</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" accesskey="U">Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">searx.plugins._core</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for searx.plugins._core</h1><div class="highlight"><pre>
+<span></span><span class="c1"># SPDX-License-Identifier: AGPL-3.0-or-later</span>
+<span class="c1"># pylint: disable=too-few-public-methods,missing-module-docstring</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;PluginInfo&quot;</span><span class="p">,</span> <span class="s2">&quot;Plugin&quot;</span><span class="p">,</span> <span class="s2">&quot;PluginCfg&quot;</span><span class="p">,</span> <span class="s2">&quot;PluginStorage&quot;</span><span class="p">]</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">abc</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">importlib</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">inspect</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">t</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">collections.abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">Generator</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">dataclasses</span><span class="w"> </span><span class="kn">import</span> <span class="n">dataclass</span><span class="p">,</span> <span class="n">field</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">searx.extended_types</span><span class="w"> </span><span class="kn">import</span> <span class="n">SXNG_Request</span>
+
+<span class="k">if</span> <span class="n">t</span><span class="o">.</span><span class="n">TYPE_CHECKING</span><span class="p">:</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">searx.search</span><span class="w"> </span><span class="kn">import</span> <span class="n">SearchWithPlugins</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">searx.result_types</span><span class="w"> </span><span class="kn">import</span> <span class="n">Result</span><span class="p">,</span> <span class="n">EngineResults</span><span class="p">,</span> <span class="n">LegacyResult</span>  <span class="c1"># pyright: ignore[reportPrivateLocalImportUsage]</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">flask</span>
+
+<span class="n">log</span><span class="p">:</span> <span class="n">logging</span><span class="o">.</span><span class="n">Logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s2">&quot;searx.plugins&quot;</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="PluginInfo">
+<a class="viewcode-back" href="../../../dev/plugins/development.html#searx.plugins.PluginInfo">[docs]</a>
+<span class="nd">@dataclass</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">PluginInfo</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Object that holds information about a *plugin*, these infos are shown to</span>
+<span class="sd">    the user in the Preferences menu.</span>
+
+<span class="sd">    To be able to translate the information into other languages, the text must</span>
+<span class="sd">    be written in English and translated with :py:obj:`flask_babel.gettext`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="nb">id</span><span class="p">:</span> <span class="nb">str</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The ID-selector in HTML/CSS `#&lt;id&gt;`.&quot;&quot;&quot;</span>
+
+    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Name of the *plugin*.&quot;&quot;&quot;</span>
+
+    <span class="n">description</span><span class="p">:</span> <span class="nb">str</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Short description of the *answerer*.&quot;&quot;&quot;</span>
+
+    <span class="n">preference_section</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;general&quot;</span><span class="p">,</span> <span class="s2">&quot;ui&quot;</span><span class="p">,</span> <span class="s2">&quot;privacy&quot;</span><span class="p">,</span> <span class="s2">&quot;query&quot;</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="s2">&quot;general&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Section (tab/group) in the preferences where this plugin is shown to the</span>
+<span class="sd">    user.</span>
+
+<span class="sd">    The value ``query`` is reserved for plugins that are activated via a</span>
+<span class="sd">    *keyword* as part of a search query, see:</span>
+
+<span class="sd">    - :py:obj:`PluginInfo.examples`</span>
+<span class="sd">    - :py:obj:`Plugin.keywords`</span>
+
+<span class="sd">    Those plugins are shown in the preferences in tab *Special Queries*.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">examples</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="nb">list</span><span class="p">)</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;List of short examples of the usage / of query terms.&quot;&quot;&quot;</span>
+
+    <span class="n">keywords</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="nb">list</span><span class="p">)</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;See :py:obj:`Plugin.keywords`&quot;&quot;&quot;</span></div>
+
+
+
+<span class="n">ID_REGXP</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s2">&quot;[a-z][a-z0-9].*&quot;</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="Plugin">
+<a class="viewcode-back" href="../../../dev/plugins/development.html#searx.plugins.Plugin">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">Plugin</span><span class="p">(</span><span class="n">abc</span><span class="o">.</span><span class="n">ABC</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Abstract base class of all Plugins.&quot;&quot;&quot;</span>
+
+    <span class="nb">id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The ID (suffix) in the HTML form.&quot;&quot;&quot;</span>
+
+    <span class="n">active</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">ClassVar</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Plugin is enabled/disabled by default (:py:obj:`PluginCfg.active`).&quot;&quot;&quot;</span>
+
+    <span class="n">keywords</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Keywords in the search query that activate the plugin.  The *keyword* is</span>
+<span class="sd">    the first word in a search query.  If a plugin should be executed regardless</span>
+<span class="sd">    of the search query, the list of keywords should be empty (which is also the</span>
+<span class="sd">    default in the base class for Plugins).&quot;&quot;&quot;</span>
+
+    <span class="n">log</span><span class="p">:</span> <span class="n">logging</span><span class="o">.</span><span class="n">Logger</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A logger object, is automatically initialized when calling the</span>
+<span class="sd">    constructor (if not already set in the subclass).&quot;&quot;&quot;</span>
+
+    <span class="n">info</span><span class="p">:</span> <span class="n">PluginInfo</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Information about the *plugin*, see :py:obj:`PluginInfo`.&quot;&quot;&quot;</span>
+
+    <span class="n">fqn</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">plg_cfg</span><span class="p">:</span> <span class="s2">&quot;PluginCfg&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">fqn</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">fqn</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__mro__</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="vm">__module__</span>
+
+        <span class="c1"># names from the configuration</span>
+        <span class="k">for</span> <span class="n">n</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">plg_cfg</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
+
+        <span class="c1"># names that must be set by the plugin implementation</span>
+        <span class="k">for</span> <span class="n">attr</span> <span class="ow">in</span> <span class="p">[</span>
+            <span class="s2">&quot;id&quot;</span><span class="p">,</span>
+        <span class="p">]:</span>
+            <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attr</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;plugin </span><span class="si">{</span><span class="bp">self</span><span class="si">}</span><span class="s2"> is missing attribute </span><span class="si">{</span><span class="n">attr</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">ID_REGXP</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;plugin ID </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="s2"> contains invalid character (use lowercase ASCII)&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;log&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">):</span>
+            <span class="n">pkg_name</span> <span class="o">=</span> <span class="n">inspect</span><span class="o">.</span><span class="n">getmodule</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">)</span><span class="o">.</span><span class="n">__package__</span>  <span class="c1"># pyright: ignore[reportOptionalMemberAccess]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">log</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">pkg_name</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__hash__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The hash value is used in :py:obj:`set`, for example, when an object</span>
+<span class="sd">        is added to the set.  The hash value is also used in other contexts,</span>
+<span class="sd">        e.g. when checking for equality to identify identical plugins from</span>
+<span class="sd">        different sources (name collisions).&quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="nb">id</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Any</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;py:obj:`Plugin` objects are equal if the hash values of the two</span>
+<span class="sd">        objects are equal.&quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="nb">hash</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">==</span> <span class="nb">hash</span><span class="p">(</span><span class="n">other</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Plugin.init">
+<a class="viewcode-back" href="../../../dev/plugins/development.html#searx.plugins.Plugin.init">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">init</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">app</span><span class="p">:</span> <span class="s2">&quot;flask.Flask&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>  <span class="c1"># pylint: disable=unused-argument</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialization of the plugin, the return value decides whether this</span>
+<span class="sd">        plugin is active or not.  Initialization only takes place once, at the</span>
+<span class="sd">        time the WEB application is set up.  The base method always returns</span>
+<span class="sd">        ``True``, the method can be overwritten in the inheritances,</span>
+
+<span class="sd">        - ``True`` plugin is active</span>
+<span class="sd">        - ``False`` plugin is inactive</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="kc">True</span></div>
+
+
+    <span class="c1"># pylint: disable=unused-argument</span>
+<div class="viewcode-block" id="Plugin.pre_search">
+<a class="viewcode-back" href="../../../dev/plugins/development.html#searx.plugins.Plugin.pre_search">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">pre_search</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">:</span> <span class="n">SXNG_Request</span><span class="p">,</span> <span class="n">search</span><span class="p">:</span> <span class="s2">&quot;SearchWithPlugins&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Runs BEFORE the search request and returns a boolean:</span>
+
+<span class="sd">        - ``True`` to continue the search</span>
+<span class="sd">        - ``False`` to stop the search</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="kc">True</span></div>
+
+
+<div class="viewcode-block" id="Plugin.on_result">
+<a class="viewcode-back" href="../../../dev/plugins/development.html#searx.plugins.Plugin.on_result">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">on_result</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">:</span> <span class="n">SXNG_Request</span><span class="p">,</span> <span class="n">search</span><span class="p">:</span> <span class="s2">&quot;SearchWithPlugins&quot;</span><span class="p">,</span> <span class="n">result</span><span class="p">:</span> <span class="s2">&quot;Result&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Runs for each result of each engine and returns a boolean:</span>
+
+<span class="sd">        - ``True`` to keep the result</span>
+<span class="sd">        - ``False`` to remove the result from the result list</span>
+
+<span class="sd">        The ``result`` can be modified to the needs.</span>
+
+<span class="sd">        .. hint::</span>
+
+<span class="sd">           If :py:obj:`Result.url &lt;searx.result_types._base.Result.url&gt;` is modified,</span>
+<span class="sd">           :py:obj:`Result.parsed_url &lt;searx.result_types._base.Result.parsed_url&gt;` must</span>
+<span class="sd">           be changed accordingly:</span>
+
+<span class="sd">           .. code:: python</span>
+
+<span class="sd">              result[&quot;parsed_url&quot;] = urlparse(result[&quot;url&quot;])</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="kc">True</span></div>
+
+
+<div class="viewcode-block" id="Plugin.post_search">
+<a class="viewcode-back" href="../../../dev/plugins/development.html#searx.plugins.Plugin.post_search">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">post_search</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">:</span> <span class="n">SXNG_Request</span><span class="p">,</span> <span class="n">search</span><span class="p">:</span> <span class="s2">&quot;SearchWithPlugins&quot;</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;None | list[Result | LegacyResult] | EngineResults&quot;</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Runs AFTER the search request.  Can return a list of</span>
+<span class="sd">        :py:obj:`Result &lt;searx.result_types._base.Result&gt;` objects to be added to the</span>
+<span class="sd">        final result list.&quot;&quot;&quot;</span>
+        <span class="k">return</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="PluginCfg">
+<a class="viewcode-back" href="../../../dev/plugins/development.html#searx.plugins.PluginCfg">[docs]</a>
+<span class="nd">@dataclass</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">PluginCfg</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Settings of a plugin.</span>
+
+<span class="sd">    .. code:: yaml</span>
+
+<span class="sd">       mypackage.mymodule.MyPlugin:</span>
+<span class="sd">         active: true</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">active</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Plugin is active by default and the user can *opt-out* in the preferences.&quot;&quot;&quot;</span></div>
+
+
+
+<div class="viewcode-block" id="PluginStorage">
+<a class="viewcode-back" href="../../../dev/plugins/development.html#searx.plugins.PluginStorage">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">PluginStorage</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A storage for managing the *plugins* of SearXNG.&quot;&quot;&quot;</span>
+
+    <span class="n">plugin_list</span><span class="p">:</span> <span class="nb">set</span><span class="p">[</span><span class="n">Plugin</span><span class="p">]</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The list of :py:obj:`Plugins` in this storage.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">plugin_list</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Generator</span><span class="p">[</span><span class="n">Plugin</span><span class="p">]:</span>
+        <span class="k">yield from</span> <span class="bp">self</span><span class="o">.</span><span class="n">plugin_list</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">plugin_list</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">info</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">PluginInfo</span><span class="p">]:</span>
+
+        <span class="k">return</span> <span class="p">[</span><span class="n">p</span><span class="o">.</span><span class="n">info</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">plugin_list</span><span class="p">]</span>
+
+<div class="viewcode-block" id="PluginStorage.load_settings">
+<a class="viewcode-back" href="../../../dev/plugins/development.html#searx.plugins.PluginStorage.load_settings">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">load_settings</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cfg</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">t</span><span class="o">.</span><span class="n">Any</span><span class="p">]]):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Load plugins configured in SearXNG&#39;s settings :ref:`settings</span>
+<span class="sd">        plugins`.&quot;&quot;&quot;</span>
+
+        <span class="k">for</span> <span class="n">fqn</span><span class="p">,</span> <span class="n">plg_settings</span> <span class="ow">in</span> <span class="n">cfg</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="bp">cls</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="n">mod_name</span><span class="p">,</span> <span class="n">cls_name</span> <span class="o">=</span> <span class="n">fqn</span><span class="o">.</span><span class="n">rsplit</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">mod</span> <span class="o">=</span> <span class="n">importlib</span><span class="o">.</span><span class="n">import_module</span><span class="p">(</span><span class="n">mod_name</span><span class="p">)</span>
+                <span class="bp">cls</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">mod</span><span class="p">,</span> <span class="n">cls_name</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>  <span class="c1"># pylint: disable=broad-exception-caught</span>
+                <span class="n">log</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="n">exc</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="bp">cls</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;plugin </span><span class="si">{</span><span class="n">fqn</span><span class="si">}</span><span class="s2"> is not implemented&quot;</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+            <span class="n">plg</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span><span class="n">PluginCfg</span><span class="p">(</span><span class="o">**</span><span class="n">plg_settings</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">plg</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="PluginStorage.register">
+<a class="viewcode-back" href="../../../dev/plugins/development.html#searx.plugins.PluginStorage.register">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">register</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">plugin</span><span class="p">:</span> <span class="n">Plugin</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Register a :py:obj:`Plugin`.  In case of name collision (if two</span>
+<span class="sd">        plugins have same ID) a :py:obj:`KeyError` exception is raised.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="n">plugin</span> <span class="ow">in</span> <span class="p">[</span><span class="n">p</span><span class="o">.</span><span class="n">id</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">plugin_list</span><span class="p">]:</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;name collision &#39;</span><span class="si">{</span><span class="n">plugin</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="s2">&#39;&quot;</span>
+            <span class="n">plugin</span><span class="o">.</span><span class="n">log</span><span class="o">.</span><span class="n">critical</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">plugin_list</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">plugin</span><span class="p">)</span>
+        <span class="n">plugin</span><span class="o">.</span><span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;plugin has been loaded&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="PluginStorage.init">
+<a class="viewcode-back" href="../../../dev/plugins/development.html#searx.plugins.PluginStorage.init">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">init</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">app</span><span class="p">:</span> <span class="s2">&quot;flask.Flask&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Calls the method :py:obj:`Plugin.init` of each plugin in this</span>
+<span class="sd">        storage.  Depending on its return value, the plugin is removed from</span>
+<span class="sd">        *this* storage or not.&quot;&quot;&quot;</span>
+
+        <span class="k">for</span> <span class="n">plg</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">plugin_list</span><span class="o">.</span><span class="n">copy</span><span class="p">():</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">plg</span><span class="o">.</span><span class="n">init</span><span class="p">(</span><span class="n">app</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">plugin_list</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">plg</span><span class="p">)</span></div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">pre_search</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">:</span> <span class="n">SXNG_Request</span><span class="p">,</span> <span class="n">search</span><span class="p">:</span> <span class="s2">&quot;SearchWithPlugins&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+
+        <span class="n">ret</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">for</span> <span class="n">plugin</span> <span class="ow">in</span> <span class="p">[</span><span class="n">p</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">plugin_list</span> <span class="k">if</span> <span class="n">p</span><span class="o">.</span><span class="n">id</span> <span class="ow">in</span> <span class="n">search</span><span class="o">.</span><span class="n">user_plugins</span><span class="p">]:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">ret</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">plugin</span><span class="o">.</span><span class="n">pre_search</span><span class="p">(</span><span class="n">request</span><span class="o">=</span><span class="n">request</span><span class="p">,</span> <span class="n">search</span><span class="o">=</span><span class="n">search</span><span class="p">))</span>
+            <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>  <span class="c1"># pylint: disable=broad-except</span>
+                <span class="n">plugin</span><span class="o">.</span><span class="n">log</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s2">&quot;Exception while calling pre_search&quot;</span><span class="p">)</span>
+                <span class="k">continue</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">ret</span><span class="p">:</span>
+                <span class="c1"># skip this search on the first False from a plugin</span>
+                <span class="k">break</span>
+        <span class="k">return</span> <span class="n">ret</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">on_result</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">:</span> <span class="n">SXNG_Request</span><span class="p">,</span> <span class="n">search</span><span class="p">:</span> <span class="s2">&quot;SearchWithPlugins&quot;</span><span class="p">,</span> <span class="n">result</span><span class="p">:</span> <span class="s2">&quot;Result&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+
+        <span class="n">ret</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">for</span> <span class="n">plugin</span> <span class="ow">in</span> <span class="p">[</span><span class="n">p</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">plugin_list</span> <span class="k">if</span> <span class="n">p</span><span class="o">.</span><span class="n">id</span> <span class="ow">in</span> <span class="n">search</span><span class="o">.</span><span class="n">user_plugins</span><span class="p">]:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">ret</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">plugin</span><span class="o">.</span><span class="n">on_result</span><span class="p">(</span><span class="n">request</span><span class="o">=</span><span class="n">request</span><span class="p">,</span> <span class="n">search</span><span class="o">=</span><span class="n">search</span><span class="p">,</span> <span class="n">result</span><span class="o">=</span><span class="n">result</span><span class="p">))</span>
+            <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>  <span class="c1"># pylint: disable=broad-except</span>
+                <span class="n">plugin</span><span class="o">.</span><span class="n">log</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s2">&quot;Exception while calling on_result&quot;</span><span class="p">)</span>
+                <span class="k">continue</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">ret</span><span class="p">:</span>
+                <span class="c1"># ignore this result item on the first False from a plugin</span>
+                <span class="k">break</span>
+
+        <span class="k">return</span> <span class="n">ret</span>
+
+<div class="viewcode-block" id="PluginStorage.post_search">
+<a class="viewcode-back" href="../../../dev/plugins/development.html#searx.plugins.PluginStorage.post_search">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">post_search</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">:</span> <span class="n">SXNG_Request</span><span class="p">,</span> <span class="n">search</span><span class="p">:</span> <span class="s2">&quot;SearchWithPlugins&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Extend :py:obj:`search.result_container</span>
+<span class="sd">        &lt;searx.results.ResultContainer`&gt; with result items from plugins listed</span>
+<span class="sd">        in :py:obj:`search.user_plugins &lt;SearchWithPlugins.user_plugins&gt;`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">keyword</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">for</span> <span class="n">keyword</span> <span class="ow">in</span> <span class="n">search</span><span class="o">.</span><span class="n">search_query</span><span class="o">.</span><span class="n">query</span><span class="o">.</span><span class="n">split</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">keyword</span><span class="p">:</span>
+                <span class="k">break</span>
+
+        <span class="k">for</span> <span class="n">plugin</span> <span class="ow">in</span> <span class="p">[</span><span class="n">p</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">plugin_list</span> <span class="k">if</span> <span class="n">p</span><span class="o">.</span><span class="n">id</span> <span class="ow">in</span> <span class="n">search</span><span class="o">.</span><span class="n">user_plugins</span><span class="p">]:</span>
+
+            <span class="k">if</span> <span class="n">plugin</span><span class="o">.</span><span class="n">keywords</span><span class="p">:</span>
+                <span class="c1"># plugin with keywords: skip plugin if no keyword match</span>
+                <span class="k">if</span> <span class="n">keyword</span> <span class="ow">and</span> <span class="n">keyword</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">plugin</span><span class="o">.</span><span class="n">keywords</span><span class="p">:</span>
+                    <span class="k">continue</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">results</span> <span class="o">=</span> <span class="n">plugin</span><span class="o">.</span><span class="n">post_search</span><span class="p">(</span><span class="n">request</span><span class="o">=</span><span class="n">request</span><span class="p">,</span> <span class="n">search</span><span class="o">=</span><span class="n">search</span><span class="p">)</span> <span class="ow">or</span> <span class="p">[]</span>
+            <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>  <span class="c1"># pylint: disable=broad-except</span>
+                <span class="n">plugin</span><span class="o">.</span><span class="n">log</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s2">&quot;Exception while calling post_search&quot;</span><span class="p">)</span>
+                <span class="k">continue</span>
+
+            <span class="c1"># In case of *plugins* prefix ``plugin:`` is set, see searx.result_types.Result</span>
+            <span class="n">search</span><span class="o">.</span><span class="n">result_container</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;plugin: </span><span class="si">{</span><span class="n">plugin</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">results</span><span class="p">)</span></div>
+</div>
+
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+  <span id="sidebar-top"></span>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+  
+    
+            <p class="logo"><a href="../../../index.html">
+              <img class="logo" src="../../../_static/searxng-wordmark.svg" alt="Logo of SearXNG"/>
+            </a></p>
+  
+
+<h3><a href="../../../index.html">Table of Contents</a></h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../user/index.html">User information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../own-instance.html">Why use a private instance?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../admin/index.html">Administrator documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../dev/index.html">Developer documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../utils/index.html">DevOps tooling box</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/index.html">Source-Code</a></li>
+</ul>
+
+  <h3>Project Links</h3>
+  <ul>
+    <li><a href="https://github.com/searxng/searxng/tree/master">Source</a>
+  
+    <li><a href="https://github.com/searxng/searxng/wiki">Wiki</a>
+  
+    <li><a href="https://searx.space">Public instances</a>
+  
+    <li><a href="https://github.com/searxng/searxng/issues">Issue Tracker</a>
+  </ul><h3>Navigation</h3>
+<ul>
+  <li><a href="../../../index.html">Overview</a>
+    <ul>
+      <li><a href="../../index.html">Module code</a>
+        
+          
+          </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright SearXNG team.
+    </div>
+  </body>
+</html>

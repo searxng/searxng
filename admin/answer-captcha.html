@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Answer CAPTCHA from server’s IP &#8212; SearXNG Documentation (2026.2.22+191818b86)</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=6625fa76" />
+    <link rel="stylesheet" type="text/css" href="../_static/searxng.css?v=52e4ff28" />
+    <link rel="stylesheet" type="text/css" href="../_static/tabs.css?v=a5c4661c" />
+    <script src="../_static/documentation_options.js?v=1b5d919e"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script data-project="searxng" data-version="2026.2.22+191818b86" src="../_static/describe_version.js?v=fa7f30d0"></script>
+    <script src="../_static/tabs.js?v=3030b3cb"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Favicons" href="searx.favicons.html" />
+    <link rel="prev" title="SearXNG maintenance" href="update-searxng.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="searx.favicons.html" title="Favicons"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="update-searxng.html" title="SearXNG maintenance"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">SearXNG Documentation (2026.2.22+191818b86)</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" accesskey="U">Administrator documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Answer CAPTCHA from server’s IP</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="answer-captcha-from-server-s-ip">
+<h1>Answer CAPTCHA from server’s IP<a class="headerlink" href="#answer-captcha-from-server-s-ip" title="Link to this heading">¶</a></h1>
+<p>With a SSH tunnel we can send requests from server’s IP and solve a CAPTCHA that
+blocks requests from this IP.  If your SearXNG instance is hosted at
+<code class="docutils literal notranslate"><span class="pre">example.org</span></code> and your login is <code class="docutils literal notranslate"><span class="pre">user</span></code> you can setup a proxy simply by
+<a class="extlink-man reference external" href="https://manpages.debian.org/jump?q=ssh">ssh</a>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># SOCKS server: socks://127.0.0.1:8080</span>
+
+$<span class="w"> </span>ssh<span class="w"> </span>-q<span class="w"> </span>-N<span class="w"> </span>-D<span class="w"> </span><span class="m">8080</span><span class="w"> </span>user@example.org
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">socks://localhost:8080</span></code> from above can be tested by:</p>
+<div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-0-c2VydmVyJ3MgSVA=" aria-selected="true" class="sphinx-tabs-tab group-tab" id="tab-0-c2VydmVyJ3MgSVA=" name="c2VydmVyJ3MgSVA=" role="tab" tabindex="0">server’s IP</button><button aria-controls="panel-0-ZGVza3RvcCdzIElQ" aria-selected="false" class="sphinx-tabs-tab group-tab" id="tab-0-ZGVza3RvcCdzIElQ" name="ZGVza3RvcCdzIElQ" role="tab" tabindex="-1">desktop’s IP</button></div><div aria-labelledby="tab-0-c2VydmVyJ3MgSVA=" class="sphinx-tabs-panel group-tab" id="panel-0-c2VydmVyJ3MgSVA=" name="c2VydmVyJ3MgSVA=" role="tabpanel" tabindex="0"><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>curl<span class="w"> </span>-x<span class="w"> </span>socks://127.0.0.1:8080<span class="w"> </span>http://ipecho.net/plain
+n.n.n.n
+</pre></div>
+</div>
+</div><div aria-labelledby="tab-0-ZGVza3RvcCdzIElQ" class="sphinx-tabs-panel group-tab" hidden="true" id="panel-0-ZGVza3RvcCdzIElQ" name="ZGVza3RvcCdzIElQ" role="tabpanel" tabindex="0"><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>curl<span class="w"> </span>http://ipecho.net/plain
+x.x.x.x
+</pre></div>
+</div>
+</div></div>
+<p>In the settings of the WEB browser open the <em>“Network Settings”</em> and setup a
+proxy on <code class="docutils literal notranslate"><span class="pre">SOCKS5</span> <span class="pre">127.0.0.1:8080</span></code> (see screenshot below).  In the WEB browser
+check the IP from the server is used:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="http://ipecho.net/plain">http://ipecho.net/plain</a></p></li>
+</ul>
+<p>Now open the search engine that blocks requests from your server’s IP.  If you
+have <a class="reference external" href="https://github.com/searxng/searxng/issues/2011#issuecomment-1553317619">issues with the qwant engine</a>,
+solve the CAPTCHA from <a class="reference external" href="https://www.qwant.com/">qwant.com</a>.</p>
+<hr class="docutils" />
+<div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-1-RmlyZWZveA==" aria-selected="true" class="sphinx-tabs-tab group-tab" id="tab-1-RmlyZWZveA==" name="RmlyZWZveA==" role="tab" tabindex="0">Firefox</button></div><div aria-labelledby="tab-1-RmlyZWZveA==" class="sphinx-tabs-panel group-tab" id="panel-1-RmlyZWZveA==" name="RmlyZWZveA==" role="tabpanel" tabindex="0"><figure class="align-default" id="id1">
+<img alt="FFox proxy on SOCKS5, 127.0.0.1:8080" src="../_images/ffox-setting-proxy-socks.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 1 </span><span class="caption-text">Firefox’s network settings</span><a class="headerlink" href="#id1" title="Link to this image">¶</a></p>
+</figcaption>
+</figure>
+</div></div>
+<div class="admonition-man-ssh-manual admonition">
+<p class="admonition-title"><a class="extlink-man reference external" href="https://manpages.debian.org/jump?q=ssh">ssh</a> manual:</p>
+<dl class="simple">
+<dt>-D [bind_address:]port</dt><dd><p>Specifies a local “dynamic” application-level port forwarding.  This works
+by allocating a socket to listen to port on the local side ..  Whenever a
+connection is made to this port, the connection is forwarded over the
+secure channel, and the application protocol is then used to determine
+where to connect to from the remote machine .. ssh will act as a SOCKS
+server ..</p>
+</dd>
+</dl>
+<dl class="option-list">
+<dt><kbd><span class="option">-N</span></kbd></dt>
+<dd><p>Do not execute a remote command.  This is useful for just forwarding ports.</p>
+</dd>
+</dl>
+</div>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+  <span id="sidebar-top"></span>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+  
+    
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/searxng-wordmark.svg" alt="Logo of SearXNG"/>
+            </a></p>
+  
+
+<h3><a href="../index.html">Table of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../user/index.html">User information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../own-instance.html">Why use a private instance?</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Administrator documentation</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="settings/index.html">Settings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation-docker.html">Installation container</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation-scripts.html">Installation Script</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation-searxng.html">Step by step installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation-granian.html">Granian</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation-uwsgi.html">uWSGI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation-nginx.html">NGINX</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation-apache.html">Apache</a></li>
+<li class="toctree-l2"><a class="reference internal" href="update-searxng.html">SearXNG maintenance</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Answer CAPTCHA from server’s IP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.favicons.html">Favicons</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.limiter.html">Limiter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html">Administration API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="architecture.html">Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plugins.html">List of plugins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="buildhosts.html">Buildhosts</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../dev/index.html">Developer documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../utils/index.html">DevOps tooling box</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../src/index.html">Source-Code</a></li>
+</ul>
+
+  <h3>Project Links</h3>
+  <ul>
+    <li><a href="https://github.com/searxng/searxng/tree/master">Source</a>
+  
+    <li><a href="https://github.com/searxng/searxng/wiki">Wiki</a>
+  
+    <li><a href="https://searx.space">Public instances</a>
+  
+    <li><a href="https://github.com/searxng/searxng/issues">Issue Tracker</a>
+  </ul><h3>Navigation</h3>
+<ul>
+  <li><a href="../index.html">Overview</a>
+    <ul>
+      <li><a href="index.html">Administrator documentation</a>
+        <ul>
+          <li>Previous: <a href="update-searxng.html" title="previous chapter">SearXNG maintenance</a>
+          <li>Next: <a href="searx.favicons.html" title="next chapter">Favicons</a></ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/admin/answer-captcha.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright SearXNG team.
+    </div>
+  </body>
+</html>

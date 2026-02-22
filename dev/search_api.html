@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Search API &#8212; SearXNG Documentation (2026.2.22+191818b86)</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=6625fa76" />
+    <link rel="stylesheet" type="text/css" href="../_static/searxng.css?v=52e4ff28" />
+    <script src="../_static/documentation_options.js?v=1b5d919e"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script data-project="searxng" data-version="2026.2.22+191818b86" src="../_static/describe_version.js?v=fa7f30d0"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Plugins" href="plugins/index.html" />
+    <link rel="prev" title="Simple Theme Templates" href="templates.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="plugins/index.html" title="Plugins"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="templates.html" title="Simple Theme Templates"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">SearXNG Documentation (2026.2.22+191818b86)</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" accesskey="U">Developer documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Search API</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="search-api">
+<span id="id1"></span><h1>Search API<a class="headerlink" href="#search-api" title="Link to this heading">¶</a></h1>
+<p>SearXNG supports querying via a simple HTTP API.
+Two endpoints, <code class="docutils literal notranslate"><span class="pre">/</span></code> and <code class="docutils literal notranslate"><span class="pre">/search</span></code>, are supported for both GET and POST methods.
+The GET method expects parameters as URL query parameters, while the POST method expects parameters as form data.</p>
+<p>If you want to consume the results as JSON, CSV, or RSS, you need to set the
+<code class="docutils literal notranslate"><span class="pre">format</span></code> parameter accordingly. Supported formats are defined in <code class="docutils literal notranslate"><span class="pre">settings.yml</span></code>, under the <code class="docutils literal notranslate"><span class="pre">search</span></code> section.
+Requesting an unset format will return a 403 Forbidden error. Be aware that many public instances have these formats disabled.</p>
+<p>Endpoints:</p>
+<p><code class="docutils literal notranslate"><span class="pre">GET</span> <span class="pre">/</span></code>
+<code class="docutils literal notranslate"><span class="pre">GET</span> <span class="pre">/search</span></code></p>
+<p><code class="docutils literal notranslate"><span class="pre">POST</span> <span class="pre">/</span></code>
+<code class="docutils literal notranslate"><span class="pre">POST</span> <span class="pre">/search</span></code></p>
+<p>example cURL calls:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl<span class="w"> </span><span class="s1">&#39;https://searx.example.org/search?q=searxng&amp;format=json&#39;</span>
+
+curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span><span class="s1">&#39;https://searx.example.org/search&#39;</span><span class="w"> </span>-d<span class="w"> </span><span class="s1">&#39;q=searxng&amp;format=csv&#39;</span>
+
+curl<span class="w"> </span>-L<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span>-d<span class="w"> </span><span class="s1">&#39;q=searxng&amp;format=json&#39;</span><span class="w"> </span><span class="s1">&#39;https://searx.example.org/&#39;</span>
+</pre></div>
+</div>
+<section id="parameters">
+<h2>Parameters<a class="headerlink" href="#parameters" title="Link to this heading">¶</a></h2>
+<aside class="sidebar">
+<p class="sidebar-title">Further reading ..</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="engines/engine_overview.html#engines-dev"><span class="std std-ref">Engine Overview</span></a></p></li>
+<li><p><a class="reference internal" href="../admin/settings/settings.html#settings-yml"><span class="std std-ref">settings.yml</span></a></p></li>
+<li><p><a class="reference internal" href="../user/configured_engines.html#configured-engines"><span class="std std-ref">Configured Engines</span></a></p></li>
+</ul>
+</aside>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">q</span></code><span class="classifier">required</span></dt><dd><p>The search query.  This string is passed to external search services.  Thus,
+SearXNG supports syntax of each search service.  For example, <code class="docutils literal notranslate"><span class="pre">site:github.com</span>
+<span class="pre">SearXNG</span></code> is a valid query for Google.  However, if simply the query above is
+passed to any search engine which does not filter its results based on this
+syntax, you might not get the results you wanted.</p>
+<p>See more at <a class="reference internal" href="../user/search-syntax.html#search-syntax"><span class="std std-ref">Search syntax</span></a></p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">categories</span></code><span class="classifier">optional</span></dt><dd><p>Comma separated list, specifies the active search categories (see
+<a class="reference internal" href="../user/configured_engines.html#configured-engines"><span class="std std-ref">Configured Engines</span></a>)</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">engines</span></code><span class="classifier">optional</span></dt><dd><p>Comma separated list, specifies the active search engines (see
+<a class="reference internal" href="../user/configured_engines.html#configured-engines"><span class="std std-ref">Configured Engines</span></a>).</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">language</span></code><span class="classifier">default from <a class="reference internal" href="../admin/settings/settings_search.html#settings-search"><span class="std std-ref">search:</span></a></span></dt><dd><p>Code of the language.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">pageno</span></code><span class="classifier">default <code class="docutils literal notranslate"><span class="pre">1</span></code></span></dt><dd><p>Search page number.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">time_range</span></code><span class="classifier">optional</span></dt><dd><p>[ <code class="docutils literal notranslate"><span class="pre">day</span></code>, <code class="docutils literal notranslate"><span class="pre">month</span></code>, <code class="docutils literal notranslate"><span class="pre">year</span></code> ]</p>
+<p>Time range of search for engines which support it.  See if an engine supports
+time range search in the preferences page of an instance.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">format</span></code><span class="classifier">optional</span></dt><dd><p>[ <code class="docutils literal notranslate"><span class="pre">json</span></code>, <code class="docutils literal notranslate"><span class="pre">csv</span></code>, <code class="docutils literal notranslate"><span class="pre">rss</span></code> ]</p>
+<p>Output format of results.  Format needs to be activated in <a class="reference internal" href="../admin/settings/settings_search.html#settings-search"><span class="std std-ref">search:</span></a>.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">results_on_new_tab</span></code><span class="classifier">default <code class="docutils literal notranslate"><span class="pre">0</span></code></span></dt><dd><p>[ <code class="docutils literal notranslate"><span class="pre">0</span></code>, <code class="docutils literal notranslate"><span class="pre">1</span></code> ]</p>
+<p>Open search results on new tab.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">image_proxy</span></code><span class="classifier">default from <a class="reference internal" href="../admin/settings/settings_server.html#settings-server"><span class="std std-ref">server:</span></a></span></dt><dd><p>[  <code class="docutils literal notranslate"><span class="pre">True</span></code>, <code class="docutils literal notranslate"><span class="pre">False</span></code> ]</p>
+<p>Proxy image results through SearXNG.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">autocomplete</span></code><span class="classifier">default from <a class="reference internal" href="../admin/settings/settings_search.html#settings-search"><span class="std std-ref">search:</span></a></span></dt><dd><p>[ <code class="docutils literal notranslate"><span class="pre">google</span></code>, <code class="docutils literal notranslate"><span class="pre">dbpedia</span></code>, <code class="docutils literal notranslate"><span class="pre">duckduckgo</span></code>, <code class="docutils literal notranslate"><span class="pre">mwmbl</span></code>, <code class="docutils literal notranslate"><span class="pre">startpage</span></code>,
+<code class="docutils literal notranslate"><span class="pre">wikipedia</span></code>, <code class="docutils literal notranslate"><span class="pre">stract</span></code>, <code class="docutils literal notranslate"><span class="pre">swisscows</span></code>, <code class="docutils literal notranslate"><span class="pre">qwant</span></code> ]</p>
+<p>Service which completes words as you type.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">safesearch</span></code><span class="classifier">default from <a class="reference internal" href="../admin/settings/settings_search.html#settings-search"><span class="std std-ref">search:</span></a></span></dt><dd><p>[ <code class="docutils literal notranslate"><span class="pre">0</span></code>, <code class="docutils literal notranslate"><span class="pre">1</span></code>, <code class="docutils literal notranslate"><span class="pre">2</span></code> ]</p>
+<p>Filter search results of engines which support safe search.  See if an engine
+supports safe search in the preferences page of an instance.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">theme</span></code><span class="classifier">default <code class="docutils literal notranslate"><span class="pre">simple</span></code></span></dt><dd><p>[ <code class="docutils literal notranslate"><span class="pre">simple</span></code> ]</p>
+<p>Theme of instance.</p>
+<p>Please note, available themes depend on an instance.  It is possible that an
+instance administrator deleted, created or renamed themes on their instance.
+See the available options in the preferences page of the instance.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">enabled_plugins</span></code><span class="classifier">optional</span></dt><dd><p>List of enabled plugins.</p>
+<dl class="field-list">
+<dt class="field-odd">default<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">Hash_plugin</span></code>, <code class="docutils literal notranslate"><span class="pre">Self_Information</span></code>,
+<code class="docutils literal notranslate"><span class="pre">Tracker_URL_remover</span></code>, <code class="docutils literal notranslate"><span class="pre">Ahmia_blacklist</span></code></p>
+</dd>
+<dt class="field-even">values<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">Hash_plugin</span></code>, <code class="docutils literal notranslate"><span class="pre">Self_Information</span></code>,
+<code class="docutils literal notranslate"><span class="pre">Tracker_URL_remover</span></code>, <code class="docutils literal notranslate"><span class="pre">Ahmia_blacklist</span></code>,</p>
+<p><code class="docutils literal notranslate"><span class="pre">Hostnames_plugin</span></code>, <code class="docutils literal notranslate"><span class="pre">Open_Access_DOI_rewrite</span></code>,
+<code class="docutils literal notranslate"><span class="pre">Vim-like_hotkeys</span></code>, <code class="docutils literal notranslate"><span class="pre">Tor_check_plugin</span></code></p>
+</dd>
+</dl>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">disabled_plugins</span></code>: optional</dt><dd><p>List of disabled plugins.</p>
+<dl class="field-list simple">
+<dt class="field-odd">default<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">Hostnames_plugin</span></code>, <code class="docutils literal notranslate"><span class="pre">Open_Access_DOI_rewrite</span></code>,
+<code class="docutils literal notranslate"><span class="pre">Vim-like_hotkeys</span></code>, <code class="docutils literal notranslate"><span class="pre">Tor_check_plugin</span></code></p>
+</dd>
+<dt class="field-even">values<span class="colon">:</span></dt>
+<dd class="field-even"><p>see values from <code class="docutils literal notranslate"><span class="pre">enabled_plugins</span></code></p>
+</dd>
+</dl>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">enabled_engines</span></code><span class="classifier">optional</span><span class="classifier"><em>all</em> <a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/searx/engines">engines</a></span></dt><dd><p>List of enabled engines.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">disabled_engines</span></code><span class="classifier">optional</span><span class="classifier"><em>all</em> <a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/searx/engines">engines</a></span></dt><dd><p>List of disabled engines.</p>
+</dd>
+</dl>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+  <span id="sidebar-top"></span>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+  
+    
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/searxng-wordmark.svg" alt="Logo of SearXNG"/>
+            </a></p>
+  
+
+<h3><a href="../index.html">Table of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../user/index.html">User information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../own-instance.html">Why use a private instance?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../admin/index.html">Administrator documentation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Developer documentation</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html">Development Quickstart</a></li>
+<li class="toctree-l2"><a class="reference internal" href="commits.html">Git Commits &amp; Change Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contribution_guide.html">How to contribute</a></li>
+<li class="toctree-l2"><a class="reference internal" href="extended_types.html">Extended Types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="engines/index.html">Engine Implementations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="result_types/index.html">Result Types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="templates.html">Simple Theme Templates</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Search API</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#parameters">Parameters</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="plugins/index.html">Plugins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="answerers/index.html">Answerers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="translation.html">Translation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="makefile.html">Makefile &amp; <code class="docutils literal notranslate"><span class="pre">./manage</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="reST.html">reST primer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searxng_extra/index.html">Tooling box <code class="docutils literal notranslate"><span class="pre">searxng_extra</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../utils/index.html">DevOps tooling box</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../src/index.html">Source-Code</a></li>
+</ul>
+
+  <h3>Project Links</h3>
+  <ul>
+    <li><a href="https://github.com/searxng/searxng/tree/master">Source</a>
+  
+    <li><a href="https://github.com/searxng/searxng/wiki">Wiki</a>
+  
+    <li><a href="https://searx.space">Public instances</a>
+  
+    <li><a href="https://github.com/searxng/searxng/issues">Issue Tracker</a>
+  </ul><h3>Navigation</h3>
+<ul>
+  <li><a href="../index.html">Overview</a>
+    <ul>
+      <li><a href="index.html">Developer documentation</a>
+        <ul>
+          <li>Previous: <a href="templates.html" title="previous chapter">Simple Theme Templates</a>
+          <li>Next: <a href="plugins/index.html" title="next chapter">Plugins</a></ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/dev/search_api.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright SearXNG team.
+    </div>
+  </body>
+</html>

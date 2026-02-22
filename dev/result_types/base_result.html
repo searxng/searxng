@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Result &#8212; SearXNG Documentation (2026.2.22+191818b86)</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=6625fa76" />
+    <link rel="stylesheet" type="text/css" href="../../_static/searxng.css?v=52e4ff28" />
+    <script src="../../_static/documentation_options.js?v=1b5d919e"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script data-project="searxng" data-version="2026.2.22+191818b86" src="../../_static/describe_version.js?v=fa7f30d0"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Main Search Results" href="main_result.html" />
+    <link rel="prev" title="Result Types" href="index.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="main_result.html" title="Main Search Results"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Result Types"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">SearXNG Documentation (2026.2.22+191818b86)</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >Developer documentation</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="index.html" accesskey="U">Result Types</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Result</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="module-searx.result_types._base">
+<span id="result"></span><h1>Result<a class="headerlink" href="#module-searx.result_types._base" title="Link to this heading">¶</a></h1>
+<p>Basic types for the typification of results.</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#searx.result_types._base.Result" title="searx.result_types._base.Result"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Result</span></code></a> base class</p></li>
+<li><p><a class="reference internal" href="#searx.result_types._base.LegacyResult" title="searx.result_types._base.LegacyResult"><code class="xref py py-obj docutils literal notranslate"><span class="pre">LegacyResult</span></code></a> for internal use only</p></li>
+</ul>
+<hr class="docutils" />
+<dl class="py class">
+<dt class="sig sig-object py" id="searx.result_types._base.Result">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">searx.result_types._base.</span></span><span class="sig-name descname"><span class="pre">Result</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">url</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">engine</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parsed_url</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/urllib.parse.html#urllib.parse.ParseResult" title="(in Python v3.14)"><span class="pre">ParseResult</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/searx/result_types/_base.html#Result"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.result_types._base.Result" title="Link to this definition">¶</a></dt>
+<dd><p>Base class of all result types <a class="reference internal" href="index.html#result-types"><span class="std std-ref">Result Types</span></a>.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="searx.result_types._base.Result.url">
+<span class="sig-name descname"><span class="pre">url</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></em><a class="headerlink" href="#searx.result_types._base.Result.url" title="Link to this definition">¶</a></dt>
+<dd><p>A link related to this <em>result</em></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="searx.result_types._base.Result.engine">
+<span class="sig-name descname"><span class="pre">engine</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></em><a class="headerlink" href="#searx.result_types._base.Result.engine" title="Link to this definition">¶</a></dt>
+<dd><p>Name of the engine <em>this</em> result comes from.  In case of <em>plugins</em> a
+prefix <code class="docutils literal notranslate"><span class="pre">plugin:</span></code> is set, in case of <em>answerer</em> prefix <code class="docutils literal notranslate"><span class="pre">answerer:</span></code> is
+set.</p>
+<p>The field is optional and is initialized from the context if necessary.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="searx.result_types._base.Result.parsed_url">
+<span class="sig-name descname"><span class="pre">parsed_url</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/urllib.parse.html#urllib.parse.ParseResult" title="(in Python v3.14)"><span class="pre">ParseResult</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></em><a class="headerlink" href="#searx.result_types._base.Result.parsed_url" title="Link to this definition">¶</a></dt>
+<dd><p><a class="reference external" href="https://docs.python.org/3/library/urllib.parse.html#urllib.parse.ParseResult" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">urllib.parse.ParseResult</span></code></a> of <a class="reference internal" href="#searx.result_types._base.Result.url" title="searx.result_types._base.Result.url"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Result.url</span></code></a>.</p>
+<p>The field is optional and is initialized from the context if necessary.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="searx.result_types._base.Result.normalize_result_fields">
+<span class="sig-name descname"><span class="pre">normalize_result_fields</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/searx/result_types/_base.html#Result.normalize_result_fields"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.result_types._base.Result.normalize_result_fields" title="Link to this definition">¶</a></dt>
+<dd><p>Normalize fields <code class="docutils literal notranslate"><span class="pre">url</span></code> and <code class="docutils literal notranslate"><span class="pre">parse_sql</span></code>.</p>
+<ul class="simple">
+<li><p>If field <code class="docutils literal notranslate"><span class="pre">url</span></code> is set and field <code class="docutils literal notranslate"><span class="pre">parse_url</span></code> is unset, init
+<code class="docutils literal notranslate"><span class="pre">parse_url</span></code> from field <code class="docutils literal notranslate"><span class="pre">url</span></code>.  The <code class="docutils literal notranslate"><span class="pre">url</span></code> field is initialized
+with the resulting value in <code class="docutils literal notranslate"><span class="pre">parse_url</span></code>, if <code class="docutils literal notranslate"><span class="pre">url</span></code> and
+<code class="docutils literal notranslate"><span class="pre">parse_url</span></code> are not equal.</p></li>
+</ul>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="searx.result_types._base.Result.filter_urls">
+<span class="sig-name descname"><span class="pre">filter_urls</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filter_func</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Callable" title="(in Python v3.14)"><span class="pre">Callable</span></a><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#searx.result_types._base.Result" title="searx.result_types._base.Result"><span class="pre">Result</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference internal" href="#searx.result_types._base.LegacyResult" title="searx.result_types._base.LegacyResult"><span class="pre">LegacyResult</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/searx/result_types/_base.html#Result.filter_urls"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.result_types._base.Result.filter_urls" title="Link to this definition">¶</a></dt>
+<dd><p>A filter function is passed in the <code class="docutils literal notranslate"><span class="pre">filter_func</span></code> argument to
+filter and/or modify the URLs.</p>
+<p>The filter function receives the <a class="reference internal" href="#searx.result_types._base.Result" title="searx.result_types._base.Result"><code class="xref py py-obj docutils literal notranslate"><span class="pre">result</span> <span class="pre">object</span></code></a> as
+the first argument and the field name (<code class="docutils literal notranslate"><span class="pre">str</span></code>) in the second argument.
+In the third argument the URL string value is passed to the filter function.</p>
+<p>The filter function is applied to all fields that contain a URL,
+in addition to the familiar <code class="docutils literal notranslate"><span class="pre">url</span></code> field, these include fields such as:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="s2">&quot;url&quot;</span><span class="p">,</span> <span class="s2">&quot;iframe_src&quot;</span><span class="p">,</span> <span class="s2">&quot;audio_src&quot;</span><span class="p">,</span> <span class="s2">&quot;img_src&quot;</span><span class="p">,</span> <span class="s2">&quot;thumbnail_src&quot;</span><span class="p">,</span> <span class="s2">&quot;thumbnail&quot;</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>and the <code class="docutils literal notranslate"><span class="pre">urls</span></code> list of items of the infobox.</p>
+<p>For each field, the filter function is called and returns a bool or a
+string value:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">True</span></code>: leave URL in field unchanged</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">False</span></code>: remove URL field from result (or remove entire result)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">str</span></code>: modified URL to be used instead</p></li>
+</ul>
+<p>See <a class="reference internal" href="../plugins/development.html#filter-urls-example"><span class="std std-ref">Filter URLs example</span></a>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="searx.result_types._base.Result.defaults_from">
+<span class="sig-name descname"><span class="pre">defaults_from</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#searx.result_types._base.Result" title="searx.result_types._base.Result"><span class="pre">Result</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/searx/result_types/_base.html#Result.defaults_from"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.result_types._base.Result.defaults_from" title="Link to this definition">¶</a></dt>
+<dd><p>Fields not set in <em>self</em> will be updated from the field values of the
+<em>other</em>.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class" id="legacyresult">
+<dt class="sig sig-object py" id="searx.result_types._base.LegacyResult">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">searx.result_types._base.</span></span><span class="sig-name descname"><span class="pre">LegacyResult</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.14)"><span class="pre">Any</span></a></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.14)"><span class="pre">Any</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/searx/result_types/_base.html#LegacyResult"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.result_types._base.LegacyResult" title="Link to this definition">¶</a></dt>
+<dd><p>A wrapper around a legacy result item.  The SearXNG core uses this class
+for untyped dictionaries / to be downward compatible.</p>
+<p>This class is needed until we have implemented an <a class="reference internal" href="#searx.result_types._base.Result" title="searx.result_types._base.Result"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Result</span></code></a> class for
+each result type and the old usages in the codebase have been fully
+migrated.</p>
+<p>There is only one place where this class is used, in the
+<code class="xref py py-obj docutils literal notranslate"><span class="pre">searx.results.ResultContainer</span></code>.</p>
+<div class="admonition attention">
+<p class="admonition-title">Attention</p>
+<p>Do not use this class in your own implementations!</p>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="searx.result_types._base.LegacyResult.filter_urls">
+<span class="sig-name descname"><span class="pre">filter_urls</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filter_func</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Callable" title="(in Python v3.14)"><span class="pre">Callable</span></a><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#searx.result_types._base.Result" title="searx.result_types._base.Result"><span class="pre">Result</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference internal" href="#searx.result_types._base.LegacyResult" title="searx.result_types._base.LegacyResult"><span class="pre">LegacyResult</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/searx/result_types/_base.html#LegacyResult.filter_urls"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.result_types._base.LegacyResult.filter_urls" title="Link to this definition">¶</a></dt>
+<dd><p>See <a class="reference internal" href="#searx.result_types._base.Result.filter_urls" title="searx.result_types._base.Result.filter_urls"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Result.filter_urls</span></code></a></p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+  <span id="sidebar-top"></span>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+  
+    
+            <p class="logo"><a href="../../index.html">
+              <img class="logo" src="../../_static/searxng-wordmark.svg" alt="Logo of SearXNG"/>
+            </a></p>
+  
+
+<h3><a href="../../index.html">Table of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../user/index.html">User information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../own-instance.html">Why use a private instance?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../admin/index.html">Administrator documentation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Developer documentation</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../quickstart.html">Development Quickstart</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../commits.html">Git Commits &amp; Change Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contribution_guide.html">How to contribute</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../extended_types.html">Extended Types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../engines/index.html">Engine Implementations</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Result Types</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Result</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#searx.result_types._base.Result"><code class="docutils literal notranslate"><span class="pre">Result</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#searx.result_types._base.Result.url"><code class="docutils literal notranslate"><span class="pre">Result.url</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="#searx.result_types._base.Result.engine"><code class="docutils literal notranslate"><span class="pre">Result.engine</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="#searx.result_types._base.Result.parsed_url"><code class="docutils literal notranslate"><span class="pre">Result.parsed_url</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="#searx.result_types._base.Result.normalize_result_fields"><code class="docutils literal notranslate"><span class="pre">Result.normalize_result_fields()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="#searx.result_types._base.Result.filter_urls"><code class="docutils literal notranslate"><span class="pre">Result.filter_urls()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="#searx.result_types._base.Result.defaults_from"><code class="docutils literal notranslate"><span class="pre">Result.defaults_from()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="#searx.result_types._base.LegacyResult"><code class="docutils literal notranslate"><span class="pre">LegacyResult</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#searx.result_types._base.LegacyResult.filter_urls"><code class="docutils literal notranslate"><span class="pre">LegacyResult.filter_urls()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="main_result.html">Main Search Results</a></li>
+<li class="toctree-l3"><a class="reference internal" href="answer.html">Answer Results</a></li>
+<li class="toctree-l3"><a class="reference internal" href="correction.html">Correction Results</a></li>
+<li class="toctree-l3"><a class="reference internal" href="suggestion.html">Suggestion Results</a></li>
+<li class="toctree-l3"><a class="reference internal" href="infobox.html">Infobox Results</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../templates.html">Simple Theme Templates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../search_api.html">Search API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../plugins/index.html">Plugins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../answerers/index.html">Answerers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../translation.html">Translation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../makefile.html">Makefile &amp; <code class="docutils literal notranslate"><span class="pre">./manage</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reST.html">reST primer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../searxng_extra/index.html">Tooling box <code class="docutils literal notranslate"><span class="pre">searxng_extra</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../utils/index.html">DevOps tooling box</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../src/index.html">Source-Code</a></li>
+</ul>
+
+  <h3>Project Links</h3>
+  <ul>
+    <li><a href="https://github.com/searxng/searxng/tree/master">Source</a>
+  
+    <li><a href="https://github.com/searxng/searxng/wiki">Wiki</a>
+  
+    <li><a href="https://searx.space">Public instances</a>
+  
+    <li><a href="https://github.com/searxng/searxng/issues">Issue Tracker</a>
+  </ul><h3>Navigation</h3>
+<ul>
+  <li><a href="../../index.html">Overview</a>
+    <ul>
+      <li><a href="../index.html">Developer documentation</a>
+        <ul>
+      <li><a href="index.html">Result Types</a>
+        <ul>
+          <li>Previous: <a href="index.html" title="previous chapter">Result Types</a>
+          <li>Next: <a href="main_result.html" title="next chapter">Main Search Results</a></ul>
+      </li></ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/dev/result_types/base_result.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright SearXNG team.
+    </div>
+  </body>
+</html>

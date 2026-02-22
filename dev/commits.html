@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Git Commits &amp; Change Management &#8212; SearXNG Documentation (2026.2.22+191818b86)</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=6625fa76" />
+    <link rel="stylesheet" type="text/css" href="../_static/searxng.css?v=52e4ff28" />
+    <script src="../_static/documentation_options.js?v=1b5d919e"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script data-project="searxng" data-version="2026.2.22+191818b86" src="../_static/describe_version.js?v=fa7f30d0"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="How to contribute" href="contribution_guide.html" />
+    <link rel="prev" title="Development Quickstart" href="quickstart.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="contribution_guide.html" title="How to contribute"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="quickstart.html" title="Development Quickstart"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">SearXNG Documentation (2026.2.22+191818b86)</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" accesskey="U">Developer documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Git Commits &amp; Change Management</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="git-commits-change-management">
+<span id="create-commit"></span><h1>Git Commits &amp; Change Management<a class="headerlink" href="#git-commits-change-management" title="Link to this heading">¶</a></h1>
+<aside class="sidebar">
+<p class="sidebar-title">Create good commits!</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://www.conventionalcommits.org/">Conventional Commits</a></p></li>
+<li><p><a class="reference external" href="https://wiki.openstack.org/wiki/GitCommitMessages#Structural_split_of_changes">Structural split of changes</a></p></li>
+<li><p><a class="reference external" href="https://wiki.openstack.org/wiki/GitCommitMessages">Git Commit Good Practice</a></p></li>
+</ul>
+</aside>
+<p>A commit and its commit message are among the most important information
+available to a developer for bug fixing and further development.  A commit is a
+change and changes have a context (a change request).</p>
+<p>In a SCM system (git), the change history is derived from the commit history. A
+commit message is therefore part of the documentation for change management and
+thus elementary for the traceability of changes.</p>
+<p><strong>What a commit is not</strong>: <em>A commit to an SCM system is not used to save files!</em></p>
+<p>A commit should always have a context and the commit message describes what is
+to be changed in that context, just as a function description should describe
+what the intention and the goal of the function is, a commit message should
+describe what the intention and the goal of that commit is.</p>
+<p>The commit messages form the history and are the first and therefore most
+important information a developer has when he has to research when and why a
+change had to be made and how it was made (what the goal was).</p>
+<p>Like any text, a commit message should be written for the reader and not from
+the perspective of the author.</p>
+<p>When scrolling through the history, the first thing one see is the title of the
+commit message. Therefore the title should describe the change as briefly and
+precisely as possible … followed by a blank line and then a somewhat detailed
+description of the change.</p>
+<hr class="docutils" />
+<p>The follwing rules should be in mind, when creating a commit:</p>
+<ul class="simple">
+<li><p><strong>Commit history should be read like a history book.</strong></p></li>
+<li><p><strong>Commit messages are for the reader not for the author of the commit.</strong></p></li>
+<li><p><strong>A commit is the atomic code-modification of a change in change management.</strong></p></li>
+<li><p><strong>Think about which descriptions from your PR might belong in the commit message.</strong></p></li>
+<li><p><strong>The maximum line length in a commit message is 80 characters.</strong></p></li>
+</ul>
+<hr class="docutils" />
+<p>Choose meaningful commit messages:</p>
+<blockquote>
+<div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="nb">type</span><span class="p">]</span> <span class="n">optional</span> <span class="n">scope</span><span class="p">:</span> <span class="n">description</span>
+
+<span class="p">[</span><span class="n">body</span><span class="p">]</span>
+
+<span class="p">[</span><span class="n">optional</span> <span class="n">trailers</span><span class="p">]</span>
+</pre></div>
+</div>
+</div></blockquote>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">[type]</span></code>:</dt><dd><p>Commits MUST be prefixed with a type .. <code class="docutils literal notranslate"><span class="pre">feat</span></code>, <code class="docutils literal notranslate"><span class="pre">fix</span></code>, <code class="docutils literal notranslate"><span class="pre">refactor</span></code>,
+<code class="docutils literal notranslate"><span class="pre">mod</span></code>, <code class="docutils literal notranslate"><span class="pre">upd</span></code>, <code class="docutils literal notranslate"><span class="pre">doc</span></code>, <code class="docutils literal notranslate"><span class="pre">l10n</span></code>, <code class="docutils literal notranslate"><span class="pre">build</span></code> ..</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">[body]</span></code></dt><dd><p><a class="reference external" href="https://wiki.openstack.org/wiki/GitCommitMessages#Information_in_commit_messages">Information in commit messages</a></p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">[optional</span> <span class="pre">trailers]</span></code>:</dt><dd><ul class="simple">
+<li><p><a class="reference external" href="https://git-scm.com/docs/git-commit#Documentation/git-commit.txt-code--signoffcode">Signed-off-by</a>: certify that the committer has the rights to submit the
+work under the project’s license.  That the developer has this right is a
+prerequisite for a merge.  If the <a class="reference external" href="https://git-scm.com/docs/git-commit#Documentation/git-commit.txt-code--signoffcode">Signed-off-by</a> is not set in the
+commit, the contributor enters his <cite>Developer’s Certificate of Origin</cite> at
+the latest when creating a PR!</p></li>
+<li><p>Closes: Link to the bug report or the bug number (e.g. <code class="docutils literal notranslate"><span class="pre">Closes:</span> <span class="pre">#10</span></code>)</p></li>
+<li><p><a class="reference external" href="https://docs.github.com/en/pull-requests/committing-changes-to-your-project/creating-and-editing-commits/creating-a-commit-with-multiple-authors">Co-authored-by</a>: email address of the co-author</p></li>
+<li><p>Reported-by: email address (if there is no bug report)</p></li>
+<li><p>Suggested-by: email address (if there is no bug report)</p></li>
+</ul>
+</dd>
+</dl>
+<hr class="docutils" />
+<p>To give examples at hand, here are a few commits.  Follow the links to see the
+full commit messages:</p>
+<dl class="simple">
+<dt><a class="extlink-patch reference external" href="https://github.com/searxng/searxng/commit/44d941c93">#44d941c93</a></dt><dd><p><code class="docutils literal notranslate"><span class="pre">[fix]</span> <span class="pre">mojeek</span> <span class="pre">web</span> <span class="pre">engine:</span> <span class="pre">don't</span> <span class="pre">add</span> <span class="pre">empty</span> <span class="pre">fmt</span> <span class="pre">argument</span> <span class="pre">for</span> <span class="pre">web</span> <span class="pre">searches</span></code></p>
+</dd>
+<dt><a class="extlink-patch reference external" href="https://github.com/searxng/searxng/commit/feb15e387">#feb15e387</a></dt><dd><p><code class="docutils literal notranslate"><span class="pre">[fix]</span> <span class="pre">brave.news</span> <span class="pre">engine:</span> <span class="pre">response</span> <span class="pre">is</span> <span class="pre">HTML</span> <span class="pre">and</span> <span class="pre">no</span> <span class="pre">longer</span> <span class="pre">JSON</span></code></p>
+</dd>
+<dt><a class="extlink-patch reference external" href="https://github.com/searxng/searxng/commit/bdfe1c2a1">#bdfe1c2a1</a></dt><dd><p><code class="docutils literal notranslate"><span class="pre">[mod]</span> <span class="pre">engines:</span> <span class="pre">migration</span> <span class="pre">of</span> <span class="pre">the</span> <span class="pre">individual</span> <span class="pre">cache</span> <span class="pre">solutions</span> <span class="pre">to</span> <span class="pre">EngineCache</span></code></p>
+</dd>
+</dl>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+  <span id="sidebar-top"></span>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+  
+    
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/searxng-wordmark.svg" alt="Logo of SearXNG"/>
+            </a></p>
+  
+
+<h3><a href="../index.html">Table of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../user/index.html">User information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../own-instance.html">Why use a private instance?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../admin/index.html">Administrator documentation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Developer documentation</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html">Development Quickstart</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Git Commits &amp; Change Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contribution_guide.html">How to contribute</a></li>
+<li class="toctree-l2"><a class="reference internal" href="extended_types.html">Extended Types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="engines/index.html">Engine Implementations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="result_types/index.html">Result Types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="templates.html">Simple Theme Templates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="search_api.html">Search API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plugins/index.html">Plugins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="answerers/index.html">Answerers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="translation.html">Translation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="makefile.html">Makefile &amp; <code class="docutils literal notranslate"><span class="pre">./manage</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="reST.html">reST primer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searxng_extra/index.html">Tooling box <code class="docutils literal notranslate"><span class="pre">searxng_extra</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../utils/index.html">DevOps tooling box</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../src/index.html">Source-Code</a></li>
+</ul>
+
+  <h3>Project Links</h3>
+  <ul>
+    <li><a href="https://github.com/searxng/searxng/tree/master">Source</a>
+  
+    <li><a href="https://github.com/searxng/searxng/wiki">Wiki</a>
+  
+    <li><a href="https://searx.space">Public instances</a>
+  
+    <li><a href="https://github.com/searxng/searxng/issues">Issue Tracker</a>
+  </ul><h3>Navigation</h3>
+<ul>
+  <li><a href="../index.html">Overview</a>
+    <ul>
+      <li><a href="index.html">Developer documentation</a>
+        <ul>
+          <li>Previous: <a href="quickstart.html" title="previous chapter">Development Quickstart</a>
+          <li>Next: <a href="contribution_guide.html" title="next chapter">How to contribute</a></ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/dev/commits.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright SearXNG team.
+    </div>
+  </body>
+</html>

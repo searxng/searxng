@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>searxng_extra/update/ &#8212; SearXNG Documentation (2026.2.22+191818b86)</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=6625fa76" />
+    <link rel="stylesheet" type="text/css" href="../../_static/searxng.css?v=52e4ff28" />
+    <script src="../../_static/documentation_options.js?v=1b5d919e"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script data-project="searxng" data-version="2026.2.22+191818b86" src="../../_static/describe_version.js?v=fa7f30d0"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="DevOps tooling box" href="../../utils/index.html" />
+    <link rel="prev" title="Tooling box searxng_extra" href="index.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../../utils/index.html" title="DevOps tooling box"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Tooling box searxng_extra"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">SearXNG Documentation (2026.2.22+191818b86)</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >Developer documentation</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="index.html" accesskey="U">Tooling box <code class="docutils literal notranslate"><span class="pre">searxng_extra</span></code></a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href=""><code class="docutils literal notranslate"><span class="pre">searxng_extra/update/</span></code></a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="searxng-extra-update">
+<h1><code class="docutils literal notranslate"><span class="pre">searxng_extra/update/</span></code><a class="headerlink" href="#searxng-extra-update" title="Link to this heading">¶</a></h1>
+<p><a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/searxng_extra/update/__init__.py">[source]</a></p>
+<p>Scripts to update static data in <a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/searx/data/">git://searx/data/</a></p>
+<section id="update-ahmia-blacklist-py">
+<span id="id1"></span><h2><code class="docutils literal notranslate"><span class="pre">update_ahmia_blacklist.py</span></code><a class="headerlink" href="#update-ahmia-blacklist-py" title="Link to this heading">¶</a></h2>
+<p><a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/searxng_extra/update/update_ahmia_blacklist.py">[source]</a></p>
+<p id="module-searxng_extra.update.update_ahmia_blacklist">This script saves <a class="reference external" href="https://ahmia.fi/blacklist/">Ahmia’s blacklist</a> for onion sites.</p>
+<p>Output file: <a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/searx/data/ahmia_blacklist.txt">git://searx/data/ahmia_blacklist.txt</a> (<a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/.github/workflows/data-update.yml">CI Update data
+…</a>).</p>
+</section>
+<section id="update-currencies-py">
+<h2><code class="docutils literal notranslate"><span class="pre">update_currencies.py</span></code><a class="headerlink" href="#update-currencies-py" title="Link to this heading">¶</a></h2>
+<p><a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/searxng_extra/update/update_currencies.py">[source]</a></p>
+<p id="module-searxng_extra.update.update_currencies">Fetch currencies from <a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/searx/engines/wikidata.py">git://searx/engines/wikidata.py</a> engine.</p>
+<p>Output file: <a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/searx/data/currencies.json">git://searx/data/currencies.json</a> (<a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/.github/workflows/data-update.yml">CI Update data …</a>).</p>
+</section>
+<section id="update-engine-descriptions-py">
+<h2><code class="docutils literal notranslate"><span class="pre">update_engine_descriptions.py</span></code><a class="headerlink" href="#update-engine-descriptions-py" title="Link to this heading">¶</a></h2>
+<p><a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/searxng_extra/update/update_engine_descriptions.py">[source]</a></p>
+<p id="module-searxng_extra.update.update_engine_descriptions">Fetch website description from websites and from
+<a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/searx/engines/wikidata.py">git://searx/engines/wikidata.py</a> engine.</p>
+<p>Output file: <a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/searx/data/engine_descriptions.json">git://searx/data/engine_descriptions.json</a>.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="searxng_extra.update.update_engine_descriptions.get_output">
+<span class="sig-prename descclassname"><span class="pre">searxng_extra.update.update_engine_descriptions.</span></span><span class="sig-name descname"><span class="pre">get_output</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/searxng_extra/update/update_engine_descriptions.html#get_output"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searxng_extra.update.update_engine_descriptions.get_output" title="Link to this definition">¶</a></dt>
+<dd><p>From descriptions[engine][language] = [description, source]
+To</p>
+<ul class="simple">
+<li><p>output[language][engine] = description_and_source</p></li>
+<li><dl class="simple">
+<dt>description_and_source can be:</dt><dd><ul>
+<li><p>[description, source]</p></li>
+<li><p>description (if source = “wikipedia”)</p></li>
+<li><p>[f”engine:lang”, “ref”] (reference to another existing description)</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</dd></dl>
+
+</section>
+<section id="update-external-bangs-py">
+<h2><code class="docutils literal notranslate"><span class="pre">update_external_bangs.py</span></code><a class="headerlink" href="#update-external-bangs-py" title="Link to this heading">¶</a></h2>
+<p><a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/searxng_extra/update/update_external_bangs.py">[source]</a></p>
+<p id="module-searxng_extra.update.update_external_bangs">Update <a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/searx/data/external_bangs.json">git://searx/data/external_bangs.json</a> using the duckduckgo bangs
+from <a class="reference internal" href="#searxng_extra.update.update_external_bangs.BANGS_URL" title="searxng_extra.update.update_external_bangs.BANGS_URL"><code class="xref py py-obj docutils literal notranslate"><span class="pre">BANGS_URL</span></code></a>.</p>
+<ul class="simple">
+<li><p><a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/.github/workflows/data-update.yml">CI Update data …</a></p></li>
+</ul>
+<dl class="py data">
+<dt class="sig sig-object py" id="searxng_extra.update.update_external_bangs.BANGS_URL">
+<span class="sig-prename descclassname"><span class="pre">searxng_extra.update.update_external_bangs.</span></span><span class="sig-name descname"><span class="pre">BANGS_URL</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'https://duckduckgo.com/bang.js'</span></em><a class="headerlink" href="#searxng_extra.update.update_external_bangs.BANGS_URL" title="Link to this definition">¶</a></dt>
+<dd><p>JSON file which contains the bangs.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="searxng_extra.update.update_external_bangs.merge_when_no_leaf">
+<span class="sig-prename descclassname"><span class="pre">searxng_extra.update.update_external_bangs.</span></span><span class="sig-name descname"><span class="pre">merge_when_no_leaf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/searxng_extra/update/update_external_bangs.html#merge_when_no_leaf"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searxng_extra.update.update_external_bangs.merge_when_no_leaf" title="Link to this definition">¶</a></dt>
+<dd><p>Minimize the number of nodes</p>
+<p><code class="docutils literal notranslate"><span class="pre">A</span> <span class="pre">-&gt;</span> <span class="pre">B</span> <span class="pre">-&gt;</span> <span class="pre">C</span></code></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">B</span></code> is child of <code class="docutils literal notranslate"><span class="pre">A</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">C</span></code> is child of <code class="docutils literal notranslate"><span class="pre">B</span></code></p></li>
+</ul>
+<p>If there are no <code class="docutils literal notranslate"><span class="pre">C</span></code> equals to <code class="docutils literal notranslate"><span class="pre">&lt;LEAF_KEY&gt;</span></code>, then each <code class="docutils literal notranslate"><span class="pre">C</span></code> are merged
+into <code class="docutils literal notranslate"><span class="pre">A</span></code>.  For example (5 nodes):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">d</span> <span class="o">-&gt;</span> <span class="n">d</span> <span class="o">-&gt;</span> <span class="n">g</span> <span class="o">-&gt;</span> <span class="o">&lt;</span><span class="n">LEAF_KEY</span><span class="o">&gt;</span> <span class="p">(</span><span class="n">ddg</span><span class="p">)</span>
+  <span class="o">-&gt;</span> <span class="n">i</span> <span class="o">-&gt;</span> <span class="n">g</span> <span class="o">-&gt;</span> <span class="o">&lt;</span><span class="n">LEAF_KEY</span><span class="o">&gt;</span> <span class="p">(</span><span class="n">dig</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>becomes (3 nodes):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">d</span> <span class="o">-&gt;</span> <span class="n">dg</span> <span class="o">-&gt;</span> <span class="o">&lt;</span><span class="n">LEAF_KEY</span><span class="o">&gt;</span>
+  <span class="o">-&gt;</span> <span class="n">ig</span> <span class="o">-&gt;</span> <span class="o">&lt;</span><span class="n">LEAF_KEY</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</section>
+<section id="update-firefox-version-py">
+<h2><code class="docutils literal notranslate"><span class="pre">update_firefox_version.py</span></code><a class="headerlink" href="#update-firefox-version-py" title="Link to this heading">¶</a></h2>
+<p><a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/searxng_extra/update/update_firefox_version.py">[source]</a></p>
+<p id="module-searxng_extra.update.update_firefox_version">Fetch firefox useragent signatures</p>
+<p>Output file: <a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/searx/data/useragents.json">git://searx/data/useragents.json</a> (<a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/.github/workflows/data-update.yml">CI Update data …</a>).</p>
+</section>
+<section id="update-engine-traits-py">
+<h2><code class="docutils literal notranslate"><span class="pre">update_engine_traits.py</span></code><a class="headerlink" href="#update-engine-traits-py" title="Link to this heading">¶</a></h2>
+<p><a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/searxng_extra/update/update_engine_traits.py">[source]</a></p>
+<p id="module-searxng_extra.update.update_engine_traits">Update <a class="reference internal" href="../engines/enginelib.html#searx.enginelib.traits.EngineTraitsMap" title="searx.enginelib.traits.EngineTraitsMap"><code class="xref py py-obj docutils literal notranslate"><span class="pre">searx.enginelib.traits.EngineTraitsMap</span></code></a> and <a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/searx/languages.py">git://searx/languages.py</a></p>
+<dl class="simple">
+<dt><a class="reference internal" href="../engines/enginelib.html#searx.enginelib.traits.EngineTraitsMap.ENGINE_TRAITS_FILE" title="searx.enginelib.traits.EngineTraitsMap.ENGINE_TRAITS_FILE"><code class="xref py py-obj docutils literal notranslate"><span class="pre">searx.enginelib.traits.EngineTraitsMap.ENGINE_TRAITS_FILE</span></code></a>:</dt><dd><p>Persistence of engines traits, fetched from the engines.</p>
+</dd>
+<dt><a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/searx/languages.py">git://searx/languages.py</a></dt><dd><p>Is generated  from intersecting each engine’s supported traits.</p>
+</dd>
+</dl>
+<p>The script <a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/searxng_extra/update/update_engine_traits.py">git://searxng_extra/update/update_engine_traits.py</a> is called in
+the <a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/.github/workflows/data-update.yml">CI Update data …</a></p>
+<dl class="py function">
+<dt class="sig sig-object py" id="searxng_extra.update.update_engine_traits.fetch_traits_map">
+<span class="sig-prename descclassname"><span class="pre">searxng_extra.update.update_engine_traits.</span></span><span class="sig-name descname"><span class="pre">fetch_traits_map</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/searxng_extra/update/update_engine_traits.html#fetch_traits_map"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searxng_extra.update.update_engine_traits.fetch_traits_map" title="Link to this definition">¶</a></dt>
+<dd><p>Fetches supported languages for each engine and writes json file with those.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="searxng_extra.update.update_engine_traits.filter_locales">
+<span class="sig-prename descclassname"><span class="pre">searxng_extra.update.update_engine_traits.</span></span><span class="sig-name descname"><span class="pre">filter_locales</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">traits_map</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../engines/enginelib.html#searx.enginelib.traits.EngineTraitsMap" title="searx.enginelib.traits.EngineTraitsMap"><span class="pre">EngineTraitsMap</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/searxng_extra/update/update_engine_traits.html#filter_locales"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searxng_extra.update.update_engine_traits.filter_locales" title="Link to this definition">¶</a></dt>
+<dd><p>Filter language &amp; region tags by a threshold.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="searxng_extra.update.update_engine_traits.UnicodeEscape">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">searxng_extra.update.update_engine_traits.</span></span><span class="sig-name descname"><span class="pre">UnicodeEscape</span></span><a class="reference internal" href="../../_modules/searxng_extra/update/update_engine_traits.html#UnicodeEscape"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searxng_extra.update.update_engine_traits.UnicodeEscape" title="Link to this definition">¶</a></dt>
+<dd><p>Escape unicode string in <a class="reference external" href="https://docs.python.org/3/library/pprint.html#pprint.pformat" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pprint.pformat</span></code></a></p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="searxng_extra.update.update_engine_traits.get_unicode_flag">
+<span class="sig-prename descclassname"><span class="pre">searxng_extra.update.update_engine_traits.</span></span><span class="sig-name descname"><span class="pre">get_unicode_flag</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">locale</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://babel.readthedocs.io/en/latest/api/core.html#babel.core.Locale" title="(in Babel v2.2)"><span class="pre">Locale</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/searxng_extra/update/update_engine_traits.html#get_unicode_flag"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searxng_extra.update.update_engine_traits.get_unicode_flag" title="Link to this definition">¶</a></dt>
+<dd><p>Determine a unicode flag (emoji) that fits to the <code class="docutils literal notranslate"><span class="pre">locale</span></code></p>
+</dd></dl>
+
+</section>
+<section id="update-osm-keys-tags-py">
+<span id="id2"></span><h2><code class="docutils literal notranslate"><span class="pre">update_osm_keys_tags.py</span></code><a class="headerlink" href="#update-osm-keys-tags-py" title="Link to this heading">¶</a></h2>
+<p><a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/searxng_extra/update/update_osm_keys_tags.py">[source]</a></p>
+<p id="module-searxng_extra.update.update_osm_keys_tags">Fetch OSM keys and tags.</p>
+<p>To get the i18n names, the scripts uses <a class="reference external" href="https://query.wikidata.org/">Wikidata Query Service</a> instead of for
+example <a class="reference external" href="https://taginfo.openstreetmap.org/taginfo/apidoc">OSM tags API</a> (side note: the actual change log from
+<a class="reference external" href="https://map.atownsend.org.uk/maps/map/changelog.html">map.atownsend.org.uk</a> might be useful to normalize OSM tags).</p>
+<p>Output file: <a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/searx/data/osm_keys_tags">git://searx/data/osm_keys_tags</a> (<a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/.github/workflows/data-update.yml">CI Update data …</a>).</p>
+<dl>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">SPARQL_TAGS_REQUEST</span></code> :</dt><dd><p>Wikidata SPARQL query that returns <em>type-categories</em> and <em>types</em>.  The
+returned tag is <code class="docutils literal notranslate"><span class="pre">Tag:{category}={type}</span></code> (see <code class="xref py py-func docutils literal notranslate"><span class="pre">get_tags()</span></code>).
+Example:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://taginfo.openstreetmap.org/tags/building=house#overview">https://taginfo.openstreetmap.org/tags/building=house#overview</a></p></li>
+<li><p><a class="reference external" href="https://wiki.openstreetmap.org/wiki/Tag:building%3Dhouse">https://wiki.openstreetmap.org/wiki/Tag:building%3Dhouse</a>
+at the bottom of the infobox (right side), there is a link to wikidata:
+<a class="reference external" href="https://www.wikidata.org/wiki/Q3947">https://www.wikidata.org/wiki/Q3947</a>
+see property “OpenStreetMap tag or key” (P1282)</p></li>
+<li><p><a class="reference external" href="https://wiki.openstreetmap.org/wiki/Tag%3Abuilding%3Dbungalow">https://wiki.openstreetmap.org/wiki/Tag%3Abuilding%3Dbungalow</a>
+<a class="reference external" href="https://www.wikidata.org/wiki/Q850107">https://www.wikidata.org/wiki/Q850107</a></p></li>
+</ul>
+</dd>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">SPARQL_KEYS_REQUEST</span></code> :</dt><dd><p>Wikidata SPARQL query that returns <em>keys</em>.  Example with “payment”:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://wiki.openstreetmap.org/wiki/Key%3Apayment">https://wiki.openstreetmap.org/wiki/Key%3Apayment</a>
+at the bottom of infobox (right side), there is a link to wikidata:
+<a class="reference external" href="https://www.wikidata.org/wiki/Q1148747">https://www.wikidata.org/wiki/Q1148747</a>
+link made using the “OpenStreetMap tag or key” property (P1282)
+to be confirm: there is a one wiki page per key ?</p></li>
+<li><p><a class="reference external" href="https://taginfo.openstreetmap.org/keys/payment#values">https://taginfo.openstreetmap.org/keys/payment#values</a></p></li>
+<li><p><a class="reference external" href="https://taginfo.openstreetmap.org/keys/payment:cash#values">https://taginfo.openstreetmap.org/keys/payment:cash#values</a></p></li>
+</ul>
+<p><code class="docutils literal notranslate"><span class="pre">rdfs:label</span></code> get all the labels without language selection
+(as opposed to SERVICE <code class="docutils literal notranslate"><span class="pre">wikibase:label</span></code>).</p>
+</dd>
+</dl>
+</section>
+<section id="update-pygments-py">
+<h2><code class="docutils literal notranslate"><span class="pre">update_pygments.py</span></code><a class="headerlink" href="#update-pygments-py" title="Link to this heading">¶</a></h2>
+<p><a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/searxng_extra/update/update_pygments.py">[source]</a></p>
+<p id="module-searxng_extra.update.update_pygments">Update pygments style</p>
+<p>Call this script after each upgrade of pygments</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="searxng_extra.update.update_pygments.Formatter">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">searxng_extra.update.update_pygments.</span></span><span class="sig-name descname"><span class="pre">Formatter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">options</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/searxng_extra/update/update_pygments.html#Formatter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searxng_extra.update.update_pygments.Formatter" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="update-locales-py">
+<span id="id3"></span><h2><code class="docutils literal notranslate"><span class="pre">update_locales.py</span></code><a class="headerlink" href="#update-locales-py" title="Link to this heading">¶</a></h2>
+<p><a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/searxng_extra/update/update_locales.py">[source]</a></p>
+<p id="module-searxng_extra.update.update_locales">Update locale names in <a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/searx/data/locales.json">git://searx/data/locales.json</a> used by
+<a class="reference internal" href="../../src/searx.locales.html#searx-locales"><span class="std std-ref">Locales</span></a></p>
+<ul class="simple">
+<li><p><a class="reference internal" href="../../src/searx.locales.html#searx.locales.RTL_LOCALES" title="searx.locales.RTL_LOCALES"><code class="xref py py-obj docutils literal notranslate"><span class="pre">searx.locales.RTL_LOCALES</span></code></a></p></li>
+<li><p><a class="reference internal" href="../../src/searx.locales.html#searx.locales.LOCALE_NAMES" title="searx.locales.LOCALE_NAMES"><code class="xref py py-obj docutils literal notranslate"><span class="pre">searx.locales.LOCALE_NAMES</span></code></a></p></li>
+</ul>
+<dl class="py function">
+<dt class="sig sig-object py" id="searxng_extra.update.update_locales.get_locale_descr">
+<span class="sig-prename descclassname"><span class="pre">searxng_extra.update.update_locales.</span></span><span class="sig-name descname"><span class="pre">get_locale_descr</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">locale</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://babel.readthedocs.io/en/latest/api/core.html#babel.core.Locale" title="(in Babel v2.2)"><span class="pre">Locale</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">tr_locale</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/searxng_extra/update/update_locales.html#get_locale_descr"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searxng_extra.update.update_locales.get_locale_descr" title="Link to this definition">¶</a></dt>
+<dd><p>Get locale name e.g. ‘Français - fr’ or ‘Português (Brasil) - pt-BR’</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>locale</strong> – instance of <code class="xref py py-class docutils literal notranslate"><span class="pre">Locale</span></code></p></li>
+<li><p><strong>tr_locale</strong> – name e.g. ‘fr’  or ‘pt_BR’ (delimiter is <em>underscore</em>)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="update-wikidata-units-py">
+<h2><code class="docutils literal notranslate"><span class="pre">update_wikidata_units.py</span></code><a class="headerlink" href="#update-wikidata-units-py" title="Link to this heading">¶</a></h2>
+<p><a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/searxng_extra/update/update_wikidata_units.py">[source]</a></p>
+<p id="module-searxng_extra.update.update_wikidata_units">Fetch units from <a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/searx/engines/wikidata.py">git://searx/engines/wikidata.py</a> engine.</p>
+<p>Output file: <a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/searx/data/wikidata_units.json">git://searx/data/wikidata_units.json</a> (<a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/.github/workflows/data-update.yml">CI Update data
+…</a>).</p>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+  <span id="sidebar-top"></span>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+  
+    
+            <p class="logo"><a href="../../index.html">
+              <img class="logo" src="../../_static/searxng-wordmark.svg" alt="Logo of SearXNG"/>
+            </a></p>
+  
+
+<h3><a href="../../index.html">Table of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../user/index.html">User information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../own-instance.html">Why use a private instance?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../admin/index.html">Administrator documentation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Developer documentation</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../quickstart.html">Development Quickstart</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../commits.html">Git Commits &amp; Change Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contribution_guide.html">How to contribute</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../extended_types.html">Extended Types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../engines/index.html">Engine Implementations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../result_types/index.html">Result Types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../templates.html">Simple Theme Templates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../search_api.html">Search API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../plugins/index.html">Plugins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../answerers/index.html">Answerers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../translation.html">Translation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../makefile.html">Makefile &amp; <code class="docutils literal notranslate"><span class="pre">./manage</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reST.html">reST primer</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Tooling box <code class="docutils literal notranslate"><span class="pre">searxng_extra</span></code></a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#"><code class="docutils literal notranslate"><span class="pre">searxng_extra/update/</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#update-ahmia-blacklist-py"><code class="docutils literal notranslate"><span class="pre">update_ahmia_blacklist.py</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#update-currencies-py"><code class="docutils literal notranslate"><span class="pre">update_currencies.py</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#update-engine-descriptions-py"><code class="docutils literal notranslate"><span class="pre">update_engine_descriptions.py</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#searxng_extra.update.update_engine_descriptions.get_output"><code class="docutils literal notranslate"><span class="pre">get_output()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="#update-external-bangs-py"><code class="docutils literal notranslate"><span class="pre">update_external_bangs.py</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#searxng_extra.update.update_external_bangs.BANGS_URL"><code class="docutils literal notranslate"><span class="pre">BANGS_URL</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="#searxng_extra.update.update_external_bangs.merge_when_no_leaf"><code class="docutils literal notranslate"><span class="pre">merge_when_no_leaf()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="#update-firefox-version-py"><code class="docutils literal notranslate"><span class="pre">update_firefox_version.py</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#update-engine-traits-py"><code class="docutils literal notranslate"><span class="pre">update_engine_traits.py</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#searxng_extra.update.update_engine_traits.fetch_traits_map"><code class="docutils literal notranslate"><span class="pre">fetch_traits_map()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="#searxng_extra.update.update_engine_traits.filter_locales"><code class="docutils literal notranslate"><span class="pre">filter_locales()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="#searxng_extra.update.update_engine_traits.UnicodeEscape"><code class="docutils literal notranslate"><span class="pre">UnicodeEscape</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="#searxng_extra.update.update_engine_traits.get_unicode_flag"><code class="docutils literal notranslate"><span class="pre">get_unicode_flag()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="#update-osm-keys-tags-py"><code class="docutils literal notranslate"><span class="pre">update_osm_keys_tags.py</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#update-pygments-py"><code class="docutils literal notranslate"><span class="pre">update_pygments.py</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#searxng_extra.update.update_pygments.Formatter"><code class="docutils literal notranslate"><span class="pre">Formatter</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="#update-locales-py"><code class="docutils literal notranslate"><span class="pre">update_locales.py</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#searxng_extra.update.update_locales.get_locale_descr"><code class="docutils literal notranslate"><span class="pre">get_locale_descr()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="#update-wikidata-units-py"><code class="docutils literal notranslate"><span class="pre">update_wikidata_units.py</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../utils/index.html">DevOps tooling box</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../src/index.html">Source-Code</a></li>
+</ul>
+
+  <h3>Project Links</h3>
+  <ul>
+    <li><a href="https://github.com/searxng/searxng/tree/master">Source</a>
+  
+    <li><a href="https://github.com/searxng/searxng/wiki">Wiki</a>
+  
+    <li><a href="https://searx.space">Public instances</a>
+  
+    <li><a href="https://github.com/searxng/searxng/issues">Issue Tracker</a>
+  </ul><h3>Navigation</h3>
+<ul>
+  <li><a href="../../index.html">Overview</a>
+    <ul>
+      <li><a href="../index.html">Developer documentation</a>
+        <ul>
+      <li><a href="index.html">Tooling box <code class="docutils literal notranslate"><span class="pre">searxng_extra</span></code></a>
+        <ul>
+          <li>Previous: <a href="index.html" title="previous chapter">Tooling box <code class="docutils literal notranslate"><span class="pre">searxng_extra</span></code></a>
+          <li>Next: <a href="../../utils/index.html" title="next chapter">DevOps tooling box</a></ul>
+      </li></ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/dev/searxng_extra/update.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright SearXNG team.
+    </div>
+  </body>
+</html>

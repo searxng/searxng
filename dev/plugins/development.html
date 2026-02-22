@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Plugin Development &#8212; SearXNG Documentation (2026.2.22+191818b86)</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=6625fa76" />
+    <link rel="stylesheet" type="text/css" href="../../_static/searxng.css?v=52e4ff28" />
+    <script src="../../_static/documentation_options.js?v=1b5d919e"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script data-project="searxng" data-version="2026.2.22+191818b86" src="../../_static/describe_version.js?v=fa7f30d0"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Built-in Plugins" href="builtins.html" />
+    <link rel="prev" title="Plugins" href="index.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="builtins.html" title="Built-in Plugins"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Plugins"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">SearXNG Documentation (2026.2.22+191818b86)</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >Developer documentation</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="index.html" accesskey="U">Plugins</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Plugin Development</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="module-searx.plugins">
+<span id="plugin-development"></span><span id="dev-plugin"></span><h1>Plugin Development<a class="headerlink" href="#module-searx.plugins" title="Link to this heading">¶</a></h1>
+<aside class="sidebar">
+<p class="sidebar-title">Further reading ..</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="../../admin/plugins.html#plugins-admin"><span class="std std-ref">List of plugins</span></a></p></li>
+<li><p><a class="reference internal" href="../../admin/settings/settings_plugins.html#settings-plugins"><span class="std std-ref">SearXNG settings</span></a></p></li>
+</ul>
+</aside>
+<p>Plugins can extend or replace functionality of various components of SearXNG.</p>
+<p>Entry points (hooks) define when a plugin runs.  Right now only three hooks are
+implemented.  So feel free to implement a hook if it fits the behaviour of your
+plugin / a plugin doesn’t need to implement all the hooks.</p>
+<ul class="simple">
+<li><p>pre search: <a class="reference internal" href="#searx.plugins.Plugin.pre_search" title="searx.plugins.Plugin.pre_search"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Plugin.pre_search</span></code></a></p></li>
+<li><p>post search: <a class="reference internal" href="#searx.plugins.Plugin.post_search" title="searx.plugins.Plugin.post_search"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Plugin.post_search</span></code></a></p></li>
+<li><p>on each result item: <a class="reference internal" href="#searx.plugins.Plugin.on_result" title="searx.plugins.Plugin.on_result"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Plugin.on_result</span></code></a></p></li>
+</ul>
+<p>Below you will find some examples, for more coding examples have a look at the
+built-in plugins <a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/searx/plugins/">git://searx/plugins/</a> or <a class="reference external" href="https://github.com/return42/tgwf-searx-plugins/">Only show green hosted results</a>.</p>
+<section id="add-answer-example">
+<h2>Add Answer example<a class="headerlink" href="#add-answer-example" title="Link to this heading">¶</a></h2>
+<p>Here is an example of a very simple plugin that adds a “Hello World” into the
+answer area:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">flask_babel</span><span class="w"> </span><span class="kn">import</span> <span class="n">gettext</span> <span class="k">as</span> <span class="n">_</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">searx.plugins</span><span class="w"> </span><span class="kn">import</span> <span class="n">Plugin</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">searx.result_types</span><span class="w"> </span><span class="kn">import</span> <span class="n">Answer</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">MyPlugin</span><span class="p">(</span><span class="n">Plugin</span><span class="p">):</span>
+
+    <span class="nb">id</span> <span class="o">=</span> <span class="s2">&quot;hello world&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">plg_cfg</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">plg_cfg</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">info</span> <span class="o">=</span> <span class="n">PluginInfo</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">_</span><span class="p">(</span><span class="s2">&quot;Hello&quot;</span><span class="p">),</span> <span class="n">description</span><span class="o">=</span><span class="n">_</span><span class="p">(</span><span class="s2">&quot;demo plugin&quot;</span><span class="p">))</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">post_search</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">search</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[</span> <span class="n">Answer</span><span class="p">(</span><span class="n">answer</span><span class="o">=</span><span class="s2">&quot;Hello World&quot;</span><span class="p">)</span> <span class="p">]</span>
+</pre></div>
+</div>
+</section>
+<section id="filter-urls-example">
+<span id="id1"></span><h2>Filter URLs example<a class="headerlink" href="#filter-urls-example" title="Link to this heading">¶</a></h2>
+<aside class="sidebar">
+<p class="sidebar-title">Further reading ..</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="../result_types/base_result.html#searx.result_types._base.Result.filter_urls" title="searx.result_types._base.Result.filter_urls"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Result.filter_urls(..)</span></code></a></p></li>
+</ul>
+</aside>
+<p>The <a class="reference internal" href="../result_types/base_result.html#searx.result_types._base.Result.filter_urls" title="searx.result_types._base.Result.filter_urls"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Result.filter_urls(..)</span></code></a>
+can be used to filter and/or modify URL fields.  In the following example, the
+filter function <code class="docutils literal notranslate"><span class="pre">my_url_filter</span></code>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">my_url_filter</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">field_name</span><span class="p">,</span> <span class="n">url_src</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span> <span class="o">|</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="k">if</span> <span class="s2">&quot;google&quot;</span> <span class="ow">in</span> <span class="n">url_src</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">False</span>              <span class="c1"># remove URL field from result</span>
+    <span class="k">if</span> <span class="s2">&quot;facebook&quot;</span> <span class="ow">in</span> <span class="n">url_src</span><span class="p">:</span>
+        <span class="n">new_url</span> <span class="o">=</span> <span class="n">url_src</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;facebook&quot;</span><span class="p">,</span> <span class="s2">&quot;fb-dummy&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">new_url</span>            <span class="c1"># return modified URL</span>
+    <span class="k">return</span> <span class="kc">True</span>                   <span class="c1"># leave URL in field unchanged</span>
+</pre></div>
+</div>
+<p>is applied to all URL fields in the <a class="reference internal" href="#searx.plugins.Plugin.on_result" title="searx.plugins.Plugin.on_result"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Plugin.on_result</span></code></a> hook:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">MyUrlFilter</span><span class="p">(</span><span class="n">Plugin</span><span class="p">):</span>
+    <span class="o">...</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">on_result</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">search</span><span class="p">,</span> <span class="n">result</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="n">result</span><span class="o">.</span><span class="n">filter_urls</span><span class="p">(</span><span class="n">my_url_filter</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">True</span>
+</pre></div>
+</div>
+</section>
+<section id="implementation">
+<h2>Implementation<a class="headerlink" href="#implementation" title="Link to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="searx.plugins.Plugin">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">searx.plugins.</span></span><span class="sig-name descname"><span class="pre">Plugin</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">plg_cfg</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#searx.plugins.PluginCfg" title="searx.plugins._core.PluginCfg"><span class="pre">PluginCfg</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/searx/plugins/_core.html#Plugin"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.plugins.Plugin" title="Link to this definition">¶</a></dt>
+<dd><p>Abstract base class of all Plugins.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="searx.plugins.Plugin.id">
+<span class="sig-name descname"><span class="pre">id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">''</span></em><a class="headerlink" href="#searx.plugins.Plugin.id" title="Link to this definition">¶</a></dt>
+<dd><p>The ID (suffix) in the HTML form.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="searx.plugins.Plugin.active">
+<span class="sig-name descname"><span class="pre">active</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.ClassVar" title="(in Python v3.14)"><span class="pre">ClassVar</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#searx.plugins.Plugin.active" title="Link to this definition">¶</a></dt>
+<dd><p>Plugin is enabled/disabled by default (<a class="reference internal" href="#searx.plugins.PluginCfg.active" title="searx.plugins.PluginCfg.active"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PluginCfg.active</span></code></a>).</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="searx.plugins.Plugin.keywords">
+<span class="sig-name descname"><span class="pre">keywords</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></em><a class="headerlink" href="#searx.plugins.Plugin.keywords" title="Link to this definition">¶</a></dt>
+<dd><p>Keywords in the search query that activate the plugin.  The <em>keyword</em> is
+the first word in a search query.  If a plugin should be executed regardless
+of the search query, the list of keywords should be empty (which is also the
+default in the base class for Plugins).</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="searx.plugins.Plugin.info">
+<span class="sig-name descname"><span class="pre">info</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#searx.plugins.PluginInfo" title="searx.plugins._core.PluginInfo"><span class="pre">PluginInfo</span></a></em><a class="headerlink" href="#searx.plugins.Plugin.info" title="Link to this definition">¶</a></dt>
+<dd><p>Information about the <em>plugin</em>, see <a class="reference internal" href="#searx.plugins.PluginInfo" title="searx.plugins.PluginInfo"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PluginInfo</span></code></a>.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="searx.plugins.Plugin.log">
+<span class="sig-name descname"><span class="pre">log</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/logging.html#logging.Logger" title="(in Python v3.14)"><span class="pre">Logger</span></a></em><a class="headerlink" href="#searx.plugins.Plugin.log" title="Link to this definition">¶</a></dt>
+<dd><p>A logger object, is automatically initialized when calling the
+constructor (if not already set in the subclass).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="searx.plugins.Plugin.init">
+<span class="sig-name descname"><span class="pre">init</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">app</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://flask.palletsprojects.com/en/stable/api/#flask.Flask" title="(in Flask v3.1.x)"><span class="pre">flask.Flask</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span></span><a class="reference internal" href="../../_modules/searx/plugins/_core.html#Plugin.init"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.plugins.Plugin.init" title="Link to this definition">¶</a></dt>
+<dd><p>Initialization of the plugin, the return value decides whether this
+plugin is active or not.  Initialization only takes place once, at the
+time the WEB application is set up.  The base method always returns
+<code class="docutils literal notranslate"><span class="pre">True</span></code>, the method can be overwritten in the inheritances,</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">True</span></code> plugin is active</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">False</span></code> plugin is inactive</p></li>
+</ul>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="searx.plugins.Plugin.pre_search">
+<span class="sig-name descname"><span class="pre">pre_search</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../extended_types.html#searx.extended_types.SXNG_Request" title="searx.extended_types.SXNG_Request"><span class="pre">SXNG_Request</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">search</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../src/searx.search.html#searx.search.SearchWithPlugins" title="searx.search.SearchWithPlugins"><span class="pre">SearchWithPlugins</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span></span><a class="reference internal" href="../../_modules/searx/plugins/_core.html#Plugin.pre_search"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.plugins.Plugin.pre_search" title="Link to this definition">¶</a></dt>
+<dd><p>Runs BEFORE the search request and returns a boolean:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">True</span></code> to continue the search</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">False</span></code> to stop the search</p></li>
+</ul>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="searx.plugins.Plugin.on_result">
+<span class="sig-name descname"><span class="pre">on_result</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../extended_types.html#searx.extended_types.SXNG_Request" title="searx.extended_types.SXNG_Request"><span class="pre">SXNG_Request</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">search</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../src/searx.search.html#searx.search.SearchWithPlugins" title="searx.search.SearchWithPlugins"><span class="pre">SearchWithPlugins</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">result</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../result_types/base_result.html#searx.result_types._base.Result" title="searx.result_types._base.Result"><span class="pre">Result</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span></span><a class="reference internal" href="../../_modules/searx/plugins/_core.html#Plugin.on_result"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.plugins.Plugin.on_result" title="Link to this definition">¶</a></dt>
+<dd><p>Runs for each result of each engine and returns a boolean:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">True</span></code> to keep the result</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">False</span></code> to remove the result from the result list</p></li>
+</ul>
+<p>The <code class="docutils literal notranslate"><span class="pre">result</span></code> can be modified to the needs.</p>
+<div class="admonition hint">
+<p class="admonition-title">Hint</p>
+<p>If <a class="reference internal" href="../result_types/base_result.html#searx.result_types._base.Result.url" title="searx.result_types._base.Result.url"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Result.url</span></code></a> is modified,
+<a class="reference internal" href="../result_types/base_result.html#searx.result_types._base.Result.parsed_url" title="searx.result_types._base.Result.parsed_url"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Result.parsed_url</span></code></a> must
+be changed accordingly:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">result</span><span class="p">[</span><span class="s2">&quot;parsed_url&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">urlparse</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="s2">&quot;url&quot;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="searx.plugins.Plugin.post_search">
+<span class="sig-name descname"><span class="pre">post_search</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../extended_types.html#searx.extended_types.SXNG_Request" title="searx.extended_types.SXNG_Request"><span class="pre">SXNG_Request</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">search</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../src/searx.search.html#searx.search.SearchWithPlugins" title="searx.search.SearchWithPlugins"><span class="pre">SearchWithPlugins</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../result_types/base_result.html#searx.result_types._base.Result" title="searx.result_types._base.Result"><span class="pre">Result</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference internal" href="../result_types/base_result.html#searx.result_types._base.LegacyResult" title="searx.result_types._base.LegacyResult"><span class="pre">LegacyResult</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference internal" href="../engines/index.html#searx.result_types.EngineResults" title="searx.result_types.EngineResults"><span class="pre">EngineResults</span></a></span></span><a class="reference internal" href="../../_modules/searx/plugins/_core.html#Plugin.post_search"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.plugins.Plugin.post_search" title="Link to this definition">¶</a></dt>
+<dd><p>Runs AFTER the search request.  Can return a list of
+<a class="reference internal" href="../result_types/base_result.html#searx.result_types._base.Result" title="searx.result_types._base.Result"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Result</span></code></a> objects to be added to the
+final result list.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="searx.plugins.PluginInfo">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">searx.plugins.</span></span><span class="sig-name descname"><span class="pre">PluginInfo</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id:</span> <span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name:</span> <span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">description:</span> <span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">preference_section:</span> <span class="pre">~typing.Literal['general'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'ui'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'privacy'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'query']</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">'general'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">examples:</span> <span class="pre">list[str]</span> <span class="pre">=</span> <span class="pre">&lt;factory&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keywords:</span> <span class="pre">list[str]</span> <span class="pre">=</span> <span class="pre">&lt;factory&gt;</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/searx/plugins/_core.html#PluginInfo"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.plugins.PluginInfo" title="Link to this definition">¶</a></dt>
+<dd><p>Object that holds information about a <em>plugin</em>, these infos are shown to
+the user in the Preferences menu.</p>
+<p>To be able to translate the information into other languages, the text must
+be written in English and translated with <a class="reference external" href="https://python-babel.github.io/flask-babel/index.html#flask_babel.gettext" title="(in Flask-Babel)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">flask_babel.gettext</span></code></a>.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="searx.plugins.PluginInfo.id">
+<span class="sig-name descname"><span class="pre">id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></em><a class="headerlink" href="#searx.plugins.PluginInfo.id" title="Link to this definition">¶</a></dt>
+<dd><p>The ID-selector in HTML/CSS <cite>#&lt;id&gt;</cite>.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="searx.plugins.PluginInfo.name">
+<span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></em><a class="headerlink" href="#searx.plugins.PluginInfo.name" title="Link to this definition">¶</a></dt>
+<dd><p>Name of the <em>plugin</em>.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="searx.plugins.PluginInfo.description">
+<span class="sig-name descname"><span class="pre">description</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></em><a class="headerlink" href="#searx.plugins.PluginInfo.description" title="Link to this definition">¶</a></dt>
+<dd><p>Short description of the <em>answerer</em>.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="searx.plugins.PluginInfo.preference_section">
+<span class="sig-name descname"><span class="pre">preference_section</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Literal" title="(in Python v3.14)"><span class="pre">Literal</span></a><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'general'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'ui'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'privacy'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'query'</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'general'</span></em><a class="headerlink" href="#searx.plugins.PluginInfo.preference_section" title="Link to this definition">¶</a></dt>
+<dd><p>Section (tab/group) in the preferences where this plugin is shown to the
+user.</p>
+<p>The value <code class="docutils literal notranslate"><span class="pre">query</span></code> is reserved for plugins that are activated via a
+<em>keyword</em> as part of a search query, see:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#searx.plugins.PluginInfo.examples" title="searx.plugins.PluginInfo.examples"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PluginInfo.examples</span></code></a></p></li>
+<li><p><a class="reference internal" href="#searx.plugins.Plugin.keywords" title="searx.plugins.Plugin.keywords"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Plugin.keywords</span></code></a></p></li>
+</ul>
+<p>Those plugins are shown in the preferences in tab <em>Special Queries</em>.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="searx.plugins.PluginInfo.examples">
+<span class="sig-name descname"><span class="pre">examples</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#searx.plugins.PluginInfo.examples" title="Link to this definition">¶</a></dt>
+<dd><p>List of short examples of the usage / of query terms.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="searx.plugins.PluginInfo.keywords">
+<span class="sig-name descname"><span class="pre">keywords</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#searx.plugins.PluginInfo.keywords" title="Link to this definition">¶</a></dt>
+<dd><p>See <a class="reference internal" href="#searx.plugins.Plugin.keywords" title="searx.plugins.Plugin.keywords"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Plugin.keywords</span></code></a></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="searx.plugins.PluginStorage">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">searx.plugins.</span></span><span class="sig-name descname"><span class="pre">PluginStorage</span></span><a class="reference internal" href="../../_modules/searx/plugins/_core.html#PluginStorage"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.plugins.PluginStorage" title="Link to this definition">¶</a></dt>
+<dd><p>A storage for managing the <em>plugins</em> of SearXNG.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="searx.plugins.PluginStorage.plugin_list">
+<span class="sig-name descname"><span class="pre">plugin_list</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#set" title="(in Python v3.14)"><span class="pre">set</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#searx.plugins.Plugin" title="searx.plugins._core.Plugin"><span class="pre">Plugin</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#searx.plugins.PluginStorage.plugin_list" title="Link to this definition">¶</a></dt>
+<dd><p>The list of <code class="xref py py-obj docutils literal notranslate"><span class="pre">Plugins</span></code> in this storage.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="searx.plugins.PluginStorage.load_settings">
+<span class="sig-name descname"><span class="pre">load_settings</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cfg</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.14)"><span class="pre">dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.14)"><span class="pre">dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.14)"><span class="pre">Any</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/searx/plugins/_core.html#PluginStorage.load_settings"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.plugins.PluginStorage.load_settings" title="Link to this definition">¶</a></dt>
+<dd><p>Load plugins configured in SearXNG’s settings <a class="reference internal" href="../../admin/settings/settings_plugins.html#settings-plugins"><span class="std std-ref">plugins:</span></a>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="searx.plugins.PluginStorage.register">
+<span class="sig-name descname"><span class="pre">register</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">plugin</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#searx.plugins.Plugin" title="searx.plugins._core.Plugin"><span class="pre">Plugin</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/searx/plugins/_core.html#PluginStorage.register"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.plugins.PluginStorage.register" title="Link to this definition">¶</a></dt>
+<dd><p>Register a <a class="reference internal" href="#searx.plugins.Plugin" title="searx.plugins.Plugin"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Plugin</span></code></a>.  In case of name collision (if two
+plugins have same ID) a <a class="reference external" href="https://docs.python.org/3/library/exceptions.html#KeyError" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">KeyError</span></code></a> exception is raised.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="searx.plugins.PluginStorage.init">
+<span class="sig-name descname"><span class="pre">init</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">app</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://flask.palletsprojects.com/en/stable/api/#flask.Flask" title="(in Flask v3.1.x)"><span class="pre">flask.Flask</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span></span><a class="reference internal" href="../../_modules/searx/plugins/_core.html#PluginStorage.init"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.plugins.PluginStorage.init" title="Link to this definition">¶</a></dt>
+<dd><p>Calls the method <a class="reference internal" href="#searx.plugins.Plugin.init" title="searx.plugins.Plugin.init"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Plugin.init</span></code></a> of each plugin in this
+storage.  Depending on its return value, the plugin is removed from
+<em>this</em> storage or not.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="searx.plugins.PluginStorage.post_search">
+<span class="sig-name descname"><span class="pre">post_search</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../extended_types.html#searx.extended_types.SXNG_Request" title="searx.extended_types.SXNG_Request"><span class="pre">SXNG_Request</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">search</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../src/searx.search.html#searx.search.SearchWithPlugins" title="searx.search.SearchWithPlugins"><span class="pre">SearchWithPlugins</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span></span><a class="reference internal" href="../../_modules/searx/plugins/_core.html#PluginStorage.post_search"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.plugins.PluginStorage.post_search" title="Link to this definition">¶</a></dt>
+<dd><p>Extend <code class="xref py py-obj docutils literal notranslate"><span class="pre">search.result_container</span>
+<span class="pre">&lt;searx.results.ResultContainer</span></code>&gt; with result items from plugins listed
+in <code class="xref py py-obj docutils literal notranslate"><span class="pre">search.user_plugins</span></code>.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="searx.plugins.PluginCfg">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">searx.plugins.</span></span><span class="sig-name descname"><span class="pre">PluginCfg</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">active</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/searx/plugins/_core.html#PluginCfg"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.plugins.PluginCfg" title="Link to this definition">¶</a></dt>
+<dd><p>Settings of a plugin.</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">mypackage.mymodule.MyPlugin</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">active</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+</pre></div>
+</div>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="searx.plugins.PluginCfg.active">
+<span class="sig-name descname"><span class="pre">active</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></em><a class="headerlink" href="#searx.plugins.PluginCfg.active" title="Link to this definition">¶</a></dt>
+<dd><p>Plugin is active by default and the user can <em>opt-out</em> in the preferences.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+  <span id="sidebar-top"></span>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+  
+    
+            <p class="logo"><a href="../../index.html">
+              <img class="logo" src="../../_static/searxng-wordmark.svg" alt="Logo of SearXNG"/>
+            </a></p>
+  
+
+<h3><a href="../../index.html">Table of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../user/index.html">User information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../own-instance.html">Why use a private instance?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../admin/index.html">Administrator documentation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Developer documentation</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../quickstart.html">Development Quickstart</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../commits.html">Git Commits &amp; Change Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contribution_guide.html">How to contribute</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../extended_types.html">Extended Types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../engines/index.html">Engine Implementations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../result_types/index.html">Result Types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../templates.html">Simple Theme Templates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../search_api.html">Search API</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Plugins</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Plugin Development</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#add-answer-example">Add Answer example</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#filter-urls-example">Filter URLs example</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#implementation">Implementation</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#searx.plugins.Plugin"><code class="docutils literal notranslate"><span class="pre">Plugin</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="#searx.plugins.PluginInfo"><code class="docutils literal notranslate"><span class="pre">PluginInfo</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="#searx.plugins.PluginStorage"><code class="docutils literal notranslate"><span class="pre">PluginStorage</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="#searx.plugins.PluginCfg"><code class="docutils literal notranslate"><span class="pre">PluginCfg</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="builtins.html">Built-in Plugins</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../answerers/index.html">Answerers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../translation.html">Translation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../makefile.html">Makefile &amp; <code class="docutils literal notranslate"><span class="pre">./manage</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reST.html">reST primer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../searxng_extra/index.html">Tooling box <code class="docutils literal notranslate"><span class="pre">searxng_extra</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../utils/index.html">DevOps tooling box</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../src/index.html">Source-Code</a></li>
+</ul>
+
+  <h3>Project Links</h3>
+  <ul>
+    <li><a href="https://github.com/searxng/searxng/tree/master">Source</a>
+  
+    <li><a href="https://github.com/searxng/searxng/wiki">Wiki</a>
+  
+    <li><a href="https://searx.space">Public instances</a>
+  
+    <li><a href="https://github.com/searxng/searxng/issues">Issue Tracker</a>
+  </ul><h3>Navigation</h3>
+<ul>
+  <li><a href="../../index.html">Overview</a>
+    <ul>
+      <li><a href="../index.html">Developer documentation</a>
+        <ul>
+      <li><a href="index.html">Plugins</a>
+        <ul>
+          <li>Previous: <a href="index.html" title="previous chapter">Plugins</a>
+          <li>Next: <a href="builtins.html" title="next chapter">Built-in Plugins</a></ul>
+      </li></ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/dev/plugins/development.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright SearXNG team.
+    </div>
+  </body>
+</html>

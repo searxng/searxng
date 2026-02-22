@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Custom message extractor (i18n) &#8212; SearXNG Documentation (2026.2.22+191818b86)</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=6625fa76" />
+    <link rel="stylesheet" type="text/css" href="../_static/searxng.css?v=52e4ff28" />
+    <script src="../_static/documentation_options.js?v=1b5d919e"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script data-project="searxng" data-version="2026.2.22+191818b86" src="../_static/describe_version.js?v=fa7f30d0"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Bot Detection" href="searx.botdetection.html" />
+    <link rel="prev" title="Source-Code" href="index.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="searx.botdetection.html" title="Bot Detection"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Source-Code"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">SearXNG Documentation (2026.2.22+191818b86)</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" accesskey="U">Source-Code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Custom message extractor (i18n)</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="module-searx.babel_extract">
+<span id="custom-message-extractor-i18n"></span><span id="searx-babel-extract"></span><h1>Custom message extractor (i18n)<a class="headerlink" href="#module-searx.babel_extract" title="Link to this heading">¶</a></h1>
+<p>This module implements the <a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/babel.cfg">searxng_msg</a> extractor to
+extract messages from:</p>
+<ul class="simple">
+<li><p><a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/searx/searxng.msg">git://searx/searxng.msg</a></p></li>
+</ul>
+<p>The <code class="docutils literal notranslate"><span class="pre">searxng.msg</span></code> files are selected by <a class="reference external" href="https://babel.pocoo.org/en/latest/index.html">Babel</a>, see Babel’s configuration in
+<a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/babel.cfg">git://babel.cfg</a>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">searxng_msg</span> <span class="o">=</span> <span class="n">searx</span><span class="o">.</span><span class="n">babel_extract</span><span class="o">.</span><span class="n">extract</span>
+<span class="o">...</span>
+<span class="p">[</span><span class="n">searxng_msg</span><span class="p">:</span> <span class="o">**/</span><span class="n">searxng</span><span class="o">.</span><span class="n">msg</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>A <code class="docutils literal notranslate"><span class="pre">searxng.msg</span></code> file is a python file that is <em>executed</em> by the
+<a class="reference internal" href="#searx.babel_extract.extract" title="searx.babel_extract.extract"><code class="xref py py-obj docutils literal notranslate"><span class="pre">extract</span></code></a> function.  Additional <code class="docutils literal notranslate"><span class="pre">searxng.msg</span></code> files can be added by:</p>
+<ol class="arabic simple">
+<li><p>Adding a <code class="docutils literal notranslate"><span class="pre">searxng.msg</span></code> file in one of the SearXNG python packages and</p></li>
+<li><p>implement a method in <a class="reference internal" href="#searx.babel_extract.extract" title="searx.babel_extract.extract"><code class="xref py py-obj docutils literal notranslate"><span class="pre">extract</span></code></a> that yields messages from this file.</p></li>
+</ol>
+<dl class="py function">
+<dt class="sig sig-object py" id="searx.babel_extract.extract">
+<span class="sig-prename descclassname"><span class="pre">searx.babel_extract.</span></span><span class="sig-name descname"><span class="pre">extract</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fileobj</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keywords</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">comment_tags</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">options</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/searx/babel_extract.html#extract"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.babel_extract.extract" title="Link to this definition">¶</a></dt>
+<dd><p>Extract messages from <code class="docutils literal notranslate"><span class="pre">searxng.msg</span></code> files by a custom <a class="reference external" href="https://babel.pocoo.org/en/latest/messages.html#writing-extraction-methods">extractor</a>.</p>
+</dd></dl>
+
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+  <span id="sidebar-top"></span>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+  
+    
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/searxng-wordmark.svg" alt="Logo of SearXNG"/>
+            </a></p>
+  
+
+<h3><a href="../index.html">Table of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../user/index.html">User information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../own-instance.html">Why use a private instance?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../admin/index.html">Administrator documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev/index.html">Developer documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../utils/index.html">DevOps tooling box</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Source-Code</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Custom message extractor (i18n)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#searx.babel_extract.extract"><code class="docutils literal notranslate"><span class="pre">extract()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="searx.botdetection.html">Bot Detection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.cache.html">Caches</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.exceptions.html">SearXNG Exceptions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.favicons.html">Favicons (source)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.infopage.html">Online <code class="docutils literal notranslate"><span class="pre">/info</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.locales.html">Locales</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.search.html">Search</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.search.processors.html">Search processors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.settings.html">Settings Loader</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.sqlitedb.html">SQLite DB</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.utils.html">Utility functions for the engines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.valkeydb.html">Valkey DB</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.valkeylib.html">Valkey Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.weather.html">Weather</a></li>
+</ul>
+</li>
+</ul>
+
+  <h3>Project Links</h3>
+  <ul>
+    <li><a href="https://github.com/searxng/searxng/tree/master">Source</a>
+  
+    <li><a href="https://github.com/searxng/searxng/wiki">Wiki</a>
+  
+    <li><a href="https://searx.space">Public instances</a>
+  
+    <li><a href="https://github.com/searxng/searxng/issues">Issue Tracker</a>
+  </ul><h3>Navigation</h3>
+<ul>
+  <li><a href="../index.html">Overview</a>
+    <ul>
+      <li><a href="index.html">Source-Code</a>
+        <ul>
+          <li>Previous: <a href="index.html" title="previous chapter">Source-Code</a>
+          <li>Next: <a href="searx.botdetection.html" title="next chapter">Bot Detection</a></ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/src/searx.babel_extract.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright SearXNG team.
+    </div>
+  </body>
+</html>

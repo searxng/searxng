@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>searx.autocomplete &#8212; SearXNG Documentation (2026.2.22+191818b86)</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=6625fa76" />
+    <link rel="stylesheet" type="text/css" href="../../_static/searxng.css?v=52e4ff28" />
+    <script src="../../_static/documentation_options.js?v=1b5d919e"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script data-project="searxng" data-version="2026.2.22+191818b86" src="../../_static/describe_version.js?v=fa7f30d0"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">SearXNG Documentation (2026.2.22+191818b86)</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">searx.autocomplete</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for searx.autocomplete</h1><div class="highlight"><pre>
+<span></span><span class="c1"># SPDX-License-Identifier: AGPL-3.0-or-later</span>
+<span class="sd">&quot;&quot;&quot;This module implements functions needed for the autocompleter.&quot;&quot;&quot;</span>
+<span class="c1"># pylint: disable=use-dict-literal</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">html</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">t</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">urllib.parse</span><span class="w"> </span><span class="kn">import</span> <span class="n">urlencode</span><span class="p">,</span> <span class="n">quote_plus</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">lxml.etree</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">lxml.html</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">httpx</span><span class="w"> </span><span class="kn">import</span> <span class="n">HTTPError</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">searx</span><span class="w"> </span><span class="kn">import</span> <span class="n">settings</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">searx.engines</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">engines</span><span class="p">,</span>
+    <span class="n">google</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">searx.network</span><span class="w"> </span><span class="kn">import</span> <span class="n">get</span> <span class="k">as</span> <span class="n">http_get</span><span class="p">,</span> <span class="n">post</span> <span class="k">as</span> <span class="n">http_post</span>  <span class="c1"># pyright: ignore[reportUnknownVariableType]</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">searx.exceptions</span><span class="w"> </span><span class="kn">import</span> <span class="n">SearxEngineResponseException</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">searx.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">extr</span><span class="p">,</span> <span class="n">gen_useragent</span>
+
+<span class="k">if</span> <span class="n">t</span><span class="o">.</span><span class="n">TYPE_CHECKING</span><span class="p">:</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">searx.extended_types</span><span class="w"> </span><span class="kn">import</span> <span class="n">SXNG_Response</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">update_kwargs</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>  <span class="c1"># type: ignore</span>
+    <span class="k">if</span> <span class="s1">&#39;timeout&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
+        <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;timeout&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">settings</span><span class="p">[</span><span class="s1">&#39;outgoing&#39;</span><span class="p">][</span><span class="s1">&#39;request_timeout&#39;</span><span class="p">]</span>
+    <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;raise_for_httperror&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">get</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;SXNG_Response&quot;</span><span class="p">:</span>  <span class="c1"># type: ignore</span>
+    <span class="n">update_kwargs</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>  <span class="c1"># pyright: ignore[reportUnknownArgumentType]</span>
+    <span class="k">return</span> <span class="n">http_get</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>  <span class="c1"># pyright: ignore[reportUnknownArgumentType]</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">post</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;SXNG_Response&quot;</span><span class="p">:</span>  <span class="c1"># type: ignore</span>
+    <span class="n">update_kwargs</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>  <span class="c1"># pyright: ignore[reportUnknownArgumentType]</span>
+    <span class="k">return</span> <span class="n">http_post</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>  <span class="c1"># pyright: ignore[reportUnknownArgumentType]</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">baidu</span><span class="p">(</span><span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">_sxng_locale</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+    <span class="c1"># baidu search autocompleter</span>
+    <span class="n">base_url</span> <span class="o">=</span> <span class="s2">&quot;https://www.baidu.com/sugrec?&quot;</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">get</span><span class="p">(</span><span class="n">base_url</span> <span class="o">+</span> <span class="n">urlencode</span><span class="p">({</span><span class="s1">&#39;ie&#39;</span><span class="p">:</span> <span class="s1">&#39;utf-8&#39;</span><span class="p">,</span> <span class="s1">&#39;json&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;prod&#39;</span><span class="p">:</span> <span class="s1">&#39;pc&#39;</span><span class="p">,</span> <span class="s1">&#39;wd&#39;</span><span class="p">:</span> <span class="n">query</span><span class="p">}))</span>
+    <span class="n">results</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">ok</span><span class="p">:</span>
+        <span class="n">data</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">t</span><span class="o">.</span><span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+        <span class="k">if</span> <span class="s1">&#39;g&#39;</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;g&#39;</span><span class="p">]:</span>
+                <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">item</span><span class="p">[</span><span class="s1">&#39;q&#39;</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">results</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">brave</span><span class="p">(</span><span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">_sxng_locale</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+    <span class="c1"># brave search autocompleter</span>
+    <span class="n">url</span> <span class="o">=</span> <span class="s1">&#39;https://search.brave.com/api/suggest?&#39;</span>
+    <span class="n">url</span> <span class="o">+=</span> <span class="n">urlencode</span><span class="p">({</span><span class="s1">&#39;q&#39;</span><span class="p">:</span> <span class="n">query</span><span class="p">})</span>
+    <span class="n">country</span> <span class="o">=</span> <span class="s1">&#39;all&#39;</span>
+    <span class="n">kwargs</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;cookies&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;country&#39;</span><span class="p">:</span> <span class="n">country</span><span class="p">}}</span>
+    <span class="n">resp</span> <span class="o">=</span> <span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="n">results</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">if</span> <span class="n">resp</span><span class="o">.</span><span class="n">ok</span><span class="p">:</span>
+        <span class="n">data</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="n">resp</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">data</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
+            <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">results</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">dbpedia</span><span class="p">(</span><span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">_sxng_locale</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+    <span class="n">autocomplete_url</span> <span class="o">=</span> <span class="s1">&#39;https://lookup.dbpedia.org/api/search.asmx/KeywordSearch?&#39;</span>
+    <span class="n">resp</span> <span class="o">=</span> <span class="n">get</span><span class="p">(</span><span class="n">autocomplete_url</span> <span class="o">+</span> <span class="n">urlencode</span><span class="p">(</span><span class="nb">dict</span><span class="p">(</span><span class="n">QueryString</span><span class="o">=</span><span class="n">query</span><span class="p">)))</span>
+    <span class="n">results</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">if</span> <span class="n">resp</span><span class="o">.</span><span class="n">ok</span><span class="p">:</span>
+        <span class="n">dom</span> <span class="o">=</span> <span class="n">lxml</span><span class="o">.</span><span class="n">etree</span><span class="o">.</span><span class="n">fromstring</span><span class="p">(</span><span class="n">resp</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
+        <span class="n">results</span> <span class="o">=</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">dom</span><span class="o">.</span><span class="n">xpath</span><span class="p">(</span><span class="s1">&#39;//Result/Label//text()&#39;</span><span class="p">)]</span>
+
+    <span class="k">return</span> <span class="n">results</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">duckduckgo</span><span class="p">(</span><span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">sxng_locale</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Autocomplete from DuckDuckGo. Supports DuckDuckGo&#39;s languages&quot;&quot;&quot;</span>
+
+    <span class="n">traits</span> <span class="o">=</span> <span class="n">engines</span><span class="p">[</span><span class="s1">&#39;duckduckgo&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">traits</span>
+    <span class="n">args</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;q&#39;</span><span class="p">:</span> <span class="n">query</span><span class="p">,</span>
+        <span class="s1">&#39;kl&#39;</span><span class="p">:</span> <span class="n">traits</span><span class="o">.</span><span class="n">get_region</span><span class="p">(</span><span class="n">sxng_locale</span><span class="p">,</span> <span class="n">traits</span><span class="o">.</span><span class="n">all_locale</span><span class="p">),</span>
+    <span class="p">}</span>
+
+    <span class="n">url</span> <span class="o">=</span> <span class="s1">&#39;https://duckduckgo.com/ac/?type=list&amp;&#39;</span> <span class="o">+</span> <span class="n">urlencode</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
+    <span class="n">resp</span> <span class="o">=</span> <span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+    <span class="n">results</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">if</span> <span class="n">resp</span><span class="o">.</span><span class="n">ok</span><span class="p">:</span>
+        <span class="n">j</span> <span class="o">=</span> <span class="n">resp</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">j</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">results</span> <span class="o">=</span> <span class="n">j</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">results</span>
+
+
+<div class="viewcode-block" id="google_complete">
+<a class="viewcode-back" href="../../dev/engines/online/google.html#searx.autocomplete.google_complete">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">google_complete</span><span class="p">(</span><span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">sxng_locale</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Autocomplete from Google.  Supports Google&#39;s languages and subdomains</span>
+<span class="sd">    (:py:obj:`searx.engines.google.get_google_info`) by using the async REST</span>
+<span class="sd">    API::</span>
+
+<span class="sd">        https://{subdomain}/complete/search?{args}</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">google_info</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">t</span><span class="o">.</span><span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">get_google_info</span><span class="p">({</span><span class="s1">&#39;searxng_locale&#39;</span><span class="p">:</span> <span class="n">sxng_locale</span><span class="p">},</span> <span class="n">engines</span><span class="p">[</span><span class="s1">&#39;google&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">traits</span><span class="p">)</span>
+    <span class="n">url</span> <span class="o">=</span> <span class="s1">&#39;https://</span><span class="si">{subdomain}</span><span class="s1">/complete/search?</span><span class="si">{args}</span><span class="s1">&#39;</span>
+    <span class="n">args</span> <span class="o">=</span> <span class="n">urlencode</span><span class="p">(</span>
+        <span class="p">{</span>
+            <span class="s1">&#39;q&#39;</span><span class="p">:</span> <span class="n">query</span><span class="p">,</span>
+            <span class="s1">&#39;client&#39;</span><span class="p">:</span> <span class="s1">&#39;gws-wiz&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;hl&#39;</span><span class="p">:</span> <span class="n">google_info</span><span class="p">[</span><span class="s1">&#39;params&#39;</span><span class="p">][</span><span class="s1">&#39;hl&#39;</span><span class="p">],</span>
+        <span class="p">}</span>
+    <span class="p">)</span>
+    <span class="n">results</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="n">resp</span> <span class="o">=</span> <span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">subdomain</span><span class="o">=</span><span class="n">google_info</span><span class="p">[</span><span class="s1">&#39;subdomain&#39;</span><span class="p">],</span> <span class="n">args</span><span class="o">=</span><span class="n">args</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">resp</span> <span class="ow">and</span> <span class="n">resp</span><span class="o">.</span><span class="n">ok</span><span class="p">:</span>
+        <span class="n">json_txt</span> <span class="o">=</span> <span class="n">resp</span><span class="o">.</span><span class="n">text</span><span class="p">[</span><span class="n">resp</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;[&#39;</span><span class="p">)</span> <span class="p">:</span> <span class="n">resp</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;]&#39;</span><span class="p">,</span> <span class="o">-</span><span class="mi">3</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">json_txt</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+            <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">lxml</span><span class="o">.</span><span class="n">html</span><span class="o">.</span><span class="n">fromstring</span><span class="p">(</span><span class="n">item</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">.</span><span class="n">text_content</span><span class="p">())</span>
+    <span class="k">return</span> <span class="n">results</span></div>
+
+
+
+<div class="viewcode-block" id="mwmbl">
+<a class="viewcode-back" href="../../dev/engines/online/mwmbl.html#searx.autocomplete.mwmbl">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">mwmbl</span><span class="p">(</span><span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">_sxng_locale</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Autocomplete from Mwmbl_.&quot;&quot;&quot;</span>
+
+    <span class="c1"># mwmbl autocompleter</span>
+    <span class="n">url</span> <span class="o">=</span> <span class="s1">&#39;https://api.mwmbl.org/search/complete?</span><span class="si">{query}</span><span class="s1">&#39;</span>
+
+    <span class="n">results</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">query</span><span class="o">=</span><span class="n">urlencode</span><span class="p">({</span><span class="s1">&#39;q&#39;</span><span class="p">:</span> <span class="n">query</span><span class="p">})))</span><span class="o">.</span><span class="n">json</span><span class="p">()[</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="c1"># results starting with `go:` are direct urls and not useful for auto completion</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">result</span> <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">results</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">result</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;go: &quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">result</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;search: &quot;</span><span class="p">)]</span></div>
+
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">naver</span><span class="p">(</span><span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">_sxng_locale</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+    <span class="c1"># Naver search autocompleter</span>
+    <span class="n">url</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;https://ac.search.naver.com/nx/ac?</span><span class="si">{</span><span class="n">urlencode</span><span class="p">({</span><span class="s1">&#39;q&#39;</span><span class="p">:</span><span class="w"> </span><span class="n">query</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;r_format&#39;</span><span class="p">:</span><span class="w"> </span><span class="s1">&#39;json&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;st&#39;</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">})</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+    <span class="n">results</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">ok</span><span class="p">:</span>
+        <span class="n">data</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">t</span><span class="o">.</span><span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;items&#39;</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;items&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]:</span>
+                <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">item</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">results</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">qihu360search</span><span class="p">(</span><span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">_sxng_locale</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+    <span class="c1"># 360Search search autocompleter</span>
+    <span class="n">url</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;https://sug.so.360.cn/suggest?</span><span class="si">{</span><span class="n">urlencode</span><span class="p">({</span><span class="s1">&#39;format&#39;</span><span class="p">:</span><span class="w"> </span><span class="s1">&#39;json&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;word&#39;</span><span class="p">:</span><span class="w"> </span><span class="n">query</span><span class="p">})</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+    <span class="n">results</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">ok</span><span class="p">:</span>
+        <span class="n">data</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">t</span><span class="o">.</span><span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+        <span class="k">if</span> <span class="s1">&#39;result&#39;</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;result&#39;</span><span class="p">]:</span>
+                <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">item</span><span class="p">[</span><span class="s1">&#39;word&#39;</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">results</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">quark</span><span class="p">(</span><span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">_sxng_locale</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+    <span class="c1"># Quark search autocompleter</span>
+    <span class="n">url</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;https://sugs.m.sm.cn/web?</span><span class="si">{</span><span class="n">urlencode</span><span class="p">({</span><span class="s1">&#39;q&#39;</span><span class="p">:</span><span class="w"> </span><span class="n">query</span><span class="p">})</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+    <span class="n">results</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">ok</span><span class="p">:</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="p">[]):</span>
+            <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">item</span><span class="p">[</span><span class="s1">&#39;w&#39;</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">results</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">seznam</span><span class="p">(</span><span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">_sxng_locale</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+    <span class="c1"># seznam search autocompleter</span>
+    <span class="n">url</span> <span class="o">=</span> <span class="s1">&#39;https://suggest.seznam.cz/fulltext/cs?</span><span class="si">{query}</span><span class="s1">&#39;</span>
+    <span class="n">resp</span> <span class="o">=</span> <span class="n">get</span><span class="p">(</span>
+        <span class="n">url</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="n">query</span><span class="o">=</span><span class="n">urlencode</span><span class="p">(</span>
+                <span class="p">{</span><span class="s1">&#39;phrase&#39;</span><span class="p">:</span> <span class="n">query</span><span class="p">,</span> <span class="s1">&#39;cursorPosition&#39;</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">query</span><span class="p">),</span> <span class="s1">&#39;format&#39;</span><span class="p">:</span> <span class="s1">&#39;json-2&#39;</span><span class="p">,</span> <span class="s1">&#39;highlight&#39;</span><span class="p">:</span> <span class="s1">&#39;1&#39;</span><span class="p">,</span> <span class="s1">&#39;count&#39;</span><span class="p">:</span> <span class="s1">&#39;6&#39;</span><span class="p">}</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
+    <span class="p">)</span>
+    <span class="n">results</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">if</span> <span class="n">resp</span><span class="o">.</span><span class="n">ok</span><span class="p">:</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">resp</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+        <span class="n">results</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">part</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;text&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span> <span class="k">for</span> <span class="n">part</span> <span class="ow">in</span> <span class="n">item</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;text&#39;</span><span class="p">,</span> <span class="p">[])])</span>
+            <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;result&#39;</span><span class="p">,</span> <span class="p">[])</span>
+            <span class="k">if</span> <span class="n">item</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;itemType&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="o">==</span> <span class="s1">&#39;ItemType.TEXT&#39;</span>
+        <span class="p">]</span>
+    <span class="k">return</span> <span class="n">results</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">sogou</span><span class="p">(</span><span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">_sxng_locale</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+    <span class="c1"># Sogou search autocompleter</span>
+    <span class="n">base_url</span> <span class="o">=</span> <span class="s2">&quot;https://sor.html5.qq.com/api/getsug?&quot;</span>
+    <span class="n">resp</span> <span class="o">=</span> <span class="n">get</span><span class="p">(</span><span class="n">base_url</span> <span class="o">+</span> <span class="n">urlencode</span><span class="p">({</span><span class="s1">&#39;m&#39;</span><span class="p">:</span> <span class="s1">&#39;searxng&#39;</span><span class="p">,</span> <span class="s1">&#39;key&#39;</span><span class="p">:</span> <span class="n">query</span><span class="p">}))</span>
+    <span class="n">results</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">if</span> <span class="n">resp</span><span class="o">.</span><span class="n">ok</span><span class="p">:</span>
+        <span class="n">raw_json</span> <span class="o">=</span> <span class="n">extr</span><span class="p">(</span><span class="n">resp</span><span class="o">.</span><span class="n">text</span><span class="p">,</span> <span class="s2">&quot;[&quot;</span><span class="p">,</span> <span class="s2">&quot;]&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[</span><span class="si">{</span><span class="n">raw_json</span><span class="si">}</span><span class="s2">]]&quot;</span><span class="p">)</span>
+            <span class="n">results</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">except</span> <span class="n">json</span><span class="o">.</span><span class="n">JSONDecodeError</span><span class="p">:</span>
+            <span class="k">pass</span>
+    <span class="k">return</span> <span class="n">results</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">startpage</span><span class="p">(</span><span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">sxng_locale</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Autocomplete from Startpage&#39;s Firefox extension.</span>
+<span class="sd">    Supports the languages specified in lang_map.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">lang_map</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;da&#39;</span><span class="p">:</span> <span class="s1">&#39;dansk&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;de&#39;</span><span class="p">:</span> <span class="s1">&#39;deutsch&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;en&#39;</span><span class="p">:</span> <span class="s1">&#39;english&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;es&#39;</span><span class="p">:</span> <span class="s1">&#39;espanol&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;fr&#39;</span><span class="p">:</span> <span class="s1">&#39;francais&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;nb&#39;</span><span class="p">:</span> <span class="s1">&#39;norsk&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;nl&#39;</span><span class="p">:</span> <span class="s1">&#39;nederlands&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;pl&#39;</span><span class="p">:</span> <span class="s1">&#39;polski&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;pt&#39;</span><span class="p">:</span> <span class="s1">&#39;portugues&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;sv&#39;</span><span class="p">:</span> <span class="s1">&#39;svenska&#39;</span><span class="p">,</span>
+    <span class="p">}</span>
+
+    <span class="n">base_lang</span> <span class="o">=</span> <span class="n">sxng_locale</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">lui</span> <span class="o">=</span> <span class="n">lang_map</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">base_lang</span><span class="p">,</span> <span class="s1">&#39;english&#39;</span><span class="p">)</span>
+
+    <span class="n">url_params</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;q&#39;</span><span class="p">:</span> <span class="n">query</span><span class="p">,</span>
+        <span class="s1">&#39;format&#39;</span><span class="p">:</span> <span class="s1">&#39;opensearch&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;segment&#39;</span><span class="p">:</span> <span class="s1">&#39;startpage.defaultffx&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;lui&#39;</span><span class="p">:</span> <span class="n">lui</span><span class="p">,</span>
+    <span class="p">}</span>
+    <span class="n">url</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;https://www.startpage.com/suggestions?</span><span class="si">{</span><span class="n">urlencode</span><span class="p">(</span><span class="n">url_params</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span>
+
+    <span class="c1"># Needs user agent, returns a 204 otherwise</span>
+    <span class="n">h</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;User-Agent&#39;</span><span class="p">:</span> <span class="n">gen_useragent</span><span class="p">()}</span>
+
+    <span class="n">resp</span> <span class="o">=</span> <span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">h</span><span class="p">)</span>
+    <span class="n">results</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">if</span> <span class="n">resp</span><span class="o">.</span><span class="n">ok</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="n">resp</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">2</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="nb">list</span><span class="p">):</span>
+                <span class="n">results</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">except</span> <span class="n">json</span><span class="o">.</span><span class="n">JSONDecodeError</span><span class="p">:</span>
+            <span class="k">pass</span>
+
+    <span class="k">return</span> <span class="n">results</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">stract</span><span class="p">(</span><span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">_sxng_locale</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+    <span class="c1"># stract autocompleter (beta)</span>
+    <span class="n">url</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;https://stract.com/beta/api/autosuggest?q=</span><span class="si">{</span><span class="n">quote_plus</span><span class="p">(</span><span class="n">query</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="n">resp</span> <span class="o">=</span> <span class="n">post</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+    <span class="n">results</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">if</span> <span class="n">resp</span><span class="o">.</span><span class="n">ok</span><span class="p">:</span>
+        <span class="n">results</span> <span class="o">=</span> <span class="p">[</span><span class="n">html</span><span class="o">.</span><span class="n">unescape</span><span class="p">(</span><span class="n">suggestion</span><span class="p">[</span><span class="s1">&#39;raw&#39;</span><span class="p">])</span> <span class="k">for</span> <span class="n">suggestion</span> <span class="ow">in</span> <span class="n">resp</span><span class="o">.</span><span class="n">json</span><span class="p">()]</span>
+
+    <span class="k">return</span> <span class="n">results</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">swisscows</span><span class="p">(</span><span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">_sxng_locale</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+    <span class="c1"># swisscows autocompleter</span>
+    <span class="n">url</span> <span class="o">=</span> <span class="s1">&#39;https://swisscows.ch/api/suggest?</span><span class="si">{query}</span><span class="s1">&amp;itemsCount=5&#39;</span>
+    <span class="n">results</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">query</span><span class="o">=</span><span class="n">urlencode</span><span class="p">({</span><span class="s1">&#39;query&#39;</span><span class="p">:</span> <span class="n">query</span><span class="p">})))</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">results</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">qwant</span><span class="p">(</span><span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">sxng_locale</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Autocomplete from Qwant. Supports Qwant&#39;s regions.&quot;&quot;&quot;</span>
+    <span class="n">locale</span> <span class="o">=</span> <span class="n">engines</span><span class="p">[</span><span class="s1">&#39;qwant&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">traits</span><span class="o">.</span><span class="n">get_region</span><span class="p">(</span><span class="n">sxng_locale</span><span class="p">,</span> <span class="s1">&#39;en_US&#39;</span><span class="p">)</span>
+    <span class="n">url</span> <span class="o">=</span> <span class="s1">&#39;https://api.qwant.com/v3/suggest?</span><span class="si">{query}</span><span class="s1">&#39;</span>
+    <span class="n">resp</span> <span class="o">=</span> <span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">query</span><span class="o">=</span><span class="n">urlencode</span><span class="p">({</span><span class="s1">&#39;q&#39;</span><span class="p">:</span> <span class="n">query</span><span class="p">,</span> <span class="s1">&#39;locale&#39;</span><span class="p">:</span> <span class="n">locale</span><span class="p">,</span> <span class="s1">&#39;version&#39;</span><span class="p">:</span> <span class="s1">&#39;2&#39;</span><span class="p">})))</span>
+    <span class="n">results</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">if</span> <span class="n">resp</span><span class="o">.</span><span class="n">ok</span><span class="p">:</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">resp</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;status&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;success&#39;</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;data&#39;</span><span class="p">][</span><span class="s1">&#39;items&#39;</span><span class="p">]:</span>
+                <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">item</span><span class="p">[</span><span class="s1">&#39;value&#39;</span><span class="p">])</span>
+
+    <span class="k">return</span> <span class="n">results</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">wikipedia</span><span class="p">(</span><span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">sxng_locale</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Autocomplete from Wikipedia. Supports Wikipedia&#39;s languages (aka netloc).&quot;&quot;&quot;</span>
+    <span class="n">eng_traits</span> <span class="o">=</span> <span class="n">engines</span><span class="p">[</span><span class="s1">&#39;wikipedia&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">traits</span>
+    <span class="n">wiki_lang</span> <span class="o">=</span> <span class="n">eng_traits</span><span class="o">.</span><span class="n">get_language</span><span class="p">(</span><span class="n">sxng_locale</span><span class="p">,</span> <span class="s1">&#39;en&#39;</span><span class="p">)</span>
+    <span class="n">wiki_netloc</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">eng_traits</span><span class="o">.</span><span class="n">custom</span><span class="p">[</span><span class="s1">&#39;wiki_netloc&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">wiki_lang</span><span class="p">,</span> <span class="s1">&#39;en.wikipedia.org&#39;</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
+
+    <span class="n">args</span> <span class="o">=</span> <span class="n">urlencode</span><span class="p">(</span>
+        <span class="p">{</span>
+            <span class="s1">&#39;action&#39;</span><span class="p">:</span> <span class="s1">&#39;opensearch&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;format&#39;</span><span class="p">:</span> <span class="s1">&#39;json&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;formatversion&#39;</span><span class="p">:</span> <span class="s1">&#39;2&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;search&#39;</span><span class="p">:</span> <span class="n">query</span><span class="p">,</span>
+            <span class="s1">&#39;namespace&#39;</span><span class="p">:</span> <span class="s1">&#39;0&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;limit&#39;</span><span class="p">:</span> <span class="s1">&#39;10&#39;</span><span class="p">,</span>
+        <span class="p">}</span>
+    <span class="p">)</span>
+    <span class="n">resp</span> <span class="o">=</span> <span class="n">get</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;https://</span><span class="si">{</span><span class="n">wiki_netloc</span><span class="si">}</span><span class="s1">/w/api.php?</span><span class="si">{</span><span class="n">args</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">results</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">if</span> <span class="n">resp</span><span class="o">.</span><span class="n">ok</span><span class="p">:</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">resp</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">results</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="k">return</span> <span class="n">results</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">yandex</span><span class="p">(</span><span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">_sxng_locale</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+    <span class="c1"># yandex autocompleter</span>
+    <span class="n">url</span> <span class="o">=</span> <span class="s2">&quot;https://suggest.yandex.com/suggest-ff.cgi?</span><span class="si">{0}</span><span class="s2">&quot;</span>
+    <span class="n">resp</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">urlencode</span><span class="p">(</span><span class="nb">dict</span><span class="p">(</span><span class="n">part</span><span class="o">=</span><span class="n">query</span><span class="p">))))</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+    <span class="n">results</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">results</span> <span class="o">=</span> <span class="n">resp</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">results</span>
+
+
+<span class="n">backends</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">t</span><span class="o">.</span><span class="n">Callable</span><span class="p">[[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]]]</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;360search&#39;</span><span class="p">:</span> <span class="n">qihu360search</span><span class="p">,</span>
+    <span class="s1">&#39;baidu&#39;</span><span class="p">:</span> <span class="n">baidu</span><span class="p">,</span>
+    <span class="s1">&#39;brave&#39;</span><span class="p">:</span> <span class="n">brave</span><span class="p">,</span>
+    <span class="s1">&#39;dbpedia&#39;</span><span class="p">:</span> <span class="n">dbpedia</span><span class="p">,</span>
+    <span class="s1">&#39;duckduckgo&#39;</span><span class="p">:</span> <span class="n">duckduckgo</span><span class="p">,</span>
+    <span class="s1">&#39;google&#39;</span><span class="p">:</span> <span class="n">google_complete</span><span class="p">,</span>
+    <span class="s1">&#39;mwmbl&#39;</span><span class="p">:</span> <span class="n">mwmbl</span><span class="p">,</span>
+    <span class="s1">&#39;naver&#39;</span><span class="p">:</span> <span class="n">naver</span><span class="p">,</span>
+    <span class="s1">&#39;quark&#39;</span><span class="p">:</span> <span class="n">quark</span><span class="p">,</span>
+    <span class="s1">&#39;qwant&#39;</span><span class="p">:</span> <span class="n">qwant</span><span class="p">,</span>
+    <span class="s1">&#39;seznam&#39;</span><span class="p">:</span> <span class="n">seznam</span><span class="p">,</span>
+    <span class="s1">&#39;sogou&#39;</span><span class="p">:</span> <span class="n">sogou</span><span class="p">,</span>
+    <span class="s1">&#39;startpage&#39;</span><span class="p">:</span> <span class="n">startpage</span><span class="p">,</span>
+    <span class="s1">&#39;stract&#39;</span><span class="p">:</span> <span class="n">stract</span><span class="p">,</span>
+    <span class="s1">&#39;swisscows&#39;</span><span class="p">:</span> <span class="n">swisscows</span><span class="p">,</span>
+    <span class="s1">&#39;wikipedia&#39;</span><span class="p">:</span> <span class="n">wikipedia</span><span class="p">,</span>
+    <span class="s1">&#39;yandex&#39;</span><span class="p">:</span> <span class="n">yandex</span><span class="p">,</span>
+<span class="p">}</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">search_autocomplete</span><span class="p">(</span><span class="n">backend_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">sxng_locale</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+    <span class="n">backend</span> <span class="o">=</span> <span class="n">backends</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">backend_name</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">backend</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">[]</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">backend</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">sxng_locale</span><span class="p">)</span>
+    <span class="k">except</span> <span class="p">(</span><span class="n">HTTPError</span><span class="p">,</span> <span class="n">SearxEngineResponseException</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[]</span>
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+  <span id="sidebar-top"></span>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+  
+    
+            <p class="logo"><a href="../../index.html">
+              <img class="logo" src="../../_static/searxng-wordmark.svg" alt="Logo of SearXNG"/>
+            </a></p>
+  
+
+<h3><a href="../../index.html">Table of Contents</a></h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../user/index.html">User information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../own-instance.html">Why use a private instance?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../admin/index.html">Administrator documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dev/index.html">Developer documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../utils/index.html">DevOps tooling box</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../src/index.html">Source-Code</a></li>
+</ul>
+
+  <h3>Project Links</h3>
+  <ul>
+    <li><a href="https://github.com/searxng/searxng/tree/master">Source</a>
+  
+    <li><a href="https://github.com/searxng/searxng/wiki">Wiki</a>
+  
+    <li><a href="https://searx.space">Public instances</a>
+  
+    <li><a href="https://github.com/searxng/searxng/issues">Issue Tracker</a>
+  </ul><h3>Navigation</h3>
+<ul>
+  <li><a href="../../index.html">Overview</a>
+    <ul>
+      <li><a href="../index.html">Module code</a>
+        
+          
+          </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright SearXNG team.
+    </div>
+  </body>
+</html>

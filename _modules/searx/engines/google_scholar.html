@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>searx.engines.google_scholar &#8212; SearXNG Documentation (2026.2.22+191818b86)</title>
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=6625fa76" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/searxng.css?v=52e4ff28" />
+    <script src="../../../_static/documentation_options.js?v=1b5d919e"></script>
+    <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script data-project="searxng" data-version="2026.2.22+191818b86" src="../../../_static/describe_version.js?v=fa7f30d0"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">SearXNG Documentation (2026.2.22+191818b86)</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" >Module code</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../engines.html" accesskey="U">searx.engines</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">searx.engines.google_scholar</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for searx.engines.google_scholar</h1><div class="highlight"><pre>
+<span></span><span class="c1"># SPDX-License-Identifier: AGPL-3.0-or-later</span>
+<span class="sd">&quot;&quot;&quot;Google Scholar is a freely accessible web search engine that indexes the full</span>
+<span class="sd">text or metadata of scholarly literature across an array of publishing formats</span>
+<span class="sd">and disciplines.</span>
+
+<span class="sd">Compared to other Google services the Scholar engine has a simple GET REST-API</span>
+<span class="sd">and there does not exists ``async`` API.  Even though the API slightly vintage</span>
+<span class="sd">we can make use of the :ref:`google API` to assemble the arguments of the GET</span>
+<span class="sd">request.</span>
+
+<span class="sd">Configuration</span>
+<span class="sd">=============</span>
+
+<span class="sd">.. code:: yaml</span>
+
+<span class="sd">  - name: google scholar</span>
+<span class="sd">    engine: google_scholar</span>
+<span class="sd">    shortcut: gos</span>
+
+<span class="sd">Implementations</span>
+<span class="sd">===============</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">t</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">urllib.parse</span><span class="w"> </span><span class="kn">import</span> <span class="n">urlencode</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">lxml</span><span class="w"> </span><span class="kn">import</span> <span class="n">html</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">httpx</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">searx.utils</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">eval_xpath</span><span class="p">,</span>
+    <span class="n">eval_xpath_getindex</span><span class="p">,</span>
+    <span class="n">eval_xpath_list</span><span class="p">,</span>
+    <span class="n">extract_text</span><span class="p">,</span>
+    <span class="n">ElementType</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">searx.exceptions</span><span class="w"> </span><span class="kn">import</span> <span class="n">SearxEngineCaptchaException</span><span class="p">,</span> <span class="n">SearxEngineAccessDeniedException</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">searx.engines.google</span><span class="w"> </span><span class="kn">import</span> <span class="n">fetch_traits</span>  <span class="c1"># pylint: disable=unused-import</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">searx.engines.google</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">get_google_info</span><span class="p">,</span>
+    <span class="n">time_range_dict</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">searx.result_types</span><span class="w"> </span><span class="kn">import</span> <span class="n">EngineResults</span>
+
+<span class="k">if</span> <span class="n">t</span><span class="o">.</span><span class="n">TYPE_CHECKING</span><span class="p">:</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">searx.extended_types</span><span class="w"> </span><span class="kn">import</span> <span class="n">SXNG_Response</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">searx.search.processors</span><span class="w"> </span><span class="kn">import</span> <span class="n">OnlineParams</span>
+
+<span class="n">about</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;website&quot;</span><span class="p">:</span> <span class="s2">&quot;https://scholar.google.com&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;wikidata_id&quot;</span><span class="p">:</span> <span class="s2">&quot;Q494817&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;official_api_documentation&quot;</span><span class="p">:</span> <span class="s2">&quot;https://developers.google.com/custom-search&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;use_official_api&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="s2">&quot;require_api_key&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="s2">&quot;results&quot;</span><span class="p">:</span> <span class="s2">&quot;HTML&quot;</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="c1"># engine dependent config</span>
+<span class="n">categories</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;science&quot;</span><span class="p">,</span> <span class="s2">&quot;scientific publications&quot;</span><span class="p">]</span>
+<span class="n">paging</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">max_page</span> <span class="o">=</span> <span class="mi">50</span>
+<span class="sd">&quot;&quot;&quot;`Google max 50 pages`_</span>
+
+<span class="sd">.. _Google max 50 pages: https://github.com/searxng/searxng/issues/2982</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="n">language_support</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">time_range_support</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">safesearch</span> <span class="o">=</span> <span class="kc">False</span>
+
+
+<div class="viewcode-block" id="request">
+<a class="viewcode-back" href="../../../dev/engines/online/google.html#searx.engines.google_scholar.request">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">request</span><span class="p">(</span><span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">params</span><span class="p">:</span> <span class="s2">&quot;OnlineParams&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Google-Scholar search request&quot;&quot;&quot;</span>
+
+    <span class="n">google_info</span> <span class="o">=</span> <span class="n">get_google_info</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">traits</span><span class="p">)</span>
+    <span class="c1"># subdomain is: scholar.google.xy</span>
+    <span class="n">google_info</span><span class="p">[</span><span class="s2">&quot;subdomain&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">google_info</span><span class="p">[</span><span class="s2">&quot;subdomain&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;www.&quot;</span><span class="p">,</span> <span class="s2">&quot;scholar.&quot;</span><span class="p">)</span>
+
+    <span class="n">args</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;q&quot;</span><span class="p">:</span> <span class="n">query</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">google_info</span><span class="p">[</span><span class="s2">&quot;params&quot;</span><span class="p">],</span>
+        <span class="s2">&quot;start&quot;</span><span class="p">:</span> <span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="s2">&quot;pageno&quot;</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="mi">10</span><span class="p">,</span>
+        <span class="s2">&quot;as_sdt&quot;</span><span class="p">:</span> <span class="s2">&quot;2007&quot;</span><span class="p">,</span>  <span class="c1"># include patents / to disable set &quot;0,5&quot;</span>
+        <span class="s2">&quot;as_vis&quot;</span><span class="p">:</span> <span class="s2">&quot;0&quot;</span><span class="p">,</span>  <span class="c1"># include citations / to disable set &quot;1&quot;</span>
+    <span class="p">}</span>
+    <span class="n">args</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">time_range_args</span><span class="p">(</span><span class="n">params</span><span class="p">))</span>
+
+    <span class="n">params</span><span class="p">[</span><span class="s2">&quot;url&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;https://&quot;</span> <span class="o">+</span> <span class="n">google_info</span><span class="p">[</span><span class="s2">&quot;subdomain&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot;/scholar?&quot;</span> <span class="o">+</span> <span class="n">urlencode</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
+    <span class="n">params</span><span class="p">[</span><span class="s2">&quot;cookies&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">google_info</span><span class="p">[</span><span class="s2">&quot;cookies&quot;</span><span class="p">]</span>
+    <span class="n">params</span><span class="p">[</span><span class="s2">&quot;headers&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">google_info</span><span class="p">[</span><span class="s2">&quot;headers&quot;</span><span class="p">])</span></div>
+
+
+
+<div class="viewcode-block" id="response">
+<a class="viewcode-back" href="../../../dev/engines/online/google.html#searx.engines.google_scholar.response">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">response</span><span class="p">(</span><span class="n">resp</span><span class="p">:</span> <span class="s2">&quot;SXNG_Response&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">EngineResults</span><span class="p">:</span>  <span class="c1"># pylint: disable=too-many-locals</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Parse response from Google Scholar&quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="n">resp</span><span class="o">.</span><span class="n">status_code</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">301</span><span class="p">,</span> <span class="mi">302</span><span class="p">,</span> <span class="mi">303</span><span class="p">,</span> <span class="mi">307</span><span class="p">,</span> <span class="mi">308</span><span class="p">)</span> <span class="ow">and</span> <span class="s2">&quot;Location&quot;</span> <span class="ow">in</span> <span class="n">resp</span><span class="o">.</span><span class="n">headers</span><span class="p">:</span>
+        <span class="k">if</span> <span class="s2">&quot;/sorry/index?continue&quot;</span> <span class="ow">in</span> <span class="n">resp</span><span class="o">.</span><span class="n">headers</span><span class="p">[</span><span class="s2">&quot;Location&quot;</span><span class="p">]:</span>
+            <span class="c1"># Our systems have detected unusual traffic from your computer</span>
+            <span class="c1"># network. Please try again later.</span>
+            <span class="k">raise</span> <span class="n">SearxEngineAccessDeniedException</span><span class="p">(</span>
+                <span class="n">message</span><span class="o">=</span><span class="s2">&quot;google_scholar: unusual traffic detected&quot;</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="k">raise</span> <span class="n">httpx</span><span class="o">.</span><span class="n">TooManyRedirects</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;location </span><span class="si">{</span><span class="n">resp</span><span class="o">.</span><span class="n">headers</span><span class="p">[</span><span class="s1">&#39;Location&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;?&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="n">res</span> <span class="o">=</span> <span class="n">EngineResults</span><span class="p">()</span>
+    <span class="n">dom</span> <span class="o">=</span> <span class="n">html</span><span class="o">.</span><span class="n">fromstring</span><span class="p">(</span><span class="n">resp</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+    <span class="n">detect_google_captcha</span><span class="p">(</span><span class="n">dom</span><span class="p">)</span>
+
+    <span class="c1"># parse results</span>
+    <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">eval_xpath_list</span><span class="p">(</span><span class="n">dom</span><span class="p">,</span> <span class="s2">&quot;//div[@data-rp]&quot;</span><span class="p">):</span>
+
+        <span class="n">title</span> <span class="o">=</span> <span class="n">extract_text</span><span class="p">(</span><span class="n">eval_xpath</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="s2">&quot;.//h3[1]//a&quot;</span><span class="p">))</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">title</span><span class="p">:</span>
+            <span class="c1"># this is a [ZITATION] block</span>
+            <span class="k">continue</span>
+
+        <span class="n">pub_type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">extract_text</span><span class="p">(</span><span class="n">eval_xpath</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="s2">&quot;.//span[@class=&#39;gs_ctg2&#39;]&quot;</span><span class="p">))</span> <span class="ow">or</span> <span class="s2">&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">pub_type</span><span class="p">:</span>
+            <span class="n">pub_type</span> <span class="o">=</span> <span class="n">pub_type</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+
+        <span class="n">url</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">eval_xpath_getindex</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="s2">&quot;.//h3[1]//a/@href&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="n">content</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">extract_text</span><span class="p">(</span><span class="n">eval_xpath</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="s2">&quot;.//div[@class=&#39;gs_rs&#39;]&quot;</span><span class="p">))</span> <span class="ow">or</span> <span class="s2">&quot;&quot;</span>
+        <span class="n">authors</span><span class="p">,</span> <span class="n">journal</span><span class="p">,</span> <span class="n">publisher</span><span class="p">,</span> <span class="n">publishedDate</span> <span class="o">=</span> <span class="n">parse_gs_a</span><span class="p">(</span>
+            <span class="n">extract_text</span><span class="p">(</span><span class="n">eval_xpath</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="s2">&quot;.//div[@class=&#39;gs_a&#39;]&quot;</span><span class="p">))</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="n">publisher</span> <span class="ow">in</span> <span class="n">url</span><span class="p">:</span>
+            <span class="n">publisher</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+
+        <span class="c1"># cited by</span>
+        <span class="n">comments</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">extract_text</span><span class="p">(</span><span class="n">eval_xpath</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="s2">&quot;.//div[@class=&#39;gs_fl&#39;]/a[starts-with(@href,&#39;/scholar?cites=&#39;)]&quot;</span><span class="p">))</span> <span class="ow">or</span> <span class="s2">&quot;&quot;</span>
+        <span class="p">)</span>
+
+        <span class="c1"># link to the html or pdf document</span>
+        <span class="n">html_url</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+        <span class="n">pdf_url</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+        <span class="n">doc_url</span> <span class="o">=</span> <span class="n">eval_xpath_getindex</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="s2">&quot;.//div[@class=&#39;gs_or_ggsm&#39;]/a/@href&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+        <span class="n">doc_type</span> <span class="o">=</span> <span class="n">extract_text</span><span class="p">(</span><span class="n">eval_xpath</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="s2">&quot;.//span[@class=&#39;gs_ctg2&#39;]&quot;</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">doc_type</span> <span class="o">==</span> <span class="s2">&quot;[PDF]&quot;</span><span class="p">:</span>
+            <span class="n">pdf_url</span> <span class="o">=</span> <span class="n">doc_url</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">html_url</span> <span class="o">=</span> <span class="n">doc_url</span>
+
+        <span class="n">res</span><span class="o">.</span><span class="n">add</span><span class="p">(</span>
+            <span class="n">res</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">Paper</span><span class="p">(</span>
+                <span class="nb">type</span><span class="o">=</span><span class="n">pub_type</span><span class="p">,</span>
+                <span class="n">url</span><span class="o">=</span><span class="n">url</span><span class="p">,</span>
+                <span class="n">title</span><span class="o">=</span><span class="n">title</span><span class="p">,</span>
+                <span class="n">authors</span><span class="o">=</span><span class="n">authors</span><span class="p">,</span>
+                <span class="n">publisher</span><span class="o">=</span><span class="n">publisher</span><span class="p">,</span>
+                <span class="n">journal</span><span class="o">=</span><span class="n">journal</span><span class="p">,</span>
+                <span class="n">publishedDate</span><span class="o">=</span><span class="n">publishedDate</span><span class="p">,</span>
+                <span class="n">content</span><span class="o">=</span><span class="n">content</span><span class="p">,</span>
+                <span class="n">comments</span><span class="o">=</span><span class="n">comments</span><span class="p">,</span>
+                <span class="n">html_url</span><span class="o">=</span><span class="n">html_url</span><span class="p">,</span>
+                <span class="n">pdf_url</span><span class="o">=</span><span class="n">pdf_url</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
+
+    <span class="c1"># parse suggestion</span>
+    <span class="k">for</span> <span class="n">suggestion</span> <span class="ow">in</span> <span class="n">eval_xpath</span><span class="p">(</span><span class="n">dom</span><span class="p">,</span> <span class="s2">&quot;//div[contains(@class, &#39;gs_qsuggest_wrap&#39;)]//li//a&quot;</span><span class="p">):</span>
+        <span class="n">res</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">res</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">LegacyResult</span><span class="p">(</span><span class="n">suggestion</span><span class="o">=</span><span class="n">extract_text</span><span class="p">(</span><span class="n">suggestion</span><span class="p">)))</span>
+
+    <span class="k">for</span> <span class="n">correction</span> <span class="ow">in</span> <span class="n">eval_xpath</span><span class="p">(</span><span class="n">dom</span><span class="p">,</span> <span class="s2">&quot;//div[@class=&#39;gs_r gs_pda&#39;]/a&quot;</span><span class="p">):</span>
+        <span class="n">res</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">res</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">LegacyResult</span><span class="p">(</span><span class="n">correction</span><span class="o">=</span><span class="n">extract_text</span><span class="p">(</span><span class="n">correction</span><span class="p">)))</span>
+    <span class="k">return</span> <span class="n">res</span></div>
+
+
+
+<div class="viewcode-block" id="time_range_args">
+<a class="viewcode-back" href="../../../dev/engines/online/google.html#searx.engines.google_scholar.time_range_args">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">time_range_args</span><span class="p">(</span><span class="n">params</span><span class="p">:</span> <span class="s2">&quot;OnlineParams&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Returns a dictionary with a time range arguments based on</span>
+<span class="sd">    ``params[&quot;time_range&quot;]``.</span>
+
+<span class="sd">    Google Scholar supports a detailed search by year.  Searching by *last</span>
+<span class="sd">    month* or *last week* (as offered by SearXNG) is uncommon for scientific</span>
+<span class="sd">    publications and is not supported by Google Scholar.</span>
+
+<span class="sd">    To limit the result list when the users selects a range, all the SearXNG</span>
+<span class="sd">    ranges (*day*, *week*, *month*, *year*) are mapped to *year*.  If no range</span>
+<span class="sd">    is set an empty dictionary of arguments is returned.</span>
+
+<span class="sd">    Example; when user selects a time range and we find ourselves in the year</span>
+<span class="sd">    2025 (current year minus one):</span>
+
+<span class="sd">    .. code:: python</span>
+
+<span class="sd">        { &quot;as_ylo&quot; : 2024 }</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">ret_val</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">if</span> <span class="n">params</span><span class="p">[</span><span class="s2">&quot;time_range&quot;</span><span class="p">]</span> <span class="ow">in</span> <span class="n">time_range_dict</span><span class="p">:</span>
+        <span class="n">ret_val</span><span class="p">[</span><span class="s2">&quot;as_ylo&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">year</span> <span class="o">-</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="n">ret_val</span></div>
+
+
+
+<div class="viewcode-block" id="detect_google_captcha">
+<a class="viewcode-back" href="../../../dev/engines/online/google.html#searx.engines.google_scholar.detect_google_captcha">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">detect_google_captcha</span><span class="p">(</span><span class="n">dom</span><span class="p">:</span> <span class="n">ElementType</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;In case of CAPTCHA Google Scholar open its own *not a Robot* dialog and is</span>
+<span class="sd">    not redirected to ``sorry.google.com``.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">eval_xpath</span><span class="p">(</span><span class="n">dom</span><span class="p">,</span> <span class="s2">&quot;//form[@id=&#39;gs_captcha_f&#39;]&quot;</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="n">SearxEngineCaptchaException</span><span class="p">(</span><span class="n">message</span><span class="o">=</span><span class="s2">&quot;CAPTCHA (gs_captcha_f)&quot;</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="parse_gs_a">
+<a class="viewcode-back" href="../../../dev/engines/online/google.html#searx.engines.google_scholar.parse_gs_a">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">parse_gs_a</span><span class="p">(</span><span class="n">text</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="n">datetime</span> <span class="o">|</span> <span class="kc">None</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Parse the text written in green.</span>
+
+<span class="sd">    Possible formats:</span>
+<span class="sd">    * &quot;{authors} - {journal}, {year} - {publisher}&quot;</span>
+<span class="sd">    * &quot;{authors} - {year} - {publisher}&quot;</span>
+<span class="sd">    * &quot;{authors} - {publisher}&quot;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">text</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">text</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">[],</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="kc">None</span>
+
+    <span class="n">s_text</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot; - &quot;</span><span class="p">)</span>
+    <span class="n">authors</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">s_text</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;, &quot;</span><span class="p">)</span>
+    <span class="n">publisher</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">s_text</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">s_text</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">3</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">authors</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">publisher</span><span class="p">,</span> <span class="kc">None</span>
+
+    <span class="c1"># the format is &quot;{authors} - {journal}, {year} - {publisher}&quot; or &quot;{authors} - {year} - {publisher}&quot;</span>
+    <span class="c1"># get journal and year</span>
+    <span class="n">journal_year</span> <span class="o">=</span> <span class="n">s_text</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;, &quot;</span><span class="p">)</span>
+    <span class="c1"># journal is optional and may contains some coma</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">journal_year</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">journal</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">journal_year</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+        <span class="k">if</span> <span class="n">journal</span> <span class="o">==</span> <span class="s2">&quot;…&quot;</span><span class="p">:</span>
+            <span class="n">journal</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">journal</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="c1"># year</span>
+    <span class="n">year</span> <span class="o">=</span> <span class="n">journal_year</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">publishedDate</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">year</span><span class="o">.</span><span class="n">strip</span><span class="p">(),</span> <span class="s2">&quot;%Y&quot;</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+        <span class="n">publishedDate</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">return</span> <span class="n">authors</span><span class="p">,</span> <span class="n">journal</span><span class="p">,</span> <span class="n">publisher</span><span class="p">,</span> <span class="n">publishedDate</span></div>
+
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+  <span id="sidebar-top"></span>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+  
+    
+            <p class="logo"><a href="../../../index.html">
+              <img class="logo" src="../../../_static/searxng-wordmark.svg" alt="Logo of SearXNG"/>
+            </a></p>
+  
+
+<h3><a href="../../../index.html">Table of Contents</a></h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../user/index.html">User information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../own-instance.html">Why use a private instance?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../admin/index.html">Administrator documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../dev/index.html">Developer documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../utils/index.html">DevOps tooling box</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/index.html">Source-Code</a></li>
+</ul>
+
+  <h3>Project Links</h3>
+  <ul>
+    <li><a href="https://github.com/searxng/searxng/tree/master">Source</a>
+  
+    <li><a href="https://github.com/searxng/searxng/wiki">Wiki</a>
+  
+    <li><a href="https://searx.space">Public instances</a>
+  
+    <li><a href="https://github.com/searxng/searxng/issues">Issue Tracker</a>
+  </ul><h3>Navigation</h3>
+<ul>
+  <li><a href="../../../index.html">Overview</a>
+    <ul>
+      <li><a href="../../index.html">Module code</a>
+        <ul>
+      <li><a href="../engines.html">searx.engines</a>
+        
+          
+          </ul>
+      </li></ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright SearXNG team.
+    </div>
+  </body>
+</html>

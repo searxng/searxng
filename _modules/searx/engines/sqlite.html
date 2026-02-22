@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>searx.engines.sqlite &#8212; SearXNG Documentation (2026.2.22+191818b86)</title>
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=6625fa76" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/searxng.css?v=52e4ff28" />
+    <script src="../../../_static/documentation_options.js?v=1b5d919e"></script>
+    <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script data-project="searxng" data-version="2026.2.22+191818b86" src="../../../_static/describe_version.js?v=fa7f30d0"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">SearXNG Documentation (2026.2.22+191818b86)</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" >Module code</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../engines.html" accesskey="U">searx.engines</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">searx.engines.sqlite</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for searx.engines.sqlite</h1><div class="highlight"><pre>
+<span></span><span class="c1"># SPDX-License-Identifier: AGPL-3.0-or-later</span>
+<span class="sd">&quot;&quot;&quot;SQLite is a small, fast and reliable SQL database engine.  It does not require</span>
+<span class="sd">any extra dependency.</span>
+
+<span class="sd">Configuration</span>
+<span class="sd">=============</span>
+
+<span class="sd">The engine has the following (additional) settings:</span>
+
+<span class="sd">- :py:obj:`result_type`</span>
+
+
+<span class="sd">Example</span>
+<span class="sd">=======</span>
+
+<span class="sd">.. _MediathekView: https://mediathekview.de/</span>
+
+<span class="sd">To demonstrate the power of database engines, here is a more complex example</span>
+<span class="sd">which reads from a MediathekView_ (DE) movie database.  For this example of the</span>
+<span class="sd">SQLite engine download the database:</span>
+
+<span class="sd">- https://liste.mediathekview.de/filmliste-v2.db.bz2</span>
+
+<span class="sd">and unpack into ``searx/data/filmliste-v2.db``.  To search the database use e.g</span>
+<span class="sd">Query to test: ``!mediathekview concert``</span>
+
+<span class="sd">.. code:: yaml</span>
+
+<span class="sd">  - name: mediathekview</span>
+<span class="sd">    engine: sqlite</span>
+<span class="sd">    shortcut: mediathekview</span>
+<span class="sd">    categories: [general, videos]</span>
+<span class="sd">    result_type: MainResult</span>
+<span class="sd">    database: searx/data/filmliste-v2.db</span>
+<span class="sd">    query_str: &gt;-</span>
+<span class="sd">      SELECT title || &#39; (&#39; || time(duration, &#39;unixepoch&#39;) || &#39;)&#39; AS title,</span>
+<span class="sd">             COALESCE( NULLIF(url_video_hd,&#39;&#39;), NULLIF(url_video_sd,&#39;&#39;), url_video) AS url,</span>
+<span class="sd">             description AS content</span>
+<span class="sd">        FROM film</span>
+<span class="sd">       WHERE title LIKE :wildcard OR description LIKE :wildcard</span>
+<span class="sd">       ORDER BY duration DESC</span>
+
+<span class="sd">Implementations</span>
+<span class="sd">===============</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">t</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">contextlib</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">searx.result_types</span><span class="w"> </span><span class="kn">import</span> <span class="n">EngineResults</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">searx.result_types</span><span class="w"> </span><span class="kn">import</span> <span class="n">MainResult</span><span class="p">,</span> <span class="n">KeyValue</span>
+
+<span class="n">engine_type</span> <span class="o">=</span> <span class="s2">&quot;offline&quot;</span>
+
+<span class="n">database</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+<span class="sd">&quot;&quot;&quot;Filename of the SQLite DB.&quot;&quot;&quot;</span>
+
+<span class="n">query_str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+<span class="sd">&quot;&quot;&quot;SQL query that returns the result items.&quot;&quot;&quot;</span>
+
+<span class="n">result_type</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;MainResult&quot;</span><span class="p">,</span> <span class="s2">&quot;KeyValue&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;KeyValue&quot;</span>
+<span class="sd">&quot;&quot;&quot;The result type can be :py:obj:`MainResult` or :py:obj:`KeyValue`.&quot;&quot;&quot;</span>
+
+<span class="n">limit</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="n">paging</span> <span class="o">=</span> <span class="kc">True</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">init</span><span class="p">(</span><span class="n">engine_settings</span><span class="p">):</span>
+    <span class="k">if</span> <span class="s1">&#39;query_str&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">engine_settings</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;query_str cannot be empty&#39;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">engine_settings</span><span class="p">[</span><span class="s1">&#39;query_str&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;select &#39;</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;only SELECT query is supported&#39;</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="sqlite_cursor">
+<a class="viewcode-back" href="../../../dev/engines/offline/sql-engines.html#searx.engines.sqlite.sqlite_cursor">[docs]</a>
+<span class="nd">@contextlib</span><span class="o">.</span><span class="n">contextmanager</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">sqlite_cursor</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Implements a :py:obj:`Context Manager &lt;contextlib.contextmanager&gt;` for a</span>
+<span class="sd">    :py:obj:`sqlite3.Cursor`.</span>
+
+<span class="sd">    Open database in read only mode: if the database doesn&#39;t exist.  The default</span>
+<span class="sd">    mode creates an empty file on the file system.  See:</span>
+
+<span class="sd">    * https://docs.python.org/3/library/sqlite3.html#sqlite3.connect</span>
+<span class="sd">    * https://www.sqlite.org/uri.html</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">uri</span> <span class="o">=</span> <span class="s1">&#39;file:&#39;</span> <span class="o">+</span> <span class="n">database</span> <span class="o">+</span> <span class="s1">&#39;?mode=ro&#39;</span>
+    <span class="k">with</span> <span class="n">contextlib</span><span class="o">.</span><span class="n">closing</span><span class="p">(</span><span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">uri</span><span class="p">,</span> <span class="n">uri</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span> <span class="k">as</span> <span class="n">connect</span><span class="p">:</span>
+        <span class="n">connect</span><span class="o">.</span><span class="n">row_factory</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">Row</span>
+        <span class="k">with</span> <span class="n">contextlib</span><span class="o">.</span><span class="n">closing</span><span class="p">(</span><span class="n">connect</span><span class="o">.</span><span class="n">cursor</span><span class="p">())</span> <span class="k">as</span> <span class="n">cursor</span><span class="p">:</span>
+            <span class="k">yield</span> <span class="n">cursor</span></div>
+
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">search</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">params</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">EngineResults</span><span class="p">:</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="n">EngineResults</span><span class="p">()</span>
+    <span class="n">query_params</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;query&#39;</span><span class="p">:</span> <span class="n">query</span><span class="p">,</span>
+        <span class="s1">&#39;wildcard&#39;</span><span class="p">:</span> <span class="sa">r</span><span class="s1">&#39;%&#39;</span> <span class="o">+</span> <span class="n">query</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">,</span> <span class="sa">r</span><span class="s1">&#39;%&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="sa">r</span><span class="s1">&#39;%&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;limit&#39;</span><span class="p">:</span> <span class="n">limit</span><span class="p">,</span>
+        <span class="s1">&#39;offset&#39;</span><span class="p">:</span> <span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="s1">&#39;pageno&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">limit</span><span class="p">,</span>
+    <span class="p">}</span>
+    <span class="n">query_to_run</span> <span class="o">=</span> <span class="n">query_str</span> <span class="o">+</span> <span class="s1">&#39; LIMIT :limit OFFSET :offset&#39;</span>
+
+    <span class="k">with</span> <span class="n">sqlite_cursor</span><span class="p">()</span> <span class="k">as</span> <span class="n">cur</span><span class="p">:</span>
+
+        <span class="n">cur</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">query_to_run</span><span class="p">,</span> <span class="n">query_params</span><span class="p">)</span>
+        <span class="n">col_names</span> <span class="o">=</span> <span class="p">[</span><span class="n">cn</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">cn</span> <span class="ow">in</span> <span class="n">cur</span><span class="o">.</span><span class="n">description</span><span class="p">]</span>
+
+        <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">cur</span><span class="o">.</span><span class="n">fetchall</span><span class="p">():</span>
+            <span class="n">kvmap</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">col_names</span><span class="p">,</span> <span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">row</span><span class="p">)))</span>
+            <span class="k">if</span> <span class="n">result_type</span> <span class="o">==</span> <span class="s2">&quot;MainResult&quot;</span><span class="p">:</span>
+                <span class="n">item</span> <span class="o">=</span> <span class="n">MainResult</span><span class="p">(</span><span class="o">**</span><span class="n">kvmap</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">item</span> <span class="o">=</span> <span class="n">KeyValue</span><span class="p">(</span><span class="n">kvmap</span><span class="o">=</span><span class="n">kvmap</span><span class="p">)</span>
+            <span class="n">res</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">res</span>
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+  <span id="sidebar-top"></span>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+  
+    
+            <p class="logo"><a href="../../../index.html">
+              <img class="logo" src="../../../_static/searxng-wordmark.svg" alt="Logo of SearXNG"/>
+            </a></p>
+  
+
+<h3><a href="../../../index.html">Table of Contents</a></h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../user/index.html">User information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../own-instance.html">Why use a private instance?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../admin/index.html">Administrator documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../dev/index.html">Developer documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../utils/index.html">DevOps tooling box</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/index.html">Source-Code</a></li>
+</ul>
+
+  <h3>Project Links</h3>
+  <ul>
+    <li><a href="https://github.com/searxng/searxng/tree/master">Source</a>
+  
+    <li><a href="https://github.com/searxng/searxng/wiki">Wiki</a>
+  
+    <li><a href="https://searx.space">Public instances</a>
+  
+    <li><a href="https://github.com/searxng/searxng/issues">Issue Tracker</a>
+  </ul><h3>Navigation</h3>
+<ul>
+  <li><a href="../../../index.html">Overview</a>
+    <ul>
+      <li><a href="../../index.html">Module code</a>
+        <ul>
+      <li><a href="../engines.html">searx.engines</a>
+        
+          
+          </ul>
+      </li></ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright SearXNG team.
+    </div>
+  </body>
+</html>

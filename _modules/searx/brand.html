@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>searx.brand &#8212; SearXNG Documentation (2026.2.22+191818b86)</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=6625fa76" />
+    <link rel="stylesheet" type="text/css" href="../../_static/searxng.css?v=52e4ff28" />
+    <script src="../../_static/documentation_options.js?v=1b5d919e"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script data-project="searxng" data-version="2026.2.22+191818b86" src="../../_static/describe_version.js?v=fa7f30d0"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">SearXNG Documentation (2026.2.22+191818b86)</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">searx.brand</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for searx.brand</h1><div class="highlight"><pre>
+<span></span><span class="c1"># SPDX-License-Identifier: AGPL-3.0-or-later</span>
+<span class="sd">&quot;&quot;&quot;Implementations needed for a branding of SearXNG.&quot;&quot;&quot;</span>
+<span class="c1"># pylint: disable=too-few-public-methods</span>
+
+<span class="c1"># Struct fields aren&#39;t discovered in Python 3.14</span>
+<span class="c1"># - https://github.com/searxng/searxng/issues/5284</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;SettingsBrand&quot;</span><span class="p">]</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">msgspec</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">BrandCustom</span><span class="p">(</span><span class="n">msgspec</span><span class="o">.</span><span class="n">Struct</span><span class="p">,</span> <span class="n">kw_only</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">forbid_unknown_fields</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Custom settings in the brand section.&quot;&quot;&quot;</span>
+
+    <span class="n">links</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Custom entries in the footer of the WEB page: ``[title]: [link]``&quot;&quot;&quot;</span>
+
+
+<div class="viewcode-block" id="SettingsBrand">
+<a class="viewcode-back" href="../../admin/settings/settings_brand.html#searx.brand.SettingsBrand">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">SettingsBrand</span><span class="p">(</span><span class="n">msgspec</span><span class="o">.</span><span class="n">Struct</span><span class="p">,</span> <span class="n">kw_only</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">forbid_unknown_fields</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Options for configuring brand properties.</span>
+
+<span class="sd">    .. code:: yaml</span>
+
+<span class="sd">       brand:</span>
+<span class="sd">         issue_url: https://github.com/searxng/searxng/issues</span>
+<span class="sd">         docs_url: https://docs.searxng.org</span>
+<span class="sd">         public_instances: https://searx.space</span>
+<span class="sd">         wiki_url: https://github.com/searxng/searxng/wiki</span>
+
+<span class="sd">         custom:</span>
+<span class="sd">           links:</span>
+<span class="sd">             Uptime: https://uptime.searxng.org/history/example-org</span>
+<span class="sd">             About: https://example.org/user/about.html</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">issue_url</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;https://github.com/searxng/searxng/issues&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;If you host your own issue tracker change this URL.&quot;&quot;&quot;</span>
+
+    <span class="n">docs_url</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;https://docs.searxng.org&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;If you host your own documentation change this URL.&quot;&quot;&quot;</span>
+
+    <span class="n">public_instances</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;https://searx.space&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;If you host your own https://searx.space change this URL.&quot;&quot;&quot;</span>
+
+    <span class="n">wiki_url</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;https://github.com/searxng/searxng/wiki&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Link to your wiki (or ``false``)&quot;&quot;&quot;</span>
+
+    <span class="n">custom</span><span class="p">:</span> <span class="n">BrandCustom</span> <span class="o">=</span> <span class="n">msgspec</span><span class="o">.</span><span class="n">field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="n">BrandCustom</span><span class="p">)</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Optional customizing.</span>
+
+<span class="sd">    .. autoclass:: searx.brand.BrandCustom</span>
+<span class="sd">       :members:</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># new_issue_url is a hackish solution tailored for only one hoster (GH).  As</span>
+    <span class="c1"># long as we don&#39;t have a more general solution, we should support it in the</span>
+    <span class="c1"># given function, but it should not be expanded further.</span>
+
+    <span class="n">new_issue_url</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;https://github.com/searxng/searxng/issues/new&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;If you host your own issue tracker not on GitHub, then unset this URL.</span>
+
+<span class="sd">    Note: This URL will create a pre-filled GitHub bug report form for an</span>
+<span class="sd">    engine.  Since this feature is implemented only for GH (and limited to</span>
+<span class="sd">    engines), it will probably be replaced by another solution in the near</span>
+<span class="sd">    future.</span>
+<span class="sd">    &quot;&quot;&quot;</span></div>
+
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+  <span id="sidebar-top"></span>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+  
+    
+            <p class="logo"><a href="../../index.html">
+              <img class="logo" src="../../_static/searxng-wordmark.svg" alt="Logo of SearXNG"/>
+            </a></p>
+  
+
+<h3><a href="../../index.html">Table of Contents</a></h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../user/index.html">User information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../own-instance.html">Why use a private instance?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../admin/index.html">Administrator documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dev/index.html">Developer documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../utils/index.html">DevOps tooling box</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../src/index.html">Source-Code</a></li>
+</ul>
+
+  <h3>Project Links</h3>
+  <ul>
+    <li><a href="https://github.com/searxng/searxng/tree/master">Source</a>
+  
+    <li><a href="https://github.com/searxng/searxng/wiki">Wiki</a>
+  
+    <li><a href="https://searx.space">Public instances</a>
+  
+    <li><a href="https://github.com/searxng/searxng/issues">Issue Tracker</a>
+  </ul><h3>Navigation</h3>
+<ul>
+  <li><a href="../../index.html">Overview</a>
+    <ul>
+      <li><a href="../index.html">Module code</a>
+        
+          
+          </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright SearXNG team.
+    </div>
+  </body>
+</html>

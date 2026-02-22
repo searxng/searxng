@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>searx.extended_types &#8212; SearXNG Documentation (2026.2.22+191818b86)</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=6625fa76" />
+    <link rel="stylesheet" type="text/css" href="../../_static/searxng.css?v=52e4ff28" />
+    <script src="../../_static/documentation_options.js?v=1b5d919e"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script data-project="searxng" data-version="2026.2.22+191818b86" src="../../_static/describe_version.js?v=fa7f30d0"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">SearXNG Documentation (2026.2.22+191818b86)</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">searx.extended_types</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for searx.extended_types</h1><div class="highlight"><pre>
+<span></span><span class="c1"># SPDX-License-Identifier: AGPL-3.0-or-later</span>
+<span class="sd">&quot;&quot;&quot;This module implements the type extensions applied by SearXNG.</span>
+
+<span class="sd">- :py:obj:`flask.request` is replaced by :py:obj:`sxng_request`</span>
+<span class="sd">- :py:obj:`flask.Request` is replaced by :py:obj:`SXNG_Request`</span>
+<span class="sd">- :py:obj:`httpx.response` is replaced by :py:obj:`SXNG_Response`</span>
+
+<span class="sd">----</span>
+
+<span class="sd">.. py:attribute:: sxng_request</span>
+<span class="sd">   :type: SXNG_Request</span>
+
+<span class="sd">   A replacement for :py:obj:`flask.request` with type cast :py:obj:`SXNG_Request`.</span>
+
+<span class="sd">.. autoclass:: SXNG_Request</span>
+<span class="sd">   :members:</span>
+
+<span class="sd">.. autoclass:: SXNG_Response</span>
+<span class="sd">   :members:</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="c1"># pylint: disable=invalid-name</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;SXNG_Request&quot;</span><span class="p">,</span> <span class="s2">&quot;sxng_request&quot;</span><span class="p">,</span> <span class="s2">&quot;SXNG_Response&quot;</span><span class="p">]</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">typing</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">flask</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">httpx</span>
+
+<span class="k">if</span> <span class="n">typing</span><span class="o">.</span><span class="n">TYPE_CHECKING</span><span class="p">:</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">searx.preferences</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">searx.results</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">searx.search.processors</span><span class="w"> </span><span class="kn">import</span> <span class="n">OnlineParamTypes</span>
+
+
+<div class="viewcode-block" id="SXNG_Request">
+<a class="viewcode-back" href="../../dev/extended_types.html#searx.extended_types.SXNG_Request">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">SXNG_Request</span><span class="p">(</span><span class="n">flask</span><span class="o">.</span><span class="n">Request</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;SearXNG extends the class :py:obj:`flask.Request` with properties from</span>
+<span class="sd">    *this* class definition, see type cast :py:obj:`sxng_request`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">user_plugins</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;list of searx.plugins.Plugin.id (the id of the plugins)&quot;&quot;&quot;</span>
+
+    <span class="n">preferences</span><span class="p">:</span> <span class="s2">&quot;searx.preferences.Preferences&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The preferences of the request.&quot;&quot;&quot;</span>
+
+    <span class="n">errors</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A list of errors (translated text) added by :py:obj:`searx.webapp` in</span>
+<span class="sd">    case of errors.&quot;&quot;&quot;</span>
+    <span class="c1"># request.form is of type werkzeug.datastructures.ImmutableMultiDict</span>
+    <span class="c1"># form: dict[str, str]</span>
+
+    <span class="n">start_time</span><span class="p">:</span> <span class="nb">float</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Start time of the request, :py:obj:`timeit.default_timer` added by</span>
+<span class="sd">    :py:obj:`searx.webapp` to calculate the total time of the request.&quot;&quot;&quot;</span>
+
+    <span class="n">render_time</span><span class="p">:</span> <span class="nb">float</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Duration of the rendering, calculated and added by</span>
+<span class="sd">    :py:obj:`searx.webapp`.&quot;&quot;&quot;</span>
+
+    <span class="n">timings</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="s2">&quot;searx.results.Timing&quot;</span><span class="p">]</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A list of :py:obj:`searx.results.Timing` of the engines, calculatid in</span>
+<span class="sd">    and hold by :py:obj:`searx.results.ResultContainer.timings`.&quot;&quot;&quot;</span>
+
+    <span class="n">remote_addr</span><span class="p">:</span> <span class="nb">str</span></div>
+
+
+
+<span class="c1">#: A replacement for :py:obj:`flask.request` with type cast :py:`SXNG_Request`.</span>
+<span class="n">sxng_request</span> <span class="o">=</span> <span class="n">typing</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span><span class="n">SXNG_Request</span><span class="p">,</span> <span class="n">flask</span><span class="o">.</span><span class="n">request</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="SXNG_Response">
+<a class="viewcode-back" href="../../dev/extended_types.html#searx.extended_types.SXNG_Response">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">SXNG_Response</span><span class="p">(</span><span class="n">httpx</span><span class="o">.</span><span class="n">Response</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;SearXNG extends the class :py:obj:`httpx.Response` with properties from</span>
+<span class="sd">    *this* class (type cast of :py:obj:`httpx.Response`).</span>
+
+<span class="sd">    .. code:: python</span>
+
+<span class="sd">       response = httpx.get(&quot;https://example.org&quot;)</span>
+<span class="sd">       response = typing.cast(SXNG_Response, response)</span>
+<span class="sd">       if response.ok:</span>
+<span class="sd">          ...</span>
+<span class="sd">       query_was = search_params[&quot;query&quot;]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">ok</span><span class="p">:</span> <span class="nb">bool</span>
+    <span class="n">search_params</span><span class="p">:</span> <span class="s2">&quot;OnlineParamTypes&quot;</span></div>
+
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+  <span id="sidebar-top"></span>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+  
+    
+            <p class="logo"><a href="../../index.html">
+              <img class="logo" src="../../_static/searxng-wordmark.svg" alt="Logo of SearXNG"/>
+            </a></p>
+  
+
+<h3><a href="../../index.html">Table of Contents</a></h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../user/index.html">User information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../own-instance.html">Why use a private instance?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../admin/index.html">Administrator documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dev/index.html">Developer documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../utils/index.html">DevOps tooling box</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../src/index.html">Source-Code</a></li>
+</ul>
+
+  <h3>Project Links</h3>
+  <ul>
+    <li><a href="https://github.com/searxng/searxng/tree/master">Source</a>
+  
+    <li><a href="https://github.com/searxng/searxng/wiki">Wiki</a>
+  
+    <li><a href="https://searx.space">Public instances</a>
+  
+    <li><a href="https://github.com/searxng/searxng/issues">Issue Tracker</a>
+  </ul><h3>Navigation</h3>
+<ul>
+  <li><a href="../../index.html">Overview</a>
+    <ul>
+      <li><a href="../index.html">Module code</a>
+        
+          
+          </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright SearXNG team.
+    </div>
+  </body>
+</html>

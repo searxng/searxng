@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>XPath Engine &#8212; SearXNG Documentation (2026.2.22+191818b86)</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=6625fa76" />
+    <link rel="stylesheet" type="text/css" href="../../_static/searxng.css?v=52e4ff28" />
+    <script src="../../_static/documentation_options.js?v=1b5d919e"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script data-project="searxng" data-version="2026.2.22+191818b86" src="../../_static/describe_version.js?v=fa7f30d0"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="MediaWiki Engine" href="mediawiki.html" />
+    <link rel="prev" title="Demo Online Engine" href="demo/demo_online.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="mediawiki.html" title="MediaWiki Engine"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="demo/demo_online.html" title="Demo Online Engine"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">SearXNG Documentation (2026.2.22+191818b86)</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >Developer documentation</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="index.html" accesskey="U">Engine Implementations</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">XPath Engine</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="xpath-engine">
+<span id="id1"></span><h1>XPath Engine<a class="headerlink" href="#xpath-engine" title="Link to this heading">¶</a></h1>
+<nav class="contents local" id="contents">
+<ul class="simple">
+<li><p><a class="reference internal" href="#configuration" id="id2">Configuration</a></p></li>
+<li><p><a class="reference internal" href="#example" id="id3">Example</a></p></li>
+<li><p><a class="reference internal" href="#implementations" id="id4">Implementations</a></p></li>
+</ul>
+</nav>
+<p id="module-searx.engines.xpath">The XPath engine is a <em>generic</em> engine with which it is possible to configure
+engines in the settings.</p>
+<section id="configuration">
+<h2><a class="toc-backref" href="#id2" role="doc-backlink">Configuration</a><a class="headerlink" href="#configuration" title="Link to this heading">¶</a></h2>
+<p>Request:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#searx.engines.xpath.search_url" title="searx.engines.xpath.search_url"><code class="xref py py-obj docutils literal notranslate"><span class="pre">search_url</span></code></a></p></li>
+<li><p><a class="reference internal" href="#searx.engines.xpath.lang_all" title="searx.engines.xpath.lang_all"><code class="xref py py-obj docutils literal notranslate"><span class="pre">lang_all</span></code></a></p></li>
+<li><p><a class="reference internal" href="#searx.engines.xpath.soft_max_redirects" title="searx.engines.xpath.soft_max_redirects"><code class="xref py py-obj docutils literal notranslate"><span class="pre">soft_max_redirects</span></code></a></p></li>
+<li><p><a class="reference internal" href="#searx.engines.xpath.method" title="searx.engines.xpath.method"><code class="xref py py-obj docutils literal notranslate"><span class="pre">method</span></code></a></p></li>
+<li><p><a class="reference internal" href="#searx.engines.xpath.request_body" title="searx.engines.xpath.request_body"><code class="xref py py-obj docutils literal notranslate"><span class="pre">request_body</span></code></a></p></li>
+<li><p><a class="reference internal" href="#searx.engines.xpath.cookies" title="searx.engines.xpath.cookies"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cookies</span></code></a></p></li>
+<li><p><a class="reference internal" href="#searx.engines.xpath.headers" title="searx.engines.xpath.headers"><code class="xref py py-obj docutils literal notranslate"><span class="pre">headers</span></code></a></p></li>
+</ul>
+<p>Paging:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#searx.engines.xpath.paging" title="searx.engines.xpath.paging"><code class="xref py py-obj docutils literal notranslate"><span class="pre">paging</span></code></a></p></li>
+<li><p><a class="reference internal" href="#searx.engines.xpath.page_size" title="searx.engines.xpath.page_size"><code class="xref py py-obj docutils literal notranslate"><span class="pre">page_size</span></code></a></p></li>
+<li><p><a class="reference internal" href="#searx.engines.xpath.first_page_num" title="searx.engines.xpath.first_page_num"><code class="xref py py-obj docutils literal notranslate"><span class="pre">first_page_num</span></code></a></p></li>
+</ul>
+<p>Time Range:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#searx.engines.xpath.time_range_support" title="searx.engines.xpath.time_range_support"><code class="xref py py-obj docutils literal notranslate"><span class="pre">time_range_support</span></code></a></p></li>
+<li><p><a class="reference internal" href="#searx.engines.xpath.time_range_url" title="searx.engines.xpath.time_range_url"><code class="xref py py-obj docutils literal notranslate"><span class="pre">time_range_url</span></code></a></p></li>
+<li><p><a class="reference internal" href="#searx.engines.xpath.time_range_map" title="searx.engines.xpath.time_range_map"><code class="xref py py-obj docutils literal notranslate"><span class="pre">time_range_map</span></code></a></p></li>
+</ul>
+<p>Safe-Search:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#searx.engines.xpath.safe_search_support" title="searx.engines.xpath.safe_search_support"><code class="xref py py-obj docutils literal notranslate"><span class="pre">safe_search_support</span></code></a></p></li>
+<li><p><a class="reference internal" href="#searx.engines.xpath.safe_search_map" title="searx.engines.xpath.safe_search_map"><code class="xref py py-obj docutils literal notranslate"><span class="pre">safe_search_map</span></code></a></p></li>
+</ul>
+<p>Response:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#searx.engines.xpath.no_result_for_http_status" title="searx.engines.xpath.no_result_for_http_status"><code class="xref py py-obj docutils literal notranslate"><span class="pre">no_result_for_http_status</span></code></a></p></li>
+</ul>
+<p><a class="reference external" href="https://quickref.me/xpath.html#xpath-selectors">XPath selector</a>:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#searx.engines.xpath.results_xpath" title="searx.engines.xpath.results_xpath"><code class="xref py py-obj docutils literal notranslate"><span class="pre">results_xpath</span></code></a></p></li>
+<li><p><a class="reference internal" href="#searx.engines.xpath.url_xpath" title="searx.engines.xpath.url_xpath"><code class="xref py py-obj docutils literal notranslate"><span class="pre">url_xpath</span></code></a></p></li>
+<li><p><a class="reference internal" href="#searx.engines.xpath.title_xpath" title="searx.engines.xpath.title_xpath"><code class="xref py py-obj docutils literal notranslate"><span class="pre">title_xpath</span></code></a></p></li>
+<li><p><a class="reference internal" href="#searx.engines.xpath.content_xpath" title="searx.engines.xpath.content_xpath"><code class="xref py py-obj docutils literal notranslate"><span class="pre">content_xpath</span></code></a></p></li>
+<li><p><a class="reference internal" href="#searx.engines.xpath.thumbnail_xpath" title="searx.engines.xpath.thumbnail_xpath"><code class="xref py py-obj docutils literal notranslate"><span class="pre">thumbnail_xpath</span></code></a></p></li>
+<li><p><a class="reference internal" href="#searx.engines.xpath.suggestion_xpath" title="searx.engines.xpath.suggestion_xpath"><code class="xref py py-obj docutils literal notranslate"><span class="pre">suggestion_xpath</span></code></a></p></li>
+</ul>
+</section>
+<section id="example">
+<h2><a class="toc-backref" href="#id3" role="doc-backlink">Example</a><a class="headerlink" href="#example" title="Link to this heading">¶</a></h2>
+<p>Here is a simple example of a XPath engine configured in the <a class="reference internal" href="../../admin/settings/settings_engines.html#settings-engines"><span class="std std-ref">engines:</span></a> section, further read <a class="reference internal" href="engine_overview.html#engines-dev"><span class="std std-ref">Engine Overview</span></a>.</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name </span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">bitbucket</span>
+<span class="w">  </span><span class="nt">engine </span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">xpath</span>
+<span class="w">  </span><span class="nt">paging </span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">True</span>
+<span class="w">  </span><span class="nt">search_url </span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://bitbucket.org/repo/all/{pageno}?name={query}</span>
+<span class="w">  </span><span class="nt">url_xpath </span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">//article[@class=&quot;repo-summary&quot;]//a[@class=&quot;repo-link&quot;]/@href</span>
+<span class="w">  </span><span class="nt">title_xpath </span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">//article[@class=&quot;repo-summary&quot;]//a[@class=&quot;repo-link&quot;]</span>
+<span class="w">  </span><span class="nt">content_xpath </span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">//article[@class=&quot;repo-summary&quot;]/p</span>
+</pre></div>
+</div>
+</section>
+<section id="implementations">
+<h2><a class="toc-backref" href="#id4" role="doc-backlink">Implementations</a><a class="headerlink" href="#implementations" title="Link to this heading">¶</a></h2>
+</section>
+<dl class="py data">
+<dt class="sig sig-object py" id="searx.engines.xpath.search_url">
+<span class="sig-prename descclassname"><span class="pre">searx.engines.xpath.</span></span><span class="sig-name descname"><span class="pre">search_url</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#searx.engines.xpath.search_url" title="Link to this definition">¶</a></dt>
+<dd><p>Search URL of the engine.  Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>https://example.org/?search={query}&amp;page={pageno}{time_range}{safe_search}
+</pre></div>
+</div>
+<p>Replacements are:</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">{query}</span></code>:</dt><dd><p>Search terms from user.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">{pageno}</span></code>:</dt><dd><p>Page number if engine supports paging <a class="reference internal" href="#searx.engines.xpath.paging" title="searx.engines.xpath.paging"><code class="xref py py-obj docutils literal notranslate"><span class="pre">paging</span></code></a></p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">{lang}</span></code>:</dt><dd><p>ISO 639-1 language code (en, de, fr ..)</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">{time_range}</span></code>:</dt><dd><p><a class="reference internal" href="#searx.engines.xpath.time_range_url" title="searx.engines.xpath.time_range_url"><code class="xref py py-obj docutils literal notranslate"><span class="pre">URL</span> <span class="pre">parameter</span></code></a> if engine <a class="reference internal" href="#searx.engines.xpath.time_range_support" title="searx.engines.xpath.time_range_support"><code class="xref py py-obj docutils literal notranslate"><span class="pre">supports</span> <span class="pre">time</span>
+<span class="pre">range</span></code></a>.  The value for the parameter is taken from
+<a class="reference internal" href="#searx.engines.xpath.time_range_map" title="searx.engines.xpath.time_range_map"><code class="xref py py-obj docutils literal notranslate"><span class="pre">time_range_map</span></code></a>.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">{safe_search}</span></code>:</dt><dd><p>Safe-search <a class="reference internal" href="#searx.engines.xpath.safe_search_map" title="searx.engines.xpath.safe_search_map"><code class="xref py py-obj docutils literal notranslate"><span class="pre">URL</span> <span class="pre">parameter</span></code></a> if engine
+<a class="reference internal" href="#searx.engines.xpath.safe_search_support" title="searx.engines.xpath.safe_search_support"><code class="xref py py-obj docutils literal notranslate"><span class="pre">supports</span> <span class="pre">safe-search</span></code></a>.  The <code class="docutils literal notranslate"><span class="pre">{safe_search}</span></code>
+replacement is taken from the <code class="xref py py-obj docutils literal notranslate"><span class="pre">safes_search_map</span></code>.  Filter results:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mi">0</span><span class="p">:</span> <span class="n">none</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span> <span class="n">moderate</span><span class="p">,</span> <span class="mi">2</span><span class="p">:</span><span class="n">strict</span>
+</pre></div>
+</div>
+<p>If not supported, the URL parameter is an empty string.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="searx.engines.xpath.lang_all">
+<span class="sig-prename descclassname"><span class="pre">searx.engines.xpath.</span></span><span class="sig-name descname"><span class="pre">lang_all</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'en'</span></em><a class="headerlink" href="#searx.engines.xpath.lang_all" title="Link to this definition">¶</a></dt>
+<dd><p>Replacement <code class="docutils literal notranslate"><span class="pre">{lang}</span></code> in <a class="reference internal" href="#searx.engines.xpath.search_url" title="searx.engines.xpath.search_url"><code class="xref py py-obj docutils literal notranslate"><span class="pre">search_url</span></code></a> if language <code class="docutils literal notranslate"><span class="pre">all</span></code> is
+selected.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="searx.engines.xpath.no_result_for_http_status">
+<span class="sig-prename descclassname"><span class="pre">searx.engines.xpath.</span></span><span class="sig-name descname"><span class="pre">no_result_for_http_status</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></em><a class="headerlink" href="#searx.engines.xpath.no_result_for_http_status" title="Link to this definition">¶</a></dt>
+<dd><p>Return empty result for these HTTP status codes instead of throwing an error.</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">no_result_for_http_status</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="searx.engines.xpath.soft_max_redirects">
+<span class="sig-prename descclassname"><span class="pre">searx.engines.xpath.</span></span><span class="sig-name descname"><span class="pre">soft_max_redirects</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0</span></em><a class="headerlink" href="#searx.engines.xpath.soft_max_redirects" title="Link to this definition">¶</a></dt>
+<dd><p>Maximum redirects, soft limit. Record an error but don’t stop the engine</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="searx.engines.xpath.results_xpath">
+<span class="sig-prename descclassname"><span class="pre">searx.engines.xpath.</span></span><span class="sig-name descname"><span class="pre">results_xpath</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">''</span></em><a class="headerlink" href="#searx.engines.xpath.results_xpath" title="Link to this definition">¶</a></dt>
+<dd><p><a class="reference external" href="https://quickref.me/xpath.html#xpath-selectors">XPath selector</a> for the list of result items</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="searx.engines.xpath.url_xpath">
+<span class="sig-prename descclassname"><span class="pre">searx.engines.xpath.</span></span><span class="sig-name descname"><span class="pre">url_xpath</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#searx.engines.xpath.url_xpath" title="Link to this definition">¶</a></dt>
+<dd><p><a class="reference external" href="https://quickref.me/xpath.html#xpath-selectors">XPath selector</a> of result’s <code class="docutils literal notranslate"><span class="pre">url</span></code>.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="searx.engines.xpath.content_xpath">
+<span class="sig-prename descclassname"><span class="pre">searx.engines.xpath.</span></span><span class="sig-name descname"><span class="pre">content_xpath</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#searx.engines.xpath.content_xpath" title="Link to this definition">¶</a></dt>
+<dd><p><a class="reference external" href="https://quickref.me/xpath.html#xpath-selectors">XPath selector</a> of result’s <code class="docutils literal notranslate"><span class="pre">content</span></code>.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="searx.engines.xpath.title_xpath">
+<span class="sig-prename descclassname"><span class="pre">searx.engines.xpath.</span></span><span class="sig-name descname"><span class="pre">title_xpath</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#searx.engines.xpath.title_xpath" title="Link to this definition">¶</a></dt>
+<dd><p><a class="reference external" href="https://quickref.me/xpath.html#xpath-selectors">XPath selector</a> of result’s <code class="docutils literal notranslate"><span class="pre">title</span></code>.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="searx.engines.xpath.thumbnail_xpath">
+<span class="sig-prename descclassname"><span class="pre">searx.engines.xpath.</span></span><span class="sig-name descname"><span class="pre">thumbnail_xpath</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></em><a class="headerlink" href="#searx.engines.xpath.thumbnail_xpath" title="Link to this definition">¶</a></dt>
+<dd><p><a class="reference external" href="https://quickref.me/xpath.html#xpath-selectors">XPath selector</a> of result’s <code class="docutils literal notranslate"><span class="pre">thumbnail</span></code>.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="searx.engines.xpath.suggestion_xpath">
+<span class="sig-prename descclassname"><span class="pre">searx.engines.xpath.</span></span><span class="sig-name descname"><span class="pre">suggestion_xpath</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">''</span></em><a class="headerlink" href="#searx.engines.xpath.suggestion_xpath" title="Link to this definition">¶</a></dt>
+<dd><p><a class="reference external" href="https://quickref.me/xpath.html#xpath-selectors">XPath selector</a> of result’s <code class="docutils literal notranslate"><span class="pre">suggestion</span></code>.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="searx.engines.xpath.cookies">
+<span class="sig-prename descclassname"><span class="pre">searx.engines.xpath.</span></span><span class="sig-name descname"><span class="pre">cookies</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="headerlink" href="#searx.engines.xpath.cookies" title="Link to this definition">¶</a></dt>
+<dd><p>Some engines might offer different result based on cookies.
+Possible use-case: To set safesearch cookie.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="searx.engines.xpath.headers">
+<span class="sig-prename descclassname"><span class="pre">searx.engines.xpath.</span></span><span class="sig-name descname"><span class="pre">headers</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="headerlink" href="#searx.engines.xpath.headers" title="Link to this definition">¶</a></dt>
+<dd><p>Some engines might offer different result based headers.  Possible use-case:
+To set header to moderate.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="searx.engines.xpath.method">
+<span class="sig-prename descclassname"><span class="pre">searx.engines.xpath.</span></span><span class="sig-name descname"><span class="pre">method</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'GET'</span></em><a class="headerlink" href="#searx.engines.xpath.method" title="Link to this definition">¶</a></dt>
+<dd><p>Some engines might require to do POST requests for search.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="searx.engines.xpath.request_body">
+<span class="sig-prename descclassname"><span class="pre">searx.engines.xpath.</span></span><span class="sig-name descname"><span class="pre">request_body</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">''</span></em><a class="headerlink" href="#searx.engines.xpath.request_body" title="Link to this definition">¶</a></dt>
+<dd><p>The body of the request.  This can only be used if different <a class="reference internal" href="#searx.engines.xpath.method" title="searx.engines.xpath.method"><code class="xref py py-obj docutils literal notranslate"><span class="pre">method</span></code></a>
+is set, e.g. <code class="docutils literal notranslate"><span class="pre">POST</span></code>.  For formatting see the documentation of <a class="reference internal" href="#searx.engines.xpath.search_url" title="searx.engines.xpath.search_url"><code class="xref py py-obj docutils literal notranslate"><span class="pre">search_url</span></code></a>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">search</span><span class="o">=</span><span class="p">{</span><span class="n">query</span><span class="p">}</span><span class="o">&amp;</span><span class="n">page</span><span class="o">=</span><span class="p">{</span><span class="n">pageno</span><span class="p">}{</span><span class="n">time_range</span><span class="p">}{</span><span class="n">safe_search</span><span class="p">}</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="searx.engines.xpath.paging">
+<span class="sig-prename descclassname"><span class="pre">searx.engines.xpath.</span></span><span class="sig-name descname"><span class="pre">paging</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></em><a class="headerlink" href="#searx.engines.xpath.paging" title="Link to this definition">¶</a></dt>
+<dd><p>Engine supports paging [True or False].</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="searx.engines.xpath.page_size">
+<span class="sig-prename descclassname"><span class="pre">searx.engines.xpath.</span></span><span class="sig-name descname"><span class="pre">page_size</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1</span></em><a class="headerlink" href="#searx.engines.xpath.page_size" title="Link to this definition">¶</a></dt>
+<dd><p>Number of results on each page.  Only needed if the site requires not a page
+number, but an offset.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="searx.engines.xpath.first_page_num">
+<span class="sig-prename descclassname"><span class="pre">searx.engines.xpath.</span></span><span class="sig-name descname"><span class="pre">first_page_num</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1</span></em><a class="headerlink" href="#searx.engines.xpath.first_page_num" title="Link to this definition">¶</a></dt>
+<dd><p>Number of the first page (usually 0 or 1).</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="searx.engines.xpath.time_range_support">
+<span class="sig-prename descclassname"><span class="pre">searx.engines.xpath.</span></span><span class="sig-name descname"><span class="pre">time_range_support</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></em><a class="headerlink" href="#searx.engines.xpath.time_range_support" title="Link to this definition">¶</a></dt>
+<dd><p>Engine supports search time range.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="searx.engines.xpath.time_range_url">
+<span class="sig-prename descclassname"><span class="pre">searx.engines.xpath.</span></span><span class="sig-name descname"><span class="pre">time_range_url</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'&amp;hours={time_range_val}'</span></em><a class="headerlink" href="#searx.engines.xpath.time_range_url" title="Link to this definition">¶</a></dt>
+<dd><p>Time range URL parameter in the in <a class="reference internal" href="#searx.engines.xpath.search_url" title="searx.engines.xpath.search_url"><code class="xref py py-obj docutils literal notranslate"><span class="pre">search_url</span></code></a>.  If no time range is
+requested by the user, the URL parameter is an empty string.  The
+<code class="docutils literal notranslate"><span class="pre">{time_range_val}</span></code> replacement is taken from the <a class="reference internal" href="#searx.engines.xpath.time_range_map" title="searx.engines.xpath.time_range_map"><code class="xref py py-obj docutils literal notranslate"><span class="pre">time_range_map</span></code></a>.</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">time_range_url </span><span class="p">:</span><span class="w"> </span><span class="s">&#39;&amp;days={time_range_val}&#39;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="searx.engines.xpath.time_range_map">
+<span class="sig-prename descclassname"><span class="pre">searx.engines.xpath.</span></span><span class="sig-name descname"><span class="pre">time_range_map</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'day':</span> <span class="pre">24,</span> <span class="pre">'month':</span> <span class="pre">720,</span> <span class="pre">'week':</span> <span class="pre">168,</span> <span class="pre">'year':</span> <span class="pre">8760}</span></em><a class="headerlink" href="#searx.engines.xpath.time_range_map" title="Link to this definition">¶</a></dt>
+<dd><p>Maps time range value from user to <code class="docutils literal notranslate"><span class="pre">{time_range_val}</span></code> in
+<a class="reference internal" href="#searx.engines.xpath.time_range_url" title="searx.engines.xpath.time_range_url"><code class="xref py py-obj docutils literal notranslate"><span class="pre">time_range_url</span></code></a>.</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">time_range_map</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">day</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
+<span class="w">  </span><span class="nt">week</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">7</span>
+<span class="w">  </span><span class="nt">month</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">30</span>
+<span class="w">  </span><span class="nt">year</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">365</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="searx.engines.xpath.safe_search_support">
+<span class="sig-prename descclassname"><span class="pre">searx.engines.xpath.</span></span><span class="sig-name descname"><span class="pre">safe_search_support</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></em><a class="headerlink" href="#searx.engines.xpath.safe_search_support" title="Link to this definition">¶</a></dt>
+<dd><p>Engine supports safe-search.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="searx.engines.xpath.safe_search_map">
+<span class="sig-prename descclassname"><span class="pre">searx.engines.xpath.</span></span><span class="sig-name descname"><span class="pre">safe_search_map</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{0:</span> <span class="pre">'&amp;filter=none',</span> <span class="pre">1:</span> <span class="pre">'&amp;filter=moderate',</span> <span class="pre">2:</span> <span class="pre">'&amp;filter=strict'}</span></em><a class="headerlink" href="#searx.engines.xpath.safe_search_map" title="Link to this definition">¶</a></dt>
+<dd><p>Maps safe-search value to <code class="docutils literal notranslate"><span class="pre">{safe_search}</span></code> in <a class="reference internal" href="#searx.engines.xpath.search_url" title="searx.engines.xpath.search_url"><code class="xref py py-obj docutils literal notranslate"><span class="pre">search_url</span></code></a>.</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">safesearch</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="nt">safes_search_map</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">0</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;&amp;filter=none&#39;</span>
+<span class="w">  </span><span class="nt">1</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;&amp;filter=moderate&#39;</span>
+<span class="w">  </span><span class="nt">2</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;&amp;filter=strict&#39;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="searx.engines.xpath.request">
+<span class="sig-prename descclassname"><span class="pre">searx.engines.xpath.</span></span><span class="sig-name descname"><span class="pre">request</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">query</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">params</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/searx/engines/xpath.html#request"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.engines.xpath.request" title="Link to this definition">¶</a></dt>
+<dd><p>Build request parameters (see <a class="reference internal" href="engine_overview.html#engine-request"><span class="std std-ref">Making a Request</span></a>).</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="searx.engines.xpath.response">
+<span class="sig-prename descclassname"><span class="pre">searx.engines.xpath.</span></span><span class="sig-name descname"><span class="pre">response</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">resp</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="index.html#searx.result_types.EngineResults" title="searx.result_types.EngineResults"><span class="pre">EngineResults</span></a></span></span><a class="reference internal" href="../../_modules/searx/engines/xpath.html#response"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.engines.xpath.response" title="Link to this definition">¶</a></dt>
+<dd><p>Scrap <em>results</em> from the response (see <a class="reference internal" href="../result_types/index.html#result-types"><span class="std std-ref">Result Types</span></a>).</p>
+</dd></dl>
+
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+  <span id="sidebar-top"></span>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+  
+    
+            <p class="logo"><a href="../../index.html">
+              <img class="logo" src="../../_static/searxng-wordmark.svg" alt="Logo of SearXNG"/>
+            </a></p>
+  
+
+<h3><a href="../../index.html">Table of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../user/index.html">User information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../own-instance.html">Why use a private instance?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../admin/index.html">Administrator documentation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Developer documentation</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../quickstart.html">Development Quickstart</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../commits.html">Git Commits &amp; Change Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contribution_guide.html">How to contribute</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../extended_types.html">Extended Types</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Engine Implementations</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="enginelib.html">Engine Library</a></li>
+<li class="toctree-l3"><a class="reference internal" href="engines.html">SearXNG’s engines loader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="engine_overview.html">Engine Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="index.html#resultlist-and-engines">ResultList and engines</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="index.html#engine-types">Engine Types</a><ul class="current">
+<li class="toctree-l4 current"><a class="reference internal" href="index.html#online-engines">Online Engines</a><ul class="current">
+<li class="toctree-l5"><a class="reference internal" href="demo/demo_online.html">Demo Online Engine</a></li>
+<li class="toctree-l5 current"><a class="current reference internal" href="#">XPath Engine</a></li>
+<li class="toctree-l5"><a class="reference internal" href="mediawiki.html">MediaWiki Engine</a></li>
+<li class="toctree-l5"><a class="reference internal" href="json_engine.html">JSON Engine</a></li>
+<li class="toctree-l5"><a class="reference internal" href="online/adobe_stock.html">Adobe Stock</a></li>
+<li class="toctree-l5"><a class="reference internal" href="online/alpinelinux.html">Alpine Linux Packages</a></li>
+<li class="toctree-l5"><a class="reference internal" href="online/annas_archive.html">Anna’s Archive</a></li>
+<li class="toctree-l5"><a class="reference internal" href="online/archlinux.html">Arch Linux</a></li>
+<li class="toctree-l5"><a class="reference internal" href="online/arxiv.html">arXiv</a></li>
+<li class="toctree-l5"><a class="reference internal" href="online/astrophysics_data_system.html">Astrophysics Data System (ADS)</a></li>
+<li class="toctree-l5"><a class="reference internal" href="online/azure.html">Azure Resources</a></li>
+<li class="toctree-l5"><a class="reference internal" href="online/bing.html">Bing Engines</a></li>
+<li class="toctree-l5"><a class="reference internal" href="online/bpb.html">Bpb</a></li>
+<li class="toctree-l5"><a class="reference internal" href="online/brave.html">Brave Engines</a></li>
+<li class="toctree-l5"><a class="reference internal" href="online/bt4g.html">BT4G</a></li>
+<li class="toctree-l5"><a class="reference internal" href="online/chinaso.html">ChinaSo</a></li>
+<li class="toctree-l5"><a class="reference internal" href="online/core.html">CORE</a></li>
+<li class="toctree-l5"><a class="reference internal" href="online/crossref.html">Crossref</a></li>
+<li class="toctree-l5"><a class="reference internal" href="online/dailymotion.html">Dailymotion</a></li>
+<li class="toctree-l5"><a class="reference internal" href="online/discourse.html">Discourse Forums</a></li>
+<li class="toctree-l5"><a class="reference internal" href="online/duckduckgo.html">DuckDuckGo Engines</a></li>
+<li class="toctree-l5"><a class="reference internal" href="online/geizhals.html">Geizhals</a></li>
+<li class="toctree-l5"><a class="reference internal" href="online/gitea.html">Gitea</a></li>
+<li class="toctree-l5"><a class="reference internal" href="online/github_code.html">Github Code</a></li>
+<li class="toctree-l5"><a class="reference internal" href="online/gitlab.html">GitLab</a></li>
+<li class="toctree-l5"><a class="reference internal" href="online/google.html">Google Engines</a></li>
+<li class="toctree-l5"><a class="reference internal" href="online/huggingface.html">Hugging Face</a></li>
+<li class="toctree-l5"><a class="reference internal" href="online/lemmy.html">Lemmy</a></li>
+<li class="toctree-l5"><a class="reference internal" href="online/loc.html">Library of Congress</a></li>
+<li class="toctree-l5"><a class="reference internal" href="online/marginalia.html">Marginalia Search</a></li>
+<li class="toctree-l5"><a class="reference internal" href="online/mastodon.html">Mastodon</a></li>
+<li class="toctree-l5"><a class="reference internal" href="online/moviepilot.html">Moviepilot</a></li>
+<li class="toctree-l5"><a class="reference internal" href="online/mrs.html">Matrix Rooms Search (MRS)</a></li>
+<li class="toctree-l5"><a class="reference internal" href="online/mwmbl.html">Mwmbl Engine</a></li>
+<li class="toctree-l5"><a class="reference internal" href="online/odysee.html">Odysee</a></li>
+<li class="toctree-l5"><a class="reference internal" href="online/openalex.html">OpenAlex</a></li>
+<li class="toctree-l5"><a class="reference internal" href="online/openlibrary.html">Open Library</a></li>
+<li class="toctree-l5"><a class="reference internal" href="online/peertube.html">Peertube Engines</a></li>
+<li class="toctree-l5"><a class="reference internal" href="online/piped.html">Piped</a></li>
+<li class="toctree-l5"><a class="reference internal" href="online/presearch.html">Presearch Engine</a></li>
+<li class="toctree-l5"><a class="reference internal" href="online/pubmed.html">PubMed</a></li>
+<li class="toctree-l5"><a class="reference internal" href="online/qwant.html">Qwant</a></li>
+<li class="toctree-l5"><a class="reference internal" href="online/radio_browser.html">RadioBrowser</a></li>
+<li class="toctree-l5"><a class="reference internal" href="online/recoll.html">Recoll Engine</a></li>
+<li class="toctree-l5"><a class="reference internal" href="online/repology.html">Repology</a></li>
+<li class="toctree-l5"><a class="reference internal" href="online/reuters.html">Reuters</a></li>
+<li class="toctree-l5"><a class="reference internal" href="online/semantic_scholar.html">Semantic Scholar</a></li>
+<li class="toctree-l5"><a class="reference internal" href="online/soundcloud.html">Soundcloud</a></li>
+<li class="toctree-l5"><a class="reference internal" href="online/sourcehut.html">Sourcehut</a></li>
+<li class="toctree-l5"><a class="reference internal" href="online/springer.html">Springer Nature</a></li>
+<li class="toctree-l5"><a class="reference internal" href="online/startpage.html">Startpage Engines</a></li>
+<li class="toctree-l5"><a class="reference internal" href="online/tagesschau.html">Tagesschau API</a></li>
+<li class="toctree-l5"><a class="reference internal" href="online/torznab.html">Torznab WebAPI</a></li>
+<li class="toctree-l5"><a class="reference internal" href="online/tubearchivist.html">Tube Archivist</a></li>
+<li class="toctree-l5"><a class="reference internal" href="online/void.html">Void Linux binary packages</a></li>
+<li class="toctree-l5"><a class="reference internal" href="online/wallhaven.html">Wallhaven</a></li>
+<li class="toctree-l5"><a class="reference internal" href="online/wikipedia.html">Wikimedia</a></li>
+<li class="toctree-l5"><a class="reference internal" href="online/yacy.html">Yacy</a></li>
+<li class="toctree-l5"><a class="reference internal" href="online/yahoo.html">Yahoo Engine</a></li>
+<li class="toctree-l5"><a class="reference internal" href="online/zlibrary.html">Z-Library</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="index.html#offline-engines">Offline Engines</a></li>
+<li class="toctree-l4"><a class="reference internal" href="index.html#online-url-search">Online URL Search</a></li>
+<li class="toctree-l4"><a class="reference internal" href="index.html#online-currency">Online Currency</a></li>
+<li class="toctree-l4"><a class="reference internal" href="index.html#online-dictionary">Online Dictionary</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../result_types/index.html">Result Types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../templates.html">Simple Theme Templates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../search_api.html">Search API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../plugins/index.html">Plugins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../answerers/index.html">Answerers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../translation.html">Translation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../makefile.html">Makefile &amp; <code class="docutils literal notranslate"><span class="pre">./manage</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reST.html">reST primer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../searxng_extra/index.html">Tooling box <code class="docutils literal notranslate"><span class="pre">searxng_extra</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../utils/index.html">DevOps tooling box</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../src/index.html">Source-Code</a></li>
+</ul>
+
+  <h3>Project Links</h3>
+  <ul>
+    <li><a href="https://github.com/searxng/searxng/tree/master">Source</a>
+  
+    <li><a href="https://github.com/searxng/searxng/wiki">Wiki</a>
+  
+    <li><a href="https://searx.space">Public instances</a>
+  
+    <li><a href="https://github.com/searxng/searxng/issues">Issue Tracker</a>
+  </ul><h3>Navigation</h3>
+<ul>
+  <li><a href="../../index.html">Overview</a>
+    <ul>
+      <li><a href="../index.html">Developer documentation</a>
+        <ul>
+      <li><a href="index.html">Engine Implementations</a>
+        <ul>
+          <li>Previous: <a href="demo/demo_online.html" title="previous chapter">Demo Online Engine</a>
+          <li>Next: <a href="mediawiki.html" title="next chapter">MediaWiki Engine</a></ul>
+      </li></ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/dev/engines/xpath.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright SearXNG team.
+    </div>
+  </body>
+</html>

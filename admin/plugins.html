@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>List of plugins &#8212; SearXNG Documentation (2026.2.22+191818b86)</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=6625fa76" />
+    <link rel="stylesheet" type="text/css" href="../_static/searxng.css?v=52e4ff28" />
+    <script src="../_static/documentation_options.js?v=1b5d919e"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script data-project="searxng" data-version="2026.2.22+191818b86" src="../_static/describe_version.js?v=fa7f30d0"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Buildhosts" href="buildhosts.html" />
+    <link rel="prev" title="Architecture" href="architecture.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="buildhosts.html" title="Buildhosts"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="architecture.html" title="Architecture"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">SearXNG Documentation (2026.2.22+191818b86)</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" accesskey="U">Administrator documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">List of plugins</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="list-of-plugins">
+<span id="plugins-admin"></span><h1>List of plugins<a class="headerlink" href="#list-of-plugins" title="Link to this heading">¶</a></h1>
+<p>Further reading ..</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="settings/settings_plugins.html#settings-plugins"><span class="std std-ref">SearXNG settings</span></a></p></li>
+<li><p><a class="reference internal" href="../dev/plugins/development.html#dev-plugin"><span class="std std-ref">Plugin Development</span></a></p></li>
+</ul>
+<span id="configured-plugins"></span><table class="docutils align-default" id="id1">
+<caption><span class="caption-number">Table 1 </span><span class="caption-text">Plugins configured at built time (defaults)</span><a class="headerlink" href="#id1" title="Link to this table">¶</a></caption>
+<colgroup>
+<col style="width: 23.1%" />
+<col style="width: 7.7%" />
+<col style="width: 69.2%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head stub"><p>Name</p></th>
+<th class="head"><p>Active</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><th class="stub"><p>Calculator</p></th>
+<td><p>yes</p></td>
+<td><p>Parses and solves mathematical expressions.</p></td>
+</tr>
+<tr class="row-odd"><th class="stub"><p>Self Information</p></th>
+<td><p>yes</p></td>
+<td><p>Displays your IP if the query is “ip” and your user agent if the query is “user-agent”.</p></td>
+</tr>
+<tr class="row-even"><th class="stub"><p>Hash plugin</p></th>
+<td><p>yes</p></td>
+<td><p>Converts strings to different hash digests. Available functions: md5, sha1, sha224, sha256, sha384, sha512.</p></td>
+</tr>
+<tr class="row-odd"><th class="stub"><p>Timezones plugin</p></th>
+<td><p>yes</p></td>
+<td><p>Display the current time on different time zones.</p></td>
+</tr>
+<tr class="row-even"><th class="stub"><p>Tor check plugin</p></th>
+<td><p>no</p></td>
+<td><p>This plugin checks if the address of the request is a Tor exit-node, and informs the user if it is; like check.torproject.org, but from SearXNG.</p></td>
+</tr>
+<tr class="row-odd"><th class="stub"><p>Unit converter plugin</p></th>
+<td><p>yes</p></td>
+<td><p>Convert between units</p></td>
+</tr>
+<tr class="row-even"><th class="stub"><p>Infinite scroll</p></th>
+<td><p>no</p></td>
+<td><p>Automatically loads the next page when scrolling to bottom of the current page</p></td>
+</tr>
+<tr class="row-odd"><th class="stub"><p>Open Access DOI rewrite</p></th>
+<td><p>no</p></td>
+<td><p>Avoid paywalls by redirecting to open-access versions of publications when available</p></td>
+</tr>
+<tr class="row-even"><th class="stub"><p>Tracker URL remover</p></th>
+<td><p>yes</p></td>
+<td><p>Remove trackers arguments from the returned URL</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+  <span id="sidebar-top"></span>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+  
+    
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/searxng-wordmark.svg" alt="Logo of SearXNG"/>
+            </a></p>
+  
+
+<h3><a href="../index.html">Table of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../user/index.html">User information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../own-instance.html">Why use a private instance?</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Administrator documentation</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="settings/index.html">Settings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation-docker.html">Installation container</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation-scripts.html">Installation Script</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation-searxng.html">Step by step installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation-granian.html">Granian</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation-uwsgi.html">uWSGI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation-nginx.html">NGINX</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation-apache.html">Apache</a></li>
+<li class="toctree-l2"><a class="reference internal" href="update-searxng.html">SearXNG maintenance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="answer-captcha.html">Answer CAPTCHA from server’s IP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.favicons.html">Favicons</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.limiter.html">Limiter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html">Administration API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="architecture.html">Architecture</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">List of plugins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="buildhosts.html">Buildhosts</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../dev/index.html">Developer documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../utils/index.html">DevOps tooling box</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../src/index.html">Source-Code</a></li>
+</ul>
+
+  <h3>Project Links</h3>
+  <ul>
+    <li><a href="https://github.com/searxng/searxng/tree/master">Source</a>
+  
+    <li><a href="https://github.com/searxng/searxng/wiki">Wiki</a>
+  
+    <li><a href="https://searx.space">Public instances</a>
+  
+    <li><a href="https://github.com/searxng/searxng/issues">Issue Tracker</a>
+  </ul><h3>Navigation</h3>
+<ul>
+  <li><a href="../index.html">Overview</a>
+    <ul>
+      <li><a href="index.html">Administrator documentation</a>
+        <ul>
+          <li>Previous: <a href="architecture.html" title="previous chapter">Architecture</a>
+          <li>Next: <a href="buildhosts.html" title="next chapter">Buildhosts</a></ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/admin/plugins.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright SearXNG team.
+    </div>
+  </body>
+</html>

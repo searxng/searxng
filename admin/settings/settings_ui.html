@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>ui: &#8212; SearXNG Documentation (2026.2.22+191818b86)</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=6625fa76" />
+    <link rel="stylesheet" type="text/css" href="../../_static/searxng.css?v=52e4ff28" />
+    <script src="../../_static/documentation_options.js?v=1b5d919e"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script data-project="searxng" data-version="2026.2.22+191818b86" src="../../_static/describe_version.js?v=fa7f30d0"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="redis:" href="settings_redis.html" />
+    <link rel="prev" title="server:" href="settings_server.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="settings_redis.html" title="redis:"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="settings_server.html" title="server:"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">SearXNG Documentation (2026.2.22+191818b86)</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >Administrator documentation</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="index.html" accesskey="U">Settings</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href=""><code class="docutils literal notranslate"><span class="pre">ui:</span></code></a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="ui">
+<span id="settings-ui"></span><h1><code class="docutils literal notranslate"><span class="pre">ui:</span></code><a class="headerlink" href="#ui" title="Link to this heading">¶</a></h1>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">ui</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">default_locale</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;&quot;</span>
+<span class="w">  </span><span class="nt">query_in_title</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+<span class="w">  </span><span class="nt">center_alignment</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+<span class="w">  </span><span class="nt">cache_url</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://web.archive.org/web/</span>
+<span class="w">  </span><span class="nt">default_theme</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">simple</span>
+<span class="w">  </span><span class="nt">theme_args</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">simple_style</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">auto</span>
+<span class="w">  </span><span class="nt">search_on_category_select</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">  </span><span class="nt">hotkeys</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">default</span>
+<span class="w">  </span><span class="nt">url_formatting</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">pretty</span>
+</pre></div>
+</div>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">default_locale</span></code> :</dt><dd><p>SearXNG interface language.  If blank, the locale is detected by using the
+browser language.  If it doesn’t work, or you are deploying a language
+specific instance of SearXNG, a locale can be defined using an ISO language
+code, like <code class="docutils literal notranslate"><span class="pre">fr</span></code>, <code class="docutils literal notranslate"><span class="pre">en</span></code>, <code class="docutils literal notranslate"><span class="pre">de</span></code>.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">query_in_title</span></code> :</dt><dd><p>When true, the result page’s titles contains the query it decreases the
+privacy, since the browser can records the page titles.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">center_alignment</span></code><span class="classifier">default <code class="docutils literal notranslate"><span class="pre">false</span></code></span></dt><dd><p>When enabled, the results are centered instead of being in the left (or RTL)
+side of the screen.  This setting only affects the <em>desktop layout</em>
+(<a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/client/simple/src/less/definitions.less">min-width: &#64;tablet</a>)</p>
+</dd>
+</dl>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">cache_url</span></code><span class="classifier"><code class="docutils literal notranslate"><span class="pre">https://web.archive.org/web/</span></code></span></dt><dd><p>URL prefix of the internet archive or cache, don’t forget trailing slash (if
+needed).  The default is <a class="reference external" href="https://web.archive.org/web/">https://web.archive.org/web/</a> alternatives are:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://webcache.googleusercontent.com/search?q=cache">https://webcache.googleusercontent.com/search?q=cache</a>:</p></li>
+<li><p><a class="reference external" href="https://archive.today/">https://archive.today/</a></p></li>
+</ul>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">default_theme</span></code> :</dt><dd><p>Name of the theme you want to use by default on your SearXNG instance.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">theme_args.simple_style</span></code>:</dt><dd><p>Style of simple theme: <code class="docutils literal notranslate"><span class="pre">auto</span></code>, <code class="docutils literal notranslate"><span class="pre">light</span></code>, <code class="docutils literal notranslate"><span class="pre">dark</span></code>, <code class="docutils literal notranslate"><span class="pre">black</span></code></p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">results_on_new_tab</span></code>:</dt><dd><p>Open result links in a new tab by default.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">search_on_category_select</span></code>:</dt><dd><p>Perform search immediately if a category selected. Disable to select multiple categories.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">hotkeys</span></code>:</dt><dd><p>Hotkeys to use in the search interface: <code class="docutils literal notranslate"><span class="pre">default</span></code>, <code class="docutils literal notranslate"><span class="pre">vim</span></code> (Vim-like).</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">url_formatting</span></code>:</dt><dd><p>Formatting type to use for result URLs: <code class="docutils literal notranslate"><span class="pre">pretty</span></code>, <code class="docutils literal notranslate"><span class="pre">full</span></code> or <code class="docutils literal notranslate"><span class="pre">host</span></code>.</p>
+</dd>
+</dl>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+  <span id="sidebar-top"></span>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+  
+    
+            <p class="logo"><a href="../../index.html">
+              <img class="logo" src="../../_static/searxng-wordmark.svg" alt="Logo of SearXNG"/>
+            </a></p>
+  
+
+<h3><a href="../../index.html">Table of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../user/index.html">User information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../own-instance.html">Why use a private instance?</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Administrator documentation</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Settings</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="settings.html"><code class="docutils literal notranslate"><span class="pre">settings.yml</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="settings_engines.html"><code class="docutils literal notranslate"><span class="pre">engines:</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="settings_brand.html"><code class="docutils literal notranslate"><span class="pre">brand:</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="settings_general.html"><code class="docutils literal notranslate"><span class="pre">general:</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="settings_search.html"><code class="docutils literal notranslate"><span class="pre">search:</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="settings_server.html"><code class="docutils literal notranslate"><span class="pre">server:</span></code></a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#"><code class="docutils literal notranslate"><span class="pre">ui:</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="settings_redis.html"><code class="docutils literal notranslate"><span class="pre">redis:</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="settings_valkey.html"><code class="docutils literal notranslate"><span class="pre">valkey:</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="settings_outgoing.html"><code class="docutils literal notranslate"><span class="pre">outgoing:</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="settings_categories_as_tabs.html"><code class="docutils literal notranslate"><span class="pre">categories_as_tabs:</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="settings_plugins.html"><code class="docutils literal notranslate"><span class="pre">plugins:</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation-docker.html">Installation container</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation-scripts.html">Installation Script</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation-searxng.html">Step by step installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation-granian.html">Granian</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation-uwsgi.html">uWSGI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation-nginx.html">NGINX</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation-apache.html">Apache</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../update-searxng.html">SearXNG maintenance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../answer-captcha.html">Answer CAPTCHA from server’s IP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../searx.favicons.html">Favicons</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../searx.limiter.html">Limiter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html">Administration API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../architecture.html">Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../plugins.html">List of plugins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../buildhosts.html">Buildhosts</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../dev/index.html">Developer documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../utils/index.html">DevOps tooling box</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../src/index.html">Source-Code</a></li>
+</ul>
+
+  <h3>Project Links</h3>
+  <ul>
+    <li><a href="https://github.com/searxng/searxng/tree/master">Source</a>
+  
+    <li><a href="https://github.com/searxng/searxng/wiki">Wiki</a>
+  
+    <li><a href="https://searx.space">Public instances</a>
+  
+    <li><a href="https://github.com/searxng/searxng/issues">Issue Tracker</a>
+  </ul><h3>Navigation</h3>
+<ul>
+  <li><a href="../../index.html">Overview</a>
+    <ul>
+      <li><a href="../index.html">Administrator documentation</a>
+        <ul>
+      <li><a href="index.html">Settings</a>
+        <ul>
+          <li>Previous: <a href="settings_server.html" title="previous chapter"><code class="docutils literal notranslate"><span class="pre">server:</span></code></a>
+          <li>Next: <a href="settings_redis.html" title="next chapter"><code class="docutils literal notranslate"><span class="pre">redis:</span></code></a></ul>
+      </li></ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/admin/settings/settings_ui.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright SearXNG team.
+    </div>
+  </body>
+</html>

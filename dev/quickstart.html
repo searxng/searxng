@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Development Quickstart &#8212; SearXNG Documentation (2026.2.22+191818b86)</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=6625fa76" />
+    <link rel="stylesheet" type="text/css" href="../_static/searxng.css?v=52e4ff28" />
+    <script src="../_static/documentation_options.js?v=1b5d919e"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script data-project="searxng" data-version="2026.2.22+191818b86" src="../_static/describe_version.js?v=fa7f30d0"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Git Commits &amp; Change Management" href="commits.html" />
+    <link rel="prev" title="Developer documentation" href="index.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="commits.html" title="Git Commits &amp; Change Management"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Developer documentation"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">SearXNG Documentation (2026.2.22+191818b86)</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" accesskey="U">Developer documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Development Quickstart</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="development-quickstart">
+<span id="devquickstart"></span><h1>Development Quickstart<a class="headerlink" href="#development-quickstart" title="Link to this heading">¶</a></h1>
+<aside class="sidebar">
+<p class="sidebar-title">further read</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="makefile.html#makefile"><span class="std std-ref">Makefile &amp; ./manage</span></a></p></li>
+<li><p><a class="reference internal" href="../admin/buildhosts.html#buildhosts"><span class="std std-ref">Buildhosts</span></a></p></li>
+</ul>
+</aside>
+<p>SearXNG loves developers; Developers do not need to worry about tool chains, the
+usual developer tasks can be comfortably executed via <a class="reference internal" href="makefile.html#makefile"><span class="std std-ref">make</span></a>.</p>
+<p>Don’t hesitate, just clone SearXNG’s sources and start hacking right now ..</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/searxng/searxng.git<span class="w"> </span>searxng
+</pre></div>
+</div>
+<p>For the developer environment, <a class="reference external" href="https://mise.jdx.dev/getting-started.html">mise en place</a> is recommended:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>curl<span class="w"> </span>https://mise.run<span class="w"> </span><span class="p">|</span><span class="w"> </span>sh
+</pre></div>
+</div>
+<p>The tools required for a developer environment are provided via <a class="reference external" href="https://github.com/searxng/searxng/blob/master/mise.toml">mise.toml</a>,
+trust the project:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>mise<span class="w"> </span>trust
+</pre></div>
+</div>
+<p>Here is how a minimal workflow looks like:</p>
+<ol class="arabic simple">
+<li><p><em>start</em> hacking</p></li>
+<li><p><em>run</em> your code: <a class="reference internal" href="makefile.html#make-run"><span class="std std-ref">make run</span></a></p></li>
+<li><p><em>format &amp; test</em> your code: <a class="reference internal" href="makefile.html#make-format"><span class="std std-ref">make format</span></a> and <a class="reference internal" href="makefile.html#make-test"><span class="std std-ref">make test</span></a></p></li>
+</ol>
+<p>If you think at some point something fails, go back to <em>start</em>.  Otherwise,
+choose a meaningful commit message and we are happy to receive your pull
+request. To not end in <em>wild west</em> we have some directives, please pay attention
+to our “<a class="reference internal" href="contribution_guide.html#how-to-contribute"><span class="std std-ref">How to contribute</span></a>” guideline.</p>
+<p>If you want to debug with the <em>good old Python Debugger</em> <a class="reference external" href="https://docs.python.org/3/library/pdb.html#module-pdb">pdb</a>: Alternatively to
+<code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">run</span></code> (2.) which starts a <a class="reference internal" href="../admin/installation-granian.html#searxng-granian"><span class="std std-ref">Granian</span></a> server you can jump
+into the developer environment and start a python based HTTP server by:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ ./manage dev.env
+...
+(dev.env)$ SEARXNG_DEBUG=1 python -m searx.webapp
+</pre></div>
+</div>
+<p>Since this is a pure Python solution, you can set breakpoints in your code with
+<code class="docutils literal notranslate"><span class="pre">pdb.set_trace()</span></code> and the debugger will wait for you in the terminal prompt.</p>
+<aside class="sidebar">
+<p class="sidebar-title">further read</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="makefile.html#make-nvm"><span class="std std-ref">NVM make nvm.install nvm.status</span></a></p></li>
+<li><p><a class="reference internal" href="makefile.html#make-themes"><span class="std std-ref">make themes.*</span></a></p></li>
+</ul>
+</aside>
+<p>If you implement themes, you will need to setup a <a class="reference internal" href="makefile.html#make-node-env"><span class="std std-ref">Node.js environment</span></a>.  Before you call <em>make run</em> (2.), you need to compile the
+modified styles and JavaScript: <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">node.clean</span> <span class="pre">themes.all</span></code>.  If <a class="reference external" href="https://biomejs.dev/">Biome</a>
+or <a class="reference external" href="https://stylelint.io/">Stylelint</a> reports issues, try <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">themes.fix</span></code>.</p>
+<p>Alternatively you can also compile selective the theme you have modified,
+e.g. the <em>simple</em> theme.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>make<span class="w"> </span>themes.simple
+</pre></div>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>To get live builds while modifying CSS &amp; JS use: <code class="docutils literal notranslate"><span class="pre">LIVE_THEME=simple</span> <span class="pre">make</span> <span class="pre">run</span></code></p>
+</div>
+<aside class="sidebar">
+<p class="sidebar-title">further read</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="makefile.html#make-static-build"><span class="std std-ref">make static.build.*</span></a></p></li>
+</ul>
+</aside>
+<p>If you finished your <em>tests</em> you can start to commit your changes.  To separate
+the modified source code from the build products first run:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>make<span class="w"> </span>static.build.restore
+</pre></div>
+</div>
+<p>This will restore the old build products and only your changes of the code
+remain in the working tree which can now be added &amp; committed.  When all sources
+are committed, you can commit the build products simply by:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>make<span class="w"> </span>static.build.commit
+</pre></div>
+</div>
+<p>Committing the build products should be the last step, just before you send us
+your PR.  There is also a make target to rewind this last build commit:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>make<span class="w"> </span>static.build.drop
+</pre></div>
+</div>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+  <span id="sidebar-top"></span>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+  
+    
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/searxng-wordmark.svg" alt="Logo of SearXNG"/>
+            </a></p>
+  
+
+<h3><a href="../index.html">Table of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../user/index.html">User information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../own-instance.html">Why use a private instance?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../admin/index.html">Administrator documentation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Developer documentation</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Development Quickstart</a></li>
+<li class="toctree-l2"><a class="reference internal" href="commits.html">Git Commits &amp; Change Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contribution_guide.html">How to contribute</a></li>
+<li class="toctree-l2"><a class="reference internal" href="extended_types.html">Extended Types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="engines/index.html">Engine Implementations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="result_types/index.html">Result Types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="templates.html">Simple Theme Templates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="search_api.html">Search API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plugins/index.html">Plugins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="answerers/index.html">Answerers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="translation.html">Translation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="makefile.html">Makefile &amp; <code class="docutils literal notranslate"><span class="pre">./manage</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="reST.html">reST primer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searxng_extra/index.html">Tooling box <code class="docutils literal notranslate"><span class="pre">searxng_extra</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../utils/index.html">DevOps tooling box</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../src/index.html">Source-Code</a></li>
+</ul>
+
+  <h3>Project Links</h3>
+  <ul>
+    <li><a href="https://github.com/searxng/searxng/tree/master">Source</a>
+  
+    <li><a href="https://github.com/searxng/searxng/wiki">Wiki</a>
+  
+    <li><a href="https://searx.space">Public instances</a>
+  
+    <li><a href="https://github.com/searxng/searxng/issues">Issue Tracker</a>
+  </ul><h3>Navigation</h3>
+<ul>
+  <li><a href="../index.html">Overview</a>
+    <ul>
+      <li><a href="index.html">Developer documentation</a>
+        <ul>
+          <li>Previous: <a href="index.html" title="previous chapter">Developer documentation</a>
+          <li>Next: <a href="commits.html" title="next chapter">Git Commits &amp; Change Management</a></ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/dev/quickstart.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright SearXNG team.
+    </div>
+  </body>
+</html>

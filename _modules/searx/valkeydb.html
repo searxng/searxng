@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>searx.valkeydb &#8212; SearXNG Documentation (2026.2.22+191818b86)</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=6625fa76" />
+    <link rel="stylesheet" type="text/css" href="../../_static/searxng.css?v=52e4ff28" />
+    <script src="../../_static/documentation_options.js?v=1b5d919e"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script data-project="searxng" data-version="2026.2.22+191818b86" src="../../_static/describe_version.js?v=fa7f30d0"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">SearXNG Documentation (2026.2.22+191818b86)</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">searx.valkeydb</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for searx.valkeydb</h1><div class="highlight"><pre>
+<span></span><span class="c1"># SPDX-License-Identifier: AGPL-3.0-or-later</span>
+<span class="sd">&quot;&quot;&quot;Implementation of the valkey client (valkey-py_).</span>
+
+<span class="sd">.. _valkey-py: https://github.com/valkey-io/valkey-py</span>
+
+<span class="sd">This implementation uses the :ref:`settings valkey` setup from ``settings.yml``.</span>
+<span class="sd">A valkey DB connect can be tested by::</span>
+
+<span class="sd">  &gt;&gt;&gt; from searx import valkeydb</span>
+<span class="sd">  &gt;&gt;&gt; valkeydb.initialize()</span>
+<span class="sd">  True</span>
+<span class="sd">  &gt;&gt;&gt; db = valkeydb.client()</span>
+<span class="sd">  &gt;&gt;&gt; db.set(&quot;foo&quot;, &quot;bar&quot;)</span>
+<span class="sd">  True</span>
+<span class="sd">  &gt;&gt;&gt; db.get(&quot;foo&quot;)</span>
+<span class="sd">  b&#39;bar&#39;</span>
+<span class="sd">  &gt;&gt;&gt;</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pwd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">valkey</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">searx</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_setting</span>
+
+<span class="n">_CLIENT</span><span class="p">:</span> <span class="n">valkey</span><span class="o">.</span><span class="n">Valkey</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="client">
+<a class="viewcode-back" href="../../src/searx.valkeydb.html#searx.valkeydb.client">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">client</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">valkey</span><span class="o">.</span><span class="n">Valkey</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Returns SearXNG&#39;s global Valkey DB connector (Valkey client object).&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">_CLIENT</span></div>
+
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">initialize</span><span class="p">():</span>
+    <span class="k">global</span> <span class="n">_CLIENT</span>  <span class="c1"># pylint: disable=global-statement</span>
+    <span class="k">if</span> <span class="n">get_setting</span><span class="p">(</span><span class="s1">&#39;redis.url&#39;</span><span class="p">):</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;setting redis.url is deprecated, use valkey.url&quot;</span><span class="p">,</span> <span class="ne">DeprecationWarning</span><span class="p">)</span>
+    <span class="n">valkey_url</span> <span class="o">=</span> <span class="n">get_setting</span><span class="p">(</span><span class="s1">&#39;valkey.url&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">get_setting</span><span class="p">(</span><span class="s1">&#39;redis.url&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">valkey_url</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">False</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="c1"># create a client, but no connection is done</span>
+        <span class="n">_CLIENT</span> <span class="o">=</span> <span class="n">valkey</span><span class="o">.</span><span class="n">Valkey</span><span class="o">.</span><span class="n">from_url</span><span class="p">(</span><span class="n">valkey_url</span><span class="p">)</span>
+
+        <span class="c1"># log the parameters as seen by the valkey lib, without the password</span>
+        <span class="n">kwargs</span> <span class="o">=</span> <span class="n">_CLIENT</span><span class="o">.</span><span class="n">get_connection_kwargs</span><span class="p">()</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;password&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="n">kwargs</span> <span class="o">=</span> <span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s1">=</span><span class="si">{</span><span class="n">v</span><span class="si">!r}</span><span class="s1">&#39;</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">items</span><span class="p">()])</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;connecting to Valkey </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">)</span>
+
+        <span class="c1"># check the connection</span>
+        <span class="n">_CLIENT</span><span class="o">.</span><span class="n">ping</span><span class="p">()</span>
+
+        <span class="c1"># no error: the valkey connection is working</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;connected to Valkey&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">True</span>
+    <span class="k">except</span> <span class="n">valkey</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">ValkeyError</span><span class="p">:</span>
+        <span class="n">_CLIENT</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">_pw</span> <span class="o">=</span> <span class="n">pwd</span><span class="o">.</span><span class="n">getpwuid</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getuid</span><span class="p">())</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s2">&quot;[</span><span class="si">%s</span><span class="s2"> (</span><span class="si">%s</span><span class="s2">)] can&#39;t connect valkey DB ...&quot;</span><span class="p">,</span> <span class="n">_pw</span><span class="o">.</span><span class="n">pw_name</span><span class="p">,</span> <span class="n">_pw</span><span class="o">.</span><span class="n">pw_uid</span><span class="p">)</span>
+    <span class="k">return</span> <span class="kc">False</span>
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+  <span id="sidebar-top"></span>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+  
+    
+            <p class="logo"><a href="../../index.html">
+              <img class="logo" src="../../_static/searxng-wordmark.svg" alt="Logo of SearXNG"/>
+            </a></p>
+  
+
+<h3><a href="../../index.html">Table of Contents</a></h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../user/index.html">User information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../own-instance.html">Why use a private instance?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../admin/index.html">Administrator documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dev/index.html">Developer documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../utils/index.html">DevOps tooling box</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../src/index.html">Source-Code</a></li>
+</ul>
+
+  <h3>Project Links</h3>
+  <ul>
+    <li><a href="https://github.com/searxng/searxng/tree/master">Source</a>
+  
+    <li><a href="https://github.com/searxng/searxng/wiki">Wiki</a>
+  
+    <li><a href="https://searx.space">Public instances</a>
+  
+    <li><a href="https://github.com/searxng/searxng/issues">Issue Tracker</a>
+  </ul><h3>Navigation</h3>
+<ul>
+  <li><a href="../../index.html">Overview</a>
+    <ul>
+      <li><a href="../index.html">Module code</a>
+        
+          
+          </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright SearXNG team.
+    </div>
+  </body>
+</html>

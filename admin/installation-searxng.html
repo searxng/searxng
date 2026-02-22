@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Step by step installation &#8212; SearXNG Documentation (2026.2.22+191818b86)</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=6625fa76" />
+    <link rel="stylesheet" type="text/css" href="../_static/searxng.css?v=52e4ff28" />
+    <link rel="stylesheet" type="text/css" href="../_static/tabs.css?v=a5c4661c" />
+    <script src="../_static/documentation_options.js?v=1b5d919e"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script data-project="searxng" data-version="2026.2.22+191818b86" src="../_static/describe_version.js?v=fa7f30d0"></script>
+    <script src="../_static/tabs.js?v=3030b3cb"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Granian" href="installation-granian.html" />
+    <link rel="prev" title="Installation Script" href="installation-scripts.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="installation-granian.html" title="Granian"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="installation-scripts.html" title="Installation Script"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">SearXNG Documentation (2026.2.22+191818b86)</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" accesskey="U">Administrator documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Step by step installation</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="step-by-step-installation">
+<span id="installation-basic"></span><h1>Step by step installation<a class="headerlink" href="#step-by-step-installation" title="Link to this heading">¶</a></h1>
+<nav class="contents local" id="contents">
+<ul class="simple">
+<li><p><a class="reference internal" href="#install-packages" id="id2">Install packages</a></p></li>
+<li><p><a class="reference internal" href="#create-user" id="id3">Create user</a></p></li>
+<li><p><a class="reference internal" href="#install-searxng-dependencies" id="id4">Install SearXNG &amp; dependencies</a></p></li>
+<li><p><a class="reference internal" href="#configuration" id="id5">Configuration</a></p></li>
+<li><p><a class="reference internal" href="#check" id="id6">Check</a></p></li>
+</ul>
+</nav>
+<p>In this section we show the setup of a SearXNG instance that will be installed
+by the <a class="reference internal" href="installation-scripts.html#installation-scripts"><span class="std std-ref">Installation Script</span></a>.</p>
+<section id="install-packages">
+<span id="id1"></span><h2><a class="toc-backref" href="#id2" role="doc-backlink">Install packages</a><a class="headerlink" href="#install-packages" title="Link to this heading">¶</a></h2>
+<div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-0-VWJ1bnR1IC8gZGViaWFu" aria-selected="true" class="sphinx-tabs-tab group-tab" id="tab-0-VWJ1bnR1IC8gZGViaWFu" name="VWJ1bnR1IC8gZGViaWFu" role="tab" tabindex="0">Ubuntu / debian</button><button aria-controls="panel-0-QXJjaCBMaW51eA==" aria-selected="false" class="sphinx-tabs-tab group-tab" id="tab-0-QXJjaCBMaW51eA==" name="QXJjaCBMaW51eA==" role="tab" tabindex="-1">Arch Linux</button><button aria-controls="panel-0-RmVkb3JhIC8gUkhFTA==" aria-selected="false" class="sphinx-tabs-tab group-tab" id="tab-0-RmVkb3JhIC8gUkhFTA==" name="RmVkb3JhIC8gUkhFTA==" role="tab" tabindex="-1">Fedora / RHEL</button></div><div aria-labelledby="tab-0-VWJ1bnR1IC8gZGViaWFu" class="sphinx-tabs-panel group-tab" id="panel-0-VWJ1bnR1IC8gZGViaWFu" name="VWJ1bnR1IC8gZGViaWFu" role="tabpanel" tabindex="0"><div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>sudo<span class="w"> </span>-H<span class="w"> </span>apt-get<span class="w"> </span>install<span class="w"> </span>-y<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>python3-dev<span class="w"> </span>python3-babel<span class="w"> </span>python3-venv<span class="w"> </span>python-is-python3<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>uwsgi<span class="w"> </span>uwsgi-plugin-python3<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>git<span class="w"> </span>build-essential<span class="w"> </span>libxslt-dev<span class="w"> </span>zlib1g-dev<span class="w"> </span>libffi-dev<span class="w"> </span>libssl-dev
+</pre></div>
+</div>
+</div><div aria-labelledby="tab-0-QXJjaCBMaW51eA==" class="sphinx-tabs-panel group-tab" hidden="true" id="panel-0-QXJjaCBMaW51eA==" name="QXJjaCBMaW51eA==" role="tabpanel" tabindex="0"><div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>sudo<span class="w"> </span>-H<span class="w"> </span>pacman<span class="w"> </span>-S<span class="w"> </span>--noconfirm<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>python<span class="w"> </span>python-pip<span class="w"> </span>python-lxml<span class="w"> </span>python-babel<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>uwsgi<span class="w"> </span>uwsgi-plugin-python<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>git<span class="w"> </span>base-devel<span class="w"> </span>libxml2
+</pre></div>
+</div>
+</div><div aria-labelledby="tab-0-RmVkb3JhIC8gUkhFTA==" class="sphinx-tabs-panel group-tab" hidden="true" id="panel-0-RmVkb3JhIC8gUkhFTA==" name="RmVkb3JhIC8gUkhFTA==" role="tabpanel" tabindex="0"><div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>sudo<span class="w"> </span>-H<span class="w"> </span>dnf<span class="w"> </span>install<span class="w"> </span>-y<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>python<span class="w"> </span>python-pip<span class="w"> </span>python-lxml<span class="w"> </span>python-babel<span class="w"> </span>python3-devel<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>uwsgi<span class="w"> </span>uwsgi-plugin-python3<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>git<span class="w"> </span>@development-tools<span class="w"> </span>libxml2<span class="w"> </span>openssl
+</pre></div>
+</div>
+</div></div>
+<div class="admonition hint">
+<p class="admonition-title">Hint</p>
+<p>This installs also the packages needed by <a class="reference internal" href="installation-uwsgi.html#searxng-uwsgi"><span class="std std-ref">uWSGI</span></a></p>
+</div>
+</section>
+<section id="create-user">
+<span id="create-searxng-user"></span><h2><a class="toc-backref" href="#id3" role="doc-backlink">Create user</a><a class="headerlink" href="#create-user" title="Link to this heading">¶</a></h2>
+<div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-1-YmFzaA==" aria-selected="true" class="sphinx-tabs-tab group-tab" id="tab-1-YmFzaA==" name="YmFzaA==" role="tab" tabindex="0">bash</button></div><div aria-labelledby="tab-1-YmFzaA==" class="sphinx-tabs-panel group-tab" id="panel-1-YmFzaA==" name="YmFzaA==" role="tabpanel" tabindex="0"><div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>sudo<span class="w"> </span>-H<span class="w"> </span>useradd<span class="w"> </span>--shell<span class="w"> </span>/bin/bash<span class="w"> </span>--system<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--home-dir<span class="w"> </span><span class="s2">&quot;/usr/local/searxng&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--comment<span class="w"> </span><span class="s1">&#39;Privacy-respecting metasearch engine&#39;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>searxng
+
+$<span class="w"> </span>sudo<span class="w"> </span>-H<span class="w"> </span>mkdir<span class="w"> </span><span class="s2">&quot;/usr/local/searxng&quot;</span>
+$<span class="w"> </span>sudo<span class="w"> </span>-H<span class="w"> </span>chown<span class="w"> </span>-R<span class="w"> </span><span class="s2">&quot;searxng:searxng&quot;</span><span class="w"> </span><span class="s2">&quot;/usr/local/searxng&quot;</span>
+</pre></div>
+</div>
+</div></div>
+</section>
+<section id="install-searxng-dependencies">
+<span id="searxng-src"></span><h2><a class="toc-backref" href="#id4" role="doc-backlink">Install SearXNG &amp; dependencies</a><a class="headerlink" href="#install-searxng-dependencies" title="Link to this heading">¶</a></h2>
+<p>Start a interactive shell from new created user and clone SearXNG:</p>
+<div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-2-YmFzaA==" aria-selected="true" class="sphinx-tabs-tab group-tab" id="tab-2-YmFzaA==" name="YmFzaA==" role="tab" tabindex="0">bash</button></div><div aria-labelledby="tab-2-YmFzaA==" class="sphinx-tabs-panel group-tab" id="panel-2-YmFzaA==" name="YmFzaA==" role="tabpanel" tabindex="0"><div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>sudo<span class="w"> </span>-H<span class="w"> </span>-u<span class="w"> </span>searxng<span class="w"> </span>-i
+<span class="o">(</span>searxng<span class="o">)</span>$<span class="w"> </span>git<span class="w"> </span>clone<span class="w"> </span><span class="s2">&quot;https://github.com/searxng/searxng&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">                   </span><span class="s2">&quot;/usr/local/searxng/searxng-src&quot;</span>
+</pre></div>
+</div>
+</div></div>
+<p>In the same shell create <em>virtualenv</em>:</p>
+<div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-3-YmFzaA==" aria-selected="true" class="sphinx-tabs-tab group-tab" id="tab-3-YmFzaA==" name="YmFzaA==" role="tab" tabindex="0">bash</button></div><div aria-labelledby="tab-3-YmFzaA==" class="sphinx-tabs-panel group-tab" id="panel-3-YmFzaA==" name="YmFzaA==" role="tabpanel" tabindex="0"><div class="highlight-sh notranslate"><div class="highlight"><pre><span></span><span class="o">(</span>searxng<span class="o">)</span>$<span class="w"> </span>python3<span class="w"> </span>-m<span class="w"> </span>venv<span class="w"> </span><span class="s2">&quot;/usr/local/searxng/searx-pyenv&quot;</span>
+<span class="o">(</span>searxng<span class="o">)</span>$<span class="w"> </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;. /usr/local/searxng/searx-pyenv/bin/activate&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">                   </span>&gt;&gt;<span class="w">  </span><span class="s2">&quot;/usr/local/searxng/.profile&quot;</span>
+</pre></div>
+</div>
+</div></div>
+<p>To install SearXNG’s dependencies, exit the SearXNG <em>bash</em> session you opened above
+and start a new one.  Before installing, check if your <em>virtualenv</em> was sourced
+from the login (<em>~/.profile</em>):</p>
+<div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-4-YmFzaA==" aria-selected="true" class="sphinx-tabs-tab group-tab" id="tab-4-YmFzaA==" name="YmFzaA==" role="tab" tabindex="0">bash</button></div><div aria-labelledby="tab-4-YmFzaA==" class="sphinx-tabs-panel group-tab" id="panel-4-YmFzaA==" name="YmFzaA==" role="tabpanel" tabindex="0"><div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>sudo<span class="w"> </span>-H<span class="w"> </span>-u<span class="w"> </span>searxng<span class="w"> </span>-i
+
+<span class="o">(</span>searxng<span class="o">)</span>$<span class="w"> </span><span class="nb">command</span><span class="w"> </span>-v<span class="w"> </span>python<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>python<span class="w"> </span>--version
+/usr/local/searxng/searx-pyenv/bin/python
+Python<span class="w"> </span><span class="m">3</span>.11.10
+
+<span class="c1"># update pip&#39;s boilerplate ..</span>
+pip<span class="w"> </span>install<span class="w"> </span>-U<span class="w"> </span>pip
+pip<span class="w"> </span>install<span class="w"> </span>-U<span class="w"> </span>setuptools
+pip<span class="w"> </span>install<span class="w"> </span>-U<span class="w"> </span>wheel
+pip<span class="w"> </span>install<span class="w"> </span>-U<span class="w"> </span>pyyaml
+pip<span class="w"> </span>install<span class="w"> </span>-U<span class="w"> </span>msgspec
+
+<span class="c1"># jump to SearXNG&#39;s working tree and install SearXNG into virtualenv</span>
+<span class="o">(</span>searxng<span class="o">)</span>$<span class="w"> </span><span class="nb">cd</span><span class="w"> </span><span class="s2">&quot;/usr/local/searxng/searxng-src&quot;</span>
+<span class="o">(</span>searxng<span class="o">)</span>$<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>--use-pep517<span class="w"> </span>--no-build-isolation<span class="w"> </span>-e<span class="w"> </span>.
+</pre></div>
+</div>
+</div></div>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>Open a second terminal for the configuration tasks and leave the <code class="docutils literal notranslate"><span class="pre">(searx)$</span></code>
+terminal open for the tasks below.</p>
+</div>
+</section>
+<section id="configuration">
+<span id="use-default-settings-yml"></span><h2><a class="toc-backref" href="#id5" role="doc-backlink">Configuration</a><a class="headerlink" href="#configuration" title="Link to this heading">¶</a></h2>
+<aside class="sidebar">
+<p class="sidebar-title"><code class="docutils literal notranslate"><span class="pre">use_default_settings:</span> <span class="pre">True</span></code></p>
+<ul class="simple">
+<li><p><a class="reference internal" href="settings/settings.html#settings-yml"><span class="std std-ref">settings.yml</span></a></p></li>
+<li><p><a class="reference internal" href="settings/settings.html#settings-location"><span class="std std-ref">settings.yml location</span></a></p></li>
+<li><p><a class="reference internal" href="settings/settings.html#settings-use-default-settings"><span class="std std-ref">use_default_settings</span></a></p></li>
+<li><p><a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/utils/templates/etc/searxng/settings.yml">/etc/searxng/settings.yml</a></p></li>
+</ul>
+</aside>
+<p>To create a initial <code class="docutils literal notranslate"><span class="pre">/etc/searxng/settings.yml</span></code> we recommend to start with a
+copy of the file <a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/utils/templates/etc/searxng/settings.yml">git://utils/templates/etc/searxng/settings.yml</a>.  This setup
+<a class="reference internal" href="settings/settings.html#settings-use-default-settings"><span class="std std-ref">use default settings</span></a> from
+<a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/searx/settings.yml">git://searx/settings.yml</a> and is shown in the tab <em>“Use default settings”</em>
+below. This setup:</p>
+<ul class="simple">
+<li><p>enables <a class="reference internal" href="searx.limiter.html#limiter"><span class="std std-ref">limiter</span></a> to protect against bots</p></li>
+<li><p>enables <a class="reference internal" href="settings/settings_server.html#image-proxy"><span class="std std-ref">image proxy</span></a> for better privacy</p></li>
+</ul>
+<p>Modify the <code class="docutils literal notranslate"><span class="pre">/etc/searxng/settings.yml</span></code> to your needs:</p>
+<div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-5-VXNlIGRlZmF1bHQgc2V0dGluZ3M=" aria-selected="true" class="sphinx-tabs-tab group-tab" id="tab-5-VXNlIGRlZmF1bHQgc2V0dGluZ3M=" name="VXNlIGRlZmF1bHQgc2V0dGluZ3M=" role="tab" tabindex="0">Use default settings</button><button aria-controls="panel-5-c2Vhcngvc2V0dGluZ3MueW1s" aria-selected="false" class="sphinx-tabs-tab group-tab" id="tab-5-c2Vhcngvc2V0dGluZ3MueW1s" name="c2Vhcngvc2V0dGluZ3MueW1s" role="tab" tabindex="-1">searx/settings.yml</button></div><div aria-labelledby="tab-5-VXNlIGRlZmF1bHQgc2V0dGluZ3M=" class="sphinx-tabs-panel group-tab" id="panel-5-VXNlIGRlZmF1bHQgc2V0dGluZ3M=" name="VXNlIGRlZmF1bHQgc2V0dGluZ3M=" role="tabpanel" tabindex="0"><div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="c1"># SearXNG settings</span>
+
+<span class="nt">use_default_settings</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+
+<span class="nt">general</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">debug</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+<span class="w">  </span><span class="nt">instance_name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;SearXNG&quot;</span>
+
+<span class="nt">search</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">safe_search</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2</span>
+<span class="w">  </span><span class="nt">autocomplete</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;duckduckgo&#39;</span>
+<span class="w">  </span><span class="nt">formats</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">html</span>
+
+<span class="nt">server</span><span class="p">:</span>
+<span class="w">  </span><span class="c1"># Is overwritten by ${SEARXNG_SECRET}</span>
+<span class="w">  </span><span class="nt">secret_key</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;ultrasecretkey&quot;</span>
+<span class="w">  </span><span class="nt">limiter</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">  </span><span class="nt">image_proxy</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">  </span><span class="c1"># public URL of the instance, to ensure correct inbound links. Is overwritten</span>
+<span class="w">  </span><span class="c1"># by ${SEARXNG_BASE_URL}.</span>
+<span class="w">  </span><span class="c1"># base_url: http://example.com/location</span>
+
+<span class="nt">valkey</span><span class="p">:</span>
+<span class="w">  </span><span class="c1"># URL to connect valkey database. Is overwritten by ${SEARXNG_VALKEY_URL}.</span>
+<span class="w">  </span><span class="nt">url</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">valkey://localhost:6379/0</span>
+</pre></div>
+</div>
+<p>To see the entire file jump to <a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/utils/templates/etc/searxng/settings.yml">git://utils/templates/etc/searxng/settings.yml</a></p>
+</div><div aria-labelledby="tab-5-c2Vhcngvc2V0dGluZ3MueW1s" class="sphinx-tabs-panel group-tab" hidden="true" id="panel-5-c2Vhcngvc2V0dGluZ3MueW1s" name="c2Vhcngvc2V0dGluZ3MueW1s" role="tabpanel" tabindex="0"><div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">general</span><span class="p">:</span>
+<span class="w">  </span><span class="c1"># Debug mode, only for development. Is overwritten by ${SEARXNG_DEBUG}</span>
+<span class="w">  </span><span class="nt">debug</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+<span class="w">  </span><span class="c1"># displayed name</span>
+<span class="w">  </span><span class="nt">instance_name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;SearXNG&quot;</span>
+<span class="w">  </span><span class="c1"># For example: https://example.com/privacy</span>
+<span class="w">  </span><span class="nt">privacypolicy_url</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+<span class="w">  </span><span class="c1"># use true to use your own donation page written in searx/info/en/donate.md</span>
+<span class="w">  </span><span class="c1"># use false to disable the donation link</span>
+<span class="w">  </span><span class="nt">donation_url</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+<span class="w">  </span><span class="c1"># mailto:contact@example.com</span>
+<span class="w">  </span><span class="nt">contact_url</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+<span class="w">  </span><span class="c1"># record stats</span>
+<span class="w">  </span><span class="nt">enable_metrics</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">  </span><span class="c1"># expose stats in open metrics format at /metrics</span>
+<span class="w">  </span><span class="c1"># leave empty to disable (no password set)</span>
+<span class="w">  </span><span class="c1"># open_metrics: &lt;password&gt;</span>
+<span class="w">  </span><span class="nt">open_metrics</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;&#39;</span>
+
+<span class="nt">brand</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">new_issue_url</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://github.com/searxng/searxng/issues/new</span>
+<span class="w">  </span><span class="nt">docs_url</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://docs.searxng.org/</span>
+<span class="w">  </span><span class="nt">public_instances</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://searx.space</span>
+<span class="w">  </span><span class="nt">wiki_url</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://github.com/searxng/searxng/wiki</span>
+<span class="w">  </span><span class="nt">issue_url</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://github.com/searxng/searxng/issues</span>
+<span class="w">  </span><span class="c1"># custom:</span>
+<span class="w">  </span><span class="c1">#   # Custom entries in the footer: [title]: [link]</span>
+<span class="w">  </span><span class="c1">#   links:</span>
+<span class="w">  </span><span class="c1">#     Uptime: https://uptime.searxng.org/history/darmarit-org</span>
+<span class="w">  </span><span class="c1">#     About: &quot;https://searxng.org&quot;</span>
+
+<span class="nt">search</span><span class="p">:</span>
+<span class="w">  </span><span class="c1"># Filter results. 0: None, 1: Moderate, 2: Strict</span>
+<span class="w">  </span><span class="nt">safe_search</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0</span>
+<span class="w">  </span><span class="c1"># Existing autocomplete backends: &quot;360search&quot;, &quot;baidu&quot;, &quot;brave&quot;, &quot;dbpedia&quot;, &quot;duckduckgo&quot;, &quot;google&quot;, &quot;yandex&quot;,</span>
+<span class="w">  </span><span class="c1"># &quot;mwmbl&quot;, &quot;naver&quot;, &quot;seznam&quot;, &quot;sogou&quot;, &quot;startpage&quot;, &quot;stract&quot;, &quot;swisscows&quot;, &quot;quark&quot;, &quot;qwant&quot;, &quot;wikipedia&quot; -</span>
+<span class="w">  </span><span class="c1"># leave blank to turn it off by default.</span>
+<span class="w">  </span><span class="nt">autocomplete</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;&quot;</span>
+<span class="w">  </span><span class="c1"># minimun characters to type before autocompleter starts</span>
+<span class="w">  </span><span class="nt">autocomplete_min</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">4</span>
+<span class="w">  </span><span class="c1"># backend for the favicon near URL in search results.</span>
+<span class="w">  </span><span class="c1"># Available resolvers: &quot;allesedv&quot;, &quot;duckduckgo&quot;, &quot;google&quot;, &quot;yandex&quot; - leave blank to turn it off by default.</span>
+<span class="w">  </span><span class="nt">favicon_resolver</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;&quot;</span>
+<span class="w">  </span><span class="c1"># Default search language - leave blank to detect from browser information or</span>
+<span class="w">  </span><span class="c1"># use codes from &#39;languages.py&#39;</span>
+<span class="w">  </span><span class="nt">default_lang</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;auto&quot;</span>
+<span class="w">  </span><span class="c1"># max_page: 0  # if engine supports paging, 0 means unlimited numbers of pages</span>
+<span class="w">  </span><span class="c1"># Available languages</span>
+<span class="w">  </span><span class="c1"># languages:</span>
+<span class="w">  </span><span class="c1">#   - all</span>
+<span class="w">  </span><span class="c1">#   - en</span>
+<span class="w">  </span><span class="c1">#   - en-US</span>
+<span class="w">  </span><span class="c1">#   - de</span>
+<span class="w">  </span><span class="c1">#   - it-IT</span>
+<span class="w">  </span><span class="c1">#   - fr</span>
+<span class="w">  </span><span class="c1">#   - fr-BE</span>
+<span class="w">  </span><span class="c1"># ban time in seconds after engine errors</span>
+<span class="w">  </span><span class="nt">ban_time_on_fail</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5</span>
+<span class="w">  </span><span class="c1"># max ban time in seconds after engine errors</span>
+<span class="w">  </span><span class="nt">max_ban_time_on_fail</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">120</span>
+<span class="w">  </span><span class="nt">suspended_times</span><span class="p">:</span>
+<span class="w">    </span><span class="c1"># Engine suspension time after error (in seconds; set to 0 to disable)</span>
+<span class="w">    </span><span class="c1"># For error &quot;Access denied&quot; and &quot;HTTP error [402, 403]&quot;</span>
+<span class="w">    </span><span class="nt">SearxEngineAccessDenied</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">180</span>
+<span class="w">    </span><span class="c1"># For error &quot;CAPTCHA&quot;</span>
+<span class="w">    </span><span class="nt">SearxEngineCaptcha</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">3600</span>
+<span class="w">    </span><span class="c1"># For error &quot;Too many request&quot; and &quot;HTTP error 429&quot;</span>
+<span class="w">    </span><span class="nt">SearxEngineTooManyRequests</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">180</span>
+<span class="w">    </span><span class="c1"># Cloudflare CAPTCHA</span>
+<span class="w">    </span><span class="nt">cf_SearxEngineCaptcha</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1296000</span>
+<span class="w">    </span><span class="nt">cf_SearxEngineAccessDenied</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">86400</span>
+<span class="w">    </span><span class="c1"># ReCAPTCHA</span>
+<span class="w">    </span><span class="nt">recaptcha_SearxEngineCaptcha</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">604800</span>
+
+<span class="w">  </span><span class="c1"># remove format to deny access, use lower case.</span>
+<span class="w">  </span><span class="c1"># formats: [html, csv, json, rss]</span>
+<span class="w">  </span><span class="nt">formats</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">html</span>
+
+<span class="nt">server</span><span class="p">:</span>
+<span class="w">  </span><span class="c1"># Is overwritten by ${SEARXNG_PORT} and ${SEARXNG_BIND_ADDRESS}</span>
+<span class="w">  </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">8888</span>
+<span class="w">  </span><span class="nt">bind_address</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;127.0.0.1&quot;</span>
+<span class="w">  </span><span class="c1"># public URL of the instance, to ensure correct inbound links. Is overwritten</span>
+<span class="w">  </span><span class="c1"># by ${SEARXNG_BASE_URL}.</span>
+<span class="w">  </span><span class="nt">base_url</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span><span class="w">  </span><span class="c1"># &quot;http://example.com/location&quot;</span>
+<span class="w">  </span><span class="c1"># rate limit the number of request on the instance, block some bots.</span>
+<span class="w">  </span><span class="c1"># Is overwritten by ${SEARXNG_LIMITER}</span>
+<span class="w">  </span><span class="nt">limiter</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+<span class="w">  </span><span class="c1"># enable features designed only for public instances.</span>
+<span class="w">  </span><span class="c1"># Is overwritten by ${SEARXNG_PUBLIC_INSTANCE}</span>
+<span class="w">  </span><span class="nt">public_instance</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+
+<span class="w">  </span><span class="c1"># If your instance owns a /etc/searxng/settings.yml file, then set the following</span>
+<span class="w">  </span><span class="c1"># values there.</span>
+
+<span class="w">  </span><span class="nt">secret_key</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;ultrasecretkey&quot;</span><span class="w">  </span><span class="c1"># Is overwritten by ${SEARXNG_SECRET}</span>
+<span class="w">  </span><span class="c1"># Proxy image results through SearXNG. Is overwritten by ${SEARXNG_IMAGE_PROXY}</span>
+<span class="w">  </span><span class="nt">image_proxy</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+<span class="w">  </span><span class="c1"># 1.0 and 1.1 are supported</span>
+<span class="w">  </span><span class="nt">http_protocol_version</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;1.0&quot;</span>
+<span class="w">  </span><span class="c1"># POST queries are &quot;more secure!&quot; but are also the source of hard-to-locate</span>
+<span class="w">  </span><span class="c1"># annoyances, which is why GET may be better for end users and their browsers.</span>
+<span class="w">  </span><span class="c1"># see https://github.com/searxng/searxng/pull/3619</span>
+<span class="w">  </span><span class="c1"># Is overwritten by ${SEARXNG_METHOD}</span>
+<span class="w">  </span><span class="nt">method</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;POST&quot;</span>
+<span class="w">  </span><span class="nt">default_http_headers</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">X-Content-Type-Options</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nosniff</span>
+<span class="w">    </span><span class="nt">X-Download-Options</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">noopen</span>
+<span class="w">    </span><span class="nt">X-Robots-Tag</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">noindex, nofollow</span>
+<span class="w">    </span><span class="nt">Referrer-Policy</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">no-referrer</span>
+
+<span class="nt">valkey</span><span class="p">:</span>
+<span class="w">  </span><span class="c1"># URL to connect valkey database. Is overwritten by ${SEARXNG_VALKEY_URL}.</span>
+<span class="w">  </span><span class="c1"># https://docs.searxng.org/admin/settings/settings_valkey.html#settings-valkey</span>
+<span class="w">  </span><span class="c1"># url: valkey://localhost:6379/0</span>
+<span class="w">  </span><span class="nt">url</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+
+<span class="nt">ui</span><span class="p">:</span>
+<span class="w">  </span><span class="c1"># Custom static path - leave it blank if you didn&#39;t change</span>
+<span class="w">  </span><span class="nt">static_path</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;&quot;</span>
+<span class="w">  </span><span class="c1"># Custom templates path - leave it blank if you didn&#39;t change</span>
+<span class="w">  </span><span class="nt">templates_path</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;&quot;</span>
+<span class="w">  </span><span class="c1"># query_in_title: When true, the result page&#39;s titles contains the query</span>
+<span class="w">  </span><span class="c1"># it decreases the privacy, since the browser can records the page titles.</span>
+<span class="w">  </span><span class="nt">query_in_title</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+<span class="w">  </span><span class="c1"># ui theme</span>
+<span class="w">  </span><span class="nt">default_theme</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">simple</span>
+<span class="w">  </span><span class="c1"># center the results ?</span>
+<span class="w">  </span><span class="nt">center_alignment</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+<span class="w">  </span><span class="c1"># URL prefix of the internet archive, don&#39;t forget trailing slash (if needed).</span>
+<span class="w">  </span><span class="c1"># cache_url: &quot;https://webcache.googleusercontent.com/search?q=cache:&quot;</span>
+<span class="w">  </span><span class="c1"># Default interface locale - leave blank to detect from browser information or</span>
+<span class="w">  </span><span class="c1"># use codes from the &#39;locales&#39; config section</span>
+<span class="w">  </span><span class="nt">default_locale</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;&quot;</span>
+<span class="w">  </span><span class="c1"># Open result links in a new tab by default</span>
+<span class="w">  </span><span class="c1"># results_on_new_tab: false</span>
+<span class="w">  </span><span class="nt">theme_args</span><span class="p">:</span>
+<span class="w">    </span><span class="c1"># style of simple theme: auto, light, dark, black</span>
+<span class="w">    </span><span class="nt">simple_style</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">auto</span>
+<span class="w">  </span><span class="c1"># Perform search immediately if a category selected.</span>
+<span class="w">  </span><span class="c1"># Disable to select multiple categories at once and start the search manually.</span>
+<span class="w">  </span><span class="nt">search_on_category_select</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">  </span><span class="c1"># Hotkeys: default or vim</span>
+<span class="w">  </span><span class="nt">hotkeys</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">default</span>
+<span class="w">  </span><span class="c1"># URL formatting: pretty, full or host</span>
+<span class="w">  </span><span class="nt">url_formatting</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">pretty</span>
+
+<span class="c1"># Lock arbitrary settings on the preferences page.</span>
+<span class="c1">#</span>
+<span class="c1"># preferences:</span>
+<span class="c1">#   lock:</span>
+<span class="c1">#     - categories</span>
+<span class="c1">#     - language</span>
+<span class="c1">#     - autocomplete</span>
+<span class="c1">#     - favicon</span>
+<span class="c1">#     - safesearch</span>
+<span class="c1">#     - method</span>
+<span class="c1">#     - doi_resolver</span>
+<span class="c1">#     - locale</span>
+<span class="c1">#     - theme</span>
+<span class="c1">#     - results_on_new_tab</span>
+<span class="c1">#     - search_on_category_select</span>
+<span class="c1">#     - method</span>
+<span class="c1">#     - image_proxy</span>
+<span class="c1">#     - query_in_title</span>
+
+<span class="c1"># communication with search engines</span>
+<span class="c1">#</span>
+<span class="nt">outgoing</span><span class="p">:</span>
+<span class="w">  </span><span class="c1"># default timeout in seconds, can be override by engine</span>
+<span class="w">  </span><span class="nt">request_timeout</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">3.0</span>
+<span class="w">  </span><span class="c1"># the maximum timeout in seconds</span>
+<span class="w">  </span><span class="c1"># max_request_timeout: 10.0</span>
+<span class="w">  </span><span class="c1"># suffix of searxng_useragent, could contain information like an email address</span>
+<span class="w">  </span><span class="c1"># to the administrator</span>
+<span class="w">  </span><span class="nt">useragent_suffix</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;&quot;</span>
+<span class="w">  </span><span class="c1"># The maximum number of concurrent connections that may be established.</span>
+<span class="w">  </span><span class="nt">pool_connections</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">100</span>
+<span class="w">  </span><span class="c1"># Allow the connection pool to maintain keep-alive connections below this</span>
+<span class="w">  </span><span class="c1"># point.</span>
+<span class="w">  </span><span class="nt">pool_maxsize</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">20</span>
+<span class="w">  </span><span class="c1"># See https://www.python-httpx.org/http2/</span>
+<span class="w">  </span><span class="nt">enable_http2</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">  </span><span class="c1"># uncomment below section if you want to use a custom server certificate</span>
+<span class="w">  </span><span class="c1"># see https://www.python-httpx.org/advanced/#changing-the-verification-defaults</span>
+<span class="w">  </span><span class="c1"># and https://www.python-httpx.org/compatibility/#ssl-configuration</span>
+<span class="w">  </span><span class="c1">#  verify: ~/.mitmproxy/mitmproxy-ca-cert.cer</span>
+<span class="w">  </span><span class="c1">#</span>
+<span class="w">  </span><span class="c1"># uncomment below section if you want to use a proxyq see: SOCKS proxies</span>
+<span class="w">  </span><span class="c1">#   https://2.python-requests.org/en/latest/user/advanced/#proxies</span>
+<span class="w">  </span><span class="c1"># are also supported: see</span>
+<span class="w">  </span><span class="c1">#   https://2.python-requests.org/en/latest/user/advanced/#socks</span>
+<span class="w">  </span><span class="c1">#</span>
+<span class="w">  </span><span class="c1">#  proxies:</span>
+<span class="w">  </span><span class="c1">#    all://:</span>
+<span class="w">  </span><span class="c1">#      - http://proxy1:8080</span>
+<span class="w">  </span><span class="c1">#      - http://proxy2:8080</span>
+<span class="w">  </span><span class="c1">#</span>
+<span class="w">  </span><span class="c1">#  using_tor_proxy: true</span>
+<span class="w">  </span><span class="c1">#</span>
+<span class="w">  </span><span class="c1"># Extra seconds to add in order to account for the time taken by the proxy</span>
+<span class="w">  </span><span class="c1">#</span>
+<span class="w">  </span><span class="c1">#  extra_proxy_timeout: 10</span>
+<span class="w">  </span><span class="c1">#</span>
+<span class="w">  </span><span class="c1"># uncomment below section only if you have more than one network interface</span>
+<span class="w">  </span><span class="c1"># which can be the source of outgoing search requests</span>
+<span class="w">  </span><span class="c1">#</span>
+<span class="w">  </span><span class="c1">#  source_ips:</span>
+<span class="w">  </span><span class="c1">#    - 1.1.1.1</span>
+<span class="w">  </span><span class="c1">#    - 1.1.1.2</span>
+<span class="w">  </span><span class="c1">#    - fe80::/126</span>
+
+
+<span class="c1"># Plugin configuration, for more details see</span>
+<span class="c1">#   https://docs.searxng.org/admin/settings/settings_plugins.html</span>
+<span class="c1">#</span>
+<span class="nt">plugins</span><span class="p">:</span>
+
+<span class="w">  </span><span class="nt">searx.plugins.calculator.SXNGPlugin</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">active</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+
+<span class="w">  </span><span class="nt">searx.plugins.infinite_scroll.SXNGPlugin</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">active</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+
+<span class="w">  </span><span class="nt">searx.plugins.hash_plugin.SXNGPlugin</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">active</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+
+<span class="w">  </span><span class="nt">searx.plugins.self_info.SXNGPlugin</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">active</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+
+<span class="w">  </span><span class="nt">searx.plugins.unit_converter.SXNGPlugin</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">active</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+
+<span class="w">  </span><span class="nt">searx.plugins.ahmia_filter.SXNGPlugin</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">active</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+
+<span class="w">  </span><span class="nt">searx.plugins.hostnames.SXNGPlugin</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">active</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+
+<span class="w">  </span><span class="nt">searx.plugins.time_zone.SXNGPlugin</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">active</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+
+<span class="w">  </span><span class="nt">searx.plugins.oa_doi_rewrite.SXNGPlugin</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">active</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+
+<span class="w">  </span><span class="nt">searx.plugins.tor_check.SXNGPlugin</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">active</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+
+<span class="w">  </span><span class="nt">searx.plugins.tracker_url_remover.SXNGPlugin</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">active</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+
+
+<span class="c1"># Configuration of the &quot;Hostnames plugin&quot;:</span>
+<span class="c1">#</span>
+</pre></div>
+</div>
+<p>To see the entire file jump to <a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/searx/settings.yml">git://searx/settings.yml</a></p>
+</div></div>
+<p>For a <em>minimal setup</em> you need to set <code class="docutils literal notranslate"><span class="pre">server:secret_key</span></code>.</p>
+<div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-6-VXNlIGRlZmF1bHQgc2V0dGluZ3M=" aria-selected="true" class="sphinx-tabs-tab group-tab" id="tab-6-VXNlIGRlZmF1bHQgc2V0dGluZ3M=" name="VXNlIGRlZmF1bHQgc2V0dGluZ3M=" role="tab" tabindex="0">Use default settings</button><button aria-controls="panel-6-bWluaW1hbCBzZXR1cA==" aria-selected="false" class="sphinx-tabs-tab group-tab" id="tab-6-bWluaW1hbCBzZXR1cA==" name="bWluaW1hbCBzZXR1cA==" role="tab" tabindex="-1">minimal setup</button></div><div aria-labelledby="tab-6-VXNlIGRlZmF1bHQgc2V0dGluZ3M=" class="sphinx-tabs-panel group-tab" id="panel-6-VXNlIGRlZmF1bHQgc2V0dGluZ3M=" name="VXNlIGRlZmF1bHQgc2V0dGluZ3M=" role="tabpanel" tabindex="0"><div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>sudo<span class="w"> </span>-H<span class="w"> </span>mkdir<span class="w"> </span>-p<span class="w"> </span><span class="s2">&quot;/etc/searxng&quot;</span>
+$<span class="w"> </span>sudo<span class="w"> </span>-H<span class="w"> </span>cp<span class="w"> </span><span class="s2">&quot;/usr/local/searxng/searxng-src/utils/templates/etc/searxng/settings.yml&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">             </span><span class="s2">&quot;/etc/searxng/settings.yml&quot;</span>
+</pre></div>
+</div>
+</div><div aria-labelledby="tab-6-bWluaW1hbCBzZXR1cA==" class="sphinx-tabs-panel group-tab" hidden="true" id="panel-6-bWluaW1hbCBzZXR1cA==" name="bWluaW1hbCBzZXR1cA==" role="tabpanel" tabindex="0"><div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>sudo<span class="w"> </span>-H<span class="w"> </span>sed<span class="w"> </span>-i<span class="w"> </span>-e<span class="w"> </span><span class="s2">&quot;s/ultrasecretkey/</span><span class="k">$(</span>openssl<span class="w"> </span>rand<span class="w"> </span>-hex<span class="w"> </span><span class="m">16</span><span class="k">)</span><span class="s2">/g&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">              </span><span class="s2">&quot;/etc/searxng/settings.yml&quot;</span>
+</pre></div>
+</div>
+</div></div>
+</section>
+<section id="check">
+<h2><a class="toc-backref" href="#id6" role="doc-backlink">Check</a><a class="headerlink" href="#check" title="Link to this heading">¶</a></h2>
+<p>To check your SearXNG setup, optional enable debugging and start the <em>webapp</em>.
+SearXNG looks at the exported environment <code class="docutils literal notranslate"><span class="pre">$SEARXNG_SETTINGS_PATH</span></code> for a
+configuration file.</p>
+<div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-7-YmFzaA==" aria-selected="true" class="sphinx-tabs-tab group-tab" id="tab-7-YmFzaA==" name="YmFzaA==" role="tab" tabindex="0">bash</button></div><div aria-labelledby="tab-7-YmFzaA==" class="sphinx-tabs-panel group-tab" id="panel-7-YmFzaA==" name="YmFzaA==" role="tabpanel" tabindex="0"><div class="highlight-sh notranslate"><div class="highlight"><pre><span></span><span class="c1"># enable debug ..</span>
+$<span class="w"> </span>sudo<span class="w"> </span>-H<span class="w"> </span>sed<span class="w"> </span>-i<span class="w"> </span>-e<span class="w"> </span><span class="s2">&quot;s/debug : False/debug : True/g&quot;</span><span class="w"> </span><span class="s2">&quot;/etc/searxng/settings.yml&quot;</span>
+
+<span class="c1"># start webapp</span>
+$<span class="w"> </span>sudo<span class="w"> </span>-H<span class="w"> </span>-u<span class="w"> </span>searxng<span class="w"> </span>-i
+<span class="o">(</span>searxng<span class="o">)</span>$<span class="w"> </span><span class="nb">cd</span><span class="w"> </span>/usr/local/searxng/searxng-src
+<span class="o">(</span>searxng<span class="o">)</span>$<span class="w"> </span><span class="nb">export</span><span class="w"> </span><span class="nv">SEARXNG_SETTINGS_PATH</span><span class="o">=</span><span class="s2">&quot;/etc/searxng/settings.yml&quot;</span>
+<span class="o">(</span>searxng<span class="o">)</span>$<span class="w"> </span>python<span class="w"> </span>searx/webapp.py
+
+<span class="c1"># disable debug</span>
+$<span class="w"> </span>sudo<span class="w"> </span>-H<span class="w"> </span>sed<span class="w"> </span>-i<span class="w"> </span>-e<span class="w"> </span><span class="s2">&quot;s/debug : True/debug : False/g&quot;</span><span class="w"> </span><span class="s2">&quot;/etc/searxng/settings.yml&quot;</span>
+</pre></div>
+</div>
+</div></div>
+<p>Open WEB browser and visit <a class="reference external" href="http://127.0.0.1:8888">http://127.0.0.1:8888</a> .  If you are inside a
+container or in a script, test with curl:</p>
+<div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-8-V0VCIGJyb3dzZXI=" aria-selected="true" class="sphinx-tabs-tab group-tab" id="tab-8-V0VCIGJyb3dzZXI=" name="V0VCIGJyb3dzZXI=" role="tab" tabindex="0">WEB browser</button><button aria-controls="panel-8-Y3VybA==" aria-selected="false" class="sphinx-tabs-tab group-tab" id="tab-8-Y3VybA==" name="Y3VybA==" role="tab" tabindex="-1">curl</button></div><div aria-labelledby="tab-8-V0VCIGJyb3dzZXI=" class="sphinx-tabs-panel group-tab" id="panel-8-V0VCIGJyb3dzZXI=" name="V0VCIGJyb3dzZXI=" role="tabpanel" tabindex="0"><div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>xdg-open<span class="w"> </span>http://127.0.0.1:8888
+</pre></div>
+</div>
+</div><div aria-labelledby="tab-8-Y3VybA==" class="sphinx-tabs-panel group-tab" hidden="true" id="panel-8-Y3VybA==" name="Y3VybA==" role="tabpanel" tabindex="0"><div class="highlight-none notranslate"><div class="highlight"><pre><span></span>$ curl --location --verbose --head --insecure 127.0.0.1:8888
+
+*   Trying 127.0.0.1:8888...
+* TCP_NODELAY set
+* Connected to 127.0.0.1 (127.0.0.1) port 8888 (#0)
+&gt; HEAD / HTTP/1.1
+&gt; Host: 127.0.0.1:8888
+&gt; User-Agent: curl/7.68.0
+&gt; Accept: */*
+&gt;
+* Mark bundle as not supporting multiuse
+* HTTP 1.0, assume close after body
+&lt; HTTP/1.0 200 OK
+HTTP/1.0 200 OK
+...
+</pre></div>
+</div>
+</div></div>
+<p>If everything works fine, hit <code class="docutils literal notranslate"><span class="pre">[CTRL-C]</span></code> to stop the <em>webapp</em> and disable the
+debug option in <code class="docutils literal notranslate"><span class="pre">settings.yml</span></code>. You can now exit SearXNG user bash session (enter exit
+command twice).  At this point SearXNG is not demonized; uwsgi allows this.</p>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+  <span id="sidebar-top"></span>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+  
+    
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/searxng-wordmark.svg" alt="Logo of SearXNG"/>
+            </a></p>
+  
+
+<h3><a href="../index.html">Table of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../user/index.html">User information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../own-instance.html">Why use a private instance?</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Administrator documentation</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="settings/index.html">Settings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation-docker.html">Installation container</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation-scripts.html">Installation Script</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Step by step installation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#install-packages">Install packages</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#create-user">Create user</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#install-searxng-dependencies">Install SearXNG &amp; dependencies</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#configuration">Configuration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#check">Check</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="installation-granian.html">Granian</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation-uwsgi.html">uWSGI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation-nginx.html">NGINX</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation-apache.html">Apache</a></li>
+<li class="toctree-l2"><a class="reference internal" href="update-searxng.html">SearXNG maintenance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="answer-captcha.html">Answer CAPTCHA from server’s IP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.favicons.html">Favicons</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.limiter.html">Limiter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html">Administration API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="architecture.html">Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plugins.html">List of plugins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="buildhosts.html">Buildhosts</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../dev/index.html">Developer documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../utils/index.html">DevOps tooling box</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../src/index.html">Source-Code</a></li>
+</ul>
+
+  <h3>Project Links</h3>
+  <ul>
+    <li><a href="https://github.com/searxng/searxng/tree/master">Source</a>
+  
+    <li><a href="https://github.com/searxng/searxng/wiki">Wiki</a>
+  
+    <li><a href="https://searx.space">Public instances</a>
+  
+    <li><a href="https://github.com/searxng/searxng/issues">Issue Tracker</a>
+  </ul><h3>Navigation</h3>
+<ul>
+  <li><a href="../index.html">Overview</a>
+    <ul>
+      <li><a href="index.html">Administrator documentation</a>
+        <ul>
+          <li>Previous: <a href="installation-scripts.html" title="previous chapter">Installation Script</a>
+          <li>Next: <a href="installation-granian.html" title="next chapter">Granian</a></ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/admin/installation-searxng.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright SearXNG team.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>valkey: &#8212; SearXNG Documentation (2026.2.22+191818b86)</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=6625fa76" />
+    <link rel="stylesheet" type="text/css" href="../../_static/searxng.css?v=52e4ff28" />
+    <script src="../../_static/documentation_options.js?v=1b5d919e"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script data-project="searxng" data-version="2026.2.22+191818b86" src="../../_static/describe_version.js?v=fa7f30d0"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="outgoing:" href="settings_outgoing.html" />
+    <link rel="prev" title="redis:" href="settings_redis.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="settings_outgoing.html" title="outgoing:"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="settings_redis.html" title="redis:"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">SearXNG Documentation (2026.2.22+191818b86)</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >Administrator documentation</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="index.html" accesskey="U">Settings</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href=""><code class="docutils literal notranslate"><span class="pre">valkey:</span></code></a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="valkey">
+<span id="settings-valkey"></span><h1><code class="docutils literal notranslate"><span class="pre">valkey:</span></code><a class="headerlink" href="#valkey" title="Link to this heading">¶</a></h1>
+<p>A <a class="reference external" href="https://valkey.io">Valkey</a> DB can be connected by an URL, in section <a class="reference internal" href="../../src/searx.valkeydb.html#valkey-db"><span class="std std-ref">Valkey DB</span></a> you will
+find a description to test your valkey connection in SearXNG.</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">url</span></code><span class="classifier"><code class="docutils literal notranslate"><span class="pre">$SEARXNG_VALKEY_URL</span></code></span></dt><dd><p>URL to connect valkey database. <a class="reference external" href="https://valkey-py.readthedocs.io/en/stable/connections.html#valkey.Valkey.from_url">There are several ways to specify a database
+number</a>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>valkey://[[username]:[password]]@localhost:6379/0
+valkeys://[[username]:[password]]@localhost:6379/0
+unix://[[username]:[password]]@/path/to/socket.sock?db=0
+</pre></div>
+</div>
+<p>When using sockets, don’t forget to check the access rights on the socket:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ls</span> <span class="o">-</span><span class="n">la</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">local</span><span class="o">/</span><span class="n">searxng</span><span class="o">-</span><span class="n">valkey</span><span class="o">/</span><span class="n">run</span><span class="o">/</span><span class="n">valkey</span><span class="o">.</span><span class="n">sock</span>
+<span class="n">srwxrwx</span><span class="o">---</span> <span class="mi">1</span> <span class="n">searxng</span><span class="o">-</span><span class="n">valkey</span> <span class="n">searxng</span><span class="o">-</span><span class="n">valkey</span> <span class="o">...</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">local</span><span class="o">/</span><span class="n">searxng</span><span class="o">-</span><span class="n">valkey</span><span class="o">/</span><span class="n">run</span><span class="o">/</span><span class="n">valkey</span><span class="o">.</span><span class="n">sock</span>
+</pre></div>
+</div>
+<p>In this example read/write access is given to the <em>searxng-valkey</em> group.  To
+get access rights to valkey instance (the socket), your SearXNG (or even your
+developer) account needs to be added to the <em>searxng-valkey</em> group.</p>
+</dd>
+</dl>
+<section id="valkey-developer-notes">
+<span id="id2"></span><h2>Valkey Developer Notes<a class="headerlink" href="#valkey-developer-notes" title="Link to this heading">¶</a></h2>
+<p>To set up a local <a class="reference external" href="https://valkey.io">Valkey</a> DB, set the URL connector in your YAML setting:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">valkey</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">url</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">valkey://localhost:6379/0</span>
+</pre></div>
+</div>
+<p>To install a local <a class="reference external" href="https://valkey.io">Valkey</a> DB from package manager read <a class="reference external" href="https://valkey.io/topics/installation/">Valkey-Installation</a>
+or use:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>./utils/searxng.sh<span class="w"> </span>install<span class="w"> </span>valkey
+<span class="c1"># restart your SearXNG instance</span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+  <span id="sidebar-top"></span>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+  
+    
+            <p class="logo"><a href="../../index.html">
+              <img class="logo" src="../../_static/searxng-wordmark.svg" alt="Logo of SearXNG"/>
+            </a></p>
+  
+
+<h3><a href="../../index.html">Table of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../user/index.html">User information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../own-instance.html">Why use a private instance?</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Administrator documentation</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Settings</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="settings.html"><code class="docutils literal notranslate"><span class="pre">settings.yml</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="settings_engines.html"><code class="docutils literal notranslate"><span class="pre">engines:</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="settings_brand.html"><code class="docutils literal notranslate"><span class="pre">brand:</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="settings_general.html"><code class="docutils literal notranslate"><span class="pre">general:</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="settings_search.html"><code class="docutils literal notranslate"><span class="pre">search:</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="settings_server.html"><code class="docutils literal notranslate"><span class="pre">server:</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="settings_ui.html"><code class="docutils literal notranslate"><span class="pre">ui:</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="settings_redis.html"><code class="docutils literal notranslate"><span class="pre">redis:</span></code></a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#"><code class="docutils literal notranslate"><span class="pre">valkey:</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#valkey-developer-notes">Valkey Developer Notes</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="settings_outgoing.html"><code class="docutils literal notranslate"><span class="pre">outgoing:</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="settings_categories_as_tabs.html"><code class="docutils literal notranslate"><span class="pre">categories_as_tabs:</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="settings_plugins.html"><code class="docutils literal notranslate"><span class="pre">plugins:</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation-docker.html">Installation container</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation-scripts.html">Installation Script</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation-searxng.html">Step by step installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation-granian.html">Granian</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation-uwsgi.html">uWSGI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation-nginx.html">NGINX</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation-apache.html">Apache</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../update-searxng.html">SearXNG maintenance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../answer-captcha.html">Answer CAPTCHA from server’s IP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../searx.favicons.html">Favicons</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../searx.limiter.html">Limiter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html">Administration API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../architecture.html">Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../plugins.html">List of plugins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../buildhosts.html">Buildhosts</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../dev/index.html">Developer documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../utils/index.html">DevOps tooling box</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../src/index.html">Source-Code</a></li>
+</ul>
+
+  <h3>Project Links</h3>
+  <ul>
+    <li><a href="https://github.com/searxng/searxng/tree/master">Source</a>
+  
+    <li><a href="https://github.com/searxng/searxng/wiki">Wiki</a>
+  
+    <li><a href="https://searx.space">Public instances</a>
+  
+    <li><a href="https://github.com/searxng/searxng/issues">Issue Tracker</a>
+  </ul><h3>Navigation</h3>
+<ul>
+  <li><a href="../../index.html">Overview</a>
+    <ul>
+      <li><a href="../index.html">Administrator documentation</a>
+        <ul>
+      <li><a href="index.html">Settings</a>
+        <ul>
+          <li>Previous: <a href="settings_redis.html" title="previous chapter"><code class="docutils literal notranslate"><span class="pre">redis:</span></code></a>
+          <li>Next: <a href="settings_outgoing.html" title="next chapter"><code class="docutils literal notranslate"><span class="pre">outgoing:</span></code></a></ul>
+      </li></ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/admin/settings/settings_valkey.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright SearXNG team.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Answer Results &#8212; SearXNG Documentation (2026.2.22+191818b86)</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=6625fa76" />
+    <link rel="stylesheet" type="text/css" href="../../_static/searxng.css?v=52e4ff28" />
+    <script src="../../_static/documentation_options.js?v=1b5d919e"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script data-project="searxng" data-version="2026.2.22+191818b86" src="../../_static/describe_version.js?v=fa7f30d0"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Correction Results" href="correction.html" />
+    <link rel="prev" title="File Results" href="main/file.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="correction.html" title="Correction Results"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="main/file.html" title="File Results"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">SearXNG Documentation (2026.2.22+191818b86)</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >Developer documentation</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="index.html" accesskey="U">Result Types</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Answer Results</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="answer-results">
+<span id="result-types-answer"></span><h1>Answer Results<a class="headerlink" href="#answer-results" title="Link to this heading">¶</a></h1>
+<p>The <a class="reference internal" href="index.html#area-answer-results"><span class="std std-ref">area answers</span></a> is an area in which additional information can
+be displayed.</p>
+<p id="module-searx.result_types.answer">Typification of the <em>answer</em> results.  Results of this type are rendered in
+the <a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/searx/templates/simple/elements/answers.html">answers.html</a>
+template.</p>
+<hr class="docutils" />
+<dl class="py class">
+<dt class="sig sig-object py" id="searx.result_types.answer.BaseAnswer">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">searx.result_types.answer.</span></span><span class="sig-name descname"><span class="pre">BaseAnswer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">url</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">engine</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parsed_url</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/urllib.parse.html#urllib.parse.ParseResult" title="(in Python v3.14)"><span class="pre">ParseResult</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/searx/result_types/answer.html#BaseAnswer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.result_types.answer.BaseAnswer" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="base_result.html#searx.result_types._base.Result" title="searx.result_types._base.Result"><code class="xref py py-class docutils literal notranslate"><span class="pre">Result</span></code></a></p>
+<p>Base class of all answer types.  It is not intended to build instances of
+this class (aka <em>abstract</em>).</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="searx.result_types.answer.Answer">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">searx.result_types.answer.</span></span><span class="sig-name descname"><span class="pre">Answer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">url</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">engine</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parsed_url</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/urllib.parse.html#urllib.parse.ParseResult" title="(in Python v3.14)"><span class="pre">ParseResult</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">template</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'answer/legacy.html'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">answer</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/searx/result_types/answer.html#Answer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.result_types.answer.Answer" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#searx.result_types.answer.BaseAnswer" title="searx.result_types.answer.BaseAnswer"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseAnswer</span></code></a></p>
+<p>Simple answer type where the <em>answer</em> is a simple string with an optional
+<code class="xref py py-obj docutils literal notranslate"><span class="pre">url</span> <span class="pre">field</span></code> field to link a resource (article, map, ..)
+related to the answer.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="searx.result_types.answer.Answer.answer">
+<span class="sig-name descname"><span class="pre">answer</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></em><a class="headerlink" href="#searx.result_types.answer.Answer.answer" title="Link to this definition">¶</a></dt>
+<dd><p>Text of the answer.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="searx.result_types.answer.Translations">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">searx.result_types.answer.</span></span><span class="sig-name descname"><span class="pre">Translations</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">url</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">engine</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parsed_url</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/urllib.parse.html#urllib.parse.ParseResult" title="(in Python v3.14)"><span class="pre">ParseResult</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">template</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'answer/translations.html'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">translations</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#searx.result_types.answer.Translations.Item" title="searx.result_types.answer.Translations.Item"><span class="pre">Item</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/searx/result_types/answer.html#Translations"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.result_types.answer.Translations" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#searx.result_types.answer.BaseAnswer" title="searx.result_types.answer.BaseAnswer"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseAnswer</span></code></a></p>
+<p>Answer type with a list of translations.</p>
+<p>The items in the list of <a class="reference internal" href="#searx.result_types.answer.Translations.translations" title="searx.result_types.answer.Translations.translations"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Translations.translations</span></code></a> are of type
+<a class="reference internal" href="#searx.result_types.answer.Translations.Item" title="searx.result_types.answer.Translations.Item"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Translations.Item</span></code></a>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">response</span><span class="p">(</span><span class="n">resp</span><span class="p">):</span>
+    <span class="n">results</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="o">...</span>
+    <span class="n">foo_1</span> <span class="o">=</span> <span class="n">Translations</span><span class="o">.</span><span class="n">Item</span><span class="p">(</span>
+        <span class="n">text</span><span class="o">=</span><span class="s2">&quot;foobar&quot;</span><span class="p">,</span>
+        <span class="n">synonyms</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;bar&quot;</span><span class="p">,</span> <span class="s2">&quot;foo&quot;</span><span class="p">],</span>
+        <span class="n">examples</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;foo and bar are placeholders&quot;</span><span class="p">],</span>
+    <span class="p">)</span>
+    <span class="n">foo_url</span><span class="o">=</span><span class="s2">&quot;https://www.deepl.com/de/translator#en/de/foo&quot;</span>
+    <span class="o">...</span>
+    <span class="n">Translations</span><span class="p">(</span><span class="n">results</span><span class="o">=</span><span class="n">results</span><span class="p">,</span> <span class="n">translations</span><span class="o">=</span><span class="p">[</span><span class="n">foo</span><span class="p">],</span> <span class="n">url</span><span class="o">=</span><span class="n">foo_url</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="searx.result_types.answer.Translations.template">
+<span class="sig-name descname"><span class="pre">template</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></em><a class="headerlink" href="#searx.result_types.answer.Translations.template" title="Link to this definition">¶</a></dt>
+<dd><p>The template in <a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/searx/templates/simple/answer/translations.html">answer/translations.html</a></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="searx.result_types.answer.Translations.translations">
+<span class="sig-name descname"><span class="pre">translations</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#searx.result_types.answer.Translations.Item" title="searx.result_types.answer.Translations.Item"><span class="pre">Translations.Item</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#searx.result_types.answer.Translations.translations" title="Link to this definition">¶</a></dt>
+<dd><p>List of translations.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="searx.result_types.answer.Translations.Item">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Item</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">text:</span> <span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transliteration:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">examples:</span> <span class="pre">list[str]</span> <span class="pre">=</span> <span class="pre">&lt;factory&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">definitions:</span> <span class="pre">list[str]</span> <span class="pre">=</span> <span class="pre">&lt;factory&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">synonyms:</span> <span class="pre">list[str]</span> <span class="pre">=</span> <span class="pre">&lt;factory&gt;</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/searx/result_types/answer.html#Translations.Item"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.result_types.answer.Translations.Item" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Struct</span></code></p>
+<p>A single element of the translations / a translation.  A translation
+consists of at least a mandatory <code class="docutils literal notranslate"><span class="pre">text</span></code> property (the translation) ,
+optional properties such as <em>definitions</em>, <em>synonyms</em> and <em>examples</em> are
+possible.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="searx.result_types.answer.Translations.Item.text">
+<span class="sig-name descname"><span class="pre">text</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></em><a class="headerlink" href="#searx.result_types.answer.Translations.Item.text" title="Link to this definition">¶</a></dt>
+<dd><p>Translated text.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="searx.result_types.answer.Translations.Item.transliteration">
+<span class="sig-name descname"><span class="pre">transliteration</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></em><a class="headerlink" href="#searx.result_types.answer.Translations.Item.transliteration" title="Link to this definition">¶</a></dt>
+<dd><p><a class="reference external" href="https://en.wikipedia.org/wiki/Transliteration">Transliteration</a> of the requested translation.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="searx.result_types.answer.Translations.Item.examples">
+<span class="sig-name descname"><span class="pre">examples</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#searx.result_types.answer.Translations.Item.examples" title="Link to this definition">¶</a></dt>
+<dd><p>List of examples for the requested translation.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="searx.result_types.answer.Translations.Item.definitions">
+<span class="sig-name descname"><span class="pre">definitions</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#searx.result_types.answer.Translations.Item.definitions" title="Link to this definition">¶</a></dt>
+<dd><p>List of definitions for the requested translation.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="searx.result_types.answer.Translations.Item.synonyms">
+<span class="sig-name descname"><span class="pre">synonyms</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#searx.result_types.answer.Translations.Item.synonyms" title="Link to this definition">¶</a></dt>
+<dd><p>List of synonyms for the requested translation.</p>
+</dd></dl>
+
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="searx.result_types.answer.WeatherAnswer">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">searx.result_types.answer.</span></span><span class="sig-name descname"><span class="pre">WeatherAnswer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">url:</span> <span class="pre">str</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">engine:</span> <span class="pre">str</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parsed_url:</span> <span class="pre">~urllib.parse.ParseResult</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">template:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">'answer/weather.html'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">current:</span> <span class="pre">~searx.result_types.answer.WeatherAnswer.Item</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">forecasts:</span> <span class="pre">list[~searx.result_types.answer.WeatherAnswer.Item]</span> <span class="pre">=</span> <span class="pre">&lt;factory&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/searx/result_types/answer.html#WeatherAnswer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.result_types.answer.WeatherAnswer" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#searx.result_types.answer.BaseAnswer" title="searx.result_types.answer.BaseAnswer"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseAnswer</span></code></a></p>
+<p>Answer type for weather data.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="searx.result_types.answer.WeatherAnswer.template">
+<span class="sig-name descname"><span class="pre">template</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></em><a class="headerlink" href="#searx.result_types.answer.WeatherAnswer.template" title="Link to this definition">¶</a></dt>
+<dd><p>The template is located at <a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/searx/templates/simple/answer/weather.html">answer/weather.html</a></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="searx.result_types.answer.WeatherAnswer.current">
+<span class="sig-name descname"><span class="pre">current</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#searx.result_types.answer.WeatherAnswer.Item" title="searx.result_types.answer.WeatherAnswer.Item"><span class="pre">WeatherAnswer.Item</span></a></em><a class="headerlink" href="#searx.result_types.answer.WeatherAnswer.current" title="Link to this definition">¶</a></dt>
+<dd><p>Current weather at <code class="docutils literal notranslate"><span class="pre">location</span></code>.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="searx.result_types.answer.WeatherAnswer.forecasts">
+<span class="sig-name descname"><span class="pre">forecasts</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#searx.result_types.answer.WeatherAnswer.Item" title="searx.result_types.answer.WeatherAnswer.Item"><span class="pre">WeatherAnswer.Item</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#searx.result_types.answer.WeatherAnswer.forecasts" title="Link to this definition">¶</a></dt>
+<dd><p>Weather forecasts for <code class="docutils literal notranslate"><span class="pre">location</span></code>.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="searx.result_types.answer.WeatherAnswer.service">
+<span class="sig-name descname"><span class="pre">service</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></em><a class="headerlink" href="#searx.result_types.answer.WeatherAnswer.service" title="Link to this definition">¶</a></dt>
+<dd><p>Weather service from which this information was provided.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="searx.result_types.answer.WeatherAnswer.Item">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Item</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">location</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../src/searx.weather.html#searx.weather.GeoLocation" title="searx.weather.GeoLocation"><span class="pre">GeoLocation</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">temperature</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../src/searx.weather.html#searx.weather.Temperature" title="searx.weather.Temperature"><span class="pre">Temperature</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">condition</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Literal" title="(in Python v3.14)"><span class="pre">Literal</span></a><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'clear</span> <span class="pre">sky'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'partly</span> <span class="pre">cloudy'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'cloudy'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'fair'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'fog'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'light</span> <span class="pre">rain</span> <span class="pre">and</span> <span class="pre">thunder'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'light</span> <span class="pre">rain</span> <span class="pre">showers</span> <span class="pre">and</span> <span class="pre">thunder'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'light</span> <span class="pre">rain</span> <span class="pre">showers'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'light</span> <span class="pre">rain'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'rain</span> <span class="pre">and</span> <span class="pre">thunder'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'rain</span> <span class="pre">showers</span> <span class="pre">and</span> <span class="pre">thunder'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'rain</span> <span class="pre">showers'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'rain'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'heavy</span> <span class="pre">rain</span> <span class="pre">and</span> <span class="pre">thunder'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'heavy</span> <span class="pre">rain</span> <span class="pre">showers</span> <span class="pre">and</span> <span class="pre">thunder'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'heavy</span> <span class="pre">rain</span> <span class="pre">showers'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'heavy</span> <span class="pre">rain'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'light</span> <span class="pre">sleet</span> <span class="pre">and</span> <span class="pre">thunder'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'light</span> <span class="pre">sleet</span> <span class="pre">showers</span> <span class="pre">and</span> <span class="pre">thunder'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'light</span> <span class="pre">sleet</span> <span class="pre">showers'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'light</span> <span class="pre">sleet'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'sleet</span> <span class="pre">and</span> <span class="pre">thunder'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'sleet</span> <span class="pre">showers</span> <span class="pre">and</span> <span class="pre">thunder'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'sleet</span> <span class="pre">showers'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'sleet'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'heavy</span> <span class="pre">sleet</span> <span class="pre">and</span> <span class="pre">thunder'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'heavy</span> <span class="pre">sleet</span> <span class="pre">showers</span> <span class="pre">and</span> <span class="pre">thunder'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'heavy</span> <span class="pre">sleet</span> <span class="pre">showers'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'heavy</span> <span class="pre">sleet'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'light</span> <span class="pre">snow</span> <span class="pre">and</span> <span class="pre">thunder'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'light</span> <span class="pre">snow</span> <span class="pre">showers</span> <span class="pre">and</span> <span class="pre">thunder'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'light</span> <span class="pre">snow</span> <span class="pre">showers'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'light</span> <span class="pre">snow'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'snow</span> <span class="pre">and</span> <span class="pre">thunder'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'snow</span> <span class="pre">showers</span> <span class="pre">and</span> <span class="pre">thunder'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'snow</span> <span class="pre">showers'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'snow'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'heavy</span> <span class="pre">snow</span> <span class="pre">and</span> <span class="pre">thunder'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'heavy</span> <span class="pre">snow</span> <span class="pre">showers</span> <span class="pre">and</span> <span class="pre">thunder'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'heavy</span> <span class="pre">snow</span> <span class="pre">showers'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'heavy</span> <span class="pre">snow'</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">datetime</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../src/searx.weather.html#searx.weather.DateTime" title="searx.weather.DateTime"><span class="pre">DateTime</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">summary</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">feels_like</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../src/searx.weather.html#searx.weather.Temperature" title="searx.weather.Temperature"><span class="pre">Temperature</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pressure</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../src/searx.weather.html#searx.weather.Pressure" title="searx.weather.Pressure"><span class="pre">Pressure</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">humidity</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../src/searx.weather.html#searx.weather.RelativeHumidity" title="searx.weather.RelativeHumidity"><span class="pre">RelativeHumidity</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wind_from</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../src/searx.weather.html#searx.weather.Compass" title="searx.weather.Compass"><span class="pre">Compass</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">wind_speed</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../src/searx.weather.html#searx.weather.WindSpeed" title="searx.weather.WindSpeed"><span class="pre">WindSpeed</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cloud_cover</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/searx/result_types/answer.html#WeatherAnswer.Item"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.result_types.answer.WeatherAnswer.Item" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Struct</span></code></p>
+<p>Weather parameters valid for a specific point in time.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="searx.result_types.answer.WeatherAnswer.Item.location">
+<span class="sig-name descname"><span class="pre">location</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="../../src/searx.weather.html#searx.weather.GeoLocation" title="searx.weather.GeoLocation"><span class="pre">GeoLocation</span></a></em><a class="headerlink" href="#searx.result_types.answer.WeatherAnswer.Item.location" title="Link to this definition">¶</a></dt>
+<dd><p>The geo-location the weather data is from (e.g. <cite>Berlin, Germany</cite>).</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="searx.result_types.answer.WeatherAnswer.Item.temperature">
+<span class="sig-name descname"><span class="pre">temperature</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="../../src/searx.weather.html#searx.weather.Temperature" title="searx.weather.Temperature"><span class="pre">Temperature</span></a></em><a class="headerlink" href="#searx.result_types.answer.WeatherAnswer.Item.temperature" title="Link to this definition">¶</a></dt>
+<dd><p>Air temperature at 2m above the ground.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="searx.result_types.answer.WeatherAnswer.Item.condition">
+<span class="sig-name descname"><span class="pre">condition</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Literal" title="(in Python v3.14)"><span class="pre">Literal</span></a><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'clear</span> <span class="pre">sky'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'partly</span> <span class="pre">cloudy'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'cloudy'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'fair'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'fog'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'light</span> <span class="pre">rain</span> <span class="pre">and</span> <span class="pre">thunder'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'light</span> <span class="pre">rain</span> <span class="pre">showers</span> <span class="pre">and</span> <span class="pre">thunder'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'light</span> <span class="pre">rain</span> <span class="pre">showers'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'light</span> <span class="pre">rain'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'rain</span> <span class="pre">and</span> <span class="pre">thunder'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'rain</span> <span class="pre">showers</span> <span class="pre">and</span> <span class="pre">thunder'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'rain</span> <span class="pre">showers'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'rain'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'heavy</span> <span class="pre">rain</span> <span class="pre">and</span> <span class="pre">thunder'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'heavy</span> <span class="pre">rain</span> <span class="pre">showers</span> <span class="pre">and</span> <span class="pre">thunder'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'heavy</span> <span class="pre">rain</span> <span class="pre">showers'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'heavy</span> <span class="pre">rain'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'light</span> <span class="pre">sleet</span> <span class="pre">and</span> <span class="pre">thunder'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'light</span> <span class="pre">sleet</span> <span class="pre">showers</span> <span class="pre">and</span> <span class="pre">thunder'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'light</span> <span class="pre">sleet</span> <span class="pre">showers'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'light</span> <span class="pre">sleet'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'sleet</span> <span class="pre">and</span> <span class="pre">thunder'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'sleet</span> <span class="pre">showers</span> <span class="pre">and</span> <span class="pre">thunder'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'sleet</span> <span class="pre">showers'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'sleet'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'heavy</span> <span class="pre">sleet</span> <span class="pre">and</span> <span class="pre">thunder'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'heavy</span> <span class="pre">sleet</span> <span class="pre">showers</span> <span class="pre">and</span> <span class="pre">thunder'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'heavy</span> <span class="pre">sleet</span> <span class="pre">showers'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'heavy</span> <span class="pre">sleet'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'light</span> <span class="pre">snow</span> <span class="pre">and</span> <span class="pre">thunder'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'light</span> <span class="pre">snow</span> <span class="pre">showers</span> <span class="pre">and</span> <span class="pre">thunder'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'light</span> <span class="pre">snow</span> <span class="pre">showers'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'light</span> <span class="pre">snow'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'snow</span> <span class="pre">and</span> <span class="pre">thunder'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'snow</span> <span class="pre">showers</span> <span class="pre">and</span> <span class="pre">thunder'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'snow</span> <span class="pre">showers'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'snow'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'heavy</span> <span class="pre">snow</span> <span class="pre">and</span> <span class="pre">thunder'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'heavy</span> <span class="pre">snow</span> <span class="pre">showers</span> <span class="pre">and</span> <span class="pre">thunder'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'heavy</span> <span class="pre">snow</span> <span class="pre">showers'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'heavy</span> <span class="pre">snow'</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#searx.result_types.answer.WeatherAnswer.Item.condition" title="Link to this definition">¶</a></dt>
+<dd><p>Standardized designations that summarize the weather situation
+(e.g. <code class="docutils literal notranslate"><span class="pre">light</span> <span class="pre">sleet</span> <span class="pre">showers</span> <span class="pre">and</span> <span class="pre">thunder</span></code>).</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="searx.result_types.answer.WeatherAnswer.Item.datetime">
+<span class="sig-name descname"><span class="pre">datetime</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="../../src/searx.weather.html#searx.weather.DateTime" title="searx.weather.DateTime"><span class="pre">DateTime</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></em><a class="headerlink" href="#searx.result_types.answer.WeatherAnswer.Item.datetime" title="Link to this definition">¶</a></dt>
+<dd><p>Time of the forecast - not needed for the current weather.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="searx.result_types.answer.WeatherAnswer.Item.summary">
+<span class="sig-name descname"><span class="pre">summary</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></em><a class="headerlink" href="#searx.result_types.answer.WeatherAnswer.Item.summary" title="Link to this definition">¶</a></dt>
+<dd><p>One-liner about the weather forecast / current weather conditions.
+If unset, a summary is build up from temperature and current weather
+conditions.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="searx.result_types.answer.WeatherAnswer.Item.feels_like">
+<span class="sig-name descname"><span class="pre">feels_like</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="../../src/searx.weather.html#searx.weather.Temperature" title="searx.weather.Temperature"><span class="pre">Temperature</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></em><a class="headerlink" href="#searx.result_types.answer.WeatherAnswer.Item.feels_like" title="Link to this definition">¶</a></dt>
+<dd><p>Apparent temperature, the temperature equivalent perceived by
+humans, caused by the combined effects of air temperature, relative
+humidity and wind speed.  The measure is most commonly applied to the
+perceived outdoor temperature.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="searx.result_types.answer.WeatherAnswer.Item.pressure">
+<span class="sig-name descname"><span class="pre">pressure</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="../../src/searx.weather.html#searx.weather.Pressure" title="searx.weather.Pressure"><span class="pre">Pressure</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></em><a class="headerlink" href="#searx.result_types.answer.WeatherAnswer.Item.pressure" title="Link to this definition">¶</a></dt>
+<dd><p>Air pressure at sea level (e.g. 1030 hPa)</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="searx.result_types.answer.WeatherAnswer.Item.humidity">
+<span class="sig-name descname"><span class="pre">humidity</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="../../src/searx.weather.html#searx.weather.RelativeHumidity" title="searx.weather.RelativeHumidity"><span class="pre">RelativeHumidity</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></em><a class="headerlink" href="#searx.result_types.answer.WeatherAnswer.Item.humidity" title="Link to this definition">¶</a></dt>
+<dd><p>Amount of relative humidity in the air at 2m above the ground. The
+unit is <code class="docutils literal notranslate"><span class="pre">%</span></code>, e.g. 60%)</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="searx.result_types.answer.WeatherAnswer.Item.wind_from">
+<span class="sig-name descname"><span class="pre">wind_from</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="../../src/searx.weather.html#searx.weather.Compass" title="searx.weather.Compass"><span class="pre">Compass</span></a></em><a class="headerlink" href="#searx.result_types.answer.WeatherAnswer.Item.wind_from" title="Link to this definition">¶</a></dt>
+<dd><p>The directon which moves towards / direction the wind is coming from.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="searx.result_types.answer.WeatherAnswer.Item.wind_speed">
+<span class="sig-name descname"><span class="pre">wind_speed</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="../../src/searx.weather.html#searx.weather.WindSpeed" title="searx.weather.WindSpeed"><span class="pre">WindSpeed</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></em><a class="headerlink" href="#searx.result_types.answer.WeatherAnswer.Item.wind_speed" title="Link to this definition">¶</a></dt>
+<dd><p>Speed of wind / wind speed at 10m above the ground (10 min average).</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="searx.result_types.answer.WeatherAnswer.Item.cloud_cover">
+<span class="sig-name descname"><span class="pre">cloud_cover</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></em><a class="headerlink" href="#searx.result_types.answer.WeatherAnswer.Item.cloud_cover" title="Link to this definition">¶</a></dt>
+<dd><p>Amount of sky covered by clouds / total cloud cover for all heights
+(cloudiness, unit: %)</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="searx.result_types.answer.WeatherAnswer.Item.url">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">url</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></em><a class="headerlink" href="#searx.result_types.answer.WeatherAnswer.Item.url" title="Link to this definition">¶</a></dt>
+<dd><p>Determines a <a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/URI/Reference/Schemes/data">data URL</a> with a symbol for the weather
+conditions.  If no symbol can be assigned, <code class="docutils literal notranslate"><span class="pre">None</span></code> is returned.</p>
+</dd></dl>
+
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="searx.result_types.answer.AnswerSet">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">searx.result_types.answer.</span></span><span class="sig-name descname"><span class="pre">AnswerSet</span></span><a class="reference internal" href="../../_modules/searx/result_types/answer.html#AnswerSet"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.result_types.answer.AnswerSet" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>Aggregator for <a class="reference internal" href="#searx.result_types.answer.BaseAnswer" title="searx.result_types.answer.BaseAnswer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">BaseAnswer</span></code></a> items in a result container.</p>
+</dd></dl>
+
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+  <span id="sidebar-top"></span>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+  
+    
+            <p class="logo"><a href="../../index.html">
+              <img class="logo" src="../../_static/searxng-wordmark.svg" alt="Logo of SearXNG"/>
+            </a></p>
+  
+
+<h3><a href="../../index.html">Table of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../user/index.html">User information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../own-instance.html">Why use a private instance?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../admin/index.html">Administrator documentation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Developer documentation</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../quickstart.html">Development Quickstart</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../commits.html">Git Commits &amp; Change Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contribution_guide.html">How to contribute</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../extended_types.html">Extended Types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../engines/index.html">Engine Implementations</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Result Types</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="base_result.html">Result</a></li>
+<li class="toctree-l3"><a class="reference internal" href="main_result.html">Main Search Results</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Answer Results</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#searx.result_types.answer.BaseAnswer"><code class="docutils literal notranslate"><span class="pre">BaseAnswer</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#searx.result_types.answer.Answer"><code class="docutils literal notranslate"><span class="pre">Answer</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#searx.result_types.answer.Answer.answer"><code class="docutils literal notranslate"><span class="pre">Answer.answer</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="#searx.result_types.answer.Translations"><code class="docutils literal notranslate"><span class="pre">Translations</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#searx.result_types.answer.Translations.template"><code class="docutils literal notranslate"><span class="pre">Translations.template</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="#searx.result_types.answer.Translations.translations"><code class="docutils literal notranslate"><span class="pre">Translations.translations</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="#searx.result_types.answer.Translations.Item"><code class="docutils literal notranslate"><span class="pre">Translations.Item</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="#searx.result_types.answer.WeatherAnswer"><code class="docutils literal notranslate"><span class="pre">WeatherAnswer</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#searx.result_types.answer.WeatherAnswer.template"><code class="docutils literal notranslate"><span class="pre">WeatherAnswer.template</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="#searx.result_types.answer.WeatherAnswer.current"><code class="docutils literal notranslate"><span class="pre">WeatherAnswer.current</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="#searx.result_types.answer.WeatherAnswer.forecasts"><code class="docutils literal notranslate"><span class="pre">WeatherAnswer.forecasts</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="#searx.result_types.answer.WeatherAnswer.service"><code class="docutils literal notranslate"><span class="pre">WeatherAnswer.service</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="#searx.result_types.answer.WeatherAnswer.Item"><code class="docutils literal notranslate"><span class="pre">WeatherAnswer.Item</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="#searx.result_types.answer.AnswerSet"><code class="docutils literal notranslate"><span class="pre">AnswerSet</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="correction.html">Correction Results</a></li>
+<li class="toctree-l3"><a class="reference internal" href="suggestion.html">Suggestion Results</a></li>
+<li class="toctree-l3"><a class="reference internal" href="infobox.html">Infobox Results</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../templates.html">Simple Theme Templates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../search_api.html">Search API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../plugins/index.html">Plugins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../answerers/index.html">Answerers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../translation.html">Translation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../makefile.html">Makefile &amp; <code class="docutils literal notranslate"><span class="pre">./manage</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reST.html">reST primer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../searxng_extra/index.html">Tooling box <code class="docutils literal notranslate"><span class="pre">searxng_extra</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../utils/index.html">DevOps tooling box</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../src/index.html">Source-Code</a></li>
+</ul>
+
+  <h3>Project Links</h3>
+  <ul>
+    <li><a href="https://github.com/searxng/searxng/tree/master">Source</a>
+  
+    <li><a href="https://github.com/searxng/searxng/wiki">Wiki</a>
+  
+    <li><a href="https://searx.space">Public instances</a>
+  
+    <li><a href="https://github.com/searxng/searxng/issues">Issue Tracker</a>
+  </ul><h3>Navigation</h3>
+<ul>
+  <li><a href="../../index.html">Overview</a>
+    <ul>
+      <li><a href="../index.html">Developer documentation</a>
+        <ul>
+      <li><a href="index.html">Result Types</a>
+        <ul>
+          <li>Previous: <a href="main/file.html" title="previous chapter">File Results</a>
+          <li>Next: <a href="correction.html" title="next chapter">Correction Results</a></ul>
+      </li></ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/dev/result_types/answer.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright SearXNG team.
+    </div>
+  </body>
+</html>

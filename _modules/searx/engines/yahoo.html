@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>searx.engines.yahoo &#8212; SearXNG Documentation (2026.2.22+191818b86)</title>
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=6625fa76" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/searxng.css?v=52e4ff28" />
+    <script src="../../../_static/documentation_options.js?v=1b5d919e"></script>
+    <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script data-project="searxng" data-version="2026.2.22+191818b86" src="../../../_static/describe_version.js?v=fa7f30d0"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">SearXNG Documentation (2026.2.22+191818b86)</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" >Module code</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../engines.html" accesskey="U">searx.engines</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">searx.engines.yahoo</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for searx.engines.yahoo</h1><div class="highlight"><pre>
+<span></span><span class="c1"># SPDX-License-Identifier: AGPL-3.0-or-later</span>
+<span class="sd">&quot;&quot;&quot;Yahoo Search (Web)</span>
+
+<span class="sd">Languages are supported by mapping the language to a domain.  If domain is not</span>
+<span class="sd">found in :py:obj:`lang2domain` URL ``&lt;lang&gt;.search.yahoo.com`` is used.</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">urllib.parse</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">unquote</span><span class="p">,</span>
+    <span class="n">urlencode</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">lxml</span><span class="w"> </span><span class="kn">import</span> <span class="n">html</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">searx.utils</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">eval_xpath_getindex</span><span class="p">,</span>
+    <span class="n">eval_xpath_list</span><span class="p">,</span>
+    <span class="n">extract_text</span><span class="p">,</span>
+    <span class="n">html_to_text</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="c1"># about</span>
+<span class="n">about</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;website&quot;</span><span class="p">:</span> <span class="s1">&#39;https://search.yahoo.com/&#39;</span><span class="p">,</span>
+    <span class="s2">&quot;wikidata_id&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="s2">&quot;official_api_documentation&quot;</span><span class="p">:</span> <span class="s1">&#39;https://developer.yahoo.com/api/&#39;</span><span class="p">,</span>
+    <span class="s2">&quot;use_official_api&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="s2">&quot;require_api_key&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="s2">&quot;results&quot;</span><span class="p">:</span> <span class="s1">&#39;HTML&#39;</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="c1"># engine dependent config</span>
+<span class="n">categories</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;general&#39;</span><span class="p">,</span> <span class="s1">&#39;web&#39;</span><span class="p">]</span>
+<span class="n">paging</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">time_range_support</span> <span class="o">=</span> <span class="kc">True</span>
+
+<span class="n">time_range_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;day&#39;</span><span class="p">:</span> <span class="s1">&#39;d&#39;</span><span class="p">,</span> <span class="s1">&#39;week&#39;</span><span class="p">:</span> <span class="s1">&#39;w&#39;</span><span class="p">,</span> <span class="s1">&#39;month&#39;</span><span class="p">:</span> <span class="s1">&#39;m&#39;</span><span class="p">}</span>
+<span class="n">safesearch_dict</span> <span class="o">=</span> <span class="p">{</span><span class="mi">0</span><span class="p">:</span> <span class="s1">&#39;p&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span> <span class="s1">&#39;i&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="p">:</span> <span class="s1">&#39;r&#39;</span><span class="p">}</span>
+
+<span class="n">region2domain</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;CO&quot;</span><span class="p">:</span> <span class="s2">&quot;co.search.yahoo.com&quot;</span><span class="p">,</span>  <span class="c1"># Colombia</span>
+    <span class="s2">&quot;TH&quot;</span><span class="p">:</span> <span class="s2">&quot;th.search.yahoo.com&quot;</span><span class="p">,</span>  <span class="c1"># Thailand</span>
+    <span class="s2">&quot;VE&quot;</span><span class="p">:</span> <span class="s2">&quot;ve.search.yahoo.com&quot;</span><span class="p">,</span>  <span class="c1"># Venezuela</span>
+    <span class="s2">&quot;CL&quot;</span><span class="p">:</span> <span class="s2">&quot;cl.search.yahoo.com&quot;</span><span class="p">,</span>  <span class="c1"># Chile</span>
+    <span class="s2">&quot;HK&quot;</span><span class="p">:</span> <span class="s2">&quot;hk.search.yahoo.com&quot;</span><span class="p">,</span>  <span class="c1"># Hong Kong</span>
+    <span class="s2">&quot;PE&quot;</span><span class="p">:</span> <span class="s2">&quot;pe.search.yahoo.com&quot;</span><span class="p">,</span>  <span class="c1"># Peru</span>
+    <span class="s2">&quot;CA&quot;</span><span class="p">:</span> <span class="s2">&quot;ca.search.yahoo.com&quot;</span><span class="p">,</span>  <span class="c1"># Canada</span>
+    <span class="s2">&quot;DE&quot;</span><span class="p">:</span> <span class="s2">&quot;de.search.yahoo.com&quot;</span><span class="p">,</span>  <span class="c1"># Germany</span>
+    <span class="s2">&quot;FR&quot;</span><span class="p">:</span> <span class="s2">&quot;fr.search.yahoo.com&quot;</span><span class="p">,</span>  <span class="c1"># France</span>
+    <span class="s2">&quot;TW&quot;</span><span class="p">:</span> <span class="s2">&quot;tw.search.yahoo.com&quot;</span><span class="p">,</span>  <span class="c1"># Taiwan</span>
+    <span class="s2">&quot;GB&quot;</span><span class="p">:</span> <span class="s2">&quot;uk.search.yahoo.com&quot;</span><span class="p">,</span>  <span class="c1"># United Kingdom</span>
+    <span class="s2">&quot;UK&quot;</span><span class="p">:</span> <span class="s2">&quot;uk.search.yahoo.com&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;BR&quot;</span><span class="p">:</span> <span class="s2">&quot;br.search.yahoo.com&quot;</span><span class="p">,</span>  <span class="c1"># Brazil</span>
+    <span class="s2">&quot;IN&quot;</span><span class="p">:</span> <span class="s2">&quot;in.search.yahoo.com&quot;</span><span class="p">,</span>  <span class="c1"># India</span>
+    <span class="s2">&quot;ES&quot;</span><span class="p">:</span> <span class="s2">&quot;espanol.search.yahoo.com&quot;</span><span class="p">,</span>  <span class="c1"># Espanol</span>
+    <span class="s2">&quot;PH&quot;</span><span class="p">:</span> <span class="s2">&quot;ph.search.yahoo.com&quot;</span><span class="p">,</span>  <span class="c1"># Philippines</span>
+    <span class="s2">&quot;AR&quot;</span><span class="p">:</span> <span class="s2">&quot;ar.search.yahoo.com&quot;</span><span class="p">,</span>  <span class="c1"># Argentina</span>
+    <span class="s2">&quot;MX&quot;</span><span class="p">:</span> <span class="s2">&quot;mx.search.yahoo.com&quot;</span><span class="p">,</span>  <span class="c1"># Mexico</span>
+    <span class="s2">&quot;SG&quot;</span><span class="p">:</span> <span class="s2">&quot;sg.search.yahoo.com&quot;</span><span class="p">,</span>  <span class="c1"># Singapore</span>
+<span class="p">}</span>
+<span class="sd">&quot;&quot;&quot;Map regions to domain&quot;&quot;&quot;</span>
+
+<span class="n">lang2domain</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;zh_chs&#39;</span><span class="p">:</span> <span class="s1">&#39;hk.search.yahoo.com&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;zh_cht&#39;</span><span class="p">:</span> <span class="s1">&#39;tw.search.yahoo.com&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;any&#39;</span><span class="p">:</span> <span class="s1">&#39;search.yahoo.com&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;en&#39;</span><span class="p">:</span> <span class="s1">&#39;search.yahoo.com&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;bg&#39;</span><span class="p">:</span> <span class="s1">&#39;search.yahoo.com&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;cs&#39;</span><span class="p">:</span> <span class="s1">&#39;search.yahoo.com&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;da&#39;</span><span class="p">:</span> <span class="s1">&#39;search.yahoo.com&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;el&#39;</span><span class="p">:</span> <span class="s1">&#39;search.yahoo.com&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;et&#39;</span><span class="p">:</span> <span class="s1">&#39;search.yahoo.com&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;he&#39;</span><span class="p">:</span> <span class="s1">&#39;search.yahoo.com&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;hr&#39;</span><span class="p">:</span> <span class="s1">&#39;search.yahoo.com&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;ja&#39;</span><span class="p">:</span> <span class="s1">&#39;search.yahoo.com&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;ko&#39;</span><span class="p">:</span> <span class="s1">&#39;search.yahoo.com&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;sk&#39;</span><span class="p">:</span> <span class="s1">&#39;search.yahoo.com&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;sl&#39;</span><span class="p">:</span> <span class="s1">&#39;search.yahoo.com&#39;</span><span class="p">,</span>
+<span class="p">}</span>
+<span class="sd">&quot;&quot;&quot;Map language to domain&quot;&quot;&quot;</span>
+
+<span class="n">yahoo_languages</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;all&quot;</span><span class="p">:</span> <span class="s2">&quot;any&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;ar&quot;</span><span class="p">:</span> <span class="s2">&quot;ar&quot;</span><span class="p">,</span>  <span class="c1"># Arabic</span>
+    <span class="s2">&quot;bg&quot;</span><span class="p">:</span> <span class="s2">&quot;bg&quot;</span><span class="p">,</span>  <span class="c1"># Bulgarian</span>
+    <span class="s2">&quot;cs&quot;</span><span class="p">:</span> <span class="s2">&quot;cs&quot;</span><span class="p">,</span>  <span class="c1"># Czech</span>
+    <span class="s2">&quot;da&quot;</span><span class="p">:</span> <span class="s2">&quot;da&quot;</span><span class="p">,</span>  <span class="c1"># Danish</span>
+    <span class="s2">&quot;de&quot;</span><span class="p">:</span> <span class="s2">&quot;de&quot;</span><span class="p">,</span>  <span class="c1"># German</span>
+    <span class="s2">&quot;el&quot;</span><span class="p">:</span> <span class="s2">&quot;el&quot;</span><span class="p">,</span>  <span class="c1"># Greek</span>
+    <span class="s2">&quot;en&quot;</span><span class="p">:</span> <span class="s2">&quot;en&quot;</span><span class="p">,</span>  <span class="c1"># English</span>
+    <span class="s2">&quot;es&quot;</span><span class="p">:</span> <span class="s2">&quot;es&quot;</span><span class="p">,</span>  <span class="c1"># Spanish</span>
+    <span class="s2">&quot;et&quot;</span><span class="p">:</span> <span class="s2">&quot;et&quot;</span><span class="p">,</span>  <span class="c1"># Estonian</span>
+    <span class="s2">&quot;fi&quot;</span><span class="p">:</span> <span class="s2">&quot;fi&quot;</span><span class="p">,</span>  <span class="c1"># Finnish</span>
+    <span class="s2">&quot;fr&quot;</span><span class="p">:</span> <span class="s2">&quot;fr&quot;</span><span class="p">,</span>  <span class="c1"># French</span>
+    <span class="s2">&quot;he&quot;</span><span class="p">:</span> <span class="s2">&quot;he&quot;</span><span class="p">,</span>  <span class="c1"># Hebrew</span>
+    <span class="s2">&quot;hr&quot;</span><span class="p">:</span> <span class="s2">&quot;hr&quot;</span><span class="p">,</span>  <span class="c1"># Croatian</span>
+    <span class="s2">&quot;hu&quot;</span><span class="p">:</span> <span class="s2">&quot;hu&quot;</span><span class="p">,</span>  <span class="c1"># Hungarian</span>
+    <span class="s2">&quot;it&quot;</span><span class="p">:</span> <span class="s2">&quot;it&quot;</span><span class="p">,</span>  <span class="c1"># Italian</span>
+    <span class="s2">&quot;ja&quot;</span><span class="p">:</span> <span class="s2">&quot;ja&quot;</span><span class="p">,</span>  <span class="c1"># Japanese</span>
+    <span class="s2">&quot;ko&quot;</span><span class="p">:</span> <span class="s2">&quot;ko&quot;</span><span class="p">,</span>  <span class="c1"># Korean</span>
+    <span class="s2">&quot;lt&quot;</span><span class="p">:</span> <span class="s2">&quot;lt&quot;</span><span class="p">,</span>  <span class="c1"># Lithuanian</span>
+    <span class="s2">&quot;lv&quot;</span><span class="p">:</span> <span class="s2">&quot;lv&quot;</span><span class="p">,</span>  <span class="c1"># Latvian</span>
+    <span class="s2">&quot;nl&quot;</span><span class="p">:</span> <span class="s2">&quot;nl&quot;</span><span class="p">,</span>  <span class="c1"># Dutch</span>
+    <span class="s2">&quot;no&quot;</span><span class="p">:</span> <span class="s2">&quot;no&quot;</span><span class="p">,</span>  <span class="c1"># Norwegian</span>
+    <span class="s2">&quot;pl&quot;</span><span class="p">:</span> <span class="s2">&quot;pl&quot;</span><span class="p">,</span>  <span class="c1"># Polish</span>
+    <span class="s2">&quot;pt&quot;</span><span class="p">:</span> <span class="s2">&quot;pt&quot;</span><span class="p">,</span>  <span class="c1"># Portuguese</span>
+    <span class="s2">&quot;ro&quot;</span><span class="p">:</span> <span class="s2">&quot;ro&quot;</span><span class="p">,</span>  <span class="c1"># Romanian</span>
+    <span class="s2">&quot;ru&quot;</span><span class="p">:</span> <span class="s2">&quot;ru&quot;</span><span class="p">,</span>  <span class="c1"># Russian</span>
+    <span class="s2">&quot;sk&quot;</span><span class="p">:</span> <span class="s2">&quot;sk&quot;</span><span class="p">,</span>  <span class="c1"># Slovak</span>
+    <span class="s2">&quot;sl&quot;</span><span class="p">:</span> <span class="s2">&quot;sl&quot;</span><span class="p">,</span>  <span class="c1"># Slovenian</span>
+    <span class="s2">&quot;sv&quot;</span><span class="p">:</span> <span class="s2">&quot;sv&quot;</span><span class="p">,</span>  <span class="c1"># Swedish</span>
+    <span class="s2">&quot;th&quot;</span><span class="p">:</span> <span class="s2">&quot;th&quot;</span><span class="p">,</span>  <span class="c1"># Thai</span>
+    <span class="s2">&quot;tr&quot;</span><span class="p">:</span> <span class="s2">&quot;tr&quot;</span><span class="p">,</span>  <span class="c1"># Turkish</span>
+    <span class="s2">&quot;zh&quot;</span><span class="p">:</span> <span class="s2">&quot;zh_chs&quot;</span><span class="p">,</span>  <span class="c1"># Chinese (Simplified)</span>
+    <span class="s2">&quot;zh_Hans&quot;</span><span class="p">:</span> <span class="s2">&quot;zh_chs&quot;</span><span class="p">,</span>
+    <span class="s1">&#39;zh-CN&#39;</span><span class="p">:</span> <span class="s2">&quot;zh_chs&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;zh_Hant&quot;</span><span class="p">:</span> <span class="s2">&quot;zh_cht&quot;</span><span class="p">,</span>  <span class="c1"># Chinese (Traditional)</span>
+    <span class="s2">&quot;zh-HK&quot;</span><span class="p">:</span> <span class="s2">&quot;zh_cht&quot;</span><span class="p">,</span>
+    <span class="s1">&#39;zh-TW&#39;</span><span class="p">:</span> <span class="s2">&quot;zh_cht&quot;</span><span class="p">,</span>
+<span class="p">}</span>
+
+
+<div class="viewcode-block" id="build_sb_cookie">
+<a class="viewcode-back" href="../../../dev/engines/online/yahoo.html#searx.engines.yahoo.build_sb_cookie">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">build_sb_cookie</span><span class="p">(</span><span class="n">cookie_params</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Build sB cookie parameter from provided parameters.</span>
+
+<span class="sd">    :param cookie_params: Dictionary of cookie parameters</span>
+<span class="sd">    :type cookie_params: dict</span>
+<span class="sd">    :returns: Formatted cookie string</span>
+<span class="sd">    :rtype: str</span>
+
+<span class="sd">    Example:</span>
+<span class="sd">        &gt;&gt;&gt; cookie_params = {&#39;v&#39;: &#39;1&#39;, &#39;vm&#39;: &#39;p&#39;, &#39;fl&#39;: &#39;1&#39;, &#39;vl&#39;: &#39;lang_fr&#39;}</span>
+<span class="sd">        &gt;&gt;&gt; build_sb_cookie(cookie_params)</span>
+<span class="sd">        &#39;v=1&amp;vm=p&amp;fl=1&amp;vl=lang_fr&#39;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">cookie_parts</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">cookie_params</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="n">cookie_parts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">=</span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="s2">&quot;&amp;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">cookie_parts</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="request">
+<a class="viewcode-back" href="../../../dev/engines/online/yahoo.html#searx.engines.yahoo.request">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">request</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">params</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Build Yahoo search request.&quot;&quot;&quot;</span>
+
+    <span class="n">lang</span><span class="p">,</span> <span class="n">region</span> <span class="o">=</span> <span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="s2">&quot;language&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;-&quot;</span><span class="p">)</span> <span class="o">+</span> <span class="p">[</span><span class="kc">None</span><span class="p">])[:</span><span class="mi">2</span><span class="p">]</span>
+    <span class="n">lang</span> <span class="o">=</span> <span class="n">yahoo_languages</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">lang</span><span class="p">,</span> <span class="s2">&quot;any&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Build URL parameters</span>
+    <span class="c1"># - p (str): Search query string</span>
+    <span class="c1"># - btf (str): Time filter, maps to values like &#39;d&#39; (day), &#39;w&#39; (week), &#39;m&#39; (month)</span>
+    <span class="c1"># - iscqry (str): Empty string, necessary for results to appear properly on first page</span>
+    <span class="c1"># - b (int): Search offset for pagination</span>
+    <span class="c1"># - pz (str): Amount of results expected for the page</span>
+    <span class="n">url_params</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;p&#39;</span><span class="p">:</span> <span class="n">query</span><span class="p">}</span>
+
+    <span class="n">btf</span> <span class="o">=</span> <span class="n">time_range_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="s1">&#39;time_range&#39;</span><span class="p">])</span>
+    <span class="k">if</span> <span class="n">btf</span><span class="p">:</span>
+        <span class="n">url_params</span><span class="p">[</span><span class="s1">&#39;btf&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">btf</span>
+
+    <span class="k">if</span> <span class="n">params</span><span class="p">[</span><span class="s1">&#39;pageno&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">url_params</span><span class="p">[</span><span class="s1">&#39;iscqry&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+    <span class="k">elif</span> <span class="n">params</span><span class="p">[</span><span class="s1">&#39;pageno&#39;</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="n">url_params</span><span class="p">[</span><span class="s1">&#39;b&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">params</span><span class="p">[</span><span class="s1">&#39;pageno&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="mi">7</span> <span class="o">+</span> <span class="mi">1</span>  <span class="c1">#  8, 15, 21, etc.</span>
+        <span class="n">url_params</span><span class="p">[</span><span class="s1">&#39;pz&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">7</span>
+        <span class="n">url_params</span><span class="p">[</span><span class="s1">&#39;bct&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">url_params</span><span class="p">[</span><span class="s1">&#39;xargs&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="c1"># Build sB cookie (for filters)</span>
+    <span class="c1"># - vm (str): SafeSearch filter, maps to values like &#39;p&#39; (None), &#39;i&#39; (Moderate), &#39;r&#39; (Strict)</span>
+    <span class="c1"># - fl (bool): Indicates if a search language is used or not</span>
+    <span class="c1"># - vl (str): The search language to use (e.g. lang_fr)</span>
+    <span class="n">sbcookie_params</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;v&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="s1">&#39;vm&#39;</span><span class="p">:</span> <span class="n">safesearch_dict</span><span class="p">[</span><span class="n">params</span><span class="p">[</span><span class="s1">&#39;safesearch&#39;</span><span class="p">]],</span>
+        <span class="s1">&#39;fl&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="s1">&#39;vl&#39;</span><span class="p">:</span> <span class="sa">f</span><span class="s1">&#39;lang_</span><span class="si">{</span><span class="n">lang</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;pn&#39;</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
+        <span class="s1">&#39;rw&#39;</span><span class="p">:</span> <span class="s1">&#39;new&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;userset&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="p">}</span>
+    <span class="n">params</span><span class="p">[</span><span class="s1">&#39;cookies&#39;</span><span class="p">][</span><span class="s1">&#39;sB&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">build_sb_cookie</span><span class="p">(</span><span class="n">sbcookie_params</span><span class="p">)</span>
+
+    <span class="c1"># Search region/language</span>
+    <span class="n">domain</span> <span class="o">=</span> <span class="n">region2domain</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">region</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">domain</span><span class="p">:</span>
+        <span class="n">domain</span> <span class="o">=</span> <span class="n">lang2domain</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">lang</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">lang</span><span class="si">}</span><span class="s1">.search.yahoo.com&#39;</span><span class="p">)</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;domain selected: </span><span class="si">{</span><span class="n">domain</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;cookies: </span><span class="si">{</span><span class="n">params</span><span class="p">[</span><span class="s2">&quot;cookies&quot;</span><span class="p">]</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+
+    <span class="n">params</span><span class="p">[</span><span class="s1">&#39;url&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;https://</span><span class="si">{</span><span class="n">domain</span><span class="si">}</span><span class="s1">/search?</span><span class="si">{</span><span class="n">urlencode</span><span class="p">(</span><span class="n">url_params</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span>
+    <span class="n">params</span><span class="p">[</span><span class="s1">&#39;domain&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">domain</span></div>
+
+
+
+<div class="viewcode-block" id="parse_url">
+<a class="viewcode-back" href="../../../dev/engines/online/yahoo.html#searx.engines.yahoo.parse_url">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">parse_url</span><span class="p">(</span><span class="n">url_string</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;remove yahoo-specific tracking-url&quot;&quot;&quot;</span>
+
+    <span class="n">endings</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;/RS&#39;</span><span class="p">,</span> <span class="s1">&#39;/RK&#39;</span><span class="p">]</span>
+    <span class="n">endpositions</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">start</span> <span class="o">=</span> <span class="n">url_string</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;http&#39;</span><span class="p">,</span> <span class="n">url_string</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;/RU=&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">ending</span> <span class="ow">in</span> <span class="n">endings</span><span class="p">:</span>
+        <span class="n">endpos</span> <span class="o">=</span> <span class="n">url_string</span><span class="o">.</span><span class="n">rfind</span><span class="p">(</span><span class="n">ending</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">endpos</span> <span class="o">&gt;</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+            <span class="n">endpositions</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">endpos</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">start</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">endpositions</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">url_string</span>
+
+    <span class="n">end</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">endpositions</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">unquote</span><span class="p">(</span><span class="n">url_string</span><span class="p">[</span><span class="n">start</span><span class="p">:</span><span class="n">end</span><span class="p">])</span></div>
+
+
+
+<div class="viewcode-block" id="response">
+<a class="viewcode-back" href="../../../dev/engines/online/yahoo.html#searx.engines.yahoo.response">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">response</span><span class="p">(</span><span class="n">resp</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;parse response&quot;&quot;&quot;</span>
+
+    <span class="n">results</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">dom</span> <span class="o">=</span> <span class="n">html</span><span class="o">.</span><span class="n">fromstring</span><span class="p">(</span><span class="n">resp</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+
+    <span class="n">url_xpath</span> <span class="o">=</span> <span class="s1">&#39;.//div[contains(@class,&quot;compTitle&quot;)]/h3/a/@href&#39;</span>
+    <span class="n">title_xpath</span> <span class="o">=</span> <span class="s1">&#39;.//h3//a/@aria-label&#39;</span>
+
+    <span class="n">domain</span> <span class="o">=</span> <span class="n">resp</span><span class="o">.</span><span class="n">search_params</span><span class="p">[</span><span class="s1">&#39;domain&#39;</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">domain</span> <span class="o">==</span> <span class="s2">&quot;search.yahoo.com&quot;</span><span class="p">:</span>
+        <span class="n">url_xpath</span> <span class="o">=</span> <span class="s1">&#39;.//div[contains(@class,&quot;compTitle&quot;)]/a/@href&#39;</span>
+        <span class="n">title_xpath</span> <span class="o">=</span> <span class="s1">&#39;.//div[contains(@class,&quot;compTitle&quot;)]/a/h3/span&#39;</span>
+
+    <span class="c1"># parse results</span>
+    <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">eval_xpath_list</span><span class="p">(</span><span class="n">dom</span><span class="p">,</span> <span class="s1">&#39;//div[contains(@class,&quot;algo-sr&quot;)]&#39;</span><span class="p">):</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="n">eval_xpath_getindex</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">url_xpath</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">url</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">continue</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="n">parse_url</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+
+        <span class="n">title</span> <span class="o">=</span> <span class="n">eval_xpath_getindex</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">title_xpath</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+        <span class="n">title</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">extract_text</span><span class="p">(</span><span class="n">title</span><span class="p">)</span>
+        <span class="n">content</span> <span class="o">=</span> <span class="n">eval_xpath_getindex</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="s1">&#39;.//div[contains(@class, &quot;compText&quot;)]&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+        <span class="n">content</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">extract_text</span><span class="p">(</span><span class="n">content</span><span class="p">,</span> <span class="n">allow_none</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="c1"># append result</span>
+        <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+            <span class="p">{</span>
+                <span class="s1">&#39;url&#39;</span><span class="p">:</span> <span class="n">url</span><span class="p">,</span>
+                <span class="c1"># title sometimes contains HTML tags / see</span>
+                <span class="c1"># https://github.com/searxng/searxng/issues/3790</span>
+                <span class="s1">&#39;title&#39;</span><span class="p">:</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">html_to_text</span><span class="p">(</span><span class="n">title</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">()),</span>
+                <span class="s1">&#39;content&#39;</span><span class="p">:</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">html_to_text</span><span class="p">(</span><span class="n">content</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">()),</span>
+            <span class="p">}</span>
+        <span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">suggestion</span> <span class="ow">in</span> <span class="n">eval_xpath_list</span><span class="p">(</span><span class="n">dom</span><span class="p">,</span> <span class="s1">&#39;//div[contains(@class, &quot;AlsoTry&quot;)]//table//a&#39;</span><span class="p">):</span>
+        <span class="c1"># append suggestion</span>
+        <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s1">&#39;suggestion&#39;</span><span class="p">:</span> <span class="n">extract_text</span><span class="p">(</span><span class="n">suggestion</span><span class="p">)})</span>
+
+    <span class="k">return</span> <span class="n">results</span></div>
+
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+  <span id="sidebar-top"></span>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+  
+    
+            <p class="logo"><a href="../../../index.html">
+              <img class="logo" src="../../../_static/searxng-wordmark.svg" alt="Logo of SearXNG"/>
+            </a></p>
+  
+
+<h3><a href="../../../index.html">Table of Contents</a></h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../user/index.html">User information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../own-instance.html">Why use a private instance?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../admin/index.html">Administrator documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../dev/index.html">Developer documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../utils/index.html">DevOps tooling box</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/index.html">Source-Code</a></li>
+</ul>
+
+  <h3>Project Links</h3>
+  <ul>
+    <li><a href="https://github.com/searxng/searxng/tree/master">Source</a>
+  
+    <li><a href="https://github.com/searxng/searxng/wiki">Wiki</a>
+  
+    <li><a href="https://searx.space">Public instances</a>
+  
+    <li><a href="https://github.com/searxng/searxng/issues">Issue Tracker</a>
+  </ul><h3>Navigation</h3>
+<ul>
+  <li><a href="../../../index.html">Overview</a>
+    <ul>
+      <li><a href="../../index.html">Module code</a>
+        <ul>
+      <li><a href="../engines.html">searx.engines</a>
+        
+          
+          </ul>
+      </li></ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright SearXNG team.
+    </div>
+  </body>
+</html>

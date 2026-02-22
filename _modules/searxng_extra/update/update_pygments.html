@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>searxng_extra.update.update_pygments &#8212; SearXNG Documentation (2026.2.22+191818b86)</title>
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=6625fa76" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/searxng.css?v=52e4ff28" />
+    <script src="../../../_static/documentation_options.js?v=1b5d919e"></script>
+    <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script data-project="searxng" data-version="2026.2.22+191818b86" src="../../../_static/describe_version.js?v=fa7f30d0"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">SearXNG Documentation (2026.2.22+191818b86)</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" accesskey="U">Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">searxng_extra.update.update_pygments</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for searxng_extra.update.update_pygments</h1><div class="highlight"><pre>
+<span></span><span class="ch">#!/usr/bin/env python</span>
+<span class="c1"># SPDX-License-Identifier: AGPL-3.0-or-later</span>
+<span class="sd">&quot;&quot;&quot;Update pygments style</span>
+
+<span class="sd">Call this script after each upgrade of pygments</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="c1"># pylint: disable=too-few-public-methods</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pygments</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pygments.formatters.html</span><span class="w"> </span><span class="kn">import</span> <span class="n">HtmlFormatter</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">searx</span><span class="w"> </span><span class="kn">import</span> <span class="n">searx_dir</span>
+
+<span class="n">LESS_FILE</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">searx_dir</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span> <span class="o">/</span> <span class="s1">&#39;client/simple/generated/pygments.less&#39;</span>
+
+<span class="n">HEADER</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;</span><span class="se">\</span>
+<span class="s2">// SPDX-License-Identifier: AGPL-3.0-or-later</span>
+
+<span class="s2">/*</span>
+<span class="s2">   this file is generated automatically by searxng_extra/update/update_pygments.py</span>
+<span class="s2">   using pygments version </span><span class="si">{</span><span class="n">pygments</span><span class="o">.</span><span class="n">__version__</span><span class="si">}</span><span class="s2">:</span>
+
+<span class="s2">       ./manage templates.simple.pygments</span>
+<span class="s2">*/</span>
+
+<span class="s2">&quot;&quot;&quot;</span>
+
+<span class="n">START_LIGHT_THEME</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">.code-highlight {</span>
+<span class="s2">&quot;&quot;&quot;</span>
+
+<span class="n">END_LIGHT_THEME</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">}</span>
+<span class="s2">&quot;&quot;&quot;</span>
+
+<span class="n">START_DARK_THEME</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">.code-highlight-dark(){</span>
+<span class="s2">  .code-highlight {</span>
+<span class="s2">&quot;&quot;&quot;</span>
+
+<span class="n">END_DARK_THEME</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">  }</span>
+<span class="s2">}</span>
+<span class="s2">&quot;&quot;&quot;</span>
+
+
+<div class="viewcode-block" id="Formatter">
+<a class="viewcode-back" href="../../../dev/searxng_extra/update.html#searxng_extra.update.update_pygments.Formatter">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">Formatter</span><span class="p">(</span><span class="n">HtmlFormatter</span><span class="p">):</span>  <span class="c1"># pylint: disable=missing-class-docstring</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_style_lines</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="n">style_lines</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">style_lines</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_linenos_style_defs</span><span class="p">())</span>
+        <span class="n">style_lines</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_background_style_defs</span><span class="p">(</span><span class="n">arg</span><span class="p">))</span>
+        <span class="n">style_lines</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_token_style_defs</span><span class="p">(</span><span class="n">arg</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">style_lines</span></div>
+
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">generat_css</span><span class="p">(</span><span class="n">light_style</span><span class="p">,</span> <span class="n">dark_style</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="n">css</span> <span class="o">=</span> <span class="n">HEADER</span> <span class="o">+</span> <span class="n">START_LIGHT_THEME</span>
+    <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">Formatter</span><span class="p">(</span><span class="n">style</span><span class="o">=</span><span class="n">light_style</span><span class="p">)</span><span class="o">.</span><span class="n">get_style_lines</span><span class="p">():</span>
+        <span class="n">css</span> <span class="o">+=</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">  &#39;</span> <span class="o">+</span> <span class="n">line</span>
+    <span class="n">css</span> <span class="o">+=</span> <span class="n">END_LIGHT_THEME</span> <span class="o">+</span> <span class="n">START_DARK_THEME</span>
+    <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">Formatter</span><span class="p">(</span><span class="n">style</span><span class="o">=</span><span class="n">dark_style</span><span class="p">)</span><span class="o">.</span><span class="n">get_style_lines</span><span class="p">():</span>
+        <span class="n">css</span> <span class="o">+=</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">    &#39;</span> <span class="o">+</span> <span class="n">line</span>
+    <span class="n">css</span> <span class="o">+=</span> <span class="n">END_DARK_THEME</span>
+    <span class="k">return</span> <span class="n">css</span>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;update: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">LESS_FILE</span><span class="p">)</span>
+    <span class="k">with</span> <span class="n">LESS_FILE</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s1">&#39;w&#39;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf8&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">generat_css</span><span class="p">(</span><span class="s1">&#39;default&#39;</span><span class="p">,</span> <span class="s1">&#39;monokai&#39;</span><span class="p">))</span>
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+  <span id="sidebar-top"></span>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+  
+    
+            <p class="logo"><a href="../../../index.html">
+              <img class="logo" src="../../../_static/searxng-wordmark.svg" alt="Logo of SearXNG"/>
+            </a></p>
+  
+
+<h3><a href="../../../index.html">Table of Contents</a></h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../user/index.html">User information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../own-instance.html">Why use a private instance?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../admin/index.html">Administrator documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../dev/index.html">Developer documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../utils/index.html">DevOps tooling box</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/index.html">Source-Code</a></li>
+</ul>
+
+  <h3>Project Links</h3>
+  <ul>
+    <li><a href="https://github.com/searxng/searxng/tree/master">Source</a>
+  
+    <li><a href="https://github.com/searxng/searxng/wiki">Wiki</a>
+  
+    <li><a href="https://searx.space">Public instances</a>
+  
+    <li><a href="https://github.com/searxng/searxng/issues">Issue Tracker</a>
+  </ul><h3>Navigation</h3>
+<ul>
+  <li><a href="../../../index.html">Overview</a>
+    <ul>
+      <li><a href="../../index.html">Module code</a>
+        
+          
+          </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright SearXNG team.
+    </div>
+  </body>
+</html>

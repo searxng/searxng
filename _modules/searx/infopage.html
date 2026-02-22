@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>searx.infopage &#8212; SearXNG Documentation (2026.2.22+191818b86)</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=6625fa76" />
+    <link rel="stylesheet" type="text/css" href="../../_static/searxng.css?v=52e4ff28" />
+    <script src="../../_static/documentation_options.js?v=1b5d919e"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script data-project="searxng" data-version="2026.2.22+191818b86" src="../../_static/describe_version.js?v=fa7f30d0"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">SearXNG Documentation (2026.2.22+191818b86)</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">searx.infopage</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for searx.infopage</h1><div class="highlight"><pre>
+<span></span><span class="c1"># SPDX-License-Identifier: AGPL-3.0-or-later</span>
+<span class="sd">&quot;&quot;&quot;Render SearXNG instance documentation.</span>
+
+<span class="sd">Usage in a Flask app route:</span>
+
+<span class="sd">.. code:: python</span>
+
+<span class="sd">  from searx import infopage</span>
+<span class="sd">  from searx.extended_types import sxng_request</span>
+
+<span class="sd">  _INFO_PAGES = infopage.InfoPageSet(infopage.MistletoePage)</span>
+
+<span class="sd">  @app.route(&#39;/info/&lt;pagename&gt;&#39;, methods=[&#39;GET&#39;])</span>
+<span class="sd">  def info(pagename):</span>
+
+<span class="sd">      locale = sxng_request.preferences.get_value(&#39;locale&#39;)</span>
+<span class="sd">      page = _INFO_PAGES.get_page(pagename, locale)</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;InfoPage&#39;</span><span class="p">,</span> <span class="s1">&#39;InfoPageSet&#39;</span><span class="p">]</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">t</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os.path</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">urllib.parse</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">functools</span><span class="w"> </span><span class="kn">import</span> <span class="n">cached_property</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">jinja2</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">flask.helpers</span><span class="w"> </span><span class="kn">import</span> <span class="n">url_for</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">markdown_it</span><span class="w"> </span><span class="kn">import</span> <span class="n">MarkdownIt</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">..</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_setting</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..version</span><span class="w"> </span><span class="kn">import</span> <span class="n">GIT_URL</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..locales</span><span class="w"> </span><span class="kn">import</span> <span class="n">LOCALE_NAMES</span>
+
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s1">&#39;searx.infopage&#39;</span><span class="p">)</span>
+<span class="n">_INFO_FOLDER</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="vm">__file__</span><span class="p">))</span>
+<span class="n">INFO_PAGES</span><span class="p">:</span> <span class="s1">&#39;InfoPageSet&#39;</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="fm">__getattr__</span><span class="p">(</span><span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="s1">&#39;INFO_PAGES&#39;</span><span class="p">:</span>
+        <span class="k">global</span> <span class="n">INFO_PAGES</span>  <span class="c1"># pylint: disable=global-statement</span>
+        <span class="n">INFO_PAGES</span> <span class="o">=</span> <span class="n">InfoPageSet</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">INFO_PAGES</span>
+
+    <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;module </span><span class="si">{</span><span class="vm">__name__</span><span class="si">!r}</span><span class="s2"> has no attribute </span><span class="si">{</span><span class="n">name</span><span class="si">!r}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="InfoPage">
+<a class="viewcode-back" href="../../src/searx.infopage.html#searx.infopage.InfoPage">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">InfoPage</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A page of the :py:obj:`online documentation &lt;InfoPageSet&gt;`.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fname</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fname</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">fname</span>
+
+<div class="viewcode-block" id="InfoPage.raw_content">
+<a class="viewcode-back" href="../../src/searx.infopage.html#searx.infopage.InfoPage.raw_content">[docs]</a>
+    <span class="nd">@cached_property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">raw_content</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Raw content of the page (without any jinja rendering)&quot;&quot;&quot;</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fname</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="InfoPage.content">
+<a class="viewcode-back" href="../../src/searx.infopage.html#searx.infopage.InfoPage.content">[docs]</a>
+    <span class="nd">@cached_property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">content</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Content of the page (rendered in a Jinja context)&quot;&quot;&quot;</span>
+        <span class="n">ctx</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_ctx</span><span class="p">()</span>
+        <span class="n">template</span> <span class="o">=</span> <span class="n">jinja2</span><span class="o">.</span><span class="n">Environment</span><span class="p">()</span><span class="o">.</span><span class="n">from_string</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">raw_content</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">template</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="o">**</span><span class="n">ctx</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="InfoPage.title">
+<a class="viewcode-back" href="../../src/searx.infopage.html#searx.infopage.InfoPage.title">[docs]</a>
+    <span class="nd">@cached_property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">title</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Title of the content (without any markup)&quot;&quot;&quot;</span>
+        <span class="n">_t</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">raw_content</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">l</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;# &#39;</span><span class="p">):</span>
+                <span class="n">_t</span> <span class="o">=</span> <span class="n">l</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s1">&#39;# &#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">_t</span></div>
+
+
+<div class="viewcode-block" id="InfoPage.html">
+<a class="viewcode-back" href="../../src/searx.infopage.html#searx.infopage.InfoPage.html">[docs]</a>
+    <span class="nd">@cached_property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">html</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Render Markdown (CommonMark_) to HTML by using markdown-it-py_.</span>
+
+<span class="sd">        .. _CommonMark: https://commonmark.org/</span>
+<span class="sd">        .. _markdown-it-py: https://github.com/executablebooks/markdown-it-py</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="n">MarkdownIt</span><span class="p">(</span><span class="s2">&quot;commonmark&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;typographer&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">})</span><span class="o">.</span><span class="n">enable</span><span class="p">([</span><span class="s2">&quot;replacements&quot;</span><span class="p">,</span> <span class="s2">&quot;smartquotes&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="InfoPage.get_ctx">
+<a class="viewcode-back" href="../../src/searx.infopage.html#searx.infopage.InfoPage.get_ctx">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_ctx</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Jinja context to render :py:obj:`InfoPage.content`&quot;&quot;&quot;</span>
+
+        <span class="k">def</span><span class="w"> </span><span class="nf">_md_link</span><span class="p">(</span><span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">url</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="n">url</span> <span class="o">=</span> <span class="n">url_for</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">_external</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="k">return</span> <span class="s2">&quot;[</span><span class="si">%s</span><span class="s2">](</span><span class="si">%s</span><span class="s2">)&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">url</span><span class="p">)</span>
+
+        <span class="k">def</span><span class="w"> </span><span class="nf">_md_search</span><span class="p">(</span><span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="n">url</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">%s</span><span class="s1">?q=</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">url_for</span><span class="p">(</span><span class="s1">&#39;search&#39;</span><span class="p">,</span> <span class="n">_external</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span> <span class="n">urllib</span><span class="o">.</span><span class="n">parse</span><span class="o">.</span><span class="n">quote</span><span class="p">(</span><span class="n">query</span><span class="p">))</span>
+            <span class="k">return</span> <span class="s1">&#39;[</span><span class="si">%s</span><span class="s1">](</span><span class="si">%s</span><span class="s1">)&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">url</span><span class="p">)</span>
+
+        <span class="n">ctx</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">t</span><span class="o">.</span><span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">ctx</span><span class="p">[</span><span class="s1">&#39;GIT_URL&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">GIT_URL</span>
+        <span class="n">ctx</span><span class="p">[</span><span class="s1">&#39;get_setting&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">get_setting</span>
+        <span class="n">ctx</span><span class="p">[</span><span class="s1">&#39;link&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">_md_link</span>
+        <span class="n">ctx</span><span class="p">[</span><span class="s1">&#39;search&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">_md_search</span>
+
+        <span class="k">return</span> <span class="n">ctx</span></div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;&lt;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s1"> fname=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">fname</span><span class="si">!r}</span><span class="s1">&gt;&#39;</span></div>
+
+
+
+<div class="viewcode-block" id="InfoPageSet">
+<a class="viewcode-back" href="../../src/searx.infopage.html#searx.infopage.InfoPageSet">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">InfoPageSet</span><span class="p">:</span>  <span class="c1"># pylint: disable=too-few-public-methods</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Cached rendering of the online documentation a SearXNG instance has.</span>
+
+<span class="sd">    :param page_class: render online documentation by :py:obj:`InfoPage` parser.</span>
+<span class="sd">    :type page_class: :py:obj:`InfoPage`</span>
+
+<span class="sd">    :param info_folder: information directory</span>
+<span class="sd">    :type info_folder: str</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">page_class</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">InfoPage</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">info_folder</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">page_class</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">InfoPage</span><span class="p">]</span> <span class="o">=</span> <span class="n">page_class</span> <span class="ow">or</span> <span class="n">InfoPage</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">folder</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">info_folder</span> <span class="ow">or</span> <span class="n">_INFO_FOLDER</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;location of the Markdown files&quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">CACHE</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span> <span class="n">InfoPage</span> <span class="o">|</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">locale_default</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;en&#39;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;default language&quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">locales</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">locale</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">,</span> <span class="s1">&#39;-&#39;</span><span class="p">)</span> <span class="k">for</span> <span class="n">locale</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">_INFO_FOLDER</span><span class="p">)</span> <span class="k">if</span> <span class="n">locale</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">,</span> <span class="s1">&#39;-&#39;</span><span class="p">)</span> <span class="ow">in</span> <span class="n">LOCALE_NAMES</span>
+        <span class="p">]</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;list of supported languages (aka locales)&quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">toc</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="s1">&#39;search-syntax&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;about&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;donate&#39;</span><span class="p">,</span>
+        <span class="p">]</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;list of articles in the online documentation&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="InfoPageSet.get_page">
+<a class="viewcode-back" href="../../src/searx.infopage.html#searx.infopage.InfoPageSet.get_page">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_page</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pagename</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">locale</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return ``pagename`` instance of :py:obj:`InfoPage`</span>
+
+<span class="sd">        :param pagename: name of the page, a value from :py:obj:`InfoPageSet.toc`</span>
+<span class="sd">        :type pagename: str</span>
+
+<span class="sd">        :param locale: language of the page, e.g. ``en``, ``zh_Hans_CN``</span>
+<span class="sd">                       (default: :py:obj:`InfoPageSet.i18n_origin`)</span>
+<span class="sd">        :type locale: str</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">locale</span> <span class="o">=</span> <span class="n">locale</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">locale_default</span>
+
+        <span class="k">if</span> <span class="n">pagename</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">toc</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="n">locale</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">locales</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+
+        <span class="n">cache_key</span> <span class="o">=</span> <span class="p">(</span><span class="n">pagename</span><span class="p">,</span> <span class="n">locale</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">cache_key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">CACHE</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">CACHE</span><span class="p">[</span><span class="n">cache_key</span><span class="p">]</span>
+
+        <span class="c1"># not yet instantiated</span>
+
+        <span class="n">fname</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">folder</span><span class="p">,</span> <span class="n">locale</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="s1">&#39;_&#39;</span><span class="p">),</span> <span class="n">pagename</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;.md&#39;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">fname</span><span class="p">):</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;file </span><span class="si">%s</span><span class="s1"> does not exists&#39;</span><span class="p">,</span> <span class="n">fname</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">CACHE</span><span class="p">[</span><span class="n">cache_key</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="k">return</span> <span class="kc">None</span>
+
+        <span class="n">page</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">page_class</span><span class="p">(</span><span class="n">fname</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">CACHE</span><span class="p">[</span><span class="n">cache_key</span><span class="p">]</span> <span class="o">=</span> <span class="n">page</span>
+        <span class="k">return</span> <span class="n">page</span></div>
+
+
+<div class="viewcode-block" id="InfoPageSet.iter_pages">
+<a class="viewcode-back" href="../../src/searx.infopage.html#searx.infopage.InfoPageSet.iter_pages">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">iter_pages</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">locale</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">fallback_to_default</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Iterate over all pages of the TOC&quot;&quot;&quot;</span>
+        <span class="n">locale</span> <span class="o">=</span> <span class="n">locale</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">locale_default</span>
+        <span class="k">for</span> <span class="n">page_name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">toc</span><span class="p">:</span>
+            <span class="n">page_locale</span> <span class="o">=</span> <span class="n">locale</span>
+            <span class="n">page</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_page</span><span class="p">(</span><span class="n">page_name</span><span class="p">,</span> <span class="n">locale</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">fallback_to_default</span> <span class="ow">and</span> <span class="n">page</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">page_locale</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">locale_default</span>
+                <span class="n">page</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_page</span><span class="p">(</span><span class="n">page_name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">locale_default</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">page</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="c1"># page is None if the page was deleted by the administrator</span>
+                <span class="k">yield</span> <span class="n">page_name</span><span class="p">,</span> <span class="n">page_locale</span><span class="p">,</span> <span class="n">page</span></div>
+</div>
+
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+  <span id="sidebar-top"></span>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+  
+    
+            <p class="logo"><a href="../../index.html">
+              <img class="logo" src="../../_static/searxng-wordmark.svg" alt="Logo of SearXNG"/>
+            </a></p>
+  
+
+<h3><a href="../../index.html">Table of Contents</a></h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../user/index.html">User information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../own-instance.html">Why use a private instance?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../admin/index.html">Administrator documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dev/index.html">Developer documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../utils/index.html">DevOps tooling box</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../src/index.html">Source-Code</a></li>
+</ul>
+
+  <h3>Project Links</h3>
+  <ul>
+    <li><a href="https://github.com/searxng/searxng/tree/master">Source</a>
+  
+    <li><a href="https://github.com/searxng/searxng/wiki">Wiki</a>
+  
+    <li><a href="https://searx.space">Public instances</a>
+  
+    <li><a href="https://github.com/searxng/searxng/issues">Issue Tracker</a>
+  </ul><h3>Navigation</h3>
+<ul>
+  <li><a href="../../index.html">Overview</a>
+    <ul>
+      <li><a href="../index.html">Module code</a>
+        
+          
+          </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright SearXNG team.
+    </div>
+  </body>
+</html>

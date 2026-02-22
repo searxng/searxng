@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Engine Implementations &#8212; SearXNG Documentation (2026.2.22+191818b86)</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=6625fa76" />
+    <link rel="stylesheet" type="text/css" href="../../_static/searxng.css?v=52e4ff28" />
+    <script src="../../_static/documentation_options.js?v=1b5d919e"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script data-project="searxng" data-version="2026.2.22+191818b86" src="../../_static/describe_version.js?v=fa7f30d0"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Engine Library" href="enginelib.html" />
+    <link rel="prev" title="Extended Types" href="../extended_types.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="enginelib.html" title="Engine Library"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="../extended_types.html" title="Extended Types"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">SearXNG Documentation (2026.2.22+191818b86)</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Developer documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Engine Implementations</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="engine-implementations">
+<span id="id1"></span><h1>Engine Implementations<a class="headerlink" href="#engine-implementations" title="Link to this heading">¶</a></h1>
+<nav class="contents local" id="contents">
+<ul class="simple">
+<li><p><a class="reference internal" href="#resultlist-and-engines" id="id7">ResultList and engines</a></p></li>
+<li><p><a class="reference internal" href="#engine-types" id="id8">Engine Types</a></p>
+<ul>
+<li><p><a class="reference internal" href="#online-engines" id="id9">Online Engines</a></p></li>
+<li><p><a class="reference internal" href="#offline-engines" id="id10">Offline Engines</a></p></li>
+<li><p><a class="reference internal" href="#online-url-search" id="id11">Online URL Search</a></p></li>
+<li><p><a class="reference internal" href="#online-currency" id="id12">Online Currency</a></p></li>
+<li><p><a class="reference internal" href="#online-dictionary" id="id13">Online Dictionary</a></p></li>
+</ul>
+</li>
+</ul>
+</nav>
+<div class="toctree-wrapper compound">
+<p class="caption" role="heading"><span class="caption-text">Framework Components</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="enginelib.html">Engine Library</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="enginelib.html#searx.enginelib.EngineCache"><code class="docutils literal notranslate"><span class="pre">EngineCache</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="enginelib.html#searx.enginelib.Engine"><code class="docutils literal notranslate"><span class="pre">Engine</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="enginelib.html#searx.enginelib.ENGINES_CACHE"><code class="docutils literal notranslate"><span class="pre">ENGINES_CACHE</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="enginelib.html#module-searx.enginelib.traits">Engine traits</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="engines.html">SearXNG’s engines loader</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="engines.html#searx.engines.engines"><code class="docutils literal notranslate"><span class="pre">engines</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="engines.html#searx.engines.engine_shortcuts"><code class="docutils literal notranslate"><span class="pre">engine_shortcuts</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="engines.html#searx.engines.load_engine"><code class="docutils literal notranslate"><span class="pre">load_engine()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="engines.html#searx.engines.is_missing_required_attributes"><code class="docutils literal notranslate"><span class="pre">is_missing_required_attributes()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="engines.html#searx.engines.using_tor_proxy"><code class="docutils literal notranslate"><span class="pre">using_tor_proxy()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="engines.html#searx.engines.load_engines"><code class="docutils literal notranslate"><span class="pre">load_engines()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="engine_overview.html">Engine Overview</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="engine_overview.html#general-engine-configuration">General Engine Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="engine_overview.html#making-a-request">Making a Request</a></li>
+<li class="toctree-l2"><a class="reference internal" href="engine_overview.html#making-a-response">Making a Response</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<section id="resultlist-and-engines">
+<h2><a class="toc-backref" href="#id7" role="doc-backlink">ResultList and engines</a><a class="headerlink" href="#resultlist-and-engines" title="Link to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="searx.result_types.ResultList">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">searx.result_types.</span></span><span class="sig-name descname"><span class="pre">ResultList</span></span><a class="reference internal" href="../../_modules/searx/result_types.html#ResultList"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.result_types.ResultList" title="Link to this definition">¶</a></dt>
+<dd><p>Base class of all result lists (abstract).</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="searx.result_types.EngineResults">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">searx.result_types.</span></span><span class="sig-name descname"><span class="pre">EngineResults</span></span><a class="reference internal" href="../../_modules/searx/result_types.html#EngineResults"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.result_types.EngineResults" title="Link to this definition">¶</a></dt>
+<dd><p>Result list that should be used by engine developers.  For convenience,
+engine developers don’t need to import types / see <code class="xref py py-obj docutils literal notranslate"><span class="pre">ResultList.types</span></code>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">searx.result_types</span><span class="w"> </span><span class="kn">import</span> <span class="n">EngineResults</span>
+<span class="o">...</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">response</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">EngineResults</span><span class="p">:</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="n">EngineResults</span><span class="p">()</span>
+    <span class="o">...</span>
+    <span class="n">res</span><span class="o">.</span><span class="n">add</span><span class="p">(</span> <span class="n">res</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">Answer</span><span class="p">(</span><span class="n">answer</span><span class="o">=</span><span class="s2">&quot;lorem ipsum ..&quot;</span><span class="p">,</span> <span class="n">url</span><span class="o">=</span><span class="s2">&quot;https://example.org&quot;</span><span class="p">)</span> <span class="p">)</span>
+    <span class="o">...</span>
+    <span class="k">return</span> <span class="n">res</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</section>
+<section id="engine-types">
+<h2><a class="toc-backref" href="#id8" role="doc-backlink">Engine Types</a><a class="headerlink" href="#engine-types" title="Link to this heading">¶</a></h2>
+<p>The <a class="reference internal" href="enginelib.html#searx.enginelib.Engine.engine_type" title="searx.enginelib.Engine.engine_type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">engine_type</span></code></a> of an engine
+determines which <a class="reference internal" href="../../src/searx.search.processors.html#searx-search-processors"><span class="std std-ref">search processor</span></a> is used by
+the engine.</p>
+<p>In this section a list of the engines that are documented is given, a complete
+list of the engines can be found in the source under: <a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/searx/engines">git://searx/engines</a>.</p>
+<section id="online-engines">
+<span id="id2"></span><h3><a class="toc-backref" href="#id9" role="doc-backlink">Online Engines</a><a class="headerlink" href="#online-engines" title="Link to this heading">¶</a></h3>
+<aside class="sidebar">
+<p class="sidebar-title">info</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="../../src/searx.search.processors.html#module-searx.search.processors.online" title="searx.search.processors.online"><code class="xref py py-obj docutils literal notranslate"><span class="pre">processors.online</span></code></a></p></li>
+</ul>
+</aside>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="demo/demo_online.html">Demo Online Engine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="xpath.html">XPath Engine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mediawiki.html">MediaWiki Engine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="json_engine.html">JSON Engine</a></li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="online/adobe_stock.html">Adobe Stock</a></li>
+<li class="toctree-l1"><a class="reference internal" href="online/alpinelinux.html">Alpine Linux Packages</a></li>
+<li class="toctree-l1"><a class="reference internal" href="online/annas_archive.html">Anna’s Archive</a></li>
+<li class="toctree-l1"><a class="reference internal" href="online/archlinux.html">Arch Linux</a></li>
+<li class="toctree-l1"><a class="reference internal" href="online/arxiv.html">arXiv</a></li>
+<li class="toctree-l1"><a class="reference internal" href="online/astrophysics_data_system.html">Astrophysics Data System (ADS)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="online/azure.html">Azure Resources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="online/bing.html">Bing Engines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="online/bpb.html">Bpb</a></li>
+<li class="toctree-l1"><a class="reference internal" href="online/brave.html">Brave Engines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="online/bt4g.html">BT4G</a></li>
+<li class="toctree-l1"><a class="reference internal" href="online/chinaso.html">ChinaSo</a></li>
+<li class="toctree-l1"><a class="reference internal" href="online/core.html">CORE</a></li>
+<li class="toctree-l1"><a class="reference internal" href="online/crossref.html">Crossref</a></li>
+<li class="toctree-l1"><a class="reference internal" href="online/dailymotion.html">Dailymotion</a></li>
+<li class="toctree-l1"><a class="reference internal" href="online/discourse.html">Discourse Forums</a></li>
+<li class="toctree-l1"><a class="reference internal" href="online/duckduckgo.html">DuckDuckGo Engines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="online/geizhals.html">Geizhals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="online/gitea.html">Gitea</a></li>
+<li class="toctree-l1"><a class="reference internal" href="online/github_code.html">Github Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="online/gitlab.html">GitLab</a></li>
+<li class="toctree-l1"><a class="reference internal" href="online/google.html">Google Engines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="online/huggingface.html">Hugging Face</a></li>
+<li class="toctree-l1"><a class="reference internal" href="online/lemmy.html">Lemmy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="online/loc.html">Library of Congress</a></li>
+<li class="toctree-l1"><a class="reference internal" href="online/marginalia.html">Marginalia Search</a></li>
+<li class="toctree-l1"><a class="reference internal" href="online/mastodon.html">Mastodon</a></li>
+<li class="toctree-l1"><a class="reference internal" href="online/moviepilot.html">Moviepilot</a></li>
+<li class="toctree-l1"><a class="reference internal" href="online/mrs.html">Matrix Rooms Search (MRS)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="online/mwmbl.html">Mwmbl Engine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="online/odysee.html">Odysee</a></li>
+<li class="toctree-l1"><a class="reference internal" href="online/openalex.html">OpenAlex</a></li>
+<li class="toctree-l1"><a class="reference internal" href="online/openlibrary.html">Open Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="online/peertube.html">Peertube Engines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="online/piped.html">Piped</a></li>
+<li class="toctree-l1"><a class="reference internal" href="online/presearch.html">Presearch Engine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="online/pubmed.html">PubMed</a></li>
+<li class="toctree-l1"><a class="reference internal" href="online/qwant.html">Qwant</a></li>
+<li class="toctree-l1"><a class="reference internal" href="online/radio_browser.html">RadioBrowser</a></li>
+<li class="toctree-l1"><a class="reference internal" href="online/recoll.html">Recoll Engine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="online/repology.html">Repology</a></li>
+<li class="toctree-l1"><a class="reference internal" href="online/reuters.html">Reuters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="online/semantic_scholar.html">Semantic Scholar</a></li>
+<li class="toctree-l1"><a class="reference internal" href="online/soundcloud.html">Soundcloud</a></li>
+<li class="toctree-l1"><a class="reference internal" href="online/sourcehut.html">Sourcehut</a></li>
+<li class="toctree-l1"><a class="reference internal" href="online/springer.html">Springer Nature</a></li>
+<li class="toctree-l1"><a class="reference internal" href="online/startpage.html">Startpage Engines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="online/tagesschau.html">Tagesschau API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="online/torznab.html">Torznab WebAPI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="online/tubearchivist.html">Tube Archivist</a></li>
+<li class="toctree-l1"><a class="reference internal" href="online/void.html">Void Linux binary packages</a></li>
+<li class="toctree-l1"><a class="reference internal" href="online/wallhaven.html">Wallhaven</a></li>
+<li class="toctree-l1"><a class="reference internal" href="online/wikipedia.html">Wikimedia</a></li>
+<li class="toctree-l1"><a class="reference internal" href="online/yacy.html">Yacy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="online/yahoo.html">Yahoo Engine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="online/zlibrary.html">Z-Library</a></li>
+</ul>
+</div>
+</section>
+<section id="offline-engines">
+<span id="id3"></span><h3><a class="toc-backref" href="#id10" role="doc-backlink">Offline Engines</a><a class="headerlink" href="#offline-engines" title="Link to this heading">¶</a></h3>
+<aside class="sidebar">
+<p class="sidebar-title">info</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="../../src/searx.search.processors.html#module-searx.search.processors.offline" title="searx.search.processors.offline"><code class="xref py py-obj docutils literal notranslate"><span class="pre">processors.offline</span></code></a></p></li>
+</ul>
+</aside>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="offline_concept.html">Offline Concept</a></li>
+<li class="toctree-l1"><a class="reference internal" href="demo/demo_offline.html">Demo Offline Engine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="offline/command-line-engines.html">Command Line Engines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="offline/nosql-engines.html">NoSQL databases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="offline/search-indexer-engines.html">Local Search APIs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="offline/sql-engines.html">SQL Engines</a></li>
+</ul>
+</div>
+</section>
+<section id="online-url-search">
+<span id="id4"></span><h3><a class="toc-backref" href="#id11" role="doc-backlink">Online URL Search</a><a class="headerlink" href="#online-url-search" title="Link to this heading">¶</a></h3>
+<aside class="sidebar">
+<p class="sidebar-title">info</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="../../src/searx.search.processors.html#module-searx.search.processors.online_url_search" title="searx.search.processors.online_url_search"><code class="xref py py-obj docutils literal notranslate"><span class="pre">processors.online_url_search</span></code></a></p></li>
+</ul>
+</aside>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="online_url_search/tineye.html">Tineye</a></li>
+</ul>
+</div>
+</section>
+<section id="online-currency">
+<span id="id5"></span><h3><a class="toc-backref" href="#id12" role="doc-backlink">Online Currency</a><a class="headerlink" href="#online-currency" title="Link to this heading">¶</a></h3>
+<aside class="sidebar">
+<p class="sidebar-title">info</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="../../src/searx.search.processors.html#module-searx.search.processors.online_currency" title="searx.search.processors.online_currency"><code class="xref py py-obj docutils literal notranslate"><span class="pre">processors.online_currency</span></code></a></p></li>
+</ul>
+</aside>
+<p><em>no engine of this type is documented yet / coming soon</em></p>
+</section>
+<section id="online-dictionary">
+<span id="id6"></span><h3><a class="toc-backref" href="#id13" role="doc-backlink">Online Dictionary</a><a class="headerlink" href="#online-dictionary" title="Link to this heading">¶</a></h3>
+<aside class="sidebar">
+<p class="sidebar-title">info</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="../../src/searx.search.processors.html#module-searx.search.processors.online_dictionary" title="searx.search.processors.online_dictionary"><code class="xref py py-obj docutils literal notranslate"><span class="pre">processors.online_dictionary</span></code></a></p></li>
+</ul>
+</aside>
+<p><em>no engine of this type is documented yet / coming soon</em></p>
+</section>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+  <span id="sidebar-top"></span>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+  
+    
+            <p class="logo"><a href="../../index.html">
+              <img class="logo" src="../../_static/searxng-wordmark.svg" alt="Logo of SearXNG"/>
+            </a></p>
+  
+
+<h3><a href="../../index.html">Table of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../user/index.html">User information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../own-instance.html">Why use a private instance?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../admin/index.html">Administrator documentation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Developer documentation</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../quickstart.html">Development Quickstart</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../commits.html">Git Commits &amp; Change Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contribution_guide.html">How to contribute</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../extended_types.html">Extended Types</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Engine Implementations</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="enginelib.html">Engine Library</a></li>
+<li class="toctree-l3"><a class="reference internal" href="engines.html">SearXNG’s engines loader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="engine_overview.html">Engine Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#resultlist-and-engines">ResultList and engines</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#searx.result_types.ResultList"><code class="docutils literal notranslate"><span class="pre">ResultList</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#searx.result_types.EngineResults"><code class="docutils literal notranslate"><span class="pre">EngineResults</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#engine-types">Engine Types</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#online-engines">Online Engines</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="demo/demo_online.html">Demo Online Engine</a></li>
+<li class="toctree-l5"><a class="reference internal" href="xpath.html">XPath Engine</a></li>
+<li class="toctree-l5"><a class="reference internal" href="mediawiki.html">MediaWiki Engine</a></li>
+<li class="toctree-l5"><a class="reference internal" href="json_engine.html">JSON Engine</a></li>
+<li class="toctree-l5"><a class="reference internal" href="online/adobe_stock.html">Adobe Stock</a></li>
+<li class="toctree-l5"><a class="reference internal" href="online/alpinelinux.html">Alpine Linux Packages</a></li>
+<li class="toctree-l5"><a class="reference internal" href="online/annas_archive.html">Anna’s Archive</a></li>
+<li class="toctree-l5"><a class="reference internal" href="online/archlinux.html">Arch Linux</a></li>
+<li class="toctree-l5"><a class="reference internal" href="online/arxiv.html">arXiv</a></li>
+<li class="toctree-l5"><a class="reference internal" href="online/astrophysics_data_system.html">Astrophysics Data System (ADS)</a></li>
+<li class="toctree-l5"><a class="reference internal" href="online/azure.html">Azure Resources</a></li>
+<li class="toctree-l5"><a class="reference internal" href="online/bing.html">Bing Engines</a></li>
+<li class="toctree-l5"><a class="reference internal" href="online/bpb.html">Bpb</a></li>
+<li class="toctree-l5"><a class="reference internal" href="online/brave.html">Brave Engines</a></li>
+<li class="toctree-l5"><a class="reference internal" href="online/bt4g.html">BT4G</a></li>
+<li class="toctree-l5"><a class="reference internal" href="online/chinaso.html">ChinaSo</a></li>
+<li class="toctree-l5"><a class="reference internal" href="online/core.html">CORE</a></li>
+<li class="toctree-l5"><a class="reference internal" href="online/crossref.html">Crossref</a></li>
+<li class="toctree-l5"><a class="reference internal" href="online/dailymotion.html">Dailymotion</a></li>
+<li class="toctree-l5"><a class="reference internal" href="online/discourse.html">Discourse Forums</a></li>
+<li class="toctree-l5"><a class="reference internal" href="online/duckduckgo.html">DuckDuckGo Engines</a></li>
+<li class="toctree-l5"><a class="reference internal" href="online/geizhals.html">Geizhals</a></li>
+<li class="toctree-l5"><a class="reference internal" href="online/gitea.html">Gitea</a></li>
+<li class="toctree-l5"><a class="reference internal" href="online/github_code.html">Github Code</a></li>
+<li class="toctree-l5"><a class="reference internal" href="online/gitlab.html">GitLab</a></li>
+<li class="toctree-l5"><a class="reference internal" href="online/google.html">Google Engines</a></li>
+<li class="toctree-l5"><a class="reference internal" href="online/huggingface.html">Hugging Face</a></li>
+<li class="toctree-l5"><a class="reference internal" href="online/lemmy.html">Lemmy</a></li>
+<li class="toctree-l5"><a class="reference internal" href="online/loc.html">Library of Congress</a></li>
+<li class="toctree-l5"><a class="reference internal" href="online/marginalia.html">Marginalia Search</a></li>
+<li class="toctree-l5"><a class="reference internal" href="online/mastodon.html">Mastodon</a></li>
+<li class="toctree-l5"><a class="reference internal" href="online/moviepilot.html">Moviepilot</a></li>
+<li class="toctree-l5"><a class="reference internal" href="online/mrs.html">Matrix Rooms Search (MRS)</a></li>
+<li class="toctree-l5"><a class="reference internal" href="online/mwmbl.html">Mwmbl Engine</a></li>
+<li class="toctree-l5"><a class="reference internal" href="online/odysee.html">Odysee</a></li>
+<li class="toctree-l5"><a class="reference internal" href="online/openalex.html">OpenAlex</a></li>
+<li class="toctree-l5"><a class="reference internal" href="online/openlibrary.html">Open Library</a></li>
+<li class="toctree-l5"><a class="reference internal" href="online/peertube.html">Peertube Engines</a></li>
+<li class="toctree-l5"><a class="reference internal" href="online/piped.html">Piped</a></li>
+<li class="toctree-l5"><a class="reference internal" href="online/presearch.html">Presearch Engine</a></li>
+<li class="toctree-l5"><a class="reference internal" href="online/pubmed.html">PubMed</a></li>
+<li class="toctree-l5"><a class="reference internal" href="online/qwant.html">Qwant</a></li>
+<li class="toctree-l5"><a class="reference internal" href="online/radio_browser.html">RadioBrowser</a></li>
+<li class="toctree-l5"><a class="reference internal" href="online/recoll.html">Recoll Engine</a></li>
+<li class="toctree-l5"><a class="reference internal" href="online/repology.html">Repology</a></li>
+<li class="toctree-l5"><a class="reference internal" href="online/reuters.html">Reuters</a></li>
+<li class="toctree-l5"><a class="reference internal" href="online/semantic_scholar.html">Semantic Scholar</a></li>
+<li class="toctree-l5"><a class="reference internal" href="online/soundcloud.html">Soundcloud</a></li>
+<li class="toctree-l5"><a class="reference internal" href="online/sourcehut.html">Sourcehut</a></li>
+<li class="toctree-l5"><a class="reference internal" href="online/springer.html">Springer Nature</a></li>
+<li class="toctree-l5"><a class="reference internal" href="online/startpage.html">Startpage Engines</a></li>
+<li class="toctree-l5"><a class="reference internal" href="online/tagesschau.html">Tagesschau API</a></li>
+<li class="toctree-l5"><a class="reference internal" href="online/torznab.html">Torznab WebAPI</a></li>
+<li class="toctree-l5"><a class="reference internal" href="online/tubearchivist.html">Tube Archivist</a></li>
+<li class="toctree-l5"><a class="reference internal" href="online/void.html">Void Linux binary packages</a></li>
+<li class="toctree-l5"><a class="reference internal" href="online/wallhaven.html">Wallhaven</a></li>
+<li class="toctree-l5"><a class="reference internal" href="online/wikipedia.html">Wikimedia</a></li>
+<li class="toctree-l5"><a class="reference internal" href="online/yacy.html">Yacy</a></li>
+<li class="toctree-l5"><a class="reference internal" href="online/yahoo.html">Yahoo Engine</a></li>
+<li class="toctree-l5"><a class="reference internal" href="online/zlibrary.html">Z-Library</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="#offline-engines">Offline Engines</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="offline_concept.html">Offline Concept</a></li>
+<li class="toctree-l5"><a class="reference internal" href="demo/demo_offline.html">Demo Offline Engine</a></li>
+<li class="toctree-l5"><a class="reference internal" href="offline/command-line-engines.html">Command Line Engines</a></li>
+<li class="toctree-l5"><a class="reference internal" href="offline/nosql-engines.html">NoSQL databases</a></li>
+<li class="toctree-l5"><a class="reference internal" href="offline/search-indexer-engines.html">Local Search APIs</a></li>
+<li class="toctree-l5"><a class="reference internal" href="offline/sql-engines.html">SQL Engines</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="#online-url-search">Online URL Search</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="online_url_search/tineye.html">Tineye</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="#online-currency">Online Currency</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#online-dictionary">Online Dictionary</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../result_types/index.html">Result Types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../templates.html">Simple Theme Templates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../search_api.html">Search API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../plugins/index.html">Plugins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../answerers/index.html">Answerers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../translation.html">Translation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../makefile.html">Makefile &amp; <code class="docutils literal notranslate"><span class="pre">./manage</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reST.html">reST primer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../searxng_extra/index.html">Tooling box <code class="docutils literal notranslate"><span class="pre">searxng_extra</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../utils/index.html">DevOps tooling box</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../src/index.html">Source-Code</a></li>
+</ul>
+
+  <h3>Project Links</h3>
+  <ul>
+    <li><a href="https://github.com/searxng/searxng/tree/master">Source</a>
+  
+    <li><a href="https://github.com/searxng/searxng/wiki">Wiki</a>
+  
+    <li><a href="https://searx.space">Public instances</a>
+  
+    <li><a href="https://github.com/searxng/searxng/issues">Issue Tracker</a>
+  </ul><h3>Navigation</h3>
+<ul>
+  <li><a href="../../index.html">Overview</a>
+    <ul>
+      <li><a href="../index.html">Developer documentation</a>
+        <ul>
+          <li>Previous: <a href="../extended_types.html" title="previous chapter">Extended Types</a>
+          <li>Next: <a href="enginelib.html" title="next chapter">Engine Library</a></ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/dev/engines/index.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright SearXNG team.
+    </div>
+  </body>
+</html>

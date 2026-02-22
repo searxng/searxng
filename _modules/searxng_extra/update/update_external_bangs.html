@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>searxng_extra.update.update_external_bangs &#8212; SearXNG Documentation (2026.2.22+191818b86)</title>
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=6625fa76" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/searxng.css?v=52e4ff28" />
+    <script src="../../../_static/documentation_options.js?v=1b5d919e"></script>
+    <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script data-project="searxng" data-version="2026.2.22+191818b86" src="../../../_static/describe_version.js?v=fa7f30d0"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">SearXNG Documentation (2026.2.22+191818b86)</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" accesskey="U">Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">searxng_extra.update.update_external_bangs</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for searxng_extra.update.update_external_bangs</h1><div class="highlight"><pre>
+<span></span><span class="ch">#!/usr/bin/env python</span>
+<span class="c1"># SPDX-License-Identifier: AGPL-3.0-or-later</span>
+<span class="sd">&quot;&quot;&quot;Update :origin:`searx/data/external_bangs.json` using the duckduckgo bangs</span>
+<span class="sd">from :py:obj:`BANGS_URL`.</span>
+
+<span class="sd">- :origin:`CI Update data ... &lt;.github/workflows/data-update.yml&gt;`</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">searx.external_bang</span><span class="w"> </span><span class="kn">import</span> <span class="n">LEAF_KEY</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">searx.data</span><span class="w"> </span><span class="kn">import</span> <span class="n">data_dir</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">searx.network</span><span class="w"> </span><span class="kn">import</span> <span class="n">get</span> <span class="k">as</span> <span class="n">http_get</span>
+
+<span class="n">DATA_FILE</span> <span class="o">=</span> <span class="n">data_dir</span> <span class="o">/</span> <span class="s1">&#39;external_bangs.json&#39;</span>
+
+<span class="n">BANGS_URL</span> <span class="o">=</span> <span class="s1">&#39;https://duckduckgo.com/bang.js&#39;</span>
+<span class="sd">&quot;&quot;&quot;JSON file which contains the bangs.&quot;&quot;&quot;</span>
+
+<span class="n">HTTPS_COLON</span> <span class="o">=</span> <span class="s1">&#39;https:&#39;</span>
+<span class="n">HTTP_COLON</span> <span class="o">=</span> <span class="s1">&#39;http:&#39;</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">main</span><span class="p">():</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;fetch bangs from </span><span class="si">{</span><span class="n">BANGS_URL</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">http_get</span><span class="p">(</span><span class="n">BANGS_URL</span><span class="p">)</span>
+    <span class="n">response</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>
+    <span class="n">ddg_bangs</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">content</span><span class="o">.</span><span class="n">decode</span><span class="p">())</span>
+    <span class="n">trie</span> <span class="o">=</span> <span class="n">parse_ddg_bangs</span><span class="p">(</span><span class="n">ddg_bangs</span><span class="p">)</span>
+    <span class="n">output</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;version&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="s1">&#39;trie&#39;</span><span class="p">:</span> <span class="n">trie</span><span class="p">,</span>
+    <span class="p">}</span>
+    <span class="k">with</span> <span class="n">DATA_FILE</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s1">&#39;w&#39;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf8&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">output</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">sort_keys</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">ensure_ascii</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="merge_when_no_leaf">
+<a class="viewcode-back" href="../../../dev/searxng_extra/update.html#searxng_extra.update.update_external_bangs.merge_when_no_leaf">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">merge_when_no_leaf</span><span class="p">(</span><span class="n">node</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Minimize the number of nodes</span>
+
+<span class="sd">    ``A -&gt; B -&gt; C``</span>
+
+<span class="sd">    - ``B`` is child of ``A``</span>
+<span class="sd">    - ``C`` is child of ``B``</span>
+
+<span class="sd">    If there are no ``C`` equals to ``&lt;LEAF_KEY&gt;``, then each ``C`` are merged</span>
+<span class="sd">    into ``A``.  For example (5 nodes)::</span>
+
+<span class="sd">      d -&gt; d -&gt; g -&gt; &lt;LEAF_KEY&gt; (ddg)</span>
+<span class="sd">        -&gt; i -&gt; g -&gt; &lt;LEAF_KEY&gt; (dig)</span>
+
+<span class="sd">    becomes (3 nodes)::</span>
+
+<span class="sd">      d -&gt; dg -&gt; &lt;LEAF_KEY&gt;</span>
+<span class="sd">        -&gt; ig -&gt; &lt;LEAF_KEY&gt;</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">restart</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+        <span class="k">return</span>
+
+    <span class="c1"># create a copy of the keys so node can be modified</span>
+    <span class="n">keys</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+
+    <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">keys</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">key</span> <span class="o">==</span> <span class="n">LEAF_KEY</span><span class="p">:</span>
+            <span class="k">continue</span>
+
+        <span class="n">value</span> <span class="o">=</span> <span class="n">node</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+        <span class="n">value_keys</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">value</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+        <span class="k">if</span> <span class="n">LEAF_KEY</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">value_keys</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">value_key</span> <span class="ow">in</span> <span class="n">value_keys</span><span class="p">:</span>
+                <span class="n">node</span><span class="p">[</span><span class="n">key</span> <span class="o">+</span> <span class="n">value_key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span><span class="p">[</span><span class="n">value_key</span><span class="p">]</span>
+                <span class="n">merge_when_no_leaf</span><span class="p">(</span><span class="n">node</span><span class="p">[</span><span class="n">key</span> <span class="o">+</span> <span class="n">value_key</span><span class="p">])</span>
+            <span class="k">del</span> <span class="n">node</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+            <span class="n">restart</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">merge_when_no_leaf</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">restart</span><span class="p">:</span>
+        <span class="n">merge_when_no_leaf</span><span class="p">(</span><span class="n">node</span><span class="p">)</span></div>
+
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">optimize_leaf</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="n">parent_key</span><span class="p">,</span> <span class="n">node</span><span class="p">):</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+        <span class="k">return</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">node</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">LEAF_KEY</span> <span class="ow">in</span> <span class="n">node</span> <span class="ow">and</span> <span class="n">parent</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">parent</span><span class="p">[</span><span class="n">parent_key</span><span class="p">]</span> <span class="o">=</span> <span class="n">node</span><span class="p">[</span><span class="n">LEAF_KEY</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">node</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">optimize_leaf</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">parse_ddg_bangs</span><span class="p">(</span><span class="n">ddg_bangs</span><span class="p">):</span>
+    <span class="n">bang_trie</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">bang_urls</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="k">for</span> <span class="n">bang_definition</span> <span class="ow">in</span> <span class="n">ddg_bangs</span><span class="p">:</span>
+        <span class="c1"># bang_list</span>
+        <span class="n">bang_url</span> <span class="o">=</span> <span class="n">bang_definition</span><span class="p">[</span><span class="s1">&#39;u&#39;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="s1">&#39;{{</span><span class="si">{s}</span><span class="s1">}}&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">bang_url</span><span class="p">:</span>
+            <span class="c1"># ignore invalid bang</span>
+            <span class="k">continue</span>
+
+        <span class="n">bang_url</span> <span class="o">=</span> <span class="n">bang_url</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;{{</span><span class="si">{s}</span><span class="s1">}}&#39;</span><span class="p">,</span> <span class="nb">chr</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>
+
+        <span class="c1"># only for the https protocol: &quot;https://example.com&quot; becomes &quot;//example.com&quot;</span>
+        <span class="k">if</span> <span class="n">bang_url</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">HTTPS_COLON</span> <span class="o">+</span> <span class="s1">&#39;//&#39;</span><span class="p">):</span>
+            <span class="n">bang_url</span> <span class="o">=</span> <span class="n">bang_url</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">HTTPS_COLON</span><span class="p">)</span> <span class="p">:]</span>
+
+        <span class="c1">#</span>
+        <span class="k">if</span> <span class="n">bang_url</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">HTTP_COLON</span> <span class="o">+</span> <span class="s1">&#39;//&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">bang_url</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">HTTP_COLON</span><span class="p">)</span> <span class="p">:]</span> <span class="ow">in</span> <span class="n">bang_urls</span><span class="p">:</span>
+            <span class="c1"># if the bang_url uses the http:// protocol, and the same URL exists in https://</span>
+            <span class="c1"># then reuse the https:// bang definition. (written //example.com)</span>
+            <span class="n">bang_def_output</span> <span class="o">=</span> <span class="n">bang_urls</span><span class="p">[</span><span class="n">bang_url</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">HTTP_COLON</span><span class="p">)</span> <span class="p">:]]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># normal use case : new http:// URL or https:// URL (without &quot;https:&quot;, see above)</span>
+            <span class="n">bang_rank</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">bang_definition</span><span class="p">[</span><span class="s1">&#39;r&#39;</span><span class="p">])</span>
+            <span class="n">bang_def_output</span> <span class="o">=</span> <span class="n">bang_url</span> <span class="o">+</span> <span class="nb">chr</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="n">bang_rank</span>
+            <span class="n">bang_def_output</span> <span class="o">=</span> <span class="n">bang_urls</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="n">bang_url</span><span class="p">,</span> <span class="n">bang_def_output</span><span class="p">)</span>
+
+        <span class="n">bang_urls</span><span class="p">[</span><span class="n">bang_url</span><span class="p">]</span> <span class="o">=</span> <span class="n">bang_def_output</span>
+
+        <span class="c1"># bang name</span>
+        <span class="n">bang</span> <span class="o">=</span> <span class="n">bang_definition</span><span class="p">[</span><span class="s1">&#39;t&#39;</span><span class="p">]</span>
+
+        <span class="c1"># bang_trie</span>
+        <span class="n">t</span> <span class="o">=</span> <span class="n">bang_trie</span>
+        <span class="k">for</span> <span class="n">bang_letter</span> <span class="ow">in</span> <span class="n">bang</span><span class="p">:</span>
+            <span class="n">t</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="n">bang_letter</span><span class="p">,</span> <span class="p">{})</span>
+        <span class="n">t</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="n">LEAF_KEY</span><span class="p">,</span> <span class="n">bang_def_output</span><span class="p">)</span>
+
+    <span class="c1"># optimize the trie</span>
+    <span class="n">merge_when_no_leaf</span><span class="p">(</span><span class="n">bang_trie</span><span class="p">)</span>
+    <span class="n">optimize_leaf</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">bang_trie</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">bang_trie</span>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">main</span><span class="p">()</span>
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+  <span id="sidebar-top"></span>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+  
+    
+            <p class="logo"><a href="../../../index.html">
+              <img class="logo" src="../../../_static/searxng-wordmark.svg" alt="Logo of SearXNG"/>
+            </a></p>
+  
+
+<h3><a href="../../../index.html">Table of Contents</a></h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../user/index.html">User information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../own-instance.html">Why use a private instance?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../admin/index.html">Administrator documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../dev/index.html">Developer documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../utils/index.html">DevOps tooling box</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/index.html">Source-Code</a></li>
+</ul>
+
+  <h3>Project Links</h3>
+  <ul>
+    <li><a href="https://github.com/searxng/searxng/tree/master">Source</a>
+  
+    <li><a href="https://github.com/searxng/searxng/wiki">Wiki</a>
+  
+    <li><a href="https://searx.space">Public instances</a>
+  
+    <li><a href="https://github.com/searxng/searxng/issues">Issue Tracker</a>
+  </ul><h3>Navigation</h3>
+<ul>
+  <li><a href="../../../index.html">Overview</a>
+    <ul>
+      <li><a href="../../index.html">Module code</a>
+        
+          
+          </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright SearXNG team.
+    </div>
+  </body>
+</html>

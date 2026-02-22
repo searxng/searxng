@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>NGINX &#8212; SearXNG Documentation (2026.2.22+191818b86)</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=6625fa76" />
+    <link rel="stylesheet" type="text/css" href="../_static/searxng.css?v=52e4ff28" />
+    <link rel="stylesheet" type="text/css" href="../_static/tabs.css?v=a5c4661c" />
+    <script src="../_static/documentation_options.js?v=1b5d919e"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script data-project="searxng" data-version="2026.2.22+191818b86" src="../_static/describe_version.js?v=fa7f30d0"></script>
+    <script src="../_static/tabs.js?v=3030b3cb"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Apache" href="installation-apache.html" />
+    <link rel="prev" title="uWSGI" href="installation-uwsgi.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="installation-apache.html" title="Apache"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="installation-uwsgi.html" title="uWSGI"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">SearXNG Documentation (2026.2.22+191818b86)</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" accesskey="U">Administrator documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">NGINX</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="nginx">
+<span id="installation-nginx"></span><h1>NGINX<a class="headerlink" href="#nginx" title="Link to this heading">¶</a></h1>
+<p>This section explains how to set up a SearXNG instance using the HTTP server <a class="reference external" href="https://docs.nginx.com/nginx/admin-guide/">nginx</a>.
+If you have used the <a class="reference internal" href="installation-scripts.html#installation-scripts"><span class="std std-ref">Installation Script</span></a> and do not have any special preferences
+you can install the <a class="reference internal" href="#nginx-searxng-site"><span class="std std-ref">SearXNG site</span></a> using
+<a class="reference internal" href="../utils/searxng.sh.html#searxng-sh-overview"><span class="std std-ref">searxng.sh</span></a>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>sudo<span class="w"> </span>-H<span class="w"> </span>./utils/searxng.sh<span class="w"> </span>install<span class="w"> </span>nginx
+</pre></div>
+</div>
+<p>If you have special interests or problems with setting up nginx, the following
+section might give you some guidance.</p>
+<aside class="sidebar">
+<p class="sidebar-title">further reading</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://docs.nginx.com/nginx/admin-guide/">nginx</a></p></li>
+<li><p><a class="reference external" href="https://nginx.org/en/docs/beginners_guide.html">nginx beginners guide</a></p></li>
+<li><p><a class="reference external" href="https://docs.nginx.com/nginx/admin-guide/web-server/web-server/#setting-up-virtual-servers">nginx server configuration</a></p></li>
+<li><p><a class="reference external" href="https://www.nginx.com/resources/wiki/start/">Getting Started wiki</a></p></li>
+<li><p><a class="reference external" href="https://uwsgi-docs.readthedocs.io/en/latest/Nginx.html">uWSGI support from nginx</a></p></li>
+</ul>
+</aside>
+<nav class="contents local" id="contents">
+<ul class="simple">
+<li><p><a class="reference internal" href="#the-nginx-http-server" id="id2">The nginx HTTP server</a></p></li>
+<li><p><a class="reference internal" href="#nginx-s-searxng-site" id="id3">NGINX’s SearXNG site</a></p></li>
+<li><p><a class="reference internal" href="#disable-logs" id="id4">Disable logs</a></p></li>
+</ul>
+</nav>
+<section id="the-nginx-http-server">
+<h2><a class="toc-backref" href="#id2" role="doc-backlink">The nginx HTTP server</a><a class="headerlink" href="#the-nginx-http-server" title="Link to this heading">¶</a></h2>
+<p>If <a class="reference external" href="https://docs.nginx.com/nginx/admin-guide/">nginx</a> is not installed, install it now.</p>
+<div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-0-VWJ1bnR1IC8gZGViaWFu" aria-selected="true" class="sphinx-tabs-tab group-tab" id="tab-0-VWJ1bnR1IC8gZGViaWFu" name="VWJ1bnR1IC8gZGViaWFu" role="tab" tabindex="0">Ubuntu / debian</button><button aria-controls="panel-0-QXJjaCBMaW51eA==" aria-selected="false" class="sphinx-tabs-tab group-tab" id="tab-0-QXJjaCBMaW51eA==" name="QXJjaCBMaW51eA==" role="tab" tabindex="-1">Arch Linux</button><button aria-controls="panel-0-RmVkb3JhIC8gUkhFTA==" aria-selected="false" class="sphinx-tabs-tab group-tab" id="tab-0-RmVkb3JhIC8gUkhFTA==" name="RmVkb3JhIC8gUkhFTA==" role="tab" tabindex="-1">Fedora / RHEL</button></div><div aria-labelledby="tab-0-VWJ1bnR1IC8gZGViaWFu" class="sphinx-tabs-panel group-tab" id="panel-0-VWJ1bnR1IC8gZGViaWFu" name="VWJ1bnR1IC8gZGViaWFu" role="tabpanel" tabindex="0"><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>-H<span class="w"> </span>apt-get<span class="w"> </span>install<span class="w"> </span>nginx
+</pre></div>
+</div>
+</div><div aria-labelledby="tab-0-QXJjaCBMaW51eA==" class="sphinx-tabs-panel group-tab" hidden="true" id="panel-0-QXJjaCBMaW51eA==" name="QXJjaCBMaW51eA==" role="tabpanel" tabindex="0"><div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>-H<span class="w"> </span>pacman<span class="w"> </span>-S<span class="w"> </span>nginx-mainline
+sudo<span class="w"> </span>-H<span class="w"> </span>systemctl<span class="w"> </span><span class="nb">enable</span><span class="w"> </span>nginx
+sudo<span class="w"> </span>-H<span class="w"> </span>systemctl<span class="w"> </span>start<span class="w"> </span>nginx
+</pre></div>
+</div>
+</div><div aria-labelledby="tab-0-RmVkb3JhIC8gUkhFTA==" class="sphinx-tabs-panel group-tab" hidden="true" id="panel-0-RmVkb3JhIC8gUkhFTA==" name="RmVkb3JhIC8gUkhFTA==" role="tabpanel" tabindex="0"><div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>-H<span class="w"> </span>dnf<span class="w"> </span>install<span class="w"> </span>nginx
+sudo<span class="w"> </span>-H<span class="w"> </span>systemctl<span class="w"> </span><span class="nb">enable</span><span class="w"> </span>nginx
+sudo<span class="w"> </span>-H<span class="w"> </span>systemctl<span class="w"> </span>start<span class="w"> </span>nginx
+</pre></div>
+</div>
+</div></div>
+<p>Now at <a class="reference external" href="http://localhost">http://localhost</a> you should see a <em>Welcome to nginx!</em> page, on Fedora you
+see a <em>Fedora Webserver - Test Page</em>.  The test page comes from the default
+<a class="reference external" href="https://docs.nginx.com/nginx/admin-guide/web-server/web-server/#setting-up-virtual-servers">nginx server configuration</a>.  How this default site is configured,
+depends on the linux distribution:</p>
+<div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-1-VWJ1bnR1IC8gZGViaWFu" aria-selected="true" class="sphinx-tabs-tab group-tab" id="tab-1-VWJ1bnR1IC8gZGViaWFu" name="VWJ1bnR1IC8gZGViaWFu" role="tab" tabindex="0">Ubuntu / debian</button><button aria-controls="panel-1-QXJjaCBMaW51eA==" aria-selected="false" class="sphinx-tabs-tab group-tab" id="tab-1-QXJjaCBMaW51eA==" name="QXJjaCBMaW51eA==" role="tab" tabindex="-1">Arch Linux</button><button aria-controls="panel-1-RmVkb3JhIC8gUkhFTA==" aria-selected="false" class="sphinx-tabs-tab group-tab" id="tab-1-RmVkb3JhIC8gUkhFTA==" name="RmVkb3JhIC8gUkhFTA==" role="tab" tabindex="-1">Fedora / RHEL</button></div><div aria-labelledby="tab-1-VWJ1bnR1IC8gZGViaWFu" class="sphinx-tabs-panel group-tab" id="panel-1-VWJ1bnR1IC8gZGViaWFu" name="VWJ1bnR1IC8gZGViaWFu" role="tabpanel" tabindex="0"><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>less<span class="w"> </span>/etc/nginx/nginx.conf
+</pre></div>
+</div>
+<p>There is one line that includes site configurations from:</p>
+<div class="highlight-nginx notranslate"><div class="highlight"><pre><span></span><span class="k">include</span><span class="w"> </span><span class="n">/etc/nginx/sites-enabled/*</span>;
+</pre></div>
+</div>
+</div><div aria-labelledby="tab-1-QXJjaCBMaW51eA==" class="sphinx-tabs-panel group-tab" hidden="true" id="panel-1-QXJjaCBMaW51eA==" name="QXJjaCBMaW51eA==" role="tabpanel" tabindex="0"><div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>less<span class="w"> </span>/etc/nginx/nginx.conf
+</pre></div>
+</div>
+<p>There is a configuration section named <code class="docutils literal notranslate"><span class="pre">server</span></code>:</p>
+<div class="highlight-nginx notranslate"><div class="highlight"><pre><span></span><span class="k">server</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kn">listen</span><span class="w">       </span><span class="mi">80</span><span class="p">;</span>
+<span class="w">    </span><span class="kn">server_name</span><span class="w">  </span><span class="s">localhost</span><span class="p">;</span>
+<span class="w">    </span><span class="c1"># ...</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div><div aria-labelledby="tab-1-RmVkb3JhIC8gUkhFTA==" class="sphinx-tabs-panel group-tab" hidden="true" id="panel-1-RmVkb3JhIC8gUkhFTA==" name="RmVkb3JhIC8gUkhFTA==" role="tabpanel" tabindex="0"><div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>less<span class="w"> </span>/etc/nginx/nginx.conf
+</pre></div>
+</div>
+<p>There is one line that includes site configurations from:</p>
+<div class="highlight-nginx notranslate"><div class="highlight"><pre><span></span><span class="k">include</span><span class="w"> </span><span class="n">/etc/nginx/conf.d/*.conf</span>;
+</pre></div>
+</div>
+</div></div>
+</section>
+<section id="nginx-s-searxng-site">
+<span id="nginx-searxng-site"></span><h2><a class="toc-backref" href="#id3" role="doc-backlink">NGINX’s SearXNG site</a><a class="headerlink" href="#nginx-s-searxng-site" title="Link to this heading">¶</a></h2>
+<p>Now you have to create a configuration file (<code class="docutils literal notranslate"><span class="pre">searxng.conf</span></code>) for the SearXNG
+site.  If <a class="reference external" href="https://docs.nginx.com/nginx/admin-guide/">nginx</a> is new to you, the <a class="reference external" href="https://nginx.org/en/docs/beginners_guide.html">nginx beginners guide</a> is a good starting
+point and the <a class="reference external" href="https://www.nginx.com/resources/wiki/start/">Getting Started wiki</a> is always a good resource <em>to keep in the
+pocket</em>.</p>
+<p>Depending on what your SearXNG installation is listening on, you need a http or socket
+communication to upstream.</p>
+<div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-2-c29ja2V0" aria-selected="true" class="sphinx-tabs-tab group-tab" id="tab-2-c29ja2V0" name="c29ja2V0" role="tab" tabindex="0">socket</button><button aria-controls="panel-2-aHR0cA==" aria-selected="false" class="sphinx-tabs-tab group-tab" id="tab-2-aHR0cA==" name="aHR0cA==" role="tab" tabindex="-1">http</button></div><div aria-labelledby="tab-2-c29ja2V0" class="sphinx-tabs-panel group-tab" id="panel-2-c29ja2V0" name="c29ja2V0" role="tabpanel" tabindex="0"><div class="highlight-nginx notranslate"><div class="highlight"><pre><span></span><span class="k">location</span><span class="w"> </span><span class="s">/searxng</span><span class="w"> </span><span class="p">{</span>
+
+<span class="w">    </span><span class="kn">uwsgi_pass</span><span class="w"> </span><span class="s">unix:///usr/local/searxng/run/socket</span><span class="p">;</span>
+
+<span class="w">    </span><span class="kn">include</span><span class="w"> </span><span class="s">uwsgi_params</span><span class="p">;</span>
+
+<span class="w">    </span><span class="kn">uwsgi_param</span><span class="w">    </span><span class="s">HTTP_HOST</span><span class="w">             </span><span class="nv">$host</span><span class="p">;</span>
+<span class="w">    </span><span class="kn">uwsgi_param</span><span class="w">    </span><span class="s">HTTP_CONNECTION</span><span class="w">       </span><span class="nv">$http_connection</span><span class="p">;</span>
+
+<span class="w">    </span><span class="c1"># see flaskfix.py</span>
+<span class="w">    </span><span class="kn">uwsgi_param</span><span class="w">    </span><span class="s">HTTP_X_FORWARDED_PROTO</span><span class="w">  </span><span class="nv">$scheme</span><span class="p">;</span>
+<span class="w">    </span><span class="kn">uwsgi_param</span><span class="w">    </span><span class="s">HTTP_X_SCRIPT_NAME</span><span class="w">    </span><span class="s">/searxng</span><span class="p">;</span>
+
+<span class="w">    </span><span class="c1"># see botdetection/trusted_proxies.py</span>
+<span class="w">    </span><span class="kn">uwsgi_param</span><span class="w">    </span><span class="s">HTTP_X_REAL_IP</span><span class="w">        </span><span class="nv">$remote_addr</span><span class="p">;</span>
+<span class="w">    </span><span class="kn">uwsgi_param</span><span class="w">    </span><span class="s">HTTP_X_FORWARDED_FOR</span><span class="w">  </span><span class="nv">$proxy_add_x_forwarded_for</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="c1"># To serve the static files via the HTTP server</span>
+<span class="c1">#</span>
+<span class="c1"># location /searxng/static/ {</span>
+<span class="c1">#     alias /usr/local/searxng/searxng-src/searx/static/;</span>
+<span class="c1"># }</span>
+</pre></div>
+</div>
+</div><div aria-labelledby="tab-2-aHR0cA==" class="sphinx-tabs-panel group-tab" hidden="true" id="panel-2-aHR0cA==" name="aHR0cA==" role="tabpanel" tabindex="0"><div class="highlight-nginx notranslate"><div class="highlight"><pre><span></span><span class="k">location</span><span class="w"> </span><span class="s">/searxng</span><span class="w"> </span><span class="p">{</span>
+
+<span class="w">    </span><span class="kn">proxy_pass</span><span class="w"> </span><span class="s">http://127.0.0.1:8888</span><span class="p">;</span>
+
+<span class="w">    </span><span class="kn">proxy_set_header</span><span class="w">   </span><span class="s">Host</span><span class="w">             </span><span class="nv">$host</span><span class="p">;</span>
+<span class="w">    </span><span class="kn">proxy_set_header</span><span class="w">   </span><span class="s">Connection</span><span class="w">       </span><span class="nv">$http_connection</span><span class="p">;</span>
+
+<span class="w">    </span><span class="c1"># see flaskfix.py</span>
+<span class="w">    </span><span class="kn">proxy_set_header</span><span class="w">   </span><span class="s">X-Forwarded-Proto</span><span class="w"> </span><span class="nv">$scheme</span><span class="p">;</span>
+<span class="w">    </span><span class="kn">proxy_set_header</span><span class="w">   </span><span class="s">X-Script-Name</span><span class="w">    </span><span class="s">/searxng</span><span class="p">;</span>
+
+<span class="w">    </span><span class="c1"># see botdetection/trusted_proxies.py</span>
+<span class="w">    </span><span class="kn">proxy_set_header</span><span class="w">   </span><span class="s">X-Real-IP</span><span class="w">        </span><span class="nv">$remote_addr</span><span class="p">;</span>
+<span class="w">    </span><span class="kn">proxy_set_header</span><span class="w">   </span><span class="s">X-Forwarded-For</span><span class="w">  </span><span class="nv">$proxy_add_x_forwarded_for</span><span class="p">;</span>
+
+<span class="w">    </span><span class="c1"># proxy_buffering  off;</span>
+<span class="w">    </span><span class="c1"># proxy_request_buffering off;</span>
+<span class="w">    </span><span class="c1"># proxy_buffer_size 8k;</span>
+
+<span class="p">}</span>
+
+<span class="c1"># To serve the static files via the HTTP server</span>
+<span class="c1">#</span>
+<span class="c1"># location /searxng/static/ {</span>
+<span class="c1">#     alias /usr/local/searxng/searxng-src/searx/static/;</span>
+<span class="c1"># }</span>
+</pre></div>
+</div>
+</div></div>
+<p>The <a class="reference internal" href="installation-scripts.html#installation-scripts"><span class="std std-ref">Installation Script</span></a> installs the <a class="reference internal" href="installation-searxng.html#use-default-settings-yml"><span class="std std-ref">reference setup</span></a> and a <a class="reference internal" href="installation-uwsgi.html#uwsgi-setup"><span class="std std-ref">uWSGI setup</span></a> that listens on a socket by default.</p>
+<div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-3-VWJ1bnR1IC8gZGViaWFu" aria-selected="true" class="sphinx-tabs-tab group-tab" id="tab-3-VWJ1bnR1IC8gZGViaWFu" name="VWJ1bnR1IC8gZGViaWFu" role="tab" tabindex="0">Ubuntu / debian</button><button aria-controls="panel-3-QXJjaCBMaW51eA==" aria-selected="false" class="sphinx-tabs-tab group-tab" id="tab-3-QXJjaCBMaW51eA==" name="QXJjaCBMaW51eA==" role="tab" tabindex="-1">Arch Linux</button><button aria-controls="panel-3-RmVkb3JhIC8gUkhFTA==" aria-selected="false" class="sphinx-tabs-tab group-tab" id="tab-3-RmVkb3JhIC8gUkhFTA==" name="RmVkb3JhIC8gUkhFTA==" role="tab" tabindex="-1">Fedora / RHEL</button></div><div aria-labelledby="tab-3-VWJ1bnR1IC8gZGViaWFu" class="sphinx-tabs-panel group-tab" id="panel-3-VWJ1bnR1IC8gZGViaWFu" name="VWJ1bnR1IC8gZGViaWFu" role="tabpanel" tabindex="0"><p>Create configuration at <code class="docutils literal notranslate"><span class="pre">/etc/nginx/sites-available/</span></code> and place a
+symlink to <code class="docutils literal notranslate"><span class="pre">sites-enabled</span></code>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>-H<span class="w"> </span>ln<span class="w"> </span>-s<span class="w"> </span>/etc/nginx/sites-available/searxng.conf<span class="w"> </span><span class="se">\</span>
+<span class="w">              </span>/etc/nginx/sites-enabled/searxng.conf
+</pre></div>
+</div>
+</div><div aria-labelledby="tab-3-QXJjaCBMaW51eA==" class="sphinx-tabs-panel group-tab" hidden="true" id="panel-3-QXJjaCBMaW51eA==" name="QXJjaCBMaW51eA==" role="tabpanel" tabindex="0"><p>In the <code class="docutils literal notranslate"><span class="pre">/etc/nginx/nginx.conf</span></code> file, in the <code class="docutils literal notranslate"><span class="pre">server</span></code> section add a
+<a class="reference external" href="https://nginx.org/en/docs/ngx_core_module.html#include">include</a>
+directive:</p>
+<div class="highlight-nginx notranslate"><div class="highlight"><pre><span></span><span class="k">server</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="c1"># ...</span>
+<span class="w">    </span><span class="kn">include</span><span class="w"> </span><span class="s">/etc/nginx/default.d/*.conf</span><span class="p">;</span>
+<span class="w">    </span><span class="c1"># ...</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Create two folders, one for the <em>available sites</em> and one for the <em>enabled sites</em>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>mkdir<span class="w"> </span>-p<span class="w"> </span>/etc/nginx/default.d
+mkdir<span class="w"> </span>-p<span class="w"> </span>/etc/nginx/default.apps-available
+</pre></div>
+</div>
+<p>Create configuration at <code class="docutils literal notranslate"><span class="pre">/etc/nginx/default.apps-available</span></code> and place a
+symlink to <code class="docutils literal notranslate"><span class="pre">default.d</span></code>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>-H<span class="w"> </span>ln<span class="w"> </span>-s<span class="w"> </span>/etc/nginx/default.apps-available/searxng.conf<span class="w"> </span><span class="se">\</span>
+<span class="w">              </span>/etc/nginx/default.d/searxng.conf
+</pre></div>
+</div>
+</div><div aria-labelledby="tab-3-RmVkb3JhIC8gUkhFTA==" class="sphinx-tabs-panel group-tab" hidden="true" id="panel-3-RmVkb3JhIC8gUkhFTA==" name="RmVkb3JhIC8gUkhFTA==" role="tabpanel" tabindex="0"><p>Create a folder for the <em>available sites</em>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>mkdir<span class="w"> </span>-p<span class="w"> </span>/etc/nginx/default.apps-available
+</pre></div>
+</div>
+<p>Create configuration at <code class="docutils literal notranslate"><span class="pre">/etc/nginx/default.apps-available</span></code> and place a
+symlink to <code class="docutils literal notranslate"><span class="pre">conf.d</span></code>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>-H<span class="w"> </span>ln<span class="w"> </span>-s<span class="w"> </span>/etc/nginx/default.apps-available/searxng.conf<span class="w"> </span><span class="se">\</span>
+<span class="w">              </span>/etc/nginx/conf.d/searxng.conf
+</pre></div>
+</div>
+</div></div>
+<p>Restart services:</p>
+<div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-4-VWJ1bnR1IC8gZGViaWFu" aria-selected="true" class="sphinx-tabs-tab group-tab" id="tab-4-VWJ1bnR1IC8gZGViaWFu" name="VWJ1bnR1IC8gZGViaWFu" role="tab" tabindex="0">Ubuntu / debian</button><button aria-controls="panel-4-QXJjaCBMaW51eA==" aria-selected="false" class="sphinx-tabs-tab group-tab" id="tab-4-QXJjaCBMaW51eA==" name="QXJjaCBMaW51eA==" role="tab" tabindex="-1">Arch Linux</button><button aria-controls="panel-4-RmVkb3JhIC8gUkhFTA==" aria-selected="false" class="sphinx-tabs-tab group-tab" id="tab-4-RmVkb3JhIC8gUkhFTA==" name="RmVkb3JhIC8gUkhFTA==" role="tab" tabindex="-1">Fedora / RHEL</button></div><div aria-labelledby="tab-4-VWJ1bnR1IC8gZGViaWFu" class="sphinx-tabs-panel group-tab" id="panel-4-VWJ1bnR1IC8gZGViaWFu" name="VWJ1bnR1IC8gZGViaWFu" role="tabpanel" tabindex="0"><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>-H<span class="w"> </span>systemctl<span class="w"> </span>restart<span class="w"> </span>nginx
+sudo<span class="w"> </span>-H<span class="w"> </span>service<span class="w"> </span>uwsgi<span class="w"> </span>restart<span class="w"> </span>searxng
+</pre></div>
+</div>
+</div><div aria-labelledby="tab-4-QXJjaCBMaW51eA==" class="sphinx-tabs-panel group-tab" hidden="true" id="panel-4-QXJjaCBMaW51eA==" name="QXJjaCBMaW51eA==" role="tabpanel" tabindex="0"><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>-H<span class="w"> </span>systemctl<span class="w"> </span>restart<span class="w"> </span>nginx
+sudo<span class="w"> </span>-H<span class="w"> </span>systemctl<span class="w"> </span>restart<span class="w"> </span>uwsgi@searxng
+</pre></div>
+</div>
+</div><div aria-labelledby="tab-4-RmVkb3JhIC8gUkhFTA==" class="sphinx-tabs-panel group-tab" hidden="true" id="panel-4-RmVkb3JhIC8gUkhFTA==" name="RmVkb3JhIC8gUkhFTA==" role="tabpanel" tabindex="0"><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>-H<span class="w"> </span>systemctl<span class="w"> </span>restart<span class="w"> </span>nginx
+sudo<span class="w"> </span>-H<span class="w"> </span>touch<span class="w"> </span>/etc/uwsgi.d/searxng.ini
+</pre></div>
+</div>
+</div></div>
+</section>
+<section id="disable-logs">
+<h2><a class="toc-backref" href="#id4" role="doc-backlink">Disable logs</a><a class="headerlink" href="#disable-logs" title="Link to this heading">¶</a></h2>
+<p>For better privacy you can disable nginx logs in <code class="docutils literal notranslate"><span class="pre">/etc/nginx/nginx.conf</span></code>.</p>
+<div class="highlight-nginx notranslate"><div class="highlight"><pre><span></span><span class="k">http</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="c1"># ...</span>
+<span class="w">    </span><span class="kn">access_log</span><span class="w"> </span><span class="s">/dev/null</span><span class="p">;</span>
+<span class="w">    </span><span class="kn">error_log</span><span class="w">  </span><span class="s">/dev/null</span><span class="p">;</span>
+<span class="w">    </span><span class="c1"># ...</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+  <span id="sidebar-top"></span>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+  
+    
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/searxng-wordmark.svg" alt="Logo of SearXNG"/>
+            </a></p>
+  
+
+<h3><a href="../index.html">Table of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../user/index.html">User information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../own-instance.html">Why use a private instance?</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Administrator documentation</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="settings/index.html">Settings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation-docker.html">Installation container</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation-scripts.html">Installation Script</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation-searxng.html">Step by step installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation-granian.html">Granian</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation-uwsgi.html">uWSGI</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">NGINX</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#the-nginx-http-server">The nginx HTTP server</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#nginx-s-searxng-site">NGINX’s SearXNG site</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#disable-logs">Disable logs</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="installation-apache.html">Apache</a></li>
+<li class="toctree-l2"><a class="reference internal" href="update-searxng.html">SearXNG maintenance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="answer-captcha.html">Answer CAPTCHA from server’s IP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.favicons.html">Favicons</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.limiter.html">Limiter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html">Administration API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="architecture.html">Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plugins.html">List of plugins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="buildhosts.html">Buildhosts</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../dev/index.html">Developer documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../utils/index.html">DevOps tooling box</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../src/index.html">Source-Code</a></li>
+</ul>
+
+  <h3>Project Links</h3>
+  <ul>
+    <li><a href="https://github.com/searxng/searxng/tree/master">Source</a>
+  
+    <li><a href="https://github.com/searxng/searxng/wiki">Wiki</a>
+  
+    <li><a href="https://searx.space">Public instances</a>
+  
+    <li><a href="https://github.com/searxng/searxng/issues">Issue Tracker</a>
+  </ul><h3>Navigation</h3>
+<ul>
+  <li><a href="../index.html">Overview</a>
+    <ul>
+      <li><a href="index.html">Administrator documentation</a>
+        <ul>
+          <li>Previous: <a href="installation-uwsgi.html" title="previous chapter">uWSGI</a>
+          <li>Next: <a href="installation-apache.html" title="next chapter">Apache</a></ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/admin/installation-nginx.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright SearXNG team.
+    </div>
+  </body>
+</html>

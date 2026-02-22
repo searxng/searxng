@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Caches &#8212; SearXNG Documentation (2026.2.22+191818b86)</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=6625fa76" />
+    <link rel="stylesheet" type="text/css" href="../_static/searxng.css?v=52e4ff28" />
+    <script src="../_static/documentation_options.js?v=1b5d919e"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script data-project="searxng" data-version="2026.2.22+191818b86" src="../_static/describe_version.js?v=fa7f30d0"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="SearXNG Exceptions" href="searx.exceptions.html" />
+    <link rel="prev" title="Bot Detection" href="searx.botdetection.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="searx.exceptions.html" title="SearXNG Exceptions"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="searx.botdetection.html" title="Bot Detection"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">SearXNG Documentation (2026.2.22+191818b86)</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" accesskey="U">Source-Code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Caches</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="module-searx.cache">
+<span id="caches"></span><span id="searx-cache"></span><h1>Caches<a class="headerlink" href="#module-searx.cache" title="Link to this heading">¶</a></h1>
+<p>Implementation of caching solutions.</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#searx.cache.ExpireCache" title="searx.cache.ExpireCache"><code class="xref py py-obj docutils literal notranslate"><span class="pre">searx.cache.ExpireCache</span></code></a> and its <a class="reference internal" href="#searx.cache.ExpireCacheCfg" title="searx.cache.ExpireCacheCfg"><code class="xref py py-obj docutils literal notranslate"><span class="pre">searx.cache.ExpireCacheCfg</span></code></a></p></li>
+</ul>
+<hr class="docutils" />
+<dl class="py class">
+<dt class="sig sig-object py" id="searx.cache.ExpireCacheCfg">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">searx.cache.</span></span><span class="sig-name descname"><span class="pre">ExpireCacheCfg</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">db_url</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">MAX_VALUE_LEN</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">10240</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">MAXHOLD_TIME</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">604800</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">MAINTENANCE_PERIOD</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">3600</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">MAINTENANCE_MODE</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Literal" title="(in Python v3.14)"><span class="pre">Literal</span></a><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'auto'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'off'</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'auto'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">password</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.14)"><span class="pre">bytes</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">b'ultrasecretkey'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/searx/cache.html#ExpireCacheCfg"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.cache.ExpireCacheCfg" title="Link to this definition">¶</a></dt>
+<dd><p>Configuration of a <a class="reference internal" href="#searx.cache.ExpireCache" title="searx.cache.ExpireCache"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ExpireCache</span></code></a> cache.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="searx.cache.ExpireCacheCfg.name">
+<span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></em><a class="headerlink" href="#searx.cache.ExpireCacheCfg.name" title="Link to this definition">¶</a></dt>
+<dd><p>Name of the cache.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="searx.cache.ExpireCacheCfg.db_url">
+<span class="sig-name descname"><span class="pre">db_url</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></em><a class="headerlink" href="#searx.cache.ExpireCacheCfg.db_url" title="Link to this definition">¶</a></dt>
+<dd><p>URL of the SQLite DB, the path to the database file.  If unset a default
+DB will be created in <cite>/tmp/sxng_cache_{self.name}.db</cite></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="searx.cache.ExpireCacheCfg.MAX_VALUE_LEN">
+<span class="sig-name descname"><span class="pre">MAX_VALUE_LEN</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></em><a class="headerlink" href="#searx.cache.ExpireCacheCfg.MAX_VALUE_LEN" title="Link to this definition">¶</a></dt>
+<dd><p>Max length of a <em>serialized</em> value.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="searx.cache.ExpireCacheCfg.MAXHOLD_TIME">
+<span class="sig-name descname"><span class="pre">MAXHOLD_TIME</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></em><a class="headerlink" href="#searx.cache.ExpireCacheCfg.MAXHOLD_TIME" title="Link to this definition">¶</a></dt>
+<dd><p>Hold time (default in sec.), after which a value is removed from the cache.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="searx.cache.ExpireCacheCfg.MAINTENANCE_PERIOD">
+<span class="sig-name descname"><span class="pre">MAINTENANCE_PERIOD</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></em><a class="headerlink" href="#searx.cache.ExpireCacheCfg.MAINTENANCE_PERIOD" title="Link to this definition">¶</a></dt>
+<dd><p>Maintenance period in seconds / when <a class="reference internal" href="#searx.cache.ExpireCacheCfg.MAINTENANCE_MODE" title="searx.cache.ExpireCacheCfg.MAINTENANCE_MODE"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MAINTENANCE_MODE</span></code></a> is set to
+<code class="docutils literal notranslate"><span class="pre">auto</span></code>.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="searx.cache.ExpireCacheCfg.MAINTENANCE_MODE">
+<span class="sig-name descname"><span class="pre">MAINTENANCE_MODE</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Literal" title="(in Python v3.14)"><span class="pre">Literal</span></a><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'auto'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'off'</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#searx.cache.ExpireCacheCfg.MAINTENANCE_MODE" title="Link to this definition">¶</a></dt>
+<dd><p>Type of maintenance mode</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">auto</span></code>:</dt><dd><p>Maintenance is carried out automatically as part of the maintenance
+intervals (<a class="reference internal" href="#searx.cache.ExpireCacheCfg.MAINTENANCE_PERIOD" title="searx.cache.ExpireCacheCfg.MAINTENANCE_PERIOD"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MAINTENANCE_PERIOD</span></code></a>); no external process is required.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">off</span></code>:</dt><dd><p>Maintenance is switched off and must be carried out by an external process
+if required.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="searx.cache.ExpireCacheCfg.password">
+<span class="sig-name descname"><span class="pre">password</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.14)"><span class="pre">bytes</span></a></em><a class="headerlink" href="#searx.cache.ExpireCacheCfg.password" title="Link to this definition">¶</a></dt>
+<dd><p>Password used by <a class="reference internal" href="#searx.cache.ExpireCache.secret_hash" title="searx.cache.ExpireCache.secret_hash"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ExpireCache.secret_hash</span></code></a>.</p>
+<p>The default password is taken from <a class="reference internal" href="../admin/settings/settings_server.html#server-secret-key"><span class="std std-ref">secret_key</span></a>.
+When the password is changed, the hashed keys in the cache can no longer be
+used, which is why all values in the cache are deleted when the password is
+changed.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="searx.cache.ExpireCacheStats">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">searx.cache.</span></span><span class="sig-name descname"><span class="pre">ExpireCacheStats</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cached_items</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.14)"><span class="pre">dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.14)"><span class="pre">Any</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/searx/cache.html#ExpireCacheStats"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.cache.ExpireCacheStats" title="Link to this definition">¶</a></dt>
+<dd><p>Dataclass which provides information on the status of the cache.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="searx.cache.ExpireCacheStats.cached_items">
+<span class="sig-name descname"><span class="pre">cached_items</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.14)"><span class="pre">dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.14)"><span class="pre">Any</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#searx.cache.ExpireCacheStats.cached_items" title="Link to this definition">¶</a></dt>
+<dd><p>Values in the cache mapped by context name.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="searx.cache.ExpireCache">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">searx.cache.</span></span><span class="sig-name descname"><span class="pre">ExpireCache</span></span><a class="reference internal" href="../_modules/searx/cache.html#ExpireCache"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.cache.ExpireCache" title="Link to this definition">¶</a></dt>
+<dd><p>Abstract base class for the implementation of a key/value cache
+with expire date.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="searx.cache.ExpireCache.set">
+<em class="property"><span class="k"><span class="pre">abstractmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">set</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.14)"><span class="pre">Any</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">expire</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">ctx</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span></span><a class="reference internal" href="../_modules/searx/cache.html#ExpireCache.set"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.cache.ExpireCache.set" title="Link to this definition">¶</a></dt>
+<dd><p>Set <em>key</em> to <em>value</em>.  To set a timeout on key use argument
+<code class="docutils literal notranslate"><span class="pre">expire</span></code> (in sec.).  If expire is unset the default is taken from
+<a class="reference internal" href="#searx.cache.ExpireCacheCfg.MAXHOLD_TIME" title="searx.cache.ExpireCacheCfg.MAXHOLD_TIME"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ExpireCacheCfg.MAXHOLD_TIME</span></code></a>.  After the timeout has expired,
+the key will automatically be deleted.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">ctx</span></code> argument specifies the context of the <code class="docutils literal notranslate"><span class="pre">key</span></code>.  A key is
+only unique in its context.</p>
+<p>The concrete implementations of this abstraction determine how the
+context is mapped in the connected database.  In SQL databases, for
+example, the context is a DB table or in a Key/Value DB it could be
+a prefix for the key.</p>
+<p>If the context is not specified (the default is <code class="docutils literal notranslate"><span class="pre">None</span></code>) then a
+default context should be used, e.g. a default table for SQL databases
+or a default prefix in a Key/Value DB.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="searx.cache.ExpireCache.get">
+<em class="property"><span class="k"><span class="pre">abstractmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">default</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.14)"><span class="pre">Any</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ctx</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.14)"><span class="pre">Any</span></a></span></span><a class="reference internal" href="../_modules/searx/cache.html#ExpireCache.get"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.cache.ExpireCache.get" title="Link to this definition">¶</a></dt>
+<dd><p>Return <em>value</em> of <em>key</em>.  If key is unset, <code class="docutils literal notranslate"><span class="pre">None</span></code> is returned.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="searx.cache.ExpireCache.maintenance">
+<em class="property"><span class="k"><span class="pre">abstractmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">maintenance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">force</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">truncate</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span></span><a class="reference internal" href="../_modules/searx/cache.html#ExpireCache.maintenance"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.cache.ExpireCache.maintenance" title="Link to this definition">¶</a></dt>
+<dd><p>Performs maintenance on the cache.</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">force</span></code>:</dt><dd><p>Maintenance should be carried out even if the maintenance interval has
+not yet been reached.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">truncate</span></code>:</dt><dd><p>Truncate the entire cache, which is necessary, for example, if the
+password has changed.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="searx.cache.ExpireCache.state">
+<em class="property"><span class="k"><span class="pre">abstractmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">state</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#searx.cache.ExpireCacheStats" title="searx.cache.ExpireCacheStats"><span class="pre">ExpireCacheStats</span></a></span></span><a class="reference internal" href="../_modules/searx/cache.html#ExpireCache.state"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.cache.ExpireCache.state" title="Link to this definition">¶</a></dt>
+<dd><p>Returns a <a class="reference internal" href="#searx.cache.ExpireCacheStats" title="searx.cache.ExpireCacheStats"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ExpireCacheStats</span></code></a>, which provides information
+about the status of the cache.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="searx.cache.ExpireCache.build_cache">
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">build_cache</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cfg</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#searx.cache.ExpireCacheCfg" title="searx.cache.ExpireCacheCfg"><span class="pre">ExpireCacheCfg</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#searx.cache.ExpireCacheSQLite" title="searx.cache.ExpireCacheSQLite"><span class="pre">ExpireCacheSQLite</span></a></span></span><a class="reference internal" href="../_modules/searx/cache.html#ExpireCache.build_cache"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.cache.ExpireCache.build_cache" title="Link to this definition">¶</a></dt>
+<dd><p>Factory to build a caching instance.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Currently, only the SQLite adapter is available, but other database
+types could be implemented in the future, e.g. a Valkey (Redis)
+adapter.</p>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="searx.cache.ExpireCache.normalize_name">
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">normalize_name</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></span><a class="reference internal" href="../_modules/searx/cache.html#ExpireCache.normalize_name"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.cache.ExpireCache.normalize_name" title="Link to this definition">¶</a></dt>
+<dd><p>Returns a normalized name that can be used as a file name or as a SQL
+table name (is used, for example, to normalize the context name).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="searx.cache.ExpireCache.secret_hash">
+<span class="sig-name descname"><span class="pre">secret_hash</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.14)"><span class="pre">bytes</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></span><a class="reference internal" href="../_modules/searx/cache.html#ExpireCache.secret_hash"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.cache.ExpireCache.secret_hash" title="Link to this definition">¶</a></dt>
+<dd><p>Creates a hash of the argument <code class="docutils literal notranslate"><span class="pre">name</span></code>.  The hash value is formed
+from the <code class="docutils literal notranslate"><span class="pre">name</span></code> combined with the <a class="reference internal" href="#searx.cache.ExpireCacheCfg.password" title="searx.cache.ExpireCacheCfg.password"><code class="xref py py-obj docutils literal notranslate"><span class="pre">password</span></code></a>.  Can be used, for example, to make the
+<code class="docutils literal notranslate"><span class="pre">key</span></code> stored in the DB unreadable for third parties.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="searx.cache.ExpireCacheSQLite">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">searx.cache.</span></span><span class="sig-name descname"><span class="pre">ExpireCacheSQLite</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cfg</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#searx.cache.ExpireCacheCfg" title="searx.cache.ExpireCacheCfg"><span class="pre">ExpireCacheCfg</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/searx/cache.html#ExpireCacheSQLite"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.cache.ExpireCacheSQLite" title="Link to this definition">¶</a></dt>
+<dd><p>Cache that manages key/value pairs in a SQLite DB.  The DB model in the
+SQLite DB is implemented in abstract class <a class="reference internal" href="searx.sqlitedb.html#searx.sqlitedb.SQLiteAppl" title="searx.sqlitedb.SQLiteAppl"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SQLiteAppl</span></code></a>.</p>
+<p>The following configurations are required / supported:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#searx.cache.ExpireCacheCfg.db_url" title="searx.cache.ExpireCacheCfg.db_url"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ExpireCacheCfg.db_url</span></code></a></p></li>
+<li><p><a class="reference internal" href="#searx.cache.ExpireCacheCfg.MAXHOLD_TIME" title="searx.cache.ExpireCacheCfg.MAXHOLD_TIME"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ExpireCacheCfg.MAXHOLD_TIME</span></code></a></p></li>
+<li><p><a class="reference internal" href="#searx.cache.ExpireCacheCfg.MAINTENANCE_PERIOD" title="searx.cache.ExpireCacheCfg.MAINTENANCE_PERIOD"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ExpireCacheCfg.MAINTENANCE_PERIOD</span></code></a></p></li>
+<li><p><a class="reference internal" href="#searx.cache.ExpireCacheCfg.MAINTENANCE_MODE" title="searx.cache.ExpireCacheCfg.MAINTENANCE_MODE"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ExpireCacheCfg.MAINTENANCE_MODE</span></code></a></p></li>
+</ul>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="searx.cache.ExpireCacheSQLite.DB_SCHEMA">
+<span class="sig-name descname"><span class="pre">DB_SCHEMA</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1</span></em><a class="headerlink" href="#searx.cache.ExpireCacheSQLite.DB_SCHEMA" title="Link to this definition">¶</a></dt>
+<dd><p>As soon as changes are made to the DB schema, the version number must be
+increased.  Changes to the version number require the DB to be recreated (or
+migrated / if an migration path exists and is implemented).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="searx.cache.ExpireCacheSQLite.init">
+<span class="sig-name descname"><span class="pre">init</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">conn</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/sqlite3.html#sqlite3.Connection" title="(in Python v3.14)"><span class="pre">Connection</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span></span><a class="reference internal" href="../_modules/searx/cache.html#ExpireCacheSQLite.init"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.cache.ExpireCacheSQLite.init" title="Link to this definition">¶</a></dt>
+<dd><p>Initializes the DB schema and properties, is only executed once even
+if called several times.</p>
+<p>If the initialization has not yet taken place, it is carried out and a
+<cite>True</cite> is returned to the caller at the end.  If the initialization has
+already been carried out in the past, <cite>False</cite> is returned.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="searx.cache.ExpireCacheSQLite.maintenance">
+<span class="sig-name descname"><span class="pre">maintenance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">force</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">truncate</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span></span><a class="reference internal" href="../_modules/searx/cache.html#ExpireCacheSQLite.maintenance"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.cache.ExpireCacheSQLite.maintenance" title="Link to this definition">¶</a></dt>
+<dd><p>Performs maintenance on the cache.</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">force</span></code>:</dt><dd><p>Maintenance should be carried out even if the maintenance interval has
+not yet been reached.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">truncate</span></code>:</dt><dd><p>Truncate the entire cache, which is necessary, for example, if the
+password has changed.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="searx.cache.ExpireCacheSQLite.create_table">
+<span class="sig-name descname"><span class="pre">create_table</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">table</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span></span><a class="reference internal" href="../_modules/searx/cache.html#ExpireCacheSQLite.create_table"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.cache.ExpireCacheSQLite.create_table" title="Link to this definition">¶</a></dt>
+<dd><p>Create DB <code class="docutils literal notranslate"><span class="pre">table</span></code> if it has not yet been created, no recreates are
+initiated if the table already exists.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="searx.cache.ExpireCacheSQLite.table_names">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">table_names</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#searx.cache.ExpireCacheSQLite.table_names" title="Link to this definition">¶</a></dt>
+<dd><p>List of key/value tables already created in the DB.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="searx.cache.ExpireCacheSQLite.next_maintenance_time">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">next_maintenance_time</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></em><a class="headerlink" href="#searx.cache.ExpireCacheSQLite.next_maintenance_time" title="Link to this definition">¶</a></dt>
+<dd><p>Returns (unix epoch) time of the next maintenance.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="searx.cache.ExpireCacheSQLite.set">
+<span class="sig-name descname"><span class="pre">set</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.14)"><span class="pre">Any</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">expire</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">ctx</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span></span><a class="reference internal" href="../_modules/searx/cache.html#ExpireCacheSQLite.set"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.cache.ExpireCacheSQLite.set" title="Link to this definition">¶</a></dt>
+<dd><p>Set key/value in DB table given by argument <code class="docutils literal notranslate"><span class="pre">ctx</span></code>.  If expire is
+unset the default is taken from <a class="reference internal" href="#searx.cache.ExpireCacheCfg.MAXHOLD_TIME" title="searx.cache.ExpireCacheCfg.MAXHOLD_TIME"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ExpireCacheCfg.MAXHOLD_TIME</span></code></a>.
+If <code class="docutils literal notranslate"><span class="pre">ctx</span></code> argument is <code class="docutils literal notranslate"><span class="pre">None</span></code> (the default), a table name is
+generated from the <a class="reference internal" href="#searx.cache.ExpireCacheCfg.name" title="searx.cache.ExpireCacheCfg.name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ExpireCacheCfg.name</span></code></a>.  If DB table does not
+exists, it will be created (on demand) by <a class="reference internal" href="#searx.cache.ExpireCacheSQLite.create_table" title="searx.cache.ExpireCacheSQLite.create_table"><code class="xref py py-obj docutils literal notranslate"><span class="pre">self.create_table</span></code></a>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="searx.cache.ExpireCacheSQLite.setmany">
+<span class="sig-name descname"><span class="pre">setmany</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">opt_list</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.14)"><span class="pre">Any</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ctx</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span></span><a class="reference internal" href="../_modules/searx/cache.html#ExpireCacheSQLite.setmany"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.cache.ExpireCacheSQLite.setmany" title="Link to this definition">¶</a></dt>
+<dd><p>Efficient bootload of the cache from a list of options.  The list
+contains tuples with the arguments described in
+<a class="reference internal" href="#searx.cache.ExpireCacheSQLite.set" title="searx.cache.ExpireCacheSQLite.set"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ExpireCacheSQLite.set</span></code></a>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="searx.cache.ExpireCacheSQLite.get">
+<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">default</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.14)"><span class="pre">Any</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ctx</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.14)"><span class="pre">Any</span></a></span></span><a class="reference internal" href="../_modules/searx/cache.html#ExpireCacheSQLite.get"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.cache.ExpireCacheSQLite.get" title="Link to this definition">¶</a></dt>
+<dd><p>Get value of <code class="docutils literal notranslate"><span class="pre">key</span></code> from table given by argument <code class="docutils literal notranslate"><span class="pre">ctx</span></code>.  If
+<code class="docutils literal notranslate"><span class="pre">ctx</span></code> argument is <code class="docutils literal notranslate"><span class="pre">None</span></code> (the default), a table name is generated
+from the <a class="reference internal" href="#searx.cache.ExpireCacheCfg.name" title="searx.cache.ExpireCacheCfg.name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ExpireCacheCfg.name</span></code></a>.  If <code class="docutils literal notranslate"><span class="pre">key</span></code> not exists (in
+table), the <code class="docutils literal notranslate"><span class="pre">default</span></code> value is returned.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="searx.cache.ExpireCacheSQLite.pairs">
+<span class="sig-name descname"><span class="pre">pairs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ctx</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Iterator" title="(in Python v3.14)"><span class="pre">Iterator</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.14)"><span class="pre">Any</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/searx/cache.html#ExpireCacheSQLite.pairs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.cache.ExpireCacheSQLite.pairs" title="Link to this definition">¶</a></dt>
+<dd><p>Iterate over key/value pairs from table given by argument <code class="docutils literal notranslate"><span class="pre">ctx</span></code>.
+If <code class="docutils literal notranslate"><span class="pre">ctx</span></code> argument is <code class="docutils literal notranslate"><span class="pre">None</span></code> (the default), a table name is
+generated from the <a class="reference internal" href="#searx.cache.ExpireCacheCfg.name" title="searx.cache.ExpireCacheCfg.name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ExpireCacheCfg.name</span></code></a>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="searx.cache.ExpireCacheSQLite.state">
+<span class="sig-name descname"><span class="pre">state</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#searx.cache.ExpireCacheStats" title="searx.cache.ExpireCacheStats"><span class="pre">ExpireCacheStats</span></a></span></span><a class="reference internal" href="../_modules/searx/cache.html#ExpireCacheSQLite.state"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.cache.ExpireCacheSQLite.state" title="Link to this definition">¶</a></dt>
+<dd><p>Returns a <a class="reference internal" href="#searx.cache.ExpireCacheStats" title="searx.cache.ExpireCacheStats"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ExpireCacheStats</span></code></a>, which provides information
+about the status of the cache.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+  <span id="sidebar-top"></span>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+  
+    
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/searxng-wordmark.svg" alt="Logo of SearXNG"/>
+            </a></p>
+  
+
+<h3><a href="../index.html">Table of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../user/index.html">User information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../own-instance.html">Why use a private instance?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../admin/index.html">Administrator documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev/index.html">Developer documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../utils/index.html">DevOps tooling box</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Source-Code</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="searx.babel_extract.html">Custom message extractor (i18n)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.botdetection.html">Bot Detection</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Caches</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#searx.cache.ExpireCacheCfg"><code class="docutils literal notranslate"><span class="pre">ExpireCacheCfg</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#searx.cache.ExpireCacheCfg.name"><code class="docutils literal notranslate"><span class="pre">ExpireCacheCfg.name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#searx.cache.ExpireCacheCfg.db_url"><code class="docutils literal notranslate"><span class="pre">ExpireCacheCfg.db_url</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#searx.cache.ExpireCacheCfg.MAX_VALUE_LEN"><code class="docutils literal notranslate"><span class="pre">ExpireCacheCfg.MAX_VALUE_LEN</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#searx.cache.ExpireCacheCfg.MAXHOLD_TIME"><code class="docutils literal notranslate"><span class="pre">ExpireCacheCfg.MAXHOLD_TIME</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#searx.cache.ExpireCacheCfg.MAINTENANCE_PERIOD"><code class="docutils literal notranslate"><span class="pre">ExpireCacheCfg.MAINTENANCE_PERIOD</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#searx.cache.ExpireCacheCfg.MAINTENANCE_MODE"><code class="docutils literal notranslate"><span class="pre">ExpireCacheCfg.MAINTENANCE_MODE</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#searx.cache.ExpireCacheCfg.password"><code class="docutils literal notranslate"><span class="pre">ExpireCacheCfg.password</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#searx.cache.ExpireCacheStats"><code class="docutils literal notranslate"><span class="pre">ExpireCacheStats</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#searx.cache.ExpireCacheStats.cached_items"><code class="docutils literal notranslate"><span class="pre">ExpireCacheStats.cached_items</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#searx.cache.ExpireCache"><code class="docutils literal notranslate"><span class="pre">ExpireCache</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#searx.cache.ExpireCache.set"><code class="docutils literal notranslate"><span class="pre">ExpireCache.set()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#searx.cache.ExpireCache.get"><code class="docutils literal notranslate"><span class="pre">ExpireCache.get()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#searx.cache.ExpireCache.maintenance"><code class="docutils literal notranslate"><span class="pre">ExpireCache.maintenance()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#searx.cache.ExpireCache.state"><code class="docutils literal notranslate"><span class="pre">ExpireCache.state()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#searx.cache.ExpireCache.build_cache"><code class="docutils literal notranslate"><span class="pre">ExpireCache.build_cache()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#searx.cache.ExpireCache.normalize_name"><code class="docutils literal notranslate"><span class="pre">ExpireCache.normalize_name()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#searx.cache.ExpireCache.secret_hash"><code class="docutils literal notranslate"><span class="pre">ExpireCache.secret_hash()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#searx.cache.ExpireCacheSQLite"><code class="docutils literal notranslate"><span class="pre">ExpireCacheSQLite</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#searx.cache.ExpireCacheSQLite.DB_SCHEMA"><code class="docutils literal notranslate"><span class="pre">ExpireCacheSQLite.DB_SCHEMA</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#searx.cache.ExpireCacheSQLite.init"><code class="docutils literal notranslate"><span class="pre">ExpireCacheSQLite.init()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#searx.cache.ExpireCacheSQLite.maintenance"><code class="docutils literal notranslate"><span class="pre">ExpireCacheSQLite.maintenance()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#searx.cache.ExpireCacheSQLite.create_table"><code class="docutils literal notranslate"><span class="pre">ExpireCacheSQLite.create_table()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#searx.cache.ExpireCacheSQLite.table_names"><code class="docutils literal notranslate"><span class="pre">ExpireCacheSQLite.table_names</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#searx.cache.ExpireCacheSQLite.next_maintenance_time"><code class="docutils literal notranslate"><span class="pre">ExpireCacheSQLite.next_maintenance_time</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#searx.cache.ExpireCacheSQLite.set"><code class="docutils literal notranslate"><span class="pre">ExpireCacheSQLite.set()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#searx.cache.ExpireCacheSQLite.setmany"><code class="docutils literal notranslate"><span class="pre">ExpireCacheSQLite.setmany()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#searx.cache.ExpireCacheSQLite.get"><code class="docutils literal notranslate"><span class="pre">ExpireCacheSQLite.get()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#searx.cache.ExpireCacheSQLite.pairs"><code class="docutils literal notranslate"><span class="pre">ExpireCacheSQLite.pairs()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#searx.cache.ExpireCacheSQLite.state"><code class="docutils literal notranslate"><span class="pre">ExpireCacheSQLite.state()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="searx.exceptions.html">SearXNG Exceptions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.favicons.html">Favicons (source)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.infopage.html">Online <code class="docutils literal notranslate"><span class="pre">/info</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.locales.html">Locales</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.search.html">Search</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.search.processors.html">Search processors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.settings.html">Settings Loader</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.sqlitedb.html">SQLite DB</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.utils.html">Utility functions for the engines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.valkeydb.html">Valkey DB</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.valkeylib.html">Valkey Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.weather.html">Weather</a></li>
+</ul>
+</li>
+</ul>
+
+  <h3>Project Links</h3>
+  <ul>
+    <li><a href="https://github.com/searxng/searxng/tree/master">Source</a>
+  
+    <li><a href="https://github.com/searxng/searxng/wiki">Wiki</a>
+  
+    <li><a href="https://searx.space">Public instances</a>
+  
+    <li><a href="https://github.com/searxng/searxng/issues">Issue Tracker</a>
+  </ul><h3>Navigation</h3>
+<ul>
+  <li><a href="../index.html">Overview</a>
+    <ul>
+      <li><a href="index.html">Source-Code</a>
+        <ul>
+          <li>Previous: <a href="searx.botdetection.html" title="previous chapter">Bot Detection</a>
+          <li>Next: <a href="searx.exceptions.html" title="next chapter">SearXNG Exceptions</a></ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/src/searx.cache.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright SearXNG team.
+    </div>
+  </body>
+</html>

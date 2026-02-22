@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>SQL Engines &#8212; SearXNG Documentation (2026.2.22+191818b86)</title>
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=6625fa76" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/searxng.css?v=52e4ff28" />
+    <script src="../../../_static/documentation_options.js?v=1b5d919e"></script>
+    <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script data-project="searxng" data-version="2026.2.22+191818b86" src="../../../_static/describe_version.js?v=fa7f30d0"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="Tineye" href="../online_url_search/tineye.html" />
+    <link rel="prev" title="Local Search APIs" href="search-indexer-engines.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../online_url_search/tineye.html" title="Tineye"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="search-indexer-engines.html" title="Local Search APIs"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">SearXNG Documentation (2026.2.22+191818b86)</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" >Developer documentation</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../index.html" accesskey="U">Engine Implementations</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">SQL Engines</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="sql-engines">
+<span id="id1"></span><h1>SQL Engines<a class="headerlink" href="#sql-engines" title="Link to this heading">¶</a></h1>
+<aside class="sidebar">
+<p class="sidebar-title">further read</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://www.sqlite.org/index.html">SQLite</a></p></li>
+<li><p><a class="reference external" href="https://www.postgresql.org">PostgreSQL</a></p></li>
+<li><p><a class="reference external" href="https://www.mysql.com">MySQL</a></p></li>
+</ul>
+</aside>
+<nav class="contents local" id="contents">
+<ul class="simple">
+<li><p><a class="reference internal" href="#extra-dependencies" id="id11">Extra Dependencies</a></p></li>
+<li><p><a class="reference internal" href="#configure-the-engines" id="id12">Configure the engines</a></p>
+<ul>
+<li><p><a class="reference internal" href="#engine-sqlite" id="id13">SQLite</a></p></li>
+<li><p><a class="reference internal" href="#engine-postgresql" id="id14">PostgreSQL</a></p></li>
+<li><p><a class="reference internal" href="#engine-mysql-server" id="id15">MySQL</a></p></li>
+<li><p><a class="reference internal" href="#mariadb" id="id16">MariaDB</a></p></li>
+</ul>
+</li>
+</ul>
+</nav>
+<aside class="sidebar">
+<p class="sidebar-title">info</p>
+<p>Initial sponsored by <a class="reference external" href="https://nlnet.nl/discovery">Search and Discovery Fund</a> of <a class="reference external" href="https://nlnet.nl/">NLnet Foundation</a>.</p>
+</aside>
+<p>With the <em>SQL engines</em> you can bind SQL databases into SearXNG.  The following
+Relational Database Management System (RDBMS) are supported:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#engine-sqlite"><span class="std std-ref">SQLite</span></a></p></li>
+<li><p><a class="reference internal" href="#engine-postgresql"><span class="std std-ref">PostgreSQL</span></a></p></li>
+<li><p><a class="reference internal" href="#engine-mysql-server"><span class="std std-ref">MySQL</span></a> &amp; <a class="reference internal" href="#engine-mariadb-server"><span class="std std-ref">MariaDB</span></a></p></li>
+</ul>
+<p>All of the engines above are just commented out in the <a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/searx/settings.yml">settings.yml</a>, as you have to set the required attributes for the
+engines, e.g. <code class="docutils literal notranslate"><span class="pre">database:</span></code> …</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">...</span>
+<span class="w">  </span><span class="nt">engine</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nv">sqlite|postgresql|mysql_server</span><span class="p p-Indicator">}</span>
+<span class="w">  </span><span class="nt">database</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">...</span>
+<span class="w">  </span><span class="nt">result_template</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nv">template_name</span><span class="p p-Indicator">}</span>
+<span class="w">  </span><span class="nt">query_str</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">...</span>
+</pre></div>
+</div>
+<p>By default, the engines use the <code class="docutils literal notranslate"><span class="pre">key-value</span></code> template for displaying results /
+see <a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/searx/templates/simple/result_templates/key-value.html">simple</a>
+theme.  If you are not satisfied with the original result layout, you can use
+your own template, set <code class="docutils literal notranslate"><span class="pre">result_template</span></code> attribute to <code class="docutils literal notranslate"><span class="pre">{template_name}</span></code> and
+place the templates at:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">searx</span><span class="o">/</span><span class="n">templates</span><span class="o">/</span><span class="p">{</span><span class="n">theme_name</span><span class="p">}</span><span class="o">/</span><span class="n">result_templates</span><span class="o">/</span><span class="p">{</span><span class="n">template_name</span><span class="p">}</span>
+</pre></div>
+</div>
+<p>If you do not wish to expose these engines on a public instance, you can still
+add them and limit the access by setting <code class="docutils literal notranslate"><span class="pre">tokens</span></code> as described in section
+<a class="reference internal" href="../../../admin/settings/settings_engines.html#private-engines"><span class="std std-ref">Private Engines (tokens)</span></a>.</p>
+<section id="extra-dependencies">
+<h2><a class="toc-backref" href="#id11" role="doc-backlink">Extra Dependencies</a><a class="headerlink" href="#extra-dependencies" title="Link to this heading">¶</a></h2>
+<p>For using <a class="reference internal" href="#engine-postgresql"><span class="std std-ref">PostgreSQL</span></a> or <a class="reference internal" href="#engine-mysql-server"><span class="std std-ref">MySQL</span></a> you need to
+install additional packages in Python’s Virtual Environment of your SearXNG
+instance.  To switch into the environment (<a class="reference internal" href="../../../admin/installation-searxng.html#searxng-src"><span class="std std-ref">Install SearXNG &amp; dependencies</span></a>) you can use
+<a class="reference internal" href="../../../utils/searxng.sh.html#searxng-sh"><span class="std std-ref">utils/searxng.sh</span></a>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ sudo utils/searxng.sh instance cmd bash
+(searxng-pyenv)$ pip install ...
+</pre></div>
+</div>
+</section>
+<section id="configure-the-engines">
+<h2><a class="toc-backref" href="#id12" role="doc-backlink">Configure the engines</a><a class="headerlink" href="#configure-the-engines" title="Link to this heading">¶</a></h2>
+<p>The configuration of the new database engines are similar.  You must put a valid
+SQL-SELECT query in <code class="docutils literal notranslate"><span class="pre">query_str</span></code>.  At the moment you can only bind at most one
+parameter in your query.  By setting the attribute <code class="docutils literal notranslate"><span class="pre">limit</span></code> you can define how
+many results you want from the SQL server.  Basically, it is the same as the
+<code class="docutils literal notranslate"><span class="pre">LIMIT</span></code> keyword in SQL.</p>
+<p>Please, do not include <code class="docutils literal notranslate"><span class="pre">LIMIT</span></code> or <code class="docutils literal notranslate"><span class="pre">OFFSET</span></code> in your SQL query as the engines
+rely on these keywords during paging.  If you want to configure the number of
+returned results use the option <code class="docutils literal notranslate"><span class="pre">limit</span></code>.</p>
+<section id="engine-sqlite">
+<span id="id2"></span><h3><a class="toc-backref" href="#id13" role="doc-backlink">SQLite</a><a class="headerlink" href="#engine-sqlite" title="Link to this heading">¶</a></h3>
+<aside class="sidebar">
+<p class="sidebar-title">info</p>
+<ul class="simple">
+<li><p><a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/searx/engines/sqlite.py">sqlite.py</a></p></li>
+</ul>
+</aside>
+<p id="module-searx.engines.sqlite">SQLite is a small, fast and reliable SQL database engine.  It does not require
+any extra dependency.</p>
+<section id="configuration">
+<h4>Configuration<a class="headerlink" href="#configuration" title="Link to this heading">¶</a></h4>
+<p>The engine has the following (additional) settings:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#searx.engines.sqlite.result_type" title="searx.engines.sqlite.result_type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">result_type</span></code></a></p></li>
+</ul>
+</section>
+<section id="example">
+<h4>Example<a class="headerlink" href="#example" title="Link to this heading">¶</a></h4>
+<p>To demonstrate the power of database engines, here is a more complex example
+which reads from a <a class="reference external" href="https://mediathekview.de/">MediathekView</a> (DE) movie database.  For this example of the
+SQLite engine download the database:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://liste.mediathekview.de/filmliste-v2.db.bz2">https://liste.mediathekview.de/filmliste-v2.db.bz2</a></p></li>
+</ul>
+<p>and unpack into <code class="docutils literal notranslate"><span class="pre">searx/data/filmliste-v2.db</span></code>.  To search the database use e.g
+Query to test: <code class="docutils literal notranslate"><span class="pre">!mediathekview</span> <span class="pre">concert</span></code></p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mediathekview</span>
+<span class="w">  </span><span class="nt">engine</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sqlite</span>
+<span class="w">  </span><span class="nt">shortcut</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mediathekview</span>
+<span class="w">  </span><span class="nt">categories</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">general</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">videos</span><span class="p p-Indicator">]</span>
+<span class="w">  </span><span class="nt">result_type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">MainResult</span>
+<span class="w">  </span><span class="nt">database</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">searx/data/filmliste-v2.db</span>
+<span class="w">  </span><span class="nt">query_str</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">&gt;-</span>
+<span class="w">    </span><span class="no">SELECT title || &#39; (&#39; || time(duration, &#39;unixepoch&#39;) || &#39;)&#39; AS title,</span>
+<span class="w">           </span><span class="no">COALESCE( NULLIF(url_video_hd,&#39;&#39;), NULLIF(url_video_sd,&#39;&#39;), url_video) AS url,</span>
+<span class="w">           </span><span class="no">description AS content</span>
+<span class="w">      </span><span class="no">FROM film</span>
+<span class="w">     </span><span class="no">WHERE title LIKE :wildcard OR description LIKE :wildcard</span>
+<span class="w">     </span><span class="no">ORDER BY duration DESC</span>
+</pre></div>
+</div>
+</section>
+<section id="implementations">
+<h4>Implementations<a class="headerlink" href="#implementations" title="Link to this heading">¶</a></h4>
+</section>
+<dl class="py data">
+<dt class="sig sig-object py" id="searx.engines.sqlite.database">
+<span class="sig-prename descclassname"><span class="pre">searx.engines.sqlite.</span></span><span class="sig-name descname"><span class="pre">database</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">''</span></em><a class="headerlink" href="#searx.engines.sqlite.database" title="Link to this definition">¶</a></dt>
+<dd><p>Filename of the SQLite DB.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="searx.engines.sqlite.query_str">
+<span class="sig-prename descclassname"><span class="pre">searx.engines.sqlite.</span></span><span class="sig-name descname"><span class="pre">query_str</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">''</span></em><a class="headerlink" href="#searx.engines.sqlite.query_str" title="Link to this definition">¶</a></dt>
+<dd><p>SQL query that returns the result items.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="searx.engines.sqlite.result_type">
+<span class="sig-prename descclassname"><span class="pre">searx.engines.sqlite.</span></span><span class="sig-name descname"><span class="pre">result_type</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Literal" title="(in Python v3.14)"><span class="pre">Literal</span></a><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'MainResult'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'KeyValue'</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'KeyValue'</span></em><a class="headerlink" href="#searx.engines.sqlite.result_type" title="Link to this definition">¶</a></dt>
+<dd><p>The result type can be <code class="xref py py-obj docutils literal notranslate"><span class="pre">MainResult</span></code> or <code class="xref py py-obj docutils literal notranslate"><span class="pre">KeyValue</span></code>.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="searx.engines.sqlite.sqlite_cursor">
+<span class="sig-prename descclassname"><span class="pre">searx.engines.sqlite.</span></span><span class="sig-name descname"><span class="pre">sqlite_cursor</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/searx/engines/sqlite.html#sqlite_cursor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.engines.sqlite.sqlite_cursor" title="Link to this definition">¶</a></dt>
+<dd><p>Implements a <a class="reference external" href="https://docs.python.org/3/library/contextlib.html#contextlib.contextmanager" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Context</span> <span class="pre">Manager</span></code></a> for a
+<a class="reference external" href="https://docs.python.org/3/library/sqlite3.html#sqlite3.Cursor" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sqlite3.Cursor</span></code></a>.</p>
+<p>Open database in read only mode: if the database doesn’t exist.  The default
+mode creates an empty file on the file system.  See:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://docs.python.org/3/library/sqlite3.html#sqlite3.connect">https://docs.python.org/3/library/sqlite3.html#sqlite3.connect</a></p></li>
+<li><p><a class="reference external" href="https://www.sqlite.org/uri.html">https://www.sqlite.org/uri.html</a></p></li>
+</ul>
+</dd></dl>
+
+</section>
+<section id="engine-postgresql">
+<span id="id3"></span><h3><a class="toc-backref" href="#id14" role="doc-backlink">PostgreSQL</a><a class="headerlink" href="#engine-postgresql" title="Link to this heading">¶</a></h3>
+<aside class="sidebar">
+<p class="sidebar-title">info</p>
+<ul class="simple">
+<li><p><a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/searx/engines/postgresql.py">postgresql.py</a></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span></code> <a class="reference external" href="psycopg2">psycopg2-binary</a></p></li>
+</ul>
+</aside>
+<p id="module-searx.engines.postgresql">PostgreSQL is a powerful and robust open source database.  Before configuring
+the PostgreSQL engine, you must install the dependency <code class="docutils literal notranslate"><span class="pre">psychopg2</span></code>.</p>
+<section id="id4">
+<h4>Example<a class="headerlink" href="#id4" title="Link to this heading">¶</a></h4>
+<p>Below is an example configuration:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my_database</span>
+<span class="w">  </span><span class="nt">engine</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">postgresql</span>
+<span class="w">  </span><span class="nt">database</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my_database</span>
+<span class="w">  </span><span class="nt">username</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">searxng</span>
+<span class="w">  </span><span class="nt">password</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">password</span>
+<span class="w">  </span><span class="nt">query_str</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;SELECT</span><span class="nv"> </span><span class="s">*</span><span class="nv"> </span><span class="s">from</span><span class="nv"> </span><span class="s">my_table</span><span class="nv"> </span><span class="s">WHERE</span><span class="nv"> </span><span class="s">my_column</span><span class="nv"> </span><span class="s">=</span><span class="nv"> </span><span class="s">%(query)s&#39;</span>
+</pre></div>
+</div>
+</section>
+<section id="id5">
+<h4>Implementations<a class="headerlink" href="#id5" title="Link to this heading">¶</a></h4>
+</section>
+<dl class="py data">
+<dt class="sig sig-object py" id="searx.engines.postgresql.host">
+<span class="sig-prename descclassname"><span class="pre">searx.engines.postgresql.</span></span><span class="sig-name descname"><span class="pre">host</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'127.0.0.1'</span></em><a class="headerlink" href="#searx.engines.postgresql.host" title="Link to this definition">¶</a></dt>
+<dd><p>Hostname of the DB connector</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="searx.engines.postgresql.port">
+<span class="sig-prename descclassname"><span class="pre">searx.engines.postgresql.</span></span><span class="sig-name descname"><span class="pre">port</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'5432'</span></em><a class="headerlink" href="#searx.engines.postgresql.port" title="Link to this definition">¶</a></dt>
+<dd><p>Port of the DB connector</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="searx.engines.postgresql.database">
+<span class="sig-prename descclassname"><span class="pre">searx.engines.postgresql.</span></span><span class="sig-name descname"><span class="pre">database</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">''</span></em><a class="headerlink" href="#searx.engines.postgresql.database" title="Link to this definition">¶</a></dt>
+<dd><p>Name of the database.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="searx.engines.postgresql.username">
+<span class="sig-prename descclassname"><span class="pre">searx.engines.postgresql.</span></span><span class="sig-name descname"><span class="pre">username</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">''</span></em><a class="headerlink" href="#searx.engines.postgresql.username" title="Link to this definition">¶</a></dt>
+<dd><p>Username for the DB connection.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="searx.engines.postgresql.password">
+<span class="sig-prename descclassname"><span class="pre">searx.engines.postgresql.</span></span><span class="sig-name descname"><span class="pre">password</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">''</span></em><a class="headerlink" href="#searx.engines.postgresql.password" title="Link to this definition">¶</a></dt>
+<dd><p>Password for the DB connection.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="searx.engines.postgresql.query_str">
+<span class="sig-prename descclassname"><span class="pre">searx.engines.postgresql.</span></span><span class="sig-name descname"><span class="pre">query_str</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">''</span></em><a class="headerlink" href="#searx.engines.postgresql.query_str" title="Link to this definition">¶</a></dt>
+<dd><p>SQL query that returns the result items.</p>
+</dd></dl>
+
+</section>
+<section id="engine-mysql-server">
+<span id="id6"></span><h3><a class="toc-backref" href="#id15" role="doc-backlink">MySQL</a><a class="headerlink" href="#engine-mysql-server" title="Link to this heading">¶</a></h3>
+<aside class="sidebar">
+<p class="sidebar-title">info</p>
+<ul class="simple">
+<li><p><a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/searx/engines/mysql_server.py">mysql_server.py</a></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span></code> <a class="extlink-pypi reference external" href="https://pypi.org/project/mysql-connector-python">mysql-connector-python</a></p></li>
+</ul>
+</aside>
+<p id="module-searx.engines.mysql_server">MySQL is said to be the most popular open source database.  Before enabling
+MySQL engine, you must install the package <code class="docutils literal notranslate"><span class="pre">mysql-connector-python</span></code>.</p>
+<p>The authentication plugin is configurable by setting <code class="docutils literal notranslate"><span class="pre">auth_plugin</span></code> in the
+attributes.  By default it is set to <code class="docutils literal notranslate"><span class="pre">caching_sha2_password</span></code>.</p>
+<section id="id7">
+<h4>Example<a class="headerlink" href="#id7" title="Link to this heading">¶</a></h4>
+<p>This is an example configuration for querying a MySQL server:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my_database</span>
+<span class="w">  </span><span class="nt">engine</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mysql_server</span>
+<span class="w">  </span><span class="nt">database</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my_database</span>
+<span class="w">  </span><span class="nt">username</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">searxng</span>
+<span class="w">  </span><span class="nt">password</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">password</span>
+<span class="w">  </span><span class="nt">limit</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5</span>
+<span class="w">  </span><span class="nt">query_str</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;SELECT</span><span class="nv"> </span><span class="s">*</span><span class="nv"> </span><span class="s">from</span><span class="nv"> </span><span class="s">my_table</span><span class="nv"> </span><span class="s">WHERE</span><span class="nv"> </span><span class="s">my_column=%(query)s&#39;</span>
+</pre></div>
+</div>
+</section>
+<section id="id8">
+<h4>Implementations<a class="headerlink" href="#id8" title="Link to this heading">¶</a></h4>
+</section>
+<dl class="py data">
+<dt class="sig sig-object py" id="searx.engines.mysql_server.host">
+<span class="sig-prename descclassname"><span class="pre">searx.engines.mysql_server.</span></span><span class="sig-name descname"><span class="pre">host</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'127.0.0.1'</span></em><a class="headerlink" href="#searx.engines.mysql_server.host" title="Link to this definition">¶</a></dt>
+<dd><p>Hostname of the DB connector</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="searx.engines.mysql_server.port">
+<span class="sig-prename descclassname"><span class="pre">searx.engines.mysql_server.</span></span><span class="sig-name descname"><span class="pre">port</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">3306</span></em><a class="headerlink" href="#searx.engines.mysql_server.port" title="Link to this definition">¶</a></dt>
+<dd><p>Port of the DB connector</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="searx.engines.mysql_server.database">
+<span class="sig-prename descclassname"><span class="pre">searx.engines.mysql_server.</span></span><span class="sig-name descname"><span class="pre">database</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">''</span></em><a class="headerlink" href="#searx.engines.mysql_server.database" title="Link to this definition">¶</a></dt>
+<dd><p>Name of the database.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="searx.engines.mysql_server.username">
+<span class="sig-prename descclassname"><span class="pre">searx.engines.mysql_server.</span></span><span class="sig-name descname"><span class="pre">username</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">''</span></em><a class="headerlink" href="#searx.engines.mysql_server.username" title="Link to this definition">¶</a></dt>
+<dd><p>Username for the DB connection.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="searx.engines.mysql_server.password">
+<span class="sig-prename descclassname"><span class="pre">searx.engines.mysql_server.</span></span><span class="sig-name descname"><span class="pre">password</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">''</span></em><a class="headerlink" href="#searx.engines.mysql_server.password" title="Link to this definition">¶</a></dt>
+<dd><p>Password for the DB connection.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="searx.engines.mysql_server.query_str">
+<span class="sig-prename descclassname"><span class="pre">searx.engines.mysql_server.</span></span><span class="sig-name descname"><span class="pre">query_str</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">''</span></em><a class="headerlink" href="#searx.engines.mysql_server.query_str" title="Link to this definition">¶</a></dt>
+<dd><p>SQL query that returns the result items.</p>
+</dd></dl>
+
+</section>
+<section id="mariadb">
+<span id="engine-mariadb-server"></span><h3><a class="toc-backref" href="#id16" role="doc-backlink">MariaDB</a><a class="headerlink" href="#mariadb" title="Link to this heading">¶</a></h3>
+<aside class="sidebar">
+<p class="sidebar-title">info</p>
+<ul class="simple">
+<li><p><a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/searx/engines/mariadb_server.py">mariadb_server.py</a></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span></code> <a class="extlink-pypi reference external" href="https://pypi.org/project/mariadb">mariadb</a></p></li>
+</ul>
+</aside>
+<p id="module-searx.engines.mariadb_server">MariaDB is a community driven fork of MySQL. Before enabling MariaDB engine,
+you must the install the pip package <code class="docutils literal notranslate"><span class="pre">mariadb</span></code> along with the necessary
+prerequities.</p>
+<p><a class="reference external" href="https://mariadb.com/docs/server/connect/programming-languages/c/install/">See the following documentation for more details</a></p>
+<section id="id9">
+<h4>Example<a class="headerlink" href="#id9" title="Link to this heading">¶</a></h4>
+<p>This is an example configuration for querying a MariaDB server:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my_database</span>
+<span class="w">  </span><span class="nt">engine</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mariadb_server</span>
+<span class="w">  </span><span class="nt">database</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my_database</span>
+<span class="w">  </span><span class="nt">username</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">searxng</span>
+<span class="w">  </span><span class="nt">password</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">password</span>
+<span class="w">  </span><span class="nt">limit</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5</span>
+<span class="w">  </span><span class="nt">query_str</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;SELECT</span><span class="nv"> </span><span class="s">*</span><span class="nv"> </span><span class="s">from</span><span class="nv"> </span><span class="s">my_table</span><span class="nv"> </span><span class="s">WHERE</span><span class="nv"> </span><span class="s">my_column=%(query)s&#39;</span>
+</pre></div>
+</div>
+</section>
+<section id="id10">
+<h4>Implementations<a class="headerlink" href="#id10" title="Link to this heading">¶</a></h4>
+</section>
+<dl class="py data">
+<dt class="sig sig-object py" id="searx.engines.mariadb_server.host">
+<span class="sig-prename descclassname"><span class="pre">searx.engines.mariadb_server.</span></span><span class="sig-name descname"><span class="pre">host</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'127.0.0.1'</span></em><a class="headerlink" href="#searx.engines.mariadb_server.host" title="Link to this definition">¶</a></dt>
+<dd><p>Hostname of the DB connector</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="searx.engines.mariadb_server.port">
+<span class="sig-prename descclassname"><span class="pre">searx.engines.mariadb_server.</span></span><span class="sig-name descname"><span class="pre">port</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">3306</span></em><a class="headerlink" href="#searx.engines.mariadb_server.port" title="Link to this definition">¶</a></dt>
+<dd><p>Port of the DB connector</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="searx.engines.mariadb_server.database">
+<span class="sig-prename descclassname"><span class="pre">searx.engines.mariadb_server.</span></span><span class="sig-name descname"><span class="pre">database</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">''</span></em><a class="headerlink" href="#searx.engines.mariadb_server.database" title="Link to this definition">¶</a></dt>
+<dd><p>Name of the database.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="searx.engines.mariadb_server.username">
+<span class="sig-prename descclassname"><span class="pre">searx.engines.mariadb_server.</span></span><span class="sig-name descname"><span class="pre">username</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">''</span></em><a class="headerlink" href="#searx.engines.mariadb_server.username" title="Link to this definition">¶</a></dt>
+<dd><p>Username for the DB connection.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="searx.engines.mariadb_server.password">
+<span class="sig-prename descclassname"><span class="pre">searx.engines.mariadb_server.</span></span><span class="sig-name descname"><span class="pre">password</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">''</span></em><a class="headerlink" href="#searx.engines.mariadb_server.password" title="Link to this definition">¶</a></dt>
+<dd><p>Password for the DB connection.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="searx.engines.mariadb_server.query_str">
+<span class="sig-prename descclassname"><span class="pre">searx.engines.mariadb_server.</span></span><span class="sig-name descname"><span class="pre">query_str</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">''</span></em><a class="headerlink" href="#searx.engines.mariadb_server.query_str" title="Link to this definition">¶</a></dt>
+<dd><p>SQL query that returns the result items.</p>
+</dd></dl>
+
+</section>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+  <span id="sidebar-top"></span>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+  
+    
+            <p class="logo"><a href="../../../index.html">
+              <img class="logo" src="../../../_static/searxng-wordmark.svg" alt="Logo of SearXNG"/>
+            </a></p>
+  
+
+<h3><a href="../../../index.html">Table of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../user/index.html">User information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../own-instance.html">Why use a private instance?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../admin/index.html">Administrator documentation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">Developer documentation</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../quickstart.html">Development Quickstart</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../commits.html">Git Commits &amp; Change Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../contribution_guide.html">How to contribute</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../extended_types.html">Extended Types</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">Engine Implementations</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../enginelib.html">Engine Library</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../engines.html">SearXNG’s engines loader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../engine_overview.html">Engine Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../index.html#resultlist-and-engines">ResultList and engines</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="../index.html#engine-types">Engine Types</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="../index.html#online-engines">Online Engines</a></li>
+<li class="toctree-l4 current"><a class="reference internal" href="../index.html#offline-engines">Offline Engines</a><ul class="current">
+<li class="toctree-l5"><a class="reference internal" href="../offline_concept.html">Offline Concept</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../demo/demo_offline.html">Demo Offline Engine</a></li>
+<li class="toctree-l5"><a class="reference internal" href="command-line-engines.html">Command Line Engines</a></li>
+<li class="toctree-l5"><a class="reference internal" href="nosql-engines.html">NoSQL databases</a></li>
+<li class="toctree-l5"><a class="reference internal" href="search-indexer-engines.html">Local Search APIs</a></li>
+<li class="toctree-l5 current"><a class="current reference internal" href="#">SQL Engines</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../index.html#online-url-search">Online URL Search</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../index.html#online-currency">Online Currency</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../index.html#online-dictionary">Online Dictionary</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../result_types/index.html">Result Types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../templates.html">Simple Theme Templates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../search_api.html">Search API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../plugins/index.html">Plugins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../answerers/index.html">Answerers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../translation.html">Translation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../makefile.html">Makefile &amp; <code class="docutils literal notranslate"><span class="pre">./manage</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../reST.html">reST primer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../searxng_extra/index.html">Tooling box <code class="docutils literal notranslate"><span class="pre">searxng_extra</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../utils/index.html">DevOps tooling box</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/index.html">Source-Code</a></li>
+</ul>
+
+  <h3>Project Links</h3>
+  <ul>
+    <li><a href="https://github.com/searxng/searxng/tree/master">Source</a>
+  
+    <li><a href="https://github.com/searxng/searxng/wiki">Wiki</a>
+  
+    <li><a href="https://searx.space">Public instances</a>
+  
+    <li><a href="https://github.com/searxng/searxng/issues">Issue Tracker</a>
+  </ul><h3>Navigation</h3>
+<ul>
+  <li><a href="../../../index.html">Overview</a>
+    <ul>
+      <li><a href="../../index.html">Developer documentation</a>
+        <ul>
+      <li><a href="../index.html">Engine Implementations</a>
+        <ul>
+          <li>Previous: <a href="search-indexer-engines.html" title="previous chapter">Local Search APIs</a>
+          <li>Next: <a href="../online_url_search/tineye.html" title="next chapter">Tineye</a></ul>
+      </li></ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../../_sources/dev/engines/offline/sql-engines.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright SearXNG team.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>searx.engines.command &#8212; SearXNG Documentation (2026.2.22+191818b86)</title>
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=6625fa76" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/searxng.css?v=52e4ff28" />
+    <script src="../../../_static/documentation_options.js?v=1b5d919e"></script>
+    <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script data-project="searxng" data-version="2026.2.22+191818b86" src="../../../_static/describe_version.js?v=fa7f30d0"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">SearXNG Documentation (2026.2.22+191818b86)</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" >Module code</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../engines.html" accesskey="U">searx.engines</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">searx.engines.command</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for searx.engines.command</h1><div class="highlight"><pre>
+<span></span><span class="c1"># SPDX-License-Identifier: AGPL-3.0-or-later</span>
+<span class="sd">&quot;&quot;&quot;With *command engines* administrators can run engines to integrate arbitrary</span>
+<span class="sd">shell commands.</span>
+
+<span class="sd">.. attention::</span>
+
+<span class="sd">   When creating and enabling a ``command`` engine on a public instance, you</span>
+<span class="sd">   must be careful to avoid leaking private data.</span>
+
+<span class="sd">The easiest solution is to limit the access by setting ``tokens`` as described</span>
+<span class="sd">in section :ref:`private engines`.  The engine base is flexible.  Only your</span>
+<span class="sd">imagination can limit the power of this engine (and maybe security concerns).</span>
+
+<span class="sd">Configuration</span>
+<span class="sd">=============</span>
+
+<span class="sd">The following options are available:</span>
+
+<span class="sd">``command``:</span>
+<span class="sd">  A comma separated list of the elements of the command.  A special token</span>
+<span class="sd">  ``{{QUERY}}`` tells where to put the search terms of the user. Example:</span>
+
+<span class="sd">  .. code:: yaml</span>
+
+<span class="sd">     [&#39;ls&#39;, &#39;-l&#39;, &#39;-h&#39;, &#39;{{QUERY}}&#39;]</span>
+
+<span class="sd">``delimiter``:</span>
+<span class="sd">  A mapping containing a delimiter ``char`` and the *titles* of each element in</span>
+<span class="sd">  ``keys``.</span>
+
+<span class="sd">``parse_regex``:</span>
+<span class="sd">  A dict containing the regular expressions for each result key.</span>
+
+<span class="sd">``query_type``:</span>
+
+<span class="sd">  The expected type of user search terms.  Possible values: ``path`` and</span>
+<span class="sd">  ``enum``.</span>
+
+<span class="sd">  ``path``:</span>
+<span class="sd">    Checks if the user provided path is inside the working directory.  If not,</span>
+<span class="sd">    the query is not executed.</span>
+
+<span class="sd">  ``enum``:</span>
+<span class="sd">    Is a list of allowed search terms.  If the user submits something which is</span>
+<span class="sd">    not included in the list, the query returns an error.</span>
+
+<span class="sd">``query_enum``:</span>
+<span class="sd">  A list containing allowed search terms if ``query_type`` is set to ``enum``.</span>
+
+<span class="sd">``working_dir``:</span>
+<span class="sd">  The directory where the command has to be executed.  Default: ``./``.</span>
+
+<span class="sd">``result_separator``:</span>
+<span class="sd">  The character that separates results. Default: ``\\n``.</span>
+
+<span class="sd">Example</span>
+<span class="sd">=======</span>
+
+<span class="sd">The example engine below can be used to find files with a specific name in the</span>
+<span class="sd">configured working directory:</span>
+
+<span class="sd">.. code:: yaml</span>
+
+<span class="sd">  - name: find</span>
+<span class="sd">    engine: command</span>
+<span class="sd">    command: [&#39;find&#39;, &#39;.&#39;, &#39;-name&#39;, &#39;{{QUERY}}&#39;]</span>
+<span class="sd">    query_type: path</span>
+<span class="sd">    shortcut: fnd</span>
+<span class="sd">    delimiter:</span>
+<span class="sd">        chars: &#39; &#39;</span>
+<span class="sd">        keys: [&#39;line&#39;]</span>
+
+<span class="sd">Implementations</span>
+<span class="sd">===============</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">os.path</span><span class="w"> </span><span class="kn">import</span> <span class="n">expanduser</span><span class="p">,</span> <span class="n">isabs</span><span class="p">,</span> <span class="n">realpath</span><span class="p">,</span> <span class="n">commonprefix</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">shlex</span><span class="w"> </span><span class="kn">import</span> <span class="n">split</span> <span class="k">as</span> <span class="n">shlex_split</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">subprocess</span><span class="w"> </span><span class="kn">import</span> <span class="n">Popen</span><span class="p">,</span> <span class="n">PIPE</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">threading</span><span class="w"> </span><span class="kn">import</span> <span class="n">Thread</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">searx</span><span class="w"> </span><span class="kn">import</span> <span class="n">logger</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">searx.result_types</span><span class="w"> </span><span class="kn">import</span> <span class="n">EngineResults</span>
+
+
+<span class="n">engine_type</span> <span class="o">=</span> <span class="s1">&#39;offline&#39;</span>
+<span class="n">paging</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">command</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">delimiter</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="n">parse_regex</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="n">query_type</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+<span class="n">query_enum</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">environment_variables</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="n">working_dir</span> <span class="o">=</span> <span class="n">realpath</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)</span>
+<span class="n">result_separator</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span>
+<span class="n">timeout</span> <span class="o">=</span> <span class="mf">4.0</span>
+
+<span class="n">_command_logger</span> <span class="o">=</span> <span class="n">logger</span><span class="o">.</span><span class="n">getChild</span><span class="p">(</span><span class="s1">&#39;command&#39;</span><span class="p">)</span>
+<span class="n">_compiled_parse_regex</span> <span class="o">=</span> <span class="p">{}</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">init</span><span class="p">(</span><span class="n">engine_settings</span><span class="p">):</span>
+    <span class="n">check_parsing_options</span><span class="p">(</span><span class="n">engine_settings</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="s1">&#39;command&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">engine_settings</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;engine command : missing configuration key: command&#39;</span><span class="p">)</span>
+
+    <span class="k">global</span> <span class="n">command</span><span class="p">,</span> <span class="n">working_dir</span><span class="p">,</span> <span class="n">delimiter</span><span class="p">,</span> <span class="n">parse_regex</span><span class="p">,</span> <span class="n">environment_variables</span>  <span class="c1"># pylint: disable=global-statement</span>
+
+    <span class="n">command</span> <span class="o">=</span> <span class="n">engine_settings</span><span class="p">[</span><span class="s1">&#39;command&#39;</span><span class="p">]</span>
+
+    <span class="k">if</span> <span class="s1">&#39;working_dir&#39;</span> <span class="ow">in</span> <span class="n">engine_settings</span><span class="p">:</span>
+        <span class="n">working_dir</span> <span class="o">=</span> <span class="n">engine_settings</span><span class="p">[</span><span class="s1">&#39;working_dir&#39;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">isabs</span><span class="p">(</span><span class="n">engine_settings</span><span class="p">[</span><span class="s1">&#39;working_dir&#39;</span><span class="p">]):</span>
+            <span class="n">working_dir</span> <span class="o">=</span> <span class="n">realpath</span><span class="p">(</span><span class="n">working_dir</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="s1">&#39;parse_regex&#39;</span> <span class="ow">in</span> <span class="n">engine_settings</span><span class="p">:</span>
+        <span class="n">parse_regex</span> <span class="o">=</span> <span class="n">engine_settings</span><span class="p">[</span><span class="s1">&#39;parse_regex&#39;</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">result_key</span><span class="p">,</span> <span class="n">regex</span> <span class="ow">in</span> <span class="n">parse_regex</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">_compiled_parse_regex</span><span class="p">[</span><span class="n">result_key</span><span class="p">]</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">regex</span><span class="p">,</span> <span class="n">flags</span><span class="o">=</span><span class="n">re</span><span class="o">.</span><span class="n">MULTILINE</span><span class="p">)</span>
+    <span class="k">if</span> <span class="s1">&#39;delimiter&#39;</span> <span class="ow">in</span> <span class="n">engine_settings</span><span class="p">:</span>
+        <span class="n">delimiter</span> <span class="o">=</span> <span class="n">engine_settings</span><span class="p">[</span><span class="s1">&#39;delimiter&#39;</span><span class="p">]</span>
+
+    <span class="k">if</span> <span class="s1">&#39;environment_variables&#39;</span> <span class="ow">in</span> <span class="n">engine_settings</span><span class="p">:</span>
+        <span class="n">environment_variables</span> <span class="o">=</span> <span class="n">engine_settings</span><span class="p">[</span><span class="s1">&#39;environment_variables&#39;</span><span class="p">]</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">search</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">params</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">EngineResults</span><span class="p">:</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="n">EngineResults</span><span class="p">()</span>
+    <span class="n">cmd</span> <span class="o">=</span> <span class="n">_get_command_to_run</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">cmd</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">res</span>
+
+    <span class="n">reader_thread</span> <span class="o">=</span> <span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="n">_get_results_from_process</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="n">cmd</span><span class="p">,</span> <span class="n">params</span><span class="p">[</span><span class="s1">&#39;pageno&#39;</span><span class="p">]))</span>
+    <span class="n">reader_thread</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+    <span class="n">reader_thread</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">res</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_get_command_to_run</span><span class="p">(</span><span class="n">query</span><span class="p">):</span>
+    <span class="n">params</span> <span class="o">=</span> <span class="n">shlex_split</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+    <span class="n">__check_query_params</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+
+    <span class="n">cmd</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">command</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">c</span> <span class="o">==</span> <span class="s1">&#39;{{QUERY}}&#39;</span><span class="p">:</span>
+            <span class="n">cmd</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">cmd</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">cmd</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_get_results_from_process</span><span class="p">(</span><span class="n">res</span><span class="p">:</span> <span class="n">EngineResults</span><span class="p">,</span> <span class="n">cmd</span><span class="p">,</span> <span class="n">pageno</span><span class="p">):</span>
+    <span class="n">leftover</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+    <span class="n">count</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">start</span><span class="p">,</span> <span class="n">end</span> <span class="o">=</span> <span class="n">__get_results_limits</span><span class="p">(</span><span class="n">pageno</span><span class="p">)</span>
+    <span class="k">with</span> <span class="n">Popen</span><span class="p">(</span><span class="n">cmd</span><span class="p">,</span> <span class="n">stdout</span><span class="o">=</span><span class="n">PIPE</span><span class="p">,</span> <span class="n">stderr</span><span class="o">=</span><span class="n">PIPE</span><span class="p">,</span> <span class="n">env</span><span class="o">=</span><span class="n">environment_variables</span><span class="p">)</span> <span class="k">as</span> <span class="n">process</span><span class="p">:</span>
+        <span class="n">line</span> <span class="o">=</span> <span class="n">process</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
+        <span class="k">while</span> <span class="n">line</span><span class="p">:</span>
+            <span class="n">buf</span> <span class="o">=</span> <span class="n">leftover</span> <span class="o">+</span> <span class="n">line</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
+            <span class="n">raw_results</span> <span class="o">=</span> <span class="n">buf</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">result_separator</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">raw_results</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
+                <span class="n">leftover</span> <span class="o">=</span> <span class="n">raw_results</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">raw_results</span> <span class="o">=</span> <span class="n">raw_results</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+            <span class="k">for</span> <span class="n">raw_result</span> <span class="ow">in</span> <span class="n">raw_results</span><span class="p">:</span>
+                <span class="n">result</span> <span class="o">=</span> <span class="n">__parse_single_result</span><span class="p">(</span><span class="n">raw_result</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">result</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="n">_command_logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;skipped result:&#39;</span><span class="p">,</span> <span class="n">raw_result</span><span class="p">)</span>
+                    <span class="k">continue</span>
+
+                <span class="k">if</span> <span class="n">start</span> <span class="o">&lt;=</span> <span class="n">count</span> <span class="ow">and</span> <span class="n">count</span> <span class="o">&lt;=</span> <span class="n">end</span><span class="p">:</span>  <span class="c1"># pylint: disable=chained-comparison</span>
+                    <span class="n">res</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">res</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">KeyValue</span><span class="p">(</span><span class="n">kvmap</span><span class="o">=</span><span class="n">result</span><span class="p">))</span>
+
+                <span class="n">count</span> <span class="o">+=</span> <span class="mi">1</span>
+                <span class="k">if</span> <span class="n">end</span> <span class="o">&lt;</span> <span class="n">count</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="n">res</span>
+
+            <span class="n">line</span> <span class="o">=</span> <span class="n">process</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
+
+        <span class="n">return_code</span> <span class="o">=</span> <span class="n">process</span><span class="o">.</span><span class="n">wait</span><span class="p">(</span><span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">return_code</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s1">&#39;non-zero return code when running command&#39;</span><span class="p">,</span> <span class="n">cmd</span><span class="p">,</span> <span class="n">return_code</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">None</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">__get_results_limits</span><span class="p">(</span><span class="n">pageno</span><span class="p">):</span>
+    <span class="n">start</span> <span class="o">=</span> <span class="p">(</span><span class="n">pageno</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="mi">10</span>
+    <span class="n">end</span> <span class="o">=</span> <span class="n">start</span> <span class="o">+</span> <span class="mi">9</span>
+    <span class="k">return</span> <span class="n">start</span><span class="p">,</span> <span class="n">end</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">__check_query_params</span><span class="p">(</span><span class="n">params</span><span class="p">):</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">query_type</span><span class="p">:</span>
+        <span class="k">return</span>
+
+    <span class="k">if</span> <span class="n">query_type</span> <span class="o">==</span> <span class="s1">&#39;path&#39;</span><span class="p">:</span>
+        <span class="n">query_path</span> <span class="o">=</span> <span class="n">params</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">query_path</span> <span class="o">=</span> <span class="n">expanduser</span><span class="p">(</span><span class="n">query_path</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">commonprefix</span><span class="p">([</span><span class="n">realpath</span><span class="p">(</span><span class="n">query_path</span><span class="p">),</span> <span class="n">working_dir</span><span class="p">])</span> <span class="o">!=</span> <span class="n">working_dir</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;requested path is outside of configured working directory&#39;</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">query_type</span> <span class="o">==</span> <span class="s1">&#39;enum&#39;</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">query_enum</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">param</span> <span class="ow">in</span> <span class="n">params</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">param</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">query_enum</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;submitted query params is not allowed&#39;</span><span class="p">,</span> <span class="n">param</span><span class="p">,</span> <span class="s1">&#39;allowed params:&#39;</span><span class="p">,</span> <span class="n">query_enum</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="check_parsing_options">
+<a class="viewcode-back" href="../../../dev/engines/offline/command-line-engines.html#searx.engines.command.check_parsing_options">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">check_parsing_options</span><span class="p">(</span><span class="n">engine_settings</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Checks if delimiter based parsing or regex parsing is configured correctly&quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="s1">&#39;delimiter&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">engine_settings</span> <span class="ow">and</span> <span class="s1">&#39;parse_regex&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">engine_settings</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;failed to init settings for parsing lines: missing delimiter or parse_regex&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="s1">&#39;delimiter&#39;</span> <span class="ow">in</span> <span class="n">engine_settings</span> <span class="ow">and</span> <span class="s1">&#39;parse_regex&#39;</span> <span class="ow">in</span> <span class="n">engine_settings</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;failed to init settings for parsing lines: too many settings&#39;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="s1">&#39;delimiter&#39;</span> <span class="ow">in</span> <span class="n">engine_settings</span><span class="p">:</span>
+        <span class="k">if</span> <span class="s1">&#39;chars&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">engine_settings</span><span class="p">[</span><span class="s1">&#39;delimiter&#39;</span><span class="p">]</span> <span class="ow">or</span> <span class="s1">&#39;keys&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">engine_settings</span><span class="p">[</span><span class="s1">&#39;delimiter&#39;</span><span class="p">]:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span></div>
+
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">__parse_single_result</span><span class="p">(</span><span class="n">raw_result</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Parses command line output based on configuration&quot;&quot;&quot;</span>
+
+    <span class="n">result</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="k">if</span> <span class="n">delimiter</span><span class="p">:</span>
+        <span class="n">elements</span> <span class="o">=</span> <span class="n">raw_result</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">delimiter</span><span class="p">[</span><span class="s1">&#39;chars&#39;</span><span class="p">],</span> <span class="n">maxsplit</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">delimiter</span><span class="p">[</span><span class="s1">&#39;keys&#39;</span><span class="p">])</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">elements</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">delimiter</span><span class="p">[</span><span class="s1">&#39;keys&#39;</span><span class="p">]):</span>
+            <span class="k">return</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">elements</span><span class="p">)):</span>  <span class="c1"># pylint: disable=consider-using-enumerate</span>
+            <span class="n">result</span><span class="p">[</span><span class="n">delimiter</span><span class="p">[</span><span class="s1">&#39;keys&#39;</span><span class="p">][</span><span class="n">i</span><span class="p">]]</span> <span class="o">=</span> <span class="n">elements</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+
+    <span class="k">if</span> <span class="n">parse_regex</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">result_key</span><span class="p">,</span> <span class="n">regex</span> <span class="ow">in</span> <span class="n">_compiled_parse_regex</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">found</span> <span class="o">=</span> <span class="n">regex</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">raw_result</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">found</span><span class="p">:</span>
+                <span class="k">return</span> <span class="p">{}</span>
+            <span class="n">result</span><span class="p">[</span><span class="n">result_key</span><span class="p">]</span> <span class="o">=</span> <span class="n">raw_result</span><span class="p">[</span><span class="n">found</span><span class="o">.</span><span class="n">start</span><span class="p">()</span> <span class="p">:</span> <span class="n">found</span><span class="o">.</span><span class="n">end</span><span class="p">()]</span>
+
+    <span class="k">return</span> <span class="n">result</span>
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+  <span id="sidebar-top"></span>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+  
+    
+            <p class="logo"><a href="../../../index.html">
+              <img class="logo" src="../../../_static/searxng-wordmark.svg" alt="Logo of SearXNG"/>
+            </a></p>
+  
+
+<h3><a href="../../../index.html">Table of Contents</a></h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../user/index.html">User information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../own-instance.html">Why use a private instance?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../admin/index.html">Administrator documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../dev/index.html">Developer documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../utils/index.html">DevOps tooling box</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/index.html">Source-Code</a></li>
+</ul>
+
+  <h3>Project Links</h3>
+  <ul>
+    <li><a href="https://github.com/searxng/searxng/tree/master">Source</a>
+  
+    <li><a href="https://github.com/searxng/searxng/wiki">Wiki</a>
+  
+    <li><a href="https://searx.space">Public instances</a>
+  
+    <li><a href="https://github.com/searxng/searxng/issues">Issue Tracker</a>
+  </ul><h3>Navigation</h3>
+<ul>
+  <li><a href="../../../index.html">Overview</a>
+    <ul>
+      <li><a href="../../index.html">Module code</a>
+        <ul>
+      <li><a href="../engines.html">searx.engines</a>
+        
+          
+          </ul>
+      </li></ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright SearXNG team.
+    </div>
+  </body>
+</html>

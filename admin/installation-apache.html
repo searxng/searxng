@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Apache &#8212; SearXNG Documentation (2026.2.22+191818b86)</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=6625fa76" />
+    <link rel="stylesheet" type="text/css" href="../_static/searxng.css?v=52e4ff28" />
+    <link rel="stylesheet" type="text/css" href="../_static/tabs.css?v=a5c4661c" />
+    <script src="../_static/documentation_options.js?v=1b5d919e"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script data-project="searxng" data-version="2026.2.22+191818b86" src="../_static/describe_version.js?v=fa7f30d0"></script>
+    <script src="../_static/tabs.js?v=3030b3cb"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="SearXNG maintenance" href="update-searxng.html" />
+    <link rel="prev" title="NGINX" href="installation-nginx.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="update-searxng.html" title="SearXNG maintenance"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="installation-nginx.html" title="NGINX"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">SearXNG Documentation (2026.2.22+191818b86)</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" accesskey="U">Administrator documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Apache</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="apache">
+<span id="installation-apache"></span><h1>Apache<a class="headerlink" href="#apache" title="Link to this heading">¶</a></h1>
+<p>This section explains how to set up a SearXNG instance using the HTTP server <a class="reference external" href="https://httpd.apache.org/">Apache</a>.
+If you did use the <a class="reference internal" href="installation-scripts.html#installation-scripts"><span class="std std-ref">Installation Script</span></a> and do not have any special preferences
+you can install the <a class="reference internal" href="#apache-searxng-site"><span class="std std-ref">SearXNG site</span></a> using
+<a class="reference internal" href="../utils/searxng.sh.html#searxng-sh-overview"><span class="std std-ref">searxng.sh</span></a>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>sudo<span class="w"> </span>-H<span class="w"> </span>./utils/searxng.sh<span class="w"> </span>install<span class="w"> </span>apache
+</pre></div>
+</div>
+<p>If you have special interests or problems with setting up Apache, the following
+section might give you some guidance.</p>
+<aside class="sidebar">
+<p class="sidebar-title">further read</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://wiki.archlinux.org/index.php/Apache_HTTP_Server">Apache Arch Linux</a></p></li>
+<li><p><a class="reference external" href="https://cwiki.apache.org/confluence/display/HTTPD/DistrosDefaultLayout#DistrosDefaultLayout-Debian,Ubuntu(Apachehttpd2.x):">Apache Debian</a></p></li>
+<li><p><a class="reference external" href="https://salsa.debian.org/apache-team/apache2/raw/master/debian/apache2.README.Debian">apache2.README.Debian</a></p></li>
+<li><p><a class="reference external" href="https://docs.fedoraproject.org/en-US/quick-docs/getting-started-with-apache-http-server/index.html">Apache Fedora</a></p></li>
+<li><p><a class="reference external" href="https://httpd.apache.org/docs/trunk/mod/directives.html">Apache directives</a></p></li>
+</ul>
+</aside>
+<nav class="contents local" id="contents">
+<ul class="simple">
+<li><p><a class="reference internal" href="#the-apache-http-server" id="id5">The Apache HTTP server</a></p>
+<ul>
+<li><p><a class="reference internal" href="#debian-s-apache-layout" id="id6">Debian’s Apache layout</a></p></li>
+<li><p><a class="reference internal" href="#apache-modules" id="id7">Apache modules</a></p></li>
+<li><p><a class="reference internal" href="#apache-sites" id="id8">Apache sites</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#apache-s-searxng-site" id="id9">Apache’s SearXNG site</a></p></li>
+<li><p><a class="reference internal" href="#disable-logs" id="id10">disable logs</a></p></li>
+</ul>
+</nav>
+<section id="the-apache-http-server">
+<h2><a class="toc-backref" href="#id5" role="doc-backlink">The Apache HTTP server</a><a class="headerlink" href="#the-apache-http-server" title="Link to this heading">¶</a></h2>
+<p>If <a class="reference external" href="https://httpd.apache.org/">Apache</a> is not installed, install it now. If <a class="reference external" href="https://httpd.apache.org/">apache</a> is new to you, the
+<a class="reference external" href="https://httpd.apache.org/docs/current/en/getting-started.html">Getting Started</a>, <a class="reference external" href="https://httpd.apache.org/docs/current/en/configuring.html">Configuration Files</a> and <a class="reference external" href="https://httpd.apache.org/docs/current/en/mod/directive-dict.html">Terms Used to Describe
+Directives</a> documentation gives first orientation.  There is also a list of
+<a class="reference external" href="https://httpd.apache.org/docs/trunk/mod/directives.html">Apache directives</a> <em>to keep in the pocket</em>.</p>
+<div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-0-VWJ1bnR1IC8gZGViaWFu" aria-selected="true" class="sphinx-tabs-tab group-tab" id="tab-0-VWJ1bnR1IC8gZGViaWFu" name="VWJ1bnR1IC8gZGViaWFu" role="tab" tabindex="0">Ubuntu / debian</button><button aria-controls="panel-0-QXJjaCBMaW51eA==" aria-selected="false" class="sphinx-tabs-tab group-tab" id="tab-0-QXJjaCBMaW51eA==" name="QXJjaCBMaW51eA==" role="tab" tabindex="-1">Arch Linux</button><button aria-controls="panel-0-RmVkb3JhIC8gUkhFTA==" aria-selected="false" class="sphinx-tabs-tab group-tab" id="tab-0-RmVkb3JhIC8gUkhFTA==" name="RmVkb3JhIC8gUkhFTA==" role="tab" tabindex="-1">Fedora / RHEL</button></div><div aria-labelledby="tab-0-VWJ1bnR1IC8gZGViaWFu" class="sphinx-tabs-panel group-tab" id="panel-0-VWJ1bnR1IC8gZGViaWFu" name="VWJ1bnR1IC8gZGViaWFu" role="tabpanel" tabindex="0"><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>-H<span class="w"> </span>apt-get<span class="w"> </span>install<span class="w"> </span>apache2
+</pre></div>
+</div>
+</div><div aria-labelledby="tab-0-QXJjaCBMaW51eA==" class="sphinx-tabs-panel group-tab" hidden="true" id="panel-0-QXJjaCBMaW51eA==" name="QXJjaCBMaW51eA==" role="tabpanel" tabindex="0"><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>-H<span class="w"> </span>pacman<span class="w"> </span>-S<span class="w"> </span>apache
+sudo<span class="w"> </span>-H<span class="w"> </span>systemctl<span class="w"> </span><span class="nb">enable</span><span class="w"> </span>httpd
+sudo<span class="w"> </span>-H<span class="w"> </span>systemctl<span class="w"> </span>start<span class="w"> </span>http
+</pre></div>
+</div>
+</div><div aria-labelledby="tab-0-RmVkb3JhIC8gUkhFTA==" class="sphinx-tabs-panel group-tab" hidden="true" id="panel-0-RmVkb3JhIC8gUkhFTA==" name="RmVkb3JhIC8gUkhFTA==" role="tabpanel" tabindex="0"><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>-H<span class="w"> </span>dnf<span class="w"> </span>install<span class="w"> </span>httpd
+sudo<span class="w"> </span>-H<span class="w"> </span>systemctl<span class="w"> </span><span class="nb">enable</span><span class="w"> </span>httpd
+sudo<span class="w"> </span>-H<span class="w"> </span>systemctl<span class="w"> </span>start<span class="w"> </span>httpd
+</pre></div>
+</div>
+</div></div>
+<p>Now at <a class="reference external" href="http://localhost">http://localhost</a> you should see some kind of <em>Welcome</em> or <em>Test</em> page.
+How this default site is configured, depends on the linux distribution
+(compare <a class="reference external" href="https://httpd.apache.org/docs/trunk/mod/directives.html">Apache directives</a>).</p>
+<div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-1-VWJ1bnR1IC8gZGViaWFu" aria-selected="true" class="sphinx-tabs-tab group-tab" id="tab-1-VWJ1bnR1IC8gZGViaWFu" name="VWJ1bnR1IC8gZGViaWFu" role="tab" tabindex="0">Ubuntu / debian</button><button aria-controls="panel-1-QXJjaCBMaW51eA==" aria-selected="false" class="sphinx-tabs-tab group-tab" id="tab-1-QXJjaCBMaW51eA==" name="QXJjaCBMaW51eA==" role="tab" tabindex="-1">Arch Linux</button><button aria-controls="panel-1-RmVkb3JhIC8gUkhFTA==" aria-selected="false" class="sphinx-tabs-tab group-tab" id="tab-1-RmVkb3JhIC8gUkhFTA==" name="RmVkb3JhIC8gUkhFTA==" role="tab" tabindex="-1">Fedora / RHEL</button></div><div aria-labelledby="tab-1-VWJ1bnR1IC8gZGViaWFu" class="sphinx-tabs-panel group-tab" id="panel-1-VWJ1bnR1IC8gZGViaWFu" name="VWJ1bnR1IC8gZGViaWFu" role="tabpanel" tabindex="0"><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>less<span class="w"> </span>/etc/apache2/sites-enabled/000-default.conf
+</pre></div>
+</div>
+<p>In this file, there is a line setting the <a class="reference external" href="https://httpd.apache.org/docs/trunk/mod/core.html#documentroot">DocumentRoot</a> directive:</p>
+<div class="highlight-apache notranslate"><div class="highlight"><pre><span></span><span class="nb">DocumentRoot</span><span class="w"> </span><span class="sx">/var/www/html</span>
+</pre></div>
+</div>
+<p>And the <em>welcome</em> page is the HTML file at <code class="docutils literal notranslate"><span class="pre">/var/www/html/index.html</span></code>.</p>
+</div><div aria-labelledby="tab-1-QXJjaCBMaW51eA==" class="sphinx-tabs-panel group-tab" hidden="true" id="panel-1-QXJjaCBMaW51eA==" name="QXJjaCBMaW51eA==" role="tabpanel" tabindex="0"><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>less<span class="w"> </span>/etc/httpd/conf/httpd.conf
+</pre></div>
+</div>
+<p>In this file, there is a line setting the <a class="reference external" href="https://httpd.apache.org/docs/trunk/mod/core.html#documentroot">DocumentRoot</a> directive:</p>
+<div class="highlight-apache notranslate"><div class="highlight"><pre><span></span><span class="nb">DocumentRoot</span><span class="w"> </span><span class="s2">&quot;/srv/http&quot;</span>
+<span class="nt">&lt;Directory</span><span class="w"> </span><span class="s">&quot;/srv/http&quot;</span><span class="nt">&gt;</span>
+<span class="w">    </span><span class="nb">Options</span><span class="w"> </span>Indexes<span class="w"> </span>FollowSymLinks
+<span class="w">    </span><span class="nb">AllowOverride</span><span class="w"> </span><span class="k">None</span>
+<span class="w">    </span><span class="nb">Require</span><span class="w"> </span><span class="k">all</span><span class="w"> </span>granted
+<span class="nt">&lt;/Directory&gt;</span>
+</pre></div>
+</div>
+<p>The <em>welcome</em> page of Arch Linux is a page showing the directory located
+at <code class="docutils literal notranslate"><span class="pre">DocumentRoot</span></code>.  This <em>directory</em> page is generated by the Module
+<a class="reference external" href="https://httpd.apache.org/docs/2.4/mod/mod_autoindex.html">mod_autoindex</a>:</p>
+<div class="highlight-apache notranslate"><div class="highlight"><pre><span></span><span class="nb">LoadModule</span><span class="w"> </span>autoindex_module<span class="w"> </span>modules/mod_autoindex.so
+...
+<span class="nb">Include</span><span class="w"> </span>conf/extra/httpd-autoindex.conf
+</pre></div>
+</div>
+</div><div aria-labelledby="tab-1-RmVkb3JhIC8gUkhFTA==" class="sphinx-tabs-panel group-tab" hidden="true" id="panel-1-RmVkb3JhIC8gUkhFTA==" name="RmVkb3JhIC8gUkhFTA==" role="tabpanel" tabindex="0"><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>less<span class="w"> </span>/etc/httpd/conf/httpd.conf
+</pre></div>
+</div>
+<p>In this file, there is a line setting the <code class="docutils literal notranslate"><span class="pre">DocumentRoot</span></code> directive:</p>
+<div class="highlight-apache notranslate"><div class="highlight"><pre><span></span><span class="nb">DocumentRoot</span><span class="w"> </span><span class="s2">&quot;/var/www/html&quot;</span>
+...
+<span class="nt">&lt;Directory</span><span class="w"> </span><span class="s">&quot;/var/www&quot;</span><span class="nt">&gt;</span>
+<span class="w">    </span><span class="nb">AllowOverride</span><span class="w"> </span><span class="k">None</span>
+<span class="w">    </span><span class="c"># Allow open access:</span>
+<span class="w">    </span><span class="nb">Require</span><span class="w"> </span><span class="k">all</span><span class="w"> </span>granted
+<span class="nt">&lt;/Directory&gt;</span>
+</pre></div>
+</div>
+<p>On fresh installations, the <code class="docutils literal notranslate"><span class="pre">/var/www</span></code> is empty and the <em>default
+welcome page</em> is shown, the configuration is located at:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">less</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">httpd</span><span class="o">/</span><span class="n">conf</span><span class="o">.</span><span class="n">d</span><span class="o">/</span><span class="n">welcome</span><span class="o">.</span><span class="n">conf</span>
+</pre></div>
+</div>
+</div></div>
+<section id="debian-s-apache-layout">
+<span id="id2"></span><h3><a class="toc-backref" href="#id6" role="doc-backlink">Debian’s Apache layout</a><a class="headerlink" href="#debian-s-apache-layout" title="Link to this heading">¶</a></h3>
+<p>Be aware, Debian’s Apache layout is quite different from the standard Apache
+configuration.  For details look at the <a class="reference external" href="https://salsa.debian.org/apache-team/apache2/raw/master/debian/apache2.README.Debian">apache2.README.Debian</a>
+(<code class="docutils literal notranslate"><span class="pre">/usr/share/doc/apache2/README.Debian.gz</span></code>).  Some commands you should know on
+Debian:</p>
+<ul class="simple">
+<li><p><a class="extlink-man reference external" href="https://manpages.debian.org/jump?q=apache2ctl">apache2ctl</a>:  Apache HTTP server control interface</p></li>
+<li><p><a class="extlink-man reference external" href="https://manpages.debian.org/jump?q=a2enmod">a2enmod</a>, <a class="extlink-man reference external" href="https://manpages.debian.org/jump?q=a2dismod">a2dismod</a>: switch on/off modules</p></li>
+<li><p><a class="extlink-man reference external" href="https://manpages.debian.org/jump?q=a2enconf">a2enconf</a>, <a class="extlink-man reference external" href="https://manpages.debian.org/jump?q=a2disconf">a2disconf</a>: switch on/off configurations</p></li>
+<li><p><a class="extlink-man reference external" href="https://manpages.debian.org/jump?q=a2ensite">a2ensite</a>, <a class="extlink-man reference external" href="https://manpages.debian.org/jump?q=a2dissite">a2dissite</a>: switch on/off sites</p></li>
+</ul>
+</section>
+<section id="apache-modules">
+<span id="id3"></span><h3><a class="toc-backref" href="#id7" role="doc-backlink">Apache modules</a><a class="headerlink" href="#apache-modules" title="Link to this heading">¶</a></h3>
+<p>To load additional modules, in most distributions you have to uncomment the
+lines with the corresponding <a class="reference external" href="https://httpd.apache.org/docs/mod/mod_so.html#loadmodule">LoadModule</a> directive, except in <a class="reference internal" href="#debian-s-apache-layout"><span class="std std-ref">Debian’s Apache layout</span></a>.</p>
+<div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-2-VWJ1bnR1IC8gZGViaWFu" aria-selected="true" class="sphinx-tabs-tab group-tab" id="tab-2-VWJ1bnR1IC8gZGViaWFu" name="VWJ1bnR1IC8gZGViaWFu" role="tab" tabindex="0">Ubuntu / debian</button><button aria-controls="panel-2-QXJjaCBMaW51eA==" aria-selected="false" class="sphinx-tabs-tab group-tab" id="tab-2-QXJjaCBMaW51eA==" name="QXJjaCBMaW51eA==" role="tab" tabindex="-1">Arch Linux</button><button aria-controls="panel-2-RmVkb3JhIC8gUkhFTA==" aria-selected="false" class="sphinx-tabs-tab group-tab" id="tab-2-RmVkb3JhIC8gUkhFTA==" name="RmVkb3JhIC8gUkhFTA==" role="tab" tabindex="-1">Fedora / RHEL</button></div><div aria-labelledby="tab-2-VWJ1bnR1IC8gZGViaWFu" class="sphinx-tabs-panel group-tab" id="panel-2-VWJ1bnR1IC8gZGViaWFu" name="VWJ1bnR1IC8gZGViaWFu" role="tabpanel" tabindex="0"><p><a class="reference internal" href="#debian-s-apache-layout"><span class="std std-ref">Debian’s Apache layout</span></a> uses <a class="extlink-man reference external" href="https://manpages.debian.org/jump?q=a2enmod">a2enmod</a> and <a class="extlink-man reference external" href="https://manpages.debian.org/jump?q=a2dismod">a2dismod</a> to
+activate or disable modules:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>-H<span class="w"> </span>a2enmod<span class="w"> </span>ssl
+sudo<span class="w"> </span>-H<span class="w"> </span>a2enmod<span class="w"> </span>headers
+sudo<span class="w"> </span>-H<span class="w"> </span>a2enmod<span class="w"> </span>proxy
+sudo<span class="w"> </span>-H<span class="w"> </span>a2enmod<span class="w"> </span>proxy_http
+sudo<span class="w"> </span>-H<span class="w"> </span>a2enmod<span class="w"> </span>proxy_uwsgi
+</pre></div>
+</div>
+</div><div aria-labelledby="tab-2-QXJjaCBMaW51eA==" class="sphinx-tabs-panel group-tab" hidden="true" id="panel-2-QXJjaCBMaW51eA==" name="QXJjaCBMaW51eA==" role="tabpanel" tabindex="0"><p>In the <code class="docutils literal notranslate"><span class="pre">/etc/httpd/conf/httpd.conf</span></code> file, activate <a class="reference external" href="https://httpd.apache.org/docs/mod/mod_so.html#loadmodule">LoadModule</a>
+directives:</p>
+<div class="highlight-apache notranslate"><div class="highlight"><pre><span></span><span class="nb">LoadModule</span><span class="w"> </span>ssl_module<span class="w">           </span>modules/mod_ssl.so
+<span class="nb">LoadModule</span><span class="w"> </span>headers_module<span class="w">       </span>modules/mod_headers.so
+<span class="nb">LoadModule</span><span class="w"> </span>proxy_module<span class="w">         </span>modules/mod_proxy.so
+<span class="nb">LoadModule</span><span class="w"> </span>proxy_http_module<span class="w">    </span>modules/mod_proxy_http.so
+<span class="nb">LoadModule</span><span class="w"> </span>proxy_uwsgi_module<span class="w">   </span>modules/mod_proxy_uwsgi.so
+</pre></div>
+</div>
+</div><div aria-labelledby="tab-2-RmVkb3JhIC8gUkhFTA==" class="sphinx-tabs-panel group-tab" hidden="true" id="panel-2-RmVkb3JhIC8gUkhFTA==" name="RmVkb3JhIC8gUkhFTA==" role="tabpanel" tabindex="0"><p>In the <code class="docutils literal notranslate"><span class="pre">/etc/httpd/conf/httpd.conf</span></code> file, activate <a class="reference external" href="https://httpd.apache.org/docs/mod/mod_so.html#loadmodule">LoadModule</a>
+directives:</p>
+<div class="highlight-apache notranslate"><div class="highlight"><pre><span></span><span class="nb">LoadModule</span><span class="w"> </span>ssl_module<span class="w">           </span>modules/mod_ssl.so
+<span class="nb">LoadModule</span><span class="w"> </span>headers_module<span class="w">       </span>modules/mod_headers.so
+<span class="nb">LoadModule</span><span class="w"> </span>proxy_module<span class="w">         </span>modules/mod_proxy.so
+<span class="nb">LoadModule</span><span class="w"> </span>proxy_http_module<span class="w">    </span>modules/mod_proxy_http.so
+<span class="nb">LoadModule</span><span class="w"> </span>proxy_uwsgi_module<span class="w">   </span>modules/mod_proxy_uwsgi.so
+</pre></div>
+</div>
+</div></div>
+</section>
+<section id="apache-sites">
+<span id="id4"></span><h3><a class="toc-backref" href="#id8" role="doc-backlink">Apache sites</a><a class="headerlink" href="#apache-sites" title="Link to this heading">¶</a></h3>
+<div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-3-VWJ1bnR1IC8gZGViaWFu" aria-selected="true" class="sphinx-tabs-tab group-tab" id="tab-3-VWJ1bnR1IC8gZGViaWFu" name="VWJ1bnR1IC8gZGViaWFu" role="tab" tabindex="0">Ubuntu / debian</button><button aria-controls="panel-3-QXJjaCBMaW51eA==" aria-selected="false" class="sphinx-tabs-tab group-tab" id="tab-3-QXJjaCBMaW51eA==" name="QXJjaCBMaW51eA==" role="tab" tabindex="-1">Arch Linux</button><button aria-controls="panel-3-RmVkb3JhIC8gUkhFTA==" aria-selected="false" class="sphinx-tabs-tab group-tab" id="tab-3-RmVkb3JhIC8gUkhFTA==" name="RmVkb3JhIC8gUkhFTA==" role="tab" tabindex="-1">Fedora / RHEL</button></div><div aria-labelledby="tab-3-VWJ1bnR1IC8gZGViaWFu" class="sphinx-tabs-panel group-tab" id="panel-3-VWJ1bnR1IC8gZGViaWFu" name="VWJ1bnR1IC8gZGViaWFu" role="tabpanel" tabindex="0"><p>In <a class="reference internal" href="#debian-s-apache-layout"><span class="std std-ref">Debian’s Apache layout</span></a> you create a <code class="docutils literal notranslate"><span class="pre">searxng.conf</span></code> with the
+<code class="docutils literal notranslate"><span class="pre">&lt;Location</span> <span class="pre">/searxng</span> <span class="pre">&gt;</span></code> directive and save this file in the <em>sites
+available</em> folder at <code class="docutils literal notranslate"><span class="pre">/etc/apache2/sites-available</span></code>.  To enable the
+<code class="docutils literal notranslate"><span class="pre">searxng.conf</span></code> use <a class="extlink-man reference external" href="https://manpages.debian.org/jump?q=a2ensite">a2ensite</a>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>-H<span class="w"> </span>a2ensite<span class="w"> </span>searxng.conf
+</pre></div>
+</div>
+</div><div aria-labelledby="tab-3-QXJjaCBMaW51eA==" class="sphinx-tabs-panel group-tab" hidden="true" id="panel-3-QXJjaCBMaW51eA==" name="QXJjaCBMaW51eA==" role="tabpanel" tabindex="0"><p>In the <code class="docutils literal notranslate"><span class="pre">/etc/httpd/conf/httpd.conf</span></code> file add a <a class="reference external" href="https://httpd.apache.org/docs/mod/core.html#includeoptional">IncludeOptional</a>
+directive:</p>
+<div class="highlight-apache notranslate"><div class="highlight"><pre><span></span><span class="nb">IncludeOptional</span><span class="w"> </span>sites-enabled/*.conf
+</pre></div>
+</div>
+<p>Create two folders, one for the <em>available sites</em> and one for the <em>enabled sites</em>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>mkdir<span class="w"> </span>-p<span class="w"> </span>/etc/httpd/sites-available
+mkdir<span class="w"> </span>-p<span class="w"> </span>/etc/httpd/sites-enabled
+</pre></div>
+</div>
+<p>Create configuration at <code class="docutils literal notranslate"><span class="pre">/etc/httpd/sites-available</span></code> and place a
+symlink to <code class="docutils literal notranslate"><span class="pre">sites-enabled</span></code>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>-H<span class="w"> </span>ln<span class="w"> </span>-s<span class="w"> </span>/etc/httpd/sites-available/searxng.conf<span class="w"> </span><span class="se">\</span>
+<span class="w">              </span>/etc/httpd/sites-enabled/searxng.conf
+</pre></div>
+</div>
+</div><div aria-labelledby="tab-3-RmVkb3JhIC8gUkhFTA==" class="sphinx-tabs-panel group-tab" hidden="true" id="panel-3-RmVkb3JhIC8gUkhFTA==" name="RmVkb3JhIC8gUkhFTA==" role="tabpanel" tabindex="0"><p>In the <code class="docutils literal notranslate"><span class="pre">/etc/httpd/conf/httpd.conf</span></code> file add a <a class="reference external" href="https://httpd.apache.org/docs/mod/core.html#includeoptional">IncludeOptional</a>
+directive:</p>
+<div class="highlight-apache notranslate"><div class="highlight"><pre><span></span><span class="nb">IncludeOptional</span><span class="w"> </span>sites-enabled/*.conf
+</pre></div>
+</div>
+<p>Create two folders, one for the <em>available sites</em> and one for the <em>enabled sites</em>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>mkdir<span class="w"> </span>-p<span class="w"> </span>/etc/httpd/sites-available
+mkdir<span class="w"> </span>-p<span class="w"> </span>/etc/httpd/sites-enabled
+</pre></div>
+</div>
+<p>Create configuration at <code class="docutils literal notranslate"><span class="pre">/etc/httpd/sites-available</span></code> and place a
+symlink to <code class="docutils literal notranslate"><span class="pre">sites-enabled</span></code>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>-H<span class="w"> </span>ln<span class="w"> </span>-s<span class="w"> </span>/etc/httpd/sites-available/searxng.conf<span class="w"> </span><span class="se">\</span>
+<span class="w">              </span>/etc/httpd/sites-enabled/searxng.conf
+</pre></div>
+</div>
+</div></div>
+</section>
+</section>
+<section id="apache-s-searxng-site">
+<span id="apache-searxng-site"></span><h2><a class="toc-backref" href="#id9" role="doc-backlink">Apache’s SearXNG site</a><a class="headerlink" href="#apache-s-searxng-site" title="Link to this heading">¶</a></h2>
+<aside class="sidebar">
+<p class="sidebar-title">uWSGI</p>
+<p>Use <a class="reference external" href="https://uwsgi-docs.readthedocs.io/en/latest/Apache.html#mod-proxy-uwsgi">mod_proxy_uwsgi</a> / don’t use the old <a class="reference external" href="https://uwsgi-docs.readthedocs.io/en/latest/Apache.html#mod-uwsgi">mod_uwsgi</a> anymore.</p>
+</aside>
+<p>To proxy the incoming requests to the SearXNG instance Apache needs the
+<a class="reference external" href="https://httpd.apache.org/docs/current/mod/mod_proxy.html">mod_proxy</a> module (<a class="reference internal" href="#apache-modules"><span class="std std-ref">Apache modules</span></a>).</p>
+<aside class="sidebar">
+<p class="sidebar-title">HTTP headers</p>
+<p>With <a class="reference external" href="https://httpd.apache.org/docs/trunk/mod/mod_proxy.html#proxypreservehost">ProxyPreserveHost</a> the incoming <code class="docutils literal notranslate"><span class="pre">Host</span></code> header is passed to the proxied
+host.</p>
+</aside>
+<p>Depending on what your SearXNG installation is listening on, you need a http
+<a class="reference external" href="https://httpd.apache.org/docs/current/mod/mod_proxy_http.html">mod_proxy_http</a>) or socket (<a class="reference external" href="https://uwsgi-docs.readthedocs.io/en/latest/Apache.html#mod-proxy-uwsgi">mod_proxy_uwsgi</a>) communication to upstream.</p>
+<p>The <a class="reference internal" href="installation-scripts.html#installation-scripts"><span class="std std-ref">Installation Script</span></a> installs the <a class="reference internal" href="installation-searxng.html#use-default-settings-yml"><span class="std std-ref">reference setup</span></a> and a <a class="reference internal" href="installation-uwsgi.html#uwsgi-setup"><span class="std std-ref">uWSGI setup</span></a> that listens on a socket by default.
+You can install and activate your own <code class="docutils literal notranslate"><span class="pre">searxng.conf</span></code> like shown in
+<a class="reference internal" href="#apache-sites"><span class="std std-ref">Apache sites</span></a>.</p>
+<div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-4-c29ja2V0" aria-selected="true" class="sphinx-tabs-tab group-tab" id="tab-4-c29ja2V0" name="c29ja2V0" role="tab" tabindex="0">socket</button><button aria-controls="panel-4-aHR0cA==" aria-selected="false" class="sphinx-tabs-tab group-tab" id="tab-4-aHR0cA==" name="aHR0cA==" role="tab" tabindex="-1">http</button></div><div aria-labelledby="tab-4-c29ja2V0" class="sphinx-tabs-panel group-tab" id="panel-4-c29ja2V0" name="c29ja2V0" role="tabpanel" tabindex="0"><div class="highlight-apache notranslate"><div class="highlight"><pre><span></span><span class="c"># -*- coding: utf-8; mode: apache -*-</span>
+
+<span class="nb">LoadModule</span><span class="w"> </span>ssl_module<span class="w">           </span><span class="sx">/mod_ssl.so</span>
+<span class="nb">LoadModule</span><span class="w"> </span>headers_module<span class="w">       </span><span class="sx">/mod_headers.so</span>
+<span class="nb">LoadModule</span><span class="w"> </span>proxy_module<span class="w">         </span><span class="sx">/mod_proxy.so</span>
+<span class="nb">LoadModule</span><span class="w"> </span>proxy_uwsgi_module<span class="w">   </span><span class="sx">/mod_proxy_uwsgi.so</span>
+<span class="c"># LoadModule setenvif_module      /mod_setenvif.so</span>
+<span class="c">#</span>
+<span class="c"># SetEnvIf Request_URI /searxng dontlog</span>
+<span class="c"># CustomLog /dev/null combined env=dontlog</span>
+
+<span class="nt">&lt;Location</span><span class="w"> </span><span class="s">/searxng</span><span class="nt">&gt;</span>
+
+<span class="w">    </span><span class="nb">Require</span><span class="w"> </span><span class="k">all</span><span class="w"> </span>granted
+<span class="w">    </span><span class="nb">Order</span><span class="w"> </span>deny,allow
+<span class="w">    </span><span class="nb">Deny</span><span class="w"> </span>from<span class="w"> </span><span class="k">all</span>
+<span class="w">    </span><span class="c"># Allow from fd00::/8 192.168.0.0/16 fe80::/10 127.0.0.0/8 ::1</span>
+<span class="w">    </span><span class="nb">Allow</span><span class="w"> </span>from<span class="w"> </span><span class="k">all</span>
+
+<span class="w">    </span><span class="c"># add the trailing slash</span>
+<span class="w">    </span><span class="nb">RedirectMatch</span><span class="w">  </span><span class="m">308</span><span class="w"> </span><span class="sx">/searxng</span>$<span class="w"> </span><span class="sx">/searxng/</span>
+
+<span class="w">    </span><span class="nb">ProxyPreserveHost</span><span class="w"> </span><span class="k">On</span>
+<span class="w">    </span><span class="nb">ProxyPass</span><span class="w"> </span>unix:/usr/local/searxng/run/socket|uwsgi://uwsgi-uds-searxng/
+
+<span class="w">    </span><span class="c"># see flaskfix.py</span>
+<span class="w">    </span><span class="nb">RequestHeader</span><span class="w"> </span>set<span class="w"> </span>X-Forwarded-Proto<span class="w"> </span>%{REQUEST_SCHEME}s
+<span class="w">    </span><span class="nb">RequestHeader</span><span class="w"> </span>set<span class="w"> </span>X-Script-Name<span class="w"> </span><span class="sx">/searxng</span>
+
+<span class="w">    </span><span class="c"># see botdetection/trusted_proxies.py</span>
+<span class="w">    </span><span class="nb">RequestHeader</span><span class="w"> </span>set<span class="w"> </span>X-Real-IP<span class="w"> </span>%{REMOTE_ADDR}s
+<span class="w">    </span><span class="nb">RequestHeader</span><span class="w"> </span>append<span class="w"> </span>X-Forwarded-For<span class="w"> </span>%{REMOTE_ADDR}s
+
+<span class="nt">&lt;/Location&gt;</span>
+
+<span class="c"># To serve the static files via the HTTP server</span>
+<span class="c">#</span>
+<span class="c"># Alias /searxng/static/ /usr/local/searxng/searxng-src/searx/static/</span>
+</pre></div>
+</div>
+</div><div aria-labelledby="tab-4-aHR0cA==" class="sphinx-tabs-panel group-tab" hidden="true" id="panel-4-aHR0cA==" name="aHR0cA==" role="tabpanel" tabindex="0"><div class="highlight-apache notranslate"><div class="highlight"><pre><span></span><span class="c"># -*- coding: utf-8; mode: apache -*-</span>
+
+<span class="nb">LoadModule</span><span class="w"> </span>ssl_module<span class="w">           </span><span class="sx">/mod_ssl.so</span>
+<span class="nb">LoadModule</span><span class="w"> </span>headers_module<span class="w">       </span><span class="sx">/mod_headers.so</span>
+<span class="nb">LoadModule</span><span class="w"> </span>proxy_module<span class="w">         </span><span class="sx">/mod_proxy.so</span>
+<span class="nb">LoadModule</span><span class="w"> </span>proxy_http_module<span class="w">    </span><span class="sx">/mod_proxy_http.so</span>
+<span class="c"># LoadModule setenvif_module      /mod_setenvif.so</span>
+<span class="c">#</span>
+<span class="c"># SetEnvIf Request_URI /searxng dontlog</span>
+<span class="c"># CustomLog /dev/null combined env=dontlog</span>
+
+<span class="nt">&lt;Location</span><span class="w"> </span><span class="s">/searxng</span><span class="nt">&gt;</span>
+
+<span class="w">    </span><span class="nb">Require</span><span class="w"> </span><span class="k">all</span><span class="w"> </span>granted
+<span class="w">    </span><span class="nb">Order</span><span class="w"> </span>deny,allow
+<span class="w">    </span><span class="nb">Deny</span><span class="w"> </span>from<span class="w"> </span><span class="k">all</span>
+<span class="w">    </span><span class="c"># Allow from fd00::/8 192.168.0.0/16 fe80::/10 127.0.0.0/8 ::1</span>
+<span class="w">    </span><span class="nb">Allow</span><span class="w"> </span>from<span class="w"> </span><span class="k">all</span>
+
+<span class="w">    </span><span class="c"># add the trailing slash</span>
+<span class="w">    </span><span class="nb">RedirectMatch</span><span class="w">  </span><span class="m">308</span><span class="w"> </span><span class="sx">/searxng</span>$<span class="w"> </span><span class="sx">/searxng/</span>
+
+<span class="w">    </span><span class="nb">ProxyPreserveHost</span><span class="w"> </span><span class="k">On</span>
+<span class="w">    </span><span class="nb">ProxyPass</span><span class="w"> </span>http://127.0.0.1:8888
+
+<span class="w">    </span><span class="c"># see flaskfix.py</span>
+<span class="w">    </span><span class="nb">RequestHeader</span><span class="w"> </span>set<span class="w"> </span>X-Forwarded-Proto<span class="w"> </span>%{REQUEST_SCHEME}s
+<span class="w">    </span><span class="nb">RequestHeader</span><span class="w"> </span>set<span class="w"> </span>X-Script-Name<span class="w"> </span><span class="sx">/searxng</span>
+
+<span class="w">    </span><span class="c"># see botdetection/trusted_proxies.py</span>
+<span class="w">    </span><span class="nb">RequestHeader</span><span class="w"> </span>set<span class="w"> </span>X-Real-IP<span class="w"> </span>%{REMOTE_ADDR}s
+<span class="w">    </span><span class="nb">RequestHeader</span><span class="w"> </span>append<span class="w"> </span>X-Forwarded-For<span class="w"> </span>%{REMOTE_ADDR}s
+
+<span class="nt">&lt;/Location&gt;</span>
+
+<span class="c"># To serve the static files via the HTTP server</span>
+<span class="c">#</span>
+<span class="c"># Alias /searxng/static/ /usr/local/searxng/searxng-src/searx/static/</span>
+</pre></div>
+</div>
+</div></div>
+<p id="restart-apache">Restart service:</p>
+<div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-5-VWJ1bnR1IC8gZGViaWFu" aria-selected="true" class="sphinx-tabs-tab group-tab" id="tab-5-VWJ1bnR1IC8gZGViaWFu" name="VWJ1bnR1IC8gZGViaWFu" role="tab" tabindex="0">Ubuntu / debian</button><button aria-controls="panel-5-QXJjaCBMaW51eA==" aria-selected="false" class="sphinx-tabs-tab group-tab" id="tab-5-QXJjaCBMaW51eA==" name="QXJjaCBMaW51eA==" role="tab" tabindex="-1">Arch Linux</button><button aria-controls="panel-5-RmVkb3JhIC8gUkhFTA==" aria-selected="false" class="sphinx-tabs-tab group-tab" id="tab-5-RmVkb3JhIC8gUkhFTA==" name="RmVkb3JhIC8gUkhFTA==" role="tab" tabindex="-1">Fedora / RHEL</button></div><div aria-labelledby="tab-5-VWJ1bnR1IC8gZGViaWFu" class="sphinx-tabs-panel group-tab" id="panel-5-VWJ1bnR1IC8gZGViaWFu" name="VWJ1bnR1IC8gZGViaWFu" role="tabpanel" tabindex="0"><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>-H<span class="w"> </span>systemctl<span class="w"> </span>restart<span class="w"> </span>apache2
+sudo<span class="w"> </span>-H<span class="w"> </span>service<span class="w"> </span>uwsgi<span class="w"> </span>restart<span class="w"> </span>searxng
+</pre></div>
+</div>
+</div><div aria-labelledby="tab-5-QXJjaCBMaW51eA==" class="sphinx-tabs-panel group-tab" hidden="true" id="panel-5-QXJjaCBMaW51eA==" name="QXJjaCBMaW51eA==" role="tabpanel" tabindex="0"><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>-H<span class="w"> </span>systemctl<span class="w"> </span>restart<span class="w"> </span>httpd
+sudo<span class="w"> </span>-H<span class="w"> </span>systemctl<span class="w"> </span>restart<span class="w"> </span>uwsgi@searxng
+</pre></div>
+</div>
+</div><div aria-labelledby="tab-5-RmVkb3JhIC8gUkhFTA==" class="sphinx-tabs-panel group-tab" hidden="true" id="panel-5-RmVkb3JhIC8gUkhFTA==" name="RmVkb3JhIC8gUkhFTA==" role="tabpanel" tabindex="0"><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>-H<span class="w"> </span>systemctl<span class="w"> </span>restart<span class="w"> </span>httpd
+sudo<span class="w"> </span>-H<span class="w"> </span>touch<span class="w"> </span>/etc/uwsgi.d/searxng.ini
+</pre></div>
+</div>
+</div></div>
+</section>
+<section id="disable-logs">
+<h2><a class="toc-backref" href="#id10" role="doc-backlink">disable logs</a><a class="headerlink" href="#disable-logs" title="Link to this heading">¶</a></h2>
+<p>For better privacy you can disable Apache logs.  In the examples above activate
+one of the lines and <a class="reference internal" href="#restart-apache">restart apache</a>:</p>
+<div class="highlight-apache notranslate"><div class="highlight"><pre><span></span><span class="nb">SetEnvIf</span><span class="w"> </span>Request_URI<span class="w"> </span><span class="s2">&quot;/searxng&quot;</span><span class="w"> </span>dontlog
+<span class="c"># CustomLog /dev/null combined env=dontlog</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">CustomLog</span></code> directive disables logs for the entire (virtual) server, use it
+when the URL of the service does not have a path component (<code class="docutils literal notranslate"><span class="pre">/searxng</span></code>), so when
+SearXNG is located at root (<code class="docutils literal notranslate"><span class="pre">/</span></code>).</p>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+  <span id="sidebar-top"></span>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+  
+    
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/searxng-wordmark.svg" alt="Logo of SearXNG"/>
+            </a></p>
+  
+
+<h3><a href="../index.html">Table of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../user/index.html">User information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../own-instance.html">Why use a private instance?</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Administrator documentation</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="settings/index.html">Settings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation-docker.html">Installation container</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation-scripts.html">Installation Script</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation-searxng.html">Step by step installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation-granian.html">Granian</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation-uwsgi.html">uWSGI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation-nginx.html">NGINX</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Apache</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#the-apache-http-server">The Apache HTTP server</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#debian-s-apache-layout">Debian’s Apache layout</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apache-modules">Apache modules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apache-sites">Apache sites</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#apache-s-searxng-site">Apache’s SearXNG site</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#disable-logs">disable logs</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="update-searxng.html">SearXNG maintenance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="answer-captcha.html">Answer CAPTCHA from server’s IP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.favicons.html">Favicons</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.limiter.html">Limiter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html">Administration API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="architecture.html">Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plugins.html">List of plugins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="buildhosts.html">Buildhosts</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../dev/index.html">Developer documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../utils/index.html">DevOps tooling box</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../src/index.html">Source-Code</a></li>
+</ul>
+
+  <h3>Project Links</h3>
+  <ul>
+    <li><a href="https://github.com/searxng/searxng/tree/master">Source</a>
+  
+    <li><a href="https://github.com/searxng/searxng/wiki">Wiki</a>
+  
+    <li><a href="https://searx.space">Public instances</a>
+  
+    <li><a href="https://github.com/searxng/searxng/issues">Issue Tracker</a>
+  </ul><h3>Navigation</h3>
+<ul>
+  <li><a href="../index.html">Overview</a>
+    <ul>
+      <li><a href="index.html">Administrator documentation</a>
+        <ul>
+          <li>Previous: <a href="installation-nginx.html" title="previous chapter">NGINX</a>
+          <li>Next: <a href="update-searxng.html" title="next chapter">SearXNG maintenance</a></ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/admin/installation-apache.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright SearXNG team.
+    </div>
+  </body>
+</html>

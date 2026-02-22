@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Tube Archivist &#8212; SearXNG Documentation (2026.2.22+191818b86)</title>
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=6625fa76" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/searxng.css?v=52e4ff28" />
+    <script src="../../../_static/documentation_options.js?v=1b5d919e"></script>
+    <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script data-project="searxng" data-version="2026.2.22+191818b86" src="../../../_static/describe_version.js?v=fa7f30d0"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="Void Linux binary packages" href="void.html" />
+    <link rel="prev" title="Torznab WebAPI" href="torznab.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="void.html" title="Void Linux binary packages"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="torznab.html" title="Torznab WebAPI"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">SearXNG Documentation (2026.2.22+191818b86)</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" >Developer documentation</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../index.html" accesskey="U">Engine Implementations</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Tube Archivist</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="module-searx.engines.tubearchivist">
+<span id="tube-archivist"></span><span id="tubearchivist-engine"></span><h1>Tube Archivist<a class="headerlink" href="#module-searx.engines.tubearchivist" title="Link to this heading">¶</a></h1>
+<p><a class="reference external" href="https://www.tubearchivist.com">Tube Archivist</a> - <em>Your self hosted YouTube media server.</em></p>
+<p>This engine connects with a self-hosted instance of <a class="reference external" href="https://www.tubearchivist.com">Tube Archivist</a> to allow
+searching for your hosted videos.</p>
+<p><a class="reference external" href="https://www.tubearchivist.com">Tube Archivist</a> (TA) requires authentication for all image loads via cookie
+authentication.  What this means is that by default, SearXNG will have no way to
+pull images from TA (as there is no way to pass cookies in a URL string only).</p>
+<p>In the meantime while work is done on the TA side, this can be worked around by
+bypassing auth for images in TA by altering the default TA nginx file.</p>
+<p>This is located in the main tubearchivist docker container at:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">nginx</span><span class="o">/</span><span class="n">sites</span><span class="o">-</span><span class="n">available</span><span class="o">/</span><span class="n">default</span>
+</pre></div>
+</div>
+<p>It is <strong>strongly</strong> recommended first setting up the intial connection and
+verying searching works first with broken images, and then attempting this
+change.  This will limit any debugging to only images, rather than
+tokens/networking.</p>
+<p>Steps to enable <strong>unauthenticated</strong> metadata access for channels and videos:</p>
+<ol class="arabic">
+<li><p>Perform any backups of TA before editing core configurations.</p></li>
+<li><p>Copy the contents of the file <code class="docutils literal notranslate"><span class="pre">/etc/nginx/sites-available/default</span></code> in the
+TA docker container</p></li>
+<li><p>Edit <code class="docutils literal notranslate"><span class="pre">location</span> <span class="pre">/cache/videos</span></code> and <code class="docutils literal notranslate"><span class="pre">location</span> <span class="pre">/cache/channels</span></code>.  Comment
+out the line <code class="docutils literal notranslate"><span class="pre">auth_request</span> <span class="pre">/api/ping/;</span></code> to <code class="docutils literal notranslate"><span class="pre">#</span> <span class="pre">auth_request</span> <span class="pre">/api/ping/;</span></code>.</p></li>
+<li><p>Save the file to wherever you normally store your docker configuration.</p></li>
+<li><p>Mount this new configuration over the default configuration.  With <code class="docutils literal notranslate"><span class="pre">docker</span>
+<span class="pre">run</span></code>, this would be:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">-</span><span class="n">v</span> <span class="o">./</span><span class="n">your</span><span class="o">-</span><span class="n">new</span><span class="o">-</span><span class="n">config</span><span class="o">.</span><span class="n">yml</span><span class="p">:</span><span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">nginx</span><span class="o">/</span><span class="n">sites</span><span class="o">-</span><span class="n">available</span><span class="o">/</span><span class="n">default</span>
+</pre></div>
+</div>
+<p>With <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">compose</span></code>, this would be:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">-</span> <span class="s2">&quot;./your-new-config.yml:/etc/nginx/sites-available/default:ro&quot;</span>
+</pre></div>
+</div>
+</li>
+<li><p>Start the TA container.</p></li>
+</ol>
+<p>After these steps, double check that TA works as normal (nothing should be
+different on the TA side).  Searching again should now show images.</p>
+<section id="configuration">
+<h2>Configuration<a class="headerlink" href="#configuration" title="Link to this heading">¶</a></h2>
+<p>The engine has the following required settings:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#searx.engines.tubearchivist.base_url" title="searx.engines.tubearchivist.base_url"><code class="xref py py-obj docutils literal notranslate"><span class="pre">base_url</span></code></a></p></li>
+<li><p><a class="reference internal" href="#searx.engines.tubearchivist.ta_token" title="searx.engines.tubearchivist.ta_token"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ta_token</span></code></a></p></li>
+</ul>
+<p>Optional settings:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#searx.engines.tubearchivist.ta_link_to_mp4" title="searx.engines.tubearchivist.ta_link_to_mp4"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ta_link_to_mp4</span></code></a></p></li>
+</ul>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">tubearchivist</span>
+<span class="w">  </span><span class="nt">engine</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">tubearchivist</span>
+<span class="w">  </span><span class="nt">shortcut</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">tuba</span>
+<span class="w">  </span><span class="nt">base_url</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">ta_token</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">ta_link_to_mp4</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+</pre></div>
+</div>
+</section>
+<section id="implementations">
+<h2>Implementations<a class="headerlink" href="#implementations" title="Link to this heading">¶</a></h2>
+</section>
+<dl class="py data">
+<dt class="sig sig-object py" id="searx.engines.tubearchivist.base_url">
+<span class="sig-prename descclassname"><span class="pre">searx.engines.tubearchivist.</span></span><span class="sig-name descname"><span class="pre">base_url</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">''</span></em><a class="headerlink" href="#searx.engines.tubearchivist.base_url" title="Link to this definition">¶</a></dt>
+<dd><p>Base URL of the Tube Archivist instance.  Fill this in with your own
+Tube Archivist URL (<code class="docutils literal notranslate"><span class="pre">http://your-instance:port</span></code>).</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="searx.engines.tubearchivist.ta_token">
+<span class="sig-prename descclassname"><span class="pre">searx.engines.tubearchivist.</span></span><span class="sig-name descname"><span class="pre">ta_token</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">''</span></em><a class="headerlink" href="#searx.engines.tubearchivist.ta_token" title="Link to this definition">¶</a></dt>
+<dd><p>The API key to use for <a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Authorization">Authorization</a> header.  Can be found under:</p>
+<blockquote>
+<div><p><span class="menuselection">Settings ‣ User ‣ Admin Interface</span>.</p>
+</div></blockquote>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="searx.engines.tubearchivist.ta_link_to_mp4">
+<span class="sig-prename descclassname"><span class="pre">searx.engines.tubearchivist.</span></span><span class="sig-name descname"><span class="pre">ta_link_to_mp4</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></em><a class="headerlink" href="#searx.engines.tubearchivist.ta_link_to_mp4" title="Link to this definition">¶</a></dt>
+<dd><p>Optional, if true SearXNG will link directly to the mp4 of the video to play
+in the browser.  The default behavior is to link into TubeArchivist’s interface
+directly.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="searx.engines.tubearchivist.video_response">
+<span class="sig-prename descclassname"><span class="pre">searx.engines.tubearchivist.</span></span><span class="sig-name descname"><span class="pre">video_response</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">resp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">results</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../index.html#searx.result_types.EngineResults" title="searx.result_types.EngineResults"><span class="pre">EngineResults</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span></span><a class="reference internal" href="../../../_modules/searx/engines/tubearchivist.html#video_response"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.engines.tubearchivist.video_response" title="Link to this definition">¶</a></dt>
+<dd><p>Parse video response from Tubearchivist instances.</p>
+</dd></dl>
+
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+  <span id="sidebar-top"></span>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+  
+    
+            <p class="logo"><a href="../../../index.html">
+              <img class="logo" src="../../../_static/searxng-wordmark.svg" alt="Logo of SearXNG"/>
+            </a></p>
+  
+
+<h3><a href="../../../index.html">Table of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../user/index.html">User information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../own-instance.html">Why use a private instance?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../admin/index.html">Administrator documentation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">Developer documentation</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../quickstart.html">Development Quickstart</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../commits.html">Git Commits &amp; Change Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../contribution_guide.html">How to contribute</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../extended_types.html">Extended Types</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">Engine Implementations</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../enginelib.html">Engine Library</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../engines.html">SearXNG’s engines loader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../engine_overview.html">Engine Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../index.html#resultlist-and-engines">ResultList and engines</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="../index.html#engine-types">Engine Types</a><ul class="current">
+<li class="toctree-l4 current"><a class="reference internal" href="../index.html#online-engines">Online Engines</a><ul class="current">
+<li class="toctree-l5"><a class="reference internal" href="../demo/demo_online.html">Demo Online Engine</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../xpath.html">XPath Engine</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../mediawiki.html">MediaWiki Engine</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../json_engine.html">JSON Engine</a></li>
+<li class="toctree-l5"><a class="reference internal" href="adobe_stock.html">Adobe Stock</a></li>
+<li class="toctree-l5"><a class="reference internal" href="alpinelinux.html">Alpine Linux Packages</a></li>
+<li class="toctree-l5"><a class="reference internal" href="annas_archive.html">Anna’s Archive</a></li>
+<li class="toctree-l5"><a class="reference internal" href="archlinux.html">Arch Linux</a></li>
+<li class="toctree-l5"><a class="reference internal" href="arxiv.html">arXiv</a></li>
+<li class="toctree-l5"><a class="reference internal" href="astrophysics_data_system.html">Astrophysics Data System (ADS)</a></li>
+<li class="toctree-l5"><a class="reference internal" href="azure.html">Azure Resources</a></li>
+<li class="toctree-l5"><a class="reference internal" href="bing.html">Bing Engines</a></li>
+<li class="toctree-l5"><a class="reference internal" href="bpb.html">Bpb</a></li>
+<li class="toctree-l5"><a class="reference internal" href="brave.html">Brave Engines</a></li>
+<li class="toctree-l5"><a class="reference internal" href="bt4g.html">BT4G</a></li>
+<li class="toctree-l5"><a class="reference internal" href="chinaso.html">ChinaSo</a></li>
+<li class="toctree-l5"><a class="reference internal" href="core.html">CORE</a></li>
+<li class="toctree-l5"><a class="reference internal" href="crossref.html">Crossref</a></li>
+<li class="toctree-l5"><a class="reference internal" href="dailymotion.html">Dailymotion</a></li>
+<li class="toctree-l5"><a class="reference internal" href="discourse.html">Discourse Forums</a></li>
+<li class="toctree-l5"><a class="reference internal" href="duckduckgo.html">DuckDuckGo Engines</a></li>
+<li class="toctree-l5"><a class="reference internal" href="geizhals.html">Geizhals</a></li>
+<li class="toctree-l5"><a class="reference internal" href="gitea.html">Gitea</a></li>
+<li class="toctree-l5"><a class="reference internal" href="github_code.html">Github Code</a></li>
+<li class="toctree-l5"><a class="reference internal" href="gitlab.html">GitLab</a></li>
+<li class="toctree-l5"><a class="reference internal" href="google.html">Google Engines</a></li>
+<li class="toctree-l5"><a class="reference internal" href="huggingface.html">Hugging Face</a></li>
+<li class="toctree-l5"><a class="reference internal" href="lemmy.html">Lemmy</a></li>
+<li class="toctree-l5"><a class="reference internal" href="loc.html">Library of Congress</a></li>
+<li class="toctree-l5"><a class="reference internal" href="marginalia.html">Marginalia Search</a></li>
+<li class="toctree-l5"><a class="reference internal" href="mastodon.html">Mastodon</a></li>
+<li class="toctree-l5"><a class="reference internal" href="moviepilot.html">Moviepilot</a></li>
+<li class="toctree-l5"><a class="reference internal" href="mrs.html">Matrix Rooms Search (MRS)</a></li>
+<li class="toctree-l5"><a class="reference internal" href="mwmbl.html">Mwmbl Engine</a></li>
+<li class="toctree-l5"><a class="reference internal" href="odysee.html">Odysee</a></li>
+<li class="toctree-l5"><a class="reference internal" href="openalex.html">OpenAlex</a></li>
+<li class="toctree-l5"><a class="reference internal" href="openlibrary.html">Open Library</a></li>
+<li class="toctree-l5"><a class="reference internal" href="peertube.html">Peertube Engines</a></li>
+<li class="toctree-l5"><a class="reference internal" href="piped.html">Piped</a></li>
+<li class="toctree-l5"><a class="reference internal" href="presearch.html">Presearch Engine</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pubmed.html">PubMed</a></li>
+<li class="toctree-l5"><a class="reference internal" href="qwant.html">Qwant</a></li>
+<li class="toctree-l5"><a class="reference internal" href="radio_browser.html">RadioBrowser</a></li>
+<li class="toctree-l5"><a class="reference internal" href="recoll.html">Recoll Engine</a></li>
+<li class="toctree-l5"><a class="reference internal" href="repology.html">Repology</a></li>
+<li class="toctree-l5"><a class="reference internal" href="reuters.html">Reuters</a></li>
+<li class="toctree-l5"><a class="reference internal" href="semantic_scholar.html">Semantic Scholar</a></li>
+<li class="toctree-l5"><a class="reference internal" href="soundcloud.html">Soundcloud</a></li>
+<li class="toctree-l5"><a class="reference internal" href="sourcehut.html">Sourcehut</a></li>
+<li class="toctree-l5"><a class="reference internal" href="springer.html">Springer Nature</a></li>
+<li class="toctree-l5"><a class="reference internal" href="startpage.html">Startpage Engines</a></li>
+<li class="toctree-l5"><a class="reference internal" href="tagesschau.html">Tagesschau API</a></li>
+<li class="toctree-l5"><a class="reference internal" href="torznab.html">Torznab WebAPI</a></li>
+<li class="toctree-l5 current"><a class="current reference internal" href="#">Tube Archivist</a></li>
+<li class="toctree-l5"><a class="reference internal" href="void.html">Void Linux binary packages</a></li>
+<li class="toctree-l5"><a class="reference internal" href="wallhaven.html">Wallhaven</a></li>
+<li class="toctree-l5"><a class="reference internal" href="wikipedia.html">Wikimedia</a></li>
+<li class="toctree-l5"><a class="reference internal" href="yacy.html">Yacy</a></li>
+<li class="toctree-l5"><a class="reference internal" href="yahoo.html">Yahoo Engine</a></li>
+<li class="toctree-l5"><a class="reference internal" href="zlibrary.html">Z-Library</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../index.html#offline-engines">Offline Engines</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../index.html#online-url-search">Online URL Search</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../index.html#online-currency">Online Currency</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../index.html#online-dictionary">Online Dictionary</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../result_types/index.html">Result Types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../templates.html">Simple Theme Templates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../search_api.html">Search API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../plugins/index.html">Plugins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../answerers/index.html">Answerers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../translation.html">Translation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../makefile.html">Makefile &amp; <code class="docutils literal notranslate"><span class="pre">./manage</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../reST.html">reST primer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../searxng_extra/index.html">Tooling box <code class="docutils literal notranslate"><span class="pre">searxng_extra</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../utils/index.html">DevOps tooling box</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/index.html">Source-Code</a></li>
+</ul>
+
+  <h3>Project Links</h3>
+  <ul>
+    <li><a href="https://github.com/searxng/searxng/tree/master">Source</a>
+  
+    <li><a href="https://github.com/searxng/searxng/wiki">Wiki</a>
+  
+    <li><a href="https://searx.space">Public instances</a>
+  
+    <li><a href="https://github.com/searxng/searxng/issues">Issue Tracker</a>
+  </ul><h3>Navigation</h3>
+<ul>
+  <li><a href="../../../index.html">Overview</a>
+    <ul>
+      <li><a href="../../index.html">Developer documentation</a>
+        <ul>
+      <li><a href="../index.html">Engine Implementations</a>
+        <ul>
+          <li>Previous: <a href="torznab.html" title="previous chapter">Torznab WebAPI</a>
+          <li>Next: <a href="void.html" title="next chapter">Void Linux binary packages</a></ul>
+      </li></ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../../_sources/dev/engines/online/tubearchivist.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright SearXNG team.
+    </div>
+  </body>
+</html>

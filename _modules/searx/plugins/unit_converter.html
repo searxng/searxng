@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>searx.plugins.unit_converter &#8212; SearXNG Documentation (2026.2.22+191818b86)</title>
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=6625fa76" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/searxng.css?v=52e4ff28" />
+    <script src="../../../_static/documentation_options.js?v=1b5d919e"></script>
+    <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script data-project="searxng" data-version="2026.2.22+191818b86" src="../../../_static/describe_version.js?v=fa7f30d0"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">SearXNG Documentation (2026.2.22+191818b86)</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" accesskey="U">Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">searx.plugins.unit_converter</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for searx.plugins.unit_converter</h1><div class="highlight"><pre>
+<span></span><span class="c1"># SPDX-License-Identifier: AGPL-3.0-or-later</span>
+<span class="sd">&quot;&quot;&quot;A plugin for converting measured values from one unit to another unit (a</span>
+<span class="sd">unit converter).</span>
+
+<span class="sd">The plugin looks up the symbols (given in the query term) in a list of</span>
+<span class="sd">converters, each converter is one item in the list (compare</span>
+<span class="sd">:py:obj:`ADDITIONAL_UNITS`).  If the symbols are ambiguous, the matching units</span>
+<span class="sd">of measurement are evaluated.  The weighting in the evaluation results from the</span>
+<span class="sd">sorting of the :py:obj:`list of unit converters&lt;symbol_to_si&gt;`.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">typing</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">babel.numbers</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">flask_babel</span><span class="w"> </span><span class="kn">import</span> <span class="n">gettext</span><span class="p">,</span> <span class="n">get_locale</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">searx.wikidata_units</span><span class="w"> </span><span class="kn">import</span> <span class="n">symbol_to_si</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">searx.plugins</span><span class="w"> </span><span class="kn">import</span> <span class="n">Plugin</span><span class="p">,</span> <span class="n">PluginInfo</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">searx.result_types</span><span class="w"> </span><span class="kn">import</span> <span class="n">EngineResults</span>
+
+<span class="k">if</span> <span class="n">typing</span><span class="o">.</span><span class="n">TYPE_CHECKING</span><span class="p">:</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">searx.search</span><span class="w"> </span><span class="kn">import</span> <span class="n">SearchWithPlugins</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">searx.extended_types</span><span class="w"> </span><span class="kn">import</span> <span class="n">SXNG_Request</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">searx.plugins</span><span class="w"> </span><span class="kn">import</span> <span class="n">PluginCfg</span>
+
+
+<span class="n">CONVERT_KEYWORDS</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;in&quot;</span><span class="p">,</span> <span class="s2">&quot;to&quot;</span><span class="p">,</span> <span class="s2">&quot;as&quot;</span><span class="p">]</span>
+
+
+<div class="viewcode-block" id="SXNGPlugin">
+<a class="viewcode-back" href="../../../dev/plugins/unit_converter.html#searx.plugins.unit_converter.SXNGPlugin">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">SXNGPlugin</span><span class="p">(</span><span class="n">Plugin</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert between units.  The result is displayed in area for the</span>
+<span class="sd">    &quot;answers&quot;.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="nb">id</span> <span class="o">=</span> <span class="s2">&quot;unit_converter&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">plg_cfg</span><span class="p">:</span> <span class="s2">&quot;PluginCfg&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">plg_cfg</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">info</span> <span class="o">=</span> <span class="n">PluginInfo</span><span class="p">(</span>
+            <span class="nb">id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
+            <span class="n">name</span><span class="o">=</span><span class="n">gettext</span><span class="p">(</span><span class="s2">&quot;Unit converter plugin&quot;</span><span class="p">),</span>
+            <span class="n">description</span><span class="o">=</span><span class="n">gettext</span><span class="p">(</span><span class="s2">&quot;Convert between units&quot;</span><span class="p">),</span>
+            <span class="n">preference_section</span><span class="o">=</span><span class="s2">&quot;general&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+
+<div class="viewcode-block" id="SXNGPlugin.post_search">
+<a class="viewcode-back" href="../../../dev/plugins/unit_converter.html#searx.plugins.unit_converter.SXNGPlugin.post_search">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">post_search</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">:</span> <span class="s2">&quot;SXNG_Request&quot;</span><span class="p">,</span> <span class="n">search</span><span class="p">:</span> <span class="s2">&quot;SearchWithPlugins&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">EngineResults</span><span class="p">:</span>
+        <span class="n">results</span> <span class="o">=</span> <span class="n">EngineResults</span><span class="p">()</span>
+
+        <span class="c1"># only convert between units on the first page</span>
+        <span class="k">if</span> <span class="n">search</span><span class="o">.</span><span class="n">search_query</span><span class="o">.</span><span class="n">pageno</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">results</span>
+
+        <span class="n">query</span> <span class="o">=</span> <span class="n">search</span><span class="o">.</span><span class="n">search_query</span><span class="o">.</span><span class="n">query</span>
+        <span class="n">query_parts</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">query_parts</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">results</span>
+
+        <span class="k">for</span> <span class="n">query_part</span> <span class="ow">in</span> <span class="n">query_parts</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">keyword</span> <span class="ow">in</span> <span class="n">CONVERT_KEYWORDS</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">query_part</span> <span class="o">==</span> <span class="n">keyword</span><span class="p">:</span>
+                    <span class="n">from_query</span><span class="p">,</span> <span class="n">to_query</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">keyword</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+                    <span class="n">target_val</span> <span class="o">=</span> <span class="n">_parse_text_and_convert</span><span class="p">(</span><span class="n">from_query</span><span class="o">.</span><span class="n">strip</span><span class="p">(),</span> <span class="n">to_query</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
+                    <span class="k">if</span> <span class="n">target_val</span><span class="p">:</span>
+                        <span class="n">results</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">results</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">Answer</span><span class="p">(</span><span class="n">answer</span><span class="o">=</span><span class="n">target_val</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="n">results</span></div>
+</div>
+
+
+
+<span class="c1"># inspired from https://stackoverflow.com/a/42475086</span>
+<span class="n">RE_MEASURE</span> <span class="o">=</span> <span class="sa">r</span><span class="s1">&#39;&#39;&#39;</span>
+<span class="s1">(?P&lt;sign&gt;[-+]?)         # +/- or nothing for positive</span>
+<span class="s1">(\s*)                   # separator: white space or nothing</span>
+<span class="s1">(?P&lt;number&gt;[\d\.,]*)    # number: 1,000.00 (en) or 1.000,00 (de)</span>
+<span class="s1">(?P&lt;E&gt;[eE][-+]?\d+)?    # scientific notation: e(+/-)2 (*10^2)</span>
+<span class="s1">(\s*)                   # separator: white space or nothing</span>
+<span class="s1">(?P&lt;unit&gt;\S+)           # unit of measure</span>
+<span class="s1">&#39;&#39;&#39;</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_parse_text_and_convert</span><span class="p">(</span><span class="n">from_query</span><span class="p">,</span> <span class="n">to_query</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+
+    <span class="c1"># pylint: disable=too-many-branches, too-many-locals</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">from_query</span> <span class="ow">and</span> <span class="n">to_query</span><span class="p">):</span>
+        <span class="k">return</span> <span class="kc">None</span>
+
+    <span class="n">measured</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">RE_MEASURE</span><span class="p">,</span> <span class="n">from_query</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">VERBOSE</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">measured</span> <span class="ow">and</span> <span class="n">measured</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s1">&#39;number&#39;</span><span class="p">),</span> <span class="n">measured</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s1">&#39;unit&#39;</span><span class="p">)):</span>
+        <span class="k">return</span> <span class="kc">None</span>
+
+    <span class="c1"># Symbols are not unique, if there are several hits for the from-unit, then</span>
+    <span class="c1"># the correct one must be determined by comparing it with the to-unit</span>
+    <span class="c1"># https://github.com/searxng/searxng/pull/3378#issuecomment-2080974863</span>
+
+    <span class="c1"># first: collecting possible units</span>
+
+    <span class="n">source_list</span><span class="p">,</span> <span class="n">target_list</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[]</span>
+
+    <span class="k">for</span> <span class="n">symbol</span><span class="p">,</span> <span class="n">si_name</span><span class="p">,</span> <span class="n">from_si</span><span class="p">,</span> <span class="n">to_si</span><span class="p">,</span> <span class="n">orig_symbol</span> <span class="ow">in</span> <span class="n">symbol_to_si</span><span class="p">():</span>
+
+        <span class="k">if</span> <span class="n">symbol</span> <span class="o">==</span> <span class="n">measured</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s1">&#39;unit&#39;</span><span class="p">):</span>
+            <span class="n">source_list</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">si_name</span><span class="p">,</span> <span class="n">to_si</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">symbol</span> <span class="o">==</span> <span class="n">to_query</span><span class="p">:</span>
+            <span class="n">target_list</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">si_name</span><span class="p">,</span> <span class="n">from_si</span><span class="p">,</span> <span class="n">orig_symbol</span><span class="p">))</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">source_list</span> <span class="ow">and</span> <span class="n">target_list</span><span class="p">):</span>
+        <span class="k">return</span> <span class="kc">None</span>
+
+    <span class="n">source_to_si</span> <span class="o">=</span> <span class="n">target_from_si</span> <span class="o">=</span> <span class="n">target_symbol</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="c1"># second: find the right unit by comparing list of from-units with list of to-units</span>
+
+    <span class="k">for</span> <span class="n">source</span> <span class="ow">in</span> <span class="n">source_list</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">target</span> <span class="ow">in</span> <span class="n">target_list</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">source</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">target</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>  <span class="c1"># compare si_name</span>
+                <span class="n">source_to_si</span> <span class="o">=</span> <span class="n">source</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+                <span class="n">target_from_si</span> <span class="o">=</span> <span class="n">target</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+                <span class="n">target_symbol</span> <span class="o">=</span> <span class="n">target</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">source_to_si</span> <span class="ow">and</span> <span class="n">target_from_si</span><span class="p">):</span>
+        <span class="k">return</span> <span class="kc">None</span>
+
+    <span class="n">_locale</span> <span class="o">=</span> <span class="n">get_locale</span><span class="p">()</span> <span class="ow">or</span> <span class="s1">&#39;en_US&#39;</span>
+
+    <span class="n">value</span> <span class="o">=</span> <span class="n">measured</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s1">&#39;sign&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="n">measured</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s1">&#39;number&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="n">measured</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s1">&#39;E&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+    <span class="n">value</span> <span class="o">=</span> <span class="n">babel</span><span class="o">.</span><span class="n">numbers</span><span class="o">.</span><span class="n">parse_decimal</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">locale</span><span class="o">=</span><span class="n">_locale</span><span class="p">)</span>
+
+    <span class="c1"># convert value to SI unit</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">source_to_si</span><span class="p">,</span> <span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">)):</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="o">*</span> <span class="n">source_to_si</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="n">source_to_si</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">value</span><span class="p">))</span>
+
+    <span class="c1"># convert value from SI unit to target unit</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">target_from_si</span><span class="p">,</span> <span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">)):</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="o">*</span> <span class="n">target_from_si</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="n">target_from_si</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">value</span><span class="p">))</span>
+
+    <span class="k">if</span> <span class="n">measured</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s1">&#39;E&#39;</span><span class="p">):</span>
+        <span class="c1"># when incoming notation is scientific, outgoing notation is scientific</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">babel</span><span class="o">.</span><span class="n">numbers</span><span class="o">.</span><span class="n">format_scientific</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">locale</span><span class="o">=</span><span class="n">_locale</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">babel</span><span class="o">.</span><span class="n">numbers</span><span class="o">.</span><span class="n">format_decimal</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">locale</span><span class="o">=</span><span class="n">_locale</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;#,##0.##########;-#&#39;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">result</span><span class="si">}</span><span class="s1"> </span><span class="si">{</span><span class="n">target_symbol</span><span class="si">}</span><span class="s1">&#39;</span>
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+  <span id="sidebar-top"></span>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+  
+    
+            <p class="logo"><a href="../../../index.html">
+              <img class="logo" src="../../../_static/searxng-wordmark.svg" alt="Logo of SearXNG"/>
+            </a></p>
+  
+
+<h3><a href="../../../index.html">Table of Contents</a></h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../user/index.html">User information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../own-instance.html">Why use a private instance?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../admin/index.html">Administrator documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../dev/index.html">Developer documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../utils/index.html">DevOps tooling box</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/index.html">Source-Code</a></li>
+</ul>
+
+  <h3>Project Links</h3>
+  <ul>
+    <li><a href="https://github.com/searxng/searxng/tree/master">Source</a>
+  
+    <li><a href="https://github.com/searxng/searxng/wiki">Wiki</a>
+  
+    <li><a href="https://searx.space">Public instances</a>
+  
+    <li><a href="https://github.com/searxng/searxng/issues">Issue Tracker</a>
+  </ul><h3>Navigation</h3>
+<ul>
+  <li><a href="../../../index.html">Overview</a>
+    <ul>
+      <li><a href="../../index.html">Module code</a>
+        
+          
+          </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright SearXNG team.
+    </div>
+  </body>
+</html>

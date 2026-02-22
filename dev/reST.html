@@ -1,0 +1,1760 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>reST primer &#8212; SearXNG Documentation (2026.2.22+191818b86)</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=6625fa76" />
+    <link rel="stylesheet" type="text/css" href="../_static/searxng.css?v=52e4ff28" />
+    <script src="../_static/documentation_options.js?v=1b5d919e"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script data-project="searxng" data-version="2026.2.22+191818b86" src="../_static/describe_version.js?v=fa7f30d0"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Tooling box searxng_extra" href="searxng_extra/index.html" />
+    <link rel="prev" title="Makefile &amp; ./manage" href="makefile.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="searxng_extra/index.html" title="Tooling box searxng_extra"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="makefile.html" title="Makefile &amp; ./manage"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">SearXNG Documentation (2026.2.22+191818b86)</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" accesskey="U">Developer documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">reST primer</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="rest-primer">
+<span id="id1"></span><h1>reST primer<a class="headerlink" href="#rest-primer" title="Link to this heading">¶</a></h1>
+<aside class="sidebar">
+<p class="sidebar-title"><a class="reference external" href="https://en.wikipedia.org/wiki/KISS_principle">KISS</a> and <a class="reference external" href="https://docs.python-guide.org/writing/style/">readability</a></p>
+<p>Instead of defining more and more roles, we at SearXNG encourage our
+contributors to follow principles like <a class="reference external" href="https://en.wikipedia.org/wiki/KISS_principle">KISS</a> and <a class="reference external" href="https://docs.python-guide.org/writing/style/">readability</a>.</p>
+</aside>
+<p>We at SearXNG are using reStructuredText (aka <a class="reference external" href="https://docutils.sourceforge.io/rst.html">reST</a>) markup for all kind of
+documentation.  With the builders from the <a class="reference external" href="https://www.sphinx-doc.org">Sphinx</a> project a HTML output is
+generated and deployed at <a class="reference external" href="https://docs.searxng.org/">docs.searxng.org</a>.  For build prerequisites read
+<a class="reference internal" href="../admin/buildhosts.html#docs-build"><span class="std std-ref">Build docs</span></a>.</p>
+<p>The source files of SearXNG’s documentation are located at <a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/docs">git://docs</a>.
+Sphinx assumes source files to be encoded in UTF-8 by default.  Run <a class="reference internal" href="contribution_guide.html#make-docs-live"><span class="std std-ref">make
+docs.live</span></a> to build HTML while editing.</p>
+<aside class="sidebar">
+<p class="sidebar-title">Further reading</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://www.sphinx-doc.org/en/master/usage/restructuredtext/basics.html">Sphinx-Primer</a></p></li>
+<li><p><a class="reference external" href="https://www.sphinx-doc.org/en/stable/markup/index.html">Sphinx markup constructs</a></p></li>
+<li><p><a class="reference external" href="https://docutils.sourceforge.io/rst.html">reST</a>, <a class="reference external" href="http://docutils.sourceforge.net/docs/index.html">docutils</a>, <a class="reference external" href="http://docutils.sourceforge.net/FAQ.html">docutils FAQ</a></p></li>
+<li><p><a class="reference external" href="https://www.sphinx-doc.org">Sphinx</a>, <a class="reference external" href="https://www.sphinx-doc.org/en/stable/faq.html">sphinx-doc FAQ</a></p></li>
+<li><p><a class="reference external" href="https://www.sphinx-doc.org/en/stable/config.html">sphinx config</a>, <a class="reference external" href="https://www.sphinx-doc.org/en/master/extdev/tutorial.html?highlight=doctree#build-phases">doctree</a></p></li>
+<li><p><a class="reference external" href="https://www.sphinx-doc.org/en/stable/markup/inline.html#cross-referencing-arbitrary-locations">sphinx cross references</a></p></li>
+<li><p><a class="reference external" href="https://return42.github.io/linuxdoc">linuxdoc</a></p></li>
+<li><p><a class="reference external" href="https://www.sphinx-doc.org/en/stable/ext/intersphinx.html">intersphinx</a></p></li>
+<li><p><a class="reference external" href="https://github.com/tardyp/sphinx-jinja">sphinx-jinja</a></p></li>
+<li><p><a class="reference external" href="https://www.sphinx-doc.org/en/stable/ext/autodoc.html">Sphinx’s autodoc</a></p></li>
+<li><p><a class="reference external" href="https://www.sphinx-doc.org/en/stable/domains.html#the-python-domain">Sphinx’s Python domain</a>, <a class="reference external" href="https://www.sphinx-doc.org/en/stable/domains.html#cross-referencing-c-constructs">Sphinx’s C domain</a></p></li>
+<li><p><a class="reference external" href="https://www.w3.org/TR/SVG11/expanded-toc.html">SVG</a>, <a class="reference external" href="https://www.imagemagick.org">ImageMagick</a></p></li>
+<li><p><a class="reference external" href="https://graphviz.gitlab.io/_pages/doc/info/lang.html">DOT</a>, <a class="reference external" href="https://graphviz.gitlab.io/_pages/pdf/dotguide.pdf">Graphviz’s dot</a>, <a class="reference external" href="https://graphviz.gitlab.io">Graphviz</a></p></li>
+</ul>
+</aside>
+<nav class="contents local" id="contents">
+<ul class="simple">
+<li><p><a class="reference internal" href="#soft-skills" id="id15">Soft skills</a></p></li>
+<li><p><a class="reference internal" href="#basic-inline-markup" id="id16">Basic inline markup</a></p></li>
+<li><p><a class="reference internal" href="#basic-article-structure" id="id17">Basic article structure</a></p>
+<ul>
+<li><p><a class="reference internal" href="#rest-template" id="id18">reST template</a></p></li>
+<li><p><a class="reference internal" href="#headings" id="id19">Headings</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#anchors-links" id="id20">Anchors &amp; Links</a></p>
+<ul>
+<li><p><a class="reference internal" href="#anchors" id="id21">Anchors</a></p></li>
+<li><p><a class="reference internal" href="#link-ordinary-url" id="id22">Link ordinary URL</a></p></li>
+<li><p><a class="reference internal" href="#smart-refs" id="id23">Smart refs</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#literal-blocks" id="id24">Literal blocks</a></p>
+<ul>
+<li><p><a class="reference internal" href="#rest-literal" id="id25"><code class="docutils literal notranslate"><span class="pre">::</span></code></a></p></li>
+<li><p><a class="reference internal" href="#code-block" id="id26"><code class="docutils literal notranslate"><span class="pre">code-block</span></code></a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#unicode-substitution" id="id27">Unicode substitution</a></p></li>
+<li><p><a class="reference internal" href="#roles" id="id28">Roles</a></p></li>
+<li><p><a class="reference internal" href="#figures-images" id="id29">Figures &amp; Images</a></p>
+<ul>
+<li><p><a class="reference internal" href="#dot-files-aka-graphviz" id="id30">DOT files (aka Graphviz)</a></p></li>
+<li><p><a class="reference internal" href="#kernel-render-dot" id="id31"><code class="docutils literal notranslate"><span class="pre">kernel-render</span></code> DOT</a></p></li>
+<li><p><a class="reference internal" href="#kernel-render-svg" id="id32"><code class="docutils literal notranslate"><span class="pre">kernel-render</span></code> SVG</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#list-markups" id="id33">List markups</a></p>
+<ul>
+<li><p><a class="reference internal" href="#bullet-list" id="id34">Bullet list</a></p></li>
+<li><p><a class="reference internal" href="#horizontal-list" id="id35">Horizontal list</a></p></li>
+<li><p><a class="reference internal" href="#definition-list" id="id36">Definition list</a></p></li>
+<li><p><a class="reference internal" href="#quoted-paragraphs" id="id37">Quoted paragraphs</a></p></li>
+<li><p><a class="reference internal" href="#field-lists" id="id38">Field Lists</a></p></li>
+<li><p><a class="reference internal" href="#further-list-blocks" id="id39">Further list blocks</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#admonitions" id="id40">Admonitions</a></p>
+<ul>
+<li><p><a class="reference internal" href="#sidebar" id="id41">Sidebar</a></p></li>
+<li><p><a class="reference internal" href="#generic-admonition" id="id42">Generic admonition</a></p></li>
+<li><p><a class="reference internal" href="#specific-admonitions" id="id43">Specific admonitions</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#tables" id="id44">Tables</a></p>
+<ul>
+<li><p><a class="reference internal" href="#simple-tables" id="id45">Simple tables</a></p></li>
+<li><p><a class="reference internal" href="#grid-tables" id="id46">Grid tables</a></p></li>
+<li><p><a class="reference internal" href="#flat-table" id="id47">flat-table</a></p></li>
+<li><p><a class="reference internal" href="#csv-table" id="id48">CSV table</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#templating" id="id49">Templating</a></p></li>
+<li><p><a class="reference internal" href="#tabbed-views" id="id50">Tabbed views</a></p></li>
+<li><p><a class="reference internal" href="#math-equations" id="id51">Math equations</a></p></li>
+</ul>
+</nav>
+<p><a class="reference external" href="https://www.sphinx-doc.org">Sphinx</a> and <a class="reference external" href="https://docutils.sourceforge.io/rst.html">reST</a> have their place in the python ecosystem.  Over that reST is
+used in popular projects, e.g the Linux kernel documentation <a class="reference external" href="https://www.kernel.org/doc/html/latest/doc-guide/sphinx.html">[kernel doc]</a>.</p>
+<aside class="sidebar">
+<p class="sidebar-title">Content matters</p>
+<p>The <a class="reference external" href="https://docs.python-guide.org/writing/style/">readability</a> of the reST sources has its value, therefore we recommend to
+make sparse usage of reST markup / .. content matters!</p>
+</aside>
+<p><strong>reST</strong> is a plaintext markup language, its markup is <em>mostly</em> intuitive and
+you will not need to learn much to produce well formed articles with.  I use the
+word <em>mostly</em>: like everything in live, reST has its advantages and
+disadvantages, some markups feel a bit grumpy (especially if you are used to
+other plaintext markups).</p>
+<section id="soft-skills">
+<h2><a class="toc-backref" href="#id15" role="doc-backlink">Soft skills</a><a class="headerlink" href="#soft-skills" title="Link to this heading">¶</a></h2>
+<p>Before going any deeper into the markup let’s face on some <strong>soft skills</strong> a
+trained author brings with, to reach a well feedback from readers:</p>
+<ul class="simple">
+<li><p>Documentation is dedicated to an audience and answers questions from the
+audience point of view.</p></li>
+<li><p>Don’t detail things which are general knowledge from the audience point of
+view.</p></li>
+<li><p>Limit the subject, use cross links for any further reading.</p></li>
+</ul>
+<p>To be more concrete what a <em>point of view</em> means.  In the (<a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/docs">git://docs</a>)
+folder we have three sections (and the <em>blog</em> folder), each dedicate to a
+different group of audience.</p>
+<dl class="simple">
+<dt>User’s POV: <a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/docs/user">git://docs/user</a></dt><dd><p>A typical user knows about search engines and might have heard about
+meta crawlers and privacy.</p>
+</dd>
+<dt>Admin’s POV: <a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/docs/admin">git://docs/admin</a></dt><dd><p>A typical Admin knows about setting up services on a linux system, but he does
+not know all the pros and cons of a SearXNG setup.</p>
+</dd>
+<dt>Developer’s POV: <a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/docs/dev">git://docs/dev</a></dt><dd><p>Depending on the <a class="reference external" href="https://docs.python-guide.org/writing/style/">readability</a> of code, a typical developer is able to read and
+understand source code.  Describe what a item aims to do (e.g. a function).
+If the chronological order matters, describe it.  Name the <em>out-of-limits
+conditions</em> and all the side effects a external developer will not know.</p>
+</dd>
+</dl>
+</section>
+<section id="basic-inline-markup">
+<span id="rest-inline-markup"></span><h2><a class="toc-backref" href="#id16" role="doc-backlink">Basic inline markup</a><a class="headerlink" href="#basic-inline-markup" title="Link to this heading">¶</a></h2>
+<aside class="sidebar">
+<p class="sidebar-title">Inline markup</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#rest-roles"><span class="std std-ref">Roles</span></a></p></li>
+<li><p><a class="reference internal" href="#rest-smart-ref"><span class="std std-ref">Smart refs</span></a></p></li>
+</ul>
+</aside>
+<p>Basic inline markup is done with asterisks and backquotes.  If asterisks or
+backquotes appear in running text and could be confused with inline markup
+delimiters, they have to be escaped with a backslash (<code class="docutils literal notranslate"><span class="pre">\*pointer</span></code>).</p>
+<table class="docutils align-default" id="id4">
+<caption><span class="caption-number">Table 9 </span><span class="caption-text">basic inline markup</span><a class="headerlink" href="#id4" title="Link to this table">¶</a></caption>
+<colgroup>
+<col style="width: 28.6%" />
+<col style="width: 21.4%" />
+<col style="width: 50.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>description</p></th>
+<th class="head"><p>rendered</p></th>
+<th class="head"><p>markup</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>one asterisk for emphasis</p></td>
+<td><p><em>italics</em></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">*italics*</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>two asterisks for strong emphasis</p></td>
+<td><p><strong>boldface</strong></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">**boldface**</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>backquotes for code samples and literals</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">foo()</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">``foo()``</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>quote asterisks or backquotes</p></td>
+<td><p>*foo is a pointer</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">\*foo</span> <span class="pre">is</span> <span class="pre">a</span> <span class="pre">pointer</span></code></p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="basic-article-structure">
+<span id="rest-basic-structure"></span><h2><a class="toc-backref" href="#id17" role="doc-backlink">Basic article structure</a><a class="headerlink" href="#basic-article-structure" title="Link to this heading">¶</a></h2>
+<p>The basic structure of an article makes use of heading adornments to markup
+chapter, sections and subsections.</p>
+<section id="rest-template">
+<span id="id2"></span><h3><a class="toc-backref" href="#id18" role="doc-backlink">reST template</a><a class="headerlink" href="#rest-template" title="Link to this heading">¶</a></h3>
+<p>reST template for an simple article:</p>
+<div class="highlight-reST notranslate"><div class="highlight"><pre><span></span><span class="p">..</span> <span class="nt">_doc refname:</span>
+
+<span class="gh">==============</span>
+<span class="gh">Document title</span>
+<span class="gh">==============</span>
+
+Lorem ipsum dolor sit amet, consectetur adipisici elit ..  Further read
+<span class="na">:ref:</span><span class="nv">`chapter refname`</span>.
+
+<span class="p">..</span> <span class="nt">_chapter refname:</span>
+
+<span class="gh">Chapter</span>
+<span class="gh">=======</span>
+
+Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+aliquid ex ea commodi consequat ...
+
+<span class="p">..</span> <span class="nt">_section refname:</span>
+
+<span class="gh">Section</span>
+<span class="gh">-------</span>
+
+lorem ..
+
+<span class="p">..</span> <span class="nt">_subsection refname:</span>
+
+<span class="gh">Subsection</span>
+<span class="gh">~~~~~~~~~~</span>
+
+lorem ..
+</pre></div>
+</div>
+</section>
+<section id="headings">
+<h3><a class="toc-backref" href="#id19" role="doc-backlink">Headings</a><a class="headerlink" href="#headings" title="Link to this heading">¶</a></h3>
+<ol class="arabic simple">
+<li><p>title - with overline for document title:</p></li>
+</ol>
+<blockquote>
+<div><div class="highlight-reST notranslate"><div class="highlight"><pre><span></span><span class="gh">==============</span>
+<span class="gh">Document title</span>
+<span class="gh">==============</span>
+</pre></div>
+</div>
+</div></blockquote>
+<ol class="arabic">
+<li><p>chapter - with anchor named <code class="docutils literal notranslate"><span class="pre">anchor</span> <span class="pre">name</span></code>:</p>
+<div class="highlight-reST notranslate"><div class="highlight"><pre><span></span><span class="p">..</span> <span class="nt">_anchor name:</span>
+
+<span class="gh">Chapter</span>
+<span class="gh">=======</span>
+</pre></div>
+</div>
+</li>
+<li><p>section</p>
+<div class="highlight-reST notranslate"><div class="highlight"><pre><span></span><span class="gh">Section</span>
+<span class="gh">-------</span>
+</pre></div>
+</div>
+</li>
+<li><p>subsection</p>
+<div class="highlight-reST notranslate"><div class="highlight"><pre><span></span><span class="gh">Subsection</span>
+<span class="gh">~~~~~~~~~~</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</section>
+</section>
+<section id="anchors-links">
+<h2><a class="toc-backref" href="#id20" role="doc-backlink">Anchors &amp; Links</a><a class="headerlink" href="#anchors-links" title="Link to this heading">¶</a></h2>
+<section id="anchors">
+<span id="rest-anchor"></span><h3><a class="toc-backref" href="#id21" role="doc-backlink">Anchors</a><a class="headerlink" href="#anchors" title="Link to this heading">¶</a></h3>
+<p>To refer a point in the documentation a anchor is needed.  The <a class="reference internal" href="#rest-template"><span class="std std-ref">reST
+template</span></a> shows an example where a chapter titled <em>“Chapters”</em>
+gets an anchor named <code class="docutils literal notranslate"><span class="pre">chapter</span> <span class="pre">title</span></code>.  Another example from <em>this</em> document,
+where the anchor named <code class="docutils literal notranslate"><span class="pre">reST</span> <span class="pre">anchor</span></code>:</p>
+<div class="highlight-reST notranslate"><div class="highlight"><pre><span></span><span class="p">..</span> <span class="nt">_reST anchor:</span>
+
+<span class="gh">Anchors</span>
+<span class="gh">-------</span>
+
+To refer a point in the documentation a anchor is needed ...
+</pre></div>
+</div>
+<p>To refer anchors use the <a class="reference external" href="https://www.sphinx-doc.org/en/master/usage/restructuredtext/roles.html#role-ref">ref role</a> markup:</p>
+<div class="highlight-reST notranslate"><div class="highlight"><pre><span></span>Visit chapter <span class="na">:ref:</span><span class="nv">`reST anchor`</span>.  Or set hyperlink text manually :ref:`foo
+bar &lt;reST anchor&gt;`.
+</pre></div>
+</div>
+<div class="rst-example admonition">
+<p class="admonition-title"><code class="docutils literal notranslate"><span class="pre">:ref:</span></code> role</p>
+<p>Visit chapter <a class="reference internal" href="#rest-anchor"><span class="std std-ref">Anchors</span></a>.  Or set hyperlink text manually <a class="reference internal" href="#rest-anchor"><span class="std std-ref">foo
+bar</span></a>.</p>
+</div>
+</section>
+<section id="link-ordinary-url">
+<span id="rest-ordinary-ref"></span><h3><a class="toc-backref" href="#id22" role="doc-backlink">Link ordinary URL</a><a class="headerlink" href="#link-ordinary-url" title="Link to this heading">¶</a></h3>
+<p>If you need to reference external URLs use <em>named</em> hyperlinks to maintain
+readability of reST sources.  Here is a example taken from <em>this</em> article:</p>
+<div class="highlight-reST notranslate"><div class="highlight"><pre><span></span><span class="p">..</span> <span class="nt">_Sphinx Field Lists:</span>
+   https://www.sphinx-doc.org/en/master/usage/restructuredtext/field-lists.html
+
+With the <span class="ge">*named*</span> hyperlink <span class="s">`Sphinx Field Lists`_</span>, the raw text is much more
+readable.
+
+And this shows the alternative (less readable) hyperlink markup `Sphinx Field
+Lists
+<span class="nt">&lt;https://www.sphinx-doc.org/en/master/usage/restructuredtext/field-lists.html&gt;</span>`__.
+</pre></div>
+</div>
+<div class="rst-example admonition">
+<p class="admonition-title">Named hyperlink</p>
+<p>With the <em>named</em> hyperlink <a class="reference external" href="https://www.sphinx-doc.org/en/master/usage/restructuredtext/field-lists.html">Sphinx Field Lists</a>, the raw text is much more
+readable.</p>
+<p>And this shows the alternative (less readable) hyperlink markup <a class="reference external" href="https://www.sphinx-doc.org/en/master/usage/restructuredtext/field-lists.html">Sphinx Field
+Lists</a>.</p>
+</div>
+</section>
+<section id="smart-refs">
+<span id="rest-smart-ref"></span><h3><a class="toc-backref" href="#id23" role="doc-backlink">Smart refs</a><a class="headerlink" href="#smart-refs" title="Link to this heading">¶</a></h3>
+<p>With the power of <a class="reference external" href="https://www.sphinx-doc.org/en/master/usage/extensions/extlinks.html">sphinx.ext.extlinks</a> and <a class="reference external" href="https://www.sphinx-doc.org/en/stable/ext/intersphinx.html">intersphinx</a> referencing external
+content becomes smart.</p>
+<table class="docutils align-default" id="id5">
+<caption><span class="caption-number">Table 10 </span><span class="caption-text">smart refs with <a class="reference external" href="https://www.sphinx-doc.org/en/master/usage/extensions/extlinks.html">sphinx.ext.extlinks</a> and <a class="reference external" href="https://www.sphinx-doc.org/en/stable/ext/intersphinx.html">intersphinx</a></span><a class="headerlink" href="#id5" title="Link to this table">¶</a></caption>
+<colgroup>
+<col style="width: 28.6%" />
+<col style="width: 21.4%" />
+<col style="width: 50.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>refer …</p></th>
+<th class="head"><p>rendered example</p></th>
+<th class="head"><p>markup</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><a class="reference external" href="https://www.sphinx-doc.org/en/master/usage/restructuredtext/roles.html#role-rfc" title="(in Sphinx v9.1.0)"><code class="xref rst rst-role docutils literal notranslate"><span class="pre">rfc</span></code></a></p></td>
+<td><p><span class="target" id="index-0"></span><a class="rfc reference external" href="https://datatracker.ietf.org/doc/html/rfc822.html"><strong>RFC 822</strong></a></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">:rfc:`822`</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference external" href="https://www.sphinx-doc.org/en/master/usage/restructuredtext/roles.html#role-pep" title="(in Sphinx v9.1.0)"><code class="xref rst rst-role docutils literal notranslate"><span class="pre">pep</span></code></a></p></td>
+<td><p><span class="target" id="index-1"></span><a class="pep reference external" href="https://peps.python.org/pep-0008/"><strong>PEP 8</strong></a></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">:pep:`8`</span></code></p></td>
+</tr>
+<tr class="row-even"><td colspan="3"><p><a class="reference external" href="https://www.sphinx-doc.org/en/master/usage/extensions/extlinks.html">sphinx.ext.extlinks</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>project’s wiki article</p></td>
+<td><p><a class="extlink-wiki reference external" href="https://github.com/searxng/searxng/wiki/Offline-engines"> Offline-engines</a></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">:wiki:`Offline-engines`</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>to docs public URL</p></td>
+<td><p><a class="extlink-docs reference external" href="https://docs.searxng.org//dev/reST.html">docs: dev/reST.html</a></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">:docs:`dev/reST.html`</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>files &amp; folders origin</p></td>
+<td><p><a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/docs/dev/reST.rst">git://docs/dev/reST.rst</a></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">:origin:`docs/dev/reST.rst`</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>pull request</p></td>
+<td><p><a class="extlink-pull reference external" href="https://github.com/searxng/searxng/pull/4">PR 4</a></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">:pull:`4`</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>patch</p></td>
+<td><p><a class="extlink-patch reference external" href="https://github.com/searxng/searxng/commit/af2cae6">#af2cae6</a></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">:patch:`af2cae6`</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>PyPi package</p></td>
+<td><p><a class="extlink-pypi reference external" href="https://pypi.org/project/httpx">PyPi: httpx</a></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">:pypi:`httpx`</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>manual page man</p></td>
+<td><p><a class="extlink-man reference external" href="https://manpages.debian.org/jump?q=bash">bash</a></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">:man:`bash`</span></code></p></td>
+</tr>
+<tr class="row-even"><td colspan="3"><p><a class="reference external" href="https://www.sphinx-doc.org/en/stable/ext/intersphinx.html">intersphinx</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>external anchor</p></td>
+<td><p><a class="reference external" href="https://docs.python.org/3/reference/expressions.html#and" title="(in Python v3.14)"><span>Boolean operations</span></a></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">:ref:`python:and`</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>external doc anchor</p></td>
+<td><p><a class="reference external" href="https://jinja.palletsprojects.com/en/stable/templates/" title="(in Jinja v3.1.x)"><span>Template Designer Documentation</span></a></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">:doc:`jinja:templates`</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>python code object</p></td>
+<td><p><a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">datetime.datetime</span></code></a></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">:py:obj:`datetime.datetime`</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>flask code object</p></td>
+<td><p><a class="reference external" href="https://flask.palletsprojects.com/en/stable/api/#flask.Flask" title="(in Flask v3.1.x)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">flask.Flask</span></code></a></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">:py:obj:`flask.Flask`</span></code></p></td>
+</tr>
+</tbody>
+</table>
+<p>Intersphinx is configured in <a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/docs/conf.py">git://docs/conf.py</a>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">intersphinx_mapping</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;python&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;https://docs.python.org/3/&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+    <span class="s2">&quot;flask&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;https://flask.palletsprojects.com/&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+    <span class="s2">&quot;jinja&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;https://jinja.palletsprojects.com/&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+    <span class="s2">&quot;linuxdoc&quot;</span> <span class="p">:</span> <span class="p">(</span><span class="s2">&quot;https://return42.github.io/linuxdoc/&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+    <span class="s2">&quot;sphinx&quot;</span> <span class="p">:</span> <span class="p">(</span><span class="s2">&quot;https://www.sphinx-doc.org/en/master/&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>To list all anchors of the inventory (e.g. <code class="docutils literal notranslate"><span class="pre">python</span></code>) use:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>python<span class="w"> </span>-m<span class="w"> </span>sphinx.ext.intersphinx<span class="w"> </span>https://docs.python.org/3/objects.inv
+...
+$<span class="w"> </span>python<span class="w"> </span>-m<span class="w"> </span>sphinx.ext.intersphinx<span class="w"> </span>https://docs.searxng.org/objects.inv
+...
+</pre></div>
+</div>
+</section>
+</section>
+<section id="literal-blocks">
+<h2><a class="toc-backref" href="#id24" role="doc-backlink">Literal blocks</a><a class="headerlink" href="#literal-blocks" title="Link to this heading">¶</a></h2>
+<p>The simplest form of <a class="extlink-duref reference external" href="https://docutils.sourceforge.io/docs/ref/rst/restructuredtext.html#literal-blocks">literal-blocks</a> is a indented block introduced by
+two colons (<code class="docutils literal notranslate"><span class="pre">::</span></code>).  For highlighting use <a class="extlink-dudir reference external" href="https://docutils.sourceforge.io/docs/ref/rst/directives.html#highlight">highlight</a> or <a class="reference internal" href="#rest-code"><span class="std std-ref">code-block</span></a> directive.  To include literals from external files use
+<a class="reference external" href="https://www.sphinx-doc.org/en/master/usage/restructuredtext/directives.html#directive-literalinclude" title="(in Sphinx v9.1.0)"><code class="xref rst rst-dir docutils literal notranslate"><span class="pre">literalinclude</span></code></a> or <a class="reference external" href="https://return42.github.io/linuxdoc/linuxdoc-howto/kernel-include-directive.html#kernel-include-directive" title="(in LinuxDoc v20240924.dev1)"><span class="xref std std-ref">kernel-include</span></a>
+directive (latter one expands environment variables in the path name).</p>
+<section id="rest-literal">
+<span id="id3"></span><h3><a class="toc-backref" href="#id25" role="doc-backlink"><code class="docutils literal notranslate"><span class="pre">::</span></code></a><a class="headerlink" href="#rest-literal" title="Link to this heading">¶</a></h3>
+<div class="highlight-reST notranslate"><div class="highlight"><pre><span></span><span class="se">::</span>
+
+<span class="s">  Literal block</span>
+
+Lorem ipsum dolor<span class="se">::</span>
+
+<span class="s">  Literal block</span>
+
+Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy
+eirmod tempor invidunt ut labore ::
+
+  Literal block
+</pre></div>
+</div>
+<div class="rst-example admonition">
+<p class="admonition-title">Literal block</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Literal</span> <span class="n">block</span>
+</pre></div>
+</div>
+<p>Lorem ipsum dolor:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Literal</span> <span class="n">block</span>
+</pre></div>
+</div>
+<p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy
+eirmod tempor invidunt ut labore</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Literal</span> <span class="n">block</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="code-block">
+<span id="rest-code"></span><h3><a class="toc-backref" href="#id26" role="doc-backlink"><code class="docutils literal notranslate"><span class="pre">code-block</span></code></a><a class="headerlink" href="#code-block" title="Link to this heading">¶</a></h3>
+<aside class="sidebar">
+<p class="sidebar-title">Syntax highlighting</p>
+<p>is handled by <a class="reference external" href="https://pygments.org/languages/">pygments</a>.</p>
+</aside>
+<p>The <a class="reference external" href="https://www.sphinx-doc.org/en/master/usage/restructuredtext/directives.html#directive-code-block" title="(in Sphinx v9.1.0)"><code class="xref rst rst-dir docutils literal notranslate"><span class="pre">code-block</span></code></a> directive is a variant of the <a class="extlink-dudir reference external" href="https://docutils.sourceforge.io/docs/ref/rst/directives.html#code">code</a> directive
+with additional options.  To learn more about code literals visit
+<a class="reference external" href="https://www.sphinx-doc.org/en/master/usage/restructuredtext/directives.html#code-examples" title="(in Sphinx v9.1.0)"><span>Showing code examples</span></a>.</p>
+<div class="highlight-reST notranslate"><div class="highlight"><pre><span></span>The URL <span class="s">``/stats``</span> handle is shown in <span class="na">:ref:</span><span class="nv">`stats-handle`</span>
+
+<span class="p">..</span> <span class="ow">code-block</span><span class="p">::</span> Python
+   <span class="nc">:caption:</span> python code block
+   <span class="nc">:name:</span> stats-handle
+
+   @app.route(&#39;/stats&#39;, methods=[&#39;GET&#39;])
+   def stats():
+       &quot;&quot;&quot;Render engine statistics page.&quot;&quot;&quot;
+       stats = get_engines_stats()
+       return render(
+           &#39;stats.html&#39;
+           , stats = stats )
+</pre></div>
+</div>
+<div class="highlight-reST notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<div class="rst-example admonition">
+<p class="admonition-title">Code block</p>
+<p>The URL <code class="docutils literal notranslate"><span class="pre">/stats</span></code> handle is shown in <a class="reference internal" href="#stats-handle"><span class="std std-ref">python code block</span></a></p>
+<div class="literal-block-wrapper docutils container" id="stats-handle">
+<div class="code-block-caption"><span class="caption-number">Listing 1 </span><span class="caption-text">python code block</span><a class="headerlink" href="#stats-handle" title="Link to this code">¶</a></div>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/stats&#39;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;GET&#39;</span><span class="p">])</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">stats</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Render engine statistics page.&quot;&quot;&quot;</span>
+    <span class="n">stats</span> <span class="o">=</span> <span class="n">get_engines_stats</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">render</span><span class="p">(</span>
+        <span class="s1">&#39;stats.html&#39;</span>
+        <span class="p">,</span> <span class="n">stats</span> <span class="o">=</span> <span class="n">stats</span> <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="unicode-substitution">
+<h2><a class="toc-backref" href="#id27" role="doc-backlink">Unicode substitution</a><a class="headerlink" href="#unicode-substitution" title="Link to this heading">¶</a></h2>
+<p>The <a class="extlink-dudir reference external" href="https://docutils.sourceforge.io/docs/ref/rst/directives.html#unicode-character-codes">unicode directive</a> converts Unicode
+character codes (numerical values) to characters.  This directive can only be
+used within a substitution definition.</p>
+<div class="highlight-reST notranslate"><div class="highlight"><pre><span></span><span class="p">..</span> <span class="nt">|copy|</span> <span class="ow">unicode</span><span class="p">::</span> 0xA9 .. copyright sign
+<span class="p">..</span> <span class="nt">|(TM)|</span> <span class="ow">unicode</span><span class="p">::</span> U+2122
+
+Trademark |(TM)| and copyright |copy| glyphs.
+</pre></div>
+</div>
+<div class="rst-example admonition">
+<p class="admonition-title">Unicode</p>
+<p>Trademark ™ and copyright © glyphs.</p>
+</div>
+</section>
+<section id="roles">
+<span id="rest-roles"></span><h2><a class="toc-backref" href="#id28" role="doc-backlink">Roles</a><a class="headerlink" href="#roles" title="Link to this heading">¶</a></h2>
+<aside class="sidebar">
+<p class="sidebar-title">Further reading</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://www.sphinx-doc.org/en/master/usage/restructuredtext/roles.html">Sphinx Roles</a></p></li>
+<li><p><a class="reference external" href="https://www.sphinx-doc.org/en/master/usage/restructuredtext/domains.html" title="(in Sphinx v9.1.0)"><span>MOVED: Domains</span></a></p></li>
+</ul>
+</aside>
+<p>A <em>custom interpreted text role</em> (<a class="extlink-duref reference external" href="https://docutils.sourceforge.io/docs/ref/rst/restructuredtext.html#roles">ref</a>) is an inline piece of
+explicit markup.  It signifies that that the enclosed text should be interpreted
+in a specific way.</p>
+<p>The general markup is one of:</p>
+<div class="highlight-reST notranslate"><div class="highlight"><pre><span></span><span class="na">:rolename:</span><span class="nv">`ref-name`</span>
+<span class="na">:rolename:</span><span class="nv">`ref text &lt;ref-name&gt;`</span>
+</pre></div>
+</div>
+<table class="docutils align-default" id="id6">
+<caption><span class="caption-number">Table 11 </span><span class="caption-text">smart refs with <a class="reference external" href="https://www.sphinx-doc.org/en/master/usage/extensions/extlinks.html">sphinx.ext.extlinks</a> and <a class="reference external" href="https://www.sphinx-doc.org/en/stable/ext/intersphinx.html">intersphinx</a></span><a class="headerlink" href="#id6" title="Link to this table">¶</a></caption>
+<colgroup>
+<col style="width: 28.6%" />
+<col style="width: 21.4%" />
+<col style="width: 50.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>role</p></th>
+<th class="head"><p>rendered example</p></th>
+<th class="head"><p>markup</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><a class="reference external" href="https://www.sphinx-doc.org/en/master/usage/restructuredtext/roles.html#role-guilabel" title="(in Sphinx v9.1.0)"><code class="xref rst rst-role docutils literal notranslate"><span class="pre">guilabel</span></code></a></p></td>
+<td><p><span class="guilabel"><span class="accelerator">C</span>ancel</span></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">:guilabel:`&amp;Cancel`</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference external" href="https://www.sphinx-doc.org/en/master/usage/restructuredtext/roles.html#role-kbd" title="(in Sphinx v9.1.0)"><code class="xref rst rst-role docutils literal notranslate"><span class="pre">kbd</span></code></a></p></td>
+<td><p><kbd class="kbd docutils literal notranslate">C</kbd>-<kbd class="kbd docutils literal notranslate">x</kbd> <kbd class="kbd docutils literal notranslate">C</kbd>-<kbd class="kbd docutils literal notranslate">f</kbd></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">:kbd:`C-x</span> <span class="pre">C-f`</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference external" href="https://www.sphinx-doc.org/en/master/usage/restructuredtext/roles.html#role-menuselection" title="(in Sphinx v9.1.0)"><code class="xref rst rst-role docutils literal notranslate"><span class="pre">menuselection</span></code></a></p></td>
+<td><p><span class="menuselection">Open ‣ File</span></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">:menuselection:`Open</span> <span class="pre">--&gt;</span> <span class="pre">File`</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference external" href="https://www.sphinx-doc.org/en/master/usage/referencing.html#role-download" title="(in Sphinx v9.1.0)"><code class="xref rst rst-role docutils literal notranslate"><span class="pre">download</span></code></a></p></td>
+<td><p><a class="reference download internal" download="" href="../_downloads/ad0ebe55d6b53b1559e0ca8dee6f30b9/reST.rst"><code class="xref download docutils literal notranslate"><span class="pre">this</span> <span class="pre">file</span></code></a></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">:download:`this</span> <span class="pre">file</span> <span class="pre">&lt;reST.rst&gt;`</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#math">math</a></p></td>
+<td><p><span class="math">a^2 + b^2 = c^2</span></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">:math:`a^2</span> <span class="pre">+</span> <span class="pre">b^2</span> <span class="pre">=</span> <span class="pre">c^2`</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference external" href="https://www.sphinx-doc.org/en/master/usage/referencing.html#role-ref" title="(in Sphinx v9.1.0)"><code class="xref rst rst-role docutils literal notranslate"><span class="pre">ref</span></code></a></p></td>
+<td><p><a class="reference internal" href="#svg-image-example"><span class="std std-ref">Simple SVG image.</span></a></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">:ref:`svg</span> <span class="pre">image</span> <span class="pre">example`</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference external" href="https://www.sphinx-doc.org/en/master/usage/restructuredtext/roles.html#role-command" title="(in Sphinx v9.1.0)"><code class="xref rst rst-role docutils literal notranslate"><span class="pre">command</span></code></a></p></td>
+<td><p><strong class="command">ls -la</strong></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">:command:`ls</span> <span class="pre">-la`</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="extlink-durole reference external" href="https://docutils.sourceforge.io/docs/ref/rst/roles.html#emphasis">emphasis</a></p></td>
+<td><p><em>italic</em></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">:emphasis:`italic`</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="extlink-durole reference external" href="https://docutils.sourceforge.io/docs/ref/rst/roles.html#strong">strong</a></p></td>
+<td><p><strong>bold</strong></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">:strong:`bold`</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="extlink-durole reference external" href="https://docutils.sourceforge.io/docs/ref/rst/roles.html#literal">literal</a></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">foo()</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">:literal:`foo()`</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="extlink-durole reference external" href="https://docutils.sourceforge.io/docs/ref/rst/roles.html#subscript">subscript</a></p></td>
+<td><p>H<sub>2</sub>O</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">H\</span> <span class="pre">:sub:`2`\</span> <span class="pre">O</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="extlink-durole reference external" href="https://docutils.sourceforge.io/docs/ref/rst/roles.html#superscript">superscript</a></p></td>
+<td><p>E = mc<sup>2</sup></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">E</span> <span class="pre">=</span> <span class="pre">mc\</span> <span class="pre">:sup:`2`</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="extlink-durole reference external" href="https://docutils.sourceforge.io/docs/ref/rst/roles.html#title-reference">title-reference</a></p></td>
+<td><p><cite>Time</cite></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">:title:`Time`</span></code></p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="figures-images">
+<h2><a class="toc-backref" href="#id29" role="doc-backlink">Figures &amp; Images</a><a class="headerlink" href="#figures-images" title="Link to this heading">¶</a></h2>
+<aside class="sidebar">
+<p class="sidebar-title">Image processing</p>
+<p>With the directives from <a class="reference external" href="https://return42.github.io/linuxdoc/linuxdoc-howto/kfigure.html#kfigure" title="(in LinuxDoc v20240924.dev1)"><span class="xref std std-ref">linuxdoc</span></a> the build process
+is flexible.  To get best results in the generated output format, install
+<a class="reference external" href="https://www.imagemagick.org">ImageMagick</a> and <a class="reference external" href="https://graphviz.gitlab.io">Graphviz</a>.</p>
+</aside>
+<p>SearXNG’s sphinx setup includes: <a class="reference external" href="https://return42.github.io/linuxdoc/linuxdoc-howto/kfigure.html#kfigure" title="(in LinuxDoc v20240924.dev1)"><span>Scalable figure and image handling</span></a>.  Scalable here means;
+scalable in sense of the build process.  Normally in absence of a converter
+tool, the build process will break.  From the authors POV it’s annoying to care
+about the build process when handling with images, especially since he has no
+access to the build process.  With <a class="reference external" href="https://return42.github.io/linuxdoc/linuxdoc-howto/kfigure.html#kfigure" title="(in LinuxDoc v20240924.dev1)"><span>Scalable figure and image handling</span></a> the build process
+continues and scales output quality in dependence of installed image processors.</p>
+<p>If you want to add an image, you should use the <code class="docutils literal notranslate"><span class="pre">kernel-figure</span></code> (inheritance
+of <a class="extlink-dudir reference external" href="https://docutils.sourceforge.io/docs/ref/rst/directives.html#figure">figure</a>) and <code class="docutils literal notranslate"><span class="pre">kernel-image</span></code> (inheritance of <a class="extlink-dudir reference external" href="https://docutils.sourceforge.io/docs/ref/rst/directives.html#image">image</a>)
+directives.  E.g. to insert a figure with a scalable image format use SVG
+(<a class="reference internal" href="#svg-image-example"><span class="std std-ref">Simple SVG image.</span></a>):</p>
+<div class="highlight-reST notranslate"><div class="highlight"><pre><span></span><span class="p">..</span> <span class="nt">_svg image example:</span>
+
+<span class="p">..</span> <span class="ow">kernel-figure</span><span class="p">::</span> svg_image.svg
+   <span class="nc">:alt:</span> SVG image example
+
+   Simple SVG image
+
+ To refer the figure, a caption block is needed: <span class="na">:ref:</span><span class="nv">`svg image example`</span>.
+</pre></div>
+</div>
+<figure class="align-default" id="id7">
+<img alt="SVG image example" src="../_images/svg_image.svg" />
+<figcaption>
+<p><span class="caption-number">Fig. 4 </span><span class="caption-text">Simple SVG image.</span><a class="headerlink" href="#id7" title="Link to this image">¶</a></p>
+</figcaption>
+</figure>
+<p>To refer the figure, a caption block is needed: <a class="reference internal" href="#svg-image-example"><span class="std std-ref">Simple SVG image.</span></a>.</p>
+<section id="dot-files-aka-graphviz">
+<h3><a class="toc-backref" href="#id30" role="doc-backlink">DOT files (aka Graphviz)</a><a class="headerlink" href="#dot-files-aka-graphviz" title="Link to this heading">¶</a></h3>
+<p>With <a class="reference external" href="https://return42.github.io/linuxdoc/linuxdoc-howto/kfigure.html#kernel-figure" title="(in LinuxDoc v20240924.dev1)"><span>kernel-figure &amp; kernel-image</span></a> reST support for <strong>DOT</strong> formatted files is
+given.</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://graphviz.gitlab.io/_pages/pdf/dotguide.pdf">Graphviz’s dot</a></p></li>
+<li><p><a class="reference external" href="https://graphviz.gitlab.io/_pages/doc/info/lang.html">DOT</a></p></li>
+<li><p><a class="reference external" href="https://graphviz.gitlab.io">Graphviz</a></p></li>
+</ul>
+<p>A simple example is shown in <a class="reference internal" href="#dot-file-example"><span class="std std-ref">DOT’s hello world example</span></a>:</p>
+<div class="highlight-reST notranslate"><div class="highlight"><pre><span></span><span class="p">..</span> <span class="nt">_dot file example:</span>
+
+<span class="p">..</span> <span class="ow">kernel-figure</span><span class="p">::</span> hello.dot
+   <span class="nc">:alt:</span> hello world
+
+   DOT&#39;s hello world example
+</pre></div>
+</div>
+<div class="rst-example admonition">
+<p class="admonition-title">hello.dot</p>
+<figure class="align-default" id="id8">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">graph</span> <span class="n">G</span> <span class="p">{</span>
+      <span class="n">Hello</span> <span class="o">--</span> <span class="n">World</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<figcaption>
+<p><span class="caption-number">Fig. 5 </span><span class="caption-text">DOT’s hello world example</span><a class="headerlink" href="#id8" title="Link to this image">¶</a></p>
+</figcaption>
+</figure>
+</div>
+</section>
+<section id="kernel-render-dot">
+<h3><a class="toc-backref" href="#id31" role="doc-backlink"><code class="docutils literal notranslate"><span class="pre">kernel-render</span></code> DOT</a><a class="headerlink" href="#kernel-render-dot" title="Link to this heading">¶</a></h3>
+<p>Embed <em>render</em> markups (or languages) like Graphviz’s <strong>DOT</strong> is provided by the
+<a class="reference external" href="https://return42.github.io/linuxdoc/linuxdoc-howto/kfigure.html#kernel-render" title="(in LinuxDoc v20240924.dev1)"><span>kernel-render</span></a> directive.  A simple example of embedded <a class="reference external" href="https://graphviz.gitlab.io/_pages/doc/info/lang.html">DOT</a> is
+shown in figure <a class="reference internal" href="#dot-render-example"><span class="std std-ref">Embedded  DOT (Graphviz) code</span></a>:</p>
+<div class="highlight-reST notranslate"><div class="highlight"><pre><span></span><span class="p">..</span> <span class="nt">_dot render example:</span>
+
+<span class="p">..</span> <span class="ow">kernel-render</span><span class="p">::</span> DOT
+   <span class="nc">:alt:</span> digraph
+   <span class="nc">:caption:</span> Embedded  DOT (Graphviz) code
+
+   digraph foo {
+     &quot;bar&quot; -&gt; &quot;baz&quot;;
+   }
+
+Attribute <span class="s">``caption``</span> is needed, if you want to refer the figure: :ref:`dot
+render example`.
+</pre></div>
+</div>
+<p>Please note <a class="reference external" href="https://return42.github.io/linuxdoc/linuxdoc-howto/kfigure.html#kfigure-build-tools" title="(in LinuxDoc v20240924.dev1)"><span class="xref std std-ref">build tools</span></a>.  If <a class="reference external" href="https://graphviz.gitlab.io">Graphviz</a> is
+installed, you will see an vector image.  If not, the raw markup is inserted as
+<em>literal-block</em>.</p>
+<div class="rst-example admonition">
+<p class="admonition-title">kernel-render DOT</p>
+<figure class="align-default" id="id9">
+<span id="dot-render-example"></span><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">digraph</span> <span class="n">foo</span> <span class="p">{</span>
+  <span class="s2">&quot;bar&quot;</span> <span class="o">-&gt;</span> <span class="s2">&quot;baz&quot;</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<figcaption>
+<p><span class="caption-number">Fig. 6 </span><span class="caption-text">Embedded  DOT (Graphviz) code</span><a class="headerlink" href="#id9" title="Link to this image">¶</a></p>
+</figcaption>
+</figure>
+<p>Attribute <code class="docutils literal notranslate"><span class="pre">caption</span></code> is needed, if you want to refer the figure: <a class="reference internal" href="#dot-render-example"><span class="std std-ref">Embedded  DOT (Graphviz) code</span></a>.</p>
+</div>
+</section>
+<section id="kernel-render-svg">
+<h3><a class="toc-backref" href="#id32" role="doc-backlink"><code class="docutils literal notranslate"><span class="pre">kernel-render</span></code> SVG</a><a class="headerlink" href="#kernel-render-svg" title="Link to this heading">¶</a></h3>
+<p>A simple example of embedded <a class="reference external" href="https://www.w3.org/TR/SVG11/expanded-toc.html">SVG</a> is shown in figure <a class="reference internal" href="#svg-render-example"><span class="std std-ref">Embedded SVG markup</span></a>:</p>
+<div class="highlight-reST notranslate"><div class="highlight"><pre><span></span><span class="p">..</span> <span class="nt">_svg render example:</span>
+
+<span class="p">..</span> <span class="ow">kernel-render</span><span class="p">::</span> SVG
+   <span class="nc">:caption:</span> Embedded <span class="gs">**SVG**</span> markup
+   <span class="nc">:alt:</span> so-nw-arrow
+</pre></div>
+</div>
+<blockquote>
+<div><div class="highlight-xml notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span>
+<span class="nt">&lt;svg</span><span class="w"> </span><span class="na">xmlns=</span><span class="s">&quot;http://www.w3.org/2000/svg&quot;</span><span class="w"> </span><span class="na">version=</span><span class="s">&quot;1.1&quot;</span>
+<span class="w">     </span><span class="na">baseProfile=</span><span class="s">&quot;full&quot;</span><span class="w"> </span><span class="na">width=</span><span class="s">&quot;70px&quot;</span><span class="w"> </span><span class="na">height=</span><span class="s">&quot;40px&quot;</span>
+<span class="w">     </span><span class="na">viewBox=</span><span class="s">&quot;0 0 700 400&quot;</span>
+<span class="w">     </span><span class="nt">&gt;</span>
+<span class="w">  </span><span class="nt">&lt;line</span><span class="w"> </span><span class="na">x1=</span><span class="s">&quot;180&quot;</span><span class="w"> </span><span class="na">y1=</span><span class="s">&quot;370&quot;</span>
+<span class="w">        </span><span class="na">x2=</span><span class="s">&quot;500&quot;</span><span class="w"> </span><span class="na">y2=</span><span class="s">&quot;50&quot;</span>
+<span class="w">        </span><span class="na">stroke=</span><span class="s">&quot;black&quot;</span><span class="w"> </span><span class="na">stroke-width=</span><span class="s">&quot;15px&quot;</span>
+<span class="w">        </span><span class="nt">/&gt;</span>
+<span class="w">  </span><span class="nt">&lt;polygon</span><span class="w"> </span><span class="na">points=</span><span class="s">&quot;585 0 525 25 585 50&quot;</span>
+<span class="w">           </span><span class="na">transform=</span><span class="s">&quot;rotate(135 525 25)&quot;</span>
+<span class="w">           </span><span class="nt">/&gt;</span>
+<span class="nt">&lt;/svg&gt;</span>
+</pre></div>
+</div>
+</div></blockquote>
+<div class="rst-example admonition">
+<p class="admonition-title">kernel-render SVG</p>
+<figure class="align-default" id="id10">
+<span id="svg-render-example"></span><img alt="so-nw-arrow" src="../_images/SVG-1fb7029fa2cc454a267bae271cccb2c591387416.svg" />
+<figcaption>
+<p><span class="caption-number">Fig. 7 </span><span class="caption-text">Embedded <strong>SVG</strong> markup</span><a class="headerlink" href="#id10" title="Link to this image">¶</a></p>
+</figcaption>
+</figure>
+</div>
+</section>
+</section>
+<section id="list-markups">
+<span id="rest-lists"></span><h2><a class="toc-backref" href="#id33" role="doc-backlink">List markups</a><a class="headerlink" href="#list-markups" title="Link to this heading">¶</a></h2>
+<section id="bullet-list">
+<h3><a class="toc-backref" href="#id34" role="doc-backlink">Bullet list</a><a class="headerlink" href="#bullet-list" title="Link to this heading">¶</a></h3>
+<p>List markup (<a class="extlink-duref reference external" href="https://docutils.sourceforge.io/docs/ref/rst/restructuredtext.html#bullet-lists">ref</a>) is simple:</p>
+<div class="highlight-reST notranslate"><div class="highlight"><pre><span></span><span class="m">-</span> This is a bulleted list.
+
+  <span class="m">1.</span> Nested lists are possible, but be aware that they must be separated from
+     the parent list items by blank line
+  <span class="m">2.</span> Second item of nested list
+
+<span class="m">-</span> It has two items, the second
+  item uses two lines.
+
+<span class="m">#.</span> This is a numbered list.
+<span class="m">#.</span> It has two items too.
+</pre></div>
+</div>
+<div class="rst-example admonition">
+<p class="admonition-title">bullet list</p>
+<ul class="simple">
+<li><p>This is a bulleted list.</p>
+<ol class="arabic simple">
+<li><p>Nested lists are possible, but be aware that they must be separated from
+the parent list items by blank line</p></li>
+<li><p>Second item of nested list</p></li>
+</ol>
+</li>
+<li><p>It has two items, the second
+item uses two lines.</p></li>
+</ul>
+<ol class="arabic simple">
+<li><p>This is a numbered list.</p></li>
+<li><p>It has two items too.</p></li>
+</ol>
+</div>
+</section>
+<section id="horizontal-list">
+<h3><a class="toc-backref" href="#id35" role="doc-backlink">Horizontal list</a><a class="headerlink" href="#horizontal-list" title="Link to this heading">¶</a></h3>
+<p>The <a class="reference external" href="https://www.sphinx-doc.org/en/master/usage/restructuredtext/directives.html#directive-hlist" title="(in Sphinx v9.1.0)"><code class="xref rst rst-dir docutils literal notranslate"><span class="pre">..</span> <span class="pre">hlist::</span></code></a> transforms a bullet list into a more compact
+list.</p>
+<div class="highlight-reST notranslate"><div class="highlight"><pre><span></span><span class="p">..</span> <span class="ow">hlist</span><span class="p">::</span>
+
+   <span class="m">-</span> first list item
+   <span class="m">-</span> second list item
+   <span class="m">-</span> third list item
+<span class="c">   ...</span>
+</pre></div>
+</div>
+<div class="rst-example admonition">
+<p class="admonition-title">hlist</p>
+<table class="hlist"><tr><td><ul class="simple">
+<li><p>first list item</p></li>
+<li><p>second list item</p></li>
+<li><p>third list item</p></li>
+<li><p>next list item</p></li>
+</ul>
+</td><td><ul class="simple">
+<li><p>next list item xxxx</p></li>
+<li><p>next list item yyyy</p></li>
+<li><p>next list item zzzz</p></li>
+</ul>
+</td></tr></table>
+</div>
+</section>
+<section id="definition-list">
+<h3><a class="toc-backref" href="#id36" role="doc-backlink">Definition list</a><a class="headerlink" href="#definition-list" title="Link to this heading">¶</a></h3>
+<aside class="sidebar">
+<p class="sidebar-title">Note ..</p>
+<ul class="simple">
+<li><p>the term cannot have more than one line of text</p></li>
+<li><p>there is <strong>no blank line between term and definition block</strong> // this
+distinguishes definition lists (<a class="extlink-duref reference external" href="https://docutils.sourceforge.io/docs/ref/rst/restructuredtext.html#definition-lists">ref</a>) from block
+quotes (<a class="extlink-duref reference external" href="https://docutils.sourceforge.io/docs/ref/rst/restructuredtext.html#block-quotes">ref</a>).</p></li>
+</ul>
+</aside>
+<p>Each definition list (<a class="extlink-duref reference external" href="https://docutils.sourceforge.io/docs/ref/rst/restructuredtext.html#definition-lists">ref</a>) item contains a term,
+optional classifiers and a definition.  A term is a simple one-line word or
+phrase.  Optional classifiers may follow the term on the same line, each after
+an inline ‘ : ‘ (<strong>space, colon, space</strong>).  A definition is a block indented
+relative to the term, and may contain multiple paragraphs and other body
+elements.  There may be no blank line between a term line and a definition block
+(<em>this distinguishes definition lists from block quotes</em>).  Blank lines are
+required before the first and after the last definition list item, but are
+optional in-between.</p>
+<p>Definition lists are created as follows:</p>
+<div class="highlight-reST notranslate"><div class="highlight"><pre><span></span>term 1 (up to a line of text)
+    Definition 1.
+
+See the typo : this line is not a term!
+
+  And this is not term&#39;s definition.  <span class="gs">**There is a blank line**</span> in between
+  the line above and this paragraph.  That&#39;s why this paragraph is taken as
+  <span class="gs">**block quote**</span> (<span class="na">:duref:</span><span class="nv">`ref &lt;block-quotes&gt;`</span>) and not as term&#39;s definition!
+
+term 2
+    Definition 2, paragraph 1.
+
+    Definition 2, paragraph 2.
+
+term 3 : classifier
+    Definition 3.
+
+term 4 : classifier one : classifier two
+    Definition 4.
+</pre></div>
+</div>
+<div class="rst-example admonition">
+<p class="admonition-title">definition list</p>
+<dl class="simple">
+<dt>term 1 (up to a line of text)</dt><dd><p>Definition 1.</p>
+</dd>
+</dl>
+<p>See the typo : this line is not a term!</p>
+<blockquote>
+<div><p>And this is not term’s definition.  <strong>There is a blank line</strong> in between
+the line above and this paragraph.  That’s why this paragraph is taken as
+<strong>block quote</strong> (<a class="extlink-duref reference external" href="https://docutils.sourceforge.io/docs/ref/rst/restructuredtext.html#block-quotes">ref</a>) and not as term’s definition!</p>
+</div></blockquote>
+<dl>
+<dt>term 2</dt><dd><p>Definition 2, paragraph 1.</p>
+<p>Definition 2, paragraph 2.</p>
+</dd>
+<dt>term 3<span class="classifier">classifier</span></dt><dd><p>Definition 3.</p>
+</dd>
+</dl>
+<p>term 4 : classifier one : classifier two</p>
+</div>
+</section>
+<section id="quoted-paragraphs">
+<h3><a class="toc-backref" href="#id37" role="doc-backlink">Quoted paragraphs</a><a class="headerlink" href="#quoted-paragraphs" title="Link to this heading">¶</a></h3>
+<p>Quoted paragraphs (<a class="extlink-duref reference external" href="https://docutils.sourceforge.io/docs/ref/rst/restructuredtext.html#block-quotes">ref</a>) are created by just indenting
+them more than the surrounding paragraphs.  Line blocks (<a class="extlink-duref reference external" href="https://docutils.sourceforge.io/docs/ref/rst/restructuredtext.html#line-blocks">ref</a>) are a way of preserving line breaks:</p>
+<div class="highlight-reST notranslate"><div class="highlight"><pre><span></span>normal paragraph ...
+lorem ipsum.
+
+   Quoted paragraph ...
+   lorem ipsum.
+
+<span class="o">|</span> These lines are
+<span class="o">|</span> broken exactly like in
+<span class="o">|</span> the source file.
+</pre></div>
+</div>
+<div class="rst-example admonition">
+<p class="admonition-title">Quoted paragraph and line block</p>
+<p>normal paragraph …
+lorem ipsum.</p>
+<blockquote>
+<div><p>Quoted paragraph …
+lorem ipsum.</p>
+</div></blockquote>
+<div class="line-block">
+<div class="line">These lines are</div>
+<div class="line">broken exactly like in</div>
+<div class="line">the source file.</div>
+</div>
+</div>
+</section>
+<section id="field-lists">
+<span id="rest-field-list"></span><h3><a class="toc-backref" href="#id38" role="doc-backlink">Field Lists</a><a class="headerlink" href="#field-lists" title="Link to this heading">¶</a></h3>
+<aside class="sidebar">
+<p class="sidebar-title">bibliographic fields</p>
+<p>First lines fields are bibliographic fields, see <a class="reference external" href="https://www.sphinx-doc.org/en/master/usage/restructuredtext/field-lists.html">Sphinx Field Lists</a>.</p>
+</aside>
+<p>Field lists are used as part of an extension syntax, such as options for
+directives, or database-like records meant for further processing.  Field lists
+are mappings from field names to field bodies.  They marked up like this:</p>
+<div class="highlight-reST notranslate"><div class="highlight"><pre><span></span><span class="nc">:fieldname:</span> Field content
+<span class="nc">:foo:</span>       first paragraph in field foo
+
+            second paragraph in field foo
+
+<span class="nc">:bar:</span>       Field content
+</pre></div>
+</div>
+<div class="rst-example admonition">
+<p class="admonition-title">Field List</p>
+<dl class="field-list">
+<dt class="field-odd">fieldname<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Field content</p>
+</dd>
+<dt class="field-even">foo<span class="colon">:</span></dt>
+<dd class="field-even"><p>first paragraph in field foo</p>
+<p>second paragraph in field foo</p>
+</dd>
+<dt class="field-odd">bar<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Field content</p>
+</dd>
+</dl>
+</div>
+<p>They are commonly used in Python documentation:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">my_function</span><span class="p">(</span><span class="n">my_arg</span><span class="p">,</span> <span class="n">my_other_arg</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A function just for me.</span>
+
+<span class="sd">    :param my_arg: The first of my arguments.</span>
+<span class="sd">    :param my_other_arg: The second of my arguments.</span>
+
+<span class="sd">    :returns: A message (just for me, of course).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+</pre></div>
+</div>
+</section>
+<section id="further-list-blocks">
+<h3><a class="toc-backref" href="#id39" role="doc-backlink">Further list blocks</a><a class="headerlink" href="#further-list-blocks" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>field lists (<a class="extlink-duref reference external" href="https://docutils.sourceforge.io/docs/ref/rst/restructuredtext.html#field-lists">ref</a>, with caveats noted in
+<a class="reference internal" href="#rest-field-list"><span class="std std-ref">Field Lists</span></a>)</p></li>
+<li><p>option lists (<a class="extlink-duref reference external" href="https://docutils.sourceforge.io/docs/ref/rst/restructuredtext.html#option-lists">ref</a>)</p></li>
+<li><p>quoted literal blocks (<a class="extlink-duref reference external" href="https://docutils.sourceforge.io/docs/ref/rst/restructuredtext.html#quoted-literal-blocks">ref</a>)</p></li>
+<li><p>doctest blocks (<a class="extlink-duref reference external" href="https://docutils.sourceforge.io/docs/ref/rst/restructuredtext.html#doctest-blocks">ref</a>)</p></li>
+</ul>
+</section>
+</section>
+<section id="admonitions">
+<h2><a class="toc-backref" href="#id40" role="doc-backlink">Admonitions</a><a class="headerlink" href="#admonitions" title="Link to this heading">¶</a></h2>
+<section id="sidebar">
+<h3><a class="toc-backref" href="#id41" role="doc-backlink">Sidebar</a><a class="headerlink" href="#sidebar" title="Link to this heading">¶</a></h3>
+<p>Sidebar is an eye catcher, often used for admonitions pointing further stuff or
+site effects.  Here is the source of the sidebar <a class="reference internal" href="#rest-primer"><span class="std std-ref">on top of this page</span></a>.</p>
+<div class="highlight-reST notranslate"><div class="highlight"><pre><span></span><span class="p">..</span> <span class="ow">sidebar</span><span class="p">::</span> KISS_ and readability_
+
+   Instead of defining more and more roles, we at SearXNG encourage our
+   contributors to follow principles like KISS_ and readability_.
+</pre></div>
+</div>
+</section>
+<section id="generic-admonition">
+<h3><a class="toc-backref" href="#id42" role="doc-backlink">Generic admonition</a><a class="headerlink" href="#generic-admonition" title="Link to this heading">¶</a></h3>
+<p>The generic <a class="extlink-dudir reference external" href="https://docutils.sourceforge.io/docs/ref/rst/directives.html#admonitions">admonition</a> needs a title:</p>
+<div class="highlight-reST notranslate"><div class="highlight"><pre><span></span><span class="p">..</span> <span class="ow">admonition</span><span class="p">::</span> generic admonition title
+
+   lorem ipsum ..
+</pre></div>
+</div>
+<div class="admonition-generic-admonition-title admonition">
+<p class="admonition-title">generic admonition title</p>
+<p>lorem ipsum ..</p>
+</div>
+</section>
+<section id="specific-admonitions">
+<h3><a class="toc-backref" href="#id43" role="doc-backlink">Specific admonitions</a><a class="headerlink" href="#specific-admonitions" title="Link to this heading">¶</a></h3>
+<p>Specific admonitions: <a class="extlink-dudir reference external" href="https://docutils.sourceforge.io/docs/ref/rst/directives.html#hint">hint</a>, <a class="extlink-dudir reference external" href="https://docutils.sourceforge.io/docs/ref/rst/directives.html#note">note</a>, <a class="extlink-dudir reference external" href="https://docutils.sourceforge.io/docs/ref/rst/directives.html#tip">tip</a> <a class="extlink-dudir reference external" href="https://docutils.sourceforge.io/docs/ref/rst/directives.html#attention">attention</a>,
+<a class="extlink-dudir reference external" href="https://docutils.sourceforge.io/docs/ref/rst/directives.html#caution">caution</a>, <a class="extlink-dudir reference external" href="https://docutils.sourceforge.io/docs/ref/rst/directives.html#danger">danger</a>, <a class="extlink-dudir reference external" href="https://docutils.sourceforge.io/docs/ref/rst/directives.html#error">error</a>, , <a class="extlink-dudir reference external" href="https://docutils.sourceforge.io/docs/ref/rst/directives.html#important">important</a>, and
+<a class="extlink-dudir reference external" href="https://docutils.sourceforge.io/docs/ref/rst/directives.html#warning">warning</a> .</p>
+<div class="highlight-reST notranslate"><div class="highlight"><pre><span></span><span class="p">..</span> <span class="ow">hint</span><span class="p">::</span>
+
+   lorem ipsum ..
+
+<span class="p">..</span> <span class="ow">note</span><span class="p">::</span>
+
+   lorem ipsum ..
+
+<span class="p">..</span> <span class="ow">warning</span><span class="p">::</span>
+
+   lorem ipsum ..
+</pre></div>
+</div>
+<div class="admonition hint">
+<p class="admonition-title">Hint</p>
+<p>lorem ipsum ..</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>lorem ipsum ..</p>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>lorem ipsum ..</p>
+</div>
+<div class="admonition attention">
+<p class="admonition-title">Attention</p>
+<p>lorem ipsum ..</p>
+</div>
+<div class="admonition caution">
+<p class="admonition-title">Caution</p>
+<p>lorem ipsum ..</p>
+</div>
+<div class="admonition danger">
+<p class="admonition-title">Danger</p>
+<p>lorem ipsum ..</p>
+</div>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>lorem ipsum ..</p>
+</div>
+<div class="admonition error">
+<p class="admonition-title">Error</p>
+<p>lorem ipsum ..</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>lorem ipsum ..</p>
+</div>
+</section>
+</section>
+<section id="tables">
+<h2><a class="toc-backref" href="#id44" role="doc-backlink">Tables</a><a class="headerlink" href="#tables" title="Link to this heading">¶</a></h2>
+<aside class="sidebar">
+<p class="sidebar-title">Nested tables</p>
+<p>Nested tables are ugly! Not all builder support nested tables, don’t use
+them!</p>
+</aside>
+<p>ASCII-art tables like <a class="reference internal" href="#rest-simple-table"><span class="std std-ref">Simple tables</span></a> and <a class="reference internal" href="#rest-grid-table"><span class="std std-ref">Grid tables</span></a> might
+be comfortable for readers of the text-files, but they have huge disadvantages
+in the creation and modifying.  First, they are hard to edit.  Think about
+adding a row or a column to a ASCII-art table or adding a paragraph in a cell,
+it is a nightmare on big tables.</p>
+<aside class="sidebar">
+<p class="sidebar-title">List tables</p>
+<p>For meaningful patch and diff use <a class="reference internal" href="#rest-flat-table"><span class="std std-ref">flat-table</span></a>.</p>
+</aside>
+<p>Second the diff of modifying ASCII-art tables is not meaningful, e.g. widening a
+cell generates a diff in which also changes are included, which are only
+ascribable to the ASCII-art.  Anyway, if you prefer ASCII-art for any reason,
+here are some helpers:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://www.emacswiki.org/emacs/TableMode">Emacs Table Mode</a></p></li>
+<li><p><a class="reference external" href="https://www.tablesgenerator.com/text_tables">Online Tables Generator</a></p></li>
+</ul>
+<section id="simple-tables">
+<span id="rest-simple-table"></span><h3><a class="toc-backref" href="#id45" role="doc-backlink">Simple tables</a><a class="headerlink" href="#simple-tables" title="Link to this heading">¶</a></h3>
+<p><a class="extlink-duref reference external" href="https://docutils.sourceforge.io/docs/ref/rst/restructuredtext.html#simple-tables">Simple tables</a> allow <em>colspan</em> but not <em>rowspan</em>.  If
+your table need some metadata (e.g. a title) you need to add the <code class="docutils literal notranslate"><span class="pre">..</span> <span class="pre">table::</span>
+<span class="pre">directive</span></code> <a class="extlink-dudir reference external" href="https://docutils.sourceforge.io/docs/ref/rst/directives.html#table">(ref)</a> in front and place the table in its body:</p>
+<div class="highlight-reST notranslate"><div class="highlight"><pre><span></span><span class="p">..</span> <span class="ow">table</span><span class="p">::</span> foo gate truth table
+   <span class="nc">:widths:</span> grid
+   <span class="nc">:align:</span> left
+
+   ====== ====== ======
+       Inputs    Output
+   ------------- ------
+   A      B      A or B
+   ====== ====== ======
+   False
+   --------------------
+   True
+   --------------------
+   True   False  True
+          (foo)
+   ------ ------ ------
+   False  True
+          (foo)
+   ====== =============
+</pre></div>
+</div>
+<div class="rst-example admonition">
+<p class="admonition-title">Simple ASCII table</p>
+<table class="docutils align-left" id="id11">
+<caption><span class="caption-number">Table 12 </span><span class="caption-text">foo gate truth table</span><a class="headerlink" href="#id11" title="Link to this table">¶</a></caption>
+<colgroup>
+<col style="width: 33.3%" />
+<col style="width: 33.3%" />
+<col style="width: 33.3%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head" colspan="2"><p>Inputs</p></th>
+<th class="head"><p>Output</p></th>
+</tr>
+<tr class="row-even"><th class="head"><p>A</p></th>
+<th class="head"><p>B</p></th>
+<th class="head"><p>A or B</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-odd"><td colspan="3"><p>False</p></td>
+</tr>
+<tr class="row-even"><td colspan="3"><p>True</p></td>
+</tr>
+<tr class="row-odd"><td><p>True</p></td>
+<td><p>False
+(foo)</p></td>
+<td><p>True</p></td>
+</tr>
+<tr class="row-even"><td><p>False</p></td>
+<td colspan="2"><p>True
+(foo)</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="grid-tables">
+<span id="rest-grid-table"></span><h3><a class="toc-backref" href="#id46" role="doc-backlink">Grid tables</a><a class="headerlink" href="#grid-tables" title="Link to this heading">¶</a></h3>
+<p><a class="extlink-duref reference external" href="https://docutils.sourceforge.io/docs/ref/rst/restructuredtext.html#grid-tables">Grid tables</a> allow colspan <em>colspan</em> and <em>rowspan</em>:</p>
+<div class="highlight-reST notranslate"><div class="highlight"><pre><span></span><span class="p">..</span> <span class="ow">table</span><span class="p">::</span> grid table example
+   <span class="nc">:widths:</span> 1 1 5
+
+   +------------+------------+-----------+
+   <span class="o">|</span> Header 1   | Header 2   | Header 3  |
+   +============+============+===========+
+   <span class="o">|</span> body row 1 | column 2   | column 3  |
+   +------------+------------+-----------+
+   <span class="o">|</span> body row 2 | Cells may span columns.|
+   +------------+------------+-----------+
+   <span class="o">|</span> body row 3 | Cells may  | - Cells   |
+   +------------+ span rows. | - contain |
+   <span class="o">|</span> body row 4 |            | - blocks. |
+   +------------+------------+-----------+
+</pre></div>
+</div>
+<div class="rst-example admonition">
+<p class="admonition-title">ASCII grid table</p>
+<table class="docutils align-default" id="id12">
+<caption><span class="caption-number">Table 13 </span><span class="caption-text">grid table example</span><a class="headerlink" href="#id12" title="Link to this table">¶</a></caption>
+<colgroup>
+<col style="width: 14.3%" />
+<col style="width: 14.3%" />
+<col style="width: 71.4%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Header 1</p></th>
+<th class="head"><p>Header 2</p></th>
+<th class="head"><p>Header 3</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>body row 1</p></td>
+<td><p>column 2</p></td>
+<td><p>column 3</p></td>
+</tr>
+<tr class="row-odd"><td><p>body row 2</p></td>
+<td colspan="2"><p>Cells may span columns.</p></td>
+</tr>
+<tr class="row-even"><td><p>body row 3</p></td>
+<td rowspan="2"><p>Cells may
+span rows.</p></td>
+<td rowspan="2"><ul class="simple">
+<li><p>Cells</p></li>
+<li><p>contain</p></li>
+<li><p>blocks.</p></li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td><p>body row 4</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="flat-table">
+<span id="rest-flat-table"></span><h3><a class="toc-backref" href="#id47" role="doc-backlink">flat-table</a><a class="headerlink" href="#flat-table" title="Link to this heading">¶</a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">flat-table</span></code> is a further developed variant of the <a class="reference external" href="https://return42.github.io/linuxdoc/linuxdoc-howto/table-markup.html#list-table-directives" title="(in LinuxDoc v20240924.dev1)"><span class="xref std std-ref">list tables</span></a>.  It is a double-stage list similar to the
+<a class="extlink-dudir reference external" href="https://docutils.sourceforge.io/docs/ref/rst/directives.html#list-table">list-table</a> with some additional features:</p>
+<dl class="simple">
+<dt>column-span: <code class="docutils literal notranslate"><span class="pre">cspan</span></code></dt><dd><p>with the role <code class="docutils literal notranslate"><span class="pre">cspan</span></code> a cell can be extended through additional columns</p>
+</dd>
+<dt>row-span: <code class="docutils literal notranslate"><span class="pre">rspan</span></code></dt><dd><p>with the role <code class="docutils literal notranslate"><span class="pre">rspan</span></code> a cell can be extended through additional rows</p>
+</dd>
+<dt>auto-span:</dt><dd><p>spans rightmost cell of a table row over the missing cells on the right side
+of that table-row.  With Option <code class="docutils literal notranslate"><span class="pre">:fill-cells:</span></code> this behavior can changed
+from <em>auto span</em> to <em>auto fill</em>, which automatically inserts (empty) cells
+instead of spanning the last cell.</p>
+</dd>
+<dt>options:</dt><dd><dl class="field-list simple">
+<dt class="field-odd">header-rows<span class="colon">:</span></dt>
+<dd class="field-odd"><p>[int] count of header rows</p>
+</dd>
+<dt class="field-even">stub-columns<span class="colon">:</span></dt>
+<dd class="field-even"><p>[int] count of stub columns</p>
+</dd>
+<dt class="field-odd">widths<span class="colon">:</span></dt>
+<dd class="field-odd"><p>[[int] [int] … ] widths of columns</p>
+</dd>
+<dt class="field-even">fill-cells<span class="colon">:</span></dt>
+<dd class="field-even"><p>instead of auto-span missing cells, insert missing cells</p>
+</dd>
+</dl>
+</dd>
+<dt>roles:</dt><dd><dl class="field-list simple">
+<dt class="field-odd">cspan<span class="colon">:</span></dt>
+<dd class="field-odd"><p>[int] additional columns (<em>morecols</em>)</p>
+</dd>
+<dt class="field-even">rspan<span class="colon">:</span></dt>
+<dd class="field-even"><p>[int] additional rows (<em>morerows</em>)</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p>The example below shows how to use this markup.  The first level of the staged
+list is the <em>table-row</em>. In the <em>table-row</em> there is only one markup allowed,
+the list of the cells in this <em>table-row</em>. Exception are <em>comments</em> ( <code class="docutils literal notranslate"><span class="pre">..</span></code> )
+and <em>targets</em> (e.g. a ref to <a class="reference internal" href="#row-body-2"><span class="std std-ref">row 2 of table’s body</span></a>).</p>
+<div class="highlight-reST notranslate"><div class="highlight"><pre><span></span><span class="p">..</span> <span class="ow">flat-table</span><span class="p">::</span> <span class="s">``flat-table``</span> example
+   <span class="nc">:header-rows:</span> 2
+   <span class="nc">:stub-columns:</span> 1
+   <span class="nc">:widths:</span> 1 1 1 1 2
+
+   <span class="m">*</span> - <span class="na">:rspan:</span><span class="nv">`1`</span> head / stub
+     <span class="m">-</span> <span class="na">:cspan:</span><span class="nv">`3`</span> head 1.1-4
+
+   <span class="m">*</span> - head 2.1
+     <span class="m">-</span> head 2.2
+     <span class="m">-</span> head 2.3
+     <span class="m">-</span> head 2.4
+
+   <span class="m">*</span> .. row body 1 / this is a comment
+
+     <span class="m">-</span> row 1
+     <span class="m">-</span> <span class="na">:rspan:</span><span class="nv">`2`</span> cell 1-3.1
+     <span class="m">-</span> cell 1.2
+     <span class="m">-</span> cell 1.3
+     <span class="m">-</span> cell 1.4
+
+   <span class="m">*</span> .. Comments and targets are allowed on <span class="ge">*table-row*</span> stage.
+<span class="p">     ..</span> <span class="nt">_`row body 2`:</span>
+
+     <span class="m">-</span> row 2
+     <span class="m">-</span> cell 2.2
+     <span class="m">-</span> <span class="na">:rspan:</span><span class="nv">`1`</span> <span class="na">:cspan:</span><span class="nv">`1`</span>
+       cell 2.3 with a span over
+
+       <span class="m">*</span> col 3-4 &amp;
+       <span class="m">*</span> row 2-3
+
+   <span class="m">*</span> - row 3
+     <span class="m">-</span> cell 3.2
+
+   <span class="m">*</span> - row 4
+     <span class="m">-</span> cell 4.1
+     <span class="m">-</span> cell 4.2
+     <span class="m">-</span> cell 4.3
+     <span class="m">-</span> cell 4.4
+
+   <span class="m">*</span> - row 5
+     <span class="m">-</span> cell 5.1 with automatic span to right end
+
+   <span class="m">*</span> - row 6
+     <span class="m">-</span> cell 6.1
+     <span class="m">-</span> ..
+</pre></div>
+</div>
+<div class="rst-example admonition">
+<p class="admonition-title">List table</p>
+<table class="docutils align-default" id="id13">
+<caption><span class="caption-number">Table 14 </span><span class="caption-text"><code class="docutils literal notranslate"><span class="pre">flat-table</span></code> example</span><a class="headerlink" href="#id13" title="Link to this table">¶</a></caption>
+<colgroup>
+<col style="width: 16.7%" />
+<col style="width: 16.7%" />
+<col style="width: 16.7%" />
+<col style="width: 16.7%" />
+<col style="width: 33.3%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head stub" rowspan="2"><p> head / stub</p></th>
+<th class="head" colspan="4"><p> head 1.1-4</p></th>
+</tr>
+<tr class="row-even"><th class="head stub"><p>head 2.1</p></th>
+<th class="head"><p>head 2.2</p></th>
+<th class="head"><p>head 2.3</p></th>
+<th class="head"><p>head 2.4</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-odd"><th class="stub"><p>row 1</p></th>
+<td rowspan="3"><p> cell 1-3.1</p></td>
+<td><p>cell 1.2</p></td>
+<td><p>cell 1.3</p></td>
+<td><p>cell 1.4</p></td>
+</tr>
+<tr class="row-even"><th class="stub"><p>row 2</p>
+</th>
+<td><p>cell 2.2</p>
+</td>
+<td colspan="2" rowspan="2"><p id="row-body-2"> 
+cell 2.3 with a span over</p>
+<ul class="simple">
+<li><p>col 3-4 &amp;</p></li>
+<li><p>row 2-3</p></li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><th class="stub"><p>row 3</p></th>
+<td><p>cell 3.2</p></td>
+</tr>
+<tr class="row-even"><th class="stub"><p>row 4</p></th>
+<td><p>cell 4.1</p></td>
+<td><p>cell 4.2</p></td>
+<td><p>cell 4.3</p></td>
+<td><p>cell 4.4</p></td>
+</tr>
+<tr class="row-odd"><th class="stub"><p>row 5</p></th>
+<td colspan="4"><p>cell 5.1 with automatic span to right end</p></td>
+</tr>
+<tr class="row-even"><th class="stub"><p>row 6</p></th>
+<td><p>cell 6.1</p></td>
+<td colspan="3"></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="csv-table">
+<h3><a class="toc-backref" href="#id48" role="doc-backlink">CSV table</a><a class="headerlink" href="#csv-table" title="Link to this heading">¶</a></h3>
+<p>CSV table might be the choice if you want to include CSV-data from a outstanding
+(build) process into your documentation.</p>
+<div class="highlight-reST notranslate"><div class="highlight"><pre><span></span><span class="p">..</span> <span class="ow">csv-table</span><span class="p">::</span> CSV table example
+   <span class="nc">:header:</span> .. , Column 1, Column 2
+   <span class="nc">:widths:</span> 2 5 5
+   <span class="nc">:stub-columns:</span> 1
+   <span class="nc">:file:</span> csv_table.txt
+</pre></div>
+</div>
+<p>Content of file <code class="docutils literal notranslate"><span class="pre">csv_table.txt</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">stub</span> <span class="n">col</span> <span class="n">row</span> <span class="mi">1</span><span class="p">,</span> <span class="n">column</span><span class="p">,</span> <span class="s2">&quot;loremLorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy</span>
+<span class="n">eirmod</span> <span class="n">tempor</span> <span class="n">invidunt</span> <span class="n">ut</span> <span class="n">labore</span> <span class="n">et</span> <span class="n">dolore</span> <span class="n">magna</span> <span class="n">aliquyam</span> <span class="n">erat</span><span class="p">,</span> <span class="n">sed</span> <span class="n">diam</span>
+<span class="n">voluptua</span><span class="o">.</span><span class="s2">&quot;</span>
+<span class="n">stub</span> <span class="n">col</span> <span class="n">row</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;At vero eos et accusam et justo duo dolores et ea rebum. Stet clita</span>
+<span class="n">kasd</span> <span class="n">gubergren</span><span class="p">,</span> <span class="n">no</span> <span class="n">sea</span> <span class="n">takimata</span> <span class="n">sanctus</span> <span class="n">est</span> <span class="n">Lorem</span> <span class="n">ipsum</span> <span class="n">dolor</span> <span class="n">sit</span> <span class="n">amet</span><span class="o">.</span><span class="s2">&quot;, column</span>
+<span class="n">stub</span> <span class="n">col</span> <span class="n">row</span> <span class="mi">1</span><span class="p">,</span> <span class="n">column</span><span class="p">,</span> <span class="n">column</span>
+</pre></div>
+</div>
+<div class="rst-example admonition">
+<p class="admonition-title">CSV table</p>
+<table class="docutils align-default" id="id14">
+<caption><span class="caption-number">Table 15 </span><span class="caption-text">CSV table example</span><a class="headerlink" href="#id14" title="Link to this table">¶</a></caption>
+<colgroup>
+<col style="width: 23.1%" />
+<col style="width: 38.5%" />
+<col style="width: 38.5%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head stub"></th>
+<th class="head"><p>Column 1</p></th>
+<th class="head"><p>Column 2</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><th class="stub"><p>stub col row 1</p></th>
+<td><p>column</p></td>
+<td><p>loremLorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy
+eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam
+voluptua.</p></td>
+</tr>
+<tr class="row-odd"><th class="stub"><p>stub col row 1</p></th>
+<td><p>At vero eos et accusam et justo duo dolores et ea rebum. Stet clita
+kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</p></td>
+<td><p>column</p></td>
+</tr>
+<tr class="row-even"><th class="stub"><p>stub col row 1</p></th>
+<td><p>column</p></td>
+<td><p>column</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+</section>
+<section id="templating">
+<h2><a class="toc-backref" href="#id49" role="doc-backlink">Templating</a><a class="headerlink" href="#templating" title="Link to this heading">¶</a></h2>
+<aside class="sidebar">
+<p class="sidebar-title">Build environment</p>
+<p>All <em>generic-doc</em> tasks are running in the <a class="reference internal" href="makefile.html#make-install"><span class="std std-ref">Python environment (make install)</span></a>.</p>
+</aside>
+<p>Templating is suitable for documentation which is created generic at the build
+time.  The <a class="reference external" href="https://github.com/tardyp/sphinx-jinja">sphinx-jinja</a> extension evaluates <a class="reference external" href="https://jinja.palletsprojects.com/">jinja</a> templates in the <a class="reference internal" href="makefile.html#make-install"><span class="std std-ref">Python environment (make install)</span></a> (with SearXNG modules installed).  We use this e.g. to build chapter:
+<a class="reference internal" href="../user/configured_engines.html#configured-engines"><span class="std std-ref">Configured Engines</span></a>.  Below the jinja directive from the
+<a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/docs/admin/engines.rst">git://docs/admin/engines.rst</a> is shown:</p>
+<div class="highlight-reST notranslate"><div class="highlight"><pre><span></span><span class="gh">==================</span>
+<span class="gh">Configured Engines</span>
+<span class="gh">==================</span>
+
+<span class="p">..</span> <span class="ow">sidebar</span><span class="p">::</span> Further reading ..
+
+   <span class="m">-</span> <span class="na">:ref:</span><span class="nv">`settings categories_as_tabs`</span>
+   <span class="m">-</span> <span class="na">:ref:</span><span class="nv">`engines-dev`</span>
+   <span class="m">-</span> <span class="na">:ref:</span><span class="nv">`settings engines`</span>
+   <span class="m">-</span> <span class="na">:ref:</span><span class="nv">`general engine configuration`</span>
+
+<span class="p">..</span> <span class="ow">jinja</span><span class="p">::</span> searx
+
+   SearXNG supports {{engines | length}} search engines of which
+   {{enabled_engine_count}} are enabled by default.
+
+   Engines can be assigned to multiple <span class="na">:ref:</span><span class="nv">`categories &lt;engine categories&gt;`</span>.
+   The UI displays the tabs that are configured in :ref:`categories_as_tabs
+   &lt;settings categories_as_tabs&gt;`.  In addition to these UI categories (also
+   called <span class="ge">*tabs*</span>), engines can be queried by their name or the categories they
+   belong to, by using a <span class="na">:ref:</span><span class="nv">`\!bing syntax &lt;search-syntax&gt;`</span>.
+
+<span class="p">..</span> <span class="ow">contents</span><span class="p">::</span>
+   <span class="nc">:depth:</span> 2
+   <span class="nc">:local:</span>
+   <span class="nc">:backlinks:</span> entry
+
+<span class="p">..</span> <span class="ow">jinja</span><span class="p">::</span> searx
+
+   {% for category, engines in categories_as_tabs.items() %}
+
+   tab <span class="s">``!{{category.replace(&#39; &#39;, &#39;_&#39;)}}``</span>
+   ---------------------------------------
+
+   {% for group, group_bang, engines in engines | group_engines_in_tab %}
+
+   {% if loop.length &gt; 1 %}
+   {% if group_bang %}group <span class="s">``{{group_bang}}``{% else %}{{group}}{% endif %}</span>
+<span class="s">   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</span>
+<span class="s">   {% endif %}</span>
+
+<span class="s">   .. flat-table::</span>
+<span class="s">      :header-rows: 2</span>
+<span class="s">      :stub-columns: 1</span>
+<span class="s">      :widths: 10 1 10 1 1 1 1 1 1 1</span>
+
+<span class="s">      * - :cspan:`5` Engines configured by default (in :ref:`settings.yml &lt;engine settings&gt;`)</span>
+<span class="s">        - :cspan:`3` :ref:`Supported features &lt;engine file&gt;`</span>
+
+<span class="s">      * - Name</span>
+<span class="s">        - !bang</span>
+<span class="s">        - Module</span>
+<span class="s">        - Disabled</span>
+<span class="s">        - Timeout</span>
+<span class="s">        - Weight</span>
+<span class="s">        - Paging</span>
+<span class="s">        - Locale</span>
+<span class="s">        - Safe search</span>
+<span class="s">        - Time range</span>
+
+<span class="s">      {% for mod in engines %}</span>
+
+<span class="s">      * - `{{mod.name}} &lt;{{mod.about and mod.about.website}}&gt;`_</span>
+<span class="s">          {%- if mod.about and  mod.about.language %}</span>
+<span class="s">          ({{mod.about.language | upper}})</span>
+<span class="s">          {%- endif %}</span>
+<span class="s">        - ``</span>!{{mod.shortcut}}<span class="s">``</span>
+<span class="s">        - {%- if &#39;searx.engines.&#39; + mod.__name__ in documented_modules %}</span>
+<span class="s">          :py:mod:`~searx.engines.{{mod.__name__}}`</span>
+<span class="s">          {%- else %}</span>
+<span class="s">          :origin:`{{mod.__name__}} &lt;searx/engines/{{mod.__name__}}.py&gt;`</span>
+<span class="s">          {%- endif %}</span>
+<span class="s">        - {{(mod.disabled and &quot;y&quot;) or &quot;&quot;}}</span>
+<span class="s">        - {{mod.timeout}}</span>
+<span class="s">        - {{mod.weight or 1 }}</span>
+<span class="s">        {% if mod.engine_type == &#39;online&#39; %}</span>
+<span class="s">        - {{(mod.paging and &quot;y&quot;) or &quot;&quot;}}</span>
+<span class="s">        - {{(mod.language_support and &quot;y&quot;) or &quot;&quot;}}</span>
+<span class="s">        - {{(mod.safesearch and &quot;y&quot;) or &quot;&quot;}}</span>
+<span class="s">        - {{(mod.time_range_support and &quot;y&quot;) or &quot;&quot;}}</span>
+<span class="s">        {% else %}</span>
+<span class="s">        - :cspan:`3` not applicable ({{mod.engine_type}})</span>
+<span class="s">        {% endif %}</span>
+
+<span class="s">     {% endfor %}</span>
+<span class="s">     {% endfor %}</span>
+<span class="s">     {% endfor %}</span>
+</pre></div>
+</div>
+<p>The context for the template is selected in the line <code class="docutils literal notranslate"><span class="pre">..</span> <span class="pre">jinja::</span> <span class="pre">searx</span></code>.  In
+sphinx’s build configuration (<a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/docs/conf.py">git://docs/conf.py</a>) the <code class="docutils literal notranslate"><span class="pre">searx</span></code> context
+contains the <code class="docutils literal notranslate"><span class="pre">engines</span></code> and <code class="docutils literal notranslate"><span class="pre">plugins</span></code>.</p>
+<div class="highlight-py notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">searx.search</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">searx.engines</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">searx.plugins</span>
+<span class="n">searx</span><span class="o">.</span><span class="n">search</span><span class="o">.</span><span class="n">initialize</span><span class="p">()</span>
+<span class="n">jinja_contexts</span> <span class="o">=</span> <span class="p">{</span>
+   <span class="s1">&#39;searx&#39;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="s1">&#39;engines&#39;</span><span class="p">:</span> <span class="n">searx</span><span class="o">.</span><span class="n">engines</span><span class="o">.</span><span class="n">engines</span><span class="p">,</span>
+      <span class="s1">&#39;plugins&#39;</span><span class="p">:</span> <span class="n">searx</span><span class="o">.</span><span class="n">plugins</span><span class="o">.</span><span class="n">plugins</span>
+   <span class="p">},</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="tabbed-views">
+<h2><a class="toc-backref" href="#id50" role="doc-backlink">Tabbed views</a><a class="headerlink" href="#tabbed-views" title="Link to this heading">¶</a></h2>
+<p>With <a class="reference external" href="https://github.com/djungelorm/sphinx-tabs">sphinx-tabs</a> extension we have <em>tabbed views</em>.  To provide installation
+instructions with one tab per distribution we use the <a class="reference external" href="https://github.com/djungelorm/sphinx-tabs#group-tabs">group-tabs</a> directive,
+others are <a class="reference external" href="https://github.com/djungelorm/sphinx-tabs#basic-tabs">basic-tabs</a> and <a class="reference external" href="https://github.com/djungelorm/sphinx-tabs#code-tabs">code-tabs</a>.  Below a <em>group-tab</em> example from
+<a class="reference internal" href="../admin/buildhosts.html#docs-build"><span class="std std-ref">Build docs</span></a> is shown:</p>
+<div class="highlight-reST notranslate"><div class="highlight"><pre><span></span><span class="p">..</span> <span class="ow">tabs</span><span class="p">::</span>
+
+<span class="p">   ..</span> <span class="ow">group-tab</span><span class="p">::</span> Ubuntu / debian
+
+<span class="p">      ..</span> <span class="ow">code-block</span><span class="p">::</span> <span class="k">sh</span>
+
+         $<span class="w"> </span>sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>shellcheck
+
+<span class="p">   ..</span> <span class="ow">group-tab</span><span class="p">::</span> Arch Linux
+
+<span class="p">      ..</span> <span class="ow">code-block</span><span class="p">::</span> <span class="k">sh</span>
+
+         $<span class="w"> </span>sudo<span class="w"> </span>pacman<span class="w"> </span>-S<span class="w"> </span>shellcheck
+
+<span class="p">   ..</span> <span class="ow">group-tab</span><span class="p">::</span>  Fedora / RHEL
+
+<span class="p">      ..</span> <span class="ow">code-block</span><span class="p">::</span> sh
+
+         $ sudo dnf install ShellCheck
+</pre></div>
+</div>
+</section>
+<section id="math-equations">
+<span id="math"></span><h2><a class="toc-backref" href="#id51" role="doc-backlink">Math equations</a><a class="headerlink" href="#math-equations" title="Link to this heading">¶</a></h2>
+<aside class="sidebar">
+<p class="sidebar-title">About LaTeX</p>
+<ul class="simple">
+<li><p><a class="reference external" href="http://vesta.informatik.rwth-aachen.de/ftp/pub/mirror/ctan/macros/latex/required/amsmath/amsldoc.pdf">amsmath user guide</a></p></li>
+<li><p><a class="reference external" href="https://en.wikibooks.org/wiki/LaTeX/Mathematics">Mathematics</a></p></li>
+<li><p><a class="reference internal" href="../admin/buildhosts.html#docs-build"><span class="std std-ref">Build docs</span></a></p></li>
+</ul>
+</aside>
+<p>The input language for mathematics is LaTeX markup using the <a class="extlink-ctan reference external" href="https://ctan.org/pkg/amsmath">CTAN: amsmath</a>
+package.</p>
+<p>To embed LaTeX markup in reST documents, use role <a class="reference external" href="https://www.sphinx-doc.org/en/master/usage/restructuredtext/roles.html#role-math" title="(in Sphinx v9.1.0)"><code class="xref rst rst-role docutils literal notranslate"><span class="pre">:math:</span></code></a> for
+inline and directive <a class="reference external" href="https://www.sphinx-doc.org/en/master/usage/restructuredtext/directives.html#directive-math" title="(in Sphinx v9.1.0)"><code class="xref rst rst-dir docutils literal notranslate"><span class="pre">..</span> <span class="pre">math::</span></code></a> for block markup.</p>
+<div class="highlight-reST notranslate"><div class="highlight"><pre><span></span>In <span class="na">:math:numref:</span><span class="nv">`schroedinger general`</span> the time-dependent Schrödinger equation
+is shown.
+
+<span class="p">..</span> <span class="ow">math</span><span class="p">::</span>
+   <span class="nc">:label:</span> schroedinger general
+
+    \mathrm{i}\hbar\dfrac{\partial}{\partial t} |\,\psi (t) \rangle =
+          \hat{H} |\,\psi (t) \rangle.
+</pre></div>
+</div>
+<div class="rst-example admonition">
+<p class="admonition-title">LaTeX math equation</p>
+<p>In <a class="reference internal" href="#equation-schroedinger-general">(1)</a> the time-dependent Schrödinger equation
+is shown.</p>
+<div class="math" id="equation-schroedinger-general">
+<p><span class="eqno">(1)<a class="headerlink" href="#equation-schroedinger-general" title="Link to this equation">¶</a></span><span class="math">\mathrm{i}\hbar\dfrac{\partial}{\partial t} |\,\psi (t) \rangle =
+       \hat{H} |\,\psi (t) \rangle.</span></p>
+</div></div>
+<p>The next example shows the difference of <code class="docutils literal notranslate"><span class="pre">\tfrac</span></code> (<em>textstyle</em>) and <code class="docutils literal notranslate"><span class="pre">\dfrac</span></code>
+(<em>displaystyle</em>) used in a inline markup or another fraction.</p>
+<div class="highlight-reST notranslate"><div class="highlight"><pre><span></span><span class="s">``\tfrac``</span> <span class="gs">**inline example**</span> <span class="na">:math:</span><span class="nv">`\tfrac{\tfrac{1}{x}+\tfrac{1}{y}}{y-z}`</span>
+<span class="s">``\dfrac``</span> <span class="gs">**inline example**</span> <span class="na">:math:</span><span class="nv">`\dfrac{\dfrac{1}{x}+\dfrac{1}{y}}{y-z}`</span>
+</pre></div>
+</div>
+<div class="rst-example admonition">
+<p class="admonition-title">Line spacing</p>
+<p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy
+eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam
+voluptua.  …
+<code class="docutils literal notranslate"><span class="pre">\tfrac</span></code> <strong>inline example</strong> <span class="math">\tfrac{\tfrac{1}{x}+\tfrac{1}{y}}{y-z}</span>
+At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd
+gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</p>
+<p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy
+eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam
+voluptua.  …
+<code class="docutils literal notranslate"><span class="pre">\tfrac</span></code> <strong>inline example</strong> <span class="math">\dfrac{\dfrac{1}{x}+\dfrac{1}{y}}{y-z}</span>
+At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd
+gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</p>
+</div>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+  <span id="sidebar-top"></span>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+  
+    
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/searxng-wordmark.svg" alt="Logo of SearXNG"/>
+            </a></p>
+  
+
+<h3><a href="../index.html">Table of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../user/index.html">User information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../own-instance.html">Why use a private instance?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../admin/index.html">Administrator documentation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Developer documentation</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html">Development Quickstart</a></li>
+<li class="toctree-l2"><a class="reference internal" href="commits.html">Git Commits &amp; Change Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contribution_guide.html">How to contribute</a></li>
+<li class="toctree-l2"><a class="reference internal" href="extended_types.html">Extended Types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="engines/index.html">Engine Implementations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="result_types/index.html">Result Types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="templates.html">Simple Theme Templates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="search_api.html">Search API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plugins/index.html">Plugins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="answerers/index.html">Answerers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="translation.html">Translation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="makefile.html">Makefile &amp; <code class="docutils literal notranslate"><span class="pre">./manage</span></code></a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">reST primer</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#soft-skills">Soft skills</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#basic-inline-markup">Basic inline markup</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#basic-article-structure">Basic article structure</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#rest-template">reST template</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#headings">Headings</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#anchors-links">Anchors &amp; Links</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#anchors">Anchors</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#link-ordinary-url">Link ordinary URL</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#smart-refs">Smart refs</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#literal-blocks">Literal blocks</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#rest-literal"><code class="docutils literal notranslate"><span class="pre">::</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#code-block"><code class="docutils literal notranslate"><span class="pre">code-block</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#unicode-substitution">Unicode substitution</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#roles">Roles</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#figures-images">Figures &amp; Images</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#dot-files-aka-graphviz">DOT files (aka Graphviz)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#kernel-render-dot"><code class="docutils literal notranslate"><span class="pre">kernel-render</span></code> DOT</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#kernel-render-svg"><code class="docutils literal notranslate"><span class="pre">kernel-render</span></code> SVG</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#list-markups">List markups</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#bullet-list">Bullet list</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#horizontal-list">Horizontal list</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#definition-list">Definition list</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#quoted-paragraphs">Quoted paragraphs</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#field-lists">Field Lists</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#further-list-blocks">Further list blocks</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#admonitions">Admonitions</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#sidebar">Sidebar</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#generic-admonition">Generic admonition</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#specific-admonitions">Specific admonitions</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#tables">Tables</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#simple-tables">Simple tables</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#grid-tables">Grid tables</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#flat-table">flat-table</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#csv-table">CSV table</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#templating">Templating</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#tabbed-views">Tabbed views</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#math-equations">Math equations</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="searxng_extra/index.html">Tooling box <code class="docutils literal notranslate"><span class="pre">searxng_extra</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../utils/index.html">DevOps tooling box</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../src/index.html">Source-Code</a></li>
+</ul>
+
+  <h3>Project Links</h3>
+  <ul>
+    <li><a href="https://github.com/searxng/searxng/tree/master">Source</a>
+  
+    <li><a href="https://github.com/searxng/searxng/wiki">Wiki</a>
+  
+    <li><a href="https://searx.space">Public instances</a>
+  
+    <li><a href="https://github.com/searxng/searxng/issues">Issue Tracker</a>
+  </ul><h3>Navigation</h3>
+<ul>
+  <li><a href="../index.html">Overview</a>
+    <ul>
+      <li><a href="index.html">Developer documentation</a>
+        <ul>
+          <li>Previous: <a href="makefile.html" title="previous chapter">Makefile &amp; <code class="docutils literal notranslate"><span class="pre">./manage</span></code></a>
+          <li>Next: <a href="searxng_extra/index.html" title="next chapter">Tooling box <code class="docutils literal notranslate"><span class="pre">searxng_extra</span></code></a></ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/dev/reST.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright SearXNG team.
+    </div>
+  </body>
+</html>

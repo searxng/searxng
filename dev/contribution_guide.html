@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>How to contribute &#8212; SearXNG Documentation (2026.2.22+191818b86)</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=6625fa76" />
+    <link rel="stylesheet" type="text/css" href="../_static/searxng.css?v=52e4ff28" />
+    <script src="../_static/documentation_options.js?v=1b5d919e"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script data-project="searxng" data-version="2026.2.22+191818b86" src="../_static/describe_version.js?v=fa7f30d0"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Extended Types" href="extended_types.html" />
+    <link rel="prev" title="Git Commits &amp; Change Management" href="commits.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="extended_types.html" title="Extended Types"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="commits.html" title="Git Commits &amp; Change Management"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">SearXNG Documentation (2026.2.22+191818b86)</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" accesskey="U">Developer documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">How to contribute</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="how-to-contribute">
+<span id="id1"></span><h1>How to contribute<a class="headerlink" href="#how-to-contribute" title="Link to this heading">¶</a></h1>
+<nav class="contents local" id="contents">
+<ul class="simple">
+<li><p><a class="reference internal" href="#prime-directives-privacy-hackability" id="id3">Prime directives: Privacy, Hackability</a></p>
+<ul>
+<li><p><a class="reference internal" href="#privacy-by-design" id="id4">Privacy-by-design</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#code" id="id5">Code</a></p></li>
+<li><p><a class="reference internal" href="#translation" id="id6">Translation</a></p></li>
+<li><p><a class="reference internal" href="#documentation" id="id7">Documentation</a></p>
+<ul>
+<li><p><a class="reference internal" href="#live-build" id="id8">Live build</a></p></li>
+<li><p><a class="reference internal" href="#deploy-on-github-io" id="id9">deploy on github.io</a></p></li>
+</ul>
+</li>
+</ul>
+</nav>
+<section id="prime-directives-privacy-hackability">
+<h2><a class="toc-backref" href="#id3" role="doc-backlink">Prime directives: Privacy, Hackability</a><a class="headerlink" href="#prime-directives-privacy-hackability" title="Link to this heading">¶</a></h2>
+<p>SearXNG has two prime directives, <strong>privacy-by-design and hackability</strong> .  The
+hackability comes in three levels:</p>
+<ul class="simple">
+<li><p>support of search engines</p></li>
+<li><p>plugins to alter search behaviour</p></li>
+<li><p>hacking SearXNG itself</p></li>
+</ul>
+<p>Note the lack of “world domination” among the directives.  SearXNG has no
+intention of wide mass-adoption, rounded corners, etc.  The prime directive
+“privacy” deserves a separate chapter, as it’s quite uncommon unfortunately.</p>
+<section id="privacy-by-design">
+<h3><a class="toc-backref" href="#id4" role="doc-backlink">Privacy-by-design</a><a class="headerlink" href="#privacy-by-design" title="Link to this heading">¶</a></h3>
+<p>SearXNG was born out of the need for a <strong>privacy-respecting</strong> search tool which
+can be extended easily to maximize both its search and its privacy protecting
+capabilities.</p>
+<p>Some widely used search engine features may work differently,
+may be turned off by default, or may not be implemented at all in SearXNG
+<strong>as a consequence of a privacy-by-design approach</strong>.</p>
+<p>Following this approach, features reducing the privacy preserving aspects of SearXNG should be
+switched off by default or should not be implemented at all.  There are plenty of
+search engines already providing such features.  If a feature reduces
+SearXNG’s efficacy in protecting a user’s privacy, the user must be informed about
+the effect of choosing to enable it.  Features that protect privacy but differ from the
+expectations of the user should also be carefully explained to them.</p>
+<p>Also, if you think that something works weird with SearXNG, it might be because
+the tool you are using is designed in a way that interferes with SearXNG’s privacy aspects.
+Submitting a bug report to the vendor of the tool that misbehaves might be a good
+feedback for them to reconsider the disrespect to their customers (e.g., <code class="docutils literal notranslate"><span class="pre">GET</span></code> vs <code class="docutils literal notranslate"><span class="pre">POST</span></code>
+requests in various browsers).</p>
+<p>Remember the other prime directive of SearXNG is to be hackable, so if the above
+privacy concerns do not fancy you, simply fork it.</p>
+<blockquote>
+<div><p><em>Happy hacking.</em></p>
+</div></blockquote>
+</section>
+</section>
+<section id="code">
+<h2><a class="toc-backref" href="#id5" role="doc-backlink">Code</a><a class="headerlink" href="#code" title="Link to this heading">¶</a></h2>
+<aside class="sidebar">
+<p class="sidebar-title">Create good commits!</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="commits.html#create-commit"><span class="std std-ref">Git Commits &amp; Change Management</span></a></p></li>
+</ul>
+</aside>
+<p>In order to submit a patch, please follow the steps below:</p>
+<ul class="simple">
+<li><p>Follow coding conventions.</p>
+<ul>
+<li><p><a class="reference external" href="https://www.python.org/dev/peps/pep-0008/">PEP8</a> standards apply, except the convention of line length</p></li>
+<li><p>Maximum line length is 120 characters</p></li>
+</ul>
+</li>
+<li><p>The cardinal rule for creating good commits is to ensure there is only one
+<em>logical change</em> per commit / read <a class="reference external" href="https://wiki.openstack.org/wiki/GitCommitMessages#Structural_split_of_changes">Structural split of changes</a></p></li>
+<li><p>Check if your code breaks existing tests.  If so, update the tests or fix your
+code.</p></li>
+<li><p>If your code can be unit-tested, add unit tests.</p></li>
+<li><p>Add yourself to the <a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/AUTHORS.rst">git://AUTHORS.rst</a> file.</p></li>
+<li><p>Choose meaningful commit messages, see <a class="reference internal" href="commits.html#create-commit"><span class="std std-ref">Git Commits &amp; Change Management</span></a></p></li>
+<li><p>Create a pull request.</p></li>
+</ul>
+<p>For more help on getting started with SearXNG development, see <a class="reference internal" href="quickstart.html#devquickstart"><span class="std std-ref">Development Quickstart</span></a>.</p>
+</section>
+<section id="translation">
+<h2><a class="toc-backref" href="#id6" role="doc-backlink">Translation</a><a class="headerlink" href="#translation" title="Link to this heading">¶</a></h2>
+<p>Translation currently takes place on <a class="reference internal" href="translation.html#translation"><span class="std std-ref">weblate</span></a>.</p>
+</section>
+<section id="documentation">
+<span id="contrib-docs"></span><h2><a class="toc-backref" href="#id7" role="doc-backlink">Documentation</a><a class="headerlink" href="#documentation" title="Link to this heading">¶</a></h2>
+<aside class="sidebar">
+<p class="sidebar-title">The reST sources</p>
+<p>has been moved from <code class="docutils literal notranslate"><span class="pre">gh-branch</span></code> into <code class="docutils literal notranslate"><span class="pre">master</span></code> (<a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/docs">git://docs</a>).</p>
+</aside>
+<p>The documentation is built using <a class="reference external" href="https://www.sphinx-doc.org">Sphinx</a>.  So in order to be able to generate
+the required files, you have to install it on your system.  Much easier, use
+our <a class="reference internal" href="makefile.html#makefile"><span class="std std-ref">Makefile &amp; ./manage</span></a>.</p>
+<p>Here is an example which makes a complete rebuild:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>make<span class="w"> </span>docs.clean<span class="w"> </span>docs.html
+...
+The<span class="w"> </span>HTML<span class="w"> </span>pages<span class="w"> </span>are<span class="w"> </span><span class="k">in</span><span class="w"> </span>dist/docs.
+</pre></div>
+</div>
+<section id="live-build">
+<span id="make-docs-live"></span><h3><a class="toc-backref" href="#id8" role="doc-backlink">Live build</a><a class="headerlink" href="#live-build" title="Link to this heading">¶</a></h3>
+<aside class="sidebar">
+<p class="sidebar-title">docs.clean</p>
+<p>It is recommended to assert a complete rebuild before deploying (use
+<code class="docutils literal notranslate"><span class="pre">docs.clean</span></code>).</p>
+</aside>
+<p>Live build is like WYSIWYG.  It’s the recommended way to go if you want to edit the documentation.
+The Makefile target <code class="docutils literal notranslate"><span class="pre">docs.live</span></code> builds the docs, opens
+URL in your favorite browser and rebuilds every time a reST file has been
+changed (<a class="reference internal" href="makefile.html#make-docs-clean"><span class="std std-ref">make docs.clean docs.live</span></a>).</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>make<span class="w"> </span>docs.live
+...
+The<span class="w"> </span>HTML<span class="w"> </span>pages<span class="w"> </span>are<span class="w"> </span><span class="k">in</span><span class="w"> </span>dist/docs.
+...<span class="w"> </span>Serving<span class="w"> </span>on<span class="w"> </span>http://0.0.0.0:8000
+...<span class="w"> </span>Start<span class="w"> </span>watching<span class="w"> </span>changes
+</pre></div>
+</div>
+<p>Live builds are implemented by <a class="reference external" href="https://github.com/executablebooks/sphinx-autobuild/blob/master/README.md">sphinx-autobuild</a>.  Use environment
+<code class="docutils literal notranslate"><span class="pre">$(SPHINXOPTS)</span></code> to pass arguments to the <a class="reference external" href="https://github.com/executablebooks/sphinx-autobuild/blob/master/README.md">sphinx-autobuild</a> command.  You can
+pass any argument except for the <code class="docutils literal notranslate"><span class="pre">--host</span></code> option (which is always set to <code class="docutils literal notranslate"><span class="pre">0.0.0.0</span></code>).
+E.g., to find and use a free port, use:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span><span class="nv">SPHINXOPTS</span><span class="o">=</span><span class="s2">&quot;--port 0&quot;</span><span class="w"> </span>make<span class="w"> </span>docs.live
+...
+...<span class="w"> </span>Serving<span class="w"> </span>on<span class="w"> </span>http://0.0.0.0:50593
+...
+</pre></div>
+</div>
+</section>
+<section id="deploy-on-github-io">
+<span id="id2"></span><h3><a class="toc-backref" href="#id9" role="doc-backlink">deploy on github.io</a><a class="headerlink" href="#deploy-on-github-io" title="Link to this heading">¶</a></h3>
+<p>To deploy documentation at <a class="extlink-docs reference external" href="https://docs.searxng.org//.">github.io</a> use Makefile target <a class="reference internal" href="makefile.html#make-docs-gh-pages"><span class="std std-ref">make docs.gh-pages</span></a>, which builds the documentation and runs all the needed git add,
+commit and push:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>make<span class="w"> </span>docs.clean<span class="w"> </span>docs.gh-pages
+</pre></div>
+</div>
+<div class="admonition attention">
+<p class="admonition-title">Attention</p>
+<p>If you are working in your own brand, don’t forget to adjust your
+<a class="reference internal" href="../admin/settings/settings_brand.html#settings-brand"><span class="std std-ref">brand:</span></a>.</p>
+</div>
+</section>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+  <span id="sidebar-top"></span>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+  
+    
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/searxng-wordmark.svg" alt="Logo of SearXNG"/>
+            </a></p>
+  
+
+<h3><a href="../index.html">Table of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../user/index.html">User information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../own-instance.html">Why use a private instance?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../admin/index.html">Administrator documentation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Developer documentation</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html">Development Quickstart</a></li>
+<li class="toctree-l2"><a class="reference internal" href="commits.html">Git Commits &amp; Change Management</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">How to contribute</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#prime-directives-privacy-hackability">Prime directives: Privacy, Hackability</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#privacy-by-design">Privacy-by-design</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#code">Code</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#translation">Translation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#documentation">Documentation</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#live-build">Live build</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#deploy-on-github-io">deploy on github.io</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="extended_types.html">Extended Types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="engines/index.html">Engine Implementations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="result_types/index.html">Result Types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="templates.html">Simple Theme Templates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="search_api.html">Search API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plugins/index.html">Plugins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="answerers/index.html">Answerers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="translation.html">Translation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="makefile.html">Makefile &amp; <code class="docutils literal notranslate"><span class="pre">./manage</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="reST.html">reST primer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searxng_extra/index.html">Tooling box <code class="docutils literal notranslate"><span class="pre">searxng_extra</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../utils/index.html">DevOps tooling box</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../src/index.html">Source-Code</a></li>
+</ul>
+
+  <h3>Project Links</h3>
+  <ul>
+    <li><a href="https://github.com/searxng/searxng/tree/master">Source</a>
+  
+    <li><a href="https://github.com/searxng/searxng/wiki">Wiki</a>
+  
+    <li><a href="https://searx.space">Public instances</a>
+  
+    <li><a href="https://github.com/searxng/searxng/issues">Issue Tracker</a>
+  </ul><h3>Navigation</h3>
+<ul>
+  <li><a href="../index.html">Overview</a>
+    <ul>
+      <li><a href="index.html">Developer documentation</a>
+        <ul>
+          <li>Previous: <a href="commits.html" title="previous chapter">Git Commits &amp; Change Management</a>
+          <li>Next: <a href="extended_types.html" title="next chapter">Extended Types</a></ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/dev/contribution_guide.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright SearXNG team.
+    </div>
+  </body>
+</html>

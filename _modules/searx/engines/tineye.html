@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>searx.engines.tineye &#8212; SearXNG Documentation (2026.2.22+191818b86)</title>
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=6625fa76" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/searxng.css?v=52e4ff28" />
+    <script src="../../../_static/documentation_options.js?v=1b5d919e"></script>
+    <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script data-project="searxng" data-version="2026.2.22+191818b86" src="../../../_static/describe_version.js?v=fa7f30d0"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">SearXNG Documentation (2026.2.22+191818b86)</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" >Module code</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../engines.html" accesskey="U">searx.engines</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">searx.engines.tineye</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for searx.engines.tineye</h1><div class="highlight"><pre>
+<span></span><span class="c1"># SPDX-License-Identifier: AGPL-3.0-or-later</span>
+<span class="sd">&quot;&quot;&quot;This engine implements *Tineye - reverse image search*</span>
+
+<span class="sd">Using TinEye, you can search by image or perform what we call a reverse image</span>
+<span class="sd">search.  You can do that by uploading an image or searching by URL. You can also</span>
+<span class="sd">simply drag and drop your images to start your search.  TinEye constantly crawls</span>
+<span class="sd">the web and adds images to its index.  Today, the TinEye index is over 50.2</span>
+<span class="sd">billion images `[tineye.com] &lt;https://tineye.com/how&gt;`_.</span>
+
+<span class="sd">.. hint::</span>
+
+<span class="sd">   This SearXNG engine only supports *&#39;searching by URL&#39;* and it does not use</span>
+<span class="sd">   the official API `[api.tineye.com] &lt;https://api.tineye.com/python/docs/&gt;`_.</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">urllib.parse</span><span class="w"> </span><span class="kn">import</span> <span class="n">urlencode</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">flask_babel</span><span class="w"> </span><span class="kn">import</span> <span class="n">gettext</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">searx.result_types</span><span class="w"> </span><span class="kn">import</span> <span class="n">EngineResults</span>
+
+<span class="n">about</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;website&quot;</span><span class="p">:</span> <span class="s1">&#39;https://tineye.com&#39;</span><span class="p">,</span>
+    <span class="s2">&quot;wikidata_id&quot;</span><span class="p">:</span> <span class="s1">&#39;Q2382535&#39;</span><span class="p">,</span>
+    <span class="s2">&quot;official_api_documentation&quot;</span><span class="p">:</span> <span class="s1">&#39;https://api.tineye.com/python/docs/&#39;</span><span class="p">,</span>
+    <span class="s2">&quot;use_official_api&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="s2">&quot;require_api_key&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="s2">&quot;results&quot;</span><span class="p">:</span> <span class="s1">&#39;JSON&#39;</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="n">engine_type</span> <span class="o">=</span> <span class="s1">&#39;online_url_search&#39;</span>
+<span class="sd">&quot;&quot;&quot;:py:obj:`searx.search.processors.online_url_search`&quot;&quot;&quot;</span>
+
+<span class="n">categories</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;general&#39;</span><span class="p">]</span>
+<span class="n">paging</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">safesearch</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="n">base_url</span> <span class="o">=</span> <span class="s1">&#39;https://tineye.com&#39;</span>
+<span class="n">search_string</span> <span class="o">=</span> <span class="s1">&#39;/api/v1/result_json/?page=</span><span class="si">{page}</span><span class="s1">&amp;</span><span class="si">{query}</span><span class="s1">&#39;</span>
+
+<span class="n">FORMAT_NOT_SUPPORTED</span> <span class="o">=</span> <span class="n">gettext</span><span class="p">(</span>
+    <span class="s2">&quot;Could not read that image url. This may be due to an unsupported file&quot;</span>
+    <span class="s2">&quot; format. TinEye only supports images that are JPEG, PNG, GIF, BMP, TIFF or WebP.&quot;</span>
+<span class="p">)</span>
+<span class="sd">&quot;&quot;&quot;TinEye error message&quot;&quot;&quot;</span>
+
+<span class="n">NO_SIGNATURE_ERROR</span> <span class="o">=</span> <span class="n">gettext</span><span class="p">(</span>
+    <span class="s2">&quot;The image is too simple to find matches. TinEye requires a basic level of&quot;</span>
+    <span class="s2">&quot; visual detail to successfully identify matches.&quot;</span>
+<span class="p">)</span>
+<span class="sd">&quot;&quot;&quot;TinEye error message&quot;&quot;&quot;</span>
+
+<span class="n">DOWNLOAD_ERROR</span> <span class="o">=</span> <span class="n">gettext</span><span class="p">(</span><span class="s2">&quot;The image could not be downloaded.&quot;</span><span class="p">)</span>
+<span class="sd">&quot;&quot;&quot;TinEye error message&quot;&quot;&quot;</span>
+
+
+<div class="viewcode-block" id="request">
+<a class="viewcode-back" href="../../../dev/engines/online_url_search/tineye.html#searx.engines.tineye.request">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">request</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">params</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Build TinEye HTTP request using ``search_urls`` of a :py:obj:`engine_type`.&quot;&quot;&quot;</span>
+
+    <span class="n">params</span><span class="p">[</span><span class="s1">&#39;raise_for_httperror&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
+
+    <span class="k">if</span> <span class="n">params</span><span class="p">[</span><span class="s1">&#39;search_urls&#39;</span><span class="p">][</span><span class="s1">&#39;data:image&#39;</span><span class="p">]:</span>
+        <span class="n">query</span> <span class="o">=</span> <span class="n">params</span><span class="p">[</span><span class="s1">&#39;search_urls&#39;</span><span class="p">][</span><span class="s1">&#39;data:image&#39;</span><span class="p">]</span>
+    <span class="k">elif</span> <span class="n">params</span><span class="p">[</span><span class="s1">&#39;search_urls&#39;</span><span class="p">][</span><span class="s1">&#39;http&#39;</span><span class="p">]:</span>
+        <span class="n">query</span> <span class="o">=</span> <span class="n">params</span><span class="p">[</span><span class="s1">&#39;search_urls&#39;</span><span class="p">][</span><span class="s1">&#39;http&#39;</span><span class="p">]</span>
+
+    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;query URL: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">query</span><span class="p">)</span>
+    <span class="n">query</span> <span class="o">=</span> <span class="n">urlencode</span><span class="p">({</span><span class="s1">&#39;url&#39;</span><span class="p">:</span> <span class="n">query</span><span class="p">})</span>
+
+    <span class="c1"># see https://github.com/TinEye/pytineye/blob/main/pytineye/api.py</span>
+    <span class="n">params</span><span class="p">[</span><span class="s1">&#39;url&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">base_url</span> <span class="o">+</span> <span class="n">search_string</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">query</span><span class="o">=</span><span class="n">query</span><span class="p">,</span> <span class="n">page</span><span class="o">=</span><span class="n">params</span><span class="p">[</span><span class="s1">&#39;pageno&#39;</span><span class="p">])</span>
+
+    <span class="n">params</span><span class="p">[</span><span class="s1">&#39;headers&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
+        <span class="p">{</span>
+            <span class="s1">&#39;Connection&#39;</span><span class="p">:</span> <span class="s1">&#39;keep-alive&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;Host&#39;</span><span class="p">:</span> <span class="s1">&#39;tineye.com&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;DNT&#39;</span><span class="p">:</span> <span class="s1">&#39;1&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;TE&#39;</span><span class="p">:</span> <span class="s1">&#39;trailers&#39;</span><span class="p">,</span>
+        <span class="p">}</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">params</span></div>
+
+
+
+<div class="viewcode-block" id="parse_tineye_match">
+<a class="viewcode-back" href="../../../dev/engines/online_url_search/tineye.html#searx.engines.tineye.parse_tineye_match">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">parse_tineye_match</span><span class="p">(</span><span class="n">match_json</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Takes parsed JSON from the API server and turns it into a :py:obj:`dict`</span>
+<span class="sd">    object.</span>
+
+<span class="sd">    Attributes `(class Match) &lt;https://github.com/TinEye/pytineye/blob/main/pytineye/api.py&gt;`__</span>
+
+<span class="sd">    - `image_url`, link to the result image.</span>
+<span class="sd">    - `domain`, domain this result was found on.</span>
+<span class="sd">    - `score`, a number (0 to 100) that indicates how closely the images match.</span>
+<span class="sd">    - `width`, image width in pixels.</span>
+<span class="sd">    - `height`, image height in pixels.</span>
+<span class="sd">    - `size`, image area in pixels.</span>
+<span class="sd">    - `format`, image format.</span>
+<span class="sd">    - `filesize`, image size in bytes.</span>
+<span class="sd">    - `overlay`, overlay URL.</span>
+<span class="sd">    - `tags`, whether this match belongs to a collection or stock domain.</span>
+
+<span class="sd">    - `backlinks`, a list of Backlink objects pointing to the original websites</span>
+<span class="sd">      and image URLs. List items are instances of :py:obj:`dict`, (`Backlink</span>
+<span class="sd">      &lt;https://github.com/TinEye/pytineye/blob/main/pytineye/api.py&gt;`__):</span>
+
+<span class="sd">      - `url`, the image URL to the image.</span>
+<span class="sd">      - `backlink`, the original website URL.</span>
+<span class="sd">      - `crawl_date`, the date the image was crawled.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># HINT: there exists an alternative backlink dict in the domains list / e.g.::</span>
+    <span class="c1">#</span>
+    <span class="c1">#     match_json[&#39;domains&#39;][0][&#39;backlinks&#39;]</span>
+
+    <span class="n">backlinks</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">if</span> <span class="s2">&quot;backlinks&quot;</span> <span class="ow">in</span> <span class="n">match_json</span><span class="p">:</span>
+
+        <span class="k">for</span> <span class="n">backlink_json</span> <span class="ow">in</span> <span class="n">match_json</span><span class="p">[</span><span class="s2">&quot;backlinks&quot;</span><span class="p">]:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">backlink_json</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+                <span class="k">continue</span>
+
+            <span class="n">crawl_date</span> <span class="o">=</span> <span class="n">backlink_json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;crawl_date&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">crawl_date</span><span class="p">:</span>
+                <span class="n">crawl_date</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">crawl_date</span><span class="p">,</span> <span class="s1">&#39;%Y-%m-</span><span class="si">%d</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">crawl_date</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">min</span>
+
+            <span class="n">backlinks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                <span class="p">{</span>
+                    <span class="s1">&#39;url&#39;</span><span class="p">:</span> <span class="n">backlink_json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;url&quot;</span><span class="p">),</span>
+                    <span class="s1">&#39;backlink&#39;</span><span class="p">:</span> <span class="n">backlink_json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;backlink&quot;</span><span class="p">),</span>
+                    <span class="s1">&#39;crawl_date&#39;</span><span class="p">:</span> <span class="n">crawl_date</span><span class="p">,</span>
+                    <span class="s1">&#39;image_name&#39;</span><span class="p">:</span> <span class="n">backlink_json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;image_name&quot;</span><span class="p">),</span>
+                <span class="p">}</span>
+            <span class="p">)</span>
+
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="s1">&#39;image_url&#39;</span><span class="p">:</span> <span class="n">match_json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;image_url&quot;</span><span class="p">),</span>
+        <span class="s1">&#39;domain&#39;</span><span class="p">:</span> <span class="n">match_json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;domain&quot;</span><span class="p">),</span>
+        <span class="s1">&#39;score&#39;</span><span class="p">:</span> <span class="n">match_json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;score&quot;</span><span class="p">),</span>
+        <span class="s1">&#39;width&#39;</span><span class="p">:</span> <span class="n">match_json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;width&quot;</span><span class="p">),</span>
+        <span class="s1">&#39;height&#39;</span><span class="p">:</span> <span class="n">match_json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;height&quot;</span><span class="p">),</span>
+        <span class="s1">&#39;size&#39;</span><span class="p">:</span> <span class="n">match_json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;size&quot;</span><span class="p">),</span>
+        <span class="s1">&#39;image_format&#39;</span><span class="p">:</span> <span class="n">match_json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;format&quot;</span><span class="p">),</span>
+        <span class="s1">&#39;filesize&#39;</span><span class="p">:</span> <span class="n">match_json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;filesize&quot;</span><span class="p">),</span>
+        <span class="s1">&#39;overlay&#39;</span><span class="p">:</span> <span class="n">match_json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;overlay&quot;</span><span class="p">),</span>
+        <span class="s1">&#39;tags&#39;</span><span class="p">:</span> <span class="n">match_json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;tags&quot;</span><span class="p">),</span>
+        <span class="s1">&#39;backlinks&#39;</span><span class="p">:</span> <span class="n">backlinks</span><span class="p">,</span>
+    <span class="p">}</span></div>
+
+
+
+<div class="viewcode-block" id="response">
+<a class="viewcode-back" href="../../../dev/engines/online_url_search/tineye.html#searx.engines.tineye.response">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">response</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">EngineResults</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Parse HTTP response from TinEye.&quot;&quot;&quot;</span>
+    <span class="n">results</span> <span class="o">=</span> <span class="n">EngineResults</span><span class="p">()</span>
+
+    <span class="c1"># handle the 422 client side errors, and the possible 400 status code error</span>
+    <span class="k">if</span> <span class="n">resp</span><span class="o">.</span><span class="n">status_code</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">400</span><span class="p">,</span> <span class="mi">422</span><span class="p">):</span>
+        <span class="n">json_data</span> <span class="o">=</span> <span class="n">resp</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+        <span class="n">suggestions</span> <span class="o">=</span> <span class="n">json_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;suggestions&#39;</span><span class="p">,</span> <span class="p">{})</span>
+        <span class="n">message</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;HTTP Status Code: </span><span class="si">{</span><span class="n">resp</span><span class="o">.</span><span class="n">status_code</span><span class="si">}</span><span class="s1">&#39;</span>
+
+        <span class="k">if</span> <span class="n">resp</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">422</span><span class="p">:</span>
+            <span class="n">s_key</span> <span class="o">=</span> <span class="n">suggestions</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;key&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">s_key</span> <span class="o">==</span> <span class="s2">&quot;Invalid image URL&quot;</span><span class="p">:</span>
+                <span class="c1"># test https://docs.searxng.org/_static/searxng-wordmark.svg</span>
+                <span class="n">message</span> <span class="o">=</span> <span class="n">FORMAT_NOT_SUPPORTED</span>
+            <span class="k">elif</span> <span class="n">s_key</span> <span class="o">==</span> <span class="s1">&#39;NO_SIGNATURE_ERROR&#39;</span><span class="p">:</span>
+                <span class="c1"># test https://pngimg.com/uploads/dot/dot_PNG4.png</span>
+                <span class="n">message</span> <span class="o">=</span> <span class="n">NO_SIGNATURE_ERROR</span>
+            <span class="k">elif</span> <span class="n">s_key</span> <span class="o">==</span> <span class="s1">&#39;Download Error&#39;</span><span class="p">:</span>
+                <span class="c1"># test https://notexists</span>
+                <span class="n">message</span> <span class="o">=</span> <span class="n">DOWNLOAD_ERROR</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;Unknown suggestion key encountered: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">s_key</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>  <span class="c1"># 400</span>
+            <span class="n">description</span> <span class="o">=</span> <span class="n">suggestions</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;description&#39;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">description</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+                <span class="n">message</span> <span class="o">=</span> <span class="s1">&#39;,&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">description</span><span class="p">)</span>
+
+        <span class="c1"># see https://github.com/searxng/searxng/pull/1456#issuecomment-1193105023</span>
+        <span class="c1"># results.add(results.types.Answer(answer=message))</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">results</span>
+
+    <span class="c1"># Raise for all other responses</span>
+    <span class="n">resp</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>
+
+    <span class="n">json_data</span> <span class="o">=</span> <span class="n">resp</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+
+    <span class="k">for</span> <span class="n">match_json</span> <span class="ow">in</span> <span class="n">json_data</span><span class="p">[</span><span class="s1">&#39;matches&#39;</span><span class="p">]:</span>
+
+        <span class="n">tineye_match</span> <span class="o">=</span> <span class="n">parse_tineye_match</span><span class="p">(</span><span class="n">match_json</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">tineye_match</span><span class="p">[</span><span class="s1">&#39;backlinks&#39;</span><span class="p">]:</span>
+            <span class="k">continue</span>
+
+        <span class="n">backlink</span> <span class="o">=</span> <span class="n">tineye_match</span><span class="p">[</span><span class="s1">&#39;backlinks&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+            <span class="p">{</span>
+                <span class="s1">&#39;template&#39;</span><span class="p">:</span> <span class="s1">&#39;images.html&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;url&#39;</span><span class="p">:</span> <span class="n">backlink</span><span class="p">[</span><span class="s1">&#39;backlink&#39;</span><span class="p">],</span>
+                <span class="s1">&#39;thumbnail_src&#39;</span><span class="p">:</span> <span class="n">tineye_match</span><span class="p">[</span><span class="s1">&#39;image_url&#39;</span><span class="p">],</span>
+                <span class="s1">&#39;source&#39;</span><span class="p">:</span> <span class="n">backlink</span><span class="p">[</span><span class="s1">&#39;url&#39;</span><span class="p">],</span>
+                <span class="s1">&#39;title&#39;</span><span class="p">:</span> <span class="n">backlink</span><span class="p">[</span><span class="s1">&#39;image_name&#39;</span><span class="p">],</span>
+                <span class="s1">&#39;img_src&#39;</span><span class="p">:</span> <span class="n">backlink</span><span class="p">[</span><span class="s1">&#39;url&#39;</span><span class="p">],</span>
+                <span class="s1">&#39;format&#39;</span><span class="p">:</span> <span class="n">tineye_match</span><span class="p">[</span><span class="s1">&#39;image_format&#39;</span><span class="p">],</span>
+                <span class="s1">&#39;width&#39;</span><span class="p">:</span> <span class="n">tineye_match</span><span class="p">[</span><span class="s1">&#39;width&#39;</span><span class="p">],</span>
+                <span class="s1">&#39;height&#39;</span><span class="p">:</span> <span class="n">tineye_match</span><span class="p">[</span><span class="s1">&#39;height&#39;</span><span class="p">],</span>
+                <span class="s1">&#39;publishedDate&#39;</span><span class="p">:</span> <span class="n">backlink</span><span class="p">[</span><span class="s1">&#39;crawl_date&#39;</span><span class="p">],</span>
+            <span class="p">}</span>
+        <span class="p">)</span>
+
+    <span class="c1"># append number of results</span>
+
+    <span class="n">number_of_results</span> <span class="o">=</span> <span class="n">json_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;num_matches&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">number_of_results</span><span class="p">:</span>
+        <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s1">&#39;number_of_results&#39;</span><span class="p">:</span> <span class="n">number_of_results</span><span class="p">})</span>
+
+    <span class="k">return</span> <span class="n">results</span></div>
+
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+  <span id="sidebar-top"></span>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+  
+    
+            <p class="logo"><a href="../../../index.html">
+              <img class="logo" src="../../../_static/searxng-wordmark.svg" alt="Logo of SearXNG"/>
+            </a></p>
+  
+
+<h3><a href="../../../index.html">Table of Contents</a></h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../user/index.html">User information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../own-instance.html">Why use a private instance?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../admin/index.html">Administrator documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../dev/index.html">Developer documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../utils/index.html">DevOps tooling box</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/index.html">Source-Code</a></li>
+</ul>
+
+  <h3>Project Links</h3>
+  <ul>
+    <li><a href="https://github.com/searxng/searxng/tree/master">Source</a>
+  
+    <li><a href="https://github.com/searxng/searxng/wiki">Wiki</a>
+  
+    <li><a href="https://searx.space">Public instances</a>
+  
+    <li><a href="https://github.com/searxng/searxng/issues">Issue Tracker</a>
+  </ul><h3>Navigation</h3>
+<ul>
+  <li><a href="../../../index.html">Overview</a>
+    <ul>
+      <li><a href="../../index.html">Module code</a>
+        <ul>
+      <li><a href="../engines.html">searx.engines</a>
+        
+          
+          </ul>
+      </li></ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright SearXNG team.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Simple Theme Templates &#8212; SearXNG Documentation (2026.2.22+191818b86)</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=6625fa76" />
+    <link rel="stylesheet" type="text/css" href="../_static/searxng.css?v=52e4ff28" />
+    <script src="../_static/documentation_options.js?v=1b5d919e"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script data-project="searxng" data-version="2026.2.22+191818b86" src="../_static/describe_version.js?v=fa7f30d0"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Search API" href="search_api.html" />
+    <link rel="prev" title="Infobox Results" href="result_types/infobox.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="search_api.html" title="Search API"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="result_types/infobox.html" title="Infobox Results"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">SearXNG Documentation (2026.2.22+191818b86)</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" accesskey="U">Developer documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Simple Theme Templates</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="simple-theme-templates">
+<span id="id1"></span><h1>Simple Theme Templates<a class="headerlink" href="#simple-theme-templates" title="Link to this heading">¶</a></h1>
+<p>The simple template is complex, it consists of many different elements and also
+uses macros and include statements.  The following is a rough overview that we
+would like to give the developer at hand, details must still be taken from the
+<a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/searx/templates/simple/">sources</a>.</p>
+<p>A <a class="reference internal" href="result_types/index.html#result-types"><span class="std std-ref">result item</span></a> can be of different media types.  The media
+type of a result is defined by the <code class="xref py py-obj docutils literal notranslate"><span class="pre">result_type.Result.template</span></code>.  To
+set another media-type as <a class="reference internal" href="#template-default"><span class="std std-ref">default.html</span></a>, the field <code class="docutils literal notranslate"><span class="pre">template</span></code>
+in the result item must be set to the desired type.</p>
+<nav class="contents local" id="contents">
+<p class="topic-title">Contents</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#result-template-macros" id="id4">Result template macros</a></p>
+<ul>
+<li><p><a class="reference internal" href="#result-header" id="id5"><code class="docutils literal notranslate"><span class="pre">result_header</span></code></a></p></li>
+<li><p><a class="reference internal" href="#result-sub-header" id="id6"><code class="docutils literal notranslate"><span class="pre">result_sub_header</span></code></a></p></li>
+<li><p><a class="reference internal" href="#engine-data-form" id="id7"><code class="docutils literal notranslate"><span class="pre">engine_data_form</span></code></a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#main-result-list" id="id8">Main Result List</a></p>
+<ul>
+<li><p><a class="reference internal" href="#default-html" id="id9"><code class="docutils literal notranslate"><span class="pre">default.html</span></code></a></p></li>
+<li><p><a class="reference internal" href="#images-html" id="id10"><code class="docutils literal notranslate"><span class="pre">images.html</span></code></a></p></li>
+<li><p><a class="reference internal" href="#videos-html" id="id11"><code class="docutils literal notranslate"><span class="pre">videos.html</span></code></a></p></li>
+<li><p><a class="reference internal" href="#torrent-html" id="id12"><code class="docutils literal notranslate"><span class="pre">torrent.html</span></code></a></p></li>
+<li><p><a class="reference internal" href="#map-html" id="id13"><code class="docutils literal notranslate"><span class="pre">map.html</span></code></a></p></li>
+<li><p><a class="reference internal" href="#paper-html" id="id14"><code class="docutils literal notranslate"><span class="pre">paper.html</span></code></a></p></li>
+<li><p><a class="reference internal" href="#packages" id="id15"><code class="docutils literal notranslate"><span class="pre">packages</span></code></a></p></li>
+<li><p><a class="reference internal" href="#products-html" id="id16"><code class="docutils literal notranslate"><span class="pre">products.html</span></code></a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#answer-results" id="id17">Answer results</a></p></li>
+<li><p><a class="reference internal" href="#suggestion-results" id="id18">Suggestion results</a></p></li>
+<li><p><a class="reference internal" href="#correction-results" id="id19">Correction results</a></p></li>
+<li><p><a class="reference internal" href="#infobox-results" id="id20">Infobox results</a></p></li>
+</ul>
+</nav>
+<section id="result-template-macros">
+<span id="id2"></span><h2><a class="toc-backref" href="#id4" role="doc-backlink">Result template macros</a><a class="headerlink" href="#result-template-macros" title="Link to this heading">¶</a></h2>
+<section id="result-header">
+<span id="macro-result-header"></span><h3><a class="toc-backref" href="#id5" role="doc-backlink"><code class="docutils literal notranslate"><span class="pre">result_header</span></code></a><a class="headerlink" href="#result-header" title="Link to this heading">¶</a></h3>
+<p>Execpt <code class="docutils literal notranslate"><span class="pre">image.html</span></code> and some others this macro is used in nearly all result
+types in the <a class="reference internal" href="#main-result-list"><span class="std std-ref">Main Result List</span></a>.</p>
+<p>Fields used in the template <a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/searx/templates/simple/macros.html">macro result_header</a>:</p>
+<dl>
+<dt>url<span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span></dt><dd><p>Link URL of the result item.</p>
+</dd>
+<dt>title<span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span></dt><dd><p>Link title of the result item.</p>
+</dd>
+<dt>img_src, thumbnail<span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span></dt><dd><p>URL of a image or thumbnail that is displayed in the result item.</p>
+</dd>
+</dl>
+</section>
+<section id="result-sub-header">
+<span id="macro-result-sub-header"></span><h3><a class="toc-backref" href="#id6" role="doc-backlink"><code class="docutils literal notranslate"><span class="pre">result_sub_header</span></code></a><a class="headerlink" href="#result-sub-header" title="Link to this heading">¶</a></h3>
+<p>Execpt <code class="docutils literal notranslate"><span class="pre">image.html</span></code> and some others this macro is used in nearly all result
+types in the <a class="reference internal" href="#main-result-list"><span class="std std-ref">Main Result List</span></a>.</p>
+<p>Fields used in the template <a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/searx/templates/simple/macros.html">macro result_sub_header</a>:</p>
+<dl>
+<dt>publishedDate<span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">datetime.datetime</span></code></a></span></dt><dd><p>The date on which the object was published.</p>
+</dd>
+<dt>length: <a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.timedelta" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">datetime.timedelta</span></code></a></dt><dd><p>Playing duration in seconds.</p>
+</dd>
+<dt>views: <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></dt><dd><p>View count in humanized number format.</p>
+</dd>
+<dt>author<span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span></dt><dd><p>Author of the title.</p>
+</dd>
+<dt>metadata<span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span></dt><dd><p>Miscellaneous metadata.</p>
+</dd>
+</dl>
+</section>
+<section id="engine-data-form">
+<span id="engine-data"></span><h3><a class="toc-backref" href="#id7" role="doc-backlink"><code class="docutils literal notranslate"><span class="pre">engine_data_form</span></code></a><a class="headerlink" href="#engine-data-form" title="Link to this heading">¶</a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">engine_data_form</span></code> macro is used in <a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/searx/templates/simple/results.html">results,html</a> in a HTML <code class="docutils literal notranslate"><span class="pre">&lt;form/&gt;</span></code> element.  The
+intention of this macro is to pass data of a engine from one <a class="reference internal" href="engines/demo/demo_online.html#searx.engines.demo_online.response" title="searx.engines.demo_online.response"><code class="xref py py-obj docutils literal notranslate"><span class="pre">response</span></code></a> to the <code class="xref py py-obj docutils literal notranslate"><span class="pre">searx.search.SearchQuery</span></code>
+of the next <a class="reference internal" href="engines/demo/demo_online.html#searx.engines.demo_online.request" title="searx.engines.demo_online.request"><code class="xref py py-obj docutils literal notranslate"><span class="pre">request</span></code></a>.</p>
+<p>To pass data, engine’s response handler can append result items of typ
+<code class="docutils literal notranslate"><span class="pre">engine_data</span></code>.  This is by example used to pass a token from the response to
+the next request:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">response</span><span class="p">(</span><span class="n">resp</span><span class="p">):</span>
+    <span class="o">...</span>
+    <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
+       <span class="s1">&#39;engine_data&#39;</span><span class="p">:</span> <span class="n">token</span><span class="p">,</span>
+       <span class="s1">&#39;key&#39;</span><span class="p">:</span> <span class="s1">&#39;next_page_token&#39;</span><span class="p">,</span>
+    <span class="p">})</span>
+    <span class="o">...</span>
+    <span class="k">return</span> <span class="n">results</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">request</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">params</span><span class="p">):</span>
+    <span class="n">page_token</span> <span class="o">=</span> <span class="n">params</span><span class="p">[</span><span class="s1">&#39;engine_data&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;next_page_token&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="main-result-list">
+<span id="id3"></span><h2><a class="toc-backref" href="#id8" role="doc-backlink">Main Result List</a><a class="headerlink" href="#main-result-list" title="Link to this heading">¶</a></h2>
+<p>The <strong>media types</strong> of the <strong>main result type</strong> are the template files in
+the <a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/searx/templates/simple/result_templates">result_templates</a>.</p>
+<section id="default-html">
+<span id="template-default"></span><h3><a class="toc-backref" href="#id9" role="doc-backlink"><code class="docutils literal notranslate"><span class="pre">default.html</span></code></a><a class="headerlink" href="#default-html" title="Link to this heading">¶</a></h3>
+<p>Displays result fields from:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#macro-result-header"><span class="std std-ref">result_header</span></a> and</p></li>
+<li><p><a class="reference internal" href="#macro-result-sub-header"><span class="std std-ref">result_sub_header</span></a></p></li>
+</ul>
+<p>Additional fields used in the <a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/searx/templates/simple/result_templates/default.html">default.html</a>:</p>
+<dl>
+<dt>content<span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span></dt><dd><p>General text of the result item.</p>
+</dd>
+<dt>iframe_src<span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span></dt><dd><p>URL of an embedded <code class="docutils literal notranslate"><span class="pre">&lt;iframe&gt;</span></code> / the frame is collapsible.</p>
+</dd>
+<dt>audio_src<span class="classifier">uri,</span></dt><dd><p>URL of an embedded <code class="docutils literal notranslate"><span class="pre">&lt;audio</span> <span class="pre">controls&gt;</span></code>.</p>
+</dd>
+</dl>
+</section>
+<section id="images-html">
+<span id="template-images"></span><h3><a class="toc-backref" href="#id10" role="doc-backlink"><code class="docutils literal notranslate"><span class="pre">images.html</span></code></a><a class="headerlink" href="#images-html" title="Link to this heading">¶</a></h3>
+<p>The images are displayed as small thumbnails in the main results list.</p>
+<dl>
+<dt>title<span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span></dt><dd><p>Title of the image.</p>
+</dd>
+<dt>thumbnail_src<span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span></dt><dd><p>URL of a preview of the image.</p>
+</dd>
+<dt>resolution <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></dt><dd><p>The resolution of the image (e.g. <code class="docutils literal notranslate"><span class="pre">1920</span> <span class="pre">x</span> <span class="pre">1080</span></code> pixel)</p>
+</dd>
+</dl>
+<section id="image-labels">
+<h4>Image labels<a class="headerlink" href="#image-labels" title="Link to this heading">¶</a></h4>
+<p>Clicking on the preview opens a gallery view in which all further metadata for
+the image is displayed.  Addition fields used in the <a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/searx/templates/simple/result_templates/images.html">images.html</a>:</p>
+<dl>
+<dt>img_src<span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span></dt><dd><p>URL of the full size image.</p>
+</dd>
+<dt>content:  <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></dt><dd><p>Description of the image.</p>
+</dd>
+<dt>author:  <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></dt><dd><p>Name of the author of the image.</p>
+</dd>
+<dt>img_format<span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span></dt><dd><p>The format of the image (e.g. <code class="docutils literal notranslate"><span class="pre">png</span></code>).</p>
+</dd>
+<dt>source<span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span></dt><dd><p>Source of the image.</p>
+</dd>
+<dt>filesize: <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></dt><dd><p>Size of bytes in <code class="xref py py-obj docutils literal notranslate"><span class="pre">human</span> <span class="pre">readable</span></code> notation
+(e.g. <code class="docutils literal notranslate"><span class="pre">MB</span></code> for 1024 * 1024 Bytes filesize).</p>
+</dd>
+<dt>url<span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span></dt><dd><p>URL of the page from where the images comes from (source).</p>
+</dd>
+</dl>
+</section>
+</section>
+<section id="videos-html">
+<span id="template-videos"></span><h3><a class="toc-backref" href="#id11" role="doc-backlink"><code class="docutils literal notranslate"><span class="pre">videos.html</span></code></a><a class="headerlink" href="#videos-html" title="Link to this heading">¶</a></h3>
+<p>Displays result fields from:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#macro-result-header"><span class="std std-ref">result_header</span></a> and</p></li>
+<li><p><a class="reference internal" href="#macro-result-sub-header"><span class="std std-ref">result_sub_header</span></a></p></li>
+</ul>
+<p>Additional fields used in the <a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/searx/templates/simple/result_templates/videos.html">videos.html</a>:</p>
+<dl>
+<dt>iframe_src<span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span></dt><dd><p>URL of an embedded <code class="docutils literal notranslate"><span class="pre">&lt;iframe&gt;</span></code> / the frame is collapsible.</p>
+<p>The videos are displayed as small thumbnails in the main results list, there
+is an additional button to collaps/open the embeded video.</p>
+</dd>
+<dt>content<span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span></dt><dd><p>Description of the code fragment.</p>
+</dd>
+</dl>
+</section>
+<section id="torrent-html">
+<span id="template-torrent"></span><h3><a class="toc-backref" href="#id12" role="doc-backlink"><code class="docutils literal notranslate"><span class="pre">torrent.html</span></code></a><a class="headerlink" href="#torrent-html" title="Link to this heading">¶</a></h3>
+<p>Displays result fields from:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#macro-result-header"><span class="std std-ref">result_header</span></a> and</p></li>
+<li><p><a class="reference internal" href="#macro-result-sub-header"><span class="std std-ref">result_sub_header</span></a></p></li>
+</ul>
+<p>Additional fields used in the <a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/searx/templates/simple/result_templates/torrent.html">torrent.html</a>:</p>
+<dl>
+<dt>magnetlink:</dt><dd><p>URL of the <a class="reference external" href="https://en.wikipedia.org/wiki/Magnet_URI_scheme">magnet link</a>.</p>
+</dd>
+<dt>torrentfile</dt><dd><p>URL of the <a class="reference external" href="https://en.wikipedia.org/wiki/Torrent_file">torrent file</a>.</p>
+</dd>
+<dt>seed<span class="classifier"><code class="docutils literal notranslate"><span class="pre">int</span></code></span></dt><dd><p>Number of seeders.</p>
+</dd>
+<dt>leech<span class="classifier"><code class="docutils literal notranslate"><span class="pre">int</span></code></span></dt><dd><p>Number of leecher</p>
+</dd>
+<dt>filesize<span class="classifier"><code class="docutils literal notranslate"><span class="pre">int</span></code></span></dt><dd><p>Size in Bytes (rendered to human readable unit of measurement).</p>
+</dd>
+<dt>files<span class="classifier"><code class="docutils literal notranslate"><span class="pre">int</span></code></span></dt><dd><p>Number of files.</p>
+</dd>
+</dl>
+</section>
+<section id="map-html">
+<span id="template-map"></span><h3><a class="toc-backref" href="#id13" role="doc-backlink"><code class="docutils literal notranslate"><span class="pre">map.html</span></code></a><a class="headerlink" href="#map-html" title="Link to this heading">¶</a></h3>
+<p>Displays result fields from:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#macro-result-header"><span class="std std-ref">result_header</span></a> and</p></li>
+<li><p><a class="reference internal" href="#macro-result-sub-header"><span class="std std-ref">result_sub_header</span></a></p></li>
+</ul>
+<p>Additional fields used in the <a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/searx/templates/simple/result_templates/map.html">map.html</a>:</p>
+<dl>
+<dt>content<span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span></dt><dd><p>Description of the item.</p>
+</dd>
+<dt>address_label<span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span></dt><dd><p>Label of the address / default <code class="docutils literal notranslate"><span class="pre">_('address')</span></code>.</p>
+</dd>
+<dt>geojson<span class="classifier"><a class="reference external" href="https://en.wikipedia.org/wiki/GeoJSON">GeoJSON</a></span></dt><dd><p>Geometries mapped to <a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/dataset">HTMLElement.dataset</a> (<code class="docutils literal notranslate"><span class="pre">data-map-geojson</span></code>) and used by
+<a class="reference external" href="https://github.com/Leaflet/Leaflet">Leaflet</a>.</p>
+</dd>
+<dt>boundingbox<span class="classifier"><code class="docutils literal notranslate"><span class="pre">[</span> <span class="pre">min-lon,</span> <span class="pre">min-lat,</span> <span class="pre">max-lon,</span> <span class="pre">max-lat]</span></code></span></dt><dd><p>A <a class="reference external" href="https://wiki.openstreetmap.org/wiki/Bounding_Box">bbox</a> area defined by min longitude , min latitude , max longitude and max
+latitude.  The bounding box is mapped to <a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/dataset">HTMLElement.dataset</a>
+(<code class="docutils literal notranslate"><span class="pre">data-map-boundingbox</span></code>) and is used by <a class="reference external" href="https://github.com/Leaflet/Leaflet">Leaflet</a>.</p>
+</dd>
+<dt>longitude, latitude<span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span></dt><dd><p>Geographical coordinates, mapped to <a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/dataset">HTMLElement.dataset</a> (<code class="docutils literal notranslate"><span class="pre">data-map-lon</span></code>,
+<code class="docutils literal notranslate"><span class="pre">data-map-lat</span></code>) and is used by <a class="reference external" href="https://github.com/Leaflet/Leaflet">Leaflet</a>.</p>
+</dd>
+<dt>address<span class="classifier"><code class="docutils literal notranslate"><span class="pre">{...}</span></code></span></dt><dd><p>A dicticonary with the address data:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">address</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;name&#39;</span>          <span class="p">:</span> <span class="nb">str</span><span class="p">,</span>  <span class="c1"># name of object</span>
+    <span class="s1">&#39;road&#39;</span>          <span class="p">:</span> <span class="nb">str</span><span class="p">,</span>  <span class="c1"># street name of object</span>
+    <span class="s1">&#39;house_number&#39;</span>  <span class="p">:</span> <span class="nb">str</span><span class="p">,</span>  <span class="c1"># house number of object</span>
+    <span class="s1">&#39;postcode&#39;</span>      <span class="p">:</span> <span class="nb">str</span><span class="p">,</span>  <span class="c1"># postcode of object</span>
+    <span class="s1">&#39;country&#39;</span>       <span class="p">:</span> <span class="nb">str</span><span class="p">,</span>  <span class="c1"># country of object</span>
+    <span class="s1">&#39;country_code&#39;</span>  <span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="s1">&#39;locality&#39;</span>      <span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<dl>
+<dt>country_code<span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span></dt><dd><p><a class="reference external" href="https://wiki.openstreetmap.org/wiki/Country_code">Country code</a> of the object.</p>
+</dd>
+<dt>locality<span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span></dt><dd><p>The name of the city, town, township, village, borough, etc. in which this
+object is located.</p>
+</dd>
+</dl>
+</dd>
+<dt>links<span class="classifier"><code class="docutils literal notranslate"><span class="pre">[link1,</span> <span class="pre">link2,</span> <span class="pre">...]</span></code></span></dt><dd><p>A list of links with labels:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">links</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
+    <span class="s1">&#39;label&#39;</span>       <span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="s1">&#39;url&#39;</span>         <span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="s1">&#39;url_label&#39;</span>   <span class="p">:</span> <span class="nb">str</span><span class="p">,</span>  <span class="c1"># set by some engines but unused (oscar)</span>
+<span class="p">})</span>
+</pre></div>
+</div>
+</dd>
+<dt>data<span class="classifier"><code class="docutils literal notranslate"><span class="pre">[data1,</span> <span class="pre">data2,</span> <span class="pre">...]</span></code></span></dt><dd><p>A list of additional data, shown in two columns and containing a label and
+value.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">data</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
+   <span class="s1">&#39;label&#39;</span>   <span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+   <span class="s1">&#39;value&#39;</span>   <span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+   <span class="s1">&#39;key&#39;</span>     <span class="p">:</span> <span class="nb">str</span><span class="p">,</span>  <span class="c1"># set by some engines but unused</span>
+<span class="p">})</span>
+</pre></div>
+</div>
+</dd>
+<dt>type<span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>  # set by some engines but unused (oscar)</span></dt><dd><p>Tag label from <a class="reference internal" href="searxng_extra/update.html#update-osm-keys-tags-py"><span class="std std-ref">OSM_KEYS_TAGS[‘tags’]</span></a>.</p>
+</dd>
+<dt>type_icon<span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>  # set by some engines but unused (oscar)</span></dt><dd><p>Type’s icon.</p>
+</dd>
+<dt>osm<span class="classifier"><code class="docutils literal notranslate"><span class="pre">{...}</span></code></span></dt><dd><p>OSM-type and OSM-ID, can be used to <a class="reference external" href="https://nominatim.org/release-docs/latest/api/Lookup/">Lookup</a> OSM data (<a class="reference external" href="https://nominatim.org/release-docs/latest/">Nominatim</a>). There is
+also a discussion about “<a class="reference external" href="https://nominatim.org/release-docs/latest/api/Output/#place_id-is-not-a-persistent-id">place_id is not a persistent id</a>” and the
+<a class="reference external" href="https://wiki.openstreetmap.org/wiki/Permanent_ID">perma_id</a>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">osm</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="s1">&#39;id&#39;</span><span class="p">:</span>   <span class="nb">str</span><span class="p">,</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<dl>
+<dt>type<span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span></dt><dd><p>Type of osm-object (if OSM-Result).</p>
+</dd>
+<dt>id :</dt><dd><p>ID of osm-object (if OSM-Result).</p>
+</dd>
+</dl>
+<div class="admonition hint">
+<p class="admonition-title">Hint</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">osm</span></code> property is set by engine <code class="docutils literal notranslate"><span class="pre">openstreetmap.py</span></code>, but it is not
+used in the <code class="docutils literal notranslate"><span class="pre">map.html</span></code> template yet.</p>
+</div>
+</dd>
+</dl>
+</section>
+<section id="paper-html">
+<span id="template-paper"></span><h3><a class="toc-backref" href="#id14" role="doc-backlink"><code class="docutils literal notranslate"><span class="pre">paper.html</span></code></a><a class="headerlink" href="#paper-html" title="Link to this heading">¶</a></h3>
+<p>Displays result fields from:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#macro-result-header"><span class="std std-ref">result_header</span></a></p></li>
+</ul>
+<p>Additional fields used in the <a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/searx/templates/simple/result_templates/paper.html">paper.html</a>:</p>
+<dl>
+<dt>content<span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span></dt><dd><p>An abstract or excerpt from the document.</p>
+</dd>
+<dt>comments<span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span></dt><dd><p>Free text display in italic below the content.</p>
+</dd>
+<dt>tags<span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]</span></dt><dd><p>Free tag list.</p>
+</dd>
+<dt>type<span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span></dt><dd><p>Short description of medium type, e.g. <em>book</em>, <em>pdf</em> or <em>html</em> …</p>
+</dd>
+<dt>authors<span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]</span></dt><dd><p>List of authors of the work (authors with a “s” suffix, the “author” is in the
+<a class="reference internal" href="#macro-result-sub-header"><span class="std std-ref">result_sub_header</span></a>).</p>
+</dd>
+<dt>editor<span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span></dt><dd><p>Editor of the book/paper.</p>
+</dd>
+<dt>publisher<span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span></dt><dd><p>Name of the publisher.</p>
+</dd>
+<dt>journal<span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span></dt><dd><p>Name of the journal or magazine the article was published in.</p>
+</dd>
+<dt>volume<span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span></dt><dd><p>Volume number.</p>
+</dd>
+<dt>pages<span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span></dt><dd><p>Page range where the article is.</p>
+</dd>
+<dt>number<span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span></dt><dd><p>Number of the report or the issue number for a journal article.</p>
+</dd>
+<dt>doi<span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span></dt><dd><p>DOI number (like <code class="docutils literal notranslate"><span class="pre">10.1038/d41586-018-07848-2</span></code>).</p>
+</dd>
+<dt>issn<span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]</span></dt><dd><p>ISSN number like <code class="docutils literal notranslate"><span class="pre">1476-4687</span></code></p>
+</dd>
+<dt>isbn<span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]</span></dt><dd><p>ISBN number like <code class="docutils literal notranslate"><span class="pre">9780201896831</span></code></p>
+</dd>
+<dt>pdf_url<span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span></dt><dd><p>URL to the full article, the PDF version</p>
+</dd>
+<dt>html_url<span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span></dt><dd><p>URL to full article, HTML version</p>
+</dd>
+</dl>
+</section>
+<section id="packages">
+<span id="template-packages"></span><h3><a class="toc-backref" href="#id15" role="doc-backlink"><code class="docutils literal notranslate"><span class="pre">packages</span></code></a><a class="headerlink" href="#packages" title="Link to this heading">¶</a></h3>
+<p>Displays result fields from:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#macro-result-header"><span class="std std-ref">result_header</span></a></p></li>
+</ul>
+<p>Additional fields used in the <a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/searx/templates/simple/result_templates/packages.html">packages.html</a>:</p>
+<dl>
+<dt>package_name<span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span></dt><dd><p>The name of the package.</p>
+</dd>
+<dt>version<span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span></dt><dd><p>The current version of the package.</p>
+</dd>
+<dt>maintainer<span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span></dt><dd><p>The maintainer or author of the project.</p>
+</dd>
+<dt>publishedDate<span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">datetime</span></code></a></span></dt><dd><p>Date of latest update or release.</p>
+</dd>
+<dt>tags<span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]</span></dt><dd><p>Free tag list.</p>
+</dd>
+<dt>popularity<span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span></dt><dd><p>The popularity of the package, e.g. rating or download count.</p>
+</dd>
+<dt>license_name<span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span></dt><dd><p>The name of the license.</p>
+</dd>
+<dt>license_url<span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span></dt><dd><p>The web location of a license copy.</p>
+</dd>
+<dt>homepage<span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span></dt><dd><p>The url of the project’s homepage.</p>
+</dd>
+<dt>source_code_url: <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></dt><dd><p>The location of the project’s source code.</p>
+</dd>
+<dt>links<span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a></span></dt><dd><p>Additional links in the form of <code class="docutils literal notranslate"><span class="pre">{'link_name':</span> <span class="pre">'http://example.com'}</span></code></p>
+</dd>
+</dl>
+</section>
+<section id="products-html">
+<span id="template-products"></span><h3><a class="toc-backref" href="#id16" role="doc-backlink"><code class="docutils literal notranslate"><span class="pre">products.html</span></code></a><a class="headerlink" href="#products-html" title="Link to this heading">¶</a></h3>
+<p>Displays result fields from:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#macro-result-header"><span class="std std-ref">result_header</span></a> and</p></li>
+<li><p><a class="reference internal" href="#macro-result-sub-header"><span class="std std-ref">result_sub_header</span></a></p></li>
+</ul>
+<p>Additional fields used in the <a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/searx/templates/simple/result_templates/products.html">products.html</a>:</p>
+<dl>
+<dt>content<span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span></dt><dd><p>Description of the product.</p>
+</dd>
+<dt>price<span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span></dt><dd><p>The price must include the currency.</p>
+</dd>
+<dt>shipping<span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span></dt><dd><p>Shipping details.</p>
+</dd>
+<dt>source_country<span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span></dt><dd><p>Place from which the shipment is made.</p>
+</dd>
+</dl>
+</section>
+</section>
+<section id="answer-results">
+<span id="template-answer-results"></span><h2><a class="toc-backref" href="#id17" role="doc-backlink">Answer results</a><a class="headerlink" href="#answer-results" title="Link to this heading">¶</a></h2>
+<p>See <a class="reference internal" href="result_types/answer.html#result-types-answer"><span class="std std-ref">Answer Results</span></a></p>
+</section>
+<section id="suggestion-results">
+<h2><a class="toc-backref" href="#id18" role="doc-backlink">Suggestion results</a><a class="headerlink" href="#suggestion-results" title="Link to this heading">¶</a></h2>
+<p>See <a class="reference internal" href="result_types/suggestion.html#result-types-suggestion"><span class="std std-ref">Suggestion Results</span></a></p>
+</section>
+<section id="correction-results">
+<h2><a class="toc-backref" href="#id19" role="doc-backlink">Correction results</a><a class="headerlink" href="#correction-results" title="Link to this heading">¶</a></h2>
+<p>See <a class="reference internal" href="result_types/correction.html#result-types-corrections"><span class="std std-ref">Correction Results</span></a></p>
+</section>
+<section id="infobox-results">
+<h2><a class="toc-backref" href="#id20" role="doc-backlink">Infobox results</a><a class="headerlink" href="#infobox-results" title="Link to this heading">¶</a></h2>
+<p>See <a class="reference internal" href="result_types/infobox.html#result-types-infobox"><span class="std std-ref">Infobox Results</span></a></p>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+  <span id="sidebar-top"></span>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+  
+    
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/searxng-wordmark.svg" alt="Logo of SearXNG"/>
+            </a></p>
+  
+
+<h3><a href="../index.html">Table of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../user/index.html">User information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../own-instance.html">Why use a private instance?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../admin/index.html">Administrator documentation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Developer documentation</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html">Development Quickstart</a></li>
+<li class="toctree-l2"><a class="reference internal" href="commits.html">Git Commits &amp; Change Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contribution_guide.html">How to contribute</a></li>
+<li class="toctree-l2"><a class="reference internal" href="extended_types.html">Extended Types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="engines/index.html">Engine Implementations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="result_types/index.html">Result Types</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Simple Theme Templates</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#result-template-macros">Result template macros</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#result-header"><code class="docutils literal notranslate"><span class="pre">result_header</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#result-sub-header"><code class="docutils literal notranslate"><span class="pre">result_sub_header</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#engine-data-form"><code class="docutils literal notranslate"><span class="pre">engine_data_form</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#main-result-list">Main Result List</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#default-html"><code class="docutils literal notranslate"><span class="pre">default.html</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#images-html"><code class="docutils literal notranslate"><span class="pre">images.html</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#image-labels">Image labels</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="#videos-html"><code class="docutils literal notranslate"><span class="pre">videos.html</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#torrent-html"><code class="docutils literal notranslate"><span class="pre">torrent.html</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#map-html"><code class="docutils literal notranslate"><span class="pre">map.html</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paper-html"><code class="docutils literal notranslate"><span class="pre">paper.html</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#packages"><code class="docutils literal notranslate"><span class="pre">packages</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#products-html"><code class="docutils literal notranslate"><span class="pre">products.html</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#answer-results">Answer results</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#suggestion-results">Suggestion results</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#correction-results">Correction results</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#infobox-results">Infobox results</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="search_api.html">Search API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plugins/index.html">Plugins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="answerers/index.html">Answerers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="translation.html">Translation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="makefile.html">Makefile &amp; <code class="docutils literal notranslate"><span class="pre">./manage</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="reST.html">reST primer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searxng_extra/index.html">Tooling box <code class="docutils literal notranslate"><span class="pre">searxng_extra</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../utils/index.html">DevOps tooling box</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../src/index.html">Source-Code</a></li>
+</ul>
+
+  <h3>Project Links</h3>
+  <ul>
+    <li><a href="https://github.com/searxng/searxng/tree/master">Source</a>
+  
+    <li><a href="https://github.com/searxng/searxng/wiki">Wiki</a>
+  
+    <li><a href="https://searx.space">Public instances</a>
+  
+    <li><a href="https://github.com/searxng/searxng/issues">Issue Tracker</a>
+  </ul><h3>Navigation</h3>
+<ul>
+  <li><a href="../index.html">Overview</a>
+    <ul>
+      <li><a href="index.html">Developer documentation</a>
+        <ul>
+          <li>Previous: <a href="result_types/infobox.html" title="previous chapter">Infobox Results</a>
+          <li>Next: <a href="search_api.html" title="next chapter">Search API</a></ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/dev/templates.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright SearXNG team.
+    </div>
+  </body>
+</html>

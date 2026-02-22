@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>searx.engines.dailymotion &#8212; SearXNG Documentation (2026.2.22+191818b86)</title>
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=6625fa76" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/searxng.css?v=52e4ff28" />
+    <script src="../../../_static/documentation_options.js?v=1b5d919e"></script>
+    <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script data-project="searxng" data-version="2026.2.22+191818b86" src="../../../_static/describe_version.js?v=fa7f30d0"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">SearXNG Documentation (2026.2.22+191818b86)</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" >Module code</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../engines.html" accesskey="U">searx.engines</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">searx.engines.dailymotion</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for searx.engines.dailymotion</h1><div class="highlight"><pre>
+<span></span><span class="c1"># SPDX-License-Identifier: AGPL-3.0-or-later</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Dailymotion (Videos)</span>
+<span class="sd">~~~~~~~~~~~~~~~~~~~~</span>
+
+<span class="sd">.. _REST GET: https://developers.dailymotion.com/tools/</span>
+<span class="sd">.. _Global API Parameters: https://developers.dailymotion.com/api/#global-parameters</span>
+<span class="sd">.. _Video filters API: https://developers.dailymotion.com/api/#video-filters</span>
+<span class="sd">.. _Fields selection: https://developers.dailymotion.com/api/#fields-selection</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timedelta</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">urllib.parse</span><span class="w"> </span><span class="kn">import</span> <span class="n">urlencode</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">babel</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">searx.network</span><span class="w"> </span><span class="kn">import</span> <span class="n">get</span><span class="p">,</span> <span class="n">raise_for_httperror</span>  <span class="c1"># see https://github.com/searxng/searxng/issues/762</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">searx.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">html_to_text</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">searx.exceptions</span><span class="w"> </span><span class="kn">import</span> <span class="n">SearxEngineAPIException</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">searx.locales</span><span class="w"> </span><span class="kn">import</span> <span class="n">region_tag</span><span class="p">,</span> <span class="n">language_tag</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">searx.enginelib.traits</span><span class="w"> </span><span class="kn">import</span> <span class="n">EngineTraits</span>
+
+<span class="c1"># about</span>
+<span class="n">about</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;website&quot;</span><span class="p">:</span> <span class="s1">&#39;https://www.dailymotion.com&#39;</span><span class="p">,</span>
+    <span class="s2">&quot;wikidata_id&quot;</span><span class="p">:</span> <span class="s1">&#39;Q769222&#39;</span><span class="p">,</span>
+    <span class="s2">&quot;official_api_documentation&quot;</span><span class="p">:</span> <span class="s1">&#39;https://www.dailymotion.com/developer&#39;</span><span class="p">,</span>
+    <span class="s2">&quot;use_official_api&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="s2">&quot;require_api_key&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="s2">&quot;results&quot;</span><span class="p">:</span> <span class="s1">&#39;JSON&#39;</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="c1"># engine dependent config</span>
+<span class="n">categories</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;videos&#39;</span><span class="p">]</span>
+<span class="n">paging</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">number_of_results</span> <span class="o">=</span> <span class="mi">10</span>
+
+<span class="n">time_range_support</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">time_delta_dict</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;day&quot;</span><span class="p">:</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span>
+    <span class="s2">&quot;week&quot;</span><span class="p">:</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="mi">7</span><span class="p">),</span>
+    <span class="s2">&quot;month&quot;</span><span class="p">:</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="mi">31</span><span class="p">),</span>
+    <span class="s2">&quot;year&quot;</span><span class="p">:</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="mi">365</span><span class="p">),</span>
+<span class="p">}</span>
+
+<span class="n">safesearch</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">safesearch_params</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="mi">2</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;is_created_for_kids&#39;</span><span class="p">:</span> <span class="s1">&#39;true&#39;</span><span class="p">},</span>
+    <span class="mi">1</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;is_created_for_kids&#39;</span><span class="p">:</span> <span class="s1">&#39;true&#39;</span><span class="p">},</span>
+    <span class="mi">0</span><span class="p">:</span> <span class="p">{},</span>
+<span class="p">}</span>
+<span class="sd">&quot;&quot;&quot;True if this video is &quot;Created for Kids&quot; / intends to target an audience</span>
+<span class="sd">under the age of 16 (``is_created_for_kids`` in `Video filters API`_ )</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="n">family_filter_map</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="mi">2</span><span class="p">:</span> <span class="s1">&#39;true&#39;</span><span class="p">,</span>
+    <span class="mi">1</span><span class="p">:</span> <span class="s1">&#39;true&#39;</span><span class="p">,</span>
+    <span class="mi">0</span><span class="p">:</span> <span class="s1">&#39;false&#39;</span><span class="p">,</span>
+<span class="p">}</span>
+<span class="sd">&quot;&quot;&quot;By default, the family filter is turned on. Setting this parameter to</span>
+<span class="sd">``false`` will stop filtering-out explicit content from searches and global</span>
+<span class="sd">contexts (``family_filter`` in `Global API Parameters`_ ).</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="n">result_fields</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s1">&#39;allow_embed&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;description&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;title&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;created_time&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;duration&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;url&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;thumbnail_360_url&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;id&#39;</span><span class="p">,</span>
+<span class="p">]</span>
+<span class="sd">&quot;&quot;&quot;`Fields selection`_, by default, a few fields are returned. To request more</span>
+<span class="sd">specific fields, the ``fields`` parameter is used with the list of fields</span>
+<span class="sd">SearXNG needs in the response to build a video result list.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="n">search_url</span> <span class="o">=</span> <span class="s1">&#39;https://api.dailymotion.com/videos?&#39;</span>
+<span class="sd">&quot;&quot;&quot;URL to retrieve a list of videos.</span>
+
+<span class="sd">- `REST GET`_</span>
+<span class="sd">- `Global API Parameters`_</span>
+<span class="sd">- `Video filters API`_</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="n">iframe_src</span> <span class="o">=</span> <span class="s2">&quot;https://www.dailymotion.com/embed/video/</span><span class="si">{video_id}</span><span class="s2">&quot;</span>
+<span class="sd">&quot;&quot;&quot;URL template to embed video in SearXNG&#39;s result list.&quot;&quot;&quot;</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">request</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">params</span><span class="p">):</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">query</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="n">eng_region</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">traits</span><span class="o">.</span><span class="n">get_region</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="s1">&#39;searxng_locale&#39;</span><span class="p">],</span> <span class="s1">&#39;en_US&#39;</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
+    <span class="n">eng_lang</span> <span class="o">=</span> <span class="n">traits</span><span class="o">.</span><span class="n">get_language</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="s1">&#39;searxng_locale&#39;</span><span class="p">],</span> <span class="s1">&#39;en&#39;</span><span class="p">)</span>
+
+    <span class="n">args</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;search&#39;</span><span class="p">:</span> <span class="n">query</span><span class="p">,</span>
+        <span class="s1">&#39;family_filter&#39;</span><span class="p">:</span> <span class="n">family_filter_map</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="s1">&#39;safesearch&#39;</span><span class="p">],</span> <span class="s1">&#39;false&#39;</span><span class="p">),</span>
+        <span class="s1">&#39;thumbnail_ratio&#39;</span><span class="p">:</span> <span class="s1">&#39;original&#39;</span><span class="p">,</span>  <span class="c1"># original|widescreen|square</span>
+        <span class="c1"># https://developers.dailymotion.com/api/#video-filters</span>
+        <span class="s1">&#39;languages&#39;</span><span class="p">:</span> <span class="n">eng_lang</span><span class="p">,</span>
+        <span class="s1">&#39;page&#39;</span><span class="p">:</span> <span class="n">params</span><span class="p">[</span><span class="s1">&#39;pageno&#39;</span><span class="p">],</span>
+        <span class="s1">&#39;password_protected&#39;</span><span class="p">:</span> <span class="s1">&#39;false&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;private&#39;</span><span class="p">:</span> <span class="s1">&#39;false&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;sort&#39;</span><span class="p">:</span> <span class="s1">&#39;relevance&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;limit&#39;</span><span class="p">:</span> <span class="n">number_of_results</span><span class="p">,</span>
+        <span class="s1">&#39;fields&#39;</span><span class="p">:</span> <span class="s1">&#39;,&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">result_fields</span><span class="p">),</span>
+    <span class="p">}</span>
+
+    <span class="n">args</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">safesearch_params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="s1">&#39;safesearch&#39;</span><span class="p">],</span> <span class="p">{}))</span>
+
+    <span class="c1"># Don&#39;t add localization and country arguments if the user does select a</span>
+    <span class="c1"># language (:de, :en, ..)</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="s1">&#39;searxng_locale&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">))</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="c1"># https://developers.dailymotion.com/api/#global-parameters</span>
+        <span class="n">args</span><span class="p">[</span><span class="s1">&#39;localization&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">eng_region</span>
+        <span class="n">args</span><span class="p">[</span><span class="s1">&#39;country&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">eng_region</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="c1"># Insufficient rights for the `ams_country&#39; parameter of route `GET /videos&#39;</span>
+        <span class="c1"># &#39;ams_country&#39;: eng_region.split(&#39;_&#39;)[1],</span>
+
+    <span class="n">time_delta</span> <span class="o">=</span> <span class="n">time_delta_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="s2">&quot;time_range&quot;</span><span class="p">])</span>
+    <span class="k">if</span> <span class="n">time_delta</span><span class="p">:</span>
+        <span class="n">created_after</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span> <span class="o">-</span> <span class="n">time_delta</span>
+        <span class="n">args</span><span class="p">[</span><span class="s1">&#39;created_after&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">timestamp</span><span class="p">(</span><span class="n">created_after</span><span class="p">)</span>
+
+    <span class="n">query_str</span> <span class="o">=</span> <span class="n">urlencode</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
+    <span class="n">params</span><span class="p">[</span><span class="s1">&#39;url&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">search_url</span> <span class="o">+</span> <span class="n">query_str</span>
+
+    <span class="k">return</span> <span class="n">params</span>
+
+
+<span class="c1"># get response from search-request</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">response</span><span class="p">(</span><span class="n">resp</span><span class="p">):</span>
+    <span class="n">results</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="n">search_res</span> <span class="o">=</span> <span class="n">resp</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+
+    <span class="c1"># check for an API error</span>
+    <span class="k">if</span> <span class="s1">&#39;error&#39;</span> <span class="ow">in</span> <span class="n">search_res</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">SearxEngineAPIException</span><span class="p">(</span><span class="n">search_res</span><span class="p">[</span><span class="s1">&#39;error&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;message&#39;</span><span class="p">))</span>
+
+    <span class="n">raise_for_httperror</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span>
+
+    <span class="c1"># parse results</span>
+    <span class="k">for</span> <span class="n">res</span> <span class="ow">in</span> <span class="n">search_res</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;list&#39;</span><span class="p">,</span> <span class="p">[]):</span>
+
+        <span class="n">title</span> <span class="o">=</span> <span class="n">res</span><span class="p">[</span><span class="s1">&#39;title&#39;</span><span class="p">]</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="n">res</span><span class="p">[</span><span class="s1">&#39;url&#39;</span><span class="p">]</span>
+
+        <span class="n">content</span> <span class="o">=</span> <span class="n">html_to_text</span><span class="p">(</span><span class="n">res</span><span class="p">[</span><span class="s1">&#39;description&#39;</span><span class="p">])</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">content</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">300</span><span class="p">:</span>
+            <span class="n">content</span> <span class="o">=</span> <span class="n">content</span><span class="p">[:</span><span class="mi">300</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;...&#39;</span>
+
+        <span class="n">publishedDate</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">fromtimestamp</span><span class="p">(</span><span class="n">res</span><span class="p">[</span><span class="s1">&#39;created_time&#39;</span><span class="p">],</span> <span class="kc">None</span><span class="p">)</span>
+
+        <span class="n">length</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">gmtime</span><span class="p">(</span><span class="n">res</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;duration&#39;</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">length</span><span class="o">.</span><span class="n">tm_hour</span><span class="p">:</span>
+            <span class="n">length</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%H:%M:%S&quot;</span><span class="p">,</span> <span class="n">length</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">length</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%M:%S&quot;</span><span class="p">,</span> <span class="n">length</span><span class="p">)</span>
+
+        <span class="n">thumbnail</span> <span class="o">=</span> <span class="n">res</span><span class="p">[</span><span class="s1">&#39;thumbnail_360_url&#39;</span><span class="p">]</span>
+        <span class="n">thumbnail</span> <span class="o">=</span> <span class="n">thumbnail</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;http://&quot;</span><span class="p">,</span> <span class="s2">&quot;https://&quot;</span><span class="p">)</span>
+
+        <span class="n">item</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;template&#39;</span><span class="p">:</span> <span class="s1">&#39;videos.html&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;url&#39;</span><span class="p">:</span> <span class="n">url</span><span class="p">,</span>
+            <span class="s1">&#39;title&#39;</span><span class="p">:</span> <span class="n">title</span><span class="p">,</span>
+            <span class="s1">&#39;content&#39;</span><span class="p">:</span> <span class="n">content</span><span class="p">,</span>
+            <span class="s1">&#39;publishedDate&#39;</span><span class="p">:</span> <span class="n">publishedDate</span><span class="p">,</span>
+            <span class="s1">&#39;length&#39;</span><span class="p">:</span> <span class="n">length</span><span class="p">,</span>
+            <span class="s1">&#39;thumbnail&#39;</span><span class="p">:</span> <span class="n">thumbnail</span><span class="p">,</span>
+        <span class="p">}</span>
+
+        <span class="c1"># HINT: no mater what the value is, without API token videos can&#39;t shown</span>
+        <span class="c1"># embedded</span>
+        <span class="k">if</span> <span class="n">res</span><span class="p">[</span><span class="s1">&#39;allow_embed&#39;</span><span class="p">]:</span>
+            <span class="n">item</span><span class="p">[</span><span class="s1">&#39;iframe_src&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">iframe_src</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">video_id</span><span class="o">=</span><span class="n">res</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">])</span>
+
+        <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+
+    <span class="c1"># return results</span>
+    <span class="k">return</span> <span class="n">results</span>
+
+
+<div class="viewcode-block" id="fetch_traits">
+<a class="viewcode-back" href="../../../dev/engines/online/dailymotion.html#searx.engines.dailymotion.fetch_traits">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">fetch_traits</span><span class="p">(</span><span class="n">engine_traits</span><span class="p">:</span> <span class="n">EngineTraits</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Fetch locales &amp; languages from dailymotion.</span>
+
+<span class="sd">    Locales fetched from `api/locales &lt;https://api.dailymotion.com/locales&gt;`_.</span>
+<span class="sd">    There are duplications in the locale codes returned from Dailymotion which</span>
+<span class="sd">    can be ignored::</span>
+
+<span class="sd">      en_EN --&gt; en_GB, en_US</span>
+<span class="sd">      ar_AA --&gt; ar_EG, ar_AE, ar_SA</span>
+
+<span class="sd">    The language list `api/languages &lt;https://api.dailymotion.com/languages&gt;`_</span>
+<span class="sd">    contains over 7000 *languages* codes (see PR1071_).  We use only those</span>
+<span class="sd">    language codes that are used in the locales.</span>
+
+<span class="sd">    .. _PR1071: https://github.com/searxng/searxng/pull/1071</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">resp</span> <span class="o">=</span> <span class="n">get</span><span class="p">(</span><span class="s1">&#39;https://api.dailymotion.com/locales&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">resp</span><span class="o">.</span><span class="n">ok</span><span class="p">:</span>  <span class="c1"># type: ignore</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;ERROR: response from dailymotion/locales is not OK.&quot;</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">resp</span><span class="o">.</span><span class="n">json</span><span class="p">()[</span><span class="s1">&#39;list&#39;</span><span class="p">]:</span>  <span class="c1"># type: ignore</span>
+        <span class="n">eng_tag</span> <span class="o">=</span> <span class="n">item</span><span class="p">[</span><span class="s1">&#39;locale&#39;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">eng_tag</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;en_EN&#39;</span><span class="p">,</span> <span class="s1">&#39;ar_AA&#39;</span><span class="p">):</span>
+            <span class="k">continue</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">sxng_tag</span> <span class="o">=</span> <span class="n">region_tag</span><span class="p">(</span><span class="n">babel</span><span class="o">.</span><span class="n">Locale</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">eng_tag</span><span class="p">))</span>
+        <span class="k">except</span> <span class="n">babel</span><span class="o">.</span><span class="n">UnknownLocaleError</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;ERROR: item unknown --&gt; </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">item</span><span class="p">)</span>
+            <span class="k">continue</span>
+
+        <span class="n">conflict</span> <span class="o">=</span> <span class="n">engine_traits</span><span class="o">.</span><span class="n">regions</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">sxng_tag</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">conflict</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">conflict</span> <span class="o">!=</span> <span class="n">eng_tag</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;CONFLICT: babel </span><span class="si">%s</span><span class="s2"> --&gt; </span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">sxng_tag</span><span class="p">,</span> <span class="n">conflict</span><span class="p">,</span> <span class="n">eng_tag</span><span class="p">))</span>
+            <span class="k">continue</span>
+        <span class="n">engine_traits</span><span class="o">.</span><span class="n">regions</span><span class="p">[</span><span class="n">sxng_tag</span><span class="p">]</span> <span class="o">=</span> <span class="n">eng_tag</span>
+
+    <span class="n">locale_lang_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">engine_traits</span><span class="o">.</span><span class="n">regions</span><span class="o">.</span><span class="n">values</span><span class="p">()]</span>
+
+    <span class="n">resp</span> <span class="o">=</span> <span class="n">get</span><span class="p">(</span><span class="s1">&#39;https://api.dailymotion.com/languages&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">resp</span><span class="o">.</span><span class="n">ok</span><span class="p">:</span>  <span class="c1"># type: ignore</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;ERROR: response from dailymotion/languages is not OK.&quot;</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">resp</span><span class="o">.</span><span class="n">json</span><span class="p">()[</span><span class="s1">&#39;list&#39;</span><span class="p">]:</span>  <span class="c1"># type: ignore</span>
+        <span class="n">eng_tag</span> <span class="o">=</span> <span class="n">item</span><span class="p">[</span><span class="s1">&#39;code&#39;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">eng_tag</span> <span class="ow">in</span> <span class="n">locale_lang_list</span><span class="p">:</span>
+            <span class="n">sxng_tag</span> <span class="o">=</span> <span class="n">language_tag</span><span class="p">(</span><span class="n">babel</span><span class="o">.</span><span class="n">Locale</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">eng_tag</span><span class="p">))</span>
+            <span class="n">engine_traits</span><span class="o">.</span><span class="n">languages</span><span class="p">[</span><span class="n">sxng_tag</span><span class="p">]</span> <span class="o">=</span> <span class="n">eng_tag</span></div>
+
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+  <span id="sidebar-top"></span>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+  
+    
+            <p class="logo"><a href="../../../index.html">
+              <img class="logo" src="../../../_static/searxng-wordmark.svg" alt="Logo of SearXNG"/>
+            </a></p>
+  
+
+<h3><a href="../../../index.html">Table of Contents</a></h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../user/index.html">User information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../own-instance.html">Why use a private instance?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../admin/index.html">Administrator documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../dev/index.html">Developer documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../utils/index.html">DevOps tooling box</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/index.html">Source-Code</a></li>
+</ul>
+
+  <h3>Project Links</h3>
+  <ul>
+    <li><a href="https://github.com/searxng/searxng/tree/master">Source</a>
+  
+    <li><a href="https://github.com/searxng/searxng/wiki">Wiki</a>
+  
+    <li><a href="https://searx.space">Public instances</a>
+  
+    <li><a href="https://github.com/searxng/searxng/issues">Issue Tracker</a>
+  </ul><h3>Navigation</h3>
+<ul>
+  <li><a href="../../../index.html">Overview</a>
+    <ul>
+      <li><a href="../../index.html">Module code</a>
+        <ul>
+      <li><a href="../engines.html">searx.engines</a>
+        
+          
+          </ul>
+      </li></ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright SearXNG team.
+    </div>
+  </body>
+</html>

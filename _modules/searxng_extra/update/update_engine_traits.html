@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>searxng_extra.update.update_engine_traits &#8212; SearXNG Documentation (2026.2.22+191818b86)</title>
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=6625fa76" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/searxng.css?v=52e4ff28" />
+    <script src="../../../_static/documentation_options.js?v=1b5d919e"></script>
+    <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script data-project="searxng" data-version="2026.2.22+191818b86" src="../../../_static/describe_version.js?v=fa7f30d0"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">SearXNG Documentation (2026.2.22+191818b86)</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" accesskey="U">Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">searxng_extra.update.update_engine_traits</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for searxng_extra.update.update_engine_traits</h1><div class="highlight"><pre>
+<span></span><span class="ch">#!/usr/bin/env python</span>
+<span class="c1"># SPDX-License-Identifier: AGPL-3.0-or-later</span>
+<span class="sd">&quot;&quot;&quot;Update :py:obj:`searx.enginelib.traits.EngineTraitsMap` and :origin:`searx/languages.py`</span>
+
+<span class="sd">:py:obj:`searx.enginelib.traits.EngineTraitsMap.ENGINE_TRAITS_FILE`:</span>
+<span class="sd">  Persistence of engines traits, fetched from the engines.</span>
+
+<span class="sd">:origin:`searx/languages.py`</span>
+<span class="sd">  Is generated  from intersecting each engine&#39;s supported traits.</span>
+
+<span class="sd">The script :origin:`searxng_extra/update/update_engine_traits.py` is called in</span>
+<span class="sd">the :origin:`CI Update data ... &lt;.github/workflows/data-update.yml&gt;`</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="c1"># pylint: disable=invalid-name</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">unicodedata</span><span class="w"> </span><span class="kn">import</span> <span class="n">lookup</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pprint</span><span class="w"> </span><span class="kn">import</span> <span class="n">pformat</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">babel</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">searx</span><span class="w"> </span><span class="kn">import</span> <span class="n">settings</span><span class="p">,</span> <span class="n">searx_dir</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">searx</span><span class="w"> </span><span class="kn">import</span> <span class="n">network</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">searx.engines</span><span class="w"> </span><span class="kn">import</span> <span class="n">load_engines</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">searx.enginelib.traits</span><span class="w"> </span><span class="kn">import</span> <span class="n">EngineTraitsMap</span>
+
+<span class="c1"># Output files.</span>
+<span class="n">languages_file</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">searx_dir</span><span class="p">)</span> <span class="o">/</span> <span class="s1">&#39;sxng_locales.py&#39;</span>
+<span class="n">languages_file_header</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span><span class="se">\</span>
+<span class="s2"># SPDX-License-Identifier: AGPL-3.0-or-later</span>
+<span class="s2">&#39;&#39;&#39;List of SearXNG&#39;s locale codes used for the search language/region.</span>
+
+<span class="s2">.. hint::</span>
+
+<span class="s2">   Don&#39;t modify this file, this file is generated by::</span>
+
+<span class="s2">     ./manage data.traits</span>
+<span class="s2">&#39;&#39;&#39;</span>
+
+<span class="s2">sxng_locales = (</span>
+<span class="s2">&quot;&quot;&quot;</span>
+<span class="n">languages_file_footer</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;,</span>
+<span class="s2">)</span>
+<span class="s2">&#39;&#39;&#39;</span>
+<span class="s2">A list of five-digit tuples:</span>
+
+<span class="s2">0. SearXNG&#39;s internal locale tag (a language or region tag)</span>
+<span class="s2">1. Name of the language (:py:obj:`babel.core.Locale.get_language_name`)</span>
+<span class="s2">2. For region tags the name of the region (:py:obj:`babel.core.Locale.get_territory_name`).</span>
+<span class="s2">   Empty string for language tags.</span>
+<span class="s2">3. English language name (from :py:obj:`babel.core.Locale.english_name`)</span>
+<span class="s2">4. Unicode flag (emoji) that fits to SearXNG&#39;s internal region tag. Languages</span>
+<span class="s2">   are represented by a globe (</span><span class="se">\U0001f310</span><span class="s2">)</span>
+
+<span class="s2">.. code:: python</span>
+
+<span class="s2">   (&#39;en&#39;,    &#39;English&#39;, &#39;&#39;,              &#39;English&#39;, &#39;</span><span class="se">\U0001f310</span><span class="s2">&#39;),</span>
+<span class="s2">   (&#39;en-CA&#39;, &#39;English&#39;, &#39;Canada&#39;,        &#39;English&#39;, &#39;</span><span class="se">\U0001f1e8\U0001f1e6</span><span class="s2">&#39;),</span>
+<span class="s2">   (&#39;en-US&#39;, &#39;English&#39;, &#39;United States&#39;, &#39;English&#39;, &#39;</span><span class="se">\U0001f1fa\U0001f1f8</span><span class="s2">&#39;),</span>
+<span class="s2">   ..</span>
+<span class="s2">   (&#39;fr&#39;,    &#39;Français&#39;, &#39;&#39;,             &#39;French&#39;,  &#39;</span><span class="se">\U0001f310</span><span class="s2">&#39;),</span>
+<span class="s2">   (&#39;fr-BE&#39;, &#39;Français&#39;, &#39;Belgique&#39;,     &#39;French&#39;,  &#39;</span><span class="se">\U0001f1e7\U0001f1ea</span><span class="s2">&#39;),</span>
+<span class="s2">   (&#39;fr-CA&#39;, &#39;Français&#39;, &#39;Canada&#39;,       &#39;French&#39;,  &#39;</span><span class="se">\U0001f1e8\U0001f1e6</span><span class="s2">&#39;),</span>
+
+<span class="s2">:meta hide-value:</span>
+<span class="s2">&#39;&#39;&#39;</span>
+<span class="s2">&quot;&quot;&quot;</span>
+
+
+<span class="n">lang2emoji</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;ha&#39;</span><span class="p">:</span> <span class="s1">&#39;</span><span class="se">\U0001f1f3\U0001f1ea</span><span class="s1">&#39;</span><span class="p">,</span>  <span class="c1"># Hausa / Niger</span>
+    <span class="s1">&#39;bs&#39;</span><span class="p">:</span> <span class="s1">&#39;</span><span class="se">\U0001f1e7\U0001f1e6</span><span class="s1">&#39;</span><span class="p">,</span>  <span class="c1"># Bosnian / Bosnia &amp; Herzegovina</span>
+    <span class="s1">&#39;jp&#39;</span><span class="p">:</span> <span class="s1">&#39;</span><span class="se">\U0001f1ef\U0001f1f5</span><span class="s1">&#39;</span><span class="p">,</span>  <span class="c1"># Japanese</span>
+    <span class="s1">&#39;ua&#39;</span><span class="p">:</span> <span class="s1">&#39;</span><span class="se">\U0001f1fa\U0001f1e6</span><span class="s1">&#39;</span><span class="p">,</span>  <span class="c1"># Ukrainian</span>
+    <span class="s1">&#39;he&#39;</span><span class="p">:</span> <span class="s1">&#39;</span><span class="se">\U0001f1ee\U0001f1f1</span><span class="s1">&#39;</span><span class="p">,</span>  <span class="c1"># Hebrew</span>
+<span class="p">}</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">main</span><span class="p">():</span>
+
+    <span class="n">engines_cfg</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">for</span> <span class="n">eng_data</span> <span class="ow">in</span> <span class="n">settings</span><span class="p">[</span><span class="s2">&quot;engines&quot;</span><span class="p">]:</span>
+        <span class="n">eng_data</span><span class="p">[</span><span class="s2">&quot;inactive&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="n">engines_cfg</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">eng_data</span><span class="p">)</span>
+
+    <span class="n">load_engines</span><span class="p">(</span><span class="n">engines_cfg</span><span class="p">)</span>
+    <span class="c1"># traits_map = EngineTraitsMap.from_data()</span>
+    <span class="n">traits_map</span> <span class="o">=</span> <span class="n">fetch_traits_map</span><span class="p">()</span>
+    <span class="n">sxng_tag_list</span> <span class="o">=</span> <span class="n">filter_locales</span><span class="p">(</span><span class="n">traits_map</span><span class="p">)</span>
+    <span class="n">write_languages_file</span><span class="p">(</span><span class="n">sxng_tag_list</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="fetch_traits_map">
+<a class="viewcode-back" href="../../../dev/searxng_extra/update.html#searxng_extra.update.update_engine_traits.fetch_traits_map">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">fetch_traits_map</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Fetches supported languages for each engine and writes json file with those.&quot;&quot;&quot;</span>
+    <span class="n">network</span><span class="o">.</span><span class="n">set_timeout_for_thread</span><span class="p">(</span><span class="mf">10.0</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">log</span><span class="p">(</span><span class="n">msg</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+    <span class="n">traits_map</span> <span class="o">=</span> <span class="n">EngineTraitsMap</span><span class="o">.</span><span class="n">fetch_traits</span><span class="p">(</span><span class="n">log</span><span class="o">=</span><span class="n">log</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;fetched properties from </span><span class="si">%s</span><span class="s2"> engines&quot;</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="n">traits_map</span><span class="p">))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;write json file: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">traits_map</span><span class="o">.</span><span class="n">ENGINE_TRAITS_FILE</span><span class="p">)</span>
+    <span class="n">traits_map</span><span class="o">.</span><span class="n">save_data</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">traits_map</span></div>
+
+
+
+<div class="viewcode-block" id="filter_locales">
+<a class="viewcode-back" href="../../../dev/searxng_extra/update.html#searxng_extra.update.update_engine_traits.filter_locales">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">filter_locales</span><span class="p">(</span><span class="n">traits_map</span><span class="p">:</span> <span class="n">EngineTraitsMap</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Filter language &amp; region tags by a threshold.&quot;&quot;&quot;</span>
+
+    <span class="n">min_eng_per_region</span> <span class="o">=</span> <span class="mi">18</span>
+    <span class="n">min_eng_per_lang</span> <span class="o">=</span> <span class="mi">22</span>
+
+    <span class="n">_</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">eng</span> <span class="ow">in</span> <span class="n">traits_map</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+        <span class="k">for</span> <span class="n">reg</span> <span class="ow">in</span> <span class="n">eng</span><span class="o">.</span><span class="n">regions</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="n">_</span><span class="p">[</span><span class="n">reg</span><span class="p">]</span> <span class="o">=</span> <span class="n">_</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">reg</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
+
+    <span class="n">regions</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">k</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">_</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">v</span> <span class="o">&gt;=</span> <span class="n">min_eng_per_region</span><span class="p">)</span>
+    <span class="n">lang_from_region</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">k</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">regions</span><span class="p">)</span>
+
+    <span class="n">_</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">eng</span> <span class="ow">in</span> <span class="n">traits_map</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+        <span class="k">for</span> <span class="n">lang</span> <span class="ow">in</span> <span class="n">eng</span><span class="o">.</span><span class="n">languages</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="c1"># ignore script types like zh_Hant, zh_Hans or sr_Latin, pa_Arab (they</span>
+            <span class="c1"># already counted by existence of &#39;zh&#39; or &#39;sr&#39;, &#39;pa&#39;)</span>
+            <span class="k">if</span> <span class="s1">&#39;_&#39;</span> <span class="ow">in</span> <span class="n">lang</span><span class="p">:</span>
+                <span class="c1"># print(&quot;ignore %s&quot; % lang)</span>
+                <span class="k">continue</span>
+            <span class="n">_</span><span class="p">[</span><span class="n">lang</span><span class="p">]</span> <span class="o">=</span> <span class="n">_</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">lang</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
+
+    <span class="n">languages</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">k</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">_</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">v</span> <span class="o">&gt;=</span> <span class="n">min_eng_per_lang</span><span class="p">)</span>
+
+    <span class="n">sxng_tag_list</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+    <span class="n">sxng_tag_list</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">regions</span><span class="p">)</span>
+    <span class="n">sxng_tag_list</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">lang_from_region</span><span class="p">)</span>
+    <span class="n">sxng_tag_list</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">languages</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">sxng_tag_list</span></div>
+
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">write_languages_file</span><span class="p">(</span><span class="n">sxng_tag_list</span><span class="p">):</span>
+
+    <span class="n">language_codes</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">for</span> <span class="n">sxng_tag</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">sxng_tag_list</span><span class="p">):</span>
+        <span class="n">sxng_locale</span><span class="p">:</span> <span class="n">babel</span><span class="o">.</span><span class="n">Locale</span> <span class="o">=</span> <span class="n">babel</span><span class="o">.</span><span class="n">Locale</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">sxng_tag</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;-&#39;</span><span class="p">)</span>
+
+        <span class="n">flag</span> <span class="o">=</span> <span class="n">get_unicode_flag</span><span class="p">(</span><span class="n">sxng_locale</span><span class="p">)</span> <span class="ow">or</span> <span class="s1">&#39;&#39;</span>
+
+        <span class="n">item</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">sxng_tag</span><span class="p">,</span>
+            <span class="n">sxng_locale</span><span class="o">.</span><span class="n">get_language_name</span><span class="p">()</span><span class="o">.</span><span class="n">title</span><span class="p">(),</span>  <span class="c1"># type: ignore</span>
+            <span class="n">sxng_locale</span><span class="o">.</span><span class="n">get_territory_name</span><span class="p">()</span> <span class="ow">or</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
+            <span class="n">sxng_locale</span><span class="o">.</span><span class="n">english_name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39; (&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="k">if</span> <span class="n">sxng_locale</span><span class="o">.</span><span class="n">english_name</span> <span class="k">else</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
+            <span class="n">UnicodeEscape</span><span class="p">(</span><span class="n">flag</span><span class="p">),</span>
+        <span class="p">)</span>
+
+        <span class="n">language_codes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+
+    <span class="n">language_codes</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">language_codes</span><span class="p">)</span>
+
+    <span class="k">with</span> <span class="n">languages_file</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s1">&#39;w&#39;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">new_file</span><span class="p">:</span>
+        <span class="n">file_content</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{header}</span><span class="s2"> </span><span class="si">{language_codes}{footer}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="n">header</span><span class="o">=</span><span class="n">languages_file_header</span><span class="p">,</span>
+            <span class="n">language_codes</span><span class="o">=</span><span class="n">pformat</span><span class="p">(</span><span class="n">language_codes</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">120</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">4</span><span class="p">)[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span>
+            <span class="n">footer</span><span class="o">=</span><span class="n">languages_file_footer</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">new_file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">file_content</span><span class="p">)</span>
+        <span class="n">new_file</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+
+<div class="viewcode-block" id="UnicodeEscape">
+<a class="viewcode-back" href="../../../dev/searxng_extra/update.html#searxng_extra.update.update_engine_traits.UnicodeEscape">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">UnicodeEscape</span><span class="p">(</span><span class="nb">str</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Escape unicode string in :py:obj:`pprint.pformat`&quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">&quot;&#39;&quot;</span> <span class="o">+</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="nb">chr</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">&#39;unicode-escape&#39;</span><span class="p">)])</span> <span class="o">+</span> <span class="s2">&quot;&#39;&quot;</span></div>
+
+
+
+<div class="viewcode-block" id="get_unicode_flag">
+<a class="viewcode-back" href="../../../dev/searxng_extra/update.html#searxng_extra.update.update_engine_traits.get_unicode_flag">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_unicode_flag</span><span class="p">(</span><span class="n">locale</span><span class="p">:</span> <span class="n">babel</span><span class="o">.</span><span class="n">Locale</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Determine a unicode flag (emoji) that fits to the ``locale``&quot;&quot;&quot;</span>
+
+    <span class="n">emoji</span> <span class="o">=</span> <span class="n">lang2emoji</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">locale</span><span class="o">.</span><span class="n">language</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">emoji</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">emoji</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">locale</span><span class="o">.</span><span class="n">territory</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s1">&#39;</span><span class="se">\U0001f310</span><span class="s1">&#39;</span>
+
+    <span class="n">emoji</span> <span class="o">=</span> <span class="n">lang2emoji</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">locale</span><span class="o">.</span><span class="n">territory</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span>
+    <span class="k">if</span> <span class="n">emoji</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">emoji</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">c1</span> <span class="o">=</span> <span class="n">lookup</span><span class="p">(</span><span class="s1">&#39;REGIONAL INDICATOR SYMBOL LETTER &#39;</span> <span class="o">+</span> <span class="n">locale</span><span class="o">.</span><span class="n">territory</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">c2</span> <span class="o">=</span> <span class="n">lookup</span><span class="p">(</span><span class="s1">&#39;REGIONAL INDICATOR SYMBOL LETTER &#39;</span> <span class="o">+</span> <span class="n">locale</span><span class="o">.</span><span class="n">territory</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="c1"># print(&quot;OK   : %s --&gt; %s%s&quot; % (locale, c1, c2))</span>
+    <span class="k">except</span> <span class="ne">KeyError</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;ERROR: </span><span class="si">%s</span><span class="s2"> --&gt; </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">locale</span><span class="p">,</span> <span class="n">exc</span><span class="p">))</span>
+        <span class="k">return</span> <span class="kc">None</span>
+
+    <span class="k">return</span> <span class="n">c1</span> <span class="o">+</span> <span class="n">c2</span></div>
+
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">main</span><span class="p">()</span>
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+  <span id="sidebar-top"></span>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+  
+    
+            <p class="logo"><a href="../../../index.html">
+              <img class="logo" src="../../../_static/searxng-wordmark.svg" alt="Logo of SearXNG"/>
+            </a></p>
+  
+
+<h3><a href="../../../index.html">Table of Contents</a></h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../user/index.html">User information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../own-instance.html">Why use a private instance?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../admin/index.html">Administrator documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../dev/index.html">Developer documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../utils/index.html">DevOps tooling box</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/index.html">Source-Code</a></li>
+</ul>
+
+  <h3>Project Links</h3>
+  <ul>
+    <li><a href="https://github.com/searxng/searxng/tree/master">Source</a>
+  
+    <li><a href="https://github.com/searxng/searxng/wiki">Wiki</a>
+  
+    <li><a href="https://searx.space">Public instances</a>
+  
+    <li><a href="https://github.com/searxng/searxng/issues">Issue Tracker</a>
+  </ul><h3>Navigation</h3>
+<ul>
+  <li><a href="../../../index.html">Overview</a>
+    <ul>
+      <li><a href="../../index.html">Module code</a>
+        
+          
+          </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright SearXNG team.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>searx.favicons.config &#8212; SearXNG Documentation (2026.2.22+191818b86)</title>
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=6625fa76" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/searxng.css?v=52e4ff28" />
+    <script src="../../../_static/documentation_options.js?v=1b5d919e"></script>
+    <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script data-project="searxng" data-version="2026.2.22+191818b86" src="../../../_static/describe_version.js?v=fa7f30d0"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">SearXNG Documentation (2026.2.22+191818b86)</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" accesskey="U">Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">searx.favicons.config</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for searx.favicons.config</h1><div class="highlight"><pre>
+<span></span><span class="c1"># SPDX-License-Identifier: AGPL-3.0-or-later</span>
+<span class="c1"># pylint: disable=missing-module-docstring</span>
+
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">pathlib</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">msgspec</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">.cache</span><span class="w"> </span><span class="kn">import</span> <span class="n">FaviconCacheConfig</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.proxy</span><span class="w"> </span><span class="kn">import</span> <span class="n">FaviconProxyConfig</span>
+
+<span class="n">CONFIG_SCHEMA</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="sd">&quot;&quot;&quot;Version of the configuration schema.&quot;&quot;&quot;</span>
+
+<span class="n">TOML_CACHE_CFG</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="s2">&quot;FaviconConfig&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="sd">&quot;&quot;&quot;Cache config objects by TOML&#39;s filename.&quot;&quot;&quot;</span>
+
+<span class="n">DEFAULT_CFG_TOML_PATH</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span> <span class="o">/</span> <span class="s2">&quot;favicons.toml&quot;</span>
+
+
+<div class="viewcode-block" id="FaviconConfig">
+<a class="viewcode-back" href="../../../src/searx.favicons.html#searx.favicons.config.FaviconConfig">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">FaviconConfig</span><span class="p">(</span><span class="n">msgspec</span><span class="o">.</span><span class="n">Struct</span><span class="p">):</span>  <span class="c1"># pylint: disable=too-few-public-methods</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The class aggregates configurations of the favicon tools&quot;&quot;&quot;</span>
+
+    <span class="n">cfg_schema</span><span class="p">:</span> <span class="nb">int</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Config&#39;s schema version.  The specification of the version of the schema</span>
+<span class="sd">    is mandatory, currently only version :py:obj:`CONFIG_SCHEMA` is supported.</span>
+<span class="sd">    By specifying a version, it is possible to ensure downward compatibility in</span>
+<span class="sd">    the event of future changes to the configuration schema&quot;&quot;&quot;</span>
+
+    <span class="n">cache</span><span class="p">:</span> <span class="n">FaviconCacheConfig</span> <span class="o">=</span> <span class="n">msgspec</span><span class="o">.</span><span class="n">field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="n">FaviconCacheConfig</span><span class="p">)</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Setup of the :py:obj:`.cache.FaviconCacheConfig`.&quot;&quot;&quot;</span>
+
+    <span class="n">proxy</span><span class="p">:</span> <span class="n">FaviconProxyConfig</span> <span class="o">=</span> <span class="n">msgspec</span><span class="o">.</span><span class="n">field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="n">FaviconProxyConfig</span><span class="p">)</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Setup of the :py:obj:`.proxy.FaviconProxyConfig`.&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="FaviconConfig.from_toml_file">
+<a class="viewcode-back" href="../../../src/searx.favicons.html#searx.favicons.config.FaviconConfig.from_toml_file">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">from_toml_file</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">cfg_file</span><span class="p">:</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">,</span> <span class="n">use_cache</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;FaviconConfig&quot;</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create a config object from a TOML file, the ``use_cache`` argument</span>
+<span class="sd">        specifies whether a cache should be used.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">cached</span> <span class="o">=</span> <span class="n">TOML_CACHE_CFG</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">cfg_file</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">use_cache</span> <span class="ow">and</span> <span class="n">cached</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">cached</span>
+
+        <span class="k">with</span> <span class="n">cfg_file</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">&quot;rb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+
+        <span class="n">cfg</span> <span class="o">=</span> <span class="n">msgspec</span><span class="o">.</span><span class="n">toml</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="n">_FaviconConfig</span><span class="p">)</span>
+        <span class="n">schema</span> <span class="o">=</span> <span class="n">cfg</span><span class="o">.</span><span class="n">favicons</span><span class="o">.</span><span class="n">cfg_schema</span>
+        <span class="k">if</span> <span class="n">schema</span> <span class="o">!=</span> <span class="n">CONFIG_SCHEMA</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;config schema version </span><span class="si">{</span><span class="n">CONFIG_SCHEMA</span><span class="si">}</span><span class="s2"> is needed, version </span><span class="si">{</span><span class="n">schema</span><span class="si">}</span><span class="s2"> is given in </span><span class="si">{</span><span class="n">cfg_file</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
+
+        <span class="n">cfg</span> <span class="o">=</span> <span class="n">cfg</span><span class="o">.</span><span class="n">favicons</span>
+        <span class="k">if</span> <span class="n">use_cache</span> <span class="ow">and</span> <span class="n">cached</span><span class="p">:</span>
+            <span class="n">TOML_CACHE_CFG</span><span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">cfg_file</span><span class="o">.</span><span class="n">resolve</span><span class="p">())]</span> <span class="o">=</span> <span class="n">cfg</span>
+
+        <span class="k">return</span> <span class="n">cfg</span></div>
+</div>
+
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">_FaviconConfig</span><span class="p">(</span><span class="n">msgspec</span><span class="o">.</span><span class="n">Struct</span><span class="p">):</span>  <span class="c1"># pylint: disable=too-few-public-methods</span>
+    <span class="c1"># wrapper struct for root object &quot;favicons.&quot;</span>
+    <span class="n">favicons</span><span class="p">:</span> <span class="n">FaviconConfig</span>
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+  <span id="sidebar-top"></span>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+  
+    
+            <p class="logo"><a href="../../../index.html">
+              <img class="logo" src="../../../_static/searxng-wordmark.svg" alt="Logo of SearXNG"/>
+            </a></p>
+  
+
+<h3><a href="../../../index.html">Table of Contents</a></h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../user/index.html">User information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../own-instance.html">Why use a private instance?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../admin/index.html">Administrator documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../dev/index.html">Developer documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../utils/index.html">DevOps tooling box</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/index.html">Source-Code</a></li>
+</ul>
+
+  <h3>Project Links</h3>
+  <ul>
+    <li><a href="https://github.com/searxng/searxng/tree/master">Source</a>
+  
+    <li><a href="https://github.com/searxng/searxng/wiki">Wiki</a>
+  
+    <li><a href="https://searx.space">Public instances</a>
+  
+    <li><a href="https://github.com/searxng/searxng/issues">Issue Tracker</a>
+  </ul><h3>Navigation</h3>
+<ul>
+  <li><a href="../../../index.html">Overview</a>
+    <ul>
+      <li><a href="../../index.html">Module code</a>
+        
+          
+          </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright SearXNG team.
+    </div>
+  </body>
+</html>

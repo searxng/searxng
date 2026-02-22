@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>searx.engines.demo_offline &#8212; SearXNG Documentation (2026.2.22+191818b86)</title>
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=6625fa76" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/searxng.css?v=52e4ff28" />
+    <script src="../../../_static/documentation_options.js?v=1b5d919e"></script>
+    <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script data-project="searxng" data-version="2026.2.22+191818b86" src="../../../_static/describe_version.js?v=fa7f30d0"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">SearXNG Documentation (2026.2.22+191818b86)</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" >Module code</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../engines.html" accesskey="U">searx.engines</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">searx.engines.demo_offline</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for searx.engines.demo_offline</h1><div class="highlight"><pre>
+<span></span><span class="c1"># SPDX-License-Identifier: AGPL-3.0-or-later</span>
+<span class="sd">&quot;&quot;&quot;Within this module we implement a *demo offline engine*.  Do not look to</span>
+<span class="sd">close to the implementation, its just a simple example.</span>
+
+<span class="sd">Configuration</span>
+<span class="sd">=============</span>
+
+<span class="sd">To get in use of this *demo* engine add the following entry to your engines list</span>
+<span class="sd">in ``settings.yml``:</span>
+
+<span class="sd">.. code:: yaml</span>
+
+<span class="sd">  - name: my offline engine</span>
+<span class="sd">    engine: demo_offline</span>
+<span class="sd">    shortcut: demo</span>
+<span class="sd">    disabled: false</span>
+
+<span class="sd">Implementations</span>
+<span class="sd">===============</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">t</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">searx.result_types</span><span class="w"> </span><span class="kn">import</span> <span class="n">EngineResults</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">searx.enginelib</span><span class="w"> </span><span class="kn">import</span> <span class="n">EngineCache</span>
+
+<span class="k">if</span> <span class="n">t</span><span class="o">.</span><span class="n">TYPE_CHECKING</span><span class="p">:</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">searx.search.processors</span><span class="w"> </span><span class="kn">import</span> <span class="n">RequestParams</span>
+
+
+<span class="n">engine_type</span> <span class="o">=</span> <span class="s2">&quot;offline&quot;</span>
+<span class="n">categories</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;general&quot;</span><span class="p">]</span>
+<span class="n">disabled</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">timeout</span> <span class="o">=</span> <span class="mf">2.0</span>
+
+<span class="n">about</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;wikidata_id&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="s2">&quot;official_api_documentation&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="s2">&quot;use_official_api&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="s2">&quot;require_api_key&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="s2">&quot;results&quot;</span><span class="p">:</span> <span class="s2">&quot;JSON&quot;</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="c1"># if there is a need for globals, use a leading underline</span>
+<span class="n">_my_offline_engine</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+
+<span class="n">CACHE</span><span class="p">:</span> <span class="n">EngineCache</span>
+<span class="sd">&quot;&quot;&quot;Persistent (SQLite) key/value cache that deletes its values after ``expire``</span>
+<span class="sd">seconds.&quot;&quot;&quot;</span>
+
+
+<div class="viewcode-block" id="setup">
+<a class="viewcode-back" href="../../../dev/engines/demo/demo_offline.html#searx.engines.demo_offline.setup">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">setup</span><span class="p">(</span><span class="n">engine_settings</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">t</span><span class="o">.</span><span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Dynamic setup of the engine settings.</span>
+
+<span class="sd">    The origin of this demo engine is a simple json string which is loaded in</span>
+<span class="sd">    this example while the engine is initialized.</span>
+
+<span class="sd">    For more details see :py:obj:`searx.enginelib.Engine.setup`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">global</span> <span class="n">_my_offline_engine</span><span class="p">,</span> <span class="n">CACHE</span>  <span class="c1"># pylint: disable=global-statement</span>
+
+    <span class="n">CACHE</span> <span class="o">=</span> <span class="n">EngineCache</span><span class="p">(</span><span class="n">engine_settings</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">])</span>
+
+    <span class="n">_my_offline_engine</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="s1">&#39;[ {&quot;value&quot;: &quot;</span><span class="si">%s</span><span class="s1">&quot;}&#39;</span>
+        <span class="s1">&#39;, {&quot;value&quot;:&quot;first item&quot;}&#39;</span>
+        <span class="s1">&#39;, {&quot;value&quot;:&quot;second item&quot;}&#39;</span>
+        <span class="s1">&#39;, {&quot;value&quot;:&quot;third item&quot;}&#39;</span>
+        <span class="s1">&#39;]&#39;</span> <span class="o">%</span> <span class="n">engine_settings</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">)</span>
+    <span class="p">)</span>
+
+    <span class="k">return</span> <span class="kc">True</span></div>
+
+
+
+<div class="viewcode-block" id="init">
+<a class="viewcode-back" href="../../../dev/engines/demo/demo_offline.html#searx.engines.demo_offline.init">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">init</span><span class="p">(</span><span class="n">engine_settings</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">t</span><span class="o">.</span><span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>  <span class="c1"># pylint: disable=unused-argument</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Initialization of the engine.</span>
+
+<span class="sd">    For more details see :py:obj:`searx.enginelib.Engine.init`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="kc">True</span></div>
+
+
+
+<div class="viewcode-block" id="search">
+<a class="viewcode-back" href="../../../dev/engines/demo/demo_offline.html#searx.engines.demo_offline.search">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">search</span><span class="p">(</span><span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">params</span><span class="p">:</span> <span class="s2">&quot;RequestParams&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">EngineResults</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Query (offline) engine and return results.  Assemble the list of results</span>
+<span class="sd">    from your local engine.</span>
+
+<span class="sd">    In this demo engine we ignore the &#39;query&#39; term, usual you would pass the</span>
+<span class="sd">    &#39;query&#39; term to your local engine to filter out the results.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="n">EngineResults</span><span class="p">()</span>
+
+    <span class="n">count</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">CACHE</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;count&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="n">data_rows</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">_my_offline_engine</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">data_rows</span><span class="p">:</span>
+        <span class="n">count</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="n">kvmap</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;query&#39;</span><span class="p">:</span> <span class="n">query</span><span class="p">,</span>
+            <span class="s1">&#39;language&#39;</span><span class="p">:</span> <span class="n">params</span><span class="p">[</span><span class="s1">&#39;searxng_locale&#39;</span><span class="p">],</span>
+            <span class="s1">&#39;value&#39;</span><span class="p">:</span> <span class="n">row</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;value&quot;</span><span class="p">),</span>
+        <span class="p">}</span>
+        <span class="n">res</span><span class="o">.</span><span class="n">add</span><span class="p">(</span>
+            <span class="n">res</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">KeyValue</span><span class="p">(</span>
+                <span class="n">caption</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Demo Offline Engine Result #</span><span class="si">{</span><span class="n">count</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+                <span class="n">key_title</span><span class="o">=</span><span class="s2">&quot;Name&quot;</span><span class="p">,</span>
+                <span class="n">value_title</span><span class="o">=</span><span class="s2">&quot;Value&quot;</span><span class="p">,</span>
+                <span class="n">kvmap</span><span class="o">=</span><span class="n">kvmap</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
+    <span class="n">res</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">res</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">LegacyResult</span><span class="p">(</span><span class="n">number_of_results</span><span class="o">=</span><span class="n">count</span><span class="p">))</span>
+
+    <span class="c1"># cache counter value for 20sec</span>
+    <span class="n">CACHE</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s2">&quot;count&quot;</span><span class="p">,</span> <span class="n">count</span><span class="p">,</span> <span class="n">expire</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">res</span></div>
+
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+  <span id="sidebar-top"></span>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+  
+    
+            <p class="logo"><a href="../../../index.html">
+              <img class="logo" src="../../../_static/searxng-wordmark.svg" alt="Logo of SearXNG"/>
+            </a></p>
+  
+
+<h3><a href="../../../index.html">Table of Contents</a></h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../user/index.html">User information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../own-instance.html">Why use a private instance?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../admin/index.html">Administrator documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../dev/index.html">Developer documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../utils/index.html">DevOps tooling box</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/index.html">Source-Code</a></li>
+</ul>
+
+  <h3>Project Links</h3>
+  <ul>
+    <li><a href="https://github.com/searxng/searxng/tree/master">Source</a>
+  
+    <li><a href="https://github.com/searxng/searxng/wiki">Wiki</a>
+  
+    <li><a href="https://searx.space">Public instances</a>
+  
+    <li><a href="https://github.com/searxng/searxng/issues">Issue Tracker</a>
+  </ul><h3>Navigation</h3>
+<ul>
+  <li><a href="../../../index.html">Overview</a>
+    <ul>
+      <li><a href="../../index.html">Module code</a>
+        <ul>
+      <li><a href="../engines.html">searx.engines</a>
+        
+          
+          </ul>
+      </li></ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright SearXNG team.
+    </div>
+  </body>
+</html>

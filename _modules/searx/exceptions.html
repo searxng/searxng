@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>searx.exceptions &#8212; SearXNG Documentation (2026.2.22+191818b86)</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=6625fa76" />
+    <link rel="stylesheet" type="text/css" href="../../_static/searxng.css?v=52e4ff28" />
+    <script src="../../_static/documentation_options.js?v=1b5d919e"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script data-project="searxng" data-version="2026.2.22+191818b86" src="../../_static/describe_version.js?v=fa7f30d0"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">SearXNG Documentation (2026.2.22+191818b86)</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">searx.exceptions</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for searx.exceptions</h1><div class="highlight"><pre>
+<span></span><span class="c1"># SPDX-License-Identifier: AGPL-3.0-or-later</span>
+<span class="sd">&quot;&quot;&quot;Exception types raised by SearXNG modules.&quot;&quot;&quot;</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">t</span>
+
+<span class="k">if</span> <span class="n">t</span><span class="o">.</span><span class="n">TYPE_CHECKING</span><span class="p">:</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">lxml.etree</span><span class="w"> </span><span class="kn">import</span> <span class="n">XPath</span>
+
+
+<div class="viewcode-block" id="SearxException">
+<a class="viewcode-back" href="../../src/searx.exceptions.html#searx.exceptions.SearxException">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">SearxException</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Base SearXNG exception.&quot;&quot;&quot;</span></div>
+
+
+
+<div class="viewcode-block" id="SearxParameterException">
+<a class="viewcode-back" href="../../src/searx.exceptions.html#searx.exceptions.SearxParameterException">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">SearxParameterException</span><span class="p">(</span><span class="n">SearxException</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Raised when query miss a required parameter&quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Any</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">value</span> <span class="o">==</span> <span class="s1">&#39;&#39;</span> <span class="ow">or</span> <span class="n">value</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">message</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Empty </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> parameter&quot;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">message</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Invalid value </span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2"> for parameter </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">message</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">message</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">parameter_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">parameter_value</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Any</span> <span class="o">=</span> <span class="n">value</span></div>
+
+
+
+<div class="viewcode-block" id="SearxSettingsException">
+<a class="viewcode-back" href="../../src/searx.exceptions.html#searx.exceptions.SearxSettingsException">[docs]</a>
+<span class="nd">@t</span><span class="o">.</span><span class="n">final</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">SearxSettingsException</span><span class="p">(</span><span class="n">SearxException</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Error while loading the settings&quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="ne">Exception</span><span class="p">,</span> <span class="n">filename</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">message</span> <span class="o">=</span> <span class="n">message</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">filename</span> <span class="o">=</span> <span class="n">filename</span></div>
+
+
+
+<div class="viewcode-block" id="SearxEngineException">
+<a class="viewcode-back" href="../../src/searx.exceptions.html#searx.exceptions.SearxEngineException">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">SearxEngineException</span><span class="p">(</span><span class="n">SearxException</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Error inside an engine&quot;&quot;&quot;</span></div>
+
+
+
+<div class="viewcode-block" id="SearxXPathSyntaxException">
+<a class="viewcode-back" href="../../src/searx.exceptions.html#searx.exceptions.SearxXPathSyntaxException">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">SearxXPathSyntaxException</span><span class="p">(</span><span class="n">SearxEngineException</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Syntax error in a XPATH&quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xpath_spec</span><span class="p">:</span> <span class="s2">&quot;str | XPath&quot;</span><span class="p">,</span> <span class="n">message</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">xpath_spec</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot; &quot;</span> <span class="o">+</span> <span class="n">message</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">message</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">message</span>
+        <span class="c1"># str(xpath_spec) to deal with str and XPath instance</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">xpath_str</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">xpath_spec</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="SearxEngineResponseException">
+<a class="viewcode-back" href="../../src/searx.exceptions.html#searx.exceptions.SearxEngineResponseException">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">SearxEngineResponseException</span><span class="p">(</span><span class="n">SearxEngineException</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Impossible to parse the result of an engine&quot;&quot;&quot;</span></div>
+
+
+
+<div class="viewcode-block" id="SearxEngineAPIException">
+<a class="viewcode-back" href="../../src/searx.exceptions.html#searx.exceptions.SearxEngineAPIException">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">SearxEngineAPIException</span><span class="p">(</span><span class="n">SearxEngineResponseException</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The website has returned an application error&quot;&quot;&quot;</span></div>
+
+
+
+<div class="viewcode-block" id="SearxEngineAccessDeniedException">
+<a class="viewcode-back" href="../../src/searx.exceptions.html#searx.exceptions.SearxEngineAccessDeniedException">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">SearxEngineAccessDeniedException</span><span class="p">(</span><span class="n">SearxEngineResponseException</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The website is blocking the access&quot;&quot;&quot;</span>
+
+    <span class="n">SUSPEND_TIME_SETTING</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;search.suspended_times.SearxEngineAccessDenied&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;This settings contains the default suspended time (default 86400 sec / 1</span>
+<span class="sd">    day).&quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">suspended_time</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">message</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;Access denied&#39;</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Generic exception to raise when an engine denies access to the results.</span>
+
+<span class="sd">        :param suspended_time: How long the engine is going to be suspended in</span>
+<span class="sd">            second. Defaults to None.</span>
+<span class="sd">        :type suspended_time: int, None</span>
+<span class="sd">        :param message: Internal message.  Defaults to ``Access denied``</span>
+<span class="sd">        :type message: str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">suspended_time</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">suspended_time</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_default_suspended_time</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">message</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">message</span><span class="si">}</span><span class="s2"> (suspended_time=</span><span class="si">{</span><span class="n">suspended_time</span><span class="si">}</span><span class="s2">)&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">suspended_time</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">suspended_time</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">message</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_get_default_suspended_time</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">searx</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_setting</span>  <span class="c1"># pylint: disable=C0415</span>
+
+        <span class="k">return</span> <span class="n">get_setting</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">SUSPEND_TIME_SETTING</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="SearxEngineCaptchaException">
+<a class="viewcode-back" href="../../src/searx.exceptions.html#searx.exceptions.SearxEngineCaptchaException">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">SearxEngineCaptchaException</span><span class="p">(</span><span class="n">SearxEngineAccessDeniedException</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The website has returned a CAPTCHA.&quot;&quot;&quot;</span>
+
+    <span class="n">SUSPEND_TIME_SETTING</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;search.suspended_times.SearxEngineCaptcha&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;This settings contains the default suspended time (default 86400 sec / 1</span>
+<span class="sd">    day).&quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">suspended_time</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">message</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;CAPTCHA&#39;</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">message</span><span class="o">=</span><span class="n">message</span><span class="p">,</span> <span class="n">suspended_time</span><span class="o">=</span><span class="n">suspended_time</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="SearxEngineTooManyRequestsException">
+<a class="viewcode-back" href="../../src/searx.exceptions.html#searx.exceptions.SearxEngineTooManyRequestsException">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">SearxEngineTooManyRequestsException</span><span class="p">(</span><span class="n">SearxEngineAccessDeniedException</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The website has returned a Too Many Request status code</span>
+
+<span class="sd">    By default, SearXNG stops sending requests to this engine for 1 hour.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">SUSPEND_TIME_SETTING</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;search.suspended_times.SearxEngineTooManyRequests&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;This settings contains the default suspended time (default 3660 sec / 1</span>
+<span class="sd">    hour).&quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">suspended_time</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">message</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;Too many request&#39;</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">message</span><span class="o">=</span><span class="n">message</span><span class="p">,</span> <span class="n">suspended_time</span><span class="o">=</span><span class="n">suspended_time</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="SearxEngineXPathException">
+<a class="viewcode-back" href="../../src/searx.exceptions.html#searx.exceptions.SearxEngineXPathException">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">SearxEngineXPathException</span><span class="p">(</span><span class="n">SearxEngineResponseException</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Error while getting the result of an XPath expression&quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xpath_spec</span><span class="p">:</span> <span class="s2">&quot;str | XPath&quot;</span><span class="p">,</span> <span class="n">message</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">xpath_spec</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot; &quot;</span> <span class="o">+</span> <span class="n">message</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">message</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">message</span>
+        <span class="c1"># str(xpath_spec) to deal with str and XPath instance</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">xpath_str</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">xpath_spec</span><span class="p">)</span></div>
+
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+  <span id="sidebar-top"></span>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+  
+    
+            <p class="logo"><a href="../../index.html">
+              <img class="logo" src="../../_static/searxng-wordmark.svg" alt="Logo of SearXNG"/>
+            </a></p>
+  
+
+<h3><a href="../../index.html">Table of Contents</a></h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../user/index.html">User information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../own-instance.html">Why use a private instance?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../admin/index.html">Administrator documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dev/index.html">Developer documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../utils/index.html">DevOps tooling box</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../src/index.html">Source-Code</a></li>
+</ul>
+
+  <h3>Project Links</h3>
+  <ul>
+    <li><a href="https://github.com/searxng/searxng/tree/master">Source</a>
+  
+    <li><a href="https://github.com/searxng/searxng/wiki">Wiki</a>
+  
+    <li><a href="https://searx.space">Public instances</a>
+  
+    <li><a href="https://github.com/searxng/searxng/issues">Issue Tracker</a>
+  </ul><h3>Navigation</h3>
+<ul>
+  <li><a href="../../index.html">Overview</a>
+    <ul>
+      <li><a href="../index.html">Module code</a>
+        
+          
+          </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright SearXNG team.
+    </div>
+  </body>
+</html>

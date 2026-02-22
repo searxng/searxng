@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>searx.engines.zlibrary &#8212; SearXNG Documentation (2026.2.22+191818b86)</title>
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=6625fa76" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/searxng.css?v=52e4ff28" />
+    <script src="../../../_static/documentation_options.js?v=1b5d919e"></script>
+    <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script data-project="searxng" data-version="2026.2.22+191818b86" src="../../../_static/describe_version.js?v=fa7f30d0"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">SearXNG Documentation (2026.2.22+191818b86)</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" >Module code</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../engines.html" accesskey="U">searx.engines</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">searx.engines.zlibrary</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for searx.engines.zlibrary</h1><div class="highlight"><pre>
+<span></span><span class="c1"># SPDX-License-Identifier: AGPL-3.0-or-later</span>
+<span class="sd">&quot;&quot;&quot;`Z-Library`_ (abbreviated as z-lib, formerly BookFinder) is a shadow library</span>
+<span class="sd">project for file-sharing access to scholarly journal articles, academic texts</span>
+<span class="sd">and general-interest books.  It began as a mirror of Library Genesis, from which</span>
+<span class="sd">most of its books originate.</span>
+
+<span class="sd">.. _Z-Library: https://zlibrary-global.se/</span>
+
+<span class="sd">Configuration</span>
+<span class="sd">=============</span>
+
+<span class="sd">The engine has the following additional settings:</span>
+
+<span class="sd">- :py:obj:`zlib_year_from`</span>
+<span class="sd">- :py:obj:`zlib_year_to`</span>
+<span class="sd">- :py:obj:`zlib_ext`</span>
+
+<span class="sd">With this options a SearXNG maintainer is able to configure **additional**</span>
+<span class="sd">engines for specific searches in Z-Library.  For example a engine to search</span>
+<span class="sd">only for EPUB from 2010 to 2020.</span>
+
+<span class="sd">.. code:: yaml</span>
+
+<span class="sd">   - name: z-library 2010s epub</span>
+<span class="sd">     engine: zlibrary</span>
+<span class="sd">     shortcut: zlib2010s</span>
+<span class="sd">     zlib_year_from: &#39;2010&#39;</span>
+<span class="sd">     zlib_year_to: &#39;2020&#39;</span>
+<span class="sd">     zlib_ext: &#39;EPUB&#39;</span>
+
+<span class="sd">Implementations</span>
+<span class="sd">===============</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">t</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">urllib.parse</span><span class="w"> </span><span class="kn">import</span> <span class="n">quote</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">lxml</span><span class="w"> </span><span class="kn">import</span> <span class="n">html</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">flask_babel</span><span class="w"> </span><span class="kn">import</span> <span class="n">gettext</span>  <span class="c1"># pyright: ignore[reportUnknownVariableType]</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">searx.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">extract_text</span><span class="p">,</span> <span class="n">eval_xpath</span><span class="p">,</span> <span class="n">eval_xpath_list</span><span class="p">,</span> <span class="n">ElementType</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">searx.enginelib.traits</span><span class="w"> </span><span class="kn">import</span> <span class="n">EngineTraits</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">searx.data</span><span class="w"> </span><span class="kn">import</span> <span class="n">ENGINE_TRAITS</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">searx.exceptions</span><span class="w"> </span><span class="kn">import</span> <span class="n">SearxException</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">searx.result_types</span><span class="w"> </span><span class="kn">import</span> <span class="n">EngineResults</span>
+
+<span class="k">if</span> <span class="n">t</span><span class="o">.</span><span class="n">TYPE_CHECKING</span><span class="p">:</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">searx.extended_types</span><span class="w"> </span><span class="kn">import</span> <span class="n">SXNG_Response</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">searx.search.processors</span><span class="w"> </span><span class="kn">import</span> <span class="n">OnlineParams</span>
+
+<span class="n">about</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">t</span><span class="o">.</span><span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;website&quot;</span><span class="p">:</span> <span class="s2">&quot;https://zlibrary-global.se&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;wikidata_id&quot;</span><span class="p">:</span> <span class="s2">&quot;Q104863992&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;official_api_documentation&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="s2">&quot;use_official_api&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="s2">&quot;require_api_key&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="s2">&quot;results&quot;</span><span class="p">:</span> <span class="s2">&quot;HTML&quot;</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="n">categories</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;files&quot;</span><span class="p">,</span> <span class="s2">&quot;books&quot;</span><span class="p">]</span>
+<span class="n">paging</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">base_url</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;https://zlibrary-global.se&quot;</span>
+
+<span class="n">zlib_year_from</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+<span class="sd">&quot;&quot;&quot;Filter z-library&#39;s results by year from. E.g &#39;2010&#39;.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="n">zlib_year_to</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+<span class="sd">&quot;&quot;&quot;Filter z-library&#39;s results by year to. E.g. &#39;2010&#39;.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="n">zlib_ext</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+<span class="sd">&quot;&quot;&quot;Filter z-library&#39;s results by a file ending. Common filters for example are</span>
+<span class="sd">``PDF`` and ``EPUB``.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="n">i18n_language</span> <span class="o">=</span> <span class="n">gettext</span><span class="p">(</span><span class="s2">&quot;Language&quot;</span><span class="p">)</span>
+<span class="n">i18n_book_rating</span> <span class="o">=</span> <span class="n">gettext</span><span class="p">(</span><span class="s2">&quot;Book rating&quot;</span><span class="p">)</span>
+<span class="n">i18n_file_quality</span> <span class="o">=</span> <span class="n">gettext</span><span class="p">(</span><span class="s2">&quot;File quality&quot;</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="setup">
+<a class="viewcode-back" href="../../../dev/engines/online/zlibrary.html#searx.engines.zlibrary.setup">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">setup</span><span class="p">(</span><span class="n">engine_settings</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">t</span><span class="o">.</span><span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>  <span class="c1"># pylint: disable=unused-argument</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Check of engine&#39;s settings.&quot;&quot;&quot;</span>
+    <span class="n">traits</span><span class="p">:</span> <span class="n">EngineTraits</span> <span class="o">=</span> <span class="n">EngineTraits</span><span class="p">(</span><span class="o">**</span><span class="n">ENGINE_TRAITS</span><span class="p">[</span><span class="s2">&quot;z-library&quot;</span><span class="p">])</span>
+
+    <span class="k">if</span> <span class="n">zlib_ext</span> <span class="ow">and</span> <span class="n">zlib_ext</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">traits</span><span class="o">.</span><span class="n">custom</span><span class="p">[</span><span class="s2">&quot;ext&quot;</span><span class="p">]:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;invalid setting ext: </span><span class="si">{</span><span class="n">zlib_ext</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">zlib_year_from</span> <span class="ow">and</span> <span class="n">zlib_year_from</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">traits</span><span class="o">.</span><span class="n">custom</span><span class="p">[</span><span class="s2">&quot;year_from&quot;</span><span class="p">]:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;invalid setting year_from: </span><span class="si">{</span><span class="n">zlib_year_from</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">zlib_year_to</span> <span class="ow">and</span> <span class="n">zlib_year_to</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">traits</span><span class="o">.</span><span class="n">custom</span><span class="p">[</span><span class="s2">&quot;year_to&quot;</span><span class="p">]:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;invalid setting year_to: </span><span class="si">{</span><span class="n">zlib_year_to</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="kc">True</span></div>
+
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">request</span><span class="p">(</span><span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">params</span><span class="p">:</span> <span class="s2">&quot;OnlineParams&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="n">lang</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">traits</span><span class="o">.</span><span class="n">get_language</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="s2">&quot;searxng_locale&quot;</span><span class="p">],</span> <span class="n">traits</span><span class="o">.</span><span class="n">all_locale</span><span class="p">)</span>
+    <span class="n">search_url</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">base_url</span>
+        <span class="o">+</span> <span class="s2">&quot;/s/</span><span class="si">{search_query}</span><span class="s2">/?page=</span><span class="si">{pageno}</span><span class="s2">&quot;</span>
+        <span class="o">+</span> <span class="s2">&quot;&amp;yearFrom=</span><span class="si">{zlib_year_from}</span><span class="s2">&quot;</span>
+        <span class="o">+</span> <span class="s2">&quot;&amp;yearTo=</span><span class="si">{zlib_year_to}</span><span class="s2">&quot;</span>
+        <span class="o">+</span> <span class="s2">&quot;&amp;languages[]=</span><span class="si">{lang}</span><span class="s2">&quot;</span>
+        <span class="o">+</span> <span class="s2">&quot;&amp;extensions[]=</span><span class="si">{zlib_ext}</span><span class="s2">&quot;</span>
+    <span class="p">)</span>
+    <span class="n">params</span><span class="p">[</span><span class="s2">&quot;url&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">search_url</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+        <span class="n">search_query</span><span class="o">=</span><span class="n">quote</span><span class="p">(</span><span class="n">query</span><span class="p">),</span>
+        <span class="n">pageno</span><span class="o">=</span><span class="n">params</span><span class="p">[</span><span class="s2">&quot;pageno&quot;</span><span class="p">],</span>
+        <span class="n">lang</span><span class="o">=</span><span class="n">lang</span><span class="p">,</span>
+        <span class="n">zlib_year_from</span><span class="o">=</span><span class="n">zlib_year_from</span><span class="p">,</span>
+        <span class="n">zlib_year_to</span><span class="o">=</span><span class="n">zlib_year_to</span><span class="p">,</span>
+        <span class="n">zlib_ext</span><span class="o">=</span><span class="n">zlib_ext</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">params</span><span class="p">[</span><span class="s2">&quot;verify&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">response</span><span class="p">(</span><span class="n">resp</span><span class="p">:</span> <span class="s2">&quot;SXNG_Response&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">EngineResults</span><span class="p">:</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="n">EngineResults</span><span class="p">()</span>
+    <span class="n">dom</span> <span class="o">=</span> <span class="n">html</span><span class="o">.</span><span class="n">fromstring</span><span class="p">(</span><span class="n">resp</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">domain_is_seized</span><span class="p">(</span><span class="n">dom</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="n">SearxException</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;zlibrary domain is seized: </span><span class="si">{</span><span class="n">base_url</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">dom</span><span class="o">.</span><span class="n">xpath</span><span class="p">(</span><span class="s1">&#39;//div[@id=&quot;searchResultBox&quot;]//div[contains(@class, &quot;resItemBox&quot;)]&#39;</span><span class="p">):</span>
+        <span class="n">kwargs</span> <span class="o">=</span> <span class="n">_parse_result</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+        <span class="n">res</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">res</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">Paper</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="n">res</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">domain_is_seized</span><span class="p">(</span><span class="n">dom</span><span class="p">:</span> <span class="n">ElementType</span><span class="p">):</span>
+    <span class="k">return</span> <span class="nb">bool</span><span class="p">(</span><span class="n">dom</span><span class="o">.</span><span class="n">xpath</span><span class="p">(</span><span class="s1">&#39;//title&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="s2">&quot;seized&quot;</span> <span class="ow">in</span> <span class="n">dom</span><span class="o">.</span><span class="n">xpath</span><span class="p">(</span><span class="s1">&#39;//title&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_text</span><span class="p">(</span><span class="n">item</span><span class="p">:</span> <span class="n">ElementType</span><span class="p">,</span> <span class="n">selector</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">return</span> <span class="n">extract_text</span><span class="p">(</span><span class="n">eval_xpath</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">selector</span><span class="p">))</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_parse_result</span><span class="p">(</span><span class="n">item</span><span class="p">:</span> <span class="n">ElementType</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">t</span><span class="o">.</span><span class="n">Any</span><span class="p">]:</span>
+
+    <span class="n">author_elements</span> <span class="o">=</span> <span class="n">eval_xpath_list</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="s1">&#39;.//div[@class=&quot;authors&quot;]//a[@itemprop=&quot;author&quot;]&#39;</span><span class="p">)</span>
+
+    <span class="n">result</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;url&quot;</span><span class="p">:</span> <span class="n">base_url</span> <span class="o">+</span> <span class="n">item</span><span class="o">.</span><span class="n">xpath</span><span class="p">(</span><span class="s1">&#39;(.//a[starts-with(@href, &quot;/book/&quot;)])[1]/@href&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">],</span>
+        <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="n">_text</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="s1">&#39;.//*[@itemprop=&quot;name&quot;]&#39;</span><span class="p">),</span>
+        <span class="s2">&quot;authors&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">extract_text</span><span class="p">(</span><span class="n">author</span><span class="p">)</span> <span class="k">for</span> <span class="n">author</span> <span class="ow">in</span> <span class="n">author_elements</span><span class="p">],</span>
+        <span class="s2">&quot;publisher&quot;</span><span class="p">:</span> <span class="n">_text</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="s1">&#39;.//a[@title=&quot;Publisher&quot;]&#39;</span><span class="p">),</span>
+        <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="n">_text</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="s1">&#39;.//div[contains(@class, &quot;property__file&quot;)]//div[contains(@class, &quot;property_value&quot;)]&#39;</span><span class="p">),</span>
+    <span class="p">}</span>
+
+    <span class="n">thumbnail</span> <span class="o">=</span> <span class="n">_text</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="s1">&#39;.//img[contains(@class, &quot;cover&quot;)]/@data-src&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">thumbnail</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">thumbnail</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">):</span>
+        <span class="n">result</span><span class="p">[</span><span class="s2">&quot;thumbnail&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">thumbnail</span>
+
+    <span class="n">year</span> <span class="o">=</span> <span class="n">_text</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="s1">&#39;.//div[contains(@class, &quot;property_year&quot;)]//div[contains(@class, &quot;property_value&quot;)]&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">year</span><span class="p">:</span>
+        <span class="n">result</span><span class="p">[</span><span class="s2">&quot;publishedDate&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">year</span><span class="p">,</span> <span class="s1">&#39;%Y&#39;</span><span class="p">)</span>
+
+    <span class="n">content</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">language</span> <span class="o">=</span> <span class="n">_text</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="s1">&#39;.//div[contains(@class, &quot;property_language&quot;)]//div[contains(@class, &quot;property_value&quot;)]&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">language</span><span class="p">:</span>
+        <span class="n">content</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">i18n_language</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">language</span><span class="o">.</span><span class="n">capitalize</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">book_rating</span> <span class="o">=</span> <span class="n">_text</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="s1">&#39;.//span[contains(@class, &quot;book-rating-interest-score&quot;)]&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">book_rating</span> <span class="ow">and</span> <span class="nb">float</span><span class="p">(</span><span class="n">book_rating</span><span class="p">):</span>
+        <span class="n">content</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">i18n_book_rating</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">book_rating</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">file_quality</span> <span class="o">=</span> <span class="n">_text</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="s1">&#39;.//span[contains(@class, &quot;book-rating-quality-score&quot;)]&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">file_quality</span> <span class="ow">and</span> <span class="nb">float</span><span class="p">(</span><span class="n">file_quality</span><span class="p">):</span>
+        <span class="n">content</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">i18n_file_quality</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">file_quality</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">result</span><span class="p">[</span><span class="s2">&quot;content&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot; | &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">content</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">result</span>
+
+
+<div class="viewcode-block" id="fetch_traits">
+<a class="viewcode-back" href="../../../dev/engines/online/zlibrary.html#searx.engines.zlibrary.fetch_traits">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">fetch_traits</span><span class="p">(</span><span class="n">engine_traits</span><span class="p">:</span> <span class="n">EngineTraits</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Fetch languages and other search arguments from zlibrary&#39;s search form.&quot;&quot;&quot;</span>
+    <span class="c1"># pylint: disable=import-outside-toplevel, too-many-branches, too-many-statements</span>
+
+    <span class="kn">import</span><span class="w"> </span><span class="nn">babel</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">babel.core</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">httpx</span>
+
+    <span class="kn">from</span><span class="w"> </span><span class="nn">searx.network</span><span class="w"> </span><span class="kn">import</span> <span class="n">get</span>  <span class="c1"># see https://github.com/searxng/searxng/issues/762</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">searx.locales</span><span class="w"> </span><span class="kn">import</span> <span class="n">language_tag</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_use_old_values</span><span class="p">():</span>
+        <span class="c1"># don&#39;t change anything, re-use the existing values</span>
+        <span class="n">engine_traits</span><span class="o">.</span><span class="n">all_locale</span> <span class="o">=</span> <span class="n">ENGINE_TRAITS</span><span class="p">[</span><span class="s2">&quot;z-library&quot;</span><span class="p">][</span><span class="s2">&quot;all_locale&quot;</span><span class="p">]</span>
+        <span class="n">engine_traits</span><span class="o">.</span><span class="n">custom</span> <span class="o">=</span> <span class="n">ENGINE_TRAITS</span><span class="p">[</span><span class="s2">&quot;z-library&quot;</span><span class="p">][</span><span class="s2">&quot;custom&quot;</span><span class="p">]</span>
+        <span class="n">engine_traits</span><span class="o">.</span><span class="n">languages</span> <span class="o">=</span> <span class="n">ENGINE_TRAITS</span><span class="p">[</span><span class="s2">&quot;z-library&quot;</span><span class="p">][</span><span class="s2">&quot;languages&quot;</span><span class="p">]</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">resp</span> <span class="o">=</span> <span class="n">get</span><span class="p">(</span><span class="n">base_url</span><span class="p">,</span> <span class="n">verify</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="k">except</span> <span class="p">(</span><span class="n">SearxException</span><span class="p">,</span> <span class="n">httpx</span><span class="o">.</span><span class="n">HTTPError</span><span class="p">)</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;ERROR: zlibrary domain &#39;</span><span class="si">{</span><span class="n">base_url</span><span class="si">}</span><span class="s2">&#39; is seized?&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  --&gt; </span><span class="si">{</span><span class="n">exc</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">_use_old_values</span><span class="p">()</span>
+        <span class="k">return</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">resp</span><span class="o">.</span><span class="n">ok</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;Response from zlibrary&#39;s search page is not OK.&quot;</span><span class="p">)</span>
+    <span class="n">dom</span> <span class="o">=</span> <span class="n">html</span><span class="o">.</span><span class="n">fromstring</span><span class="p">(</span><span class="n">resp</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">domain_is_seized</span><span class="p">(</span><span class="n">dom</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;ERROR: zlibrary domain is seized: </span><span class="si">{</span><span class="n">base_url</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">_use_old_values</span><span class="p">()</span>
+        <span class="k">return</span>
+
+    <span class="n">engine_traits</span><span class="o">.</span><span class="n">all_locale</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="n">engine_traits</span><span class="o">.</span><span class="n">custom</span><span class="p">[</span><span class="s2">&quot;ext&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="n">l</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
+    <span class="c1"># years_from</span>
+    <span class="n">l</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">year</span> <span class="ow">in</span> <span class="n">eval_xpath_list</span><span class="p">(</span><span class="n">dom</span><span class="p">,</span> <span class="s2">&quot;//div[@id=&#39;advSearch-noJS&#39;]//select[@id=&#39;sf_yearFrom&#39;]/option&quot;</span><span class="p">):</span>
+        <span class="n">l</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">year</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;value&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+    <span class="n">engine_traits</span><span class="o">.</span><span class="n">custom</span><span class="p">[</span><span class="s2">&quot;year_from&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">l</span>
+
+    <span class="c1"># years_to</span>
+    <span class="n">l</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">year</span> <span class="ow">in</span> <span class="n">eval_xpath_list</span><span class="p">(</span><span class="n">dom</span><span class="p">,</span> <span class="s2">&quot;//div[@id=&#39;advSearch-noJS&#39;]//select[@id=&#39;sf_yearTo&#39;]/option&quot;</span><span class="p">):</span>
+        <span class="n">l</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">year</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;value&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+    <span class="n">engine_traits</span><span class="o">.</span><span class="n">custom</span><span class="p">[</span><span class="s2">&quot;year_to&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">l</span>
+
+    <span class="c1"># ext (file extensions)</span>
+    <span class="n">l</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">ext</span> <span class="ow">in</span> <span class="n">eval_xpath_list</span><span class="p">(</span><span class="n">dom</span><span class="p">,</span> <span class="s2">&quot;//div[@id=&#39;advSearch-noJS&#39;]//select[@id=&#39;sf_extensions&#39;]/option&quot;</span><span class="p">):</span>
+        <span class="n">l</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ext</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;value&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+    <span class="n">engine_traits</span><span class="o">.</span><span class="n">custom</span><span class="p">[</span><span class="s2">&quot;ext&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">l</span>
+
+    <span class="c1"># Handle languages</span>
+    <span class="c1"># Z-library uses English names for languages, so we need to map them to their respective locales</span>
+    <span class="n">language_name_locale_map</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">babel</span><span class="o">.</span><span class="n">Locale</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">locale</span> <span class="ow">in</span> <span class="n">babel</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">localedata</span><span class="o">.</span><span class="n">locale_identifiers</span><span class="p">():</span>
+        <span class="c1"># Create a Locale object for the current locale</span>
+        <span class="n">loc</span> <span class="o">=</span> <span class="n">babel</span><span class="o">.</span><span class="n">Locale</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">locale</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">loc</span><span class="o">.</span><span class="n">english_name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">continue</span>
+        <span class="n">language_name_locale_map</span><span class="p">[</span><span class="n">loc</span><span class="o">.</span><span class="n">english_name</span><span class="o">.</span><span class="n">lower</span><span class="p">()]</span> <span class="o">=</span> <span class="n">loc</span>
+
+    <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">eval_xpath_list</span><span class="p">(</span><span class="n">dom</span><span class="p">,</span> <span class="s2">&quot;//div[@id=&#39;advSearch-noJS&#39;]//select[@id=&#39;sf_languages&#39;]/option&quot;</span><span class="p">):</span>
+        <span class="n">eng_lang</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;value&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">eng_lang</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">continue</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">locale</span> <span class="o">=</span> <span class="n">language_name_locale_map</span><span class="p">[</span><span class="n">eng_lang</span><span class="o">.</span><span class="n">lower</span><span class="p">()]</span>
+        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+            <span class="c1"># silently ignore unknown languages</span>
+            <span class="c1"># print(&quot;ERROR: %s is unknown by babel&quot; % (eng_lang))</span>
+            <span class="k">continue</span>
+        <span class="n">sxng_lang</span> <span class="o">=</span> <span class="n">language_tag</span><span class="p">(</span><span class="n">locale</span><span class="p">)</span>
+        <span class="n">conflict</span> <span class="o">=</span> <span class="n">engine_traits</span><span class="o">.</span><span class="n">languages</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">sxng_lang</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">conflict</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">conflict</span> <span class="o">!=</span> <span class="n">eng_lang</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;CONFLICT: babel </span><span class="si">%s</span><span class="s2"> --&gt; </span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">sxng_lang</span><span class="p">,</span> <span class="n">conflict</span><span class="p">,</span> <span class="n">eng_lang</span><span class="p">))</span>
+            <span class="k">continue</span>
+        <span class="n">engine_traits</span><span class="o">.</span><span class="n">languages</span><span class="p">[</span><span class="n">sxng_lang</span><span class="p">]</span> <span class="o">=</span> <span class="n">eng_lang</span></div>
+
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+  <span id="sidebar-top"></span>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+  
+    
+            <p class="logo"><a href="../../../index.html">
+              <img class="logo" src="../../../_static/searxng-wordmark.svg" alt="Logo of SearXNG"/>
+            </a></p>
+  
+
+<h3><a href="../../../index.html">Table of Contents</a></h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../user/index.html">User information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../own-instance.html">Why use a private instance?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../admin/index.html">Administrator documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../dev/index.html">Developer documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../utils/index.html">DevOps tooling box</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/index.html">Source-Code</a></li>
+</ul>
+
+  <h3>Project Links</h3>
+  <ul>
+    <li><a href="https://github.com/searxng/searxng/tree/master">Source</a>
+  
+    <li><a href="https://github.com/searxng/searxng/wiki">Wiki</a>
+  
+    <li><a href="https://searx.space">Public instances</a>
+  
+    <li><a href="https://github.com/searxng/searxng/issues">Issue Tracker</a>
+  </ul><h3>Navigation</h3>
+<ul>
+  <li><a href="../../../index.html">Overview</a>
+    <ul>
+      <li><a href="../../index.html">Module code</a>
+        <ul>
+      <li><a href="../engines.html">searx.engines</a>
+        
+          
+          </ul>
+      </li></ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright SearXNG team.
+    </div>
+  </body>
+</html>

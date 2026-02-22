@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Code Results &#8212; SearXNG Documentation (2026.2.22+191818b86)</title>
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=6625fa76" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/searxng.css?v=52e4ff28" />
+    <script src="../../../_static/documentation_options.js?v=1b5d919e"></script>
+    <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script data-project="searxng" data-version="2026.2.22+191818b86" src="../../../_static/describe_version.js?v=fa7f30d0"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="Paper Results" href="paper.html" />
+    <link rel="prev" title="Key-Value Results" href="keyvalue.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="paper.html" title="Paper Results"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="keyvalue.html" title="Key-Value Results"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">SearXNG Documentation (2026.2.22+191818b86)</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" >Developer documentation</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../index.html" >Result Types</a> &#187;</li>
+          <li class="nav-item nav-item-3"><a href="../main_result.html" accesskey="U">Main Search Results</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Code Results</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="module-searx.result_types.code">
+<span id="code-results"></span><span id="result-types-code"></span><h1>Code Results<a class="headerlink" href="#module-searx.result_types.code" title="Link to this heading">¶</a></h1>
+<p>Typification of the <em>code</em> results.  Results of this type are rendered in
+the <a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/searx/templates/simple/result_templates/code.html">code.html</a>
+template.  For highlighting the code passages, <a class="reference external" href="https://pygments.org">Pygments</a> is used.</p>
+<hr class="docutils" />
+<dl class="py class">
+<dt class="sig sig-object py" id="searx.result_types.code.Code">
+<em class="property"><span class="k"><span class="pre">final</span></span><span class="w"> </span><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">searx.result_types.code.</span></span><span class="sig-name descname"><span class="pre">Code</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">title:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">content:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">img_src:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">iframe_src:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">audio_src:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">thumbnail:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">publishedDate:</span> <span class="pre">~datetime.datetime</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pubdate:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">length:</span> <span class="pre">~datetime.timedelta</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">views:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">author:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metadata:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">priority:</span> <span class="pre">~typing.Literal[''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'high'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'low']</span> <span class="pre">=</span> <span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">engines:</span> <span class="pre">set[str]</span> <span class="pre">=</span> <span class="pre">&lt;factory&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">open_group:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">close_group:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">positions:</span> <span class="pre">list[int]</span> <span class="pre">=</span> <span class="pre">&lt;factory&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">score:</span> <span class="pre">float</span> <span class="pre">=</span> <span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">category:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">template:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">'code.html'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">url:</span> <span class="pre">str</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">engine:</span> <span class="pre">str</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parsed_url:</span> <span class="pre">~urllib.parse.ParseResult</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">repository:</span> <span class="pre">str</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">codelines:</span> <span class="pre">list[tuple[int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">str]]</span> <span class="pre">=</span> <span class="pre">&lt;factory&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hl_lines:</span> <span class="pre">set[int]</span> <span class="pre">=</span> <span class="pre">&lt;factory&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">code_language:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">'&lt;guess&gt;'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename:</span> <span class="pre">str</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">strip_new_lines:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">strip_whitespace:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/searx/result_types/code.html#Code"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.result_types.code.Code" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="mainresult.html#searx.result_types._base.MainResult" title="searx.result_types._base.MainResult"><code class="xref py py-class docutils literal notranslate"><span class="pre">MainResult</span></code></a></p>
+<p>Result type suitable for displaying code passages.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="searx.result_types.code.Code.repository">
+<span class="sig-name descname"><span class="pre">repository</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></em><a class="headerlink" href="#searx.result_types.code.Code.repository" title="Link to this definition">¶</a></dt>
+<dd><p>A link related to a repository related to the <em>result</em>.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="searx.result_types.code.Code.codelines">
+<span class="sig-name descname"><span class="pre">codelines</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#searx.result_types.code.Code.codelines" title="Link to this definition">¶</a></dt>
+<dd><p>A list of two digit tuples where the first item is the line number and
+the second item is the code line.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="searx.result_types.code.Code.hl_lines">
+<span class="sig-name descname"><span class="pre">hl_lines</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#set" title="(in Python v3.14)"><span class="pre">set</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#searx.result_types.code.Code.hl_lines" title="Link to this definition">¶</a></dt>
+<dd><p>A list of line numbers to highlight.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="searx.result_types.code.Code.code_language">
+<span class="sig-name descname"><span class="pre">code_language</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></em><a class="headerlink" href="#searx.result_types.code.Code.code_language" title="Link to this definition">¶</a></dt>
+<dd><p>Pygment’s short name of the lexer, e.g. <code class="docutils literal notranslate"><span class="pre">text</span></code> for the
+<a class="reference external" href="https://pygments.org/docs/lexers/#pygments.lexers.special.TextLexer" title="(in Pygments v2.19.2)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pygments.lexers.special.TextLexer</span></code></a>.  For a list of available
+languages consult: <a class="reference external" href="https://pygments.org/languages/">Pygments languages</a>.  If the language is not in this
+list, a <a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ValueError</span></code></a> is raised.</p>
+<p>The default is <code class="docutils literal notranslate"><span class="pre">&lt;guess&gt;</span></code> which has a special meaning;</p>
+<ul class="simple">
+<li><p>If <a class="reference internal" href="#searx.result_types.code.Code.filename" title="searx.result_types.code.Code.filename"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Code.filename</span></code></a> is set, Pygment’s factory method
+<a class="reference external" href="https://pygments.org/docs/api/#pygments.lexers.guess_lexer_for_filename" title="(in Pygments v2.19.2)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pygments.lexers.guess_lexer_for_filename</span></code></a> is used to determine
+the language of the <code class="docutils literal notranslate"><span class="pre">codelines</span></code>.</p></li>
+<li><p>else Pygment’s <a class="reference external" href="https://pygments.org/docs/api/#pygments.lexers.guess_lexer" title="(in Pygments v2.19.2)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pygments.lexers.guess_lexer</span></code></a> factory is used.</p></li>
+</ul>
+<p>In case the language can’t be detected, the fallback is <code class="docutils literal notranslate"><span class="pre">text</span></code>.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="searx.result_types.code.Code.filename">
+<span class="sig-name descname"><span class="pre">filename</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></em><a class="headerlink" href="#searx.result_types.code.Code.filename" title="Link to this definition">¶</a></dt>
+<dd><p>Optional file name, can help to <code class="docutils literal notranslate"><span class="pre">&lt;guess&gt;</span></code> the language of the code (in
+case of ambiguous short code examples).  If <code class="xref py py-obj docutils literal notranslate"><span class="pre">Code.title</span></code> is not set,
+its default is the filename.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="searx.result_types.code.Code.strip_new_lines">
+<span class="sig-name descname"><span class="pre">strip_new_lines</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></em><a class="headerlink" href="#searx.result_types.code.Code.strip_new_lines" title="Link to this definition">¶</a></dt>
+<dd><p>Strip leading and trailing newlines for each returned fragment (default:
+<code class="docutils literal notranslate"><span class="pre">True</span></code>).  Single file might return multiple code fragments.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="searx.result_types.code.Code.strip_whitespace">
+<span class="sig-name descname"><span class="pre">strip_whitespace</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></em><a class="headerlink" href="#searx.result_types.code.Code.strip_whitespace" title="Link to this definition">¶</a></dt>
+<dd><p>Strip all leading and trailing whitespace for each returned fragment
+(default: <code class="docutils literal notranslate"><span class="pre">False</span></code>).  Single file might return multiple code fragments.
+Enabling this might break code indentation.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="searx.result_types.code.Code.HTML">
+<span class="sig-name descname"><span class="pre">HTML</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">options</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></span><a class="reference internal" href="../../../_modules/searx/result_types/code.html#Code.HTML"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.result_types.code.Code.HTML" title="Link to this definition">¶</a></dt>
+<dd><p>Rendered HTML, additional options are accepted, for more details have
+a look at <a class="reference external" href="https://pygments.org/docs/formatters/#HtmlFormatter">HtmlFormatter</a>.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+  <span id="sidebar-top"></span>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+  
+    
+            <p class="logo"><a href="../../../index.html">
+              <img class="logo" src="../../../_static/searxng-wordmark.svg" alt="Logo of SearXNG"/>
+            </a></p>
+  
+
+<h3><a href="../../../index.html">Table of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../user/index.html">User information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../own-instance.html">Why use a private instance?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../admin/index.html">Administrator documentation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">Developer documentation</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../quickstart.html">Development Quickstart</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../commits.html">Git Commits &amp; Change Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../contribution_guide.html">How to contribute</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../extended_types.html">Extended Types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../engines/index.html">Engine Implementations</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">Result Types</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../base_result.html">Result</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="../main_result.html">Main Search Results</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="mainresult.html"><code class="docutils literal notranslate"><span class="pre">MainResult</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="keyvalue.html">Key-Value Results</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Code Results</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#searx.result_types.code.Code"><code class="docutils literal notranslate"><span class="pre">Code</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="paper.html">Paper Results</a></li>
+<li class="toctree-l4"><a class="reference internal" href="file.html">File Results</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../answer.html">Answer Results</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../correction.html">Correction Results</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../suggestion.html">Suggestion Results</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../infobox.html">Infobox Results</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../templates.html">Simple Theme Templates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../search_api.html">Search API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../plugins/index.html">Plugins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../answerers/index.html">Answerers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../translation.html">Translation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../makefile.html">Makefile &amp; <code class="docutils literal notranslate"><span class="pre">./manage</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../reST.html">reST primer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../searxng_extra/index.html">Tooling box <code class="docutils literal notranslate"><span class="pre">searxng_extra</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../utils/index.html">DevOps tooling box</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/index.html">Source-Code</a></li>
+</ul>
+
+  <h3>Project Links</h3>
+  <ul>
+    <li><a href="https://github.com/searxng/searxng/tree/master">Source</a>
+  
+    <li><a href="https://github.com/searxng/searxng/wiki">Wiki</a>
+  
+    <li><a href="https://searx.space">Public instances</a>
+  
+    <li><a href="https://github.com/searxng/searxng/issues">Issue Tracker</a>
+  </ul><h3>Navigation</h3>
+<ul>
+  <li><a href="../../../index.html">Overview</a>
+    <ul>
+      <li><a href="../../index.html">Developer documentation</a>
+        <ul>
+      <li><a href="../index.html">Result Types</a>
+        <ul>
+      <li><a href="../main_result.html">Main Search Results</a>
+        <ul>
+          <li>Previous: <a href="keyvalue.html" title="previous chapter">Key-Value Results</a>
+          <li>Next: <a href="paper.html" title="next chapter">Paper Results</a></ul>
+      </li></ul>
+      </li></ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../../_sources/dev/result_types/main/code.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright SearXNG team.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>searx.result_types.code &#8212; SearXNG Documentation (2026.2.22+191818b86)</title>
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=6625fa76" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/searxng.css?v=52e4ff28" />
+    <script src="../../../_static/documentation_options.js?v=1b5d919e"></script>
+    <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script data-project="searxng" data-version="2026.2.22+191818b86" src="../../../_static/describe_version.js?v=fa7f30d0"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">SearXNG Documentation (2026.2.22+191818b86)</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" >Module code</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../result_types.html" accesskey="U">searx.result_types</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">searx.result_types.code</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for searx.result_types.code</h1><div class="highlight"><pre>
+<span></span><span class="c1"># SPDX-License-Identifier: AGPL-3.0-or-later</span>
+<span class="sd">&quot;&quot;&quot;Typification of the *code* results.  Results of this type are rendered in</span>
+<span class="sd">the :origin:`code.html &lt;searx/templates/simple/result_templates/code.html&gt;`</span>
+<span class="sd">template.  For highlighting the code passages, Pygments_ is used.</span>
+
+<span class="sd">.. _Pygments:  https://pygments.org</span>
+
+<span class="sd">----</span>
+
+<span class="sd">.. autoclass:: Code</span>
+<span class="sd">   :members:</span>
+<span class="sd">   :show-inheritance:</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="c1"># pylint: disable=too-few-public-methods, disable=invalid-name</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Code&quot;</span><span class="p">]</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">t</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">pygments</span><span class="w"> </span><span class="kn">import</span> <span class="n">highlight</span>  <span class="c1"># pyright: ignore[reportUnknownVariableType]</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pygments.lexers._mapping</span><span class="w"> </span><span class="kn">import</span> <span class="n">LEXERS</span>  <span class="c1"># pyright: ignore[reportMissingTypeStubs]</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pygments.lexers</span><span class="w"> </span><span class="kn">import</span> <span class="n">guess_lexer</span><span class="p">,</span> <span class="n">get_lexer_by_name</span><span class="p">,</span> <span class="n">guess_lexer_for_filename</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pygments.util</span><span class="w"> </span><span class="kn">import</span> <span class="n">ClassNotFound</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pygments.formatters</span><span class="w"> </span><span class="kn">import</span> <span class="n">HtmlFormatter</span>  <span class="c1"># pylint: disable=no-name-in-module</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">._base</span><span class="w"> </span><span class="kn">import</span> <span class="n">MainResult</span>
+
+
+<span class="n">_pygments_languages</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">is_valid_language</span><span class="p">(</span><span class="n">code_language</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Checks if the specified ``code_language`` is known in Pygments.&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">_pygments_languages</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="n">LEXERS</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+            <span class="c1"># l[2] is the tuple with the alias names</span>
+            <span class="k">for</span> <span class="n">alias_name</span> <span class="ow">in</span> <span class="n">l</span><span class="p">[</span><span class="mi">2</span><span class="p">]:</span>
+                <span class="n">_pygments_languages</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">alias_name</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span>
+    <span class="k">return</span> <span class="n">code_language</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="n">_pygments_languages</span>
+
+
+<div class="viewcode-block" id="Code">
+<a class="viewcode-back" href="../../../dev/result_types/main/code.html#searx.result_types.code.Code">[docs]</a>
+<span class="nd">@t</span><span class="o">.</span><span class="n">final</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">Code</span><span class="p">(</span><span class="n">MainResult</span><span class="p">,</span> <span class="n">kw_only</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Result type suitable for displaying code passages.&quot;&quot;&quot;</span>
+
+    <span class="n">template</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;code.html&quot;</span>
+
+    <span class="n">repository</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A link related to a repository related to the *result*.&quot;&quot;&quot;</span>
+
+    <span class="n">codelines</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A list of two digit tuples where the first item is the line number and</span>
+<span class="sd">    the second item is the code line.&quot;&quot;&quot;</span>
+
+    <span class="n">hl_lines</span><span class="p">:</span> <span class="nb">set</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A list of line numbers to highlight.&quot;&quot;&quot;</span>
+
+    <span class="n">code_language</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&lt;guess&gt;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Pygment&#39;s short name of the lexer, e.g. ``text`` for the</span>
+<span class="sd">    :py:obj:`pygments.lexers.special.TextLexer`.  For a list of available</span>
+<span class="sd">    languages consult: `Pygments languages`_.  If the language is not in this</span>
+<span class="sd">    list, a :py:obj:`ValueError` is raised.</span>
+
+<span class="sd">    The default is ``&lt;guess&gt;`` which has a special meaning;</span>
+
+<span class="sd">    - If :py:obj:`Code.filename` is set, Pygment&#39;s factory method</span>
+<span class="sd">      :py:obj:`pygments.lexers.guess_lexer_for_filename` is used to determine</span>
+<span class="sd">      the language of the ``codelines``.</span>
+
+<span class="sd">    - else Pygment&#39;s :py:obj:`pygments.lexers.guess_lexer` factory is used.</span>
+
+<span class="sd">    In case the language can&#39;t be detected, the fallback is ``text``.</span>
+
+<span class="sd">    .. _Pygments languages:  https://pygments.org/languages/</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">filename</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Optional file name, can help to ``&lt;guess&gt;`` the language of the code (in</span>
+<span class="sd">    case of ambiguous short code examples).  If :py:obj:`Code.title` is not set,</span>
+<span class="sd">    its default is the filename.&quot;&quot;&quot;</span>
+
+    <span class="n">strip_new_lines</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Strip leading and trailing newlines for each returned fragment (default:</span>
+<span class="sd">    ``True``).  Single file might return multiple code fragments.&quot;&quot;&quot;</span>
+
+    <span class="n">strip_whitespace</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Strip all leading and trailing whitespace for each returned fragment</span>
+<span class="sd">    (default: ``False``).  Single file might return multiple code fragments.</span>
+<span class="sd">    Enabling this might break code indentation.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">__post_init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">__post_init__</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">title</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">filename</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">filename</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">code_language</span> <span class="o">!=</span> <span class="s2">&quot;&lt;guess&gt;&quot;</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">is_valid_language</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">code_language</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;unknown code_language: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">code_language</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__hash__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The hash value is build up from URL and code lines. :py:obj:`Code</span>
+<span class="sd">        &lt;Result.__eq__&gt;` objects are equal, when the hash values of both objects</span>
+<span class="sd">        are equal.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">hash</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">url</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">codelines</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_lexer</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">code_language</span> <span class="o">!=</span> <span class="s2">&quot;&lt;guess&gt;&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">get_lexer_by_name</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">code_language</span><span class="p">)</span>
+
+        <span class="n">src_code</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">l</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">codelines</span><span class="p">])</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">filename</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">guess_lexer_for_filename</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">filename</span><span class="p">,</span> <span class="n">src_code</span><span class="p">)</span>
+            <span class="k">except</span> <span class="n">ClassNotFound</span><span class="p">:</span>
+                <span class="k">pass</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">guess_lexer</span><span class="p">(</span><span class="n">src_code</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">ClassNotFound</span><span class="p">:</span>
+            <span class="k">pass</span>
+        <span class="k">return</span> <span class="n">get_lexer_by_name</span><span class="p">(</span><span class="s2">&quot;text&quot;</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Code.HTML">
+<a class="viewcode-back" href="../../../dev/result_types/main/code.html#searx.result_types.code.Code.HTML">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">HTML</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">options</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>  <span class="c1"># pyright: ignore[reportUnknownParameterType, reportMissingParameterType]</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Rendered HTML, additional options are accepted, for more details have</span>
+<span class="sd">        a look at HtmlFormatter_.</span>
+
+<span class="sd">        .. _HtmlFormatter: https://pygments.org/docs/formatters/#HtmlFormatter</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">lexer</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_lexer</span><span class="p">()</span>
+
+        <span class="n">line_no</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># current line number</span>
+        <span class="n">code_block_start</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># line where the current code block starts</span>
+        <span class="n">code_block_end</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># line where the current code ends</span>
+        <span class="n">code_block</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># lines of the current code block</span>
+        <span class="n">html_code_blocks</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># HTML representation of all code blocks</span>
+
+        <span class="k">def</span><span class="w"> </span><span class="nf">_render</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>  <span class="c1"># pyright: ignore[reportUnknownParameterType, reportMissingParameterType]</span>
+            <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">default</span> <span class="ow">in</span> <span class="p">[</span>
+                <span class="p">(</span><span class="s2">&quot;linenos&quot;</span><span class="p">,</span> <span class="s2">&quot;inline&quot;</span><span class="p">),</span>
+                <span class="p">(</span><span class="s2">&quot;linenostart&quot;</span><span class="p">,</span> <span class="n">code_block_start</span><span class="p">),</span>
+                <span class="p">(</span><span class="s2">&quot;cssclass&quot;</span><span class="p">,</span> <span class="s2">&quot;code-highlight&quot;</span><span class="p">),</span>
+                <span class="p">(</span><span class="s2">&quot;hl_lines&quot;</span><span class="p">,</span> <span class="p">[</span><span class="n">hl</span> <span class="o">-</span> <span class="n">code_block_start</span> <span class="o">+</span> <span class="mi">1</span> <span class="k">for</span> <span class="n">hl</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">hl_lines</span><span class="p">]),</span>
+            <span class="p">]:</span>
+                <span class="n">kwargs</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">default</span><span class="p">)</span>  <span class="c1"># pyright: ignore[reportUnknownMemberType]</span>
+
+            <span class="c1"># Wrap the code inside &lt;pre&gt; blocks using &lt;code&gt;, as recommended by</span>
+            <span class="c1"># the HTML5 specification (default is False).  Do we need this?</span>
+            <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;wrapcode&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;wrapcode&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+
+            <span class="n">html_code_blocks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                <span class="n">highlight</span><span class="p">(</span>
+                    <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">code_block</span><span class="p">),</span>
+                    <span class="n">lexer</span><span class="p">,</span>
+                    <span class="n">HtmlFormatter</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">),</span>  <span class="c1"># pyright: ignore[reportUnknownArgumentType]</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">line_no</span><span class="p">,</span> <span class="n">code_line</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">codelines</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">code_block_end</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="c1"># initial start condition</span>
+                <span class="n">code_block_start</span> <span class="o">=</span> <span class="n">line_no</span>
+
+            <span class="k">if</span> <span class="n">code_block_end</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">code_block_end</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">!=</span> <span class="n">line_no</span><span class="p">:</span>
+                <span class="c1"># new code block is detected, render current code block</span>
+                <span class="n">_render</span><span class="p">(</span><span class="o">**</span><span class="n">options</span><span class="p">)</span>  <span class="c1"># pyright: ignore[reportUnknownArgumentType]</span>
+                <span class="c1"># reset conditions for next code block, which first line is the</span>
+                <span class="c1"># current code line</span>
+                <span class="n">code_block</span> <span class="o">=</span> <span class="p">[</span><span class="n">code_line</span><span class="p">]</span>
+                <span class="n">code_block_start</span> <span class="o">=</span> <span class="n">line_no</span>
+                <span class="n">code_block_end</span> <span class="o">=</span> <span class="n">line_no</span>
+                <span class="k">continue</span>
+
+            <span class="c1"># add line to the current code block and update last line n</span>
+            <span class="n">code_block</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">code_line</span><span class="p">)</span>
+            <span class="n">code_block_end</span> <span class="o">=</span> <span class="n">line_no</span>
+
+        <span class="c1"># highlight (last) code block</span>
+        <span class="n">_render</span><span class="p">(</span><span class="o">**</span><span class="n">options</span><span class="p">)</span>  <span class="c1"># pyright: ignore[reportUnknownArgumentType]</span>
+        <span class="k">return</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">html_code_blocks</span><span class="p">)</span></div>
+</div>
+
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+  <span id="sidebar-top"></span>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+  
+    
+            <p class="logo"><a href="../../../index.html">
+              <img class="logo" src="../../../_static/searxng-wordmark.svg" alt="Logo of SearXNG"/>
+            </a></p>
+  
+
+<h3><a href="../../../index.html">Table of Contents</a></h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../user/index.html">User information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../own-instance.html">Why use a private instance?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../admin/index.html">Administrator documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../dev/index.html">Developer documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../utils/index.html">DevOps tooling box</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/index.html">Source-Code</a></li>
+</ul>
+
+  <h3>Project Links</h3>
+  <ul>
+    <li><a href="https://github.com/searxng/searxng/tree/master">Source</a>
+  
+    <li><a href="https://github.com/searxng/searxng/wiki">Wiki</a>
+  
+    <li><a href="https://searx.space">Public instances</a>
+  
+    <li><a href="https://github.com/searxng/searxng/issues">Issue Tracker</a>
+  </ul><h3>Navigation</h3>
+<ul>
+  <li><a href="../../../index.html">Overview</a>
+    <ul>
+      <li><a href="../../index.html">Module code</a>
+        <ul>
+      <li><a href="../result_types.html">searx.result_types</a>
+        
+          
+          </ul>
+      </li></ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright SearXNG team.
+    </div>
+  </body>
+</html>

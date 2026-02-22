@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Result Types &#8212; SearXNG Documentation (2026.2.22+191818b86)</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=6625fa76" />
+    <link rel="stylesheet" type="text/css" href="../../_static/searxng.css?v=52e4ff28" />
+    <script src="../../_static/documentation_options.js?v=1b5d919e"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script data-project="searxng" data-version="2026.2.22+191818b86" src="../../_static/describe_version.js?v=fa7f30d0"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Result" href="base_result.html" />
+    <link rel="prev" title="Tineye" href="../engines/online_url_search/tineye.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="base_result.html" title="Result"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="../engines/online_url_search/tineye.html" title="Tineye"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">SearXNG Documentation (2026.2.22+191818b86)</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Developer documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Result Types</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="result-types">
+<span id="id1"></span><h1>Result Types<a class="headerlink" href="#result-types" title="Link to this heading">¶</a></h1>
+<p>To understand the typification of the results, let’s take a brief look at the
+structure of SearXNG ..  At its core, SearXNG is nothing more than an aggregator
+that aggregates the results from various sources, renders them via templates and
+displays them to the user.</p>
+<p>The <strong>sources</strong> can be:</p>
+<ol class="arabic simple">
+<li><p><a class="reference internal" href="../engines/index.html#engine-implementations"><span class="std std-ref">engines</span></a></p></li>
+<li><p><a class="reference internal" href="../plugins/development.html#dev-plugin"><span class="std std-ref">plugins</span></a></p></li>
+<li><p><a class="reference internal" href="../answerers/development.html#dev-answerers"><span class="std std-ref">answerers</span></a></p></li>
+</ol>
+<p>The sources provide the results, which are displayed in different <strong>areas</strong>
+depending on the type of result. The areas are:</p>
+<dl class="simple" id="area-main-results">
+<dt><a class="reference internal" href="main_result.html#main-search-results"><span class="std std-ref">area main results</span></a></dt><dd><p>It is the main area in which – as is typical for search engines – the
+results that a search engine has found for the search term are displayed.</p>
+</dd>
+</dl>
+<dl class="simple" id="area-answer-results">
+<dt><a class="reference internal" href="answer.html#result-types-answer"><span class="std std-ref">area answers</span></a></dt><dd><p>This area displays short answers that could be found for the search term.</p>
+</dd>
+</dl>
+<dl class="simple" id="area-info-box">
+<dt><a class="reference internal" href="infobox.html#result-types-infobox"><span class="std std-ref">area info box</span></a></dt><dd><p>An area in which additional information can be displayed, e.g. excerpts from
+wikipedia or other sources such as maps.</p>
+</dd>
+</dl>
+<dl class="simple" id="area-suggestions-results">
+<dt><a class="reference internal" href="suggestion.html#result-types-suggestion"><span class="std std-ref">area suggestions</span></a></dt><dd><p>Suggestions for alternative search terms can be found in this area.  These can
+be clicked on and a search is carried out with these search terms.</p>
+</dd>
+</dl>
+<dl class="simple" id="area-corrections-results">
+<dt><a class="reference internal" href="correction.html#result-types-corrections"><span class="std std-ref">area corrections</span></a></dt><dd><p>Results in this area are like the suggestion of alternative search terms,
+which usually result from spelling corrections</p>
+</dd>
+</dl>
+<p>At this point it is important to note that all <strong>sources</strong> can contribute
+results to all of the areas mentioned above.</p>
+<p>In most cases, however, the <a class="reference internal" href="../engines/index.html#engine-implementations"><span class="std std-ref">engines</span></a> will fill
+the <em>main results</em> and the <a class="reference internal" href="../answerers/development.html#dev-answerers"><span class="std std-ref">answerers</span></a> will generally
+provide the contributions for the <em>answer</em> area.  Not necessary to mention here
+but for a better understanding: the plugins can also filter out or change
+results from the main results area (e.g. the URL of the link).</p>
+<p>The result items are organized in the <code class="xref py py-obj docutils literal notranslate"><span class="pre">results.ResultContainer</span></code> and
+after all sources have delivered their results, this container is passed to the
+templating to build a HTML output.  The output is usually HTML, but it is also
+possible to output the result lists as JSON or RSS feed. Thats quite all we need
+to know before we dive into typification of result items.</p>
+<div class="admonition hint">
+<p class="admonition-title">Hint</p>
+<p>Typification of result items: we are at the very first beginng!</p>
+</div>
+<p>The first thing we have to realize is that there is no typification of the
+result items so far, we have to build it up first .. and that is quite a big
+task, which we will only be able to accomplish gradually.</p>
+<p>The foundation for the typeless results was laid back in 2013 in the very first
+commit <a class="reference external" href="https://github.com/searxng/searxng/commit/ae9fb1d7d">&#64;ae9fb1d</a>, and the principle has not changed since then.  At
+the time, the approach was perfectly adequate, but we have since evolved and the
+demands on SearXNG increase with every feature request.</p>
+<p><strong>Motivation:</strong> in the meantime, it has become very difficult to develop new
+features that require structural changes and it is especially hard for newcomers
+to find their way in this typeless world.  As long as the results are only
+simple key/value dictionaries, it is not even possible for the IDEs to support
+the application developer in his work.</p>
+<p><strong>Planning:</strong> The procedure for subsequent typing will have to be based on the
+circumstances ..</p>
+<div class="admonition attention">
+<p class="admonition-title">Attention</p>
+<p>As long as there is no type defined for a kind of result the HTML template
+specify what the properties of a type are.</p>
+<p>In this sense, you will either find a type definition here in the
+documentation or, if this does not yet exist, a description of the HTML
+template.</p>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="base_result.html">Result</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="base_result.html#searx.result_types._base.Result"><code class="docutils literal notranslate"><span class="pre">Result</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="base_result.html#searx.result_types._base.LegacyResult"><code class="docutils literal notranslate"><span class="pre">LegacyResult</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="main_result.html">Main Search Results</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="main/mainresult.html"><code class="docutils literal notranslate"><span class="pre">MainResult</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="main/keyvalue.html">Key-Value Results</a></li>
+<li class="toctree-l2"><a class="reference internal" href="main/code.html">Code Results</a></li>
+<li class="toctree-l2"><a class="reference internal" href="main/paper.html">Paper Results</a></li>
+<li class="toctree-l2"><a class="reference internal" href="main/file.html">File Results</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="answer.html">Answer Results</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="answer.html#searx.result_types.answer.BaseAnswer"><code class="docutils literal notranslate"><span class="pre">BaseAnswer</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="answer.html#searx.result_types.answer.Answer"><code class="docutils literal notranslate"><span class="pre">Answer</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="answer.html#searx.result_types.answer.Translations"><code class="docutils literal notranslate"><span class="pre">Translations</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="answer.html#searx.result_types.answer.WeatherAnswer"><code class="docutils literal notranslate"><span class="pre">WeatherAnswer</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="answer.html#searx.result_types.answer.AnswerSet"><code class="docutils literal notranslate"><span class="pre">AnswerSet</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="correction.html">Correction Results</a></li>
+<li class="toctree-l1"><a class="reference internal" href="suggestion.html">Suggestion Results</a></li>
+<li class="toctree-l1"><a class="reference internal" href="infobox.html">Infobox Results</a></li>
+</ul>
+</div>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+  <span id="sidebar-top"></span>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+  
+    
+            <p class="logo"><a href="../../index.html">
+              <img class="logo" src="../../_static/searxng-wordmark.svg" alt="Logo of SearXNG"/>
+            </a></p>
+  
+
+<h3><a href="../../index.html">Table of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../user/index.html">User information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../own-instance.html">Why use a private instance?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../admin/index.html">Administrator documentation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Developer documentation</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../quickstart.html">Development Quickstart</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../commits.html">Git Commits &amp; Change Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contribution_guide.html">How to contribute</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../extended_types.html">Extended Types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../engines/index.html">Engine Implementations</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Result Types</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="base_result.html">Result</a></li>
+<li class="toctree-l3"><a class="reference internal" href="main_result.html">Main Search Results</a></li>
+<li class="toctree-l3"><a class="reference internal" href="answer.html">Answer Results</a></li>
+<li class="toctree-l3"><a class="reference internal" href="correction.html">Correction Results</a></li>
+<li class="toctree-l3"><a class="reference internal" href="suggestion.html">Suggestion Results</a></li>
+<li class="toctree-l3"><a class="reference internal" href="infobox.html">Infobox Results</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../templates.html">Simple Theme Templates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../search_api.html">Search API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../plugins/index.html">Plugins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../answerers/index.html">Answerers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../translation.html">Translation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../makefile.html">Makefile &amp; <code class="docutils literal notranslate"><span class="pre">./manage</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reST.html">reST primer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../searxng_extra/index.html">Tooling box <code class="docutils literal notranslate"><span class="pre">searxng_extra</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../utils/index.html">DevOps tooling box</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../src/index.html">Source-Code</a></li>
+</ul>
+
+  <h3>Project Links</h3>
+  <ul>
+    <li><a href="https://github.com/searxng/searxng/tree/master">Source</a>
+  
+    <li><a href="https://github.com/searxng/searxng/wiki">Wiki</a>
+  
+    <li><a href="https://searx.space">Public instances</a>
+  
+    <li><a href="https://github.com/searxng/searxng/issues">Issue Tracker</a>
+  </ul><h3>Navigation</h3>
+<ul>
+  <li><a href="../../index.html">Overview</a>
+    <ul>
+      <li><a href="../index.html">Developer documentation</a>
+        <ul>
+          <li>Previous: <a href="../engines/online_url_search/tineye.html" title="previous chapter">Tineye</a>
+          <li>Next: <a href="base_result.html" title="next chapter">Result</a></ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/dev/result_types/index.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright SearXNG team.
+    </div>
+  </body>
+</html>

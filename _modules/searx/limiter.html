@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>searx.limiter &#8212; SearXNG Documentation (2026.2.22+191818b86)</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=6625fa76" />
+    <link rel="stylesheet" type="text/css" href="../../_static/searxng.css?v=52e4ff28" />
+    <script src="../../_static/documentation_options.js?v=1b5d919e"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script data-project="searxng" data-version="2026.2.22+191818b86" src="../../_static/describe_version.js?v=fa7f30d0"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">SearXNG Documentation (2026.2.22+191818b86)</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">searx.limiter</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for searx.limiter</h1><div class="highlight"><pre>
+<span></span><span class="c1"># SPDX-License-Identifier: AGPL-3.0-or-later</span>
+<span class="sd">&quot;&quot;&quot;Bot protection / IP rate limitation.  The intention of rate limitation is to</span>
+<span class="sd">limit suspicious requests from an IP.  The motivation behind this is the fact</span>
+<span class="sd">that SearXNG passes through requests from bots and is thus classified as a bot</span>
+<span class="sd">itself.  As a result, the SearXNG engine then receives a CAPTCHA or is blocked</span>
+<span class="sd">by the search engine (the origin) in some other way.</span>
+
+<span class="sd">To avoid blocking, the requests from bots to SearXNG must also be blocked, this</span>
+<span class="sd">is the task of the limiter.  To perform this task, the limiter uses the methods</span>
+<span class="sd">from the :ref:`botdetection`:</span>
+
+<span class="sd">- Analysis of the HTTP header in the request / :ref:`botdetection probe headers`</span>
+<span class="sd">  can be easily bypassed.</span>
+
+<span class="sd">- Block and pass lists in which IPs are listed / :ref:`botdetection ip_lists`</span>
+<span class="sd">  are hard to maintain, since the IPs of bots are not all known and change over</span>
+<span class="sd">  the time.</span>
+
+<span class="sd">- Detection &amp; dynamically :ref:`botdetection rate limit` of bots based on the</span>
+<span class="sd">  behavior of the requests.  For dynamically changeable IP lists a Valkey</span>
+<span class="sd">  database is needed.</span>
+
+<span class="sd">The prerequisite for IP based methods is the correct determination of the IP of</span>
+<span class="sd">the client. The IP of the client is determined via the X-Forwarded-For_ HTTP</span>
+<span class="sd">header.</span>
+
+<span class="sd">.. attention::</span>
+
+<span class="sd">   A correct setup of the HTTP request headers ``X-Forwarded-For`` and</span>
+<span class="sd">   ``X-Real-IP`` is essential to be able to assign a request to an IP correctly:</span>
+
+<span class="sd">   - `NGINX RequestHeader`_</span>
+<span class="sd">   - `Apache RequestHeader`_</span>
+
+<span class="sd">.. _X-Forwarded-For:</span>
+<span class="sd">    https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Forwarded-For</span>
+<span class="sd">.. _NGINX RequestHeader:</span>
+<span class="sd">    https://docs.searxng.org/admin/installation-nginx.html#nginx-s-searxng-site</span>
+<span class="sd">.. _Apache RequestHeader:</span>
+<span class="sd">    https://docs.searxng.org/admin/installation-apache.html#apache-s-searxng-site</span>
+
+<span class="sd">Enable Limiter</span>
+<span class="sd">==============</span>
+
+<span class="sd">To enable the limiter activate:</span>
+
+<span class="sd">.. code:: yaml</span>
+
+<span class="sd">   server:</span>
+<span class="sd">     ...</span>
+<span class="sd">     limiter: true  # rate limit the number of request on the instance, block some bots</span>
+
+<span class="sd">and set the valkey-url connection. Check the value, it depends on your valkey DB</span>
+<span class="sd">(see :ref:`settings valkey`), by example:</span>
+
+<span class="sd">.. code:: yaml</span>
+
+<span class="sd">   valkey:</span>
+<span class="sd">     url: valkey://localhost:6379/0</span>
+
+
+<span class="sd">Configure Limiter</span>
+<span class="sd">=================</span>
+
+<span class="sd">The methods of :ref:`botdetection` the limiter uses are configured in a local</span>
+<span class="sd">file ``/etc/searxng/limiter.toml``.  The defaults are shown in limiter.toml_ /</span>
+<span class="sd">Don&#39;t copy all values to your local configuration, just enable what you need by</span>
+<span class="sd">overwriting the defaults.  For instance to activate the ``link_token`` method in</span>
+<span class="sd">the :ref:`botdetection.ip_limit` you only need to set this option to ``true``:</span>
+
+<span class="sd">.. code:: toml</span>
+
+<span class="sd">   [botdetection.ip_limit]</span>
+<span class="sd">   link_token = true</span>
+
+<span class="sd">.. _limiter.toml:</span>
+
+<span class="sd">``limiter.toml``</span>
+<span class="sd">================</span>
+
+<span class="sd">In this file the limiter finds the configuration of the :ref:`botdetection`:</span>
+
+<span class="sd">- :ref:`botdetection ip_lists`</span>
+<span class="sd">- :ref:`botdetection rate limit`</span>
+<span class="sd">- :ref:`botdetection probe headers`</span>
+
+<span class="sd">.. kernel-include:: $SOURCEDIR/limiter.toml</span>
+<span class="sd">   :code: toml</span>
+
+<span class="sd">Implementation</span>
+<span class="sd">==============</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">ipaddress</span><span class="w"> </span><span class="kn">import</span> <span class="n">ip_address</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">flask</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">werkzeug</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">searx.compat</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">searx</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">logger</span><span class="p">,</span>
+    <span class="n">valkeydb</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">searx</span><span class="w"> </span><span class="kn">import</span> <span class="n">botdetection</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">searx.extended_types</span><span class="w"> </span><span class="kn">import</span> <span class="n">SXNG_Request</span><span class="p">,</span> <span class="n">sxng_request</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">searx.botdetection</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">config</span><span class="p">,</span>
+    <span class="n">http_accept</span><span class="p">,</span>
+    <span class="n">http_accept_encoding</span><span class="p">,</span>
+    <span class="n">http_accept_language</span><span class="p">,</span>
+    <span class="n">http_user_agent</span><span class="p">,</span>
+    <span class="n">http_sec_fetch</span><span class="p">,</span>
+    <span class="n">ip_limit</span><span class="p">,</span>
+    <span class="n">ip_lists</span><span class="p">,</span>
+    <span class="n">get_network</span><span class="p">,</span>
+    <span class="n">dump_request</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="c1"># the configuration are limiter.toml and &quot;limiter&quot; in settings.yml so, for</span>
+<span class="c1"># coherency, the logger is &quot;limiter&quot;</span>
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logger</span><span class="o">.</span><span class="n">getChild</span><span class="p">(</span><span class="s1">&#39;limiter&#39;</span><span class="p">)</span>
+
+<span class="n">CFG</span><span class="p">:</span> <span class="n">config</span><span class="o">.</span><span class="n">Config</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="n">_INSTALLED</span> <span class="o">=</span> <span class="kc">False</span>
+
+<span class="n">LIMITER_CFG_SCHEMA</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span> <span class="o">/</span> <span class="s2">&quot;limiter.toml&quot;</span>
+<span class="sd">&quot;&quot;&quot;Base configuration (schema) of the botdetection.&quot;&quot;&quot;</span>
+
+
+<div class="viewcode-block" id="get_cfg">
+<a class="viewcode-back" href="../../admin/searx.limiter.html#searx.limiter.get_cfg">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_cfg</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">config</span><span class="o">.</span><span class="n">Config</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Returns SearXNG&#39;s global limiter configuration.&quot;&quot;&quot;</span>
+    <span class="k">global</span> <span class="n">CFG</span>  <span class="c1"># pylint: disable=global-statement</span>
+
+    <span class="k">if</span> <span class="n">CFG</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">.</span><span class="w"> </span><span class="kn">import</span> <span class="n">settings_loader</span>  <span class="c1"># pylint: disable=import-outside-toplevel</span>
+
+        <span class="n">cfg_file</span> <span class="o">=</span> <span class="p">(</span><span class="n">settings_loader</span><span class="o">.</span><span class="n">get_user_cfg_folder</span><span class="p">()</span> <span class="ow">or</span> <span class="n">Path</span><span class="p">(</span><span class="s2">&quot;/etc/searxng&quot;</span><span class="p">))</span> <span class="o">/</span> <span class="s2">&quot;limiter.toml&quot;</span>
+        <span class="n">CFG</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">Config</span><span class="o">.</span><span class="n">from_toml</span><span class="p">(</span><span class="n">LIMITER_CFG_SCHEMA</span><span class="p">,</span> <span class="n">cfg_file</span><span class="p">,</span> <span class="n">searx</span><span class="o">.</span><span class="n">compat</span><span class="o">.</span><span class="n">LIMITER_CFG_DEPRECATED</span><span class="p">)</span>
+        <span class="n">searx</span><span class="o">.</span><span class="n">compat</span><span class="o">.</span><span class="n">limiter_fix_cfg</span><span class="p">(</span><span class="n">CFG</span><span class="p">,</span> <span class="n">cfg_file</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">CFG</span></div>
+
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">filter_request</span><span class="p">(</span><span class="n">request</span><span class="p">:</span> <span class="n">SXNG_Request</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">werkzeug</span><span class="o">.</span><span class="n">Response</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="c1"># pylint: disable=too-many-return-statements</span>
+
+    <span class="n">cfg</span> <span class="o">=</span> <span class="n">get_cfg</span><span class="p">()</span>
+    <span class="n">real_ip</span> <span class="o">=</span> <span class="n">ip_address</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">remote_addr</span><span class="p">)</span>
+    <span class="n">network</span> <span class="o">=</span> <span class="n">get_network</span><span class="p">(</span><span class="n">real_ip</span><span class="p">,</span> <span class="n">cfg</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">path</span> <span class="o">==</span> <span class="s1">&#39;/healthz&#39;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span>
+
+    <span class="c1"># link-local</span>
+
+    <span class="k">if</span> <span class="n">network</span><span class="o">.</span><span class="n">is_link_local</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span>
+
+    <span class="c1"># block- &amp; pass- lists</span>
+    <span class="c1">#</span>
+    <span class="c1"># 1. The IP of the request is first checked against the pass-list; if the IP</span>
+    <span class="c1">#    matches an entry in the list, the request is not blocked.</span>
+    <span class="c1"># 2. If no matching entry is found in the pass-list, then a check is made against</span>
+    <span class="c1">#    the block list; if the IP matches an entry in the list, the request is</span>
+    <span class="c1">#    blocked.</span>
+    <span class="c1"># 3. If the IP is not in either list, the request is not blocked.</span>
+
+    <span class="n">match</span><span class="p">,</span> <span class="n">msg</span> <span class="o">=</span> <span class="n">ip_lists</span><span class="o">.</span><span class="n">pass_ip</span><span class="p">(</span><span class="n">real_ip</span><span class="p">,</span> <span class="n">cfg</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">match</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;PASS </span><span class="si">%s</span><span class="s2">: matched PASSLIST - </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">network</span><span class="o">.</span><span class="n">compressed</span><span class="p">,</span> <span class="n">msg</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">None</span>
+
+    <span class="n">match</span><span class="p">,</span> <span class="n">msg</span> <span class="o">=</span> <span class="n">ip_lists</span><span class="o">.</span><span class="n">block_ip</span><span class="p">(</span><span class="n">real_ip</span><span class="p">,</span> <span class="n">cfg</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">match</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;BLOCK </span><span class="si">%s</span><span class="s2">: matched BLOCKLIST - </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">network</span><span class="o">.</span><span class="n">compressed</span><span class="p">,</span> <span class="n">msg</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">flask</span><span class="o">.</span><span class="n">make_response</span><span class="p">((</span><span class="s1">&#39;IP is on BLOCKLIST - </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">msg</span><span class="p">,</span> <span class="mi">429</span><span class="p">))</span>
+
+    <span class="c1"># methods applied on all requests</span>
+
+    <span class="k">for</span> <span class="n">func</span> <span class="ow">in</span> <span class="p">[</span>
+        <span class="n">http_user_agent</span><span class="p">,</span>
+    <span class="p">]:</span>
+        <span class="n">val</span> <span class="o">=</span> <span class="n">func</span><span class="o">.</span><span class="n">filter_request</span><span class="p">(</span><span class="n">network</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">cfg</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">val</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;NOT OK (</span><span class="si">{</span><span class="n">func</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">): </span><span class="si">{</span><span class="n">network</span><span class="si">}</span><span class="s2">: %s&quot;</span><span class="p">,</span> <span class="n">dump_request</span><span class="p">(</span><span class="n">sxng_request</span><span class="p">))</span>
+            <span class="k">return</span> <span class="n">val</span>
+
+    <span class="c1"># methods applied on /search requests</span>
+
+    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">path</span> <span class="o">==</span> <span class="s1">&#39;/search&#39;</span><span class="p">:</span>
+
+        <span class="k">for</span> <span class="n">func</span> <span class="ow">in</span> <span class="p">[</span>
+            <span class="n">http_accept</span><span class="p">,</span>
+            <span class="n">http_accept_encoding</span><span class="p">,</span>
+            <span class="n">http_accept_language</span><span class="p">,</span>
+            <span class="n">http_user_agent</span><span class="p">,</span>
+            <span class="n">http_sec_fetch</span><span class="p">,</span>
+            <span class="n">ip_limit</span><span class="p">,</span>
+        <span class="p">]:</span>
+            <span class="n">val</span> <span class="o">=</span> <span class="n">func</span><span class="o">.</span><span class="n">filter_request</span><span class="p">(</span><span class="n">network</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">cfg</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">val</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;NOT OK (</span><span class="si">{</span><span class="n">func</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">): </span><span class="si">{</span><span class="n">network</span><span class="si">}</span><span class="s2">: %s&quot;</span><span class="p">,</span> <span class="n">dump_request</span><span class="p">(</span><span class="n">sxng_request</span><span class="p">))</span>
+                <span class="k">return</span> <span class="n">val</span>
+
+    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;OK </span><span class="si">{</span><span class="n">network</span><span class="si">}</span><span class="s2">: %s&quot;</span><span class="p">,</span> <span class="n">dump_request</span><span class="p">(</span><span class="n">sxng_request</span><span class="p">))</span>
+    <span class="k">return</span> <span class="kc">None</span>
+
+
+<div class="viewcode-block" id="pre_request">
+<a class="viewcode-back" href="../../admin/searx.limiter.html#searx.limiter.pre_request">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">pre_request</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;See :py:obj:`flask.Flask.before_request`&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">filter_request</span><span class="p">(</span><span class="n">sxng_request</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="is_installed">
+<a class="viewcode-back" href="../../admin/searx.limiter.html#searx.limiter.is_installed">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">is_installed</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Returns ``True`` if limiter is active and a valkey DB is available.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">_INSTALLED</span></div>
+
+
+
+<div class="viewcode-block" id="initialize">
+<a class="viewcode-back" href="../../admin/searx.limiter.html#searx.limiter.initialize">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">initialize</span><span class="p">(</span><span class="n">app</span><span class="p">:</span> <span class="n">flask</span><span class="o">.</span><span class="n">Flask</span><span class="p">,</span> <span class="n">settings</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Install the limiter&quot;&quot;&quot;</span>
+    <span class="k">global</span> <span class="n">_INSTALLED</span>  <span class="c1"># pylint: disable=global-statement</span>
+
+    <span class="c1"># even if the limiter is not activated, the botdetection must be activated</span>
+    <span class="c1"># (e.g. the self_info plugin uses the botdetection to get client IP)</span>
+
+    <span class="n">cfg</span> <span class="o">=</span> <span class="n">get_cfg</span><span class="p">()</span>
+    <span class="n">valkey_client</span> <span class="o">=</span> <span class="n">valkeydb</span><span class="o">.</span><span class="n">client</span><span class="p">()</span>
+    <span class="n">botdetection</span><span class="o">.</span><span class="n">init</span><span class="p">(</span><span class="n">cfg</span><span class="p">,</span> <span class="n">valkey_client</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;server&#39;</span><span class="p">][</span><span class="s1">&#39;limiter&#39;</span><span class="p">]</span> <span class="ow">or</span> <span class="n">settings</span><span class="p">[</span><span class="s1">&#39;server&#39;</span><span class="p">][</span><span class="s1">&#39;public_instance&#39;</span><span class="p">]):</span>
+        <span class="k">return</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">valkey_client</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
+            <span class="s2">&quot;The limiter requires Valkey, please consult the documentation: &quot;</span>
+            <span class="s2">&quot;https://docs.searxng.org/admin/searx.limiter.html&quot;</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="n">settings</span><span class="p">[</span><span class="s1">&#39;server&#39;</span><span class="p">][</span><span class="s1">&#39;public_instance&#39;</span><span class="p">]:</span>
+            <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        <span class="k">return</span>
+
+    <span class="n">_INSTALLED</span> <span class="o">=</span> <span class="kc">True</span>
+
+    <span class="k">if</span> <span class="n">settings</span><span class="p">[</span><span class="s1">&#39;server&#39;</span><span class="p">][</span><span class="s1">&#39;public_instance&#39;</span><span class="p">]:</span>
+        <span class="c1"># overwrite limiter.toml setting</span>
+        <span class="n">cfg</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s1">&#39;botdetection.ip_limit.link_token&#39;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+
+    <span class="n">app</span><span class="o">.</span><span class="n">before_request</span><span class="p">(</span><span class="n">pre_request</span><span class="p">)</span></div>
+
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+  <span id="sidebar-top"></span>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+  
+    
+            <p class="logo"><a href="../../index.html">
+              <img class="logo" src="../../_static/searxng-wordmark.svg" alt="Logo of SearXNG"/>
+            </a></p>
+  
+
+<h3><a href="../../index.html">Table of Contents</a></h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../user/index.html">User information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../own-instance.html">Why use a private instance?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../admin/index.html">Administrator documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dev/index.html">Developer documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../utils/index.html">DevOps tooling box</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../src/index.html">Source-Code</a></li>
+</ul>
+
+  <h3>Project Links</h3>
+  <ul>
+    <li><a href="https://github.com/searxng/searxng/tree/master">Source</a>
+  
+    <li><a href="https://github.com/searxng/searxng/wiki">Wiki</a>
+  
+    <li><a href="https://searx.space">Public instances</a>
+  
+    <li><a href="https://github.com/searxng/searxng/issues">Issue Tracker</a>
+  </ul><h3>Navigation</h3>
+<ul>
+  <li><a href="../../index.html">Overview</a>
+    <ul>
+      <li><a href="../index.html">Module code</a>
+        
+          
+          </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright SearXNG team.
+    </div>
+  </body>
+</html>

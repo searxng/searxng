@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>searx.search &#8212; SearXNG Documentation (2026.2.22+191818b86)</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=6625fa76" />
+    <link rel="stylesheet" type="text/css" href="../../_static/searxng.css?v=52e4ff28" />
+    <script src="../../_static/documentation_options.js?v=1b5d919e"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script data-project="searxng" data-version="2026.2.22+191818b86" src="../../_static/describe_version.js?v=fa7f30d0"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">SearXNG Documentation (2026.2.22+191818b86)</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">searx.search</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for searx.search</h1><div class="highlight"><pre>
+<span></span><span class="c1"># SPDX-License-Identifier: AGPL-3.0-or-later</span>
+<span class="c1"># pylint: disable=missing-module-docstring, too-few-public-methods</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;SearchWithPlugins&quot;</span><span class="p">]</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">t</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">threading</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">timeit</span><span class="w"> </span><span class="kn">import</span> <span class="n">default_timer</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">uuid</span><span class="w"> </span><span class="kn">import</span> <span class="n">uuid4</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">flask</span><span class="w"> </span><span class="kn">import</span> <span class="n">copy_current_request_context</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">searx</span><span class="w"> </span><span class="kn">import</span> <span class="n">logger</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">searx</span><span class="w"> </span><span class="kn">import</span> <span class="n">settings</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">searx.answerers</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">searx.plugins</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">searx.engines</span><span class="w"> </span><span class="kn">import</span> <span class="n">load_engines</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">searx.external_bang</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_bang_url</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">searx.metrics</span><span class="w"> </span><span class="kn">import</span> <span class="n">initialize</span> <span class="k">as</span> <span class="n">initialize_metrics</span><span class="p">,</span> <span class="n">counter_inc</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">searx.network</span><span class="w"> </span><span class="kn">import</span> <span class="n">initialize</span> <span class="k">as</span> <span class="n">initialize_network</span><span class="p">,</span> <span class="n">check_network_configuration</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">searx.results</span><span class="w"> </span><span class="kn">import</span> <span class="n">ResultContainer</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">searx.search.processors</span><span class="w"> </span><span class="kn">import</span> <span class="n">PROCESSORS</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">searx.search.processors.abstract</span><span class="w"> </span><span class="kn">import</span> <span class="n">RequestParams</span>
+
+<span class="k">if</span> <span class="n">t</span><span class="o">.</span><span class="n">TYPE_CHECKING</span><span class="p">:</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">SearchQuery</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">searx.extended_types</span><span class="w"> </span><span class="kn">import</span> <span class="n">SXNG_Request</span>
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logger</span><span class="o">.</span><span class="n">getChild</span><span class="p">(</span><span class="s1">&#39;search&#39;</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">initialize</span><span class="p">(</span>
+    <span class="n">settings_engines</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">t</span><span class="o">.</span><span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>  <span class="c1"># pyright: ignore[reportArgumentType]</span>
+    <span class="n">check_network</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">enable_metrics</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+<span class="p">):</span>
+    <span class="n">settings_engines</span> <span class="o">=</span> <span class="n">settings_engines</span> <span class="ow">or</span> <span class="n">settings</span><span class="p">[</span><span class="s1">&#39;engines&#39;</span><span class="p">]</span>
+    <span class="n">load_engines</span><span class="p">(</span><span class="n">settings_engines</span><span class="p">)</span>
+    <span class="n">initialize_network</span><span class="p">(</span><span class="n">settings_engines</span><span class="p">,</span> <span class="n">settings</span><span class="p">[</span><span class="s1">&#39;outgoing&#39;</span><span class="p">])</span>
+    <span class="k">if</span> <span class="n">check_network</span><span class="p">:</span>
+        <span class="n">check_network_configuration</span><span class="p">()</span>
+    <span class="n">initialize_metrics</span><span class="p">([</span><span class="n">engine</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">engine</span> <span class="ow">in</span> <span class="n">settings_engines</span><span class="p">],</span> <span class="n">enable_metrics</span><span class="p">)</span>
+    <span class="n">PROCESSORS</span><span class="o">.</span><span class="n">init</span><span class="p">(</span><span class="n">settings_engines</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="Search">
+<a class="viewcode-back" href="../../src/searx.search.html#searx.search.Search">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">Search</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Search information container&quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">search_query</span><span class="p">:</span> <span class="s2">&quot;SearchQuery&quot;</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize the Search&quot;&quot;&quot;</span>
+        <span class="c1"># init vars</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">search_query</span><span class="p">:</span> <span class="s2">&quot;SearchQuery&quot;</span> <span class="o">=</span> <span class="n">search_query</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">result_container</span><span class="p">:</span> <span class="n">ResultContainer</span> <span class="o">=</span> <span class="n">ResultContainer</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">start_time</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">actual_timeout</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">search_external_bang</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Check if there is a external bang.  If yes, update</span>
+<span class="sd">        self.result_container and return True.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">search_query</span><span class="o">.</span><span class="n">external_bang</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">result_container</span><span class="o">.</span><span class="n">redirect_url</span> <span class="o">=</span> <span class="n">get_bang_url</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">search_query</span><span class="p">)</span>
+
+            <span class="c1"># This means there was a valid bang and the rest of the search does</span>
+            <span class="c1"># not need to be continued</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">result_container</span><span class="o">.</span><span class="n">redirect_url</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+                <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">search_answerers</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="n">results</span> <span class="o">=</span> <span class="n">searx</span><span class="o">.</span><span class="n">answerers</span><span class="o">.</span><span class="n">STORAGE</span><span class="o">.</span><span class="n">ask</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">search_query</span><span class="o">.</span><span class="n">query</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">result_container</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">results</span><span class="p">)</span>  <span class="c1"># pyright: ignore[reportArgumentType]</span>
+        <span class="k">return</span> <span class="nb">bool</span><span class="p">(</span><span class="n">results</span><span class="p">)</span>
+
+    <span class="c1"># do search-request</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_get_requests</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="n">RequestParams</span><span class="p">]],</span> <span class="nb">float</span><span class="p">]:</span>
+        <span class="c1"># init vars</span>
+        <span class="n">requests</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="n">RequestParams</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="c1"># max of all selected engine timeout</span>
+        <span class="n">default_timeout</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="c1"># start search-request for all selected engines</span>
+        <span class="k">for</span> <span class="n">engineref</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">search_query</span><span class="o">.</span><span class="n">engineref_list</span><span class="p">:</span>
+            <span class="n">processor</span> <span class="o">=</span> <span class="n">PROCESSORS</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">engineref</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">processor</span><span class="p">:</span>
+                <span class="c1"># engine does not exists; not yet or the &#39;init&#39; method of the</span>
+                <span class="c1"># engine has been failed and the engine has not been registered.</span>
+                <span class="k">continue</span>
+
+            <span class="c1"># stop the request now if the engine is suspend</span>
+            <span class="k">if</span> <span class="n">processor</span><span class="o">.</span><span class="n">extend_container_if_suspended</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">result_container</span><span class="p">):</span>
+                <span class="k">continue</span>
+
+            <span class="c1"># set default request parameters</span>
+            <span class="n">request_params</span> <span class="o">=</span> <span class="n">processor</span><span class="o">.</span><span class="n">get_params</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">search_query</span><span class="p">,</span> <span class="n">engineref</span><span class="o">.</span><span class="n">category</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">request_params</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">continue</span>
+
+            <span class="n">counter_inc</span><span class="p">(</span><span class="s1">&#39;engine&#39;</span><span class="p">,</span> <span class="n">engineref</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="s1">&#39;search&#39;</span><span class="p">,</span> <span class="s1">&#39;count&#39;</span><span class="p">,</span> <span class="s1">&#39;sent&#39;</span><span class="p">)</span>
+
+            <span class="c1"># append request to list</span>
+            <span class="n">requests</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">engineref</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">search_query</span><span class="o">.</span><span class="n">query</span><span class="p">,</span> <span class="n">request_params</span><span class="p">))</span>
+
+            <span class="c1"># update default_timeout</span>
+            <span class="n">default_timeout</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">default_timeout</span><span class="p">,</span> <span class="n">processor</span><span class="o">.</span><span class="n">engine</span><span class="o">.</span><span class="n">timeout</span><span class="p">)</span>
+
+        <span class="c1"># adjust timeout</span>
+        <span class="n">max_request_timeout</span> <span class="o">=</span> <span class="n">settings</span><span class="p">[</span><span class="s1">&#39;outgoing&#39;</span><span class="p">][</span><span class="s1">&#39;max_request_timeout&#39;</span><span class="p">]</span>
+        <span class="n">actual_timeout</span> <span class="o">=</span> <span class="n">default_timeout</span>
+        <span class="n">query_timeout</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">search_query</span><span class="o">.</span><span class="n">timeout_limit</span>
+
+        <span class="k">if</span> <span class="n">max_request_timeout</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">query_timeout</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="c1"># No max, no user query: default_timeout</span>
+            <span class="k">pass</span>
+        <span class="k">elif</span> <span class="n">max_request_timeout</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">query_timeout</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="c1"># No max, but user query: From user query except if above default</span>
+            <span class="n">actual_timeout</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">default_timeout</span><span class="p">,</span> <span class="n">query_timeout</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">max_request_timeout</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">query_timeout</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="c1"># Max, no user query: Default except if above max</span>
+            <span class="n">actual_timeout</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">default_timeout</span><span class="p">,</span> <span class="n">max_request_timeout</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">max_request_timeout</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">query_timeout</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="c1"># Max &amp; user query: From user query except if above max</span>
+            <span class="n">actual_timeout</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">query_timeout</span><span class="p">,</span> <span class="n">max_request_timeout</span><span class="p">)</span>
+
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span>
+            <span class="s2">&quot;actual_timeout=</span><span class="si">{0}</span><span class="s2"> (default_timeout=</span><span class="si">{1}</span><span class="s2">, ?timeout_limit=</span><span class="si">{2}</span><span class="s2">, max_request_timeout=</span><span class="si">{3}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="n">actual_timeout</span><span class="p">,</span> <span class="n">default_timeout</span><span class="p">,</span> <span class="n">query_timeout</span><span class="p">,</span> <span class="n">max_request_timeout</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">requests</span><span class="p">,</span> <span class="n">actual_timeout</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">search_multiple_requests</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">requests</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="n">RequestParams</span><span class="p">]]):</span>
+        <span class="c1"># pylint: disable=protected-access</span>
+        <span class="n">search_id</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">uuid4</span><span class="p">())</span>
+
+        <span class="k">for</span> <span class="n">engine_name</span><span class="p">,</span> <span class="n">query</span><span class="p">,</span> <span class="n">request_params</span> <span class="ow">in</span> <span class="n">requests</span><span class="p">:</span>
+            <span class="n">_search</span> <span class="o">=</span> <span class="n">copy_current_request_context</span><span class="p">(</span><span class="n">PROCESSORS</span><span class="p">[</span><span class="n">engine_name</span><span class="p">]</span><span class="o">.</span><span class="n">search</span><span class="p">)</span>
+            <span class="n">th</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="p">(</span>  <span class="c1"># pylint: disable=invalid-name</span>
+                <span class="n">target</span><span class="o">=</span><span class="n">_search</span><span class="p">,</span>
+                <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">request_params</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">result_container</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">start_time</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">actual_timeout</span><span class="p">),</span>
+                <span class="n">name</span><span class="o">=</span><span class="n">search_id</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="n">th</span><span class="o">.</span><span class="n">_timeout</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="n">th</span><span class="o">.</span><span class="n">_engine_name</span> <span class="o">=</span> <span class="n">engine_name</span>
+            <span class="n">th</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+
+        <span class="k">for</span> <span class="n">th</span> <span class="ow">in</span> <span class="n">threading</span><span class="o">.</span><span class="n">enumerate</span><span class="p">():</span>  <span class="c1"># pylint: disable=invalid-name</span>
+            <span class="k">if</span> <span class="n">th</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="n">search_id</span><span class="p">:</span>
+                <span class="n">remaining_time</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">actual_timeout</span> <span class="o">-</span> <span class="p">(</span><span class="n">default_timer</span><span class="p">()</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">start_time</span><span class="p">))</span>
+                <span class="n">th</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">remaining_time</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">th</span><span class="o">.</span><span class="n">is_alive</span><span class="p">():</span>
+                    <span class="n">th</span><span class="o">.</span><span class="n">_timeout</span> <span class="o">=</span> <span class="kc">True</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">result_container</span><span class="o">.</span><span class="n">add_unresponsive_engine</span><span class="p">(</span><span class="n">th</span><span class="o">.</span><span class="n">_engine_name</span><span class="p">,</span> <span class="s1">&#39;timeout&#39;</span><span class="p">)</span>
+                    <span class="n">PROCESSORS</span><span class="p">[</span><span class="n">th</span><span class="o">.</span><span class="n">_engine_name</span><span class="p">]</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;engine timeout&#39;</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">search_standard</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Update self.result_container, self.actual_timeout</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">requests</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">actual_timeout</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_requests</span><span class="p">()</span>
+
+        <span class="c1"># send all search-request</span>
+        <span class="k">if</span> <span class="n">requests</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">search_multiple_requests</span><span class="p">(</span><span class="n">requests</span><span class="p">)</span>
+
+        <span class="c1"># return results, suggestions, answers and infoboxes</span>
+        <span class="k">return</span> <span class="kc">True</span>
+
+    <span class="c1"># do search-request</span>
+<div class="viewcode-block" id="Search.search">
+<a class="viewcode-back" href="../../src/searx.search.html#searx.search.Search.search">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">search</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ResultContainer</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">start_time</span> <span class="o">=</span> <span class="n">default_timer</span><span class="p">()</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">search_external_bang</span><span class="p">():</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">search_answerers</span><span class="p">():</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">search_standard</span><span class="p">()</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">result_container</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="SearchWithPlugins">
+<a class="viewcode-back" href="../../src/searx.search.html#searx.search.SearchWithPlugins">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">SearchWithPlugins</span><span class="p">(</span><span class="n">Search</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Inherit from the Search class, add calls to the plugins.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">search_query</span><span class="p">:</span> <span class="s2">&quot;SearchQuery&quot;</span><span class="p">,</span> <span class="n">request</span><span class="p">:</span> <span class="s2">&quot;SXNG_Request&quot;</span><span class="p">,</span> <span class="n">user_plugins</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">search_query</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">user_plugins</span> <span class="o">=</span> <span class="n">user_plugins</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">result_container</span><span class="o">.</span><span class="n">on_result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_on_result</span>
+        <span class="c1"># pylint: disable=line-too-long</span>
+        <span class="c1"># get the &quot;real&quot; request to use it outside the Flask context.</span>
+        <span class="c1"># see</span>
+        <span class="c1"># * https://github.com/pallets/flask/blob/d01d26e5210e3ee4cbbdef12f05c886e08e92852/src/flask/globals.py#L55</span>
+        <span class="c1"># * https://github.com/pallets/werkzeug/blob/3c5d3c9bd0d9ce64590f0af8997a38f3823b368d/src/werkzeug/local.py#L548-L559</span>
+        <span class="c1"># * https://werkzeug.palletsprojects.com/en/2.0.x/local/#werkzeug.local.LocalProxy._get_current_object</span>
+        <span class="c1"># pylint: enable=line-too-long</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">request</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">_get_current_object</span><span class="p">()</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_on_result</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">result</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">searx</span><span class="o">.</span><span class="n">plugins</span><span class="o">.</span><span class="n">STORAGE</span><span class="o">.</span><span class="n">on_result</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">request</span><span class="p">,</span> <span class="bp">self</span><span class="p">,</span> <span class="n">result</span><span class="p">)</span>
+
+<div class="viewcode-block" id="SearchWithPlugins.search">
+<a class="viewcode-back" href="../../src/searx.search.html#searx.search.SearchWithPlugins.search">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">search</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ResultContainer</span><span class="p">:</span>
+
+        <span class="k">if</span> <span class="n">searx</span><span class="o">.</span><span class="n">plugins</span><span class="o">.</span><span class="n">STORAGE</span><span class="o">.</span><span class="n">pre_search</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">request</span><span class="p">,</span> <span class="bp">self</span><span class="p">):</span>
+            <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">search</span><span class="p">()</span>
+
+        <span class="n">searx</span><span class="o">.</span><span class="n">plugins</span><span class="o">.</span><span class="n">STORAGE</span><span class="o">.</span><span class="n">post_search</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">request</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">result_container</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">result_container</span></div>
+</div>
+
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+  <span id="sidebar-top"></span>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+  
+    
+            <p class="logo"><a href="../../index.html">
+              <img class="logo" src="../../_static/searxng-wordmark.svg" alt="Logo of SearXNG"/>
+            </a></p>
+  
+
+<h3><a href="../../index.html">Table of Contents</a></h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../user/index.html">User information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../own-instance.html">Why use a private instance?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../admin/index.html">Administrator documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dev/index.html">Developer documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../utils/index.html">DevOps tooling box</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../src/index.html">Source-Code</a></li>
+</ul>
+
+  <h3>Project Links</h3>
+  <ul>
+    <li><a href="https://github.com/searxng/searxng/tree/master">Source</a>
+  
+    <li><a href="https://github.com/searxng/searxng/wiki">Wiki</a>
+  
+    <li><a href="https://searx.space">Public instances</a>
+  
+    <li><a href="https://github.com/searxng/searxng/issues">Issue Tracker</a>
+  </ul><h3>Navigation</h3>
+<ul>
+  <li><a href="../../index.html">Overview</a>
+    <ul>
+      <li><a href="../index.html">Module code</a>
+        
+          
+          </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright SearXNG team.
+    </div>
+  </body>
+</html>

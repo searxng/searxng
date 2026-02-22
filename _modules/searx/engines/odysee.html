@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>searx.engines.odysee &#8212; SearXNG Documentation (2026.2.22+191818b86)</title>
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=6625fa76" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/searxng.css?v=52e4ff28" />
+    <script src="../../../_static/documentation_options.js?v=1b5d919e"></script>
+    <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script data-project="searxng" data-version="2026.2.22+191818b86" src="../../../_static/describe_version.js?v=fa7f30d0"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">SearXNG Documentation (2026.2.22+191818b86)</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" >Module code</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../engines.html" accesskey="U">searx.engines</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">searx.engines.odysee</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for searx.engines.odysee</h1><div class="highlight"><pre>
+<span></span><span class="c1"># SPDX-License-Identifier: AGPL-3.0-or-later</span>
+<span class="sd">&quot;&quot;&quot;Odysee_ is a decentralized video hosting platform.</span>
+
+<span class="sd">.. _Odysee: https://github.com/OdyseeTeam/odysee-frontend</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">urllib.parse</span><span class="w"> </span><span class="kn">import</span> <span class="n">urlencode</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">babel</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">searx.network</span><span class="w"> </span><span class="kn">import</span> <span class="n">get</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">searx.locales</span><span class="w"> </span><span class="kn">import</span> <span class="n">language_tag</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">searx.enginelib.traits</span><span class="w"> </span><span class="kn">import</span> <span class="n">EngineTraits</span>
+
+<span class="c1"># Engine metadata</span>
+<span class="n">about</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;website&quot;</span><span class="p">:</span> <span class="s2">&quot;https://odysee.com/&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;wikidata_id&quot;</span><span class="p">:</span> <span class="s2">&quot;Q102046570&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;official_api_documentation&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="s2">&quot;use_official_api&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="s2">&quot;require_api_key&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="s2">&quot;results&quot;</span><span class="p">:</span> <span class="s2">&quot;JSON&quot;</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="c1"># Engine configuration</span>
+<span class="n">paging</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">time_range_support</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">results_per_page</span> <span class="o">=</span> <span class="mi">20</span>
+<span class="n">categories</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;videos&#39;</span><span class="p">]</span>
+
+<span class="c1"># Search URL (Note: lighthouse.lbry.com/search works too, and may be faster at times)</span>
+<span class="n">base_url</span> <span class="o">=</span> <span class="s2">&quot;https://lighthouse.odysee.tv/search&quot;</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">request</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">params</span><span class="p">):</span>
+    <span class="n">time_range_dict</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;day&quot;</span><span class="p">:</span> <span class="s2">&quot;today&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;week&quot;</span><span class="p">:</span> <span class="s2">&quot;thisweek&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;month&quot;</span><span class="p">:</span> <span class="s2">&quot;thismonth&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;year&quot;</span><span class="p">:</span> <span class="s2">&quot;thisyear&quot;</span><span class="p">,</span>
+    <span class="p">}</span>
+
+    <span class="n">start_index</span> <span class="o">=</span> <span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="s2">&quot;pageno&quot;</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">results_per_page</span>
+    <span class="n">query_params</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;s&quot;</span><span class="p">:</span> <span class="n">query</span><span class="p">,</span>
+        <span class="s2">&quot;size&quot;</span><span class="p">:</span> <span class="n">results_per_page</span><span class="p">,</span>
+        <span class="s2">&quot;from&quot;</span><span class="p">:</span> <span class="n">start_index</span><span class="p">,</span>
+        <span class="s2">&quot;include&quot;</span><span class="p">:</span> <span class="s2">&quot;channel,thumbnail_url,title,description,duration,release_time&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;mediaType&quot;</span><span class="p">:</span> <span class="s2">&quot;video&quot;</span><span class="p">,</span>
+    <span class="p">}</span>
+
+    <span class="n">lang</span> <span class="o">=</span> <span class="n">traits</span><span class="o">.</span><span class="n">get_language</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="s1">&#39;searxng_locale&#39;</span><span class="p">],</span> <span class="kc">None</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">lang</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">query_params</span><span class="p">[</span><span class="s1">&#39;language&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">lang</span>
+
+    <span class="k">if</span> <span class="n">params</span><span class="p">[</span><span class="s1">&#39;time_range&#39;</span><span class="p">]</span> <span class="ow">in</span> <span class="n">time_range_dict</span><span class="p">:</span>
+        <span class="n">query_params</span><span class="p">[</span><span class="s1">&#39;time_filter&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">time_range_dict</span><span class="p">[</span><span class="n">params</span><span class="p">[</span><span class="s1">&#39;time_range&#39;</span><span class="p">]]</span>
+
+    <span class="n">params</span><span class="p">[</span><span class="s2">&quot;url&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">base_url</span><span class="si">}</span><span class="s2">?</span><span class="si">{</span><span class="n">urlencode</span><span class="p">(</span><span class="n">query_params</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="k">return</span> <span class="n">params</span>
+
+
+<span class="c1"># Format the video duration</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">format_duration</span><span class="p">(</span><span class="n">duration</span><span class="p">):</span>
+    <span class="n">seconds</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">duration</span><span class="p">)</span>
+    <span class="n">length</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">gmtime</span><span class="p">(</span><span class="n">seconds</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">length</span><span class="o">.</span><span class="n">tm_hour</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">time</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%H:%M:%S&quot;</span><span class="p">,</span> <span class="n">length</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">time</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%M:%S&quot;</span><span class="p">,</span> <span class="n">length</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">response</span><span class="p">(</span><span class="n">resp</span><span class="p">):</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">resp</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+    <span class="n">results</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="n">item</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span>
+        <span class="n">claim_id</span> <span class="o">=</span> <span class="n">item</span><span class="p">[</span><span class="s2">&quot;claimId&quot;</span><span class="p">]</span>
+        <span class="n">title</span> <span class="o">=</span> <span class="n">item</span><span class="p">[</span><span class="s2">&quot;title&quot;</span><span class="p">]</span>
+        <span class="n">thumbnail_url</span> <span class="o">=</span> <span class="n">item</span><span class="p">[</span><span class="s2">&quot;thumbnail_url&quot;</span><span class="p">]</span>
+        <span class="n">description</span> <span class="o">=</span> <span class="n">item</span><span class="p">[</span><span class="s2">&quot;description&quot;</span><span class="p">]</span> <span class="ow">or</span> <span class="s2">&quot;&quot;</span>
+        <span class="n">channel</span> <span class="o">=</span> <span class="n">item</span><span class="p">[</span><span class="s2">&quot;channel&quot;</span><span class="p">]</span>
+        <span class="n">release_time</span> <span class="o">=</span> <span class="n">item</span><span class="p">[</span><span class="s2">&quot;release_time&quot;</span><span class="p">]</span>
+        <span class="n">duration</span> <span class="o">=</span> <span class="n">item</span><span class="p">[</span><span class="s2">&quot;duration&quot;</span><span class="p">]</span>
+
+        <span class="n">release_date</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">release_time</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;T&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">],</span> <span class="s2">&quot;%Y-%m-</span><span class="si">%d</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">formatted_date</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">fromtimestamp</span><span class="p">(</span><span class="n">release_date</span><span class="o">.</span><span class="n">timestamp</span><span class="p">())</span>
+
+        <span class="n">url</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;https://odysee.com/</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">:</span><span class="si">{</span><span class="n">claim_id</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="n">iframe_url</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;https://odysee.com/$/embed/</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">:</span><span class="si">{</span><span class="n">claim_id</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="n">odysee_thumbnail</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;https://thumbnails.odycdn.com/optimize/s:390:0/quality:85/plain/</span><span class="si">{</span><span class="n">thumbnail_url</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="n">formatted_duration</span> <span class="o">=</span> <span class="n">format_duration</span><span class="p">(</span><span class="n">duration</span><span class="p">)</span>
+
+        <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+            <span class="p">{</span>
+                <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="n">title</span><span class="p">,</span>
+                <span class="s2">&quot;url&quot;</span><span class="p">:</span> <span class="n">url</span><span class="p">,</span>
+                <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="n">description</span><span class="p">,</span>
+                <span class="s2">&quot;author&quot;</span><span class="p">:</span> <span class="n">channel</span><span class="p">,</span>
+                <span class="s2">&quot;publishedDate&quot;</span><span class="p">:</span> <span class="n">formatted_date</span><span class="p">,</span>
+                <span class="s2">&quot;length&quot;</span><span class="p">:</span> <span class="n">formatted_duration</span><span class="p">,</span>
+                <span class="s2">&quot;thumbnail&quot;</span><span class="p">:</span> <span class="n">odysee_thumbnail</span><span class="p">,</span>
+                <span class="s2">&quot;iframe_src&quot;</span><span class="p">:</span> <span class="n">iframe_url</span><span class="p">,</span>
+                <span class="s2">&quot;template&quot;</span><span class="p">:</span> <span class="s2">&quot;videos.html&quot;</span><span class="p">,</span>
+            <span class="p">}</span>
+        <span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">results</span>
+
+
+<div class="viewcode-block" id="fetch_traits">
+<a class="viewcode-back" href="../../../dev/engines/online/odysee.html#searx.engines.odysee.fetch_traits">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">fetch_traits</span><span class="p">(</span><span class="n">engine_traits</span><span class="p">:</span> <span class="n">EngineTraits</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Fetch languages from Odysee&#39;s source code.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">resp</span> <span class="o">=</span> <span class="n">get</span><span class="p">(</span>
+        <span class="s1">&#39;https://raw.githubusercontent.com/OdyseeTeam/odysee-frontend/master/ui/constants/supported_browser_languages.js&#39;</span><span class="p">,</span>  <span class="c1"># pylint: disable=line-too-long</span>
+        <span class="n">timeout</span><span class="o">=</span><span class="mi">60</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">resp</span><span class="o">.</span><span class="n">ok</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;ERROR: can&#39;t determine languages from Odysee&quot;</span><span class="p">)</span>
+        <span class="k">return</span>
+
+    <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">resp</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">4</span><span class="p">]:</span>
+        <span class="n">lang_tag</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;: &quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;&#39;&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">sxng_tag</span> <span class="o">=</span> <span class="n">language_tag</span><span class="p">(</span><span class="n">babel</span><span class="o">.</span><span class="n">Locale</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">lang_tag</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;-&quot;</span><span class="p">))</span>
+        <span class="k">except</span> <span class="n">babel</span><span class="o">.</span><span class="n">UnknownLocaleError</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;ERROR: </span><span class="si">%s</span><span class="s2"> is unknown by babel&quot;</span> <span class="o">%</span> <span class="n">lang_tag</span><span class="p">)</span>
+            <span class="k">continue</span>
+
+        <span class="n">conflict</span> <span class="o">=</span> <span class="n">engine_traits</span><span class="o">.</span><span class="n">languages</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">sxng_tag</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">conflict</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">conflict</span> <span class="o">!=</span> <span class="n">lang_tag</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;CONFLICT: babel </span><span class="si">%s</span><span class="s2"> --&gt; </span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">sxng_tag</span><span class="p">,</span> <span class="n">conflict</span><span class="p">,</span> <span class="n">lang_tag</span><span class="p">))</span>
+            <span class="k">continue</span>
+
+        <span class="n">engine_traits</span><span class="o">.</span><span class="n">languages</span><span class="p">[</span><span class="n">sxng_tag</span><span class="p">]</span> <span class="o">=</span> <span class="n">lang_tag</span></div>
+
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+  <span id="sidebar-top"></span>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+  
+    
+            <p class="logo"><a href="../../../index.html">
+              <img class="logo" src="../../../_static/searxng-wordmark.svg" alt="Logo of SearXNG"/>
+            </a></p>
+  
+
+<h3><a href="../../../index.html">Table of Contents</a></h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../user/index.html">User information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../own-instance.html">Why use a private instance?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../admin/index.html">Administrator documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../dev/index.html">Developer documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../utils/index.html">DevOps tooling box</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/index.html">Source-Code</a></li>
+</ul>
+
+  <h3>Project Links</h3>
+  <ul>
+    <li><a href="https://github.com/searxng/searxng/tree/master">Source</a>
+  
+    <li><a href="https://github.com/searxng/searxng/wiki">Wiki</a>
+  
+    <li><a href="https://searx.space">Public instances</a>
+  
+    <li><a href="https://github.com/searxng/searxng/issues">Issue Tracker</a>
+  </ul><h3>Navigation</h3>
+<ul>
+  <li><a href="../../../index.html">Overview</a>
+    <ul>
+      <li><a href="../../index.html">Module code</a>
+        <ul>
+      <li><a href="../engines.html">searx.engines</a>
+        
+          
+          </ul>
+      </li></ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright SearXNG team.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>SQLite DB &#8212; SearXNG Documentation (2026.2.22+191818b86)</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=6625fa76" />
+    <link rel="stylesheet" type="text/css" href="../_static/searxng.css?v=52e4ff28" />
+    <script src="../_static/documentation_options.js?v=1b5d919e"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script data-project="searxng" data-version="2026.2.22+191818b86" src="../_static/describe_version.js?v=fa7f30d0"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Utility functions for the engines" href="searx.utils.html" />
+    <link rel="prev" title="Settings Loader" href="searx.settings.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="searx.utils.html" title="Utility functions for the engines"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="searx.settings.html" title="Settings Loader"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">SearXNG Documentation (2026.2.22+191818b86)</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" accesskey="U">Source-Code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">SQLite DB</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="sqlite-db">
+<span id="id1"></span><h1>SQLite DB<a class="headerlink" href="#sqlite-db" title="Link to this heading">¶</a></h1>
+<p id="module-searx.sqlitedb">Implementations to make access to SQLite databases a little more convenient.</p>
+<dl class="simple">
+<dt><a class="reference internal" href="#searx.sqlitedb.SQLiteAppl" title="searx.sqlitedb.SQLiteAppl"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SQLiteAppl</span></code></a></dt><dd><p>Abstract class with which DB applications can be implemented.</p>
+</dd>
+<dt><a class="reference internal" href="#searx.sqlitedb.SQLiteProperties" title="searx.sqlitedb.SQLiteProperties"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SQLiteProperties</span></code></a>:</dt><dd><p>Class to manage properties stored in a database.</p>
+</dd>
+</dl>
+<p>Examplarical implementations based on <a class="reference internal" href="#searx.sqlitedb.SQLiteAppl" title="searx.sqlitedb.SQLiteAppl"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SQLiteAppl</span></code></a>:</p>
+<dl class="simple">
+<dt><a class="reference internal" href="searx.cache.html#searx.cache.ExpireCacheSQLite" title="searx.cache.ExpireCacheSQLite"><code class="xref py py-obj docutils literal notranslate"><span class="pre">searx.cache.ExpireCacheSQLite</span></code></a> :</dt><dd><p>Cache that manages key/value pairs in a SQLite DB, in which the key/value
+pairs are deleted after an “expire” time.  This type of cache is used, for
+example, for the engines, see <a class="reference internal" href="../dev/engines/enginelib.html#searx.enginelib.EngineCache" title="searx.enginelib.EngineCache"><code class="xref py py-obj docutils literal notranslate"><span class="pre">searx.enginelib.EngineCache</span></code></a>.</p>
+</dd>
+<dt><a class="reference internal" href="searx.favicons.html#searx.favicons.cache.FaviconCacheSQLite" title="searx.favicons.cache.FaviconCacheSQLite"><code class="xref py py-obj docutils literal notranslate"><span class="pre">searx.favicons.cache.FaviconCacheSQLite</span></code></a> :</dt><dd><p>Favicon cache that manages the favicon BLOBs in a SQLite DB.</p>
+</dd>
+</dl>
+<hr class="docutils" />
+<dl class="py class">
+<dt class="sig sig-object py" id="searx.sqlitedb.DBSession">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">searx.sqlitedb.</span></span><span class="sig-name descname"><span class="pre">DBSession</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">app</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#searx.sqlitedb.SQLiteAppl" title="searx.sqlitedb.SQLiteAppl"><span class="pre">SQLiteAppl</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/searx/sqlitedb.html#DBSession"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.sqlitedb.DBSession" title="Link to this definition">¶</a></dt>
+<dd><p>A <em>thead-local</em> DB session</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="searx.sqlitedb.DBSession.get_connect">
+<em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_connect</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">app</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#searx.sqlitedb.SQLiteAppl" title="searx.sqlitedb.SQLiteAppl"><span class="pre">SQLiteAppl</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/sqlite3.html#sqlite3.Connection" title="(in Python v3.14)"><span class="pre">Connection</span></a></span></span><a class="reference internal" href="../_modules/searx/sqlitedb.html#DBSession.get_connect"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.sqlitedb.DBSession.get_connect" title="Link to this definition">¶</a></dt>
+<dd><p>Returns a thread local DB connection.  The connection is only
+established once per thread.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="searx.sqlitedb.SQLiteAppl">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">searx.sqlitedb.</span></span><span class="sig-name descname"><span class="pre">SQLiteAppl</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">db_url</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/searx/sqlitedb.html#SQLiteAppl"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.sqlitedb.SQLiteAppl" title="Link to this definition">¶</a></dt>
+<dd><p>Abstract base class for implementing convenient DB access in SQLite
+applications.  In the constructor, a <a class="reference internal" href="#searx.sqlitedb.SQLiteProperties" title="searx.sqlitedb.SQLiteProperties"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SQLiteProperties</span></code></a> instance is
+already aggregated under <code class="docutils literal notranslate"><span class="pre">self.properties</span></code>.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="searx.sqlitedb.SQLiteAppl.DB_SCHEMA">
+<span class="sig-name descname"><span class="pre">DB_SCHEMA</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1</span></em><a class="headerlink" href="#searx.sqlitedb.SQLiteAppl.DB_SCHEMA" title="Link to this definition">¶</a></dt>
+<dd><p>As soon as changes are made to the DB schema, the version number must be
+increased.  Changes to the version number require the DB to be recreated (or
+migrated / if an migration path exists and is implemented).</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="searx.sqlitedb.SQLiteAppl.SQLITE_THREADING_MODE">
+<span class="sig-name descname"><span class="pre">SQLITE_THREADING_MODE</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'serialized'</span></em><a class="headerlink" href="#searx.sqlitedb.SQLiteAppl.SQLITE_THREADING_MODE" title="Link to this definition">¶</a></dt>
+<dd><p>Threading mode of the SQLite library.  Depends on the options used at
+compile time and is different for different distributions and architectures.</p>
+<p>Possible values are 0:<code class="docutils literal notranslate"><span class="pre">single-thread</span></code>, 1:<code class="docutils literal notranslate"><span class="pre">multi-thread</span></code>,
+3:<code class="docutils literal notranslate"><span class="pre">serialized</span></code> (see <a class="reference external" href="https://docs.python.org/3/library/sqlite3.html#sqlite3.threadsafety" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sqlite3.threadsafety</span></code></a>).  Pre- Python 3.11
+this value was hard coded to 1.</p>
+<p>Depending on this value, optimizations are made, e.g. in “serialized” mode
+it is not necessary to create a separate DB connector for each thread.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="searx.sqlitedb.SQLiteAppl.SQLITE_JOURNAL_MODE">
+<span class="sig-name descname"><span class="pre">SQLITE_JOURNAL_MODE</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'WAL'</span></em><a class="headerlink" href="#searx.sqlitedb.SQLiteAppl.SQLITE_JOURNAL_MODE" title="Link to this definition">¶</a></dt>
+<dd><p><code class="docutils literal notranslate"><span class="pre">SQLiteAppl</span></code> applications are optimized for <a class="reference external" href="https://sqlite.org/wal.html">WAL</a> mode, its not recommend
+to change the journal mode (see <code class="xref py py-obj docutils literal notranslate"><span class="pre">SQLiteAppl.tear_down</span></code>).</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="searx.sqlitedb.SQLiteAppl.SQLITE_CONNECT_ARGS">
+<span class="sig-name descname"><span class="pre">SQLITE_CONNECT_ARGS</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.14)"><span class="pre">dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'cached_statements':</span> <span class="pre">0,</span> <span class="pre">'check_same_thread':</span> <span class="pre">False}</span></em><a class="headerlink" href="#searx.sqlitedb.SQLiteAppl.SQLITE_CONNECT_ARGS" title="Link to this definition">¶</a></dt>
+<dd><p>Connection arguments (<a class="reference external" href="https://docs.python.org/3/library/sqlite3.html#sqlite3.connect" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sqlite3.connect</span></code></a>)</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">check_same_thread</span></code>: <em>bool</em></dt><dd><p>Is disabled by default when <a class="reference internal" href="#searx.sqlitedb.SQLiteAppl.SQLITE_THREADING_MODE" title="searx.sqlitedb.SQLiteAppl.SQLITE_THREADING_MODE"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SQLITE_THREADING_MODE</span></code></a> is
+<cite>serialized</cite>.  The check is more of a hindrance when <a class="reference external" href="https://docs.python.org/3/library/sqlite3.html#sqlite3.threadsafety">threadsafety</a> is
+<cite>serialized</cite> because it would prevent a DB connector from being used in
+multiple threads.</p>
+<p>Is enabled when <a class="reference external" href="https://docs.python.org/3/library/sqlite3.html#sqlite3.threadsafety">threadsafety</a> is <code class="docutils literal notranslate"><span class="pre">single-thread</span></code> or <code class="docutils literal notranslate"><span class="pre">multi-thread</span></code>
+(when threads cannot share a connection <a class="reference external" href="https://peps.python.org/pep-0249/#threadsafety">PEP-0249</a>).</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">cached_statements</span></code>:</dt><dd><p>Is set to <code class="docutils literal notranslate"><span class="pre">0</span></code> by default.  Note: Python 3.12+ fetch result are not
+consistent in multi-threading application and causing an API misuse error.</p>
+<p>The multithreading use in SQLiteAppl is intended and supported if
+threadsafety is set to 3 (aka “serialized”). CPython supports “serialized”
+from version 3.12 on, but unfortunately only with errors:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://github.com/python/cpython/issues/118172">https://github.com/python/cpython/issues/118172</a></p></li>
+<li><p><a class="reference external" href="https://github.com/python/cpython/issues/123873">https://github.com/python/cpython/issues/123873</a></p></li>
+</ul>
+<p>The workaround for SQLite3 multithreading cache inconsistency is to set
+option <code class="docutils literal notranslate"><span class="pre">cached_statements</span></code> to <code class="docutils literal notranslate"><span class="pre">0</span></code> by default.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">isolation_level</span></code>: <em>unset</em></dt><dd><p>If the connection attribute <a class="reference external" href="https://docs.python.org/3/library/sqlite3.html#sqlite3.Connection.isolation_level">isolation_level</a> is <strong>not</strong> <code class="docutils literal notranslate"><span class="pre">None</span></code>, new
+transactions are implicitly opened before <code class="docutils literal notranslate"><span class="pre">execute()</span></code> and
+<code class="docutils literal notranslate"><span class="pre">executemany()</span></code> executes SQL- INSERT, UPDATE, DELETE, or REPLACE
+statements <a class="reference external" href="https://docs.python.org/3/library/sqlite3.html#sqlite3-transaction-control-isolation-level">[1]</a>.</p>
+<p>By default, the value is not set, which means the default from Python is
+used: Python’s default is <code class="docutils literal notranslate"><span class="pre">&quot;&quot;</span></code>, which is an alias for <code class="docutils literal notranslate"><span class="pre">&quot;DEFERRED&quot;</span></code>.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">autocommit</span></code>: <em>unset</em></dt><dd><p>Starting with Python 3.12 the DB connection has a <code class="docutils literal notranslate"><span class="pre">autocommit</span></code> attribute
+and the recommended way of controlling transaction behaviour is through
+this attribute <a class="reference external" href="https://docs.python.org/3/library/sqlite3.html#transaction-control-via-the-autocommit-attribute">[2]</a>.</p>
+<p>By default, the value is not set, which means the default from Python is
+used: Python’s default is the constant <a class="reference external" href="https://docs.python.org/3/library/sqlite3.html#sqlite3.LEGACY_TRANSACTION_CONTROL">LEGACY_TRANSACTION_CONTROL</a>:
+Pre-Python 3.12 (non-PEP 249-compliant) transaction control, see
+<code class="docutils literal notranslate"><span class="pre">isolation_level</span></code> above for more details.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="searx.sqlitedb.SQLiteAppl.connect">
+<span class="sig-name descname"><span class="pre">connect</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/sqlite3.html#sqlite3.Connection" title="(in Python v3.14)"><span class="pre">Connection</span></a></span></span><a class="reference internal" href="../_modules/searx/sqlitedb.html#SQLiteAppl.connect"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.sqlitedb.SQLiteAppl.connect" title="Link to this definition">¶</a></dt>
+<dd><p>Creates a new DB connection (<a class="reference internal" href="#searx.sqlitedb.SQLiteAppl.SQLITE_CONNECT_ARGS" title="searx.sqlitedb.SQLiteAppl.SQLITE_CONNECT_ARGS"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SQLITE_CONNECT_ARGS</span></code></a>).  If not
+already done, the DB schema is set up.  The caller must take care of
+closing the resource.  Alternatively, <a class="reference internal" href="#searx.sqlitedb.SQLiteAppl.DB" title="searx.sqlitedb.SQLiteAppl.DB"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SQLiteAppl.DB</span></code></a> can also
+be used (the resource behind <cite>self.DB</cite> is automatically closed when the
+process or thread is terminated).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="searx.sqlitedb.SQLiteAppl.register_functions">
+<span class="sig-name descname"><span class="pre">register_functions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">conn</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/sqlite3.html#sqlite3.Connection" title="(in Python v3.14)"><span class="pre">Connection</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/searx/sqlitedb.html#SQLiteAppl.register_functions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.sqlitedb.SQLiteAppl.register_functions" title="Link to this definition">¶</a></dt>
+<dd><p>Create <a class="reference external" href="https://docs.python.org/3/library/sqlite3.html#sqlite3.Connection.create_function">user-defined</a> SQL functions.</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">REGEXP(&lt;pattern&gt;,</span> <span class="pre">&lt;field&gt;)</span></code><span class="classifier">0 | 1</span></dt><dd><p><a class="reference external" href="https://docs.python.org/3/library/re.html#re.search">re.search</a> returns (int) 1 for a match and 0 for none match of
+<code class="docutils literal notranslate"><span class="pre">&lt;pattern&gt;</span></code> in <code class="docutils literal notranslate"><span class="pre">&lt;field&gt;</span></code>.</p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="s1">&#39;12&#39;</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">field</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">REGEXP</span><span class="p">(</span><span class="s1">&#39;^[0-9][0-9]$&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">field</span><span class="p">)</span>
+<span class="c1">-- 12</span>
+
+<span class="k">SELECT</span><span class="w"> </span><span class="n">REGEXP</span><span class="p">(</span><span class="s1">&#39;[0-9][0-9]&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;X12Y&#39;</span><span class="p">)</span>
+<span class="c1">-- 1</span>
+<span class="k">SELECT</span><span class="w"> </span><span class="n">REGEXP</span><span class="p">(</span><span class="s1">&#39;[0-9][0-9]&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;X1Y&#39;</span><span class="p">)</span>
+<span class="c1">-- 0</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="searx.sqlitedb.SQLiteAppl.DB">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">DB</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/sqlite3.html#sqlite3.Connection" title="(in Python v3.14)"><span class="pre">Connection</span></a></em><a class="headerlink" href="#searx.sqlitedb.SQLiteAppl.DB" title="Link to this definition">¶</a></dt>
+<dd><p>Provides a DB connection.  The connection is a <em>singleton</em> and
+therefore well suited for read access.  If
+<a class="reference internal" href="#searx.sqlitedb.SQLiteAppl.SQLITE_THREADING_MODE" title="searx.sqlitedb.SQLiteAppl.SQLITE_THREADING_MODE"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SQLITE_THREADING_MODE</span></code></a> is <code class="docutils literal notranslate"><span class="pre">serialized</span></code> only one DB connection
+is created for all threads.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>For dedicated <a class="reference external" href="https://docs.python.org/3/library/sqlite3.html#sqlite3-controlling-transactions">transaction control</a>, it is recommended to create a
+new connection (<a class="reference internal" href="#searx.sqlitedb.SQLiteAppl.connect" title="searx.sqlitedb.SQLiteAppl.connect"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SQLiteAppl.connect</span></code></a>).</p>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="searx.sqlitedb.SQLiteAppl.init">
+<span class="sig-name descname"><span class="pre">init</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">conn</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/sqlite3.html#sqlite3.Connection" title="(in Python v3.14)"><span class="pre">Connection</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span></span><a class="reference internal" href="../_modules/searx/sqlitedb.html#SQLiteAppl.init"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.sqlitedb.SQLiteAppl.init" title="Link to this definition">¶</a></dt>
+<dd><p>Initializes the DB schema and properties, is only executed once even
+if called several times.</p>
+<p>If the initialization has not yet taken place, it is carried out and a
+<cite>True</cite> is returned to the caller at the end.  If the initialization has
+already been carried out in the past, <cite>False</cite> is returned.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="searx.sqlitedb.SQLiteProperties">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">searx.sqlitedb.</span></span><span class="sig-name descname"><span class="pre">SQLiteProperties</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">db_url</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/searx/sqlitedb.html#SQLiteProperties"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.sqlitedb.SQLiteProperties" title="Link to this definition">¶</a></dt>
+<dd><p>Simple class to manage properties of a DB application in the DB.  The
+object has its own DB connection and transaction area.</p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="k">IF</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">EXISTS</span><span class="w"> </span><span class="n">properties</span><span class="w"> </span><span class="p">(</span>
+<span class="w">  </span><span class="n">name</span><span class="w">       </span><span class="nb">TEXT</span><span class="p">,</span>
+<span class="w">  </span><span class="n">value</span><span class="w">      </span><span class="nb">TEXT</span><span class="p">,</span>
+<span class="w">  </span><span class="n">m_time</span><span class="w">     </span><span class="nb">INTEGER</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="p">(</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;%s&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;now&#39;</span><span class="p">)),</span>
+<span class="w">  </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="w"> </span><span class="p">(</span><span class="n">name</span><span class="p">))</span>
+</pre></div>
+</div>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="searx.sqlitedb.SQLiteProperties.SQLITE_JOURNAL_MODE">
+<span class="sig-name descname"><span class="pre">SQLITE_JOURNAL_MODE</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'WAL'</span></em><a class="headerlink" href="#searx.sqlitedb.SQLiteProperties.SQLITE_JOURNAL_MODE" title="Link to this definition">¶</a></dt>
+<dd><p><code class="docutils literal notranslate"><span class="pre">SQLiteAppl</span></code> applications are optimized for <a class="reference external" href="https://sqlite.org/wal.html">WAL</a> mode, its not recommend
+to change the journal mode (see <code class="xref py py-obj docutils literal notranslate"><span class="pre">SQLiteAppl.tear_down</span></code>).</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="searx.sqlitedb.SQLiteProperties.DDL_PROPERTIES">
+<span class="sig-name descname"><span class="pre">DDL_PROPERTIES</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&quot;CREATE</span> <span class="pre">TABLE</span> <span class="pre">IF</span> <span class="pre">NOT</span> <span class="pre">EXISTS</span> <span class="pre">properties</span> <span class="pre">(\n</span>&#160; <span class="pre">name</span>&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">TEXT,\n</span>&#160; <span class="pre">value</span>&#160;&#160;&#160;&#160;&#160; <span class="pre">TEXT,\n</span>&#160; <span class="pre">m_time</span>&#160;&#160;&#160;&#160; <span class="pre">INTEGER</span> <span class="pre">DEFAULT</span> <span class="pre">(strftime('%s',</span> <span class="pre">'now')),</span>&#160; <span class="pre">--</span> <span class="pre">last</span> <span class="pre">modified</span> <span class="pre">(unix</span> <span class="pre">epoch)</span> <span class="pre">time</span> <span class="pre">in</span> <span class="pre">sec.\n</span>&#160; <span class="pre">PRIMARY</span> <span class="pre">KEY</span> <span class="pre">(name))&quot;</span></em><a class="headerlink" href="#searx.sqlitedb.SQLiteProperties.DDL_PROPERTIES" title="Link to this definition">¶</a></dt>
+<dd><p>Table to store properties of the DB application</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="searx.sqlitedb.SQLiteProperties.SQLITE_CONNECT_ARGS">
+<span class="sig-name descname"><span class="pre">SQLITE_CONNECT_ARGS</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.14)"><span class="pre">dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'cached_statements':</span> <span class="pre">0,</span> <span class="pre">'check_same_thread':</span> <span class="pre">False}</span></em><a class="headerlink" href="#searx.sqlitedb.SQLiteProperties.SQLITE_CONNECT_ARGS" title="Link to this definition">¶</a></dt>
+<dd><p>Connection arguments (<a class="reference external" href="https://docs.python.org/3/library/sqlite3.html#sqlite3.connect" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sqlite3.connect</span></code></a>)</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">check_same_thread</span></code>: <em>bool</em></dt><dd><p>Is disabled by default when <code class="xref py py-obj docutils literal notranslate"><span class="pre">SQLITE_THREADING_MODE</span></code> is
+<cite>serialized</cite>.  The check is more of a hindrance when <a class="reference external" href="https://docs.python.org/3/library/sqlite3.html#sqlite3.threadsafety">threadsafety</a> is
+<cite>serialized</cite> because it would prevent a DB connector from being used in
+multiple threads.</p>
+<p>Is enabled when <a class="reference external" href="https://docs.python.org/3/library/sqlite3.html#sqlite3.threadsafety">threadsafety</a> is <code class="docutils literal notranslate"><span class="pre">single-thread</span></code> or <code class="docutils literal notranslate"><span class="pre">multi-thread</span></code>
+(when threads cannot share a connection <a class="reference external" href="https://peps.python.org/pep-0249/#threadsafety">PEP-0249</a>).</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">cached_statements</span></code>:</dt><dd><p>Is set to <code class="docutils literal notranslate"><span class="pre">0</span></code> by default.  Note: Python 3.12+ fetch result are not
+consistent in multi-threading application and causing an API misuse error.</p>
+<p>The multithreading use in SQLiteAppl is intended and supported if
+threadsafety is set to 3 (aka “serialized”). CPython supports “serialized”
+from version 3.12 on, but unfortunately only with errors:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://github.com/python/cpython/issues/118172">https://github.com/python/cpython/issues/118172</a></p></li>
+<li><p><a class="reference external" href="https://github.com/python/cpython/issues/123873">https://github.com/python/cpython/issues/123873</a></p></li>
+</ul>
+<p>The workaround for SQLite3 multithreading cache inconsistency is to set
+option <code class="docutils literal notranslate"><span class="pre">cached_statements</span></code> to <code class="docutils literal notranslate"><span class="pre">0</span></code> by default.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">isolation_level</span></code>: <em>unset</em></dt><dd><p>If the connection attribute <a class="reference external" href="https://docs.python.org/3/library/sqlite3.html#sqlite3.Connection.isolation_level">isolation_level</a> is <strong>not</strong> <code class="docutils literal notranslate"><span class="pre">None</span></code>, new
+transactions are implicitly opened before <code class="docutils literal notranslate"><span class="pre">execute()</span></code> and
+<code class="docutils literal notranslate"><span class="pre">executemany()</span></code> executes SQL- INSERT, UPDATE, DELETE, or REPLACE
+statements <a class="reference external" href="https://docs.python.org/3/library/sqlite3.html#sqlite3-transaction-control-isolation-level">[1]</a>.</p>
+<p>By default, the value is not set, which means the default from Python is
+used: Python’s default is <code class="docutils literal notranslate"><span class="pre">&quot;&quot;</span></code>, which is an alias for <code class="docutils literal notranslate"><span class="pre">&quot;DEFERRED&quot;</span></code>.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">autocommit</span></code>: <em>unset</em></dt><dd><p>Starting with Python 3.12 the DB connection has a <code class="docutils literal notranslate"><span class="pre">autocommit</span></code> attribute
+and the recommended way of controlling transaction behaviour is through
+this attribute <a class="reference external" href="https://docs.python.org/3/library/sqlite3.html#transaction-control-via-the-autocommit-attribute">[2]</a>.</p>
+<p>By default, the value is not set, which means the default from Python is
+used: Python’s default is the constant <a class="reference external" href="https://docs.python.org/3/library/sqlite3.html#sqlite3.LEGACY_TRANSACTION_CONTROL">LEGACY_TRANSACTION_CONTROL</a>:
+Pre-Python 3.12 (non-PEP 249-compliant) transaction control, see
+<code class="docutils literal notranslate"><span class="pre">isolation_level</span></code> above for more details.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="searx.sqlitedb.SQLiteProperties.init">
+<span class="sig-name descname"><span class="pre">init</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">conn</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/sqlite3.html#sqlite3.Connection" title="(in Python v3.14)"><span class="pre">Connection</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span></span><a class="reference internal" href="../_modules/searx/sqlitedb.html#SQLiteProperties.init"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.sqlitedb.SQLiteProperties.init" title="Link to this definition">¶</a></dt>
+<dd><p>Initializes DB schema of the properties in the DB.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="searx.sqlitedb.SQLiteProperties.set">
+<span class="sig-name descname"><span class="pre">set</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/searx/sqlitedb.html#SQLiteProperties.set"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.sqlitedb.SQLiteProperties.set" title="Link to this definition">¶</a></dt>
+<dd><p>Set <code class="docutils literal notranslate"><span class="pre">value</span></code> of property <code class="docutils literal notranslate"><span class="pre">name</span></code> in DB.  If property already
+exists, update the <code class="docutils literal notranslate"><span class="pre">m_time</span></code> (and the value).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="searx.sqlitedb.SQLiteProperties.delete">
+<span class="sig-name descname"><span class="pre">delete</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span></span><a class="reference internal" href="../_modules/searx/sqlitedb.html#SQLiteProperties.delete"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.sqlitedb.SQLiteProperties.delete" title="Link to this definition">¶</a></dt>
+<dd><p>Delete of property <code class="docutils literal notranslate"><span class="pre">name</span></code> from DB.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="searx.sqlitedb.SQLiteProperties.row">
+<span class="sig-name descname"><span class="pre">row</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">default</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.14)"><span class="pre">Any</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/searx/sqlitedb.html#SQLiteProperties.row"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.sqlitedb.SQLiteProperties.row" title="Link to this definition">¶</a></dt>
+<dd><p>Returns the DB row of property <code class="docutils literal notranslate"><span class="pre">name</span></code> or <code class="docutils literal notranslate"><span class="pre">default</span></code> if property
+not exists in DB.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="searx.sqlitedb.SQLiteProperties.m_time">
+<span class="sig-name descname"><span class="pre">m_time</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">default</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span></span><a class="reference internal" href="../_modules/searx/sqlitedb.html#SQLiteProperties.m_time"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.sqlitedb.SQLiteProperties.m_time" title="Link to this definition">¶</a></dt>
+<dd><p>Last modification time of this property.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+  <span id="sidebar-top"></span>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+  
+    
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/searxng-wordmark.svg" alt="Logo of SearXNG"/>
+            </a></p>
+  
+
+<h3><a href="../index.html">Table of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../user/index.html">User information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../own-instance.html">Why use a private instance?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../admin/index.html">Administrator documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev/index.html">Developer documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../utils/index.html">DevOps tooling box</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Source-Code</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="searx.babel_extract.html">Custom message extractor (i18n)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.botdetection.html">Bot Detection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.cache.html">Caches</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.exceptions.html">SearXNG Exceptions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.favicons.html">Favicons (source)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.infopage.html">Online <code class="docutils literal notranslate"><span class="pre">/info</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.locales.html">Locales</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.search.html">Search</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.search.processors.html">Search processors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.settings.html">Settings Loader</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">SQLite DB</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#searx.sqlitedb.DBSession"><code class="docutils literal notranslate"><span class="pre">DBSession</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#searx.sqlitedb.DBSession.get_connect"><code class="docutils literal notranslate"><span class="pre">DBSession.get_connect()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#searx.sqlitedb.SQLiteAppl"><code class="docutils literal notranslate"><span class="pre">SQLiteAppl</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#searx.sqlitedb.SQLiteAppl.DB_SCHEMA"><code class="docutils literal notranslate"><span class="pre">SQLiteAppl.DB_SCHEMA</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#searx.sqlitedb.SQLiteAppl.SQLITE_THREADING_MODE"><code class="docutils literal notranslate"><span class="pre">SQLiteAppl.SQLITE_THREADING_MODE</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#searx.sqlitedb.SQLiteAppl.SQLITE_JOURNAL_MODE"><code class="docutils literal notranslate"><span class="pre">SQLiteAppl.SQLITE_JOURNAL_MODE</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#searx.sqlitedb.SQLiteAppl.SQLITE_CONNECT_ARGS"><code class="docutils literal notranslate"><span class="pre">SQLiteAppl.SQLITE_CONNECT_ARGS</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#searx.sqlitedb.SQLiteAppl.connect"><code class="docutils literal notranslate"><span class="pre">SQLiteAppl.connect()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#searx.sqlitedb.SQLiteAppl.register_functions"><code class="docutils literal notranslate"><span class="pre">SQLiteAppl.register_functions()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#searx.sqlitedb.SQLiteAppl.DB"><code class="docutils literal notranslate"><span class="pre">SQLiteAppl.DB</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#searx.sqlitedb.SQLiteAppl.init"><code class="docutils literal notranslate"><span class="pre">SQLiteAppl.init()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#searx.sqlitedb.SQLiteProperties"><code class="docutils literal notranslate"><span class="pre">SQLiteProperties</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#searx.sqlitedb.SQLiteProperties.SQLITE_JOURNAL_MODE"><code class="docutils literal notranslate"><span class="pre">SQLiteProperties.SQLITE_JOURNAL_MODE</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#searx.sqlitedb.SQLiteProperties.DDL_PROPERTIES"><code class="docutils literal notranslate"><span class="pre">SQLiteProperties.DDL_PROPERTIES</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#searx.sqlitedb.SQLiteProperties.SQLITE_CONNECT_ARGS"><code class="docutils literal notranslate"><span class="pre">SQLiteProperties.SQLITE_CONNECT_ARGS</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#searx.sqlitedb.SQLiteProperties.init"><code class="docutils literal notranslate"><span class="pre">SQLiteProperties.init()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#searx.sqlitedb.SQLiteProperties.set"><code class="docutils literal notranslate"><span class="pre">SQLiteProperties.set()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#searx.sqlitedb.SQLiteProperties.delete"><code class="docutils literal notranslate"><span class="pre">SQLiteProperties.delete()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#searx.sqlitedb.SQLiteProperties.row"><code class="docutils literal notranslate"><span class="pre">SQLiteProperties.row()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#searx.sqlitedb.SQLiteProperties.m_time"><code class="docutils literal notranslate"><span class="pre">SQLiteProperties.m_time()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="searx.utils.html">Utility functions for the engines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.valkeydb.html">Valkey DB</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.valkeylib.html">Valkey Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.weather.html">Weather</a></li>
+</ul>
+</li>
+</ul>
+
+  <h3>Project Links</h3>
+  <ul>
+    <li><a href="https://github.com/searxng/searxng/tree/master">Source</a>
+  
+    <li><a href="https://github.com/searxng/searxng/wiki">Wiki</a>
+  
+    <li><a href="https://searx.space">Public instances</a>
+  
+    <li><a href="https://github.com/searxng/searxng/issues">Issue Tracker</a>
+  </ul><h3>Navigation</h3>
+<ul>
+  <li><a href="../index.html">Overview</a>
+    <ul>
+      <li><a href="index.html">Source-Code</a>
+        <ul>
+          <li>Previous: <a href="searx.settings.html" title="previous chapter">Settings Loader</a>
+          <li>Next: <a href="searx.utils.html" title="next chapter">Utility functions for the engines</a></ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/src/searx.sqlitedb.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright SearXNG team.
+    </div>
+  </body>
+</html>

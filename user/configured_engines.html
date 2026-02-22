@@ -1,0 +1,3797 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Configured Engines &#8212; SearXNG Documentation (2026.2.22+191818b86)</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=6625fa76" />
+    <link rel="stylesheet" type="text/css" href="../_static/searxng.css?v=52e4ff28" />
+    <script src="../_static/documentation_options.js?v=1b5d919e"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script data-project="searxng" data-version="2026.2.22+191818b86" src="../_static/describe_version.js?v=fa7f30d0"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="About SearXNG" href="about.html" />
+    <link rel="prev" title="Search syntax" href="search-syntax.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="about.html" title="About SearXNG"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="search-syntax.html" title="Search syntax"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">SearXNG Documentation (2026.2.22+191818b86)</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" accesskey="U">User information</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Configured Engines</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="configured-engines">
+<span id="id1"></span><h1>Configured Engines<a class="headerlink" href="#configured-engines" title="Link to this heading">¶</a></h1>
+<aside class="sidebar">
+<p class="sidebar-title">Further reading ..</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="../admin/settings/settings_categories_as_tabs.html#settings-categories-as-tabs"><span class="std std-ref">categories_as_tabs:</span></a></p></li>
+<li><p><a class="reference internal" href="../dev/engines/engine_overview.html#engines-dev"><span class="std std-ref">Engine Overview</span></a></p></li>
+<li><p><a class="reference internal" href="../admin/settings/settings_engines.html#settings-engines"><span class="std std-ref">engines:</span></a></p></li>
+<li><p><a class="reference internal" href="../dev/engines/engine_overview.html#general-engine-configuration"><span class="std std-ref">General Engine Configuration</span></a></p></li>
+</ul>
+</aside>
+<p>SearXNG supports 244 search engines of which
+88 are enabled by default.</p>
+<p>Engines can be assigned to multiple <a class="reference internal" href="../admin/settings/settings_engines.html#engine-categories"><span class="std std-ref">categories</span></a>.
+The UI displays the tabs that are configured in <a class="reference internal" href="../admin/settings/settings_categories_as_tabs.html#settings-categories-as-tabs"><span class="std std-ref">categories_as_tabs</span></a>.  In addition to these UI categories (also
+called <em>tabs</em>), engines can be queried by their name or the categories they
+belong to, by using a <a class="reference internal" href="search-syntax.html#search-syntax"><span class="std std-ref">!bing syntax</span></a>.</p>
+<nav class="contents local" id="contents">
+<ul class="simple">
+<li><p><a class="reference internal" href="#tab-general" id="id19">tab <code class="docutils literal notranslate"><span class="pre">!general</span></code></a></p>
+<ul>
+<li><p><a class="reference internal" href="#group-books" id="id20">group <code class="docutils literal notranslate"><span class="pre">!books</span></code></a></p></li>
+<li><p><a class="reference internal" href="#group-currency" id="id21">group <code class="docutils literal notranslate"><span class="pre">!currency</span></code></a></p></li>
+<li><p><a class="reference internal" href="#group-translate" id="id22">group <code class="docutils literal notranslate"><span class="pre">!translate</span></code></a></p></li>
+<li><p><a class="reference internal" href="#group-web" id="id23">group <code class="docutils literal notranslate"><span class="pre">!web</span></code></a></p></li>
+<li><p><a class="reference internal" href="#group-wikimedia" id="id24">group <code class="docutils literal notranslate"><span class="pre">!wikimedia</span></code></a></p></li>
+<li><p><a class="reference internal" href="#without-further-subgrouping" id="id25">without further subgrouping</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#tab-images" id="id26">tab <code class="docutils literal notranslate"><span class="pre">!images</span></code></a></p>
+<ul>
+<li><p><a class="reference internal" href="#group-icons" id="id27">group <code class="docutils literal notranslate"><span class="pre">!icons</span></code></a></p></li>
+<li><p><a class="reference internal" href="#id2" id="id28">group <code class="docutils literal notranslate"><span class="pre">!web</span></code></a></p></li>
+<li><p><a class="reference internal" href="#id3" id="id29">without further subgrouping</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#tab-videos" id="id30">tab <code class="docutils literal notranslate"><span class="pre">!videos</span></code></a></p>
+<ul>
+<li><p><a class="reference internal" href="#id4" id="id31">group <code class="docutils literal notranslate"><span class="pre">!web</span></code></a></p></li>
+<li><p><a class="reference internal" href="#id5" id="id32">without further subgrouping</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#tab-news" id="id33">tab <code class="docutils literal notranslate"><span class="pre">!news</span></code></a></p>
+<ul>
+<li><p><a class="reference internal" href="#id6" id="id34">group <code class="docutils literal notranslate"><span class="pre">!web</span></code></a></p></li>
+<li><p><a class="reference internal" href="#id7" id="id35">group <code class="docutils literal notranslate"><span class="pre">!wikimedia</span></code></a></p></li>
+<li><p><a class="reference internal" href="#id8" id="id36">without further subgrouping</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#tab-map" id="id37">tab <code class="docutils literal notranslate"><span class="pre">!map</span></code></a></p></li>
+<li><p><a class="reference internal" href="#tab-music" id="id38">tab <code class="docutils literal notranslate"><span class="pre">!music</span></code></a></p>
+<ul>
+<li><p><a class="reference internal" href="#group-lyrics" id="id39">group <code class="docutils literal notranslate"><span class="pre">!lyrics</span></code></a></p></li>
+<li><p><a class="reference internal" href="#group-radio" id="id40">group <code class="docutils literal notranslate"><span class="pre">!radio</span></code></a></p></li>
+<li><p><a class="reference internal" href="#id10" id="id41">without further subgrouping</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#tab-it" id="id42">tab <code class="docutils literal notranslate"><span class="pre">!it</span></code></a></p>
+<ul>
+<li><p><a class="reference internal" href="#group-packages" id="id43">group <code class="docutils literal notranslate"><span class="pre">!packages</span></code></a></p></li>
+<li><p><a class="reference internal" href="#group-q-a" id="id44">group <code class="docutils literal notranslate"><span class="pre">!q&amp;a</span></code></a></p></li>
+<li><p><a class="reference internal" href="#group-repos" id="id45">group <code class="docutils literal notranslate"><span class="pre">!repos</span></code></a></p></li>
+<li><p><a class="reference internal" href="#group-software-wikis" id="id46">group <code class="docutils literal notranslate"><span class="pre">!software_wikis</span></code></a></p></li>
+<li><p><a class="reference internal" href="#id12" id="id47">without further subgrouping</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#tab-science" id="id48">tab <code class="docutils literal notranslate"><span class="pre">!science</span></code></a></p>
+<ul>
+<li><p><a class="reference internal" href="#group-scientific-publications" id="id49">group <code class="docutils literal notranslate"><span class="pre">!scientific_publications</span></code></a></p></li>
+<li><p><a class="reference internal" href="#id13" id="id50">group <code class="docutils literal notranslate"><span class="pre">!wikimedia</span></code></a></p></li>
+<li><p><a class="reference internal" href="#id15" id="id51">without further subgrouping</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#tab-files" id="id52">tab <code class="docutils literal notranslate"><span class="pre">!files</span></code></a></p>
+<ul>
+<li><p><a class="reference internal" href="#group-apps" id="id53">group <code class="docutils literal notranslate"><span class="pre">!apps</span></code></a></p></li>
+<li><p><a class="reference internal" href="#id16" id="id54">group <code class="docutils literal notranslate"><span class="pre">!books</span></code></a></p></li>
+<li><p><a class="reference internal" href="#id17" id="id55">without further subgrouping</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#tab-social-media" id="id56">tab <code class="docutils literal notranslate"><span class="pre">!social_media</span></code></a></p></li>
+</ul>
+</nav>
+<section id="tab-general">
+<h2><a class="toc-backref" href="#id19" role="doc-backlink">tab <code class="docutils literal notranslate"><span class="pre">!general</span></code></a><a class="headerlink" href="#tab-general" title="Link to this heading">¶</a></h2>
+<section id="group-books">
+<h3><a class="toc-backref" href="#id20" role="doc-backlink">group <code class="docutils literal notranslate"><span class="pre">!books</span></code></a><a class="headerlink" href="#group-books" title="Link to this heading">¶</a></h3>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 35.7%" />
+<col style="width: 3.6%" />
+<col style="width: 35.7%" />
+<col style="width: 3.6%" />
+<col style="width: 3.6%" />
+<col style="width: 3.6%" />
+<col style="width: 3.6%" />
+<col style="width: 3.6%" />
+<col style="width: 3.6%" />
+<col style="width: 3.6%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head stub" colspan="6"><p> Engines configured by default (in <a class="reference internal" href="../dev/engines/engine_overview.html#engine-settings"><span class="std std-ref">settings.yml</span></a>)</p></th>
+<th class="head" colspan="4"><p> <a class="reference internal" href="../dev/engines/engine_overview.html#engine-file"><span class="std std-ref">Supported features</span></a></p></th>
+</tr>
+<tr class="row-even"><th class="head stub"><p>Name</p></th>
+<th class="head"><p>!bang</p></th>
+<th class="head"><p>Module</p></th>
+<th class="head"><p>Disabled</p></th>
+<th class="head"><p>Timeout</p></th>
+<th class="head"><p>Weight</p></th>
+<th class="head"><p>Paging</p></th>
+<th class="head"><p>Locale</p></th>
+<th class="head"><p>Safe search</p></th>
+<th class="head"><p>Time range</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-odd"><th class="stub"><p><a class="reference external" href="https://openlibrary.org">openlibrary</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!ol</span></code></p></td>
+<td><p><a class="reference internal" href="../dev/engines/online/openlibrary.html#module-searx.engines.openlibrary" title="searx.engines.openlibrary"><code class="xref py py-mod docutils literal notranslate"><span class="pre">openlibrary</span></code></a></p></td>
+<td><p>y</p></td>
+<td><p>10</p></td>
+<td><p>1</p></td>
+<td><p>y</p></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="group-currency">
+<h3><a class="toc-backref" href="#id21" role="doc-backlink">group <code class="docutils literal notranslate"><span class="pre">!currency</span></code></a><a class="headerlink" href="#group-currency" title="Link to this heading">¶</a></h3>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 35.7%" />
+<col style="width: 3.6%" />
+<col style="width: 35.7%" />
+<col style="width: 3.6%" />
+<col style="width: 3.6%" />
+<col style="width: 3.6%" />
+<col style="width: 3.6%" />
+<col style="width: 3.6%" />
+<col style="width: 3.6%" />
+<col style="width: 3.6%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head stub" colspan="6"><p> Engines configured by default (in <a class="reference internal" href="../dev/engines/engine_overview.html#engine-settings"><span class="std std-ref">settings.yml</span></a>)</p></th>
+<th class="head" colspan="4"><p> <a class="reference internal" href="../dev/engines/engine_overview.html#engine-file"><span class="std std-ref">Supported features</span></a></p></th>
+</tr>
+<tr class="row-even"><th class="head stub"><p>Name</p></th>
+<th class="head"><p>!bang</p></th>
+<th class="head"><p>Module</p></th>
+<th class="head"><p>Disabled</p></th>
+<th class="head"><p>Timeout</p></th>
+<th class="head"><p>Weight</p></th>
+<th class="head"><p>Paging</p></th>
+<th class="head"><p>Locale</p></th>
+<th class="head"><p>Safe search</p></th>
+<th class="head"><p>Time range</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-odd"><th class="stub"><p><a class="reference external" href="https://duckduckgo.com/">currency</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!cc</span></code></p></td>
+<td><p><a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/searx/engines/currency_convert.py">currency_convert</a></p></td>
+<td></td>
+<td><p>3.0</p></td>
+<td><p>100</p></td>
+<td colspan="4"><p> not applicable (online_currency)</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="group-translate">
+<h3><a class="toc-backref" href="#id22" role="doc-backlink">group <code class="docutils literal notranslate"><span class="pre">!translate</span></code></a><a class="headerlink" href="#group-translate" title="Link to this heading">¶</a></h3>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 35.7%" />
+<col style="width: 3.6%" />
+<col style="width: 35.7%" />
+<col style="width: 3.6%" />
+<col style="width: 3.6%" />
+<col style="width: 3.6%" />
+<col style="width: 3.6%" />
+<col style="width: 3.6%" />
+<col style="width: 3.6%" />
+<col style="width: 3.6%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head stub" colspan="6"><p> Engines configured by default (in <a class="reference internal" href="../dev/engines/engine_overview.html#engine-settings"><span class="std std-ref">settings.yml</span></a>)</p></th>
+<th class="head" colspan="4"><p> <a class="reference internal" href="../dev/engines/engine_overview.html#engine-file"><span class="std std-ref">Supported features</span></a></p></th>
+</tr>
+<tr class="row-even"><th class="head stub"><p>Name</p></th>
+<th class="head"><p>!bang</p></th>
+<th class="head"><p>Module</p></th>
+<th class="head"><p>Disabled</p></th>
+<th class="head"><p>Timeout</p></th>
+<th class="head"><p>Weight</p></th>
+<th class="head"><p>Paging</p></th>
+<th class="head"><p>Locale</p></th>
+<th class="head"><p>Safe search</p></th>
+<th class="head"><p>Time range</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-odd"><th class="stub"><p><a class="reference external" href="https://dictzone.com/">dictzone</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!dc</span></code></p></td>
+<td><p><a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/searx/engines/dictzone.py">dictzone</a></p></td>
+<td></td>
+<td><p>3.0</p></td>
+<td><p>100</p></td>
+<td colspan="4"><p> not applicable (online_dictionary)</p></td>
+</tr>
+<tr class="row-even"><th class="stub"><p><a class="reference external" href="https://lingva.ml">lingva</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!lv</span></code></p></td>
+<td><p><a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/searx/engines/lingva.py">lingva</a></p></td>
+<td></td>
+<td><p>3.0</p></td>
+<td><p>1</p></td>
+<td colspan="4"><p> not applicable (online_dictionary)</p></td>
+</tr>
+<tr class="row-odd"><th class="stub"><p><a class="reference external" href="https://codeberg.org/aryak/mozhi">mozhi</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!mz</span></code></p></td>
+<td><p><a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/searx/engines/mozhi.py">mozhi</a></p></td>
+<td><p>y</p></td>
+<td><p>4.0</p></td>
+<td><p>1</p></td>
+<td colspan="4"><p> not applicable (online_dictionary)</p></td>
+</tr>
+<tr class="row-even"><th class="stub"><p><a class="reference external" href="https://mymemory.translated.net/">mymemory translated</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!tl</span></code></p></td>
+<td><p><a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/searx/engines/translated.py">translated</a></p></td>
+<td></td>
+<td><p>5.0</p></td>
+<td><p>100</p></td>
+<td colspan="4"><p> not applicable (online_dictionary)</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="group-web">
+<h3><a class="toc-backref" href="#id23" role="doc-backlink">group <code class="docutils literal notranslate"><span class="pre">!web</span></code></a><a class="headerlink" href="#group-web" title="Link to this heading">¶</a></h3>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 35.7%" />
+<col style="width: 3.6%" />
+<col style="width: 35.7%" />
+<col style="width: 3.6%" />
+<col style="width: 3.6%" />
+<col style="width: 3.6%" />
+<col style="width: 3.6%" />
+<col style="width: 3.6%" />
+<col style="width: 3.6%" />
+<col style="width: 3.6%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head stub" colspan="6"><p> Engines configured by default (in <a class="reference internal" href="../dev/engines/engine_overview.html#engine-settings"><span class="std std-ref">settings.yml</span></a>)</p></th>
+<th class="head" colspan="4"><p> <a class="reference internal" href="../dev/engines/engine_overview.html#engine-file"><span class="std std-ref">Supported features</span></a></p></th>
+</tr>
+<tr class="row-even"><th class="head stub"><p>Name</p></th>
+<th class="head"><p>!bang</p></th>
+<th class="head"><p>Module</p></th>
+<th class="head"><p>Disabled</p></th>
+<th class="head"><p>Timeout</p></th>
+<th class="head"><p>Weight</p></th>
+<th class="head"><p>Paging</p></th>
+<th class="head"><p>Locale</p></th>
+<th class="head"><p>Safe search</p></th>
+<th class="head"><p>Time range</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-odd"><th class="stub"><p><a class="reference external" href="https://www.bing.com">bing</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!bi</span></code></p></td>
+<td><p><a class="reference internal" href="../dev/engines/online/bing.html#module-searx.engines.bing" title="searx.engines.bing"><code class="xref py py-mod docutils literal notranslate"><span class="pre">bing</span></code></a></p></td>
+<td><p>y</p></td>
+<td><p>3.0</p></td>
+<td><p>1</p></td>
+<td><p>y</p></td>
+<td><p>y</p></td>
+<td><p>y</p></td>
+<td><p>y</p></td>
+</tr>
+<tr class="row-even"><th class="stub"><p><a class="reference external" href="https://search.brave.com/">brave</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!br</span></code></p></td>
+<td><p><a class="reference internal" href="../dev/engines/online/brave.html#module-searx.engines.brave" title="searx.engines.brave"><code class="xref py py-mod docutils literal notranslate"><span class="pre">brave</span></code></a></p></td>
+<td></td>
+<td><p>3.0</p></td>
+<td><p>1</p></td>
+<td><p>y</p></td>
+<td><p>y</p></td>
+<td><p>y</p></td>
+<td><p>y</p></td>
+</tr>
+<tr class="row-odd"><th class="stub"><p><a class="reference external" href="https://lite.duckduckgo.com/lite/">duckduckgo</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!ddg</span></code></p></td>
+<td><p><a class="reference internal" href="../dev/engines/online/duckduckgo.html#module-searx.engines.duckduckgo" title="searx.engines.duckduckgo"><code class="xref py py-mod docutils literal notranslate"><span class="pre">duckduckgo</span></code></a></p></td>
+<td></td>
+<td><p>3.0</p></td>
+<td><p>1</p></td>
+<td><p>y</p></td>
+<td><p>y</p></td>
+<td><p>y</p></td>
+<td><p>y</p></td>
+</tr>
+<tr class="row-even"><th class="stub"><p><a class="reference external" href="https://www.google.com">google</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!go</span></code></p></td>
+<td><p><a class="reference internal" href="../dev/engines/online/google.html#module-searx.engines.google" title="searx.engines.google"><code class="xref py py-mod docutils literal notranslate"><span class="pre">google</span></code></a></p></td>
+<td></td>
+<td><p>3.0</p></td>
+<td><p>1</p></td>
+<td><p>y</p></td>
+<td><p>y</p></td>
+<td><p>y</p></td>
+<td><p>y</p></td>
+</tr>
+<tr class="row-odd"><th class="stub"><p><a class="reference external" href="https://mojeek.com">mojeek</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!mjk</span></code></p></td>
+<td><p><a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/searx/engines/mojeek.py">mojeek</a></p></td>
+<td><p>y</p></td>
+<td><p>3.0</p></td>
+<td><p>1</p></td>
+<td><p>y</p></td>
+<td><p>y</p></td>
+<td><p>y</p></td>
+<td><p>y</p></td>
+</tr>
+<tr class="row-even"><th class="stub"><p><a class="reference external" href="https://presearch.io">presearch</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!ps</span></code></p></td>
+<td><p><a class="reference internal" href="../dev/engines/online/presearch.html#module-searx.engines.presearch" title="searx.engines.presearch"><code class="xref py py-mod docutils literal notranslate"><span class="pre">presearch</span></code></a></p></td>
+<td><p>y</p></td>
+<td><p>4.0</p></td>
+<td><p>1</p></td>
+<td><p>y</p></td>
+<td></td>
+<td><p>y</p></td>
+<td><p>y</p></td>
+</tr>
+<tr class="row-odd"><th class="stub"><p><a class="reference external" href="https://presearch.io">presearch videos</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!psvid</span></code></p></td>
+<td><p><a class="reference internal" href="../dev/engines/online/presearch.html#module-searx.engines.presearch" title="searx.engines.presearch"><code class="xref py py-mod docutils literal notranslate"><span class="pre">presearch</span></code></a></p></td>
+<td><p>y</p></td>
+<td><p>4.0</p></td>
+<td><p>1</p></td>
+<td><p>y</p></td>
+<td></td>
+<td><p>y</p></td>
+<td><p>y</p></td>
+</tr>
+<tr class="row-even"><th class="stub"><p><a class="reference external" href="https://www.qwant.com/">qwant</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!qw</span></code></p></td>
+<td><p><a class="reference internal" href="../dev/engines/online/qwant.html#module-searx.engines.qwant" title="searx.engines.qwant"><code class="xref py py-mod docutils literal notranslate"><span class="pre">qwant</span></code></a></p></td>
+<td><p>y</p></td>
+<td><p>3.0</p></td>
+<td><p>1</p></td>
+<td><p>y</p></td>
+<td><p>y</p></td>
+<td><p>y</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><th class="stub"><p><a class="reference external" href="https://startpage.com">startpage</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!sp</span></code></p></td>
+<td><p><a class="reference internal" href="../dev/engines/online/startpage.html#module-searx.engines.startpage" title="searx.engines.startpage"><code class="xref py py-mod docutils literal notranslate"><span class="pre">startpage</span></code></a></p></td>
+<td></td>
+<td><p>3.0</p></td>
+<td><p>1</p></td>
+<td><p>y</p></td>
+<td><p>y</p></td>
+<td><p>y</p></td>
+<td><p>y</p></td>
+</tr>
+<tr class="row-even"><th class="stub"><p><a class="reference external" href="https://wiby.me/">wiby</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!wib</span></code></p></td>
+<td><p><a class="reference internal" href="../dev/engines/json_engine.html#module-searx.engines.json_engine" title="searx.engines.json_engine"><code class="xref py py-mod docutils literal notranslate"><span class="pre">json_engine</span></code></a></p></td>
+<td><p>y</p></td>
+<td><p>3.0</p></td>
+<td><p>1</p></td>
+<td><p>y</p></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-odd"><th class="stub"><p><a class="reference external" href="https://search.yahoo.com/">yahoo</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!yh</span></code></p></td>
+<td><p><a class="reference internal" href="../dev/engines/online/yahoo.html#module-searx.engines.yahoo" title="searx.engines.yahoo"><code class="xref py py-mod docutils literal notranslate"><span class="pre">yahoo</span></code></a></p></td>
+<td><p>y</p></td>
+<td><p>3.0</p></td>
+<td><p>1</p></td>
+<td><p>y</p></td>
+<td></td>
+<td></td>
+<td><p>y</p></td>
+</tr>
+<tr class="row-even"><th class="stub"><p><a class="reference external" href="https://www.seznam.cz/">seznam</a>
+(CZ)</p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!szn</span></code></p></td>
+<td><p><a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/searx/engines/seznam.py">seznam</a></p></td>
+<td><p>y</p></td>
+<td><p>3.0</p></td>
+<td><p>1</p></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-odd"><th class="stub"><p><a class="reference external" href="https://search.naver.com">naver</a>
+(KO)</p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!nvr</span></code></p></td>
+<td><p><a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/searx/engines/naver.py">naver</a></p></td>
+<td><p>y</p></td>
+<td><p>3.0</p></td>
+<td><p>1</p></td>
+<td><p>y</p></td>
+<td></td>
+<td></td>
+<td><p>y</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="group-wikimedia">
+<h3><a class="toc-backref" href="#id24" role="doc-backlink">group <code class="docutils literal notranslate"><span class="pre">!wikimedia</span></code></a><a class="headerlink" href="#group-wikimedia" title="Link to this heading">¶</a></h3>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 35.7%" />
+<col style="width: 3.6%" />
+<col style="width: 35.7%" />
+<col style="width: 3.6%" />
+<col style="width: 3.6%" />
+<col style="width: 3.6%" />
+<col style="width: 3.6%" />
+<col style="width: 3.6%" />
+<col style="width: 3.6%" />
+<col style="width: 3.6%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head stub" colspan="6"><p> Engines configured by default (in <a class="reference internal" href="../dev/engines/engine_overview.html#engine-settings"><span class="std std-ref">settings.yml</span></a>)</p></th>
+<th class="head" colspan="4"><p> <a class="reference internal" href="../dev/engines/engine_overview.html#engine-file"><span class="std std-ref">Supported features</span></a></p></th>
+</tr>
+<tr class="row-even"><th class="head stub"><p>Name</p></th>
+<th class="head"><p>!bang</p></th>
+<th class="head"><p>Module</p></th>
+<th class="head"><p>Disabled</p></th>
+<th class="head"><p>Timeout</p></th>
+<th class="head"><p>Weight</p></th>
+<th class="head"><p>Paging</p></th>
+<th class="head"><p>Locale</p></th>
+<th class="head"><p>Safe search</p></th>
+<th class="head"><p>Time range</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-odd"><th class="stub"><p><a class="reference external" href="https://www.wikibooks.org/">wikibooks</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!wb</span></code></p></td>
+<td><p><a class="reference internal" href="../dev/engines/mediawiki.html#module-searx.engines.mediawiki" title="searx.engines.mediawiki"><code class="xref py py-mod docutils literal notranslate"><span class="pre">mediawiki</span></code></a></p></td>
+<td><p>y</p></td>
+<td><p>3.0</p></td>
+<td><p>0.5</p></td>
+<td><p>y</p></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-even"><th class="stub"><p><a class="reference external" href="https://www.wikiquote.org/">wikiquote</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!wq</span></code></p></td>
+<td><p><a class="reference internal" href="../dev/engines/mediawiki.html#module-searx.engines.mediawiki" title="searx.engines.mediawiki"><code class="xref py py-mod docutils literal notranslate"><span class="pre">mediawiki</span></code></a></p></td>
+<td><p>y</p></td>
+<td><p>3.0</p></td>
+<td><p>0.5</p></td>
+<td><p>y</p></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-odd"><th class="stub"><p><a class="reference external" href="https://www.wikisource.org/">wikisource</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!ws</span></code></p></td>
+<td><p><a class="reference internal" href="../dev/engines/mediawiki.html#module-searx.engines.mediawiki" title="searx.engines.mediawiki"><code class="xref py py-mod docutils literal notranslate"><span class="pre">mediawiki</span></code></a></p></td>
+<td><p>y</p></td>
+<td><p>3.0</p></td>
+<td><p>0.5</p></td>
+<td><p>y</p></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-even"><th class="stub"><p><a class="reference external" href="https://species.wikimedia.org/">wikispecies</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!wsp</span></code></p></td>
+<td><p><a class="reference internal" href="../dev/engines/mediawiki.html#module-searx.engines.mediawiki" title="searx.engines.mediawiki"><code class="xref py py-mod docutils literal notranslate"><span class="pre">mediawiki</span></code></a></p></td>
+<td><p>y</p></td>
+<td><p>3.0</p></td>
+<td><p>1</p></td>
+<td><p>y</p></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-odd"><th class="stub"><p><a class="reference external" href="https://www.wikiversity.org/">wikiversity</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!wv</span></code></p></td>
+<td><p><a class="reference internal" href="../dev/engines/mediawiki.html#module-searx.engines.mediawiki" title="searx.engines.mediawiki"><code class="xref py py-mod docutils literal notranslate"><span class="pre">mediawiki</span></code></a></p></td>
+<td><p>y</p></td>
+<td><p>3.0</p></td>
+<td><p>0.5</p></td>
+<td><p>y</p></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-even"><th class="stub"><p><a class="reference external" href="https://www.wikivoyage.org/">wikivoyage</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!wy</span></code></p></td>
+<td><p><a class="reference internal" href="../dev/engines/mediawiki.html#module-searx.engines.mediawiki" title="searx.engines.mediawiki"><code class="xref py py-mod docutils literal notranslate"><span class="pre">mediawiki</span></code></a></p></td>
+<td><p>y</p></td>
+<td><p>3.0</p></td>
+<td><p>0.5</p></td>
+<td><p>y</p></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="without-further-subgrouping">
+<h3><a class="toc-backref" href="#id25" role="doc-backlink">without further subgrouping</a><a class="headerlink" href="#without-further-subgrouping" title="Link to this heading">¶</a></h3>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 35.7%" />
+<col style="width: 3.6%" />
+<col style="width: 35.7%" />
+<col style="width: 3.6%" />
+<col style="width: 3.6%" />
+<col style="width: 3.6%" />
+<col style="width: 3.6%" />
+<col style="width: 3.6%" />
+<col style="width: 3.6%" />
+<col style="width: 3.6%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head stub" colspan="6"><p> Engines configured by default (in <a class="reference internal" href="../dev/engines/engine_overview.html#engine-settings"><span class="std std-ref">settings.yml</span></a>)</p></th>
+<th class="head" colspan="4"><p> <a class="reference internal" href="../dev/engines/engine_overview.html#engine-file"><span class="std std-ref">Supported features</span></a></p></th>
+</tr>
+<tr class="row-even"><th class="head stub"><p>Name</p></th>
+<th class="head"><p>!bang</p></th>
+<th class="head"><p>Module</p></th>
+<th class="head"><p>Disabled</p></th>
+<th class="head"><p>Timeout</p></th>
+<th class="head"><p>Weight</p></th>
+<th class="head"><p>Paging</p></th>
+<th class="head"><p>Locale</p></th>
+<th class="head"><p>Safe search</p></th>
+<th class="head"><p>Time range</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-odd"><th class="stub"><p><a class="reference external" href="https://www.ask.com/">ask</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!ask</span></code></p></td>
+<td><p><a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/searx/engines/ask.py">ask</a></p></td>
+<td><p>y</p></td>
+<td><p>3.0</p></td>
+<td><p>1</p></td>
+<td><p>y</p></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-even"><th class="stub"><p><a class="reference external" href="https://crowdview.ai/">crowdview</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!cv</span></code></p></td>
+<td><p><a class="reference internal" href="../dev/engines/json_engine.html#module-searx.engines.json_engine" title="searx.engines.json_engine"><code class="xref py py-mod docutils literal notranslate"><span class="pre">json_engine</span></code></a></p></td>
+<td><p>y</p></td>
+<td><p>3.0</p></td>
+<td><p>1</p></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-odd"><th class="stub"><p><a class="reference external" href="https://duckduckgo.com/">ddg definitions</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!ddd</span></code></p></td>
+<td><p><a class="reference internal" href="../dev/engines/online/duckduckgo.html#module-searx.engines.duckduckgo_definitions" title="searx.engines.duckduckgo_definitions"><code class="xref py py-mod docutils literal notranslate"><span class="pre">duckduckgo_definitions</span></code></a></p></td>
+<td><p>y</p></td>
+<td><p>3.0</p></td>
+<td><p>2</p></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-even"><th class="stub"><p><a class="reference external" href="https://encyclosearch.org">encyclosearch</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!es</span></code></p></td>
+<td><p><a class="reference internal" href="../dev/engines/json_engine.html#module-searx.engines.json_engine" title="searx.engines.json_engine"><code class="xref py py-mod docutils literal notranslate"><span class="pre">json_engine</span></code></a></p></td>
+<td><p>y</p></td>
+<td><p>3.0</p></td>
+<td><p>1</p></td>
+<td><p>y</p></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-odd"><th class="stub"><p><a class="reference external" href="https://fynd.bot">fynd</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!fynd</span></code></p></td>
+<td><p><a class="reference internal" href="../dev/engines/xpath.html#module-searx.engines.xpath" title="searx.engines.xpath"><code class="xref py py-mod docutils literal notranslate"><span class="pre">xpath</span></code></a></p></td>
+<td><p>y</p></td>
+<td><p>3.0</p></td>
+<td><p>1</p></td>
+<td><p>y</p></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-even"><th class="stub"><p><a class="reference external" href="https://github.com/mwmbl/mwmbl">mwmbl</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!mwm</span></code></p></td>
+<td><p><a class="reference internal" href="../dev/engines/online/mwmbl.html#module-searx.engines.mwmbl" title="searx.engines.mwmbl"><code class="xref py py-mod docutils literal notranslate"><span class="pre">mwmbl</span></code></a></p></td>
+<td><p>y</p></td>
+<td><p>3.0</p></td>
+<td><p>1</p></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-odd"><th class="stub"><p><a class="reference external" href="https://rightdao.com/">right dao</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!rd</span></code></p></td>
+<td><p><a class="reference internal" href="../dev/engines/xpath.html#module-searx.engines.xpath" title="searx.engines.xpath"><code class="xref py py-mod docutils literal notranslate"><span class="pre">xpath</span></code></a></p></td>
+<td><p>y</p></td>
+<td><p>3.0</p></td>
+<td><p>1</p></td>
+<td><p>y</p></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-even"><th class="stub"><p><a class="reference external" href="https://searchmysite.net">searchmysite</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!sms</span></code></p></td>
+<td><p><a class="reference internal" href="../dev/engines/xpath.html#module-searx.engines.xpath" title="searx.engines.xpath"><code class="xref py py-mod docutils literal notranslate"><span class="pre">xpath</span></code></a></p></td>
+<td><p>y</p></td>
+<td><p>3.0</p></td>
+<td><p>1</p></td>
+<td><p>y</p></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-odd"><th class="stub"><p><a class="reference external" href="https://stract.com/">stract</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!str</span></code></p></td>
+<td><p><a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/searx/engines/stract.py">stract</a></p></td>
+<td><p>y</p></td>
+<td><p>3.0</p></td>
+<td><p>1</p></td>
+<td><p>y</p></td>
+<td><p>y</p></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-even"><th class="stub"><p><a class="reference external" href="https://tineye.com">tineye</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!tin</span></code></p></td>
+<td><p><a class="reference internal" href="../dev/engines/online_url_search/tineye.html#module-searx.engines.tineye" title="searx.engines.tineye"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tineye</span></code></a></p></td>
+<td><p>y</p></td>
+<td><p>9.0</p></td>
+<td><p>1</p></td>
+<td colspan="4"><p> not applicable (online_url_search)</p></td>
+</tr>
+<tr class="row-odd"><th class="stub"><p><a class="reference external" href="https://wikidata.org/">wikidata</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!wd</span></code></p></td>
+<td><p><a class="reference internal" href="../dev/engines/online/wikipedia.html#module-searx.engines.wikidata" title="searx.engines.wikidata"><code class="xref py py-mod docutils literal notranslate"><span class="pre">wikidata</span></code></a></p></td>
+<td></td>
+<td><p>3.0</p></td>
+<td><p>2</p></td>
+<td></td>
+<td><p>y</p></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-even"><th class="stub"><p><a class="reference external" href="https://www.wikipedia.org/">wikipedia</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!wp</span></code></p></td>
+<td><p><a class="reference internal" href="../dev/engines/online/wikipedia.html#module-searx.engines.wikipedia" title="searx.engines.wikipedia"><code class="xref py py-mod docutils literal notranslate"><span class="pre">wikipedia</span></code></a></p></td>
+<td></td>
+<td><p>3.0</p></td>
+<td><p>1</p></td>
+<td></td>
+<td><p>y</p></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-odd"><th class="stub"><p><a class="reference external" href="https://www.wolframalpha.com/">wolframalpha</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!wa</span></code></p></td>
+<td><p><a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/searx/engines/wolframalpha_noapi.py">wolframalpha_noapi</a></p></td>
+<td><p>y</p></td>
+<td><p>6.0</p></td>
+<td><p>1</p></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-even"><th class="stub"><p><a class="reference external" href="https://yacy.net/">yacy</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!ya</span></code></p></td>
+<td><p><a class="reference internal" href="../dev/engines/online/yacy.html#module-searx.engines.yacy" title="searx.engines.yacy"><code class="xref py py-mod docutils literal notranslate"><span class="pre">yacy</span></code></a></p></td>
+<td><p>y</p></td>
+<td><p>5.0</p></td>
+<td><p>1</p></td>
+<td><p>y</p></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-odd"><th class="stub"><p><a class="reference external" href="https://yandex.com/">yandex</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!yd</span></code></p></td>
+<td><p><a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/searx/engines/yandex.py">yandex</a></p></td>
+<td><p>y</p></td>
+<td><p>3.0</p></td>
+<td><p>1</p></td>
+<td><p>y</p></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-even"><th class="stub"><p><a class="reference external" href="https://yep.com/">yep</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!yep</span></code></p></td>
+<td><p><a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/searx/engines/yep.py">yep</a></p></td>
+<td><p>y</p></td>
+<td><p>15</p></td>
+<td><p>1</p></td>
+<td></td>
+<td></td>
+<td><p>y</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><th class="stub"><p><a class="reference external" href="https://www.bpb.de">bpb</a>
+(DE)</p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!bpb</span></code></p></td>
+<td><p><a class="reference internal" href="../dev/engines/online/bpb.html#module-searx.engines.bpb" title="searx.engines.bpb"><code class="xref py py-mod docutils literal notranslate"><span class="pre">bpb</span></code></a></p></td>
+<td><p>y</p></td>
+<td><p>3.0</p></td>
+<td><p>1</p></td>
+<td><p>y</p></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-even"><th class="stub"><p><a class="reference external" href="https://tagesschau.de">tagesschau</a>
+(DE)</p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!ts</span></code></p></td>
+<td><p><a class="reference internal" href="../dev/engines/online/tagesschau.html#module-searx.engines.tagesschau" title="searx.engines.tagesschau"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tagesschau</span></code></a></p></td>
+<td><p>y</p></td>
+<td><p>3.0</p></td>
+<td><p>1</p></td>
+<td><p>y</p></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-odd"><th class="stub"><p><a class="reference external" href="https://wikimini.org/">wikimini</a>
+(FR)</p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!wkmn</span></code></p></td>
+<td><p><a class="reference internal" href="../dev/engines/xpath.html#module-searx.engines.xpath" title="searx.engines.xpath"><code class="xref py py-mod docutils literal notranslate"><span class="pre">xpath</span></code></a></p></td>
+<td><p>y</p></td>
+<td><p>3.0</p></td>
+<td><p>1</p></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-even"><th class="stub"><p><a class="reference external" href="https://www.so.com/">360search</a>
+(ZH)</p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!360so</span></code></p></td>
+<td><p><a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/searx/engines/360search.py">360search</a></p></td>
+<td><p>y</p></td>
+<td><p>10.0</p></td>
+<td><p>1</p></td>
+<td><p>y</p></td>
+<td></td>
+<td></td>
+<td><p>y</p></td>
+</tr>
+<tr class="row-odd"><th class="stub"><p><a class="reference external" href="https://www.baidu.com">baidu</a>
+(ZH)</p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!bd</span></code></p></td>
+<td><p><a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/searx/engines/baidu.py">baidu</a></p></td>
+<td><p>y</p></td>
+<td><p>3.0</p></td>
+<td><p>1</p></td>
+<td><p>y</p></td>
+<td></td>
+<td></td>
+<td><p>y</p></td>
+</tr>
+<tr class="row-even"><th class="stub"><p><a class="reference external" href="https://quark.sm.cn/">quark</a>
+(ZH)</p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!qk</span></code></p></td>
+<td><p><a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/searx/engines/quark.py">quark</a></p></td>
+<td><p>y</p></td>
+<td><p>3.0</p></td>
+<td><p>1</p></td>
+<td><p>y</p></td>
+<td></td>
+<td></td>
+<td><p>y</p></td>
+</tr>
+<tr class="row-odd"><th class="stub"><p><a class="reference external" href="https://www.sogou.com/">sogou</a>
+(ZH)</p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!sogou</span></code></p></td>
+<td><p><a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/searx/engines/sogou.py">sogou</a></p></td>
+<td><p>y</p></td>
+<td><p>3.0</p></td>
+<td><p>1</p></td>
+<td><p>y</p></td>
+<td></td>
+<td></td>
+<td><p>y</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="tab-images">
+<h2><a class="toc-backref" href="#id26" role="doc-backlink">tab <code class="docutils literal notranslate"><span class="pre">!images</span></code></a><a class="headerlink" href="#tab-images" title="Link to this heading">¶</a></h2>
+<section id="group-icons">
+<h3><a class="toc-backref" href="#id27" role="doc-backlink">group <code class="docutils literal notranslate"><span class="pre">!icons</span></code></a><a class="headerlink" href="#group-icons" title="Link to this heading">¶</a></h3>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 35.7%" />
+<col style="width: 3.6%" />
+<col style="width: 35.7%" />
+<col style="width: 3.6%" />
+<col style="width: 3.6%" />
+<col style="width: 3.6%" />
+<col style="width: 3.6%" />
+<col style="width: 3.6%" />
+<col style="width: 3.6%" />
+<col style="width: 3.6%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head stub" colspan="6"><p> Engines configured by default (in <a class="reference internal" href="../dev/engines/engine_overview.html#engine-settings"><span class="std std-ref">settings.yml</span></a>)</p></th>
+<th class="head" colspan="4"><p> <a class="reference internal" href="../dev/engines/engine_overview.html#engine-file"><span class="std std-ref">Supported features</span></a></p></th>
+</tr>
+<tr class="row-even"><th class="head stub"><p>Name</p></th>
+<th class="head"><p>!bang</p></th>
+<th class="head"><p>Module</p></th>
+<th class="head"><p>Disabled</p></th>
+<th class="head"><p>Timeout</p></th>
+<th class="head"><p>Weight</p></th>
+<th class="head"><p>Paging</p></th>
+<th class="head"><p>Locale</p></th>
+<th class="head"><p>Safe search</p></th>
+<th class="head"><p>Time range</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-odd"><th class="stub"><p><a class="reference external" href="https://devicon.dev/">devicons</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!di</span></code></p></td>
+<td><p><a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/searx/engines/devicons.py">devicons</a></p></td>
+<td></td>
+<td><p>3.0</p></td>
+<td><p>1</p></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-even"><th class="stub"><p><a class="reference external" href="https://lucide.dev/">lucide</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!luc</span></code></p></td>
+<td><p><a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/searx/engines/lucide.py">lucide</a></p></td>
+<td></td>
+<td><p>3.0</p></td>
+<td><p>1</p></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-odd"><th class="stub"><p><a class="reference external" href="https://fonts.google.com/icons">material icons</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!mi</span></code></p></td>
+<td><p><a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/searx/engines/material_icons.py">material_icons</a></p></td>
+<td><p>y</p></td>
+<td><p>3.0</p></td>
+<td><p>1</p></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-even"><th class="stub"><p><a class="reference external" href="https://selfh.st/icons/">selfhst icons</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!si</span></code></p></td>
+<td><p><a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/searx/engines/selfhst.py">selfhst</a></p></td>
+<td><p>y</p></td>
+<td><p>3.0</p></td>
+<td><p>1</p></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-odd"><th class="stub"><p><a class="reference external" href="https://www.svgrepo.com">svgrepo</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!svg</span></code></p></td>
+<td><p><a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/searx/engines/svgrepo.py">svgrepo</a></p></td>
+<td><p>y</p></td>
+<td><p>10.0</p></td>
+<td><p>1</p></td>
+<td><p>y</p></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-even"><th class="stub"><p><a class="reference external" href="https://uxwing.com">uxwing</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!ux</span></code></p></td>
+<td><p><a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/searx/engines/uxwing.py">uxwing</a></p></td>
+<td><p>y</p></td>
+<td><p>3.0</p></td>
+<td><p>1</p></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="id2">
+<h3><a class="toc-backref" href="#id28" role="doc-backlink">group <code class="docutils literal notranslate"><span class="pre">!web</span></code></a><a class="headerlink" href="#id2" title="Link to this heading">¶</a></h3>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 35.7%" />
+<col style="width: 3.6%" />
+<col style="width: 35.7%" />
+<col style="width: 3.6%" />
+<col style="width: 3.6%" />
+<col style="width: 3.6%" />
+<col style="width: 3.6%" />
+<col style="width: 3.6%" />
+<col style="width: 3.6%" />
+<col style="width: 3.6%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head stub" colspan="6"><p> Engines configured by default (in <a class="reference internal" href="../dev/engines/engine_overview.html#engine-settings"><span class="std std-ref">settings.yml</span></a>)</p></th>
+<th class="head" colspan="4"><p> <a class="reference internal" href="../dev/engines/engine_overview.html#engine-file"><span class="std std-ref">Supported features</span></a></p></th>
+</tr>
+<tr class="row-even"><th class="head stub"><p>Name</p></th>
+<th class="head"><p>!bang</p></th>
+<th class="head"><p>Module</p></th>
+<th class="head"><p>Disabled</p></th>
+<th class="head"><p>Timeout</p></th>
+<th class="head"><p>Weight</p></th>
+<th class="head"><p>Paging</p></th>
+<th class="head"><p>Locale</p></th>
+<th class="head"><p>Safe search</p></th>
+<th class="head"><p>Time range</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-odd"><th class="stub"><p><a class="reference external" href="https://www.bing.com/images">bing images</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!bii</span></code></p></td>
+<td><p><a class="reference internal" href="../dev/engines/online/bing.html#module-searx.engines.bing_images" title="searx.engines.bing_images"><code class="xref py py-mod docutils literal notranslate"><span class="pre">bing_images</span></code></a></p></td>
+<td></td>
+<td><p>3.0</p></td>
+<td><p>1</p></td>
+<td><p>y</p></td>
+<td><p>y</p></td>
+<td><p>y</p></td>
+<td><p>y</p></td>
+</tr>
+<tr class="row-even"><th class="stub"><p><a class="reference external" href="https://search.brave.com/">brave.images</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!brimg</span></code></p></td>
+<td><p><a class="reference internal" href="../dev/engines/online/brave.html#module-searx.engines.brave" title="searx.engines.brave"><code class="xref py py-mod docutils literal notranslate"><span class="pre">brave</span></code></a></p></td>
+<td></td>
+<td><p>3.0</p></td>
+<td><p>1</p></td>
+<td></td>
+<td><p>y</p></td>
+<td><p>y</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><th class="stub"><p><a class="reference external" href="https://images.google.com">google images</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!goi</span></code></p></td>
+<td><p><a class="reference internal" href="../dev/engines/online/google.html#module-searx.engines.google_images" title="searx.engines.google_images"><code class="xref py py-mod docutils literal notranslate"><span class="pre">google_images</span></code></a></p></td>
+<td></td>
+<td><p>3.0</p></td>
+<td><p>1</p></td>
+<td><p>y</p></td>
+<td><p>y</p></td>
+<td><p>y</p></td>
+<td><p>y</p></td>
+</tr>
+<tr class="row-even"><th class="stub"><p><a class="reference external" href="https://mojeek.com">mojeek images</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!mjkimg</span></code></p></td>
+<td><p><a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/searx/engines/mojeek.py">mojeek</a></p></td>
+<td><p>y</p></td>
+<td><p>3.0</p></td>
+<td><p>1</p></td>
+<td></td>
+<td><p>y</p></td>
+<td><p>y</p></td>
+<td><p>y</p></td>
+</tr>
+<tr class="row-odd"><th class="stub"><p><a class="reference external" href="https://presearch.io">presearch images</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!psimg</span></code></p></td>
+<td><p><a class="reference internal" href="../dev/engines/online/presearch.html#module-searx.engines.presearch" title="searx.engines.presearch"><code class="xref py py-mod docutils literal notranslate"><span class="pre">presearch</span></code></a></p></td>
+<td><p>y</p></td>
+<td><p>4.0</p></td>
+<td><p>1</p></td>
+<td><p>y</p></td>
+<td></td>
+<td><p>y</p></td>
+<td><p>y</p></td>
+</tr>
+<tr class="row-even"><th class="stub"><p><a class="reference external" href="https://www.qwant.com/">qwant images</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!qwi</span></code></p></td>
+<td><p><a class="reference internal" href="../dev/engines/online/qwant.html#module-searx.engines.qwant" title="searx.engines.qwant"><code class="xref py py-mod docutils literal notranslate"><span class="pre">qwant</span></code></a></p></td>
+<td></td>
+<td><p>3.0</p></td>
+<td><p>1</p></td>
+<td><p>y</p></td>
+<td><p>y</p></td>
+<td><p>y</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><th class="stub"><p><a class="reference external" href="https://startpage.com">startpage images</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!spi</span></code></p></td>
+<td><p><a class="reference internal" href="../dev/engines/online/startpage.html#module-searx.engines.startpage" title="searx.engines.startpage"><code class="xref py py-mod docutils literal notranslate"><span class="pre">startpage</span></code></a></p></td>
+<td></td>
+<td><p>3.0</p></td>
+<td><p>1</p></td>
+<td><p>y</p></td>
+<td><p>y</p></td>
+<td><p>y</p></td>
+<td><p>y</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="id3">
+<h3><a class="toc-backref" href="#id29" role="doc-backlink">without further subgrouping</a><a class="headerlink" href="#id3" title="Link to this heading">¶</a></h3>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 35.7%" />
+<col style="width: 3.6%" />
+<col style="width: 35.7%" />
+<col style="width: 3.6%" />
+<col style="width: 3.6%" />
+<col style="width: 3.6%" />
+<col style="width: 3.6%" />
+<col style="width: 3.6%" />
+<col style="width: 3.6%" />
+<col style="width: 3.6%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head stub" colspan="6"><p> Engines configured by default (in <a class="reference internal" href="../dev/engines/engine_overview.html#engine-settings"><span class="std std-ref">settings.yml</span></a>)</p></th>
+<th class="head" colspan="4"><p> <a class="reference internal" href="../dev/engines/engine_overview.html#engine-file"><span class="std std-ref">Supported features</span></a></p></th>
+</tr>
+<tr class="row-even"><th class="head stub"><p>Name</p></th>
+<th class="head"><p>!bang</p></th>
+<th class="head"><p>Module</p></th>
+<th class="head"><p>Disabled</p></th>
+<th class="head"><p>Timeout</p></th>
+<th class="head"><p>Weight</p></th>
+<th class="head"><p>Paging</p></th>
+<th class="head"><p>Locale</p></th>
+<th class="head"><p>Safe search</p></th>
+<th class="head"><p>Time range</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-odd"><th class="stub"><p><a class="reference external" href="https://1x.com/">1x</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!1x</span></code></p></td>
+<td><p><a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/searx/engines/www1x.py">www1x</a></p></td>
+<td><p>y</p></td>
+<td><p>3.0</p></td>
+<td><p>1</p></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-even"><th class="stub"><p><a class="reference external" href="https://stock.adobe.com/">adobe stock</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!asi</span></code></p></td>
+<td><p><a class="reference internal" href="../dev/engines/online/adobe_stock.html#module-searx.engines.adobe_stock" title="searx.engines.adobe_stock"><code class="xref py py-mod docutils literal notranslate"><span class="pre">adobe_stock</span></code></a></p></td>
+<td><p>y</p></td>
+<td><p>6</p></td>
+<td><p>1</p></td>
+<td><p>y</p></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-odd"><th class="stub"><p><a class="reference external" href="https://www.artic.edu">artic</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!arc</span></code></p></td>
+<td><p><a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/searx/engines/artic.py">artic</a></p></td>
+<td></td>
+<td><p>4.0</p></td>
+<td><p>1</p></td>
+<td><p>y</p></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-even"><th class="stub"><p><a class="reference external" href="https://www.artstation.com/">artstation</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!as</span></code></p></td>
+<td><p><a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/searx/engines/artstation.py">artstation</a></p></td>
+<td><p>y</p></td>
+<td><p>3.0</p></td>
+<td><p>1</p></td>
+<td><p>y</p></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-odd"><th class="stub"><p><a class="reference external" href="https://www.deviantart.com/">deviantart</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!da</span></code></p></td>
+<td><p><a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/searx/engines/deviantart.py">deviantart</a></p></td>
+<td></td>
+<td><p>3.0</p></td>
+<td><p>1</p></td>
+<td><p>y</p></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-even"><th class="stub"><p><a class="reference external" href="https://duckduckgo.com/">duckduckgo images</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!ddi</span></code></p></td>
+<td><p><a class="reference internal" href="../dev/engines/online/duckduckgo.html#module-searx.engines.duckduckgo_extra" title="searx.engines.duckduckgo_extra"><code class="xref py py-mod docutils literal notranslate"><span class="pre">duckduckgo_extra</span></code></a></p></td>
+<td></td>
+<td><p>3.0</p></td>
+<td><p>1</p></td>
+<td><p>y</p></td>
+<td><p>y</p></td>
+<td><p>y</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><th class="stub"><p><a class="reference external" href="https://findthatmeme.com">findthatmeme</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!ftm</span></code></p></td>
+<td><p><a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/searx/engines/findthatmeme.py">findthatmeme</a></p></td>
+<td><p>y</p></td>
+<td><p>3.0</p></td>
+<td><p>1</p></td>
+<td><p>y</p></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-even"><th class="stub"><p><a class="reference external" href="https://www.flickr.com">flickr</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!fl</span></code></p></td>
+<td><p><a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/searx/engines/flickr_noapi.py">flickr_noapi</a></p></td>
+<td></td>
+<td><p>3.0</p></td>
+<td><p>1</p></td>
+<td><p>y</p></td>
+<td></td>
+<td></td>
+<td><p>y</p></td>
+</tr>
+<tr class="row-odd"><th class="stub"><p><a class="reference external" href="https://frinkiac.com">frinkiac</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!frk</span></code></p></td>
+<td><p><a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/searx/engines/frinkiac.py">frinkiac</a></p></td>
+<td><p>y</p></td>
+<td><p>3.0</p></td>
+<td><p>1</p></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-even"><th class="stub"><p><a class="reference external" href="https://imgur.com/">imgur</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!img</span></code></p></td>
+<td><p><a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/searx/engines/imgur.py">imgur</a></p></td>
+<td><p>y</p></td>
+<td><p>3.0</p></td>
+<td><p>1</p></td>
+<td><p>y</p></td>
+<td></td>
+<td></td>
+<td><p>y</p></td>
+</tr>
+<tr class="row-odd"><th class="stub"><p><a class="reference external" href="https://www.ipernity.com">ipernity</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!ip</span></code></p></td>
+<td><p><a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/searx/engines/ipernity.py">ipernity</a></p></td>
+<td><p>y</p></td>
+<td><p>3.0</p></td>
+<td><p>1</p></td>
+<td><p>y</p></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-even"><th class="stub"><p><a class="reference external" href="https://www.loc.gov/pictures/">library of congress</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!loc</span></code></p></td>
+<td><p><a class="reference internal" href="../dev/engines/online/loc.html#module-searx.engines.loc" title="searx.engines.loc"><code class="xref py py-mod docutils literal notranslate"><span class="pre">loc</span></code></a></p></td>
+<td><p>y</p></td>
+<td><p>3.0</p></td>
+<td><p>1</p></td>
+<td><p>y</p></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-odd"><th class="stub"><p><a class="reference external" href="https://openverse.org/">openverse</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!opv</span></code></p></td>
+<td><p><a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/searx/engines/openverse.py">openverse</a></p></td>
+<td></td>
+<td><p>3.0</p></td>
+<td><p>1</p></td>
+<td><p>y</p></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-even"><th class="stub"><p><a class="reference external" href="https://www.pinterest.com/">pinterest</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!pin</span></code></p></td>
+<td><p><a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/searx/engines/pinterest.py">pinterest</a></p></td>
+<td></td>
+<td><p>3.0</p></td>
+<td><p>1</p></td>
+<td><p>y</p></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-odd"><th class="stub"><p><a class="reference external" href="https://pixabay.com">pixabay images</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!pixi</span></code></p></td>
+<td><p><a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/searx/engines/pixabay.py">pixabay</a></p></td>
+<td><p>y</p></td>
+<td><p>3.0</p></td>
+<td><p>1</p></td>
+<td><p>y</p></td>
+<td></td>
+<td><p>y</p></td>
+<td><p>y</p></td>
+</tr>
+<tr class="row-even"><th class="stub"><p><a class="reference external" href="https://pdimagearchive.org">public domain image archive</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!pdia</span></code></p></td>
+<td><p><a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/searx/engines/public_domain_image_archive.py">public_domain_image_archive</a></p></td>
+<td><p>y</p></td>
+<td><p>3.0</p></td>
+<td><p>1</p></td>
+<td><p>y</p></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-odd"><th class="stub"><p><a class="reference external" href="https://pic.sogou.com/">sogou images</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!sogoui</span></code></p></td>
+<td><p><a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/searx/engines/sogou_images.py">sogou_images</a></p></td>
+<td><p>y</p></td>
+<td><p>3.0</p></td>
+<td><p>1</p></td>
+<td><p>y</p></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-even"><th class="stub"><p><a class="reference external" href="https://unsplash.com">unsplash</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!us</span></code></p></td>
+<td><p><a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/searx/engines/unsplash.py">unsplash</a></p></td>
+<td></td>
+<td><p>3.0</p></td>
+<td><p>1</p></td>
+<td><p>y</p></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-odd"><th class="stub"><p><a class="reference external" href="https://commons.wikimedia.org/">wikicommons.images</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!wci</span></code></p></td>
+<td><p><a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/searx/engines/wikicommons.py">wikicommons</a></p></td>
+<td></td>
+<td><p>3.0</p></td>
+<td><p>1</p></td>
+<td><p>y</p></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-even"><th class="stub"><p><a class="reference external" href="https://yacy.net/">yacy images</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!yai</span></code></p></td>
+<td><p><a class="reference internal" href="../dev/engines/online/yacy.html#module-searx.engines.yacy" title="searx.engines.yacy"><code class="xref py py-mod docutils literal notranslate"><span class="pre">yacy</span></code></a></p></td>
+<td><p>y</p></td>
+<td><p>5.0</p></td>
+<td><p>1</p></td>
+<td><p>y</p></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-odd"><th class="stub"><p><a class="reference external" href="https://yandex.com/">yandex images</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!ydi</span></code></p></td>
+<td><p><a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/searx/engines/yandex.py">yandex</a></p></td>
+<td><p>y</p></td>
+<td><p>3.0</p></td>
+<td><p>1</p></td>
+<td><p>y</p></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-even"><th class="stub"><p><a class="reference external" href="https://yep.com/">yep images</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!yepi</span></code></p></td>
+<td><p><a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/searx/engines/yep.py">yep</a></p></td>
+<td><p>y</p></td>
+<td><p>3.0</p></td>
+<td><p>1</p></td>
+<td></td>
+<td></td>
+<td><p>y</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><th class="stub"><p><a class="reference external" href="https://search.naver.com">naver images</a>
+(KO)</p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!nvri</span></code></p></td>
+<td><p><a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/searx/engines/naver.py">naver</a></p></td>
+<td><p>y</p></td>
+<td><p>3.0</p></td>
+<td><p>1</p></td>
+<td><p>y</p></td>
+<td></td>
+<td></td>
+<td><p>y</p></td>
+</tr>
+<tr class="row-even"><th class="stub"><p><a class="reference external" href="https://www.baidu.com">baidu images</a>
+(ZH)</p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!bdi</span></code></p></td>
+<td><p><a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/searx/engines/baidu.py">baidu</a></p></td>
+<td><p>y</p></td>
+<td><p>3.0</p></td>
+<td><p>1</p></td>
+<td><p>y</p></td>
+<td></td>
+<td></td>
+<td><p>y</p></td>
+</tr>
+<tr class="row-odd"><th class="stub"><p><a class="reference external" href="https://quark.sm.cn/">quark images</a>
+(ZH)</p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!qki</span></code></p></td>
+<td><p><a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/searx/engines/quark.py">quark</a></p></td>
+<td><p>y</p></td>
+<td><p>3.0</p></td>
+<td><p>1</p></td>
+<td><p>y</p></td>
+<td></td>
+<td></td>
+<td><p>y</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="tab-videos">
+<h2><a class="toc-backref" href="#id30" role="doc-backlink">tab <code class="docutils literal notranslate"><span class="pre">!videos</span></code></a><a class="headerlink" href="#tab-videos" title="Link to this heading">¶</a></h2>
+<section id="id4">
+<h3><a class="toc-backref" href="#id31" role="doc-backlink">group <code class="docutils literal notranslate"><span class="pre">!web</span></code></a><a class="headerlink" href="#id4" title="Link to this heading">¶</a></h3>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 35.7%" />
+<col style="width: 3.6%" />
+<col style="width: 35.7%" />
+<col style="width: 3.6%" />
+<col style="width: 3.6%" />
+<col style="width: 3.6%" />
+<col style="width: 3.6%" />
+<col style="width: 3.6%" />
+<col style="width: 3.6%" />
+<col style="width: 3.6%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head stub" colspan="6"><p> Engines configured by default (in <a class="reference internal" href="../dev/engines/engine_overview.html#engine-settings"><span class="std std-ref">settings.yml</span></a>)</p></th>
+<th class="head" colspan="4"><p> <a class="reference internal" href="../dev/engines/engine_overview.html#engine-file"><span class="std std-ref">Supported features</span></a></p></th>
+</tr>
+<tr class="row-even"><th class="head stub"><p>Name</p></th>
+<th class="head"><p>!bang</p></th>
+<th class="head"><p>Module</p></th>
+<th class="head"><p>Disabled</p></th>
+<th class="head"><p>Timeout</p></th>
+<th class="head"><p>Weight</p></th>
+<th class="head"><p>Paging</p></th>
+<th class="head"><p>Locale</p></th>
+<th class="head"><p>Safe search</p></th>
+<th class="head"><p>Time range</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-odd"><th class="stub"><p><a class="reference external" href="https://www.bing.com/videos">bing videos</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!biv</span></code></p></td>
+<td><p><a class="reference internal" href="../dev/engines/online/bing.html#module-searx.engines.bing_videos" title="searx.engines.bing_videos"><code class="xref py py-mod docutils literal notranslate"><span class="pre">bing_videos</span></code></a></p></td>
+<td></td>
+<td><p>3.0</p></td>
+<td><p>1</p></td>
+<td><p>y</p></td>
+<td><p>y</p></td>
+<td><p>y</p></td>
+<td><p>y</p></td>
+</tr>
+<tr class="row-even"><th class="stub"><p><a class="reference external" href="https://search.brave.com/">brave.videos</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!brvid</span></code></p></td>
+<td><p><a class="reference internal" href="../dev/engines/online/brave.html#module-searx.engines.brave" title="searx.engines.brave"><code class="xref py py-mod docutils literal notranslate"><span class="pre">brave</span></code></a></p></td>
+<td></td>
+<td><p>3.0</p></td>
+<td><p>1</p></td>
+<td></td>
+<td><p>y</p></td>
+<td><p>y</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><th class="stub"><p><a class="reference external" href="https://www.google.com">google videos</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!gov</span></code></p></td>
+<td><p><a class="reference internal" href="../dev/engines/online/google.html#module-searx.engines.google_videos" title="searx.engines.google_videos"><code class="xref py py-mod docutils literal notranslate"><span class="pre">google_videos</span></code></a></p></td>
+<td></td>
+<td><p>3.0</p></td>
+<td><p>1</p></td>
+<td><p>y</p></td>
+<td><p>y</p></td>
+<td><p>y</p></td>
+<td><p>y</p></td>
+</tr>
+<tr class="row-even"><th class="stub"><p><a class="reference external" href="https://www.qwant.com/">qwant videos</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!qwv</span></code></p></td>
+<td><p><a class="reference internal" href="../dev/engines/online/qwant.html#module-searx.engines.qwant" title="searx.engines.qwant"><code class="xref py py-mod docutils literal notranslate"><span class="pre">qwant</span></code></a></p></td>
+<td></td>
+<td><p>3.0</p></td>
+<td><p>1</p></td>
+<td><p>y</p></td>
+<td><p>y</p></td>
+<td><p>y</p></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="id5">
+<h3><a class="toc-backref" href="#id32" role="doc-backlink">without further subgrouping</a><a class="headerlink" href="#id5" title="Link to this heading">¶</a></h3>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 35.7%" />
+<col style="width: 3.6%" />
+<col style="width: 35.7%" />
+<col style="width: 3.6%" />
+<col style="width: 3.6%" />
+<col style="width: 3.6%" />
+<col style="width: 3.6%" />
+<col style="width: 3.6%" />
+<col style="width: 3.6%" />
+<col style="width: 3.6%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head stub" colspan="6"><p> Engines configured by default (in <a class="reference internal" href="../dev/engines/engine_overview.html#engine-settings"><span class="std std-ref">settings.yml</span></a>)</p></th>
+<th class="head" colspan="4"><p> <a class="reference internal" href="../dev/engines/engine_overview.html#engine-file"><span class="std std-ref">Supported features</span></a></p></th>
+</tr>
+<tr class="row-even"><th class="head stub"><p>Name</p></th>
+<th class="head"><p>!bang</p></th>
+<th class="head"><p>Module</p></th>
+<th class="head"><p>Disabled</p></th>
+<th class="head"><p>Timeout</p></th>
+<th class="head"><p>Weight</p></th>
+<th class="head"><p>Paging</p></th>
+<th class="head"><p>Locale</p></th>
+<th class="head"><p>Safe search</p></th>
+<th class="head"><p>Time range</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-odd"><th class="stub"><p><a class="reference external" href="https://tv.360kan.com/">360search videos</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!360sov</span></code></p></td>
+<td><p><a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/searx/engines/360search_videos.py">360search_videos</a></p></td>
+<td><p>y</p></td>
+<td><p>3.0</p></td>
+<td><p>1</p></td>
+<td><p>y</p></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-even"><th class="stub"><p><a class="reference external" href="https://stock.adobe.com/">adobe stock video</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!asv</span></code></p></td>
+<td><p><a class="reference internal" href="../dev/engines/online/adobe_stock.html#module-searx.engines.adobe_stock" title="searx.engines.adobe_stock"><code class="xref py py-mod docutils literal notranslate"><span class="pre">adobe_stock</span></code></a></p></td>
+<td><p>y</p></td>
+<td><p>6</p></td>
+<td><p>1</p></td>
+<td><p>y</p></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-odd"><th class="stub"><p><a class="reference external" href="https://www.bilibili.com">bilibili</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!bil</span></code></p></td>
+<td><p><a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/searx/engines/bilibili.py">bilibili</a></p></td>
+<td><p>y</p></td>
+<td><p>3.0</p></td>
+<td><p>1</p></td>
+<td><p>y</p></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-even"><th class="stub"><p><a class="reference external" href="https://bitchute.com">bitchute</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!bit</span></code></p></td>
+<td><p><a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/searx/engines/bitchute.py">bitchute</a></p></td>
+<td><p>y</p></td>
+<td><p>3.0</p></td>
+<td><p>1</p></td>
+<td><p>y</p></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-odd"><th class="stub"><p><a class="reference external" href="https://www.dailymotion.com">dailymotion</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!dm</span></code></p></td>
+<td><p><a class="reference internal" href="../dev/engines/online/dailymotion.html#module-searx.engines.dailymotion" title="searx.engines.dailymotion"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dailymotion</span></code></a></p></td>
+<td></td>
+<td><p>3.0</p></td>
+<td><p>1</p></td>
+<td><p>y</p></td>
+<td><p>y</p></td>
+<td><p>y</p></td>
+<td><p>y</p></td>
+</tr>
+<tr class="row-even"><th class="stub"><p><a class="reference external" href="https://duckduckgo.com/">duckduckgo videos</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!ddv</span></code></p></td>
+<td><p><a class="reference internal" href="../dev/engines/online/duckduckgo.html#module-searx.engines.duckduckgo_extra" title="searx.engines.duckduckgo_extra"><code class="xref py py-mod docutils literal notranslate"><span class="pre">duckduckgo_extra</span></code></a></p></td>
+<td></td>
+<td><p>3.0</p></td>
+<td><p>1</p></td>
+<td><p>y</p></td>
+<td><p>y</p></td>
+<td><p>y</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><th class="stub"><p><a class="reference external" href="https://play.google.com/">google play movies</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!gpm</span></code></p></td>
+<td><p><a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/searx/engines/google_play.py">google_play</a></p></td>
+<td><p>y</p></td>
+<td><p>3.0</p></td>
+<td><p>1</p></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-even"><th class="stub"><p><a class="reference external" href="https://live.space">livespace</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!ls</span></code></p></td>
+<td><p><a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/searx/engines/livespace.py">livespace</a></p></td>
+<td><p>y</p></td>
+<td><p>5.0</p></td>
+<td><p>1</p></td>
+<td><p>y</p></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-odd"><th class="stub"><p><a class="reference external" href="https://media.ccc.de">media.ccc.de</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!c3tv</span></code></p></td>
+<td><p><a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/searx/engines/ccc_media.py">ccc_media</a></p></td>
+<td><p>y</p></td>
+<td><p>3.0</p></td>
+<td><p>1</p></td>
+<td><p>y</p></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-even"><th class="stub"><p><a class="reference external" href="https://odysee.com/">odysee</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!od</span></code></p></td>
+<td><p><a class="reference internal" href="../dev/engines/online/odysee.html#module-searx.engines.odysee" title="searx.engines.odysee"><code class="xref py py-mod docutils literal notranslate"><span class="pre">odysee</span></code></a></p></td>
+<td><p>y</p></td>
+<td><p>3.0</p></td>
+<td><p>1</p></td>
+<td><p>y</p></td>
+<td><p>y</p></td>
+<td></td>
+<td><p>y</p></td>
+</tr>
+<tr class="row-odd"><th class="stub"><p><a class="reference external" href="https://joinpeertube.org">peertube</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!ptb</span></code></p></td>
+<td><p><a class="reference internal" href="../dev/engines/online/peertube.html#module-searx.engines.peertube" title="searx.engines.peertube"><code class="xref py py-mod docutils literal notranslate"><span class="pre">peertube</span></code></a></p></td>
+<td><p>y</p></td>
+<td><p>6.0</p></td>
+<td><p>1</p></td>
+<td><p>y</p></td>
+<td><p>y</p></td>
+<td><p>y</p></td>
+<td><p>y</p></td>
+</tr>
+<tr class="row-even"><th class="stub"><p><a class="reference external" href="https://pixabay.com">pixabay videos</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!pixv</span></code></p></td>
+<td><p><a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/searx/engines/pixabay.py">pixabay</a></p></td>
+<td><p>y</p></td>
+<td><p>3.0</p></td>
+<td><p>1</p></td>
+<td><p>y</p></td>
+<td></td>
+<td><p>y</p></td>
+<td><p>y</p></td>
+</tr>
+<tr class="row-odd"><th class="stub"><p><a class="reference external" href="https://rumble.com/">rumble</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!ru</span></code></p></td>
+<td><p><a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/searx/engines/rumble.py">rumble</a></p></td>
+<td><p>y</p></td>
+<td><p>3.0</p></td>
+<td><p>1</p></td>
+<td><p>y</p></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-even"><th class="stub"><p><a class="reference external" href="https://sepiasearch.org">sepiasearch</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!sep</span></code></p></td>
+<td><p><a class="reference internal" href="../dev/engines/online/peertube.html#module-searx.engines.sepiasearch" title="searx.engines.sepiasearch"><code class="xref py py-mod docutils literal notranslate"><span class="pre">sepiasearch</span></code></a></p></td>
+<td></td>
+<td><p>3.0</p></td>
+<td><p>1</p></td>
+<td><p>y</p></td>
+<td><p>y</p></td>
+<td><p>y</p></td>
+<td><p>y</p></td>
+</tr>
+<tr class="row-odd"><th class="stub"><p><a class="reference external" href="https://vimeo.com/">vimeo</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!vm</span></code></p></td>
+<td><p><a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/searx/engines/vimeo.py">vimeo</a></p></td>
+<td></td>
+<td><p>3.0</p></td>
+<td><p>1</p></td>
+<td><p>y</p></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-even"><th class="stub"><p><a class="reference external" href="https://commons.wikimedia.org/">wikicommons.videos</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!wcv</span></code></p></td>
+<td><p><a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/searx/engines/wikicommons.py">wikicommons</a></p></td>
+<td></td>
+<td><p>3.0</p></td>
+<td><p>1</p></td>
+<td><p>y</p></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-odd"><th class="stub"><p><a class="reference external" href="https://www.youtube.com/">youtube</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!yt</span></code></p></td>
+<td><p><a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/searx/engines/youtube_noapi.py">youtube_noapi</a></p></td>
+<td></td>
+<td><p>3.0</p></td>
+<td><p>1</p></td>
+<td><p>y</p></td>
+<td></td>
+<td></td>
+<td><p>y</p></td>
+</tr>
+<tr class="row-even"><th class="stub"><p><a class="reference external" href="https://mediathekviewweb.de/">mediathekviewweb</a>
+(DE)</p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!mvw</span></code></p></td>
+<td><p><a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/searx/engines/mediathekviewweb.py">mediathekviewweb</a></p></td>
+<td><p>y</p></td>
+<td><p>3.0</p></td>
+<td><p>1</p></td>
+<td><p>y</p></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-odd"><th class="stub"><p><a class="reference external" href="https://www.ina.fr/">ina</a>
+(FR)</p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!in</span></code></p></td>
+<td><p><a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/searx/engines/ina.py">ina</a></p></td>
+<td><p>y</p></td>
+<td><p>6.0</p></td>
+<td><p>1</p></td>
+<td><p>y</p></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-even"><th class="stub"><p><a class="reference external" href="https://www.nicovideo.jp/">niconico</a>
+(JA)</p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!nico</span></code></p></td>
+<td><p><a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/searx/engines/niconico.py">niconico</a></p></td>
+<td><p>y</p></td>
+<td><p>3.0</p></td>
+<td><p>1</p></td>
+<td><p>y</p></td>
+<td></td>
+<td></td>
+<td><p>y</p></td>
+</tr>
+<tr class="row-odd"><th class="stub"><p><a class="reference external" href="https://search.naver.com">naver videos</a>
+(KO)</p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!nvrv</span></code></p></td>
+<td><p><a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/searx/engines/naver.py">naver</a></p></td>
+<td><p>y</p></td>
+<td><p>3.0</p></td>
+<td><p>1</p></td>
+<td><p>y</p></td>
+<td></td>
+<td></td>
+<td><p>y</p></td>
+</tr>
+<tr class="row-even"><th class="stub"><p><a class="reference external" href="https://www.acfun.cn/">acfun</a>
+(ZH)</p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!acf</span></code></p></td>
+<td><p><a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/searx/engines/acfun.py">acfun</a></p></td>
+<td><p>y</p></td>
+<td><p>3.0</p></td>
+<td><p>1</p></td>
+<td><p>y</p></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-odd"><th class="stub"><p><a class="reference external" href="https://www.iqiyi.com/">iqiyi</a>
+(ZH)</p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!iq</span></code></p></td>
+<td><p><a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/searx/engines/iqiyi.py">iqiyi</a></p></td>
+<td><p>y</p></td>
+<td><p>3.0</p></td>
+<td><p>1</p></td>
+<td><p>y</p></td>
+<td></td>
+<td></td>
+<td><p>y</p></td>
+</tr>
+<tr class="row-even"><th class="stub"><p><a class="reference external" href="https://v.sogou.com/">sogou videos</a>
+(ZH)</p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!sogouv</span></code></p></td>
+<td><p><a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/searx/engines/sogou_videos.py">sogou_videos</a></p></td>
+<td><p>y</p></td>
+<td><p>3.0</p></td>
+<td><p>1</p></td>
+<td><p>y</p></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="tab-news">
+<h2><a class="toc-backref" href="#id33" role="doc-backlink">tab <code class="docutils literal notranslate"><span class="pre">!news</span></code></a><a class="headerlink" href="#tab-news" title="Link to this heading">¶</a></h2>
+<section id="id6">
+<h3><a class="toc-backref" href="#id34" role="doc-backlink">group <code class="docutils literal notranslate"><span class="pre">!web</span></code></a><a class="headerlink" href="#id6" title="Link to this heading">¶</a></h3>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 35.7%" />
+<col style="width: 3.6%" />
+<col style="width: 35.7%" />
+<col style="width: 3.6%" />
+<col style="width: 3.6%" />
+<col style="width: 3.6%" />
+<col style="width: 3.6%" />
+<col style="width: 3.6%" />
+<col style="width: 3.6%" />
+<col style="width: 3.6%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head stub" colspan="6"><p> Engines configured by default (in <a class="reference internal" href="../dev/engines/engine_overview.html#engine-settings"><span class="std std-ref">settings.yml</span></a>)</p></th>
+<th class="head" colspan="4"><p> <a class="reference internal" href="../dev/engines/engine_overview.html#engine-file"><span class="std std-ref">Supported features</span></a></p></th>
+</tr>
+<tr class="row-even"><th class="head stub"><p>Name</p></th>
+<th class="head"><p>!bang</p></th>
+<th class="head"><p>Module</p></th>
+<th class="head"><p>Disabled</p></th>
+<th class="head"><p>Timeout</p></th>
+<th class="head"><p>Weight</p></th>
+<th class="head"><p>Paging</p></th>
+<th class="head"><p>Locale</p></th>
+<th class="head"><p>Safe search</p></th>
+<th class="head"><p>Time range</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-odd"><th class="stub"><p><a class="reference external" href="https://mojeek.com">mojeek news</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!mjknews</span></code></p></td>
+<td><p><a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/searx/engines/mojeek.py">mojeek</a></p></td>
+<td><p>y</p></td>
+<td><p>3.0</p></td>
+<td><p>1</p></td>
+<td></td>
+<td><p>y</p></td>
+<td><p>y</p></td>
+<td><p>y</p></td>
+</tr>
+<tr class="row-even"><th class="stub"><p><a class="reference external" href="https://presearch.io">presearch news</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!psnews</span></code></p></td>
+<td><p><a class="reference internal" href="../dev/engines/online/presearch.html#module-searx.engines.presearch" title="searx.engines.presearch"><code class="xref py py-mod docutils literal notranslate"><span class="pre">presearch</span></code></a></p></td>
+<td><p>y</p></td>
+<td><p>4.0</p></td>
+<td><p>1</p></td>
+<td><p>y</p></td>
+<td></td>
+<td><p>y</p></td>
+<td><p>y</p></td>
+</tr>
+<tr class="row-odd"><th class="stub"><p><a class="reference external" href="https://startpage.com">startpage news</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!spn</span></code></p></td>
+<td><p><a class="reference internal" href="../dev/engines/online/startpage.html#module-searx.engines.startpage" title="searx.engines.startpage"><code class="xref py py-mod docutils literal notranslate"><span class="pre">startpage</span></code></a></p></td>
+<td></td>
+<td><p>3.0</p></td>
+<td><p>1</p></td>
+<td><p>y</p></td>
+<td><p>y</p></td>
+<td><p>y</p></td>
+<td><p>y</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="id7">
+<h3><a class="toc-backref" href="#id35" role="doc-backlink">group <code class="docutils literal notranslate"><span class="pre">!wikimedia</span></code></a><a class="headerlink" href="#id7" title="Link to this heading">¶</a></h3>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 35.7%" />
+<col style="width: 3.6%" />
+<col style="width: 35.7%" />
+<col style="width: 3.6%" />
+<col style="width: 3.6%" />
+<col style="width: 3.6%" />
+<col style="width: 3.6%" />
+<col style="width: 3.6%" />
+<col style="width: 3.6%" />
+<col style="width: 3.6%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head stub" colspan="6"><p> Engines configured by default (in <a class="reference internal" href="../dev/engines/engine_overview.html#engine-settings"><span class="std std-ref">settings.yml</span></a>)</p></th>
+<th class="head" colspan="4"><p> <a class="reference internal" href="../dev/engines/engine_overview.html#engine-file"><span class="std std-ref">Supported features</span></a></p></th>
+</tr>
+<tr class="row-even"><th class="head stub"><p>Name</p></th>
+<th class="head"><p>!bang</p></th>
+<th class="head"><p>Module</p></th>
+<th class="head"><p>Disabled</p></th>
+<th class="head"><p>Timeout</p></th>
+<th class="head"><p>Weight</p></th>
+<th class="head"><p>Paging</p></th>
+<th class="head"><p>Locale</p></th>
+<th class="head"><p>Safe search</p></th>
+<th class="head"><p>Time range</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-odd"><th class="stub"><p><a class="reference external" href="https://www.wikinews.org/">wikinews</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!wn</span></code></p></td>
+<td><p><a class="reference internal" href="../dev/engines/mediawiki.html#module-searx.engines.mediawiki" title="searx.engines.mediawiki"><code class="xref py py-mod docutils literal notranslate"><span class="pre">mediawiki</span></code></a></p></td>
+<td></td>
+<td><p>3.0</p></td>
+<td><p>1</p></td>
+<td><p>y</p></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="id8">
+<h3><a class="toc-backref" href="#id36" role="doc-backlink">without further subgrouping</a><a class="headerlink" href="#id8" title="Link to this heading">¶</a></h3>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 35.7%" />
+<col style="width: 3.6%" />
+<col style="width: 35.7%" />
+<col style="width: 3.6%" />
+<col style="width: 3.6%" />
+<col style="width: 3.6%" />
+<col style="width: 3.6%" />
+<col style="width: 3.6%" />
+<col style="width: 3.6%" />
+<col style="width: 3.6%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head stub" colspan="6"><p> Engines configured by default (in <a class="reference internal" href="../dev/engines/engine_overview.html#engine-settings"><span class="std std-ref">settings.yml</span></a>)</p></th>
+<th class="head" colspan="4"><p> <a class="reference internal" href="../dev/engines/engine_overview.html#engine-file"><span class="std std-ref">Supported features</span></a></p></th>
+</tr>
+<tr class="row-even"><th class="head stub"><p>Name</p></th>
+<th class="head"><p>!bang</p></th>
+<th class="head"><p>Module</p></th>
+<th class="head"><p>Disabled</p></th>
+<th class="head"><p>Timeout</p></th>
+<th class="head"><p>Weight</p></th>
+<th class="head"><p>Paging</p></th>
+<th class="head"><p>Locale</p></th>
+<th class="head"><p>Safe search</p></th>
+<th class="head"><p>Time range</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-odd"><th class="stub"><p><a class="reference external" href="https://www.bing.com/news">bing news</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!bin</span></code></p></td>
+<td><p><a class="reference internal" href="../dev/engines/online/bing.html#module-searx.engines.bing_news" title="searx.engines.bing_news"><code class="xref py py-mod docutils literal notranslate"><span class="pre">bing_news</span></code></a></p></td>
+<td></td>
+<td><p>3.0</p></td>
+<td><p>1</p></td>
+<td><p>y</p></td>
+<td><p>y</p></td>
+<td></td>
+<td><p>y</p></td>
+</tr>
+<tr class="row-even"><th class="stub"><p><a class="reference external" href="https://search.brave.com/">brave.news</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!brnews</span></code></p></td>
+<td><p><a class="reference internal" href="../dev/engines/online/brave.html#module-searx.engines.brave" title="searx.engines.brave"><code class="xref py py-mod docutils literal notranslate"><span class="pre">brave</span></code></a></p></td>
+<td></td>
+<td><p>3.0</p></td>
+<td><p>1</p></td>
+<td></td>
+<td><p>y</p></td>
+<td><p>y</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><th class="stub"><p><a class="reference external" href="https://duckduckgo.com/">duckduckgo news</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!ddn</span></code></p></td>
+<td><p><a class="reference internal" href="../dev/engines/online/duckduckgo.html#module-searx.engines.duckduckgo_extra" title="searx.engines.duckduckgo_extra"><code class="xref py py-mod docutils literal notranslate"><span class="pre">duckduckgo_extra</span></code></a></p></td>
+<td></td>
+<td><p>3.0</p></td>
+<td><p>1</p></td>
+<td><p>y</p></td>
+<td><p>y</p></td>
+<td><p>y</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><th class="stub"><p><a class="reference external" href="https://news.google.com">google news</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!gon</span></code></p></td>
+<td><p><a class="reference internal" href="../dev/engines/online/google.html#module-searx.engines.google_news" title="searx.engines.google_news"><code class="xref py py-mod docutils literal notranslate"><span class="pre">google_news</span></code></a></p></td>
+<td></td>
+<td><p>3.0</p></td>
+<td><p>1</p></td>
+<td></td>
+<td><p>y</p></td>
+<td><p>y</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><th class="stub"><p><a class="reference external" href="https://www.qwant.com/">qwant news</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!qwn</span></code></p></td>
+<td><p><a class="reference internal" href="../dev/engines/online/qwant.html#module-searx.engines.qwant" title="searx.engines.qwant"><code class="xref py py-mod docutils literal notranslate"><span class="pre">qwant</span></code></a></p></td>
+<td></td>
+<td><p>3.0</p></td>
+<td><p>1</p></td>
+<td><p>y</p></td>
+<td><p>y</p></td>
+<td><p>y</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><th class="stub"><p><a class="reference external" href="https://www.reuters.com">reuters</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!reu</span></code></p></td>
+<td><p><a class="reference internal" href="../dev/engines/online/reuters.html#module-searx.engines.reuters" title="searx.engines.reuters"><code class="xref py py-mod docutils literal notranslate"><span class="pre">reuters</span></code></a></p></td>
+<td></td>
+<td><p>3.0</p></td>
+<td><p>1</p></td>
+<td><p>y</p></td>
+<td></td>
+<td></td>
+<td><p>y</p></td>
+</tr>
+<tr class="row-odd"><th class="stub"><p><a class="reference external" href="https://news.yahoo.com">yahoo news</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!yhn</span></code></p></td>
+<td><p><a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/searx/engines/yahoo_news.py">yahoo_news</a></p></td>
+<td></td>
+<td><p>3.0</p></td>
+<td><p>1</p></td>
+<td><p>y</p></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-even"><th class="stub"><p><a class="reference external" href="https://yep.com/">yep news</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!yepn</span></code></p></td>
+<td><p><a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/searx/engines/yep.py">yep</a></p></td>
+<td><p>y</p></td>
+<td><p>3.0</p></td>
+<td><p>1</p></td>
+<td></td>
+<td></td>
+<td><p>y</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><th class="stub"><p><a class="reference external" href="https://tagesschau.de">tagesschau</a>
+(DE)</p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!ts</span></code></p></td>
+<td><p><a class="reference internal" href="../dev/engines/online/tagesschau.html#module-searx.engines.tagesschau" title="searx.engines.tagesschau"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tagesschau</span></code></a></p></td>
+<td><p>y</p></td>
+<td><p>3.0</p></td>
+<td><p>1</p></td>
+<td><p>y</p></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-even"><th class="stub"><p><a class="reference external" href="https://www.ansa.it">ansa</a>
+(IT)</p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!ans</span></code></p></td>
+<td><p><a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/searx/engines/ansa.py">ansa</a></p></td>
+<td><p>y</p></td>
+<td><p>3.0</p></td>
+<td><p>1</p></td>
+<td><p>y</p></td>
+<td></td>
+<td></td>
+<td><p>y</p></td>
+</tr>
+<tr class="row-odd"><th class="stub"><p><a class="reference external" href="https://www.ilpost.it">il post</a>
+(IT)</p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!pst</span></code></p></td>
+<td><p><a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/searx/engines/il_post.py">il_post</a></p></td>
+<td><p>y</p></td>
+<td><p>3.0</p></td>
+<td><p>1</p></td>
+<td><p>y</p></td>
+<td></td>
+<td></td>
+<td><p>y</p></td>
+</tr>
+<tr class="row-even"><th class="stub"><p><a class="reference external" href="https://search.naver.com">naver news</a>
+(KO)</p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!nvrn</span></code></p></td>
+<td><p><a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/searx/engines/naver.py">naver</a></p></td>
+<td><p>y</p></td>
+<td><p>3.0</p></td>
+<td><p>1</p></td>
+<td><p>y</p></td>
+<td></td>
+<td></td>
+<td><p>y</p></td>
+</tr>
+<tr class="row-odd"><th class="stub"><p><a class="reference external" href="https://weixin.sogou.com/">sogou wechat</a>
+(ZH)</p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!sogouw</span></code></p></td>
+<td><p><a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/searx/engines/sogou_wechat.py">sogou_wechat</a></p></td>
+<td><p>y</p></td>
+<td><p>3.0</p></td>
+<td><p>1</p></td>
+<td><p>y</p></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="tab-map">
+<h2><a class="toc-backref" href="#id37" role="doc-backlink">tab <code class="docutils literal notranslate"><span class="pre">!map</span></code></a><a class="headerlink" href="#tab-map" title="Link to this heading">¶</a></h2>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 35.7%" />
+<col style="width: 3.6%" />
+<col style="width: 35.7%" />
+<col style="width: 3.6%" />
+<col style="width: 3.6%" />
+<col style="width: 3.6%" />
+<col style="width: 3.6%" />
+<col style="width: 3.6%" />
+<col style="width: 3.6%" />
+<col style="width: 3.6%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head stub" colspan="6"><p> Engines configured by default (in <a class="reference internal" href="../dev/engines/engine_overview.html#engine-settings"><span class="std std-ref">settings.yml</span></a>)</p></th>
+<th class="head" colspan="4"><p> <a class="reference internal" href="../dev/engines/engine_overview.html#engine-file"><span class="std std-ref">Supported features</span></a></p></th>
+</tr>
+<tr class="row-even"><th class="head stub"><p>Name</p></th>
+<th class="head"><p>!bang</p></th>
+<th class="head"><p>Module</p></th>
+<th class="head"><p>Disabled</p></th>
+<th class="head"><p>Timeout</p></th>
+<th class="head"><p>Weight</p></th>
+<th class="head"><p>Paging</p></th>
+<th class="head"><p>Locale</p></th>
+<th class="head"><p>Safe search</p></th>
+<th class="head"><p>Time range</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-odd"><th class="stub"><p><a class="reference external" href="https://www.apple.com/maps/">apple maps</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!apm</span></code></p></td>
+<td><p><a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/searx/engines/apple_maps.py">apple_maps</a></p></td>
+<td><p>y</p></td>
+<td><p>5.0</p></td>
+<td><p>1</p></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-even"><th class="stub"><p><a class="reference external" href="https://www.openstreetmap.org/">openstreetmap</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!osm</span></code></p></td>
+<td><p><a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/searx/engines/openstreetmap.py">openstreetmap</a></p></td>
+<td></td>
+<td><p>3.0</p></td>
+<td><p>1</p></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-odd"><th class="stub"><p><a class="reference external" href="https://photon.komoot.io">photon</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!ph</span></code></p></td>
+<td><p><a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/searx/engines/photon.py">photon</a></p></td>
+<td></td>
+<td><p>3.0</p></td>
+<td><p>1</p></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="tab-music">
+<h2><a class="toc-backref" href="#id38" role="doc-backlink">tab <code class="docutils literal notranslate"><span class="pre">!music</span></code></a><a class="headerlink" href="#tab-music" title="Link to this heading">¶</a></h2>
+<section id="group-lyrics">
+<h3><a class="toc-backref" href="#id39" role="doc-backlink">group <code class="docutils literal notranslate"><span class="pre">!lyrics</span></code></a><a class="headerlink" href="#group-lyrics" title="Link to this heading">¶</a></h3>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 35.7%" />
+<col style="width: 3.6%" />
+<col style="width: 35.7%" />
+<col style="width: 3.6%" />
+<col style="width: 3.6%" />
+<col style="width: 3.6%" />
+<col style="width: 3.6%" />
+<col style="width: 3.6%" />
+<col style="width: 3.6%" />
+<col style="width: 3.6%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head stub" colspan="6"><p> Engines configured by default (in <a class="reference internal" href="../dev/engines/engine_overview.html#engine-settings"><span class="std std-ref">settings.yml</span></a>)</p></th>
+<th class="head" colspan="4"><p> <a class="reference internal" href="../dev/engines/engine_overview.html#engine-file"><span class="std std-ref">Supported features</span></a></p></th>
+</tr>
+<tr class="row-even"><th class="head stub"><p>Name</p></th>
+<th class="head"><p>!bang</p></th>
+<th class="head"><p>Module</p></th>
+<th class="head"><p>Disabled</p></th>
+<th class="head"><p>Timeout</p></th>
+<th class="head"><p>Weight</p></th>
+<th class="head"><p>Paging</p></th>
+<th class="head"><p>Locale</p></th>
+<th class="head"><p>Safe search</p></th>
+<th class="head"><p>Time range</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-odd"><th class="stub"><p><a class="reference external" href="https://genius.com/">genius</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!gen</span></code></p></td>
+<td><p><a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/searx/engines/genius.py">genius</a></p></td>
+<td></td>
+<td><p>3.0</p></td>
+<td><p>1</p></td>
+<td><p>y</p></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="group-radio">
+<h3><a class="toc-backref" href="#id40" role="doc-backlink">group <code class="docutils literal notranslate"><span class="pre">!radio</span></code></a><a class="headerlink" href="#group-radio" title="Link to this heading">¶</a></h3>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 35.7%" />
+<col style="width: 3.6%" />
+<col style="width: 35.7%" />
+<col style="width: 3.6%" />
+<col style="width: 3.6%" />
+<col style="width: 3.6%" />
+<col style="width: 3.6%" />
+<col style="width: 3.6%" />
+<col style="width: 3.6%" />
+<col style="width: 3.6%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head stub" colspan="6"><p> Engines configured by default (in <a class="reference internal" href="../dev/engines/engine_overview.html#engine-settings"><span class="std std-ref">settings.yml</span></a>)</p></th>
+<th class="head" colspan="4"><p> <a class="reference internal" href="../dev/engines/engine_overview.html#engine-file"><span class="std std-ref">Supported features</span></a></p></th>
+</tr>
+<tr class="row-even"><th class="head stub"><p>Name</p></th>
+<th class="head"><p>!bang</p></th>
+<th class="head"><p>Module</p></th>
+<th class="head"><p>Disabled</p></th>
+<th class="head"><p>Timeout</p></th>
+<th class="head"><p>Weight</p></th>
+<th class="head"><p>Paging</p></th>
+<th class="head"><p>Locale</p></th>
+<th class="head"><p>Safe search</p></th>
+<th class="head"><p>Time range</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-odd"><th class="stub"><p><a class="reference external" href="https://www.radio-browser.info/">radio browser</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!rb</span></code></p></td>
+<td><p><a class="reference internal" href="../dev/engines/online/radio_browser.html#module-searx.engines.radio_browser" title="searx.engines.radio_browser"><code class="xref py py-mod docutils literal notranslate"><span class="pre">radio_browser</span></code></a></p></td>
+<td></td>
+<td><p>3.0</p></td>
+<td><p>1</p></td>
+<td><p>y</p></td>
+<td><p>y</p></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="id10">
+<h3><a class="toc-backref" href="#id41" role="doc-backlink">without further subgrouping</a><a class="headerlink" href="#id10" title="Link to this heading">¶</a></h3>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 35.7%" />
+<col style="width: 3.6%" />
+<col style="width: 35.7%" />
+<col style="width: 3.6%" />
+<col style="width: 3.6%" />
+<col style="width: 3.6%" />
+<col style="width: 3.6%" />
+<col style="width: 3.6%" />
+<col style="width: 3.6%" />
+<col style="width: 3.6%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head stub" colspan="6"><p> Engines configured by default (in <a class="reference internal" href="../dev/engines/engine_overview.html#engine-settings"><span class="std std-ref">settings.yml</span></a>)</p></th>
+<th class="head" colspan="4"><p> <a class="reference internal" href="../dev/engines/engine_overview.html#engine-file"><span class="std std-ref">Supported features</span></a></p></th>
+</tr>
+<tr class="row-even"><th class="head stub"><p>Name</p></th>
+<th class="head"><p>!bang</p></th>
+<th class="head"><p>Module</p></th>
+<th class="head"><p>Disabled</p></th>
+<th class="head"><p>Timeout</p></th>
+<th class="head"><p>Weight</p></th>
+<th class="head"><p>Paging</p></th>
+<th class="head"><p>Locale</p></th>
+<th class="head"><p>Safe search</p></th>
+<th class="head"><p>Time range</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-odd"><th class="stub"><p><a class="reference external" href="https://stock.adobe.com/">adobe stock audio</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!asa</span></code></p></td>
+<td><p><a class="reference internal" href="../dev/engines/online/adobe_stock.html#module-searx.engines.adobe_stock" title="searx.engines.adobe_stock"><code class="xref py py-mod docutils literal notranslate"><span class="pre">adobe_stock</span></code></a></p></td>
+<td><p>y</p></td>
+<td><p>6</p></td>
+<td><p>1</p></td>
+<td><p>y</p></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-even"><th class="stub"><p><a class="reference external" href="https://bandcamp.com/">bandcamp</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!bc</span></code></p></td>
+<td><p><a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/searx/engines/bandcamp.py">bandcamp</a></p></td>
+<td></td>
+<td><p>3.0</p></td>
+<td><p>1</p></td>
+<td><p>y</p></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-odd"><th class="stub"><p><a class="reference external" href="https://deezer.com">deezer</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!dz</span></code></p></td>
+<td><p><a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/searx/engines/deezer.py">deezer</a></p></td>
+<td><p>y</p></td>
+<td><p>3.0</p></td>
+<td><p>1</p></td>
+<td><p>y</p></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-even"><th class="stub"><p><a class="reference external" href="https://www.mixcloud.com/">mixcloud</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!mc</span></code></p></td>
+<td><p><a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/searx/engines/mixcloud.py">mixcloud</a></p></td>
+<td></td>
+<td><p>3.0</p></td>
+<td><p>1</p></td>
+<td><p>y</p></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-odd"><th class="stub"><p><a class="reference external" href="https://soundcloud.com">soundcloud</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!sc</span></code></p></td>
+<td><p><a class="reference internal" href="../dev/engines/online/soundcloud.html#module-searx.engines.soundcloud" title="searx.engines.soundcloud"><code class="xref py py-mod docutils literal notranslate"><span class="pre">soundcloud</span></code></a></p></td>
+<td></td>
+<td><p>3.0</p></td>
+<td><p>1</p></td>
+<td><p>y</p></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-even"><th class="stub"><p><a class="reference external" href="https://commons.wikimedia.org/">wikicommons.audio</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!wca</span></code></p></td>
+<td><p><a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/searx/engines/wikicommons.py">wikicommons</a></p></td>
+<td></td>
+<td><p>3.0</p></td>
+<td><p>1</p></td>
+<td><p>y</p></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-odd"><th class="stub"><p><a class="reference external" href="https://music.yandex.ru">yandex music</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!ydm</span></code></p></td>
+<td><p><a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/searx/engines/yandex_music.py">yandex_music</a></p></td>
+<td><p>y</p></td>
+<td><p>3.0</p></td>
+<td><p>1</p></td>
+<td><p>y</p></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-even"><th class="stub"><p><a class="reference external" href="https://www.youtube.com/">youtube</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!yt</span></code></p></td>
+<td><p><a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/searx/engines/youtube_noapi.py">youtube_noapi</a></p></td>
+<td></td>
+<td><p>3.0</p></td>
+<td><p>1</p></td>
+<td><p>y</p></td>
+<td></td>
+<td></td>
+<td><p>y</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="tab-it">
+<h2><a class="toc-backref" href="#id42" role="doc-backlink">tab <code class="docutils literal notranslate"><span class="pre">!it</span></code></a><a class="headerlink" href="#tab-it" title="Link to this heading">¶</a></h2>
+<section id="group-packages">
+<h3><a class="toc-backref" href="#id43" role="doc-backlink">group <code class="docutils literal notranslate"><span class="pre">!packages</span></code></a><a class="headerlink" href="#group-packages" title="Link to this heading">¶</a></h3>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 35.7%" />
+<col style="width: 3.6%" />
+<col style="width: 35.7%" />
+<col style="width: 3.6%" />
+<col style="width: 3.6%" />
+<col style="width: 3.6%" />
+<col style="width: 3.6%" />
+<col style="width: 3.6%" />
+<col style="width: 3.6%" />
+<col style="width: 3.6%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head stub" colspan="6"><p> Engines configured by default (in <a class="reference internal" href="../dev/engines/engine_overview.html#engine-settings"><span class="std std-ref">settings.yml</span></a>)</p></th>
+<th class="head" colspan="4"><p> <a class="reference internal" href="../dev/engines/engine_overview.html#engine-file"><span class="std std-ref">Supported features</span></a></p></th>
+</tr>
+<tr class="row-even"><th class="head stub"><p>Name</p></th>
+<th class="head"><p>!bang</p></th>
+<th class="head"><p>Module</p></th>
+<th class="head"><p>Disabled</p></th>
+<th class="head"><p>Timeout</p></th>
+<th class="head"><p>Weight</p></th>
+<th class="head"><p>Paging</p></th>
+<th class="head"><p>Locale</p></th>
+<th class="head"><p>Safe search</p></th>
+<th class="head"><p>Time range</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-odd"><th class="stub"><p><a class="reference external" href="https://www.alpinelinux.org">alpine linux packages</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!alp</span></code></p></td>
+<td><p><a class="reference internal" href="../dev/engines/online/alpinelinux.html#module-searx.engines.alpinelinux" title="searx.engines.alpinelinux"><code class="xref py py-mod docutils literal notranslate"><span class="pre">alpinelinux</span></code></a></p></td>
+<td><p>y</p></td>
+<td><p>3.0</p></td>
+<td><p>1</p></td>
+<td><p>y</p></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-even"><th class="stub"><p><a class="reference external" href="https://cachyos.org">cachy os packages</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!cos</span></code></p></td>
+<td><p><a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/searx/engines/cachy_os.py">cachy_os</a></p></td>
+<td><p>y</p></td>
+<td><p>3.0</p></td>
+<td><p>1</p></td>
+<td><p>y</p></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-odd"><th class="stub"><p><a class="reference external" href="https://crates.io/">crates.io</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!crates</span></code></p></td>
+<td><p><a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/searx/engines/crates.py">crates</a></p></td>
+<td><p>y</p></td>
+<td><p>6.0</p></td>
+<td><p>1</p></td>
+<td><p>y</p></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-even"><th class="stub"><p><a class="reference external" href="https://hub.docker.com">docker hub</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!dh</span></code></p></td>
+<td><p><a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/searx/engines/docker_hub.py">docker_hub</a></p></td>
+<td></td>
+<td><p>3.0</p></td>
+<td><p>1</p></td>
+<td><p>y</p></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-odd"><th class="stub"><p><a class="reference external" href="https://hex.pm/">hex</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!hex</span></code></p></td>
+<td><p><a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/searx/engines/hex.py">hex</a></p></td>
+<td><p>y</p></td>
+<td><p>3.0</p></td>
+<td><p>1</p></td>
+<td><p>y</p></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-even"><th class="stub"><p><a class="reference external" href="https://hoogle.haskell.org/">hoogle</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!ho</span></code></p></td>
+<td><p><a class="reference internal" href="../dev/engines/xpath.html#module-searx.engines.xpath" title="searx.engines.xpath"><code class="xref py py-mod docutils literal notranslate"><span class="pre">xpath</span></code></a></p></td>
+<td></td>
+<td><p>3.0</p></td>
+<td><p>1</p></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-odd"><th class="stub"><p><a class="reference external" href="https://lib.rs">lib.rs</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!lrs</span></code></p></td>
+<td><p><a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/searx/engines/lib_rs.py">lib_rs</a></p></td>
+<td><p>y</p></td>
+<td><p>3.0</p></td>
+<td><p>1</p></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-even"><th class="stub"><p><a class="reference external" href="https://metacpan.org/">metacpan</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!cpan</span></code></p></td>
+<td><p><a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/searx/engines/metacpan.py">metacpan</a></p></td>
+<td><p>y</p></td>
+<td><p>3.0</p></td>
+<td><p>1</p></td>
+<td><p>y</p></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-odd"><th class="stub"><p><a class="reference external" href="https://npms.io/">npm</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!npm</span></code></p></td>
+<td><p><a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/searx/engines/npm.py">npm</a></p></td>
+<td><p>y</p></td>
+<td><p>5.0</p></td>
+<td><p>1</p></td>
+<td><p>y</p></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-even"><th class="stub"><p><a class="reference external" href="https://packagist.org">packagist</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!pack</span></code></p></td>
+<td><p><a class="reference internal" href="../dev/engines/json_engine.html#module-searx.engines.json_engine" title="searx.engines.json_engine"><code class="xref py py-mod docutils literal notranslate"><span class="pre">json_engine</span></code></a></p></td>
+<td><p>y</p></td>
+<td><p>5.0</p></td>
+<td><p>1</p></td>
+<td><p>y</p></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-odd"><th class="stub"><p><a class="reference external" href="https://pkg.go.dev/">pkg.go.dev</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!pgo</span></code></p></td>
+<td><p><a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/searx/engines/pkg_go_dev.py">pkg_go_dev</a></p></td>
+<td><p>y</p></td>
+<td><p>3.0</p></td>
+<td><p>1</p></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-even"><th class="stub"><p><a class="reference external" href="https://pub.dev/">pub.dev</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!pd</span></code></p></td>
+<td><p><a class="reference internal" href="../dev/engines/xpath.html#module-searx.engines.xpath" title="searx.engines.xpath"><code class="xref py py-mod docutils literal notranslate"><span class="pre">xpath</span></code></a></p></td>
+<td><p>y</p></td>
+<td><p>3.0</p></td>
+<td><p>1</p></td>
+<td><p>y</p></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-odd"><th class="stub"><p><a class="reference external" href="https://pypi.org">pypi</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!pypi</span></code></p></td>
+<td><p><a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/searx/engines/pypi.py">pypi</a></p></td>
+<td></td>
+<td><p>3.0</p></td>
+<td><p>1</p></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-even"><th class="stub"><p><a class="reference external" href="https://rubygems.org/">rubygems</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!rbg</span></code></p></td>
+<td><p><a class="reference internal" href="../dev/engines/xpath.html#module-searx.engines.xpath" title="searx.engines.xpath"><code class="xref py py-mod docutils literal notranslate"><span class="pre">xpath</span></code></a></p></td>
+<td><p>y</p></td>
+<td><p>3.0</p></td>
+<td><p>1</p></td>
+<td><p>y</p></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-odd"><th class="stub"><p><a class="reference external" href="https://voidlinux.org/packages/">voidlinux</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!void</span></code></p></td>
+<td><p><a class="reference internal" href="../dev/engines/online/void.html#module-searx.engines.voidlinux" title="searx.engines.voidlinux"><code class="xref py py-mod docutils literal notranslate"><span class="pre">voidlinux</span></code></a></p></td>
+<td><p>y</p></td>
+<td><p>3.0</p></td>
+<td><p>1</p></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="group-q-a">
+<h3><a class="toc-backref" href="#id44" role="doc-backlink">group <code class="docutils literal notranslate"><span class="pre">!q&amp;a</span></code></a><a class="headerlink" href="#group-q-a" title="Link to this heading">¶</a></h3>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 35.7%" />
+<col style="width: 3.6%" />
+<col style="width: 35.7%" />
+<col style="width: 3.6%" />
+<col style="width: 3.6%" />
+<col style="width: 3.6%" />
+<col style="width: 3.6%" />
+<col style="width: 3.6%" />
+<col style="width: 3.6%" />
+<col style="width: 3.6%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head stub" colspan="6"><p> Engines configured by default (in <a class="reference internal" href="../dev/engines/engine_overview.html#engine-settings"><span class="std std-ref">settings.yml</span></a>)</p></th>
+<th class="head" colspan="4"><p> <a class="reference internal" href="../dev/engines/engine_overview.html#engine-file"><span class="std std-ref">Supported features</span></a></p></th>
+</tr>
+<tr class="row-even"><th class="head stub"><p>Name</p></th>
+<th class="head"><p>!bang</p></th>
+<th class="head"><p>Module</p></th>
+<th class="head"><p>Disabled</p></th>
+<th class="head"><p>Timeout</p></th>
+<th class="head"><p>Weight</p></th>
+<th class="head"><p>Paging</p></th>
+<th class="head"><p>Locale</p></th>
+<th class="head"><p>Safe search</p></th>
+<th class="head"><p>Time range</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-odd"><th class="stub"><p><a class="reference external" href="https://stackexchange.com">askubuntu</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!ubuntu</span></code></p></td>
+<td><p><a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/searx/engines/stackexchange.py">stackexchange</a></p></td>
+<td></td>
+<td><p>3.0</p></td>
+<td><p>1</p></td>
+<td><p>y</p></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-even"><th class="stub"><p><a class="reference external" href="https://discourse.org/">caddy.community</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!caddy</span></code></p></td>
+<td><p><a class="reference internal" href="../dev/engines/online/discourse.html#module-searx.engines.discourse" title="searx.engines.discourse"><code class="xref py py-mod docutils literal notranslate"><span class="pre">discourse</span></code></a></p></td>
+<td><p>y</p></td>
+<td><p>3.0</p></td>
+<td><p>1</p></td>
+<td><p>y</p></td>
+<td></td>
+<td></td>
+<td><p>y</p></td>
+</tr>
+<tr class="row-odd"><th class="stub"><p><a class="reference external" href="https://discourse.org/">discuss.python</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!dpy</span></code></p></td>
+<td><p><a class="reference internal" href="../dev/engines/online/discourse.html#module-searx.engines.discourse" title="searx.engines.discourse"><code class="xref py py-mod docutils literal notranslate"><span class="pre">discourse</span></code></a></p></td>
+<td><p>y</p></td>
+<td><p>3.0</p></td>
+<td><p>1</p></td>
+<td><p>y</p></td>
+<td></td>
+<td></td>
+<td><p>y</p></td>
+</tr>
+<tr class="row-even"><th class="stub"><p><a class="reference external" href="https://discourse.org/">pi-hole.community</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!pi</span></code></p></td>
+<td><p><a class="reference internal" href="../dev/engines/online/discourse.html#module-searx.engines.discourse" title="searx.engines.discourse"><code class="xref py py-mod docutils literal notranslate"><span class="pre">discourse</span></code></a></p></td>
+<td><p>y</p></td>
+<td><p>3.0</p></td>
+<td><p>1</p></td>
+<td><p>y</p></td>
+<td></td>
+<td></td>
+<td><p>y</p></td>
+</tr>
+<tr class="row-odd"><th class="stub"><p><a class="reference external" href="https://stackexchange.com">stackoverflow</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!st</span></code></p></td>
+<td><p><a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/searx/engines/stackexchange.py">stackexchange</a></p></td>
+<td></td>
+<td><p>3.0</p></td>
+<td><p>1</p></td>
+<td><p>y</p></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-even"><th class="stub"><p><a class="reference external" href="https://stackexchange.com">superuser</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!su</span></code></p></td>
+<td><p><a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/searx/engines/stackexchange.py">stackexchange</a></p></td>
+<td></td>
+<td><p>3.0</p></td>
+<td><p>1</p></td>
+<td><p>y</p></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="group-repos">
+<h3><a class="toc-backref" href="#id45" role="doc-backlink">group <code class="docutils literal notranslate"><span class="pre">!repos</span></code></a><a class="headerlink" href="#group-repos" title="Link to this heading">¶</a></h3>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 35.7%" />
+<col style="width: 3.6%" />
+<col style="width: 35.7%" />
+<col style="width: 3.6%" />
+<col style="width: 3.6%" />
+<col style="width: 3.6%" />
+<col style="width: 3.6%" />
+<col style="width: 3.6%" />
+<col style="width: 3.6%" />
+<col style="width: 3.6%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head stub" colspan="6"><p> Engines configured by default (in <a class="reference internal" href="../dev/engines/engine_overview.html#engine-settings"><span class="std std-ref">settings.yml</span></a>)</p></th>
+<th class="head" colspan="4"><p> <a class="reference internal" href="../dev/engines/engine_overview.html#engine-file"><span class="std std-ref">Supported features</span></a></p></th>
+</tr>
+<tr class="row-even"><th class="head stub"><p>Name</p></th>
+<th class="head"><p>!bang</p></th>
+<th class="head"><p>Module</p></th>
+<th class="head"><p>Disabled</p></th>
+<th class="head"><p>Timeout</p></th>
+<th class="head"><p>Weight</p></th>
+<th class="head"><p>Paging</p></th>
+<th class="head"><p>Locale</p></th>
+<th class="head"><p>Safe search</p></th>
+<th class="head"><p>Time range</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-odd"><th class="stub"><p><a class="reference external" href="https://bitbucket.org/">bitbucket</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!bb</span></code></p></td>
+<td><p><a class="reference internal" href="../dev/engines/xpath.html#module-searx.engines.xpath" title="searx.engines.xpath"><code class="xref py py-mod docutils literal notranslate"><span class="pre">xpath</span></code></a></p></td>
+<td><p>y</p></td>
+<td><p>4.0</p></td>
+<td><p>1</p></td>
+<td><p>y</p></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-even"><th class="stub"><p><a class="reference external" href="https://about.gitea.com">codeberg</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!cb</span></code></p></td>
+<td><p><a class="reference internal" href="../dev/engines/online/gitea.html#module-searx.engines.gitea" title="searx.engines.gitea"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gitea</span></code></a></p></td>
+<td><p>y</p></td>
+<td><p>3.0</p></td>
+<td><p>1</p></td>
+<td><p>y</p></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-odd"><th class="stub"><p><a class="reference external" href="https://about.gitea.com">gitea.com</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!gitea</span></code></p></td>
+<td><p><a class="reference internal" href="../dev/engines/online/gitea.html#module-searx.engines.gitea" title="searx.engines.gitea"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gitea</span></code></a></p></td>
+<td><p>y</p></td>
+<td><p>3.0</p></td>
+<td><p>1</p></td>
+<td><p>y</p></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-even"><th class="stub"><p><a class="reference external" href="https://github.com/">github</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!gh</span></code></p></td>
+<td><p><a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/searx/engines/github.py">github</a></p></td>
+<td></td>
+<td><p>3.0</p></td>
+<td><p>1</p></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-odd"><th class="stub"><p><a class="reference external" href="https://gitlab.com/">gitlab</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!gl</span></code></p></td>
+<td><p><a class="reference internal" href="../dev/engines/online/gitlab.html#module-searx.engines.gitlab" title="searx.engines.gitlab"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gitlab</span></code></a></p></td>
+<td><p>y</p></td>
+<td><p>3.0</p></td>
+<td><p>1</p></td>
+<td><p>y</p></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-even"><th class="stub"><p><a class="reference external" href="https://huggingface.co/">huggingface</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!hf</span></code></p></td>
+<td><p><a class="reference internal" href="../dev/engines/online/huggingface.html#module-searx.engines.huggingface" title="searx.engines.huggingface"><code class="xref py py-mod docutils literal notranslate"><span class="pre">huggingface</span></code></a></p></td>
+<td><p>y</p></td>
+<td><p>3.0</p></td>
+<td><p>1</p></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-odd"><th class="stub"><p><a class="reference external" href="https://huggingface.co/">huggingface datasets</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!hfd</span></code></p></td>
+<td><p><a class="reference internal" href="../dev/engines/online/huggingface.html#module-searx.engines.huggingface" title="searx.engines.huggingface"><code class="xref py py-mod docutils literal notranslate"><span class="pre">huggingface</span></code></a></p></td>
+<td><p>y</p></td>
+<td><p>3.0</p></td>
+<td><p>1</p></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-even"><th class="stub"><p><a class="reference external" href="https://huggingface.co/">huggingface spaces</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!hfs</span></code></p></td>
+<td><p><a class="reference internal" href="../dev/engines/online/huggingface.html#module-searx.engines.huggingface" title="searx.engines.huggingface"><code class="xref py py-mod docutils literal notranslate"><span class="pre">huggingface</span></code></a></p></td>
+<td><p>y</p></td>
+<td><p>3.0</p></td>
+<td><p>1</p></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-odd"><th class="stub"><p><a class="reference external" href="https://ollama.com">ollama</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!ollama</span></code></p></td>
+<td><p><a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/searx/engines/ollama.py">ollama</a></p></td>
+<td><p>y</p></td>
+<td><p>3.0</p></td>
+<td><p>1</p></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-even"><th class="stub"><p><a class="reference external" href="https://sourcehut.org">sourcehut</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!srht</span></code></p></td>
+<td><p><a class="reference internal" href="../dev/engines/online/sourcehut.html#module-searx.engines.sourcehut" title="searx.engines.sourcehut"><code class="xref py py-mod docutils literal notranslate"><span class="pre">sourcehut</span></code></a></p></td>
+<td><p>y</p></td>
+<td><p>3.0</p></td>
+<td><p>1</p></td>
+<td><p>y</p></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="group-software-wikis">
+<h3><a class="toc-backref" href="#id46" role="doc-backlink">group <code class="docutils literal notranslate"><span class="pre">!software_wikis</span></code></a><a class="headerlink" href="#group-software-wikis" title="Link to this heading">¶</a></h3>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 35.7%" />
+<col style="width: 3.6%" />
+<col style="width: 35.7%" />
+<col style="width: 3.6%" />
+<col style="width: 3.6%" />
+<col style="width: 3.6%" />
+<col style="width: 3.6%" />
+<col style="width: 3.6%" />
+<col style="width: 3.6%" />
+<col style="width: 3.6%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head stub" colspan="6"><p> Engines configured by default (in <a class="reference internal" href="../dev/engines/engine_overview.html#engine-settings"><span class="std std-ref">settings.yml</span></a>)</p></th>
+<th class="head" colspan="4"><p> <a class="reference internal" href="../dev/engines/engine_overview.html#engine-file"><span class="std std-ref">Supported features</span></a></p></th>
+</tr>
+<tr class="row-even"><th class="head stub"><p>Name</p></th>
+<th class="head"><p>!bang</p></th>
+<th class="head"><p>Module</p></th>
+<th class="head"><p>Disabled</p></th>
+<th class="head"><p>Timeout</p></th>
+<th class="head"><p>Weight</p></th>
+<th class="head"><p>Paging</p></th>
+<th class="head"><p>Locale</p></th>
+<th class="head"><p>Safe search</p></th>
+<th class="head"><p>Time range</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-odd"><th class="stub"><p><a class="reference external" href="https://wiki.archlinux.org/">arch linux wiki</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!al</span></code></p></td>
+<td><p><a class="reference internal" href="../dev/engines/online/archlinux.html#module-searx.engines.archlinux" title="searx.engines.archlinux"><code class="xref py py-mod docutils literal notranslate"><span class="pre">archlinux</span></code></a></p></td>
+<td></td>
+<td><p>3.0</p></td>
+<td><p>1</p></td>
+<td><p>y</p></td>
+<td><p>y</p></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-even"><th class="stub"><p><a class="reference external" href="https://directory.fsf.org/">free software directory</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!fsd</span></code></p></td>
+<td><p><a class="reference internal" href="../dev/engines/mediawiki.html#module-searx.engines.mediawiki" title="searx.engines.mediawiki"><code class="xref py py-mod docutils literal notranslate"><span class="pre">mediawiki</span></code></a></p></td>
+<td><p>y</p></td>
+<td><p>5.0</p></td>
+<td><p>1</p></td>
+<td><p>y</p></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-odd"><th class="stub"><p><a class="reference external" href="None">gentoo</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!ge</span></code></p></td>
+<td><p><a class="reference internal" href="../dev/engines/mediawiki.html#module-searx.engines.mediawiki" title="searx.engines.mediawiki"><code class="xref py py-mod docutils literal notranslate"><span class="pre">mediawiki</span></code></a></p></td>
+<td></td>
+<td><p>10</p></td>
+<td><p>1</p></td>
+<td><p>y</p></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-even"><th class="stub"><p><a class="reference external" href="None">nixos wiki</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!nixw</span></code></p></td>
+<td><p><a class="reference internal" href="../dev/engines/mediawiki.html#module-searx.engines.mediawiki" title="searx.engines.mediawiki"><code class="xref py py-mod docutils literal notranslate"><span class="pre">mediawiki</span></code></a></p></td>
+<td><p>y</p></td>
+<td><p>3.0</p></td>
+<td><p>1</p></td>
+<td><p>y</p></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="id12">
+<h3><a class="toc-backref" href="#id47" role="doc-backlink">without further subgrouping</a><a class="headerlink" href="#id12" title="Link to this heading">¶</a></h3>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 35.7%" />
+<col style="width: 3.6%" />
+<col style="width: 35.7%" />
+<col style="width: 3.6%" />
+<col style="width: 3.6%" />
+<col style="width: 3.6%" />
+<col style="width: 3.6%" />
+<col style="width: 3.6%" />
+<col style="width: 3.6%" />
+<col style="width: 3.6%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head stub" colspan="6"><p> Engines configured by default (in <a class="reference internal" href="../dev/engines/engine_overview.html#engine-settings"><span class="std std-ref">settings.yml</span></a>)</p></th>
+<th class="head" colspan="4"><p> <a class="reference internal" href="../dev/engines/engine_overview.html#engine-file"><span class="std std-ref">Supported features</span></a></p></th>
+</tr>
+<tr class="row-even"><th class="head stub"><p>Name</p></th>
+<th class="head"><p>!bang</p></th>
+<th class="head"><p>Module</p></th>
+<th class="head"><p>Disabled</p></th>
+<th class="head"><p>Timeout</p></th>
+<th class="head"><p>Weight</p></th>
+<th class="head"><p>Paging</p></th>
+<th class="head"><p>Locale</p></th>
+<th class="head"><p>Safe search</p></th>
+<th class="head"><p>Time range</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-odd"><th class="stub"><p><a class="reference external" href="{}">anaconda</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!conda</span></code></p></td>
+<td><p><a class="reference internal" href="../dev/engines/xpath.html#module-searx.engines.xpath" title="searx.engines.xpath"><code class="xref py py-mod docutils literal notranslate"><span class="pre">xpath</span></code></a></p></td>
+<td><p>y</p></td>
+<td><p>6.0</p></td>
+<td><p>1</p></td>
+<td><p>y</p></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-even"><th class="stub"><p><a class="reference external" href="https://habr.com/">habrahabr</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!habr</span></code></p></td>
+<td><p><a class="reference internal" href="../dev/engines/xpath.html#module-searx.engines.xpath" title="searx.engines.xpath"><code class="xref py py-mod docutils literal notranslate"><span class="pre">xpath</span></code></a></p></td>
+<td><p>y</p></td>
+<td><p>4.0</p></td>
+<td><p>1</p></td>
+<td><p>y</p></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-odd"><th class="stub"><p><a class="reference external" href="https://news.ycombinator.com/">hackernews</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!hn</span></code></p></td>
+<td><p><a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/searx/engines/hackernews.py">hackernews</a></p></td>
+<td><p>y</p></td>
+<td><p>3.0</p></td>
+<td><p>1</p></td>
+<td><p>y</p></td>
+<td></td>
+<td></td>
+<td><p>y</p></td>
+</tr>
+<tr class="row-even"><th class="stub"><p><a class="reference external" href="https://lobste.rs/">lobste.rs</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!lo</span></code></p></td>
+<td><p><a class="reference internal" href="../dev/engines/xpath.html#module-searx.engines.xpath" title="searx.engines.xpath"><code class="xref py py-mod docutils literal notranslate"><span class="pre">xpath</span></code></a></p></td>
+<td><p>y</p></td>
+<td><p>5.0</p></td>
+<td><p>1</p></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-odd"><th class="stub"><p><a class="reference external" href="https://www.mankier.com/">mankier</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!man</span></code></p></td>
+<td><p><a class="reference internal" href="../dev/engines/json_engine.html#module-searx.engines.json_engine" title="searx.engines.json_engine"><code class="xref py py-mod docutils literal notranslate"><span class="pre">json_engine</span></code></a></p></td>
+<td></td>
+<td><p>3.0</p></td>
+<td><p>1</p></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-even"><th class="stub"><p><a class="reference external" href="https://developer.mozilla.org">mdn</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!mdn</span></code></p></td>
+<td><p><a class="reference internal" href="../dev/engines/json_engine.html#module-searx.engines.json_engine" title="searx.engines.json_engine"><code class="xref py py-mod docutils literal notranslate"><span class="pre">json_engine</span></code></a></p></td>
+<td></td>
+<td><p>3.0</p></td>
+<td><p>1</p></td>
+<td><p>y</p></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-odd"><th class="stub"><p><a class="reference external" href="https://learn.microsoft.com">microsoft learn</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!msl</span></code></p></td>
+<td><p><a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/searx/engines/microsoft_learn.py">microsoft_learn</a></p></td>
+<td><p>y</p></td>
+<td><p>3.0</p></td>
+<td><p>1</p></td>
+<td><p>y</p></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-even"><th class="stub"><p><a class="reference external" href="https://nvd.nist.gov">national vulnerability database</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!nvd</span></code></p></td>
+<td><p><a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/searx/engines/nvd.py">nvd</a></p></td>
+<td><p>y</p></td>
+<td><p>3.0</p></td>
+<td><p>1</p></td>
+<td><p>y</p></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-odd"><th class="stub"><p><a class="reference external" href="https://www.baidu.com">baidu kaifa</a>
+(ZH)</p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!bdk</span></code></p></td>
+<td><p><a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/searx/engines/baidu.py">baidu</a></p></td>
+<td><p>y</p></td>
+<td><p>3.0</p></td>
+<td><p>1</p></td>
+<td><p>y</p></td>
+<td></td>
+<td></td>
+<td><p>y</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="tab-science">
+<h2><a class="toc-backref" href="#id48" role="doc-backlink">tab <code class="docutils literal notranslate"><span class="pre">!science</span></code></a><a class="headerlink" href="#tab-science" title="Link to this heading">¶</a></h2>
+<section id="group-scientific-publications">
+<h3><a class="toc-backref" href="#id49" role="doc-backlink">group <code class="docutils literal notranslate"><span class="pre">!scientific_publications</span></code></a><a class="headerlink" href="#group-scientific-publications" title="Link to this heading">¶</a></h3>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 35.7%" />
+<col style="width: 3.6%" />
+<col style="width: 35.7%" />
+<col style="width: 3.6%" />
+<col style="width: 3.6%" />
+<col style="width: 3.6%" />
+<col style="width: 3.6%" />
+<col style="width: 3.6%" />
+<col style="width: 3.6%" />
+<col style="width: 3.6%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head stub" colspan="6"><p> Engines configured by default (in <a class="reference internal" href="../dev/engines/engine_overview.html#engine-settings"><span class="std std-ref">settings.yml</span></a>)</p></th>
+<th class="head" colspan="4"><p> <a class="reference internal" href="../dev/engines/engine_overview.html#engine-file"><span class="std std-ref">Supported features</span></a></p></th>
+</tr>
+<tr class="row-even"><th class="head stub"><p>Name</p></th>
+<th class="head"><p>!bang</p></th>
+<th class="head"><p>Module</p></th>
+<th class="head"><p>Disabled</p></th>
+<th class="head"><p>Timeout</p></th>
+<th class="head"><p>Weight</p></th>
+<th class="head"><p>Paging</p></th>
+<th class="head"><p>Locale</p></th>
+<th class="head"><p>Safe search</p></th>
+<th class="head"><p>Time range</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-odd"><th class="stub"><p><a class="reference external" href="https://arxiv.org">arxiv</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!arx</span></code></p></td>
+<td><p><a class="reference internal" href="../dev/engines/online/arxiv.html#module-searx.engines.arxiv" title="searx.engines.arxiv"><code class="xref py py-mod docutils literal notranslate"><span class="pre">arxiv</span></code></a></p></td>
+<td></td>
+<td><p>3.0</p></td>
+<td><p>1</p></td>
+<td><p>y</p></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-even"><th class="stub"><p><a class="reference external" href="https://www.crossref.org/">crossref</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!cr</span></code></p></td>
+<td><p><a class="reference internal" href="../dev/engines/online/crossref.html#module-searx.engines.crossref" title="searx.engines.crossref"><code class="xref py py-mod docutils literal notranslate"><span class="pre">crossref</span></code></a></p></td>
+<td><p>y</p></td>
+<td><p>30</p></td>
+<td><p>1</p></td>
+<td><p>y</p></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-odd"><th class="stub"><p><a class="reference external" href="https://scholar.google.com">google scholar</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!gos</span></code></p></td>
+<td><p><a class="reference internal" href="../dev/engines/online/google.html#module-searx.engines.google_scholar" title="searx.engines.google_scholar"><code class="xref py py-mod docutils literal notranslate"><span class="pre">google_scholar</span></code></a></p></td>
+<td></td>
+<td><p>3.0</p></td>
+<td><p>1</p></td>
+<td><p>y</p></td>
+<td><p>y</p></td>
+<td></td>
+<td><p>y</p></td>
+</tr>
+<tr class="row-even"><th class="stub"><p><a class="reference external" href="https://openalex.org/">openalex</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!oa</span></code></p></td>
+<td><p><a class="reference internal" href="../dev/engines/online/openalex.html#module-searx.engines.openalex" title="searx.engines.openalex"><code class="xref py py-mod docutils literal notranslate"><span class="pre">openalex</span></code></a></p></td>
+<td><p>y</p></td>
+<td><p>5.0</p></td>
+<td><p>1</p></td>
+<td><p>y</p></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-odd"><th class="stub"><p><a class="reference external" href="https://www.ncbi.nlm.nih.gov/pubmed/">pubmed</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!pub</span></code></p></td>
+<td><p><a class="reference internal" href="../dev/engines/online/pubmed.html#module-searx.engines.pubmed" title="searx.engines.pubmed"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pubmed</span></code></a></p></td>
+<td></td>
+<td><p>3.0</p></td>
+<td><p>1</p></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-even"><th class="stub"><p><a class="reference external" href="https://www.semanticscholar.org/">semantic scholar</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!se</span></code></p></td>
+<td><p><a class="reference internal" href="../dev/engines/online/semantic_scholar.html#module-searx.engines.semantic_scholar" title="searx.engines.semantic_scholar"><code class="xref py py-mod docutils literal notranslate"><span class="pre">semantic_scholar</span></code></a></p></td>
+<td></td>
+<td><p>3.0</p></td>
+<td><p>1</p></td>
+<td><p>y</p></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="id13">
+<h3><a class="toc-backref" href="#id50" role="doc-backlink">group <code class="docutils literal notranslate"><span class="pre">!wikimedia</span></code></a><a class="headerlink" href="#id13" title="Link to this heading">¶</a></h3>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 35.7%" />
+<col style="width: 3.6%" />
+<col style="width: 35.7%" />
+<col style="width: 3.6%" />
+<col style="width: 3.6%" />
+<col style="width: 3.6%" />
+<col style="width: 3.6%" />
+<col style="width: 3.6%" />
+<col style="width: 3.6%" />
+<col style="width: 3.6%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head stub" colspan="6"><p> Engines configured by default (in <a class="reference internal" href="../dev/engines/engine_overview.html#engine-settings"><span class="std std-ref">settings.yml</span></a>)</p></th>
+<th class="head" colspan="4"><p> <a class="reference internal" href="../dev/engines/engine_overview.html#engine-file"><span class="std std-ref">Supported features</span></a></p></th>
+</tr>
+<tr class="row-even"><th class="head stub"><p>Name</p></th>
+<th class="head"><p>!bang</p></th>
+<th class="head"><p>Module</p></th>
+<th class="head"><p>Disabled</p></th>
+<th class="head"><p>Timeout</p></th>
+<th class="head"><p>Weight</p></th>
+<th class="head"><p>Paging</p></th>
+<th class="head"><p>Locale</p></th>
+<th class="head"><p>Safe search</p></th>
+<th class="head"><p>Time range</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-odd"><th class="stub"><p><a class="reference external" href="https://species.wikimedia.org/">wikispecies</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!wsp</span></code></p></td>
+<td><p><a class="reference internal" href="../dev/engines/mediawiki.html#module-searx.engines.mediawiki" title="searx.engines.mediawiki"><code class="xref py py-mod docutils literal notranslate"><span class="pre">mediawiki</span></code></a></p></td>
+<td><p>y</p></td>
+<td><p>3.0</p></td>
+<td><p>1</p></td>
+<td><p>y</p></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="id15">
+<h3><a class="toc-backref" href="#id51" role="doc-backlink">without further subgrouping</a><a class="headerlink" href="#id15" title="Link to this heading">¶</a></h3>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 35.7%" />
+<col style="width: 3.6%" />
+<col style="width: 35.7%" />
+<col style="width: 3.6%" />
+<col style="width: 3.6%" />
+<col style="width: 3.6%" />
+<col style="width: 3.6%" />
+<col style="width: 3.6%" />
+<col style="width: 3.6%" />
+<col style="width: 3.6%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head stub" colspan="6"><p> Engines configured by default (in <a class="reference internal" href="../dev/engines/engine_overview.html#engine-settings"><span class="std std-ref">settings.yml</span></a>)</p></th>
+<th class="head" colspan="4"><p> <a class="reference internal" href="../dev/engines/engine_overview.html#engine-file"><span class="std std-ref">Supported features</span></a></p></th>
+</tr>
+<tr class="row-even"><th class="head stub"><p>Name</p></th>
+<th class="head"><p>!bang</p></th>
+<th class="head"><p>Module</p></th>
+<th class="head"><p>Disabled</p></th>
+<th class="head"><p>Timeout</p></th>
+<th class="head"><p>Weight</p></th>
+<th class="head"><p>Paging</p></th>
+<th class="head"><p>Locale</p></th>
+<th class="head"><p>Safe search</p></th>
+<th class="head"><p>Time range</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-odd"><th class="stub"><p><a class="reference external" href="https://www.openaire.eu/">openairedatasets</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!oad</span></code></p></td>
+<td><p><a class="reference internal" href="../dev/engines/json_engine.html#module-searx.engines.json_engine" title="searx.engines.json_engine"><code class="xref py py-mod docutils literal notranslate"><span class="pre">json_engine</span></code></a></p></td>
+<td></td>
+<td><p>5.0</p></td>
+<td><p>1</p></td>
+<td><p>y</p></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-even"><th class="stub"><p><a class="reference external" href="https://www.openaire.eu/">openairepublications</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!oap</span></code></p></td>
+<td><p><a class="reference internal" href="../dev/engines/json_engine.html#module-searx.engines.json_engine" title="searx.engines.json_engine"><code class="xref py py-mod docutils literal notranslate"><span class="pre">json_engine</span></code></a></p></td>
+<td></td>
+<td><p>5.0</p></td>
+<td><p>1</p></td>
+<td><p>y</p></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-odd"><th class="stub"><p><a class="reference external" href="https://www.ebi.ac.uk/pdbe">pdbe</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!pdb</span></code></p></td>
+<td><p><a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/searx/engines/pdbe.py">pdbe</a></p></td>
+<td></td>
+<td><p>3.0</p></td>
+<td><p>1</p></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="tab-files">
+<h2><a class="toc-backref" href="#id52" role="doc-backlink">tab <code class="docutils literal notranslate"><span class="pre">!files</span></code></a><a class="headerlink" href="#tab-files" title="Link to this heading">¶</a></h2>
+<section id="group-apps">
+<h3><a class="toc-backref" href="#id53" role="doc-backlink">group <code class="docutils literal notranslate"><span class="pre">!apps</span></code></a><a class="headerlink" href="#group-apps" title="Link to this heading">¶</a></h3>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 35.7%" />
+<col style="width: 3.6%" />
+<col style="width: 35.7%" />
+<col style="width: 3.6%" />
+<col style="width: 3.6%" />
+<col style="width: 3.6%" />
+<col style="width: 3.6%" />
+<col style="width: 3.6%" />
+<col style="width: 3.6%" />
+<col style="width: 3.6%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head stub" colspan="6"><p> Engines configured by default (in <a class="reference internal" href="../dev/engines/engine_overview.html#engine-settings"><span class="std std-ref">settings.yml</span></a>)</p></th>
+<th class="head" colspan="4"><p> <a class="reference internal" href="../dev/engines/engine_overview.html#engine-file"><span class="std std-ref">Supported features</span></a></p></th>
+</tr>
+<tr class="row-even"><th class="head stub"><p>Name</p></th>
+<th class="head"><p>!bang</p></th>
+<th class="head"><p>Module</p></th>
+<th class="head"><p>Disabled</p></th>
+<th class="head"><p>Timeout</p></th>
+<th class="head"><p>Weight</p></th>
+<th class="head"><p>Paging</p></th>
+<th class="head"><p>Locale</p></th>
+<th class="head"><p>Safe search</p></th>
+<th class="head"><p>Time range</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-odd"><th class="stub"><p><a class="reference external" href="https://www.apkmirror.com">apk mirror</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!apkm</span></code></p></td>
+<td><p><a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/searx/engines/apkmirror.py">apkmirror</a></p></td>
+<td><p>y</p></td>
+<td><p>4.0</p></td>
+<td><p>1</p></td>
+<td><p>y</p></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-even"><th class="stub"><p><a class="reference external" href="https://www.apple.com/app-store/">apple app store</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!aps</span></code></p></td>
+<td><p><a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/searx/engines/apple_app_store.py">apple_app_store</a></p></td>
+<td><p>y</p></td>
+<td><p>3.0</p></td>
+<td><p>1</p></td>
+<td></td>
+<td></td>
+<td><p>y</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><th class="stub"><p><a class="reference external" href="https://f-droid.org/">fdroid</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!fd</span></code></p></td>
+<td><p><a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/searx/engines/fdroid.py">fdroid</a></p></td>
+<td><p>y</p></td>
+<td><p>3.0</p></td>
+<td><p>1</p></td>
+<td><p>y</p></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-even"><th class="stub"><p><a class="reference external" href="https://play.google.com/">google play apps</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!gpa</span></code></p></td>
+<td><p><a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/searx/engines/google_play.py">google_play</a></p></td>
+<td><p>y</p></td>
+<td><p>3.0</p></td>
+<td><p>1</p></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="id16">
+<h3><a class="toc-backref" href="#id54" role="doc-backlink">group <code class="docutils literal notranslate"><span class="pre">!books</span></code></a><a class="headerlink" href="#id16" title="Link to this heading">¶</a></h3>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 35.7%" />
+<col style="width: 3.6%" />
+<col style="width: 35.7%" />
+<col style="width: 3.6%" />
+<col style="width: 3.6%" />
+<col style="width: 3.6%" />
+<col style="width: 3.6%" />
+<col style="width: 3.6%" />
+<col style="width: 3.6%" />
+<col style="width: 3.6%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head stub" colspan="6"><p> Engines configured by default (in <a class="reference internal" href="../dev/engines/engine_overview.html#engine-settings"><span class="std std-ref">settings.yml</span></a>)</p></th>
+<th class="head" colspan="4"><p> <a class="reference internal" href="../dev/engines/engine_overview.html#engine-file"><span class="std std-ref">Supported features</span></a></p></th>
+</tr>
+<tr class="row-even"><th class="head stub"><p>Name</p></th>
+<th class="head"><p>!bang</p></th>
+<th class="head"><p>Module</p></th>
+<th class="head"><p>Disabled</p></th>
+<th class="head"><p>Timeout</p></th>
+<th class="head"><p>Weight</p></th>
+<th class="head"><p>Paging</p></th>
+<th class="head"><p>Locale</p></th>
+<th class="head"><p>Safe search</p></th>
+<th class="head"><p>Time range</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-odd"><th class="stub"><p><a class="reference external" href="https://annas-archive.org/">annas archive</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!aa</span></code></p></td>
+<td><p><a class="reference internal" href="../dev/engines/online/annas_archive.html#module-searx.engines.annas_archive" title="searx.engines.annas_archive"><code class="xref py py-mod docutils literal notranslate"><span class="pre">annas_archive</span></code></a></p></td>
+<td><p>y</p></td>
+<td><p>5</p></td>
+<td><p>1</p></td>
+<td><p>y</p></td>
+<td><p>y</p></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="id17">
+<h3><a class="toc-backref" href="#id55" role="doc-backlink">without further subgrouping</a><a class="headerlink" href="#id17" title="Link to this heading">¶</a></h3>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 35.7%" />
+<col style="width: 3.6%" />
+<col style="width: 35.7%" />
+<col style="width: 3.6%" />
+<col style="width: 3.6%" />
+<col style="width: 3.6%" />
+<col style="width: 3.6%" />
+<col style="width: 3.6%" />
+<col style="width: 3.6%" />
+<col style="width: 3.6%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head stub" colspan="6"><p> Engines configured by default (in <a class="reference internal" href="../dev/engines/engine_overview.html#engine-settings"><span class="std std-ref">settings.yml</span></a>)</p></th>
+<th class="head" colspan="4"><p> <a class="reference internal" href="../dev/engines/engine_overview.html#engine-file"><span class="std std-ref">Supported features</span></a></p></th>
+</tr>
+<tr class="row-even"><th class="head stub"><p>Name</p></th>
+<th class="head"><p>!bang</p></th>
+<th class="head"><p>Module</p></th>
+<th class="head"><p>Disabled</p></th>
+<th class="head"><p>Timeout</p></th>
+<th class="head"><p>Weight</p></th>
+<th class="head"><p>Paging</p></th>
+<th class="head"><p>Locale</p></th>
+<th class="head"><p>Safe search</p></th>
+<th class="head"><p>Time range</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-odd"><th class="stub"><p><a class="reference external" href="https://1337x.to/">1337x</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!1337x</span></code></p></td>
+<td><p><a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/searx/engines/1337x.py">1337x</a></p></td>
+<td><p>y</p></td>
+<td><p>3.0</p></td>
+<td><p>1</p></td>
+<td><p>y</p></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-even"><th class="stub"><p><a class="reference external" href="https://bt4gprx.com">bt4g</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!bt4g</span></code></p></td>
+<td><p><a class="reference internal" href="../dev/engines/online/bt4g.html#module-searx.engines.bt4g" title="searx.engines.bt4g"><code class="xref py py-mod docutils literal notranslate"><span class="pre">bt4g</span></code></a></p></td>
+<td></td>
+<td><p>3.0</p></td>
+<td><p>1</p></td>
+<td><p>y</p></td>
+<td></td>
+<td></td>
+<td><p>y</p></td>
+</tr>
+<tr class="row-odd"><th class="stub"><p><a class="reference external" href="https://btdig.com">btdigg</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!bt</span></code></p></td>
+<td><p><a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/searx/engines/btdigg.py">btdigg</a></p></td>
+<td><p>y</p></td>
+<td><p>3.0</p></td>
+<td><p>1</p></td>
+<td><p>y</p></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-even"><th class="stub"><p><a class="reference external" href="https://kickasstorrents.to">kickass</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!kc</span></code></p></td>
+<td><p><a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/searx/engines/kickass.py">kickass</a></p></td>
+<td></td>
+<td><p>4.0</p></td>
+<td><p>1</p></td>
+<td><p>y</p></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-odd"><th class="stub"><p><a class="reference external" href="https://libgen.fun/">library genesis</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!lg</span></code></p></td>
+<td><p><a class="reference internal" href="../dev/engines/xpath.html#module-searx.engines.xpath" title="searx.engines.xpath"><code class="xref py py-mod docutils literal notranslate"><span class="pre">xpath</span></code></a></p></td>
+<td><p>y</p></td>
+<td><p>7.0</p></td>
+<td><p>1</p></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-even"><th class="stub"><p><a class="reference external" href="https://nyaa.si/">nyaa</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!nt</span></code></p></td>
+<td><p><a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/searx/engines/nyaa.py">nyaa</a></p></td>
+<td><p>y</p></td>
+<td><p>3.0</p></td>
+<td><p>1</p></td>
+<td><p>y</p></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-odd"><th class="stub"><p><a class="reference external" href="https://openrepos.net/">openrepos</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!or</span></code></p></td>
+<td><p><a class="reference internal" href="../dev/engines/xpath.html#module-searx.engines.xpath" title="searx.engines.xpath"><code class="xref py py-mod docutils literal notranslate"><span class="pre">xpath</span></code></a></p></td>
+<td><p>y</p></td>
+<td><p>4.0</p></td>
+<td><p>1</p></td>
+<td><p>y</p></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-even"><th class="stub"><p><a class="reference external" href="https://thepiratebay.org">piratebay</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!tpb</span></code></p></td>
+<td><p><a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/searx/engines/piratebay.py">piratebay</a></p></td>
+<td></td>
+<td><p>3.0</p></td>
+<td><p>1</p></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-odd"><th class="stub"><p><a class="reference external" href="https://www.solidtorrents.to/">solidtorrents</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!solid</span></code></p></td>
+<td><p><a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/searx/engines/solidtorrents.py">solidtorrents</a></p></td>
+<td></td>
+<td><p>4.0</p></td>
+<td><p>1</p></td>
+<td><p>y</p></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-even"><th class="stub"><p><a class="reference external" href="https://www.tokyotosho.info/">tokyotoshokan</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!tt</span></code></p></td>
+<td><p><a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/searx/engines/tokyotoshokan.py">tokyotoshokan</a></p></td>
+<td><p>y</p></td>
+<td><p>6.0</p></td>
+<td><p>1</p></td>
+<td><p>y</p></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-odd"><th class="stub"><p><a class="reference external" href="https://commons.wikimedia.org/">wikicommons.files</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!wcf</span></code></p></td>
+<td><p><a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/searx/engines/wikicommons.py">wikicommons</a></p></td>
+<td></td>
+<td><p>3.0</p></td>
+<td><p>1</p></td>
+<td><p>y</p></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="tab-social-media">
+<h2><a class="toc-backref" href="#id56" role="doc-backlink">tab <code class="docutils literal notranslate"><span class="pre">!social_media</span></code></a><a class="headerlink" href="#tab-social-media" title="Link to this heading">¶</a></h2>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 35.7%" />
+<col style="width: 3.6%" />
+<col style="width: 35.7%" />
+<col style="width: 3.6%" />
+<col style="width: 3.6%" />
+<col style="width: 3.6%" />
+<col style="width: 3.6%" />
+<col style="width: 3.6%" />
+<col style="width: 3.6%" />
+<col style="width: 3.6%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head stub" colspan="6"><p> Engines configured by default (in <a class="reference internal" href="../dev/engines/engine_overview.html#engine-settings"><span class="std std-ref">settings.yml</span></a>)</p></th>
+<th class="head" colspan="4"><p> <a class="reference internal" href="../dev/engines/engine_overview.html#engine-file"><span class="std std-ref">Supported features</span></a></p></th>
+</tr>
+<tr class="row-even"><th class="head stub"><p>Name</p></th>
+<th class="head"><p>!bang</p></th>
+<th class="head"><p>Module</p></th>
+<th class="head"><p>Disabled</p></th>
+<th class="head"><p>Timeout</p></th>
+<th class="head"><p>Weight</p></th>
+<th class="head"><p>Paging</p></th>
+<th class="head"><p>Locale</p></th>
+<th class="head"><p>Safe search</p></th>
+<th class="head"><p>Time range</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-odd"><th class="stub"><p><a class="reference external" href="https://9gag.com/">9gag</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!9g</span></code></p></td>
+<td><p><a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/searx/engines/9gag.py">9gag</a></p></td>
+<td><p>y</p></td>
+<td><p>3.0</p></td>
+<td><p>1</p></td>
+<td><p>y</p></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-even"><th class="stub"><p><a class="reference external" href="https://lemmy.ml/">lemmy comments</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!lecom</span></code></p></td>
+<td><p><a class="reference internal" href="../dev/engines/online/lemmy.html#module-searx.engines.lemmy" title="searx.engines.lemmy"><code class="xref py py-mod docutils literal notranslate"><span class="pre">lemmy</span></code></a></p></td>
+<td></td>
+<td><p>3.0</p></td>
+<td><p>1</p></td>
+<td><p>y</p></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-odd"><th class="stub"><p><a class="reference external" href="https://lemmy.ml/">lemmy communities</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!leco</span></code></p></td>
+<td><p><a class="reference internal" href="../dev/engines/online/lemmy.html#module-searx.engines.lemmy" title="searx.engines.lemmy"><code class="xref py py-mod docutils literal notranslate"><span class="pre">lemmy</span></code></a></p></td>
+<td></td>
+<td><p>3.0</p></td>
+<td><p>1</p></td>
+<td><p>y</p></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-even"><th class="stub"><p><a class="reference external" href="https://lemmy.ml/">lemmy posts</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!lepo</span></code></p></td>
+<td><p><a class="reference internal" href="../dev/engines/online/lemmy.html#module-searx.engines.lemmy" title="searx.engines.lemmy"><code class="xref py py-mod docutils literal notranslate"><span class="pre">lemmy</span></code></a></p></td>
+<td></td>
+<td><p>3.0</p></td>
+<td><p>1</p></td>
+<td><p>y</p></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-odd"><th class="stub"><p><a class="reference external" href="https://lemmy.ml/">lemmy users</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!leus</span></code></p></td>
+<td><p><a class="reference internal" href="../dev/engines/online/lemmy.html#module-searx.engines.lemmy" title="searx.engines.lemmy"><code class="xref py py-mod docutils literal notranslate"><span class="pre">lemmy</span></code></a></p></td>
+<td></td>
+<td><p>3.0</p></td>
+<td><p>1</p></td>
+<td><p>y</p></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-even"><th class="stub"><p><a class="reference external" href="https://joinmastodon.org/">mastodon hashtags</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!mah</span></code></p></td>
+<td><p><a class="reference internal" href="../dev/engines/online/mastodon.html#module-searx.engines.mastodon" title="searx.engines.mastodon"><code class="xref py py-mod docutils literal notranslate"><span class="pre">mastodon</span></code></a></p></td>
+<td></td>
+<td><p>3.0</p></td>
+<td><p>1</p></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-odd"><th class="stub"><p><a class="reference external" href="https://joinmastodon.org/">mastodon users</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!mau</span></code></p></td>
+<td><p><a class="reference internal" href="../dev/engines/online/mastodon.html#module-searx.engines.mastodon" title="searx.engines.mastodon"><code class="xref py py-mod docutils literal notranslate"><span class="pre">mastodon</span></code></a></p></td>
+<td></td>
+<td><p>3.0</p></td>
+<td><p>1</p></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-even"><th class="stub"><p><a class="reference external" href="https://www.reddit.com/">reddit</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!re</span></code></p></td>
+<td><p><a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/searx/engines/reddit.py">reddit</a></p></td>
+<td><p>y</p></td>
+<td><p>3.0</p></td>
+<td><p>1</p></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-odd"><th class="stub"><p><a class="reference external" href="https://www.tootfinder.ch">tootfinder</a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">!toot</span></code></p></td>
+<td><p><a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/searx/engines/tootfinder.py">tootfinder</a></p></td>
+<td></td>
+<td><p>3.0</p></td>
+<td><p>1</p></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+  <span id="sidebar-top"></span>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+  
+    
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/searxng-wordmark.svg" alt="Logo of SearXNG"/>
+            </a></p>
+  
+
+<h3><a href="../index.html">Table of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">User information</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="search-syntax.html">Search syntax</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Configured Engines</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#tab-general">tab <code class="docutils literal notranslate"><span class="pre">!general</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#group-books">group <code class="docutils literal notranslate"><span class="pre">!books</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#group-currency">group <code class="docutils literal notranslate"><span class="pre">!currency</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#group-translate">group <code class="docutils literal notranslate"><span class="pre">!translate</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#group-web">group <code class="docutils literal notranslate"><span class="pre">!web</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#group-wikimedia">group <code class="docutils literal notranslate"><span class="pre">!wikimedia</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#without-further-subgrouping">without further subgrouping</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#tab-images">tab <code class="docutils literal notranslate"><span class="pre">!images</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#group-icons">group <code class="docutils literal notranslate"><span class="pre">!icons</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id2">group <code class="docutils literal notranslate"><span class="pre">!web</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id3">without further subgrouping</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#tab-videos">tab <code class="docutils literal notranslate"><span class="pre">!videos</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id4">group <code class="docutils literal notranslate"><span class="pre">!web</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id5">without further subgrouping</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#tab-news">tab <code class="docutils literal notranslate"><span class="pre">!news</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id6">group <code class="docutils literal notranslate"><span class="pre">!web</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id7">group <code class="docutils literal notranslate"><span class="pre">!wikimedia</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id8">without further subgrouping</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#tab-map">tab <code class="docutils literal notranslate"><span class="pre">!map</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#tab-music">tab <code class="docutils literal notranslate"><span class="pre">!music</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#group-lyrics">group <code class="docutils literal notranslate"><span class="pre">!lyrics</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#group-radio">group <code class="docutils literal notranslate"><span class="pre">!radio</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id10">without further subgrouping</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#tab-it">tab <code class="docutils literal notranslate"><span class="pre">!it</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#group-packages">group <code class="docutils literal notranslate"><span class="pre">!packages</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#group-q-a">group <code class="docutils literal notranslate"><span class="pre">!q&amp;a</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#group-repos">group <code class="docutils literal notranslate"><span class="pre">!repos</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#group-software-wikis">group <code class="docutils literal notranslate"><span class="pre">!software_wikis</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id12">without further subgrouping</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#tab-science">tab <code class="docutils literal notranslate"><span class="pre">!science</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#group-scientific-publications">group <code class="docutils literal notranslate"><span class="pre">!scientific_publications</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id13">group <code class="docutils literal notranslate"><span class="pre">!wikimedia</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id15">without further subgrouping</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#tab-files">tab <code class="docutils literal notranslate"><span class="pre">!files</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#group-apps">group <code class="docutils literal notranslate"><span class="pre">!apps</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id16">group <code class="docutils literal notranslate"><span class="pre">!books</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id17">without further subgrouping</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#tab-social-media">tab <code class="docutils literal notranslate"><span class="pre">!social_media</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="about.html">About SearXNG</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../own-instance.html">Why use a private instance?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../admin/index.html">Administrator documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev/index.html">Developer documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../utils/index.html">DevOps tooling box</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../src/index.html">Source-Code</a></li>
+</ul>
+
+  <h3>Project Links</h3>
+  <ul>
+    <li><a href="https://github.com/searxng/searxng/tree/master">Source</a>
+  
+    <li><a href="https://github.com/searxng/searxng/wiki">Wiki</a>
+  
+    <li><a href="https://searx.space">Public instances</a>
+  
+    <li><a href="https://github.com/searxng/searxng/issues">Issue Tracker</a>
+  </ul><h3>Navigation</h3>
+<ul>
+  <li><a href="../index.html">Overview</a>
+    <ul>
+      <li><a href="index.html">User information</a>
+        <ul>
+          <li>Previous: <a href="search-syntax.html" title="previous chapter">Search syntax</a>
+          <li>Next: <a href="about.html" title="next chapter">About SearXNG</a></ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/user/configured_engines.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright SearXNG team.
+    </div>
+  </body>
+</html>

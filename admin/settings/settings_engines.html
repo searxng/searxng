@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>engines: &#8212; SearXNG Documentation (2026.2.22+191818b86)</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=6625fa76" />
+    <link rel="stylesheet" type="text/css" href="../../_static/searxng.css?v=52e4ff28" />
+    <script src="../../_static/documentation_options.js?v=1b5d919e"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script data-project="searxng" data-version="2026.2.22+191818b86" src="../../_static/describe_version.js?v=fa7f30d0"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="brand:" href="settings_brand.html" />
+    <link rel="prev" title="settings.yml" href="settings.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="settings_brand.html" title="brand:"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="settings.html" title="settings.yml"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">SearXNG Documentation (2026.2.22+191818b86)</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >Administrator documentation</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="index.html" accesskey="U">Settings</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href=""><code class="docutils literal notranslate"><span class="pre">engines:</span></code></a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="engines">
+<span id="settings-engines"></span><h1><code class="docutils literal notranslate"><span class="pre">engines:</span></code><a class="headerlink" href="#engines" title="Link to this heading">¶</a></h1>
+<aside class="sidebar">
+<p class="sidebar-title">Further reading ..</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="../../user/configured_engines.html#configured-engines"><span class="std std-ref">Configured Engines</span></a></p></li>
+<li><p><a class="reference internal" href="../../dev/engines/engine_overview.html#engines-dev"><span class="std std-ref">Engine Overview</span></a></p></li>
+</ul>
+</aside>
+<p>In the section <code class="docutils literal notranslate"><span class="pre">engines:</span></code> is a list of the engines that are to be made
+available in the instance.  Each list entry is in turn a key/value mapping.</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">engines</span><span class="p">:</span>
+
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">dummy.online</span>
+<span class="w">    </span><span class="nt">engine</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">dummy</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">..</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">dummy.offline</span>
+<span class="w">    </span><span class="nt">engine</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">dummy-offline</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">..</span>
+<span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">..</span>
+</pre></div>
+</div>
+<p>In the code example below a <em>full fledged</em> example of a YAML setup from a dummy
+engine is shown.  Most of the options have a default value or even are optional.</p>
+<div class="admonition hint">
+<p class="admonition-title">Hint</p>
+<p>A few more options are possible, but they are pretty specific to some
+engines (<a class="reference internal" href="../../dev/engines/index.html#engine-implementations"><span class="std std-ref">Engine Implementations</span></a>).</p>
+</div>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">example</span>
+<span class="w">  </span><span class="nt">engine</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">example</span>
+<span class="w">  </span><span class="nt">shortcut</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">demo</span>
+<span class="w">  </span><span class="nt">base_url</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;https://{language}.example.com/&#39;</span>
+<span class="w">  </span><span class="nt">send_accept_language_header</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+<span class="w">  </span><span class="nt">categories</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">general</span>
+<span class="w">  </span><span class="nt">timeout</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">3.0</span>
+<span class="w">  </span><span class="nt">api_key</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;apikey&#39;</span>
+<span class="w">  </span><span class="nt">disabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+<span class="w">  </span><span class="nt">language</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">en_US</span>
+<span class="w">  </span><span class="nt">tokens</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="w"> </span><span class="s">&#39;my-secret-token&#39;</span><span class="w"> </span><span class="p p-Indicator">]</span>
+<span class="w">  </span><span class="nt">weight</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
+<span class="w">  </span><span class="nt">display_error_messages</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">  </span><span class="nt">about</span><span class="p">:</span>
+<span class="w">     </span><span class="nt">website</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://example.com</span>
+<span class="w">     </span><span class="nt">wikidata_id</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Q306656</span>
+<span class="w">     </span><span class="nt">official_api_documentation</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://example.com/api-doc</span>
+<span class="w">     </span><span class="nt">use_official_api</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">     </span><span class="nt">require_api_key</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">     </span><span class="nt">results</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">HTML</span>
+
+<span class="w">  </span><span class="c1"># overwrite values from section &#39;outgoing:&#39;</span>
+<span class="w">  </span><span class="nt">enable_http2</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+<span class="w">  </span><span class="nt">retries</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
+<span class="w">  </span><span class="nt">max_connections</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">100</span>
+<span class="w">  </span><span class="nt">max_keepalive_connections</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10</span>
+<span class="w">  </span><span class="nt">keepalive_expiry</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5.0</span>
+<span class="w">  </span><span class="nt">using_tor_proxy</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+<span class="w">  </span><span class="nt">proxies</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">http</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">http://proxy1:8080</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">http://proxy2:8080</span>
+<span class="w">    </span><span class="nt">https</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">http://proxy1:8080</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">http://proxy2:8080</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">socks5://user:password@proxy3:1080</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">socks5h://user:password@proxy4:1080</span>
+
+<span class="w">  </span><span class="c1"># other network settings</span>
+<span class="w">  </span><span class="nt">enable_http</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+<span class="w">  </span><span class="nt">retry_on_http_error</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w"> </span><span class="c1"># or 403 or [404, 429]</span>
+</pre></div>
+</div>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">name</span></code> :</dt><dd><p>Name that will be used across SearXNG to define this engine.  In settings, on
+the result page…</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">engine</span></code> :</dt><dd><p>Name of the python file used to handle requests and responses to and from this
+search engine.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">shortcut</span></code> :</dt><dd><p>Code used to execute bang requests (in this case using <code class="docutils literal notranslate"><span class="pre">!bi</span></code>)</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">base_url</span></code><span class="classifier">optional</span></dt><dd><p>Part of the URL that should be stable across every request.  Can be useful to
+use multiple sites using only one engine, or updating the site URL without
+touching at the code.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">send_accept_language_header</span></code> :</dt><dd><p>Several engines that support languages (or regions) deal with the HTTP header
+<code class="docutils literal notranslate"><span class="pre">Accept-Language</span></code> to build a response that fits to the locale.  When this
+option is activated, the language (locale) that is selected by the user is used
+to build and send a <code class="docutils literal notranslate"><span class="pre">Accept-Language</span></code> header in the request to the origin
+search engine.</p>
+</dd>
+</dl>
+<dl id="engine-categories">
+<dt><code class="docutils literal notranslate"><span class="pre">categories</span></code><span class="classifier">optional</span></dt><dd><p>Specifies to which categories the engine should be added.  Engines can be
+assigned to multiple categories.</p>
+<p>Categories can be shown as tabs (<a class="reference internal" href="settings_categories_as_tabs.html#settings-categories-as-tabs"><span class="std std-ref">categories_as_tabs:</span></a>) in the
+UI.  A search in a tab (in the UI) will query all engines that are active in
+this tab.  In the preferences page (<code class="docutils literal notranslate"><span class="pre">/preferences</span></code>) – under <em>engines</em> –
+users can select what engine should be active when querying in this tab.</p>
+<p>Alternatively, <a class="reference internal" href="../../user/search-syntax.html#search-syntax"><span class="std std-ref">!bang</span></a> can be used to search all engines
+in a category, regardless of whether they are active or not, or whether they
+are in a tab of the UI or not.  For example, <code class="docutils literal notranslate"><span class="pre">!dictionaries</span></code> can be used to
+query all search engines in that category (group).</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">timeout</span></code><span class="classifier">optional</span></dt><dd><p>Timeout of the search with the current search engine.  Overwrites
+<code class="docutils literal notranslate"><span class="pre">request_timeout</span></code> from <a class="reference internal" href="settings_outgoing.html#settings-outgoing"><span class="std std-ref">outgoing:</span></a>.  <strong>Be careful, it will
+modify the global timeout of SearXNG.</strong></p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">api_key</span></code><span class="classifier">optional</span></dt><dd><p>In a few cases, using an API needs the use of a secret key.  How to obtain them
+is described in the file.  Engines that require an API key are set to
+<code class="docutils literal notranslate"><span class="pre">inactive:</span> <span class="pre">true</span></code> by default.  To enable such an engine, provide the API key
+and set <code class="docutils literal notranslate"><span class="pre">inactive:</span> <span class="pre">false</span></code>.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">disabled</span></code><span class="classifier">optional</span></dt><dd><p>To disable by default the engine, but not deleting it.  It will allow the user
+to manually activate it in the settings.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">inactive</span></code>: optional</dt><dd><p>Remove the engine from the settings (<em>disabled &amp; removed</em>).  This defaults to <code class="docutils literal notranslate"><span class="pre">true</span></code> for engines
+that require an API key, please see the <code class="docutils literal notranslate"><span class="pre">api_key</span></code> section if you want to enable such an engine.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">language</span></code><span class="classifier">optional</span></dt><dd><p>If you want to use another language for a specific engine, you can define it
+by using the ISO code of language (and region), like <code class="docutils literal notranslate"><span class="pre">fr</span></code>, <code class="docutils literal notranslate"><span class="pre">en-US</span></code>,
+<code class="docutils literal notranslate"><span class="pre">de-DE</span></code>.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">tokens</span></code><span class="classifier">optional</span></dt><dd><p>A list of secret tokens to make this engine <em>private</em>, more details see
+<a class="reference internal" href="#private-engines"><span class="std std-ref">Private Engines (tokens)</span></a>.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">weight</span></code><span class="classifier">default <code class="docutils literal notranslate"><span class="pre">1</span></code></span></dt><dd><p>Weighting of the results of this engine.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">display_error_messages</span></code><span class="classifier">default <code class="docutils literal notranslate"><span class="pre">true</span></code></span></dt><dd><p>When an engine returns an error, the message is displayed on the user interface.</p>
+</dd>
+</dl>
+<dl id="engine-network">
+<dt><code class="docutils literal notranslate"><span class="pre">network</span></code><span class="classifier">optional</span></dt><dd><p>Use the network configuration from another engine.
+In addition, there are two default networks:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">ipv4</span></code> set <code class="docutils literal notranslate"><span class="pre">local_addresses</span></code> to <code class="docutils literal notranslate"><span class="pre">0.0.0.0</span></code> (use only IPv4 local addresses)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ipv6</span></code> set <code class="docutils literal notranslate"><span class="pre">local_addresses</span></code> to <code class="docutils literal notranslate"><span class="pre">::</span></code> (use only IPv6 local addresses)</p></li>
+</ul>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">enable_http</span></code><span class="classifier">optional</span></dt><dd><p>Enable HTTP for this engine (by default only HTTPS is enabled).</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">retry_on_http_error</span></code><span class="classifier">optional</span></dt><dd><p>Retry request on some HTTP status code.</p>
+<p>Example:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">true</span></code> : on HTTP status code between 400 and 599.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">403</span></code> : on HTTP status code 403.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">[403,</span> <span class="pre">429]</span></code>: on HTTP status code 403 and 429.</p></li>
+</ul>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">proxies</span></code> :</dt><dd><p>Overwrites proxy settings from <a class="reference internal" href="settings_outgoing.html#settings-outgoing"><span class="std std-ref">outgoing:</span></a>.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">using_tor_proxy</span></code> :</dt><dd><p>Using tor proxy (<code class="docutils literal notranslate"><span class="pre">true</span></code>) or not (<code class="docutils literal notranslate"><span class="pre">false</span></code>) for this engine.  The default is
+taken from <code class="docutils literal notranslate"><span class="pre">using_tor_proxy</span></code> of the <a class="reference internal" href="settings_outgoing.html#settings-outgoing"><span class="std std-ref">outgoing:</span></a>.</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">max_keepalive_connection#s</span></code> :</dt><dd><dl class="simple">
+<dt><a class="reference external" href="https://www.python-httpx.org/advanced/#pool-limit-configuration">Pool limit configuration</a>, overwrites value <code class="docutils literal notranslate"><span class="pre">pool_maxsize</span></code> from</dt><dd><p><a class="reference internal" href="settings_outgoing.html#settings-outgoing"><span class="std std-ref">outgoing:</span></a> for this engine.</p>
+</dd>
+</dl>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">max_connections</span></code> :</dt><dd><p><a class="reference external" href="https://www.python-httpx.org/advanced/#pool-limit-configuration">Pool limit configuration</a>, overwrites value <code class="docutils literal notranslate"><span class="pre">pool_connections</span></code> from
+<a class="reference internal" href="settings_outgoing.html#settings-outgoing"><span class="std std-ref">outgoing:</span></a> for this engine.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">keepalive_expiry</span></code> :</dt><dd><p><a class="reference external" href="https://www.python-httpx.org/advanced/#pool-limit-configuration">Pool limit configuration</a>, overwrites value <code class="docutils literal notranslate"><span class="pre">keepalive_expiry</span></code> from
+<a class="reference internal" href="settings_outgoing.html#settings-outgoing"><span class="std std-ref">outgoing:</span></a> for this engine.</p>
+</dd>
+</dl>
+<section id="private-engines-tokens">
+<span id="private-engines"></span><h2>Private Engines (<code class="docutils literal notranslate"><span class="pre">tokens</span></code>)<a class="headerlink" href="#private-engines-tokens" title="Link to this heading">¶</a></h2>
+<p>Administrators might find themselves wanting to limit access to some of the
+enabled engines on their instances.  It might be because they do not want to
+expose some private information through <a class="reference internal" href="../../dev/engines/index.html#offline-engines"><span class="std std-ref">Offline Engines</span></a>.  Or they would
+rather share engines only with their trusted friends or colleagues.</p>
+<aside class="sidebar">
+<p class="sidebar-title">info</p>
+<p>Initial sponsored by <a class="reference external" href="https://nlnet.nl/discovery">Search and Discovery Fund</a> of <a class="reference external" href="https://nlnet.nl/">NLnet Foundation</a>.</p>
+</aside>
+<p>To solve this issue the concept of <em>private engines</em> exists.</p>
+<p>A new option was added to engines named <cite>tokens</cite>.  It expects a list of strings.
+If the user making a request presents one of the tokens of an engine, they can
+access information about the engine and make search requests.</p>
+<p>Example configuration to restrict access to the Arch Linux Wiki engine:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">arch linux wiki</span>
+<span class="w">  </span><span class="nt">engine</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">archlinux</span>
+<span class="w">  </span><span class="nt">shortcut</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">al</span>
+<span class="w">  </span><span class="nt">tokens</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="w"> </span><span class="s">&#39;my-secret-token&#39;</span><span class="w"> </span><span class="p p-Indicator">]</span>
+</pre></div>
+</div>
+<p>Unless a user has configured the right token, the engine is going to be hidden
+from them.  It is not going to be included in the list of engines on the
+Preferences page and in the output of <cite>/config</cite> REST API call.</p>
+<p>Tokens can be added to one’s configuration on the Preferences page under “Engine
+tokens”.  The input expects a comma separated list of strings.</p>
+<p>The distribution of the tokens from the administrator to the users is not carved
+in stone.  As providing access to such engines implies that the admin knows and
+trusts the user, we do not see necessary to come up with a strict process.
+Instead, we would like to add guidelines to the documentation of the feature.</p>
+</section>
+<section id="example-multilingual-search">
+<h2>Example: Multilingual Search<a class="headerlink" href="#example-multilingual-search" title="Link to this heading">¶</a></h2>
+<p>SearXNG does not support true multilingual search.  You have to use the language
+prefix in your search query when searching in a different language.</p>
+<p>But there is a workaround: By adding a new search engine with a different
+language, SearXNG will search in your default and other language.</p>
+<p>Example configuration in settings.yml for a German and English speaker:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">search</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">default_lang </span><span class="p">:</span><span class="w"> </span><span class="s">&quot;de&quot;</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">...</span>
+
+<span class="nt">engines</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name </span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">google english</span>
+<span class="w">    </span><span class="nt">engine </span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">google</span>
+<span class="w">    </span><span class="nt">language </span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">en</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">...</span>
+</pre></div>
+</div>
+<p>When searching, the default google engine will return German results and
+“google english” will return English results.</p>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+  <span id="sidebar-top"></span>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+  
+    
+            <p class="logo"><a href="../../index.html">
+              <img class="logo" src="../../_static/searxng-wordmark.svg" alt="Logo of SearXNG"/>
+            </a></p>
+  
+
+<h3><a href="../../index.html">Table of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../user/index.html">User information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../own-instance.html">Why use a private instance?</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Administrator documentation</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Settings</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="settings.html"><code class="docutils literal notranslate"><span class="pre">settings.yml</span></code></a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#"><code class="docutils literal notranslate"><span class="pre">engines:</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#private-engines-tokens">Private Engines (<code class="docutils literal notranslate"><span class="pre">tokens</span></code>)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#example-multilingual-search">Example: Multilingual Search</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="settings_brand.html"><code class="docutils literal notranslate"><span class="pre">brand:</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="settings_general.html"><code class="docutils literal notranslate"><span class="pre">general:</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="settings_search.html"><code class="docutils literal notranslate"><span class="pre">search:</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="settings_server.html"><code class="docutils literal notranslate"><span class="pre">server:</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="settings_ui.html"><code class="docutils literal notranslate"><span class="pre">ui:</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="settings_redis.html"><code class="docutils literal notranslate"><span class="pre">redis:</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="settings_valkey.html"><code class="docutils literal notranslate"><span class="pre">valkey:</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="settings_outgoing.html"><code class="docutils literal notranslate"><span class="pre">outgoing:</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="settings_categories_as_tabs.html"><code class="docutils literal notranslate"><span class="pre">categories_as_tabs:</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="settings_plugins.html"><code class="docutils literal notranslate"><span class="pre">plugins:</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation-docker.html">Installation container</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation-scripts.html">Installation Script</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation-searxng.html">Step by step installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation-granian.html">Granian</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation-uwsgi.html">uWSGI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation-nginx.html">NGINX</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation-apache.html">Apache</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../update-searxng.html">SearXNG maintenance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../answer-captcha.html">Answer CAPTCHA from server’s IP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../searx.favicons.html">Favicons</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../searx.limiter.html">Limiter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html">Administration API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../architecture.html">Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../plugins.html">List of plugins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../buildhosts.html">Buildhosts</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../dev/index.html">Developer documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../utils/index.html">DevOps tooling box</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../src/index.html">Source-Code</a></li>
+</ul>
+
+  <h3>Project Links</h3>
+  <ul>
+    <li><a href="https://github.com/searxng/searxng/tree/master">Source</a>
+  
+    <li><a href="https://github.com/searxng/searxng/wiki">Wiki</a>
+  
+    <li><a href="https://searx.space">Public instances</a>
+  
+    <li><a href="https://github.com/searxng/searxng/issues">Issue Tracker</a>
+  </ul><h3>Navigation</h3>
+<ul>
+  <li><a href="../../index.html">Overview</a>
+    <ul>
+      <li><a href="../index.html">Administrator documentation</a>
+        <ul>
+      <li><a href="index.html">Settings</a>
+        <ul>
+          <li>Previous: <a href="settings.html" title="previous chapter"><code class="docutils literal notranslate"><span class="pre">settings.yml</span></code></a>
+          <li>Next: <a href="settings_brand.html" title="next chapter"><code class="docutils literal notranslate"><span class="pre">brand:</span></code></a></ul>
+      </li></ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/admin/settings/settings_engines.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright SearXNG team.
+    </div>
+  </body>
+</html>

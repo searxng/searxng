@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Limiter &#8212; SearXNG Documentation (2026.2.22+191818b86)</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=6625fa76" />
+    <link rel="stylesheet" type="text/css" href="../_static/searxng.css?v=52e4ff28" />
+    <script src="../_static/documentation_options.js?v=1b5d919e"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script data-project="searxng" data-version="2026.2.22+191818b86" src="../_static/describe_version.js?v=fa7f30d0"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Administration API" href="api.html" />
+    <link rel="prev" title="Favicons" href="searx.favicons.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="api.html" title="Administration API"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="searx.favicons.html" title="Favicons"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">SearXNG Documentation (2026.2.22+191818b86)</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" accesskey="U">Administrator documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Limiter</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="limiter">
+<span id="id1"></span><h1>Limiter<a class="headerlink" href="#limiter" title="Link to this heading">¶</a></h1>
+<aside class="sidebar">
+<p class="sidebar-title">info</p>
+<p>The limiter requires a <a class="reference internal" href="settings/settings_valkey.html#settings-valkey"><span class="std std-ref">Valkey</span></a> database.</p>
+</aside>
+<nav class="contents local" id="contents">
+<ul class="simple">
+<li><p><a class="reference internal" href="#enable-limiter" id="id3">Enable Limiter</a></p></li>
+<li><p><a class="reference internal" href="#configure-limiter" id="id4">Configure Limiter</a></p></li>
+<li><p><a class="reference internal" href="#limiter-toml" id="id5"><code class="docutils literal notranslate"><span class="pre">limiter.toml</span></code></a></p></li>
+<li><p><a class="reference internal" href="#implementation" id="id6">Implementation</a></p></li>
+</ul>
+</nav>
+<p id="module-searx.limiter">Bot protection / IP rate limitation.  The intention of rate limitation is to
+limit suspicious requests from an IP.  The motivation behind this is the fact
+that SearXNG passes through requests from bots and is thus classified as a bot
+itself.  As a result, the SearXNG engine then receives a CAPTCHA or is blocked
+by the search engine (the origin) in some other way.</p>
+<p>To avoid blocking, the requests from bots to SearXNG must also be blocked, this
+is the task of the limiter.  To perform this task, the limiter uses the methods
+from the <a class="reference internal" href="../src/searx.botdetection.html#botdetection"><span class="std std-ref">Bot Detection</span></a>:</p>
+<ul class="simple">
+<li><p>Analysis of the HTTP header in the request / <a class="reference internal" href="../src/searx.botdetection.html#botdetection-probe-headers"><span class="std std-ref">Probe HTTP headers</span></a>
+can be easily bypassed.</p></li>
+<li><p>Block and pass lists in which IPs are listed / <a class="reference internal" href="../src/searx.botdetection.html#botdetection-ip-lists"><span class="std std-ref">IP lists</span></a>
+are hard to maintain, since the IPs of bots are not all known and change over
+the time.</p></li>
+<li><p>Detection &amp; dynamically <a class="reference internal" href="../src/searx.botdetection.html#botdetection-rate-limit"><span class="std std-ref">Rate limit</span></a> of bots based on the
+behavior of the requests.  For dynamically changeable IP lists a Valkey
+database is needed.</p></li>
+</ul>
+<p>The prerequisite for IP based methods is the correct determination of the IP of
+the client. The IP of the client is determined via the <a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Forwarded-For">X-Forwarded-For</a> HTTP
+header.</p>
+<div class="admonition attention">
+<p class="admonition-title">Attention</p>
+<p>A correct setup of the HTTP request headers <code class="docutils literal notranslate"><span class="pre">X-Forwarded-For</span></code> and
+<code class="docutils literal notranslate"><span class="pre">X-Real-IP</span></code> is essential to be able to assign a request to an IP correctly:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://docs.searxng.org/admin/installation-nginx.html#nginx-s-searxng-site">NGINX RequestHeader</a></p></li>
+<li><p><a class="reference external" href="https://docs.searxng.org/admin/installation-apache.html#apache-s-searxng-site">Apache RequestHeader</a></p></li>
+</ul>
+</div>
+<section id="enable-limiter">
+<h2><a class="toc-backref" href="#id3" role="doc-backlink">Enable Limiter</a><a class="headerlink" href="#enable-limiter" title="Link to this heading">¶</a></h2>
+<p>To enable the limiter activate:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">server</span><span class="p">:</span>
+<span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">...</span>
+<span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">limiter</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w">  </span><span class="c1"># rate limit the number of request on the instance, block some bots</span>
+</pre></div>
+</div>
+<p>and set the valkey-url connection. Check the value, it depends on your valkey DB
+(see <a class="reference internal" href="settings/settings_valkey.html#settings-valkey"><span class="std std-ref">valkey:</span></a>), by example:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">valkey</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">url</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">valkey://localhost:6379/0</span>
+</pre></div>
+</div>
+</section>
+<section id="configure-limiter">
+<h2><a class="toc-backref" href="#id4" role="doc-backlink">Configure Limiter</a><a class="headerlink" href="#configure-limiter" title="Link to this heading">¶</a></h2>
+<p>The methods of <a class="reference internal" href="../src/searx.botdetection.html#botdetection"><span class="std std-ref">Bot Detection</span></a> the limiter uses are configured in a local
+file <code class="docutils literal notranslate"><span class="pre">/etc/searxng/limiter.toml</span></code>.  The defaults are shown in <a class="reference internal" href="#limiter-toml">limiter.toml</a> /
+Don’t copy all values to your local configuration, just enable what you need by
+overwriting the defaults.  For instance to activate the <code class="docutils literal notranslate"><span class="pre">link_token</span></code> method in
+the <a class="reference internal" href="../src/searx.botdetection.html#botdetection-ip-limit"><span class="std std-ref">Method ip_limit</span></a> you only need to set this option to <code class="docutils literal notranslate"><span class="pre">true</span></code>:</p>
+<div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[botdetection.ip_limit]</span>
+<span class="n">link_token</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">true</span>
+</pre></div>
+</div>
+</section>
+<section id="limiter-toml">
+<span id="id2"></span><h2><a class="toc-backref" href="#id5" role="doc-backlink"><code class="docutils literal notranslate"><span class="pre">limiter.toml</span></code></a><a class="headerlink" href="#limiter-toml" title="Link to this heading">¶</a></h2>
+<p>In this file the limiter finds the configuration of the <a class="reference internal" href="../src/searx.botdetection.html#botdetection"><span class="std std-ref">Bot Detection</span></a>:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="../src/searx.botdetection.html#botdetection-ip-lists"><span class="std std-ref">IP lists</span></a></p></li>
+<li><p><a class="reference internal" href="../src/searx.botdetection.html#botdetection-rate-limit"><span class="std std-ref">Rate limit</span></a></p></li>
+<li><p><a class="reference internal" href="../src/searx.botdetection.html#botdetection-probe-headers"><span class="std std-ref">Probe HTTP headers</span></a></p></li>
+</ul>
+<div class="code toml highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">botdetection</span><span class="p">]</span>
+
+<span class="c1"># The prefix defines the number of leading bits in an address that are compared</span>
+<span class="c1"># to determine whether or not an address is part of a (client) network.</span>
+
+<span class="n">ipv4_prefix</span> <span class="o">=</span> <span class="mi">32</span>
+<span class="n">ipv6_prefix</span> <span class="o">=</span> <span class="mi">48</span>
+
+<span class="c1"># If the request IP is in trusted_proxies list, the client IP address is</span>
+<span class="c1"># extracted from the X-Forwarded-For and X-Real-IP headers. This should be</span>
+<span class="c1"># used if SearXNG is behind a reverse proxy or load balancer.</span>
+
+<span class="n">trusted_proxies</span> <span class="o">=</span> <span class="p">[</span>
+  <span class="s1">&#39;127.0.0.0/8&#39;</span><span class="p">,</span>
+  <span class="s1">&#39;::1&#39;</span><span class="p">,</span>
+  <span class="c1"># &#39;192.168.0.0/16&#39;,</span>
+  <span class="c1"># &#39;172.16.0.0/12&#39;,</span>
+  <span class="c1"># &#39;10.0.0.0/8&#39;,</span>
+  <span class="c1"># &#39;fd00::/8&#39;,</span>
+<span class="p">]</span>
+
+<span class="p">[</span><span class="n">botdetection</span><span class="o">.</span><span class="n">ip_limit</span><span class="p">]</span>
+
+<span class="c1"># To get unlimited access in a local network, by default link-local addresses</span>
+<span class="c1"># (networks) are not monitored by the ip_limit</span>
+<span class="n">filter_link_local</span> <span class="o">=</span> <span class="n">false</span>
+
+<span class="c1"># activate link_token method in the ip_limit method</span>
+<span class="n">link_token</span> <span class="o">=</span> <span class="n">false</span>
+
+<span class="p">[</span><span class="n">botdetection</span><span class="o">.</span><span class="n">ip_lists</span><span class="p">]</span>
+
+<span class="c1"># In the limiter, the ip_lists method has priority over all other methods -&gt; if</span>
+<span class="c1"># an IP is in the pass_ip list, it has unrestricted access and it is also not</span>
+<span class="c1"># checked if e.g. the &quot;user agent&quot; suggests a bot (e.g. curl).</span>
+
+<span class="n">block_ip</span> <span class="o">=</span> <span class="p">[</span>
+  <span class="c1"># &#39;93.184.216.34&#39;,  # IPv4 of example.org</span>
+  <span class="c1"># &#39;257.1.1.1&#39;,      # invalid IP --&gt; will be ignored, logged in ERROR class</span>
+<span class="p">]</span>
+
+<span class="n">pass_ip</span> <span class="o">=</span> <span class="p">[</span>
+  <span class="c1"># &#39;192.168.0.0/16&#39;,      # IPv4 private network</span>
+  <span class="c1"># &#39;fe80::/10&#39;            # IPv6 linklocal / wins over botdetection.ip_limit.filter_link_local</span>
+<span class="p">]</span>
+
+<span class="c1"># Activate passlist of (hardcoded) IPs from the SearXNG organization,</span>
+<span class="c1"># e.g. `check.searx.space`.</span>
+<span class="n">pass_searxng_org</span> <span class="o">=</span> <span class="n">true</span>
+</pre></div>
+</div>
+</section>
+<section id="implementation">
+<h2><a class="toc-backref" href="#id6" role="doc-backlink">Implementation</a><a class="headerlink" href="#implementation" title="Link to this heading">¶</a></h2>
+</section>
+<dl class="py data">
+<dt class="sig sig-object py" id="searx.limiter.LIMITER_CFG_SCHEMA">
+<span class="sig-prename descclassname"><span class="pre">searx.limiter.</span></span><span class="sig-name descname"><span class="pre">LIMITER_CFG_SCHEMA</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">PosixPath('/home/runner/work/searxng/searxng/searx/limiter.toml')</span></em><a class="headerlink" href="#searx.limiter.LIMITER_CFG_SCHEMA" title="Link to this definition">¶</a></dt>
+<dd><p>Base configuration (schema) of the botdetection.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="searx.limiter.get_cfg">
+<span class="sig-prename descclassname"><span class="pre">searx.limiter.</span></span><span class="sig-name descname"><span class="pre">get_cfg</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="../src/searx.botdetection.html#searx.botdetection.config.Config" title="searx.botdetection.config.Config"><span class="pre">Config</span></a></span></span><a class="reference internal" href="../_modules/searx/limiter.html#get_cfg"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.limiter.get_cfg" title="Link to this definition">¶</a></dt>
+<dd><p>Returns SearXNG’s global limiter configuration.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="searx.limiter.pre_request">
+<span class="sig-prename descclassname"><span class="pre">searx.limiter.</span></span><span class="sig-name descname"><span class="pre">pre_request</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/searx/limiter.html#pre_request"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.limiter.pre_request" title="Link to this definition">¶</a></dt>
+<dd><p>See <a class="reference external" href="https://flask.palletsprojects.com/en/stable/api/#flask.Flask.before_request" title="(in Flask v3.1.x)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">flask.Flask.before_request</span></code></a></p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="searx.limiter.is_installed">
+<span class="sig-prename descclassname"><span class="pre">searx.limiter.</span></span><span class="sig-name descname"><span class="pre">is_installed</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/searx/limiter.html#is_installed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.limiter.is_installed" title="Link to this definition">¶</a></dt>
+<dd><p>Returns <code class="docutils literal notranslate"><span class="pre">True</span></code> if limiter is active and a valkey DB is available.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="searx.limiter.initialize">
+<span class="sig-prename descclassname"><span class="pre">searx.limiter.</span></span><span class="sig-name descname"><span class="pre">initialize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">app</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://flask.palletsprojects.com/en/stable/api/#flask.Flask" title="(in Flask v3.1.x)"><span class="pre">Flask</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">settings</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/searx/limiter.html#initialize"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.limiter.initialize" title="Link to this definition">¶</a></dt>
+<dd><p>Install the limiter</p>
+</dd></dl>
+
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+  <span id="sidebar-top"></span>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+  
+    
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/searxng-wordmark.svg" alt="Logo of SearXNG"/>
+            </a></p>
+  
+
+<h3><a href="../index.html">Table of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../user/index.html">User information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../own-instance.html">Why use a private instance?</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Administrator documentation</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="settings/index.html">Settings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation-docker.html">Installation container</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation-scripts.html">Installation Script</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation-searxng.html">Step by step installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation-granian.html">Granian</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation-uwsgi.html">uWSGI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation-nginx.html">NGINX</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation-apache.html">Apache</a></li>
+<li class="toctree-l2"><a class="reference internal" href="update-searxng.html">SearXNG maintenance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="answer-captcha.html">Answer CAPTCHA from server’s IP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.favicons.html">Favicons</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Limiter</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#enable-limiter">Enable Limiter</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#configure-limiter">Configure Limiter</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#limiter-toml"><code class="docutils literal notranslate"><span class="pre">limiter.toml</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#implementation">Implementation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#searx.limiter.LIMITER_CFG_SCHEMA"><code class="docutils literal notranslate"><span class="pre">LIMITER_CFG_SCHEMA</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#searx.limiter.get_cfg"><code class="docutils literal notranslate"><span class="pre">get_cfg()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#searx.limiter.pre_request"><code class="docutils literal notranslate"><span class="pre">pre_request()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#searx.limiter.is_installed"><code class="docutils literal notranslate"><span class="pre">is_installed()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#searx.limiter.initialize"><code class="docutils literal notranslate"><span class="pre">initialize()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="api.html">Administration API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="architecture.html">Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plugins.html">List of plugins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="buildhosts.html">Buildhosts</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../dev/index.html">Developer documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../utils/index.html">DevOps tooling box</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../src/index.html">Source-Code</a></li>
+</ul>
+
+  <h3>Project Links</h3>
+  <ul>
+    <li><a href="https://github.com/searxng/searxng/tree/master">Source</a>
+  
+    <li><a href="https://github.com/searxng/searxng/wiki">Wiki</a>
+  
+    <li><a href="https://searx.space">Public instances</a>
+  
+    <li><a href="https://github.com/searxng/searxng/issues">Issue Tracker</a>
+  </ul><h3>Navigation</h3>
+<ul>
+  <li><a href="../index.html">Overview</a>
+    <ul>
+      <li><a href="index.html">Administrator documentation</a>
+        <ul>
+          <li>Previous: <a href="searx.favicons.html" title="previous chapter">Favicons</a>
+          <li>Next: <a href="api.html" title="next chapter">Administration API</a></ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/admin/searx.limiter.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright SearXNG team.
+    </div>
+  </body>
+</html>

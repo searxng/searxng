@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>searx.cache &#8212; SearXNG Documentation (2026.2.22+191818b86)</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=6625fa76" />
+    <link rel="stylesheet" type="text/css" href="../../_static/searxng.css?v=52e4ff28" />
+    <script src="../../_static/documentation_options.js?v=1b5d919e"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script data-project="searxng" data-version="2026.2.22+191818b86" src="../../_static/describe_version.js?v=fa7f30d0"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">SearXNG Documentation (2026.2.22+191818b86)</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">searx.cache</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for searx.cache</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Implementation of caching solutions.</span>
+
+<span class="sd">- :py:obj:`searx.cache.ExpireCache` and its :py:obj:`searx.cache.ExpireCacheCfg`</span>
+
+<span class="sd">----</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;ExpireCacheCfg&quot;</span><span class="p">,</span> <span class="s2">&quot;ExpireCacheStats&quot;</span><span class="p">,</span> <span class="s2">&quot;ExpireCache&quot;</span><span class="p">,</span> <span class="s2">&quot;ExpireCacheSQLite&quot;</span><span class="p">]</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">abc</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">collections.abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">Iterator</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">dataclasses</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">datetime</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">hashlib</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">hmac</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pickle</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">string</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">tempfile</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">typing</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">msgspec</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">searx</span><span class="w"> </span><span class="kn">import</span> <span class="n">sqlitedb</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">searx</span><span class="w"> </span><span class="kn">import</span> <span class="n">logger</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">searx</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_setting</span>
+
+<span class="n">log</span> <span class="o">=</span> <span class="n">logger</span><span class="o">.</span><span class="n">getChild</span><span class="p">(</span><span class="s2">&quot;cache&quot;</span><span class="p">)</span>
+
+<span class="n">CacheRowType</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">TypeAlias</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">typing</span><span class="o">.</span><span class="n">Any</span><span class="p">,</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span><span class="p">]</span>
+
+
+<div class="viewcode-block" id="ExpireCacheCfg">
+<a class="viewcode-back" href="../../src/searx.cache.html#searx.cache.ExpireCacheCfg">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">ExpireCacheCfg</span><span class="p">(</span><span class="n">msgspec</span><span class="o">.</span><span class="n">Struct</span><span class="p">):</span>  <span class="c1"># pylint: disable=too-few-public-methods</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Configuration of a :py:obj:`ExpireCache` cache.&quot;&quot;&quot;</span>
+
+    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Name of the cache.&quot;&quot;&quot;</span>
+
+    <span class="n">db_url</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;URL of the SQLite DB, the path to the database file.  If unset a default</span>
+<span class="sd">    DB will be created in `/tmp/sxng_cache_{self.name}.db`&quot;&quot;&quot;</span>
+
+    <span class="n">MAX_VALUE_LEN</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1024</span> <span class="o">*</span> <span class="mi">10</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Max length of a *serialized* value.&quot;&quot;&quot;</span>
+
+    <span class="n">MAXHOLD_TIME</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">60</span> <span class="o">*</span> <span class="mi">60</span> <span class="o">*</span> <span class="mi">24</span> <span class="o">*</span> <span class="mi">7</span>  <span class="c1"># 7 days</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Hold time (default in sec.), after which a value is removed from the cache.&quot;&quot;&quot;</span>
+
+    <span class="n">MAINTENANCE_PERIOD</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">60</span> <span class="o">*</span> <span class="mi">60</span>  <span class="c1"># 2h</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Maintenance period in seconds / when :py:obj:`MAINTENANCE_MODE` is set to</span>
+<span class="sd">    ``auto``.&quot;&quot;&quot;</span>
+
+    <span class="n">MAINTENANCE_MODE</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;auto&quot;</span><span class="p">,</span> <span class="s2">&quot;off&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;auto&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Type of maintenance mode</span>
+
+<span class="sd">    ``auto``:</span>
+<span class="sd">      Maintenance is carried out automatically as part of the maintenance</span>
+<span class="sd">      intervals (:py:obj:`MAINTENANCE_PERIOD`); no external process is required.</span>
+
+<span class="sd">    ``off``:</span>
+<span class="sd">      Maintenance is switched off and must be carried out by an external process</span>
+<span class="sd">      if required.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">password</span><span class="p">:</span> <span class="nb">bytes</span> <span class="o">=</span> <span class="n">get_setting</span><span class="p">(</span><span class="s2">&quot;server.secret_key&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">encode</span><span class="p">()</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Password used by :py:obj:`ExpireCache.secret_hash`.</span>
+
+<span class="sd">    The default password is taken from :ref:`secret_key &lt;server.secret_key&gt;`.</span>
+<span class="sd">    When the password is changed, the hashed keys in the cache can no longer be</span>
+<span class="sd">    used, which is why all values in the cache are deleted when the password is</span>
+<span class="sd">    changed.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">__post_init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># if db_url is unset, use a default DB in /tmp/sxng_cache_{name}.db</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">db_url</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">db_url</span> <span class="o">=</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">gettempdir</span><span class="p">()</span> <span class="o">+</span> <span class="n">os</span><span class="o">.</span><span class="n">sep</span> <span class="o">+</span> <span class="sa">f</span><span class="s2">&quot;sxng_cache_</span><span class="si">{</span><span class="n">ExpireCache</span><span class="o">.</span><span class="n">normalize_name</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span><span class="si">}</span><span class="s2">.db&quot;</span></div>
+
+
+
+<div class="viewcode-block" id="ExpireCacheStats">
+<a class="viewcode-back" href="../../src/searx.cache.html#searx.cache.ExpireCacheStats">[docs]</a>
+<span class="nd">@dataclasses</span><span class="o">.</span><span class="n">dataclass</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">ExpireCacheStats</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Dataclass which provides information on the status of the cache.&quot;&quot;&quot;</span>
+
+    <span class="n">cached_items</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="n">CacheRowType</span><span class="p">]]</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Values in the cache mapped by context name.</span>
+
+<span class="sd">    .. code: python</span>
+
+<span class="sd">       {</span>
+<span class="sd">           &quot;context name&quot;: [</span>
+<span class="sd">               (&quot;foo key&quot;: &quot;foo value&quot;, &lt;expire&gt;),</span>
+<span class="sd">               (&quot;bar key&quot;: &quot;bar value&quot;, &lt;expire&gt;),</span>
+<span class="sd">               # ...</span>
+<span class="sd">           ],</span>
+<span class="sd">           # ...</span>
+<span class="sd">       }</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">report</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">c_ctx</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">c_kv</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">lines</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="k">for</span> <span class="n">ctx_name</span><span class="p">,</span> <span class="n">kv_list</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">cached_items</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">c_ctx</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">kv_list</span><span class="p">:</span>
+                <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[</span><span class="si">{</span><span class="n">ctx_name</span><span class="si">:</span><span class="s2">20s</span><span class="si">}</span><span class="s2">] empty&quot;</span><span class="p">)</span>
+                <span class="k">continue</span>
+
+            <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">expire</span> <span class="ow">in</span> <span class="n">kv_list</span><span class="p">:</span>
+                <span class="n">valid_until</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+                <span class="k">if</span> <span class="n">expire</span><span class="p">:</span>
+                    <span class="n">valid_until</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">fromtimestamp</span><span class="p">(</span><span class="n">expire</span><span class="p">)</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%Y-%m-</span><span class="si">%d</span><span class="s2"> %H:%M:%S&quot;</span><span class="p">)</span>
+                <span class="n">c_kv</span> <span class="o">+=</span> <span class="mi">1</span>
+                <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[</span><span class="si">{</span><span class="n">ctx_name</span><span class="si">:</span><span class="s2">20s</span><span class="si">}</span><span class="s2">] </span><span class="si">{</span><span class="n">valid_until</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">key</span><span class="si">:</span><span class="s2">12</span><span class="si">}</span><span class="s2">&quot;</span> <span class="sa">f</span><span class="s2">&quot; --&gt; (</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">value</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">) </span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2"> &quot;</span><span class="p">)</span>
+
+        <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Number of contexts: </span><span class="si">{</span><span class="n">c_ctx</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;number of key/value pairs: </span><span class="si">{</span><span class="n">c_kv</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">lines</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="ExpireCache">
+<a class="viewcode-back" href="../../src/searx.cache.html#searx.cache.ExpireCache">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">ExpireCache</span><span class="p">(</span><span class="n">abc</span><span class="o">.</span><span class="n">ABC</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Abstract base class for the implementation of a key/value cache</span>
+<span class="sd">    with expire date.&quot;&quot;&quot;</span>
+
+    <span class="n">cfg</span><span class="p">:</span> <span class="n">ExpireCacheCfg</span>
+
+    <span class="n">hash_token</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;hash_token&quot;</span>
+
+<div class="viewcode-block" id="ExpireCache.set">
+<a class="viewcode-back" href="../../src/searx.cache.html#searx.cache.ExpireCache.set">[docs]</a>
+    <span class="nd">@abc</span><span class="o">.</span><span class="n">abstractmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Any</span><span class="p">,</span> <span class="n">expire</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">ctx</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set *key* to *value*.  To set a timeout on key use argument</span>
+<span class="sd">        ``expire`` (in sec.).  If expire is unset the default is taken from</span>
+<span class="sd">        :py:obj:`ExpireCacheCfg.MAXHOLD_TIME`.  After the timeout has expired,</span>
+<span class="sd">        the key will automatically be deleted.</span>
+
+<span class="sd">        The ``ctx`` argument specifies the context of the ``key``.  A key is</span>
+<span class="sd">        only unique in its context.</span>
+
+<span class="sd">        The concrete implementations of this abstraction determine how the</span>
+<span class="sd">        context is mapped in the connected database.  In SQL databases, for</span>
+<span class="sd">        example, the context is a DB table or in a Key/Value DB it could be</span>
+<span class="sd">        a prefix for the key.</span>
+
+<span class="sd">        If the context is not specified (the default is ``None``) then a</span>
+<span class="sd">        default context should be used, e.g. a default table for SQL databases</span>
+<span class="sd">        or a default prefix in a Key/Value DB.</span>
+<span class="sd">        &quot;&quot;&quot;</span></div>
+
+
+<div class="viewcode-block" id="ExpireCache.get">
+<a class="viewcode-back" href="../../src/searx.cache.html#searx.cache.ExpireCache.get">[docs]</a>
+    <span class="nd">@abc</span><span class="o">.</span><span class="n">abstractmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">default</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Any</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">ctx</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Any</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return *value* of *key*.  If key is unset, ``None`` is returned.&quot;&quot;&quot;</span></div>
+
+
+<div class="viewcode-block" id="ExpireCache.maintenance">
+<a class="viewcode-back" href="../../src/searx.cache.html#searx.cache.ExpireCache.maintenance">[docs]</a>
+    <span class="nd">@abc</span><span class="o">.</span><span class="n">abstractmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">maintenance</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">force</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">truncate</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Performs maintenance on the cache.</span>
+
+<span class="sd">        ``force``:</span>
+<span class="sd">          Maintenance should be carried out even if the maintenance interval has</span>
+<span class="sd">          not yet been reached.</span>
+
+<span class="sd">        ``truncate``:</span>
+<span class="sd">          Truncate the entire cache, which is necessary, for example, if the</span>
+<span class="sd">          password has changed.</span>
+<span class="sd">        &quot;&quot;&quot;</span></div>
+
+
+<div class="viewcode-block" id="ExpireCache.state">
+<a class="viewcode-back" href="../../src/searx.cache.html#searx.cache.ExpireCache.state">[docs]</a>
+    <span class="nd">@abc</span><span class="o">.</span><span class="n">abstractmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">state</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ExpireCacheStats</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns a :py:obj:`ExpireCacheStats`, which provides information</span>
+<span class="sd">        about the status of the cache.&quot;&quot;&quot;</span></div>
+
+
+<div class="viewcode-block" id="ExpireCache.build_cache">
+<a class="viewcode-back" href="../../src/searx.cache.html#searx.cache.ExpireCache.build_cache">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">build_cache</span><span class="p">(</span><span class="n">cfg</span><span class="p">:</span> <span class="n">ExpireCacheCfg</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;ExpireCacheSQLite&quot;</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Factory to build a caching instance.</span>
+
+<span class="sd">        .. note::</span>
+
+<span class="sd">           Currently, only the SQLite adapter is available, but other database</span>
+<span class="sd">           types could be implemented in the future, e.g. a Valkey (Redis)</span>
+<span class="sd">           adapter.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">ExpireCacheSQLite</span><span class="p">(</span><span class="n">cfg</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="ExpireCache.normalize_name">
+<a class="viewcode-back" href="../../src/searx.cache.html#searx.cache.ExpireCache.normalize_name">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">normalize_name</span><span class="p">(</span><span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns a normalized name that can be used as a file name or as a SQL</span>
+<span class="sd">        table name (is used, for example, to normalize the context name).&quot;&quot;&quot;</span>
+
+        <span class="n">_valid</span> <span class="o">=</span> <span class="s2">&quot;-_.&quot;</span> <span class="o">+</span> <span class="n">string</span><span class="o">.</span><span class="n">ascii_letters</span> <span class="o">+</span> <span class="n">string</span><span class="o">.</span><span class="n">digits</span>
+        <span class="k">return</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">c</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">name</span> <span class="k">if</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">_valid</span><span class="p">])</span></div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">serialize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bytes</span><span class="p">:</span>
+        <span class="n">dump</span><span class="p">:</span> <span class="nb">bytes</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">dump</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">deserialize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">bytes</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Any</span><span class="p">:</span>
+        <span class="n">obj</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">obj</span>
+
+<div class="viewcode-block" id="ExpireCache.secret_hash">
+<a class="viewcode-back" href="../../src/searx.cache.html#searx.cache.ExpireCache.secret_hash">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">secret_hash</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="nb">bytes</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Creates a hash of the argument ``name``.  The hash value is formed</span>
+<span class="sd">        from the ``name`` combined with the :py:obj:`password</span>
+<span class="sd">        &lt;ExpireCacheCfg.password&gt;`.  Can be used, for example, to make the</span>
+<span class="sd">        ``key`` stored in the DB unreadable for third parties.&quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="nb">bytes</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
+        <span class="n">m</span> <span class="o">=</span> <span class="n">hmac</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">name</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">cfg</span><span class="o">.</span><span class="n">password</span><span class="p">,</span> <span class="n">digestmod</span><span class="o">=</span><span class="s1">&#39;sha256&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">m</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="ExpireCacheSQLite">
+<a class="viewcode-back" href="../../src/searx.cache.html#searx.cache.ExpireCacheSQLite">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">ExpireCacheSQLite</span><span class="p">(</span><span class="n">sqlitedb</span><span class="o">.</span><span class="n">SQLiteAppl</span><span class="p">,</span> <span class="n">ExpireCache</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Cache that manages key/value pairs in a SQLite DB.  The DB model in the</span>
+<span class="sd">    SQLite DB is implemented in abstract class :py:obj:`SQLiteAppl</span>
+<span class="sd">    &lt;searx.sqlitedb.SQLiteAppl&gt;`.</span>
+
+<span class="sd">    The following configurations are required / supported:</span>
+
+<span class="sd">    - :py:obj:`ExpireCacheCfg.db_url`</span>
+<span class="sd">    - :py:obj:`ExpireCacheCfg.MAXHOLD_TIME`</span>
+<span class="sd">    - :py:obj:`ExpireCacheCfg.MAINTENANCE_PERIOD`</span>
+<span class="sd">    - :py:obj:`ExpireCacheCfg.MAINTENANCE_MODE`</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">DB_SCHEMA</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span>
+
+    <span class="c1"># The key/value tables will be created on demand by self.create_table</span>
+    <span class="n">DDL_CREATE_TABLES</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="n">CACHE_TABLE_PREFIX</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;CACHE-TABLE&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cfg</span><span class="p">:</span> <span class="n">ExpireCacheCfg</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;An instance of the SQLite expire cache is build up from a</span>
+<span class="sd">        :py:obj:`config &lt;ExpireCacheCfg&gt;`.&quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">cfg</span><span class="p">:</span> <span class="n">ExpireCacheCfg</span> <span class="o">=</span> <span class="n">cfg</span>
+        <span class="k">if</span> <span class="n">cfg</span><span class="o">.</span><span class="n">db_url</span> <span class="o">==</span> <span class="s2">&quot;:memory:&quot;</span><span class="p">:</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">critical</span><span class="p">(</span><span class="s2">&quot;don&#39;t use SQLite DB in :memory: in production!!&quot;</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">cfg</span><span class="o">.</span><span class="n">db_url</span><span class="p">)</span>
+
+<div class="viewcode-block" id="ExpireCacheSQLite.init">
+<a class="viewcode-back" href="../../src/searx.cache.html#searx.cache.ExpireCacheSQLite.init">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">init</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">conn</span><span class="p">:</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">Connection</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="n">ret_val</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">init</span><span class="p">(</span><span class="n">conn</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">ret_val</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span>
+
+        <span class="n">new</span> <span class="o">=</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">sha256</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cfg</span><span class="o">.</span><span class="n">password</span><span class="p">)</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span>
+        <span class="n">old</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">properties</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">hash_token</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">old</span> <span class="o">!=</span> <span class="n">new</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">old</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">log</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;[</span><span class="si">%s</span><span class="s2">] hash token changed: truncate all cache tables&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">cfg</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">maintenance</span><span class="p">(</span><span class="n">force</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">truncate</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">properties</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">hash_token</span><span class="p">,</span> <span class="n">new</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="kc">True</span></div>
+
+
+<div class="viewcode-block" id="ExpireCacheSQLite.maintenance">
+<a class="viewcode-back" href="../../src/searx.cache.html#searx.cache.ExpireCacheSQLite.maintenance">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">maintenance</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">force</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">truncate</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">force</span> <span class="ow">and</span> <span class="nb">int</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">())</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">next_maintenance_time</span><span class="p">:</span>
+            <span class="c1"># log.debug(&quot;no maintenance required yet, next maintenance interval is in the future&quot;)</span>
+            <span class="k">return</span> <span class="kc">False</span>
+
+        <span class="c1"># Prevent parallel DB maintenance cycles from other DB connections</span>
+        <span class="c1"># (e.g. in multi thread or process environments).</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">properties</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s2">&quot;LAST_MAINTENANCE&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>  <span class="c1"># hint: this (also) sets the m_time of the property!</span>
+
+        <span class="k">if</span> <span class="n">truncate</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">truncate_tables</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">table_names</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">True</span>
+
+        <span class="c1"># drop items by expire time stamp ..</span>
+        <span class="n">expire</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">())</span>
+
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">connect</span><span class="p">()</span> <span class="k">as</span> <span class="n">conn</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">table</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">table_names</span><span class="p">:</span>
+                <span class="n">res</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;DELETE FROM </span><span class="si">{</span><span class="n">table</span><span class="si">}</span><span class="s2"> WHERE expire &lt; ?&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">expire</span><span class="p">,))</span>
+                <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;deleted </span><span class="si">%s</span><span class="s2"> keys from table </span><span class="si">%s</span><span class="s2"> (expire date reached)&quot;</span><span class="p">,</span> <span class="n">res</span><span class="o">.</span><span class="n">rowcount</span><span class="p">,</span> <span class="n">table</span><span class="p">)</span>
+
+        <span class="c1"># Vacuuming the WALs</span>
+        <span class="c1"># https://www.theunterminatedstring.com/sqlite-vacuuming/</span>
+
+        <span class="n">conn</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;PRAGMA wal_checkpoint(TRUNCATE)&quot;</span><span class="p">)</span>
+        <span class="n">conn</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="kc">True</span></div>
+
+
+<div class="viewcode-block" id="ExpireCacheSQLite.create_table">
+<a class="viewcode-back" href="../../src/searx.cache.html#searx.cache.ExpireCacheSQLite.create_table">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">create_table</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">table</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create DB ``table`` if it has not yet been created, no recreates are</span>
+<span class="sd">        initiated if the table already exists.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">table</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">table_names</span><span class="p">:</span>
+            <span class="c1"># log.debug(&quot;key/value table %s exists in DB (no need to recreate)&quot;, table)</span>
+            <span class="k">return</span> <span class="kc">False</span>
+
+        <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;key/value table &#39;</span><span class="si">%s</span><span class="s2">&#39; NOT exists in DB -&gt; create DB table ..&quot;</span><span class="p">,</span> <span class="n">table</span><span class="p">)</span>
+        <span class="n">sql_table</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+            <span class="p">[</span>
+                <span class="sa">f</span><span class="s2">&quot;CREATE TABLE IF NOT EXISTS </span><span class="si">{</span><span class="n">table</span><span class="si">}</span><span class="s2"> (&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;  key        TEXT,&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;  value      BLOB,&quot;</span><span class="p">,</span>
+                <span class="sa">f</span><span class="s2">&quot;  expire     INTEGER DEFAULT (strftime(&#39;%s&#39;, &#39;now&#39;) + </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">cfg</span><span class="o">.</span><span class="n">MAXHOLD_TIME</span><span class="si">}</span><span class="s2">),&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;PRIMARY KEY (key))&quot;</span><span class="p">,</span>
+            <span class="p">]</span>
+        <span class="p">)</span>
+        <span class="n">sql_index</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;CREATE INDEX IF NOT EXISTS index_expire_</span><span class="si">{</span><span class="n">table</span><span class="si">}</span><span class="s2"> ON </span><span class="si">{</span><span class="n">table</span><span class="si">}</span><span class="s2">(expire);&quot;</span>
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">connect</span><span class="p">()</span> <span class="k">as</span> <span class="n">conn</span><span class="p">:</span>
+            <span class="n">conn</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">sql_table</span><span class="p">)</span>
+            <span class="n">conn</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">sql_index</span><span class="p">)</span>
+        <span class="n">conn</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">properties</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">CACHE_TABLE_PREFIX</span><span class="si">}</span><span class="s2">-</span><span class="si">{</span><span class="n">table</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">table</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">True</span></div>
+
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">table_names</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;List of key/value tables already created in the DB.&quot;&quot;&quot;</span>
+        <span class="n">sql</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;SELECT value FROM properties WHERE name LIKE &#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">CACHE_TABLE_PREFIX</span><span class="si">}</span><span class="s2">%%&#39;&quot;</span>
+        <span class="n">rows</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">DB</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">sql</span><span class="p">)</span><span class="o">.</span><span class="n">fetchall</span><span class="p">()</span> <span class="ow">or</span> <span class="p">[]</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">r</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">rows</span><span class="p">]</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">truncate_tables</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">table_names</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]):</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;truncate table: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;,&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">table_names</span><span class="p">))</span>
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">connect</span><span class="p">()</span> <span class="k">as</span> <span class="n">conn</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">table</span> <span class="ow">in</span> <span class="n">table_names</span><span class="p">:</span>
+                <span class="n">conn</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;DELETE FROM </span><span class="si">{</span><span class="n">table</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">conn</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="k">return</span> <span class="kc">True</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">next_maintenance_time</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns (unix epoch) time of the next maintenance.&quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">cfg</span><span class="o">.</span><span class="n">MAINTENANCE_PERIOD</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">properties</span><span class="o">.</span><span class="n">m_time</span><span class="p">(</span><span class="s2">&quot;LAST_MAINTENANCE&quot;</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()))</span>
+
+    <span class="c1"># implement ABC methods of ExpireCache</span>
+
+<div class="viewcode-block" id="ExpireCacheSQLite.set">
+<a class="viewcode-back" href="../../src/searx.cache.html#searx.cache.ExpireCacheSQLite.set">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Any</span><span class="p">,</span> <span class="n">expire</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">ctx</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set key/value in DB table given by argument ``ctx``.  If expire is</span>
+<span class="sd">        unset the default is taken from :py:obj:`ExpireCacheCfg.MAXHOLD_TIME`.</span>
+<span class="sd">        If ``ctx`` argument is ``None`` (the default), a table name is</span>
+<span class="sd">        generated from the :py:obj:`ExpireCacheCfg.name`.  If DB table does not</span>
+<span class="sd">        exists, it will be created (on demand) by :py:obj:`self.create_table</span>
+<span class="sd">        &lt;ExpireCacheSQLite.create_table&gt;`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">c</span><span class="p">,</span> <span class="n">err_msg_list</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_setmany</span><span class="p">([(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">expire</span><span class="p">)],</span> <span class="n">ctx</span><span class="o">=</span><span class="n">ctx</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">c</span><span class="p">:</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> -- </span><span class="si">%s</span><span class="s2">: key &#39;</span><span class="si">%s</span><span class="s2">&#39; updated or inserted (</span><span class="si">%s</span><span class="s2"> errors)&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">cfg</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">ctx</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">err_msg_list</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">msg</span> <span class="ow">in</span> <span class="n">err_msg_list</span><span class="p">:</span>
+                <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> -- </span><span class="si">%s</span><span class="s2">: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">cfg</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">ctx</span><span class="p">,</span> <span class="n">msg</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">bool</span><span class="p">(</span><span class="n">c</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="ExpireCacheSQLite.setmany">
+<a class="viewcode-back" href="../../src/searx.cache.html#searx.cache.ExpireCacheSQLite.setmany">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">setmany</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">opt_list</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">CacheRowType</span><span class="p">],</span>
+        <span class="n">ctx</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Efficient bootload of the cache from a list of options.  The list</span>
+<span class="sd">        contains tuples with the arguments described in</span>
+<span class="sd">        :py:obj:`ExpireCacheSQLite.set`.&quot;&quot;&quot;</span>
+        <span class="n">_start</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+        <span class="n">c</span><span class="p">,</span> <span class="n">err_msg_list</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_setmany</span><span class="p">(</span><span class="n">opt_list</span><span class="o">=</span><span class="n">opt_list</span><span class="p">,</span> <span class="n">ctx</span><span class="o">=</span><span class="n">ctx</span><span class="p">)</span>
+        <span class="n">_end</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">msg</span> <span class="ow">in</span> <span class="n">err_msg_list</span><span class="p">:</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> -- </span><span class="si">%s</span><span class="s2">: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">cfg</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">ctx</span><span class="p">,</span> <span class="n">msg</span><span class="p">)</span>
+
+        <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span>
+            <span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> -- </span><span class="si">%s</span><span class="s2">: </span><span class="si">%s</span><span class="s2">/</span><span class="si">%s</span><span class="s2"> key/value pairs updated or inserted in </span><span class="si">%s</span><span class="s2"> sec (</span><span class="si">%s</span><span class="s2"> errors)&quot;</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">cfg</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+            <span class="n">ctx</span><span class="p">,</span>
+            <span class="n">c</span><span class="p">,</span>
+            <span class="nb">len</span><span class="p">(</span><span class="n">opt_list</span><span class="p">),</span>
+            <span class="n">_end</span> <span class="o">-</span> <span class="n">_start</span><span class="p">,</span>
+            <span class="nb">len</span><span class="p">(</span><span class="n">err_msg_list</span><span class="p">),</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">c</span></div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_setmany</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">opt_list</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">CacheRowType</span><span class="p">],</span>
+        <span class="n">ctx</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]]:</span>
+
+        <span class="n">table</span> <span class="o">=</span> <span class="n">ctx</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">maintenance</span><span class="p">()</span>
+
+        <span class="n">table_name</span> <span class="o">=</span> <span class="n">table</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">table_name</span><span class="p">:</span>
+            <span class="n">table_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">normalize_name</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cfg</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">create_table</span><span class="p">(</span><span class="n">table_name</span><span class="p">)</span>
+
+        <span class="n">sql_str</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;INSERT INTO </span><span class="si">{</span><span class="n">table_name</span><span class="si">}</span><span class="s2"> (key, value, expire) VALUES (?, ?, ?)&quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;    ON CONFLICT DO &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;UPDATE SET value=?, expire=?&quot;</span>
+        <span class="p">)</span>
+
+        <span class="n">sql_rows</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span>
+            <span class="nb">tuple</span><span class="p">[</span>
+                <span class="nb">str</span><span class="p">,</span>  <span class="c1"># key</span>
+                <span class="n">typing</span><span class="o">.</span><span class="n">Any</span><span class="p">,</span>  <span class="c1"># value</span>
+                <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>  <span class="c1"># expire</span>
+                <span class="n">typing</span><span class="o">.</span><span class="n">Any</span><span class="p">,</span>  <span class="c1"># value</span>
+                <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>  <span class="c1"># expire</span>
+            <span class="p">]</span>
+        <span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="n">err_msg_list</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">_val</span><span class="p">,</span> <span class="n">expire</span> <span class="ow">in</span> <span class="n">opt_list</span><span class="p">:</span>
+
+            <span class="n">value</span><span class="p">:</span> <span class="nb">bytes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">serialize</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="n">_val</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">cfg</span><span class="o">.</span><span class="n">MAX_VALUE_LEN</span><span class="p">:</span>
+                <span class="n">err_msg_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">table</span><span class="si">}</span><span class="s2">.key=&#39;</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">&#39; - serialized value too big to cache (len: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">value</span><span class="p">)</span><span class="si">}</span><span class="s2">) &quot;</span><span class="p">)</span>
+                <span class="k">continue</span>
+
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">expire</span><span class="p">:</span>
+                <span class="n">expire</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cfg</span><span class="o">.</span><span class="n">MAXHOLD_TIME</span>
+            <span class="n">expire</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">())</span> <span class="o">+</span> <span class="n">expire</span>
+
+            <span class="c1"># positional arguments of the INSERT INTO statement</span>
+            <span class="n">sql_args</span> <span class="o">=</span> <span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">expire</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">expire</span><span class="p">)</span>
+            <span class="n">sql_rows</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sql_args</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">sql_rows</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mi">0</span><span class="p">,</span> <span class="n">err_msg_list</span>
+
+        <span class="k">if</span> <span class="n">table</span><span class="p">:</span>
+            <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">DB</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">DB</span><span class="o">.</span><span class="n">executemany</span><span class="p">(</span><span class="n">sql_str</span><span class="p">,</span> <span class="n">sql_rows</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">connect</span><span class="p">()</span> <span class="k">as</span> <span class="n">conn</span><span class="p">:</span>
+                <span class="n">conn</span><span class="o">.</span><span class="n">executemany</span><span class="p">(</span><span class="n">sql_str</span><span class="p">,</span> <span class="n">sql_rows</span><span class="p">)</span>
+            <span class="n">conn</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="n">sql_rows</span><span class="p">),</span> <span class="n">err_msg_list</span>
+
+<div class="viewcode-block" id="ExpireCacheSQLite.get">
+<a class="viewcode-back" href="../../src/searx.cache.html#searx.cache.ExpireCacheSQLite.get">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">default</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Any</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">ctx</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Any</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get value of ``key`` from table given by argument ``ctx``.  If</span>
+<span class="sd">        ``ctx`` argument is ``None`` (the default), a table name is generated</span>
+<span class="sd">        from the :py:obj:`ExpireCacheCfg.name`.  If ``key`` not exists (in</span>
+<span class="sd">        table), the ``default`` value is returned.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">table</span> <span class="o">=</span> <span class="n">ctx</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">maintenance</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">table</span><span class="p">:</span>
+            <span class="n">table</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">normalize_name</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cfg</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">table</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">table_names</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">default</span>
+
+        <span class="n">sql</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;SELECT value FROM </span><span class="si">{</span><span class="n">table</span><span class="si">}</span><span class="s2"> WHERE key = ?&quot;</span>
+        <span class="n">row</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">DB</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">sql</span><span class="p">,</span> <span class="p">(</span><span class="n">key</span><span class="p">,))</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">row</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">default</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">deserialize</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span></div>
+
+
+<div class="viewcode-block" id="ExpireCacheSQLite.pairs">
+<a class="viewcode-back" href="../../src/searx.cache.html#searx.cache.ExpireCacheSQLite.pairs">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">pairs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ctx</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">typing</span><span class="o">.</span><span class="n">Any</span><span class="p">]]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Iterate over key/value pairs from table given by argument ``ctx``.</span>
+<span class="sd">        If ``ctx`` argument is ``None`` (the default), a table name is</span>
+<span class="sd">        generated from the :py:obj:`ExpireCacheCfg.name`.&quot;&quot;&quot;</span>
+        <span class="n">table</span> <span class="o">=</span> <span class="n">ctx</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">maintenance</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">table</span><span class="p">:</span>
+            <span class="n">table</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">normalize_name</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cfg</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">table</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">table_names</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">DB</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;SELECT key, value FROM </span><span class="si">{</span><span class="n">table</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">):</span>
+                <span class="k">yield</span> <span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">deserialize</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span></div>
+
+
+<div class="viewcode-block" id="ExpireCacheSQLite.state">
+<a class="viewcode-back" href="../../src/searx.cache.html#searx.cache.ExpireCacheSQLite.state">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">state</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ExpireCacheStats</span><span class="p">:</span>
+        <span class="n">cached_items</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="n">CacheRowType</span><span class="p">]]</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">table</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">table_names</span><span class="p">:</span>
+            <span class="n">cached_items</span><span class="p">[</span><span class="n">table</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">DB</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;SELECT key, value, expire FROM </span><span class="si">{</span><span class="n">table</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">):</span>
+                <span class="n">cached_items</span><span class="p">[</span><span class="n">table</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">deserialize</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="n">row</span><span class="p">[</span><span class="mi">2</span><span class="p">]))</span>
+        <span class="k">return</span> <span class="n">ExpireCacheStats</span><span class="p">(</span><span class="n">cached_items</span><span class="o">=</span><span class="n">cached_items</span><span class="p">)</span></div>
+</div>
+
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+  <span id="sidebar-top"></span>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+  
+    
+            <p class="logo"><a href="../../index.html">
+              <img class="logo" src="../../_static/searxng-wordmark.svg" alt="Logo of SearXNG"/>
+            </a></p>
+  
+
+<h3><a href="../../index.html">Table of Contents</a></h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../user/index.html">User information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../own-instance.html">Why use a private instance?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../admin/index.html">Administrator documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dev/index.html">Developer documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../utils/index.html">DevOps tooling box</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../src/index.html">Source-Code</a></li>
+</ul>
+
+  <h3>Project Links</h3>
+  <ul>
+    <li><a href="https://github.com/searxng/searxng/tree/master">Source</a>
+  
+    <li><a href="https://github.com/searxng/searxng/wiki">Wiki</a>
+  
+    <li><a href="https://searx.space">Public instances</a>
+  
+    <li><a href="https://github.com/searxng/searxng/issues">Issue Tracker</a>
+  </ul><h3>Navigation</h3>
+<ul>
+  <li><a href="../../index.html">Overview</a>
+    <ul>
+      <li><a href="../index.html">Module code</a>
+        
+          
+          </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright SearXNG team.
+    </div>
+  </body>
+</html>

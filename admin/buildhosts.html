@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Buildhosts &#8212; SearXNG Documentation (2026.2.22+191818b86)</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=6625fa76" />
+    <link rel="stylesheet" type="text/css" href="../_static/searxng.css?v=52e4ff28" />
+    <link rel="stylesheet" type="text/css" href="../_static/tabs.css?v=a5c4661c" />
+    <script src="../_static/documentation_options.js?v=1b5d919e"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script data-project="searxng" data-version="2026.2.22+191818b86" src="../_static/describe_version.js?v=fa7f30d0"></script>
+    <script src="../_static/tabs.js?v=3030b3cb"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Developer documentation" href="../dev/index.html" />
+    <link rel="prev" title="List of plugins" href="plugins.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../dev/index.html" title="Developer documentation"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="plugins.html" title="List of plugins"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">SearXNG Documentation (2026.2.22+191818b86)</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" accesskey="U">Administrator documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Buildhosts</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="buildhosts">
+<span id="id1"></span><h1>Buildhosts<a class="headerlink" href="#buildhosts" title="Link to this heading">¶</a></h1>
+<nav class="contents local" id="contents">
+<ul class="simple">
+<li><p><a class="reference internal" href="#build-and-development-tools" id="id2">Build and Development tools</a></p></li>
+<li><p><a class="reference internal" href="#build-docs" id="id3">Build docs</a></p></li>
+<li><p><a class="reference internal" href="#lint-shell-scripts" id="id4">Lint shell scripts</a></p></li>
+</ul>
+</nav>
+<p>To get best results from build, it’s recommend to install additional packages on
+build hosts (see <a class="reference internal" href="../utils/searxng.sh.html#searxng-sh"><span class="std std-ref">utils/searxng.sh</span></a>).</p>
+<section id="build-and-development-tools">
+<span id="searxng-sh-install-buildhost"></span><h2><a class="toc-backref" href="#id2" role="doc-backlink">Build and Development tools</a><a class="headerlink" href="#build-and-development-tools" title="Link to this heading">¶</a></h2>
+<p>To Install tools used by build and development tasks in once:</p>
+<div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-0-U2VhclhORydzIGRldmVsb3BtZW50IHRvb2xz" aria-selected="true" class="sphinx-tabs-tab group-tab" id="tab-0-U2VhclhORydzIGRldmVsb3BtZW50IHRvb2xz" name="U2VhclhORydzIGRldmVsb3BtZW50IHRvb2xz" role="tab" tabindex="0">SearXNG’s development tools</button></div><div aria-labelledby="tab-0-U2VhclhORydzIGRldmVsb3BtZW50IHRvb2xz" class="sphinx-tabs-panel group-tab" id="panel-0-U2VhclhORydzIGRldmVsb3BtZW50IHRvb2xz" name="U2VhclhORydzIGRldmVsb3BtZW50IHRvb2xz" role="tabpanel" tabindex="0"><div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>sudo<span class="w"> </span>-H<span class="w"> </span>./utils/searxng.sh<span class="w"> </span>install<span class="w"> </span>buildhost
+</pre></div>
+</div>
+</div></div>
+<p>This will install packages needed by SearXNG:</p>
+<div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-1-VWJ1bnR1IC8gZGViaWFu" aria-selected="true" class="sphinx-tabs-tab group-tab" id="tab-1-VWJ1bnR1IC8gZGViaWFu" name="VWJ1bnR1IC8gZGViaWFu" role="tab" tabindex="0">Ubuntu / debian</button><button aria-controls="panel-1-QXJjaCBMaW51eA==" aria-selected="false" class="sphinx-tabs-tab group-tab" id="tab-1-QXJjaCBMaW51eA==" name="QXJjaCBMaW51eA==" role="tab" tabindex="-1">Arch Linux</button><button aria-controls="panel-1-RmVkb3JhIC8gUkhFTA==" aria-selected="false" class="sphinx-tabs-tab group-tab" id="tab-1-RmVkb3JhIC8gUkhFTA==" name="RmVkb3JhIC8gUkhFTA==" role="tab" tabindex="-1">Fedora / RHEL</button></div><div aria-labelledby="tab-1-VWJ1bnR1IC8gZGViaWFu" class="sphinx-tabs-panel group-tab" id="panel-1-VWJ1bnR1IC8gZGViaWFu" name="VWJ1bnR1IC8gZGViaWFu" role="tabpanel" tabindex="0"><div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>sudo<span class="w"> </span>-H<span class="w"> </span>apt-get<span class="w"> </span>install<span class="w"> </span>-y<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>python3-dev<span class="w"> </span>python3-babel<span class="w"> </span>python3-venv<span class="w"> </span>python-is-python3<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>uwsgi<span class="w"> </span>uwsgi-plugin-python3<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>git<span class="w"> </span>build-essential<span class="w"> </span>libxslt-dev<span class="w"> </span>zlib1g-dev<span class="w"> </span>libffi-dev<span class="w"> </span>libssl-dev
+</pre></div>
+</div>
+</div><div aria-labelledby="tab-1-QXJjaCBMaW51eA==" class="sphinx-tabs-panel group-tab" hidden="true" id="panel-1-QXJjaCBMaW51eA==" name="QXJjaCBMaW51eA==" role="tabpanel" tabindex="0"><div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>sudo<span class="w"> </span>-H<span class="w"> </span>pacman<span class="w"> </span>-S<span class="w"> </span>--noconfirm<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>python<span class="w"> </span>python-pip<span class="w"> </span>python-lxml<span class="w"> </span>python-babel<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>uwsgi<span class="w"> </span>uwsgi-plugin-python<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>git<span class="w"> </span>base-devel<span class="w"> </span>libxml2
+</pre></div>
+</div>
+</div><div aria-labelledby="tab-1-RmVkb3JhIC8gUkhFTA==" class="sphinx-tabs-panel group-tab" hidden="true" id="panel-1-RmVkb3JhIC8gUkhFTA==" name="RmVkb3JhIC8gUkhFTA==" role="tabpanel" tabindex="0"><div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>sudo<span class="w"> </span>-H<span class="w"> </span>dnf<span class="w"> </span>install<span class="w"> </span>-y<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>python<span class="w"> </span>python-pip<span class="w"> </span>python-lxml<span class="w"> </span>python-babel<span class="w"> </span>python3-devel<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>uwsgi<span class="w"> </span>uwsgi-plugin-python3<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>git<span class="w"> </span>@development-tools<span class="w"> </span>libxml2<span class="w"> </span>openssl
+</pre></div>
+</div>
+</div></div>
+<p>and packages needed to build documentation and run tests:</p>
+<div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-2-VWJ1bnR1IC8gZGViaWFu" aria-selected="true" class="sphinx-tabs-tab group-tab" id="tab-2-VWJ1bnR1IC8gZGViaWFu" name="VWJ1bnR1IC8gZGViaWFu" role="tab" tabindex="0">Ubuntu / debian</button><button aria-controls="panel-2-QXJjaCBMaW51eA==" aria-selected="false" class="sphinx-tabs-tab group-tab" id="tab-2-QXJjaCBMaW51eA==" name="QXJjaCBMaW51eA==" role="tab" tabindex="-1">Arch Linux</button><button aria-controls="panel-2-RmVkb3JhIC8gUkhFTA==" aria-selected="false" class="sphinx-tabs-tab group-tab" id="tab-2-RmVkb3JhIC8gUkhFTA==" name="RmVkb3JhIC8gUkhFTA==" role="tab" tabindex="-1">Fedora / RHEL</button></div><div aria-labelledby="tab-2-VWJ1bnR1IC8gZGViaWFu" class="sphinx-tabs-panel group-tab" id="panel-2-VWJ1bnR1IC8gZGViaWFu" name="VWJ1bnR1IC8gZGViaWFu" role="tabpanel" tabindex="0"><div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>sudo<span class="w"> </span>-H<span class="w"> </span>apt-get<span class="w"> </span>install<span class="w"> </span>-y<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>graphviz<span class="w"> </span>imagemagick<span class="w"> </span>texlive-xetex<span class="w"> </span>librsvg2-bin<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>texlive-latex-recommended<span class="w"> </span>texlive-extra-utils<span class="w"> </span>fonts-dejavu<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>latexmk<span class="w"> </span>shellcheck
+</pre></div>
+</div>
+</div><div aria-labelledby="tab-2-QXJjaCBMaW51eA==" class="sphinx-tabs-panel group-tab" hidden="true" id="panel-2-QXJjaCBMaW51eA==" name="QXJjaCBMaW51eA==" role="tabpanel" tabindex="0"><div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>sudo<span class="w"> </span>-H<span class="w"> </span>pacman<span class="w"> </span>-S<span class="w"> </span>--noconfirm<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>graphviz<span class="w"> </span>imagemagick<span class="w"> </span>texlive-bin<span class="w"> </span>extra/librsvg<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>texlive-core<span class="w"> </span>texlive-latexextra<span class="w"> </span>ttf-dejavu<span class="w"> </span>shellcheck
+</pre></div>
+</div>
+</div><div aria-labelledby="tab-2-RmVkb3JhIC8gUkhFTA==" class="sphinx-tabs-panel group-tab" hidden="true" id="panel-2-RmVkb3JhIC8gUkhFTA==" name="RmVkb3JhIC8gUkhFTA==" role="tabpanel" tabindex="0"><div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>sudo<span class="w"> </span>-H<span class="w"> </span>dnf<span class="w"> </span>install<span class="w"> </span>-y<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>graphviz<span class="w"> </span>graphviz-gd<span class="w"> </span>ImageMagick<span class="w"> </span>librsvg2-tools<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>texlive-xetex-bin<span class="w"> </span>texlive-collection-fontsrecommended<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>texlive-collection-latex<span class="w"> </span>dejavu-sans-fonts<span class="w"> </span>dejavu-serif-fonts<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>dejavu-sans-mono-fonts<span class="w"> </span>ShellCheck
+</pre></div>
+</div>
+</div></div>
+</section>
+<section id="build-docs">
+<span id="docs-build"></span><h2><a class="toc-backref" href="#id3" role="doc-backlink">Build docs</a><a class="headerlink" href="#build-docs" title="Link to this heading">¶</a></h2>
+<aside class="sidebar">
+<p class="sidebar-title">Sphinx build needs</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://www.imagemagick.org">ImageMagick</a></p></li>
+<li><p><a class="reference external" href="https://graphviz.gitlab.io">Graphviz</a></p></li>
+<li><p><a class="reference external" href="https://tug.org/xetex/">XeTeX</a></p></li>
+<li><p><a class="reference external" href="https://dvisvgm.de/">dvisvgm</a></p></li>
+</ul>
+</aside>
+<p>Most of the sphinx requirements are installed from <a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/setup.py">git://setup.py</a> and the
+docs can be build from scratch with <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">docs.html</span></code>.  For better math and
+image processing additional packages are needed.  The <a class="reference external" href="https://tug.org/xetex/">XeTeX</a> needed not only for
+PDF creation, it’s also needed for <a class="reference internal" href="../dev/reST.html#math"><span class="std std-ref">Math equations</span></a> when HTML output is build.</p>
+<p>To be able to do <a class="reference external" href="https://www.sphinx-doc.org/en/master/usage/extensions/math.html#math-support" title="(in Sphinx v9.1.0)"><span>Math support for HTML outputs in Sphinx</span></a> without CDNs, the math are rendered
+as images (<code class="docutils literal notranslate"><span class="pre">sphinx.ext.imgmath</span></code> extension).</p>
+<p>Here is the extract from the <a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/docs/conf.py">git://docs/conf.py</a> file, setting math renderer
+to <code class="docutils literal notranslate"><span class="pre">imgmath</span></code>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">html_math_renderer</span> <span class="o">=</span> <span class="s1">&#39;imgmath&#39;</span>
+<span class="n">imgmath_image_format</span> <span class="o">=</span> <span class="s1">&#39;svg&#39;</span>
+<span class="n">imgmath_font_size</span> <span class="o">=</span> <span class="mi">14</span>
+</pre></div>
+</div>
+<p>If your docs build (<code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">docs.html</span></code>) shows warnings like this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">WARNING</span><span class="p">:</span> <span class="n">dot</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="ow">not</span> <span class="n">found</span><span class="p">,</span> <span class="k">for</span> <span class="n">better</span> <span class="n">output</span> <span class="n">quality</span> <span class="n">install</span> \
+         <span class="n">graphviz</span> <span class="kn">from</span><span class="w"> </span><span class="nn">https</span><span class="p">:</span><span class="o">//</span><span class="n">www</span><span class="o">.</span><span class="n">graphviz</span><span class="o">.</span><span class="n">org</span>
+<span class="o">..</span>
+<span class="n">WARNING</span><span class="p">:</span> <span class="n">LaTeX</span> <span class="n">command</span> <span class="s1">&#39;latex&#39;</span> <span class="n">cannot</span> <span class="n">be</span> <span class="n">run</span> <span class="p">(</span><span class="n">needed</span> <span class="k">for</span> <span class="n">math</span> \
+         <span class="n">display</span><span class="p">),</span> <span class="n">check</span> <span class="n">the</span> <span class="n">imgmath_latex</span> <span class="n">setting</span>
+</pre></div>
+</div>
+<p>you need to install additional packages on your build host, to get better HTML
+output (<a class="reference internal" href="#searxng-sh-install-buildhost"><span class="std std-ref">install buildhost</span></a>).</p>
+<div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-3-VWJ1bnR1IC8gZGViaWFu" aria-selected="true" class="sphinx-tabs-tab group-tab" id="tab-3-VWJ1bnR1IC8gZGViaWFu" name="VWJ1bnR1IC8gZGViaWFu" role="tab" tabindex="0">Ubuntu / debian</button><button aria-controls="panel-3-QXJjaCBMaW51eA==" aria-selected="false" class="sphinx-tabs-tab group-tab" id="tab-3-QXJjaCBMaW51eA==" name="QXJjaCBMaW51eA==" role="tab" tabindex="-1">Arch Linux</button><button aria-controls="panel-3-RmVkb3JhIC8gUkhFTA==" aria-selected="false" class="sphinx-tabs-tab group-tab" id="tab-3-RmVkb3JhIC8gUkhFTA==" name="RmVkb3JhIC8gUkhFTA==" role="tab" tabindex="-1">Fedora / RHEL</button></div><div aria-labelledby="tab-3-VWJ1bnR1IC8gZGViaWFu" class="sphinx-tabs-panel group-tab" id="panel-3-VWJ1bnR1IC8gZGViaWFu" name="VWJ1bnR1IC8gZGViaWFu" role="tabpanel" tabindex="0"><div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>graphviz<span class="w"> </span>imagemagick<span class="w"> </span>texlive-xetex<span class="w"> </span>librsvg2-bin
+</pre></div>
+</div>
+</div><div aria-labelledby="tab-3-QXJjaCBMaW51eA==" class="sphinx-tabs-panel group-tab" hidden="true" id="panel-3-QXJjaCBMaW51eA==" name="QXJjaCBMaW51eA==" role="tabpanel" tabindex="0"><div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>sudo<span class="w"> </span>pacman<span class="w"> </span>-S<span class="w"> </span>graphviz<span class="w"> </span>imagemagick<span class="w"> </span>texlive-bin<span class="w"> </span>extra/librsvg
+</pre></div>
+</div>
+</div><div aria-labelledby="tab-3-RmVkb3JhIC8gUkhFTA==" class="sphinx-tabs-panel group-tab" hidden="true" id="panel-3-RmVkb3JhIC8gUkhFTA==" name="RmVkb3JhIC8gUkhFTA==" role="tabpanel" tabindex="0"><div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>sudo<span class="w"> </span>dnf<span class="w"> </span>install<span class="w"> </span>graphviz<span class="w"> </span>graphviz-gd<span class="w"> </span>ImageMagick<span class="w"> </span>texlive-xetex-bin<span class="w"> </span>librsvg2-tools
+</pre></div>
+</div>
+</div></div>
+<p>For PDF output you also need:</p>
+<div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-4-VWJ1bnR1IC8gZGViaWFu" aria-selected="true" class="sphinx-tabs-tab group-tab" id="tab-4-VWJ1bnR1IC8gZGViaWFu" name="VWJ1bnR1IC8gZGViaWFu" role="tab" tabindex="0">Ubuntu / debian</button><button aria-controls="panel-4-QXJjaCBMaW51eA==" aria-selected="false" class="sphinx-tabs-tab group-tab" id="tab-4-QXJjaCBMaW51eA==" name="QXJjaCBMaW51eA==" role="tab" tabindex="-1">Arch Linux</button><button aria-controls="panel-4-RmVkb3JhIC8gUkhFTA==" aria-selected="false" class="sphinx-tabs-tab group-tab" id="tab-4-RmVkb3JhIC8gUkhFTA==" name="RmVkb3JhIC8gUkhFTA==" role="tab" tabindex="-1">Fedora / RHEL</button></div><div aria-labelledby="tab-4-VWJ1bnR1IC8gZGViaWFu" class="sphinx-tabs-panel group-tab" id="panel-4-VWJ1bnR1IC8gZGViaWFu" name="VWJ1bnR1IC8gZGViaWFu" role="tabpanel" tabindex="0"><div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>sudo<span class="w"> </span>apt<span class="w"> </span>texlive-latex-recommended<span class="w"> </span>texlive-extra-utils<span class="w"> </span>ttf-dejavu
+</pre></div>
+</div>
+</div><div aria-labelledby="tab-4-QXJjaCBMaW51eA==" class="sphinx-tabs-panel group-tab" hidden="true" id="panel-4-QXJjaCBMaW51eA==" name="QXJjaCBMaW51eA==" role="tabpanel" tabindex="0"><div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>sudo<span class="w"> </span>pacman<span class="w"> </span>-S<span class="w"> </span>texlive-core<span class="w"> </span>texlive-latexextra<span class="w"> </span>ttf-dejavu
+</pre></div>
+</div>
+</div><div aria-labelledby="tab-4-RmVkb3JhIC8gUkhFTA==" class="sphinx-tabs-panel group-tab" hidden="true" id="panel-4-RmVkb3JhIC8gUkhFTA==" name="RmVkb3JhIC8gUkhFTA==" role="tabpanel" tabindex="0"><div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>sudo<span class="w"> </span>dnf<span class="w"> </span>install<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>texlive-collection-fontsrecommended<span class="w"> </span>texlive-collection-latex<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>dejavu-sans-fonts<span class="w"> </span>dejavu-serif-fonts<span class="w"> </span>dejavu-sans-mono-fonts
+</pre></div>
+</div>
+</div></div>
+</section>
+<section id="lint-shell-scripts">
+<span id="sh-lint"></span><h2><a class="toc-backref" href="#id4" role="doc-backlink">Lint shell scripts</a><a class="headerlink" href="#lint-shell-scripts" title="Link to this heading">¶</a></h2>
+<p>To lint shell scripts we use <a class="reference external" href="https://github.com/koalaman/shellcheck">ShellCheck</a> - a shell script static analysis tool
+(<a class="reference internal" href="#searxng-sh-install-buildhost"><span class="std std-ref">install buildhost</span></a>).</p>
+<div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-5-VWJ1bnR1IC8gZGViaWFu" aria-selected="true" class="sphinx-tabs-tab group-tab" id="tab-5-VWJ1bnR1IC8gZGViaWFu" name="VWJ1bnR1IC8gZGViaWFu" role="tab" tabindex="0">Ubuntu / debian</button><button aria-controls="panel-5-QXJjaCBMaW51eA==" aria-selected="false" class="sphinx-tabs-tab group-tab" id="tab-5-QXJjaCBMaW51eA==" name="QXJjaCBMaW51eA==" role="tab" tabindex="-1">Arch Linux</button><button aria-controls="panel-5-RmVkb3JhIC8gUkhFTA==" aria-selected="false" class="sphinx-tabs-tab group-tab" id="tab-5-RmVkb3JhIC8gUkhFTA==" name="RmVkb3JhIC8gUkhFTA==" role="tab" tabindex="-1">Fedora / RHEL</button></div><div aria-labelledby="tab-5-VWJ1bnR1IC8gZGViaWFu" class="sphinx-tabs-panel group-tab" id="panel-5-VWJ1bnR1IC8gZGViaWFu" name="VWJ1bnR1IC8gZGViaWFu" role="tabpanel" tabindex="0"><div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>shellcheck
+</pre></div>
+</div>
+</div><div aria-labelledby="tab-5-QXJjaCBMaW51eA==" class="sphinx-tabs-panel group-tab" hidden="true" id="panel-5-QXJjaCBMaW51eA==" name="QXJjaCBMaW51eA==" role="tabpanel" tabindex="0"><div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>sudo<span class="w"> </span>pacman<span class="w"> </span>-S<span class="w"> </span>shellcheck
+</pre></div>
+</div>
+</div><div aria-labelledby="tab-5-RmVkb3JhIC8gUkhFTA==" class="sphinx-tabs-panel group-tab" hidden="true" id="panel-5-RmVkb3JhIC8gUkhFTA==" name="RmVkb3JhIC8gUkhFTA==" role="tabpanel" tabindex="0"><div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>sudo<span class="w"> </span>dnf<span class="w"> </span>install<span class="w"> </span>ShellCheck
+</pre></div>
+</div>
+</div></div>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+  <span id="sidebar-top"></span>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+  
+    
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/searxng-wordmark.svg" alt="Logo of SearXNG"/>
+            </a></p>
+  
+
+<h3><a href="../index.html">Table of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../user/index.html">User information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../own-instance.html">Why use a private instance?</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Administrator documentation</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="settings/index.html">Settings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation-docker.html">Installation container</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation-scripts.html">Installation Script</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation-searxng.html">Step by step installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation-granian.html">Granian</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation-uwsgi.html">uWSGI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation-nginx.html">NGINX</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation-apache.html">Apache</a></li>
+<li class="toctree-l2"><a class="reference internal" href="update-searxng.html">SearXNG maintenance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="answer-captcha.html">Answer CAPTCHA from server’s IP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.favicons.html">Favicons</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.limiter.html">Limiter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html">Administration API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="architecture.html">Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plugins.html">List of plugins</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Buildhosts</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#build-and-development-tools">Build and Development tools</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#build-docs">Build docs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#lint-shell-scripts">Lint shell scripts</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../dev/index.html">Developer documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../utils/index.html">DevOps tooling box</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../src/index.html">Source-Code</a></li>
+</ul>
+
+  <h3>Project Links</h3>
+  <ul>
+    <li><a href="https://github.com/searxng/searxng/tree/master">Source</a>
+  
+    <li><a href="https://github.com/searxng/searxng/wiki">Wiki</a>
+  
+    <li><a href="https://searx.space">Public instances</a>
+  
+    <li><a href="https://github.com/searxng/searxng/issues">Issue Tracker</a>
+  </ul><h3>Navigation</h3>
+<ul>
+  <li><a href="../index.html">Overview</a>
+    <ul>
+      <li><a href="index.html">Administrator documentation</a>
+        <ul>
+          <li>Previous: <a href="plugins.html" title="previous chapter">List of plugins</a>
+          <li>Next: <a href="../dev/index.html" title="next chapter">Developer documentation</a></ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/admin/buildhosts.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright SearXNG team.
+    </div>
+  </body>
+</html>

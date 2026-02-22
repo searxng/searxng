@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Key-Value Results &#8212; SearXNG Documentation (2026.2.22+191818b86)</title>
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=6625fa76" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/searxng.css?v=52e4ff28" />
+    <script src="../../../_static/documentation_options.js?v=1b5d919e"></script>
+    <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script data-project="searxng" data-version="2026.2.22+191818b86" src="../../../_static/describe_version.js?v=fa7f30d0"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="Code Results" href="code.html" />
+    <link rel="prev" title="&lt;no title&gt;" href="mainresult.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="code.html" title="Code Results"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="mainresult.html" title="&lt;no title&gt;"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">SearXNG Documentation (2026.2.22+191818b86)</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" >Developer documentation</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../index.html" >Result Types</a> &#187;</li>
+          <li class="nav-item nav-item-3"><a href="../main_result.html" accesskey="U">Main Search Results</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Key-Value Results</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="module-searx.result_types.keyvalue">
+<span id="key-value-results"></span><span id="result-types-keyvalue"></span><h1>Key-Value Results<a class="headerlink" href="#module-searx.result_types.keyvalue" title="Link to this heading">¶</a></h1>
+<p>Typification of the <em>keyvalue</em> results.  Results of this type are rendered in
+the <a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/searx/templates/simple/result_templates/keyvalue.html">keyvalue.html</a>
+template.</p>
+<hr class="docutils" />
+<dl class="py class">
+<dt class="sig sig-object py" id="searx.result_types.keyvalue.KeyValue">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">searx.result_types.keyvalue.</span></span><span class="sig-name descname"><span class="pre">KeyValue</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">title:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">'',</span> <span class="pre">content:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">'',</span> <span class="pre">img_src:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">'',</span> <span class="pre">iframe_src:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">'',</span> <span class="pre">audio_src:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">'',</span> <span class="pre">thumbnail:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">'',</span> <span class="pre">publishedDate:</span> <span class="pre">~datetime.datetime</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None,</span> <span class="pre">pubdate:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">'',</span> <span class="pre">length:</span> <span class="pre">~datetime.timedelta</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None,</span> <span class="pre">views:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">'',</span> <span class="pre">author:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">'',</span> <span class="pre">metadata:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">'',</span> <span class="pre">priority:</span> <span class="pre">~typing.Literal['',</span> <span class="pre">'high',</span> <span class="pre">'low']</span> <span class="pre">=</span> <span class="pre">'',</span> <span class="pre">engines:</span> <span class="pre">set[str]</span> <span class="pre">=</span> <span class="pre">&lt;factory&gt;,</span> <span class="pre">open_group:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">False,</span> <span class="pre">close_group:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">False,</span> <span class="pre">positions:</span> <span class="pre">list[int]</span> <span class="pre">=</span> <span class="pre">&lt;factory&gt;,</span> <span class="pre">score:</span> <span class="pre">float</span> <span class="pre">=</span> <span class="pre">0,</span> <span class="pre">category:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">'',</span> <span class="pre">*,</span> <span class="pre">template:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">'keyvalue.html',</span> <span class="pre">url:</span> <span class="pre">str</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None,</span> <span class="pre">engine:</span> <span class="pre">str</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">'',</span> <span class="pre">parsed_url:</span> <span class="pre">~urllib.parse.ParseResult</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None,</span> <span class="pre">kvmap:</span> <span class="pre">dict[str,</span> <span class="pre">~typing.Any]</span> <span class="pre">|</span> <span class="pre">~collections.OrderedDict[str,</span> <span class="pre">~typing.Any],</span> <span class="pre">caption:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">'',</span> <span class="pre">key_title:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">'',</span> <span class="pre">value_title:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">''</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/searx/result_types/keyvalue.html#KeyValue"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.result_types.keyvalue.KeyValue" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="mainresult.html#searx.result_types._base.MainResult" title="searx.result_types._base.MainResult"><code class="xref py py-class docutils literal notranslate"><span class="pre">MainResult</span></code></a></p>
+<p>Simple table view which maps <em>key</em> names (first col) to <em>values</em>
+(second col).</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="searx.result_types.keyvalue.KeyValue.kvmap">
+<span class="sig-name descname"><span class="pre">kvmap</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.14)"><span class="pre">dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.14)"><span class="pre">Any</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/collections.html#collections.OrderedDict" title="(in Python v3.14)"><span class="pre">OrderedDict</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.14)"><span class="pre">Any</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#searx.result_types.keyvalue.KeyValue.kvmap" title="Link to this definition">¶</a></dt>
+<dd><p>Dictionary with keys and values. To sort keys, use <code class="xref py py-obj docutils literal notranslate"><span class="pre">OrderedDict</span></code>.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="searx.result_types.keyvalue.KeyValue.caption">
+<span class="sig-name descname"><span class="pre">caption</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></em><a class="headerlink" href="#searx.result_types.keyvalue.KeyValue.caption" title="Link to this definition">¶</a></dt>
+<dd><p>Optional caption for this result.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="searx.result_types.keyvalue.KeyValue.key_title">
+<span class="sig-name descname"><span class="pre">key_title</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></em><a class="headerlink" href="#searx.result_types.keyvalue.KeyValue.key_title" title="Link to this definition">¶</a></dt>
+<dd><p>Optional title for the <em>key column</em>.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="searx.result_types.keyvalue.KeyValue.value_title">
+<span class="sig-name descname"><span class="pre">value_title</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></em><a class="headerlink" href="#searx.result_types.keyvalue.KeyValue.value_title" title="Link to this definition">¶</a></dt>
+<dd><p>Optional title for the <em>value column</em>.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+  <span id="sidebar-top"></span>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+  
+    
+            <p class="logo"><a href="../../../index.html">
+              <img class="logo" src="../../../_static/searxng-wordmark.svg" alt="Logo of SearXNG"/>
+            </a></p>
+  
+
+<h3><a href="../../../index.html">Table of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../user/index.html">User information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../own-instance.html">Why use a private instance?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../admin/index.html">Administrator documentation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">Developer documentation</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../quickstart.html">Development Quickstart</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../commits.html">Git Commits &amp; Change Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../contribution_guide.html">How to contribute</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../extended_types.html">Extended Types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../engines/index.html">Engine Implementations</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">Result Types</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../base_result.html">Result</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="../main_result.html">Main Search Results</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="mainresult.html"><code class="docutils literal notranslate"><span class="pre">MainResult</span></code></a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Key-Value Results</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#searx.result_types.keyvalue.KeyValue"><code class="docutils literal notranslate"><span class="pre">KeyValue</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="code.html">Code Results</a></li>
+<li class="toctree-l4"><a class="reference internal" href="paper.html">Paper Results</a></li>
+<li class="toctree-l4"><a class="reference internal" href="file.html">File Results</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../answer.html">Answer Results</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../correction.html">Correction Results</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../suggestion.html">Suggestion Results</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../infobox.html">Infobox Results</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../templates.html">Simple Theme Templates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../search_api.html">Search API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../plugins/index.html">Plugins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../answerers/index.html">Answerers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../translation.html">Translation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../makefile.html">Makefile &amp; <code class="docutils literal notranslate"><span class="pre">./manage</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../reST.html">reST primer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../searxng_extra/index.html">Tooling box <code class="docutils literal notranslate"><span class="pre">searxng_extra</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../utils/index.html">DevOps tooling box</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/index.html">Source-Code</a></li>
+</ul>
+
+  <h3>Project Links</h3>
+  <ul>
+    <li><a href="https://github.com/searxng/searxng/tree/master">Source</a>
+  
+    <li><a href="https://github.com/searxng/searxng/wiki">Wiki</a>
+  
+    <li><a href="https://searx.space">Public instances</a>
+  
+    <li><a href="https://github.com/searxng/searxng/issues">Issue Tracker</a>
+  </ul><h3>Navigation</h3>
+<ul>
+  <li><a href="../../../index.html">Overview</a>
+    <ul>
+      <li><a href="../../index.html">Developer documentation</a>
+        <ul>
+      <li><a href="../index.html">Result Types</a>
+        <ul>
+      <li><a href="../main_result.html">Main Search Results</a>
+        <ul>
+          <li>Previous: <a href="mainresult.html" title="previous chapter">&lt;no title&gt;</a>
+          <li>Next: <a href="code.html" title="next chapter">Code Results</a></ul>
+      </li></ul>
+      </li></ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../../_sources/dev/result_types/main/keyvalue.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright SearXNG team.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>searx.botdetection.ip_lists &#8212; SearXNG Documentation (2026.2.22+191818b86)</title>
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=6625fa76" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/searxng.css?v=52e4ff28" />
+    <script src="../../../_static/documentation_options.js?v=1b5d919e"></script>
+    <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script data-project="searxng" data-version="2026.2.22+191818b86" src="../../../_static/describe_version.js?v=fa7f30d0"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">SearXNG Documentation (2026.2.22+191818b86)</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" accesskey="U">Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">searx.botdetection.ip_lists</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for searx.botdetection.ip_lists</h1><div class="highlight"><pre>
+<span></span><span class="c1"># SPDX-License-Identifier: AGPL-3.0-or-later</span>
+<span class="sd">&quot;&quot;&quot;.. _botdetection.ip_lists:</span>
+
+<span class="sd">Method ``ip_lists``</span>
+<span class="sd">-------------------</span>
+
+<span class="sd">The ``ip_lists`` method implements :py:obj:`block-list &lt;block_ip&gt;` and</span>
+<span class="sd">:py:obj:`pass-list &lt;pass_ip&gt;`.</span>
+
+<span class="sd">.. code:: toml</span>
+
+<span class="sd">   [botdetection.ip_lists]</span>
+
+<span class="sd">   pass_ip = [</span>
+<span class="sd">     &#39;167.235.158.251&#39;, # IPv4 of check.searx.space</span>
+<span class="sd">     &#39;192.168.0.0/16&#39;,  # IPv4 private network</span>
+<span class="sd">     &#39;fe80::/10&#39;,       # IPv6 linklocal</span>
+<span class="sd">   ]</span>
+
+<span class="sd">   block_ip = [</span>
+<span class="sd">     &#39;93.184.216.34&#39;,   # IPv4 of example.org</span>
+<span class="sd">     &#39;257.1.1.1&#39;,       # invalid IP --&gt; will be ignored, logged in ERROR class</span>
+<span class="sd">   ]</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="c1"># pylint: disable=unused-argument</span>
+
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Tuple</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">ipaddress</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">ip_network</span><span class="p">,</span>
+    <span class="n">IPv4Address</span><span class="p">,</span>
+    <span class="n">IPv6Address</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">.</span><span class="w"> </span><span class="kn">import</span> <span class="n">config</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">._helpers</span><span class="w"> </span><span class="kn">import</span> <span class="n">logger</span>
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logger</span><span class="o">.</span><span class="n">getChild</span><span class="p">(</span><span class="s1">&#39;ip_limit&#39;</span><span class="p">)</span>
+
+<span class="n">SEARXNG_ORG</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="c1"># https://github.com/searxng/searxng/pull/2484#issuecomment-1576639195</span>
+    <span class="s1">&#39;167.235.158.251&#39;</span><span class="p">,</span>  <span class="c1"># IPv4 check.searx.space</span>
+    <span class="s1">&#39;2a01:04f8:1c1c:8fc2::/64&#39;</span><span class="p">,</span>  <span class="c1"># IPv6 check.searx.space</span>
+<span class="p">]</span>
+<span class="sd">&quot;&quot;&quot;Passlist of IPs from the SearXNG organization, e.g. `check.searx.space`.&quot;&quot;&quot;</span>
+
+
+<div class="viewcode-block" id="pass_ip">
+<a class="viewcode-back" href="../../../src/searx.botdetection.html#searx.botdetection.ip_lists.pass_ip">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">pass_ip</span><span class="p">(</span><span class="n">real_ip</span><span class="p">:</span> <span class="n">IPv4Address</span> <span class="o">|</span> <span class="n">IPv6Address</span><span class="p">,</span> <span class="n">cfg</span><span class="p">:</span> <span class="n">config</span><span class="o">.</span><span class="n">Config</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">bool</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Checks if the IP on the subnet is in one of the members of the</span>
+<span class="sd">    ``botdetection.ip_lists.pass_ip`` list.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="n">cfg</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;botdetection.ip_lists.pass_searxng_org&#39;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">net</span> <span class="ow">in</span> <span class="n">SEARXNG_ORG</span><span class="p">:</span>
+            <span class="n">net</span> <span class="o">=</span> <span class="n">ip_network</span><span class="p">(</span><span class="n">net</span><span class="p">,</span> <span class="n">strict</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">real_ip</span><span class="o">.</span><span class="n">version</span> <span class="o">==</span> <span class="n">net</span><span class="o">.</span><span class="n">version</span> <span class="ow">and</span> <span class="n">real_ip</span> <span class="ow">in</span> <span class="n">net</span><span class="p">:</span>
+                <span class="k">return</span> <span class="kc">True</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;IP matches </span><span class="si">{</span><span class="n">net</span><span class="o">.</span><span class="n">compressed</span><span class="si">}</span><span class="s2"> in SEARXNG_ORG list.&quot;</span>
+    <span class="k">return</span> <span class="n">ip_is_subnet_of_member_in_list</span><span class="p">(</span><span class="n">real_ip</span><span class="p">,</span> <span class="s1">&#39;botdetection.ip_lists.pass_ip&#39;</span><span class="p">,</span> <span class="n">cfg</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="block_ip">
+<a class="viewcode-back" href="../../../src/searx.botdetection.html#searx.botdetection.ip_lists.block_ip">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">block_ip</span><span class="p">(</span><span class="n">real_ip</span><span class="p">:</span> <span class="n">IPv4Address</span> <span class="o">|</span> <span class="n">IPv6Address</span><span class="p">,</span> <span class="n">cfg</span><span class="p">:</span> <span class="n">config</span><span class="o">.</span><span class="n">Config</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">bool</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Checks if the IP on the subnet is in one of the members of the</span>
+<span class="sd">    ``botdetection.ip_lists.block_ip`` list.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">block</span><span class="p">,</span> <span class="n">msg</span> <span class="o">=</span> <span class="n">ip_is_subnet_of_member_in_list</span><span class="p">(</span><span class="n">real_ip</span><span class="p">,</span> <span class="s1">&#39;botdetection.ip_lists.block_ip&#39;</span><span class="p">,</span> <span class="n">cfg</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">block</span><span class="p">:</span>
+        <span class="n">msg</span> <span class="o">+=</span> <span class="s2">&quot; To remove IP from list, please contact the maintainer of the service.&quot;</span>
+    <span class="k">return</span> <span class="n">block</span><span class="p">,</span> <span class="n">msg</span></div>
+
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">ip_is_subnet_of_member_in_list</span><span class="p">(</span>
+    <span class="n">real_ip</span><span class="p">:</span> <span class="n">IPv4Address</span> <span class="o">|</span> <span class="n">IPv6Address</span><span class="p">,</span> <span class="n">list_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">cfg</span><span class="p">:</span> <span class="n">config</span><span class="o">.</span><span class="n">Config</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">bool</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
+    <span class="k">for</span> <span class="n">net</span> <span class="ow">in</span> <span class="n">cfg</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">list_name</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="p">[]):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">net</span> <span class="o">=</span> <span class="n">ip_network</span><span class="p">(</span><span class="n">net</span><span class="p">,</span> <span class="n">strict</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;invalid IP </span><span class="si">%s</span><span class="s2"> in </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">net</span><span class="p">,</span> <span class="n">list_name</span><span class="p">)</span>
+            <span class="k">continue</span>
+        <span class="k">if</span> <span class="n">real_ip</span><span class="o">.</span><span class="n">version</span> <span class="o">==</span> <span class="n">net</span><span class="o">.</span><span class="n">version</span> <span class="ow">and</span> <span class="n">real_ip</span> <span class="ow">in</span> <span class="n">net</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">True</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;IP matches </span><span class="si">{</span><span class="n">net</span><span class="o">.</span><span class="n">compressed</span><span class="si">}</span><span class="s2"> in </span><span class="si">{</span><span class="n">list_name</span><span class="si">}</span><span class="s2">.&quot;</span>
+    <span class="k">return</span> <span class="kc">False</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;IP is not a member of an item in the f</span><span class="si">{</span><span class="n">list_name</span><span class="si">}</span><span class="s2"> list&quot;</span>
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+  <span id="sidebar-top"></span>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+  
+    
+            <p class="logo"><a href="../../../index.html">
+              <img class="logo" src="../../../_static/searxng-wordmark.svg" alt="Logo of SearXNG"/>
+            </a></p>
+  
+
+<h3><a href="../../../index.html">Table of Contents</a></h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../user/index.html">User information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../own-instance.html">Why use a private instance?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../admin/index.html">Administrator documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../dev/index.html">Developer documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../utils/index.html">DevOps tooling box</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/index.html">Source-Code</a></li>
+</ul>
+
+  <h3>Project Links</h3>
+  <ul>
+    <li><a href="https://github.com/searxng/searxng/tree/master">Source</a>
+  
+    <li><a href="https://github.com/searxng/searxng/wiki">Wiki</a>
+  
+    <li><a href="https://searx.space">Public instances</a>
+  
+    <li><a href="https://github.com/searxng/searxng/issues">Issue Tracker</a>
+  </ul><h3>Navigation</h3>
+<ul>
+  <li><a href="../../../index.html">Overview</a>
+    <ul>
+      <li><a href="../../index.html">Module code</a>
+        
+          
+          </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright SearXNG team.
+    </div>
+  </body>
+</html>

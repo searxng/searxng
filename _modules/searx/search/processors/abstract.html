@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>searx.search.processors.abstract &#8212; SearXNG Documentation (2026.2.22+191818b86)</title>
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=6625fa76" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/searxng.css?v=52e4ff28" />
+    <script src="../../../../_static/documentation_options.js?v=1b5d919e"></script>
+    <script src="../../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script data-project="searxng" data-version="2026.2.22+191818b86" src="../../../../_static/describe_version.js?v=fa7f30d0"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../../index.html">SearXNG Documentation (2026.2.22+191818b86)</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../../index.html" >Module code</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../../search.html" accesskey="U">searx.search</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">searx.search.processors.abstract</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for searx.search.processors.abstract</h1><div class="highlight"><pre>
+<span></span><span class="c1"># SPDX-License-Identifier: AGPL-3.0-or-later</span>
+<span class="sd">&quot;&quot;&quot;Abstract base classes for all engine processors.&quot;&quot;&quot;</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">t</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">threading</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">abstractmethod</span><span class="p">,</span> <span class="n">ABC</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">timeit</span><span class="w"> </span><span class="kn">import</span> <span class="n">default_timer</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">searx</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_setting</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">searx</span><span class="w"> </span><span class="kn">import</span> <span class="n">logger</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">searx.engines</span><span class="w"> </span><span class="kn">import</span> <span class="n">engines</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">searx.network</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_time_for_thread</span><span class="p">,</span> <span class="n">get_network</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">searx.metrics</span><span class="w"> </span><span class="kn">import</span> <span class="n">histogram_observe</span><span class="p">,</span> <span class="n">counter_inc</span><span class="p">,</span> <span class="n">count_exception</span><span class="p">,</span> <span class="n">count_error</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">searx.exceptions</span><span class="w"> </span><span class="kn">import</span> <span class="n">SearxEngineAccessDeniedException</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">searx.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_engine_from_settings</span>
+
+<span class="k">if</span> <span class="n">t</span><span class="o">.</span><span class="n">TYPE_CHECKING</span><span class="p">:</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">types</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">searx.enginelib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Engine</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">searx.search.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">SearchQuery</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">searx.results</span><span class="w"> </span><span class="kn">import</span> <span class="n">ResultContainer</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">searx.result_types</span><span class="w"> </span><span class="kn">import</span> <span class="n">Result</span><span class="p">,</span> <span class="n">LegacyResult</span>  <span class="c1"># pyright: ignore[reportPrivateLocalImportUsage]</span>
+
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logger</span><span class="o">.</span><span class="n">getChild</span><span class="p">(</span><span class="s2">&quot;searx.search.processor&quot;</span><span class="p">)</span>
+<span class="n">SUSPENDED_STATUS</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span> <span class="o">|</span> <span class="nb">str</span><span class="p">,</span> <span class="s2">&quot;SuspendedStatus&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+
+
+<div class="viewcode-block" id="RequestParams">
+<a class="viewcode-back" href="../../../../src/searx.search.processors.html#searx.search.processors.abstract.RequestParams">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">RequestParams</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">TypedDict</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Basic quantity of the Request parameters of all engine types.&quot;&quot;&quot;</span>
+
+    <span class="n">query</span><span class="p">:</span> <span class="nb">str</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Search term, stripped of search syntax arguments.&quot;&quot;&quot;</span>
+
+    <span class="n">category</span><span class="p">:</span> <span class="nb">str</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Current category, like ``general``.</span>
+
+<span class="sd">    .. hint::</span>
+
+<span class="sd">       This field is deprecated, don&#39;t use it in further implementations.</span>
+
+<span class="sd">    This field is currently *arbitrarily* filled with the name of &quot;one&quot;&quot;</span>
+<span class="sd">    category (the name of the first category of the engine). In practice,</span>
+<span class="sd">    however, it is not clear what this &quot;one&quot; category should be; in principle,</span>
+<span class="sd">    multiple categories can also be activated in a search.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">pageno</span><span class="p">:</span> <span class="nb">int</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Current page number, where the first page is ``1``.&quot;&quot;&quot;</span>
+
+    <span class="n">safesearch</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Literal</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Safe-Search filter (0:normal, 1:moderate, 2:strict).&quot;&quot;&quot;</span>
+
+    <span class="n">time_range</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;day&quot;</span><span class="p">,</span> <span class="s2">&quot;week&quot;</span><span class="p">,</span> <span class="s2">&quot;month&quot;</span><span class="p">,</span> <span class="s2">&quot;year&quot;</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Time-range filter.&quot;&quot;&quot;</span>
+
+    <span class="n">engine_data</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Allows the transfer of (engine specific) data to the next request of the</span>
+<span class="sd">    client.  In the case of the ``online`` engines, this data is delivered to</span>
+<span class="sd">    the client via the HTML ``&lt;form&gt;`` in response.</span>
+
+<span class="sd">    If the client then sends this form back to the server with the next request,</span>
+<span class="sd">    this data will be available.</span>
+
+<span class="sd">    This makes it possible to carry data from one request to the next without a</span>
+<span class="sd">    session context, but this feature (is fragile) and should only be used in</span>
+<span class="sd">    exceptional cases. See also :ref:`engine_data`.&quot;&quot;&quot;</span>
+
+    <span class="n">searxng_locale</span><span class="p">:</span> <span class="nb">str</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Language / locale filter from the search request, a string like &#39;all&#39;,</span>
+<span class="sd">    &#39;en&#39;, &#39;en-US&#39;, &#39;zh-HK&#39; .. and others, for more details see</span>
+<span class="sd">    :py:obj:`searx.locales`.&quot;&quot;&quot;</span></div>
+
+
+
+<div class="viewcode-block" id="SuspendedStatus">
+<a class="viewcode-back" href="../../../../src/searx.search.processors.html#searx.search.processors.abstract.SuspendedStatus">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">SuspendedStatus</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Class to handle suspend state.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lock</span><span class="p">:</span> <span class="n">threading</span><span class="o">.</span><span class="n">Lock</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Lock</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">continuous_errors</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">suspend_end_time</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">suspend_reason</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">is_suspended</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">suspend_end_time</span> <span class="o">&gt;=</span> <span class="n">default_timer</span><span class="p">()</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">suspend</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">suspended_time</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">suspend_reason</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">lock</span><span class="p">:</span>
+            <span class="c1"># update continuous_errors / suspend_end_time</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">continuous_errors</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="k">if</span> <span class="n">suspended_time</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">max_ban</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">get_setting</span><span class="p">(</span><span class="s2">&quot;search.max_ban_time_on_fail&quot;</span><span class="p">)</span>
+                <span class="n">ban_fail</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">get_setting</span><span class="p">(</span><span class="s2">&quot;search.ban_time_on_fail&quot;</span><span class="p">)</span>
+                <span class="n">suspended_time</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">max_ban</span><span class="p">,</span> <span class="n">ban_fail</span><span class="p">)</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">suspend_end_time</span> <span class="o">=</span> <span class="n">default_timer</span><span class="p">()</span> <span class="o">+</span> <span class="n">suspended_time</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">suspend_reason</span> <span class="o">=</span> <span class="n">suspend_reason</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Suspend for </span><span class="si">%i</span><span class="s2"> seconds&quot;</span><span class="p">,</span> <span class="n">suspended_time</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">resume</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">lock</span><span class="p">:</span>
+            <span class="c1"># reset the suspend variables</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">continuous_errors</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">suspend_end_time</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">suspend_reason</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span></div>
+
+
+
+<div class="viewcode-block" id="EngineProcessor">
+<a class="viewcode-back" href="../../../../src/searx.search.processors.html#searx.search.processors.abstract.EngineProcessor">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">EngineProcessor</span><span class="p">(</span><span class="n">ABC</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Base classes used for all types of request processors.&quot;&quot;&quot;</span>
+
+    <span class="n">engine_type</span><span class="p">:</span> <span class="nb">str</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">engine</span><span class="p">:</span> <span class="s2">&quot;Engine|types.ModuleType&quot;</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">engine</span><span class="p">:</span> <span class="s2">&quot;Engine&quot;</span> <span class="o">=</span> <span class="n">engine</span>  <span class="c1"># pyright: ignore[reportAttributeAccessIssue]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="p">:</span> <span class="n">logging</span><span class="o">.</span><span class="n">Logger</span> <span class="o">=</span> <span class="n">engines</span><span class="p">[</span><span class="n">engine</span><span class="o">.</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">logger</span>
+        <span class="n">key</span> <span class="o">=</span> <span class="n">get_network</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">engine</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+        <span class="n">key</span> <span class="o">=</span> <span class="nb">id</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="k">if</span> <span class="n">key</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">engine</span><span class="o">.</span><span class="n">name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">suspended_status</span><span class="p">:</span> <span class="n">SuspendedStatus</span> <span class="o">=</span> <span class="n">SUSPENDED_STATUS</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">SuspendedStatus</span><span class="p">())</span>
+
+<div class="viewcode-block" id="EngineProcessor.initialize">
+<a class="viewcode-back" href="../../../../src/searx.search.processors.html#searx.search.processors.abstract.EngineProcessor.initialize">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">initialize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">callback</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Callable</span><span class="p">[[</span><span class="s2">&quot;EngineProcessor&quot;</span><span class="p">,</span> <span class="nb">bool</span><span class="p">],</span> <span class="nb">bool</span><span class="p">]):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialization of *this* :py:obj:`EngineProcessor`.</span>
+
+<span class="sd">        If processor&#39;s engine has an ``init`` method, it is called first.</span>
+<span class="sd">        Engine&#39;s ``init`` method is executed in a thread, meaning that the</span>
+<span class="sd">        *registration* (the ``callback``) may occur later and is not already</span>
+<span class="sd">        established by the return from this registration method.</span>
+
+<span class="sd">        Registration only takes place if the ``init`` method is not available or</span>
+<span class="sd">        is successfully run through.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">engine</span><span class="p">,</span> <span class="s2">&quot;init&quot;</span><span class="p">):</span>
+            <span class="n">callback</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+            <span class="k">return</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">callable</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">engine</span><span class="o">.</span><span class="n">init</span><span class="p">):</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Engine&#39;s init method isn&#39;t a callable (is of type: </span><span class="si">%s</span><span class="s2">).&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">engine</span><span class="o">.</span><span class="n">init</span><span class="p">))</span>
+            <span class="n">callback</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+            <span class="k">return</span>
+
+        <span class="k">def</span><span class="w"> </span><span class="nf">__init_processor_thread</span><span class="p">():</span>
+            <span class="n">eng_ok</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">init_engine</span><span class="p">()</span>
+            <span class="n">callback</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">eng_ok</span><span class="p">)</span>
+
+        <span class="c1"># set up and start a thread</span>
+        <span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="n">__init_processor_thread</span><span class="p">,</span> <span class="n">daemon</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">start</span><span class="p">()</span></div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">init_engine</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="n">eng_setting</span> <span class="o">=</span> <span class="n">get_engine_from_settings</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">engine</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+        <span class="n">init_ok</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">init_ok</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">engine</span><span class="o">.</span><span class="n">init</span><span class="p">(</span><span class="n">eng_setting</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>  <span class="c1"># pylint: disable=broad-except</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s2">&quot;Init method of engine </span><span class="si">%s</span><span class="s2"> failed due to an exception.&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">engine</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+            <span class="n">init_ok</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="c1"># In older engines, None is returned from the init method, which is</span>
+        <span class="c1"># equivalent to indicating that the initialization was successful.</span>
+        <span class="k">if</span> <span class="n">init_ok</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">init_ok</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">return</span> <span class="n">init_ok</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">handle_exception</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">result_container</span><span class="p">:</span> <span class="s2">&quot;ResultContainer&quot;</span><span class="p">,</span>
+        <span class="n">exception_or_message</span><span class="p">:</span> <span class="ne">BaseException</span> <span class="o">|</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">suspend</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="c1"># update result_container</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">exception_or_message</span><span class="p">,</span> <span class="ne">BaseException</span><span class="p">):</span>
+            <span class="n">exception_class</span> <span class="o">=</span> <span class="n">exception_or_message</span><span class="o">.</span><span class="vm">__class__</span>
+            <span class="n">module_name</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">exception_class</span><span class="p">,</span> <span class="s1">&#39;__module__&#39;</span><span class="p">,</span> <span class="s1">&#39;builtins&#39;</span><span class="p">)</span>
+            <span class="n">module_name</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span> <span class="k">if</span> <span class="n">module_name</span> <span class="o">==</span> <span class="s1">&#39;builtins&#39;</span> <span class="k">else</span> <span class="n">module_name</span> <span class="o">+</span> <span class="s1">&#39;.&#39;</span>
+            <span class="n">error_message</span> <span class="o">=</span> <span class="n">module_name</span> <span class="o">+</span> <span class="n">exception_class</span><span class="o">.</span><span class="vm">__qualname__</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">error_message</span> <span class="o">=</span> <span class="n">exception_or_message</span>
+        <span class="n">result_container</span><span class="o">.</span><span class="n">add_unresponsive_engine</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">engine</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">error_message</span><span class="p">)</span>
+        <span class="c1"># metrics</span>
+        <span class="n">counter_inc</span><span class="p">(</span><span class="s1">&#39;engine&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">engine</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="s1">&#39;search&#39;</span><span class="p">,</span> <span class="s1">&#39;count&#39;</span><span class="p">,</span> <span class="s1">&#39;error&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">exception_or_message</span><span class="p">,</span> <span class="ne">BaseException</span><span class="p">):</span>
+            <span class="n">count_exception</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">engine</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">exception_or_message</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">count_error</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">engine</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">exception_or_message</span><span class="p">)</span>
+        <span class="c1"># suspend the engine ?</span>
+        <span class="k">if</span> <span class="n">suspend</span><span class="p">:</span>
+            <span class="n">suspended_time</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">exception_or_message</span><span class="p">,</span> <span class="n">SearxEngineAccessDeniedException</span><span class="p">):</span>
+                <span class="n">suspended_time</span> <span class="o">=</span> <span class="n">exception_or_message</span><span class="o">.</span><span class="n">suspended_time</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">suspended_status</span><span class="o">.</span><span class="n">suspend</span><span class="p">(</span><span class="n">suspended_time</span><span class="p">,</span> <span class="n">error_message</span><span class="p">)</span>  <span class="c1"># pylint: disable=no-member</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_extend_container_basic</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">result_container</span><span class="p">:</span> <span class="s2">&quot;ResultContainer&quot;</span><span class="p">,</span>
+        <span class="n">start_time</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">search_results</span><span class="p">:</span> <span class="s2">&quot;list[Result | LegacyResult]&quot;</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="c1"># update result_container</span>
+        <span class="n">result_container</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">engine</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">search_results</span><span class="p">)</span>
+        <span class="n">engine_time</span> <span class="o">=</span> <span class="n">default_timer</span><span class="p">()</span> <span class="o">-</span> <span class="n">start_time</span>
+        <span class="n">page_load_time</span> <span class="o">=</span> <span class="n">get_time_for_thread</span><span class="p">()</span>
+        <span class="n">result_container</span><span class="o">.</span><span class="n">add_timing</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">engine</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">engine_time</span><span class="p">,</span> <span class="n">page_load_time</span><span class="p">)</span>
+        <span class="c1"># metrics</span>
+        <span class="n">counter_inc</span><span class="p">(</span><span class="s1">&#39;engine&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">engine</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="s1">&#39;search&#39;</span><span class="p">,</span> <span class="s1">&#39;count&#39;</span><span class="p">,</span> <span class="s1">&#39;successful&#39;</span><span class="p">)</span>
+        <span class="n">histogram_observe</span><span class="p">(</span><span class="n">engine_time</span><span class="p">,</span> <span class="s1">&#39;engine&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">engine</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="s1">&#39;time&#39;</span><span class="p">,</span> <span class="s1">&#39;total&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">page_load_time</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">histogram_observe</span><span class="p">(</span><span class="n">page_load_time</span><span class="p">,</span> <span class="s1">&#39;engine&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">engine</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="s1">&#39;time&#39;</span><span class="p">,</span> <span class="s1">&#39;http&#39;</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">extend_container</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">result_container</span><span class="p">:</span> <span class="s2">&quot;ResultContainer&quot;</span><span class="p">,</span>
+        <span class="n">start_time</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">search_results</span><span class="p">:</span> <span class="s2">&quot;list[Result | LegacyResult]|None&quot;</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">threading</span><span class="o">.</span><span class="n">current_thread</span><span class="p">(),</span> <span class="s1">&#39;_timeout&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">):</span>
+            <span class="c1"># the main thread is not waiting anymore</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">handle_exception</span><span class="p">(</span><span class="n">result_container</span><span class="p">,</span> <span class="s1">&#39;timeout&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># check if the engine accepted the request</span>
+            <span class="k">if</span> <span class="n">search_results</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_extend_container_basic</span><span class="p">(</span><span class="n">result_container</span><span class="p">,</span> <span class="n">start_time</span><span class="p">,</span> <span class="n">search_results</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">suspended_status</span><span class="o">.</span><span class="n">resume</span><span class="p">()</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">extend_container_if_suspended</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">result_container</span><span class="p">:</span> <span class="s2">&quot;ResultContainer&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">suspended_status</span><span class="o">.</span><span class="n">is_suspended</span><span class="p">:</span>
+            <span class="n">result_container</span><span class="o">.</span><span class="n">add_unresponsive_engine</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">engine</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">suspended_status</span><span class="o">.</span><span class="n">suspend_reason</span><span class="p">,</span> <span class="n">suspended</span><span class="o">=</span><span class="kc">True</span>
+            <span class="p">)</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">return</span> <span class="kc">False</span>
+
+<div class="viewcode-block" id="EngineProcessor.get_params">
+<a class="viewcode-back" href="../../../../src/searx.search.processors.html#searx.search.processors.abstract.EngineProcessor.get_params">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_params</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">search_query</span><span class="p">:</span> <span class="s2">&quot;SearchQuery&quot;</span><span class="p">,</span> <span class="n">engine_category</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">RequestParams</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns a dictionary with the :ref:`request parameters &lt;engine</span>
+<span class="sd">        request arguments&gt;` (:py:obj:`RequestParams`), if the search condition</span>
+<span class="sd">        is not supported by the engine, ``None`` is returned:</span>
+
+<span class="sd">        - *time range* filter in search conditions, but the engine does not have</span>
+<span class="sd">           a corresponding filter</span>
+<span class="sd">        - page number &gt; 1 when engine does not support paging</span>
+<span class="sd">        - page number &gt; ``max_page``</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># if paging is not supported, skip</span>
+        <span class="k">if</span> <span class="n">search_query</span><span class="o">.</span><span class="n">pageno</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">engine</span><span class="o">.</span><span class="n">paging</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+
+        <span class="c1"># if max page is reached, skip</span>
+        <span class="n">max_page</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">engine</span><span class="o">.</span><span class="n">max_page</span> <span class="ow">or</span> <span class="n">get_setting</span><span class="p">(</span><span class="s2">&quot;search.max_page&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">max_page</span> <span class="ow">and</span> <span class="n">max_page</span> <span class="o">&lt;</span> <span class="n">search_query</span><span class="o">.</span><span class="n">pageno</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+
+        <span class="c1"># if time_range is not supported, skip</span>
+        <span class="k">if</span> <span class="n">search_query</span><span class="o">.</span><span class="n">time_range</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">engine</span><span class="o">.</span><span class="n">time_range_support</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+
+        <span class="n">params</span><span class="p">:</span> <span class="n">RequestParams</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;query&quot;</span><span class="p">:</span> <span class="n">search_query</span><span class="o">.</span><span class="n">query</span><span class="p">,</span>
+            <span class="s2">&quot;category&quot;</span><span class="p">:</span> <span class="n">engine_category</span><span class="p">,</span>
+            <span class="s2">&quot;pageno&quot;</span><span class="p">:</span> <span class="n">search_query</span><span class="o">.</span><span class="n">pageno</span><span class="p">,</span>
+            <span class="s2">&quot;safesearch&quot;</span><span class="p">:</span> <span class="n">search_query</span><span class="o">.</span><span class="n">safesearch</span><span class="p">,</span>
+            <span class="s2">&quot;time_range&quot;</span><span class="p">:</span> <span class="n">search_query</span><span class="o">.</span><span class="n">time_range</span><span class="p">,</span>
+            <span class="s2">&quot;engine_data&quot;</span><span class="p">:</span> <span class="n">search_query</span><span class="o">.</span><span class="n">engine_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">engine</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="p">{}),</span>
+            <span class="s2">&quot;searxng_locale&quot;</span><span class="p">:</span> <span class="n">search_query</span><span class="o">.</span><span class="n">lang</span><span class="p">,</span>
+        <span class="p">}</span>
+
+        <span class="c1"># params[&quot;language&quot;] is deprecated --&gt; use params[&quot;searxng_locale&quot;]</span>
+        <span class="c1">#</span>
+        <span class="c1"># Conditions related to engine&#39;s traits are implemented in engine.traits</span>
+        <span class="c1"># module. Don&#39;t do &quot;locale&quot; decisions here in the abstract layer of the</span>
+        <span class="c1"># search processor, just pass the value from user&#39;s choice unchanged to</span>
+        <span class="c1"># the engine request.</span>
+
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">engine</span><span class="p">,</span> <span class="s2">&quot;language&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">engine</span><span class="o">.</span><span class="n">language</span><span class="p">:</span>
+            <span class="n">params</span><span class="p">[</span><span class="s2">&quot;language&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">engine</span><span class="o">.</span><span class="n">language</span>  <span class="c1"># pyright: ignore[reportGeneralTypeIssues]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">params</span><span class="p">[</span><span class="s2">&quot;language&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">search_query</span><span class="o">.</span><span class="n">lang</span>  <span class="c1"># pyright: ignore[reportGeneralTypeIssues]</span>
+
+        <span class="k">return</span> <span class="n">params</span></div>
+
+
+    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">search</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">params</span><span class="p">:</span> <span class="n">RequestParams</span><span class="p">,</span>
+        <span class="n">result_container</span><span class="p">:</span> <span class="s2">&quot;ResultContainer&quot;</span><span class="p">,</span>
+        <span class="n">start_time</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">timeout_limit</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="k">pass</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_tests</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># deprecated!</span>
+        <span class="k">return</span> <span class="p">{}</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_default_tests</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># deprecated!</span>
+        <span class="k">return</span> <span class="p">{}</span></div>
+
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+  <span id="sidebar-top"></span>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+  
+    
+            <p class="logo"><a href="../../../../index.html">
+              <img class="logo" src="../../../../_static/searxng-wordmark.svg" alt="Logo of SearXNG"/>
+            </a></p>
+  
+
+<h3><a href="../../../../index.html">Table of Contents</a></h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../user/index.html">User information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../own-instance.html">Why use a private instance?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../admin/index.html">Administrator documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../dev/index.html">Developer documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../utils/index.html">DevOps tooling box</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../src/index.html">Source-Code</a></li>
+</ul>
+
+  <h3>Project Links</h3>
+  <ul>
+    <li><a href="https://github.com/searxng/searxng/tree/master">Source</a>
+  
+    <li><a href="https://github.com/searxng/searxng/wiki">Wiki</a>
+  
+    <li><a href="https://searx.space">Public instances</a>
+  
+    <li><a href="https://github.com/searxng/searxng/issues">Issue Tracker</a>
+  </ul><h3>Navigation</h3>
+<ul>
+  <li><a href="../../../../index.html">Overview</a>
+    <ul>
+      <li><a href="../../../index.html">Module code</a>
+        <ul>
+      <li><a href="../../search.html">searx.search</a>
+        
+          
+          </ul>
+      </li></ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright SearXNG team.
+    </div>
+  </body>
+</html>

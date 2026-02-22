@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>searx.engines.google &#8212; SearXNG Documentation (2026.2.22+191818b86)</title>
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=6625fa76" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/searxng.css?v=52e4ff28" />
+    <script src="../../../_static/documentation_options.js?v=1b5d919e"></script>
+    <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script data-project="searxng" data-version="2026.2.22+191818b86" src="../../../_static/describe_version.js?v=fa7f30d0"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">SearXNG Documentation (2026.2.22+191818b86)</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" >Module code</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../engines.html" accesskey="U">searx.engines</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">searx.engines.google</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for searx.engines.google</h1><div class="highlight"><pre>
+<span></span><span class="c1"># SPDX-License-Identifier: AGPL-3.0-or-later</span>
+<span class="sd">&quot;&quot;&quot;This is the implementation of the Google WEB engine.  Some of this</span>
+<span class="sd">implementations (manly the :py:obj:`get_google_info`) are shared by other</span>
+<span class="sd">engines:</span>
+
+<span class="sd">- :ref:`google images engine`</span>
+<span class="sd">- :ref:`google news engine`</span>
+<span class="sd">- :ref:`google videos engine`</span>
+<span class="sd">- :ref:`google scholar engine`</span>
+<span class="sd">- :ref:`google autocomplete`</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">t</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">random</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">string</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">urllib.parse</span><span class="w"> </span><span class="kn">import</span> <span class="n">urlencode</span><span class="p">,</span> <span class="n">unquote</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">lxml</span><span class="w"> </span><span class="kn">import</span> <span class="n">html</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">babel</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">babel.core</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">babel.languages</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">searx.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">extract_text</span><span class="p">,</span> <span class="n">eval_xpath</span><span class="p">,</span> <span class="n">eval_xpath_list</span><span class="p">,</span> <span class="n">eval_xpath_getindex</span><span class="p">,</span> <span class="n">gen_gsa_useragent</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">searx.locales</span><span class="w"> </span><span class="kn">import</span> <span class="n">language_tag</span><span class="p">,</span> <span class="n">region_tag</span><span class="p">,</span> <span class="n">get_official_locales</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">searx.network</span><span class="w"> </span><span class="kn">import</span> <span class="n">get</span>  <span class="c1"># see https://github.com/searxng/searxng/issues/762</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">searx.exceptions</span><span class="w"> </span><span class="kn">import</span> <span class="n">SearxEngineCaptchaException</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">searx.enginelib.traits</span><span class="w"> </span><span class="kn">import</span> <span class="n">EngineTraits</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">searx.result_types</span><span class="w"> </span><span class="kn">import</span> <span class="n">EngineResults</span>
+
+<span class="k">if</span> <span class="n">t</span><span class="o">.</span><span class="n">TYPE_CHECKING</span><span class="p">:</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">searx.extended_types</span><span class="w"> </span><span class="kn">import</span> <span class="n">SXNG_Response</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">searx.search.processors</span><span class="w"> </span><span class="kn">import</span> <span class="n">OnlineParams</span>
+
+<span class="n">about</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;website&quot;</span><span class="p">:</span> <span class="s1">&#39;https://www.google.com&#39;</span><span class="p">,</span>
+    <span class="s2">&quot;wikidata_id&quot;</span><span class="p">:</span> <span class="s1">&#39;Q9366&#39;</span><span class="p">,</span>
+    <span class="s2">&quot;official_api_documentation&quot;</span><span class="p">:</span> <span class="s1">&#39;https://developers.google.com/custom-search/&#39;</span><span class="p">,</span>
+    <span class="s2">&quot;use_official_api&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="s2">&quot;require_api_key&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="s2">&quot;results&quot;</span><span class="p">:</span> <span class="s1">&#39;HTML&#39;</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="c1"># engine dependent config</span>
+<span class="n">categories</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;general&#39;</span><span class="p">,</span> <span class="s1">&#39;web&#39;</span><span class="p">]</span>
+<span class="n">paging</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">max_page</span> <span class="o">=</span> <span class="mi">50</span>
+<span class="sd">&quot;&quot;&quot;`Google max 50 pages`_</span>
+
+<span class="sd">.. _Google max 50 pages: https://github.com/searxng/searxng/issues/2982</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="n">time_range_support</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">safesearch</span> <span class="o">=</span> <span class="kc">True</span>
+
+<span class="n">time_range_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;day&#39;</span><span class="p">:</span> <span class="s1">&#39;d&#39;</span><span class="p">,</span> <span class="s1">&#39;week&#39;</span><span class="p">:</span> <span class="s1">&#39;w&#39;</span><span class="p">,</span> <span class="s1">&#39;month&#39;</span><span class="p">:</span> <span class="s1">&#39;m&#39;</span><span class="p">,</span> <span class="s1">&#39;year&#39;</span><span class="p">:</span> <span class="s1">&#39;y&#39;</span><span class="p">}</span>
+
+<span class="c1"># Filter results. 0: None, 1: Moderate, 2: Strict</span>
+<span class="n">filter_mapping</span> <span class="o">=</span> <span class="p">{</span><span class="mi">0</span><span class="p">:</span> <span class="s1">&#39;off&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span> <span class="s1">&#39;medium&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="p">:</span> <span class="s1">&#39;high&#39;</span><span class="p">}</span>
+
+<span class="c1"># specific xpath variables</span>
+<span class="c1"># ------------------------</span>
+
+<span class="c1"># Suggestions are links placed in a *card-section*, we extract only the text</span>
+<span class="c1"># from the links not the links itself.</span>
+<span class="n">suggestion_xpath</span> <span class="o">=</span> <span class="s1">&#39;//div[contains(@class, &quot;ouy7Mc&quot;)]//a&#39;</span>
+
+
+<span class="n">_arcid_range</span> <span class="o">=</span> <span class="n">string</span><span class="o">.</span><span class="n">ascii_letters</span> <span class="o">+</span> <span class="n">string</span><span class="o">.</span><span class="n">digits</span> <span class="o">+</span> <span class="s2">&quot;_-&quot;</span>
+<span class="n">_arcid_random</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+
+
+<div class="viewcode-block" id="ui_async">
+<a class="viewcode-back" href="../../../dev/engines/online/google.html#searx.engines.google.ui_async">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">ui_async</span><span class="p">(</span><span class="n">start</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Format of the response from UI&#39;s async request.</span>
+
+<span class="sd">    - ``arc_id:&lt;...&gt;,use_ac:true,_fmt:prog``</span>
+
+<span class="sd">    The arc_id is random generated every hour.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">global</span> <span class="n">_arcid_random</span>  <span class="c1"># pylint: disable=global-statement</span>
+
+    <span class="n">use_ac</span> <span class="o">=</span> <span class="s2">&quot;use_ac:true&quot;</span>
+    <span class="c1"># _fmt:html returns a HTTP 500 when user search for celebrities like</span>
+    <span class="c1"># &#39;!google natasha allegri&#39; or &#39;!google chris evans&#39;</span>
+    <span class="n">_fmt</span> <span class="o">=</span> <span class="s2">&quot;_fmt:prog&quot;</span>
+
+    <span class="c1"># create a new random arc_id every hour</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">_arcid_random</span> <span class="ow">or</span> <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">())</span> <span class="o">-</span> <span class="n">_arcid_random</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">&gt;</span> <span class="mi">3600</span><span class="p">:</span>
+        <span class="n">_arcid_random</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">random</span><span class="o">.</span><span class="n">choices</span><span class="p">(</span><span class="n">_arcid_range</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">23</span><span class="p">)),</span> <span class="nb">int</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()))</span>
+    <span class="n">arc_id</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;arc_id:srp_</span><span class="si">{</span><span class="n">_arcid_random</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">_1</span><span class="si">{</span><span class="n">start</span><span class="si">:</span><span class="s2">02</span><span class="si">}</span><span class="s2">&quot;</span>
+
+    <span class="k">return</span> <span class="s2">&quot;,&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">arc_id</span><span class="p">,</span> <span class="n">use_ac</span><span class="p">,</span> <span class="n">_fmt</span><span class="p">])</span></div>
+
+
+
+<div class="viewcode-block" id="get_google_info">
+<a class="viewcode-back" href="../../../dev/engines/online/google.html#searx.engines.google.get_google_info">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_google_info</span><span class="p">(</span><span class="n">params</span><span class="p">:</span> <span class="s2">&quot;OnlineParams&quot;</span><span class="p">,</span> <span class="n">eng_traits</span><span class="p">:</span> <span class="n">EngineTraits</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">t</span><span class="o">.</span><span class="n">Any</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Composing various (language) properties for the google engines (:ref:`google</span>
+<span class="sd">    API`).</span>
+
+<span class="sd">    This function is called by the various google engines (:ref:`google web</span>
+<span class="sd">    engine`, :ref:`google images engine`, :ref:`google news engine` and</span>
+<span class="sd">    :ref:`google videos engine`).</span>
+
+<span class="sd">    :param dict param: Request parameters of the engine.  At least</span>
+<span class="sd">        a ``searxng_locale`` key should be in the dictionary.</span>
+
+<span class="sd">    :param eng_traits: Engine&#39;s traits fetched from google preferences</span>
+<span class="sd">        (:py:obj:`searx.enginelib.traits.EngineTraits`)</span>
+
+<span class="sd">    :rtype: dict</span>
+<span class="sd">    :returns:</span>
+<span class="sd">        Py-Dictionary with the key/value pairs:</span>
+
+<span class="sd">        language:</span>
+<span class="sd">            The language code that is used by google (e.g. ``lang_en`` or</span>
+<span class="sd">            ``lang_zh-TW``)</span>
+
+<span class="sd">        country:</span>
+<span class="sd">            The country code that is used by google (e.g. ``US`` or ``TW``)</span>
+
+<span class="sd">        locale:</span>
+<span class="sd">            A instance of :py:obj:`babel.core.Locale` build from the</span>
+<span class="sd">            ``searxng_locale`` value.</span>
+
+<span class="sd">        subdomain:</span>
+<span class="sd">            Google subdomain :py:obj:`google_domains` that fits to the country</span>
+<span class="sd">            code.</span>
+
+<span class="sd">        params:</span>
+<span class="sd">            Py-Dictionary with additional request arguments (can be passed to</span>
+<span class="sd">            :py:func:`urllib.parse.urlencode`).</span>
+
+<span class="sd">            - ``hl`` parameter: specifies the interface language of user interface.</span>
+<span class="sd">            - ``lr`` parameter: restricts search results to documents written in</span>
+<span class="sd">              a particular language.</span>
+<span class="sd">            - ``cr`` parameter: restricts search results to documents</span>
+<span class="sd">              originating in a particular country.</span>
+<span class="sd">            - ``ie`` parameter: sets the character encoding scheme that should</span>
+<span class="sd">              be used to interpret the query string (&#39;utf8&#39;).</span>
+<span class="sd">            - ``oe`` parameter: sets the character encoding scheme that should</span>
+<span class="sd">              be used to decode the XML result (&#39;utf8&#39;).</span>
+
+<span class="sd">        headers:</span>
+<span class="sd">            Py-Dictionary with additional HTTP headers (can be passed to</span>
+<span class="sd">            request&#39;s headers)</span>
+
+<span class="sd">            - ``Accept: &#39;*/*``</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">ret_val</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">t</span><span class="o">.</span><span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;language&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="s1">&#39;country&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="s1">&#39;subdomain&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="s1">&#39;params&#39;</span><span class="p">:</span> <span class="p">{},</span>
+        <span class="s1">&#39;headers&#39;</span><span class="p">:</span> <span class="p">{},</span>
+        <span class="s1">&#39;cookies&#39;</span><span class="p">:</span> <span class="p">{},</span>
+        <span class="s1">&#39;locale&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">}</span>
+
+    <span class="n">sxng_locale</span> <span class="o">=</span> <span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;searxng_locale&#39;</span><span class="p">,</span> <span class="s1">&#39;all&#39;</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">locale</span> <span class="o">=</span> <span class="n">babel</span><span class="o">.</span><span class="n">Locale</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">sxng_locale</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;-&#39;</span><span class="p">)</span>
+    <span class="k">except</span> <span class="n">babel</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">UnknownLocaleError</span><span class="p">:</span>
+        <span class="n">locale</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="n">eng_lang</span> <span class="o">=</span> <span class="n">eng_traits</span><span class="o">.</span><span class="n">get_language</span><span class="p">(</span><span class="n">sxng_locale</span><span class="p">,</span> <span class="s1">&#39;lang_en&#39;</span><span class="p">)</span>
+    <span class="n">lang_code</span> <span class="o">=</span> <span class="n">eng_lang</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>  <span class="c1"># lang_zh-TW --&gt; zh-TW / lang_en --&gt; en</span>
+    <span class="n">country</span> <span class="o">=</span> <span class="n">eng_traits</span><span class="o">.</span><span class="n">get_region</span><span class="p">(</span><span class="n">sxng_locale</span><span class="p">,</span> <span class="n">eng_traits</span><span class="o">.</span><span class="n">all_locale</span><span class="p">)</span>
+
+    <span class="c1"># Test zh_hans &amp; zh_hant --&gt; in the topmost links in the result list of list</span>
+    <span class="c1"># TW and HK you should a find wiktionary.org zh_hant link.  In the result</span>
+    <span class="c1"># list of zh-CN should not be no hant link instead you should find</span>
+    <span class="c1"># zh.m.wikipedia.org/zh somewhere in the top.</span>
+
+    <span class="c1"># &#39;!go 日 :zh-TW&#39; --&gt; https://zh.m.wiktionary.org/zh-hant/%E6%97%A5</span>
+    <span class="c1"># &#39;!go 日 :zh-CN&#39; --&gt; https://zh.m.wikipedia.org/zh/%E6%97%A5</span>
+
+    <span class="n">ret_val</span><span class="p">[</span><span class="s1">&#39;language&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">eng_lang</span>
+    <span class="n">ret_val</span><span class="p">[</span><span class="s1">&#39;country&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">country</span>
+    <span class="n">ret_val</span><span class="p">[</span><span class="s1">&#39;locale&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">locale</span>
+    <span class="n">ret_val</span><span class="p">[</span><span class="s1">&#39;subdomain&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">eng_traits</span><span class="o">.</span><span class="n">custom</span><span class="p">[</span><span class="s1">&#39;supported_domains&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">country</span><span class="o">.</span><span class="n">upper</span><span class="p">(),</span> <span class="s1">&#39;www.google.com&#39;</span><span class="p">)</span>
+
+    <span class="c1"># hl parameter:</span>
+    <span class="c1">#   The hl parameter specifies the interface language (host language) of</span>
+    <span class="c1">#   your user interface. To improve the performance and the quality of your</span>
+    <span class="c1">#   search results, you are strongly encouraged to set this parameter</span>
+    <span class="c1">#   explicitly.</span>
+    <span class="c1">#   https://developers.google.com/custom-search/docs/xml_results#hlsp</span>
+    <span class="c1"># The Interface Language:</span>
+    <span class="c1">#   https://developers.google.com/custom-search/docs/xml_results_appendices#interfaceLanguages</span>
+
+    <span class="c1"># https://github.com/searxng/searxng/issues/2515#issuecomment-1607150817</span>
+    <span class="n">ret_val</span><span class="p">[</span><span class="s1">&#39;params&#39;</span><span class="p">][</span><span class="s1">&#39;hl&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">lang_code</span><span class="si">}</span><span class="s1">-</span><span class="si">{</span><span class="n">country</span><span class="si">}</span><span class="s1">&#39;</span>
+
+    <span class="c1"># lr parameter:</span>
+    <span class="c1">#   The lr (language restrict) parameter restricts search results to</span>
+    <span class="c1">#   documents written in a particular language.</span>
+    <span class="c1">#   https://developers.google.com/custom-search/docs/xml_results#lrsp</span>
+    <span class="c1">#   Language Collection Values:</span>
+    <span class="c1">#   https://developers.google.com/custom-search/docs/xml_results_appendices#languageCollections</span>
+    <span class="c1">#</span>
+    <span class="c1"># To select &#39;all&#39; languages an empty &#39;lr&#39; value is used.</span>
+    <span class="c1">#</span>
+    <span class="c1"># Different to other google services, Google Scholar supports to select more</span>
+    <span class="c1"># than one language. The languages are separated by a pipe &#39;|&#39; (logical OR).</span>
+    <span class="c1"># By example: &amp;lr=lang_zh-TW%7Clang_de selects articles written in</span>
+    <span class="c1"># traditional chinese OR german language.</span>
+
+    <span class="n">ret_val</span><span class="p">[</span><span class="s1">&#39;params&#39;</span><span class="p">][</span><span class="s1">&#39;lr&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">eng_lang</span>
+    <span class="k">if</span> <span class="n">sxng_locale</span> <span class="o">==</span> <span class="s1">&#39;all&#39;</span><span class="p">:</span>
+        <span class="n">ret_val</span><span class="p">[</span><span class="s1">&#39;params&#39;</span><span class="p">][</span><span class="s1">&#39;lr&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+
+    <span class="c1"># cr parameter:</span>
+    <span class="c1">#   The cr parameter restricts search results to documents originating in a</span>
+    <span class="c1">#   particular country.</span>
+    <span class="c1">#   https://developers.google.com/custom-search/docs/xml_results#crsp</span>
+
+    <span class="c1"># specify a region (country) only if a region is given in the selected</span>
+    <span class="c1"># locale --&gt; https://github.com/searxng/searxng/issues/2672</span>
+    <span class="n">ret_val</span><span class="p">[</span><span class="s1">&#39;params&#39;</span><span class="p">][</span><span class="s1">&#39;cr&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">sxng_locale</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">))</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">ret_val</span><span class="p">[</span><span class="s1">&#39;params&#39;</span><span class="p">][</span><span class="s1">&#39;cr&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;country&#39;</span> <span class="o">+</span> <span class="n">country</span>
+
+    <span class="c1"># gl parameter: (mandatory by Google News)</span>
+    <span class="c1">#   The gl parameter value is a two-letter country code. For WebSearch</span>
+    <span class="c1">#   results, the gl parameter boosts search results whose country of origin</span>
+    <span class="c1">#   matches the parameter value. See the Country Codes section for a list of</span>
+    <span class="c1">#   valid values.</span>
+    <span class="c1">#   Specifying a gl parameter value in WebSearch requests should improve the</span>
+    <span class="c1">#   relevance of results. This is particularly true for international</span>
+    <span class="c1">#   customers and, even more specifically, for customers in English-speaking</span>
+    <span class="c1">#   countries other than the United States.</span>
+    <span class="c1">#   https://developers.google.com/custom-search/docs/xml_results#glsp</span>
+
+    <span class="c1"># https://github.com/searxng/searxng/issues/2515#issuecomment-1606294635</span>
+    <span class="c1"># ret_val[&#39;params&#39;][&#39;gl&#39;] = country</span>
+
+    <span class="c1"># ie parameter:</span>
+    <span class="c1">#   The ie parameter sets the character encoding scheme that should be used</span>
+    <span class="c1">#   to interpret the query string. The default ie value is latin1.</span>
+    <span class="c1">#   https://developers.google.com/custom-search/docs/xml_results#iesp</span>
+
+    <span class="n">ret_val</span><span class="p">[</span><span class="s1">&#39;params&#39;</span><span class="p">][</span><span class="s1">&#39;ie&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;utf8&#39;</span>
+
+    <span class="c1"># oe parameter:</span>
+    <span class="c1">#   The oe parameter sets the character encoding scheme that should be used</span>
+    <span class="c1">#   to decode the XML result. The default oe value is latin1.</span>
+    <span class="c1">#   https://developers.google.com/custom-search/docs/xml_results#oesp</span>
+
+    <span class="n">ret_val</span><span class="p">[</span><span class="s1">&#39;params&#39;</span><span class="p">][</span><span class="s1">&#39;oe&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;utf8&#39;</span>
+
+    <span class="c1"># num parameter:</span>
+    <span class="c1">#   The num parameter identifies the number of search results to return.</span>
+    <span class="c1">#   The default num value is 10, and the maximum value is 20. If you request</span>
+    <span class="c1">#   more than 20 results, only 20 results will be returned.</span>
+    <span class="c1">#   https://developers.google.com/custom-search/docs/xml_results#numsp</span>
+
+    <span class="c1"># HINT: seems to have no effect (tested in google WEB &amp; Images)</span>
+    <span class="c1"># ret_val[&#39;params&#39;][&#39;num&#39;] = 20</span>
+
+    <span class="c1"># HTTP headers</span>
+
+    <span class="n">ret_val</span><span class="p">[</span><span class="s1">&#39;headers&#39;</span><span class="p">][</span><span class="s1">&#39;Accept&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;*/*&#39;</span>
+    <span class="n">ret_val</span><span class="p">[</span><span class="s1">&#39;headers&#39;</span><span class="p">][</span><span class="s1">&#39;User-Agent&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">gen_gsa_useragent</span><span class="p">()</span>
+
+    <span class="c1"># Cookies</span>
+
+    <span class="c1"># - https://github.com/searxng/searxng/pull/1679#issuecomment-1235432746</span>
+    <span class="c1"># - https://github.com/searxng/searxng/issues/1555</span>
+    <span class="n">ret_val</span><span class="p">[</span><span class="s1">&#39;cookies&#39;</span><span class="p">][</span><span class="s1">&#39;CONSENT&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;YES+&quot;</span>
+
+    <span class="k">return</span> <span class="n">ret_val</span></div>
+
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">detect_google_sorry</span><span class="p">(</span><span class="n">resp</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">resp</span><span class="o">.</span><span class="n">url</span><span class="o">.</span><span class="n">host</span> <span class="o">==</span> <span class="s1">&#39;sorry.google.com&#39;</span> <span class="ow">or</span> <span class="n">resp</span><span class="o">.</span><span class="n">url</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;/sorry&#39;</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="n">SearxEngineCaptchaException</span><span class="p">()</span>
+
+
+<div class="viewcode-block" id="request">
+<a class="viewcode-back" href="../../../dev/engines/online/google.html#searx.engines.google.request">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">request</span><span class="p">(</span><span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">params</span><span class="p">:</span> <span class="s2">&quot;OnlineParams&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Google search request&quot;&quot;&quot;</span>
+    <span class="c1"># pylint: disable=line-too-long</span>
+    <span class="n">start</span> <span class="o">=</span> <span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="s1">&#39;pageno&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="mi">10</span>
+    <span class="n">str_async</span> <span class="o">=</span> <span class="n">ui_async</span><span class="p">(</span><span class="n">start</span><span class="p">)</span>
+    <span class="n">google_info</span> <span class="o">=</span> <span class="n">get_google_info</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">traits</span><span class="p">)</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;ARC_ID: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">str_async</span><span class="p">)</span>
+
+    <span class="c1"># https://www.google.de/search?q=corona&amp;hl=de&amp;lr=lang_de&amp;start=0&amp;tbs=qdr%3Ad&amp;safe=medium</span>
+    <span class="n">query_url</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="s1">&#39;https://&#39;</span>
+        <span class="o">+</span> <span class="n">google_info</span><span class="p">[</span><span class="s1">&#39;subdomain&#39;</span><span class="p">]</span>
+        <span class="o">+</span> <span class="s1">&#39;/search&#39;</span>
+        <span class="o">+</span> <span class="s2">&quot;?&quot;</span>
+        <span class="o">+</span> <span class="n">urlencode</span><span class="p">(</span>
+            <span class="p">{</span>
+                <span class="s1">&#39;q&#39;</span><span class="p">:</span> <span class="n">query</span><span class="p">,</span>
+                <span class="o">**</span><span class="n">google_info</span><span class="p">[</span><span class="s1">&#39;params&#39;</span><span class="p">],</span>
+                <span class="s1">&#39;filter&#39;</span><span class="p">:</span> <span class="s1">&#39;0&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;start&#39;</span><span class="p">:</span> <span class="n">start</span><span class="p">,</span>
+                <span class="c1"># &#39;vet&#39;: &#39;12ahUKEwik3ZbIzfn7AhXMX_EDHbUDBh0QxK8CegQIARAC..i&#39;,</span>
+                <span class="c1"># &#39;ved&#39;: &#39;2ahUKEwik3ZbIzfn7AhXMX_EDHbUDBh0Q_skCegQIARAG&#39;,</span>
+                <span class="c1"># &#39;cs&#39; : 1,</span>
+                <span class="c1"># &#39;sa&#39;: &#39;N&#39;,</span>
+                <span class="c1"># &#39;yv&#39;: 3,</span>
+                <span class="c1"># &#39;prmd&#39;: &#39;vin&#39;,</span>
+                <span class="c1"># &#39;ei&#39;: &#39;GASaY6TxOcy_xc8PtYeY6AE&#39;,</span>
+                <span class="c1"># &#39;sa&#39;: &#39;N&#39;,</span>
+                <span class="c1"># &#39;sstk&#39;: &#39;AcOHfVkD7sWCSAheZi-0tx_09XDO55gTWY0JNq3_V26cNN-c8lfD45aZYPI8s_Bqp8s57AHz5pxchDtAGCA_cikAWSjy9kw3kgg&#39;</span>
+                <span class="c1"># formally known as use_mobile_ui</span>
+                <span class="s1">&#39;asearch&#39;</span><span class="p">:</span> <span class="s1">&#39;arc&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;async&#39;</span><span class="p">:</span> <span class="n">str_async</span><span class="p">,</span>
+            <span class="p">}</span>
+        <span class="p">)</span>
+    <span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">params</span><span class="p">[</span><span class="s1">&#39;time_range&#39;</span><span class="p">]</span> <span class="ow">in</span> <span class="n">time_range_dict</span><span class="p">:</span>
+        <span class="n">query_url</span> <span class="o">+=</span> <span class="s1">&#39;&amp;&#39;</span> <span class="o">+</span> <span class="n">urlencode</span><span class="p">({</span><span class="s1">&#39;tbs&#39;</span><span class="p">:</span> <span class="s1">&#39;qdr:&#39;</span> <span class="o">+</span> <span class="n">time_range_dict</span><span class="p">[</span><span class="n">params</span><span class="p">[</span><span class="s1">&#39;time_range&#39;</span><span class="p">]]})</span>
+    <span class="k">if</span> <span class="n">params</span><span class="p">[</span><span class="s1">&#39;safesearch&#39;</span><span class="p">]:</span>
+        <span class="n">query_url</span> <span class="o">+=</span> <span class="s1">&#39;&amp;&#39;</span> <span class="o">+</span> <span class="n">urlencode</span><span class="p">({</span><span class="s1">&#39;safe&#39;</span><span class="p">:</span> <span class="n">filter_mapping</span><span class="p">[</span><span class="n">params</span><span class="p">[</span><span class="s1">&#39;safesearch&#39;</span><span class="p">]]})</span>
+    <span class="n">params</span><span class="p">[</span><span class="s1">&#39;url&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">query_url</span>
+
+    <span class="n">params</span><span class="p">[</span><span class="s1">&#39;cookies&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">google_info</span><span class="p">[</span><span class="s1">&#39;cookies&#39;</span><span class="p">]</span>
+    <span class="n">params</span><span class="p">[</span><span class="s1">&#39;headers&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">google_info</span><span class="p">[</span><span class="s1">&#39;headers&#39;</span><span class="p">])</span></div>
+
+
+
+<span class="c1"># =26;[3,&quot;dimg_ZNMiZPCqE4apxc8P3a2tuAQ_137&quot;]a87;data:image/jpeg;base64,/9j/4AAQSkZJRgABA</span>
+<span class="c1"># ...6T+9Nl4cnD+gr9OK8I56/tX3l86nWYw//2Q==26;</span>
+<span class="n">RE_DATA_IMAGE</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;&quot;(dimg_[^&quot;]*)&quot;[^;]*;(data:image[^;]*;[^;]*);&#39;</span><span class="p">)</span>
+<span class="n">RE_DATA_IMAGE_end</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;&quot;(dimg_[^&quot;]*)&quot;[^;]*;(data:image[^;]*;[^;]*)$&#39;</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">parse_data_images</span><span class="p">(</span><span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+    <span class="n">data_image_map</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="k">for</span> <span class="n">img_id</span><span class="p">,</span> <span class="n">data_image</span> <span class="ow">in</span> <span class="n">RE_DATA_IMAGE</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+        <span class="n">end_pos</span> <span class="o">=</span> <span class="n">data_image</span><span class="o">.</span><span class="n">rfind</span><span class="p">(</span><span class="s1">&#39;=&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">end_pos</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">data_image</span> <span class="o">=</span> <span class="n">data_image</span><span class="p">[:</span> <span class="n">end_pos</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+        <span class="n">data_image_map</span><span class="p">[</span><span class="n">img_id</span><span class="p">]</span> <span class="o">=</span> <span class="n">data_image</span>
+    <span class="n">last</span> <span class="o">=</span> <span class="n">RE_DATA_IMAGE_end</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">last</span><span class="p">:</span>
+        <span class="n">data_image_map</span><span class="p">[</span><span class="n">last</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)]</span> <span class="o">=</span> <span class="n">last</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;data:image objects --&gt; </span><span class="si">%s</span><span class="s1">&#39;</span><span class="p">,</span> <span class="nb">list</span><span class="p">(</span><span class="n">data_image_map</span><span class="o">.</span><span class="n">keys</span><span class="p">()))</span>
+    <span class="k">return</span> <span class="n">data_image_map</span>
+
+
+<div class="viewcode-block" id="response">
+<a class="viewcode-back" href="../../../dev/engines/online/google.html#searx.engines.google.response">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">response</span><span class="p">(</span><span class="n">resp</span><span class="p">:</span> <span class="s2">&quot;SXNG_Response&quot;</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get response from google&#39;s search request&quot;&quot;&quot;</span>
+    <span class="c1"># pylint: disable=too-many-branches, too-many-statements</span>
+    <span class="n">detect_google_sorry</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span>
+    <span class="n">data_image_map</span> <span class="o">=</span> <span class="n">parse_data_images</span><span class="p">(</span><span class="n">resp</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+
+    <span class="n">results</span> <span class="o">=</span> <span class="n">EngineResults</span><span class="p">()</span>
+
+    <span class="c1"># convert the text to dom</span>
+    <span class="n">dom</span> <span class="o">=</span> <span class="n">html</span><span class="o">.</span><span class="n">fromstring</span><span class="p">(</span><span class="n">resp</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+
+    <span class="c1"># parse results</span>
+
+    <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">eval_xpath_list</span><span class="p">(</span><span class="n">dom</span><span class="p">,</span> <span class="s1">&#39;.//div[contains(@class, &quot;MjjYud&quot;)]&#39;</span><span class="p">):</span>
+        <span class="c1"># pylint: disable=too-many-nested-blocks</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">title_tag</span> <span class="o">=</span> <span class="n">eval_xpath_getindex</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="s1">&#39;.//div[contains(@role, &quot;link&quot;)]&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">title_tag</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="c1"># this not one of the common google results *section*</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;ignoring item from the result_xpath list: missing title&#39;</span><span class="p">)</span>
+                <span class="k">continue</span>
+            <span class="n">title</span> <span class="o">=</span> <span class="n">extract_text</span><span class="p">(</span><span class="n">title_tag</span><span class="p">)</span>
+
+            <span class="n">raw_url</span> <span class="o">=</span> <span class="n">eval_xpath_getindex</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="s1">&#39;.//a/@href&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">raw_url</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;ignoring item from the result_xpath list: missing url of title &quot;</span><span class="si">%s</span><span class="s1">&quot;&#39;</span><span class="p">,</span> <span class="n">title</span><span class="p">)</span>
+                <span class="k">continue</span>
+            <span class="n">url</span> <span class="o">=</span> <span class="n">unquote</span><span class="p">(</span><span class="n">raw_url</span><span class="p">[</span><span class="mi">7</span><span class="p">:]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;&amp;sa=U&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>  <span class="c1"># remove the google redirector</span>
+
+            <span class="n">content_nodes</span> <span class="o">=</span> <span class="n">eval_xpath</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="s1">&#39;.//div[contains(@data-sncf, &quot;1&quot;)]&#39;</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">content_nodes</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">script</span> <span class="ow">in</span> <span class="n">item</span><span class="o">.</span><span class="n">xpath</span><span class="p">(</span><span class="s2">&quot;.//script&quot;</span><span class="p">):</span>
+                    <span class="n">script</span><span class="o">.</span><span class="n">getparent</span><span class="p">()</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">script</span><span class="p">)</span>
+
+            <span class="n">content</span> <span class="o">=</span> <span class="n">extract_text</span><span class="p">(</span><span class="n">content_nodes</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">content</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;ignoring item from the result_xpath list: missing content of title &quot;</span><span class="si">%s</span><span class="s1">&quot;&#39;</span><span class="p">,</span> <span class="n">title</span><span class="p">)</span>
+                <span class="k">continue</span>
+
+            <span class="n">thumbnail</span> <span class="o">=</span> <span class="n">content_nodes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">xpath</span><span class="p">(</span><span class="s1">&#39;.//img/@src&#39;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">thumbnail</span><span class="p">:</span>
+                <span class="n">thumbnail</span> <span class="o">=</span> <span class="n">thumbnail</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="k">if</span> <span class="n">thumbnail</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;data:image&#39;</span><span class="p">):</span>
+                    <span class="n">img_id</span> <span class="o">=</span> <span class="n">content_nodes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">xpath</span><span class="p">(</span><span class="s1">&#39;.//img/@id&#39;</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">img_id</span><span class="p">:</span>
+                        <span class="n">thumbnail</span> <span class="o">=</span> <span class="n">data_image_map</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">img_id</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">thumbnail</span> <span class="o">=</span> <span class="kc">None</span>
+
+            <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s1">&#39;url&#39;</span><span class="p">:</span> <span class="n">url</span><span class="p">,</span> <span class="s1">&#39;title&#39;</span><span class="p">:</span> <span class="n">title</span><span class="p">,</span> <span class="s1">&#39;content&#39;</span><span class="p">:</span> <span class="n">content</span><span class="p">,</span> <span class="s1">&#39;thumbnail&#39;</span><span class="p">:</span> <span class="n">thumbnail</span><span class="p">})</span>
+
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>  <span class="c1"># pylint: disable=broad-except</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">exc_info</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="k">continue</span>
+
+    <span class="c1"># parse suggestion</span>
+    <span class="k">for</span> <span class="n">suggestion</span> <span class="ow">in</span> <span class="n">eval_xpath_list</span><span class="p">(</span><span class="n">dom</span><span class="p">,</span> <span class="n">suggestion_xpath</span><span class="p">):</span>
+        <span class="c1"># append suggestion</span>
+        <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s1">&#39;suggestion&#39;</span><span class="p">:</span> <span class="n">extract_text</span><span class="p">(</span><span class="n">suggestion</span><span class="p">)})</span>
+
+    <span class="c1"># return results</span>
+    <span class="k">return</span> <span class="n">results</span></div>
+
+
+
+<span class="c1"># get supported languages from their site</span>
+
+
+<span class="n">skip_countries</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="c1"># official language of google-country not in google-languages</span>
+    <span class="s1">&#39;AL&#39;</span><span class="p">,</span>  <span class="c1"># Albanien (sq)</span>
+    <span class="s1">&#39;AZ&#39;</span><span class="p">,</span>  <span class="c1"># Aserbaidschan  (az)</span>
+    <span class="s1">&#39;BD&#39;</span><span class="p">,</span>  <span class="c1"># Bangladesch (bn)</span>
+    <span class="s1">&#39;BN&#39;</span><span class="p">,</span>  <span class="c1"># Brunei Darussalam (ms)</span>
+    <span class="s1">&#39;BT&#39;</span><span class="p">,</span>  <span class="c1"># Bhutan (dz)</span>
+    <span class="s1">&#39;ET&#39;</span><span class="p">,</span>  <span class="c1"># Äthiopien (am)</span>
+    <span class="s1">&#39;GE&#39;</span><span class="p">,</span>  <span class="c1"># Georgien (ka, os)</span>
+    <span class="s1">&#39;GL&#39;</span><span class="p">,</span>  <span class="c1"># Grönland (kl)</span>
+    <span class="s1">&#39;KH&#39;</span><span class="p">,</span>  <span class="c1"># Kambodscha (km)</span>
+    <span class="s1">&#39;LA&#39;</span><span class="p">,</span>  <span class="c1"># Laos (lo)</span>
+    <span class="s1">&#39;LK&#39;</span><span class="p">,</span>  <span class="c1"># Sri Lanka (si, ta)</span>
+    <span class="s1">&#39;ME&#39;</span><span class="p">,</span>  <span class="c1"># Montenegro (sr)</span>
+    <span class="s1">&#39;MK&#39;</span><span class="p">,</span>  <span class="c1"># Nordmazedonien (mk, sq)</span>
+    <span class="s1">&#39;MM&#39;</span><span class="p">,</span>  <span class="c1"># Myanmar (my)</span>
+    <span class="s1">&#39;MN&#39;</span><span class="p">,</span>  <span class="c1"># Mongolei (mn)</span>
+    <span class="s1">&#39;MV&#39;</span><span class="p">,</span>  <span class="c1"># Malediven (dv) // dv_MV is unknown by babel</span>
+    <span class="s1">&#39;MY&#39;</span><span class="p">,</span>  <span class="c1"># Malaysia (ms)</span>
+    <span class="s1">&#39;NP&#39;</span><span class="p">,</span>  <span class="c1"># Nepal (ne)</span>
+    <span class="s1">&#39;TJ&#39;</span><span class="p">,</span>  <span class="c1"># Tadschikistan (tg)</span>
+    <span class="s1">&#39;TM&#39;</span><span class="p">,</span>  <span class="c1"># Turkmenistan (tk)</span>
+    <span class="s1">&#39;UZ&#39;</span><span class="p">,</span>  <span class="c1"># Usbekistan (uz)</span>
+<span class="p">]</span>
+
+
+<div class="viewcode-block" id="fetch_traits">
+<a class="viewcode-back" href="../../../dev/engines/online/google.html#searx.engines.google.fetch_traits">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">fetch_traits</span><span class="p">(</span><span class="n">engine_traits</span><span class="p">:</span> <span class="n">EngineTraits</span><span class="p">,</span> <span class="n">add_domains</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Fetch languages from Google.&quot;&quot;&quot;</span>
+    <span class="c1"># pylint: disable=import-outside-toplevel, too-many-branches</span>
+
+    <span class="n">engine_traits</span><span class="o">.</span><span class="n">custom</span><span class="p">[</span><span class="s1">&#39;supported_domains&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="n">resp</span> <span class="o">=</span> <span class="n">get</span><span class="p">(</span><span class="s1">&#39;https://www.google.com/preferences&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">resp</span><span class="o">.</span><span class="n">ok</span><span class="p">:</span>  <span class="c1"># type: ignore</span>
+        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;Response from Google&#39;s preferences is not OK.&quot;</span><span class="p">)</span>
+
+    <span class="n">dom</span> <span class="o">=</span> <span class="n">html</span><span class="o">.</span><span class="n">fromstring</span><span class="p">(</span><span class="n">resp</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">))</span>
+
+    <span class="c1"># supported language codes</span>
+
+    <span class="n">lang_map</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;no&#39;</span><span class="p">:</span> <span class="s1">&#39;nb&#39;</span><span class="p">}</span>
+    <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">eval_xpath_list</span><span class="p">(</span><span class="n">dom</span><span class="p">,</span> <span class="s2">&quot;//select[@name=&#39;hl&#39;]/option&quot;</span><span class="p">):</span>
+        <span class="n">eng_lang</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;value&quot;</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">locale</span> <span class="o">=</span> <span class="n">babel</span><span class="o">.</span><span class="n">Locale</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">lang_map</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">eng_lang</span><span class="p">,</span> <span class="n">eng_lang</span><span class="p">),</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;-&#39;</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">babel</span><span class="o">.</span><span class="n">UnknownLocaleError</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;INFO:  google UI language </span><span class="si">%s</span><span class="s2"> (</span><span class="si">%s</span><span class="s2">) is unknown by babel&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">eng_lang</span><span class="p">,</span> <span class="n">x</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;(&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()))</span>
+            <span class="k">continue</span>
+        <span class="n">sxng_lang</span> <span class="o">=</span> <span class="n">language_tag</span><span class="p">(</span><span class="n">locale</span><span class="p">)</span>
+
+        <span class="n">conflict</span> <span class="o">=</span> <span class="n">engine_traits</span><span class="o">.</span><span class="n">languages</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">sxng_lang</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">conflict</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">conflict</span> <span class="o">!=</span> <span class="n">eng_lang</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;CONFLICT: babel </span><span class="si">%s</span><span class="s2"> --&gt; </span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">sxng_lang</span><span class="p">,</span> <span class="n">conflict</span><span class="p">,</span> <span class="n">eng_lang</span><span class="p">))</span>
+            <span class="k">continue</span>
+        <span class="n">engine_traits</span><span class="o">.</span><span class="n">languages</span><span class="p">[</span><span class="n">sxng_lang</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;lang_&#39;</span> <span class="o">+</span> <span class="n">eng_lang</span>
+
+    <span class="c1"># alias languages</span>
+    <span class="n">engine_traits</span><span class="o">.</span><span class="n">languages</span><span class="p">[</span><span class="s1">&#39;zh&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;lang_zh-CN&#39;</span>
+
+    <span class="c1"># supported region codes</span>
+
+    <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">eval_xpath_list</span><span class="p">(</span><span class="n">dom</span><span class="p">,</span> <span class="s2">&quot;//select[@name=&#39;gl&#39;]/option&quot;</span><span class="p">):</span>
+        <span class="n">eng_country</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;value&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">eng_country</span> <span class="ow">in</span> <span class="n">skip_countries</span><span class="p">:</span>
+            <span class="k">continue</span>
+        <span class="k">if</span> <span class="n">eng_country</span> <span class="o">==</span> <span class="s1">&#39;ZZ&#39;</span><span class="p">:</span>
+            <span class="n">engine_traits</span><span class="o">.</span><span class="n">all_locale</span> <span class="o">=</span> <span class="s1">&#39;ZZ&#39;</span>
+            <span class="k">continue</span>
+
+        <span class="n">sxng_locales</span> <span class="o">=</span> <span class="n">get_official_locales</span><span class="p">(</span><span class="n">eng_country</span><span class="p">,</span> <span class="n">engine_traits</span><span class="o">.</span><span class="n">languages</span><span class="o">.</span><span class="n">keys</span><span class="p">(),</span> <span class="n">regional</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">sxng_locales</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;ERROR: can&#39;t map from google country </span><span class="si">%s</span><span class="s2"> (</span><span class="si">%s</span><span class="s2">) to a babel region.&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;data-name&#39;</span><span class="p">),</span> <span class="n">eng_country</span><span class="p">))</span>
+            <span class="k">continue</span>
+
+        <span class="k">for</span> <span class="n">sxng_locale</span> <span class="ow">in</span> <span class="n">sxng_locales</span><span class="p">:</span>
+            <span class="n">engine_traits</span><span class="o">.</span><span class="n">regions</span><span class="p">[</span><span class="n">region_tag</span><span class="p">(</span><span class="n">sxng_locale</span><span class="p">)]</span> <span class="o">=</span> <span class="n">eng_country</span>
+
+    <span class="c1"># alias regions</span>
+    <span class="n">engine_traits</span><span class="o">.</span><span class="n">regions</span><span class="p">[</span><span class="s1">&#39;zh-CN&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;HK&#39;</span>
+
+    <span class="c1"># supported domains</span>
+
+    <span class="k">if</span> <span class="n">add_domains</span><span class="p">:</span>
+        <span class="n">resp</span> <span class="o">=</span> <span class="n">get</span><span class="p">(</span><span class="s1">&#39;https://www.google.com/supported_domains&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">resp</span><span class="o">.</span><span class="n">ok</span><span class="p">:</span>  <span class="c1"># type: ignore</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;Response from https://www.google.com/supported_domains is not OK.&quot;</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">domain</span> <span class="ow">in</span> <span class="n">resp</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">():</span>  <span class="c1"># type: ignore</span>
+            <span class="n">domain</span> <span class="o">=</span> <span class="n">domain</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">domain</span> <span class="ow">or</span> <span class="n">domain</span> <span class="ow">in</span> <span class="p">[</span>
+                <span class="s1">&#39;.google.com&#39;</span><span class="p">,</span>
+            <span class="p">]:</span>
+                <span class="k">continue</span>
+            <span class="n">region</span> <span class="o">=</span> <span class="n">domain</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
+            <span class="n">engine_traits</span><span class="o">.</span><span class="n">custom</span><span class="p">[</span><span class="s1">&#39;supported_domains&#39;</span><span class="p">][</span><span class="n">region</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;www&#39;</span> <span class="o">+</span> <span class="n">domain</span>  <span class="c1"># type: ignore</span>
+            <span class="k">if</span> <span class="n">region</span> <span class="o">==</span> <span class="s1">&#39;HK&#39;</span><span class="p">:</span>
+                <span class="c1"># There is no google.cn, we use .com.hk for zh-CN</span>
+                <span class="n">engine_traits</span><span class="o">.</span><span class="n">custom</span><span class="p">[</span><span class="s1">&#39;supported_domains&#39;</span><span class="p">][</span><span class="s1">&#39;CN&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;www&#39;</span> <span class="o">+</span> <span class="n">domain</span>  <span class="c1"># type: ignore</span></div>
+
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+  <span id="sidebar-top"></span>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+  
+    
+            <p class="logo"><a href="../../../index.html">
+              <img class="logo" src="../../../_static/searxng-wordmark.svg" alt="Logo of SearXNG"/>
+            </a></p>
+  
+
+<h3><a href="../../../index.html">Table of Contents</a></h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../user/index.html">User information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../own-instance.html">Why use a private instance?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../admin/index.html">Administrator documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../dev/index.html">Developer documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../utils/index.html">DevOps tooling box</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/index.html">Source-Code</a></li>
+</ul>
+
+  <h3>Project Links</h3>
+  <ul>
+    <li><a href="https://github.com/searxng/searxng/tree/master">Source</a>
+  
+    <li><a href="https://github.com/searxng/searxng/wiki">Wiki</a>
+  
+    <li><a href="https://searx.space">Public instances</a>
+  
+    <li><a href="https://github.com/searxng/searxng/issues">Issue Tracker</a>
+  </ul><h3>Navigation</h3>
+<ul>
+  <li><a href="../../../index.html">Overview</a>
+    <ul>
+      <li><a href="../../index.html">Module code</a>
+        <ul>
+      <li><a href="../engines.html">searx.engines</a>
+        
+          
+          </ul>
+      </li></ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright SearXNG team.
+    </div>
+  </body>
+</html>

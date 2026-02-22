@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Hostnames &#8212; SearXNG Documentation (2026.2.22+191818b86)</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=6625fa76" />
+    <link rel="stylesheet" type="text/css" href="../../_static/searxng.css?v=52e4ff28" />
+    <script src="../../_static/documentation_options.js?v=1b5d919e"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script data-project="searxng" data-version="2026.2.22+191818b86" src="../../_static/describe_version.js?v=fa7f30d0"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Infinite scroll" href="infinite_scroll.html" />
+    <link rel="prev" title="Hash Values" href="hash_plugin.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="infinite_scroll.html" title="Infinite scroll"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="hash_plugin.html" title="Hash Values"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">SearXNG Documentation (2026.2.22+191818b86)</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >Developer documentation</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="index.html" >Plugins</a> &#187;</li>
+          <li class="nav-item nav-item-3"><a href="builtins.html" accesskey="U">Built-in Plugins</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Hostnames</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="module-searx.plugins.hostnames">
+<span id="hostnames"></span><span id="hostnames-plugin"></span><h1>Hostnames<a class="headerlink" href="#module-searx.plugins.hostnames" title="Link to this heading">¶</a></h1>
+<p>During the initialization phase, the plugin checks whether a <code class="docutils literal notranslate"><span class="pre">hostnames:</span></code>
+configuration exists. If this is not the case, the plugin is not included in the
+PluginStorage (it is not available for selection).</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">hostnames.replace</span></code>: A <strong>mapping</strong> of regular expressions to hostnames to be
+replaced by other hostnames.</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">hostnames</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">replace</span><span class="p">:</span>
+<span class="w">    </span><span class="s">&#39;(.*\.)?youtube\.com$&#39;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">&#39;invidious.example.com&#39;</span>
+<span class="w">    </span><span class="s">&#39;(.*\.)?youtu\.be$&#39;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">&#39;invidious.example.com&#39;</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">...</span>
+</pre></div>
+</div>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">hostnames.remove</span></code>: A <strong>list</strong> of regular expressions of the hostnames whose
+results should be taken from the results list.</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">hostnames</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">remove</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&#39;(.*\.)?facebook.com$&#39;</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">...</span>
+</pre></div>
+</div>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">hostnames.high_priority</span></code>: A <strong>list</strong> of regular expressions for hostnames
+whose result should be given higher priority. The results from these hosts are
+arranged higher in the results list.</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">hostnames</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">high_priority</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&#39;(.*\.)?wikipedia.org$&#39;</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">...</span>
+</pre></div>
+</div>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">hostnames.lower_priority</span></code>: A <strong>list</strong> of regular expressions for hostnames
+whose result should be given lower priority. The results from these hosts are
+arranged lower in the results list.</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">hostnames</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">low_priority</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&#39;(.*\.)?google(\..*)?$&#39;</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">...</span>
+</pre></div>
+</div>
+</li>
+</ul>
+<p>If the URL matches the pattern of <code class="docutils literal notranslate"><span class="pre">high_priority</span></code> AND <code class="docutils literal notranslate"><span class="pre">low_priority</span></code>, the
+higher priority wins over the lower priority.</p>
+<p>Alternatively, you can also specify a file name for the <strong>mappings</strong> or
+<strong>lists</strong> to load these from an external file:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">hostnames</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">replace</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;rewrite-hosts.yml&#39;</span>
+<span class="w">  </span><span class="nt">remove</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&#39;(.*\.)?facebook.com$&#39;</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">...</span>
+<span class="w">  </span><span class="nt">low_priority</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&#39;(.*\.)?google(\..*)?$&#39;</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">...</span>
+<span class="w">  </span><span class="nt">high_priority</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&#39;(.*\.)?wikipedia.org$&#39;</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">...</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">rewrite-hosts.yml</span></code> from the example above must be in the folder in which
+the <code class="docutils literal notranslate"><span class="pre">settings.yml</span></code> file is already located (<code class="docutils literal notranslate"><span class="pre">/etc/searxng</span></code>). The file then
+only contains the lists or the mapping tables without further information on the
+namespaces.  In the example above, this would be a mapping table that looks
+something like this:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="s">&#39;(.*\.)?youtube\.com$&#39;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">&#39;invidious.example.com&#39;</span>
+<span class="s">&#39;(.*\.)?youtu\.be$&#39;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">&#39;invidious.example.com&#39;</span>
+</pre></div>
+</div>
+<dl class="py class">
+<dt class="sig sig-object py" id="searx.plugins.hostnames.SXNGPlugin">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">searx.plugins.hostnames.</span></span><span class="sig-name descname"><span class="pre">SXNGPlugin</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">plg_cfg</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="development.html#searx.plugins.PluginCfg" title="searx.plugins.PluginCfg"><span class="pre">PluginCfg</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/searx/plugins/hostnames.html#SXNGPlugin"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.plugins.hostnames.SXNGPlugin" title="Link to this definition">¶</a></dt>
+<dd><p>Rewrite hostnames, remove results or prioritize them.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="searx.plugins.hostnames.SXNGPlugin.id">
+<span class="sig-name descname"><span class="pre">id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'hostnames'</span></em><a class="headerlink" href="#searx.plugins.hostnames.SXNGPlugin.id" title="Link to this definition">¶</a></dt>
+<dd><p>The ID (suffix) in the HTML form.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="searx.plugins.hostnames.SXNGPlugin.on_result">
+<span class="sig-name descname"><span class="pre">on_result</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../extended_types.html#searx.extended_types.SXNG_Request" title="searx.extended_types.SXNG_Request"><span class="pre">SXNG_Request</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">search</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../src/searx.search.html#searx.search.SearchWithPlugins" title="searx.search.SearchWithPlugins"><span class="pre">SearchWithPlugins</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">result</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../result_types/base_result.html#searx.result_types._base.Result" title="searx.result_types._base.Result"><span class="pre">Result</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span></span><a class="reference internal" href="../../_modules/searx/plugins/hostnames.html#SXNGPlugin.on_result"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.plugins.hostnames.SXNGPlugin.on_result" title="Link to this definition">¶</a></dt>
+<dd><p>Runs for each result of each engine and returns a boolean:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">True</span></code> to keep the result</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">False</span></code> to remove the result from the result list</p></li>
+</ul>
+<p>The <code class="docutils literal notranslate"><span class="pre">result</span></code> can be modified to the needs.</p>
+<div class="admonition hint">
+<p class="admonition-title">Hint</p>
+<p>If <a class="reference internal" href="../result_types/base_result.html#searx.result_types._base.Result.url" title="searx.result_types._base.Result.url"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Result.url</span></code></a> is modified,
+<a class="reference internal" href="../result_types/base_result.html#searx.result_types._base.Result.parsed_url" title="searx.result_types._base.Result.parsed_url"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Result.parsed_url</span></code></a> must
+be changed accordingly:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">result</span><span class="p">[</span><span class="s2">&quot;parsed_url&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">urlparse</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="s2">&quot;url&quot;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="searx.plugins.hostnames.SXNGPlugin.init">
+<span class="sig-name descname"><span class="pre">init</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">app</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://flask.palletsprojects.com/en/stable/api/#flask.Flask" title="(in Flask v3.1.x)"><span class="pre">flask.Flask</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span></span><a class="reference internal" href="../../_modules/searx/plugins/hostnames.html#SXNGPlugin.init"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.plugins.hostnames.SXNGPlugin.init" title="Link to this definition">¶</a></dt>
+<dd><p>Initialization of the plugin, the return value decides whether this
+plugin is active or not.  Initialization only takes place once, at the
+time the WEB application is set up.  The base method always returns
+<code class="docutils literal notranslate"><span class="pre">True</span></code>, the method can be overwritten in the inheritances,</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">True</span></code> plugin is active</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">False</span></code> plugin is inactive</p></li>
+</ul>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="searx.plugins.hostnames.filter_url_field">
+<span class="sig-prename descclassname"><span class="pre">searx.plugins.hostnames.</span></span><span class="sig-name descname"><span class="pre">filter_url_field</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">result</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../result_types/base_result.html#searx.result_types._base.Result" title="searx.result_types._base.Result"><span class="pre">Result</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference internal" href="../result_types/base_result.html#searx.result_types._base.LegacyResult" title="searx.result_types._base.LegacyResult"><span class="pre">LegacyResult</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">field_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">url_src</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></span><a class="reference internal" href="../../_modules/searx/plugins/hostnames.html#filter_url_field"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.plugins.hostnames.filter_url_field" title="Link to this definition">¶</a></dt>
+<dd><p>Returns bool <code class="docutils literal notranslate"><span class="pre">True</span></code> to use URL unchanged (<code class="docutils literal notranslate"><span class="pre">False</span></code> to ignore URL).
+If URL should be modified, the returned string is the new URL to use.</p>
+</dd></dl>
+
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+  <span id="sidebar-top"></span>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+  
+    
+            <p class="logo"><a href="../../index.html">
+              <img class="logo" src="../../_static/searxng-wordmark.svg" alt="Logo of SearXNG"/>
+            </a></p>
+  
+
+<h3><a href="../../index.html">Table of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../user/index.html">User information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../own-instance.html">Why use a private instance?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../admin/index.html">Administrator documentation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Developer documentation</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../quickstart.html">Development Quickstart</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../commits.html">Git Commits &amp; Change Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contribution_guide.html">How to contribute</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../extended_types.html">Extended Types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../engines/index.html">Engine Implementations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../result_types/index.html">Result Types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../templates.html">Simple Theme Templates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../search_api.html">Search API</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Plugins</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="development.html">Plugin Development</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="builtins.html">Built-in Plugins</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="calculator.html">Calculator</a></li>
+<li class="toctree-l4"><a class="reference internal" href="hash_plugin.html">Hash Values</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Hostnames</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#searx.plugins.hostnames.SXNGPlugin"><code class="docutils literal notranslate"><span class="pre">SXNGPlugin</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="#searx.plugins.hostnames.filter_url_field"><code class="docutils literal notranslate"><span class="pre">filter_url_field()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="infinite_scroll.html">Infinite scroll</a></li>
+<li class="toctree-l4"><a class="reference internal" href="self_info.html">Self-Info</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tor_check.html">Tor check</a></li>
+<li class="toctree-l4"><a class="reference internal" href="unit_converter.html">Unit Converter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="time_zone.html">Time Zone</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../answerers/index.html">Answerers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../translation.html">Translation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../makefile.html">Makefile &amp; <code class="docutils literal notranslate"><span class="pre">./manage</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reST.html">reST primer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../searxng_extra/index.html">Tooling box <code class="docutils literal notranslate"><span class="pre">searxng_extra</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../utils/index.html">DevOps tooling box</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../src/index.html">Source-Code</a></li>
+</ul>
+
+  <h3>Project Links</h3>
+  <ul>
+    <li><a href="https://github.com/searxng/searxng/tree/master">Source</a>
+  
+    <li><a href="https://github.com/searxng/searxng/wiki">Wiki</a>
+  
+    <li><a href="https://searx.space">Public instances</a>
+  
+    <li><a href="https://github.com/searxng/searxng/issues">Issue Tracker</a>
+  </ul><h3>Navigation</h3>
+<ul>
+  <li><a href="../../index.html">Overview</a>
+    <ul>
+      <li><a href="../index.html">Developer documentation</a>
+        <ul>
+      <li><a href="index.html">Plugins</a>
+        <ul>
+      <li><a href="builtins.html">Built-in Plugins</a>
+        <ul>
+          <li>Previous: <a href="hash_plugin.html" title="previous chapter">Hash Values</a>
+          <li>Next: <a href="infinite_scroll.html" title="next chapter">Infinite scroll</a></ul>
+      </li></ul>
+      </li></ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/dev/plugins/hostnames.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright SearXNG team.
+    </div>
+  </body>
+</html>

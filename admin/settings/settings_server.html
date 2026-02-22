@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>server: &#8212; SearXNG Documentation (2026.2.22+191818b86)</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=6625fa76" />
+    <link rel="stylesheet" type="text/css" href="../../_static/searxng.css?v=52e4ff28" />
+    <script src="../../_static/documentation_options.js?v=1b5d919e"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script data-project="searxng" data-version="2026.2.22+191818b86" src="../../_static/describe_version.js?v=fa7f30d0"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="ui:" href="settings_ui.html" />
+    <link rel="prev" title="search:" href="settings_search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="settings_ui.html" title="ui:"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="settings_search.html" title="search:"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">SearXNG Documentation (2026.2.22+191818b86)</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >Administrator documentation</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="index.html" accesskey="U">Settings</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href=""><code class="docutils literal notranslate"><span class="pre">server:</span></code></a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="server">
+<span id="settings-server"></span><h1><code class="docutils literal notranslate"><span class="pre">server:</span></code><a class="headerlink" href="#server" title="Link to this heading">¶</a></h1>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">server</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">base_url</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">http://example.org/location</span><span class="w">  </span><span class="c1"># change this!</span>
+<span class="w">    </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">8888</span>
+<span class="w">    </span><span class="nt">bind_address</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;127.0.0.1&quot;</span>
+<span class="w">    </span><span class="nt">secret_key</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;ultrasecretkey&quot;</span><span class="w">           </span><span class="c1"># change this!</span>
+<span class="w">    </span><span class="nt">limiter</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+<span class="w">    </span><span class="nt">public_instance</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+<span class="w">    </span><span class="nt">image_proxy</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+<span class="w">    </span><span class="nt">method</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;POST&quot;</span>
+<span class="w">    </span><span class="nt">default_http_headers</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">X-Content-Type-Options </span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nosniff</span>
+<span class="w">      </span><span class="nt">X-Download-Options </span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">noopen</span>
+<span class="w">      </span><span class="nt">X-Robots-Tag </span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">noindex, nofollow</span>
+<span class="w">      </span><span class="nt">Referrer-Policy </span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">no-referrer</span>
+</pre></div>
+</div>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">base_url</span></code><span class="classifier"><code class="docutils literal notranslate"><span class="pre">$SEARXNG_BASE_URL</span></code></span></dt><dd><p>The base URL where SearXNG is deployed.  Used to create correct inbound links.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">port</span></code> &amp; <code class="docutils literal notranslate"><span class="pre">bind_address</span></code>: <code class="docutils literal notranslate"><span class="pre">$SEARXNG_PORT</span></code> &amp; <code class="docutils literal notranslate"><span class="pre">$SEARXNG_BIND_ADDRESS</span></code></dt><dd><p>Port number and <em>bind address</em> of the SearXNG web application if you run it
+directly using <code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">searx/webapp.py</span></code>.  Doesn’t apply to a SearXNG
+services running behind a proxy and using socket communications.</p>
+</dd>
+</dl>
+<dl id="server-secret-key">
+<dt><code class="docutils literal notranslate"><span class="pre">secret_key</span></code><span class="classifier"><code class="docutils literal notranslate"><span class="pre">$SEARXNG_SECRET</span></code></span></dt><dd><p>Used for cryptography purpose.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">limiter</span></code><span class="classifier"><code class="docutils literal notranslate"><span class="pre">$SEARXNG_LIMITER</span></code></span></dt><dd><p>Rate limit the number of request on the instance, block some bots.  The
+<a class="reference internal" href="../searx.limiter.html#limiter"><span class="std std-ref">Limiter</span></a> requires a <a class="reference internal" href="settings_valkey.html#settings-valkey"><span class="std std-ref">valkey:</span></a> database.</p>
+</dd>
+</dl>
+<p id="public-instance"><code class="docutils literal notranslate"><span class="pre">public_instance</span></code> :  <code class="docutils literal notranslate"><span class="pre">$SEARXNG_PUBLIC_INSTANCE</span></code></p>
+<blockquote>
+<div><p>Setting that allows to enable features specifically for public instances (not
+needed for local usage).  By set to <code class="docutils literal notranslate"><span class="pre">true</span></code> the following features are
+activated:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="../../src/searx.botdetection.html#module-searx.botdetection.link_token" title="searx.botdetection.link_token"><code class="xref py py-obj docutils literal notranslate"><span class="pre">searx.botdetection.link_token</span></code></a> in the <a class="reference internal" href="../searx.limiter.html#limiter"><span class="std std-ref">Limiter</span></a></p></li>
+</ul>
+</div></blockquote>
+<dl id="image-proxy">
+<dt><code class="docutils literal notranslate"><span class="pre">image_proxy</span></code><span class="classifier"><code class="docutils literal notranslate"><span class="pre">$SEARXNG_IMAGE_PROXY</span></code></span></dt><dd><p>Allow your instance of SearXNG of being able to proxy images.  Uses memory space.</p>
+</dd>
+</dl>
+<p id="method"><code class="docutils literal notranslate"><span class="pre">method</span></code> : <code class="docutils literal notranslate"><span class="pre">GET</span></code> | <code class="docutils literal notranslate"><span class="pre">POST</span></code></p>
+<blockquote>
+<div><p>HTTP method.  By defaults <code class="docutils literal notranslate"><span class="pre">POST</span></code> is used / The <code class="docutils literal notranslate"><span class="pre">POST</span></code> method has the
+advantage with some WEB browsers that the history is not easy to read, but
+there are also various disadvantages that sometimes <strong>severely restrict the
+ease of use for the end user</strong> (e.g. back button to jump back to the previous
+search page and drag &amp; drop of search term to new tabs do not work as
+expected .. and several more).  We had some discussions about the <em>pros
+versus cons</em>:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://github.com/searxng/searxng/pull/3619">[doc] adds the missing documentation of the server.method settings</a></p></li>
+<li><p>look out for <a class="reference external" href="https://github.com/search?q=repo%3Asearxng%2Fsearxng+label%3A%22http+methods+GET+%26+POST%22">label:”http methods GET &amp; POST”</a></p></li>
+</ul>
+</div></blockquote>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">default_http_headers</span></code> :</dt><dd><p>Set additional <a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers">HTTP headers</a>, see <a class="reference external" href="https://github.com/searx/searx/issues/715">#755</a></p>
+</dd>
+</dl>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+  <span id="sidebar-top"></span>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+  
+    
+            <p class="logo"><a href="../../index.html">
+              <img class="logo" src="../../_static/searxng-wordmark.svg" alt="Logo of SearXNG"/>
+            </a></p>
+  
+
+<h3><a href="../../index.html">Table of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../user/index.html">User information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../own-instance.html">Why use a private instance?</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Administrator documentation</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Settings</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="settings.html"><code class="docutils literal notranslate"><span class="pre">settings.yml</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="settings_engines.html"><code class="docutils literal notranslate"><span class="pre">engines:</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="settings_brand.html"><code class="docutils literal notranslate"><span class="pre">brand:</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="settings_general.html"><code class="docutils literal notranslate"><span class="pre">general:</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="settings_search.html"><code class="docutils literal notranslate"><span class="pre">search:</span></code></a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#"><code class="docutils literal notranslate"><span class="pre">server:</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="settings_ui.html"><code class="docutils literal notranslate"><span class="pre">ui:</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="settings_redis.html"><code class="docutils literal notranslate"><span class="pre">redis:</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="settings_valkey.html"><code class="docutils literal notranslate"><span class="pre">valkey:</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="settings_outgoing.html"><code class="docutils literal notranslate"><span class="pre">outgoing:</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="settings_categories_as_tabs.html"><code class="docutils literal notranslate"><span class="pre">categories_as_tabs:</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="settings_plugins.html"><code class="docutils literal notranslate"><span class="pre">plugins:</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation-docker.html">Installation container</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation-scripts.html">Installation Script</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation-searxng.html">Step by step installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation-granian.html">Granian</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation-uwsgi.html">uWSGI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation-nginx.html">NGINX</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation-apache.html">Apache</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../update-searxng.html">SearXNG maintenance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../answer-captcha.html">Answer CAPTCHA from server’s IP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../searx.favicons.html">Favicons</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../searx.limiter.html">Limiter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html">Administration API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../architecture.html">Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../plugins.html">List of plugins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../buildhosts.html">Buildhosts</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../dev/index.html">Developer documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../utils/index.html">DevOps tooling box</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../src/index.html">Source-Code</a></li>
+</ul>
+
+  <h3>Project Links</h3>
+  <ul>
+    <li><a href="https://github.com/searxng/searxng/tree/master">Source</a>
+  
+    <li><a href="https://github.com/searxng/searxng/wiki">Wiki</a>
+  
+    <li><a href="https://searx.space">Public instances</a>
+  
+    <li><a href="https://github.com/searxng/searxng/issues">Issue Tracker</a>
+  </ul><h3>Navigation</h3>
+<ul>
+  <li><a href="../../index.html">Overview</a>
+    <ul>
+      <li><a href="../index.html">Administrator documentation</a>
+        <ul>
+      <li><a href="index.html">Settings</a>
+        <ul>
+          <li>Previous: <a href="settings_search.html" title="previous chapter"><code class="docutils literal notranslate"><span class="pre">search:</span></code></a>
+          <li>Next: <a href="settings_ui.html" title="next chapter"><code class="docutils literal notranslate"><span class="pre">ui:</span></code></a></ul>
+      </li></ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/admin/settings/settings_server.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright SearXNG team.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>searxng_extra.update.update_locales &#8212; SearXNG Documentation (2026.2.22+191818b86)</title>
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=6625fa76" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/searxng.css?v=52e4ff28" />
+    <script src="../../../_static/documentation_options.js?v=1b5d919e"></script>
+    <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script data-project="searxng" data-version="2026.2.22+191818b86" src="../../../_static/describe_version.js?v=fa7f30d0"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">SearXNG Documentation (2026.2.22+191818b86)</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" accesskey="U">Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">searxng_extra.update.update_locales</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for searxng_extra.update.update_locales</h1><div class="highlight"><pre>
+<span></span><span class="ch">#!/usr/bin/env python</span>
+<span class="c1"># SPDX-License-Identifier: AGPL-3.0-or-later</span>
+<span class="sd">&quot;&quot;&quot;Update locale names in :origin:`searx/data/locales.json` used by</span>
+<span class="sd">:ref:`searx.locales`</span>
+
+<span class="sd">- :py:obj:`searx.locales.RTL_LOCALES`</span>
+<span class="sd">- :py:obj:`searx.locales.LOCALE_NAMES`</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="c1"># pylint: disable=invalid-name</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Set</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">babel</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">babel.languages</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">babel.core</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">searx</span><span class="w"> </span><span class="kn">import</span> <span class="n">searx_dir</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">searx.locales</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">ADDITIONAL_TRANSLATIONS</span><span class="p">,</span>
+    <span class="n">LOCALE_BEST_MATCH</span><span class="p">,</span>
+    <span class="n">get_translation_locales</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">LOCALE_DATA_FILE</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">searx_dir</span><span class="p">)</span> <span class="o">/</span> <span class="s1">&#39;data&#39;</span> <span class="o">/</span> <span class="s1">&#39;locales.json&#39;</span>
+<span class="n">TRANSLATIONS_FOLDER</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">searx_dir</span><span class="p">)</span> <span class="o">/</span> <span class="s1">&#39;translations&#39;</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">main</span><span class="p">():</span>
+
+    <span class="n">LOCALE_NAMES</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">RTL_LOCALES</span><span class="p">:</span> <span class="n">Set</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+
+    <span class="k">for</span> <span class="n">tag</span><span class="p">,</span> <span class="n">descr</span> <span class="ow">in</span> <span class="n">ADDITIONAL_TRANSLATIONS</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="n">locale</span> <span class="o">=</span> <span class="n">babel</span><span class="o">.</span><span class="n">Locale</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">LOCALE_BEST_MATCH</span><span class="p">[</span><span class="n">tag</span><span class="p">],</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;-&#39;</span><span class="p">)</span>
+        <span class="n">LOCALE_NAMES</span><span class="p">[</span><span class="n">tag</span><span class="p">]</span> <span class="o">=</span> <span class="n">descr</span>
+        <span class="k">if</span> <span class="n">locale</span><span class="o">.</span><span class="n">text_direction</span> <span class="o">==</span> <span class="s1">&#39;rtl&#39;</span><span class="p">:</span>
+            <span class="n">RTL_LOCALES</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">tag</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">tag</span> <span class="ow">in</span> <span class="n">LOCALE_BEST_MATCH</span><span class="p">:</span>
+        <span class="n">descr</span> <span class="o">=</span> <span class="n">LOCALE_NAMES</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">tag</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">descr</span><span class="p">:</span>
+            <span class="n">locale</span> <span class="o">=</span> <span class="n">babel</span><span class="o">.</span><span class="n">Locale</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">tag</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;-&#39;</span><span class="p">)</span>
+            <span class="n">LOCALE_NAMES</span><span class="p">[</span><span class="n">tag</span><span class="p">]</span> <span class="o">=</span> <span class="n">get_locale_descr</span><span class="p">(</span><span class="n">locale</span><span class="p">,</span> <span class="n">tag</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="s1">&#39;_&#39;</span><span class="p">))</span>
+            <span class="k">if</span> <span class="n">locale</span><span class="o">.</span><span class="n">text_direction</span> <span class="o">==</span> <span class="s1">&#39;rtl&#39;</span><span class="p">:</span>
+                <span class="n">RTL_LOCALES</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">tag</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">tr_locale</span> <span class="ow">in</span> <span class="n">get_translation_locales</span><span class="p">():</span>
+        <span class="n">sxng_tag</span> <span class="o">=</span> <span class="n">tr_locale</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">,</span> <span class="s1">&#39;-&#39;</span><span class="p">)</span>
+        <span class="n">descr</span> <span class="o">=</span> <span class="n">LOCALE_NAMES</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">sxng_tag</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">descr</span><span class="p">:</span>
+            <span class="n">locale</span> <span class="o">=</span> <span class="n">babel</span><span class="o">.</span><span class="n">Locale</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">tr_locale</span><span class="p">)</span>
+            <span class="n">LOCALE_NAMES</span><span class="p">[</span><span class="n">sxng_tag</span><span class="p">]</span> <span class="o">=</span> <span class="n">get_locale_descr</span><span class="p">(</span><span class="n">locale</span><span class="p">,</span> <span class="n">tr_locale</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">locale</span><span class="o">.</span><span class="n">text_direction</span> <span class="o">==</span> <span class="s1">&#39;rtl&#39;</span><span class="p">:</span>
+                <span class="n">RTL_LOCALES</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">sxng_tag</span><span class="p">)</span>
+
+    <span class="n">content</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;LOCALE_NAMES&quot;</span><span class="p">:</span> <span class="n">LOCALE_NAMES</span><span class="p">,</span>
+        <span class="s2">&quot;RTL_LOCALES&quot;</span><span class="p">:</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">RTL_LOCALES</span><span class="p">),</span>
+    <span class="p">}</span>
+
+    <span class="k">with</span> <span class="n">LOCALE_DATA_FILE</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s1">&#39;w&#39;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">content</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">sort_keys</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">ensure_ascii</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="get_locale_descr">
+<a class="viewcode-back" href="../../../dev/searxng_extra/update.html#searxng_extra.update.update_locales.get_locale_descr">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_locale_descr</span><span class="p">(</span><span class="n">locale</span><span class="p">:</span> <span class="n">babel</span><span class="o">.</span><span class="n">Locale</span><span class="p">,</span> <span class="n">tr_locale</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get locale name e.g. &#39;Français - fr&#39; or &#39;Português (Brasil) - pt-BR&#39;</span>
+
+<span class="sd">    :param locale: instance of :py:class:`Locale`</span>
+<span class="sd">    :param tr_locale: name e.g. &#39;fr&#39;  or &#39;pt_BR&#39; (delimiter is *underscore*)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">native_language</span><span class="p">,</span> <span class="n">native_territory</span> <span class="o">=</span> <span class="n">_get_locale_descr</span><span class="p">(</span><span class="n">locale</span><span class="p">,</span> <span class="n">tr_locale</span><span class="p">)</span>
+    <span class="n">english_language</span><span class="p">,</span> <span class="n">english_territory</span> <span class="o">=</span> <span class="n">_get_locale_descr</span><span class="p">(</span><span class="n">locale</span><span class="p">,</span> <span class="s1">&#39;en&#39;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">native_territory</span> <span class="o">==</span> <span class="n">english_territory</span><span class="p">:</span>
+        <span class="n">english_territory</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">native_territory</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">english_territory</span><span class="p">:</span>
+        <span class="c1"># none territory name</span>
+        <span class="k">if</span> <span class="n">native_language</span> <span class="o">==</span> <span class="n">english_language</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">native_language</span>
+        <span class="k">return</span> <span class="n">native_language</span> <span class="o">+</span> <span class="s1">&#39; (&#39;</span> <span class="o">+</span> <span class="n">english_language</span> <span class="o">+</span> <span class="s1">&#39;)&#39;</span>
+
+    <span class="n">result</span> <span class="o">=</span> <span class="n">native_language</span> <span class="o">+</span> <span class="s1">&#39;, &#39;</span> <span class="o">+</span> <span class="n">native_territory</span> <span class="o">+</span> <span class="s1">&#39; (&#39;</span> <span class="o">+</span> <span class="n">english_language</span>
+    <span class="k">if</span> <span class="n">english_territory</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">result</span> <span class="o">+</span> <span class="s1">&#39;, &#39;</span> <span class="o">+</span> <span class="n">english_territory</span> <span class="o">+</span> <span class="s1">&#39;)&#39;</span>
+    <span class="k">return</span> <span class="n">result</span> <span class="o">+</span> <span class="s1">&#39;)&#39;</span></div>
+
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_get_locale_descr</span><span class="p">(</span><span class="n">locale</span><span class="p">:</span> <span class="n">babel</span><span class="o">.</span><span class="n">Locale</span><span class="p">,</span> <span class="n">tr_locale</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
+    <span class="n">language_name</span> <span class="o">=</span> <span class="n">locale</span><span class="o">.</span><span class="n">get_language_name</span><span class="p">(</span><span class="n">tr_locale</span><span class="p">)</span><span class="o">.</span><span class="n">capitalize</span><span class="p">()</span>  <span class="c1"># type: ignore</span>
+    <span class="k">if</span> <span class="n">language_name</span> <span class="ow">and</span> <span class="p">(</span><span class="s1">&#39;a&#39;</span> <span class="o">&lt;=</span> <span class="n">language_name</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="s1">&#39;z&#39;</span><span class="p">):</span>
+        <span class="n">language_name</span> <span class="o">=</span> <span class="n">language_name</span><span class="o">.</span><span class="n">capitalize</span><span class="p">()</span>
+    <span class="n">territory_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">locale</span><span class="o">.</span><span class="n">get_territory_name</span><span class="p">(</span><span class="n">tr_locale</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
+    <span class="k">return</span> <span class="n">language_name</span><span class="p">,</span> <span class="n">territory_name</span>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">main</span><span class="p">()</span>
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+  <span id="sidebar-top"></span>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+  
+    
+            <p class="logo"><a href="../../../index.html">
+              <img class="logo" src="../../../_static/searxng-wordmark.svg" alt="Logo of SearXNG"/>
+            </a></p>
+  
+
+<h3><a href="../../../index.html">Table of Contents</a></h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../user/index.html">User information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../own-instance.html">Why use a private instance?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../admin/index.html">Administrator documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../dev/index.html">Developer documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../utils/index.html">DevOps tooling box</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/index.html">Source-Code</a></li>
+</ul>
+
+  <h3>Project Links</h3>
+  <ul>
+    <li><a href="https://github.com/searxng/searxng/tree/master">Source</a>
+  
+    <li><a href="https://github.com/searxng/searxng/wiki">Wiki</a>
+  
+    <li><a href="https://searx.space">Public instances</a>
+  
+    <li><a href="https://github.com/searxng/searxng/issues">Issue Tracker</a>
+  </ul><h3>Navigation</h3>
+<ul>
+  <li><a href="../../../index.html">Overview</a>
+    <ul>
+      <li><a href="../../index.html">Module code</a>
+        
+          
+          </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright SearXNG team.
+    </div>
+  </body>
+</html>

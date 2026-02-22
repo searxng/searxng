@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Offline Concept &#8212; SearXNG Documentation (2026.2.22+191818b86)</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=6625fa76" />
+    <link rel="stylesheet" type="text/css" href="../../_static/searxng.css?v=52e4ff28" />
+    <script src="../../_static/documentation_options.js?v=1b5d919e"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script data-project="searxng" data-version="2026.2.22+191818b86" src="../../_static/describe_version.js?v=fa7f30d0"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Demo Offline Engine" href="demo/demo_offline.html" />
+    <link rel="prev" title="Z-Library" href="online/zlibrary.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="demo/demo_offline.html" title="Demo Offline Engine"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="online/zlibrary.html" title="Z-Library"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">SearXNG Documentation (2026.2.22+191818b86)</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >Developer documentation</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="index.html" accesskey="U">Engine Implementations</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Offline Concept</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="offline-concept">
+<h1>Offline Concept<a class="headerlink" href="#offline-concept" title="Link to this heading">¶</a></h1>
+<aside class="sidebar">
+<p class="sidebar-title">offline engines</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="demo/demo_offline.html#demo-offline-engine"><span class="std std-ref">Demo Offline Engine</span></a></p></li>
+<li><p><a class="reference internal" href="offline/command-line-engines.html#engine-command"><span class="std std-ref">Command Line Engines</span></a></p></li>
+<li><p><a class="reference internal" href="offline/sql-engines.html#sql-engines"><span class="std std-ref">SQL Engines</span></a></p></li>
+<li><p><a class="reference internal" href="offline/nosql-engines.html#nosql-engines"><span class="std std-ref">NoSQL databases</span></a></p></li>
+<li><p><a class="reference internal" href="../../src/searx.search.processors.html#module-searx.search.processors.offline" title="searx.search.processors.offline"><code class="xref py py-obj docutils literal notranslate"><span class="pre">searx.search.processors.offline</span></code></a></p></li>
+</ul>
+</aside>
+<p>To extend the functionality of SearXNG, offline engines are going to be
+introduced.  An offline engine is an engine which does not need Internet
+connection to perform a search and does not use HTTP to communicate.</p>
+<p>Offline engines can be configured, by adding those to the <cite>engines</cite> list of
+<a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/searx/settings.yml">settings.yml</a>.  An example skeleton for offline
+engines can be found in <a class="reference internal" href="demo/demo_offline.html#demo-offline-engine"><span class="std std-ref">Demo Offline Engine</span></a> (<a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/searx/engines/demo_offline.py">demo_offline.py</a>).</p>
+<section id="programming-interface">
+<h2>Programming Interface<a class="headerlink" href="#programming-interface" title="Link to this heading">¶</a></h2>
+<dl>
+<dt><a class="reference internal" href="demo/demo_offline.html#searx.engines.demo_offline.init" title="searx.engines.demo_offline.init"><code class="xref py py-func docutils literal notranslate"><span class="pre">init(engine_settings=None)</span></code></a></dt><dd><p>All offline engines can have their own init function to setup the engine before
+accepting requests. The function gets the settings from settings.yml as a
+parameter. This function can be omitted, if there is no need to setup anything
+in advance.</p>
+</dd>
+<dt><a class="reference internal" href="demo/demo_offline.html#searx.engines.demo_offline.search" title="searx.engines.demo_offline.search"><code class="xref py py-func docutils literal notranslate"><span class="pre">search(query,</span> <span class="pre">params)</span></code></a></dt><dd><p>Each offline engine has a function named <code class="docutils literal notranslate"><span class="pre">search</span></code>.  This function is
+responsible to perform a search and return the results in a presentable
+format. (Where <em>presentable</em> means presentable by the selected result
+template.)</p>
+<p>The return value is a list of results retrieved by the engine.</p>
+</dd>
+<dt>Engine representation in <code class="docutils literal notranslate"><span class="pre">/config</span></code></dt><dd><p>If an engine is offline, the attribute <code class="docutils literal notranslate"><span class="pre">offline</span></code> is set to <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p>
+</dd>
+</dl>
+</section>
+<section id="extra-dependencies">
+<span id="offline-requirements"></span><h2>Extra Dependencies<a class="headerlink" href="#extra-dependencies" title="Link to this heading">¶</a></h2>
+<p>If an offline engine depends on an external tool, SearXNG does not install it by
+default.  When an administrator configures such engine and starts the instance,
+the process returns an error with the list of missing dependencies.  Also,
+required dependencies will be added to the comment/description of the engine, so
+admins can install packages in advance.</p>
+<p>If there is a need to install additional packages in <em>Python’s Virtual
+Environment</em> of your SearXNG instance you need to switch into the environment
+(<a class="reference internal" href="../../admin/installation-searxng.html#searxng-src"><span class="std std-ref">Install SearXNG &amp; dependencies</span></a>) first, for this you can use <a class="reference internal" href="../../utils/searxng.sh.html#searxng-sh"><span class="std std-ref">utils/searxng.sh</span></a>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ sudo utils/searxng.sh instance cmd bash
+(searxng-pyenv)$ pip install ...
+</pre></div>
+</div>
+</section>
+<section id="private-engines-security">
+<h2>Private engines (Security)<a class="headerlink" href="#private-engines-security" title="Link to this heading">¶</a></h2>
+<p>To limit the access to offline engines, if an instance is available publicly,
+administrators can set token(s) for each of the <a class="reference internal" href="../../admin/settings/settings_engines.html#private-engines"><span class="std std-ref">Private Engines (tokens)</span></a>.  If a
+query contains a valid token, then SearXNG performs the requested private
+search.  If not, requests from an offline engines return errors.</p>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+  <span id="sidebar-top"></span>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+  
+    
+            <p class="logo"><a href="../../index.html">
+              <img class="logo" src="../../_static/searxng-wordmark.svg" alt="Logo of SearXNG"/>
+            </a></p>
+  
+
+<h3><a href="../../index.html">Table of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../user/index.html">User information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../own-instance.html">Why use a private instance?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../admin/index.html">Administrator documentation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Developer documentation</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../quickstart.html">Development Quickstart</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../commits.html">Git Commits &amp; Change Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contribution_guide.html">How to contribute</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../extended_types.html">Extended Types</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Engine Implementations</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="enginelib.html">Engine Library</a></li>
+<li class="toctree-l3"><a class="reference internal" href="engines.html">SearXNG’s engines loader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="engine_overview.html">Engine Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="index.html#resultlist-and-engines">ResultList and engines</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="index.html#engine-types">Engine Types</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="index.html#online-engines">Online Engines</a></li>
+<li class="toctree-l4 current"><a class="reference internal" href="index.html#offline-engines">Offline Engines</a><ul class="current">
+<li class="toctree-l5 current"><a class="current reference internal" href="#">Offline Concept</a></li>
+<li class="toctree-l5"><a class="reference internal" href="demo/demo_offline.html">Demo Offline Engine</a></li>
+<li class="toctree-l5"><a class="reference internal" href="offline/command-line-engines.html">Command Line Engines</a></li>
+<li class="toctree-l5"><a class="reference internal" href="offline/nosql-engines.html">NoSQL databases</a></li>
+<li class="toctree-l5"><a class="reference internal" href="offline/search-indexer-engines.html">Local Search APIs</a></li>
+<li class="toctree-l5"><a class="reference internal" href="offline/sql-engines.html">SQL Engines</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="index.html#online-url-search">Online URL Search</a></li>
+<li class="toctree-l4"><a class="reference internal" href="index.html#online-currency">Online Currency</a></li>
+<li class="toctree-l4"><a class="reference internal" href="index.html#online-dictionary">Online Dictionary</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../result_types/index.html">Result Types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../templates.html">Simple Theme Templates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../search_api.html">Search API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../plugins/index.html">Plugins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../answerers/index.html">Answerers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../translation.html">Translation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../makefile.html">Makefile &amp; <code class="docutils literal notranslate"><span class="pre">./manage</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reST.html">reST primer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../searxng_extra/index.html">Tooling box <code class="docutils literal notranslate"><span class="pre">searxng_extra</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../utils/index.html">DevOps tooling box</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../src/index.html">Source-Code</a></li>
+</ul>
+
+  <h3>Project Links</h3>
+  <ul>
+    <li><a href="https://github.com/searxng/searxng/tree/master">Source</a>
+  
+    <li><a href="https://github.com/searxng/searxng/wiki">Wiki</a>
+  
+    <li><a href="https://searx.space">Public instances</a>
+  
+    <li><a href="https://github.com/searxng/searxng/issues">Issue Tracker</a>
+  </ul><h3>Navigation</h3>
+<ul>
+  <li><a href="../../index.html">Overview</a>
+    <ul>
+      <li><a href="../index.html">Developer documentation</a>
+        <ul>
+      <li><a href="index.html">Engine Implementations</a>
+        <ul>
+          <li>Previous: <a href="online/zlibrary.html" title="previous chapter">Z-Library</a>
+          <li>Next: <a href="demo/demo_offline.html" title="next chapter">Demo Offline Engine</a></ul>
+      </li></ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/dev/engines/offline_concept.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright SearXNG team.
+    </div>
+  </body>
+</html>

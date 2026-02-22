@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Brave Engines &#8212; SearXNG Documentation (2026.2.22+191818b86)</title>
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=6625fa76" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/searxng.css?v=52e4ff28" />
+    <script src="../../../_static/documentation_options.js?v=1b5d919e"></script>
+    <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script data-project="searxng" data-version="2026.2.22+191818b86" src="../../../_static/describe_version.js?v=fa7f30d0"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="BT4G" href="bt4g.html" />
+    <link rel="prev" title="Bpb" href="bpb.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="bt4g.html" title="BT4G"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="bpb.html" title="Bpb"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">SearXNG Documentation (2026.2.22+191818b86)</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" >Developer documentation</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../index.html" accesskey="U">Engine Implementations</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Brave Engines</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="brave-engines">
+<h1>Brave Engines<a class="headerlink" href="#brave-engines" title="Link to this heading">¶</a></h1>
+<nav class="contents local" id="contents">
+<p class="topic-title">Contents</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#module-searx.engines.brave" id="id3">Brave Standard Engine</a></p>
+<ul>
+<li><p><a class="reference internal" href="#brave-regions" id="id4">Brave regions</a></p></li>
+<li><p><a class="reference internal" href="#brave-goggles" id="id5">Brave Goggles</a></p></li>
+<li><p><a class="reference internal" href="#brave-languages" id="id6">Brave languages</a></p></li>
+<li><p><a class="reference internal" href="#implementations" id="id7">Implementations</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#module-searx.engines.braveapi" id="id8">Brave API Engine</a></p>
+<ul>
+<li><p><a class="reference internal" href="#configuration" id="id9">Configuration</a></p></li>
+</ul>
+</li>
+</ul>
+</nav>
+<p>Brave offers two different engines for SearXNG:</p>
+<ol class="arabic simple">
+<li><p>The standard engine (<code class="docutils literal notranslate"><span class="pre">brave</span></code>) uses the web interface.</p></li>
+<li><p>The API engine (<code class="docutils literal notranslate"><span class="pre">braveapi</span></code>) uses the official REST API.</p></li>
+</ol>
+<section id="module-searx.engines.brave">
+<span id="brave-standard-engine"></span><span id="brave-engine"></span><h2><a class="toc-backref" href="#id3" role="doc-backlink">Brave Standard Engine</a><a class="headerlink" href="#module-searx.engines.brave" title="Link to this heading">¶</a></h2>
+<p>Brave supports the categories listed in <a class="reference internal" href="#searx.engines.brave.brave_category" title="searx.engines.brave.brave_category"><code class="xref py py-obj docutils literal notranslate"><span class="pre">brave_category</span></code></a> (General,
+news, videos, images).  The support of <a class="reference internal" href="#searx.engines.brave.paging" title="searx.engines.brave.paging"><code class="xref py py-obj docutils literal notranslate"><span class="pre">paging</span></code></a> and <a class="reference internal" href="#searx.engines.brave.time_range_support" title="searx.engines.brave.time_range_support"><code class="xref py py-obj docutils literal notranslate"><span class="pre">time</span> <span class="pre">range</span></code></a> is limited (see remarks).</p>
+<p>Configured <code class="docutils literal notranslate"><span class="pre">brave</span></code> engines:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">brave</span>
+<span class="w">  </span><span class="nt">engine</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">brave</span>
+<span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">...</span>
+<span class="w">  </span><span class="nt">brave_category</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">search</span>
+<span class="w">  </span><span class="nt">time_range_support</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">  </span><span class="nt">paging</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">brave.images</span>
+<span class="w">  </span><span class="nt">engine</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">brave</span>
+<span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">...</span>
+<span class="w">  </span><span class="nt">brave_category</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">images</span>
+
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">brave.videos</span>
+<span class="w">  </span><span class="nt">engine</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">brave</span>
+<span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">...</span>
+<span class="w">  </span><span class="nt">brave_category</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">videos</span>
+
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">brave.news</span>
+<span class="w">  </span><span class="nt">engine</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">brave</span>
+<span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">...</span>
+<span class="w">  </span><span class="nt">brave_category</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">news</span>
+
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">brave.goggles</span>
+<span class="w">  </span><span class="nt">time_range_support</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">  </span><span class="nt">paging</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">...</span>
+<span class="w">  </span><span class="nt">brave_category</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">goggles</span>
+</pre></div>
+</div>
+<section id="brave-regions">
+<span id="id1"></span><h3><a class="toc-backref" href="#id4" role="doc-backlink">Brave regions</a><a class="headerlink" href="#brave-regions" title="Link to this heading">¶</a></h3>
+<p>Brave uses two-digit tags for the regions like <code class="docutils literal notranslate"><span class="pre">ca</span></code> while SearXNG deals with
+locales.  To get a mapping, all <em>officiat de-facto</em> languages of the Brave
+region are mapped to regions in SearXNG (see <a class="reference external" href="https://babel.readthedocs.io/en/latest/api/languages.html#babel.languages.get_official_languages" title="(in Babel v2.2)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">babel</span></code></a>):</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;regions&quot;</span><span class="p">:</span> <span class="p">{</span>
+  <span class="o">..</span>
+  <span class="s2">&quot;en-CA&quot;</span><span class="p">:</span> <span class="s2">&quot;ca&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;fr-CA&quot;</span><span class="p">:</span> <span class="s2">&quot;ca&quot;</span><span class="p">,</span>
+  <span class="o">..</span>
+ <span class="p">}</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The language (aka region) support of Brave’s index is limited to very basic
+languages.  The search results for languages like Chinese or Arabic are of
+low quality.</p>
+</div>
+</section>
+<section id="brave-goggles">
+<span id="brave-googles"></span><h3><a class="toc-backref" href="#id5" role="doc-backlink">Brave Goggles</a><a class="headerlink" href="#brave-goggles" title="Link to this heading">¶</a></h3>
+<p>Goggles allow you to choose, alter, or extend the ranking of Brave Search
+results (<a class="reference external" href="https://brave.com/static-assets/files/goggles.pdf">Goggles Whitepaper</a>).  Goggles are openly developed by the community
+of Brave Search users.</p>
+<p>Select from the <a class="reference external" href="https://search.brave.com/goggles/discover">list of Goggles</a> people have published, or create your own
+(<a class="reference external" href="https://github.com/brave/goggles-quickstart">Goggles Quickstart</a>).</p>
+</section>
+<section id="brave-languages">
+<span id="id2"></span><h3><a class="toc-backref" href="#id6" role="doc-backlink">Brave languages</a><a class="headerlink" href="#brave-languages" title="Link to this heading">¶</a></h3>
+<p>Brave’s language support is limited to the UI (menus, area local notations,
+etc).  Brave’s index only seems to support a locale, but it does not seem to
+support any languages in its index.  The choice of available languages is very
+small (and its not clear to me where the difference in UI is when switching
+from en-us to en-ca or en-gb).</p>
+<p>In the <a class="reference internal" href="../enginelib.html#searx.enginelib.traits.EngineTraits" title="searx.enginelib.traits.EngineTraits"><code class="xref py py-obj docutils literal notranslate"><span class="pre">EngineTraits</span> <span class="pre">object</span></code></a> the
+UI languages are stored in a custom field named <code class="docutils literal notranslate"><span class="pre">ui_lang</span></code>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;custom&quot;</span><span class="p">:</span> <span class="p">{</span>
+  <span class="s2">&quot;ui_lang&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="s2">&quot;ca&quot;</span><span class="p">:</span> <span class="s2">&quot;ca&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;de-DE&quot;</span><span class="p">:</span> <span class="s2">&quot;de-de&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;en-CA&quot;</span><span class="p">:</span> <span class="s2">&quot;en-ca&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;en-GB&quot;</span><span class="p">:</span> <span class="s2">&quot;en-gb&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;en-US&quot;</span><span class="p">:</span> <span class="s2">&quot;en-us&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;es&quot;</span><span class="p">:</span> <span class="s2">&quot;es&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;fr-CA&quot;</span><span class="p">:</span> <span class="s2">&quot;fr-ca&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;fr-FR&quot;</span><span class="p">:</span> <span class="s2">&quot;fr-fr&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;ja-JP&quot;</span><span class="p">:</span> <span class="s2">&quot;ja-jp&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;pt-BR&quot;</span><span class="p">:</span> <span class="s2">&quot;pt-br&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;sq-AL&quot;</span><span class="p">:</span> <span class="s2">&quot;sq-al&quot;</span>
+  <span class="p">}</span>
+<span class="p">},</span>
+</pre></div>
+</div>
+</section>
+<section id="implementations">
+<h3><a class="toc-backref" href="#id7" role="doc-backlink">Implementations</a><a class="headerlink" href="#implementations" title="Link to this heading">¶</a></h3>
+</section>
+<dl class="py data">
+<dt class="sig sig-object py" id="searx.engines.brave.brave_category">
+<span class="sig-prename descclassname"><span class="pre">searx.engines.brave.</span></span><span class="sig-name descname"><span class="pre">brave_category</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Literal" title="(in Python v3.14)"><span class="pre">Literal</span></a><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'search'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'videos'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'images'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'news'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'goggles'</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'search'</span></em><a class="headerlink" href="#searx.engines.brave.brave_category" title="Link to this definition">¶</a></dt>
+<dd><p>Brave supports common web-search, videos, images, news, and goggles search.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">search</span></code>: Common WEB search</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">videos</span></code>: search for videos</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">images</span></code>: search for images</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">news</span></code>: search for news</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">goggles</span></code>: Common WEB search with custom rules, requires a <a class="reference internal" href="#searx.engines.brave.Goggles" title="searx.engines.brave.Goggles"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Goggles</span></code></a> URL.</p></li>
+</ul>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="searx.engines.brave.Goggles">
+<span class="sig-prename descclassname"><span class="pre">searx.engines.brave.</span></span><span class="sig-name descname"><span class="pre">Goggles</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">''</span></em><a class="headerlink" href="#searx.engines.brave.Goggles" title="Link to this definition">¶</a></dt>
+<dd><p>This should be a URL ending in <code class="docutils literal notranslate"><span class="pre">.goggle</span></code></p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="searx.engines.brave.brave_spellcheck">
+<span class="sig-prename descclassname"><span class="pre">searx.engines.brave.</span></span><span class="sig-name descname"><span class="pre">brave_spellcheck</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></em><a class="headerlink" href="#searx.engines.brave.brave_spellcheck" title="Link to this definition">¶</a></dt>
+<dd><p>Brave supports some kind of spell checking.  When activated, Brave tries to
+fix typos, e.g. it searches for <code class="docutils literal notranslate"><span class="pre">food</span></code> when the user queries for <code class="docutils literal notranslate"><span class="pre">fooh</span></code>.  In
+the UI of Brave the user gets warned about this, since we can not warn the user
+in SearXNG, the spellchecking is disabled by default.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="searx.engines.brave.paging">
+<span class="sig-prename descclassname"><span class="pre">searx.engines.brave.</span></span><span class="sig-name descname"><span class="pre">paging</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></em><a class="headerlink" href="#searx.engines.brave.paging" title="Link to this definition">¶</a></dt>
+<dd><p>Brave only supports paging in <a class="reference internal" href="#searx.engines.brave.brave_category" title="searx.engines.brave.brave_category"><code class="xref py py-obj docutils literal notranslate"><span class="pre">brave_category</span></code></a> <code class="docutils literal notranslate"><span class="pre">search</span></code> (UI
+category All) and in the goggles category.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="searx.engines.brave.max_page">
+<span class="sig-prename descclassname"><span class="pre">searx.engines.brave.</span></span><span class="sig-name descname"><span class="pre">max_page</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">10</span></em><a class="headerlink" href="#searx.engines.brave.max_page" title="Link to this definition">¶</a></dt>
+<dd><p>Tested 9 pages maximum (<code class="docutils literal notranslate"><span class="pre">&amp;offset=8</span></code>), to be save max is set to 10.  Trying
+to do more won’t return any result and you will most likely be flagged as a bot.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="searx.engines.brave.time_range_support">
+<span class="sig-prename descclassname"><span class="pre">searx.engines.brave.</span></span><span class="sig-name descname"><span class="pre">time_range_support</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></em><a class="headerlink" href="#searx.engines.brave.time_range_support" title="Link to this definition">¶</a></dt>
+<dd><p>Brave only supports time-range in <a class="reference internal" href="#searx.engines.brave.brave_category" title="searx.engines.brave.brave_category"><code class="xref py py-obj docutils literal notranslate"><span class="pre">brave_category</span></code></a> <code class="docutils literal notranslate"><span class="pre">search</span></code> (UI
+category All) and in the goggles category.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="searx.engines.brave.fetch_traits">
+<span class="sig-prename descclassname"><span class="pre">searx.engines.brave.</span></span><span class="sig-name descname"><span class="pre">fetch_traits</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">engine_traits</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../enginelib.html#searx.enginelib.traits.EngineTraits" title="searx.enginelib.traits.EngineTraits"><span class="pre">EngineTraits</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/searx/engines/brave.html#fetch_traits"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.engines.brave.fetch_traits" title="Link to this definition">¶</a></dt>
+<dd><p>Fetch <a class="reference internal" href="#brave-languages"><span class="std std-ref">languages</span></a> and <a class="reference internal" href="#brave-regions"><span class="std std-ref">regions</span></a> from Brave.</p>
+</dd></dl>
+
+</section>
+<section id="module-searx.engines.braveapi">
+<span id="brave-api-engine"></span><span id="braveapi-engine"></span><h2><a class="toc-backref" href="#id8" role="doc-backlink">Brave API Engine</a><a class="headerlink" href="#module-searx.engines.braveapi" title="Link to this heading">¶</a></h2>
+<p>Engine to search using the Brave (WEB) Search API.</p>
+<section id="configuration">
+<h3><a class="toc-backref" href="#id9" role="doc-backlink">Configuration</a><a class="headerlink" href="#configuration" title="Link to this heading">¶</a></h3>
+<p>The engine has the following mandatory setting:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#searx.engines.braveapi.api_key" title="searx.engines.braveapi.api_key"><code class="xref py py-obj docutils literal notranslate"><span class="pre">api_key</span></code></a></p></li>
+</ul>
+<p>Optional settings are:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#searx.engines.braveapi.results_per_page" title="searx.engines.braveapi.results_per_page"><code class="xref py py-obj docutils literal notranslate"><span class="pre">results_per_page</span></code></a></p></li>
+</ul>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">braveapi</span>
+<span class="w">  </span><span class="nt">engine</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">braveapi</span>
+<span class="w">  </span><span class="nt">api_key</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;YOUR-API-KEY&#39;</span><span class="w">  </span><span class="c1"># required</span>
+<span class="w">  </span><span class="nt">results_per_page</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">20</span><span class="w">     </span><span class="c1"># optional</span>
+</pre></div>
+</div>
+<p>The API supports paging and time filters.</p>
+</section>
+<dl class="py data">
+<dt class="sig sig-object py" id="searx.engines.braveapi.api_key">
+<span class="sig-prename descclassname"><span class="pre">searx.engines.braveapi.</span></span><span class="sig-name descname"><span class="pre">api_key</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">''</span></em><a class="headerlink" href="#searx.engines.braveapi.api_key" title="Link to this definition">¶</a></dt>
+<dd><p>API key for Brave Search API (required).</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="searx.engines.braveapi.results_per_page">
+<span class="sig-prename descclassname"><span class="pre">searx.engines.braveapi.</span></span><span class="sig-name descname"><span class="pre">results_per_page</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">20</span></em><a class="headerlink" href="#searx.engines.braveapi.results_per_page" title="Link to this definition">¶</a></dt>
+<dd><p>Maximum number of results per page (default 20).</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="searx.engines.braveapi.base_url">
+<span class="sig-prename descclassname"><span class="pre">searx.engines.braveapi.</span></span><span class="sig-name descname"><span class="pre">base_url</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'https://api.search.brave.com/res/v1/web/search'</span></em><a class="headerlink" href="#searx.engines.braveapi.base_url" title="Link to this definition">¶</a></dt>
+<dd><p>Base URL for the Brave Search API.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="searx.engines.braveapi.time_range_map">
+<span class="sig-prename descclassname"><span class="pre">searx.engines.braveapi.</span></span><span class="sig-name descname"><span class="pre">time_range_map</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'day':</span> <span class="pre">'past_day',</span> <span class="pre">'month':</span> <span class="pre">'past_month',</span> <span class="pre">'week':</span> <span class="pre">'past_week',</span> <span class="pre">'year':</span> <span class="pre">'past_year'}</span></em><a class="headerlink" href="#searx.engines.braveapi.time_range_map" title="Link to this definition">¶</a></dt>
+<dd><p>Mapping of SearXNG time ranges to Brave API time ranges.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="searx.engines.braveapi.init">
+<span class="sig-prename descclassname"><span class="pre">searx.engines.braveapi.</span></span><span class="sig-name descname"><span class="pre">init</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">_</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/searx/engines/braveapi.html#init"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.engines.braveapi.init" title="Link to this definition">¶</a></dt>
+<dd><p>Initialize the engine.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="searx.engines.braveapi.request">
+<span class="sig-prename descclassname"><span class="pre">searx.engines.braveapi.</span></span><span class="sig-name descname"><span class="pre">request</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">query</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">params</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../../src/searx.search.processors.html#searx.search.processors.online.OnlineParams" title="searx.search.processors.online.OnlineParams"><span class="pre">OnlineParams</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span></span><a class="reference internal" href="../../../_modules/searx/engines/braveapi.html#request"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.engines.braveapi.request" title="Link to this definition">¶</a></dt>
+<dd><p>Create the API request.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="searx.engines.braveapi.response">
+<span class="sig-prename descclassname"><span class="pre">searx.engines.braveapi.</span></span><span class="sig-name descname"><span class="pre">response</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">resp</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../extended_types.html#searx.extended_types.SXNG_Response" title="searx.extended_types.SXNG_Response"><span class="pre">SXNG_Response</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="../index.html#searx.result_types.EngineResults" title="searx.result_types.EngineResults"><span class="pre">EngineResults</span></a></span></span><a class="reference internal" href="../../../_modules/searx/engines/braveapi.html#response"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.engines.braveapi.response" title="Link to this definition">¶</a></dt>
+<dd><p>Process the API response and return results.</p>
+</dd></dl>
+
+<p>The API engine requires an API key from Brave. This can be obtained from the
+<a class="reference external" href="https://api-dashboard.search.brave.com/">API Dashboard</a>.</p>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+  <span id="sidebar-top"></span>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+  
+    
+            <p class="logo"><a href="../../../index.html">
+              <img class="logo" src="../../../_static/searxng-wordmark.svg" alt="Logo of SearXNG"/>
+            </a></p>
+  
+
+<h3><a href="../../../index.html">Table of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../user/index.html">User information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../own-instance.html">Why use a private instance?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../admin/index.html">Administrator documentation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">Developer documentation</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../quickstart.html">Development Quickstart</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../commits.html">Git Commits &amp; Change Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../contribution_guide.html">How to contribute</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../extended_types.html">Extended Types</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">Engine Implementations</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../enginelib.html">Engine Library</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../engines.html">SearXNG’s engines loader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../engine_overview.html">Engine Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../index.html#resultlist-and-engines">ResultList and engines</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="../index.html#engine-types">Engine Types</a><ul class="current">
+<li class="toctree-l4 current"><a class="reference internal" href="../index.html#online-engines">Online Engines</a><ul class="current">
+<li class="toctree-l5"><a class="reference internal" href="../demo/demo_online.html">Demo Online Engine</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../xpath.html">XPath Engine</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../mediawiki.html">MediaWiki Engine</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../json_engine.html">JSON Engine</a></li>
+<li class="toctree-l5"><a class="reference internal" href="adobe_stock.html">Adobe Stock</a></li>
+<li class="toctree-l5"><a class="reference internal" href="alpinelinux.html">Alpine Linux Packages</a></li>
+<li class="toctree-l5"><a class="reference internal" href="annas_archive.html">Anna’s Archive</a></li>
+<li class="toctree-l5"><a class="reference internal" href="archlinux.html">Arch Linux</a></li>
+<li class="toctree-l5"><a class="reference internal" href="arxiv.html">arXiv</a></li>
+<li class="toctree-l5"><a class="reference internal" href="astrophysics_data_system.html">Astrophysics Data System (ADS)</a></li>
+<li class="toctree-l5"><a class="reference internal" href="azure.html">Azure Resources</a></li>
+<li class="toctree-l5"><a class="reference internal" href="bing.html">Bing Engines</a></li>
+<li class="toctree-l5"><a class="reference internal" href="bpb.html">Bpb</a></li>
+<li class="toctree-l5 current"><a class="current reference internal" href="#">Brave Engines</a></li>
+<li class="toctree-l5"><a class="reference internal" href="bt4g.html">BT4G</a></li>
+<li class="toctree-l5"><a class="reference internal" href="chinaso.html">ChinaSo</a></li>
+<li class="toctree-l5"><a class="reference internal" href="core.html">CORE</a></li>
+<li class="toctree-l5"><a class="reference internal" href="crossref.html">Crossref</a></li>
+<li class="toctree-l5"><a class="reference internal" href="dailymotion.html">Dailymotion</a></li>
+<li class="toctree-l5"><a class="reference internal" href="discourse.html">Discourse Forums</a></li>
+<li class="toctree-l5"><a class="reference internal" href="duckduckgo.html">DuckDuckGo Engines</a></li>
+<li class="toctree-l5"><a class="reference internal" href="geizhals.html">Geizhals</a></li>
+<li class="toctree-l5"><a class="reference internal" href="gitea.html">Gitea</a></li>
+<li class="toctree-l5"><a class="reference internal" href="github_code.html">Github Code</a></li>
+<li class="toctree-l5"><a class="reference internal" href="gitlab.html">GitLab</a></li>
+<li class="toctree-l5"><a class="reference internal" href="google.html">Google Engines</a></li>
+<li class="toctree-l5"><a class="reference internal" href="huggingface.html">Hugging Face</a></li>
+<li class="toctree-l5"><a class="reference internal" href="lemmy.html">Lemmy</a></li>
+<li class="toctree-l5"><a class="reference internal" href="loc.html">Library of Congress</a></li>
+<li class="toctree-l5"><a class="reference internal" href="marginalia.html">Marginalia Search</a></li>
+<li class="toctree-l5"><a class="reference internal" href="mastodon.html">Mastodon</a></li>
+<li class="toctree-l5"><a class="reference internal" href="moviepilot.html">Moviepilot</a></li>
+<li class="toctree-l5"><a class="reference internal" href="mrs.html">Matrix Rooms Search (MRS)</a></li>
+<li class="toctree-l5"><a class="reference internal" href="mwmbl.html">Mwmbl Engine</a></li>
+<li class="toctree-l5"><a class="reference internal" href="odysee.html">Odysee</a></li>
+<li class="toctree-l5"><a class="reference internal" href="openalex.html">OpenAlex</a></li>
+<li class="toctree-l5"><a class="reference internal" href="openlibrary.html">Open Library</a></li>
+<li class="toctree-l5"><a class="reference internal" href="peertube.html">Peertube Engines</a></li>
+<li class="toctree-l5"><a class="reference internal" href="piped.html">Piped</a></li>
+<li class="toctree-l5"><a class="reference internal" href="presearch.html">Presearch Engine</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pubmed.html">PubMed</a></li>
+<li class="toctree-l5"><a class="reference internal" href="qwant.html">Qwant</a></li>
+<li class="toctree-l5"><a class="reference internal" href="radio_browser.html">RadioBrowser</a></li>
+<li class="toctree-l5"><a class="reference internal" href="recoll.html">Recoll Engine</a></li>
+<li class="toctree-l5"><a class="reference internal" href="repology.html">Repology</a></li>
+<li class="toctree-l5"><a class="reference internal" href="reuters.html">Reuters</a></li>
+<li class="toctree-l5"><a class="reference internal" href="semantic_scholar.html">Semantic Scholar</a></li>
+<li class="toctree-l5"><a class="reference internal" href="soundcloud.html">Soundcloud</a></li>
+<li class="toctree-l5"><a class="reference internal" href="sourcehut.html">Sourcehut</a></li>
+<li class="toctree-l5"><a class="reference internal" href="springer.html">Springer Nature</a></li>
+<li class="toctree-l5"><a class="reference internal" href="startpage.html">Startpage Engines</a></li>
+<li class="toctree-l5"><a class="reference internal" href="tagesschau.html">Tagesschau API</a></li>
+<li class="toctree-l5"><a class="reference internal" href="torznab.html">Torznab WebAPI</a></li>
+<li class="toctree-l5"><a class="reference internal" href="tubearchivist.html">Tube Archivist</a></li>
+<li class="toctree-l5"><a class="reference internal" href="void.html">Void Linux binary packages</a></li>
+<li class="toctree-l5"><a class="reference internal" href="wallhaven.html">Wallhaven</a></li>
+<li class="toctree-l5"><a class="reference internal" href="wikipedia.html">Wikimedia</a></li>
+<li class="toctree-l5"><a class="reference internal" href="yacy.html">Yacy</a></li>
+<li class="toctree-l5"><a class="reference internal" href="yahoo.html">Yahoo Engine</a></li>
+<li class="toctree-l5"><a class="reference internal" href="zlibrary.html">Z-Library</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../index.html#offline-engines">Offline Engines</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../index.html#online-url-search">Online URL Search</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../index.html#online-currency">Online Currency</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../index.html#online-dictionary">Online Dictionary</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../result_types/index.html">Result Types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../templates.html">Simple Theme Templates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../search_api.html">Search API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../plugins/index.html">Plugins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../answerers/index.html">Answerers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../translation.html">Translation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../makefile.html">Makefile &amp; <code class="docutils literal notranslate"><span class="pre">./manage</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../reST.html">reST primer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../searxng_extra/index.html">Tooling box <code class="docutils literal notranslate"><span class="pre">searxng_extra</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../utils/index.html">DevOps tooling box</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/index.html">Source-Code</a></li>
+</ul>
+
+  <h3>Project Links</h3>
+  <ul>
+    <li><a href="https://github.com/searxng/searxng/tree/master">Source</a>
+  
+    <li><a href="https://github.com/searxng/searxng/wiki">Wiki</a>
+  
+    <li><a href="https://searx.space">Public instances</a>
+  
+    <li><a href="https://github.com/searxng/searxng/issues">Issue Tracker</a>
+  </ul><h3>Navigation</h3>
+<ul>
+  <li><a href="../../../index.html">Overview</a>
+    <ul>
+      <li><a href="../../index.html">Developer documentation</a>
+        <ul>
+      <li><a href="../index.html">Engine Implementations</a>
+        <ul>
+          <li>Previous: <a href="bpb.html" title="previous chapter">Bpb</a>
+          <li>Next: <a href="bt4g.html" title="next chapter">BT4G</a></ul>
+      </li></ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../../_sources/dev/engines/online/brave.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright SearXNG team.
+    </div>
+  </body>
+</html>

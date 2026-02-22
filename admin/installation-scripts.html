@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Installation Script &#8212; SearXNG Documentation (2026.2.22+191818b86)</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=6625fa76" />
+    <link rel="stylesheet" type="text/css" href="../_static/searxng.css?v=52e4ff28" />
+    <script src="../_static/documentation_options.js?v=1b5d919e"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script data-project="searxng" data-version="2026.2.22+191818b86" src="../_static/describe_version.js?v=fa7f30d0"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Step by step installation" href="installation-searxng.html" />
+    <link rel="prev" title="Installation container" href="installation-docker.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="installation-searxng.html" title="Step by step installation"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="installation-docker.html" title="Installation container"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">SearXNG Documentation (2026.2.22+191818b86)</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" accesskey="U">Administrator documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Installation Script</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="installation-script">
+<span id="installation-scripts"></span><h1>Installation Script<a class="headerlink" href="#installation-script" title="Link to this heading">¶</a></h1>
+<aside class="sidebar">
+<p class="sidebar-title">Update the OS first!</p>
+<p>To avoid unwanted side effects, update your OS before installing SearXNG.</p>
+</aside>
+<p>The following will install a setup as shown in <a class="reference internal" href="architecture.html#arch-public"><span class="std std-ref">the reference architecture</span></a>.  First you need to get a clone of the repository.  The clone is only needed for
+the installation procedure and some maintenance tasks.</p>
+<aside class="sidebar">
+<p class="sidebar-title">further read</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="../utils/index.html#toolboxing"><span class="std std-ref">DevOps tooling box</span></a></p></li>
+</ul>
+</aside>
+<p>Jump to a folder that is readable by <em>others</em> and start to clone SearXNG,
+alternatively you can create your own fork and clone from there.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span><span class="nb">cd</span><span class="w"> </span>~/Downloads
+$<span class="w"> </span>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/searxng/searxng.git<span class="w"> </span>searxng
+$<span class="w"> </span><span class="nb">cd</span><span class="w"> </span>searxng
+</pre></div>
+</div>
+<aside class="sidebar">
+<p class="sidebar-title">further read</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="update-searxng.html#inspect-searxng"><span class="std std-ref">How to inspect &amp; debug</span></a></p></li>
+</ul>
+</aside>
+<p>To install a SearXNG <a class="reference internal" href="installation-searxng.html#use-default-settings-yml"><span class="std std-ref">reference setup</span></a>
+including a <a class="reference internal" href="architecture.html#architecture-uwsgi"><span class="std std-ref">uWSGI setup</span></a> as described in the
+<a class="reference internal" href="installation-searxng.html#installation-basic"><span class="std std-ref">Step by step installation</span></a> and in the <a class="reference internal" href="installation-uwsgi.html#searxng-uwsgi"><span class="std std-ref">uWSGI</span></a> section type:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>sudo<span class="w"> </span>-H<span class="w"> </span>./utils/searxng.sh<span class="w"> </span>install<span class="w"> </span>all
+</pre></div>
+</div>
+<div class="admonition attention">
+<p class="admonition-title">Attention</p>
+<p>For the installation procedure, use a <em>sudoer</em> login to run the scripts.  If
+you install from <code class="docutils literal notranslate"><span class="pre">root</span></code>, take into account that the scripts are creating a
+<code class="docutils literal notranslate"><span class="pre">searxng</span></code> user.  In the installation procedure this new created user does
+need to have read access to the cloned SearXNG repository, which is not the case if you clone
+it into a folder below <code class="docutils literal notranslate"><span class="pre">/root</span></code>!</p>
+</div>
+<aside class="sidebar">
+<p class="sidebar-title">further read</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="update-searxng.html#update-searxng"><span class="std std-ref">How to update</span></a></p></li>
+</ul>
+</aside>
+<p>When all services are installed and running fine, you can add SearXNG to your
+HTTP server.  We do not have any preferences regarding the HTTP server, you can use
+whatever you prefer.</p>
+<p>We implemented installation procedures for:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="installation-nginx.html#installation-nginx"><span class="std std-ref">NGINX</span></a></p></li>
+<li><p><a class="reference internal" href="installation-apache.html#installation-apache"><span class="std std-ref">Apache</span></a></p></li>
+</ul>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+  <span id="sidebar-top"></span>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+  
+    
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/searxng-wordmark.svg" alt="Logo of SearXNG"/>
+            </a></p>
+  
+
+<h3><a href="../index.html">Table of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../user/index.html">User information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../own-instance.html">Why use a private instance?</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Administrator documentation</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="settings/index.html">Settings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation-docker.html">Installation container</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Installation Script</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation-searxng.html">Step by step installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation-granian.html">Granian</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation-uwsgi.html">uWSGI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation-nginx.html">NGINX</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation-apache.html">Apache</a></li>
+<li class="toctree-l2"><a class="reference internal" href="update-searxng.html">SearXNG maintenance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="answer-captcha.html">Answer CAPTCHA from server’s IP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.favicons.html">Favicons</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.limiter.html">Limiter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html">Administration API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="architecture.html">Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plugins.html">List of plugins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="buildhosts.html">Buildhosts</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../dev/index.html">Developer documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../utils/index.html">DevOps tooling box</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../src/index.html">Source-Code</a></li>
+</ul>
+
+  <h3>Project Links</h3>
+  <ul>
+    <li><a href="https://github.com/searxng/searxng/tree/master">Source</a>
+  
+    <li><a href="https://github.com/searxng/searxng/wiki">Wiki</a>
+  
+    <li><a href="https://searx.space">Public instances</a>
+  
+    <li><a href="https://github.com/searxng/searxng/issues">Issue Tracker</a>
+  </ul><h3>Navigation</h3>
+<ul>
+  <li><a href="../index.html">Overview</a>
+    <ul>
+      <li><a href="index.html">Administrator documentation</a>
+        <ul>
+          <li>Previous: <a href="installation-docker.html" title="previous chapter">Installation container</a>
+          <li>Next: <a href="installation-searxng.html" title="next chapter">Step by step installation</a></ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/admin/installation-scripts.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright SearXNG team.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>searxng_extra.update.update_engine_descriptions &#8212; SearXNG Documentation (2026.2.22+191818b86)</title>
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=6625fa76" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/searxng.css?v=52e4ff28" />
+    <script src="../../../_static/documentation_options.js?v=1b5d919e"></script>
+    <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script data-project="searxng" data-version="2026.2.22+191818b86" src="../../../_static/describe_version.js?v=fa7f30d0"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">SearXNG Documentation (2026.2.22+191818b86)</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" accesskey="U">Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">searxng_extra.update.update_engine_descriptions</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for searxng_extra.update.update_engine_descriptions</h1><div class="highlight"><pre>
+<span></span><span class="ch">#!/usr/bin/env python</span>
+<span class="c1"># SPDX-License-Identifier: AGPL-3.0-or-later</span>
+<span class="sd">&quot;&quot;&quot;Fetch website description from websites and from</span>
+<span class="sd">:origin:`searx/engines/wikidata.py` engine.</span>
+
+<span class="sd">Output file: :origin:`searx/data/engine_descriptions.json`.</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="c1"># pylint: disable=invalid-name, global-statement</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">urllib.parse</span><span class="w"> </span><span class="kn">import</span> <span class="n">urlparse</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">os.path</span><span class="w"> </span><span class="kn">import</span> <span class="n">join</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">lxml.html</span><span class="w"> </span><span class="kn">import</span> <span class="n">fromstring</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">searx.engines</span><span class="w"> </span><span class="kn">import</span> <span class="n">wikidata</span><span class="p">,</span> <span class="n">set_loggers</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">searx.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">extract_text</span><span class="p">,</span> <span class="n">searxng_useragent</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">searx.locales</span><span class="w"> </span><span class="kn">import</span> <span class="n">LOCALE_NAMES</span><span class="p">,</span> <span class="n">locales_initialize</span><span class="p">,</span> <span class="n">match_locale</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">searx</span><span class="w"> </span><span class="kn">import</span> <span class="n">searx_dir</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">searx.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">gen_useragent</span><span class="p">,</span> <span class="n">detect_language</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">searx.search</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">searx.network</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">searx.data</span><span class="w"> </span><span class="kn">import</span> <span class="n">data_dir</span>
+
+<span class="n">DATA_FILE</span> <span class="o">=</span> <span class="n">data_dir</span> <span class="o">/</span> <span class="s1">&#39;engine_descriptions.json&#39;</span>
+
+<span class="n">set_loggers</span><span class="p">(</span><span class="n">wikidata</span><span class="p">,</span> <span class="s1">&#39;wikidata&#39;</span><span class="p">)</span>
+<span class="n">locales_initialize</span><span class="p">()</span>
+
+<span class="c1"># you can run the query in https://query.wikidata.org</span>
+<span class="c1"># replace %IDS% by Wikidata entities separated by spaces with the prefix wd:</span>
+<span class="c1"># for example wd:Q182496 wd:Q1540899</span>
+<span class="c1"># replace %LANGUAGES_SPARQL% by languages</span>
+<span class="n">SPARQL_WIKIPEDIA_ARTICLE</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">SELECT DISTINCT ?item ?name ?article ?lang</span>
+<span class="s2">WHERE {</span>
+<span class="s2">  hint:Query hint:optimizer &quot;None&quot;.</span>
+<span class="s2">  VALUES ?item { %IDS% }</span>
+<span class="s2">  ?article schema:about ?item ;</span>
+<span class="s2">              schema:inLanguage ?lang ;</span>
+<span class="s2">              schema:name ?name ;</span>
+<span class="s2">              schema:isPartOf [ wikibase:wikiGroup &quot;wikipedia&quot; ] .</span>
+<span class="s2">  FILTER(?lang in (%LANGUAGES_SPARQL%)) .</span>
+<span class="s2">  FILTER (!CONTAINS(?name, &#39;:&#39;)) .</span>
+<span class="s2">}</span>
+<span class="s2">ORDER BY ?item ?lang</span>
+<span class="s2">&quot;&quot;&quot;</span>
+
+<span class="n">SPARQL_DESCRIPTION</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">SELECT DISTINCT ?item ?itemDescription</span>
+<span class="s2">WHERE {</span>
+<span class="s2">  VALUES ?item { %IDS% }</span>
+<span class="s2">  ?item schema:description ?itemDescription .</span>
+<span class="s2">  FILTER (lang(?itemDescription) in (%LANGUAGES_SPARQL%))</span>
+<span class="s2">}</span>
+<span class="s2">ORDER BY ?itemLang</span>
+<span class="s2">&quot;&quot;&quot;</span>
+
+<span class="n">NOT_A_DESCRIPTION</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s1">&#39;web site&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;site web&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;komputa serĉilo&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;interreta serĉilo&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;bilaketa motor&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;web search engine&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;wikimedia täpsustuslehekülg&#39;</span><span class="p">,</span>
+<span class="p">]</span>
+
+<span class="n">SKIP_ENGINE_SOURCE</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="c1"># fmt: off</span>
+    <span class="p">(</span><span class="s1">&#39;gitlab&#39;</span><span class="p">,</span> <span class="s1">&#39;wikidata&#39;</span><span class="p">)</span>
+    <span class="c1"># descriptions are about wikipedia disambiguation pages</span>
+    <span class="c1"># fmt: on</span>
+<span class="p">]</span>
+
+<span class="n">WIKIPEDIA_LANGUAGES</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="n">LANGUAGES_SPARQL</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+<span class="n">IDS</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="n">WIKIPEDIA_LANGUAGE_VARIANTS</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;zh_Hant&#39;</span><span class="p">:</span> <span class="s1">&#39;zh-tw&#39;</span><span class="p">}</span>
+
+
+<span class="n">descriptions</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="n">wd_to_engine_name</span> <span class="o">=</span> <span class="p">{}</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">normalize_description</span><span class="p">(</span><span class="n">description</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="p">[</span><span class="nb">chr</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">31</span><span class="p">)]:</span>
+        <span class="n">description</span> <span class="o">=</span> <span class="n">description</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="s1">&#39; &#39;</span><span class="p">)</span>
+    <span class="n">description</span> <span class="o">=</span> <span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">description</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">())</span>
+    <span class="k">return</span> <span class="n">description</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">update_description</span><span class="p">(</span><span class="n">engine_name</span><span class="p">,</span> <span class="n">lang</span><span class="p">,</span> <span class="n">description</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">description</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="k">return</span>
+    <span class="n">description</span> <span class="o">=</span> <span class="n">normalize_description</span><span class="p">(</span><span class="n">description</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">description</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="n">engine_name</span><span class="o">.</span><span class="n">lower</span><span class="p">():</span>
+        <span class="k">return</span>
+    <span class="k">if</span> <span class="n">description</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="n">NOT_A_DESCRIPTION</span><span class="p">:</span>
+        <span class="k">return</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">engine_name</span><span class="p">,</span> <span class="n">source</span><span class="p">)</span> <span class="ow">in</span> <span class="n">SKIP_ENGINE_SOURCE</span><span class="p">:</span>
+        <span class="k">return</span>
+    <span class="k">if</span> <span class="s1">&#39; &#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">description</span><span class="p">:</span>
+        <span class="c1"># skip unique word description (like &quot;website&quot;)</span>
+        <span class="k">return</span>
+    <span class="k">if</span> <span class="n">replace</span> <span class="ow">or</span> <span class="n">lang</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">descriptions</span><span class="p">[</span><span class="n">engine_name</span><span class="p">]:</span>
+        <span class="n">descriptions</span><span class="p">[</span><span class="n">engine_name</span><span class="p">][</span><span class="n">lang</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">description</span><span class="p">,</span> <span class="n">source</span><span class="p">]</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">get_wikipedia_summary</span><span class="p">(</span><span class="n">wikipedia_url</span><span class="p">,</span> <span class="n">searxng_locale</span><span class="p">):</span>
+    <span class="c1"># get the REST API URL from the HTML URL</span>
+
+    <span class="c1"># Headers</span>
+    <span class="n">headers</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;User-Agent&#39;</span><span class="p">:</span> <span class="n">searxng_useragent</span><span class="p">()}</span>
+
+    <span class="k">if</span> <span class="n">searxng_locale</span> <span class="ow">in</span> <span class="n">WIKIPEDIA_LANGUAGE_VARIANTS</span><span class="p">:</span>
+        <span class="n">headers</span><span class="p">[</span><span class="s1">&#39;Accept-Language&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">WIKIPEDIA_LANGUAGE_VARIANTS</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">searxng_locale</span><span class="p">)</span>
+
+    <span class="c1"># URL path : from HTML URL to REST API URL</span>
+    <span class="n">parsed_url</span> <span class="o">=</span> <span class="n">urlparse</span><span class="p">(</span><span class="n">wikipedia_url</span><span class="p">)</span>
+    <span class="c1"># remove the /wiki/ prefix</span>
+    <span class="n">article_name</span> <span class="o">=</span> <span class="n">parsed_url</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;/wiki/&#39;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="c1"># article_name is already encoded but not the / which is required for the REST API call</span>
+    <span class="n">encoded_article_name</span> <span class="o">=</span> <span class="n">article_name</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">,</span> <span class="s1">&#39;</span><span class="si">%2F</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">path</span> <span class="o">=</span> <span class="s1">&#39;/api/rest_v1/page/summary/&#39;</span> <span class="o">+</span> <span class="n">encoded_article_name</span>
+    <span class="n">wikipedia_rest_url</span> <span class="o">=</span> <span class="n">parsed_url</span><span class="o">.</span><span class="n">_replace</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">)</span><span class="o">.</span><span class="n">geturl</span><span class="p">()</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">searx</span><span class="o">.</span><span class="n">network</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">wikipedia_rest_url</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+        <span class="n">response</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>  <span class="c1"># pylint: disable=broad-except</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;     &quot;</span><span class="p">,</span> <span class="n">wikipedia_url</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">None</span>
+    <span class="n">api_result</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">api_result</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;extract&#39;</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">get_website_description</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">lang1</span><span class="p">,</span> <span class="n">lang2</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="n">headers</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;User-Agent&#39;</span><span class="p">:</span> <span class="n">gen_useragent</span><span class="p">(),</span>
+        <span class="s1">&#39;Accept&#39;</span><span class="p">:</span> <span class="s1">&#39;text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;DNT&#39;</span><span class="p">:</span> <span class="s1">&#39;1&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;Upgrade-Insecure-Requests&#39;</span><span class="p">:</span> <span class="s1">&#39;1&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;Sec-GPC&#39;</span><span class="p">:</span> <span class="s1">&#39;1&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;Cache-Control&#39;</span><span class="p">:</span> <span class="s1">&#39;max-age=0&#39;</span><span class="p">,</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="n">lang1</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">lang_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">lang1</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">lang2</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">lang_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">lang2</span><span class="p">)</span>
+        <span class="n">headers</span><span class="p">[</span><span class="s1">&#39;Accept-Language&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="s2">&quot;,&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">lang_list</span><span class="p">)</span><span class="si">}</span><span class="s1">;q=0.8&#39;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">searx</span><span class="o">.</span><span class="n">network</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+        <span class="n">response</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>
+    <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>  <span class="c1"># pylint: disable=broad-except</span>
+        <span class="k">return</span> <span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">html</span> <span class="o">=</span> <span class="n">fromstring</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+        <span class="n">html</span> <span class="o">=</span> <span class="n">fromstring</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
+
+    <span class="n">description</span> <span class="o">=</span> <span class="n">extract_text</span><span class="p">(</span><span class="n">html</span><span class="o">.</span><span class="n">xpath</span><span class="p">(</span><span class="s1">&#39;/html/head/meta[@name=&quot;description&quot;]/@content&#39;</span><span class="p">))</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">description</span><span class="p">:</span>
+        <span class="n">description</span> <span class="o">=</span> <span class="n">extract_text</span><span class="p">(</span><span class="n">html</span><span class="o">.</span><span class="n">xpath</span><span class="p">(</span><span class="s1">&#39;/html/head/meta[@property=&quot;og:description&quot;]/@content&#39;</span><span class="p">))</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">description</span><span class="p">:</span>
+        <span class="n">description</span> <span class="o">=</span> <span class="n">extract_text</span><span class="p">(</span><span class="n">html</span><span class="o">.</span><span class="n">xpath</span><span class="p">(</span><span class="s1">&#39;/html/head/title&#39;</span><span class="p">))</span>
+    <span class="n">lang</span> <span class="o">=</span> <span class="n">extract_text</span><span class="p">(</span><span class="n">html</span><span class="o">.</span><span class="n">xpath</span><span class="p">(</span><span class="s1">&#39;/html/@lang&#39;</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">lang</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">lang1</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">lang</span> <span class="o">=</span> <span class="n">lang1</span>
+    <span class="n">lang</span> <span class="o">=</span> <span class="n">detect_language</span><span class="p">(</span><span class="n">description</span><span class="p">)</span> <span class="ow">or</span> <span class="n">lang</span> <span class="ow">or</span> <span class="s1">&#39;en&#39;</span>
+    <span class="n">lang</span> <span class="o">=</span> <span class="n">lang</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">lang</span> <span class="o">=</span> <span class="n">lang</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">lang</span><span class="p">,</span> <span class="n">description</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">initialize</span><span class="p">():</span>
+    <span class="k">global</span> <span class="n">IDS</span><span class="p">,</span> <span class="n">LANGUAGES_SPARQL</span>
+    <span class="n">searx</span><span class="o">.</span><span class="n">search</span><span class="o">.</span><span class="n">initialize</span><span class="p">()</span>
+    <span class="n">wikipedia_engine</span> <span class="o">=</span> <span class="n">searx</span><span class="o">.</span><span class="n">engines</span><span class="o">.</span><span class="n">engines</span><span class="p">[</span><span class="s1">&#39;wikipedia&#39;</span><span class="p">]</span>
+
+    <span class="n">locale2lang</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;nl-BE&#39;</span><span class="p">:</span> <span class="s1">&#39;nl&#39;</span><span class="p">}</span>
+    <span class="k">for</span> <span class="n">sxng_ui_lang</span> <span class="ow">in</span> <span class="n">LOCALE_NAMES</span><span class="p">:</span>
+
+        <span class="n">sxng_ui_alias</span> <span class="o">=</span> <span class="n">locale2lang</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">sxng_ui_lang</span><span class="p">,</span> <span class="n">sxng_ui_lang</span><span class="p">)</span>
+        <span class="n">wiki_lang</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="k">if</span> <span class="n">sxng_ui_alias</span> <span class="ow">in</span> <span class="n">wikipedia_engine</span><span class="o">.</span><span class="n">traits</span><span class="o">.</span><span class="n">custom</span><span class="p">[</span><span class="s1">&#39;WIKIPEDIA_LANGUAGES&#39;</span><span class="p">]:</span>
+            <span class="n">wiki_lang</span> <span class="o">=</span> <span class="n">sxng_ui_alias</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">wiki_lang</span><span class="p">:</span>
+            <span class="n">wiki_lang</span> <span class="o">=</span> <span class="n">wikipedia_engine</span><span class="o">.</span><span class="n">traits</span><span class="o">.</span><span class="n">get_language</span><span class="p">(</span><span class="n">sxng_ui_alias</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">wiki_lang</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;WIKIPEDIA_LANGUAGES missing </span><span class="si">{</span><span class="n">sxng_ui_lang</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">continue</span>
+        <span class="n">WIKIPEDIA_LANGUAGES</span><span class="p">[</span><span class="n">sxng_ui_lang</span><span class="p">]</span> <span class="o">=</span> <span class="n">wiki_lang</span>
+
+    <span class="n">LANGUAGES_SPARQL</span> <span class="o">=</span> <span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&#39;</span><span class="si">{</span><span class="n">l</span><span class="si">}</span><span class="s2">&#39;&quot;</span> <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="nb">set</span><span class="p">(</span><span class="n">WIKIPEDIA_LANGUAGES</span><span class="o">.</span><span class="n">values</span><span class="p">()))</span>
+    <span class="k">for</span> <span class="n">engine_name</span><span class="p">,</span> <span class="n">engine</span> <span class="ow">in</span> <span class="n">searx</span><span class="o">.</span><span class="n">engines</span><span class="o">.</span><span class="n">engines</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="n">descriptions</span><span class="p">[</span><span class="n">engine_name</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">wikidata_id</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="s2">&quot;about&quot;</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;wikidata_id&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">wikidata_id</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">wd_to_engine_name</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="n">wikidata_id</span><span class="p">,</span> <span class="nb">set</span><span class="p">())</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">engine_name</span><span class="p">)</span>
+
+    <span class="n">IDS</span> <span class="o">=</span> <span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">wd_id</span><span class="p">:</span> <span class="s1">&#39;wd:&#39;</span> <span class="o">+</span> <span class="n">wd_id</span><span class="p">,</span> <span class="n">wd_to_engine_name</span><span class="o">.</span><span class="n">keys</span><span class="p">())))</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">fetch_wikidata_descriptions</span><span class="p">():</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Fetching wikidata descriptions&#39;</span><span class="p">)</span>
+    <span class="n">searx</span><span class="o">.</span><span class="n">network</span><span class="o">.</span><span class="n">set_timeout_for_thread</span><span class="p">(</span><span class="mi">60</span><span class="p">)</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">wikidata</span><span class="o">.</span><span class="n">send_wikidata_query</span><span class="p">(</span>
+        <span class="n">SPARQL_DESCRIPTION</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;%IDS%&#39;</span><span class="p">,</span> <span class="n">IDS</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;%LANGUAGES_SPARQL%&#39;</span><span class="p">,</span> <span class="n">LANGUAGES_SPARQL</span><span class="p">)</span>
+    <span class="p">)</span>
+    <span class="k">if</span> <span class="n">result</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">binding</span> <span class="ow">in</span> <span class="n">result</span><span class="p">[</span><span class="s1">&#39;results&#39;</span><span class="p">][</span><span class="s1">&#39;bindings&#39;</span><span class="p">]:</span>
+            <span class="n">wikidata_id</span> <span class="o">=</span> <span class="n">binding</span><span class="p">[</span><span class="s1">&#39;item&#39;</span><span class="p">][</span><span class="s1">&#39;value&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;http://www.wikidata.org/entity/&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+            <span class="n">wikidata_lang</span> <span class="o">=</span> <span class="n">binding</span><span class="p">[</span><span class="s1">&#39;itemDescription&#39;</span><span class="p">][</span><span class="s1">&#39;xml:lang&#39;</span><span class="p">]</span>
+            <span class="n">desc</span> <span class="o">=</span> <span class="n">binding</span><span class="p">[</span><span class="s1">&#39;itemDescription&#39;</span><span class="p">][</span><span class="s1">&#39;value&#39;</span><span class="p">]</span>
+            <span class="k">for</span> <span class="n">engine_name</span> <span class="ow">in</span> <span class="n">wd_to_engine_name</span><span class="p">[</span><span class="n">wikidata_id</span><span class="p">]:</span>
+                <span class="k">for</span> <span class="n">searxng_locale</span> <span class="ow">in</span> <span class="n">LOCALE_NAMES</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">WIKIPEDIA_LANGUAGES</span><span class="p">[</span><span class="n">searxng_locale</span><span class="p">]</span> <span class="o">!=</span> <span class="n">wikidata_lang</span><span class="p">:</span>
+                        <span class="k">continue</span>
+                    <span class="nb">print</span><span class="p">(</span>
+                        <span class="sa">f</span><span class="s2">&quot;    engine: </span><span class="si">{</span><span class="n">engine_name</span><span class="si">:</span><span class="s2">20</span><span class="si">}</span><span class="s2"> / wikidata_lang: </span><span class="si">{</span><span class="n">wikidata_lang</span><span class="si">:</span><span class="s2">5</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+                        <span class="sa">f</span><span class="s2">&quot;/ len(wikidata_desc): </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">desc</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+                    <span class="p">)</span>
+                    <span class="n">update_description</span><span class="p">(</span><span class="n">engine_name</span><span class="p">,</span> <span class="n">searxng_locale</span><span class="p">,</span> <span class="n">desc</span><span class="p">,</span> <span class="s1">&#39;wikidata&#39;</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">fetch_wikipedia_descriptions</span><span class="p">():</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Fetching wikipedia descriptions&#39;</span><span class="p">)</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">wikidata</span><span class="o">.</span><span class="n">send_wikidata_query</span><span class="p">(</span>
+        <span class="n">SPARQL_WIKIPEDIA_ARTICLE</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;%IDS%&#39;</span><span class="p">,</span> <span class="n">IDS</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;%LANGUAGES_SPARQL%&#39;</span><span class="p">,</span> <span class="n">LANGUAGES_SPARQL</span><span class="p">)</span>
+    <span class="p">)</span>
+    <span class="k">if</span> <span class="n">result</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">binding</span> <span class="ow">in</span> <span class="n">result</span><span class="p">[</span><span class="s1">&#39;results&#39;</span><span class="p">][</span><span class="s1">&#39;bindings&#39;</span><span class="p">]:</span>
+            <span class="n">wikidata_id</span> <span class="o">=</span> <span class="n">binding</span><span class="p">[</span><span class="s1">&#39;item&#39;</span><span class="p">][</span><span class="s1">&#39;value&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;http://www.wikidata.org/entity/&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+            <span class="n">wikidata_lang</span> <span class="o">=</span> <span class="n">binding</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">][</span><span class="s1">&#39;xml:lang&#39;</span><span class="p">]</span>
+            <span class="n">wikipedia_url</span> <span class="o">=</span> <span class="n">binding</span><span class="p">[</span><span class="s1">&#39;article&#39;</span><span class="p">][</span><span class="s1">&#39;value&#39;</span><span class="p">]</span>  <span class="c1"># for example the URL https://de.wikipedia.org/wiki/PubMed</span>
+            <span class="k">for</span> <span class="n">engine_name</span> <span class="ow">in</span> <span class="n">wd_to_engine_name</span><span class="p">[</span><span class="n">wikidata_id</span><span class="p">]:</span>
+                <span class="k">for</span> <span class="n">searxng_locale</span> <span class="ow">in</span> <span class="n">LOCALE_NAMES</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">WIKIPEDIA_LANGUAGES</span><span class="p">[</span><span class="n">searxng_locale</span><span class="p">]</span> <span class="o">!=</span> <span class="n">wikidata_lang</span><span class="p">:</span>
+                        <span class="k">continue</span>
+                    <span class="n">desc</span> <span class="o">=</span> <span class="n">get_wikipedia_summary</span><span class="p">(</span><span class="n">wikipedia_url</span><span class="p">,</span> <span class="n">searxng_locale</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="ow">not</span> <span class="n">desc</span><span class="p">:</span>
+                        <span class="k">continue</span>
+                    <span class="nb">print</span><span class="p">(</span>
+                        <span class="sa">f</span><span class="s2">&quot;    engine: </span><span class="si">{</span><span class="n">engine_name</span><span class="si">:</span><span class="s2">20</span><span class="si">}</span><span class="s2"> / wikidata_lang: </span><span class="si">{</span><span class="n">wikidata_lang</span><span class="si">:</span><span class="s2">5</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+                        <span class="sa">f</span><span class="s2">&quot;/ len(wikipedia_desc): </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">desc</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+                    <span class="p">)</span>
+                    <span class="n">update_description</span><span class="p">(</span><span class="n">engine_name</span><span class="p">,</span> <span class="n">searxng_locale</span><span class="p">,</span> <span class="n">desc</span><span class="p">,</span> <span class="s1">&#39;wikipedia&#39;</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">normalize_url</span><span class="p">(</span><span class="n">url</span><span class="p">):</span>
+    <span class="n">url</span> <span class="o">=</span> <span class="n">url</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{language}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="s1">&#39;en&#39;</span><span class="p">)</span>
+    <span class="n">url</span> <span class="o">=</span> <span class="n">urlparse</span><span class="p">(</span><span class="n">url</span><span class="p">)</span><span class="o">.</span><span class="n">_replace</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="s1">&#39;/&#39;</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">query</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">fragment</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">geturl</span><span class="p">()</span>
+    <span class="n">url</span> <span class="o">=</span> <span class="n">url</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;https://api.&#39;</span><span class="p">,</span> <span class="s1">&#39;https://&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">url</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">fetch_website_description</span><span class="p">(</span><span class="n">engine_name</span><span class="p">,</span> <span class="n">website</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;- fetch website descr: </span><span class="si">{</span><span class="n">engine_name</span><span class="si">}</span><span class="s2"> / </span><span class="si">{</span><span class="n">website</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">default_lang</span><span class="p">,</span> <span class="n">default_description</span> <span class="o">=</span> <span class="n">get_website_description</span><span class="p">(</span><span class="n">website</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">default_lang</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">default_description</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="c1"># the front page can&#39;t be fetched: skip this engine</span>
+        <span class="k">return</span>
+
+    <span class="c1"># to specify an order in where the most common languages are in front of the</span>
+    <span class="c1"># language list ..</span>
+    <span class="n">languages</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;en&#39;</span><span class="p">,</span> <span class="s1">&#39;es&#39;</span><span class="p">,</span> <span class="s1">&#39;pt&#39;</span><span class="p">,</span> <span class="s1">&#39;ru&#39;</span><span class="p">,</span> <span class="s1">&#39;tr&#39;</span><span class="p">,</span> <span class="s1">&#39;fr&#39;</span><span class="p">]</span>
+    <span class="n">languages</span> <span class="o">=</span> <span class="n">languages</span> <span class="o">+</span> <span class="p">[</span><span class="n">l</span> <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="n">LOCALE_NAMES</span> <span class="k">if</span> <span class="n">l</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">languages</span><span class="p">]</span>
+
+    <span class="n">previous_matched_lang</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">previous_count</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="k">for</span> <span class="n">lang</span> <span class="ow">in</span> <span class="n">languages</span><span class="p">:</span>
+
+        <span class="k">if</span> <span class="n">lang</span> <span class="ow">in</span> <span class="n">descriptions</span><span class="p">[</span><span class="n">engine_name</span><span class="p">]:</span>
+            <span class="k">continue</span>
+
+        <span class="n">fetched_lang</span><span class="p">,</span> <span class="n">desc</span> <span class="o">=</span> <span class="n">get_website_description</span><span class="p">(</span><span class="n">website</span><span class="p">,</span> <span class="n">lang</span><span class="p">,</span> <span class="n">WIKIPEDIA_LANGUAGES</span><span class="p">[</span><span class="n">lang</span><span class="p">])</span>
+        <span class="k">if</span> <span class="n">fetched_lang</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">desc</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">continue</span>
+
+        <span class="c1"># check if desc changed with the different lang values</span>
+
+        <span class="k">if</span> <span class="n">fetched_lang</span> <span class="o">==</span> <span class="n">previous_matched_lang</span><span class="p">:</span>
+            <span class="n">previous_count</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="k">if</span> <span class="n">previous_count</span> <span class="o">==</span> <span class="mi">6</span><span class="p">:</span>
+                <span class="c1"># the website has returned the same description for 6 different languages in Accept-Language header</span>
+                <span class="c1"># stop now</span>
+                <span class="k">break</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">previous_matched_lang</span> <span class="o">=</span> <span class="n">fetched_lang</span>
+            <span class="n">previous_count</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="c1"># Don&#39;t trust in the value of fetched_lang, some websites return</span>
+        <span class="c1"># for some inappropriate values, by example bing-images::</span>
+        <span class="c1">#</span>
+        <span class="c1">#   requested lang: zh-Hans-CN / fetched lang: ceb / desc: 查看根据您的兴趣量身定制的提要</span>
+        <span class="c1">#</span>
+        <span class="c1"># The lang ceb is &quot;Cebuano&quot; but the description is given in zh-Hans-CN</span>
+
+        <span class="nb">print</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;    engine: </span><span class="si">{</span><span class="n">engine_name</span><span class="si">:</span><span class="s2">20</span><span class="si">}</span><span class="s2"> / requested lang:</span><span class="si">{</span><span class="n">lang</span><span class="si">:</span><span class="s2">7</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="sa">f</span><span class="s2">&quot; / fetched lang: </span><span class="si">{</span><span class="n">fetched_lang</span><span class="si">:</span><span class="s2">7</span><span class="si">}</span><span class="s2"> / len(desc): </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">desc</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="p">)</span>
+
+        <span class="n">matched_lang</span> <span class="o">=</span> <span class="n">match_locale</span><span class="p">(</span><span class="n">fetched_lang</span><span class="p">,</span> <span class="n">LOCALE_NAMES</span><span class="o">.</span><span class="n">keys</span><span class="p">(),</span> <span class="n">fallback</span><span class="o">=</span><span class="n">lang</span><span class="p">)</span>
+        <span class="n">update_description</span><span class="p">(</span><span class="n">engine_name</span><span class="p">,</span> <span class="n">matched_lang</span><span class="p">,</span> <span class="n">desc</span><span class="p">,</span> <span class="n">website</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">fetch_website_descriptions</span><span class="p">():</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Fetching website descriptions&#39;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">engine_name</span><span class="p">,</span> <span class="n">engine</span> <span class="ow">in</span> <span class="n">searx</span><span class="o">.</span><span class="n">engines</span><span class="o">.</span><span class="n">engines</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="n">website</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="s2">&quot;about&quot;</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;website&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">website</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="s2">&quot;search_url&quot;</span><span class="p">):</span>
+            <span class="n">website</span> <span class="o">=</span> <span class="n">normalize_url</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="s2">&quot;search_url&quot;</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">website</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="s2">&quot;base_url&quot;</span><span class="p">):</span>
+            <span class="n">website</span> <span class="o">=</span> <span class="n">normalize_url</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="s2">&quot;base_url&quot;</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">website</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">fetch_website_description</span><span class="p">(</span><span class="n">engine_name</span><span class="p">,</span> <span class="n">website</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">get_engine_descriptions_filename</span><span class="p">():</span>
+    <span class="k">return</span> <span class="n">join</span><span class="p">(</span><span class="n">join</span><span class="p">(</span><span class="n">searx_dir</span><span class="p">,</span> <span class="s2">&quot;data&quot;</span><span class="p">),</span> <span class="s2">&quot;engine_descriptions.json&quot;</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="get_output">
+<a class="viewcode-back" href="../../../dev/searxng_extra/update.html#searxng_extra.update.update_engine_descriptions.get_output">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_output</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    From descriptions[engine][language] = [description, source]</span>
+<span class="sd">    To</span>
+
+<span class="sd">    * output[language][engine] = description_and_source</span>
+<span class="sd">    * description_and_source can be:</span>
+<span class="sd">       * [description, source]</span>
+<span class="sd">       * description (if source = &quot;wikipedia&quot;)</span>
+<span class="sd">       * [f&quot;engine:lang&quot;, &quot;ref&quot;] (reference to another existing description)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">output</span> <span class="o">=</span> <span class="p">{</span><span class="n">locale</span><span class="p">:</span> <span class="p">{}</span> <span class="k">for</span> <span class="n">locale</span> <span class="ow">in</span> <span class="n">LOCALE_NAMES</span><span class="p">}</span>
+
+    <span class="n">seen_descriptions</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="k">for</span> <span class="n">engine_name</span><span class="p">,</span> <span class="n">lang_descriptions</span> <span class="ow">in</span> <span class="n">descriptions</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="k">for</span> <span class="n">language</span><span class="p">,</span> <span class="n">description</span> <span class="ow">in</span> <span class="n">lang_descriptions</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">description</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">in</span> <span class="n">seen_descriptions</span><span class="p">:</span>
+                <span class="n">ref</span> <span class="o">=</span> <span class="n">seen_descriptions</span><span class="p">[</span><span class="n">description</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
+                <span class="n">description</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">ref</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1">:</span><span class="si">{</span><span class="n">ref</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="s1">&#39;ref&#39;</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">seen_descriptions</span><span class="p">[</span><span class="n">description</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> <span class="o">=</span> <span class="p">(</span><span class="n">engine_name</span><span class="p">,</span> <span class="n">language</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">description</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;wikipedia&#39;</span><span class="p">:</span>
+                    <span class="n">description</span> <span class="o">=</span> <span class="n">description</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">output</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="n">language</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="n">engine_name</span><span class="p">,</span> <span class="n">description</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">output</span></div>
+
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">main</span><span class="p">():</span>
+    <span class="n">initialize</span><span class="p">()</span>
+    <span class="n">fetch_wikidata_descriptions</span><span class="p">()</span>
+    <span class="n">fetch_wikipedia_descriptions</span><span class="p">()</span>
+    <span class="n">fetch_website_descriptions</span><span class="p">()</span>
+
+    <span class="n">output</span> <span class="o">=</span> <span class="n">get_output</span><span class="p">()</span>
+    <span class="k">with</span> <span class="n">DATA_FILE</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s1">&#39;w&#39;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf8&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">output</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">separators</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">,</span> <span class="s1">&#39;:&#39;</span><span class="p">),</span> <span class="n">sort_keys</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">ensure_ascii</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">main</span><span class="p">()</span>
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+  <span id="sidebar-top"></span>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+  
+    
+            <p class="logo"><a href="../../../index.html">
+              <img class="logo" src="../../../_static/searxng-wordmark.svg" alt="Logo of SearXNG"/>
+            </a></p>
+  
+
+<h3><a href="../../../index.html">Table of Contents</a></h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../user/index.html">User information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../own-instance.html">Why use a private instance?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../admin/index.html">Administrator documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../dev/index.html">Developer documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../utils/index.html">DevOps tooling box</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/index.html">Source-Code</a></li>
+</ul>
+
+  <h3>Project Links</h3>
+  <ul>
+    <li><a href="https://github.com/searxng/searxng/tree/master">Source</a>
+  
+    <li><a href="https://github.com/searxng/searxng/wiki">Wiki</a>
+  
+    <li><a href="https://searx.space">Public instances</a>
+  
+    <li><a href="https://github.com/searxng/searxng/issues">Issue Tracker</a>
+  </ul><h3>Navigation</h3>
+<ul>
+  <li><a href="../../../index.html">Overview</a>
+    <ul>
+      <li><a href="../../index.html">Module code</a>
+        
+          
+          </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright SearXNG team.
+    </div>
+  </body>
+</html>

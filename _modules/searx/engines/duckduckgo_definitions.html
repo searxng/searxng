@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>searx.engines.duckduckgo_definitions &#8212; SearXNG Documentation (2026.2.22+191818b86)</title>
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=6625fa76" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/searxng.css?v=52e4ff28" />
+    <script src="../../../_static/documentation_options.js?v=1b5d919e"></script>
+    <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script data-project="searxng" data-version="2026.2.22+191818b86" src="../../../_static/describe_version.js?v=fa7f30d0"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">SearXNG Documentation (2026.2.22+191818b86)</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" >Module code</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../engines.html" accesskey="U">searx.engines</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">searx.engines.duckduckgo_definitions</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for searx.engines.duckduckgo_definitions</h1><div class="highlight"><pre>
+<span></span><span class="c1"># SPDX-License-Identifier: AGPL-3.0-or-later</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">DuckDuckGo Instant Answer API</span>
+<span class="sd">~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</span>
+
+<span class="sd">The `DDG-API &lt;https://duckduckgo.com/api&gt;`__ is no longer documented but from</span>
+<span class="sd">reverse engineering we can see that some services (e.g. instant answers) still</span>
+<span class="sd">in use from the DDG search engine.</span>
+
+<span class="sd">As far we can say the *instant answers* API does not support languages, or at</span>
+<span class="sd">least we could not find out how language support should work.  It seems that</span>
+<span class="sd">most of the features are based on English terms.</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">t</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">urllib.parse</span><span class="w"> </span><span class="kn">import</span> <span class="n">urlencode</span><span class="p">,</span> <span class="n">urlparse</span><span class="p">,</span> <span class="n">urljoin</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">lxml</span><span class="w"> </span><span class="kn">import</span> <span class="n">html</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">searx.data</span><span class="w"> </span><span class="kn">import</span> <span class="n">WIKIDATA_UNITS</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">searx.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">extract_text</span><span class="p">,</span> <span class="n">html_to_text</span><span class="p">,</span> <span class="n">get_string_replaces_function</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">searx.external_urls</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">get_external_url</span><span class="p">,</span>
+    <span class="n">get_earth_coordinates_url</span><span class="p">,</span>
+    <span class="n">area_to_osm_zoom</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">searx.result_types</span><span class="w"> </span><span class="kn">import</span> <span class="n">EngineResults</span>
+
+<span class="k">if</span> <span class="n">t</span><span class="o">.</span><span class="n">TYPE_CHECKING</span><span class="p">:</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">searx.extended_types</span><span class="w"> </span><span class="kn">import</span> <span class="n">SXNG_Response</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">searx.search.processors</span><span class="w"> </span><span class="kn">import</span> <span class="n">OnlineParams</span>
+
+<span class="n">about</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;website&quot;</span><span class="p">:</span> <span class="s2">&quot;https://duckduckgo.com/&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;wikidata_id&quot;</span><span class="p">:</span> <span class="s2">&quot;Q12805&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;official_api_documentation&quot;</span><span class="p">:</span> <span class="s2">&quot;https://duckduckgo.com/api&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;use_official_api&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="s2">&quot;require_api_key&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="s2">&quot;results&quot;</span><span class="p">:</span> <span class="s2">&quot;JSON&quot;</span><span class="p">,</span>
+<span class="p">}</span>
+
+
+<span class="n">URL</span> <span class="o">=</span> <span class="s2">&quot;https://api.duckduckgo.com/&quot;</span> <span class="o">+</span> <span class="s2">&quot;?</span><span class="si">{query}</span><span class="s2">&amp;format=json&amp;pretty=0&amp;no_redirect=1&amp;d=1&quot;</span>
+
+<span class="n">WIKIDATA_PREFIX</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;http://www.wikidata.org/entity/&quot;</span><span class="p">,</span> <span class="s2">&quot;https://www.wikidata.org/entity/&quot;</span><span class="p">]</span>
+
+<span class="n">replace_http_by_https</span> <span class="o">=</span> <span class="n">get_string_replaces_function</span><span class="p">({</span><span class="s2">&quot;http:&quot;</span><span class="p">:</span> <span class="s2">&quot;https:&quot;</span><span class="p">})</span>
+
+
+<div class="viewcode-block" id="is_broken_text">
+<a class="viewcode-back" href="../../../dev/engines/online/duckduckgo.html#searx.engines.duckduckgo_definitions.is_broken_text">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">is_broken_text</span><span class="p">(</span><span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;duckduckgo may return something like ``&lt;a href=&quot;xxxx&quot;&gt;http://somewhere Related website&lt;a/&gt;``</span>
+
+<span class="sd">    The href URL is broken, the &quot;Related website&quot; may contains some HTML.</span>
+
+<span class="sd">    The best solution seems to ignore these results.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">text</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;http&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="s2">&quot; &quot;</span> <span class="ow">in</span> <span class="n">text</span></div>
+
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">result_to_text</span><span class="p">(</span><span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">htmlResult</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="c1"># TODO : remove result ending with &quot;Meaning&quot; or &quot;Category&quot;  # pylint: disable=fixme</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="n">dom</span> <span class="o">=</span> <span class="n">html</span><span class="o">.</span><span class="n">fromstring</span><span class="p">(</span><span class="n">htmlResult</span><span class="p">)</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="n">dom</span><span class="o">.</span><span class="n">xpath</span><span class="p">(</span><span class="s2">&quot;//a&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">extract_text</span><span class="p">(</span><span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">text</span>
+    <span class="k">if</span> <span class="n">result</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">is_broken_text</span><span class="p">(</span><span class="n">result</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">result</span>
+    <span class="k">return</span> <span class="kc">None</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">request</span><span class="p">(</span><span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">params</span><span class="p">:</span> <span class="s2">&quot;OnlineParams&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="n">params</span><span class="p">[</span><span class="s2">&quot;url&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">URL</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">query</span><span class="o">=</span><span class="n">urlencode</span><span class="p">({</span><span class="s2">&quot;q&quot;</span><span class="p">:</span> <span class="n">query</span><span class="p">}))</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">response</span><span class="p">(</span><span class="n">resp</span><span class="p">:</span> <span class="s2">&quot;SXNG_Response&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">EngineResults</span><span class="p">:</span>
+    <span class="c1"># pylint: disable=too-many-locals, too-many-branches, too-many-statements</span>
+    <span class="n">results</span> <span class="o">=</span> <span class="n">EngineResults</span><span class="p">()</span>
+    <span class="n">search_res</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">resp</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+
+    <span class="c1"># search_res.get(&quot;Entity&quot;) possible values (not exhaustive) :</span>
+    <span class="c1"># * continent / country / department / location / waterfall</span>
+    <span class="c1"># * actor / musician / artist</span>
+    <span class="c1"># * book / performing art / film / television  / media franchise / concert tour / playwright</span>
+    <span class="c1"># * prepared food</span>
+    <span class="c1"># * website / software / os / programming language / file format / software engineer</span>
+    <span class="c1"># * company</span>
+
+    <span class="n">content</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="n">heading</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">search_res</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Heading&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+    <span class="n">attributes</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span> <span class="o">|</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]]</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">urls</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span> <span class="o">|</span> <span class="nb">bool</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">infobox_id</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">relatedTopics</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span> <span class="o">|</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]]]</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="c1"># add answer if there is one</span>
+    <span class="n">answer</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">search_res</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Answer&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">answer</span><span class="p">:</span>
+        <span class="n">answer_type</span> <span class="o">=</span> <span class="n">search_res</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;AnswerType&quot;</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;AnswerType=&#39;</span><span class="si">%s</span><span class="s2">&#39; Answer=&#39;</span><span class="si">%s</span><span class="s2">&#39;&quot;</span><span class="p">,</span> <span class="n">answer_type</span><span class="p">,</span> <span class="n">answer</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">answer</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">and</span> <span class="n">answer_type</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;calc&quot;</span><span class="p">,</span> <span class="s2">&quot;ip&quot;</span><span class="p">]:</span>
+            <span class="n">results</span><span class="o">.</span><span class="n">add</span><span class="p">(</span>
+                <span class="n">results</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">Answer</span><span class="p">(</span>
+                    <span class="n">answer</span><span class="o">=</span><span class="n">html_to_text</span><span class="p">(</span><span class="n">answer</span><span class="p">),</span>
+                    <span class="n">url</span><span class="o">=</span><span class="n">search_res</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;AbstractURL&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">),</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
+
+    <span class="c1"># add infobox</span>
+    <span class="k">if</span> <span class="s2">&quot;Definition&quot;</span> <span class="ow">in</span> <span class="n">search_res</span><span class="p">:</span>
+        <span class="n">content</span> <span class="o">=</span> <span class="n">content</span> <span class="o">+</span> <span class="n">search_res</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Definition&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="s2">&quot;Abstract&quot;</span> <span class="ow">in</span> <span class="n">search_res</span><span class="p">:</span>
+        <span class="n">content</span> <span class="o">=</span> <span class="n">content</span> <span class="o">+</span> <span class="n">search_res</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Abstract&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+
+    <span class="c1"># image</span>
+    <span class="n">image</span> <span class="o">=</span> <span class="n">search_res</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Image&quot;</span><span class="p">)</span>
+    <span class="n">image</span> <span class="o">=</span> <span class="kc">None</span> <span class="k">if</span> <span class="n">image</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span> <span class="k">else</span> <span class="n">image</span>
+    <span class="k">if</span> <span class="n">image</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">urlparse</span><span class="p">(</span><span class="n">image</span><span class="p">)</span><span class="o">.</span><span class="n">netloc</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
+        <span class="n">image</span> <span class="o">=</span> <span class="n">urljoin</span><span class="p">(</span><span class="s2">&quot;https://duckduckgo.com&quot;</span><span class="p">,</span> <span class="n">image</span><span class="p">)</span>
+
+    <span class="c1"># Official website, Wikipedia page</span>
+    <span class="n">_result_list</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="n">search_res</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Results&quot;</span><span class="p">,</span> <span class="p">[])</span>  <span class="c1"># pyright: ignore[reportAssignmentType]</span>
+
+    <span class="k">for</span> <span class="n">ddg_result</span> <span class="ow">in</span> <span class="n">_result_list</span><span class="p">:</span>
+        <span class="n">firstURL</span> <span class="o">=</span> <span class="n">ddg_result</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;FirstURL&quot;</span><span class="p">)</span>
+        <span class="n">text</span> <span class="o">=</span> <span class="n">ddg_result</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Text&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">firstURL</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">text</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">urls</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="n">text</span><span class="p">,</span> <span class="s2">&quot;url&quot;</span><span class="p">:</span> <span class="n">firstURL</span><span class="p">})</span>
+            <span class="n">results</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">results</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">LegacyResult</span><span class="p">({</span><span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="n">heading</span><span class="p">,</span> <span class="s2">&quot;url&quot;</span><span class="p">:</span> <span class="n">firstURL</span><span class="p">}))</span>
+
+    <span class="c1"># related topics</span>
+    <span class="n">_result_list</span> <span class="o">=</span> <span class="n">search_res</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;RelatedTopics&quot;</span><span class="p">,</span> <span class="p">[])</span>  <span class="c1"># pyright: ignore[reportAssignmentType]</span>
+    <span class="k">for</span> <span class="n">ddg_result</span> <span class="ow">in</span> <span class="n">_result_list</span><span class="p">:</span>
+        <span class="k">if</span> <span class="s2">&quot;FirstURL&quot;</span> <span class="ow">in</span> <span class="n">ddg_result</span><span class="p">:</span>
+            <span class="n">firstURL</span> <span class="o">=</span> <span class="n">ddg_result</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;FirstURL&quot;</span><span class="p">)</span>
+            <span class="n">text</span> <span class="o">=</span> <span class="n">ddg_result</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Text&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">is_broken_text</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+                <span class="n">suggestion</span> <span class="o">=</span> <span class="n">result_to_text</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">ddg_result</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Result&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">))</span>
+                <span class="k">if</span> <span class="n">suggestion</span> <span class="o">!=</span> <span class="n">heading</span> <span class="ow">and</span> <span class="n">suggestion</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="n">results</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">results</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">LegacyResult</span><span class="p">({</span><span class="s2">&quot;suggestion&quot;</span><span class="p">:</span> <span class="n">suggestion</span><span class="p">}))</span>
+        <span class="k">elif</span> <span class="s2">&quot;Topics&quot;</span> <span class="ow">in</span> <span class="n">ddg_result</span><span class="p">:</span>
+            <span class="n">suggestions</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">relatedTopics</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="n">ddg_result</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Name&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">),</span> <span class="s2">&quot;suggestions&quot;</span><span class="p">:</span> <span class="n">suggestions</span><span class="p">})</span>
+            <span class="n">_topic_results</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="n">ddg_result</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Topics&quot;</span><span class="p">,</span> <span class="p">[])</span>  <span class="c1"># pyright: ignore[reportAssignmentType]</span>
+            <span class="k">for</span> <span class="n">topic_result</span> <span class="ow">in</span> <span class="n">_topic_results</span><span class="p">:</span>
+                <span class="n">suggestion</span> <span class="o">=</span> <span class="n">result_to_text</span><span class="p">(</span><span class="n">topic_result</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Text&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">),</span> <span class="n">topic_result</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Result&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">))</span>
+                <span class="k">if</span> <span class="n">suggestion</span> <span class="o">!=</span> <span class="n">heading</span> <span class="ow">and</span> <span class="n">suggestion</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="n">suggestions</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">suggestion</span><span class="p">)</span>
+
+    <span class="c1"># abstract</span>
+    <span class="n">abstractURL</span> <span class="o">=</span> <span class="n">search_res</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;AbstractURL&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">abstractURL</span> <span class="o">!=</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
+        <span class="c1"># add as result ? problem always in english</span>
+        <span class="n">infobox_id</span> <span class="o">=</span> <span class="n">abstractURL</span>
+        <span class="n">urls</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="n">search_res</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;AbstractSource&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">),</span> <span class="s2">&quot;url&quot;</span><span class="p">:</span> <span class="n">abstractURL</span><span class="p">,</span> <span class="s2">&quot;official&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">})</span>
+        <span class="n">results</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">results</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">LegacyResult</span><span class="p">({</span><span class="s2">&quot;url&quot;</span><span class="p">:</span> <span class="n">abstractURL</span><span class="p">,</span> <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="n">heading</span><span class="p">}))</span>
+
+    <span class="c1"># definition</span>
+    <span class="n">definitionURL</span> <span class="o">=</span> <span class="n">search_res</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;DefinitionURL&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">definitionURL</span> <span class="o">!=</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
+        <span class="c1"># add as result ? as answer ? problem always in english</span>
+        <span class="n">infobox_id</span> <span class="o">=</span> <span class="n">definitionURL</span>
+        <span class="n">urls</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="n">search_res</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;DefinitionSource&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">),</span> <span class="s2">&quot;url&quot;</span><span class="p">:</span> <span class="n">definitionURL</span><span class="p">})</span>
+
+    <span class="c1"># to merge with wikidata&#39;s infobox</span>
+    <span class="k">if</span> <span class="n">infobox_id</span><span class="p">:</span>
+        <span class="n">infobox_id</span> <span class="o">=</span> <span class="n">replace_http_by_https</span><span class="p">(</span><span class="n">infobox_id</span><span class="p">)</span>
+
+    <span class="c1"># attributes</span>
+    <span class="c1"># some will be converted to urls</span>
+    <span class="k">if</span> <span class="s2">&quot;Infobox&quot;</span> <span class="ow">in</span> <span class="n">search_res</span><span class="p">:</span>
+        <span class="n">infobox</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">t</span><span class="o">.</span><span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="n">search_res</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Infobox&quot;</span><span class="p">,</span> <span class="p">{})</span>  <span class="c1"># pyright: ignore[reportAssignmentType]</span>
+        <span class="k">if</span> <span class="s2">&quot;content&quot;</span> <span class="ow">in</span> <span class="n">infobox</span><span class="p">:</span>
+            <span class="n">osm_zoom</span> <span class="o">=</span> <span class="mi">17</span>
+            <span class="n">coordinates</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="k">for</span> <span class="n">info</span> <span class="ow">in</span> <span class="n">infobox</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;content&quot;</span><span class="p">,</span> <span class="p">{}):</span>
+                <span class="n">data_type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">info</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;data_type&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+                <span class="n">data_label</span> <span class="o">=</span> <span class="n">info</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;label&quot;</span><span class="p">)</span>
+                <span class="n">data_value</span> <span class="o">=</span> <span class="n">info</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;value&quot;</span><span class="p">)</span>
+
+                <span class="c1"># Workaround: ddg may return a double quote</span>
+                <span class="k">if</span> <span class="n">data_value</span> <span class="o">==</span> <span class="s1">&#39;&quot;&quot;&#39;</span><span class="p">:</span>
+                    <span class="k">continue</span>
+
+                <span class="c1"># Is it an external URL ?</span>
+                <span class="c1"># * imdb_id / facebook_profile / youtube_channel / youtube_video / twitter_profile</span>
+                <span class="c1"># * instagram_profile / rotten_tomatoes / spotify_artist_id / itunes_artist_id / soundcloud_id</span>
+                <span class="c1"># * netflix_id</span>
+                <span class="n">external_url</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">get_external_url</span><span class="p">(</span><span class="n">data_type</span><span class="p">,</span> <span class="n">data_value</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
+                <span class="k">if</span> <span class="n">external_url</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="n">urls</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="n">data_label</span><span class="p">,</span> <span class="s2">&quot;url&quot;</span><span class="p">:</span> <span class="n">external_url</span><span class="p">})</span>
+                <span class="k">elif</span> <span class="n">data_type</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;instance&quot;</span><span class="p">,</span> <span class="s2">&quot;wiki_maps_trigger&quot;</span><span class="p">,</span> <span class="s2">&quot;google_play_artist_id&quot;</span><span class="p">]:</span>
+                    <span class="c1"># ignore instance: Wikidata value from &quot;Instance Of&quot; (Qxxxx)</span>
+                    <span class="c1"># ignore wiki_maps_trigger: reference to a javascript</span>
+                    <span class="c1"># ignore google_play_artist_id: service shutdown</span>
+                    <span class="k">pass</span>
+                <span class="k">elif</span> <span class="n">data_type</span> <span class="o">==</span> <span class="s2">&quot;string&quot;</span> <span class="ow">and</span> <span class="n">data_label</span> <span class="o">==</span> <span class="s2">&quot;Website&quot;</span><span class="p">:</span>
+                    <span class="c1"># There is already an URL for the website</span>
+                    <span class="k">pass</span>
+                <span class="k">elif</span> <span class="n">data_type</span> <span class="o">==</span> <span class="s2">&quot;area&quot;</span><span class="p">:</span>
+                    <span class="n">attributes</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s2">&quot;label&quot;</span><span class="p">:</span> <span class="n">data_label</span><span class="p">,</span> <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="n">area_to_str</span><span class="p">(</span><span class="n">data_value</span><span class="p">),</span> <span class="s2">&quot;entity&quot;</span><span class="p">:</span> <span class="s2">&quot;P2046&quot;</span><span class="p">})</span>
+                    <span class="n">osm_zoom</span> <span class="o">=</span> <span class="n">area_to_osm_zoom</span><span class="p">(</span><span class="n">data_value</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;amount&quot;</span><span class="p">))</span>
+                <span class="k">elif</span> <span class="n">data_type</span> <span class="o">==</span> <span class="s2">&quot;coordinates&quot;</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">data_value</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;globe&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;http://www.wikidata.org/entity/Q2&quot;</span><span class="p">:</span>
+                        <span class="c1"># coordinate on Earth</span>
+                        <span class="c1"># get the zoom information from the area</span>
+                        <span class="n">coordinates</span> <span class="o">=</span> <span class="n">info</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="c1"># coordinate NOT on Earth</span>
+                        <span class="n">attributes</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s2">&quot;label&quot;</span><span class="p">:</span> <span class="n">data_label</span><span class="p">,</span> <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="n">data_value</span><span class="p">,</span> <span class="s2">&quot;entity&quot;</span><span class="p">:</span> <span class="s2">&quot;P625&quot;</span><span class="p">})</span>
+                <span class="k">elif</span> <span class="n">data_type</span> <span class="o">==</span> <span class="s2">&quot;string&quot;</span><span class="p">:</span>
+                    <span class="n">attributes</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s2">&quot;label&quot;</span><span class="p">:</span> <span class="n">data_label</span><span class="p">,</span> <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="n">data_value</span><span class="p">})</span>
+
+            <span class="k">if</span> <span class="n">coordinates</span><span class="p">:</span>
+                <span class="n">data_label</span> <span class="o">=</span> <span class="n">coordinates</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;label&quot;</span><span class="p">)</span>
+                <span class="n">data_value</span> <span class="o">=</span> <span class="n">coordinates</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;value&quot;</span><span class="p">)</span>
+                <span class="n">latitude</span> <span class="o">=</span> <span class="n">data_value</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;latitude&quot;</span><span class="p">)</span>
+                <span class="n">longitude</span> <span class="o">=</span> <span class="n">data_value</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;longitude&quot;</span><span class="p">)</span>
+                <span class="n">_url</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">get_earth_coordinates_url</span><span class="p">(</span><span class="n">latitude</span><span class="p">,</span> <span class="n">longitude</span><span class="p">,</span> <span class="n">osm_zoom</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
+                <span class="n">urls</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;OpenStreetMap&quot;</span><span class="p">,</span> <span class="s2">&quot;url&quot;</span><span class="p">:</span> <span class="n">_url</span><span class="p">,</span> <span class="s2">&quot;entity&quot;</span><span class="p">:</span> <span class="s2">&quot;P625&quot;</span><span class="p">})</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">heading</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="c1"># TODO get infobox.meta.value where .label=&quot;article_title&quot;    # pylint: disable=fixme</span>
+        <span class="k">if</span> <span class="n">image</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">attributes</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">urls</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">relatedTopics</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">content</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">results</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">results</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">LegacyResult</span><span class="p">({</span><span class="s2">&quot;url&quot;</span><span class="p">:</span> <span class="n">urls</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;url&quot;</span><span class="p">],</span> <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="n">heading</span><span class="p">,</span> <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="n">content</span><span class="p">}))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">results</span><span class="o">.</span><span class="n">add</span><span class="p">(</span>
+                <span class="n">results</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">LegacyResult</span><span class="p">(</span>
+                    <span class="p">{</span>
+                        <span class="s2">&quot;infobox&quot;</span><span class="p">:</span> <span class="n">heading</span><span class="p">,</span>
+                        <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="n">infobox_id</span><span class="p">,</span>
+                        <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="n">content</span><span class="p">,</span>
+                        <span class="s2">&quot;img_src&quot;</span><span class="p">:</span> <span class="n">image</span><span class="p">,</span>
+                        <span class="s2">&quot;attributes&quot;</span><span class="p">:</span> <span class="n">attributes</span><span class="p">,</span>
+                        <span class="s2">&quot;urls&quot;</span><span class="p">:</span> <span class="n">urls</span><span class="p">,</span>
+                        <span class="s2">&quot;relatedTopics&quot;</span><span class="p">:</span> <span class="n">relatedTopics</span><span class="p">,</span>
+                    <span class="p">}</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">results</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">unit_to_str</span><span class="p">(</span><span class="n">unit</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">prefix</span> <span class="ow">in</span> <span class="n">WIKIDATA_PREFIX</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">unit</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">prefix</span><span class="p">):</span>
+            <span class="n">wikidata_entity</span> <span class="o">=</span> <span class="n">unit</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">prefix</span><span class="p">)</span> <span class="p">:]</span>
+            <span class="n">real_unit</span> <span class="o">=</span> <span class="n">WIKIDATA_UNITS</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">wikidata_entity</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">real_unit</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">unit</span>
+            <span class="k">return</span> <span class="n">real_unit</span><span class="p">[</span><span class="s2">&quot;symbol&quot;</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">unit</span>
+
+
+<div class="viewcode-block" id="area_to_str">
+<a class="viewcode-back" href="../../../dev/engines/online/duckduckgo.html#searx.engines.duckduckgo_definitions.area_to_str">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">area_to_str</span><span class="p">(</span><span class="n">area</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;parse ``{&quot;unit&quot;: &quot;https://www.wikidata.org/entity/Q712226&quot;, &quot;amount&quot;: &quot;+20.99&quot;}``&quot;&quot;&quot;</span>
+    <span class="n">unit</span> <span class="o">=</span> <span class="n">unit_to_str</span><span class="p">(</span><span class="n">area</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;unit&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">unit</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">amount</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">area</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;amount&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">))</span>
+            <span class="k">return</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2"> </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">amount</span><span class="p">,</span> <span class="n">unit</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+            <span class="k">pass</span>
+    <span class="k">return</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2"> </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">area</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;amount&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">),</span> <span class="n">area</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;unit&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">))</span></div>
+
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+  <span id="sidebar-top"></span>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+  
+    
+            <p class="logo"><a href="../../../index.html">
+              <img class="logo" src="../../../_static/searxng-wordmark.svg" alt="Logo of SearXNG"/>
+            </a></p>
+  
+
+<h3><a href="../../../index.html">Table of Contents</a></h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../user/index.html">User information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../own-instance.html">Why use a private instance?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../admin/index.html">Administrator documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../dev/index.html">Developer documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../utils/index.html">DevOps tooling box</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/index.html">Source-Code</a></li>
+</ul>
+
+  <h3>Project Links</h3>
+  <ul>
+    <li><a href="https://github.com/searxng/searxng/tree/master">Source</a>
+  
+    <li><a href="https://github.com/searxng/searxng/wiki">Wiki</a>
+  
+    <li><a href="https://searx.space">Public instances</a>
+  
+    <li><a href="https://github.com/searxng/searxng/issues">Issue Tracker</a>
+  </ul><h3>Navigation</h3>
+<ul>
+  <li><a href="../../../index.html">Overview</a>
+    <ul>
+      <li><a href="../../index.html">Module code</a>
+        <ul>
+      <li><a href="../engines.html">searx.engines</a>
+        
+          
+          </ul>
+      </li></ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright SearXNG team.
+    </div>
+  </body>
+</html>

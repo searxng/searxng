@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Administrator documentation &#8212; SearXNG Documentation (2026.2.22+191818b86)</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=6625fa76" />
+    <link rel="stylesheet" type="text/css" href="../_static/searxng.css?v=52e4ff28" />
+    <script src="../_static/documentation_options.js?v=1b5d919e"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script data-project="searxng" data-version="2026.2.22+191818b86" src="../_static/describe_version.js?v=fa7f30d0"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Settings" href="settings/index.html" />
+    <link rel="prev" title="Why use a private instance?" href="../own-instance.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="settings/index.html" title="Settings"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="../own-instance.html" title="Why use a private instance?"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">SearXNG Documentation (2026.2.22+191818b86)</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Administrator documentation</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="administrator-documentation">
+<h1>Administrator documentation<a class="headerlink" href="#administrator-documentation" title="Link to this heading">¶</a></h1>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="settings/index.html">Settings</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="settings/settings.html"><code class="docutils literal notranslate"><span class="pre">settings.yml</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="settings/settings_engines.html"><code class="docutils literal notranslate"><span class="pre">engines:</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="settings/settings_brand.html"><code class="docutils literal notranslate"><span class="pre">brand:</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="settings/settings_general.html"><code class="docutils literal notranslate"><span class="pre">general:</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="settings/settings_search.html"><code class="docutils literal notranslate"><span class="pre">search:</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="settings/settings_server.html"><code class="docutils literal notranslate"><span class="pre">server:</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="settings/settings_ui.html"><code class="docutils literal notranslate"><span class="pre">ui:</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="settings/settings_redis.html"><code class="docutils literal notranslate"><span class="pre">redis:</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="settings/settings_valkey.html"><code class="docutils literal notranslate"><span class="pre">valkey:</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="settings/settings_outgoing.html"><code class="docutils literal notranslate"><span class="pre">outgoing:</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="settings/settings_categories_as_tabs.html"><code class="docutils literal notranslate"><span class="pre">categories_as_tabs:</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="settings/settings_plugins.html"><code class="docutils literal notranslate"><span class="pre">plugins:</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation-docker.html">Installation container</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="installation-docker.html#installation">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation-docker.html#instancing">Instancing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation-docker.html#volumes">Volumes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation-docker.html#environment-variables">Environment variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation-docker.html#custom-certificates">Custom certificates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation-docker.html#custom-images">Custom images</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="installation-scripts.html">Installation Script</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation-searxng.html">Step by step installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="installation-searxng.html#install-packages">Install packages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation-searxng.html#create-user">Create user</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation-searxng.html#install-searxng-dependencies">Install SearXNG &amp; dependencies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation-searxng.html#configuration">Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation-searxng.html#check">Check</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="installation-granian.html">Granian</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="installation-granian.html#installation">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation-granian.html#configuration">Configuration</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="installation-uwsgi.html">uWSGI</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="installation-uwsgi.html#origin-uwsgi">Origin uWSGI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation-uwsgi.html#distributors">Distributors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation-uwsgi.html#uwsgi-maintenance">uWSGI maintenance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation-uwsgi.html#uwsgi-setup">uWSGI setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation-uwsgi.html#pitfalls-of-the-tyrant-mode">Pitfalls of the Tyrant mode</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="installation-nginx.html">NGINX</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="installation-nginx.html#the-nginx-http-server">The nginx HTTP server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation-nginx.html#nginx-s-searxng-site">NGINX’s SearXNG site</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation-nginx.html#disable-logs">Disable logs</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="installation-apache.html">Apache</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="installation-apache.html#the-apache-http-server">The Apache HTTP server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation-apache.html#apache-s-searxng-site">Apache’s SearXNG site</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation-apache.html#disable-logs">disable logs</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="update-searxng.html">SearXNG maintenance</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="update-searxng.html#how-to-update">How to update</a></li>
+<li class="toctree-l2"><a class="reference internal" href="update-searxng.html#how-to-inspect-debug">How to inspect &amp; debug</a></li>
+<li class="toctree-l2"><a class="reference internal" href="update-searxng.html#migrate-and-stay-tuned">Migrate and stay tuned!</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="answer-captcha.html">Answer CAPTCHA from server’s IP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="searx.favicons.html">Favicons</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="searx.favicons.html#infrastructure">Infrastructure</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.favicons.html#setting-up-the-cache">Setting up the cache</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.favicons.html#proxy-configuration">Proxy configuration</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="searx.limiter.html">Limiter</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="searx.limiter.html#enable-limiter">Enable Limiter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.limiter.html#configure-limiter">Configure Limiter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.limiter.html#limiter-toml"><code class="docutils literal notranslate"><span class="pre">limiter.toml</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.limiter.html#implementation">Implementation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.limiter.html#searx.limiter.LIMITER_CFG_SCHEMA"><code class="docutils literal notranslate"><span class="pre">LIMITER_CFG_SCHEMA</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.limiter.html#searx.limiter.get_cfg"><code class="docutils literal notranslate"><span class="pre">get_cfg()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.limiter.html#searx.limiter.pre_request"><code class="docutils literal notranslate"><span class="pre">pre_request()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.limiter.html#searx.limiter.is_installed"><code class="docutils literal notranslate"><span class="pre">is_installed()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.limiter.html#searx.limiter.initialize"><code class="docutils literal notranslate"><span class="pre">initialize()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">Administration API</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api.html#get-configuration-data">Get configuration data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#embed-search-bar">Embed search bar</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="architecture.html">Architecture</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="architecture.html#uwsgi-setup">uWSGI Setup</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="plugins.html">List of plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="buildhosts.html">Buildhosts</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="buildhosts.html#build-and-development-tools">Build and Development tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="buildhosts.html#build-docs">Build docs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="buildhosts.html#lint-shell-scripts">Lint shell scripts</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+  <span id="sidebar-top"></span>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+  
+    
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/searxng-wordmark.svg" alt="Logo of SearXNG"/>
+            </a></p>
+  
+
+<h3><a href="../index.html">Table of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../user/index.html">User information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../own-instance.html">Why use a private instance?</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Administrator documentation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="settings/index.html">Settings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation-docker.html">Installation container</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation-scripts.html">Installation Script</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation-searxng.html">Step by step installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation-granian.html">Granian</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation-uwsgi.html">uWSGI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation-nginx.html">NGINX</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation-apache.html">Apache</a></li>
+<li class="toctree-l2"><a class="reference internal" href="update-searxng.html">SearXNG maintenance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="answer-captcha.html">Answer CAPTCHA from server’s IP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.favicons.html">Favicons</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.limiter.html">Limiter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html">Administration API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="architecture.html">Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plugins.html">List of plugins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="buildhosts.html">Buildhosts</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../dev/index.html">Developer documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../utils/index.html">DevOps tooling box</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../src/index.html">Source-Code</a></li>
+</ul>
+
+  <h3>Project Links</h3>
+  <ul>
+    <li><a href="https://github.com/searxng/searxng/tree/master">Source</a>
+  
+    <li><a href="https://github.com/searxng/searxng/wiki">Wiki</a>
+  
+    <li><a href="https://searx.space">Public instances</a>
+  
+    <li><a href="https://github.com/searxng/searxng/issues">Issue Tracker</a>
+  </ul><h3>Navigation</h3>
+<ul>
+  <li><a href="../index.html">Overview</a>
+    <ul>
+          <li>Previous: <a href="../own-instance.html" title="previous chapter">Why use a private instance?</a>
+          <li>Next: <a href="settings/index.html" title="next chapter">Settings</a>
+    </ul>
+  </li>
+</ul>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/admin/index.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright SearXNG team.
+    </div>
+  </body>
+</html>

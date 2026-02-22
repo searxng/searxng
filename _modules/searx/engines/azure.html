@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>searx.engines.azure &#8212; SearXNG Documentation (2026.2.22+191818b86)</title>
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=6625fa76" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/searxng.css?v=52e4ff28" />
+    <script src="../../../_static/documentation_options.js?v=1b5d919e"></script>
+    <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script data-project="searxng" data-version="2026.2.22+191818b86" src="../../../_static/describe_version.js?v=fa7f30d0"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">SearXNG Documentation (2026.2.22+191818b86)</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" >Module code</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../engines.html" accesskey="U">searx.engines</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">searx.engines.azure</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for searx.engines.azure</h1><div class="highlight"><pre>
+<span></span><span class="c1"># SPDX-License-Identifier: AGPL-3.0-or-later</span>
+<span class="sd">&quot;&quot;&quot;Engine for Azure resources.  This engine mimics the standard search bar in Azure</span>
+<span class="sd">Portal (for resources and resource groups).</span>
+
+<span class="sd">Configuration</span>
+<span class="sd">=============</span>
+
+<span class="sd">You must `register an application in Microsoft Entra ID`_ and assign it the</span>
+<span class="sd">&#39;Reader&#39; role in your subscription.</span>
+
+<span class="sd">To use this engine, add an entry similar to the following to your engine list in</span>
+<span class="sd">``settings.yml``:</span>
+
+<span class="sd">.. code:: yaml</span>
+
+<span class="sd">   - name: azure</span>
+<span class="sd">     engine: azure</span>
+<span class="sd">     ...</span>
+<span class="sd">     azure_tenant_id: &quot;your_tenant_id&quot;</span>
+<span class="sd">     azure_client_id: &quot;your_client_id&quot;</span>
+<span class="sd">     azure_client_secret: &quot;your_client_secret&quot;</span>
+<span class="sd">     azure_token_expiration_seconds: 5000</span>
+
+<span class="sd">.. _register an application in Microsoft Entra ID:</span>
+<span class="sd">    https://learn.microsoft.com/en-us/entra/identity-platform/quickstart-register-app</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">t</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">searx.enginelib</span><span class="w"> </span><span class="kn">import</span> <span class="n">EngineCache</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">searx.network</span><span class="w"> </span><span class="kn">import</span> <span class="n">post</span> <span class="k">as</span> <span class="n">http_post</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">searx.result_types</span><span class="w"> </span><span class="kn">import</span> <span class="n">EngineResults</span>
+
+<span class="k">if</span> <span class="n">t</span><span class="o">.</span><span class="n">TYPE_CHECKING</span><span class="p">:</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">searx.extended_types</span><span class="w"> </span><span class="kn">import</span> <span class="n">SXNG_Response</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">searx.search.processors</span><span class="w"> </span><span class="kn">import</span> <span class="n">OnlineParams</span>
+
+<span class="n">engine_type</span> <span class="o">=</span> <span class="s2">&quot;online&quot;</span>
+<span class="n">categories</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;it&quot;</span><span class="p">,</span> <span class="s2">&quot;cloud&quot;</span><span class="p">]</span>
+
+<span class="c1"># Default values, should be overridden in settings.yml</span>
+<span class="n">azure_tenant_id</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+<span class="n">azure_client_id</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+<span class="n">azure_client_secret</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+<span class="n">azure_token_expiration_seconds</span> <span class="o">=</span> <span class="mi">5000</span>
+<span class="sd">&quot;&quot;&quot;Time for which an auth token is valid (sec.)&quot;&quot;&quot;</span>
+<span class="n">azure_batch_endpoint</span> <span class="o">=</span> <span class="s2">&quot;https://management.azure.com/batch?api-version=2020-06-01&quot;</span>
+
+<span class="n">about</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;website&quot;</span><span class="p">:</span> <span class="s2">&quot;https://www.portal.azure.com&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;wikidata_id&quot;</span><span class="p">:</span> <span class="s2">&quot;Q725967&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;official_api_documentation&quot;</span><span class="p">:</span> <span class="s2">&quot;https://learn.microsoft.com/en-us/</span><span class="se">\</span>
+<span class="s2">    rest/api/azure-resourcegraph/?view=rest-azureresourcegraph-resourcegraph-2024-04-01&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;use_official_api&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="s2">&quot;require_api_key&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="s2">&quot;results&quot;</span><span class="p">:</span> <span class="s2">&quot;JSON&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;language&quot;</span><span class="p">:</span> <span class="s2">&quot;en&quot;</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="n">CACHE</span><span class="p">:</span> <span class="n">EngineCache</span>
+<span class="sd">&quot;&quot;&quot;Persistent (SQLite) key/value cache that deletes its values after ``expire``</span>
+<span class="sd">seconds.&quot;&quot;&quot;</span>
+
+
+<div class="viewcode-block" id="setup">
+<a class="viewcode-back" href="../../../dev/engines/online/azure.html#searx.engines.azure.setup">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">setup</span><span class="p">(</span><span class="n">engine_settings</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">t</span><span class="o">.</span><span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Initialization of the engine.</span>
+
+<span class="sd">    - Instantiate a cache for this engine (:py:obj:`CACHE`).</span>
+<span class="sd">    - Checks whether the tenant_id, client_id and client_secret are set,</span>
+<span class="sd">      otherwise the engine is inactive.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">global</span> <span class="n">CACHE</span>  <span class="c1"># pylint: disable=global-statement</span>
+    <span class="n">CACHE</span> <span class="o">=</span> <span class="n">EngineCache</span><span class="p">(</span><span class="n">engine_settings</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">])</span>
+
+    <span class="n">missing_opts</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">opt</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;azure_tenant_id&quot;</span><span class="p">,</span> <span class="s2">&quot;azure_client_id&quot;</span><span class="p">,</span> <span class="s2">&quot;azure_client_secret&quot;</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">engine_settings</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">opt</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">):</span>
+            <span class="n">missing_opts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">opt</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">missing_opts</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;missing values for options: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">missing_opts</span><span class="p">))</span>
+        <span class="k">return</span> <span class="kc">False</span>
+    <span class="k">return</span> <span class="kc">True</span></div>
+
+
+
+<div class="viewcode-block" id="authenticate">
+<a class="viewcode-back" href="../../../dev/engines/online/azure.html#searx.engines.azure.authenticate">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">authenticate</span><span class="p">(</span><span class="n">t_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">c_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">c_secret</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Authenticates to Azure using Oauth2 Client Credentials Flow and returns</span>
+<span class="sd">    an access token.&quot;&quot;&quot;</span>
+
+    <span class="n">url</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;https://login.microsoftonline.com/</span><span class="si">{</span><span class="n">t_id</span><span class="si">}</span><span class="s2">/oauth2/v2.0/token&quot;</span>
+    <span class="n">body</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;client_id&quot;</span><span class="p">:</span> <span class="n">c_id</span><span class="p">,</span>
+        <span class="s2">&quot;client_secret&quot;</span><span class="p">:</span> <span class="n">c_secret</span><span class="p">,</span>
+        <span class="s2">&quot;grant_type&quot;</span><span class="p">:</span> <span class="s2">&quot;client_credentials&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;scope&quot;</span><span class="p">:</span> <span class="s2">&quot;https://management.azure.com/.default&quot;</span><span class="p">,</span>
+    <span class="p">}</span>
+
+    <span class="n">resp</span><span class="p">:</span> <span class="n">SXNG_Response</span> <span class="o">=</span> <span class="n">http_post</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">body</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">resp</span><span class="o">.</span><span class="n">status_code</span> <span class="o">!=</span> <span class="mi">200</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Azure authentication failed (status </span><span class="si">{</span><span class="n">resp</span><span class="o">.</span><span class="n">status_code</span><span class="si">}</span><span class="s2">): </span><span class="si">{</span><span class="n">resp</span><span class="o">.</span><span class="n">text</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">resp</span><span class="o">.</span><span class="n">json</span><span class="p">()[</span><span class="s2">&quot;access_token&quot;</span><span class="p">]</span></div>
+
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">get_auth_token</span><span class="p">(</span><span class="n">t_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">c_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">c_secret</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="n">key</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;azure_tenant_id: </span><span class="si">{</span><span class="n">t_id</span><span class="si">:}</span><span class="s2">, azure_client_id: </span><span class="si">{</span><span class="n">c_id</span><span class="si">}</span><span class="s2">, azure_client_secret: </span><span class="si">{</span><span class="n">c_secret</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="n">token</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">CACHE</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">token</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">token</span>
+    <span class="n">token</span> <span class="o">=</span> <span class="n">authenticate</span><span class="p">(</span><span class="n">t_id</span><span class="p">,</span> <span class="n">c_id</span><span class="p">,</span> <span class="n">c_secret</span><span class="p">)</span>
+    <span class="n">CACHE</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">token</span><span class="p">,</span> <span class="n">expire</span><span class="o">=</span><span class="n">azure_token_expiration_seconds</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">token</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">request</span><span class="p">(</span><span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">params</span><span class="p">:</span> <span class="s2">&quot;OnlineParams&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+
+    <span class="n">token</span> <span class="o">=</span> <span class="n">get_auth_token</span><span class="p">(</span><span class="n">azure_tenant_id</span><span class="p">,</span> <span class="n">azure_client_id</span><span class="p">,</span> <span class="n">azure_client_secret</span><span class="p">)</span>
+
+    <span class="n">params</span><span class="p">[</span><span class="s2">&quot;url&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">azure_batch_endpoint</span>
+    <span class="n">params</span><span class="p">[</span><span class="s2">&quot;method&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;POST&quot;</span>
+    <span class="n">params</span><span class="p">[</span><span class="s2">&quot;headers&quot;</span><span class="p">][</span><span class="s2">&quot;Authorization&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Bearer </span><span class="si">{</span><span class="n">token</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="n">params</span><span class="p">[</span><span class="s2">&quot;headers&quot;</span><span class="p">][</span><span class="s2">&quot;Content-Type&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;application/json&quot;</span>
+    <span class="n">params</span><span class="p">[</span><span class="s2">&quot;json&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;requests&quot;</span><span class="p">:</span> <span class="p">[</span>
+            <span class="p">{</span>
+                <span class="s2">&quot;url&quot;</span><span class="p">:</span> <span class="s2">&quot;/providers/Microsoft.ResourceGraph/resources?api-version=2024-04-01&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;httpMethod&quot;</span><span class="p">:</span> <span class="s2">&quot;POST&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;resourceGroups&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;requestHeaderDetails&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;commandName&quot;</span><span class="p">:</span> <span class="s2">&quot;Microsoft.ResourceGraph&quot;</span><span class="p">},</span>
+                <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="p">{</span>
+                    <span class="s2">&quot;query&quot;</span><span class="p">:</span> <span class="p">(</span>
+                        <span class="sa">f</span><span class="s2">&quot;ResourceContainers&quot;</span>
+                        <span class="sa">f</span><span class="s2">&quot; | where (name contains (&#39;</span><span class="si">{</span><span class="n">query</span><span class="si">}</span><span class="s2">&#39;))&quot;</span>
+                        <span class="sa">f</span><span class="s2">&quot; | where (type =~ (&#39;Microsoft.Resources/subscriptions/resourcegroups&#39;))&quot;</span>
+                        <span class="sa">f</span><span class="s2">&quot; | project id,name,type,kind,subscriptionId,resourceGroup&quot;</span>
+                        <span class="sa">f</span><span class="s2">&quot; | extend matchscore = name startswith &#39;</span><span class="si">{</span><span class="n">query</span><span class="si">}</span><span class="s2">&#39;&quot;</span>
+                        <span class="sa">f</span><span class="s2">&quot; | extend normalizedName = tolower(tostring(name))&quot;</span>
+                        <span class="sa">f</span><span class="s2">&quot; | sort by matchscore desc, normalizedName asc&quot;</span>
+                        <span class="sa">f</span><span class="s2">&quot; | take 30&quot;</span>
+                    <span class="p">)</span>
+                <span class="p">},</span>
+            <span class="p">},</span>
+            <span class="p">{</span>
+                <span class="s2">&quot;url&quot;</span><span class="p">:</span> <span class="s2">&quot;/providers/Microsoft.ResourceGraph/resources?api-version=2024-04-01&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;httpMethod&quot;</span><span class="p">:</span> <span class="s2">&quot;POST&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;resources&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;requestHeaderDetails&quot;</span><span class="p">:</span> <span class="p">{</span>
+                    <span class="s2">&quot;commandName&quot;</span><span class="p">:</span> <span class="s2">&quot;Microsoft.ResourceGraph&quot;</span><span class="p">,</span>
+                <span class="p">},</span>
+                <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="p">{</span>
+                    <span class="s2">&quot;query&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;Resources | where name contains &#39;</span><span class="si">{</span><span class="n">query</span><span class="si">}</span><span class="s2">&#39; | take 30&quot;</span><span class="p">,</span>
+                <span class="p">},</span>
+            <span class="p">},</span>
+        <span class="p">]</span>
+    <span class="p">}</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">response</span><span class="p">(</span><span class="n">resp</span><span class="p">:</span> <span class="s2">&quot;SXNG_Response&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">EngineResults</span><span class="p">:</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="n">EngineResults</span><span class="p">()</span>
+    <span class="n">json_data</span> <span class="o">=</span> <span class="n">resp</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+
+    <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">json_data</span><span class="p">[</span><span class="s2">&quot;responses&quot;</span><span class="p">]:</span>
+        <span class="k">if</span> <span class="n">result</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;resourceGroups&quot;</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">data</span> <span class="ow">in</span> <span class="n">result</span><span class="p">[</span><span class="s2">&quot;content&quot;</span><span class="p">][</span><span class="s2">&quot;data&quot;</span><span class="p">]:</span>
+                <span class="n">res</span><span class="o">.</span><span class="n">add</span><span class="p">(</span>
+                    <span class="n">res</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">MainResult</span><span class="p">(</span>
+                        <span class="n">url</span><span class="o">=</span><span class="p">(</span>
+                            <span class="sa">f</span><span class="s2">&quot;https://portal.azure.com/#@/resource&quot;</span>
+                            <span class="sa">f</span><span class="s2">&quot;/subscriptions/</span><span class="si">{</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;subscriptionId&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">/resourceGroups/</span><span class="si">{</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">/overview&quot;</span>
+                        <span class="p">),</span>
+                        <span class="n">title</span><span class="o">=</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">],</span>
+                        <span class="n">content</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Resource Group in Subscription: </span><span class="si">{</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;subscriptionId&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+                    <span class="p">)</span>
+                <span class="p">)</span>
+        <span class="k">elif</span> <span class="n">result</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;resources&quot;</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">data</span> <span class="ow">in</span> <span class="n">result</span><span class="p">[</span><span class="s2">&quot;content&quot;</span><span class="p">][</span><span class="s2">&quot;data&quot;</span><span class="p">]:</span>
+                <span class="n">res</span><span class="o">.</span><span class="n">add</span><span class="p">(</span>
+                    <span class="n">res</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">MainResult</span><span class="p">(</span>
+                        <span class="n">url</span><span class="o">=</span><span class="p">(</span>
+                            <span class="sa">f</span><span class="s2">&quot;https://portal.azure.com/#@/resource&quot;</span>
+                            <span class="sa">f</span><span class="s2">&quot;/subscriptions/</span><span class="si">{</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;subscriptionId&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">/resourceGroups/</span><span class="si">{</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;resourceGroup&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span>
+                            <span class="sa">f</span><span class="s2">&quot;/providers/</span><span class="si">{</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;type&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">/overview&quot;</span>
+                        <span class="p">),</span>
+                        <span class="n">title</span><span class="o">=</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">],</span>
+                        <span class="n">content</span><span class="o">=</span><span class="p">(</span>
+                            <span class="sa">f</span><span class="s2">&quot;Resource of type </span><span class="si">{</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;type&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2"> in Subscription:&quot;</span>
+                            <span class="sa">f</span><span class="s2">&quot; </span><span class="si">{</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;subscriptionId&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">, Resource Group: </span><span class="si">{</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;resourceGroup&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span>
+                        <span class="p">),</span>
+                    <span class="p">)</span>
+                <span class="p">)</span>
+    <span class="k">return</span> <span class="n">res</span>
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+  <span id="sidebar-top"></span>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+  
+    
+            <p class="logo"><a href="../../../index.html">
+              <img class="logo" src="../../../_static/searxng-wordmark.svg" alt="Logo of SearXNG"/>
+            </a></p>
+  
+
+<h3><a href="../../../index.html">Table of Contents</a></h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../user/index.html">User information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../own-instance.html">Why use a private instance?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../admin/index.html">Administrator documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../dev/index.html">Developer documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../utils/index.html">DevOps tooling box</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/index.html">Source-Code</a></li>
+</ul>
+
+  <h3>Project Links</h3>
+  <ul>
+    <li><a href="https://github.com/searxng/searxng/tree/master">Source</a>
+  
+    <li><a href="https://github.com/searxng/searxng/wiki">Wiki</a>
+  
+    <li><a href="https://searx.space">Public instances</a>
+  
+    <li><a href="https://github.com/searxng/searxng/issues">Issue Tracker</a>
+  </ul><h3>Navigation</h3>
+<ul>
+  <li><a href="../../../index.html">Overview</a>
+    <ul>
+      <li><a href="../../index.html">Module code</a>
+        <ul>
+      <li><a href="../engines.html">searx.engines</a>
+        
+          
+          </ul>
+      </li></ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright SearXNG team.
+    </div>
+  </body>
+</html>

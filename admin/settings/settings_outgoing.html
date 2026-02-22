@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>outgoing: &#8212; SearXNG Documentation (2026.2.22+191818b86)</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=6625fa76" />
+    <link rel="stylesheet" type="text/css" href="../../_static/searxng.css?v=52e4ff28" />
+    <script src="../../_static/documentation_options.js?v=1b5d919e"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script data-project="searxng" data-version="2026.2.22+191818b86" src="../../_static/describe_version.js?v=fa7f30d0"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="categories_as_tabs:" href="settings_categories_as_tabs.html" />
+    <link rel="prev" title="valkey:" href="settings_valkey.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="settings_categories_as_tabs.html" title="categories_as_tabs:"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="settings_valkey.html" title="valkey:"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">SearXNG Documentation (2026.2.22+191818b86)</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >Administrator documentation</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="index.html" accesskey="U">Settings</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href=""><code class="docutils literal notranslate"><span class="pre">outgoing:</span></code></a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="outgoing">
+<span id="settings-outgoing"></span><h1><code class="docutils literal notranslate"><span class="pre">outgoing:</span></code><a class="headerlink" href="#outgoing" title="Link to this heading">¶</a></h1>
+<p>Communication with search engines.</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">outgoing</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">request_timeout</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2.0</span><span class="w">       </span><span class="c1"># default timeout in seconds, can be override by engine</span>
+<span class="w">  </span><span class="nt">max_request_timeout</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10.0</span><span class="w">  </span><span class="c1"># the maximum timeout in seconds</span>
+<span class="w">  </span><span class="nt">useragent_suffix</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;&quot;</span><span class="w">       </span><span class="c1"># information like an email address to the administrator</span>
+<span class="w">  </span><span class="nt">pool_connections</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">100</span><span class="w">      </span><span class="c1"># Maximum number of allowable connections, or null</span>
+<span class="w">                             </span><span class="c1"># for no limits. The default is 100.</span>
+<span class="w">  </span><span class="nt">pool_maxsize</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10</span><span class="w">           </span><span class="c1"># Number of allowable keep-alive connections, or null</span>
+<span class="w">                             </span><span class="c1"># to always allow. The default is 10.</span>
+<span class="w">  </span><span class="nt">enable_http2</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w">         </span><span class="c1"># See https://www.python-httpx.org/http2/</span>
+<span class="w">  </span><span class="c1"># uncomment below section if you want to use a custom server certificate</span>
+<span class="w">  </span><span class="c1"># see https://www.python-httpx.org/advanced/#changing-the-verification-defaults</span>
+<span class="w">  </span><span class="c1"># and https://www.python-httpx.org/compatibility/#ssl-configuration</span>
+<span class="w">  </span><span class="c1">#  verify: ~/.mitmproxy/mitmproxy-ca-cert.cer</span>
+<span class="w">  </span><span class="c1">#</span>
+<span class="w">  </span><span class="c1"># uncomment below section if you want to use a proxyq see: SOCKS proxies</span>
+<span class="w">  </span><span class="c1">#   https://2.python-requests.org/en/latest/user/advanced/#proxies</span>
+<span class="w">  </span><span class="c1"># are also supported: see</span>
+<span class="w">  </span><span class="c1">#   https://2.python-requests.org/en/latest/user/advanced/#socks</span>
+<span class="w">  </span><span class="c1">#</span>
+<span class="w">  </span><span class="c1">#  proxies:</span>
+<span class="w">  </span><span class="c1">#    all://:</span>
+<span class="w">  </span><span class="c1">#      - http://proxy1:8080</span>
+<span class="w">  </span><span class="c1">#      - http://proxy2:8080</span>
+<span class="w">  </span><span class="c1">#</span>
+<span class="w">  </span><span class="c1">#  using_tor_proxy: true</span>
+<span class="w">  </span><span class="c1">#</span>
+<span class="w">  </span><span class="c1"># Extra seconds to add in order to account for the time taken by the proxy</span>
+<span class="w">  </span><span class="c1">#</span>
+<span class="w">  </span><span class="c1">#  extra_proxy_timeout: 10.0</span>
+<span class="w">  </span><span class="c1">#</span>
+</pre></div>
+</div>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">request_timeout</span></code> :</dt><dd><p>Global timeout of the requests made to others engines in seconds.  A bigger
+timeout will allow to wait for answers from slow engines, but in consequence
+will slow SearXNG reactivity (the result page may take the time specified in the
+timeout to load).  Can be override by <code class="docutils literal notranslate"><span class="pre">timeout</span></code> in the <a class="reference internal" href="settings_engines.html#settings-engines"><span class="std std-ref">engines:</span></a>.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">useragent_suffix</span></code> :</dt><dd><p>Suffix to the user-agent SearXNG uses to send requests to others engines.  If an
+engine wish to block you, a contact info here may be useful to avoid that.</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">pool_maxsize</span></code>:</dt><dd><p>Number of allowable keep-alive connections, or <code class="docutils literal notranslate"><span class="pre">null</span></code> to always allow.  The
+default is 10.  See <code class="docutils literal notranslate"><span class="pre">max_keepalive_connections</span></code> <a class="reference external" href="https://www.python-httpx.org/advanced/#pool-limit-configuration">Pool limit configuration</a>.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">pool_connections</span></code> :</dt><dd><p>Maximum number of allowable connections, or <code class="docutils literal notranslate"><span class="pre">null</span></code> # for no limits.  The
+default is 100.  See <code class="docutils literal notranslate"><span class="pre">max_connections</span></code> <a class="reference external" href="https://www.python-httpx.org/advanced/#pool-limit-configuration">Pool limit configuration</a>.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">keepalive_expiry</span></code> :</dt><dd><p>Number of seconds to keep a connection in the pool.  By default 5.0 seconds.
+See <code class="docutils literal notranslate"><span class="pre">keepalive_expiry</span></code> <a class="reference external" href="https://www.python-httpx.org/advanced/#pool-limit-configuration">Pool limit configuration</a>.</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">proxies</span></code> :</dt><dd><p>Define one or more proxies you wish to use, see <a class="reference external" href="https://www.python-httpx.org/advanced/#http-proxying">httpx proxies</a>.
+If there are more than one proxy for one protocol (http, https),
+requests to the engines are distributed in a round-robin fashion.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">source_ips</span></code> :</dt><dd><p>If you use multiple network interfaces, define from which IP the requests must
+be made. Example:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">0.0.0.0</span></code> any local IPv4 address.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">::</span></code> any local IPv6 address.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">192.168.0.1</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">[</span> <span class="pre">192.168.0.1,</span> <span class="pre">192.168.0.2</span> <span class="pre">]</span></code> these two specific IP addresses</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">fe80::60a2:1691:e5a2:ee1f</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">fe80::60a2:1691:e5a2:ee1f/126</span></code> all IP addresses in this network.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">[</span> <span class="pre">192.168.0.1,</span> <span class="pre">fe80::/126</span> <span class="pre">]</span></code></p></li>
+</ul>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">retries</span></code> :</dt><dd><p>Number of retry in case of an HTTP error.  On each retry, SearXNG uses an
+different proxy and source ip.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">enable_http2</span></code> :</dt><dd><p>Enable by default. Set to <code class="docutils literal notranslate"><span class="pre">false</span></code> to disable HTTP/2.</p>
+</dd>
+</dl>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">verify</span></code>:<span class="classifier"><code class="docutils literal notranslate"><span class="pre">$SSL_CERT_FILE</span></code>, <code class="docutils literal notranslate"><span class="pre">$SSL_CERT_DIR</span></code></span></dt><dd><p>Allow to specify a path to certificate.
+see <a class="reference external" href="https://www.python-httpx.org/advanced/#changing-the-verification-defaults">httpx verification defaults</a>.</p>
+<p>In addition to <code class="docutils literal notranslate"><span class="pre">verify</span></code>, SearXNG supports the <code class="docutils literal notranslate"><span class="pre">$SSL_CERT_FILE</span></code> (for a file) and
+<code class="docutils literal notranslate"><span class="pre">$SSL_CERT_DIR</span></code> (for a directory) OpenSSL variables.
+see <a class="reference external" href="https://www.python-httpx.org/compatibility/#ssl-configuration">httpx ssl configuration</a>.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">max_redirects</span></code> :</dt><dd><p>30 by default. Maximum redirect before it is an error.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">using_tor_proxy</span></code> :</dt><dd><p>Using tor proxy (<code class="docutils literal notranslate"><span class="pre">true</span></code>) or not (<code class="docutils literal notranslate"><span class="pre">false</span></code>) for all engines.  The default is
+<code class="docutils literal notranslate"><span class="pre">false</span></code> and can be overwritten in the <a class="reference internal" href="settings_engines.html#settings-engines"><span class="std std-ref">engines:</span></a></p>
+</dd>
+</dl>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+  <span id="sidebar-top"></span>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+  
+    
+            <p class="logo"><a href="../../index.html">
+              <img class="logo" src="../../_static/searxng-wordmark.svg" alt="Logo of SearXNG"/>
+            </a></p>
+  
+
+<h3><a href="../../index.html">Table of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../user/index.html">User information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../own-instance.html">Why use a private instance?</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Administrator documentation</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Settings</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="settings.html"><code class="docutils literal notranslate"><span class="pre">settings.yml</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="settings_engines.html"><code class="docutils literal notranslate"><span class="pre">engines:</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="settings_brand.html"><code class="docutils literal notranslate"><span class="pre">brand:</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="settings_general.html"><code class="docutils literal notranslate"><span class="pre">general:</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="settings_search.html"><code class="docutils literal notranslate"><span class="pre">search:</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="settings_server.html"><code class="docutils literal notranslate"><span class="pre">server:</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="settings_ui.html"><code class="docutils literal notranslate"><span class="pre">ui:</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="settings_redis.html"><code class="docutils literal notranslate"><span class="pre">redis:</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="settings_valkey.html"><code class="docutils literal notranslate"><span class="pre">valkey:</span></code></a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#"><code class="docutils literal notranslate"><span class="pre">outgoing:</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="settings_categories_as_tabs.html"><code class="docutils literal notranslate"><span class="pre">categories_as_tabs:</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="settings_plugins.html"><code class="docutils literal notranslate"><span class="pre">plugins:</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation-docker.html">Installation container</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation-scripts.html">Installation Script</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation-searxng.html">Step by step installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation-granian.html">Granian</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation-uwsgi.html">uWSGI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation-nginx.html">NGINX</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation-apache.html">Apache</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../update-searxng.html">SearXNG maintenance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../answer-captcha.html">Answer CAPTCHA from server’s IP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../searx.favicons.html">Favicons</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../searx.limiter.html">Limiter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html">Administration API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../architecture.html">Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../plugins.html">List of plugins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../buildhosts.html">Buildhosts</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../dev/index.html">Developer documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../utils/index.html">DevOps tooling box</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../src/index.html">Source-Code</a></li>
+</ul>
+
+  <h3>Project Links</h3>
+  <ul>
+    <li><a href="https://github.com/searxng/searxng/tree/master">Source</a>
+  
+    <li><a href="https://github.com/searxng/searxng/wiki">Wiki</a>
+  
+    <li><a href="https://searx.space">Public instances</a>
+  
+    <li><a href="https://github.com/searxng/searxng/issues">Issue Tracker</a>
+  </ul><h3>Navigation</h3>
+<ul>
+  <li><a href="../../index.html">Overview</a>
+    <ul>
+      <li><a href="../index.html">Administrator documentation</a>
+        <ul>
+      <li><a href="index.html">Settings</a>
+        <ul>
+          <li>Previous: <a href="settings_valkey.html" title="previous chapter"><code class="docutils literal notranslate"><span class="pre">valkey:</span></code></a>
+          <li>Next: <a href="settings_categories_as_tabs.html" title="next chapter"><code class="docutils literal notranslate"><span class="pre">categories_as_tabs:</span></code></a></ul>
+      </li></ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/admin/settings/settings_outgoing.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright SearXNG team.
+    </div>
+  </body>
+</html>

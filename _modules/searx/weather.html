@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>searx.weather &#8212; SearXNG Documentation (2026.2.22+191818b86)</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=6625fa76" />
+    <link rel="stylesheet" type="text/css" href="../../_static/searxng.css?v=52e4ff28" />
+    <script src="../../_static/documentation_options.js?v=1b5d919e"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script data-project="searxng" data-version="2026.2.22+191818b86" src="../../_static/describe_version.js?v=fa7f30d0"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">SearXNG Documentation (2026.2.22+191818b86)</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">searx.weather</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for searx.weather</h1><div class="highlight"><pre>
+<span></span><span class="c1"># SPDX-License-Identifier: AGPL-3.0-or-later</span>
+<span class="sd">&quot;&quot;&quot;Implementations used for weather conditions and forecast.&quot;&quot;&quot;</span>
+<span class="c1"># pylint: disable=too-few-public-methods</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;symbol_url&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Temperature&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Pressure&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;WindSpeed&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;RelativeHumidity&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Compass&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;WeatherConditionType&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;DateTime&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;GeoLocation&quot;</span><span class="p">,</span>
+<span class="p">]</span>
+
+<span class="c1"># msgspec: note that if using PEP 563 “postponed evaluation of annotations”</span>
+<span class="c1"># (e.g. from __future__ import annotations) only the following spellings will</span>
+<span class="c1"># work: https://jcristharif.com/msgspec/structs.html#class-variables</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">ClassVar</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">t</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">base64</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">datetime</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">zoneinfo</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">urllib.parse</span><span class="w"> </span><span class="kn">import</span> <span class="n">quote_plus</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">babel</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">babel.numbers</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">babel.dates</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">babel.languages</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">flask_babel</span>  <span class="c1"># pyright: ignore[reportMissingTypeStubs]</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">msgspec</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">searx</span><span class="w"> </span><span class="kn">import</span> <span class="n">network</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">searx.cache</span><span class="w"> </span><span class="kn">import</span> <span class="n">ExpireCache</span><span class="p">,</span> <span class="n">ExpireCacheCfg</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">searx.extended_types</span><span class="w"> </span><span class="kn">import</span> <span class="n">sxng_request</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">searx.wikidata_units</span><span class="w"> </span><span class="kn">import</span> <span class="n">convert_to_si</span><span class="p">,</span> <span class="n">convert_from_si</span>
+
+<span class="n">WEATHER_DATA_CACHE</span><span class="p">:</span> <span class="n">ExpireCache</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="sd">&quot;&quot;&quot;A simple cache for weather data (geo-locations, icons, ..)&quot;&quot;&quot;</span>
+
+<span class="n">YR_WEATHER_SYMBOL_URL</span> <span class="o">=</span> <span class="s2">&quot;https://raw.githubusercontent.com/nrkno/yr-weather-symbols/refs/heads/master/symbols/outline&quot;</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">get_WEATHER_DATA_CACHE</span><span class="p">():</span>
+
+    <span class="k">global</span> <span class="n">WEATHER_DATA_CACHE</span>  <span class="c1"># pylint: disable=global-statement</span>
+
+    <span class="k">if</span> <span class="n">WEATHER_DATA_CACHE</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">WEATHER_DATA_CACHE</span> <span class="o">=</span> <span class="n">ExpireCache</span><span class="o">.</span><span class="n">build_cache</span><span class="p">(</span>
+            <span class="n">ExpireCacheCfg</span><span class="p">(</span>
+                <span class="n">name</span><span class="o">=</span><span class="s2">&quot;WEATHER_DATA_CACHE&quot;</span><span class="p">,</span>
+                <span class="n">MAX_VALUE_LEN</span><span class="o">=</span><span class="mi">1024</span> <span class="o">*</span> <span class="mi">200</span><span class="p">,</span>  <span class="c1"># max. 200kB per icon (icons have most often 10-20kB)</span>
+                <span class="n">MAXHOLD_TIME</span><span class="o">=</span><span class="mi">60</span> <span class="o">*</span> <span class="mi">60</span> <span class="o">*</span> <span class="mi">24</span> <span class="o">*</span> <span class="mi">7</span> <span class="o">*</span> <span class="mi">4</span><span class="p">,</span>  <span class="c1"># 4 weeks</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
+    <span class="k">return</span> <span class="n">WEATHER_DATA_CACHE</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_get_sxng_locale_tag</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="c1"># The function should return a locale (the sxng-tag: de-DE.en-US, ..) that</span>
+    <span class="c1"># can later be used to format and convert measured values for the output of</span>
+    <span class="c1"># weather data to the user.</span>
+    <span class="c1">#</span>
+    <span class="c1"># In principle, SearXNG only has two possible parameters for determining</span>
+    <span class="c1"># the locale: the UI language or the search- language/region.  Since the</span>
+    <span class="c1"># conversion of weather data and time information is usually</span>
+    <span class="c1"># region-specific, the UI language is not suitable.</span>
+    <span class="c1">#</span>
+    <span class="c1"># It would probably be ideal to use the user&#39;s geolocation, but this will</span>
+    <span class="c1"># probably never be available in SearXNG (privacy critical).</span>
+    <span class="c1">#</span>
+    <span class="c1"># Therefore, as long as no &quot;better&quot; parameters are available, this function</span>
+    <span class="c1"># returns a locale based on the search region.</span>
+
+    <span class="c1"># pylint: disable=import-outside-toplevel,disable=cyclic-import</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">searx</span><span class="w"> </span><span class="kn">import</span> <span class="n">query</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">searx.preferences</span><span class="w"> </span><span class="kn">import</span> <span class="n">ClientPref</span>
+
+    <span class="n">query</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="n">RawTextQuery</span><span class="p">(</span><span class="n">sxng_request</span><span class="o">.</span><span class="n">form</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;q&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">),</span> <span class="p">[])</span>
+    <span class="k">if</span> <span class="n">query</span><span class="o">.</span><span class="n">languages</span> <span class="ow">and</span> <span class="n">query</span><span class="o">.</span><span class="n">languages</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;all&quot;</span><span class="p">,</span> <span class="s2">&quot;auto&quot;</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="n">query</span><span class="o">.</span><span class="n">languages</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="n">search_lang</span> <span class="o">=</span> <span class="n">sxng_request</span><span class="o">.</span><span class="n">form</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;language&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">search_lang</span> <span class="ow">and</span> <span class="n">search_lang</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;all&quot;</span><span class="p">,</span> <span class="s2">&quot;auto&quot;</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="n">search_lang</span>
+
+    <span class="n">client_pref</span> <span class="o">=</span> <span class="n">ClientPref</span><span class="o">.</span><span class="n">from_http_request</span><span class="p">(</span><span class="n">sxng_request</span><span class="p">)</span>
+    <span class="n">search_lang</span> <span class="o">=</span> <span class="n">client_pref</span><span class="o">.</span><span class="n">locale_tag</span>
+    <span class="k">if</span> <span class="n">search_lang</span> <span class="ow">and</span> <span class="n">search_lang</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;all&quot;</span><span class="p">,</span> <span class="s2">&quot;auto&quot;</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="n">search_lang</span>
+    <span class="k">return</span> <span class="s2">&quot;en&quot;</span>
+
+
+<div class="viewcode-block" id="symbol_url">
+<a class="viewcode-back" href="../../src/searx.weather.html#searx.weather.symbol_url">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">symbol_url</span><span class="p">(</span><span class="n">condition</span><span class="p">:</span> <span class="s2">&quot;WeatherConditionType&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Returns ``data:`` URL for the weather condition symbol or ``None`` if</span>
+<span class="sd">    the condition is not of type :py:obj:`WeatherConditionType`.</span>
+
+<span class="sd">    If symbol (SVG) is not already in the :py:obj:`WEATHER_DATA_CACHE` its</span>
+<span class="sd">    fetched from https://github.com/nrkno/yr-weather-symbols</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Symbols for darkmode/lightmode? .. and day/night symbols? .. for the</span>
+    <span class="c1"># latter we need a geopoint (critical in sense of privacy)</span>
+
+    <span class="n">fname</span> <span class="o">=</span> <span class="n">YR_WEATHER_SYMBOL_MAP</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">condition</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">fname</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span>
+
+    <span class="n">ctx</span> <span class="o">=</span> <span class="s2">&quot;weather_symbol_url&quot;</span>
+    <span class="n">cache</span> <span class="o">=</span> <span class="n">get_WEATHER_DATA_CACHE</span><span class="p">()</span>
+    <span class="n">origin_url</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">YR_WEATHER_SYMBOL_URL</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">fname</span><span class="si">}</span><span class="s2">.svg&quot;</span>
+
+    <span class="n">data_url</span> <span class="o">=</span> <span class="n">cache</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">origin_url</span><span class="p">,</span> <span class="n">ctx</span><span class="o">=</span><span class="n">ctx</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">data_url</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">data_url</span>
+
+    <span class="n">response</span> <span class="o">=</span> <span class="n">network</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">origin_url</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">200</span><span class="p">:</span>
+        <span class="n">mimetype</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">headers</span><span class="p">[</span><span class="s1">&#39;Content-Type&#39;</span><span class="p">]</span>
+        <span class="n">data_url</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;data:</span><span class="si">{</span><span class="n">mimetype</span><span class="si">}</span><span class="s2">;base64,</span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">base64</span><span class="o">.</span><span class="n">b64encode</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">content</span><span class="p">),</span><span class="w"> </span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="n">cache</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="n">origin_url</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">data_url</span><span class="p">,</span> <span class="n">expire</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ctx</span><span class="o">=</span><span class="n">ctx</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">data_url</span></div>
+
+
+
+<div class="viewcode-block" id="GeoLocation">
+<a class="viewcode-back" href="../../src/searx.weather.html#searx.weather.GeoLocation">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">GeoLocation</span><span class="p">(</span><span class="n">msgspec</span><span class="o">.</span><span class="n">Struct</span><span class="p">,</span> <span class="n">kw_only</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Minimal implementation of Geocoding.&quot;&quot;&quot;</span>
+
+    <span class="c1"># The type definition was based on the properties from the geocoding API of</span>
+    <span class="c1"># open-meteo.</span>
+    <span class="c1">#</span>
+    <span class="c1"># - https://open-meteo.com/en/docs/geocoding-api</span>
+    <span class="c1"># - https://en.wikipedia.org/wiki/List_of_tz_database_time_zones</span>
+    <span class="c1"># - https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2</span>
+
+    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">latitude</span><span class="p">:</span> <span class="nb">float</span>  <span class="c1"># Geographical WGS84 coordinates of this location</span>
+    <span class="n">longitude</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">elevation</span><span class="p">:</span> <span class="nb">float</span>  <span class="c1"># Elevation above mean sea level of this location</span>
+    <span class="n">country_code</span><span class="p">:</span> <span class="nb">str</span>  <span class="c1"># 2-Character ISO-3166-1 alpha2 country code. E.g. DE for Germany</span>
+    <span class="n">timezone</span><span class="p">:</span> <span class="nb">str</span>  <span class="c1"># Time zone using time zone database definitions</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">zoneinfo</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">zoneinfo</span><span class="o">.</span><span class="n">ZoneInfo</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">zoneinfo</span><span class="o">.</span><span class="n">ZoneInfo</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">timezone</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">locale</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">babel</span><span class="o">.</span><span class="n">Locale</span><span class="p">:</span>
+
+        <span class="c1"># by region of the search language</span>
+        <span class="n">sxng_tag</span> <span class="o">=</span> <span class="n">_get_sxng_locale_tag</span><span class="p">()</span>
+        <span class="k">if</span> <span class="s2">&quot;-&quot;</span> <span class="ow">in</span> <span class="n">sxng_tag</span><span class="p">:</span>
+            <span class="n">locale</span> <span class="o">=</span> <span class="n">babel</span><span class="o">.</span><span class="n">Locale</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">_get_sxng_locale_tag</span><span class="p">(),</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;-&#39;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">locale</span>
+
+        <span class="c1"># by most popular language in the region (country code)</span>
+        <span class="k">for</span> <span class="n">lang</span> <span class="ow">in</span> <span class="n">babel</span><span class="o">.</span><span class="n">languages</span><span class="o">.</span><span class="n">get_official_languages</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">country_code</span><span class="p">):</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">locale</span> <span class="o">=</span> <span class="n">babel</span><span class="o">.</span><span class="n">Locale</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">lang</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">country_code</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="k">return</span> <span class="n">locale</span>
+            <span class="k">except</span> <span class="n">babel</span><span class="o">.</span><span class="n">UnknownLocaleError</span><span class="p">:</span>
+                <span class="k">continue</span>
+
+        <span class="c1"># No locale could be determined.  This does not actually occur, but if</span>
+        <span class="c1"># it does, the English language is used by default.  But not region US.</span>
+        <span class="c1"># US has some units that are only used in US but not in the rest of the</span>
+        <span class="c1"># world (e.g. °F instead of °C)</span>
+        <span class="k">return</span> <span class="n">babel</span><span class="o">.</span><span class="n">Locale</span><span class="p">(</span><span class="s2">&quot;en&quot;</span><span class="p">,</span> <span class="n">territory</span><span class="o">=</span><span class="s2">&quot;DE&quot;</span><span class="p">)</span>
+
+<div class="viewcode-block" id="GeoLocation.by_query">
+<a class="viewcode-back" href="../../src/searx.weather.html#searx.weather.GeoLocation.by_query">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">by_query</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">search_term</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;GeoLocation&quot;</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Factory method to get a GeoLocation object by a search term.  If no</span>
+<span class="sd">        location can be determined for the search term, a :py:obj:`ValueError`</span>
+<span class="sd">        is thrown.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">ctx</span> <span class="o">=</span> <span class="s2">&quot;weather_geolocation_by_query&quot;</span>
+        <span class="n">cache</span> <span class="o">=</span> <span class="n">get_WEATHER_DATA_CACHE</span><span class="p">()</span>
+        <span class="c1"># {&#39;name&#39;: &#39;Berlin&#39;, &#39;latitude&#39;: 52.52437, &#39;longitude&#39;: 13.41053,</span>
+        <span class="c1">#  &#39;elevation&#39;: 74.0, &#39;country_code&#39;: &#39;DE&#39;, &#39;timezone&#39;: &#39;Europe/Berlin&#39;}</span>
+        <span class="n">geo_props</span> <span class="o">=</span> <span class="n">cache</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">search_term</span><span class="p">,</span> <span class="n">ctx</span><span class="o">=</span><span class="n">ctx</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">geo_props</span><span class="p">:</span>
+            <span class="n">geo_props</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_query_open_meteo</span><span class="p">(</span><span class="n">search_term</span><span class="o">=</span><span class="n">search_term</span><span class="p">)</span>
+            <span class="n">cache</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="n">search_term</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">geo_props</span><span class="p">,</span> <span class="n">expire</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ctx</span><span class="o">=</span><span class="n">ctx</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="o">**</span><span class="n">geo_props</span><span class="p">)</span>  <span class="c1"># type: ignore</span></div>
+
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_query_open_meteo</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">search_term</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;https://geocoding-api.open-meteo.com/v1/search?name=</span><span class="si">{</span><span class="n">quote_plus</span><span class="p">(</span><span class="n">search_term</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="n">resp</span> <span class="o">=</span> <span class="n">network</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">resp</span><span class="o">.</span><span class="n">status_code</span> <span class="o">!=</span> <span class="mi">200</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;unknown geo location: &#39;</span><span class="si">{</span><span class="n">search_term</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
+        <span class="n">results</span> <span class="o">=</span> <span class="n">resp</span><span class="o">.</span><span class="n">json</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;results&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">results</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;unknown geo location: &#39;</span><span class="si">{</span><span class="n">search_term</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
+        <span class="n">location</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">return</span> <span class="p">{</span><span class="n">field_name</span><span class="p">:</span> <span class="n">location</span><span class="p">[</span><span class="n">field_name</span><span class="p">]</span> <span class="k">for</span> <span class="n">field_name</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="n">__struct_fields__</span><span class="p">}</span></div>
+
+
+
+<span class="n">DateTimeFormats</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;full&quot;</span><span class="p">,</span> <span class="s2">&quot;long&quot;</span><span class="p">,</span> <span class="s2">&quot;medium&quot;</span><span class="p">,</span> <span class="s2">&quot;short&quot;</span><span class="p">]</span>
+<span class="n">DateTimeLocaleTypes</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;UI&quot;</span><span class="p">]</span>
+
+
+<div class="viewcode-block" id="DateTime">
+<a class="viewcode-back" href="../../src/searx.weather.html#searx.weather.DateTime">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">DateTime</span><span class="p">(</span><span class="n">msgspec</span><span class="o">.</span><span class="n">Struct</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Class to represent date &amp; time.  Essentially, it is a wrapper that</span>
+<span class="sd">    conveniently combines :py:obj:`datetime.datetime` and</span>
+<span class="sd">    :py:obj:`babel.dates.format_datetime`.  A conversion of time zones is not</span>
+<span class="sd">    provided (in the current version).</span>
+
+<span class="sd">    The localized string representation can be obtained via the</span>
+<span class="sd">    :py:obj:`DateTime.l10n` and :py:obj:`DateTime.l10n_date` methods, where the</span>
+<span class="sd">    ``locale`` parameter defaults to the search language.  Alternatively, a</span>
+<span class="sd">    :py:obj:`GeoLocation` or a :py:obj:`babel.Locale` instance can be passed</span>
+<span class="sd">    directly. If the UI language is to be used, the string ``UI`` can be passed</span>
+<span class="sd">    as the value for the ``locale``.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">datetime</span><span class="p">:</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">l10n</span><span class="p">()</span>
+
+<div class="viewcode-block" id="DateTime.l10n">
+<a class="viewcode-back" href="../../src/searx.weather.html#searx.weather.DateTime.l10n">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">l10n</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">fmt</span><span class="p">:</span> <span class="n">DateTimeFormats</span> <span class="o">|</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;medium&quot;</span><span class="p">,</span>
+        <span class="n">locale</span><span class="p">:</span> <span class="n">DateTimeLocaleTypes</span> <span class="o">|</span> <span class="n">babel</span><span class="o">.</span><span class="n">Locale</span> <span class="o">|</span> <span class="n">GeoLocation</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Localized representation of date &amp; time.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">locale</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">and</span> <span class="n">locale</span> <span class="o">==</span> <span class="s2">&quot;UI&quot;</span><span class="p">:</span>
+            <span class="n">locale</span> <span class="o">=</span> <span class="n">flask_babel</span><span class="o">.</span><span class="n">get_locale</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">locale</span><span class="p">,</span> <span class="n">GeoLocation</span><span class="p">):</span>
+            <span class="n">locale</span> <span class="o">=</span> <span class="n">locale</span><span class="o">.</span><span class="n">locale</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="n">locale</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">locale</span> <span class="o">=</span> <span class="n">babel</span><span class="o">.</span><span class="n">Locale</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">_get_sxng_locale_tag</span><span class="p">(),</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;-&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">babel</span><span class="o">.</span><span class="n">dates</span><span class="o">.</span><span class="n">format_datetime</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">datetime</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="n">fmt</span><span class="p">,</span> <span class="n">locale</span><span class="o">=</span><span class="n">locale</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="DateTime.l10n_date">
+<a class="viewcode-back" href="../../src/searx.weather.html#searx.weather.DateTime.l10n_date">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">l10n_date</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">fmt</span><span class="p">:</span> <span class="n">DateTimeFormats</span> <span class="o">|</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;medium&quot;</span><span class="p">,</span>
+        <span class="n">locale</span><span class="p">:</span> <span class="n">DateTimeLocaleTypes</span> <span class="o">|</span> <span class="n">babel</span><span class="o">.</span><span class="n">Locale</span> <span class="o">|</span> <span class="n">GeoLocation</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Localized representation of date.&quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">locale</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">and</span> <span class="n">locale</span> <span class="o">==</span> <span class="s2">&quot;UI&quot;</span><span class="p">:</span>
+            <span class="n">locale</span> <span class="o">=</span> <span class="n">flask_babel</span><span class="o">.</span><span class="n">get_locale</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">locale</span><span class="p">,</span> <span class="n">GeoLocation</span><span class="p">):</span>
+            <span class="n">locale</span> <span class="o">=</span> <span class="n">locale</span><span class="o">.</span><span class="n">locale</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="n">locale</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">locale</span> <span class="o">=</span> <span class="n">babel</span><span class="o">.</span><span class="n">Locale</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">_get_sxng_locale_tag</span><span class="p">(),</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;-&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">babel</span><span class="o">.</span><span class="n">dates</span><span class="o">.</span><span class="n">format_date</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">datetime</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="n">fmt</span><span class="p">,</span> <span class="n">locale</span><span class="o">=</span><span class="n">locale</span><span class="p">)</span></div>
+</div>
+
+
+
+<span class="n">TemperatureUnit</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">TypeAlias</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;°C&quot;</span><span class="p">,</span> <span class="s2">&quot;°F&quot;</span><span class="p">,</span> <span class="s2">&quot;K&quot;</span><span class="p">]</span>
+<span class="n">TEMPERATURE_UNITS</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Final</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="n">TemperatureUnit</span><span class="p">]]</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">get_args</span><span class="p">(</span><span class="n">TemperatureUnit</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="Temperature">
+<a class="viewcode-back" href="../../src/searx.weather.html#searx.weather.Temperature">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">Temperature</span><span class="p">(</span><span class="n">msgspec</span><span class="o">.</span><span class="n">Struct</span><span class="p">,</span> <span class="n">kw_only</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Class for converting temperature units and for string representation of</span>
+<span class="sd">    measured values.&quot;&quot;&quot;</span>
+
+    <span class="n">val</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">unit</span><span class="p">:</span> <span class="n">TemperatureUnit</span>
+
+    <span class="n">si_name</span><span class="p">:</span> <span class="n">ClassVar</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;Q11579&quot;</span>
+    <span class="n">UNITS</span><span class="p">:</span> <span class="n">ClassVar</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="n">TemperatureUnit</span><span class="p">]]</span> <span class="o">=</span> <span class="n">TEMPERATURE_UNITS</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">__post_init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">unit</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">UNITS</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;invalid unit: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">unit</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">l10n</span><span class="p">()</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">unit</span><span class="p">:</span> <span class="n">TemperatureUnit</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">unit</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">unit</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">val</span>
+        <span class="n">si_val</span> <span class="o">=</span> <span class="n">convert_to_si</span><span class="p">(</span><span class="n">si_name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">si_name</span><span class="p">,</span> <span class="n">symbol</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">unit</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">val</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">convert_from_si</span><span class="p">(</span><span class="n">si_name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">si_name</span><span class="p">,</span> <span class="n">symbol</span><span class="o">=</span><span class="n">unit</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">si_val</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Temperature.l10n">
+<a class="viewcode-back" href="../../src/searx.weather.html#searx.weather.Temperature.l10n">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">l10n</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">unit</span><span class="p">:</span> <span class="n">TemperatureUnit</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">locale</span><span class="p">:</span> <span class="n">babel</span><span class="o">.</span><span class="n">Locale</span> <span class="o">|</span> <span class="n">GeoLocation</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">template</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{value}</span><span class="s2"> </span><span class="si">{unit}</span><span class="s2">&quot;</span><span class="p">,</span>
+        <span class="n">num_pattern</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;#,##0&quot;</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Localized representation of a measured value.</span>
+
+<span class="sd">        If the ``unit`` is not set, an attempt is made to determine a ``unit``</span>
+<span class="sd">        matching the territory of the ``locale``.  If the locale is not set, an</span>
+<span class="sd">        attempt is made to determine it from the HTTP request.</span>
+
+<span class="sd">        The value is converted into the respective unit before formatting.</span>
+
+<span class="sd">        The argument ``num_pattern`` is used to determine the string formatting</span>
+<span class="sd">        of the numerical value:</span>
+
+<span class="sd">        - https://babel.pocoo.org/en/latest/numbers.html#pattern-syntax</span>
+<span class="sd">        - https://unicode.org/reports/tr35/tr35-numbers.html#Number_Format_Patterns</span>
+
+<span class="sd">        The argument ``template`` specifies how the **string formatted** value</span>
+<span class="sd">        and unit are to be arranged.</span>
+
+<span class="sd">        - `Format Specification Mini-Language</span>
+<span class="sd">          &lt;https://docs.python.org/3/library/string.html#format-specification-mini-language&gt;`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">locale</span><span class="p">,</span> <span class="n">GeoLocation</span><span class="p">):</span>
+            <span class="n">locale</span> <span class="o">=</span> <span class="n">locale</span><span class="o">.</span><span class="n">locale</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="n">locale</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">locale</span> <span class="o">=</span> <span class="n">babel</span><span class="o">.</span><span class="n">Locale</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">_get_sxng_locale_tag</span><span class="p">(),</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;-&#39;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">unit</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>  <span class="c1"># unit by territory</span>
+            <span class="n">unit</span> <span class="o">=</span> <span class="s2">&quot;°C&quot;</span>
+            <span class="k">if</span> <span class="n">locale</span><span class="o">.</span><span class="n">territory</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;US&quot;</span><span class="p">]:</span>
+                <span class="n">unit</span> <span class="o">=</span> <span class="s2">&quot;°F&quot;</span>
+        <span class="n">val_str</span> <span class="o">=</span> <span class="n">babel</span><span class="o">.</span><span class="n">numbers</span><span class="o">.</span><span class="n">format_decimal</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="n">unit</span><span class="p">),</span> <span class="n">locale</span><span class="o">=</span><span class="n">locale</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="n">num_pattern</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">template</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="n">val_str</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="n">unit</span><span class="p">)</span></div>
+</div>
+
+
+
+<span class="n">PressureUnit</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">TypeAlias</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;Pa&quot;</span><span class="p">,</span> <span class="s2">&quot;hPa&quot;</span><span class="p">,</span> <span class="s2">&quot;cm Hg&quot;</span><span class="p">,</span> <span class="s2">&quot;bar&quot;</span><span class="p">]</span>
+<span class="n">PRESSURE_UNITS</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Final</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="n">PressureUnit</span><span class="p">]]</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">get_args</span><span class="p">(</span><span class="n">PressureUnit</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="Pressure">
+<a class="viewcode-back" href="../../src/searx.weather.html#searx.weather.Pressure">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">Pressure</span><span class="p">(</span><span class="n">msgspec</span><span class="o">.</span><span class="n">Struct</span><span class="p">,</span> <span class="n">kw_only</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Class for converting pressure units and for string representation of</span>
+<span class="sd">    measured values.&quot;&quot;&quot;</span>
+
+    <span class="n">val</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">unit</span><span class="p">:</span> <span class="n">PressureUnit</span>
+
+    <span class="n">si_name</span><span class="p">:</span> <span class="n">ClassVar</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;Q44395&quot;</span>
+    <span class="n">UNITS</span><span class="p">:</span> <span class="n">ClassVar</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="n">PressureUnit</span><span class="p">]]</span> <span class="o">=</span> <span class="n">PRESSURE_UNITS</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">__post_init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">unit</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">UNITS</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;invalid unit: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">unit</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">l10n</span><span class="p">()</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">unit</span><span class="p">:</span> <span class="n">PressureUnit</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">unit</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">unit</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">val</span>
+        <span class="n">si_val</span> <span class="o">=</span> <span class="n">convert_to_si</span><span class="p">(</span><span class="n">si_name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">si_name</span><span class="p">,</span> <span class="n">symbol</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">unit</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">val</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">convert_from_si</span><span class="p">(</span><span class="n">si_name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">si_name</span><span class="p">,</span> <span class="n">symbol</span><span class="o">=</span><span class="n">unit</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">si_val</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">l10n</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">unit</span><span class="p">:</span> <span class="n">PressureUnit</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">locale</span><span class="p">:</span> <span class="n">babel</span><span class="o">.</span><span class="n">Locale</span> <span class="o">|</span> <span class="n">GeoLocation</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">template</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{value}</span><span class="s2"> </span><span class="si">{unit}</span><span class="s2">&quot;</span><span class="p">,</span>
+        <span class="n">num_pattern</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;#,##0&quot;</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">locale</span><span class="p">,</span> <span class="n">GeoLocation</span><span class="p">):</span>
+            <span class="n">locale</span> <span class="o">=</span> <span class="n">locale</span><span class="o">.</span><span class="n">locale</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="n">locale</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">locale</span> <span class="o">=</span> <span class="n">babel</span><span class="o">.</span><span class="n">Locale</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">_get_sxng_locale_tag</span><span class="p">(),</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;-&#39;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">unit</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>  <span class="c1"># unit by territory?</span>
+            <span class="n">unit</span> <span class="o">=</span> <span class="s2">&quot;hPa&quot;</span>
+
+        <span class="n">val_str</span> <span class="o">=</span> <span class="n">babel</span><span class="o">.</span><span class="n">numbers</span><span class="o">.</span><span class="n">format_decimal</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="n">unit</span><span class="p">),</span> <span class="n">locale</span><span class="o">=</span><span class="n">locale</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="n">num_pattern</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">template</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="n">val_str</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="n">unit</span><span class="p">)</span></div>
+
+
+
+<span class="n">WindSpeedUnit</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">TypeAlias</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;m/s&quot;</span><span class="p">,</span> <span class="s2">&quot;km/h&quot;</span><span class="p">,</span> <span class="s2">&quot;kn&quot;</span><span class="p">,</span> <span class="s2">&quot;mph&quot;</span><span class="p">,</span> <span class="s2">&quot;mi/h&quot;</span><span class="p">,</span> <span class="s2">&quot;Bft&quot;</span><span class="p">]</span>
+<span class="n">WIND_SPEED_UNITS</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Final</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="n">WindSpeedUnit</span><span class="p">]]</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">get_args</span><span class="p">(</span><span class="n">WindSpeedUnit</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="WindSpeed">
+<a class="viewcode-back" href="../../src/searx.weather.html#searx.weather.WindSpeed">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">WindSpeed</span><span class="p">(</span><span class="n">msgspec</span><span class="o">.</span><span class="n">Struct</span><span class="p">,</span> <span class="n">kw_only</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Class for converting speed or velocity units and for string</span>
+<span class="sd">    representation of measured values.</span>
+
+<span class="sd">    .. hint::</span>
+
+<span class="sd">       Working with unit ``Bft`` (:py:obj:`searx.wikidata_units.Beaufort`) will</span>
+<span class="sd">       throw a :py:obj:`ValueError` for egative values or values greater 16 Bft</span>
+<span class="sd">       (55.6 m/s)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">val</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">unit</span><span class="p">:</span> <span class="n">WindSpeedUnit</span>
+
+    <span class="n">si_name</span><span class="p">:</span> <span class="n">ClassVar</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;Q182429&quot;</span>
+    <span class="n">UNITS</span><span class="p">:</span> <span class="n">ClassVar</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="n">WindSpeedUnit</span><span class="p">]]</span> <span class="o">=</span> <span class="n">WIND_SPEED_UNITS</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">__post_init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">unit</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">UNITS</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;invalid unit: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">unit</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">l10n</span><span class="p">()</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">unit</span><span class="p">:</span> <span class="n">WindSpeedUnit</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">unit</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">unit</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">val</span>
+        <span class="n">si_val</span> <span class="o">=</span> <span class="n">convert_to_si</span><span class="p">(</span><span class="n">si_name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">si_name</span><span class="p">,</span> <span class="n">symbol</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">unit</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">val</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">convert_from_si</span><span class="p">(</span><span class="n">si_name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">si_name</span><span class="p">,</span> <span class="n">symbol</span><span class="o">=</span><span class="n">unit</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">si_val</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">l10n</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">unit</span><span class="p">:</span> <span class="n">WindSpeedUnit</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">locale</span><span class="p">:</span> <span class="n">babel</span><span class="o">.</span><span class="n">Locale</span> <span class="o">|</span> <span class="n">GeoLocation</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">template</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{value}</span><span class="s2"> </span><span class="si">{unit}</span><span class="s2">&quot;</span><span class="p">,</span>
+        <span class="n">num_pattern</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;#,##0&quot;</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">locale</span><span class="p">,</span> <span class="n">GeoLocation</span><span class="p">):</span>
+            <span class="n">locale</span> <span class="o">=</span> <span class="n">locale</span><span class="o">.</span><span class="n">locale</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="n">locale</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">locale</span> <span class="o">=</span> <span class="n">babel</span><span class="o">.</span><span class="n">Locale</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">_get_sxng_locale_tag</span><span class="p">(),</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;-&#39;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">unit</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>  <span class="c1"># unit by territory?</span>
+            <span class="n">unit</span> <span class="o">=</span> <span class="s2">&quot;m/s&quot;</span>
+
+        <span class="n">val_str</span> <span class="o">=</span> <span class="n">babel</span><span class="o">.</span><span class="n">numbers</span><span class="o">.</span><span class="n">format_decimal</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="n">unit</span><span class="p">),</span> <span class="n">locale</span><span class="o">=</span><span class="n">locale</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="n">num_pattern</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">template</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="n">val_str</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="n">unit</span><span class="p">)</span></div>
+
+
+
+<span class="n">RelativeHumidityUnit</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">TypeAlias</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;%&quot;</span><span class="p">]</span>
+<span class="n">RELATIVE_HUMIDITY_UNITS</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Final</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="n">RelativeHumidityUnit</span><span class="p">]]</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">get_args</span><span class="p">(</span><span class="n">RelativeHumidityUnit</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="RelativeHumidity">
+<a class="viewcode-back" href="../../src/searx.weather.html#searx.weather.RelativeHumidity">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">RelativeHumidity</span><span class="p">(</span><span class="n">msgspec</span><span class="o">.</span><span class="n">Struct</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Amount of relative humidity in the air. The unit is ``%``&quot;&quot;&quot;</span>
+
+    <span class="n">val</span><span class="p">:</span> <span class="nb">float</span>
+
+    <span class="c1"># there exists only one unit (%) --&gt; set &quot;%&quot; as the final value (constant)</span>
+    <span class="n">unit</span><span class="p">:</span> <span class="n">ClassVar</span><span class="p">[</span><span class="n">RelativeHumidityUnit</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;%&quot;</span>
+    <span class="n">UNITS</span><span class="p">:</span> <span class="n">ClassVar</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="n">RelativeHumidityUnit</span><span class="p">]]</span> <span class="o">=</span> <span class="n">RELATIVE_HUMIDITY_UNITS</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">__post_init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">unit</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">UNITS</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;invalid unit: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">unit</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">l10n</span><span class="p">()</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">value</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">val</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">l10n</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">locale</span><span class="p">:</span> <span class="n">babel</span><span class="o">.</span><span class="n">Locale</span> <span class="o">|</span> <span class="n">GeoLocation</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">template</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{value}{unit}</span><span class="s2">&quot;</span><span class="p">,</span>
+        <span class="n">num_pattern</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;#,##0&quot;</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">locale</span><span class="p">,</span> <span class="n">GeoLocation</span><span class="p">):</span>
+            <span class="n">locale</span> <span class="o">=</span> <span class="n">locale</span><span class="o">.</span><span class="n">locale</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="n">locale</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">locale</span> <span class="o">=</span> <span class="n">babel</span><span class="o">.</span><span class="n">Locale</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">_get_sxng_locale_tag</span><span class="p">(),</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;-&#39;</span><span class="p">)</span>
+
+        <span class="n">unit</span> <span class="o">=</span> <span class="s2">&quot;%&quot;</span>
+        <span class="n">val_str</span> <span class="o">=</span> <span class="n">babel</span><span class="o">.</span><span class="n">numbers</span><span class="o">.</span><span class="n">format_decimal</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">(),</span> <span class="n">locale</span><span class="o">=</span><span class="n">locale</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="n">num_pattern</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">template</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="n">val_str</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="n">unit</span><span class="p">)</span></div>
+
+
+
+<span class="n">CompassPoint</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">TypeAlias</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">Literal</span><span class="p">[</span>
+    <span class="s2">&quot;N&quot;</span><span class="p">,</span> <span class="s2">&quot;NNE&quot;</span><span class="p">,</span> <span class="s2">&quot;NE&quot;</span><span class="p">,</span> <span class="s2">&quot;ENE&quot;</span><span class="p">,</span> <span class="s2">&quot;E&quot;</span><span class="p">,</span> <span class="s2">&quot;ESE&quot;</span><span class="p">,</span> <span class="s2">&quot;SE&quot;</span><span class="p">,</span> <span class="s2">&quot;SSE&quot;</span><span class="p">,</span> <span class="s2">&quot;S&quot;</span><span class="p">,</span> <span class="s2">&quot;SSW&quot;</span><span class="p">,</span> <span class="s2">&quot;SW&quot;</span><span class="p">,</span> <span class="s2">&quot;WSW&quot;</span><span class="p">,</span> <span class="s2">&quot;W&quot;</span><span class="p">,</span> <span class="s2">&quot;WNW&quot;</span><span class="p">,</span> <span class="s2">&quot;NW&quot;</span><span class="p">,</span> <span class="s2">&quot;NNW&quot;</span>
+<span class="p">]</span>
+<span class="sd">&quot;&quot;&quot;Compass point type definition&quot;&quot;&quot;</span>
+<span class="n">COMPASS_POINTS</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Final</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="n">CompassPoint</span><span class="p">]]</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">get_args</span><span class="p">(</span><span class="n">CompassPoint</span><span class="p">)</span>
+
+<span class="n">CompassUnit</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">TypeAlias</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;°&quot;</span><span class="p">,</span> <span class="s2">&quot;Point&quot;</span><span class="p">]</span>
+<span class="n">COMPASS_UNITS</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Final</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="n">CompassUnit</span><span class="p">]]</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">get_args</span><span class="p">(</span><span class="n">CompassUnit</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="Compass">
+<a class="viewcode-back" href="../../src/searx.weather.html#searx.weather.Compass">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">Compass</span><span class="p">(</span><span class="n">msgspec</span><span class="o">.</span><span class="n">Struct</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Class for converting compass points and azimuth values (360°)&quot;&quot;&quot;</span>
+
+    <span class="n">val</span><span class="p">:</span> <span class="s2">&quot;float | int | CompassPoint&quot;</span>
+    <span class="n">unit</span><span class="p">:</span> <span class="n">CompassUnit</span> <span class="o">=</span> <span class="s2">&quot;°&quot;</span>
+    <span class="n">UNITS</span><span class="p">:</span> <span class="n">ClassVar</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="n">CompassUnit</span><span class="p">]]</span> <span class="o">=</span> <span class="n">COMPASS_UNITS</span>
+
+    <span class="n">TURN</span><span class="p">:</span> <span class="n">ClassVar</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="mf">360.0</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Full turn (360°)&quot;&quot;&quot;</span>
+
+    <span class="n">POINTS</span><span class="p">:</span> <span class="n">ClassVar</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="n">CompassPoint</span><span class="p">]]</span> <span class="o">=</span> <span class="n">COMPASS_POINTS</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Compass points.&quot;&quot;&quot;</span>
+
+    <span class="n">RANGE</span><span class="p">:</span> <span class="n">ClassVar</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">TURN</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">POINTS</span><span class="p">)</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Angle sector of a compass point&quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">__post_init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">val</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">val</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">POINTS</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Invalid compass point: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">val</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">val</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">POINTS</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">val</span><span class="p">)</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">RANGE</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">val</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">val</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">TURN</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">unit</span> <span class="o">=</span> <span class="s2">&quot;°&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">l10n</span><span class="p">()</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">unit</span><span class="p">:</span> <span class="n">CompassUnit</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">unit</span> <span class="o">==</span> <span class="s2">&quot;Point&quot;</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">val</span><span class="p">,</span> <span class="nb">float</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">point</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">val</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">unit</span> <span class="o">==</span> <span class="s2">&quot;°&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">val</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;unknown unit: </span><span class="si">{</span><span class="n">unit</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Compass.point">
+<a class="viewcode-back" href="../../src/searx.weather.html#searx.weather.Compass.point">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">point</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">azimuth</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">CompassPoint</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the compass point to an azimuth value.&quot;&quot;&quot;</span>
+        <span class="n">azimuth</span> <span class="o">=</span> <span class="n">azimuth</span> <span class="o">%</span> <span class="bp">cls</span><span class="o">.</span><span class="n">TURN</span>
+        <span class="c1"># The angle sector of a compass point starts 1/2 sector range before</span>
+        <span class="c1"># and after compass point (example: &quot;N&quot; goes from -11.25° to +11.25°)</span>
+        <span class="n">azimuth</span> <span class="o">=</span> <span class="n">azimuth</span> <span class="o">-</span> <span class="bp">cls</span><span class="o">.</span><span class="n">RANGE</span> <span class="o">/</span> <span class="mi">2</span>
+        <span class="n">idx</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">azimuth</span> <span class="o">//</span> <span class="bp">cls</span><span class="o">.</span><span class="n">RANGE</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">POINTS</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span></div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">l10n</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">unit</span><span class="p">:</span> <span class="n">CompassUnit</span> <span class="o">=</span> <span class="s2">&quot;Point&quot;</span><span class="p">,</span>
+        <span class="n">locale</span><span class="p">:</span> <span class="n">babel</span><span class="o">.</span><span class="n">Locale</span> <span class="o">|</span> <span class="n">GeoLocation</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">template</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{value}{unit}</span><span class="s2">&quot;</span><span class="p">,</span>
+        <span class="n">num_pattern</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;#,##0&quot;</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">locale</span><span class="p">,</span> <span class="n">GeoLocation</span><span class="p">):</span>
+            <span class="n">locale</span> <span class="o">=</span> <span class="n">locale</span><span class="o">.</span><span class="n">locale</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="n">locale</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">locale</span> <span class="o">=</span> <span class="n">babel</span><span class="o">.</span><span class="n">Locale</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">_get_sxng_locale_tag</span><span class="p">(),</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;-&#39;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">unit</span> <span class="o">==</span> <span class="s2">&quot;Point&quot;</span><span class="p">:</span>
+            <span class="n">val_str</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="n">unit</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">template</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="n">val_str</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+
+        <span class="n">val_str</span> <span class="o">=</span> <span class="n">babel</span><span class="o">.</span><span class="n">numbers</span><span class="o">.</span><span class="n">format_decimal</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="n">unit</span><span class="p">),</span> <span class="n">locale</span><span class="o">=</span><span class="n">locale</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="n">num_pattern</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">template</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="n">val_str</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="n">unit</span><span class="p">)</span></div>
+
+
+
+<span class="n">WeatherConditionType</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">Literal</span><span class="p">[</span>
+    <span class="c1"># The capitalized string goes into to i18n/l10n (en: &quot;Clear sky&quot; -&gt; de: &quot;wolkenloser Himmel&quot;)</span>
+    <span class="s2">&quot;clear sky&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;partly cloudy&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;cloudy&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;fair&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;fog&quot;</span><span class="p">,</span>
+    <span class="c1"># rain</span>
+    <span class="s2">&quot;light rain and thunder&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;light rain showers and thunder&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;light rain showers&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;light rain&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;rain and thunder&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;rain showers and thunder&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;rain showers&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;rain&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;heavy rain and thunder&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;heavy rain showers and thunder&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;heavy rain showers&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;heavy rain&quot;</span><span class="p">,</span>
+    <span class="c1"># sleet</span>
+    <span class="s2">&quot;light sleet and thunder&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;light sleet showers and thunder&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;light sleet showers&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;light sleet&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;sleet and thunder&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;sleet showers and thunder&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;sleet showers&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;sleet&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;heavy sleet and thunder&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;heavy sleet showers and thunder&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;heavy sleet showers&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;heavy sleet&quot;</span><span class="p">,</span>
+    <span class="c1"># snow</span>
+    <span class="s2">&quot;light snow and thunder&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;light snow showers and thunder&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;light snow showers&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;light snow&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;snow and thunder&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;snow showers and thunder&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;snow showers&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;snow&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;heavy snow and thunder&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;heavy snow showers and thunder&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;heavy snow showers&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;heavy snow&quot;</span><span class="p">,</span>
+<span class="p">]</span>
+<span class="sd">&quot;&quot;&quot;Standardized designations for weather conditions.  The designators were</span>
+<span class="sd">taken from a collaboration between NRK and Norwegian Meteorological Institute</span>
+<span class="sd">(yr.no_).  `Weather symbols`_ can be assigned to the identifiers</span>
+<span class="sd">(weathericons_) and they are included in the translation (i18n/l10n</span>
+<span class="sd">:origin:`searx/searxng.msg`).</span>
+
+<span class="sd">.. _yr.no: https://www.yr.no/en</span>
+<span class="sd">.. _Weather symbols: https://github.com/nrkno/yr-weather-symbols</span>
+<span class="sd">.. _weathericons: https://github.com/metno/weathericons</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="n">YR_WEATHER_SYMBOL_MAP</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;clear sky&quot;</span><span class="p">:</span> <span class="s2">&quot;01d&quot;</span><span class="p">,</span>  <span class="c1"># 01d clearsky_day</span>
+    <span class="s2">&quot;partly cloudy&quot;</span><span class="p">:</span> <span class="s2">&quot;03d&quot;</span><span class="p">,</span>  <span class="c1"># 03d partlycloudy_day</span>
+    <span class="s2">&quot;cloudy&quot;</span><span class="p">:</span> <span class="s2">&quot;04&quot;</span><span class="p">,</span>  <span class="c1"># 04 cloudy</span>
+    <span class="s2">&quot;fair&quot;</span><span class="p">:</span> <span class="s2">&quot;02d&quot;</span><span class="p">,</span>  <span class="c1"># 02d fair_day</span>
+    <span class="s2">&quot;fog&quot;</span><span class="p">:</span> <span class="s2">&quot;15&quot;</span><span class="p">,</span>  <span class="c1"># 15 fog</span>
+    <span class="c1"># rain</span>
+    <span class="s2">&quot;light rain and thunder&quot;</span><span class="p">:</span> <span class="s2">&quot;30&quot;</span><span class="p">,</span>  <span class="c1"># 30 lightrainandthunder</span>
+    <span class="s2">&quot;light rain showers and thunder&quot;</span><span class="p">:</span> <span class="s2">&quot;24d&quot;</span><span class="p">,</span>  <span class="c1"># 24d lightrainshowersandthunder_day</span>
+    <span class="s2">&quot;light rain showers&quot;</span><span class="p">:</span> <span class="s2">&quot;40d&quot;</span><span class="p">,</span>  <span class="c1"># 40d lightrainshowers_day</span>
+    <span class="s2">&quot;light rain&quot;</span><span class="p">:</span> <span class="s2">&quot;46&quot;</span><span class="p">,</span>  <span class="c1"># 46 lightrain</span>
+    <span class="s2">&quot;rain and thunder&quot;</span><span class="p">:</span> <span class="s2">&quot;22&quot;</span><span class="p">,</span>  <span class="c1"># 22 rainandthunder</span>
+    <span class="s2">&quot;rain showers and thunder&quot;</span><span class="p">:</span> <span class="s2">&quot;06d&quot;</span><span class="p">,</span>  <span class="c1"># 06d rainshowersandthunder_day</span>
+    <span class="s2">&quot;rain showers&quot;</span><span class="p">:</span> <span class="s2">&quot;05d&quot;</span><span class="p">,</span>  <span class="c1"># 05d rainshowers_day</span>
+    <span class="s2">&quot;rain&quot;</span><span class="p">:</span> <span class="s2">&quot;09&quot;</span><span class="p">,</span>  <span class="c1"># 09 rain</span>
+    <span class="s2">&quot;heavy rain and thunder&quot;</span><span class="p">:</span> <span class="s2">&quot;11&quot;</span><span class="p">,</span>  <span class="c1"># 11 heavyrainandthunder</span>
+    <span class="s2">&quot;heavy rain showers and thunder&quot;</span><span class="p">:</span> <span class="s2">&quot;25d&quot;</span><span class="p">,</span>  <span class="c1"># 25d heavyrainshowersandthunder_day</span>
+    <span class="s2">&quot;heavy rain showers&quot;</span><span class="p">:</span> <span class="s2">&quot;41d&quot;</span><span class="p">,</span>  <span class="c1"># 41d heavyrainshowers_day</span>
+    <span class="s2">&quot;heavy rain&quot;</span><span class="p">:</span> <span class="s2">&quot;10&quot;</span><span class="p">,</span>  <span class="c1"># 10 heavyrain</span>
+    <span class="c1"># sleet</span>
+    <span class="s2">&quot;light sleet and thunder&quot;</span><span class="p">:</span> <span class="s2">&quot;31&quot;</span><span class="p">,</span>  <span class="c1"># 31 lightsleetandthunder</span>
+    <span class="s2">&quot;light sleet showers and thunder&quot;</span><span class="p">:</span> <span class="s2">&quot;26d&quot;</span><span class="p">,</span>  <span class="c1"># 26d lightssleetshowersandthunder_day</span>
+    <span class="s2">&quot;light sleet showers&quot;</span><span class="p">:</span> <span class="s2">&quot;42d&quot;</span><span class="p">,</span>  <span class="c1"># 42d lightsleetshowers_day</span>
+    <span class="s2">&quot;light sleet&quot;</span><span class="p">:</span> <span class="s2">&quot;47&quot;</span><span class="p">,</span>  <span class="c1"># 47 lightsleet</span>
+    <span class="s2">&quot;sleet and thunder&quot;</span><span class="p">:</span> <span class="s2">&quot;23&quot;</span><span class="p">,</span>  <span class="c1"># 23 sleetandthunder</span>
+    <span class="s2">&quot;sleet showers and thunder&quot;</span><span class="p">:</span> <span class="s2">&quot;20d&quot;</span><span class="p">,</span>  <span class="c1"># 20d sleetshowersandthunder_day</span>
+    <span class="s2">&quot;sleet showers&quot;</span><span class="p">:</span> <span class="s2">&quot;07d&quot;</span><span class="p">,</span>  <span class="c1"># 07d sleetshowers_day</span>
+    <span class="s2">&quot;sleet&quot;</span><span class="p">:</span> <span class="s2">&quot;12&quot;</span><span class="p">,</span>  <span class="c1"># 12 sleet</span>
+    <span class="s2">&quot;heavy sleet and thunder&quot;</span><span class="p">:</span> <span class="s2">&quot;32&quot;</span><span class="p">,</span>  <span class="c1"># 32 heavysleetandthunder</span>
+    <span class="s2">&quot;heavy sleet showers and thunder&quot;</span><span class="p">:</span> <span class="s2">&quot;27d&quot;</span><span class="p">,</span>  <span class="c1"># 27d heavysleetshowersandthunder_day</span>
+    <span class="s2">&quot;heavy sleet showers&quot;</span><span class="p">:</span> <span class="s2">&quot;43d&quot;</span><span class="p">,</span>  <span class="c1"># 43d heavysleetshowers_day</span>
+    <span class="s2">&quot;heavy sleet&quot;</span><span class="p">:</span> <span class="s2">&quot;48&quot;</span><span class="p">,</span>  <span class="c1"># 48 heavysleet</span>
+    <span class="c1"># snow</span>
+    <span class="s2">&quot;light snow and thunder&quot;</span><span class="p">:</span> <span class="s2">&quot;33&quot;</span><span class="p">,</span>  <span class="c1"># 33 lightsnowandthunder</span>
+    <span class="s2">&quot;light snow showers and thunder&quot;</span><span class="p">:</span> <span class="s2">&quot;28d&quot;</span><span class="p">,</span>  <span class="c1"># 28d lightssnowshowersandthunder_day</span>
+    <span class="s2">&quot;light snow showers&quot;</span><span class="p">:</span> <span class="s2">&quot;44d&quot;</span><span class="p">,</span>  <span class="c1"># 44d lightsnowshowers_day</span>
+    <span class="s2">&quot;light snow&quot;</span><span class="p">:</span> <span class="s2">&quot;49&quot;</span><span class="p">,</span>  <span class="c1"># 49 lightsnow</span>
+    <span class="s2">&quot;snow and thunder&quot;</span><span class="p">:</span> <span class="s2">&quot;14&quot;</span><span class="p">,</span>  <span class="c1"># 14 snowandthunder</span>
+    <span class="s2">&quot;snow showers and thunder&quot;</span><span class="p">:</span> <span class="s2">&quot;21d&quot;</span><span class="p">,</span>  <span class="c1"># 21d snowshowersandthunder_day</span>
+    <span class="s2">&quot;snow showers&quot;</span><span class="p">:</span> <span class="s2">&quot;08d&quot;</span><span class="p">,</span>  <span class="c1"># 08d snowshowers_day</span>
+    <span class="s2">&quot;snow&quot;</span><span class="p">:</span> <span class="s2">&quot;13&quot;</span><span class="p">,</span>  <span class="c1"># 13 snow</span>
+    <span class="s2">&quot;heavy snow and thunder&quot;</span><span class="p">:</span> <span class="s2">&quot;34&quot;</span><span class="p">,</span>  <span class="c1"># 34 heavysnowandthunder</span>
+    <span class="s2">&quot;heavy snow showers and thunder&quot;</span><span class="p">:</span> <span class="s2">&quot;29d&quot;</span><span class="p">,</span>  <span class="c1"># 29d heavysnowshowersandthunder_day</span>
+    <span class="s2">&quot;heavy snow showers&quot;</span><span class="p">:</span> <span class="s2">&quot;45d&quot;</span><span class="p">,</span>  <span class="c1"># 45d heavysnowshowers_day</span>
+    <span class="s2">&quot;heavy snow&quot;</span><span class="p">:</span> <span class="s2">&quot;50&quot;</span><span class="p">,</span>  <span class="c1"># 50 heavysnow</span>
+<span class="p">}</span>
+<span class="sd">&quot;&quot;&quot;Map a :py:obj:`WeatherConditionType` to a `YR weather symbol`_</span>
+
+<span class="sd">.. code::</span>
+
+<span class="sd">   base_url = &quot;https://raw.githubusercontent.com/nrkno/yr-weather-symbols/refs/heads/master/symbols&quot;</span>
+<span class="sd">   icon_url = f&quot;{base_url}/outline/{YR_WEATHER_SYMBOL_MAP[&#39;sleet showers&#39;]}.svg&quot;</span>
+
+<span class="sd">.. _YR weather symbol: https://github.com/nrkno/yr-weather-symbols/blob/master/locales/en.json</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+
+    <span class="c1"># test: fetch all symbols of the type catalog ..</span>
+    <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">t</span><span class="o">.</span><span class="n">get_args</span><span class="p">(</span><span class="n">WeatherConditionType</span><span class="p">):</span>
+        <span class="n">symbol_url</span><span class="p">(</span><span class="n">condition</span><span class="o">=</span><span class="n">c</span><span class="p">)</span>
+
+    <span class="n">_cache</span> <span class="o">=</span> <span class="n">get_WEATHER_DATA_CACHE</span><span class="p">()</span>
+    <span class="n">title</span> <span class="o">=</span> <span class="s2">&quot;cached weather condition symbols&quot;</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">title</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;=&quot;</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">title</span><span class="p">))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">_cache</span><span class="o">.</span><span class="n">state</span><span class="p">()</span><span class="o">.</span><span class="n">report</span><span class="p">())</span>
+    <span class="nb">print</span><span class="p">()</span>
+    <span class="n">title</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;properties of </span><span class="si">{</span><span class="n">_cache</span><span class="o">.</span><span class="n">cfg</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">title</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;=&quot;</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">title</span><span class="p">))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">_cache</span><span class="o">.</span><span class="n">properties</span><span class="p">))</span>  <span class="c1"># type: ignore</span>
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+  <span id="sidebar-top"></span>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+  
+    
+            <p class="logo"><a href="../../index.html">
+              <img class="logo" src="../../_static/searxng-wordmark.svg" alt="Logo of SearXNG"/>
+            </a></p>
+  
+
+<h3><a href="../../index.html">Table of Contents</a></h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../user/index.html">User information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../own-instance.html">Why use a private instance?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../admin/index.html">Administrator documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dev/index.html">Developer documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../utils/index.html">DevOps tooling box</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../src/index.html">Source-Code</a></li>
+</ul>
+
+  <h3>Project Links</h3>
+  <ul>
+    <li><a href="https://github.com/searxng/searxng/tree/master">Source</a>
+  
+    <li><a href="https://github.com/searxng/searxng/wiki">Wiki</a>
+  
+    <li><a href="https://searx.space">Public instances</a>
+  
+    <li><a href="https://github.com/searxng/searxng/issues">Issue Tracker</a>
+  </ul><h3>Navigation</h3>
+<ul>
+  <li><a href="../../index.html">Overview</a>
+    <ul>
+      <li><a href="../index.html">Module code</a>
+        
+          
+          </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright SearXNG team.
+    </div>
+  </body>
+</html>

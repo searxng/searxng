@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>searx.favicons.cache &#8212; SearXNG Documentation (2026.2.22+191818b86)</title>
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=6625fa76" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/searxng.css?v=52e4ff28" />
+    <script src="../../../_static/documentation_options.js?v=1b5d919e"></script>
+    <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script data-project="searxng" data-version="2026.2.22+191818b86" src="../../../_static/describe_version.js?v=fa7f30d0"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">SearXNG Documentation (2026.2.22+191818b86)</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" accesskey="U">Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">searx.favicons.cache</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for searx.favicons.cache</h1><div class="highlight"><pre>
+<span></span><span class="c1"># SPDX-License-Identifier: AGPL-3.0-or-later</span>
+<span class="sd">&quot;&quot;&quot;Implementations for caching favicons.</span>
+
+<span class="sd">:py:obj:`FaviconCacheConfig`:</span>
+<span class="sd">  Configuration of the favicon cache</span>
+
+<span class="sd">:py:obj:`FaviconCache`:</span>
+<span class="sd">  Abstract base class for the implementation of a favicon cache.</span>
+
+<span class="sd">:py:obj:`FaviconCacheSQLite`:</span>
+<span class="sd">  Favicon cache that manages the favicon BLOBs in a SQLite DB.</span>
+
+<span class="sd">:py:obj:`FaviconCacheNull`:</span>
+<span class="sd">  Fallback solution if the configured cache cannot be used for system reasons.</span>
+
+<span class="sd">----</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">t</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">abc</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">dataclasses</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">hashlib</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">tempfile</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">typer</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">msgspec</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">searx</span><span class="w"> </span><span class="kn">import</span> <span class="n">sqlitedb</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">searx</span><span class="w"> </span><span class="kn">import</span> <span class="n">logger</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">searx.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">humanize_bytes</span><span class="p">,</span> <span class="n">humanize_number</span>
+
+<span class="n">CACHE</span><span class="p">:</span> <span class="s2">&quot;FaviconCache&quot;</span>
+<span class="n">FALLBACK_ICON</span> <span class="o">=</span> <span class="sa">b</span><span class="s2">&quot;FALLBACK_ICON&quot;</span>
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logger</span><span class="o">.</span><span class="n">getChild</span><span class="p">(</span><span class="s1">&#39;favicons.cache&#39;</span><span class="p">)</span>
+<span class="n">app</span> <span class="o">=</span> <span class="n">typer</span><span class="o">.</span><span class="n">Typer</span><span class="p">()</span>
+
+
+<div class="viewcode-block" id="state">
+<a class="viewcode-back" href="../../../src/searx.favicons.html#searx.favicons.cache.state">[docs]</a>
+<span class="nd">@app</span><span class="o">.</span><span class="n">command</span><span class="p">()</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">state</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;show state of the cache&quot;&quot;&quot;</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">CACHE</span><span class="o">.</span><span class="n">state</span><span class="p">()</span><span class="o">.</span><span class="n">report</span><span class="p">())</span></div>
+
+
+
+<div class="viewcode-block" id="maintenance">
+<a class="viewcode-back" href="../../../src/searx.favicons.html#searx.favicons.cache.maintenance">[docs]</a>
+<span class="nd">@app</span><span class="o">.</span><span class="n">command</span><span class="p">()</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">maintenance</span><span class="p">(</span><span class="n">force</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">debug</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;perform maintenance of the cache&quot;&quot;&quot;</span>
+    <span class="n">root_log</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">debug</span><span class="p">:</span>
+        <span class="n">root_log</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">root_log</span><span class="o">.</span><span class="n">handlers</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">handler</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">StreamHandler</span><span class="p">()</span>
+        <span class="n">handler</span><span class="o">.</span><span class="n">setFormatter</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">Formatter</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%(message)s</span><span class="s2">&quot;</span><span class="p">))</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">addHandler</span><span class="p">(</span><span class="n">handler</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">)</span>
+
+    <span class="n">state_t0</span> <span class="o">=</span> <span class="n">CACHE</span><span class="o">.</span><span class="n">state</span><span class="p">()</span>
+    <span class="n">CACHE</span><span class="o">.</span><span class="n">maintenance</span><span class="p">(</span><span class="n">force</span><span class="o">=</span><span class="n">force</span><span class="p">)</span>
+    <span class="n">state_t1</span> <span class="o">=</span> <span class="n">CACHE</span><span class="o">.</span><span class="n">state</span><span class="p">()</span>
+    <span class="n">state_delta</span> <span class="o">=</span> <span class="n">state_t0</span> <span class="o">-</span> <span class="n">state_t1</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;The cache has been reduced by:&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">state_delta</span><span class="o">.</span><span class="n">report</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">- </span><span class="si">{descr}</span><span class="s2">: </span><span class="si">{val}</span><span class="s2">&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">lstrip</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">))</span></div>
+
+
+
+<div class="viewcode-block" id="init">
+<a class="viewcode-back" href="../../../src/searx.favicons.html#searx.favicons.cache.init">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">init</span><span class="p">(</span><span class="n">cfg</span><span class="p">:</span> <span class="s2">&quot;FaviconCacheConfig&quot;</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Initialization of a global ``CACHE``&quot;&quot;&quot;</span>
+
+    <span class="k">global</span> <span class="n">CACHE</span>  <span class="c1"># pylint: disable=global-statement</span>
+    <span class="k">if</span> <span class="n">cfg</span><span class="o">.</span><span class="n">db_type</span> <span class="o">==</span> <span class="s2">&quot;sqlite&quot;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">sqlite_version_info</span> <span class="o">&lt;=</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">35</span><span class="p">):</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">critical</span><span class="p">(</span>
+                <span class="s2">&quot;Disable favicon caching completely: SQLite library (</span><span class="si">%s</span><span class="s2">) is too old! (require &gt;= 3.35)&quot;</span><span class="p">,</span>
+                <span class="n">sqlite3</span><span class="o">.</span><span class="n">sqlite_version</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="n">CACHE</span> <span class="o">=</span> <span class="n">FaviconCacheNull</span><span class="p">(</span><span class="n">cfg</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">CACHE</span> <span class="o">=</span> <span class="n">FaviconCacheSQLite</span><span class="p">(</span><span class="n">cfg</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">cfg</span><span class="o">.</span><span class="n">db_type</span> <span class="o">==</span> <span class="s2">&quot;mem&quot;</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Favicons are cached in memory, don&#39;t use this in production!&quot;</span><span class="p">)</span>
+        <span class="n">CACHE</span> <span class="o">=</span> <span class="n">FaviconCacheMEM</span><span class="p">(</span><span class="n">cfg</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;favicons db_type &#39;</span><span class="si">{</span><span class="n">cfg</span><span class="o">.</span><span class="n">db_type</span><span class="si">}</span><span class="s2">&#39; is unknown&quot;</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="FaviconCacheConfig">
+<a class="viewcode-back" href="../../../src/searx.favicons.html#searx.favicons.cache.FaviconCacheConfig">[docs]</a>
+<span class="nd">@t</span><span class="o">.</span><span class="n">final</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">FaviconCacheConfig</span><span class="p">(</span><span class="n">msgspec</span><span class="o">.</span><span class="n">Struct</span><span class="p">):</span>  <span class="c1"># pylint: disable=too-few-public-methods</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Configuration of the favicon cache.&quot;&quot;&quot;</span>
+
+    <span class="n">db_type</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;sqlite&quot;</span><span class="p">,</span> <span class="s2">&quot;mem&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;sqlite&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Type of the database:</span>
+
+<span class="sd">    ``sqlite``:</span>
+<span class="sd">      :py:obj:`.cache.FaviconCacheSQLite`</span>
+
+<span class="sd">    ``mem``:</span>
+<span class="sd">      :py:obj:`.cache.FaviconCacheMEM` (not recommended)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">db_url</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">gettempdir</span><span class="p">()</span> <span class="o">+</span> <span class="n">os</span><span class="o">.</span><span class="n">sep</span> <span class="o">+</span> <span class="s2">&quot;faviconcache.db&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;URL of the SQLite DB, the path to the database file.&quot;&quot;&quot;</span>
+
+    <span class="n">HOLD_TIME</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">60</span> <span class="o">*</span> <span class="mi">60</span> <span class="o">*</span> <span class="mi">24</span> <span class="o">*</span> <span class="mi">30</span>  <span class="c1"># 30 days</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Hold time (default in sec.), after which a BLOB is removed from the cache.&quot;&quot;&quot;</span>
+
+    <span class="n">LIMIT_TOTAL_BYTES</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1024</span> <span class="o">*</span> <span class="mi">1024</span> <span class="o">*</span> <span class="mi">50</span>  <span class="c1"># 50 MB</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Maximum of bytes (default) stored in the cache of all blobs.  Note: The</span>
+<span class="sd">    limit is only reached at each maintenance interval after which the oldest</span>
+<span class="sd">    BLOBs are deleted; the limit is exceeded during the maintenance period. If</span>
+<span class="sd">    the maintenance period is *too long* or maintenance is switched off</span>
+<span class="sd">    completely, the cache grows uncontrollably.&quot;&quot;&quot;</span>
+
+    <span class="n">BLOB_MAX_BYTES</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1024</span> <span class="o">*</span> <span class="mi">20</span>  <span class="c1"># 20 KB</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The maximum BLOB size in bytes that a favicon may have so that it can be</span>
+<span class="sd">    saved in the cache.  If the favicon is larger, it is not saved in the cache</span>
+<span class="sd">    and must be requested by the client via the proxy.&quot;&quot;&quot;</span>
+
+    <span class="n">MAINTENANCE_PERIOD</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">60</span> <span class="o">*</span> <span class="mi">60</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Maintenance period in seconds / when :py:obj:`MAINTENANCE_MODE` is set to</span>
+<span class="sd">    ``auto``.&quot;&quot;&quot;</span>
+
+    <span class="n">MAINTENANCE_MODE</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;auto&quot;</span><span class="p">,</span> <span class="s2">&quot;off&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;auto&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Type of maintenance mode</span>
+
+<span class="sd">    ``auto``:</span>
+<span class="sd">      Maintenance is carried out automatically as part of the maintenance</span>
+<span class="sd">      intervals (:py:obj:`MAINTENANCE_PERIOD`); no external process is required.</span>
+
+<span class="sd">    ``off``:</span>
+<span class="sd">      Maintenance is switched off and must be carried out by an external process</span>
+<span class="sd">      if required.</span>
+<span class="sd">    &quot;&quot;&quot;</span></div>
+
+
+
+<div class="viewcode-block" id="FaviconCacheStats">
+<a class="viewcode-back" href="../../../src/searx.favicons.html#searx.favicons.cache.FaviconCacheStats">[docs]</a>
+<span class="nd">@dataclasses</span><span class="o">.</span><span class="n">dataclass</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">FaviconCacheStats</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Dataclass which provides information on the status of the cache.&quot;&quot;&quot;</span>
+
+    <span class="n">favicons</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="nb">bytes</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">domains</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">resolvers</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="n">field_descr</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="n">t</span><span class="o">.</span><span class="n">Callable</span><span class="p">[[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="nb">type</span><span class="p">],</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="p">(</span><span class="s2">&quot;favicons&quot;</span><span class="p">,</span> <span class="s2">&quot;number of favicons in cache&quot;</span><span class="p">,</span> <span class="n">humanize_number</span><span class="p">),</span>
+        <span class="p">(</span><span class="s2">&quot;bytes&quot;</span><span class="p">,</span> <span class="s2">&quot;total size (approx. bytes) of cache&quot;</span><span class="p">,</span> <span class="n">humanize_bytes</span><span class="p">),</span>
+        <span class="p">(</span><span class="s2">&quot;domains&quot;</span><span class="p">,</span> <span class="s2">&quot;total number of domains in cache&quot;</span><span class="p">,</span> <span class="n">humanize_number</span><span class="p">),</span>
+        <span class="p">(</span><span class="s2">&quot;resolvers&quot;</span><span class="p">,</span> <span class="s2">&quot;number of resolvers&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">),</span>
+    <span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__sub__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">:</span> <span class="s2">&quot;FaviconCacheStats&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;FaviconCacheStats&quot;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;unsupported operand type(s) for +: &#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="si">}</span><span class="s2">&#39; and &#39;</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">other</span><span class="p">)</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
+        <span class="n">kwargs</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">field</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">field_descr</span><span class="p">:</span>
+            <span class="n">self_val</span><span class="p">,</span> <span class="n">other_val</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">field</span><span class="p">),</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">field</span><span class="p">)</span>
+            <span class="k">if</span> <span class="kc">None</span> <span class="ow">in</span> <span class="p">(</span><span class="n">self_val</span><span class="p">,</span> <span class="n">other_val</span><span class="p">):</span>
+                <span class="k">continue</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">self_val</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+                <span class="n">kwargs</span><span class="p">[</span><span class="n">field</span><span class="p">]</span> <span class="o">=</span> <span class="n">self_val</span> <span class="o">-</span> <span class="n">other_val</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">kwargs</span><span class="p">[</span><span class="n">field</span><span class="p">]</span> <span class="o">=</span> <span class="n">self_val</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">report</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fmt</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{descr}</span><span class="s2">: </span><span class="si">{val}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">):</span>
+        <span class="n">s</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">field</span><span class="p">,</span> <span class="n">descr</span><span class="p">,</span> <span class="n">cast</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">field_descr</span><span class="p">:</span>
+            <span class="n">val</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">field</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">val</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">val</span> <span class="o">=</span> <span class="s2">&quot;--&quot;</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">val</span> <span class="o">=</span> <span class="n">cast</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
+            <span class="n">s</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">fmt</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">descr</span><span class="o">=</span><span class="n">descr</span><span class="p">,</span> <span class="n">val</span><span class="o">=</span><span class="n">val</span><span class="p">))</span>  <span class="c1"># pyright: ignore[reportUnknownArgumentType]</span>
+        <span class="k">return</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">s</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="FaviconCache">
+<a class="viewcode-back" href="../../../src/searx.favicons.html#searx.favicons.cache.FaviconCache">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">FaviconCache</span><span class="p">(</span><span class="n">abc</span><span class="o">.</span><span class="n">ABC</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Abstract base class for the implementation of a favicon cache.&quot;&quot;&quot;</span>
+
+    <span class="nd">@abc</span><span class="o">.</span><span class="n">abstractmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cfg</span><span class="p">:</span> <span class="n">FaviconCacheConfig</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;An instance of the favicon cache is build up from the configuration.&quot;&quot;&quot;</span>
+
+    <span class="nd">@abc</span><span class="o">.</span><span class="n">abstractmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">resolver</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">authority</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span> <span class="o">|</span> <span class="nb">tuple</span><span class="p">[</span><span class="kc">None</span> <span class="o">|</span> <span class="nb">bytes</span><span class="p">,</span> <span class="kc">None</span> <span class="o">|</span> <span class="nb">str</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns ``None`` or the tuple of ``(data, mime)`` that has been</span>
+<span class="sd">        registered in the cache.  The ``None`` indicates that there was no entry</span>
+<span class="sd">        in the cache.&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="FaviconCache.set">
+<a class="viewcode-back" href="../../../src/searx.favicons.html#searx.favicons.cache.FaviconCache.set">[docs]</a>
+    <span class="nd">@abc</span><span class="o">.</span><span class="n">abstractmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">resolver</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">authority</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">mime</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="nb">bytes</span> <span class="o">|</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set data and mime-type in the cache.  If data is None, the</span>
+<span class="sd">        :py:obj:`FALLBACK_ICON` is registered. in the cache.&quot;&quot;&quot;</span></div>
+
+
+<div class="viewcode-block" id="FaviconCache.state">
+<a class="viewcode-back" href="../../../src/searx.favicons.html#searx.favicons.cache.FaviconCache.state">[docs]</a>
+    <span class="nd">@abc</span><span class="o">.</span><span class="n">abstractmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">state</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">FaviconCacheStats</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns a :py:obj:`FaviconCacheStats` (key/values) with information</span>
+<span class="sd">        on the state of the cache.&quot;&quot;&quot;</span></div>
+
+
+<div class="viewcode-block" id="FaviconCache.maintenance">
+<a class="viewcode-back" href="../../../src/searx.favicons.html#searx.favicons.cache.FaviconCache.maintenance">[docs]</a>
+    <span class="nd">@abc</span><span class="o">.</span><span class="n">abstractmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">maintenance</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">force</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Performs maintenance on the cache&quot;&quot;&quot;</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="FaviconCacheNull">
+<a class="viewcode-back" href="../../../src/searx.favicons.html#searx.favicons.cache.FaviconCacheNull">[docs]</a>
+<span class="nd">@t</span><span class="o">.</span><span class="n">final</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">FaviconCacheNull</span><span class="p">(</span><span class="n">FaviconCache</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A dummy favicon cache that caches nothing / a fallback solution. The</span>
+<span class="sd">    NullCache is used when more efficient caches such as the</span>
+<span class="sd">    :py:obj:`FaviconCacheSQLite` cannot be used because, for example, the SQLite</span>
+<span class="sd">    library is only available in an old version and does not meet the</span>
+<span class="sd">    requirements.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cfg</span><span class="p">:</span> <span class="n">FaviconCacheConfig</span><span class="p">):</span>
+        <span class="k">return</span> <span class="kc">None</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">resolver</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">authority</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span> <span class="o">|</span> <span class="nb">tuple</span><span class="p">[</span><span class="kc">None</span> <span class="o">|</span> <span class="nb">bytes</span><span class="p">,</span> <span class="kc">None</span> <span class="o">|</span> <span class="nb">str</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="kc">None</span>
+
+<div class="viewcode-block" id="FaviconCacheNull.set">
+<a class="viewcode-back" href="../../../src/searx.favicons.html#searx.favicons.cache.FaviconCacheNull.set">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">resolver</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">authority</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">mime</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="nb">bytes</span> <span class="o">|</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">False</span></div>
+
+
+<div class="viewcode-block" id="FaviconCacheNull.state">
+<a class="viewcode-back" href="../../../src/searx.favicons.html#searx.favicons.cache.FaviconCacheNull.state">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">state</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">FaviconCacheStats</span><span class="p">(</span><span class="n">favicons</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="FaviconCacheNull.maintenance">
+<a class="viewcode-back" href="../../../src/searx.favicons.html#searx.favicons.cache.FaviconCacheNull.maintenance">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">maintenance</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">force</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+        <span class="k">pass</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="FaviconCacheSQLite">
+<a class="viewcode-back" href="../../../src/searx.favicons.html#searx.favicons.cache.FaviconCacheSQLite">[docs]</a>
+<span class="nd">@t</span><span class="o">.</span><span class="n">final</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">FaviconCacheSQLite</span><span class="p">(</span><span class="n">sqlitedb</span><span class="o">.</span><span class="n">SQLiteAppl</span><span class="p">,</span> <span class="n">FaviconCache</span><span class="p">):</span>  <span class="c1"># pyright: ignore[reportUnsafeMultipleInheritance]</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Favicon cache that manages the favicon BLOBs in a SQLite DB.  The DB</span>
+<span class="sd">    model in the SQLite DB is implemented using the abstract class</span>
+<span class="sd">    :py:obj:`sqlitedb.SQLiteAppl`.</span>
+
+<span class="sd">    For introspection of the DB, jump into developer environment and run command</span>
+<span class="sd">    to show cache state::</span>
+
+<span class="sd">        $ ./manage pyenv.cmd bash --norc --noprofile</span>
+<span class="sd">        (py3) python -m searx.favicons cache state</span>
+
+<span class="sd">    The following configurations are required / supported:</span>
+
+<span class="sd">    - :py:obj:`FaviconCacheConfig.db_url`</span>
+<span class="sd">    - :py:obj:`FaviconCacheConfig.HOLD_TIME`</span>
+<span class="sd">    - :py:obj:`FaviconCacheConfig.LIMIT_TOTAL_BYTES`</span>
+<span class="sd">    - :py:obj:`FaviconCacheConfig.BLOB_MAX_BYTES`</span>
+<span class="sd">    - :py:obj:`MAINTENANCE_PERIOD`</span>
+<span class="sd">    - :py:obj:`MAINTENANCE_MODE`</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">DB_SCHEMA</span> <span class="o">=</span> <span class="mi">1</span>
+
+    <span class="n">DDL_BLOBS</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span><span class="se">\</span>
+<span class="s2">CREATE TABLE IF NOT EXISTS blobs (</span>
+<span class="s2">  sha256     TEXT,</span>
+<span class="s2">  bytes_c    INTEGER,</span>
+<span class="s2">  mime       TEXT NOT NULL,</span>
+<span class="s2">  data       BLOB NOT NULL,</span>
+<span class="s2">  PRIMARY KEY (sha256))&quot;&quot;&quot;</span>
+
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Table to store BLOB objects by their sha256 hash values.&quot;&quot;&quot;</span>
+
+    <span class="n">DDL_BLOB_MAP</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span><span class="se">\</span>
+<span class="s2">CREATE TABLE IF NOT EXISTS blob_map (</span>
+<span class="s2">    m_time     INTEGER DEFAULT (strftime(&#39;</span><span class="si">%s</span><span class="s2">&#39;, &#39;now&#39;)),  -- last modified (unix epoch) time in sec.</span>
+<span class="s2">    sha256     TEXT,</span>
+<span class="s2">    resolver   TEXT,</span>
+<span class="s2">    authority  TEXT,</span>
+<span class="s2">    PRIMARY KEY (resolver, authority))&quot;&quot;&quot;</span>
+
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Table to map from (resolver, authority) to sha256 hash values.&quot;&quot;&quot;</span>
+
+    <span class="n">DDL_CREATE_TABLES</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;blobs&quot;</span><span class="p">:</span> <span class="n">DDL_BLOBS</span><span class="p">,</span>
+        <span class="s2">&quot;blob_map&quot;</span><span class="p">:</span> <span class="n">DDL_BLOB_MAP</span><span class="p">,</span>
+    <span class="p">}</span>
+
+    <span class="n">SQL_DROP_LEFTOVER_BLOBS</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="s2">&quot;DELETE FROM blobs WHERE sha256 IN (&quot;</span>
+        <span class="s2">&quot; SELECT b.sha256&quot;</span>
+        <span class="s2">&quot;   FROM blobs b&quot;</span>
+        <span class="s2">&quot;   LEFT JOIN blob_map bm&quot;</span>
+        <span class="s2">&quot;     ON b.sha256 = bm.sha256&quot;</span>
+        <span class="s2">&quot;  WHERE bm.sha256 IS NULL)&quot;</span>
+    <span class="p">)</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Delete blobs.sha256 (BLOBs) no longer in blob_map.sha256.&quot;&quot;&quot;</span>
+
+    <span class="n">SQL_ITER_BLOBS_SHA256_BYTES_C</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="s2">&quot;SELECT b.sha256, b.bytes_c FROM blobs b&quot;</span>
+        <span class="s2">&quot;  JOIN blob_map bm &quot;</span>
+        <span class="s2">&quot;    ON b.sha256 = bm.sha256&quot;</span>
+        <span class="s2">&quot; ORDER BY bm.m_time ASC&quot;</span>
+    <span class="p">)</span>
+
+    <span class="n">SQL_INSERT_BLOBS</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="s2">&quot;INSERT INTO blobs (sha256, bytes_c, mime, data) VALUES (?, ?, ?, ?)&quot;</span>
+        <span class="s2">&quot;    ON CONFLICT (sha256) DO NOTHING&quot;</span>
+    <span class="p">)</span>  <span class="c1"># fmt: skip</span>
+
+    <span class="n">SQL_INSERT_BLOB_MAP</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="s2">&quot;INSERT INTO blob_map (sha256, resolver, authority) VALUES (?, ?, ?)&quot;</span>
+        <span class="s2">&quot;    ON CONFLICT DO UPDATE &quot;</span>
+        <span class="s2">&quot;   SET sha256=excluded.sha256, m_time=strftime(&#39;</span><span class="si">%s</span><span class="s2">&#39;, &#39;now&#39;)&quot;</span>
+    <span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cfg</span><span class="p">:</span> <span class="n">FaviconCacheConfig</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;An instance of the favicon cache is build up from the configuration.&quot;&quot;&quot;</span>  <span class="c1">#</span>
+
+        <span class="k">if</span> <span class="n">cfg</span><span class="o">.</span><span class="n">db_url</span> <span class="o">==</span> <span class="s2">&quot;:memory:&quot;</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">critical</span><span class="p">(</span><span class="s2">&quot;don&#39;t use SQLite DB in :memory: in production!!&quot;</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">cfg</span><span class="o">.</span><span class="n">db_url</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cfg</span> <span class="o">=</span> <span class="n">cfg</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">resolver</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">authority</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span> <span class="o">|</span> <span class="nb">tuple</span><span class="p">[</span><span class="kc">None</span> <span class="o">|</span> <span class="nb">bytes</span><span class="p">,</span> <span class="kc">None</span> <span class="o">|</span> <span class="nb">str</span><span class="p">]:</span>
+
+        <span class="n">sql</span> <span class="o">=</span> <span class="s2">&quot;SELECT sha256 FROM blob_map WHERE resolver = ? AND authority = ?&quot;</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">DB</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">sql</span><span class="p">,</span> <span class="p">(</span><span class="n">resolver</span><span class="p">,</span> <span class="n">authority</span><span class="p">))</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">res</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+
+        <span class="n">data</span><span class="p">,</span> <span class="n">mime</span> <span class="o">=</span> <span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="n">sha256</span> <span class="o">=</span> <span class="n">res</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">sha256</span> <span class="o">==</span> <span class="n">FALLBACK_ICON</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">data</span><span class="p">,</span> <span class="n">mime</span>
+
+        <span class="n">sql</span> <span class="o">=</span> <span class="s2">&quot;SELECT data, mime FROM blobs WHERE sha256 = ?&quot;</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">DB</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">sql</span><span class="p">,</span> <span class="p">(</span><span class="n">sha256</span><span class="p">,))</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">res</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">data</span><span class="p">,</span> <span class="n">mime</span> <span class="o">=</span> <span class="n">res</span>
+        <span class="k">return</span> <span class="n">data</span><span class="p">,</span> <span class="n">mime</span>
+
+<div class="viewcode-block" id="FaviconCacheSQLite.set">
+<a class="viewcode-back" href="../../../src/searx.favicons.html#searx.favicons.cache.FaviconCacheSQLite.set">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">resolver</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">authority</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">mime</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="nb">bytes</span> <span class="o">|</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">cfg</span><span class="o">.</span><span class="n">MAINTENANCE_MODE</span> <span class="o">==</span> <span class="s2">&quot;auto&quot;</span> <span class="ow">and</span> <span class="nb">int</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">())</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">next_maintenance_time</span><span class="p">:</span>
+            <span class="c1"># Should automatic maintenance be moved to a new thread?</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">maintenance</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="n">data</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">mime</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
+                <span class="s2">&quot;favicon resolver </span><span class="si">%s</span><span class="s2"> tries to cache mime-type None for authority </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span>
+                <span class="n">resolver</span><span class="p">,</span>
+                <span class="n">authority</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="k">return</span> <span class="kc">False</span>
+
+        <span class="n">bytes_c</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span> <span class="ow">or</span> <span class="sa">b</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">bytes_c</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">cfg</span><span class="o">.</span><span class="n">BLOB_MAX_BYTES</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+                <span class="s2">&quot;favicon of resolver: </span><span class="si">%s</span><span class="s2"> / authority: </span><span class="si">%s</span><span class="s2"> to big to cache (bytes: </span><span class="si">%s</span><span class="s2">) &quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">resolver</span><span class="p">,</span> <span class="n">authority</span><span class="p">,</span> <span class="n">bytes_c</span><span class="p">)</span>
+            <span class="p">)</span>
+            <span class="k">return</span> <span class="kc">False</span>
+
+        <span class="k">if</span> <span class="n">data</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">sha256</span> <span class="o">=</span> <span class="n">FALLBACK_ICON</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">sha256</span> <span class="o">=</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">sha256</span><span class="p">(</span><span class="n">data</span><span class="p">)</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span>
+
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">connect</span><span class="p">()</span> <span class="k">as</span> <span class="n">conn</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">sha256</span> <span class="o">!=</span> <span class="n">FALLBACK_ICON</span><span class="p">:</span>
+                <span class="n">conn</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">SQL_INSERT_BLOBS</span><span class="p">,</span> <span class="p">(</span><span class="n">sha256</span><span class="p">,</span> <span class="n">bytes_c</span><span class="p">,</span> <span class="n">mime</span><span class="p">,</span> <span class="n">data</span><span class="p">))</span>
+            <span class="n">conn</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">SQL_INSERT_BLOB_MAP</span><span class="p">,</span> <span class="p">(</span><span class="n">sha256</span><span class="p">,</span> <span class="n">resolver</span><span class="p">,</span> <span class="n">authority</span><span class="p">))</span>
+        <span class="c1"># hint: the with context of the connection object closes the transaction</span>
+        <span class="c1"># but not the DB connection.  The connection has to be closed by the</span>
+        <span class="c1"># caller of self.connect()!</span>
+        <span class="n">conn</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="kc">True</span></div>
+
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">next_maintenance_time</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns (unix epoch) time of the next maintenance.&quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">cfg</span><span class="o">.</span><span class="n">MAINTENANCE_PERIOD</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">properties</span><span class="o">.</span><span class="n">m_time</span><span class="p">(</span><span class="s2">&quot;LAST_MAINTENANCE&quot;</span><span class="p">)</span>
+
+<div class="viewcode-block" id="FaviconCacheSQLite.maintenance">
+<a class="viewcode-back" href="../../../src/searx.favicons.html#searx.favicons.cache.FaviconCacheSQLite.maintenance">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">maintenance</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">force</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+
+        <span class="c1"># Prevent parallel DB maintenance cycles from other DB connections</span>
+        <span class="c1"># (e.g. in multi thread or process environments).</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">force</span> <span class="ow">and</span> <span class="nb">int</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">())</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">next_maintenance_time</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;no maintenance required yet, next maintenance interval is in the future&quot;</span><span class="p">)</span>
+            <span class="k">return</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">properties</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s2">&quot;LAST_MAINTENANCE&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>  <span class="c1"># hint: this (also) sets the m_time of the property!</span>
+
+        <span class="c1"># Do maintenance tasks.  This can be take a little more time, to avoid</span>
+        <span class="c1"># DB locks, establish a new DB connection.</span>
+
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">connect</span><span class="p">()</span> <span class="k">as</span> <span class="n">conn</span><span class="p">:</span>
+
+            <span class="c1"># drop items not in HOLD time</span>
+            <span class="n">res</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;DELETE FROM blob_map&quot;</span>
+                <span class="sa">f</span><span class="s2">&quot; WHERE cast(m_time as integer) &lt; cast(strftime(&#39;%s&#39;, &#39;now&#39;) as integer) - </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">cfg</span><span class="o">.</span><span class="n">HOLD_TIME</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;dropped </span><span class="si">%s</span><span class="s2"> obsolete blob_map items from db&quot;</span><span class="p">,</span> <span class="n">res</span><span class="o">.</span><span class="n">rowcount</span><span class="p">)</span>
+            <span class="n">res</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">SQL_DROP_LEFTOVER_BLOBS</span><span class="p">)</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;dropped </span><span class="si">%s</span><span class="s2"> obsolete BLOBS from db&quot;</span><span class="p">,</span> <span class="n">res</span><span class="o">.</span><span class="n">rowcount</span><span class="p">)</span>
+
+            <span class="c1"># drop old items to be in LIMIT_TOTAL_BYTES</span>
+            <span class="n">total_bytes</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;SELECT SUM(bytes_c) FROM blobs&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">or</span> <span class="mi">0</span>
+            <span class="k">if</span> <span class="n">total_bytes</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">cfg</span><span class="o">.</span><span class="n">LIMIT_TOTAL_BYTES</span><span class="p">:</span>
+
+                <span class="n">x</span> <span class="o">=</span> <span class="n">total_bytes</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">cfg</span><span class="o">.</span><span class="n">LIMIT_TOTAL_BYTES</span>
+                <span class="n">c</span> <span class="o">=</span> <span class="mi">0</span>
+                <span class="n">sha_list</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+                <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">conn</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">SQL_ITER_BLOBS_SHA256_BYTES_C</span><span class="p">):</span>
+                    <span class="n">sha256</span><span class="p">,</span> <span class="n">bytes_c</span> <span class="o">=</span> <span class="n">row</span>
+                    <span class="n">sha_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sha256</span><span class="p">)</span>
+                    <span class="n">c</span> <span class="o">+=</span> <span class="n">bytes_c</span>
+                    <span class="k">if</span> <span class="n">c</span> <span class="o">&gt;</span> <span class="n">x</span><span class="p">:</span>
+                        <span class="k">break</span>
+                <span class="k">if</span> <span class="n">sha_list</span><span class="p">:</span>
+                    <span class="n">conn</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;DELETE FROM blobs WHERE sha256 IN (&#39;</span><span class="si">%s</span><span class="s2">&#39;)&quot;</span> <span class="o">%</span> <span class="s2">&quot;&#39;,&#39;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">sha_list</span><span class="p">))</span>
+                    <span class="n">conn</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;DELETE FROM blob_map WHERE sha256 IN (&#39;</span><span class="si">%s</span><span class="s2">&#39;)&quot;</span> <span class="o">%</span> <span class="s2">&quot;&#39;,&#39;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">sha_list</span><span class="p">))</span>
+                    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;dropped </span><span class="si">%s</span><span class="s2"> blobs with total size of </span><span class="si">%s</span><span class="s2"> bytes&quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">sha_list</span><span class="p">),</span> <span class="n">c</span><span class="p">)</span>
+
+        <span class="c1"># Vacuuming the WALs</span>
+        <span class="c1"># https://www.theunterminatedstring.com/sqlite-vacuuming/</span>
+
+        <span class="n">conn</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;PRAGMA wal_checkpoint(TRUNCATE)&quot;</span><span class="p">)</span>
+        <span class="n">conn</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_query_val</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sql</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">default</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Any</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="n">val</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">DB</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">sql</span><span class="p">)</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">val</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">val</span> <span class="o">=</span> <span class="n">val</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">val</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">val</span> <span class="o">=</span> <span class="n">default</span>
+        <span class="k">return</span> <span class="n">val</span>
+
+<div class="viewcode-block" id="FaviconCacheSQLite.state">
+<a class="viewcode-back" href="../../../src/searx.favicons.html#searx.favicons.cache.FaviconCacheSQLite.state">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">state</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">FaviconCacheStats</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">FaviconCacheStats</span><span class="p">(</span>
+            <span class="n">favicons</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_query_val</span><span class="p">(</span><span class="s2">&quot;SELECT count(*) FROM blobs&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+            <span class="nb">bytes</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_query_val</span><span class="p">(</span><span class="s2">&quot;SELECT SUM(bytes_c) FROM blobs&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+            <span class="n">domains</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_query_val</span><span class="p">(</span><span class="s2">&quot;SELECT count(*) FROM (SELECT authority FROM blob_map GROUP BY authority)&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+            <span class="n">resolvers</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_query_val</span><span class="p">(</span><span class="s2">&quot;SELECT count(*) FROM (SELECT resolver FROM blob_map GROUP BY resolver)&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+        <span class="p">)</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="FaviconCacheMEM">
+<a class="viewcode-back" href="../../../src/searx.favicons.html#searx.favicons.cache.FaviconCacheMEM">[docs]</a>
+<span class="nd">@t</span><span class="o">.</span><span class="n">final</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">FaviconCacheMEM</span><span class="p">(</span><span class="n">FaviconCache</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Favicon cache in process&#39; memory.  Its just a POC that stores the</span>
+<span class="sd">    favicons in the memory of the process.</span>
+
+<span class="sd">    .. attention::</span>
+
+<span class="sd">       Don&#39;t use it in production, it will blow up your memory!!</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cfg</span><span class="p">:</span> <span class="n">FaviconCacheConfig</span><span class="p">):</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">cfg</span> <span class="o">=</span> <span class="n">cfg</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">t</span><span class="o">.</span><span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_sha_mime</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">]]</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">resolver</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">authority</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span> <span class="o">|</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">bytes</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">]:</span>
+
+        <span class="n">sha</span><span class="p">,</span> <span class="n">mime</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sha_mime</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">resolver</span><span class="si">}</span><span class="s2">:</span><span class="si">{</span><span class="n">authority</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">sha</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">sha</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">data</span> <span class="o">==</span> <span class="n">FALLBACK_ICON</span><span class="p">:</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">return</span> <span class="n">data</span><span class="p">,</span> <span class="n">mime</span>
+
+<div class="viewcode-block" id="FaviconCacheMEM.set">
+<a class="viewcode-back" href="../../../src/searx.favicons.html#searx.favicons.cache.FaviconCacheMEM.set">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">resolver</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">authority</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">mime</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="nb">bytes</span> <span class="o">|</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+
+        <span class="k">if</span> <span class="n">data</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="n">FALLBACK_ICON</span>
+            <span class="n">mime</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="k">elif</span> <span class="n">mime</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
+                <span class="s2">&quot;favicon resolver </span><span class="si">%s</span><span class="s2"> tries to cache mime-type None for authority </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span>
+                <span class="n">resolver</span><span class="p">,</span>
+                <span class="n">authority</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="k">return</span> <span class="kc">False</span>
+
+        <span class="n">digest</span> <span class="o">=</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">sha256</span><span class="p">(</span><span class="n">data</span><span class="p">)</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="p">[</span><span class="n">digest</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_sha_mime</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">resolver</span><span class="si">}</span><span class="s2">:</span><span class="si">{</span><span class="n">authority</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">digest</span><span class="p">,</span> <span class="n">mime</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">True</span></div>
+
+
+<div class="viewcode-block" id="FaviconCacheMEM.state">
+<a class="viewcode-back" href="../../../src/searx.favicons.html#searx.favicons.cache.FaviconCacheMEM.state">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">state</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">FaviconCacheStats</span><span class="p">(</span><span class="n">favicons</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="o">.</span><span class="n">keys</span><span class="p">()))</span></div>
+
+
+<div class="viewcode-block" id="FaviconCacheMEM.maintenance">
+<a class="viewcode-back" href="../../../src/searx.favicons.html#searx.favicons.cache.FaviconCacheMEM.maintenance">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">maintenance</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">force</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+        <span class="k">pass</span></div>
+</div>
+
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+  <span id="sidebar-top"></span>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+  
+    
+            <p class="logo"><a href="../../../index.html">
+              <img class="logo" src="../../../_static/searxng-wordmark.svg" alt="Logo of SearXNG"/>
+            </a></p>
+  
+
+<h3><a href="../../../index.html">Table of Contents</a></h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../user/index.html">User information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../own-instance.html">Why use a private instance?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../admin/index.html">Administrator documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../dev/index.html">Developer documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../utils/index.html">DevOps tooling box</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/index.html">Source-Code</a></li>
+</ul>
+
+  <h3>Project Links</h3>
+  <ul>
+    <li><a href="https://github.com/searxng/searxng/tree/master">Source</a>
+  
+    <li><a href="https://github.com/searxng/searxng/wiki">Wiki</a>
+  
+    <li><a href="https://searx.space">Public instances</a>
+  
+    <li><a href="https://github.com/searxng/searxng/issues">Issue Tracker</a>
+  </ul><h3>Navigation</h3>
+<ul>
+  <li><a href="../../../index.html">Overview</a>
+    <ul>
+      <li><a href="../../index.html">Module code</a>
+        
+          
+          </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright SearXNG team.
+    </div>
+  </body>
+</html>

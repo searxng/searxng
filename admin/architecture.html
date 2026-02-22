@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Architecture &#8212; SearXNG Documentation (2026.2.22+191818b86)</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=6625fa76" />
+    <link rel="stylesheet" type="text/css" href="../_static/searxng.css?v=52e4ff28" />
+    <script src="../_static/documentation_options.js?v=1b5d919e"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script data-project="searxng" data-version="2026.2.22+191818b86" src="../_static/describe_version.js?v=fa7f30d0"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="List of plugins" href="plugins.html" />
+    <link rel="prev" title="Administration API" href="api.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="plugins.html" title="List of plugins"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="api.html" title="Administration API"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">SearXNG Documentation (2026.2.22+191818b86)</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" accesskey="U">Administrator documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Architecture</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="architecture">
+<span id="id1"></span><h1>Architecture<a class="headerlink" href="#architecture" title="Link to this heading">¶</a></h1>
+<aside class="sidebar">
+<p class="sidebar-title">Further reading</p>
+<ul class="simple">
+<li><p>Reverse Proxy: <a class="reference internal" href="installation-apache.html#apache-searxng-site"><span class="std std-ref">Apache</span></a> &amp; <a class="reference internal" href="installation-nginx.html#nginx-searxng-site"><span class="std std-ref">nginx</span></a></p></li>
+<li><p>uWSGI: <a class="reference internal" href="installation-uwsgi.html#searxng-uwsgi"><span class="std std-ref">uWSGI</span></a></p></li>
+<li><p>SearXNG: <a class="reference internal" href="installation-searxng.html#installation-basic"><span class="std std-ref">Step by step installation</span></a></p></li>
+</ul>
+</aside>
+<p>Herein you will find some hints and suggestions about typical architectures of
+SearXNG infrastructures.</p>
+<section id="uwsgi-setup">
+<span id="architecture-uwsgi"></span><h2>uWSGI Setup<a class="headerlink" href="#uwsgi-setup" title="Link to this heading">¶</a></h2>
+<p>We start with a <em>reference</em> setup for public SearXNG instances which can be build
+up and maintained by the scripts from our <a class="reference internal" href="../utils/index.html#toolboxing"><span class="std std-ref">DevOps tooling box</span></a>.</p>
+<figure class="align-default" id="id2">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">digraph</span> <span class="n">G</span> <span class="p">{</span>
+
+  <span class="n">node</span> <span class="p">[</span><span class="n">style</span><span class="o">=</span><span class="n">filled</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="n">box</span><span class="p">,</span> <span class="n">fillcolor</span><span class="o">=</span><span class="s2">&quot;#ffffcc&quot;</span><span class="p">,</span> <span class="n">fontname</span><span class="o">=</span><span class="n">Sans</span><span class="p">];</span>
+  <span class="n">edge</span> <span class="p">[</span><span class="n">fontname</span><span class="o">=</span><span class="s2">&quot;Sans&quot;</span><span class="p">];</span>
+
+  <span class="n">browser</span> <span class="p">[</span><span class="n">label</span><span class="o">=</span><span class="s2">&quot;browser&quot;</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="n">tab</span><span class="p">,</span> <span class="n">fillcolor</span><span class="o">=</span><span class="n">aliceblue</span><span class="p">];</span>
+  <span class="n">rp</span>      <span class="p">[</span><span class="n">label</span><span class="o">=</span><span class="s2">&quot;reverse proxy&quot;</span><span class="p">];</span>
+  <span class="n">static</span>  <span class="p">[</span><span class="n">label</span><span class="o">=</span><span class="s2">&quot;static files&quot;</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="n">folder</span><span class="p">,</span> <span class="n">href</span><span class="o">=</span><span class="s2">&quot;url to configure static files&quot;</span><span class="p">,</span> <span class="n">fillcolor</span><span class="o">=</span><span class="n">lightgray</span><span class="p">];</span>
+  <span class="n">uwsgi</span>   <span class="p">[</span><span class="n">label</span><span class="o">=</span><span class="s2">&quot;uwsgi&quot;</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="n">parallelogram</span> <span class="n">href</span><span class="o">=</span><span class="s2">&quot;https://docs.searxng.org/utils/searxng.sh.html&quot;</span><span class="p">]</span>
+  <span class="n">valkey</span>  <span class="p">[</span><span class="n">label</span><span class="o">=</span><span class="s2">&quot;valkey DB&quot;</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="n">cylinder</span><span class="p">];</span>
+
+  <span class="n">searxng1</span>  <span class="p">[</span><span class="n">label</span><span class="o">=</span><span class="s2">&quot;SearXNG #1&quot;</span><span class="p">,</span> <span class="n">fontcolor</span><span class="o">=</span><span class="n">blue3</span><span class="p">];</span>
+  <span class="n">searxng2</span>  <span class="p">[</span><span class="n">label</span><span class="o">=</span><span class="s2">&quot;SearXNG #2&quot;</span><span class="p">,</span> <span class="n">fontcolor</span><span class="o">=</span><span class="n">blue3</span><span class="p">];</span>
+  <span class="n">searxng3</span>  <span class="p">[</span><span class="n">label</span><span class="o">=</span><span class="s2">&quot;SearXNG #3&quot;</span><span class="p">,</span> <span class="n">fontcolor</span><span class="o">=</span><span class="n">blue3</span><span class="p">];</span>
+  <span class="n">searxng4</span>  <span class="p">[</span><span class="n">label</span><span class="o">=</span><span class="s2">&quot;SearXNG #4&quot;</span><span class="p">,</span> <span class="n">fontcolor</span><span class="o">=</span><span class="n">blue3</span><span class="p">];</span>
+
+  <span class="n">browser</span> <span class="o">-&gt;</span> <span class="n">rp</span> <span class="p">[</span><span class="n">label</span><span class="o">=</span><span class="s2">&quot;HTTPS&quot;</span><span class="p">]</span>
+
+  <span class="n">subgraph</span> <span class="n">cluster_searxng</span> <span class="p">{</span>
+      <span class="n">label</span> <span class="o">=</span> <span class="s2">&quot;SearXNG instance&quot;</span> <span class="n">fontname</span><span class="o">=</span><span class="n">Sans</span><span class="p">;</span>
+      <span class="n">bgcolor</span><span class="o">=</span><span class="s2">&quot;#fafafa&quot;</span><span class="p">;</span>
+      <span class="p">{</span> <span class="n">rank</span><span class="o">=</span><span class="n">same</span><span class="p">;</span> <span class="n">static</span> <span class="n">rp</span> <span class="p">};</span>
+      <span class="n">rp</span> <span class="o">-&gt;</span> <span class="n">static</span>  <span class="p">[</span><span class="n">label</span><span class="o">=</span><span class="s2">&quot;optional: reverse proxy serves static files&quot;</span><span class="p">,</span> <span class="n">fillcolor</span><span class="o">=</span><span class="n">slategray</span><span class="p">,</span> <span class="n">fontcolor</span><span class="o">=</span><span class="n">slategray</span><span class="p">];</span>
+      <span class="n">rp</span> <span class="o">-&gt;</span> <span class="n">uwsgi</span> <span class="p">[</span><span class="n">label</span><span class="o">=</span><span class="s2">&quot;http:// (tcp) or unix:// (socket)&quot;</span><span class="p">];</span>
+      <span class="n">uwsgi</span> <span class="o">-&gt;</span> <span class="n">searxng1</span> <span class="o">-&gt;</span> <span class="n">valkey</span><span class="p">;</span>
+      <span class="n">uwsgi</span> <span class="o">-&gt;</span> <span class="n">searxng2</span> <span class="o">-&gt;</span> <span class="n">valkey</span><span class="p">;</span>
+      <span class="n">uwsgi</span> <span class="o">-&gt;</span> <span class="n">searxng3</span> <span class="o">-&gt;</span> <span class="n">valkey</span><span class="p">;</span>
+      <span class="n">uwsgi</span> <span class="o">-&gt;</span> <span class="n">searxng4</span> <span class="o">-&gt;</span> <span class="n">valkey</span><span class="p">;</span>
+  <span class="p">}</span>
+
+<span class="p">}</span>
+</pre></div>
+</div>
+<figcaption>
+<p><span class="caption-number">Fig. 2 </span><span class="caption-text">Reference architecture of a public SearXNG setup.</span><a class="headerlink" href="#id2" title="Link to this image">¶</a></p>
+</figcaption>
+</figure>
+<p>The reference installation activates <code class="docutils literal notranslate"><span class="pre">server.limiter</span></code> and
+<code class="docutils literal notranslate"><span class="pre">server.image_proxy</span></code> (<a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/utils/templates/etc/searxng/settings.yml">/etc/searxng/settings.yml</a>)</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="c1"># SearXNG settings</span>
+
+<span class="nt">use_default_settings</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+
+<span class="nt">general</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">debug</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+<span class="w">  </span><span class="nt">instance_name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;SearXNG&quot;</span>
+
+<span class="nt">search</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">safe_search</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2</span>
+<span class="w">  </span><span class="nt">autocomplete</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;duckduckgo&#39;</span>
+<span class="w">  </span><span class="nt">formats</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">html</span>
+
+<span class="nt">server</span><span class="p">:</span>
+<span class="w">  </span><span class="c1"># Is overwritten by ${SEARXNG_SECRET}</span>
+<span class="w">  </span><span class="nt">secret_key</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;ultrasecretkey&quot;</span>
+<span class="w">  </span><span class="nt">limiter</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">  </span><span class="nt">image_proxy</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">  </span><span class="c1"># public URL of the instance, to ensure correct inbound links. Is overwritten</span>
+<span class="w">  </span><span class="c1"># by ${SEARXNG_BASE_URL}.</span>
+<span class="w">  </span><span class="c1"># base_url: http://example.com/location</span>
+
+<span class="nt">valkey</span><span class="p">:</span>
+<span class="w">  </span><span class="c1"># URL to connect valkey database. Is overwritten by ${SEARXNG_VALKEY_URL}.</span>
+<span class="w">  </span><span class="nt">url</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">valkey://localhost:6379/0</span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+  <span id="sidebar-top"></span>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+  
+    
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/searxng-wordmark.svg" alt="Logo of SearXNG"/>
+            </a></p>
+  
+
+<h3><a href="../index.html">Table of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../user/index.html">User information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../own-instance.html">Why use a private instance?</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Administrator documentation</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="settings/index.html">Settings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation-docker.html">Installation container</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation-scripts.html">Installation Script</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation-searxng.html">Step by step installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation-granian.html">Granian</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation-uwsgi.html">uWSGI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation-nginx.html">NGINX</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation-apache.html">Apache</a></li>
+<li class="toctree-l2"><a class="reference internal" href="update-searxng.html">SearXNG maintenance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="answer-captcha.html">Answer CAPTCHA from server’s IP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.favicons.html">Favicons</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.limiter.html">Limiter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html">Administration API</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Architecture</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#uwsgi-setup">uWSGI Setup</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="plugins.html">List of plugins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="buildhosts.html">Buildhosts</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../dev/index.html">Developer documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../utils/index.html">DevOps tooling box</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../src/index.html">Source-Code</a></li>
+</ul>
+
+  <h3>Project Links</h3>
+  <ul>
+    <li><a href="https://github.com/searxng/searxng/tree/master">Source</a>
+  
+    <li><a href="https://github.com/searxng/searxng/wiki">Wiki</a>
+  
+    <li><a href="https://searx.space">Public instances</a>
+  
+    <li><a href="https://github.com/searxng/searxng/issues">Issue Tracker</a>
+  </ul><h3>Navigation</h3>
+<ul>
+  <li><a href="../index.html">Overview</a>
+    <ul>
+      <li><a href="index.html">Administrator documentation</a>
+        <ul>
+          <li>Previous: <a href="api.html" title="previous chapter">Administration API</a>
+          <li>Next: <a href="plugins.html" title="next chapter">List of plugins</a></ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/admin/architecture.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright SearXNG team.
+    </div>
+  </body>
+</html>

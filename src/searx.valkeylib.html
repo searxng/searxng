@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Valkey Library &#8212; SearXNG Documentation (2026.2.22+191818b86)</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=6625fa76" />
+    <link rel="stylesheet" type="text/css" href="../_static/searxng.css?v=52e4ff28" />
+    <script src="../_static/documentation_options.js?v=1b5d919e"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script data-project="searxng" data-version="2026.2.22+191818b86" src="../_static/describe_version.js?v=fa7f30d0"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Weather" href="searx.weather.html" />
+    <link rel="prev" title="Valkey DB" href="searx.valkeydb.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="searx.weather.html" title="Weather"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="searx.valkeydb.html" title="Valkey DB"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">SearXNG Documentation (2026.2.22+191818b86)</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" accesskey="U">Source-Code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Valkey Library</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="module-searx.valkeylib">
+<span id="valkey-library"></span><span id="searx-valkey"></span><h1>Valkey Library<a class="headerlink" href="#module-searx.valkeylib" title="Link to this heading">¶</a></h1>
+<p>A collection of convenient functions and valkey/lua scripts.</p>
+<p>This code was partial inspired by the <a class="reference external" href="https://redis.com/blog/bullet-proofing-lua-scripts-in-redispy/">Bullet-Proofing Lua Scripts in ValkeyPy</a>
+article.</p>
+<dl class="py data">
+<dt class="sig sig-object py" id="searx.valkeylib.LUA_SCRIPT_STORAGE">
+<span class="sig-prename descclassname"><span class="pre">searx.valkeylib.</span></span><span class="sig-name descname"><span class="pre">LUA_SCRIPT_STORAGE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="headerlink" href="#searx.valkeylib.LUA_SCRIPT_STORAGE" title="Link to this definition">¶</a></dt>
+<dd><p>A global dictionary to cache client’s <code class="docutils literal notranslate"><span class="pre">Script</span></code> objects, used by
+<a class="reference internal" href="#searx.valkeylib.lua_script_storage" title="searx.valkeylib.lua_script_storage"><code class="xref py py-obj docutils literal notranslate"><span class="pre">lua_script_storage</span></code></a></p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="searx.valkeylib.lua_script_storage">
+<span class="sig-prename descclassname"><span class="pre">searx.valkeylib.</span></span><span class="sig-name descname"><span class="pre">lua_script_storage</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">client</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">script</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/searx/valkeylib.html#lua_script_storage"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.valkeylib.lua_script_storage" title="Link to this definition">¶</a></dt>
+<dd><p>Returns a valkey <a class="reference external" href="https://valkey-py.readthedocs.io/en/stable/commands.html#valkey.commands.core.CoreCommands.register_script" title="(in valkey-py v99.99.99)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Script</span></code></a> instance.</p>
+<p>Due to performance reason the <code class="docutils literal notranslate"><span class="pre">Script</span></code> object is instantiated only once
+for a client (<code class="docutils literal notranslate"><span class="pre">client.register_script(..)</span></code>) and is cached in
+<a class="reference internal" href="#searx.valkeylib.LUA_SCRIPT_STORAGE" title="searx.valkeylib.LUA_SCRIPT_STORAGE"><code class="xref py py-obj docutils literal notranslate"><span class="pre">LUA_SCRIPT_STORAGE</span></code></a>.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="searx.valkeylib.purge_by_prefix">
+<span class="sig-prename descclassname"><span class="pre">searx.valkeylib.</span></span><span class="sig-name descname"><span class="pre">purge_by_prefix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">client</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prefix</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'SearXNG_'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/searx/valkeylib.html#purge_by_prefix"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.valkeylib.purge_by_prefix" title="Link to this definition">¶</a></dt>
+<dd><p>Purge all keys with <code class="docutils literal notranslate"><span class="pre">prefix</span></code> from database.</p>
+<p>Queries all keys in the database by the given prefix and set expire time to
+zero.  The default prefix will drop all keys which has been set by SearXNG
+(drops SearXNG schema entirely from database).</p>
+<p>The implementation is the lua script from string <code class="xref py py-obj docutils literal notranslate"><span class="pre">PURGE_BY_PREFIX</span></code>.
+The lua script uses <a class="reference external" href="https://valkey.io/commands/expire/">EXPIRE</a> instead of <a class="reference external" href="https://valkey.io/commands/del/">DEL</a>: if there are a lot keys to
+delete and/or their values are big, <cite>DEL</cite> could take more time and blocks
+the command loop while <cite>EXPIRE</cite> turns back immediate.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>prefix</strong> – prefix of the key to delete (default: <code class="docutils literal notranslate"><span class="pre">SearXNG_</span></code>)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="searx.valkeylib.secret_hash">
+<span class="sig-prename descclassname"><span class="pre">searx.valkeylib.</span></span><span class="sig-name descname"><span class="pre">secret_hash</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/searx/valkeylib.html#secret_hash"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.valkeylib.secret_hash" title="Link to this definition">¶</a></dt>
+<dd><p>Creates a hash of the <code class="docutils literal notranslate"><span class="pre">name</span></code>.</p>
+<p>Combines argument <code class="docutils literal notranslate"><span class="pre">name</span></code> with the <code class="docutils literal notranslate"><span class="pre">secret_key</span></code> from <a class="reference internal" href="../admin/settings/settings_server.html#settings-server"><span class="std std-ref">server:</span></a>.  This function can be used to get a more anonymized name of a Valkey
+KEY.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – the name to create a secret hash for</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="searx.valkeylib.incr_counter">
+<span class="sig-prename descclassname"><span class="pre">searx.valkeylib.</span></span><span class="sig-name descname"><span class="pre">incr_counter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">client</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">limit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">expire</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/searx/valkeylib.html#incr_counter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.valkeylib.incr_counter" title="Link to this definition">¶</a></dt>
+<dd><p>Increment a counter and return the new value.</p>
+<p>If counter with valkey key <code class="docutils literal notranslate"><span class="pre">SearXNG_counter_&lt;name&gt;</span></code> does not exists it is
+created with initial value 1 returned.  The replacement <code class="docutils literal notranslate"><span class="pre">&lt;name&gt;</span></code> is a
+<em>secret hash</em> of the value from argument <code class="docutils literal notranslate"><span class="pre">name</span></code> (see
+<a class="reference internal" href="#searx.valkeylib.secret_hash" title="searx.valkeylib.secret_hash"><code class="xref py py-func docutils literal notranslate"><span class="pre">secret_hash()</span></code></a>).</p>
+<p>The implementation of the valkey counter is the lua script from string
+<code class="xref py py-obj docutils literal notranslate"><span class="pre">INCR_COUNTER</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – name of the counter</p></li>
+<li><p><strong>expire</strong> (int / see <a class="reference external" href="https://valkey.io/commands/expire/">EXPIRE</a>) – live-time of the counter in seconds (default <code class="docutils literal notranslate"><span class="pre">None</span></code> means
+infinite).</p></li>
+<li><p><strong>limit</strong> (int / limit is 2^64 see <a class="reference external" href="https://valkey.io/commands/incr/">INCR</a>) – limit where the counter stops to increment (default <code class="docutils literal notranslate"><span class="pre">None</span></code>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>value of the incremented counter</p>
+</dd>
+</dl>
+<p>A simple demo of a counter with expire time and limit:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">6</span><span class="p">):</span>
+<span class="gp">... </span>  <span class="n">i</span><span class="p">,</span> <span class="n">incr_counter</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="s2">&quot;foo&quot;</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span> <span class="c1"># max 3, duration 5 sec</span>
+<span class="gp">... </span>  <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="c1"># from the third call on max has been reached</span>
+<span class="gp">...</span>
+<span class="go">(0, 1)</span>
+<span class="go">(1, 2)</span>
+<span class="go">(2, 3)</span>
+<span class="go">(3, 3)</span>
+<span class="go">(4, 3)</span>
+<span class="go">(5, 1)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="searx.valkeylib.drop_counter">
+<span class="sig-prename descclassname"><span class="pre">searx.valkeylib.</span></span><span class="sig-name descname"><span class="pre">drop_counter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">client</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/searx/valkeylib.html#drop_counter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.valkeylib.drop_counter" title="Link to this definition">¶</a></dt>
+<dd><p>Drop counter with valkey key <code class="docutils literal notranslate"><span class="pre">SearXNG_counter_&lt;name&gt;</span></code></p>
+<p>The replacement <code class="docutils literal notranslate"><span class="pre">&lt;name&gt;</span></code> is a <em>secret hash</em> of the value from argument
+<code class="docutils literal notranslate"><span class="pre">name</span></code> (see <a class="reference internal" href="#searx.valkeylib.incr_counter" title="searx.valkeylib.incr_counter"><code class="xref py py-func docutils literal notranslate"><span class="pre">incr_counter()</span></code></a> and <a class="reference internal" href="#searx.valkeylib.incr_sliding_window" title="searx.valkeylib.incr_sliding_window"><code class="xref py py-func docutils literal notranslate"><span class="pre">incr_sliding_window()</span></code></a>).</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="searx.valkeylib.incr_sliding_window">
+<span class="sig-prename descclassname"><span class="pre">searx.valkeylib.</span></span><span class="sig-name descname"><span class="pre">incr_sliding_window</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">client</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">duration</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/searx/valkeylib.html#incr_sliding_window"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.valkeylib.incr_sliding_window" title="Link to this definition">¶</a></dt>
+<dd><p>Increment a sliding-window counter and return the new value.</p>
+<p>If counter with valkey key <code class="docutils literal notranslate"><span class="pre">SearXNG_counter_&lt;name&gt;</span></code> does not exists it is
+created with initial value 1 returned.  The replacement <code class="docutils literal notranslate"><span class="pre">&lt;name&gt;</span></code> is a
+<em>secret hash</em> of the value from argument <code class="docutils literal notranslate"><span class="pre">name</span></code> (see
+<a class="reference internal" href="#searx.valkeylib.secret_hash" title="searx.valkeylib.secret_hash"><code class="xref py py-func docutils literal notranslate"><span class="pre">secret_hash()</span></code></a>).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – name of the counter</p></li>
+<li><p><strong>duration</strong> – live-time of the sliding window in seconds</p></li>
+</ul>
+</dd>
+<dt class="field-even">Typeduration<span class="colon">:</span></dt>
+<dd class="field-even"><p>int</p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>value of the incremented counter</p>
+</dd>
+</dl>
+<p>The implementation of the valkey counter is the lua script from string
+<code class="xref py py-obj docutils literal notranslate"><span class="pre">INCR_SLIDING_WINDOW</span></code>.  The lua script uses <a class="reference external" href="https://valkey.com/ebook/part-1-getting-started/chapter-1-getting-to-know-valkey/1-2-what-valkey-data-structures-look-like/1-2-5-sorted-sets-in-valkey/">sorted sets in Valkey</a>
+to implement a sliding window for the valkey key <code class="docutils literal notranslate"><span class="pre">SearXNG_counter_&lt;name&gt;</span></code>
+(<a class="reference external" href="https://valkey.io/commands/zadd/">ZADD</a>).  The current <a class="reference external" href="https://valkey.io/commands/time/">TIME</a> is used to score the items in the sorted set and
+the time window is moved by removing items with a score lower current time
+minus <em>duration</em> time (<a class="reference external" href="https://valkey.io/commands/zremrangebyscore/">ZREMRANGEBYSCORE</a>).</p>
+<p>The <a class="reference external" href="https://valkey.io/commands/expire/">EXPIRE</a> time (the duration of the sliding window) is refreshed on each
+call (increment) and if there is no call in this duration, the sorted
+set expires from the valkey DB.</p>
+<p>The return value is the amount of items in the sorted set (<a class="reference external" href="https://valkey.io/commands/zcount/">ZCOUNT</a>), what
+means the number of calls in the sliding window.</p>
+<p>A simple demo of the sliding window:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">):</span>
+<span class="gp">... </span>  <span class="n">incr_sliding_window</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="s2">&quot;foo&quot;</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span> <span class="c1"># duration 3 sec</span>
+<span class="gp">... </span>  <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="c1"># from the third call (second) on the window is moved</span>
+<span class="gp">...</span>
+<span class="go">1</span>
+<span class="go">2</span>
+<span class="go">3</span>
+<span class="go">3</span>
+<span class="go">3</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>  <span class="c1"># wait until expire</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">incr_sliding_window</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="s2">&quot;foo&quot;</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="go">1</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+  <span id="sidebar-top"></span>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+  
+    
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/searxng-wordmark.svg" alt="Logo of SearXNG"/>
+            </a></p>
+  
+
+<h3><a href="../index.html">Table of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../user/index.html">User information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../own-instance.html">Why use a private instance?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../admin/index.html">Administrator documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev/index.html">Developer documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../utils/index.html">DevOps tooling box</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Source-Code</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="searx.babel_extract.html">Custom message extractor (i18n)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.botdetection.html">Bot Detection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.cache.html">Caches</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.exceptions.html">SearXNG Exceptions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.favicons.html">Favicons (source)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.infopage.html">Online <code class="docutils literal notranslate"><span class="pre">/info</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.locales.html">Locales</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.search.html">Search</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.search.processors.html">Search processors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.settings.html">Settings Loader</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.sqlitedb.html">SQLite DB</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.utils.html">Utility functions for the engines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.valkeydb.html">Valkey DB</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Valkey Library</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#searx.valkeylib.LUA_SCRIPT_STORAGE"><code class="docutils literal notranslate"><span class="pre">LUA_SCRIPT_STORAGE</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#searx.valkeylib.lua_script_storage"><code class="docutils literal notranslate"><span class="pre">lua_script_storage()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#searx.valkeylib.purge_by_prefix"><code class="docutils literal notranslate"><span class="pre">purge_by_prefix()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#searx.valkeylib.secret_hash"><code class="docutils literal notranslate"><span class="pre">secret_hash()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#searx.valkeylib.incr_counter"><code class="docutils literal notranslate"><span class="pre">incr_counter()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#searx.valkeylib.drop_counter"><code class="docutils literal notranslate"><span class="pre">drop_counter()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#searx.valkeylib.incr_sliding_window"><code class="docutils literal notranslate"><span class="pre">incr_sliding_window()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="searx.weather.html">Weather</a></li>
+</ul>
+</li>
+</ul>
+
+  <h3>Project Links</h3>
+  <ul>
+    <li><a href="https://github.com/searxng/searxng/tree/master">Source</a>
+  
+    <li><a href="https://github.com/searxng/searxng/wiki">Wiki</a>
+  
+    <li><a href="https://searx.space">Public instances</a>
+  
+    <li><a href="https://github.com/searxng/searxng/issues">Issue Tracker</a>
+  </ul><h3>Navigation</h3>
+<ul>
+  <li><a href="../index.html">Overview</a>
+    <ul>
+      <li><a href="index.html">Source-Code</a>
+        <ul>
+          <li>Previous: <a href="searx.valkeydb.html" title="previous chapter">Valkey DB</a>
+          <li>Next: <a href="searx.weather.html" title="next chapter">Weather</a></ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/src/searx.valkeylib.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright SearXNG team.
+    </div>
+  </body>
+</html>
