@@ -216,6 +216,7 @@ class OnlineProcessor(EngineProcessor):
                 "{} redirects, maximum: {}".format(len(response.history), soft_max_redirects),
                 (status_code, reason, hostname),
                 secondary=True,
+                log_level=self.metrics_log_level,
             )
 
         return response
@@ -268,7 +269,8 @@ class OnlineProcessor(EngineProcessor):
             self.logger.exception(
                 "requests exception (search duration : {0} s, timeout: {1} s) : {2}".format(
                     default_timer() - start_time, timeout_limit, e
-                )
+                ),
+                exc_info=self.log_engine_exc_info,
             )
         except (
             SearxEngineCaptchaException,
@@ -280,3 +282,43 @@ class OnlineProcessor(EngineProcessor):
         except Exception as e:  # pylint: disable=broad-except
             self.handle_exception(result_container, e)
             self.logger.exception("exception : {0}".format(e))
+
+    def get_default_tests(self):
+        tests = {}
+
+        tests['simple'] = {
+            'matrix': {'query': ('life', 'computer')},
+            'result_container': ['not_empty'],
+        }
+
+        if getattr(self.engine, 'paging', False):
+            tests['paging'] = {
+                'matrix': {'query': 'time', 'pageno': (1, 2, 3)},
+                'result_container': ['not_empty'],
+                'test': ['unique_results'],
+            }
+            if 'general' in self.engine.categories:
+                # avoid documentation about HTML tags (<time> and <input type="time">)
+                tests['paging']['matrix']['query'] = 'news'
+
+        if getattr(self.engine, 'time_range', False):
+            tests['time_range'] = {
+                'matrix': {'query': 'news', 'time_range': (None, 'day')},
+                'result_container': ['not_empty'],
+                'test': ['unique_results'],
+            }
+
+        if getattr(self.engine, 'traits', False):
+            tests['lang_fr'] = {
+                'matrix': {'query': 'paris', 'lang': 'fr'},
+                'result_container': ['not_empty', ('has_language', 'fr')],
+            }
+            tests['lang_en'] = {
+                'matrix': {'query': 'paris', 'lang': 'en'},
+                'result_container': ['not_empty', ('has_language', 'en')],
+            }
+
+        if getattr(self.engine, 'safesearch', False):
+            tests['safesearch'] = {'matrix': {'query': 'porn', 'safesearch': (0, 2)}, 'test': ['unique_results']}
+
+        return tests
