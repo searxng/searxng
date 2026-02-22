@@ -1,0 +1,119 @@
+{# Translations-like answer, but expanded by default & renders HTML #}
+<details class="answer-translations" open>
+  <summary>
+    {%- if answer.translations -%}
+      {{ _('definition of ' + (answer.translations and answer.translations[0].text)).strip() }}
+    {%- else -%}
+      {{ _('no definition') }}
+    {%- endif -%}
+  </summary>
+
+  <dl>
+    {%- for item in answer.translations -%}
+      <br>
+      {%- if not loop.first -%}
+        <br>
+      {%- endif -%}
+      
+      <div class="pos-label">
+        <dt>
+          <b>{{ item.text }}</b>
+          {%- if item.transliteration -%}
+            <i style="opacity:0.7;">  {{ item.transliteration }}</i>
+          {%- endif -%}
+        </dt>
+      </div>
+      <dd>
+        {%- if item.definitions -%}
+          <br>
+          <div class="section-title"><b>{{ _('Definitions') }}</b></div>
+          <ol class="definitions">
+            {%- for d in item.definitions -%}
+              <li>{{ d|safe }}</li>
+            {%- endfor -%}
+          </ol>
+        {%- endif -%}
+
+        {%- if item.examples -%}
+          <br>
+          <div class="section-title"><b>{{ _('Examples') }}</b></div>
+          <ul class="examples">
+            {%- for ex in item.examples -%}
+              {# ex is expected to be sanitized HTML #}
+              <li>{{ ex|safe }}</li>
+            {%- endfor -%}
+          </ul>
+        {%- endif -%}
+
+        {%- if item.synonyms -%}
+          <br>
+          <div class="section-title"><b>{{ _('Synonyms') }}</b></div>
+          <ul class="synonyms">
+            {%- for s in item.synonyms -%}
+              <li>{{ s }}</li>
+            {%- endfor -%}
+          </ul>
+        {%- endif -%}
+      </dd>
+    {%- endfor -%}
+  </dl>
+</details>
+
+<div style="text-align:right;margin-top:25px;">
+  {%- if answer.url -%}
+    <a href="{{ answer.url }}"
+       class="define-source-btn"
+       {% if results_on_new_tab %}
+         target="_blank" rel="noopener noreferrer"
+       {% else %}
+         rel="noreferrer"
+       {% endif %}>
+      {{ _('Source:') }} {{ answer.engine }}
+    </a>
+  {%- else -%}
+    <span class="define-source-btn disabled">{{ answer.engine }}</span>
+  {%- endif -%}
+</div>
+
+<style>
+  .answer ol,
+  .answer ul {
+    margin: 0.35em 0 0.6em 1.2em;
+    padding-left: 20px;
+    line-height: 1.55;
+  }
+
+  .answer li + li {
+    margin-top: 0.3em;
+  }
+
+  .answer li::marker {
+    font-size: 0.9em;
+  }
+
+  .answer li {
+    padding-left: 0.15em;  /* increases gap between bullet and text */
+  }
+
+  .define-source-btn {
+    display: inline-block;
+    background: rgba(255, 255, 255, 0.08);
+    color: #bbb;
+    font-size: 0.9em;
+    padding: 3px 10px;
+    border-radius: 9999px;
+    text-decoration: none;
+    opacity: 0.7;
+    transition: opacity 0.15s ease, background 0.15s ease;
+  }
+
+  .define-source-btn:hover {
+    opacity: 0.8;
+    background: rgba(255, 255, 255, 0.12);
+  }
+
+  .define-source-btn.disabled {
+    pointer-events: none;
+    opacity: 0.4;
+  }
+</style>
