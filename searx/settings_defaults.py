@@ -267,10 +267,6 @@ SCHEMA: dict[str, t.Any] = {
         'networks': {},
     },
     'plugins': SettingsValue(dict, {}),
-    'checker': {
-        'off_when_debug': SettingsValue(bool, True, None),
-        'scheduling': SettingsValue((None, dict), None, None),
-    },
     'categories_as_tabs': SettingsValue(dict, CATEGORIES_AS_TABS),
     'engines': SettingsValue(list, []),
     'doi_resolvers': {},

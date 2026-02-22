@@ -291,38 +291,6 @@ Pylint_ is known as one of the best source-code, bug and quality checker for the
 Python programming language.  The pylint profile used in the SearXNG project is
 found in project's root folder :origin:`.pylintrc`.
 
-.. _make search.checker:
-
-``make search.checker.{engine name}``
-=====================================
-
-To check all engines::
-
-    make search.checker
-
-To check a engine with whitespace in the name like *google news* replace space
-by underline::
-
-    make search.checker.google_news
-
-To see HTTP requests and more use SEARXNG_DEBUG::
-
-    make SEARXNG_DEBUG=1 search.checker.google_news
-
-.. _3xx: https://en.wikipedia.org/wiki/List_of_HTTP_status_codes#3xx_redirection
-
-To filter out HTTP redirects (3xx_)::
-
-    make SEARXNG_DEBUG=1 search.checker.google_news | grep -A1 "HTTP/1.1\" 3[0-9][0-9]"
-    ...
-    Engine google news                   Checking
-    https://news.google.com:443 "GET /search?q=life&hl=en&lr=lang_en&ie=utf8&oe=utf8&ceid=US%3Aen&gl=US HTTP/1.1" 302 0
-    https://news.google.com:443 "GET /search?q=life&hl=en-US&lr=lang_en&ie=utf8&oe=utf8&ceid=US:en&gl=US HTTP/1.1" 200 None
-    --
-    https://news.google.com:443 "GET /search?q=computer&hl=en&lr=lang_en&ie=utf8&oe=utf8&ceid=US%3Aen&gl=US HTTP/1.1" 302 0
-    https://news.google.com:443 "GET /search?q=computer&hl=en-US&lr=lang_en&ie=utf8&oe=utf8&ceid=US:en&gl=US HTTP/1.1" 200 None
-    --
-
 .. _make themes:
 
 ``make themes.*``

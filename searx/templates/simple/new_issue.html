@@ -55,10 +55,6 @@ or manually by executing the searx/webapp.py file? -->
 {{'  '}}* Code: `{{ error.code }}`
 {{'\n'-}}
 {%- endfor -%}
-{%- for test_name, results in engine_reliability.checker.items() -%}
-{%- if loop.first %}Checker{% endif -%}
-{{-'\n  '}}* {{ test_name }}: {% for result in results%}`{{ result }}`,{% endfor -%}
-{%- endfor -%}
     </textarea>
     <input type="checkbox" id="step1">
     <label for="step1">{{ _('Start submitting a new issue on GitHub') }}</label>

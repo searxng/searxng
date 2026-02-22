@@ -139,26 +139,18 @@ def get_engine_errors(engline_name_list):
     return result
 
 
-def get_reliabilities(engline_name_list, checker_results):
+def get_reliabilities(engline_name_list):
     reliabilities = {}
 
     engine_errors = get_engine_errors(engline_name_list)
 
     for engine_name in engline_name_list:
-        checker_result = checker_results.get(engine_name, {})
-        checker_success = checker_result.get('success', True)
         errors = engine_errors.get(engine_name) or []
         sent_count = counter('engine', engine_name, 'search', 'count', 'sent')
 
         if sent_count == 0:
             # no request
             reliability = None
-        elif checker_success and not errors:
-            reliability = 100
-        elif 'simple' in checker_result.get('errors', {}):
-            # the basic (simple) test doesn't work: the engine is broken according to the checker
-            # even if there is no exception
-            reliability = 0
         else:
             # pylint: disable=consider-using-generator
             reliability = 100 - sum([error['percentage'] for error in errors if not error.get('secondary')])
@@ -167,7 +159,6 @@ def get_reliabilities(engline_name_list, checker_results):
             'reliability': reliability,
             'sent_count': sent_count,
             'errors': errors,
-            'checker': checker_result.get('errors', {}),
         }
     return reliabilities
 

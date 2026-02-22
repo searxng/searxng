@@ -124,23 +124,6 @@
                 {% endif %}
             {% endfor %}
         {% endfor %}
-        {% if engine_reliabilities[selected_engine_name].checker %}
-            <h3>{{ _('Checker') }}</h3>
-            <table>
-                <tr>
-                    <th scope="col" class="failed-test">{{ _('Failed test') }}</th>
-                    <th scope="col">{{ _('Comment(s)') }}</th>
-                </tr>
-                {% for test_name, results in engine_reliabilities[selected_engine_name].checker.items() %}
-                <tr>
-                    <td>{{ test_name }}</td>
-                    <td>
-                        {% for r in results %}<p>{{ r }}</p>{% endfor %}
-                    </td>
-                </tr>
-                {% endfor %}
-            </table>
-        {% endif %}
         {{ new_issue(selected_engine_name, engine_reliabilities[selected_engine_name]) }}
     </div>
 {% endif %}

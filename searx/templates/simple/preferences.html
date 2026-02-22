@@ -64,7 +64,7 @@
     {%- if search_engine.enable_http -%}
       <p>{{- icon_big('exclamation-sign', 'No HTTPS') -}}{{- _('No HTTPS')-}}</p>
     {% endif -%}
-    {%- if reliabilities.get(search_engine.name, {}).errors or reliabilities.get(search_engine.name, {}).checker -%}
+    {%- if reliabilities.get(search_engine.name, {}).errors -%}
       <a href="{{ url_for('stats', engine=search_engine.name|e) }}" {{- ' ' -}}
          title="{{ _('View error logs and submit a bug report') }}">
       {{- _('View error logs and submit a bug report') -}}
@@ -109,7 +109,6 @@
 
 {%- macro engine_reliability(engine_name) -%}
   {%- set r = reliabilities.get(engine_name, {}).get('reliability', None) -%}
-  {%- set checker_result = reliabilities.get(engine_name, {}).get('checker', []) -%}
   {%- set errors = reliabilities.get(engine_name, {}).get('errors', []) -%}
   {%- if r != None -%}
     {%- if r <= 50 -%}
@@ -124,7 +123,7 @@
   {% else %}
     {%- set r = '' -%}
   {%- endif -%}
-  {%- if checker_result or errors -%}
+  {%- if errors -%}
     <td class="{{ label }} column-reliability">{{- '' -}}
       <a href="{{ url_for('stats', engine=engine_name|e) }}">{{- '' -}}
         <span>
@@ -132,9 +131,6 @@
         </span>{{- '' -}}
       </a>{{- '' -}}
       <div class="engine-tooltip" role="tooltip" id="{{engine_name}}_reliability">
-        {%- if checker_result -%}
-          <p>{{ _("Failed checker test(s): ") }} {{ ', '.join(checker_result) }}</p>
-        {%- endif -%}
         {%- if errors -%}<p>{{ _('Errors:') }}</p>{%- endif -%}
         {%- for error in errors -%}
           <p>{{ error }}</p>{{- '' -}}
