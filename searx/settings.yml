@@ -901,7 +901,12 @@ engines:
 
   - name: fynd
     engine: xpath
-    search_url: https://fynd.bot/?search={query}&offset={pageno}
+    search_url: https://fynd.bot/?search={query}&offset={pageno}{safe_search}
+    safesearch: true
+    safe_search_map:
+      0: '&safe=0'
+      1: '&safe=1'
+      2: '&safe=1'
     results_xpath: //div[contains(@class, "result-item")]
     url_xpath: .//a/@href
     title_xpath: .//div[contains(@class, "title-line")]
