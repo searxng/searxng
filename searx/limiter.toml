@@ -47,3 +47,25 @@ pass_ip = [
 # Activate passlist of (hardcoded) IPs from the SearXNG organization,
 # e.g. `check.searx.space`.
 pass_searxng_org = true
+
+[botdetection.abuseipdb]
+
+# Enable abuseipdb checking. Requires an API key and valkey.
+enabled = false
+
+# AbuseIPDB API key. Can also be set via SEARXNG_ABUSEIPDB_API_KEY env var.
+# Get your free API key at https://www.abuseipdb.com/account/api
+api_key = ""
+
+# Minimum abuse confidence score (0-100) to block an IP.
+# If the abuseConfidenceScore >= this value, the request is blocked.
+# Recommended: 75-100 for denial of service.
+confidence_threshold = 75
+
+# Skip blocking for Tor exit nodes.
+# If true, IPs marked as Tor exit nodes are not blocked even if confidence_threshold is met.
+skip_tor = false
+
+# Cache time in seconds for abuseipdb results in valkey.
+# Default: 86400 (24 hours)
+cache_time = 86400

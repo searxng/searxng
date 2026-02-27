@@ -115,6 +115,7 @@ from searx.botdetection import (
     http_sec_fetch,
     ip_limit,
     ip_lists,
+    abuseipdb,
     get_network,
     dump_request,
 )
@@ -179,13 +180,13 @@ def filter_request(request: SXNG_Request) -> werkzeug.Response | None:
         return flask.make_response(('IP is on BLOCKLIST - %s' % msg, 429))
 
     # methods applied on all requests
+    logger.debug("filter_request: checking IP %s (path: %s)", network.compressed, request.path)
 
-    for func in [
-        http_user_agent,
-    ]:
+    for func in [http_user_agent, abuseipdb]:
+        logger.debug("filter_request: calling %s for IP %s", func.__name__, network.compressed)
         val = func.filter_request(network, request, cfg)
         if val is not None:
-            logger.debug(f"NOT OK ({func.__name__}): {network}: %s", dump_request(sxng_request))
+            logger.debug("BLOCK by %s: IP %s", func.__name__, network.compressed)
             return val
 
     # methods applied on /search requests
@@ -227,6 +228,11 @@ def initialize(app: flask.Flask, settings):
     # (e.g. the self_info plugin uses the botdetection to get client IP)
 
     cfg = get_cfg()
+
+    # Initialize valkey connection if not already done
+    if not valkeydb.client():
+        valkeydb.initialize()
+
     valkey_client = valkeydb.client()
     botdetection.init(cfg, valkey_client)
 
