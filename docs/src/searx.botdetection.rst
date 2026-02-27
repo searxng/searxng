@@ -56,6 +56,16 @@ Probe HTTP headers
 .. automodule:: searx.botdetection.http_sec_fetch
   :members:
 
+
+.. _botdetection abuseipdb:
+
+AbuseIPDB
+=========
+
+.. automodule:: searx.botdetection.abuseipdb
+  :members:
+
+
 .. _botdetection config:
 
 Config
