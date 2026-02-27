@@ -26,13 +26,14 @@
 # return42 <return42@noreply.codeberg.org>, 2025.
 # eudemo <eudemo@noreply.codeberg.org>, 2025.
 # dtalens <dtalens@noreply.codeberg.org>, 2025.
+# MaCl0wSt <macl0wst@noreply.codeberg.org>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-12-05 10:19+0000\n"
-"PO-Revision-Date: 2025-12-18 23:21+0000\n"
-"Last-Translator: dtalens <dtalens@noreply.codeberg.org>\n"
+"POT-Creation-Date: 2026-02-22 13:48+0000\n"
+"PO-Revision-Date: 2026-02-26 19:29+0000\n"
+"Last-Translator: MaCl0wSt <macl0wst@noreply.codeberg.org>\n"
 "Language-Team: Catalan <https://translate.codeberg.org/projects/searxng/"
 "searxng/ca/>\n"
 "Language: ca\n"
@@ -40,8 +41,8 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.15\n"
-"Generated-By: Babel 2.17.0\n"
+"X-Generator: Weblate 5.15.2\n"
+"Generated-By: Babel 2.18.0\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
 #: searx/searxng.msg
@@ -421,12 +422,12 @@ msgstr "Calamarsa intensa i trons"
 #. WEATHER_CONDITIONS
 #: searx/searxng.msg
 msgid "Heavy sleet showers and thunder"
-msgstr ""
+msgstr "Forts ruixats de calamarsa i trons"
 
 #. WEATHER_CONDITIONS
 #: searx/searxng.msg
 msgid "Heavy sleet showers"
-msgstr ""
+msgstr "Forts ruixats de calamarsa"
 
 #. WEATHER_CONDITIONS
 #: searx/searxng.msg
@@ -554,28 +555,28 @@ msgstr "tancat"
 msgid "answered"
 msgstr "contestat"
 
-#: searx/webapp.py:328
+#: searx/webapp.py:327
 msgid "No item found"
 msgstr "No s'ha trobat cap element"
 
-#: searx/engines/qwant.py:299
-#: searx/templates/simple/result_templates/images.html:23 searx/webapp.py:330
+#: searx/engines/qwant.py:296
+#: searx/templates/simple/result_templates/images.html:23 searx/webapp.py:329
 msgid "Source"
 msgstr "Origen"
 
-#: searx/webapp.py:332
+#: searx/webapp.py:331
 msgid "Error loading the next page"
 msgstr "S'ha produït un error en carregar la següent pàgina"
 
-#: searx/webapp.py:481 searx/webapp.py:882
+#: searx/webapp.py:480 searx/webapp.py:881
 msgid "Invalid settings, please edit your preferences"
 msgstr "La configuració no és vàlida, editeu-la"
 
-#: searx/webapp.py:497
+#: searx/webapp.py:496
 msgid "Invalid settings"
 msgstr "La configuració no és vàlida"
 
-#: searx/webapp.py:574 searx/webapp.py:664
+#: searx/webapp.py:573 searx/webapp.py:663
 msgid "search error"
 msgstr "error de cerca"
 
@@ -654,7 +655,7 @@ msgstr "Genera diferents valors aleatoris"
 msgid "Compute {func} of the arguments"
 msgstr ""
 
-#: searx/engines/openstreetmap.py:156
+#: searx/engines/openstreetmap.py:155
 msgid "Show route in map .."
 msgstr ""
 
@@ -667,7 +668,7 @@ msgstr "{title} (OBSOLET)"
 msgid "This entry has been superseded by"
 msgstr "Aquesta entrada ha estat substituïda per"
 
-#: searx/engines/qwant.py:301
+#: searx/engines/qwant.py:298
 msgid "Channel"
 msgstr "Canal"
 
@@ -682,10 +683,6 @@ msgstr "vots"
 #: searx/engines/radio_browser.py:146
 msgid "clicks"
 msgstr "clics"
-
-#: searx/engines/seekr.py:193 searx/engines/zlibrary.py:78
-msgid "Language"
-msgstr "Llengua"
 
 #: searx/engines/semantic_scholar.py:141
 #, python-brace-format
@@ -717,6 +714,10 @@ msgstr ""
 #: searx/engines/tineye.py:53
 msgid "The image could not be downloaded."
 msgstr "No s'ha pogut baixar la imatge."
+
+#: searx/engines/zlibrary.py:78
+msgid "Language"
+msgstr "Llengua"
 
 #: searx/engines/zlibrary.py:79
 msgid "Book rating"
@@ -876,7 +877,7 @@ msgid "Donate"
 msgstr "Donar"
 
 #: searx/templates/simple/base.html:55 searx/templates/simple/base.html:57
-#: searx/templates/simple/preferences.html:156
+#: searx/templates/simple/preferences.html:152
 msgid "Preferences"
 msgstr "Preferències"
 
@@ -937,27 +938,27 @@ msgstr "Autor"
 msgid "cached"
 msgstr "en memòria cau"
 
-#: searx/templates/simple/new_issue.html:64
+#: searx/templates/simple/new_issue.html:60
 msgid "Start submitting a new issue on GitHub"
 msgstr "Obriu una incidència a GitHub"
 
-#: searx/templates/simple/new_issue.html:66
+#: searx/templates/simple/new_issue.html:62
 msgid "Please check for existing bugs about this engine on GitHub"
 msgstr ""
 "Comproveu si existeix alguna incidència oberta amb aquest cercador a "
 "GitHub"
 
-#: searx/templates/simple/new_issue.html:69
+#: searx/templates/simple/new_issue.html:65
 msgid "I confirm there is no existing bug about the issue I encounter"
 msgstr ""
 "Confirmo que no hi ha cap incidència relacionada amb el problema que "
 "presento"
 
-#: searx/templates/simple/new_issue.html:71
+#: searx/templates/simple/new_issue.html:67
 msgid "If this is a public instance, please specify the URL in the bug report"
 msgstr "Si aquesta és una instància pública, indiqueu l'URL a la incidència"
 
-#: searx/templates/simple/new_issue.html:72
+#: searx/templates/simple/new_issue.html:68
 msgid "Submit a new issue on Github including the above information"
 msgstr "Creeu una incidència a GitHub incloent la informació anterior"
 
@@ -994,57 +995,53 @@ msgstr "P80"
 msgid "P95"
 msgstr "P95"
 
-#: searx/templates/simple/preferences.html:136
-msgid "Failed checker test(s): "
-msgstr "Proves de control fallides: "
-
-#: searx/templates/simple/preferences.html:138
+#: searx/templates/simple/preferences.html:134
 msgid "Errors:"
 msgstr "Errors:"
 
-#: searx/templates/simple/preferences.html:160
+#: searx/templates/simple/preferences.html:156
 msgid ""
 "This is a preview of the settings used by the 'Search URL' you used to "
 "get here."
 msgstr ""
 
-#: searx/templates/simple/preferences.html:162
+#: searx/templates/simple/preferences.html:158
 msgid "Press save to copy these preferences to your browser."
 msgstr "Prem gravar per aquestes preferències al teu navegador."
 
-#: searx/templates/simple/preferences.html:163
+#: searx/templates/simple/preferences.html:159
 msgid "Click here to view your browser preferences instead:"
 msgstr "Clica aquí per veure en el seu lloc les preferències del navegador:"
 
-#: searx/templates/simple/preferences.html:173
+#: searx/templates/simple/preferences.html:169
 msgid "General"
 msgstr "General"
 
-#: searx/templates/simple/preferences.html:176
+#: searx/templates/simple/preferences.html:172
 msgid "Default categories"
 msgstr "Categories predeterminades"
 
-#: searx/templates/simple/preferences.html:204
+#: searx/templates/simple/preferences.html:200
 msgid "User interface"
 msgstr "Interfície de l'usuari"
 
-#: searx/templates/simple/preferences.html:224
+#: searx/templates/simple/preferences.html:220
 msgid "Privacy"
 msgstr "Privadesa"
 
-#: searx/templates/simple/preferences.html:239
+#: searx/templates/simple/preferences.html:235
 msgid "Engines"
 msgstr "Motors de cerca"
 
-#: searx/templates/simple/preferences.html:241
+#: searx/templates/simple/preferences.html:237
 msgid "Currently used search engines"
 msgstr "Cercadors usats actualment"
 
-#: searx/templates/simple/preferences.html:250
+#: searx/templates/simple/preferences.html:246
 msgid "Special Queries"
 msgstr "Consultes especials"
 
-#: searx/templates/simple/preferences.html:258
+#: searx/templates/simple/preferences.html:254
 msgid "Cookies"
 msgstr "Galetes"
 
@@ -1164,18 +1161,6 @@ msgstr "Funció"
 #: searx/templates/simple/stats.html:121
 msgid "Code"
 msgstr "Codi"
-
-#: searx/templates/simple/stats.html:128
-msgid "Checker"
-msgstr "Comprovador"
-
-#: searx/templates/simple/stats.html:131
-msgid "Failed test"
-msgstr "Prova fallida"
-
-#: searx/templates/simple/stats.html:132
-msgid "Comment(s)"
-msgstr "Comentaris"
 
 #: searx/templates/simple/answer/translations.html:12
 #: searx/templates/simple/preferences/answerers.html:8
@@ -1424,8 +1409,8 @@ msgid ""
 "A URL containing your preferences. This URL can be used to restore your "
 "settings on a different device."
 msgstr ""
-"Un URL que conté les vostres preferències. Aquest URL es pot utilitzar per "
-"restaurar la configuració en un altre dispositiu."
+"Un URL que conté les vostres preferències. Aquest URL es pot utilitzar "
+"per restaurar la configuració en un altre dispositiu."
 
 #: searx/templates/simple/preferences/cookies.html:46
 msgid "Copy preferences hash"
@@ -1456,8 +1441,8 @@ msgid ""
 "This tab does not exist in the user interface, but you can search with "
 "these engines via !bangs."
 msgstr ""
-"Aquesta pestanya no existeix a la interfície d'usuari, però podeu cercar amb "
-"aquests motors mitjançant !bangs."
+"Aquesta pestanya no existeix a la interfície d'usuari, però podeu cercar "
+"amb aquests motors mitjançant !bangs."
 
 #: searx/templates/simple/preferences/engines.html:15
 msgid "Enable all"
@@ -2413,3 +2398,15 @@ msgstr "oculta el vídeo"
 #~ " scrolling to the bottom of the "
 #~ "current page"
 #~ msgstr ""
+
+#~ msgid "Failed checker test(s): "
+#~ msgstr "Proves de control fallides: "
+
+#~ msgid "Checker"
+#~ msgstr "Comprovador"
+
+#~ msgid "Failed test"
+#~ msgstr "Prova fallida"
+
+#~ msgid "Comment(s)"
+#~ msgstr "Comentaris"

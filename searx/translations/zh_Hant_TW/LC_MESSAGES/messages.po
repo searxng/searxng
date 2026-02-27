@@ -43,20 +43,19 @@
 # Maoyue_OUO <maoyue_ouo@noreply.codeberg.org>, 2026.
 msgid ""
 msgstr ""
-"Project-Id-Version: searx\n"
+"Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-12-05 10:19+0000\n"
+"POT-Creation-Date: 2026-02-22 13:48+0000\n"
 "PO-Revision-Date: 2026-01-10 17:50+0000\n"
 "Last-Translator: Maoyue_OUO <maoyue_ouo@noreply.codeberg.org>\n"
-"Language-Team: Chinese (Traditional Han script, Taiwan) <https://"
-"translate.codeberg.org/projects/searxng/searxng/zh_Hant_TW/>\n"
 "Language: zh_Hant_TW\n"
+"Language-Team: Chinese (Traditional Han script, Taiwan) "
+"<https://translate.codeberg.org/projects/searxng/searxng/zh_Hant_TW/>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.15.1\n"
-"Generated-By: Babel 2.17.0\n"
+"Generated-By: Babel 2.18.0\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
 #: searx/searxng.msg
@@ -569,28 +568,28 @@ msgstr "已關閉"
 msgid "answered"
 msgstr "已解答"
 
-#: searx/webapp.py:328
+#: searx/webapp.py:327
 msgid "No item found"
 msgstr "找不到項目"
 
-#: searx/engines/qwant.py:299
-#: searx/templates/simple/result_templates/images.html:23 searx/webapp.py:330
+#: searx/engines/qwant.py:296
+#: searx/templates/simple/result_templates/images.html:23 searx/webapp.py:329
 msgid "Source"
 msgstr "來源"
 
-#: searx/webapp.py:332
+#: searx/webapp.py:331
 msgid "Error loading the next page"
 msgstr "載入下個頁面時發生錯誤"
 
-#: searx/webapp.py:481 searx/webapp.py:882
+#: searx/webapp.py:480 searx/webapp.py:881
 msgid "Invalid settings, please edit your preferences"
 msgstr "無效的設定，請編輯您的偏好設定"
 
-#: searx/webapp.py:497
+#: searx/webapp.py:496
 msgid "Invalid settings"
 msgstr "無效的設定"
 
-#: searx/webapp.py:574 searx/webapp.py:664
+#: searx/webapp.py:573 searx/webapp.py:663
 msgid "search error"
 msgstr "搜尋錯誤"
 
@@ -669,7 +668,7 @@ msgstr "產生不同的隨機數值"
 msgid "Compute {func} of the arguments"
 msgstr "計算參數的 {func}"
 
-#: searx/engines/openstreetmap.py:156
+#: searx/engines/openstreetmap.py:155
 msgid "Show route in map .."
 msgstr "在地圖上顯示路線 .."
 
@@ -682,7 +681,7 @@ msgstr "{title}（已過時）"
 msgid "This entry has been superseded by"
 msgstr "此條目已被以下內容取代"
 
-#: searx/engines/qwant.py:301
+#: searx/engines/qwant.py:298
 msgid "Channel"
 msgstr "頻道"
 
@@ -697,10 +696,6 @@ msgstr "投票數"
 #: searx/engines/radio_browser.py:146
 msgid "clicks"
 msgstr "點擊數"
-
-#: searx/engines/seekr.py:193 searx/engines/zlibrary.py:78
-msgid "Language"
-msgstr "語言"
 
 #: searx/engines/semantic_scholar.py:141
 #, python-brace-format
@@ -727,6 +722,10 @@ msgstr "影像過於簡單以致無法找到相符的結果。TinEye 需要具�
 #: searx/engines/tineye.py:53
 msgid "The image could not be downloaded."
 msgstr "圖片無法下載。"
+
+#: searx/engines/zlibrary.py:78
+msgid "Language"
+msgstr "語言"
 
 #: searx/engines/zlibrary.py:79
 msgid "Book rating"
@@ -881,7 +880,7 @@ msgid "Donate"
 msgstr "捐款"
 
 #: searx/templates/simple/base.html:55 searx/templates/simple/base.html:57
-#: searx/templates/simple/preferences.html:156
+#: searx/templates/simple/preferences.html:152
 msgid "Preferences"
 msgstr "偏好設定"
 
@@ -942,23 +941,23 @@ msgstr "作者"
 msgid "cached"
 msgstr "快照"
 
-#: searx/templates/simple/new_issue.html:64
+#: searx/templates/simple/new_issue.html:60
 msgid "Start submitting a new issue on GitHub"
 msgstr "在 GitHub 上提交問題"
 
-#: searx/templates/simple/new_issue.html:66
+#: searx/templates/simple/new_issue.html:62
 msgid "Please check for existing bugs about this engine on GitHub"
 msgstr "請在 GitHub 上檢查是否已有關於此引擎的已知錯誤"
 
-#: searx/templates/simple/new_issue.html:69
+#: searx/templates/simple/new_issue.html:65
 msgid "I confirm there is no existing bug about the issue I encounter"
 msgstr "我確認提交的問題不在目前問題列表"
 
-#: searx/templates/simple/new_issue.html:71
+#: searx/templates/simple/new_issue.html:67
 msgid "If this is a public instance, please specify the URL in the bug report"
 msgstr "如果這是公開站臺， 請在問題報告中附上 URL"
 
-#: searx/templates/simple/new_issue.html:72
+#: searx/templates/simple/new_issue.html:68
 msgid "Submit a new issue on Github including the above information"
 msgstr "在 GitHub 上提交包含上述資訊的新問題"
 
@@ -995,57 +994,53 @@ msgstr "P80"
 msgid "P95"
 msgstr "P95"
 
-#: searx/templates/simple/preferences.html:136
-msgid "Failed checker test(s): "
-msgstr "檢查程式測試失敗： "
-
-#: searx/templates/simple/preferences.html:138
+#: searx/templates/simple/preferences.html:134
 msgid "Errors:"
 msgstr "錯誤："
 
-#: searx/templates/simple/preferences.html:160
+#: searx/templates/simple/preferences.html:156
 msgid ""
 "This is a preview of the settings used by the 'Search URL' you used to "
 "get here."
 msgstr "這是您使用「搜尋網址」來到此處所採用設定的預覽。"
 
-#: searx/templates/simple/preferences.html:162
+#: searx/templates/simple/preferences.html:158
 msgid "Press save to copy these preferences to your browser."
 msgstr "按下儲存以將這些設定複製至您的瀏覽器。"
 
-#: searx/templates/simple/preferences.html:163
+#: searx/templates/simple/preferences.html:159
 msgid "Click here to view your browser preferences instead:"
 msgstr "請點擊此處查看您的瀏覽器偏好設定："
 
-#: searx/templates/simple/preferences.html:173
+#: searx/templates/simple/preferences.html:169
 msgid "General"
 msgstr "一般"
 
-#: searx/templates/simple/preferences.html:176
+#: searx/templates/simple/preferences.html:172
 msgid "Default categories"
 msgstr "預設分類"
 
-#: searx/templates/simple/preferences.html:204
+#: searx/templates/simple/preferences.html:200
 msgid "User interface"
 msgstr "使用者介面"
 
-#: searx/templates/simple/preferences.html:224
+#: searx/templates/simple/preferences.html:220
 msgid "Privacy"
 msgstr "隱私"
 
-#: searx/templates/simple/preferences.html:239
+#: searx/templates/simple/preferences.html:235
 msgid "Engines"
 msgstr "搜尋引擎"
 
-#: searx/templates/simple/preferences.html:241
+#: searx/templates/simple/preferences.html:237
 msgid "Currently used search engines"
 msgstr "目前使用的搜尋引擎"
 
-#: searx/templates/simple/preferences.html:250
+#: searx/templates/simple/preferences.html:246
 msgid "Special Queries"
 msgstr "特殊查詢"
 
-#: searx/templates/simple/preferences.html:258
+#: searx/templates/simple/preferences.html:254
 msgid "Cookies"
 msgstr "Cookies"
 
@@ -1165,18 +1160,6 @@ msgstr "函式"
 #: searx/templates/simple/stats.html:121
 msgid "Code"
 msgstr "程式碼"
-
-#: searx/templates/simple/stats.html:128
-msgid "Checker"
-msgstr "檢查程式"
-
-#: searx/templates/simple/stats.html:131
-msgid "Failed test"
-msgstr "測試未透過"
-
-#: searx/templates/simple/stats.html:132
-msgid "Comment(s)"
-msgstr "注釋"
 
 #: searx/templates/simple/answer/translations.html:12
 #: searx/templates/simple/preferences/answerers.html:8
@@ -2321,3 +2304,16 @@ msgstr "隱藏影片"
 #~ " scrolling to the bottom of the "
 #~ "current page"
 #~ msgstr ""
+
+#~ msgid "Failed checker test(s): "
+#~ msgstr "檢查程式測試失敗： "
+
+#~ msgid "Checker"
+#~ msgstr "檢查程式"
+
+#~ msgid "Failed test"
+#~ msgstr "測試未透過"
+
+#~ msgid "Comment(s)"
+#~ msgstr "注釋"
+
