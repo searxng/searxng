@@ -51,6 +51,7 @@ pass_searxng_org = true
 [botdetection.abuseipdb]
 
 # Enable abuseipdb checking. Requires an API key and valkey.
+# Can also be set via SEARXNG_ABUSEIPDB_ENABLED env var.
 enabled = false
 
 # AbuseIPDB API key. Can also be set via SEARXNG_ABUSEIPDB_API_KEY env var.
@@ -60,12 +61,15 @@ api_key = ""
 # Minimum abuse confidence score (0-100) to block an IP.
 # If the abuseConfidenceScore >= this value, the request is blocked.
 # Recommended: 75-100 for denial of service.
+# Can also be set via SEARXNG_ABUSEIPDB_CONFIDENCE_THRESHOLD env var.
 confidence_threshold = 75
 
 # Skip blocking for Tor exit nodes.
 # If true, IPs marked as Tor exit nodes are not blocked even if confidence_threshold is met.
+# Can also be set via SEARXNG_ABUSEIPDB_SKIP_TOR env var.
 skip_tor = false
 
 # Cache time in seconds for abuseipdb results in valkey.
 # Default: 86400 (24 hours)
+# Can also be set via SEARXNG_ABUSEIPDB_CACHE_TIME env var.
 cache_time = 86400

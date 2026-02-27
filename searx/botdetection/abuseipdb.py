@@ -26,7 +26,13 @@ The method works as follows:
    - Block the request, UNLESS isTor is true and skip_tor is enabled
 4. Cache the result in valkey for the configured cache_time
 
-API key can also be set via the SEARXNG_ABUSEIPDB_API_KEY environment variable.
+Environment variables:
+
+- ``SEARXNG_ABUSEIPDB_ENABLED``: Set to "true" to enable the module
+- ``SEARXNG_ABUSEIPDB_API_KEY``: Your AbuseIPDB API key
+- ``SEARXNG_ABUSEIPDB_CONFIDENCE_THRESHOLD``: Minimum confidence score to block (default: 75)
+- ``SEARXNG_ABUSEIPDB_SKIP_TOR``: Set to "true" to skip blocking Tor exit nodes
+- ``SEARXNG_ABUSEIPDB_CACHE_TIME``: Cache time in seconds (default: 86400)
 
 Get your free API key at https://www.abuseipdb.com/account/api
 """
