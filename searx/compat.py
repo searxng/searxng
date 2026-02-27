@@ -43,9 +43,9 @@ ABUSEIPDB_ENV_VARS = {
 
 def _convert_env_value(key: str, value: str) -> t.Any:
     """Convert environment variable value to appropriate type."""
-    if key.endswith('.enabled') or key.endswith('.skip_tor'):
-        return value.lower() in ('1', 'true', 'yes', 'on')
-    if key.endswith('.confidence_threshold') or key.endswith('.cache_time'):
+    if key.endswith(".enabled") or key.endswith(".skip_tor"):
+        return value.lower() in ("1", "true", "yes", "on")
+    if key.endswith(".confidence_threshold") or key.endswith(".cache_time"):
         try:
             return int(value)
         except ValueError:
@@ -81,4 +81,3 @@ def limiter_fix_cfg(cfg, cfg_file):
                 cfg.set(opt, value)
             except KeyError:
                 pass
-

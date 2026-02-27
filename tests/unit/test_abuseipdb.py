@@ -217,7 +217,9 @@ class AbuseIPDBFilterRequestTests(unittest.TestCase):
         mock_network.compressed = "8.8.8.8"
         mock_request = MagicMock()
 
-        with patch("searx.botdetection.abuseipdb.flask.make_response") as mock_make_response:
+        with patch(
+            "searx.botdetection.abuseipdb.flask.make_response"
+        ) as mock_make_response:
             mock_make_response.return_value = MagicMock(status_code=429)
             result = abuseipdb.filter_request(mock_network, mock_request, mock_cfg)
 
@@ -225,7 +227,9 @@ class AbuseIPDBFilterRequestTests(unittest.TestCase):
 
     @patch("searx.botdetection.abuseipdb._get_valkey_client")
     @patch("searx.botdetection.abuseipdb._get_cached_result")
-    def test_filter_request_skips_tor_when_enabled(self, mock_get_cached, mock_get_valkey):
+    def test_filter_request_skips_tor_when_enabled(
+        self, mock_get_cached, mock_get_valkey
+    ):
         mock_valkey = MagicMock()
         mock_get_valkey.return_value = mock_valkey
         mock_get_cached.return_value = {"abuseConfidenceScore": 80, "isTor": True}
