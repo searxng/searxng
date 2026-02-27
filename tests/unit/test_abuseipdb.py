@@ -10,13 +10,23 @@ from searx.botdetection import abuseipdb
 
 class AbuseIPDBCacheTests(unittest.TestCase):
 
+    def test_hash_ip(self):
+        # pylint: disable=protected-access
+        hash1 = abuseipdb._hash_ip("192.168.1.1")
+        self.assertEqual(len(hash1), 16)
+        self.assertEqual(hash1, "c5eb5a4cc76a5cdb")
+
+        hash2 = abuseipdb._hash_ip("8.8.8.8")
+        self.assertEqual(len(hash2), 16)
+        self.assertEqual(hash2, "838c4c2573848f58")
+
     def test_cache_key(self):
         # pylint: disable=protected-access
         key = abuseipdb._cache_key("192.168.1.1")
-        self.assertEqual(key, "abuseipdb:192.168.1.1")
+        self.assertEqual(key, "abuseipdb:c5eb5a4cc76a5cdb")
 
         key = abuseipdb._cache_key("8.8.8.8")
-        self.assertEqual(key, "abuseipdb:8.8.8.8")
+        self.assertEqual(key, "abuseipdb:838c4c2573848f58")
 
     def test_get_cached_result(self):
         # pylint: disable=protected-access
@@ -28,7 +38,7 @@ class AbuseIPDBCacheTests(unittest.TestCase):
         self.assertIsNotNone(result)
         assert result is not None
         self.assertEqual(result["abuseConfidenceScore"], 50)
-        mock_client.get.assert_called_once_with("abuseipdb:8.8.8.8")
+        mock_client.get.assert_called_once_with("abuseipdb:838c4c2573848f58")
 
     def test_get_cached_result_missing(self):
         # pylint: disable=protected-access
@@ -53,14 +63,17 @@ class AbuseIPDBCacheTests(unittest.TestCase):
         mock_client = MagicMock()
         mock_client.setex = MagicMock()
 
-        result = {"abuseConfidenceScore": 50}
+        result = {"abuseConfidenceScore": 50, "isTor": False, "ipAddress": "8.8.8.8"}
         abuseipdb._set_cached_result(mock_client, "8.8.8.8", result, 3600)
 
         mock_client.setex.assert_called_once()
         args = mock_client.setex.call_args[0]
-        self.assertEqual(args[0], "abuseipdb:8.8.8.8")
+        self.assertEqual(args[0], "abuseipdb:838c4c2573848f58")
         self.assertEqual(args[1], 3600)
-        self.assertEqual(json.loads(args[2]), result)
+        cached_data = json.loads(args[2])
+        self.assertEqual(cached_data["abuseConfidenceScore"], 50)
+        self.assertEqual(cached_data["isTor"], False)
+        self.assertNotIn("ipAddress", cached_data)
 
 
 class AbuseIPDBCheckIPTests(unittest.TestCase):

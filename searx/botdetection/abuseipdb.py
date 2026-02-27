@@ -37,6 +37,7 @@ Environment variables:
 Get your free API key at https://www.abuseipdb.com/account/api
 """
 
+import hashlib
 import json
 import typing as t
 
@@ -55,12 +56,17 @@ logger = searx_logger.getChild("botdetection.abuseipdb")
 ABUSEIPDB_API_URL = "https://api.abuseipdb.com/api/v2"
 
 
-def _get_valkey_client() -> valkey.Valkey:
-    return valkeydb.get_valkey_client()
+def _hash_ip(ip_address: str) -> str:
+    """Hash IP address for privacy (GDPR compliance)."""
+    return hashlib.sha256(ip_address.encode()).hexdigest()[:16]
 
 
 def _cache_key(ip_address: str) -> str:
-    return f"abuseipdb:{ip_address}"
+    return f"abuseipdb:{_hash_ip(ip_address)}"
+
+
+def _get_valkey_client() -> valkey.Valkey:
+    return valkeydb.get_valkey_client()
 
 
 def _get_cached_result(valkey_client: valkey.Valkey, ip_address: str) -> t.Optional[dict[str, t.Any]]:
@@ -75,8 +81,12 @@ def _get_cached_result(valkey_client: valkey.Valkey, ip_address: str) -> t.Optio
 
 
 def _set_cached_result(valkey_client: valkey.Valkey, ip_address: str, result: dict[str, t.Any], cache_time: int):
-    """Cache abuseipdb result in valkey."""
-    valkey_client.setex(_cache_key(ip_address), cache_time, json.dumps(result))
+    """Cache minimal abuseipdb result in valkey (only required fields, IP hashed)."""
+    cached_data = {
+        "abuseConfidenceScore": result.get("abuseConfidenceScore", 0),
+        "isTor": result.get("isTor", False),
+    }
+    valkey_client.setex(_cache_key(ip_address), cache_time, json.dumps(cached_data))
 
 
 def check_ip(ip_address: str, cfg: config.Config) -> t.Optional[dict[str, t.Any]]:
