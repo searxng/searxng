@@ -175,20 +175,21 @@ def filter_request(
         return None
 
     ip_address = str(network.network_address)
+    hashed_ip = _hash_ip(ip_address)
     confidence_threshold = cfg.get("botdetection.abuseipdb.confidence_threshold", default=75)
     skip_tor = cfg.get("botdetection.abuseipdb.skip_tor", default=False)
     cache_time = cfg.get("botdetection.abuseipdb.cache_time", default=86400)
 
-    cached_result: t.Optional[dict[str, t.Any]] = _get_cached_result(valkey_client, ip_address)
+    cached_result: t.Optional[dict[str, t.Any]] = _get_cached_result(valkey_client, hashed_ip)
 
     if cached_result is None:
-        logger.debug("Querying AbuseIPDB for IP: %s", ip_address)
+        logger.debug("Querying AbuseIPDB for IP: %s", hashed_ip)
         cached_result = check_ip(ip_address, cfg)
 
         if cached_result is None:
             logger.warning(
                 "Failed to get abuseipdb result for IP: %s, allowing request",
-                ip_address,
+                hashed_ip,
             )
             return None
 
@@ -199,7 +200,7 @@ def filter_request(
 
     logger.debug(
         "IP %s: abuseConfidenceScore=%d, isTor=%s",
-        ip_address,
+        hashed_ip,
         abuse_confidence_score,
         is_tor,
     )
@@ -208,14 +209,14 @@ def filter_request(
         if is_tor and skip_tor:
             logger.debug(
                 "IP %s: abuseConfidenceScore=%d >= %d but is Tor exit node and skip_tor is enabled, allowing",
-                ip_address,
+                hashed_ip,
                 abuse_confidence_score,
                 confidence_threshold,
             )
         else:
             logger.error(
                 "BLOCK: IP %s has abuseConfidenceScore %d >= %d",
-                ip_address,
+                hashed_ip,
                 abuse_confidence_score,
                 confidence_threshold,
             )
