@@ -4,12 +4,6 @@ name: Container
 # yamllint disable-line rule:truthy
 on:
   workflow_dispatch:
-    inputs:
-      push_to_dockerhub:
-        description: 'Push to DockerHub (requires credentials)'
-        required: false
-        default: 'false'
-        type: boolean
   workflow_run:
     workflows:
       - Integration
@@ -169,7 +163,7 @@ jobs:
         run: make container.test
 
   release:
-    if: (github.repository_owner == 'searxng' || github.event_name == 'workflow_dispatch') && (github.ref_name == 'master' || github.event.inputs.push_to_dockerhub)
+    if: github.repository_owner == 'searxng' && github.ref_name == 'master'
     name: Release
     runs-on: ubuntu-24.04-arm
     needs:
@@ -193,7 +187,6 @@ jobs:
           password: "${{ secrets.GITHUB_TOKEN }}"
 
       - name: Login to Docker Hub
-        if: github.repository_owner == 'searxng' && github.event.inputs.push_to_dockerhub
         uses: docker/login-action@c94ce9fb468520275223c153574b00df6fe4bcc9  # v3.7.0
         with:
           registry: "docker.io"
