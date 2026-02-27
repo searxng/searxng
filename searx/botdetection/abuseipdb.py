@@ -194,21 +194,21 @@ def filter_request(
         is_tor,
     )
 
-    if abuse_confidence_score >= confidence_threshold and not (is_tor and skip_tor):
-        logger.error(
-            "BLOCK: IP %s has abuseConfidenceScore %d >= %d",
-            ip_address,
-            abuse_confidence_score,
-            confidence_threshold,
-        )
-        return too_many_requests(network, f"IP has abuse confidence score {abuse_confidence_score}")
-
-    if abuse_confidence_score >= confidence_threshold and is_tor and skip_tor:
-        logger.debug(
-            "IP %s: abuseConfidenceScore=%d >= %d but is Tor exit node and skip_tor is enabled, allowing",
-            ip_address,
-            abuse_confidence_score,
-            confidence_threshold,
-        )
+    if abuse_confidence_score >= confidence_threshold:
+        if is_tor and skip_tor:
+            logger.debug(
+                "IP %s: abuseConfidenceScore=%d >= %d but is Tor exit node and skip_tor is enabled, allowing",
+                ip_address,
+                abuse_confidence_score,
+                confidence_threshold,
+            )
+        else:
+            logger.error(
+                "BLOCK: IP %s has abuseConfidenceScore %d >= %d",
+                ip_address,
+                abuse_confidence_score,
+                confidence_threshold,
+            )
+            return too_many_requests(network, f"IP has abuse confidence score {abuse_confidence_score}")
 
     return None
