@@ -3,7 +3,7 @@
 
 import json
 import unittest
-from unittest.mock import Mock, patch, MagicMock
+from unittest.mock import patch, MagicMock
 
 from searx.botdetection import abuseipdb
 
@@ -11,6 +11,7 @@ from searx.botdetection import abuseipdb
 class AbuseIPDBCacheTests(unittest.TestCase):
 
     def test_cache_key(self):
+        # pylint: disable=protected-access
         key = abuseipdb._cache_key("192.168.1.1")
         self.assertEqual(key, "abuseipdb:192.168.1.1")
 
@@ -18,15 +19,19 @@ class AbuseIPDBCacheTests(unittest.TestCase):
         self.assertEqual(key, "abuseipdb:8.8.8.8")
 
     def test_get_cached_result(self):
+        # pylint: disable=protected-access
         mock_client = MagicMock()
         mock_client.get.return_value = json.dumps({"abuseConfidenceScore": 50})
 
         result = abuseipdb._get_cached_result(mock_client, "8.8.8.8")
 
+        self.assertIsNotNone(result)
+        assert result is not None
         self.assertEqual(result["abuseConfidenceScore"], 50)
         mock_client.get.assert_called_once_with("abuseipdb:8.8.8.8")
 
     def test_get_cached_result_missing(self):
+        # pylint: disable=protected-access
         mock_client = MagicMock()
         mock_client.get.return_value = None
 
@@ -35,6 +40,7 @@ class AbuseIPDBCacheTests(unittest.TestCase):
         self.assertIsNone(result)
 
     def test_get_cached_result_invalid_json(self):
+        # pylint: disable=protected-access
         mock_client = MagicMock()
         mock_client.get.return_value = "invalid json"
 
@@ -43,6 +49,7 @@ class AbuseIPDBCacheTests(unittest.TestCase):
         self.assertIsNone(result)
 
     def test_set_cached_result(self):
+        # pylint: disable=protected-access
         mock_client = MagicMock()
         mock_client.setex = MagicMock()
 
@@ -87,6 +94,7 @@ class AbuseIPDBCheckIPTests(unittest.TestCase):
         result = abuseipdb.check_ip("8.8.8.8", mock_cfg)
 
         self.assertIsNotNone(result)
+        assert result is not None
         self.assertEqual(result["abuseConfidenceScore"], 50)
         self.assertFalse(result["isTor"])
 
@@ -130,6 +138,7 @@ class AbuseIPDBCheckIPTests(unittest.TestCase):
         result = abuseipdb.report_ip("192.168.1.1", "18", "Test report", mock_cfg)
 
         self.assertIsNotNone(result)
+        assert result is not None
         self.assertTrue(result.get("success"))
 
     def test_report_ip_no_api_key(self):
@@ -217,9 +226,7 @@ class AbuseIPDBFilterRequestTests(unittest.TestCase):
         mock_network.compressed = "8.8.8.8"
         mock_request = MagicMock()
 
-        with patch(
-            "searx.botdetection.abuseipdb.flask.make_response"
-        ) as mock_make_response:
+        with patch("searx.botdetection.abuseipdb.flask.make_response") as mock_make_response:
             mock_make_response.return_value = MagicMock(status_code=429)
             result = abuseipdb.filter_request(mock_network, mock_request, mock_cfg)
 
@@ -227,9 +234,7 @@ class AbuseIPDBFilterRequestTests(unittest.TestCase):
 
     @patch("searx.botdetection.abuseipdb._get_valkey_client")
     @patch("searx.botdetection.abuseipdb._get_cached_result")
-    def test_filter_request_skips_tor_when_enabled(
-        self, mock_get_cached, mock_get_valkey
-    ):
+    def test_filter_request_skips_tor_when_enabled(self, mock_get_cached, mock_get_valkey):
         mock_valkey = MagicMock()
         mock_get_valkey.return_value = mock_valkey
         mock_get_cached.return_value = {"abuseConfidenceScore": 80, "isTor": True}
@@ -303,9 +308,7 @@ class AbuseIPDBFilterRequestTests(unittest.TestCase):
     @patch("searx.botdetection.abuseipdb._get_valkey_client")
     @patch("searx.botdetection.abuseipdb._get_cached_result")
     @patch("searx.botdetection.abuseipdb.check_ip")
-    def test_filter_request_api_failure_allows_request(
-        self, mock_check_ip, mock_get_cached, mock_get_valkey
-    ):
+    def test_filter_request_api_failure_allows_request(self, mock_check_ip, mock_get_cached, mock_get_valkey):
         mock_valkey = MagicMock()
         mock_get_valkey.return_value = mock_valkey
         mock_get_cached.return_value = None

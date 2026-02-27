@@ -57,27 +57,23 @@ def _cache_key(ip_address: str) -> str:
     return f"abuseipdb:{ip_address}"
 
 
-def _get_cached_result(
-    valkey_client: valkey.Valkey, ip_address: str
-) -> t.Optional[dict]:
+def _get_cached_result(valkey_client: valkey.Valkey, ip_address: str) -> t.Optional[dict[str, t.Any]]:
     """Get cached abuseipdb result from valkey."""
     cached = valkey_client.get(_cache_key(ip_address))
     if cached:
         try:
-            return json.loads(cached)
+            return json.loads(cached)  # type: ignore[arg-type]
         except json.JSONDecodeError:
             logger.warning("Failed to decode cached result for IP: %s", ip_address)
     return None
 
 
-def _set_cached_result(
-    valkey_client: valkey.Valkey, ip_address: str, result: dict, cache_time: int
-):
+def _set_cached_result(valkey_client: valkey.Valkey, ip_address: str, result: dict[str, t.Any], cache_time: int):
     """Cache abuseipdb result in valkey."""
     valkey_client.setex(_cache_key(ip_address), cache_time, json.dumps(result))
 
 
-def check_ip(ip_address: str, cfg: config.Config) -> t.Optional[dict]:
+def check_ip(ip_address: str, cfg: config.Config) -> t.Optional[dict[str, t.Any]]:
     """Check an IP against AbuseIPDB API."""
     api_key = cfg.get("botdetection.abuseipdb.api_key", default="")
     if not api_key:
@@ -102,18 +98,14 @@ def check_ip(ip_address: str, cfg: config.Config) -> t.Optional[dict]:
         if response.status_code == 429:
             logger.warning("AbuseIPDB rate limit exceeded")
             return None
-        logger.error(
-            "AbuseIPDB API error: %d - %s", response.status_code, response.text
-        )
+        logger.error("AbuseIPDB API error: %d - %s", response.status_code, response.text)
     except Exception as e:  # pylint: disable=broad-except
         logger.error("Failed to query AbuseIPDB for IP %s: %s", ip_address, e)
 
     return None
 
 
-def report_ip(
-    ip_address: str, categories: str, comment: str, cfg: config.Config
-) -> t.Optional[dict]:
+def report_ip(ip_address: str, categories: str, comment: str, cfg: config.Config) -> t.Optional[dict[str, t.Any]]:
     """Report an IP to AbuseIPDB."""
     api_key = cfg.get("botdetection.abuseipdb.api_key", default="")
     if not api_key:
@@ -139,9 +131,7 @@ def report_ip(
         if response.status_code == 429:
             logger.warning("AbuseIPDB rate limit exceeded")
             return None
-        logger.error(
-            "AbuseIPDB API error: %d - %s", response.status_code, response.text
-        )
+        logger.error("AbuseIPDB API error: %d - %s", response.status_code, response.text)
     except Exception as e:  # pylint: disable=broad-except
         logger.error("Failed to report to AbuseIPDB for IP %s: %s", ip_address, e)
 
@@ -169,13 +159,11 @@ def filter_request(
         return None
 
     ip_address = str(network.network_address)
-    confidence_threshold = cfg.get(
-        "botdetection.abuseipdb.confidence_threshold", default=75
-    )
+    confidence_threshold = cfg.get("botdetection.abuseipdb.confidence_threshold", default=75)
     skip_tor = cfg.get("botdetection.abuseipdb.skip_tor", default=False)
     cache_time = cfg.get("botdetection.abuseipdb.cache_time", default=86400)
 
-    cached_result = _get_cached_result(valkey_client, ip_address)
+    cached_result: t.Optional[dict[str, t.Any]] = _get_cached_result(valkey_client, ip_address)
 
     if cached_result is None:
         logger.debug("Querying AbuseIPDB for IP: %s", ip_address)
@@ -190,8 +178,8 @@ def filter_request(
 
         _set_cached_result(valkey_client, ip_address, cached_result, cache_time)
 
-    abuse_confidence_score = cached_result.get("abuseConfidenceScore", 0)
-    is_tor = cached_result.get("isTor", False)
+    abuse_confidence_score: int = cached_result.get("abuseConfidenceScore", 0)
+    is_tor: bool = cached_result.get("isTor", False)
 
     logger.debug(
         "IP %s: abuseConfidenceScore=%d, isTor=%s",
@@ -200,24 +188,21 @@ def filter_request(
         is_tor,
     )
 
-    if abuse_confidence_score >= confidence_threshold:
-        if is_tor and skip_tor:
-            logger.debug(
-                "IP %s: abuseConfidenceScore=%d >= %d but is Tor exit node and skip_tor is enabled, allowing",
-                ip_address,
-                abuse_confidence_score,
-                confidence_threshold,
-            )
-            return None
-
+    if abuse_confidence_score >= confidence_threshold and not (is_tor and skip_tor):
         logger.error(
             "BLOCK: IP %s has abuseConfidenceScore %d >= %d",
             ip_address,
             abuse_confidence_score,
             confidence_threshold,
         )
-        return too_many_requests(
-            network, f"IP has abuse confidence score {abuse_confidence_score}"
+        return too_many_requests(network, f"IP has abuse confidence score {abuse_confidence_score}")
+
+    if abuse_confidence_score >= confidence_threshold and is_tor and skip_tor:
+        logger.debug(
+            "IP %s: abuseConfidenceScore=%d >= %d but is Tor exit node and skip_tor is enabled, allowing",
+            ip_address,
+            abuse_confidence_score,
+            confidence_threshold,
         )
 
     return None
