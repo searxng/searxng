@@ -45,7 +45,7 @@ from lxml.etree import ElementBase
 from searx.data import ENGINE_TRAITS
 from searx.enginelib.traits import EngineTraits
 from searx.result_types import EngineResults
-from searx.utils import eval_xpath, eval_xpath_list, extract_text
+from searx.utils import eval_xpath, eval_xpath_getindex, eval_xpath_list, extract_text
 
 if t.TYPE_CHECKING:
     from searx.extended_types import SXNG_Response
@@ -165,7 +165,10 @@ def _get_result(item: ElementBase, base_url_choice: str) -> dict[str, t.Any] | N
         return None
 
     # the link with class "js-vim-focus" is always the title link
-    title_text = extract_text(eval_xpath(item, ".//a[contains(@class, 'js-vim-focus')]"))
+    title_text = extract_text(
+        xpath_results=eval_xpath(item, ".//a[contains(@class, 'js-vim-focus')]"),
+        allow_none=True,
+    )
     if not title_text:
         return None
 
@@ -174,51 +177,61 @@ def _get_result(item: ElementBase, base_url_choice: str) -> dict[str, t.Any] | N
         "title": title_text,
     }
 
-    # the content is in a div with class "relative" and "line-clamp"
-    content_els = item.xpath(".//div[@class='relative']/div[contains(@class, 'line-clamp')]")
-    if content_els:
-        content_text = extract_text(content_els[0])
-        if content_text:
-            result["content"] = content_text
-
-    # the thumbnail is the src of the first img in the result item
-    thumbnail_els = item.xpath(".//img/@src")
-    if thumbnail_els:
-        result["thumbnail"] = thumbnail_els[0]
-
-    # identified by the "user-edit" icon
-    author_els = item.xpath(".//a[.//span[contains(@class, 'icon-[mdi--user-edit]')]]")
-    if author_els:
-        author_text = extract_text(author_els[0])
-        if author_text:
-            result["authors"] = [author_text]
-
-    # identified by the "company" icon
-    publisher_els = item.xpath(".//a[.//span[contains(@class, 'icon-[mdi--company]')]]")
-    if publisher_els:
-        publisher = extract_text(publisher_els[0]) or ""
-        if publisher:
-            result["publisher"] = publisher
-
-    # file metadata
-    # (`✅ English [en] · PDF · 10.0MB · 2000 · 📗 Book (unknown) · 🚀/ia`)
-    metadata_els = item.xpath(
-        (
-            ".//div[contains(@class, 'font-semibold')"
-            " and contains(@class, 'text-sm')"
-            " and contains(@class, 'text-gray-800')]"
-        )
+    result["content"] = extract_text(
+        xpath_results=eval_xpath_getindex(
+            element=item,
+            # the content is in a div with class "relative" and "line-clamp"
+            xpath_spec=".//div[@class='relative']/div[contains(@class, 'line-clamp')]",
+            index=0,
+            default=None,
+        ),
+        allow_none=True,
     )
-    if metadata_els:
-        meta_text = metadata_els[0].text_content().split("Save")[0].strip().rstrip("·").strip()
-        parts = [p.strip() for p in meta_text.split("·") if p.strip()]
 
-        if len(parts) >= 2:
-            result["type"] = parts[1].strip()
+    result["thumbnail"] = eval_xpath_getindex(
+        element=item,
+        # the thumbnail is the src of the first img in the result item
+        xpath_spec=".//img/@src",
+        index=0,
+        default=None,
+    )
 
-        tags = [p.strip() for p in parts[2:] if p.strip()]
-        if tags:
-            result["tags"] = tags
+    result["authors"] = [
+        extract_text(
+            xpath_results=eval_xpath_getindex(
+                element=item,
+                # identified by the "user-edit" icon
+                xpath_spec=".//a[.//span[contains(@class, 'icon-[mdi--user-edit]')]]",
+                index=0,
+                default=None,
+            ),
+            allow_none=True,
+        )
+    ]
+
+    result["publisher"] = extract_text(
+        xpath_results=eval_xpath_getindex(
+            element=item,
+            # identified by the "company" icon
+            xpath_spec=".//a[.//span[contains(@class, 'icon-[mdi--company]')]]",
+            index=0,
+            default=None,
+        ),
+        allow_none=True,
+    )
+
+    tags_text = extract_text(
+        xpath_results=eval_xpath_getindex(
+            element=item,
+            # the only one with "font-semibold" class
+            xpath_spec=".//div[contains(@class, 'font-semibold')]",
+            index=0,
+            default=None,
+        ),
+        allow_none=True,
+    )
+    if tags_text:
+        result["tags"] = [tag.strip() for tag in tags_text.split("Save")[0].split("·") if tag.strip()]
 
     return result
 
