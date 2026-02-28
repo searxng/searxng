@@ -234,8 +234,9 @@ def request(query, params):
         time_range = time_range_url.format(time_range_val=time_range_val)
 
     safe_search = ''
-    if params['safesearch']:
-        safe_search = safe_search_map[params['safesearch']]
+    safe_search_val = params.get('safesearch')
+    if safe_search_val is not None:
+        safe_search = safe_search_map[safe_search_val]
 
     fargs = {
         'query': urlencode({'q': query})[2:],

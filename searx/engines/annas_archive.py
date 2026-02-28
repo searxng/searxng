@@ -3,8 +3,8 @@
 engine providing access to a variety of book resources (also via IPFS), created
 by a team of anonymous archivists (AnnaArchivist_).
 
-.. _Anna's Archive: https://annas-archive.org/
-.. _AnnaArchivist: https://annas-software.org/AnnaArchivist/annas-archive
+.. _Anna's Archive: https://annas-archive.li/
+.. _AnnaArchivist: https://software.annas-archive.li/AnnaArchivist/annas-archive
 
 Configuration
 =============
@@ -36,19 +36,16 @@ Implementations
 """
 
 import random
-
 import typing as t
-
 from urllib.parse import urlencode
+
 from lxml import html
 from lxml.etree import ElementBase
 
-from searx.utils import extract_text, eval_xpath, eval_xpath_getindex, eval_xpath_list
-from searx.enginelib.traits import EngineTraits
 from searx.data import ENGINE_TRAITS
-from searx.exceptions import SearxEngineXPathException
-
+from searx.enginelib.traits import EngineTraits
 from searx.result_types import EngineResults
+from searx.utils import eval_xpath, eval_xpath_getindex, eval_xpath_list, extract_text
 
 if t.TYPE_CHECKING:
     from searx.extended_types import SXNG_Response
@@ -56,7 +53,7 @@ if t.TYPE_CHECKING:
 
 # about
 about: dict[str, t.Any] = {
-    "website": "https://annas-archive.org/",
+    "website": "https://annas-archive.li/",
     "wikidata_id": "Q115288326",
     "official_api_documentation": None,
     "use_official_api": False,
@@ -83,7 +80,7 @@ To not filter use an empty string (default).
 aa_sort: str = ""
 """Sort Anna's results, possible values::
 
-    newest, oldest, largest, smallest
+    newest, oldest, largest, smallest, newest_added, oldest_added, random
 
 To sort by *most relevant* use an empty string (default)."""
 
@@ -99,9 +96,10 @@ aa_ext: str = ""
 """
 
 
-def setup(engine_settings: dict[str, t.Any]) -> bool:  # pylint: disable=unused-argument
+def setup(_engine_settings: dict[str, t.Any]) -> bool:
     """Check of engine's settings."""
-    traits = EngineTraits(**ENGINE_TRAITS["annas archive"])
+
+    traits: EngineTraits = EngineTraits(**ENGINE_TRAITS["annas archive"])
 
     if not base_url:
         raise ValueError("missing required config `base_url`")
@@ -118,7 +116,7 @@ def setup(engine_settings: dict[str, t.Any]) -> bool:  # pylint: disable=unused-
     return True
 
 
-def get_base_url_choice() -> str:
+def _get_base_url_choice() -> str:
     if isinstance(base_url, list):
         return random.choice(base_url)
 
@@ -135,10 +133,10 @@ def request(query: str, params: "OnlineParams") -> None:
         "q": query,
         "page": params["pageno"],
     }
-    # filter out None and empty values
+    # filter out empty values
     filtered_args = dict((k, v) for k, v in args.items() if v)
 
-    params["base_url"] = get_base_url_choice()
+    params["base_url"] = _get_base_url_choice()
     params["url"] = f"{params['base_url']}/search?{urlencode(filtered_args)}"
 
 
@@ -146,53 +144,118 @@ def response(resp: "SXNG_Response") -> EngineResults:
     res = EngineResults()
     dom = html.fromstring(resp.text)
 
-    # The rendering of the WEB page is strange; positions of Anna's result page
-    # are enclosed in SGML comments.  These comments are *uncommented* by some
-    # JS code, see query of class ".js-scroll-hidden" in Anna's HTML template:
-    #   https://annas-software.org/AnnaArchivist/annas-archive/-/blob/main/allthethings/templates/macros/md5_list.html
+    # Each result is a div with class "flex" inside "js-aarecord-list-outer"
+    # container.  The "flex" filter excludes non-result div such as section
+    # separators.
+    for item in eval_xpath_list(
+        dom,
+        "//main//div[contains(@class, 'js-aarecord-list-outer')]/div[contains(@class, 'flex')]",
+    ):
+        result = _get_result(item, resp.search_params["base_url"])
+        if result is not None:
+            res.add(res.types.Paper(**result))
 
-    for item in eval_xpath_list(dom, "//main//div[contains(@class, 'js-aarecord-list-outer')]/div"):
-        try:
-            kwargs: dict[str, t.Any] = _get_result(item, resp.search_params["base_url"])
-        except SearxEngineXPathException:
-            continue
-        res.add(res.types.Paper(**kwargs))
     return res
 
 
-def _get_result(item: ElementBase, base_url_choice) -> dict[str, t.Any]:
-    return {
-        "url": base_url_choice + eval_xpath_getindex(item, "./a/@href", 0),
-        "title": extract_text(eval_xpath(item, "./div//a[starts-with(@href, '/md5')]")),
-        "authors": [extract_text(eval_xpath_getindex(item, ".//a[starts-with(@href, '/search')]", 0))],
-        "publisher": extract_text(
-            eval_xpath_getindex(item, ".//a[starts-with(@href, '/search')]", 1, default=None), allow_none=True
-        ),
-        "content": extract_text(eval_xpath(item, ".//div[contains(@class, 'relative')]")),
-        "thumbnail": extract_text(eval_xpath_getindex(item, ".//img/@src", 0, default=None), allow_none=True),
+def _get_result(item: ElementBase, base_url_choice: str) -> dict[str, t.Any] | None:
+    # the first direct child "a" contains the link to the result page
+    href_els = item.xpath("./a/@href")
+    if not href_els:
+        return None
+
+    # the link with class "js-vim-focus" is always the title link
+    title_text = extract_text(
+        xpath_results=eval_xpath(item, ".//a[contains(@class, 'js-vim-focus')]"),
+        allow_none=True,
+    )
+    if not title_text:
+        return None
+
+    result: dict[str, t.Any] = {
+        "url": base_url_choice + href_els[0],
+        "title": title_text,
     }
 
+    result["content"] = extract_text(
+        xpath_results=eval_xpath_getindex(
+            element=item,
+            # the content is in a div with class "relative" and "line-clamp"
+            xpath_spec=".//div[@class='relative']/div[contains(@class, 'line-clamp')]",
+            index=0,
+            default=None,
+        ),
+        allow_none=True,
+    )
 
-def fetch_traits(engine_traits: EngineTraits):
+    result["thumbnail"] = eval_xpath_getindex(
+        element=item,
+        # the thumbnail is the src of the first img in the result item
+        xpath_spec=".//img/@src",
+        index=0,
+        default=None,
+    )
+
+    result["authors"] = [
+        extract_text(
+            xpath_results=eval_xpath_getindex(
+                element=item,
+                # identified by the "user-edit" icon
+                xpath_spec=".//a[.//span[contains(@class, 'icon-[mdi--user-edit]')]]",
+                index=0,
+                default=None,
+            ),
+            allow_none=True,
+        )
+    ]
+
+    result["publisher"] = extract_text(
+        xpath_results=eval_xpath_getindex(
+            element=item,
+            # identified by the "company" icon
+            xpath_spec=".//a[.//span[contains(@class, 'icon-[mdi--company]')]]",
+            index=0,
+            default=None,
+        ),
+        allow_none=True,
+    )
+
+    tags_text = extract_text(
+        xpath_results=eval_xpath_getindex(
+            element=item,
+            # the only one with "font-semibold" class
+            xpath_spec=".//div[contains(@class, 'font-semibold')]",
+            index=0,
+            default=None,
+        ),
+        allow_none=True,
+    )
+    if tags_text:
+        result["tags"] = [tag.strip() for tag in tags_text.split("Save")[0].split("·") if tag.strip()]
+
+    return result
+
+
+def fetch_traits(engine_traits: EngineTraits) -> None:
     """Fetch languages and other search arguments from Anna's search form."""
     # pylint: disable=import-outside-toplevel
 
     import babel
-    from searx.network import get  # see https://github.com/searxng/searxng/issues/762
+
     from searx.locales import language_tag
+    from searx.network import get  # see https://github.com/searxng/searxng/issues/762
 
     engine_traits.all_locale = ""
     engine_traits.custom["content"] = []
     engine_traits.custom["ext"] = []
     engine_traits.custom["sort"] = []
 
-    resp = get(get_base_url_choice() + "/search")
+    resp = get(_get_base_url_choice() + "/search")
     if not resp.ok:
         raise RuntimeError("Response from Anna's search page is not OK.")
     dom = html.fromstring(resp.text)
 
     # supported language codes
-
     lang_map: dict[str, str] = {}
     for x in eval_xpath_list(dom, "//form//input[@name='lang']"):
         eng_lang = x.get("value")
