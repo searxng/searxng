@@ -8,33 +8,34 @@ Output file: :origin:`searx/data/gsa_useragents.txt` (:origin:`CI Update data
 .. Source for user agents: https://github.com/intoli/user-agents/
 
 """
-# pylint: disable=use-dict-literal
 
-from json import loads
 from gzip import decompress
+from json import loads
 
 from searx.data import data_dir
-from searx.utils import searxng_useragent
 from searx.network import get as http_get
+from searx.utils import searxng_useragent
 
-DATA_FILE = data_dir / 'gsa_useragents.txt'
-URL = 'https://raw.githubusercontent.com/intoli/user-agents/main/src/user-agents.json.gz'
+DATA_FILE = data_dir / "gsa_useragents.txt"
+URL = "https://raw.githubusercontent.com/intoli/user-agents/main/src/user-agents.json.gz"
 
 
 def fetch_gsa_useragents() -> list[str]:
     response = http_get(URL, timeout=3.0, headers={"User-Agent": searxng_useragent()})
     response.raise_for_status()
 
-    uas = []
+    suas: set[str] = set()
     for ua in loads(decompress(response.content)):
         if ua["platform"] == "iPhone" and "GSA" in ua["userAgent"]:
-            uas.append(ua["userAgent"])
+            suas.add(ua["userAgent"])
 
-    uas.sort()
-    return uas
+    luas = list(suas)
+    luas.sort()
+
+    return luas
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     useragents = fetch_gsa_useragents()
-    with DATA_FILE.open("w", encoding='utf-8') as f:
-        f.write('\n'.join(useragents))
+    with DATA_FILE.open("w", encoding="utf-8") as f:
+        f.write("\n".join(useragents))
