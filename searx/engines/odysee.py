@@ -5,14 +5,13 @@
 """
 
 import time
-from urllib.parse import urlencode
 from datetime import datetime
+from urllib.parse import urlencode
 
 import babel
 
-from searx.network import get
-from searx.locales import language_tag
 from searx.enginelib.traits import EngineTraits
+from searx.locales import language_tag
 
 # Engine metadata
 about = {
@@ -28,7 +27,7 @@ about = {
 paging = True
 time_range_support = True
 results_per_page = 20
-categories = ['videos']
+categories = ["videos"]
 
 # Search URL (Note: lighthouse.lbry.com/search works too, and may be faster at times)
 base_url = "https://lighthouse.odysee.tv/search"
@@ -51,12 +50,12 @@ def request(query, params):
         "mediaType": "video",
     }
 
-    lang = traits.get_language(params['searxng_locale'], None)
+    lang = traits.get_language(params["searxng_locale"], None)
     if lang is not None:
-        query_params['language'] = lang
+        query_params["language"] = lang
 
-    if params['time_range'] in time_range_dict:
-        query_params['time_filter'] = time_range_dict[params['time_range']]
+    if params["time_range"] in time_range_dict:
+        query_params["time_filter"] = time_range_dict[params["time_range"]]
 
     params["url"] = f"{base_url}?{urlencode(query_params)}"
     return params
@@ -114,15 +113,16 @@ def fetch_traits(engine_traits: EngineTraits):
     """
     Fetch languages from Odysee's source code.
     """
+    # pylint: disable=import-outside-toplevel
+
+    from searx.network import get  # see https://github.com/searxng/searxng/issues/762
 
     resp = get(
-        'https://raw.githubusercontent.com/OdyseeTeam/odysee-frontend/master/ui/constants/supported_browser_languages.js',  # pylint: disable=line-too-long
-        timeout=60,
+        "https://raw.githubusercontent.com/OdyseeTeam/odysee-frontend/master/ui/constants/supported_browser_languages.js",  # pylint: disable=line-too-long
+        timeout=5,
     )
-
     if not resp.ok:
-        print("ERROR: can't determine languages from Odysee")
-        return
+        raise RuntimeError("Response from Odysee is not OK.")
 
     for line in resp.text.split("\n")[1:-4]:
         lang_tag = line.strip().split(": ")[0].replace("'", "")

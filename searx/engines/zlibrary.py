@@ -36,14 +36,15 @@ Implementations
 import typing as t
 from datetime import datetime
 from urllib.parse import quote
-from lxml import html
-from flask_babel import gettext  # pyright: ignore[reportUnknownVariableType]
 
-from searx.utils import extract_text, eval_xpath, eval_xpath_list, ElementType
-from searx.enginelib.traits import EngineTraits
+from flask_babel import gettext  # pyright: ignore[reportUnknownVariableType]
+from lxml import html
+
 from searx.data import ENGINE_TRAITS
+from searx.enginelib.traits import EngineTraits
 from searx.exceptions import SearxException
 from searx.result_types import EngineResults
+from searx.utils import ElementType, eval_xpath, eval_xpath_list, extract_text
 
 if t.TYPE_CHECKING:
     from searx.extended_types import SXNG_Response
@@ -129,7 +130,7 @@ def response(resp: "SXNG_Response") -> EngineResults:
 
 
 def domain_is_seized(dom: ElementType):
-    return bool(dom.xpath('//title') and "seized" in dom.xpath('//title')[0].text.lower())
+    return bool(dom.xpath("//title") and "seized" in dom.xpath("//title")[0].text.lower())
 
 
 def _text(item: ElementType, selector: str) -> str | None:
@@ -145,19 +146,28 @@ def _parse_result(item: ElementType) -> dict[str, t.Any]:
         "title": _text(item, './/*[@itemprop="name"]'),
         "authors": [extract_text(author) for author in author_elements],
         "publisher": _text(item, './/a[@title="Publisher"]'),
-        "type": _text(item, './/div[contains(@class, "property__file")]//div[contains(@class, "property_value")]'),
+        "type": _text(
+            item,
+            './/div[contains(@class, "property__file")]//div[contains(@class, "property_value")]',
+        ),
     }
 
     thumbnail = _text(item, './/img[contains(@class, "cover")]/@data-src')
-    if thumbnail and not thumbnail.startswith('/'):
+    if thumbnail and not thumbnail.startswith("/"):
         result["thumbnail"] = thumbnail
 
-    year = _text(item, './/div[contains(@class, "property_year")]//div[contains(@class, "property_value")]')
+    year = _text(
+        item,
+        './/div[contains(@class, "property_year")]//div[contains(@class, "property_value")]',
+    )
     if year:
-        result["publishedDate"] = datetime.strptime(year, '%Y')
+        result["publishedDate"] = datetime.strptime(year, "%Y")
 
     content: list[str] = []
-    language = _text(item, './/div[contains(@class, "property_language")]//div[contains(@class, "property_value")]')
+    language = _text(
+        item,
+        './/div[contains(@class, "property_language")]//div[contains(@class, "property_value")]',
+    )
     if language:
         content.append(f"{i18n_language}: {language.capitalize()}")
     book_rating = _text(item, './/span[contains(@class, "book-rating-interest-score")]')
@@ -177,33 +187,18 @@ def fetch_traits(engine_traits: EngineTraits) -> None:
 
     import babel
     import babel.core
-    import httpx
 
-    from searx.network import get  # see https://github.com/searxng/searxng/issues/762
     from searx.locales import language_tag
+    from searx.network import get  # see https://github.com/searxng/searxng/issues/762
 
-    def _use_old_values():
-        # don't change anything, re-use the existing values
-        engine_traits.all_locale = ENGINE_TRAITS["z-library"]["all_locale"]
-        engine_traits.custom = ENGINE_TRAITS["z-library"]["custom"]
-        engine_traits.languages = ENGINE_TRAITS["z-library"]["languages"]
-
-    try:
-        resp = get(base_url, verify=False)
-    except (SearxException, httpx.HTTPError) as exc:
-        print(f"ERROR: zlibrary domain '{base_url}' is seized?")
-        print(f"  --> {exc}")
-        _use_old_values()
-        return
-
+    resp = get(base_url, timeout=5, verify=False)
     if not resp.ok:
-        raise RuntimeError("Response from zlibrary's search page is not OK.")
+        raise RuntimeError("Response from zlibrary is not OK.")
+
     dom = html.fromstring(resp.text)
 
     if domain_is_seized(dom):
-        print(f"ERROR: zlibrary domain is seized: {base_url}")
-        _use_old_values()
-        return
+        raise RuntimeError(f"Response from zlibrary is not OK. ({base_url} seized)")
 
     engine_traits.all_locale = ""
     engine_traits.custom["ext"] = []

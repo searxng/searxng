@@ -5,26 +5,25 @@
 """
 
 import re
-from urllib.parse import urlencode
 from datetime import datetime, timedelta
+from urllib.parse import urlencode
+
+import babel
 from dateutil.parser import parse
 from dateutil.relativedelta import relativedelta
 
-import babel
-
-from searx.network import get  # see https://github.com/searxng/searxng/issues/762
+from searx.enginelib.traits import EngineTraits
 from searx.locales import language_tag
 from searx.utils import html_to_text, humanize_number
-from searx.enginelib.traits import EngineTraits
 
 about = {
     # pylint: disable=line-too-long
-    "website": 'https://joinpeertube.org',
-    "wikidata_id": 'Q50938515',
-    "official_api_documentation": 'https://docs.joinpeertube.org/api-rest-reference.html#tag/Search/operation/searchVideos',
+    "website": "https://joinpeertube.org",
+    "wikidata_id": "Q50938515",
+    "official_api_documentation": "https://docs.joinpeertube.org/api-rest-reference.html#tag/Search/operation/searchVideos",
     "use_official_api": True,
     "require_api_key": False,
-    "results": 'JSON',
+    "results": "JSON",
 }
 
 # engine dependent config
@@ -38,14 +37,14 @@ base_url = "https://peer.tube"
 
 time_range_support = True
 time_range_table = {
-    'day': relativedelta(),
-    'week': relativedelta(weeks=-1),
-    'month': relativedelta(months=-1),
-    'year': relativedelta(years=-1),
+    "day": relativedelta(),
+    "week": relativedelta(weeks=-1),
+    "month": relativedelta(months=-1),
+    "year": relativedelta(years=-1),
 }
 
 safesearch = True
-safesearch_table = {0: 'both', 1: 'false', 2: 'false'}
+safesearch_table = {0: "both", 1: "false", 2: "false"}
 
 
 def request(query, params):
@@ -55,32 +54,32 @@ def request(query, params):
         return False
 
     # eng_region = traits.get_region(params['searxng_locale'], 'en_US')
-    eng_lang = traits.get_language(params['searxng_locale'], None)
+    eng_lang = traits.get_language(params["searxng_locale"], None)
 
-    params['url'] = (
+    params["url"] = (
         base_url.rstrip("/")
         + "/api/v1/search/videos?"
         + urlencode(
             {
-                'search': query,
-                'searchTarget': 'search-index',  # Vidiversum
-                'resultType': 'videos',
-                'start': (params['pageno'] - 1) * 10,
-                'count': 10,
+                "search": query,
+                "searchTarget": "search-index",  # Vidiversum
+                "resultType": "videos",
+                "start": (params["pageno"] - 1) * 10,
+                "count": 10,
                 # -createdAt: sort by date ascending / createdAt: date descending
-                'sort': '-match',  # sort by *match descending*
-                'nsfw': safesearch_table[params['safesearch']],
+                "sort": "-match",  # sort by *match descending*
+                "nsfw": safesearch_table[params["safesearch"]],
             }
         )
     )
 
     if eng_lang is not None:
-        params['url'] += '&languageOneOf[]=' + eng_lang
-        params['url'] += '&boostLanguages[]=' + eng_lang
+        params["url"] += "&languageOneOf[]=" + eng_lang
+        params["url"] += "&boostLanguages[]=" + eng_lang
 
-    if params['time_range'] in time_range_table:
-        time = datetime.now().date() + time_range_table[params['time_range']]
-        params['url'] += '&startDate=' + time.isoformat()
+    if params["time_range"] in time_range_table:
+        time = datetime.now().date() + time_range_table[params["time_range"]]
+        params["url"] += "&startDate=" + time.isoformat()
 
     return params
 
@@ -95,37 +94,37 @@ def video_response(resp):
 
     json_data = resp.json()
 
-    if 'data' not in json_data:
+    if "data" not in json_data:
         return []
 
-    for result in json_data['data']:
+    for result in json_data["data"]:
         metadata = [
             x
             for x in [
-                result.get('channel', {}).get('displayName'),
-                result.get('channel', {}).get('name') + '@' + result.get('channel', {}).get('host'),
-                ', '.join(result.get('tags', [])),
+                result.get("channel", {}).get("displayName"),
+                result.get("channel", {}).get("name") + "@" + result.get("channel", {}).get("host"),
+                ", ".join(result.get("tags", [])),
             ]
             if x
         ]
 
-        duration = result.get('duration')
+        duration = result.get("duration")
         if duration:
             duration = timedelta(seconds=duration)
 
         results.append(
             {
-                'url': result['url'],
-                'title': result['name'],
-                'content': html_to_text(result.get('description') or ''),
-                'author': result.get('account', {}).get('displayName'),
-                'length': duration,
-                'views': humanize_number(result['views']),
-                'template': 'videos.html',
-                'publishedDate': parse(result['publishedAt']),
-                'iframe_src': result.get('embedUrl'),
-                'thumbnail': result.get('thumbnailUrl') or result.get('previewUrl'),
-                'metadata': ' | '.join(metadata),
+                "url": result["url"],
+                "title": result["name"],
+                "content": html_to_text(result.get("description") or ""),
+                "author": result.get("account", {}).get("displayName"),
+                "length": duration,
+                "views": humanize_number(result["views"]),
+                "template": "videos.html",
+                "publishedDate": parse(result["publishedAt"]),
+                "iframe_src": result.get("embedUrl"),
+                "thumbnail": result.get("thumbnailUrl") or result.get("previewUrl"),
+                "metadata": " | ".join(metadata),
             }
         )
 
@@ -142,16 +141,16 @@ def fetch_traits(engine_traits: EngineTraits):
     .. _videoLanguages:
        https://framagit.org/framasoft/peertube/search-index/-/commit/8ed5c729#3d8747f9a60695c367c70bb64efba8f403721fad_0_291
     """
+    # pylint: disable=import-outside-toplevel
+
+    from searx.network import get  # see https://github.com/searxng/searxng/issues/762
 
     resp = get(
-        'https://framagit.org/framasoft/peertube/search-index/-/raw/master/client/src/components/Filters.vue',
-        # the response from search-index repository is very slow
-        timeout=60,
+        "https://framagit.org/framasoft/peertube/search-index/-/raw/master/client/src/components/Filters.vue",
+        timeout=5,
     )
-
-    if not resp.ok:  # type: ignore
-        print("ERROR: response from peertube is not OK.")
-        return
+    if not resp.ok:
+        raise RuntimeError("Response from Peertube is not OK.")
 
     js_lang = re.search(r"videoLanguages \(\)[^\n]+(.*?)\]", resp.text, re.DOTALL)  # type: ignore
     if not js_lang:
@@ -160,7 +159,7 @@ def fetch_traits(engine_traits: EngineTraits):
 
     for lang in re.finditer(r"\{ id: '([a-z]+)', label:", js_lang.group(1)):
         eng_tag = lang.group(1)
-        if eng_tag == 'oc':
+        if eng_tag == "oc":
             # Occitanis not known by babel, its closest relative is Catalan
             # but 'ca' is already in the list of engine_traits.languages -->
             # 'oc' will be ignored.
@@ -178,5 +177,5 @@ def fetch_traits(engine_traits: EngineTraits):
             continue
         engine_traits.languages[sxng_tag] = eng_tag
 
-    engine_traits.languages['zh_Hans'] = 'zh'
-    engine_traits.languages['zh_Hant'] = 'zh'
+    engine_traits.languages["zh_Hans"] = "zh"
+    engine_traits.languages["zh_Hant"] = "zh"

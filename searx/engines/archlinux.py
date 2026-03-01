@@ -9,55 +9,60 @@ Arch Wiki blocks access to it.
 """
 
 from urllib.parse import urlencode, urljoin, urlparse
-import lxml
-import babel
 
-from searx.utils import extract_text, eval_xpath_list, eval_xpath_getindex, searxng_useragent
+import babel
+import lxml
+
 from searx.enginelib.traits import EngineTraits
 from searx.locales import language_tag
-
+from searx.utils import (
+    eval_xpath_getindex,
+    eval_xpath_list,
+    extract_text,
+    searxng_useragent,
+)
 
 about = {
-    "website": 'https://wiki.archlinux.org/',
-    "wikidata_id": 'Q101445877',
+    "website": "https://wiki.archlinux.org/",
+    "wikidata_id": "Q101445877",
     "official_api_documentation": None,
     "use_official_api": False,
     "require_api_key": False,
-    "results": 'HTML',
+    "results": "HTML",
 }
 
 # engine dependent config
-categories = ['it', 'software wikis']
+categories = ["it", "software wikis"]
 paging = True
-main_wiki = 'wiki.archlinux.org'
+main_wiki = "wiki.archlinux.org"
 
 
 def request(query, params):
 
-    sxng_lang = params['searxng_locale'].split('-')[0]
-    netloc: str = traits.custom['wiki_netloc'].get(sxng_lang, main_wiki)  # type: ignore
-    title: str = traits.custom['title'].get(sxng_lang, 'Special:Search')  # type: ignore
-    base_url = 'https://' + netloc + '/index.php?'
-    offset = (params['pageno'] - 1) * 20
+    sxng_lang = params["searxng_locale"].split("-")[0]
+    netloc: str = traits.custom["wiki_netloc"].get(sxng_lang, main_wiki)  # type: ignore
+    title: str = traits.custom["title"].get(sxng_lang, "Special:Search")  # type: ignore
+    base_url = "https://" + netloc + "/index.php?"
+    offset = (params["pageno"] - 1) * 20
 
     if netloc == main_wiki:
-        eng_lang: str = traits.get_language(sxng_lang, 'English')  # type: ignore
-        query += ' (' + eng_lang + ')'
+        eng_lang: str = traits.get_language(sxng_lang, "English")  # type: ignore
+        query += " (" + eng_lang + ")"
         # wiki.archlinux.org is protected by anubis
         # - https://github.com/searxng/searxng/issues/4646#issuecomment-2817848019
-        params['headers']['User-Agent'] = searxng_useragent()
-    elif netloc == 'wiki.archlinuxcn.org':
-        base_url = 'https://' + netloc + '/wzh/index.php?'
+        params["headers"]["User-Agent"] = searxng_useragent()
+    elif netloc == "wiki.archlinuxcn.org":
+        base_url = "https://" + netloc + "/wzh/index.php?"
 
     args = {
-        'search': query,
-        'title': title,
-        'limit': 20,
-        'offset': offset,
-        'profile': 'default',
+        "search": query,
+        "title": title,
+        "limit": 20,
+        "offset": offset,
+        "profile": "default",
     }
 
-    params['url'] = base_url + urlencode(args)
+    params["url"] = base_url + urlencode(args)
     return params
 
 
@@ -67,18 +72,18 @@ def response(resp):
     dom = lxml.html.fromstring(resp.text)  # type: ignore
 
     # get the base URL for the language in which request was made
-    sxng_lang = resp.search_params['searxng_locale'].split('-')[0]
-    netloc: str = traits.custom['wiki_netloc'].get(sxng_lang, main_wiki)  # type: ignore
-    base_url = 'https://' + netloc + '/index.php?'
+    sxng_lang = resp.search_params["searxng_locale"].split("-")[0]
+    netloc: str = traits.custom["wiki_netloc"].get(sxng_lang, main_wiki)  # type: ignore
+    base_url = "https://" + netloc + "/index.php?"
 
     for result in eval_xpath_list(dom, '//ul[@class="mw-search-results"]/li'):
         link = eval_xpath_getindex(result, './/div[@class="mw-search-result-heading"]/a', 0)
         content = extract_text(result.xpath('.//div[@class="searchresult"]'))
         results.append(
             {
-                'url': urljoin(base_url, link.get('href')),  # type: ignore
-                'title': extract_text(link),
-                'content': content,
+                "url": urljoin(base_url, link.get("href")),  # type: ignore
+                "title": extract_text(link),
+                "content": content,
             }
         )
 
@@ -108,39 +113,39 @@ def fetch_traits(engine_traits: EngineTraits):
 
     """
     # pylint: disable=import-outside-toplevel
+
     from searx.network import get  # see https://github.com/searxng/searxng/issues/762
 
-    engine_traits.custom['wiki_netloc'] = {}
-    engine_traits.custom['title'] = {}
+    engine_traits.custom["wiki_netloc"] = {}
+    engine_traits.custom["title"] = {}
 
     title_map = {
-        'de': 'Spezial:Suche',
-        'fa': 'ویژه:جستجو',
-        'ja': '特別:検索',
-        'zh': 'Special:搜索',
+        "de": "Spezial:Suche",
+        "fa": "ویژه:جستجو",
+        "ja": "特別:検索",
+        "zh": "Special:搜索",
     }
 
-    resp = get('https://wiki.archlinux.org/', timeout=3)
-    if not resp.ok:  # type: ignore
-        print("ERROR: response from wiki.archlinux.org is not OK.")
+    resp = get("https://wiki.archlinux.org/", timeout=5)
+    if not resp.ok:
+        raise RuntimeError("Response from Arch Linux Wiki is not OK.")
 
     dom = lxml.html.fromstring(resp.text)  # type: ignore
     for a in eval_xpath_list(dom, "//a[@class='interlanguage-link-target']"):
-
-        sxng_tag = language_tag(babel.Locale.parse(a.get('lang'), sep='-'))
+        sxng_tag = language_tag(babel.Locale.parse(a.get("lang"), sep="-"))
         # zh_Hans --> zh
-        sxng_tag = sxng_tag.split('_')[0]
+        sxng_tag = sxng_tag.split("_")[0]
 
-        netloc = urlparse(a.get('href')).netloc
-        if netloc != 'wiki.archlinux.org':
+        netloc = urlparse(a.get("href")).netloc
+        if netloc != "wiki.archlinux.org":
             title = title_map.get(sxng_tag)
             if not title:
                 print("ERROR: title tag from %s (%s) is unknown" % (netloc, sxng_tag))
                 continue
-            engine_traits.custom['wiki_netloc'][sxng_tag] = netloc
-            engine_traits.custom['title'][sxng_tag] = title  # type: ignore
+            engine_traits.custom["wiki_netloc"][sxng_tag] = netloc
+            engine_traits.custom["title"][sxng_tag] = title  # type: ignore
 
         eng_tag = extract_text(eval_xpath_list(a, ".//span"))
         engine_traits.languages[sxng_tag] = eng_tag  # type: ignore
 
-    engine_traits.languages['en'] = 'English'
+    engine_traits.languages["en"] = "English"

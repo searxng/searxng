@@ -117,29 +117,28 @@ Implementations
 
 """
 
+import json
 import typing as t
-
 from urllib.parse import (
     urlencode,
     urlparse,
 )
 
-import json
 from dateutil import parser
 from lxml import html
 
 from searx import locales
-from searx.utils import (
-    extract_text,
-    eval_xpath_list,
-    eval_xpath_getindex,
-    js_obj_str_to_python,
-    js_obj_str_to_json_str,
-    get_embeded_stream_url,
-)
 from searx.enginelib.traits import EngineTraits
-from searx.result_types import EngineResults
 from searx.extended_types import SXNG_Response
+from searx.result_types import EngineResults
+from searx.utils import (
+    eval_xpath_getindex,
+    eval_xpath_list,
+    extract_text,
+    get_embeded_stream_url,
+    js_obj_str_to_json_str,
+    js_obj_str_to_python,
+)
 
 about = {
     "website": "https://search.brave.com/",
@@ -264,10 +263,10 @@ def extract_json_data(text: str) -> dict[str, t.Any]:
 
 def response(resp: SXNG_Response) -> EngineResults:
 
-    if brave_category in ('search', 'goggles'):
+    if brave_category in ("search", "goggles"):
         return _parse_search(resp)
 
-    if brave_category in ('news'):
+    if brave_category in ("news"):
         return _parse_news(resp)
 
     # Example script source containing the data:
@@ -277,11 +276,11 @@ def response(resp: SXNG_Response) -> EngineResults:
     #    data: [{type:"data",data: .... ["q","goggles_id"],route:1,url:1}}]
     #          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
     json_data: dict[str, t.Any] = extract_json_data(resp.text)
-    json_resp: dict[str, t.Any] = json_data['data'][1]["data"]['body']['response']
+    json_resp: dict[str, t.Any] = json_data["data"][1]["data"]["body"]["response"]
 
-    if brave_category == 'images':
+    if brave_category == "images":
         return _parse_images(json_resp)
-    if brave_category == 'videos':
+    if brave_category == "videos":
         return _parse_videos(json_resp)
 
     raise ValueError(f"Unsupported brave category: {brave_category}")
@@ -292,7 +291,6 @@ def _parse_search(resp: SXNG_Response) -> EngineResults:
     dom = html.fromstring(resp.text)
 
     for result in eval_xpath_list(dom, "//div[contains(@class, 'snippet ')]"):
-
         url: str | None = eval_xpath_getindex(result, ".//a/@href", 0, default=None)
         title_tag = eval_xpath_getindex(result, ".//div[contains(@class, 'title')]", 0, default=None)
         if url is None or title_tag is None or not urlparse(url).netloc:  # partial url likely means it's an ad
@@ -304,7 +302,12 @@ def _parse_search(resp: SXNG_Response) -> EngineResults:
         # there are other classes like 'site-name-content' we don't want to match,
         # however only using contains(@class, 'content') would e.g. also match `site-name-content`
         # thus, we explicitly also require the spaces as class separator
-        _content = eval_xpath_getindex(result, ".//div[contains(concat(' ', @class, ' '), ' content ')]", 0, default="")
+        _content = eval_xpath_getindex(
+            result,
+            ".//div[contains(concat(' ', @class, ' '), ' content ')]",
+            0,
+            default="",
+        )
         if len(_content):
             content = extract_text(_content)  # type: ignore
             _pub_date = extract_text(
@@ -327,7 +330,10 @@ def _parse_search(resp: SXNG_Response) -> EngineResults:
         res.add(item)
 
         video_tag = eval_xpath_getindex(
-            result, ".//div[contains(@class, 'video-snippet') and @data-macro='video']", 0, default=[]
+            result,
+            ".//div[contains(@class, 'video-snippet') and @data-macro='video']",
+            0,
+            default=[],
         )
         if len(video_tag):
             # In my tests a video tag in the WEB search was most often not a
@@ -338,7 +344,7 @@ def _parse_search(resp: SXNG_Response) -> EngineResults:
                 item["template"] = "videos.html"
 
     for suggestion in eval_xpath_list(dom, "//a[contains(@class, 'related-query')]"):
-        res.append(res.types.LegacyResult({'suggestion': extract_text(suggestion)}))
+        res.append(res.types.LegacyResult({"suggestion": extract_text(suggestion)}))
 
     return res
 
@@ -348,7 +354,6 @@ def _parse_news(resp: SXNG_Response) -> EngineResults:
     dom = html.fromstring(resp.text)
 
     for result in eval_xpath_list(dom, "//div[contains(@class, 'results')]//div[@data-type='news']"):
-
         url = eval_xpath_getindex(result, ".//a[contains(@class, 'result-header')]/@href", 0, default=None)
         if url is None:
             continue
@@ -417,23 +422,23 @@ def fetch_traits(engine_traits: EngineTraits):
     # pylint: disable=import-outside-toplevel, too-many-branches
 
     import babel.languages
-    from searx.locales import region_tag, language_tag
+
+    from searx.locales import language_tag, region_tag
     from searx.network import get  # see https://github.com/searxng/searxng/issues/762
 
     engine_traits.custom["ui_lang"] = {}
 
-    lang_map = {'no': 'nb'}  # norway
+    lang_map = {"no": "nb"}  # norway
 
     # languages (UI)
 
-    resp = get('https://search.brave.com/settings')
-
+    resp = get("https://search.brave.com/settings", timeout=5)
     if not resp.ok:
-        print("ERROR: response from Brave is not OK.")
+        raise RuntimeError("Response from Brave languages is not OK.")
+
     dom = html.fromstring(resp.text)
 
     for option in dom.xpath("//section//option[@value='en-us']/../option"):
-
         ui_lang = option.get("value")
         try:
             l = babel.Locale.parse(ui_lang, sep="-")
@@ -441,9 +446,8 @@ def fetch_traits(engine_traits: EngineTraits):
                 sxng_tag = region_tag(babel.Locale.parse(ui_lang, sep="-"))
             else:
                 sxng_tag = language_tag(babel.Locale.parse(ui_lang, sep="-"))
-
         except babel.UnknownLocaleError:
-            print("ERROR: can't determine babel locale of Brave's (UI) language %s" % ui_lang)
+            # silently ignore unknown languages
             continue
 
         conflict = engine_traits.custom["ui_lang"].get(sxng_tag)  # type: ignore
@@ -455,10 +459,12 @@ def fetch_traits(engine_traits: EngineTraits):
 
     # search regions of brave
 
-    resp = get("https://cdn.search.brave.com/serp/v2/_app/immutable/chunks/parameters.734c106a.js")
-
+    resp = get(
+        "https://cdn.search.brave.com/serp/v2/_app/immutable/chunks/parameters.734c106a.js",
+        timeout=5,
+    )
     if not resp.ok:
-        print("ERROR: response from Brave is not OK.")
+        raise RuntimeError("Response from Brave regions is not OK.")
 
     country_js = resp.text[resp.text.index("options:{all") + len("options:") :]
     country_js = country_js[: country_js.index("},k={default")]
@@ -473,7 +479,11 @@ def fetch_traits(engine_traits: EngineTraits):
         # add official languages of the country ..
         for lang_tag in babel.languages.get_official_languages(country_tag, de_facto=True):
             lang_tag = lang_map.get(lang_tag, lang_tag)
-            sxng_tag = region_tag(babel.Locale.parse("%s_%s" % (lang_tag, country_tag.upper())))
+            try:
+                sxng_tag = region_tag(babel.Locale.parse("%s_%s" % (lang_tag, country_tag.upper())))
+            except babel.UnknownLocaleError:
+                # silently ignore unknown languages
+                continue
             # print("%-20s: %s <-- %s" % (v["label"], country_tag, sxng_tag))
 
             conflict = engine_traits.regions.get(sxng_tag)
