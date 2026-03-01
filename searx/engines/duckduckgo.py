@@ -24,7 +24,8 @@ DDG's content search / see engine ``duckduckgo_extra.py``
 Special features of the no-JS services (DDG-lite & DDG-html):
 
 - The no-JS clients receive a form that contains all the controlling parameters.
-- When the form data is submitted, a real WEB browser sets the HTTP _Sec-Fetch_ headers.
+- When the form data is submitted, a real WEB browser sets the HTTP *Sec-Fetch*
+  headers.
 
 HTML ``<form>``, HTTP-Headers & DDG's bot Blocker:
 
@@ -238,7 +239,7 @@ def get_vqd(
     query: str,
     params: "OnlineParams",
 ) -> str:
-    """Returns the vqd_ vakue that fits to the *query* (and HTTP User-Agent_
+    """Returns the ``vqd`` value that fits to the *query* (and HTTP User-Agent_
     header).
 
     :param query: the query term
