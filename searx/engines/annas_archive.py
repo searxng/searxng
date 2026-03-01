@@ -250,9 +250,10 @@ def fetch_traits(engine_traits: EngineTraits) -> None:
     engine_traits.custom["ext"] = []
     engine_traits.custom["sort"] = []
 
-    resp = get(_get_base_url_choice() + "/search")
+    resp = get(_get_base_url_choice() + "/search", timeout=5)
     if not resp.ok:
-        raise RuntimeError("Response from Anna's search page is not OK.")
+        raise RuntimeError("Response from Anna's Archive is not OK.")
+
     dom = html.fromstring(resp.text)
 
     # supported language codes

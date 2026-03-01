@@ -9,15 +9,14 @@ To load traits from the persistence :py:obj:`EngineTraitsMap.from_data` can be
 used.
 """
 
-
-import os
-import json
 import dataclasses
+import json
+import pathlib
 import types
 import typing as t
-import pathlib
+
 from searx import locales
-from searx.data import data_dir, ENGINE_TRAITS
+from searx.data import ENGINE_TRAITS, data_dir
 
 if t.TYPE_CHECKING:
     from . import Engine
@@ -77,7 +76,7 @@ class EngineTraits:
     language").
     """
 
-    data_type: t.Literal['traits_v1'] = 'traits_v1'
+    data_type: t.Literal["traits_v1"] = "traits_v1"
     """Data type, default is 'traits_v1'.
     """
 
@@ -97,7 +96,7 @@ class EngineTraits:
         :py:obj:`searx.locales.get_engine_locale`.  Except for the special value ``all``
         which is determined from :py:obj:`EngineTraits.all_locale`.
         """
-        if searxng_locale == 'all' and self.all_locale is not None:
+        if searxng_locale == "all" and self.all_locale is not None:
             return self.all_locale
         return locales.get_engine_locale(searxng_locale, self.languages, default=default)
 
@@ -113,7 +112,7 @@ class EngineTraits:
         :py:obj:`searx.locales.get_engine_locale`.  Except for the special value ``all``
         which is determined from :py:obj:`EngineTraits.all_locale`.
         """
-        if searxng_locale == 'all' and self.all_locale is not None:
+        if searxng_locale == "all" and self.all_locale is not None:
             return self.all_locale
         return locales.get_engine_locale(searxng_locale, self.regions, default=default)
 
@@ -125,10 +124,10 @@ class EngineTraits:
         For verification the functions :py:func:`EngineTraits.get_region` and
         :py:func:`EngineTraits.get_language` are used.
         """
-        if self.data_type == 'traits_v1':
+        if self.data_type == "traits_v1":
             return bool(self.get_region(searxng_locale) or self.get_language(searxng_locale))
 
-        raise TypeError('engine traits of type %s is unknown' % self.data_type)
+        raise TypeError("engine traits of type %s is unknown" % self.data_type)
 
     def copy(self):
         """Create a copy of the dataclass object."""
@@ -141,7 +140,7 @@ class EngineTraits:
         function does not exists, ``None`` is returned.
         """
 
-        fetch_traits = getattr(engine, 'fetch_traits', None)
+        fetch_traits = getattr(engine, "fetch_traits", None)
         engine_traits = None
 
         if fetch_traits:
@@ -155,10 +154,10 @@ class EngineTraits:
         :param engine: engine instance build by :py:func:`searx.engines.load_engine`
         """
 
-        if self.data_type == 'traits_v1':
+        if self.data_type == "traits_v1":
             self._set_traits_v1(engine)
         else:
-            raise TypeError('engine traits of type %s is unknown' % self.data_type)
+            raise TypeError("engine traits of type %s is unknown" % self.data_type)
 
     def _set_traits_v1(self, engine: "Engine | types.ModuleType") -> None:
         # For an engine, when there is `language: ...` in the YAML settings the engine
@@ -174,15 +173,15 @@ class EngineTraits:
         _msg = "settings.yml - engine: '%s' / %s: '%s' not supported"
 
         languages = traits.languages
-        if hasattr(engine, 'language'):
+        if hasattr(engine, "language"):
             if engine.language not in languages:
-                raise ValueError(_msg % (engine.name, 'language', engine.language))
+                raise ValueError(_msg % (engine.name, "language", engine.language))
             traits.languages = {engine.language: languages[engine.language]}
 
         regions = traits.regions
-        if hasattr(engine, 'region'):
+        if hasattr(engine, "region"):
             if engine.region not in regions:
-                raise ValueError(_msg % (engine.name, 'region', engine.region))
+                raise ValueError(_msg % (engine.name, "region", engine.region))
             traits.regions = {engine.region: regions[engine.region]}
 
         engine.language_support = bool(traits.languages or traits.regions)
@@ -194,16 +193,16 @@ class EngineTraits:
 class EngineTraitsMap(dict[str, EngineTraits]):
     """A python dictionary to map :class:`EngineTraits` by engine name."""
 
-    ENGINE_TRAITS_FILE: pathlib.Path = (data_dir / 'engine_traits.json').resolve()
+    ENGINE_TRAITS_FILE: pathlib.Path = (data_dir / "engine_traits.json").resolve()
     """File with persistence of the :py:obj:`EngineTraitsMap`."""
 
     def save_data(self):
         """Store EngineTraitsMap in in file :py:obj:`self.ENGINE_TRAITS_FILE`"""
-        with open(self.ENGINE_TRAITS_FILE, 'w', encoding='utf-8') as f:
+        with open(self.ENGINE_TRAITS_FILE, "w", encoding="utf-8") as f:
             json.dump(self, f, indent=2, sort_keys=True, cls=EngineTraitsEncoder)
 
     @classmethod
-    def from_data(cls) -> 'EngineTraitsMap':
+    def from_data(cls) -> "EngineTraitsMap":
         """Instantiate :class:`EngineTraitsMap` object from :py:obj:`ENGINE_TRAITS`"""
         obj = cls()
         for k, v in ENGINE_TRAITS.items():
@@ -211,8 +210,10 @@ class EngineTraitsMap(dict[str, EngineTraits]):
         return obj
 
     @classmethod
-    def fetch_traits(cls, log: t.Callable[[str], None]) -> 'EngineTraitsMap':
-        from searx import engines  # pylint: disable=cyclic-import, import-outside-toplevel
+    def fetch_traits(cls, log: t.Callable[[str], None]) -> "EngineTraitsMap":
+        from searx import (  # pylint: disable=cyclic-import, import-outside-toplevel
+            engines,
+        )
 
         names = list(engines.engines)
         names.sort()
@@ -226,13 +227,13 @@ class EngineTraitsMap(dict[str, EngineTraits]):
             try:
                 traits = EngineTraits.fetch_traits(engine)
             except Exception as exc:
-                log("FATAL: while fetch_traits %s: %s" % (engine_name, exc))
-                if os.environ.get('FORCE', '').lower() not in ['on', 'true', '1']:
-                    raise
+                log("ERROR: while fetch_traits %s: %s" % (engine_name, exc))
                 v = ENGINE_TRAITS.get(engine_name)
                 if v:
-                    log("FORCE: re-use old values from fetch_traits - ENGINE_TRAITS[%s]" % engine_name)
+                    log("WARNING: re-use old values from fetch_traits - ENGINE_TRAITS[%s]" % engine_name)
                     traits = EngineTraits(**v)
+                else:
+                    log("WARNING: no old values available for ENGINE_TRAITS[%s], skipping" % engine_name)
 
             if traits is not None:
                 log("%-20s: SearXNG languages --> %s " % (engine_name, len(traits.languages)))
@@ -247,7 +248,7 @@ class EngineTraitsMap(dict[str, EngineTraits]):
         :param engine: engine instance build by :py:func:`searx.engines.load_engine`
         """
 
-        engine_traits = EngineTraits(data_type='traits_v1')
+        engine_traits = EngineTraits(data_type="traits_v1")
         if engine.name in self.keys():
             engine_traits = self[engine.name]
 

@@ -55,23 +55,22 @@ options:
 """
 
 import urllib.parse
-import babel
 
+import babel
 from lxml import html
 
-from searx import utils
+from searx import locales, utils
 from searx import network as _network
-from searx import locales
 from searx.enginelib.traits import EngineTraits
 
 # about
 about = {
-    "website": 'https://www.wikipedia.org/',
-    "wikidata_id": 'Q52',
-    "official_api_documentation": 'https://en.wikipedia.org/api/',
+    "website": "https://www.wikipedia.org/",
+    "wikidata_id": "Q52",
+    "official_api_documentation": "https://en.wikipedia.org/api/",
     "use_official_api": True,
     "require_api_key": False,
-    "results": 'JSON',
+    "results": "JSON",
 }
 
 display_type = ["infobox"]
@@ -79,18 +78,18 @@ display_type = ["infobox"]
 one will add a hit to the result list.  The first one will show a hit in the
 info box.  Both values can be set, or one of the two can be set."""
 
-list_of_wikipedias = 'https://meta.wikimedia.org/wiki/List_of_Wikipedias'
+list_of_wikipedias = "https://meta.wikimedia.org/wiki/List_of_Wikipedias"
 """`List of all wikipedias <https://meta.wikimedia.org/wiki/List_of_Wikipedias>`_
 """
 
-wikipedia_article_depth = 'https://meta.wikimedia.org/wiki/Wikipedia_article_depth'
+wikipedia_article_depth = "https://meta.wikimedia.org/wiki/Wikipedia_article_depth"
 """The *editing depth* of Wikipedia is one of several possible rough indicators
 of the encyclopedia's collaborative quality, showing how frequently its articles
 are updated.  The measurement of depth was introduced after some limitations of
 the classic measurement of article count were realized.
 """
 
-rest_v1_summary_url = 'https://{wiki_netloc}/api/rest_v1/page/summary/{title}'
+rest_v1_summary_url = "https://{wiki_netloc}/api/rest_v1/page/summary/{title}"
 """
 `wikipedia rest_v1 summary API`_:
   The summary response includes an extract of the first paragraph of the page in
@@ -140,8 +139,8 @@ def get_wiki_params(sxng_locale, eng_traits):
     (region) higher than a language (compare :py:obj:`wiki_lc_locale_variants`).
 
     """
-    eng_tag = eng_traits.get_region(sxng_locale, eng_traits.get_language(sxng_locale, 'en'))
-    wiki_netloc = eng_traits.custom['wiki_netloc'].get(eng_tag, 'en.wikipedia.org')
+    eng_tag = eng_traits.get_region(sxng_locale, eng_traits.get_language(sxng_locale, "en"))
+    wiki_netloc = eng_traits.custom["wiki_netloc"].get(eng_tag, "en.wikipedia.org")
     return eng_tag, wiki_netloc
 
 
@@ -150,12 +149,12 @@ def request(query, params):
     if query.islower():
         query = query.title()
 
-    _eng_tag, wiki_netloc = get_wiki_params(params['searxng_locale'], traits)
+    _eng_tag, wiki_netloc = get_wiki_params(params["searxng_locale"], traits)
     title = urllib.parse.quote(query)
-    params['url'] = rest_v1_summary_url.format(wiki_netloc=wiki_netloc, title=title)
+    params["url"] = rest_v1_summary_url.format(wiki_netloc=wiki_netloc, title=title)
 
-    params['raise_for_httperror'] = False
-    params['soft_max_redirects'] = 2
+    params["raise_for_httperror"] = False
+    params["soft_max_redirects"] = 2
 
     return params
 
@@ -173,31 +172,37 @@ def response(resp):
             pass
         else:
             if (
-                api_result['type'] == 'https://mediawiki.org/wiki/HyperSwitch/errors/bad_request'
-                and api_result['detail'] == 'title-invalid-characters'
+                api_result["type"] == "https://mediawiki.org/wiki/HyperSwitch/errors/bad_request"
+                and api_result["detail"] == "title-invalid-characters"
             ):
                 return []
 
     _network.raise_for_httperror(resp)
 
     api_result = resp.json()
-    title = utils.html_to_text(api_result.get('titles', {}).get('display') or api_result.get('title'))
-    wikipedia_link = api_result['content_urls']['desktop']['page']
+    title = utils.html_to_text(api_result.get("titles", {}).get("display") or api_result.get("title"))
+    wikipedia_link = api_result["content_urls"]["desktop"]["page"]
 
-    if "list" in display_type or api_result.get('type') != 'standard':
+    if "list" in display_type or api_result.get("type") != "standard":
         # show item in the result list if 'list' is in the display options or it
         # is a item that can't be displayed in a infobox.
-        results.append({'url': wikipedia_link, 'title': title, 'content': api_result.get('description', '')})
+        results.append(
+            {
+                "url": wikipedia_link,
+                "title": title,
+                "content": api_result.get("description", ""),
+            }
+        )
 
     if "infobox" in display_type:
-        if api_result.get('type') == 'standard':
+        if api_result.get("type") == "standard":
             results.append(
                 {
-                    'infobox': title,
-                    'id': wikipedia_link,
-                    'content': api_result.get('extract', ''),
-                    'img_src': api_result.get('thumbnail', {}).get('source'),
-                    'urls': [{'title': 'Wikipedia', 'url': wikipedia_link}],
+                    "infobox": title,
+                    "id": wikipedia_link,
+                    "content": api_result.get("extract", ""),
+                    "img_src": api_result.get("thumbnail", {}).get("source"),
+                    "urls": [{"title": "Wikipedia", "url": wikipedia_link}],
                 }
             )
 
@@ -212,28 +217,28 @@ def response(resp):
 lang_map = locales.LOCALE_BEST_MATCH.copy()
 lang_map.update(
     {
-        'be-tarask': 'bel',
-        'ak': 'aka',
-        'als': 'gsw',
-        'bat-smg': 'sgs',
-        'cbk-zam': 'cbk',
-        'fiu-vro': 'vro',
-        'map-bms': 'map',
-        'no': 'nb-NO',
-        'nrm': 'nrf',
-        'roa-rup': 'rup',
-        'nds-nl': 'nds',
+        "be-tarask": "bel",
+        "ak": "aka",
+        "als": "gsw",
+        "bat-smg": "sgs",
+        "cbk-zam": "cbk",
+        "fiu-vro": "vro",
+        "map-bms": "map",
+        "no": "nb-NO",
+        "nrm": "nrf",
+        "roa-rup": "rup",
+        "nds-nl": "nds",
         #'simple: – invented code used for the Simple English Wikipedia (not the official IETF code en-simple)
-        'zh-min-nan': 'nan',
-        'zh-yue': 'yue',
-        'an': 'arg',
+        "zh-min-nan": "nan",
+        "zh-yue": "yue",
+        "an": "arg",
     }
 )
 
 
 def fetch_traits(engine_traits: EngineTraits):
     fetch_wikimedia_traits(engine_traits)
-    print("WIKIPEDIA_LANGUAGES: %s" % len(engine_traits.custom['WIKIPEDIA_LANGUAGES']))
+    print("WIKIPEDIA_LANGUAGES: %s" % len(engine_traits.custom["WIKIPEDIA_LANGUAGES"]))
 
 
 def fetch_wikimedia_traits(engine_traits: EngineTraits):
@@ -257,9 +262,13 @@ def fetch_wikimedia_traits(engine_traits: EngineTraits):
            "zh-classical": "zh-classical.wikipedia.org"
        }
     """
-    # pylint: disable=too-many-branches
-    engine_traits.custom['wiki_netloc'] = {}
-    engine_traits.custom['WIKIPEDIA_LANGUAGES'] = []
+    # pylint: disable=import-outside-toplevel, too-many-branches
+
+    from searx.network import get  # see https://github.com/searxng/searxng/issues/762
+    from searx.utils import searxng_useragent
+
+    engine_traits.custom["wiki_netloc"] = {}
+    engine_traits.custom["WIKIPEDIA_LANGUAGES"] = []
 
     # insert alias to map from a script or region to a wikipedia variant
 
@@ -270,35 +279,34 @@ def fetch_wikimedia_traits(engine_traits: EngineTraits):
         for sxng_tag in sxng_tag_list:
             engine_traits.regions[sxng_tag] = eng_tag
 
-    resp = _network.get(list_of_wikipedias)
+    headers = {"Accept": "*/*", "User-Agent": searxng_useragent()}
+    resp = get(list_of_wikipedias, timeout=5, headers=headers)
     if not resp.ok:
-        print("ERROR: response from Wikipedia is not OK.")
+        raise RuntimeError("Response from Wikipedia is not OK.")
 
     dom = html.fromstring(resp.text)
     for row in dom.xpath('//table[contains(@class,"sortable")]//tbody/tr'):
-
-        cols = row.xpath('./td')
+        cols = row.xpath("./td")
         if not cols:
             continue
         cols = [c.text_content().strip() for c in cols]
 
-        depth = float(cols[11].replace('-', '0').replace(',', ''))
-        articles = int(cols[4].replace(',', '').replace(',', ''))
+        depth = float(cols[11].replace("-", "0").replace(",", ""))
+        articles = int(cols[4].replace(",", "").replace(",", ""))
 
         eng_tag = cols[3]
-        wiki_url = row.xpath('./td[4]/a/@href')[0]
+        wiki_url = row.xpath("./td[4]/a/@href")[0]
         wiki_url = urllib.parse.urlparse(wiki_url)
 
         try:
-            sxng_tag = locales.language_tag(babel.Locale.parse(lang_map.get(eng_tag, eng_tag), sep='-'))
+            sxng_tag = locales.language_tag(babel.Locale.parse(lang_map.get(eng_tag, eng_tag), sep="-"))
         except babel.UnknownLocaleError:
             # print("ERROR: %s [%s] is unknown by babel" % (cols[0], eng_tag))
             continue
         finally:
-            engine_traits.custom['WIKIPEDIA_LANGUAGES'].append(eng_tag)
+            engine_traits.custom["WIKIPEDIA_LANGUAGES"].append(eng_tag)
 
         if sxng_tag not in locales.LOCALE_NAMES:
-
             if articles < 10000:
                 # exclude languages with too few articles
                 continue
@@ -315,6 +323,6 @@ def fetch_wikimedia_traits(engine_traits: EngineTraits):
             continue
 
         engine_traits.languages[sxng_tag] = eng_tag
-        engine_traits.custom['wiki_netloc'][eng_tag] = wiki_url.netloc
+        engine_traits.custom["wiki_netloc"][eng_tag] = wiki_url.netloc
 
-    engine_traits.custom['WIKIPEDIA_LANGUAGES'].sort()
+    engine_traits.custom["WIKIPEDIA_LANGUAGES"].sort()
