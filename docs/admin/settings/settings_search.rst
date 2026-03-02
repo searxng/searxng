@@ -47,7 +47,6 @@
   - ``seznam``
   - ``sogou``
   - ``startpage``
-  - ``stract``
   - ``swisscows``
   - ``wikipedia``
   - ``yandex``

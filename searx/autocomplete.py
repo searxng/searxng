@@ -3,9 +3,8 @@
 # pylint: disable=use-dict-literal
 
 import json
-import html
 import typing as t
-from urllib.parse import urlencode, quote_plus
+from urllib.parse import urlencode
 
 import lxml.etree
 import lxml.html
@@ -16,7 +15,7 @@ from searx.engines import (
     engines,
     google,
 )
-from searx.network import get as http_get, post as http_post  # pyright: ignore[reportUnknownVariableType]
+from searx.network import get as http_get, post as http_post
 from searx.exceptions import SearxEngineResponseException
 from searx.utils import extr, gen_useragent
 
@@ -268,18 +267,6 @@ def startpage(query: str, sxng_locale: str) -> list[str]:
     return results
 
 
-def stract(query: str, _sxng_locale: str) -> list[str]:
-    # stract autocompleter (beta)
-    url = f"https://stract.com/beta/api/autosuggest?q={quote_plus(query)}"
-    resp = post(url)
-    results: list[str] = []
-
-    if resp.ok:
-        results = [html.unescape(suggestion['raw']) for suggestion in resp.json()]
-
-    return results
-
-
 def swisscows(query: str, _sxng_locale: str) -> list[str]:
     # swisscows autocompleter
     url = 'https://swisscows.ch/api/suggest?{query}&itemsCount=5'
@@ -355,7 +342,6 @@ backends: dict[str, t.Callable[[str, str], list[str]]] = {
     'seznam': seznam,
     'sogou': sogou,
     'startpage': startpage,
-    'stract': stract,
     'swisscows': swisscows,
     'wikipedia': wikipedia,
     'yandex': yandex,
