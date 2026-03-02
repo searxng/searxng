@@ -19,7 +19,7 @@ from searx.engines import wikidata, set_loggers
 from searx.utils import extract_text, searxng_useragent
 from searx.locales import LOCALE_NAMES, locales_initialize, match_locale
 from searx import searx_dir
-from searx.utils import gen_useragent, detect_language
+from searx.utils import gen_useragent
 import searx.search
 import searx.network
 from searx.data import data_dir
@@ -169,7 +169,7 @@ def get_website_description(url, lang1, lang2=None):
     lang = extract_text(html.xpath('/html/@lang'))
     if lang is None and len(lang1) > 0:
         lang = lang1
-    lang = detect_language(description) or lang or 'en'
+    lang = lang or 'en'
     lang = lang.split('_')[0]
     lang = lang.split('-')[0]
     return (lang, description)
