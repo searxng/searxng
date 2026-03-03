@@ -36,6 +36,7 @@
 
   - ``360search``
   - ``baidu``
+  - ``bing``
   - ``brave``
   - ``dbpedia``
   - ``duckduckgo``
