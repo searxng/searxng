@@ -72,7 +72,11 @@ def server_list() -> list[str]:
     ips = socket.getaddrinfo("all.api.radio-browser.info", 80, 0, 0, socket.IPPROTO_TCP)
     for ip_tuple in ips:
         _ip: str = ip_tuple[4][0]  # type: ignore
-        url = socket.gethostbyaddr(_ip)[0]
+        try:
+            url = socket.gethostbyaddr(_ip)[0]
+        except socket.herror:
+            # https://github.com/searxng/searxng/issues/5439
+            continue
         srv = "https://" + url
         if srv not in servers:
             servers.append(srv)
