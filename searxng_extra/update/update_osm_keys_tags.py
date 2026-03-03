@@ -204,7 +204,6 @@ def optimize_keys(data):
 
 
 if __name__ == '__main__':
-
     set_timeout_for_thread(60)
     result = {
         'keys': optimize_keys(get_keys()),
