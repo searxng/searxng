@@ -89,7 +89,6 @@ class ResultContainer:
         main_count = 0
 
         for result in list(results):
-
             if isinstance(result, Result):
                 result.engine = result.engine or engine_name
                 result.normalize_result_fields()
@@ -174,7 +173,6 @@ class ResultContainer:
         result_hash = hash(result)
 
         with self._lock:
-
             merged = self.main_results_map.get(result_hash)
             if not merged:
                 # if there is no duplicate in the merged results, append result

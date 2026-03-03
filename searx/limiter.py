@@ -191,7 +191,6 @@ def filter_request(request: SXNG_Request) -> werkzeug.Response | None:
     # methods applied on /search requests
 
     if request.path == '/search':
-
         for func in [
             http_accept,
             http_accept_encoding,

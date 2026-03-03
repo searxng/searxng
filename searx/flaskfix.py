@@ -38,7 +38,6 @@ class ReverseProxyPathFix:
         self.server = None
 
         if settings['server']['base_url']:
-
             # If base_url is specified, then these values from are given
             # preference over any Flask's generics.
 

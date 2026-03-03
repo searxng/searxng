@@ -26,7 +26,6 @@ SearXNG’s locale implementations
 ================================
 """
 
-
 import typing as t
 from pathlib import Path
 
@@ -311,7 +310,6 @@ def get_engine_locale(searxng_locale: str, engine_locales: dict[str, str], defau
     # engine does support the searxng_lang in this other territory.
 
     if locale.language:
-
         terr_lang_dict: dict[str, dict[str, t.Any]] = {}
         territory: str
         langs: dict[str, dict[str, t.Any]]
