@@ -47,7 +47,6 @@ def do_post_search(query, storage, **kwargs) -> Mock:
 
 
 class PluginMock(searx.plugins.Plugin):
-
     def __init__(self, _id: str, name: str, active: bool):
         plg_cfg = searx.plugins.PluginCfg(active=active)
         self.id = _id
@@ -74,7 +73,6 @@ class PluginMock(searx.plugins.Plugin):
 
 
 class PluginStorage(SearxTestCase):
-
     def setUp(self):
         super().setUp()
         engines = {}

@@ -8,7 +8,6 @@ from searx import get_setting
 
 
 class TestExceptions(SearxTestCase):
-
     @parameterized.expand(
         [
             searx.exceptions.SearxEngineAccessDeniedException,

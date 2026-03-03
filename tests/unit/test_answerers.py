@@ -13,7 +13,6 @@ from tests import SearxTestCase
 
 
 class AnswererTest(SearxTestCase):
-
     def setUp(self):
         super().setUp()
 
