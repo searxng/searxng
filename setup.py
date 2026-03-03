@@ -38,9 +38,7 @@ setup(
         "Programming Language :: Python :: 3.13",
     ],
     project_urls={"Code": GIT_URL, "Issue tracker": get_setting('brand.issue_url')},
-    entry_points={
-        'console_scripts': ['searxng-run = searx.webapp:run']
-    },
+    entry_points={'console_scripts': ['searxng-run = searx.webapp:run']},
     packages=find_packages(
         include=[
             'searx',
