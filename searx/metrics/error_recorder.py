@@ -23,7 +23,6 @@ LogParametersType = tuple[str, ...]
 
 
 class ErrorContext:  # pylint: disable=missing-class-docstring
-
     def __init__(  # pylint: disable=too-many-arguments
         self,
         filename: str,
