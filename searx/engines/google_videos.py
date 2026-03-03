@@ -11,6 +11,7 @@
 .. _data URLs:
    https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/Data_URIs
 """
+
 import re
 from urllib.parse import urlencode, urlparse, parse_qs, unquote
 from lxml import html

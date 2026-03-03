@@ -136,7 +136,6 @@ def response(resp):
     )
 
     for index, time in enumerate(json_data["hourly"]["time"]):
-
         if time < json_data["current"]["time"]:
             # Cut off the hours that are already in the past
             continue

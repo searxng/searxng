@@ -141,7 +141,6 @@ def response(resp):
         return []
 
     for result in search_results['query']['search']:
-
         if result.get('snippet', '').startswith('#REDIRECT'):
             continue
 

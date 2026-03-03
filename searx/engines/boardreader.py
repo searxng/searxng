@@ -1,22 +1,22 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 """Boardreader (forum search)"""
 
+import gettext
 import re
-
+import typing as t
 from datetime import datetime
 from urllib.parse import urlencode
-import typing as t
-import gettext
+
 import babel
 
-from searx.locales import language_tag
 from searx.enginelib import EngineCache
 from searx.enginelib.traits import EngineTraits
 from searx.engines.json_engine import safe_search_map
 from searx.exceptions import SearxEngineAPIException
+from searx.locales import language_tag
 from searx.network import get, raise_for_httperror
 from searx.result_types import EngineResults
-from searx.utils import extr, js_obj_str_to_python, html_to_text
+from searx.utils import extr, html_to_text, js_obj_str_to_python
 
 if t.TYPE_CHECKING:
     from searx.extended_types import SXNG_Response
@@ -70,9 +70,10 @@ def _get_session_id() -> str:
 def request(query: str, params: "OnlineParams"):
     session_id = _get_session_id()
 
-    language: str = traits.get_language(
-        params["searxng_locale"], default="All"
-    )  # pyright: ignore[reportAssignmentType]
+    language: str = traits.get_language(  # pyright: ignore[reportAssignmentType]
+        params["searxng_locale"],
+        default="All",
+    )
     args = {
         "query": query,
         "page": params["pageno"],

@@ -37,7 +37,6 @@ def response(resp):
     results = []
 
     for item in search_res.get('videos', []):
-
         results.append(
             {
                 "title": item['video_name'],

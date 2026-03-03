@@ -286,7 +286,6 @@ def do_query(data, q):  # pylint: disable=invalid-name
     qkey = q[0]
 
     for key, value in iterate(data):
-
         if len(q) == 1:
             if key == qkey:
                 ret.append(value)

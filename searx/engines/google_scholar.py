@@ -112,7 +112,6 @@ def response(resp: "SXNG_Response") -> EngineResults:  # pylint: disable=too-man
 
     # parse results
     for result in eval_xpath_list(dom, "//div[@data-rp]"):
-
         title = extract_text(eval_xpath(result, ".//h3[1]//a"))
         if not title:
             # this is a [ZITATION] block

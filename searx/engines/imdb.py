@@ -50,7 +50,6 @@ def response(resp):
     results = []
 
     for entry in suggestions.get('d', []):
-
         # https://developer.imdb.com/documentation/key-concepts#imdb-ids
         entry_id = entry['id']
         categ = search_categories.get(entry_id[:2])

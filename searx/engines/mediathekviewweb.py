@@ -56,7 +56,6 @@ def response(resp):
     results = []
 
     for item in mwv_result_list:
-
         item['hms'] = str(datetime.timedelta(seconds=item['duration']))
 
         results.append(

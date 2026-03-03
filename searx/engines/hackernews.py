@@ -59,8 +59,7 @@ def request(query, params):
             search_type = 'search_by_date'
             timestamp = (
                 # pylint: disable=unexpected-keyword-arg
-                datetime.now()
-                - relativedelta(**{f"{params['time_range']}s": 1})  # type: ignore
+                datetime.now() - relativedelta(**{f"{params['time_range']}s": 1})  # type: ignore
             ).timestamp()
             query_params["numericFilters"] = f"created_at_i>{timestamp}"
 
@@ -80,7 +79,7 @@ def response(resp):
 
         metadata = ""
         if points != 0 or num_comments != 0:
-            metadata = f"{gettext('points')}: {points}" f" | {gettext('comments')}: {num_comments}"
+            metadata = f"{gettext('points')}: {points} | {gettext('comments')}: {num_comments}"
         results.append(
             {
                 "title": hit.get("title") or f"{gettext('author')}: {hit['author']}",

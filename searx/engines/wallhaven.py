@@ -69,7 +69,6 @@ def response(resp):
     json = resp.json()
 
     for result in json['data']:
-
         results.append(
             {
                 'template': 'images.html',
