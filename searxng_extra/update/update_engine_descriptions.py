@@ -180,7 +180,6 @@ def initialize():
 
     locale2lang = {'nl-BE': 'nl'}
     for sxng_ui_lang in LOCALE_NAMES:
-
         sxng_ui_alias = locale2lang.get(sxng_ui_lang, sxng_ui_lang)
         wiki_lang = None
 
@@ -273,7 +272,6 @@ def fetch_website_description(engine_name, website):
     previous_count = 0
 
     for lang in languages:
-
         if lang in descriptions[engine_name]:
             continue
 

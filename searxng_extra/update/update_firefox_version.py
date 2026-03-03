@@ -29,8 +29,7 @@ NORMAL_REGEX = re.compile(r'^[0-9]+\.[0-9](\.[0-9])?$')
 #
 useragents = {
     "versions": (),
-    "os": ('Windows NT 10.0; Win64; x64',
-           'X11; Linux x86_64'),
+    "os": ('Windows NT 10.0; Win64; x64', 'X11; Linux x86_64'),
     "ua": "Mozilla/5.0 ({os}; rv:{version}) Gecko/20100101 Firefox/{version}",
 }
 
