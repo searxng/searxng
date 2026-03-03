@@ -1,6 +1,5 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-"""Implement some checks in the active installation
-"""
+"""Implement some checks in the active installation"""
 
 import os
 import sys
@@ -21,17 +20,16 @@ import searx
 OLD_SETTING = '/etc/searx/settings.yml'
 
 if os.path.isfile(OLD_SETTING):
-    msg = (
-        '%s is no longer valid, move setting to %s' % (
-            OLD_SETTING,
-            os.environ.get('SEARXNG_SETTINGS_PATH', '/etc/searxng/settings.yml')
-        ))
+    msg = '%s is no longer valid, move setting to %s' % (
+        OLD_SETTING,
+        os.environ.get('SEARXNG_SETTINGS_PATH', '/etc/searxng/settings.yml'),
+    )
     warnings.warn(msg, DeprecationWarning)
 
 OLD_BRAND_ENV = repo_root / 'utils' / 'brand.env'
 
 if os.path.isfile(OLD_BRAND_ENV):
-    msg = ('%s is no longer needed, remove the file' % (OLD_BRAND_ENV))
+    msg = '%s is no longer needed, remove the file' % (OLD_BRAND_ENV)
     warnings.warn(msg, DeprecationWarning)
 
 from searx import valkeydb, get_setting
