@@ -652,7 +652,6 @@ YR_WEATHER_SYMBOL_MAP = {
 """
 
 if __name__ == "__main__":
-
     # test: fetch all symbols of the type catalog ..
     for c in t.get_args(WeatherConditionType):
         symbol_url(condition=c)
