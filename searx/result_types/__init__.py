@@ -11,7 +11,6 @@
 """
 # pylint: disable=too-few-public-methods
 
-
 __all__ = [
     "Result",
     "MainResult",
