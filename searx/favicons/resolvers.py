@@ -6,7 +6,6 @@ timeout``) and returns a tuple ``(data, mime)``.
 
 """
 
-
 __all__ = ["DEFAULT_RESOLVER_MAP", "allesedv", "duckduckgo", "google", "yandex"]
 
 from typing import Callable
