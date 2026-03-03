@@ -43,7 +43,6 @@ ADDRESS_MAPPING = {'ipv4': '0.0.0.0', 'ipv6': '::'}
 
 @t.final
 class Network:
-
     __slots__ = (
         'enable_http',
         'verify',
