@@ -35,9 +35,7 @@ class SXNGPlugin(Plugin):
             preference_section="general",
         )
 
-    def on_result(
-        self, request: "SXNG_Request", search: "SearchWithPlugins", result: "Result"
-    ) -> bool:  # pylint: disable=unused-argument
+    def on_result(self, request: "SXNG_Request", search: "SearchWithPlugins", result: "Result") -> bool:  # pylint: disable=unused-argument
         if not getattr(result, "is_onion", False) or not getattr(result, "parsed_url", False):
             return True
         result_hash = md5(result["parsed_url"].hostname.encode()).hexdigest()
