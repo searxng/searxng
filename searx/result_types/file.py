@@ -13,7 +13,6 @@ template.
 """
 # pylint: disable=too-few-public-methods
 
-
 __all__ = ["File"]
 
 import typing as t
@@ -73,7 +72,6 @@ class File(MainResult, kw_only=True):
         super().__post_init__()
 
         if not self.mtype or not self.subtype:
-
             fn = self.filename or self.embedded
             if not self.mimetype and fn:
                 self.mimetype = mimetypes.guess_type(fn, strict=False)[0] or ""

@@ -28,7 +28,6 @@ template.
 """
 # pylint: disable=too-few-public-methods
 
-
 __all__ = ["AnswerSet", "Answer", "Translations", "WeatherAnswer"]
 
 from flask_babel import gettext
