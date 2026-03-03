@@ -87,7 +87,7 @@ Parameters
 
 ``autocomplete`` : default from :ref:`settings search`
   [ ``google``, ``dbpedia``, ``duckduckgo``, ``mwmbl``, ``startpage``,
-  ``wikipedia``, ``stract``, ``swisscows``, ``qwant`` ]
+  ``wikipedia``, ``swisscows``, ``qwant`` ]
 
   Service which completes words as you type.
 
