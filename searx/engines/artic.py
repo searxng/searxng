@@ -49,7 +49,6 @@ def response(resp):
     json_data = loads(resp.text)
 
     for result in json_data['data']:
-
         if not result['image_id']:
             continue
 

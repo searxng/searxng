@@ -52,7 +52,6 @@ Implementations
 """
 # pylint: disable=fixme
 
-
 import random
 from json import loads
 from urllib.parse import urlencode

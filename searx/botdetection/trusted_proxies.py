@@ -3,7 +3,6 @@
 (:py:obj:`flask.request.remote_addr`) behind a proxy chain."""
 # pylint: disable=too-many-branches
 
-
 import typing as t
 
 from collections import abc

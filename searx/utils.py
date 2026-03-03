@@ -1,7 +1,6 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 """Utility functions for the engines"""
 
-
 import re
 import importlib
 import importlib.util
@@ -760,7 +759,11 @@ def _j2p_process_escape(match: re.Match[str]) -> str:
     return (
         Rf'\{_escape}'
         if _escape in _JSON_PASSTHROUGH_ESCAPES
-        else R'\u00' if _escape == 'x' else '' if _escape == '\n' else _escape
+        else R'\u00'
+        if _escape == 'x'
+        else ''
+        if _escape == '\n'
+        else _escape
     )
 
 

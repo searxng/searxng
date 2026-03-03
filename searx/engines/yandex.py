@@ -87,7 +87,6 @@ def request(query, params):
 
 def response(resp):
     if search_type == 'web':
-
         catch_bad_response(resp)
 
         dom = html.fromstring(resp.text)
@@ -106,7 +105,6 @@ def response(resp):
         return results
 
     if search_type == 'images':
-
         catch_bad_response(resp)
 
         html_data = html.fromstring(resp.text)

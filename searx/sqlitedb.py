@@ -65,7 +65,7 @@ class DBSession:
 
     @property
     def conn(self) -> sqlite3.Connection:
-        msg = f"[{threading.current_thread().ident}] DBSession: " f"{self.app.__class__.__name__}({self.app.db_url})"
+        msg = f"[{threading.current_thread().ident}] DBSession: {self.app.__class__.__name__}({self.app.db_url})"
         if self._conn is None:
             self._conn = self.app.connect()
             logger.debug("%s --> created new connection", msg)

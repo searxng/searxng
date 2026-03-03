@@ -119,7 +119,6 @@ class TrackerPatternsDB:
         parsed_new_url = urlparse(url=new_url)
 
         for rule in self.rules():
-
             query_str: str = parsed_new_url.query
             if not query_str:
                 # There are no more query arguments in the parsed_new_url on

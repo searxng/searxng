@@ -114,7 +114,6 @@ def parse_tineye_match(match_json):
 
     backlinks = []
     if "backlinks" in match_json:
-
         for backlink_json in match_json["backlinks"]:
             if not isinstance(backlink_json, dict):
                 continue
@@ -188,7 +187,6 @@ def response(resp) -> EngineResults:
     json_data = resp.json()
 
     for match_json in json_data['matches']:
-
         tineye_match = parse_tineye_match(match_json)
         if not tineye_match['backlinks']:
             continue

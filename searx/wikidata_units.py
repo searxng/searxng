@@ -142,7 +142,6 @@ def units_by_si_name(si_name):
 
     # build the catalog ..
     for item in symbol_to_si():
-
         item_si_name = item[pos_si_name]
         item_symbol = item[pos_symbol]
 
@@ -273,7 +272,6 @@ def fetch_units():
     results = collections.OrderedDict()
     response = wikidata.send_wikidata_query(SARQL_REQUEST)
     for unit in response['results']['bindings']:
-
         symbol = unit['symbol']['value']
         name = unit['item']['value'].rsplit('/', 1)[1]
         si_name = unit.get('tosiUnit', {}).get('value', '')

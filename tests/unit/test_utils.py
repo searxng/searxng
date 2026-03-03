@@ -17,7 +17,6 @@ def random_string(length, choices=string.ascii_letters):
 
 
 class TestUtils(SearxTestCase):
-
     def test_gen_useragent(self):
         self.assertIsInstance(utils.gen_useragent(), str)
         self.assertIsNotNone(utils.gen_useragent())
@@ -116,7 +115,6 @@ class TestUtils(SearxTestCase):
 
 
 class TestXPathUtils(SearxTestCase):  # pylint: disable=missing-class-docstring
-
     TEST_DOC = """<ul>
         <li>Text in <b>bold</b> and <i>italic</i> </li>
         <li>Another <b>text</b> <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAUEBAAAACwAAAAAAQABAAACAkQBADs="></li>

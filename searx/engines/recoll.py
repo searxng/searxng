@@ -35,6 +35,7 @@ Implementations
 ===============
 
 """
+
 import typing as t
 
 from datetime import date, timedelta
@@ -120,7 +121,6 @@ def response(resp: "SXNG_Response") -> EngineResults:
         return res
 
     for result in json_data.get("results", []):
-
         url = result.get("url", "").replace("file://" + mount_prefix, dl_prefix)
 
         mtype = subtype = result.get("mtype", "")

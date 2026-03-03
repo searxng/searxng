@@ -18,7 +18,6 @@ from .test_plugins import do_post_search
 
 
 class PluginIPSelfInfo(SearxTestCase):
-
     def setUp(self):
         super().setUp()
         engines = {}

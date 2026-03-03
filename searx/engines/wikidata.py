@@ -541,7 +541,6 @@ class WDAmountAttribute(WDAttribute):
 
 
 class WDArticle(WDAttribute):
-
     __slots__ = 'language', 'kwargs'
 
     def __init__(self, language, kwargs=None):
@@ -585,7 +584,6 @@ class WDLabelAttribute(WDAttribute):
 
 
 class WDURLAttribute(WDAttribute):
-
     HTTP_WIKIMEDIA_IMAGE = 'http://commons.wikimedia.org/wiki/Special:FilePath/'
 
     __slots__ = 'url_id', 'url_path_prefix', 'kwargs'
@@ -645,9 +643,7 @@ class WDGeoAttribute(WDAttribute):
     def get_where(self):
         return """OPTIONAL { ?item p:{name}/psv:{name} [
     wikibase:geoLatitude ?{name}Lat ;
-    wikibase:geoLongitude ?{name}Long ] }""".replace(
-            '{name}', self.name
-        )
+    wikibase:geoLongitude ?{name}Long ] }""".replace('{name}', self.name)
 
     def get_group_by(self):
         return self.get_select()
@@ -668,7 +664,6 @@ class WDGeoAttribute(WDAttribute):
 
 
 class WDImageAttribute(WDURLAttribute):
-
     __slots__ = ('priority',)
 
     def __init__(self, name, url_id=None, priority=100):
@@ -690,9 +685,7 @@ class WDDateAttribute(WDAttribute):
     wikibase:timePrecision ?{name}timePrecision ;
     wikibase:timeTimezone ?{name}timeZone ;
     wikibase:timeCalendarModel ?{name}timeCalendar ] . }
-    hint:Prior hint:rangeSafe true;""".replace(
-            '{name}', self.name
-        )
+    hint:Prior hint:rangeSafe true;""".replace('{name}', self.name)
 
     def get_group_by(self):
         return self.get_select()

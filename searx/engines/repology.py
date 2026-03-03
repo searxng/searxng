@@ -68,7 +68,6 @@ def response(resp: 'SXNG_Response') -> EngineResults:
 
     resp_json = resp.json()
     for pkgname, repositories in resp_json.items():
-
         # either there's a package with status "newest" or we assume that the
         # most commonly used version is the latest released (non-alpha) version
         latest_version = None

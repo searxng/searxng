@@ -48,7 +48,6 @@ def response(resp):
     data = resp.json()
 
     for item in data["body"]["illust"]["data"]:
-
         image_url = item["url"]
         pixiv_proxy = random.choice(pixiv_image_proxies)
         proxy_image_url = image_url.replace("https://i.pximg.net", pixiv_proxy)

@@ -41,7 +41,6 @@ def response(resp) -> EngineResults:
     search_res = resp.json()
 
     for item in search_res['response'][0]['grid']['vulnerabilities']:
-
         cve_id = item["cve"]["id"]
         description = item["cve"]["descriptions"][0]["value"]
         date = datetime.strptime(item["cve"]["published"], "%Y-%m-%dT%H:%M:%S.%f")

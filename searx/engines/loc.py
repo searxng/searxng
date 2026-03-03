@@ -58,7 +58,6 @@ def response(resp):
     raise_for_httperror(resp)
 
     for result in json_results:
-
         url = result["item"].get("link")
         if not url:
             continue

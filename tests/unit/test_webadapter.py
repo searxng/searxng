@@ -15,7 +15,6 @@ SEARCHQUERY = [EngineRef(PRIVATE_ENGINE_NAME, "general")]
 
 
 class ValidateQueryCase(SearxTestCase):
-
     def test_without_token(self):
         preferences = Preferences(['simple'], ['general'], engines, searx.plugins.STORAGE)
         valid, unknown, invalid_token = validate_engineref_list(SEARCHQUERY, preferences)

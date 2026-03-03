@@ -8,6 +8,7 @@ converters, each converter is one item in the list (compare
 of measurement are evaluated.  The weighting in the evaluation results from the
 sorting of the :py:obj:`list of unit converters<symbol_to_si>`.
 """
+
 import typing
 import re
 import babel.numbers
@@ -99,7 +100,6 @@ def _parse_text_and_convert(from_query, to_query) -> str | None:
     source_list, target_list = [], []
 
     for symbol, si_name, from_si, to_si, orig_symbol in symbol_to_si():
-
         if symbol == measured.group('unit'):
             source_list.append((si_name, to_si))
         if symbol == to_query:

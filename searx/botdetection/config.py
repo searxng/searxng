@@ -283,7 +283,6 @@ def _validate(
 
     data_value: dict[str, typing.Any]
     for key, data_value in data_dict.items():
-
         names.append(key)
         name = '.'.join(names)
 
@@ -303,7 +302,7 @@ def _validate(
             issue_list.append(
                 SchemaIssue(
                     'invalid',
-                    (f"data_dict: type mismatch '{name}':" f" expected {type(schema_value)}, is: {type(data_value)}"),
+                    (f"data_dict: type mismatch '{name}': expected {type(schema_value)}, is: {type(data_value)}"),
                 )
             )
             is_valid = False
@@ -348,7 +347,6 @@ def dict_deepupdate(base_dict: dict[str, typing.Any], upd_dict: dict[str, typing
         # For each upd_key & upd_val pair in upd_dict:
 
         if isinstance(upd_val, dict):
-
             if upd_key in base_dict:
                 # if base_dict[upd_key] exists, recursively deep-update it
                 if not isinstance(base_dict[upd_key], dict):
@@ -367,7 +365,6 @@ def dict_deepupdate(base_dict: dict[str, typing.Any], upd_dict: dict[str, typing
                 base_dict[upd_key] = copy.deepcopy(upd_val)  # pyright: ignore[reportUnknownArgumentType]
 
         elif isinstance(upd_val, list):
-
             if upd_key in base_dict:
                 # if base_dict[upd_key] exists, base_dict[up_key] is extended by
                 # the list from upd_val
@@ -381,7 +378,6 @@ def dict_deepupdate(base_dict: dict[str, typing.Any], upd_dict: dict[str, typing
                 base_dict[upd_key] = copy.deepcopy(upd_val)  # pyright: ignore[reportUnknownArgumentType]
 
         elif isinstance(upd_val, set):
-
             if upd_key in base_dict:
                 # if base_dict[upd_key] exists, base_dict[up_key] is updated by the set in upd_val
                 if not isinstance(base_dict[upd_key], set):
