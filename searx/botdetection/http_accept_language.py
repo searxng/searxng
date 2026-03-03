@@ -11,7 +11,6 @@ if the Accept-Language_ header is unset.
 
 """
 
-
 from ipaddress import (
     IPv4Network,
     IPv6Network,
