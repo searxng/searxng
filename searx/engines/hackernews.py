@@ -80,7 +80,7 @@ def response(resp):
 
         metadata = ""
         if points != 0 or num_comments != 0:
-            metadata = f"{gettext('points')}: {points}" f" | {gettext('comments')}: {num_comments}"
+            metadata = f"{gettext('points')}: {points} | {gettext('comments')}: {num_comments}"
         results.append(
             {
                 "title": hit.get("title") or f"{gettext('author')}: {hit['author']}",

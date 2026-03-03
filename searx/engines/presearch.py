@@ -137,7 +137,7 @@ def _get_request_id(query, params):
         # SearXNG ;-)
 
         if l and l.territory:
-            headers['Accept-Language'] = f"{l.language}-{l.territory},{l.language};" "q=0.9,*;" "q=0.5"
+            headers['Accept-Language'] = f"{l.language}-{l.territory},{l.language};q=0.9,*;q=0.5"
 
     resp = get(url, headers=headers, timeout=5)
 
@@ -212,7 +212,6 @@ def parse_search_query(json_results):
     if info:
         attributes = []
         for item in info.get('about', []):
-
             text = html_to_text(item)
             if ':' in text:
                 # split text into key / value

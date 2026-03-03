@@ -52,7 +52,6 @@ def response(resp):
     json_data = loads(resp.text)
 
     for result in json_data['items']:
-
         content = "[%s]" % ", ".join(result['tags'])
         content += " %s" % result['owner']['display_name']
         if result['is_answered']:

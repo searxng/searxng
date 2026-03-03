@@ -72,9 +72,9 @@ def request(query, params):
     params['cookies'] = google_info['cookies']
     params['headers'].update(google_info['headers'])
     # this ua will allow getting ~50 results instead of 10. #1641
-    params['headers']['User-Agent'] = (
-        'NSTN/3.60.474802233.release Dalvik/2.1.0 (Linux; U; Android 12;' f' {google_info.get("country", "US")}) gzip'
-    )
+    params['headers'][
+        'User-Agent'
+    ] = f'NSTN/3.60.474802233.release Dalvik/2.1.0 (Linux; U; Android 12; {google_info.get("country", "US")}) gzip'
 
     return params
 

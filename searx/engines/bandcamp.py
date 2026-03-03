@@ -49,7 +49,6 @@ def response(resp):
     dom = html.fromstring(resp.text)
 
     for result in eval_xpath_list(dom, '//li[contains(@class, "searchresult")]'):
-
         link = eval_xpath_getindex(result, './/div[@class="itemurl"]/a', 0, default=None)
         if link is None:
             continue

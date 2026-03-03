@@ -3,7 +3,6 @@
 Wolfram|Alpha (Science)
 """
 
-
 from json import loads
 from urllib.parse import urlencode
 

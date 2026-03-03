@@ -81,7 +81,6 @@ def response(resp: "SXNG_Response") -> EngineResults:
 
     dom = etree.fromstring(resp.content)
     for entry in eval_xpath_list(dom, xpath_entry):
-
         title: str = eval_xpath_getindex(entry, xpath_title, 0).text
 
         url: str = eval_xpath_getindex(entry, xpath_id, 0).text

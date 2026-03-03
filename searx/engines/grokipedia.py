@@ -40,7 +40,6 @@ def response(resp) -> EngineResults:
     search_res = resp.json()
 
     for item in search_res["results"]:
-
         results.add(
             results.types.MainResult(
                 url='https://grokipedia.com/page/' + item["slug"],

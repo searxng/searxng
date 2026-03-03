@@ -5,7 +5,9 @@ Doku Wiki
 
 from urllib.parse import urlencode
 from urllib.parse import urljoin
+
 from lxml.html import fromstring
+
 from searx.utils import extract_text, eval_xpath
 
 # about
@@ -26,19 +28,20 @@ number_of_results = 5
 # search-url
 # Doku is OpenSearch compatible
 base_url = 'http://localhost:8090'
+
+# fmt: off
 search_url = (
-    # fmt: off
     '/?do=search'
     '&{query}'
-    # fmt: on
 )
+# fmt: on
+
 # '&startRecord={offset}'
 # '&maximumRecords={limit}'
 
 
 # do search-request
 def request(query, params):
-
     params['url'] = base_url + search_url.format(query=urlencode({'id': query}))
 
     return params

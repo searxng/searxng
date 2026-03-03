@@ -102,7 +102,6 @@ def response(resp: "SXNG_Response") -> EngineResults:  # pylint: disable=too-man
         return extract_text(elem, allow_none=True) or ""
 
     for pubmed_article in eval_xpath_list(efetch_xml, "//PubmedArticle"):
-
         medline_citation: ElementType = eval_xpath_getindex(pubmed_article, "./MedlineCitation", 0)
         pubmed_data: ElementType = eval_xpath_getindex(pubmed_article, "./PubmedData", 0)
 

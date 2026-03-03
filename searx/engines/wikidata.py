@@ -191,7 +191,6 @@ class WDAmountAttribute(WDAttribute):
 
 
 class WDArticle(WDAttribute):
-
     def __init__(self, language: str, kwargs=None):
         super().__init__("wikipedia")
         self.language: str = language
@@ -235,7 +234,6 @@ class WDLabelAttribute(WDAttribute):
 
 
 class WDURLAttribute(WDAttribute):
-
     HTTP_WIKIMEDIA_IMAGE = "http://commons.wikimedia.org/wiki/Special:FilePath/"
 
     def __init__(
@@ -322,7 +320,6 @@ class WDGeoAttribute(WDAttribute):
 
 
 class WDImageAttribute(WDURLAttribute):
-
     def __init__(self, name, url_id=None, priority=100):
         super().__init__(name, url_id)
         self.priority = priority

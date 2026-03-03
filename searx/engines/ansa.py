@@ -65,7 +65,6 @@ def response(resp) -> EngineResults:
     doc = html.fromstring(resp.text)
 
     for result in eval_xpath_list(doc, "//div[@class='article']"):
-
         res_obj = MainResult(
             title=extract_text(eval_xpath(result, "./div[@class='content']/h2[@class='title']/a")),
             content=extract_text(eval_xpath(result, "./div[@class='content']/div[@class='text']")),
