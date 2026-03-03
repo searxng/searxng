@@ -291,7 +291,6 @@ class PluginStorage:
                 break
 
         for plugin in [p for p in self.plugin_list if p.id in search.user_plugins]:
-
             if plugin.keywords:
                 # plugin with keywords: skip plugin if no keyword match
                 if keyword and keyword not in plugin.keywords:
