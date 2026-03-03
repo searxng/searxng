@@ -400,7 +400,6 @@ CREATE TABLE IF NOT EXISTS blob_map (
         # DB locks, establish a new DB connection.
 
         with self.connect() as conn:
-
             # drop items not in HOLD time
             res = conn.execute(
                 f"DELETE FROM blob_map"
@@ -413,7 +412,6 @@ CREATE TABLE IF NOT EXISTS blob_map (
             # drop old items to be in LIMIT_TOTAL_BYTES
             total_bytes = conn.execute("SELECT SUM(bytes_c) FROM blobs").fetchone()[0] or 0
             if total_bytes > self.cfg.LIMIT_TOTAL_BYTES:
-
                 x = total_bytes - self.cfg.LIMIT_TOTAL_BYTES
                 c = 0
                 sha_list: list[str] = []
