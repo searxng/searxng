@@ -18,7 +18,6 @@ def _settings(f_name):
 
 
 class TestLoad(SearxTestCase):
-
     def test_load_zero(self):
         with self.assertRaises(SearxSettingsException):
             settings_loader.load_yaml('/dev/zero')
@@ -30,7 +29,6 @@ class TestLoad(SearxTestCase):
 
 
 class TestDefaultSettings(SearxTestCase):
-
     def test_load(self):
         settings, msg = settings_loader.load_settings(load_user_settings=False)
         self.assertTrue(msg.startswith('load the default settings from'))
@@ -45,7 +43,6 @@ class TestDefaultSettings(SearxTestCase):
 
 
 class TestUserSettings(SearxTestCase):
-
     def test_is_use_default_settings(self):
         self.assertFalse(settings_loader.is_use_default_settings({}))
         self.assertTrue(settings_loader.is_use_default_settings({'use_default_settings': True}))

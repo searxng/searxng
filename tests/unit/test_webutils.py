@@ -8,7 +8,6 @@ from tests import SearxTestCase
 
 
 class TestWebUtils(SearxTestCase):
-
     @parameterized.expand(
         [
             ('https://searx.me/', 'https://searx.me/'),
@@ -79,7 +78,6 @@ class TestWebUtils(SearxTestCase):
 
 
 class TestUnicodeWriter(SearxTestCase):
-
     def setUp(self):
         super().setUp()
         self.unicode_writer = webutils.CSVWriter(mock.MagicMock())
@@ -96,7 +94,6 @@ class TestUnicodeWriter(SearxTestCase):
 
 
 class TestNewHmac(SearxTestCase):
-
     @parameterized.expand(
         [
             b'secret',

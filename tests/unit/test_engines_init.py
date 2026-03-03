@@ -6,7 +6,6 @@ from tests import SearxTestCase
 
 
 class TestEnginesInit(SearxTestCase):
-
     def test_initialize_engines_default(self):
         engine_list = [
             {'engine': 'dummy', 'name': 'engine1', 'shortcut': 'e1'},

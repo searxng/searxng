@@ -121,7 +121,6 @@ class TestNetwork(SearxTestCase):
 
 
 class TestNetworkRequestRetries(SearxTestCase):
-
     TEXT = 'Lorem Ipsum'
 
     def setUp(self):
@@ -197,7 +196,6 @@ class TestNetworkRequestRetries(SearxTestCase):
 
 
 class TestNetworkStreamRetries(SearxTestCase):
-
     TEXT = 'Lorem Ipsum'
 
     def setUp(self):

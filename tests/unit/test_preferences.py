@@ -27,7 +27,6 @@ favicons.init()
 
 
 class TestSettings(SearxTestCase):
-
     # map settings
 
     def test_map_setting_invalid_default_value(self):
@@ -132,7 +131,6 @@ class TestSettings(SearxTestCase):
 
 
 class TestPreferences(SearxTestCase):
-
     def setUp(self):
         super().setUp()
 
