@@ -60,9 +60,6 @@ def get_locale_params(engine_region: str | None) -> dict[str, str] | None:
         Specifying the market helps Bing route the request and return an
         appropriate and optimal response.
 
-    With the exception of Bing-Web, as it seems that using the ``mkt``
-    parameter returns irrelevant results.
-
     The ``mkt`` parameter takes a full ``<language>-<country>`` code.
 
     This function is shared with :py:mod:`searx.engines.bing_images`,
@@ -108,6 +105,10 @@ def request(query: str, params: "OnlineParams") -> "OnlineParams":
         "q": query,
         "adlt": _safesearch_map.get(params.get("safesearch", 0), "off"),
     }
+
+    locale_params = get_locale_params(engine_region)
+    if locale_params:
+        query_params.update(locale_params)
 
     params["url"] = f"{base_url}?{urlencode(query_params)}"
 
