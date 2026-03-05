@@ -3,8 +3,8 @@
 engine providing access to a variety of book resources (also via IPFS), created
 by a team of anonymous archivists (AnnaArchivist_).
 
-.. _Anna's Archive: https://annas-archive.li/
-.. _AnnaArchivist: https://software.annas-archive.li/AnnaArchivist/annas-archive
+.. _Anna's Archive: https://annas-archive.gl/
+.. _AnnaArchivist: https://software.annas-archive.gl/AnnaArchivist/annas-archive
 
 Configuration
 =============
@@ -53,7 +53,7 @@ if t.TYPE_CHECKING:
 
 # about
 about: dict[str, t.Any] = {
-    "website": "https://annas-archive.li/",
+    "website": "https://annas-archive.gl/",
     "wikidata_id": "Q115288326",
     "official_api_documentation": None,
     "use_official_api": False,
