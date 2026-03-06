@@ -9,7 +9,6 @@ from searx.query import RawTextQuery
 from searx.engines import categories, engines
 from searx.search.models import SearchQuery, EngineRef
 from searx.preferences import Preferences, is_locked
-from searx.utils import detect_language
 
 
 # remove duplicate queries.
@@ -233,9 +232,7 @@ def get_search_query_from_webapp(
     4. string with the *selected locale* of the query
 
     About language/locale: if the client selects the alias ``auto`` the
-    ``SearchQuery`` object is build up by the :py:obj:`detected language
-    <searx.utils.detect_language>`.  If language recognition does not have a
-    match the language preferred by the :py:obj:`Preferences.client` is used.
+    language preferred by the :py:obj:`Preferences.client` is used.
     If client does not have a preference, the default ``all`` is used.
 
     The *selected locale* in the tuple always represents the selected
@@ -267,8 +264,7 @@ def get_search_query_from_webapp(
     selected_locale = query_lang
 
     if query_lang == 'auto':
-        query_lang = detect_language(query, threshold=0.8, only_search_languages=True)
-        query_lang = query_lang or preferences.client.locale_tag or 'all'
+        query_lang = preferences.client.locale_tag or 'all'
 
     if not is_locked('categories') and raw_text_query.specific:
         # if engines are calculated from query,
