@@ -11,7 +11,7 @@
 {%- if result.repository -%}
   <p class="content">{{- '' -}}
     {{ _('Repository') }}: {{- ' ' -}}
-    <a href="{{ result.repository|safe }}"{{- ' ' -}}
+    <a href="{{ result.repository }}"{{- ' ' -}}
       {% if results_on_new_tab %}
       target="_blank" {{- ' ' -}}
       rel="noopener noreferrer"
@@ -26,7 +26,7 @@
 
 {%- if result.filename %}
   <p class="content">
-    {{ _('Filename') }}: {{ result.filename|safe }}
+    {{ _('Filename') }}: {{ result.filename }}
   </p>
 {% endif -%}
 
