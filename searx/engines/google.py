@@ -287,9 +287,7 @@ def request(query: str, params: "OnlineParams") -> None:
     """Google search request"""
     # pylint: disable=line-too-long
     start = (params["pageno"] - 1) * 10
-    str_async = ui_async(start)
     google_info = get_google_info(params, traits)
-    logger.debug("ARC_ID: %s", str_async)
 
     # https://www.google.de/search?q=corona&hl=de&lr=lang_de&start=0&tbs=qdr%3Ad&safe=medium
     query_url = (
@@ -313,8 +311,8 @@ def request(query: str, params: "OnlineParams") -> None:
                 # 'sa': 'N',
                 # 'sstk': 'AcOHfVkD7sWCSAheZi-0tx_09XDO55gTWY0JNq3_V26cNN-c8lfD45aZYPI8s_Bqp8s57AHz5pxchDtAGCA_cikAWSjy9kw3kgg'
                 # formally known as use_mobile_ui
-                "asearch": "arc",
-                "async": str_async,
+                # "asearch": "arc",
+                # "async": str_async,
             }
         )
     )
