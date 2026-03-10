@@ -869,7 +869,7 @@ summary.title {
   transition: opacity 0.5s;
   opacity: 0;
   pointer-events: none;
-.rounded-corners;
+  .rounded-corners;
 
   a {
     display: block;
@@ -1191,8 +1191,6 @@ body.video-grid-enabled.results-videos-present {
     }
 
     #urls {
-      margin: 0 !important;
-      display: flex !important;
       flex-wrap: wrap !important;
       gap: 1rem !important;
       width: 100% !important;
@@ -1232,7 +1230,7 @@ body.video-grid-enabled.results-videos-present {
       h3 {
         margin: 0 0 0.5rem 0 !important;
         font-size: 1rem !important;
-        word-break: break-word !important;
+        overflow-wrap: anywhere !important;
       }
 
       .content {

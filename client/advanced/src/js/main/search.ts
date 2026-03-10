@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 import { listen } from "../toolkit.ts";
-import { getElement } from "../util/getElement.ts";
 import { getCookie } from "../util/cookies.ts";
+import { getElement } from "../util/getElement.ts";
 
 const searchForm: HTMLFormElement = getElement<HTMLFormElement>("search");
 const searchInput: HTMLInputElement = getElement<HTMLInputElement>("q");
@@ -59,11 +59,9 @@ for (const button of categoryButtons) {
     if (resultsPerPageHidden) {
       if (button.name !== "category_videos") {
         resultsPerPageHidden.value = "";
-      } else {
+      } else if (!resultsPerPageHidden.value) {
         // If switching TO videos, make sure it's set from cookie if empty
-        if (!resultsPerPageHidden.value) {
-          resultsPerPageHidden.value = getCookie("results_per_page") || "";
-        }
+        resultsPerPageHidden.value = getCookie("results_per_page") || "";
       }
     }
 
@@ -104,17 +102,15 @@ listen("submit", searchForm, (event: Event) => {
   if (categoryButtons.length > 0) {
     const searchCategories = getElement<HTMLInputElement>("selected-categories");
     const selected = categoryButtons.filter((button) => button.classList.contains("selected"));
-    
-    // Final check on submission: if "videos" is not the ONLY selected category, 
+
+    // Final check on submission: if "videos" is not the ONLY selected category,
     // maybe we want to clear it? User said "Videos -> General", so if we move away from videos:
-    const hasVideos = selected.some(btn => btn.name === "category_videos");
+    const hasVideos = selected.some((btn) => btn.name === "category_videos");
     if (!hasVideos && resultsPerPageHidden) {
       resultsPerPageHidden.value = "";
     }
 
-    searchCategories.value = selected
-      .map((button) => button.name.replace("category_", ""))
-      .join(",");
+    searchCategories.value = selected.map((button) => button.name.replace("category_", "")).join(",");
   }
 
   searchForm.submit();

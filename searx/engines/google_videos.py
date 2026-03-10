@@ -166,7 +166,7 @@ def _parse_results(resp_text):
 def response(resp):
     """Get response from google's search request"""
     detect_google_sorry(resp)
-    
+
     # Use the helper to parse the first page
     results = _parse_results(resp.text)
 
@@ -194,7 +194,6 @@ def response(resp):
 
             new_url = urlunparse(parsed_url._replace(query=urlencode(query_params, doseq=True)))
 
-
             headers = search_params['headers'].copy()
             sub_resp = searx.network.get(
                 new_url, headers=headers, cookies=search_params['cookies'], raise_for_httperror=False
@@ -206,7 +205,7 @@ def response(resp):
             detect_google_sorry(sub_resp)
             new_results = _parse_results(sub_resp.text)
             new_actual_results = [r for r in new_results if 'url' in r]
-            
+
             if not new_actual_results:
                 break
 

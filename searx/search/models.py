@@ -56,7 +56,6 @@ class SearchQuery:
         self.results_per_page = results_per_page
         self.is_video_search = is_video_search
 
-
         self.locale = None
         if self.lang:
             try:

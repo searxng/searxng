@@ -19,7 +19,8 @@ class SearchQueryTestCase(SearxTestCase):
     def test_repr(self):
         s = SearchQuery('test', [EngineRef('bing', 'general')], 'all', 0, 1, '1', 5.0, 'g')
         self.assertEqual(
-            repr(s), "SearchQuery('test', [EngineRef('bing', 'general')], 'all', 0, 1, '1', 5.0, 'g', None, None, False)"
+            repr(s),
+            "SearchQuery('test', [EngineRef('bing', 'general')], 'all', 0, 1, '1', 5.0, 'g', None, None, False)",
         )  # noqa
 
     def test_eq(self):
