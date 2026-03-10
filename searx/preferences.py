@@ -450,6 +450,17 @@ class Preferences:
                 locked=is_locked('theme'),
                 choices=themes
             ),
+            'results_per_page': MapSetting(
+                settings['search']['results_per_page'],
+                locked=is_locked('results_per_page'),
+                map={
+                    '10': 10,
+                    '20': 20,
+                    '30': 30,
+                    '40': 40,
+                    '50': 50
+                }
+            ),
             'results_on_new_tab': BooleanSetting(
                 settings['ui']['results_on_new_tab'],
                 locked=is_locked('results_on_new_tab')

@@ -27,13 +27,16 @@
   <link rel="icon" href="{{ url_for('static', filename='img/favicon.svg') }}" type="image/svg+xml">
   <link rel="apple-touch-icon" href="{{ url_for('static', filename='img/favicon.png') }}">
 </head>
+{% set is_video_search = 'videos' in selected_categories or (q and ('!gov' in q or '!videos' in q)) %}
 {% set ns = namespace(has_videos=false) %}
-{% for result in results %}
-  {% if result.template in ['videos.html', 'videos'] %}
-    {% set ns.has_videos = true %}
-  {% endif %}
-{% endfor %}
-<body class="{{ endpoint }}_endpoint {% if request.cookies.get('video_grid_enabled') == 'true' %}video-grid-enabled{% endif %} {% if ns.has_videos %}results-videos-present{% endif %}" >
+{% if is_video_search %}
+  {% for result in results %}
+    {% if result.template in ['videos.html', 'videos'] %}
+      {% set ns.has_videos = true %}
+    {% endif %}
+  {% endfor %}
+{% endif %}
+<body class="{{ endpoint }}_endpoint {% if is_video_search and request.cookies.get('video_grid_enabled') == 'true' %}video-grid-enabled{% endif %} {% if ns.has_videos %}results-videos-present{% endif %}" >
   <main id="main_{{  self._TemplateReference__context.name|replace("advanced/", "")|replace(".html", "") }}" class="{{body_class}}">
     {% if errors %}
         <div class="dialog-error" role="alert">

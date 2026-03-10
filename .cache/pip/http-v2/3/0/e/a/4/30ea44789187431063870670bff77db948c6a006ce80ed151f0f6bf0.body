@@ -1,0 +1,87 @@
+Metadata-Version: 2.4
+Name: whitenoise
+Version: 6.12.0
+Summary: Radically simplified static file serving for WSGI applications
+Author: David Evans
+Maintainer: David Evans
+Maintainer-email: Adam Johnson <me@adamj.eu>
+License-Expression: MIT
+Project-URL: Changelog, https://whitenoise.readthedocs.io/en/stable/changelog.html
+Project-URL: Documentation, https://whitenoise.readthedocs.io/
+Project-URL: Repository, https://github.com/evansd/whitenoise
+Keywords: Django
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Framework :: Django
+Classifier: Framework :: Django :: 4.2
+Classifier: Framework :: Django :: 5.0
+Classifier: Framework :: Django :: 5.1
+Classifier: Framework :: Django :: 5.2
+Classifier: Framework :: Django :: 6.0
+Classifier: Intended Audience :: Developers
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3 :: Only
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Classifier: Programming Language :: Python :: 3.14
+Classifier: Programming Language :: Python :: Implementation :: CPython
+Classifier: Topic :: Internet :: WWW/HTTP :: WSGI :: Middleware
+Classifier: Typing :: Typed
+Requires-Python: >=3.10
+Description-Content-Type: text/x-rst
+License-File: LICENSE
+Provides-Extra: brotli
+Requires-Dist: brotli; extra == "brotli"
+Dynamic: license-file
+
+==========
+WhiteNoise
+==========
+
+.. image:: https://img.shields.io/readthedocs/whitenoise?style=for-the-badge
+   :target: https://whitenoise.readthedocs.io/en/latest/
+
+.. image:: https://img.shields.io/github/actions/workflow/status/evansd/whitenoise/main.yml.svg?branch=master&style=for-the-badge
+   :target: https://github.com/evansd/whitenoise/actions?workflow=CI
+
+.. image:: https://img.shields.io/badge/Coverage-96%25-success?style=for-the-badge
+   :target: https://github.com/evansd/whitenoise/actions?workflow=CI
+
+.. image:: https://img.shields.io/pypi/v/whitenoise.svg?style=for-the-badge
+   :target: https://pypi.org/project/whitenoise/
+
+.. image:: https://img.shields.io/badge/code%20style-black-000000.svg?style=for-the-badge
+   :target: https://github.com/psf/black
+
+.. image:: https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white&style=for-the-badge
+   :target: https://github.com/pre-commit/pre-commit
+   :alt: pre-commit
+
+**Radically simplified static file serving for Python web apps**
+
+With a couple of lines of config WhiteNoise allows your web app to serve its
+own static files, making it a self-contained unit that can be deployed anywhere
+without relying on nginx, Amazon S3 or any other external service. (Especially
+useful on Heroku, OpenShift and other PaaS providers.)
+
+It's designed to work nicely with a CDN for high-traffic sites so you don't have to
+sacrifice performance to benefit from simplicity.
+
+WhiteNoise works with any WSGI-compatible app but has some special auto-configuration
+features for Django.
+
+WhiteNoise takes care of best-practices for you, for instance:
+
+* Serving compressed content (gzip and Brotli formats, handling Accept-Encoding
+  and Vary headers correctly)
+* Setting far-future cache headers on content which won't change
+
+Worried that serving static files with Python is horribly inefficient?
+Still think you should be using Amazon S3? Have a look at the `Infrequently
+Asked Questions`_.
+
+To get started, see the documentation_.
+
+.. _Infrequently Asked Questions: https://whitenoise.readthedocs.io/en/stable/#infrequently-asked-questions
+.. _documentation: https://whitenoise.readthedocs.io/en/stable/

@@ -19,7 +19,8 @@
     {% include 'advanced/filters/languages.html' %}
     {% include 'advanced/filters/time_range.html' %}
     {% include 'advanced/filters/safesearch.html' %}
-    <select {% if has_videos %}name="results_per_page"{% endif %} id="results_per_page" class="results_per_page" aria-label="{{ _('Results per page') }}" {% if not has_videos %}style="display: none;"{% endif %}>
+    <select {% if is_video_search %}name="results_per_page"{% endif %} id="results_per_page" class="results_per_page" aria-label="{{ _('Results per page') }}" {% if not is_video_search %}style="display: none;"{% endif %}>
+
       <option value="10" {% if results_per_page == 10 %}selected="selected"{% endif %}>10 {{ _('results per page') }}</option>
       <option value="20" {% if results_per_page == 20 %}selected="selected"{% endif %}>20 {{ _('results per page') }}</option>
       <option value="30" {% if results_per_page == 30 %}selected="selected"{% endif %}>30 {{ _('results per page') }}</option>
@@ -53,14 +54,15 @@
       })();
     </script>
 
-    <div id="video-view-config" class="filter-item" {% if not has_videos %}style="display: none;"{% endif %}>
+    <div id="video-view-config" class="filter-item" {% if not is_video_search %}style="display: none;"{% endif %}>
       <label for="video-grid-toggle">{{ _('Grid View') }}</label>
       <input type="checkbox" id="video-grid-toggle" class="checkbox-onoff">
     </div>
-    <div class="filter-item grid-only" {% if not has_videos %}style="display: none;"{% endif %}>
+    <div class="filter-item grid-only" {% if not is_video_search %}style="display: none;"{% endif %}>
       <label for="video-size-resizer">{{ _('Size') }}</label>
       <input type="range" id="video-size-resizer" min="150" max="500" value="300">
     </div>
+
   </div>
   <input type="hidden" name="theme" value="{{ theme }}" >
   {% if timeout_limit %}<input type="hidden" name="timeout_limit" value="{{ timeout_limit|e }}" >{% endif %}

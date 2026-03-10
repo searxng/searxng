@@ -477,14 +477,6 @@ def pre_request():
         # Manual override for standalone cookies (like theme toggle or results per page)
         if 'simple_style' in sxng_request.cookies:
             preferences.key_value_settings['simple_style'].parse(sxng_request.cookies['simple_style'])
-        if 'results_per_page' in sxng_request.cookies:
-            results_per_page_val = sxng_request.cookies['results_per_page']
-            try:
-                # We don't have a ResultsPerPageSetting class yet, but we can override the setting
-                # used in search() later
-                pass
-            except:
-                pass
     except Exception as e:  # pylint: disable=broad-except
         logger.exception(e, exc_info=True)
         sxng_request.errors.append(gettext('Invalid settings, please edit your preferences'))
@@ -705,22 +697,10 @@ def search():
 
     results = result_container.get_ordered_results()
 
-    # global pagination
-    # Precedence: URL argument -> Cookie -> Form data -> Default Setting
-    results_per_page = sxng_request.args.get('results_per_page')
-    if not results_per_page:
-        results_per_page = sxng_request.cookies.get('results_per_page')
-    if not results_per_page:
-        results_per_page = sxng_request.form.get('results_per_page')
-    if not results_per_page:
-        results_per_page = settings['search']['results_per_page']
-
-    try:
-        results_per_page = int(results_per_page)
-    except:
-        results_per_page = 10
-
-    results = results[:results_per_page]
+    # global pagination (only for videos)
+    results_per_page = search_query.results_per_page
+    if search_query.is_video_search and results_per_page is not None:
+        results = results[:results_per_page]
 
     if search_query.redirect_to_first_result and results:
         return redirect(results[0]['url'], 302)

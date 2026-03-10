@@ -1,0 +1,49 @@
+Metadata-Version: 2.1
+Name: flask-babel
+Version: 4.0.0
+Summary: Adds i18n/l10n support for Flask applications.
+Home-page: https://github.com/python-babel/flask-babel
+License: BSD-3-Clause
+Author: Armin Ronacher
+Maintainer: Tyler Kennedy
+Maintainer-email: tk@tkte.ch
+Requires-Python: >=3.8,<4.0
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Environment :: Web Environment
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: BSD License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: Implementation :: CPython
+Classifier: Programming Language :: Python :: Implementation :: PyPy
+Classifier: Topic :: Internet :: WWW/HTTP :: Dynamic Content
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Requires-Dist: Babel (>=2.12)
+Requires-Dist: Flask (>=2.0)
+Requires-Dist: Jinja2 (>=3.1)
+Requires-Dist: pytz (>=2022.7)
+Project-URL: Documentation, https://python-babel.github.io/flask-babel/
+Project-URL: Repository, https://github.com/python-babel/flask-babel
+Description-Content-Type: text/markdown
+
+# Flask Babel
+
+![Tests](https://github.com/python-babel/flask-babel/workflows/Tests/badge.svg?branch=master)
+[![PyPI](https://img.shields.io/pypi/v/flask-babel.svg?maxAge=2592000)](https://pypi.python.org/pypi/Flask-Babel)
+
+Implements i18n and l10n support for Flask. This is based on the Python
+[babel][] and [pytz][] modules.
+
+## Documentation
+
+The latest documentation is available [here][docs].
+
+[babel]: https://github.com/python-babel/babel
+[pytz]: https://pypi.python.org/pypi/pytz/
+[docs]: https://python-babel.github.io/flask-babel/
+[semver]: https://semver.org/
+
