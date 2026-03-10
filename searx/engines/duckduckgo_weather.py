@@ -17,7 +17,6 @@ from searx.result_types import EngineResults
 from searx.extended_types import SXNG_Response
 from searx import weather
 
-
 about = {
     "website": "https://duckduckgo.com/",
     "wikidata_id": "Q12805",

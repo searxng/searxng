@@ -164,6 +164,7 @@ Terms / phrases that you keep coming across:
    https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Accept-Language
 
 """
+
 # pylint: disable=global-statement
 
 import json
