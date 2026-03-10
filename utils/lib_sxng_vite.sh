@@ -12,10 +12,16 @@ vite.:  .. to be done ..
     fix:   run prettiers on simple theme
     lint:  run linters on simple theme
     dev:   start development server
+  advanced.:
+    build: build static files of the advanced theme
+    fix:   run prettiers on advanced theme
+    lint:  run linters on advanced theme
+    dev:   start development server
 EOF
 }
 
 VITE_SIMPLE_THEME="${REPO_ROOT}/client/simple"
+VITE_ADVANCED_THEME="${REPO_ROOT}/client/advanced"
 
 # ToDo: vite server is not implemented yet / will be done in a follow up PR
 #
@@ -75,7 +81,64 @@ vite.simple.lint() {
     )
 }
 
+vite.advanced.build() {
+    (
+        set -e
+        templates.advanced.pygments
+
+        node.env
+        build_msg ADVANCED "run build of theme from: ${VITE_ADVANCED_THEME}"
+
+        pushd "${VITE_ADVANCED_THEME}"
+        npm install
+        npm run build
+        popd &>/dev/null
+    )
+}
+
+vite.advanced.analyze() {
+    (
+        set -e
+        templates.advanced.pygments
+
+        node.env
+        build_msg ADVANCED "run analyze of theme from: ${VITE_ADVANCED_THEME}"
+
+        pushd "${VITE_ADVANCED_THEME}"
+        npm install
+        VITE_BUNDLE_ANALYZE=true npm run build
+        popd &>/dev/null
+    )
+}
+
+vite.advanced.fix() {
+    (
+        set -e
+        node.env
+        npm --prefix client/advanced run fix
+    )
+}
+
+vite.advanced.lint() {
+    (
+        set -e
+        node.env
+        npm --prefix client/advanced run lint
+    )
+}
+
 templates.simple.pygments() {
+    build_msg PYGMENTS "searxng_extra/update/update_pygments.py"
+    pyenv.cmd python searxng_extra/update/update_pygments.py |
+        prefix_stdout "${_Blue}PYGMENTS ${_creset} "
+    if [ "${PIPESTATUS[0]}" -ne "0" ]; then
+        build_msg PYGMENTS "building LESS files for pygments failed"
+        return 1
+    fi
+    return 0
+}
+
+templates.advanced.pygments() {
     build_msg PYGMENTS "searxng_extra/update/update_pygments.py"
     pyenv.cmd python searxng_extra/update/update_pygments.py |
         prefix_stdout "${_Blue}PYGMENTS ${_creset} "

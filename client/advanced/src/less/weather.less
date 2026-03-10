@@ -1,0 +1,44 @@
+// SPDX-License-Identifier: AGPL-3.0-or-later
+
+#answers .weather {
+  summary {
+    display: block;
+    list-style: none;
+  }
+
+  div.summary {
+    margin: 0;
+    padding: 0.5rem 1rem;
+    background-color: var(--color-header-background);
+    .rounded-corners-tiny;
+  }
+
+  table {
+    font-size: 0.9rem;
+    table-layout: fixed;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+    border-collapse: separate;
+    border-spacing: 0.1em 0;
+  }
+
+  td {
+    padding: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  img.symbol {
+    width: 5rem;
+    margin: auto;
+    display: block;
+  }
+
+  .title {
+    // background-color: var(--color-result-keyvalue-even);
+  }
+
+  .measured {
+    // background-color: var(--color-result-keyvalue-odd);
+  }
+}

@@ -1,0 +1,35 @@
+// SPDX-License-Identifier: AGPL-3.0-or-later
+
+iframe[src^="https://w.soundcloud.com"] {
+  height: 120px;
+}
+
+iframe[src^="https://www.deezer.com"] {
+  // The real size is 92px, but 94px are needed to avoid an inner scrollbar of
+  // the embedded HTML.
+  height: 94px;
+}
+
+iframe[src^="https://www.mixcloud.com"] {
+  // the embedded player from mixcloud has some quirks: initial there is an
+  // issue with an image URL that is blocked since it is an a Cross-Origin
+  // request. The alternative text (<img alt='Mixcloud Logo'> then cause an
+  // scrollbar in the inner of the iframe we can't avoid.  Another quirk comes
+  // when pressing the play button, sometimes the shown player has an height of
+  // 200px, sometimes 250px.
+  height: 250px;
+}
+
+iframe[src^="https://bandcamp.com/EmbeddedPlayer"] {
+  // show playlist
+  height: 350px;
+}
+
+iframe[src^="https://bandcamp.com/EmbeddedPlayer/track"] {
+  // hide playlist
+  height: 120px;
+}
+
+iframe[src^="https://genius.com/songs"] {
+  height: 65px;
+}

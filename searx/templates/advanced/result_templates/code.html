@@ -1,0 +1,38 @@
+{% from 'advanced/macros.html' import result_header, result_sub_header, result_sub_footer, result_footer with context %}
+
+{{ result_header(result, favicons, image_proxify) -}}
+{{- result_sub_header(result) -}}
+
+{%- if result.content -%}
+  <p class="content">
+    {{- result.content|safe -}}
+  </p>
+{%- endif -%}
+{%- if result.repository -%}
+  <p class="content">{{- '' -}}
+    {{ _('Repository') }}: {{- ' ' -}}
+    <a href="{{ result.repository|safe }}"{{- ' ' -}}
+      {% if results_on_new_tab %}
+      target="_blank" {{- ' ' -}}
+      rel="noopener noreferrer"
+      {%- else -%}
+      rel="noreferrer"
+      {%- endif -%}
+    >
+      {{- result.repository -}}
+    </a>{{- '' -}}
+  </p>
+{%- endif -%}
+
+{%- if result.filename %}
+  <p class="content">
+    {{ _('Filename') }}: {{ result.filename|safe }}
+  </p>
+{% endif -%}
+
+<div dir="ltr" class="codelines">
+    {{- result.HTML()|safe -}}
+</div>
+
+{{- result_sub_footer(result) -}}
+{{- result_footer(result) -}}

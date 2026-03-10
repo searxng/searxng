@@ -1,0 +1,42 @@
+{% from 'advanced/icons.html' import icon_big %}
+{%- set category_icons = {
+    'apps': 'appstore',
+    'dictionaries': 'book',
+    'files': 'file-tray-full',
+    'general': 'search',
+    'images': 'image',
+    'it': 'layers',
+    'map': 'location',
+    'music': 'musical-notes',
+    'news': 'newspaper',
+    'radio': 'radio',
+    'science': 'school',
+    'social media': 'people',
+    'TV': 'tv',
+    'videos': 'play',
+}  -%}
+<div id="categories" class="search_categories">{{- '' -}}
+    <div id="categories_container">
+        {%- if not search_on_category_select or not display_tooltip -%}
+            {%- for category in categories -%}
+                <div class="category category_checkbox">{{- '' -}}
+                    <input type="checkbox" id="checkbox_{{ category|replace(' ', '_') }}" name="category_{{ category }}"{% if category in selected_categories %} checked="checked"{% endif %}>
+                    <label for="checkbox_{{ category|replace(' ', '_') }}" class="tooltips">
+                        {{- icon_big(category_icons[category]) if category in category_icons  else icon_big('globe') -}}
+                        <div class="category_name">{{- _(category) -}}</div>
+                    </label>
+                </div>
+            {%- endfor -%}
+            {%- if display_tooltip %}<div class="help">{{ _('Click on the magnifier to perform search') }}</div>{% endif -%}
+        {%- else -%}
+            {%- for category in categories -%}{{- '\n' -}}
+                <button type="submit" name="category_{{ category }}" class="category category_button {% if category in selected_categories %}selected{% endif %}">
+                    {{- icon_big(category_icons[category]) if category in category_icons else icon_big('globe') -}}
+                    <div class="category_name">{{- _(category) -}}</div>{{- '' -}}
+                </button>{{- '' -}}
+            {%- endfor -%}
+            <input name="categories" id="selected-categories" type="hidden" />
+            {{- '\n' -}}
+        {%- endif -%}
+    </div>{{- '' -}}
+</div>

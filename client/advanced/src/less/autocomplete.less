@@ -1,0 +1,73 @@
+// SPDX-License-Identifier: AGPL-3.0-or-later
+
+.autocomplete {
+  position: absolute;
+  width: @search-width;
+  max-width: calc(100% - 2 * @search-padding-horizontal);
+  max-height: 0;
+  overflow-y: hidden;
+  .ltr-text-align-left();
+
+  .rounded-corners;
+
+  &:active,
+  &:focus,
+  &:hover {
+    background-color: var(--color-autocomplete-background);
+  }
+
+  &:empty {
+    display: none;
+  }
+
+  > ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+
+    > li {
+      cursor: pointer;
+      padding: 0.5rem 1rem;
+
+      &.active,
+      &:active,
+      &:focus,
+      &:hover {
+        background-color: var(--color-autocomplete-background-hover);
+
+        a:active,
+        a:focus,
+        a:hover {
+          text-decoration: none;
+        }
+      }
+
+      &.locked {
+        cursor: inherit;
+      }
+    }
+  }
+
+  &.open {
+    display: block;
+    background-color: var(--color-autocomplete-background);
+    color: var(--color-autocomplete-font);
+    max-height: 32rem;
+    overflow-y: auto;
+    z-index: 5000;
+    margin-top: 3.5rem;
+    border-radius: 0.8rem;
+
+    &:empty {
+      display: none;
+    }
+  }
+}
+
+@media screen and (max-width: @phone) {
+  .autocomplete {
+    > ul > li {
+      padding: 1rem;
+    }
+  }
+}

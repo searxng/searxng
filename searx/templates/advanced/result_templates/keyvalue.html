@@ -1,0 +1,21 @@
+<article class="result result-keyvalue {% if result.category -%}category-{{ result.category }}{%- endif -%}">
+  <table>
+    {%- if result.caption %}<caption>{{ result.caption }}</caption>{%- endif -%}
+    {%- if result.key_title or result.value_title %}
+      <thead>
+        <tr>
+          <th class="col-key" scope="col" >{{result.key_title}}</th>
+          <th class="col-value" scope="col" >{{result.value_title}}</th>
+        </tr>
+      </thead>
+    {%- endif -%}
+    {%- for key, value in result.kvmap.items() -%}
+      <tr class="{{ loop.cycle('odd', 'even') }}">
+        <th class="col-key" scope="row">{{ key }}</th>{{- '' -}}
+        <td class="col-value">{{ value }}</td>{{- '' -}}
+      </tr>
+    {%- endfor -%}
+  </table>{{- '' -}}
+  <div class="engines">{% for engine in result.engines %}<span>{{ engine }}</span>{% endfor %}</div>{{- '' -}}
+  <div class="break"></div>{{- '' -}}
+</article>

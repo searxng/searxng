@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<OpenSearchDescription xmlns="http://a9.com/-/spec/opensearch/1.1/" xmlns:moz="http://www.mozilla.org/2006/browser/search/">
+  <ShortName>{{ instance_name }}</ShortName>
+  <LongName>SearXNG metasearch</LongName>
+  <Description>SearXNG is a metasearch engine that respects your privacy.</Description>
+  <InputEncoding>UTF-8</InputEncoding>
+  <Image type="image/png">{{ url_for('static', filename='img/favicon.png', _external=True) }}</Image>
+  {% if opensearch_method == 'GET' %}
+  <Url rel="results" type="text/html" method="{{ opensearch_method }}" template="{{ url_for('search', _external=True) }}?q={searchTerms}"/>
+  {% else %}
+  <Url rel="results" type="text/html" method="{{ opensearch_method }}" template="{{ url_for('search', _external=True) }}">
+    <Param name="q" value="{searchTerms}" />
+  </Url>
+  {% endif %}
+  {% if autocomplete %}
+    <Url rel="suggestions" type="application/x-suggestions+json" method="{{ opensearch_method }}" template="{{ url_for('autocompleter', _external=True) }}?q={searchTerms}"/>
+  {% endif %}
+  <Url rel="self" type="application/opensearchdescription+xml"  method="{{ opensearch_method }}" template="{{ url_for('opensearch', _external=True) }}" />
+  <Query role="example" searchTerms="SearXNG" />
+  <moz:SearchForm>{{ url_for('search', _external=True) }}</moz:SearchForm>
+</OpenSearchDescription>

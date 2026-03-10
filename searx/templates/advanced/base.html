@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html class="no-js theme-{{ preferences.get_value('simple_style') or 'auto' }} center-alignment-{{ preferences.get_value('center_alignment') and 'yes' or 'no' }}" lang="{{ locale_rfc5646 }}" {% if rtl %} dir="rtl"{% endif %}>
+<head>
+  <meta charset="UTF-8">
+  <meta name="endpoint" content="{{ endpoint }}">
+  <meta name="description" content="SearXNG — a privacy-respecting, open metasearch engine">
+  <meta name="keywords" content="SearXNG, search, search engine, metasearch, meta search">
+  <meta name="generator" content="searxng/{{ searx_version }}">
+  <meta name="referrer" content="no-referrer">
+  <meta name="robots" content="noarchive">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}{% endblock %}{{ instance_name }}</title>
+  <script type="module" src="{{ url_for('static', filename='sxng-core.min.js') }}" client_settings="{{ client_settings }}"></script>
+  {% block meta %}{% endblock %}
+  {% if rtl %}
+  <link rel="stylesheet" href="{{ url_for('static', filename='sxng-rtl.min.css') }}" type="text/css" media="screen">
+  {% else %}
+  <link rel="stylesheet" href="{{ url_for('static', filename='sxng-ltr.min.css') }}" type="text/css" media="screen">
+  {% endif %}
+  {% if get_setting('server.limiter') or get_setting('server.public_instance') %}
+  <link rel="stylesheet" href="{{ url_for('client_token', token=link_token) }}" type="text/css">
+  {% endif %}
+  {% block head %}
+  <link title="{{ instance_name }}" type="application/opensearchdescription+xml" rel="search" href="{{ opensearch_url }}">
+  {% endblock %}
+  <link rel="icon" href="{{ url_for('static', filename='img/favicon.png') }}" sizes="any">
+  <link rel="icon" href="{{ url_for('static', filename='img/favicon.svg') }}" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="{{ url_for('static', filename='img/favicon.png') }}">
+</head>
+{% set ns = namespace(has_videos=false) %}
+{% for result in results %}
+  {% if result.template in ['videos.html', 'videos'] %}
+    {% set ns.has_videos = true %}
+  {% endif %}
+{% endfor %}
+<body class="{{ endpoint }}_endpoint {% if request.cookies.get('video_grid_enabled') == 'true' %}video-grid-enabled{% endif %} {% if ns.has_videos %}results-videos-present{% endif %}" >
+  <main id="main_{{  self._TemplateReference__context.name|replace("advanced/", "")|replace(".html", "") }}" class="{{body_class}}">
+    {% if errors %}
+        <div class="dialog-error" role="alert">
+            <a href="#" class="close" aria-label="close" title="close">×</a>
+            <ul>
+            {% for message in errors %}
+                <li>{{ message }}</li>
+            {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+
+    <nav id="links_on_top">
+      {%- from 'advanced/icons.html' import icon_big -%}
+      {%- if endpoint != 'preferences' -%}
+        <a id="theme-toggle" href="#" class="link_on_top_theme">
+          <span class="theme-icon-dark" {% if request.cookies.get('simple_style') == 'dark' %}style="display: none;"{% endif %}>{{ icon_big('moon') }}</span>
+          <span class="theme-icon-light" {% if request.cookies.get('simple_style') != 'dark' %}style="display: none;"{% endif %}>{{ icon_big('sunny') }}</span>
+          <span class="theme-text">{% if request.cookies.get('simple_style') == 'dark' %}{{ _('Light mode') }}{% else %}{{ _('Dark mode') }}{% endif %}</span>
+        </a>
+        <script>
+          (function() {
+            var toggle = document.getElementById('theme-toggle');
+            if (toggle) {
+              toggle.addEventListener('click', function(e) {
+                e.preventDefault();
+                var html = document.documentElement;
+                var body = document.body;
+                var isDark = html.classList.contains('theme-dark') || (html.classList.contains('theme-auto') && window.matchMedia('(prefers-color-scheme: dark)').matches);
+                
+                // If it was auto, we need to check what it actually is right now
+                if (html.className.indexOf('theme-') === -1) {
+                   isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                }
+
+                var newStyle = isDark ? 'light' : 'dark';
+                
+                // Update classes on html tag
+                html.classList.remove('theme-auto', 'theme-light', 'theme-dark');
+                html.classList.add('theme-' + newStyle);
+                
+                // Update toggle UI
+                var darkIcon = toggle.querySelector('.theme-icon-dark');
+                var lightIcon = toggle.querySelector('.theme-icon-light');
+                var text = toggle.querySelector('.theme-text');
+                
+                if (newStyle === 'dark') {
+                  darkIcon.style.display = 'none';
+                  lightIcon.style.display = 'inline-block';
+                  text.textContent = '{{ _("Light mode") }}';
+                } else {
+                  darkIcon.style.display = 'inline-block';
+                  lightIcon.style.display = 'none';
+                  text.textContent = '{{ _("Dark mode") }}';
+                }
+                
+                // Set cookie to persist - using simple_style which SearXNG backend recognizes
+                var date = new Date();
+                date.setTime(date.getTime() + (365 * 24 * 60 * 60 * 1000));
+                document.cookie = "simple_style=" + newStyle + "; expires=" + date.toUTCString() + "; path=/; SameSite=Lax";
+              });
+            }
+          })();
+        </script>
+      {%- endif -%}
+      {%- block linkto_about -%}
+        <a href="{{ url_for('info', pagename='about') }}" class="link_on_top_about">{{ icon_big('information-circle') }}<span>{{ _('About') }}</span></a>
+      {%- endblock -%}
+      {%- block linkto_donate -%}
+        {%- if donation_url -%}
+        <a href="{{ donation_url }}" class="link_on_top_donate">{{ icon_big('heart') }}<span>{{ _('Donate') }}</span></a>
+        {%- endif -%}
+      {%- endblock -%}
+      {%- block linkto_preferences -%}
+        {%- if request.args.get('preferences') -%}
+          <a href="{{ url_for('preferences') }}?preferences={{ request.args.get('preferences') }}&preferences_preview_only=true" class="link_on_top_preferences">{{ icon_big('settings') }}<span>{{ _('Preferences') }}</span></a>
+        {%- else -%}
+          <a href="{{ url_for('preferences') }}" class="link_on_top_preferences">{{ icon_big('settings') }}<span>{{ _('Preferences') }}</span></a>
+        {%- endif -%}
+      {%- endblock -%}
+    </nav>
+    {% block header %}
+    {% endblock %}
+    {% block content %}
+    {% endblock %}
+  </main>
+  <footer>
+    <p>
+    {{ _('Powered by') }} <a href="{{ url_for('info', pagename='about') }}">SearXNG</a> - {{ searx_version }} — {{ _('a privacy-respecting, open metasearch engine') }}<br>
+        <a href="{{ searx_git_url }}">{{ _('Source code') }}</a>
+        | <a href="{{ get_setting('brand.issue_url') }}">{{ _('Issue tracker') }}</a>
+        {% if enable_metrics %}| <a href="{{ url_for('stats') }}">{{ _('Engine stats') }}</a>{% endif %}
+        {% if get_setting('brand.public_instances') %}
+        | <a href="{{ get_setting('brand.public_instances') }}">{{ _('Public instances') }}</a>
+        {% endif %}
+        {% if get_setting('general.privacypolicy_url') %}
+        | <a href="{{ get_setting('general.privacypolicy_url') }}">{{ _('Privacy policy') }}</a>
+        {% endif %}
+        {% if get_setting('general.contact_url') %}
+        | <a href="{{ get_setting('general.contact_url') }}">{{ _('Contact instance maintainer') }}</a>
+        {% endif %}
+        {% for title, link in get_setting('brand.custom.links').items() %}
+        | <a href="{{ link }}">{{ _(title) }}</a>
+        {% endfor %}
+    </p>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,235 @@
+// SPDX-License-Identifier: AGPL-3.0-or-later
+
+table {
+  border-collapse: collapse;
+
+  th,
+  td {
+    text-align: center;
+    padding: 1rem 0.5rem;
+    .ltr-text-align-left();
+  }
+
+  tr.pref-group th {
+    font-weight: normal;
+    .ltr-text-align-left();
+    background: var(--color-settings-table-group-background);
+  }
+}
+
+#main_preferences {
+  form {
+    width: 100%;
+  }
+
+  fieldset {
+    margin: 8px;
+    border: none;
+  }
+
+  legend {
+    margin: 0;
+    padding: 5px 0 0 0;
+    display: block;
+    .ltr-float-left();
+    width: 300px;
+  }
+
+  input[type="text"] {
+    width: 13.25rem;
+    color: var(--color-toolkit-input-text-font);
+    border: none;
+    background: none repeat scroll 0 0 var(--color-toolkit-select-background);
+    padding: 0.2rem 0.4rem;
+    height: 2rem;
+    .rounded-corners-tiny;
+
+    &:hover,
+    &:focus {
+      background-color: var(--color-toolkit-select-background-hover);
+    }
+  }
+
+  div.pref-group {
+    width: 100%;
+    font-weight: normal;
+    padding: 1rem 0.5rem;
+    .ltr-text-align-left();
+    background: var(--color-settings-table-group-background);
+  }
+
+  .value {
+    margin: 0;
+    padding: 0;
+    .ltr-float-left();
+    width: 15em;
+
+    select,
+    input[type="text"] {
+      font-size: inherit !important;
+      margin-top: 0;
+      .ltr-margin-right(1rem);
+      margin-bottom: 0;
+      .ltr-margin-left(0);
+    }
+
+    select {
+      width: 14rem;
+    }
+
+    select:focus,
+    input:focus {
+      outline: none;
+      box-shadow: 0 0 1px 1px var(--color-btn-background);
+    }
+  }
+
+  .description {
+    margin: 0;
+    padding: 5px 0 0 0;
+    .ltr-float-right();
+    width: 50%;
+    color: var(--color-settings-engine-description-font);
+    font-size: 90%;
+  }
+
+  .bang {
+    .ltr-text-align-left();
+    .rounded-corners-tiny;
+    background-color: var(--color-doc-code-background);
+    color: var(--color-doc-code);
+    padding: 0.2rem;
+    border: 0 none;
+  }
+
+  .category {
+    .ltr-margin-right(0.5rem);
+
+    label {
+      border: 2px solid transparent;
+      padding: 0.2rem 0.4rem;
+      .rounded-corners-tiny;
+    }
+  }
+
+  .category input[type="checkbox"]:checked + label {
+    border: 2px solid var(--color-categories-item-border-selected);
+  }
+
+  table.table_engines {
+    th.name {
+      /* stylelint-disable */
+      label {
+        cursor: pointer;
+      }
+      /* stylelint-enable */
+
+      .engine-tooltip {
+        margin-top: 1.8rem;
+        .ltr-left(calc((100% - 85em) / 2 + 10em));
+        max-width: 40rem;
+
+        .engine-description {
+          margin-top: 0.5rem;
+        }
+
+        .bang {
+          margin: 0.3rem;
+        }
+      }
+    }
+
+    .checkbox-col,
+    .name,
+    .shortcut {
+      .ltr-text-align-left();
+    }
+  }
+
+  table.cookies {
+    width: 100%;
+    direction: ltr;
+
+    th,
+    td {
+      text-align: left;
+      font-family: monospace;
+      font-size: 1rem;
+      padding: 0.5em;
+      vertical-align: top;
+    }
+
+    td:first-child {
+      word-break: keep-all;
+      width: 14rem;
+      padding-right: 1rem;
+    }
+
+    td:last-child {
+      word-break: break-all;
+    }
+
+    & > tbody > tr:nth-child(even) > th,
+    & > tbody > tr:nth-child(even) > td {
+      background-color: var(--color-settings-tr-hover);
+    }
+  }
+
+  .preferences_back {
+    background: none repeat scroll 0 0 var(--color-btn-background);
+    color: var(--color-btn-font);
+    border: 0 none;
+    .rounded-corners;
+
+    cursor: pointer;
+    display: inline-block;
+    margin: 2px 4px;
+    padding: 0.7em;
+
+    a {
+      color: var(--color-settings-return-font);
+    }
+
+    a::first-letter {
+      text-transform: uppercase;
+    }
+  }
+
+  #toggle-all-engines-container {
+    width: max-content;
+    margin-left: auto;
+  }
+
+  div.selectable_url {
+    pre {
+      width: 100%;
+    }
+  }
+
+  #copy-hash-container {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+
+    div.selectable_url {
+      pre {
+        width: auto;
+        flex-grow: 1;
+      }
+    }
+  }
+
+  #pref-hash-input {
+    width: 100%;
+  }
+}
+
+@media screen and (max-width: @tablet) {
+  .preferences_back {
+    clear: both;
+  }
+
+  .engine-tooltip {
+    .ltr-left(10em) !important;
+  }
+}

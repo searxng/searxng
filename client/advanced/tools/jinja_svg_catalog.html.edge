@@ -1,0 +1,28 @@
+{{--
+SPDX-License-Identifier: AGPL-3.0-or-later
+
+This is a EDGE https://edgejs.dev/ template to generate a HTML Jinja template
+for the backend.  Example output of this EDGE template:
+- https://github.com/searxng/searxng/blob/master/searx/templates/simple/icons.html
+--}}
+{#
+Catalog of SVG symbols that can be inserted into the HTML output of a Jinja
+template. This file from:
+
+  client/simple/tools/icon_catalog.edge.html
+#}
+
+{%-
+set catalog = {
+@each((svg, name) in svg_catalog)
+    '{{{name}}}' : '{{{svg}}}',
+@end
+}
+-%}
+
+@each(macro in macros)
+
+{% macro {{ macro.name }}(action, alt) -%}
+  {{ open_curly_brace }} catalog[action] | replace("{{__jinja_class_placeholder__}}", "{{ macro.class }}") | safe {{ close_curly_brace }}
+{%- endmacro %}
+@end

@@ -1,0 +1,47 @@
+<form id="search" method="{{ method or 'POST' }}" action="{{ url_for('search') }}" role="search">
+  <div id="search_header">
+    <div id="search_view">
+      <div class="search_box">
+        <input id="q" name="q" type="text" placeholder="{{ _('Search for...') }}" autocomplete="off" autocapitalize="none" spellcheck="false" autocorrect="off" dir="auto" value="{{ q or '' }}">
+        <button id="clear_search" type="reset" aria-label="{{ _('clear') }}"><span class="hide_if_nojs">{{ icon_big('close') }}</span><span class="show_if_nojs">{{ _('clear') }}</span></button>
+        <button id="send_search" type="submit" aria-label="{{ _('search') }}"><span class="hide_if_nojs">{{ icon_big('search') }}</span><span class="show_if_nojs">{{ _('search') }}</span></button>
+        <div class="autocomplete hide_if_nojs"><ul></ul></div>
+      </div>
+    </div>
+  </div>
+  {% for category in selected_categories %}
+  <input type="hidden" name="category_{{ category }}" value="1" >
+  {% endfor %}
+  <input type="hidden" name="language" value="{{ current_language }}" >
+  <input type="hidden" name="time_range" value="{{ time_range }}" >
+  <input type="hidden" name="safesearch" value="{{ safesearch }}" >
+  <input type="hidden" name="theme" value="{{ theme }}" >
+  <script>
+    (function() {
+      function getCookie(name) {
+        var nameEQ = name + "=";
+        var ca = document.cookie.split(';');
+        for(var i=0;i < ca.length;i++) {
+          var c = ca[i];
+          while (c.charAt(0)==' ') c = c.substring(1,c.length);
+          if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+        }
+        return null;
+      }
+      var form = document.getElementById('search');
+      form.addEventListener('submit', function() {
+        var q = document.getElementById('q').value;
+        var resultsPerPage = getCookie('results_per_page');
+        // Only add results_per_page if the query specifically targets videos
+        if (resultsPerPage && (q.indexOf('!videos') !== -1 || q.indexOf('!gov') !== -1)) {
+          var input = document.createElement('input');
+          input.type = 'hidden';
+          input.name = 'results_per_page';
+          input.value = resultsPerPage;
+          form.appendChild(input);
+        }
+      });
+    })();
+  </script>
+  {% if timeout_limit %}<input type="hidden" name="timeout_limit" value="{{ timeout_limit|e }}" >{% endif %}
+</form>

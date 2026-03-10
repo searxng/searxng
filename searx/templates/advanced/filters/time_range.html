@@ -1,0 +1,17 @@
+<select name="time_range" id="time_range" class="time_range" aria-label="{{ _('Time range') }}">{{- '' -}}
+    <option id="time-range-anytime" value="" {{ "selected" if time_range=="" or not time_range  else ""}}>
+        {{- _('Anytime') -}}
+    </option>{{- '' -}}
+    <option id="time-range-day" value="day" {{ "selected" if time_range=="day" else ""}}>
+        {{- _('Last day') -}}
+    </option>{{- '' -}}
+    <option id="time-range-week" value="week" {{ "selected" if time_range=="week" else ""}}>
+        {{- _('Last week') -}}
+    </option>{{- '' -}}
+    <option id="time-range-month" value="month" {{ "selected" if time_range=="month" else ""}}>
+        {{- _('Last month') -}}
+    </option>{{- '' -}}
+    <option id="time-range-year" value="year" {{ "selected" if time_range=="year" else ""}}>
+        {{- _('Last year') -}}
+    </option>{{- '' -}}
+</select>

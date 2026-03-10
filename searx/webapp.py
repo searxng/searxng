@@ -375,7 +375,7 @@ def get_client_settings():
         'search_on_category_select': req_pref.get_value('search_on_category_select'),
         'hotkeys': req_pref.get_value('hotkeys'),
         'url_formatting': req_pref.get_value('url_formatting'),
-        'theme_static_path': custom_url_for('static', filename='themes/simple'),
+        'theme_static_path': custom_url_for('static', filename='themes/' + req_pref.get_value('theme')),
         'results_on_new_tab': req_pref.get_value('results_on_new_tab'),
         'favicon_resolver': req_pref.get_value('favicon_resolver'),
         'advanced_search': req_pref.get_value('advanced_search'),
@@ -474,7 +474,17 @@ def pre_request():
 
     try:
         preferences.parse_dict(sxng_request.cookies)
-
+        # Manual override for standalone cookies (like theme toggle or results per page)
+        if 'simple_style' in sxng_request.cookies:
+            preferences.key_value_settings['simple_style'].parse(sxng_request.cookies['simple_style'])
+        if 'results_per_page' in sxng_request.cookies:
+            results_per_page_val = sxng_request.cookies['results_per_page']
+            try:
+                # We don't have a ResultsPerPageSetting class yet, but we can override the setting
+                # used in search() later
+                pass
+            except:
+                pass
     except Exception as e:  # pylint: disable=broad-except
         logger.exception(e, exc_info=True)
         sxng_request.errors.append(gettext('Invalid settings, please edit your preferences'))
@@ -695,6 +705,23 @@ def search():
 
     results = result_container.get_ordered_results()
 
+    # global pagination
+    # Precedence: URL argument -> Cookie -> Form data -> Default Setting
+    results_per_page = sxng_request.args.get('results_per_page')
+    if not results_per_page:
+        results_per_page = sxng_request.cookies.get('results_per_page')
+    if not results_per_page:
+        results_per_page = sxng_request.form.get('results_per_page')
+    if not results_per_page:
+        results_per_page = settings['search']['results_per_page']
+
+    try:
+        results_per_page = int(results_per_page)
+    except:
+        results_per_page = 10
+
+    results = results[:results_per_page]
+
     if search_query.redirect_to_first_result and results:
         return redirect(results[0]['url'], 302)
 
@@ -762,6 +789,7 @@ def search():
         pageno = search_query.pageno,
         time_range = search_query.time_range or '',
         number_of_results = format_decimal(result_container.number_of_results),
+        results_per_page = results_per_page,
         suggestions = suggestion_urls,
         answers = result_container.answers,
         corrections = correction_urls,

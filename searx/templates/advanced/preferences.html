@@ -1,0 +1,264 @@
+{%- from 'advanced/icons.html' import icon_small, icon_big -%}
+{%- extends "advanced/page_with_header.html" -%}
+
+{%- macro tabs_open() -%}
+<div class="tabs" role="tablist">
+{%- endmacro -%}
+
+{%- macro tab_header(name, id, label, checked) -%}
+<input type="radio" name="{{ name }}" id="tab-{{ id }}" {% if checked is sameas true %}checked="checked"{% endif %}>
+<label id="tab-label-{{ id }}" for="tab-{{ id }}" role="tab" aria-controls="tab-content-{{ id }}">{{ label }}</label>
+<section id="tab-content-{{ id }}" role="tabpanel" aria-hidden="false">
+{%- endmacro -%}
+
+{%- macro tab_footer() -%}
+</section>
+{%- endmacro -%}
+
+{%- macro tabs_close() -%}
+</div>
+{%- endmacro -%}
+
+{%- macro checkbox(name, checked, disabled) -%}
+  {%- if checked == '?' -%}
+    {{- icon_small('alert') -}}
+  {%- else -%}
+    <input type="checkbox" {%- if name %} name="{{ name }}" {%- endif %} value="None" {%- if checked %} checked {%- endif -%}{%- if disabled %} disabled {%- endif -%}>
+  {%- endif -%}
+{%- endmacro -%}
+
+{%- macro checkbox_onoff_reversed(name, checked, labelledby) -%}
+  <input type="checkbox" {{- ' ' -}}
+         name="{{ name }}" {{- ' ' -}}
+         id="{{ name }}" {{- ' ' -}}
+         {%- if labelledby -%} aria-labelledby="{{ labelledby }}"{{- ' ' -}}{%- endif -%}
+         class="checkbox-onoff reversed-checkbox"{{- ' ' -}}
+         {%- if checked -%} checked{%- endif -%}>
+{%- endmacro -%}
+
+{%- macro plugin_preferences(section) -%}
+  {%- for plugin in plugins_storage -%}
+    {%- if plugin.preference_section == section -%}
+      <fieldset>{{- '' -}}
+	<legend>{{ _(plugin.name) }}</legend>{{- '' -}}
+	<div class="value">
+	  {{- checkbox_onoff_reversed('plugin_' + plugin.id, plugin.id not in allowed_plugins, 'plugin_labelledby' + plugin.id) -}}
+	</div>{{- '' -}}
+	<div class="description" id="{{ 'plugin_labelledby' + plugin.id }}">
+	  {{- _(plugin.description) -}}
+	</div>{{- '' -}}
+      </fieldset>
+    {%- endif -%}
+  {%- endfor -%}
+{%- endmacro -%}
+
+{%- macro engine_about(search_engine) -%}
+{%- if search_engine.about is defined -%}
+  {%- set about = search_engine.about -%}
+  <div class="engine-tooltip" role="tooltip">{{- '' -}}
+    <p class="engine-description"></p>{{- '' -}}
+    <p><a href="{{about.website}}" rel="noreferrer">{{about.website}}</a></p>{{- '' -}}
+    {%- if about.wikidata_id -%}
+      <p><a href="https://www.wikidata.org/wiki/{{about.wikidata_id}}" rel="noreferrer">wikidata.org/wiki/{{about.wikidata_id}}</a></p>
+    {%- endif -%}
+    {%- if search_engine.enable_http -%}
+      <p>{{- icon_big('exclamation-sign', 'No HTTPS') -}}{{- _('No HTTPS')-}}</p>
+    {% endif -%}
+    {%- if reliabilities.get(search_engine.name, {}).errors -%}
+      <a href="{{ url_for('stats', engine=search_engine.name|e) }}" {{- ' ' -}}
+         title="{{ _('View error logs and submit a bug report') }}">
+      {{- _('View error logs and submit a bug report') -}}
+      </a>
+    {%- endif -%}
+    <p>{{- '' -}}
+      <span class="right">{{ _("!bang for this engine") }}</span>{{- '' -}}
+      {%- for bang in [search_engine.name] + [search_engine.shortcut] -%}
+        <span class="bang"> {{ '!' + bang.replace(' ', '_') }}</span>
+      {%- endfor -%}
+    </p>{{- '' -}}
+    <p>{{- '' -}}
+      <span class="right">{{ _("!bang for its categories") }}</span>
+      {%- for bang in search_engine.categories -%}
+        <span class="bang">{{ '!' + bang.replace(' ', '_') }}</span>
+      {%- endfor -%}
+    </p>{{- '' -}}
+  </div>
+{%- endif -%}
+{%- endmacro -%}
+
+{%- macro engine_time(engine_name) -%}
+  <td class="{{ label }}">{{- '' -}}
+    {%- if stats[engine_name].time != None -%}
+    <span class="stacked-bar-chart-value">{{- stats[engine_name].time -}}</span>{{- '' -}}
+    <span class="stacked-bar-chart" aria-hidden="true">
+        {%- if max_rate95 is not none and max_rate95 > 0 -%}
+        <div class="stacked-bar-chart-median bar{{ (100 * (stats[engine_name].time / max_rate95))|round }}"></div>{{- '' -}}
+        <div class="stacked-bar-chart-rate80 bar{{ (100 * ((stats[engine_name].rate80 - stats[engine_name].time) / max_rate95))|round }}"></div>{{- '' -}}
+        <div class="stacked-bar-chart-rate95 bar{{ (100 * ((stats[engine_name].rate95 - stats[engine_name].rate80) / max_rate95))|round }}"></div>{{- '' -}}
+        <span class="stacked-bar-chart-rate100"></span>
+        {%- endif -%}
+    </span>{{- '' -}}
+    <div class="engine-tooltip text-left" role="tooltip" id="{{engine_name}}_graph">{{- '' -}}
+        <p>{{ _('Median') }}: {{ stats[engine_name].time }}</p>{{- '' -}}
+        <p>{{ _('P80') }}: {{ stats[engine_name].rate80 }}</p>{{- '' -}}
+        <p>{{ _('P95') }}: {{ stats[engine_name].rate95 }}</p>{{- '' -}}
+    </div>
+  {%- endif -%}
+  </td>
+{%- endmacro -%}
+
+{%- macro engine_reliability(engine_name) -%}
+  {%- set r = reliabilities.get(engine_name, {}).get('reliability', None) -%}
+  {%- set errors = reliabilities.get(engine_name, {}).get('errors', []) -%}
+  {%- if r != None -%}
+    {%- if r <= 50 -%}
+      {% set label = 'danger' -%}
+    {%- elif r < 80 -%}
+      {%- set label = 'warning' -%}
+    {%- elif r < 90 %}
+      {%- set label = '' -%}
+    {%- else -%}
+      {%- set label = 'success' -%}
+    {%- endif -%}
+  {% else %}
+    {%- set r = '' -%}
+  {%- endif -%}
+  {%- if errors -%}
+    <td class="{{ label }} column-reliability">{{- '' -}}
+      <a href="{{ url_for('stats', engine=engine_name|e) }}">{{- '' -}}
+        <span>
+          {{- icon_big('alert', 'The engine is not reliabled') }} {{ r -}}
+        </span>{{- '' -}}
+      </a>{{- '' -}}
+      <div class="engine-tooltip" role="tooltip" id="{{engine_name}}_reliability">
+        {%- if errors -%}<p>{{ _('Errors:') }}</p>{%- endif -%}
+        {%- for error in errors -%}
+          <p>{{ error }}</p>{{- '' -}}
+        {%- endfor -%}
+      </div>{{- '' -}}
+    </td>
+  {%- else -%}
+    <td class="{{ label }}">{% if r %}<span>{{ r }}</span>
+  {%- endif -%}
+    </td>
+  {%- endif -%}
+{%- endmacro -%}
+
+{%- block head -%}{%- endblock -%}
+{%- block linkto_preferences -%}{%- endblock -%}
+
+{%- block content -%}
+
+  <h1>{{ _('Preferences') }}</h1>
+
+  {%- if request.args.get('preferences_preview_only') == 'true' -%}
+    <div class="dialog-warning-block">
+      <p>{{ _("This is a preview of the settings used by the 'Search URL' you used to get here.") }}</p>
+      <ul>
+        <li>{{ _('Press save to copy these preferences to your browser.') }}</li>
+        <li>{{ _('Click here to view your browser preferences instead:') }} <a href="{{ url_for('preferences') }}">/preferences</a></li>
+      </ul>
+    </div>
+  {%- endif -%}
+
+  <form id="search_form" method="post" action="{{ url_for('preferences') }}" autocomplete="off">
+    {{- tabs_open() -}}
+
+    {# tab: general #}
+
+    {{- tab_header('maintab', 'general', _('General'), True) -}}
+    {%- if 'categories' not in locked_preferences -%}
+      <fieldset>
+        <legend>{{- _('Default categories') -}}</legend>
+        {% set display_tooltip = false %}
+        {% include 'advanced/categories.html' %}
+      </fieldset>
+    {%- endif -%}
+    {%- if 'language' not in locked_preferences -%}
+      {%- include 'advanced/preferences/language.html' -%}
+    {% endif %}
+    {%- if 'autocomplete' not in locked_preferences -%}
+      {%- include 'advanced/preferences/autocomplete.html' -%}
+    {%- endif -%}
+    {%- if 'favicon' not in locked_preferences -%}
+      {%- include 'advanced/preferences/favicon.html' -%}
+    {%- endif -%}
+    {% if 'safesearch' not in locked_preferences %}
+      {%- include 'advanced/preferences/safesearch.html' -%}
+    {%- endif -%}
+    {%- include 'advanced/preferences/tokens.html' -%}
+    {{- plugin_preferences('general') -}}
+
+
+    {%- if 'doi_resolver' not in locked_preferences %}
+      {%- include 'advanced/preferences/doi_resolver.html' -%}
+    {%- endif -%}
+    {{- tab_footer() -}}
+
+    {# tab: ui #}
+
+    {{- tab_header('maintab', 'ui', _('User interface')) -}}
+    {%- if 'locale' not in locked_preferences -%}
+      {%- include 'advanced/preferences/ui_locale.html' -%}
+    {%- endif -%}
+    {%- if 'theme' not in locked_preferences -%}
+      {%- include 'advanced/preferences/theme.html' -%}
+    {%- endif -%}
+    {%- if 'results_on_new_tab' not in locked_preferences -%}
+      {%- include 'advanced/preferences/results_on_new_tab.html' -%}
+    {%- endif -%}
+    {%- if 'search_on_category_select' not in locked_preferences -%}
+      {%- include 'advanced/preferences/search_on_category_select.html' -%}
+    {%- endif -%}
+    {%- include 'advanced/preferences/hotkeys.html' -%}
+    {%- include 'advanced/preferences/urlformatting.html' -%}
+    {{- plugin_preferences('ui') -}}
+    {{- tab_footer() -}}
+
+    {# tab: privacy #}
+
+    {{- tab_header('maintab', 'privacy', _('Privacy')) -}}
+    {%- if 'method' not in locked_preferences -%}
+      {%- include 'advanced/preferences/method.html' -%}
+    {%- endif -%}
+    {%- if 'image_proxy' not in locked_preferences -%}
+      {%- include 'advanced/preferences/image_proxy.html' -%}
+    {%- endif -%}
+    {%- if 'query_in_title' not in locked_preferences -%}
+      {%- include 'advanced/preferences/query_in_title.html' -%}
+    {%- endif -%}
+    {{- plugin_preferences('privacy') -}}
+    {{- tab_footer() -}}
+
+    {# tab: enignes #}
+
+    {{- tab_header('maintab', 'engines', _('Engines')) -}}
+    <p>
+      {{- _('Currently used search engines') -}}
+    </p>
+    {{- tabs_open() -}}
+    {%- include 'advanced/preferences/engines.html' -%}
+    {{- tabs_close() -}}
+    {{- tab_footer() -}}
+
+    {# tab: query #}
+
+    {{- tab_header('maintab', 'query', _('Special Queries')) -}}
+    {%- if answer_storage -%}
+      {%- include 'advanced/preferences/answerers.html' -%}
+    {%- endif -%}
+    {{- tab_footer() -}}
+
+    {# tab: cookies #}
+
+    {{- tab_header('maintab', 'cookies', _('Cookies')) -}}
+    {%- include 'advanced/preferences/cookies.html' -%}
+    {{- tab_footer() -}}
+    {{- tabs_close() -}}
+
+    {# footer with save & reset buttons #}
+
+    {%- include 'advanced/preferences/footer.html' -%}
+
+  </form>{{- '' -}}
+{%- endblock -%}

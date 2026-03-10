@@ -1,0 +1,62 @@
+{% macro show_weather_data(answer, data) %}
+  <table>
+    <colgroup>
+      <col span="1" class="thumbnail">
+      <col span="1" class="title">
+      <col span="1" class="measured">
+      <col span="1" class="title">
+      <col span="1" class="measured">
+    </colgroup>
+    <tbody>
+      <tr>
+        <td rowspan="4">
+          {%- if data.url %}<img class="symbol" src="{{ data.url }}" title="{{ data.summary }}">{% endif -%}
+        </td>
+      </tr>
+      <tr>
+        <td>{{ _("Temperature") }}:</td>
+        <td>{{ data.temperature.l10n(locale=data.location) }}</td>
+        <td>{{ _("Feels Like") }}:</td>
+        <td>{{ data.feels_like.l10n(locale=data.location) }}</td>
+      </tr>
+      <tr>
+        <td>{{ _("Wind") }}:</td>
+        <td>{{ data.wind_from.l10n(locale=data.location) }}: {{ data.wind_speed.l10n(locale=data.location) }}</td>
+        <td>{{ _("Pressure") }}:</td>
+        <td>{{ data.pressure.l10n(locale=data.location) }}</td>
+      </tr>
+      <tr>
+        <td>{{_("Humidity")}}:</td>
+        <td>{{ data.humidity.l10n(locale=data.location) }}</td>
+        <td></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+{% endmacro %}
+
+<details class="weather">
+  <summary>
+    <div class="summary"> {{ answer.current.summary }}</div>
+    {{ show_weather_data(answer, answer.current) }}
+  </summary>
+  <div class="weather-forecast">
+    {%- if answer.forecasts -%}
+      <div class="answer-weather-forecasts">
+        {%- for forecast in answer.forecasts -%}
+            <div class="summary">{{ forecast.datetime.l10n(locale=answer.current.location,fmt="short") }} {{ forecast.summary }}</div>
+            {{ show_weather_data(answer, forecast) }}
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+  </div>
+</details>
+
+{%- if answer.url -%}
+    <a href="{{ answer.url }}" class="answer-url"
+        {%- if results_on_new_tab %}target="_blank" rel="noopener noreferrer"{%- else -%}rel="noreferrer"{%- endif -%}>
+        {{ answer.service }}
+    </a>
+{%- else -%}
+    <span class="answer-url">{{ answer.service }}</span>
+{% endif -%}

@@ -1,0 +1,34 @@
+<div id="engines_msg">
+  {% if (not results and not answers) or not max_response_time %}
+  <details class="sidebar-collapsible" open>
+    <summary class="title" id="engines_msg-title">{{ _('Messages from the search engines') }}</summary>
+  {% else %}
+  <details class="sidebar-collapsible">
+    <summary class="title" id="engines_msg-title">{{ _('Response time') }}: {{ max_response_time | round(1) }} {{ _('seconds') }}</summary>
+  {% endif %}
+    <table class="engine-stats" id="engines_msg-table">
+      {%- for engine_name, error_type in unresponsive_engines -%}
+      <tr>
+        <td class="engine-name">
+          <a href="{{ url_for('stats', engine=engine_name|e) }}"
+             title="{{ _('View error logs and submit a bug report') }}">
+             {{- engine_name -}}
+          </a>
+        </td>
+        <td class="response-error">{{- error_type -}}</td>
+      </tr>
+      {%- endfor -%}
+      {%- for engine_name, response_time in timings -%}
+      <tr>
+        <td class="engine-name"><a href="{{ url_for('stats', engine=engine_name|e) }}">{{ engine_name }}</a></td>
+        <td class="response-time">
+          <div class="bar-chart-value">{{- response_time | round(1) -}}</div>
+          <div class="bar-chart-graph" aria-labelledby="{{engine_name}}_time" aria-hidden="true">
+            <div class="bar-chart-bar bar{{ (100 * response_time / max_response_time) | round | int }}"></div>
+          </div>
+        </td>
+      </tr>
+      {%- endfor -%}
+    </table>
+  </details>
+</div>

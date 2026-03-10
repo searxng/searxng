@@ -1,0 +1,72 @@
+// SPDX-License-Identifier: AGPL-3.0-or-later
+
+/*
+  Layout of the Paper result class
+*/
+
+.result-paper {
+  .attributes {
+    display: table;
+    border-spacing: 0.125rem;
+
+    div {
+      display: table-row;
+
+      span {
+        font-size: 0.9rem;
+        margin-top: 0.25rem;
+        display: table-cell;
+
+        time {
+          font-size: 0.9rem;
+        }
+      }
+
+      span:first-child {
+        color: var(--color-base-font);
+        min-width: 10rem;
+      }
+
+      span:nth-child(2) {
+        color: var(--color-result-publishdate-font);
+      }
+    }
+  }
+
+  .content {
+    margin-top: 0.25rem;
+  }
+
+  .comments {
+    font-size: 0.9rem;
+    margin: 0.25rem 0 0 0;
+    padding: 0;
+    overflow-wrap: break-word;
+    line-height: 1.24;
+    font-style: italic;
+  }
+}
+
+@media screen and (max-width: @phone) {
+  .result-paper {
+    .attributes {
+      display: block;
+
+      div {
+        display: block;
+
+        span {
+          display: inline;
+        }
+
+        span:first-child {
+          font-weight: bold;
+        }
+
+        span:nth-child(2) {
+          .ltr-margin-left(0.5rem);
+        }
+      }
+    }
+  }
+}

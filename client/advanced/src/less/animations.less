@@ -1,0 +1,21 @@
+// SPDX-License-Identifier: AGPL-3.0-or-later
+
+.dialog-modal {
+  animation-name: dialogmodal;
+  animation-duration: 0.13s;
+
+  @keyframes dialogmodal {
+    0% {
+      opacity: 0;
+    }
+
+    50% {
+      opacity: 0.5;
+      transform: translate(-50%, -50%) scale(1.05);
+    }
+  }
+}
+
+input.checkbox-onoff[type="checkbox"]::before {
+  transition: left 0.25s;
+}

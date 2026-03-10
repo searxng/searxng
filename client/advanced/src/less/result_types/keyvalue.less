@@ -1,0 +1,38 @@
+// SPDX-License-Identifier: AGPL-3.0-or-later
+
+/*
+  Layout of the KeyValue result class
+*/
+
+#main_results .result-keyvalue {
+  caption {
+    padding: 0.8rem 0.5rem;
+    font-style: italic;
+    caption-side: bottom;
+    background-color: var(--color-result-keyvalue-table);
+  }
+
+  .col-key {
+    width: 25%;
+  }
+
+  table {
+    word-break: break-all;
+    table-layout: fixed;
+    width: 100%;
+    background-color: var(--color-result-keyvalue-table);
+  }
+
+  tr.odd {
+    background-color: var(--color-result-keyvalue-odd);
+  }
+
+  tr.even {
+    background-color: var(--color-result-keyvalue-even);
+  }
+
+  th,
+  td {
+    padding: 0.3rem 0.5rem;
+  }
+}

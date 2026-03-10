@@ -1,0 +1,56 @@
+// SPDX-License-Identifier: AGPL-3.0-or-later
+
+@import "../../../generated/pygments.less";
+
+.codelines {
+  margin: @results-margin 0 0 0;
+  padding: @result-padding 0 0 0;
+}
+
+.code-highlight-sxng() {
+  .code-highlight {
+    pre {
+      overflow: auto;
+      margin: 0;
+      padding: 0 0 0.75rem 0;
+    }
+
+    .linenos {
+      user-select: none;
+      cursor: default;
+
+      &::selection {
+        background: transparent;
+      }
+
+      margin-right: 8px;
+      text-align: right;
+    }
+
+    span.linenos {
+      color: var(--color-line-number);
+    }
+
+    .err {
+      // The code view in the result list should not act as a code-checker.
+      border: none;
+      color: inherit;
+    }
+  }
+}
+
+.code-highlight-sxng();
+
+/// Dark Theme (autoswitch based on device pref)
+@media (prefers-color-scheme: dark) {
+  :root.theme-auto {
+    .code-highlight-dark();
+    .code-highlight-sxng();
+  }
+}
+
+// Dark Theme by preferences
+:root.theme-dark {
+  .code-highlight-dark();
+  .code-highlight-sxng();
+}

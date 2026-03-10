@@ -1,0 +1,41 @@
+// SPDX-License-Identifier: AGPL-3.0-or-later
+
+@import (inline) "../../node_modules/normalize.css/normalize.css";
+@import "definitions.less";
+@import "mixins.less";
+
+// Reset padding and margin
+html,
+body,
+main {
+  padding: 0;
+  margin: 0;
+}
+
+html {
+  font-family: sans-serif;
+  font-size: 0.9em;
+  .text-size-adjust;
+
+  color: var(--color-base-font);
+  background-color: var(--color-base-background);
+
+  scroll-behavior: smooth;
+}
+
+body {
+  margin-inline: 1rem;
+}
+
+a {
+  text-decoration: none;
+  color: var(--color-url-font);
+
+  &:visited {
+    color: var(--color-url-visited-font);
+
+    .highlight {
+      color: var(--color-url-visited-font);
+    }
+  }
+}

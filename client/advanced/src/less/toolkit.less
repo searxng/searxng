@@ -1,0 +1,640 @@
+// SPDX-License-Identifier: AGPL-3.0-or-later
+
+// other solution :  http://stackoverflow.com/questions/1577598/how-to-hide-parts-of-html-when-javascript-is-disabled/13857783#13857783
+
+// stylelint-disable no-descending-specificity
+
+html.no-js .hide_if_nojs {
+  display: none;
+}
+
+html.js .show_if_nojs {
+  display: none;
+}
+
+.center {
+  text-align: center;
+}
+
+.right {
+  float: right;
+}
+
+.left {
+  float: left;
+}
+
+.invisible {
+  display: none !important;
+}
+
+.list-unstyled {
+  list-style-type: none;
+
+  li {
+    margin-top: 4px;
+    margin-bottom: 4px;
+  }
+}
+
+.danger {
+  background-color: var(--color-error-background);
+}
+
+.warning {
+  background: var(--color-warning-background);
+}
+
+.success {
+  background: var(--color-success-background);
+}
+
+.badge {
+  display: inline-block;
+  color: var(--color-toolkit-badge-font);
+  background-color: var(--color-toolkit-badge-background);
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: baseline;
+  min-width: 10px;
+  padding: 1px 5px;
+  border-radius: 5px;
+}
+
+// kbd
+kbd {
+  padding: 2px 4px;
+  margin: 1px;
+  font-size: 90%;
+  color: var(--color-toolkit-kbd-font);
+  background: var(--color-toolkit-kbd-background);
+}
+
+// table
+table {
+  width: 100%;
+
+  &.striped {
+    tr {
+      border-bottom: 1px solid var(--color-settings-tr-hover);
+    }
+  }
+}
+
+th {
+  padding: 0.4em;
+}
+
+td {
+  padding: 0 4px;
+}
+
+tr {
+  &:hover {
+    background: var(--color-settings-tr-hover) !important;
+  }
+}
+
+// pre
+.pre() {
+  display: block;
+  font-size: 0.8em;
+  word-break: break-all;
+  margin: 0.1em;
+  user-select: all;
+}
+
+div.selectable_url {
+  display: block;
+  border: 1px solid var(--color-result-search-url-border);
+  padding: 4px;
+  color: var(--color-result-search-url-font);
+  margin: 0.1em;
+  overflow: hidden;
+  height: 1.2em;
+  line-height: 1.2em;
+  .rounded-corners-tiny;
+
+  pre {
+    .pre();
+  }
+}
+
+// dialog
+.dialog() {
+  position: relative;
+  display: flex;
+  padding: 1rem;
+  margin: 0 0 1em 0;
+  border: 1px solid var(--color-toolkit-dialog-border);
+  .ltr-text-align-left();
+  .rounded-corners;
+
+  .close {
+    .ltr-float-right();
+    position: relative;
+    top: -3px;
+    color: inherit;
+    font-size: 1.5em;
+  }
+
+  ul,
+  ol,
+  p {
+    margin: 1px 0 0 0;
+  }
+
+  table {
+    width: auto;
+  }
+
+  tr {
+    vertical-align: text-top;
+
+    &:hover {
+      background: transparent !important;
+    }
+  }
+
+  td {
+    padding: 0 1em 0 0;
+    .ltr-padding-right(1rem);
+    .ltr-padding-left(0);
+  }
+
+  h4 {
+    margin-top: 0.3em;
+    margin-bottom: 0.3em;
+  }
+}
+
+.dialog-error {
+  .dialog();
+
+  color: var(--color-error);
+  background: var(--color-error-background);
+  border-color: var(--color-error);
+}
+
+.dialog-error-block {
+  .dialog();
+
+  display: block;
+  color: var(--color-error);
+  background: var(--color-error-background);
+  border-color: var(--color-error);
+}
+
+.dialog-warning {
+  .dialog();
+
+  color: var(--color-warning);
+  background: var(--color-warning-background);
+  border-color: var(--color-warning);
+}
+
+.dialog-warning-block {
+  .dialog();
+
+  display: block;
+  color: var(--color-warning);
+  background: var(--color-warning-background);
+  border-color: var(--color-warning);
+}
+
+.dialog-modal {
+  .dialog();
+
+  display: block;
+  background: var(--color-toolkit-dialog-background);
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  margin: 0 auto;
+  transform: translate(-50%, -50%);
+  z-index: 5000;
+
+  h3 {
+    margin-top: 0;
+  }
+}
+
+// btn-collapse
+.btn-collapse {
+  cursor: pointer;
+}
+
+//
+.scrollx {
+  overflow: auto hidden;
+  display: block;
+  padding: 0;
+  margin: 0;
+  border: none;
+}
+
+/* -- tabs -- */
+.tabs .tabs > label {
+  font-size: 90%;
+}
+
+ul.tabs {
+  border-bottom: 1px solid var(--color-toolkit-tabs-section-border);
+  list-style: none;
+  padding-left: 0;
+
+  li {
+    display: flex;
+  }
+}
+
+.tabs {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+  min-width: 100%;
+
+  & > * {
+    order: 2;
+  }
+
+  & > input[type="radio"] {
+    display: none;
+  }
+
+  & > label,
+  & > li > a {
+    order: 1;
+    padding: 0.7em;
+    margin: 0 0.7em;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    border: solid var(--color-toolkit-tabs-label-border);
+    border-width: 0 0 2px 0;
+    color: unset;
+
+    .disable-user-select();
+
+    cursor: pointer;
+
+    &.active {
+      border-bottom: 2px solid var(--color-categories-item-border-selected);
+      background: var(--color-categories-item-selected);
+      color: var(--color-categories-item-selected-font);
+    }
+  }
+
+  & > label:hover,
+  & > li > a:hover {
+    border-bottom: 2px solid var(--color-categories-item-border-selected);
+  }
+
+  & > section {
+    min-width: 100%;
+    padding: 0.7rem 0;
+    box-sizing: border-box;
+    border-top: 1px solid var(--color-toolkit-tabs-section-border);
+    display: none;
+  }
+
+  // default selection
+  & > label:last-of-type {
+    border-bottom: 2px solid var(--color-categories-item-border-selected);
+    background: var(--color-categories-item-selected);
+    color: var(--color-categories-item-selected-font);
+    letter-spacing: -0.1px;
+  }
+
+  & > section:last-of-type {
+    display: block;
+  }
+}
+
+html body .tabs > input:checked {
+  ~ section {
+    display: none;
+  }
+
+  ~ label {
+    position: inherit;
+    background: inherit;
+    border-bottom: 2px solid transparent;
+    font-weight: normal;
+    color: inherit;
+
+    &:hover {
+      border-bottom: 2px solid var(--color-categories-item-border-selected);
+    }
+  }
+
+  + label {
+    border-bottom: 2px solid var(--color-categories-item-border-selected);
+    background: var(--color-categories-item-selected);
+    color: var(--color-categories-item-selected-font);
+  }
+
+  + label + section {
+    display: block;
+  }
+}
+
+/* -- select -- */
+select {
+  height: 2.4rem;
+  margin-top: 0;
+  .ltr-margin-right(1rem);
+  margin-bottom: 0;
+  .ltr-margin-left(0);
+  padding: 0.2rem !important;
+  color: var(--color-search-font);
+  font-size: 0.9rem;
+  z-index: 100;
+
+  &:hover,
+  &:focus {
+    cursor: pointer;
+  }
+}
+
+@supports ((background-position-x: 100%) and ((appearance: none))) {
+  select {
+    appearance: none;
+    border-width: 0 2rem 0 0;
+    border-color: transparent;
+    background: data-uri("image/svg+xml;charset=UTF-8", @select-light-svg-path)
+      no-repeat;
+    background-position-x: calc(100% + 2rem);
+    background-size: 2rem;
+    background-origin: content-box;
+    background-color: var(--color-toolkit-select-background);
+    outline: medium none;
+    text-overflow: ellipsis;
+    .rounded-corners-tiny;
+
+    &:hover,
+    &:focus {
+      background-color: var(--color-toolkit-select-background-hover);
+    }
+
+    option {
+      background-color: var(--color-base-background);
+    }
+  }
+
+  @media (prefers-color-scheme: dark) {
+    html.theme-auto select,
+    html.theme-dark select {
+      background-image: data-uri(
+        "image/svg+xml;charset=UTF-8",
+        @select-dark-svg-path
+      );
+    }
+  }
+
+  html.theme-dark select {
+    background-image: data-uri(
+      "image/svg+xml;charset=UTF-8",
+      @select-dark-svg-path
+    );
+  }
+}
+
+/* -- checkbox-onoff -- */
+input.checkbox-onoff[type="checkbox"] {
+  appearance: none;
+  cursor: pointer;
+  display: inline-block;
+  width: 2.5em;
+  height: 0.7em;
+  box-shadow: none !important;
+  margin: 0 16px;
+  border-radius: 10px;
+  position: relative;
+
+  /* focus & hover */
+  &:focus,
+  &:hover {
+    outline: none;
+  }
+
+  &:focus::after {
+    content: "";
+    position: absolute;
+    width: 3.5em;
+    height: 1.65em;
+    border: 1px solid var(--color-btn-background);
+    border-radius: 12px;
+    box-shadow: var(--color-btn-background) 0 0 3px;
+    z-index: 1200;
+    top: -0.55em;
+    left: -0.6em;
+  }
+
+  &::before {
+    position: absolute;
+    top: -0.5em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 0.75em;
+    width: 1.875em;
+    height: 1.875em;
+    border-radius: 50%;
+  }
+}
+
+/* check mark
+reversed-checkbox displays unchecked checkedboxes as checked, and vice versa.
+see https://github.com/searxng/searxng/blob/3408d061aab9abc6168fec9bbc6deab71b236dac/searx/templates/simple/preferences.html#L313
+*/
+input.checkbox-onoff[type="checkbox"],
+input.checkbox-onoff.reversed-checkbox[type="checkbox"]:checked {
+  background: var(--color-toolkit-checkbox-onoff-off-background);
+
+  &::before {
+    left: -0.5em;
+    content: "\2715";
+    color: var(--color-toolkit-checkbox-onoff-off-mark-color);
+    background: var(--color-toolkit-checkbox-onoff-off-mark-background);
+  }
+}
+
+input.checkbox-onoff[type="checkbox"]:checked,
+input.checkbox-onoff.reversed-checkbox[type="checkbox"] {
+  background: var(--color-toolkit-checkbox-onoff-on-background);
+
+  &::before {
+    left: calc(100% - 1.5em);
+    content: "\2713";
+    color: var(--color-toolkit-checkbox-onoff-on-mark-color);
+    background: var(--color-toolkit-checkbox-onoff-on-mark-background);
+  }
+}
+
+/* -- checkbox -- */
+@supports (transform: rotate(-45deg)) {
+  input[type="checkbox"]:not(.checkbox-onoff) {
+    appearance: none;
+
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    position: relative;
+    top: 0;
+    left: 0;
+    border: 2px solid var(--color-toolkit-checkbox-input-border);
+    .rounded-corners(0.3em);
+
+    &::after {
+      content: "";
+      width: 9px;
+      height: 5px;
+      position: absolute;
+      top: 3px;
+      left: 2px;
+      border: 3px solid var(--color-toolkit-checkbox-label-border);
+      border-top: none;
+      border-right: none;
+      background: transparent;
+      opacity: 0;
+      transform: rotate(-45deg);
+    }
+
+    &:checked::after {
+      border-color: var(--color-toolkit-checkbox-input-border);
+      opacity: 1;
+    }
+  }
+
+  // disabled : can't be focused, show only the check mark
+  input[type="checkbox"][disabled]:not(.checkbox-onoff) {
+    border: inherit;
+    background-color: transparent !important;
+    cursor: inherit;
+  }
+
+  // if not checked and possible to checked then display a "light" check mark on hover
+  input.checkbox[type="checkbox"]:not(
+      :checked,
+      [disabled],
+      .checkbox-onoff
+    ):hover::after {
+    opacity: 0.5;
+  }
+}
+
+@media screen and (max-width: @phone) {
+  .tabs > label {
+    width: 100%;
+  }
+}
+
+/* -- loader -- */
+.loader,
+.loader::after {
+  border-radius: 50%;
+  width: 2em;
+  height: 2em;
+}
+
+.loader {
+  margin: 1em auto;
+  font-size: 10px;
+  position: relative;
+  text-indent: -9999em;
+  border-top: 0.5em solid var(--color-toolkit-loader-border);
+  border-right: 0.5em solid var(--color-toolkit-loader-border);
+  border-bottom: 0.5em solid var(--color-toolkit-loader-border);
+  border-left: 0.5em solid var(--color-toolkit-loader-borderleft);
+  transform: translateZ(0);
+  animation: load8 1.2s infinite linear;
+}
+
+@keyframes load8 {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* -- engine-tooltip -- */
+.engine-tooltip {
+  display: none;
+  position: absolute;
+  padding: 0.5rem 1rem;
+  margin: 0 0 0 2rem;
+  border: 1px solid var(--color-toolkit-engine-tooltip-border);
+  background: var(--color-toolkit-engine-tooltip-background);
+  font-size: 14px;
+  font-weight: normal;
+  z-index: 5000;
+  text-align: left;
+  .rounded-corners;
+}
+
+th:hover .engine-tooltip,
+td:hover .engine-tooltip,
+.engine-tooltip:hover {
+  display: inline-block;
+}
+
+/* -- stacked bar chart -- */
+.stacked-bar-chart {
+  margin: 0;
+  padding: 0 0.125rem 0 4rem;
+  width: 100%;
+  flex-flow: row nowrap;
+  align-items: center;
+  display: inline-flex;
+}
+
+.stacked-bar-chart-value {
+  width: 3rem;
+  display: inline-block;
+  position: absolute;
+  padding: 0 0.5rem;
+  text-align: right;
+}
+
+.stacked-bar-chart-base {
+  display: flex;
+  flex-shrink: 0;
+  flex-grow: 0;
+  flex-basis: unset;
+}
+
+.stacked-bar-chart-median {
+  .stacked-bar-chart-base();
+
+  background: var(--color-base-font);
+  border: 1px solid rgb(var(--color-base-font-rgb), 0.9);
+  padding: 0.3rem 0;
+}
+
+.stacked-bar-chart-rate80 {
+  .stacked-bar-chart-base();
+
+  background: transparent;
+  border: 1px solid rgb(var(--color-base-font-rgb), 0.3);
+  padding: 0.3rem 0;
+}
+
+.stacked-bar-chart-rate95 {
+  .stacked-bar-chart-base();
+
+  background: transparent;
+  border-bottom: 1px dotted rgb(var(--color-base-font-rgb), 0.5);
+  padding: 0;
+}
+
+.stacked-bar-chart-rate100 {
+  .stacked-bar-chart-base();
+
+  background: transparent;
+  border-left: 1px solid rgb(var(--color-base-font-rgb), 0.9);
+  padding: 0.4rem 0;
+  width: 1px;
+}

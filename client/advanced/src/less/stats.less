@@ -1,0 +1,106 @@
+// SPDX-License-Identifier: AGPL-3.0-or-later
+
+.engine-stats {
+  border-spacing: 0;
+  border-collapse: collapse;
+
+  tr td,
+  tr th {
+    border-bottom: 1px solid var(--color-result-border);
+    padding: 0.25rem;
+  }
+
+  table.engine-tooltip {
+    border-spacing: 0;
+    border-collapse: collapse;
+
+    td,
+    th {
+      border: none;
+    }
+  }
+
+  .engine-name {
+    width: 20rem;
+  }
+
+  .engine-score {
+    width: 7rem;
+    text-align: right;
+  }
+
+  .engine-reliability {
+    text-align: right;
+  }
+}
+
+table.engine-error th.engine-error-type,
+table.engine-error td.engine-error-type,
+failed-test {
+  width: 10rem;
+}
+
+.engine-errors {
+  margin-top: 3rem;
+
+  table.engine-error {
+    max-width: 1280px;
+    margin: 1rem 0 3rem 0;
+    border: 1px solid var(--color-result-border);
+    .ltr-text-align-left();
+
+    tr th,
+    tr td {
+      padding: 0.5rem;
+    }
+
+    & span.log_parameters {
+      border-right: 1px solid solid var(--color-result-border);
+      padding: 0 1rem 0 0;
+      margin: 0 0 0 0.5rem;
+    }
+  }
+}
+
+.bar-chart-value {
+  width: 3em;
+  display: inline-block;
+  text-align: right;
+  padding-right: 0.5rem;
+}
+
+.bar-chart-graph {
+  width: calc(100% - 5rem);
+  display: inline-block;
+}
+
+.bar-chart-bar {
+  border: 3px solid var(--color-bar-chart-primary);
+  margin: 1px 0;
+}
+
+.bar-chart-serie1 {
+  border: 3px solid var(--color-bar-chart-primary);
+  margin: 1px 0;
+  float: left;
+}
+
+.bar-chart-serie2 {
+  border: 3px solid var(--color-bar-chart-secondary);
+  margin: 1px 0;
+  float: left;
+}
+
+.bar0 {
+  width: 0;
+  border: 0;
+}
+
+.generate-bar(100);
+
+.generate-bar(@n, @i: 1) when (@i =< @n) {
+  .bar@{i} {
+    width: (@i * 100% / @n);
+  }
+  .generate-bar(@n, (@i + 1));
+}

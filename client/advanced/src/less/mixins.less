@@ -1,0 +1,36 @@
+// SPDX-License-Identifier: AGPL-3.0-or-later
+
+// Mixins
+.text-size-adjust (@property: 100%) {
+  text-size-adjust: @property;
+}
+
+.rounded-corners (@radius: 10px) {
+  border-radius: @radius;
+}
+
+.rounded-right-corners (@radius: 0 10px 10px 0) {
+  border-radius: @radius;
+}
+
+.rounded-corners-tiny (@radius: 5px) {
+  border-radius: @radius;
+}
+
+// disable user selection
+.disable-user-select () {
+  user-select: none;
+}
+
+.show-content-button() {
+  padding: 5px 10px;
+  .rounded-corners-tiny;
+  background: var(--color-show-btn-background);
+  color: var(--color-show-btn-font);
+  cursor: pointer;
+
+  &:hover {
+    background: var(--color-btn-background);
+    color: var(--color-btn-font);
+  }
+}

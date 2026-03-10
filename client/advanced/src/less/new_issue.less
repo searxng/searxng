@@ -1,0 +1,38 @@
+// SPDX-License-Identifier: AGPL-3.0-or-later
+
+.stats_endpoint {
+  .github-issue-button {
+    display: block;
+    font-size: 16px;
+  }
+
+  .issue-hide {
+    display: none;
+  }
+
+  input[type="checked"] {
+    position: absolute;
+  }
+
+  label {
+    margin: 1rem 1rem 1rem 0;
+  }
+
+  .step_content {
+    margin: 1rem 1rem 1rem 2rem;
+  }
+
+  .step1,
+  .step2 {
+    visibility: hidden;
+  }
+
+  .step1_delay {
+    transition: visibility 0s linear 4s;
+  }
+
+  #step1:checked ~ .step1,
+  #step2:checked ~ .step2 {
+    visibility: visible;
+  }
+}
