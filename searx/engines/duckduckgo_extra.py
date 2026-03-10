@@ -14,7 +14,13 @@ from searx.utils import get_embeded_stream_url, html_to_text, gen_useragent, ext
 from searx.network import get  # see https://github.com/searxng/searxng/issues/762
 
 from searx.engines.duckduckgo import fetch_traits  # pylint: disable=unused-import
-from searx.engines.duckduckgo import get_ddg_lang, get_vqd, set_vqd
+from searx.engines.duckduckgo import (
+    get_ddg_lang,
+    get_now_ms,
+    get_vqd,
+    is_ddg_globally_blocked,
+    set_vqd,
+)
 
 if t.TYPE_CHECKING:
     from searx.extended_types import SXNG_Response
@@ -47,13 +53,19 @@ _HTTP_User_Agent: str = gen_useragent()
 def init(engine_settings: dict[str, t.Any]):
 
     if engine_settings["ddg_category"] not in ["images", "videos", "news"]:
-        raise ValueError(f"Unsupported DuckDuckGo category: {engine_settings['ddg_category']}")
+        raise ValueError(
+            f"Unsupported DuckDuckGo category: {engine_settings['ddg_category']}"
+        )
 
 
 def fetch_vqd(
     query: str,
     params: "OnlineParams",
 ):
+    now_ms = get_now_ms()
+    if is_ddg_globally_blocked(now_ms):
+        logger.debug("DDG cooldown active: skip vqd fetch for %s request", ddg_category)
+        return ""
 
     logger.debug("fetch_vqd: request value from from duckduckgo.com")
     resp = get(
@@ -68,7 +80,9 @@ def fetch_vqd(
         if value:
             logger.debug("vqd value from duckduckgo.com request: '%s'", value)
         else:
-            logger.error("vqd: can't parse value from ddg response (return empty string)")
+            logger.error(
+                "vqd: can't parse value from ddg response (return empty string)"
+            )
             return ""
     else:
         logger.error("vqd: got HTTP %s from duckduckgo.com", resp.status_code)
@@ -87,6 +101,12 @@ def request(query: str, params: "OnlineParams") -> None:
         params["url"] = None
         return
 
+    now_ms = get_now_ms()
+    if is_ddg_globally_blocked(now_ms):
+        logger.debug("DDG cooldown active: skip %s request", ddg_category)
+        params["url"] = None
+        return
+
     # HTTP headers
     # ============
 
@@ -94,7 +114,13 @@ def request(query: str, params: "OnlineParams") -> None:
     # The vqd value is generated from the query and the UA header. To be able to
     # reuse the vqd value, the UA header must be static.
     headers["User-Agent"] = _HTTP_User_Agent
-    vqd = get_vqd(query=query, params=params) or fetch_vqd(query=query, params=params)
+    vqd = get_vqd(query=query, params=params)
+    if not vqd:
+        vqd = fetch_vqd(query=query, params=params)
+    if not vqd:
+        logger.debug("DDG vqd unavailable: skip %s request", ddg_category)
+        params["url"] = None
+        return
 
     headers["Accept"] = "*/*"
     headers["Referer"] = "https://duckduckgo.com/"
@@ -137,7 +163,9 @@ def request(query: str, params: "OnlineParams") -> None:
         params["cookies"]["p"] = safe_search  # "-2", "1"
         args["p"] = safe_search
 
-    params["url"] = f"https://duckduckgo.com/{search_path_map[ddg_category]}.js?{urlencode(args)}"
+    params["url"] = (
+        f"https://duckduckgo.com/{search_path_map[ddg_category]}.js?{urlencode(args)}"
+    )
 
     logger.debug("param headers: %s", params["headers"])
     logger.debug("param data: %s", params["data"])
@@ -146,38 +174,38 @@ def request(query: str, params: "OnlineParams") -> None:
 
 def _image_result(result):
     return {
-        'template': 'images.html',
-        'url': result['url'],
-        'title': result['title'],
-        'content': '',
-        'thumbnail_src': result['thumbnail'],
-        'img_src': result['image'],
-        'resolution': '%s x %s' % (result['width'], result['height']),
-        'source': result['source'],
+        "template": "images.html",
+        "url": result["url"],
+        "title": result["title"],
+        "content": "",
+        "thumbnail_src": result["thumbnail"],
+        "img_src": result["image"],
+        "resolution": "%s x %s" % (result["width"], result["height"]),
+        "source": result["source"],
     }
 
 
 def _video_result(result):
     return {
-        'template': 'videos.html',
-        'url': result['content'],
-        'title': result['title'],
-        'content': result['description'],
-        'thumbnail': result['images'].get('small') or result['images'].get('medium'),
-        'iframe_src': get_embeded_stream_url(result['content']),
-        'source': result['provider'],
-        'length': result['duration'],
-        'metadata': result.get('uploader'),
+        "template": "videos.html",
+        "url": result["content"],
+        "title": result["title"],
+        "content": result["description"],
+        "thumbnail": result["images"].get("small") or result["images"].get("medium"),
+        "iframe_src": get_embeded_stream_url(result["content"]),
+        "source": result["provider"],
+        "length": result["duration"],
+        "metadata": result.get("uploader"),
     }
 
 
 def _news_result(result):
     return {
-        'url': result['url'],
-        'title': result['title'],
-        'content': html_to_text(result['excerpt']),
-        'source': result['source'],
-        'publishedDate': datetime.fromtimestamp(result['date']),
+        "url": result["url"],
+        "title": result["title"],
+        "content": html_to_text(result["excerpt"]),
+        "source": result["source"],
+        "publishedDate": datetime.fromtimestamp(result["date"]),
     }
 
 
@@ -185,12 +213,12 @@ def response(resp):
     results = []
     res_json = resp.json()
 
-    for result in res_json['results']:
-        if ddg_category == 'images':
+    for result in res_json["results"]:
+        if ddg_category == "images":
             results.append(_image_result(result))
-        elif ddg_category == 'videos':
+        elif ddg_category == "videos":
             results.append(_video_result(result))
-        elif ddg_category == 'news':
+        elif ddg_category == "news":
             results.append(_news_result(result))
         else:
             raise ValueError(f"Invalid duckduckgo category: {ddg_category}")
