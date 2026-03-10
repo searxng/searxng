@@ -12,7 +12,7 @@
    https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/Data_URIs
 """
 
-from urllib.parse import urlencode, urlparse, parse_qs
+from urllib.parse import urlencode, urlparse, parse_qs, unquote
 from lxml import html
 
 from searx.utils import (
@@ -100,14 +100,23 @@ def response(resp):
     # parse results
     for result in result_divs:
         title = extract_text(
-            eval_xpath_getindex(result, './/h3[contains(@class, "LC20lb")]', 0, default=None), allow_none=True
+            eval_xpath_getindex(result, './/h3[contains(@class, "LC20lb")] | .//div[@role="heading"]', 0, default=None),
+            allow_none=True,
         )
-        url = eval_xpath_getindex(result, './/a[@jsname="UWckNb"]/@href', 0, default=None)
+        url = eval_xpath_getindex(
+            result, './/a[@jsname="UWckNb"]/@href | .//a[contains(@href, "/url?q=")]/@href', 0, default=None
+        )
+        if url and url.startswith('/url?q='):
+            url = unquote(url[7:].split('&sa=U')[0])
+
         content = extract_text(
             eval_xpath_getindex(result, './/div[contains(@class, "ITZIwc")]', 0, default=None), allow_none=True
         )
         pub_info = extract_text(
-            eval_xpath_getindex(result, './/div[contains(@class, "gqF9jc")]', 0, default=None), allow_none=True
+            eval_xpath_getindex(
+                result, './/div[contains(@class, "gqF9jc")] | .//div[contains(@class, "WRu9Cd")]', 0, default=None
+            ),
+            allow_none=True,
         )
         # Broader XPath to find any <img> element
         thumbnail = eval_xpath_getindex(result, './/img/@src', 0, default=None)

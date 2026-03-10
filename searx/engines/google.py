@@ -379,7 +379,11 @@ def response(resp: "SXNG_Response"):
                     title,
                 )
                 continue
-            url = unquote(raw_url[7:].split("&sa=U")[0])  # remove the google redirector
+
+            if raw_url.startswith('/url?q='):
+                url = unquote(raw_url[7:].split("&sa=U")[0])  # remove the google redirector
+            else:
+                url = raw_url
 
             content_nodes = eval_xpath(result, './/div[contains(@data-sncf, "1")]')
             for item in content_nodes:
@@ -388,24 +392,17 @@ def response(resp: "SXNG_Response"):
 
             content = extract_text(content_nodes)
 
-            if not content:
-                logger.debug(
-                    'ignoring item from the result_xpath list: missing content of title "%s"',
-                    title,
-                )
-                continue
-
-            thumbnail = content_nodes[0].xpath(".//img/@src")
+            thumbnail = result.xpath(".//img/@src")
             if thumbnail:
                 thumbnail = thumbnail[0]
                 if thumbnail.startswith("data:image"):
-                    img_id = content_nodes[0].xpath(".//img/@id")
+                    img_id = result.xpath(".//img/@id")
                     if img_id:
                         thumbnail = data_image_map.get(img_id[0])
             else:
                 thumbnail = None
 
-            results.append({"url": url, "title": title, "content": content, "thumbnail": thumbnail})
+            results.append({"url": url, "title": title, "content": content or '', "thumbnail": thumbnail})
 
         except Exception as e:  # pylint: disable=broad-except
             logger.error(e, exc_info=True)
