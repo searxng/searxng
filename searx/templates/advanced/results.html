@@ -207,10 +207,8 @@
 
     <div id="urls" role="main">
     {% for result in results %}
-        {% if result.open_group and not only_template %}<div class="template_group_{{ result['template']|replace('.html', '') }}">{% endif %}
         {% set index = loop.index %}
         {% include get_result_template(theme, result['template']) %}
-        {% if result.close_group and not only_template %}</div>{% endif %}
     {% endfor %}
     {% if not results and not answers %}
         {% include 'advanced/messages/no_results.html' %}
@@ -219,15 +217,17 @@
 
     <nav id="pagination">
         {% if pageno > 1 %}
-            <form method="{{ method or 'POST' }}" action="{{ url_for('search') }}" class="pagination_form">
+            <form method="{{ method or 'POST' }}" action="{{ url_for('search') }}" class="pagination_form previous_page">
                 {{ engine_data_form(engine_data) }}
                 <input type="hidden" name="q" value="{{ q|e }}">
-                <input type="hidden" name="category_{{ selected_categories[0] }}" value="1" >
+                {% for category in selected_categories %}
+                <input type="hidden" name="category_{{ category }}" value="1" >
+                {% endfor %}
                 <input type="hidden" name="pageno" value="{{ pageno - 1 }}" >
                 <input type="hidden" name="language" value="{{ current_language }}" >
                 <input type="hidden" name="time_range" value="{{ time_range }}" >
                 <input type="hidden" name="safesearch" value="{{ safesearch }}" >
-                <input type="hidden" name="results_per_page" value="{{ results_per_page }}" >
+                {% if results_per_page %}<input type="hidden" name="results_per_page" value="{{ results_per_page }}" >{% endif %}
                 <input type="hidden" name="theme" value="{{ theme }}" >
                 <button type="submit" role="link">< {{ _('Previous page') }}</button>
             </form>
@@ -237,15 +237,17 @@
         {% set start_page = [1, pageno - 4]|max %}
         {% set end_page = start_page + 9 %}
         {% for x in range(start_page, end_page + 1) %}
-            <form method="{{ method or 'POST' }}" action="{{ url_for('search') }}" class="pagination_form">
+            <form method="{{ method or 'POST' }}" action="{{ url_for('search') }}" class="pagination_form page_number">
                 {{ engine_data_form(engine_data) }}
                 <input type="hidden" name="q" value="{{ q|e }}">
-                <input type="hidden" name="category_{{ selected_categories[0] }}" value="1" >
+                {% for category in selected_categories %}
+                <input type="hidden" name="category_{{ category }}" value="1" >
+                {% endfor %}
                 <input type="hidden" name="pageno" value="{{ x }}" >
                 <input type="hidden" name="language" value="{{ current_language }}" >
                 <input type="hidden" name="time_range" value="{{ time_range }}" >
                 <input type="hidden" name="safesearch" value="{{ safesearch }}" >
-                <input type="hidden" name="results_per_page" value="{{ results_per_page }}" >
+                {% if results_per_page %}<input type="hidden" name="results_per_page" value="{{ results_per_page }}" >{% endif %}
                 <input type="hidden" name="theme" value="{{ theme }}" >
                 {% if x == pageno %}
                 <input role="link" class="page_number_current" type="button" value="{{ x }}">
@@ -257,24 +259,24 @@
         </div>
 
         {% if paging %}
-            <form method="{{ method or 'POST' }}" action="{{ url_for('search') }}" class="pagination_form">
+            <form method="{{ method or 'POST' }}" action="{{ url_for('search') }}" class="pagination_form next_page">
                 {{ engine_data_form(engine_data) }}
                 <input type="hidden" name="q" value="{{ q|e }}">
-                <input type="hidden" name="category_{{ selected_categories[0] }}" value="1" >
+                {% for category in selected_categories %}
+                <input type="hidden" name="category_{{ category }}" value="1" >
+                {% endfor %}
                 <input type="hidden" name="pageno" value="{{ pageno + 1 }}" >
                 <input type="hidden" name="language" value="{{ current_language }}" >
                 <input type="hidden" name="time_range" value="{{ time_range }}" >
                 <input type="hidden" name="safesearch" value="{{ safesearch }}" >
-                <input type="hidden" name="results_per_page" value="{{ results_per_page }}" >
+                {% if results_per_page %}<input type="hidden" name="results_per_page" value="{{ results_per_page }}" >{% endif %}
                 <input type="hidden" name="theme" value="{{ theme }}" >
                 <button type="submit" role="link">{{ _('Next page') }} ></button>
             </form>
         {% endif %}
     </nav>
-    {% if not only_template %}
     <div id="backToTop">
-        <a href="#" aria-label="{{ _('back to top') }}" title="{{ _('back to top') }}">{{ icon('chevron-up-outline') }}</a>
+        <a href="#" aria-label="{{ _('back to top') }}" title="{{ _('back to top') }}">{{ icon_small('navigate-up') }}</a>
     </div>
-    {% endif %}
 </div>
 {% endblock %}

@@ -211,6 +211,8 @@ class MapSetting(Setting):
 
     def parse(self, data: str):
         """Parse and validate ``data`` and store the result at ``self.value``"""
+        if data == '':
+            return
 
         if data not in self.map:
             raise ValidationException('Invalid choice: {0}'.format(data))
