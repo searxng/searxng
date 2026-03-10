@@ -7,7 +7,6 @@ from searx.exceptions import SearxParameterException
 from searx.webutils import VALID_LANGUAGE_CODE
 from searx.query import RawTextQuery
 from searx.engines import categories, engines
-from searx import settings
 from searx.search.models import SearchQuery, EngineRef
 from searx.preferences import Preferences, is_locked
 
@@ -219,6 +218,31 @@ def parse_engine_data(form):
     return engine_data
 
 
+def parse_video_results_per_page(preferences, raw_text_query, query_engineref_list):
+    is_video_search = False
+    if query_engineref_list:
+        all_videos = True
+        for engineref in query_engineref_list:
+            engine = engines.get(engineref.name)
+            if not engine or 'videos' not in getattr(engine, 'categories', []):
+                all_videos = False
+                break
+        if all_videos:
+            is_video_search = True
+
+    if not is_video_search and ('!gov' in raw_text_query.getFullQuery() or '!videos' in raw_text_query.getFullQuery()):
+        is_video_search = True
+
+    results_per_page = None
+    if is_video_search:
+        results_per_page = preferences.key_value_settings['results_per_page'].get_value()
+        # Ensure we have a default if it's somehow not set
+        if not results_per_page:
+            results_per_page = 10
+
+    return is_video_search, results_per_page
+
+
 def get_search_query_from_webapp(
     preferences: Preferences, form: Dict[str, str]
 ) -> Tuple[SearchQuery, RawTextQuery, List[EngineRef], List[EngineRef], str]:
@@ -281,28 +305,7 @@ def get_search_query_from_webapp(
         query_engineref_list, preferences
     )
 
-    # results per page (Only for videos)
-    is_video_search = False
-    if query_engineref_list:
-        all_videos = True
-        for engineref in query_engineref_list:
-            engine = engines.get(engineref.name)
-            if not engine or 'videos' not in getattr(engine, 'categories', []):
-                all_videos = False
-                break
-        if all_videos:
-            is_video_search = True
-
-    if not is_video_search and ('!gov' in raw_text_query.getFullQuery() or '!videos' in raw_text_query.getFullQuery()):
-        is_video_search = True
-
-    if is_video_search:
-        results_per_page = preferences.key_value_settings['results_per_page'].get_value()
-        # Ensure we have a default if it's somehow not set
-        if not results_per_page:
-            results_per_page = 10
-    else:
-        results_per_page = None
+    is_video_search, results_per_page = parse_video_results_per_page(preferences, raw_text_query, query_engineref_list)
 
     return (
         SearchQuery(
