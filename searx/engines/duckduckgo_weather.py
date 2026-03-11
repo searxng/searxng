@@ -17,6 +17,11 @@ from searx.result_types import EngineResults
 from searx.extended_types import SXNG_Response
 from searx import weather
 
+if t.TYPE_CHECKING:
+    from searx.search.processors import OnlineParams
+
+__all__ = ["fetch_traits"]
+
 about = {
     "website": "https://duckduckgo.com/",
     "wikidata_id": "Q12805",
@@ -84,7 +89,7 @@ def _weather_data(location: weather.GeoLocation, data: dict[str, t.Any]):
     )
 
 
-def request(query: str, params: dict[str, t.Any]):
+def request(query: str, params: "OnlineParams") -> None:
 
     now_ms = get_now_ms()
     if is_ddg_globally_blocked(now_ms):
@@ -92,8 +97,8 @@ def request(query: str, params: dict[str, t.Any]):
         params["url"] = None
         return
 
-    eng_region = traits.get_region(params["searxng_locale"], traits.all_locale)
-    eng_lang = get_ddg_lang(traits, params["searxng_locale"])
+    eng_region: str = t.cast(str, traits.get_region(params["searxng_locale"], traits.all_locale) or traits.all_locale)
+    eng_lang: str = get_ddg_lang(traits, params["searxng_locale"]) or "en_US"
 
     # !ddw paris :es-AR --> {'ad': 'es_AR', 'ah': 'ar-es', 'l': 'ar-es'}
     params["cookies"]["ad"] = eng_lang
@@ -102,7 +107,6 @@ def request(query: str, params: dict[str, t.Any]):
     logger.debug("cookies: %s", params["cookies"])
 
     params["url"] = base_url.format(query=quote(query), lang=eng_lang.split("_")[0])
-    return params
 
 
 def response(resp: SXNG_Response):

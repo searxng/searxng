@@ -269,9 +269,7 @@ def _get_cache_int(key: str) -> int:
     try:
         return int(value)
     except (TypeError, ValueError):
-        logger.debug(
-            "DDG state: ignore invalid cached value for key '%s': %r", key, value
-        )
+        logger.debug("DDG state: ignore invalid cached value for key '%s': %r", key, value)
         return 0
 
 
@@ -285,14 +283,42 @@ def get_ddg_global_blocked_until_ms() -> int:
 
 def set_ddg_global_blocked_until_ms(until_ms: int) -> None:
     current = get_ddg_global_blocked_until_ms()
-    if until_ms <= current:
-        until_ms = current
+    until_ms = max(until_ms, current)
     _set_cache_int(key=_DDG_GLOBAL_BLOCKED_UNTIL_KEY, value=until_ms, expire=3605)
 
 
 def is_ddg_globally_blocked(now_ms: int | None = None) -> bool:
     now_ms = get_now_ms() if now_ms is None else now_ms
     return now_ms < get_ddg_global_blocked_until_ms()
+
+
+def _check_and_reserve_web_slot(now_ms: int, params: "OnlineParams") -> bool:
+    """Returns False and sets params["url"]=None if the web request must be skipped."""
+    with _DDG_STATE_LOCK:
+        blocked_until_ms = get_ddg_global_blocked_until_ms()
+        if now_ms < blocked_until_ms:
+            logger.debug(
+                "DDG cooldown active: skip web request for %d ms",
+                blocked_until_ms - now_ms,
+            )
+            params["url"] = None
+            return False
+
+        next_allowed_ms = _get_cache_int(_DDG_WEB_NEXT_ALLOWED_AT_KEY)
+        if now_ms < next_allowed_ms:
+            logger.debug(
+                "DDG web rate limit active: skip request for %d ms",
+                next_allowed_ms - now_ms,
+            )
+            params["url"] = None
+            return False
+
+        _set_cache_int(
+            key=_DDG_WEB_NEXT_ALLOWED_AT_KEY,
+            value=now_ms + _DDG_WEB_MIN_INTERVAL_MS,
+            expire=60,
+        )
+    return True
 
 
 def get_ddg_lang(
@@ -411,30 +437,8 @@ def request(query: str, params: "OnlineParams") -> None:
         return
 
     now_ms = get_now_ms()
-    with _DDG_STATE_LOCK:
-        blocked_until_ms = get_ddg_global_blocked_until_ms()
-        if now_ms < blocked_until_ms:
-            logger.debug(
-                "DDG cooldown active: skip web request for %d ms",
-                blocked_until_ms - now_ms,
-            )
-            params["url"] = None
-            return
-
-        next_allowed_ms = _get_cache_int(_DDG_WEB_NEXT_ALLOWED_AT_KEY)
-        if now_ms < next_allowed_ms:
-            logger.debug(
-                "DDG web rate limit active: skip request for %d ms",
-                next_allowed_ms - now_ms,
-            )
-            params["url"] = None
-            return
-
-        _set_cache_int(
-            key=_DDG_WEB_NEXT_ALLOWED_AT_KEY,
-            value=now_ms + _DDG_WEB_MIN_INTERVAL_MS,
-            expire=60,
-        )
+    if not _check_and_reserve_web_slot(now_ms, params):
+        return
 
     query = quote_ddg_bangs(query)
     eng_region: str = traits.get_region(
@@ -540,12 +544,8 @@ def response(resp: "SXNG_Response") -> EngineResults:
         blocked_until_ms = get_now_ms() + _DDG_CAPTCHA_COOLDOWN_MS
         with _DDG_STATE_LOCK:
             set_ddg_global_blocked_until_ms(blocked_until_ms)
-        logger.info(
-            "DDG CAPTCHA detected: activate shared cooldown until %d", blocked_until_ms
-        )
-        raise SearxEngineCaptchaException(
-            message=f"CAPTCHA ({params['data'].get('kl')})"
-        )
+        logger.info("DDG CAPTCHA detected: activate shared cooldown until %d", blocked_until_ms)
+        raise SearxEngineCaptchaException(message=f"CAPTCHA ({params['data'].get('kl')})")
 
     form = eval_xpath(doc, '//input[@name="vqd"]/..')
 
@@ -562,13 +562,9 @@ def response(resp: "SXNG_Response") -> EngineResults:
         )
 
     # just select "web-result" and ignore results of class "result--ad result--ad--small"
-    for div_result in eval_xpath(
-        doc, '//div[@id="links"]/div[contains(@class, "web-result")]'
-    ):
+    for div_result in eval_xpath(doc, '//div[@id="links"]/div[contains(@class, "web-result")]'):
         _title = eval_xpath(div_result, ".//h2/a")
-        _content = eval_xpath_getindex(
-            div_result, './/a[contains(@class, "result__snippet")]', 0, []
-        )
+        _content = eval_xpath_getindex(div_result, './/a[contains(@class, "result__snippet")]', 0, [])
         res.add(
             res.types.MainResult(
                 title=extract_text(_title) or "",
@@ -588,9 +584,7 @@ def response(resp: "SXNG_Response") -> EngineResults:
         res.add(
             res.types.Answer(
                 answer=zero_click,
-                url=eval_xpath_getindex(
-                    doc, '//div[@id="zero_click_abstract"]/a/@href', 0
-                ),
+                url=eval_xpath_getindex(doc, '//div[@id="zero_click_abstract"]/a/@href', 0),
             )
         )
     return res

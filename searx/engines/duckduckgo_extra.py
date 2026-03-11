@@ -26,6 +26,8 @@ if t.TYPE_CHECKING:
     from searx.extended_types import SXNG_Response
     from searx.search.processors import OnlineParams
 
+__all__ = ["fetch_traits"]
+
 # about
 about = {
     "website": "https://duckduckgo.com/",
@@ -53,9 +55,7 @@ _HTTP_User_Agent: str = gen_useragent()
 def init(engine_settings: dict[str, t.Any]):
 
     if engine_settings["ddg_category"] not in ["images", "videos", "news"]:
-        raise ValueError(
-            f"Unsupported DuckDuckGo category: {engine_settings['ddg_category']}"
-        )
+        raise ValueError(f"Unsupported DuckDuckGo category: {engine_settings['ddg_category']}")
 
 
 def fetch_vqd(
@@ -80,9 +80,7 @@ def fetch_vqd(
         if value:
             logger.debug("vqd value from duckduckgo.com request: '%s'", value)
         else:
-            logger.error(
-                "vqd: can't parse value from ddg response (return empty string)"
-            )
+            logger.error("vqd: can't parse value from ddg response (return empty string)")
             return ""
     else:
         logger.error("vqd: got HTTP %s from duckduckgo.com", resp.status_code)
@@ -163,16 +161,14 @@ def request(query: str, params: "OnlineParams") -> None:
         params["cookies"]["p"] = safe_search  # "-2", "1"
         args["p"] = safe_search
 
-    params["url"] = (
-        f"https://duckduckgo.com/{search_path_map[ddg_category]}.js?{urlencode(args)}"
-    )
+    params["url"] = f"https://duckduckgo.com/{search_path_map[ddg_category]}.js?{urlencode(args)}"
 
     logger.debug("param headers: %s", params["headers"])
     logger.debug("param data: %s", params["data"])
     logger.debug("param cookies: %s", params["cookies"])
 
 
-def _image_result(result):
+def _image_result(result: dict[str, t.Any]) -> dict[str, t.Any]:
     return {
         "template": "images.html",
         "url": result["url"],
@@ -185,7 +181,7 @@ def _image_result(result):
     }
 
 
-def _video_result(result):
+def _video_result(result: dict[str, t.Any]) -> dict[str, t.Any]:
     return {
         "template": "videos.html",
         "url": result["content"],
@@ -199,7 +195,7 @@ def _video_result(result):
     }
 
 
-def _news_result(result):
+def _news_result(result: dict[str, t.Any]) -> dict[str, t.Any]:
     return {
         "url": result["url"],
         "title": result["title"],
@@ -209,11 +205,11 @@ def _news_result(result):
     }
 
 
-def response(resp):
-    results = []
-    res_json = resp.json()
+def response(resp: "SXNG_Response") -> list[dict[str, t.Any]]:
+    results: list[dict[str, t.Any]] = []
+    res_json = t.cast(dict[str, t.Any], resp.json())
 
-    for result in res_json["results"]:
+    for result in t.cast(list[dict[str, t.Any]], res_json["results"]):
         if ddg_category == "images":
             results.append(_image_result(result))
         elif ddg_category == "videos":

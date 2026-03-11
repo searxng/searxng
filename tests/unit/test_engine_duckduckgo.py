@@ -1,12 +1,15 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-# pylint: disable=missing-module-docstring,missing-class-docstring
+# pylint: disable=missing-module-docstring,missing-class-docstring,invalid-name,protected-access
 
 import logging
 import threading
-from collections import defaultdict
+import typing as t
 from unittest.mock import Mock
 
 from tests import SearxTestCase
+
+if t.TYPE_CHECKING:
+    from searx.search.processors import OnlineParams
 
 
 class FakeCache:
@@ -15,11 +18,11 @@ class FakeCache:
         self.store: dict[str, str] = {}
         self._lock = threading.Lock()
 
-    def get(self, key, default=None, **kwargs):
+    def get(self, key, default=None, **_kwargs):
         with self._lock:
             return self.store.get(key, default)
 
-    def set(self, key, value, expire=None, **kwargs):
+    def set(self, key, value, _expire=None, **_kwargs):
         with self._lock:
             self.store[key] = value
 
@@ -39,7 +42,7 @@ class FakeTraits:
             return default
         return "us-en"
 
-    def get_language(self, sxng_locale, default):
+    def get_language(self, _sxng_locale, _default):
         return "en_US"
 
 
@@ -48,9 +51,9 @@ class DuckDuckGoTests(SearxTestCase):
     def setUp(self):
         super().setUp()
 
-        import searx.engines.duckduckgo as duckduckgo
-        import searx.engines.duckduckgo_extra as duckduckgo_extra
-        import searx.engines.duckduckgo_weather as duckduckgo_weather
+        from searx.engines import duckduckgo  # pylint: disable=import-outside-toplevel
+        from searx.engines import duckduckgo_extra  # pylint: disable=import-outside-toplevel
+        from searx.engines import duckduckgo_weather  # pylint: disable=import-outside-toplevel
 
         self.ddg = duckduckgo
         self.ddg_extra = duckduckgo_extra
@@ -88,16 +91,29 @@ class DuckDuckGoTests(SearxTestCase):
     def _set_time_ms(self, now_ms):
         self.setattr4test(self.ddg.time, "time", lambda: now_ms / 1000)
 
-    def _make_params(self, **overrides):
-        params = defaultdict(dict)
-        params["headers"] = {}
-        params["data"] = {}
-        params["cookies"] = {}
-        params["searxng_locale"] = "en-US"
-        params["pageno"] = 1
-        params["time_range"] = None
-        params["safesearch"] = 0
-        params.update(overrides)
+    def _make_params(self, *, pageno: int = 1) -> "OnlineParams":
+        params: "OnlineParams" = {
+            "method": "GET",
+            "headers": {},
+            "data": {},
+            "json": {},
+            "content": b"",
+            "url": "",
+            "cookies": {},
+            "allow_redirects": False,
+            "max_redirects": 0,
+            "soft_max_redirects": 0,
+            "auth": None,
+            "verify": None,
+            "raise_for_httperror": True,
+            "query": "",
+            "category": "general",
+            "pageno": pageno,
+            "safesearch": 0,
+            "time_range": None,
+            "engine_data": {},
+            "searxng_locale": "en-US",
+        }
         return params
 
     def test_web_request_rate_limits_with_exact_threshold(self):
@@ -168,9 +184,7 @@ class DuckDuckGoTests(SearxTestCase):
         self.ddg.request("blocked", params)
 
         self.assertIsNone(params["url"])
-        self.assertEqual(
-            0, self.ddg._get_cache_int(self.ddg._DDG_WEB_NEXT_ALLOWED_AT_KEY)
-        )
+        self.assertEqual(0, self.ddg._get_cache_int(self.ddg._DDG_WEB_NEXT_ALLOWED_AT_KEY))
 
     def test_extra_request_honors_global_cooldown_before_vqd_lookup(self):
         self._set_time_ms(5_000)
@@ -223,6 +237,8 @@ class DuckDuckGoTests(SearxTestCase):
         params = self._make_params()
         self.ddg_extra.request("cats", params)
 
+        self.assertIsNotNone(params["url"])
+        assert params["url"] is not None
         self.assertIn("/i.js?", params["url"])
         self.assertIn("vqd=cached-vqd", params["url"])
 
@@ -243,6 +259,8 @@ class DuckDuckGoTests(SearxTestCase):
         params = self._make_params()
         self.ddg_weather.request("Paris", params)
 
+        self.assertIsNotNone(params["url"])
+        assert params["url"] is not None
         self.assertIn("/js/spice/forecast/Paris/en", params["url"])
         self.assertEqual("en_US", params["cookies"]["ad"])
         self.assertEqual("us-en", params["cookies"]["ah"])
@@ -264,9 +282,7 @@ class DuckDuckGoTests(SearxTestCase):
         self.ddg.request("x" * 500, skipped_params)
 
         self.assertIsNone(skipped_params["url"])
-        self.assertEqual(
-            0, self.ddg._get_cache_int(self.ddg._DDG_WEB_NEXT_ALLOWED_AT_KEY)
-        )
+        self.assertEqual(0, self.ddg._get_cache_int(self.ddg._DDG_WEB_NEXT_ALLOWED_AT_KEY))
 
         allowed_params = self._make_params()
         self.ddg.request("short query", allowed_params)
@@ -346,20 +362,15 @@ class DuckDuckGoTests(SearxTestCase):
         def run_request(params):
             try:
                 self.ddg.request("parallel", params)
-            except Exception as exc:  # pragma: no cover
+            except BaseException as exc:  # pragma: no cover
                 errors.append(exc)
 
-        threads = [
-            threading.Thread(target=run_request, args=(params,))
-            for params in params_list
-        ]
+        threads = [threading.Thread(target=run_request, args=(params,)) for params in params_list]
         for thread in threads:
             thread.start()
         for thread in threads:
             thread.join()
 
         self.assertEqual([], errors)
-        self.assertEqual(
-            1, sum(1 for params in params_list if params["url"] == self.ddg.ddg_url)
-        )
+        self.assertEqual(1, sum(1 for params in params_list if params["url"] == self.ddg.ddg_url))
         self.assertEqual(2, sum(1 for params in params_list if params["url"] is None))
