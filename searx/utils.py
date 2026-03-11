@@ -611,7 +611,7 @@ def get_embeded_stream_url(url: str):
     if parsed_url.netloc in ['www.youtube.com', 'youtube.com'] and parsed_url.path == '/watch' and parsed_url.query:
         video_id = parse_qs(parsed_url.query).get('v', [])
         if video_id:
-            iframe_src = 'https://www.youtube-nocookie.com/embed/' + video_id[0]
+            iframe_src = 'https://www.youtube-nocookie.com/embed/' + video_id[0] + '?autoplay=1'
 
     # Facebook
     elif parsed_url.netloc in ['www.facebook.com', 'facebook.com']:
