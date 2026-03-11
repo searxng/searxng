@@ -148,59 +148,39 @@
           {%- include 'advanced/elements/suggestions.html' -%}
         {%- endif -%}
 
-        <div id="search_url">
-          <details class="sidebar-collapsible">
-            <summary class="title">{{ _('Search URL') }}</summary>
-            <div class="wrapper">
-              <div class="selectable_url">
-                <pre><code>{{ q|e }}</code></pre>
-              </div>
-              <button id="copy_url" data-copied-text="{{ _('Copied!') }}">{{ _('Copy search query') }}</button>
-            </div>
-          </details>
-        </div>
+        {%- include 'advanced/elements/engines_msg.html' -%}
 
-        {%- if unresponsive_engines -%}
-          <div id="engines_msg">
+        {%- if method == 'POST' -%}
+          <div id="search_url">
             <details class="sidebar-collapsible">
-              <summary class="title">{{ _('Engine errors') }}</summary>
+              <summary class="title">{{ _('Search URL') }}</summary>
               <div class="wrapper">
-                {%- for engine_name, error_type in unresponsive_engines -%}
-                  <p>
-                    <span class="engine-name">{{ engine_name }}</span>:
-                    <span class="response-error">{{ error_type }}</span>
-                  </p>
-                {%- endfor -%}
+                <div class="selectable_url">
+                  <pre><code>{{ url_for('search', _external=True) }}?q={{ q|urlencode }}&amp;language={{ current_language }}&amp;time_range={{ time_range }}&amp;safesearch={{ safesearch }}</code></pre>
+                </div>
+                <button id="copy_url" data-copied-text="{{ _('Copied!') }}">{{ _('Copy search query') }}</button>
               </div>
             </details>
           </div>
         {%- endif -%}
 
-        <div id="apis">
-          <details class="sidebar-collapsible">
-            <summary class="title">{{ _('Download results') }}</summary>
-            <div class="wrapper">
-              <form method="{{ method or 'POST' }}" action="{{ url_for('search') }}">
-                {{ engine_data_form(engine_data) }}
-                <input type="hidden" name="q" value="{{ q|e }}">
-                <input type="hidden" name="format" value="json">
-                <input type="submit" value="JSON">
-              </form>
-              <form method="{{ method or 'POST' }}" action="{{ url_for('search') }}">
-                {{ engine_data_form(engine_data) }}
-                <input type="hidden" name="q" value="{{ q|e }}">
-                <input type="hidden" name="format" value="csv">
-                <input type="submit" value="CSV">
-              </form>
-              <form method="{{ method or 'POST' }}" action="{{ url_for('search') }}">
-                {{ engine_data_form(engine_data) }}
-                <input type="hidden" name="q" value="{{ q|e }}">
-                <input type="hidden" name="format" value="rss">
-                <input type="submit" value="RSS">
-              </form>
-            </div>
-          </details>
-        </div>
+        {%- if search_formats -%}
+          <div id="apis">
+            <details class="sidebar-collapsible">
+              <summary class="title">{{ _('Download results') }}</summary>
+              <div class="wrapper">
+                {%- for output_type in search_formats -%}
+                  <form method="{{ method or 'POST' }}" action="{{ url_for('search') }}">
+                    {{ engine_data_form(engine_data) }}
+                    <input type="hidden" name="q" value="{{ q|e }}">
+                    <input type="hidden" name="format" value="{{ output_type }}">
+                    <input type="submit" value="{{ output_type }}">
+                  </form>
+                {%- endfor -%}
+              </div>
+            </details>
+          </div>
+        {%- endif -%}
 
         <div id="sidebar-end-collapsible"></div>
     </div>
