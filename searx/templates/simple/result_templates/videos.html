@@ -18,7 +18,7 @@
 {{- result_sub_footer(result) -}}
 {% if result.iframe_src -%}
 <div id="result-video-{{ index }}" class="embedded-video invisible">
-  <iframe data-src="{{result.iframe_src}}" frameborder="0" allowfullscreen sandbox="allow-scripts allow-same-origin allow-popups allow-forms" allow="autoplay; encrypted-media; picture-in-picture"></iframe>
+  <iframe data-src="{{result.iframe_src}}" frameborder="0" allowfullscreen allow="autoplay; encrypted-media; picture-in-picture"></iframe>
 </div>
 {%- endif %}
 {{ result_footer(result) }}
