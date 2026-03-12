@@ -11,8 +11,8 @@ engines:
 
 """
 
-import random
 import json
+import random
 import re
 import string
 import time
@@ -99,7 +99,9 @@ def ui_async(start: int) -> str:
     return ",".join([arc_id, use_ac, _fmt])
 
 
-def get_google_info(params: "OnlineParams", eng_traits: EngineTraits) -> dict[str, t.Any]:
+def get_google_info(
+    params: "OnlineParams", eng_traits: EngineTraits
+) -> dict[str, t.Any]:
     """Composing various (language) properties for the google engines (:ref:`google
     API`).
 
@@ -185,7 +187,9 @@ def get_google_info(params: "OnlineParams", eng_traits: EngineTraits) -> dict[st
     ret_val["language"] = eng_lang
     ret_val["country"] = country
     ret_val["locale"] = locale
-    ret_val["subdomain"] = eng_traits.custom["supported_domains"].get(country.upper(), "www.google.com")
+    ret_val["subdomain"] = eng_traits.custom["supported_domains"].get(
+        country.upper(), "www.google.com"
+    )
 
     # hl parameter:
     #   The hl parameter specifies the interface language (host language) of
@@ -319,7 +323,9 @@ def request(query: str, params: "OnlineParams") -> None:
     )
 
     if params["time_range"] in time_range_dict:
-        query_url += "&" + urlencode({"tbs": "qdr:" + time_range_dict[params["time_range"]]})
+        query_url += "&" + urlencode(
+            {"tbs": "qdr:" + time_range_dict[params["time_range"]]}
+        )
     if params["safesearch"]:
         query_url += "&" + urlencode({"safe": filter_mapping[params["safesearch"]]})
     params["url"] = query_url
@@ -337,7 +343,7 @@ RE_DATA_IMAGE_end = re.compile(r'"(dimg_[^"]*)"[^;]*;(data:image[^;]*;[^;]*)$')
 def parse_data_images(text: str):
     data_image_map = {}
 
-    for match in re.finditer(r'google\.(?:ldi|pim)=({.*?});', text):
+    for match in re.finditer(r"google\.(?:ldi|pim)=({.*?});", text):
         try:
             data = json.loads(match.group(1))
             data_image_map.update(data)
@@ -373,7 +379,9 @@ def response(resp: "SXNG_Response"):
         # pylint: disable=too-many-nested-blocks
 
         try:
-            title_tag = eval_xpath_getindex(result, './/div[contains(@role, "link")]', 0, default=None)
+            title_tag = eval_xpath_getindex(
+                result, './/div[contains(@role, "link")]', 0, default=None
+            )
             if title_tag is None:
                 # this not one of the common google results *section*
                 logger.debug("ignoring item from the result_xpath list: missing title")
@@ -388,12 +396,16 @@ def response(resp: "SXNG_Response"):
                 )
                 continue
 
-            if raw_url.startswith('/url?q='):
-                url = unquote(raw_url[7:].split("&sa=U")[0])  # remove the google redirector
+            if raw_url.startswith("/url?q="):
+                url = unquote(
+                    raw_url[7:].split("&sa=U")[0]
+                )  # remove the google redirector
             else:
                 url = raw_url
 
-            content_nodes = eval_xpath(result, './/div[@data-sncf="1" or @data-sncf="2"]')
+            content_nodes = eval_xpath(
+                result, './/div[@data-sncf="1" or @data-sncf="2"]'
+            )
             for item in content_nodes:
                 for script in item.xpath(".//script"):
                     script.getparent().remove(script)
@@ -405,7 +417,7 @@ def response(resp: "SXNG_Response"):
                 src = img.get("src")
                 if not src:
                     continue
-                
+
                 # Check if it's a data image
                 if src.startswith("data:image"):
                     img_id = img.get("id")
@@ -420,7 +432,14 @@ def response(resp: "SXNG_Response"):
                         thumbnail = src
                         break
 
-            results.append({"url": url, "title": title, "content": content or '', "thumbnail": thumbnail})
+            results.append(
+                {
+                    "url": url,
+                    "title": title,
+                    "content": content or "",
+                    "thumbnail": thumbnail,
+                }
+            )
 
         except Exception as e:  # pylint: disable=broad-except
             logger.error(e, exc_info=True)
@@ -476,7 +495,9 @@ def fetch_traits(engine_traits: EngineTraits, add_domains: bool = True):
     if not resp.ok:
         raise RuntimeError("Response from Google preferences is not OK.")
 
-    dom = html.fromstring(resp.text.replace('<?xml version="1.0" encoding="UTF-8"?>', ""))
+    dom = html.fromstring(
+        resp.text.replace('<?xml version="1.0" encoding="UTF-8"?>', "")
+    )
 
     # supported language codes
 
@@ -486,7 +507,10 @@ def fetch_traits(engine_traits: EngineTraits, add_domains: bool = True):
         try:
             locale = babel.Locale.parse(lang_map.get(eng_lang, eng_lang), sep="-")
         except babel.UnknownLocaleError:
-            print("INFO:  google UI language %s (%s) is unknown by babel" % (eng_lang, x.text.split("(")[0].strip()))
+            print(
+                "INFO:  google UI language %s (%s) is unknown by babel"
+                % (eng_lang, x.text.split("(")[0].strip())
+            )
             continue
         sxng_lang = language_tag(locale)
 
@@ -511,10 +535,15 @@ def fetch_traits(engine_traits: EngineTraits, add_domains: bool = True):
             engine_traits.all_locale = "ZZ"
             continue
 
-        sxng_locales = get_official_locales(eng_country, engine_traits.languages.keys(), regional=True)
+        sxng_locales = get_official_locales(
+            eng_country, engine_traits.languages.keys(), regional=True
+        )
 
         if not sxng_locales:
-            print("ERROR: can't map from google country %s (%s) to a babel region." % (x.get("data-name"), eng_country))
+            print(
+                "ERROR: can't map from google country %s (%s) to a babel region."
+                % (x.get("data-name"), eng_country)
+            )
             continue
 
         for sxng_locale in sxng_locales:
