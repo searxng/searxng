@@ -12,6 +12,7 @@ engines:
 """
 
 import random
+import json
 import re
 import string
 import time
@@ -336,6 +337,13 @@ RE_DATA_IMAGE_end = re.compile(r'"(dimg_[^"]*)"[^;]*;(data:image[^;]*;[^;]*)$')
 def parse_data_images(text: str):
     data_image_map = {}
 
+    for match in re.finditer(r'google\.(?:ldi|pim)=({.*?});', text):
+        try:
+            data = json.loads(match.group(1))
+            data_image_map.update(data)
+        except Exception as e:  # pylint: disable=broad-exception-caught
+            logger.debug("google parse_data_images json error: %s", e)
+
     for img_id, data_image in RE_DATA_IMAGE.findall(text):
         end_pos = data_image.rfind("=")
         if end_pos > 0:
@@ -385,23 +393,27 @@ def response(resp: "SXNG_Response"):
             else:
                 url = raw_url
 
-            content_nodes = eval_xpath(result, './/div[contains(@data-sncf, "1")]')
+            content_nodes = eval_xpath(result, './/div[@data-sncf="1" or @data-sncf="2"]')
             for item in content_nodes:
                 for script in item.xpath(".//script"):
                     script.getparent().remove(script)
 
             content = extract_text(content_nodes)
 
-            thumbnail = result.xpath(".//img/@src")
-            if thumbnail:
-                thumbnail = thumbnail[0]
-                if thumbnail.startswith("data:image"):
-                    img_id = result.xpath(".//img/@id")
-                    if img_id:
-                        thumbnail = data_image_map.get(img_id[0])
-            else:
-                thumbnail = None
+            thumbnail = None
+            for img in result.xpath('.//img'):
+                src = img.get('src')
+                if not src:
+                    continue
 
+                if src.startswith('data:image'):
+                    img_id = img.get('id')
+                    thumbnail = data_image_map.get(img_id)
+                    if thumbnail:
+                        break
+                elif 'favicon' not in src and img.get('class') != 'XNo5Ab':
+                    thumbnail = src
+                    break
             results.append({"url": url, "title": title, "content": content or '', "thumbnail": thumbnail})
 
         except Exception as e:  # pylint: disable=broad-except
