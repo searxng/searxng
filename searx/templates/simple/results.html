@@ -63,9 +63,21 @@
       if (resultsPerPage) {
         resultsPerPage.addEventListener('change', function() {
           setCookie('results_per_page', this.value, 365);
-          var url = new URL(window.location.href);
-          url.searchParams.set('results_per_page', this.value);
-          window.location.href = url.toString();
+          // If we are dealing with POST requests, window.location.href drops the payload.
+          // The safest way to reload is to resubmit the main search form if it exists.
+          var mainForm = document.getElementById('search') || document.querySelector('form.search_form');
+          if (mainForm) {
+              // Ensure the select's value is submitted
+              var select = document.getElementById('results_per_page');
+              if (select) {
+                  select.setAttribute('name', 'results_per_page');
+              }
+              mainForm.submit();
+          } else {
+              var url = new URL(window.location.href);
+              url.searchParams.set('results_per_page', this.value);
+              window.location.href = url.toString();
+          }
         });
       }
 

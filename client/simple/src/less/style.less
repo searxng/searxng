@@ -1153,7 +1153,6 @@ summary.title {
 @media screen and (max-width: @small-phone) {
   .result-videos {
     img.thumbnail {
-      float: none !important;
     }
 
     .content {
@@ -1220,7 +1219,6 @@ body.video-grid-enabled.results-videos-present {
       }
       
       .url_header { order: 1; }
-      .engines { order: 2; margin-bottom: 0.5rem; padding-top: 0 !important; }
       .thumbnail_link { order: 3; }
       h3 { order: 4; }
       .content { order: 5; }
@@ -1228,7 +1226,6 @@ body.video-grid-enabled.results-videos-present {
       .embedded-video { order: 7; }
 
       .thumbnail_link {
-        float: none !important;
         display: block !important;
         margin: 0 0 0.5rem 0 !important;
         width: 100% !important;
@@ -1257,15 +1254,21 @@ body.video-grid-enabled.results-videos-present {
       }
 
       .result_author {
-        font-size: 0.8rem !important;
       }
 
       .engines {
-        display: flex !important;
         float: none !important;
+        display: flex !important;
         justify-content: flex-start !important;
-        padding-top: 0.5rem !important;
-        font-size: 0.8rem !important;
+        padding: 0 !important;
+        margin-bottom: 0.5rem;
+        order: 2;
+
+        span, a, svg {
+          font-size: 0.8rem !important;
+          line-height: 1;
+          margin-top: 0 !important;
+        }
       }
     }
 
@@ -1278,22 +1281,25 @@ body.video-grid-enabled.results-videos-present {
 
 #video-view-config,
 .filter-item {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   gap: 0.5rem;
   padding: 0 0.5rem;
+  height: 2.4rem;
 
   label {
     white-space: nowrap;
     font-size: 0.9rem;
+    color: var(--color-search-font);
   }
 }
 
-.results-videos-present.video-grid-enabled .grid-only {
-  display: flex !important;
-}
-
-body:not(.video-grid-enabled) .grid-only,
-body:not(.results-videos-present) .grid-only {
+.grid-only {
   display: none !important;
 }
+
+body.results-videos-present.video-grid-enabled .grid-only {
+  display: inline-flex !important;
+}
+
+/* cache buster 1773278653.500305 */
