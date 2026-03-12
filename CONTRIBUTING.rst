@@ -2,6 +2,7 @@
 
 .. _Quickstart guide: https://docs.searxng.org/dev/quickstart.html
 .. _Commits guide: https://docs.searxng.org/dev/commits.html
+.. _AI Policy: https://github.com/searxng/searxng/blob/master/AI_POLICY.rst
 .. _Weblate: https://translate.codeberg.org/projects/searxng/searxng/
 .. _GitHub Codespaces: https://docs.github.com/en/codespaces/overview
 .. _120 hours per month: https://github.com/settings/billing
@@ -90,3 +91,8 @@ rules in this project are:
 - Prefer fewer arguments.
 - Do not add obvious comments to code.
 - Do not comment out code, delete lines instead.
+
+AI Policy
+~~~~~~~~~
+
+For our policy on the use of AI tools, please read `AI Policy`_.
