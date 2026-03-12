@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 import { listen } from "../toolkit.ts";
+import { getCookie } from "../util/cookies.ts";
 import { getElement } from "../util/getElement.ts";
 
 const searchForm: HTMLFormElement = getElement<HTMLFormElement>("search");
@@ -13,6 +14,12 @@ const isResultsPage: boolean = document.querySelector("main")?.id === "main_resu
 const categoryButtons: HTMLButtonElement[] = Array.from(
   document.querySelectorAll<HTMLButtonElement>("#categories_container button.category")
 );
+
+// Results per page persistence
+const resultsPerPageHidden = document.getElementById("results_per_page_hidden") as HTMLInputElement | null;
+if (resultsPerPageHidden && !resultsPerPageHidden.value) {
+  resultsPerPageHidden.value = getCookie("results_per_page") || "";
+}
 
 if (searchInput.value.length === 0) {
   searchReset.classList.add("empty");
@@ -48,6 +55,16 @@ listen("click", searchReset, (event: MouseEvent) => {
 
 for (const button of categoryButtons) {
   listen("click", button, (event: MouseEvent) => {
+    // If we click any category, we should decide whether to keep results_per_page
+    if (resultsPerPageHidden) {
+      if (button.name !== "category_videos") {
+        resultsPerPageHidden.value = "";
+      } else if (!resultsPerPageHidden.value) {
+        // If switching TO videos, make sure it's set from cookie if empty
+        resultsPerPageHidden.value = getCookie("results_per_page") || "";
+      }
+    }
+
     if (event.shiftKey) {
       event.preventDefault();
       button.classList.toggle("selected");
@@ -84,10 +101,16 @@ listen("submit", searchForm, (event: Event) => {
 
   if (categoryButtons.length > 0) {
     const searchCategories = getElement<HTMLInputElement>("selected-categories");
-    searchCategories.value = categoryButtons
-      .filter((button) => button.classList.contains("selected"))
-      .map((button) => button.name.replace("category_", ""))
-      .join(",");
+    const selected = categoryButtons.filter((button) => button.classList.contains("selected"));
+
+    // Final check on submission: if "videos" is not the ONLY selected category,
+    // maybe we want to clear it? User said "Videos -> General", so if we move away from videos:
+    const hasVideos = selected.some((btn) => btn.name === "category_videos");
+    if (!hasVideos && resultsPerPageHidden) {
+      resultsPerPageHidden.value = "";
+    }
+
+    searchCategories.value = selected.map((button) => button.name.replace("category_", "")).join(",");
   }
 
   searchForm.submit();

@@ -808,6 +808,7 @@ summary.title {
     display: flex;
     align-items: center;
     margin-left: 1em;
+    gap: 0.5rem;
 
     svg {
       font-size: 1.2em;
@@ -826,6 +827,11 @@ summary.title {
 
 #pagination {
   grid-area: pagination;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 2rem;
 
   br {
     clear: both;
@@ -837,7 +843,6 @@ summary.title {
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  overflow: hidden;
 }
 
 .page_number {
@@ -1166,3 +1171,111 @@ pre code {
 @import "result_types/code.less";
 @import "result_types/paper.less";
 @import "result_types/file.less";
+
+/* Video Grid View */
+body.video-grid-enabled.results-videos-present {
+  #results:has(.result-videos) {
+    margin: 1rem @results-tablet-offset 0 @results-tablet-offset !important;
+    display: grid !important;
+    grid-template:
+      "corrections" min-content
+      "answers" min-content
+      "sidebar" min-content
+      "urls" 1fr
+      "pagination" min-content
+      / 100% !important;
+    gap: 0 !important;
+
+    #sidebar {
+      margin-bottom: 1rem !important;
+    }
+
+    #urls {
+      flex-wrap: wrap !important;
+      gap: 1rem !important;
+      width: 100% !important;
+      max-width: 100% !important;
+      margin: 0 !important;
+      display: flex !important;
+    }
+
+    #urls::after {
+      flex-grow: 10 !important;
+      content: "" !important;
+    }
+
+    .result-videos {
+      flex: 0 0 auto !important;
+      width: var(--video-size, 300px) !important;
+      margin: 0 !important;
+      padding: 0.5rem !important;
+      border: 1px solid var(--color-result-border) !important;
+      border-radius: 8px !important;
+      background: var(--color-result-background) !important;
+
+      .thumbnail_link {
+        float: none !important;
+        display: block !important;
+        margin: 0 0 0.5rem 0 !important;
+        width: 100% !important;
+        height: auto !important;
+
+        img {
+          width: 100% !important;
+          aspect-ratio: 16 / 9 !important;
+          object-fit: cover !important;
+        }
+      }
+
+      h3 {
+        margin: 0 0 0.5rem 0 !important;
+        font-size: 1rem !important;
+        overflow-wrap: anywhere !important;
+      }
+
+      .content {
+        display: -webkit-box !important;
+        -webkit-line-clamp: 3 !important;
+        -webkit-box-orient: vertical !important;
+        overflow: hidden !important;
+        font-size: 0.85rem !important;
+        line-height: 1.2 !important;
+      }
+
+      .result_author {
+        font-size: 0.8rem !important;
+      }
+
+      .engines {
+        display: none !important;
+      }
+    }
+
+    #backToTop {
+      .ltr-left(auto) !important;
+      .ltr-right(1rem) !important;
+    }
+  }
+}
+
+#video-view-config,
+.filter-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0 0.5rem;
+
+  label {
+    white-space: nowrap;
+    font-size: 0.9rem;
+  }
+}
+
+.results-videos-present.video-grid-enabled .grid-only {
+  display: flex !important;
+}
+
+body:not(.video-grid-enabled) .grid-only,
+body:not(.results-videos-present) .grid-only {
+  display: none !important;
+}

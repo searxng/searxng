@@ -51,6 +51,7 @@ const simple_icons: IconSet[] = [
       leecher: "arrow-down.svg",
       location: "location-outline.svg",
       magnet: "magnet-outline.svg",
+      moon: "moon-outline.svg",
       "musical-notes": "musical-notes-outline.svg",
       "navigate-down": "chevron-down-outline.svg",
       "navigate-left": "chevron-back-outline.svg",
@@ -64,6 +65,7 @@ const simple_icons: IconSet[] = [
       search: "search-outline.svg",
       seeder: "swap-vertical.svg",
       settings: "settings-outline.svg",
+      sunny: "sunny-outline.svg",
       tv: "tv-outline.svg"
     },
     svgo_opts: sxng_icon_opts

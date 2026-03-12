@@ -16,5 +16,32 @@
   <input type="hidden" name="time_range" value="{{ time_range }}" >
   <input type="hidden" name="safesearch" value="{{ safesearch }}" >
   <input type="hidden" name="theme" value="{{ theme }}" >
+  <script>
+    (function() {
+      function getCookie(name) {
+        var nameEQ = name + "=";
+        var ca = document.cookie.split(';');
+        for(var i=0;i < ca.length;i++) {
+          var c = ca[i];
+          while (c.charAt(0)==' ') c = c.substring(1,c.length);
+          if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+        }
+        return null;
+      }
+      var form = document.getElementById('search');
+      form.addEventListener('submit', function() {
+        var q = document.getElementById('q').value;
+        var resultsPerPage = getCookie('results_per_page');
+        // Only add results_per_page if the query specifically targets videos
+        if (resultsPerPage && (q.indexOf('!videos') !== -1 || q.indexOf('!gov') !== -1)) {
+          var input = document.createElement('input');
+          input.type = 'hidden';
+          input.name = 'results_per_page';
+          input.value = resultsPerPage;
+          form.appendChild(input);
+        }
+      });
+    })();
+  </script>
   {% if timeout_limit %}<input type="hidden" name="timeout_limit" value="{{ timeout_limit|e }}" >{% endif %}
 </form>

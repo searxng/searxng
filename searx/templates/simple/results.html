@@ -8,6 +8,103 @@
     {% endfor %}
 {%- endmacro %}
 {% block title %}{% if query_in_title %}{{- q|e }} - {% endif %}{% endblock %}
+
+{% block body_classes %}{% if results|selectattr('template', 'defined')|selectattr('template', 'in', ['videos.html', 'videos'])|list|count > 0 %}results-videos-present{% endif %}{% endblock %}
+
+{% set ns = namespace(has_videos=false) %}
+{% for result in results %}
+  {% if result.template in ['videos.html', 'videos'] %}
+    {% set ns.has_videos = true %}
+  {% endif %}
+{% endfor %}
+{% set has_videos = ns.has_videos %}
+
+<script>
+  (function() {
+    function setCookie(name, value, days) {
+      var date = new Date();
+      date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+      var expires = "; expires=" + date.toUTCString();
+      document.cookie = name + "=" + (value || "") + expires + "; path=/; SameSite=Lax";
+    }
+
+    function getCookie(name) {
+      var nameEQ = name + "=";
+      var ca = document.cookie.split(';');
+      for(var i=0;i < ca.length;i++) {
+        var c = ca[i];
+        while (c.charAt(0)==' ') c = c.substring(1,c.length);
+        if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+      }
+      return null;
+    }
+
+    function init() {
+      var resultsPerPage = document.getElementById('results_per_page');
+      var gridToggle = document.getElementById('video-grid-toggle');
+      var resizer = document.getElementById('video-size-resizer');
+      var form = document.getElementById('search');
+
+      // Strip grid classes when switching to non-video categories
+      if (form) {
+        form.addEventListener('click', function(e) {
+          var target = e.target.closest('button.category');
+          if (target && target.name !== 'category_videos') {
+            document.body.classList.remove('video-grid-enabled', 'results-videos-present');
+            var config = document.getElementById('video-view-config');
+            if (config) config.style.display = 'none';
+          }
+        });
+      }
+
+      if (resultsPerPage) {
+        resultsPerPage.addEventListener('change', function() {
+          setCookie('results_per_page', this.value, 365);
+          var url = new URL(window.location.href);
+          url.searchParams.set('results_per_page', this.value);
+          window.location.href = url.toString();
+        });
+      }
+
+      if (gridToggle) {
+        // Restore grid toggle state
+        var savedGrid = getCookie('video_grid_enabled') === 'true';
+        gridToggle.checked = savedGrid;
+        document.body.classList.toggle('video-grid-enabled', savedGrid);
+
+        gridToggle.addEventListener('change', function() {
+          document.body.classList.toggle('video-grid-enabled', this.checked);
+          if (this.checked && resizer) {
+            document.body.style.setProperty('--video-size', resizer.value + 'px');
+          } else {
+            document.body.style.removeProperty('--video-size');
+          }
+          setCookie('video_grid_enabled', this.checked, 365);
+        });
+      }
+
+      if (resizer) {
+        // Restore resizer value
+        var savedSize = getCookie('video_size') || '300';
+        resizer.value = savedSize;
+        if (gridToggle && gridToggle.checked) {
+          document.body.style.setProperty('--video-size', savedSize + 'px');
+        }
+
+        resizer.addEventListener('input', function() {
+          document.body.style.setProperty('--video-size', this.value + 'px');
+          setCookie('video_size', this.value, 365);
+        });
+      }
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', init);
+    } else {
+      init();
+    }
+  })();
+</script>
 {% block meta %}<link rel="alternate" type="application/rss+xml" title="Searx search: {{ q|e }}" href="{{ url_for('search', _external=True) }}?q={{ q|urlencode }}&amp;categories={{ selected_categories|join(",") | replace(' ','+') }}&amp;pageno={{ pageno }}&amp;time_range={{ time_range }}&amp;language={{ current_language }}&amp;safesearch={{ safesearch }}&amp;format=rss">{% endblock %}
 {% block content %}
 {% include 'simple/search.html' %}
@@ -18,7 +115,7 @@
   {% set only_template = '' %}
 {% endif %}
 
-<div id="results" class="{{ only_template }}">
+<div id="results" class="{{ only_template }} {% if has_videos %}results-videos-present{% endif %}">
 
   {%- if answers -%}
     {%- include 'simple/elements/answers.html' -%}
@@ -89,6 +186,7 @@
                   <input type="hidden" name="language" value="{{ current_language }}" >
                   <input type="hidden" name="time_range" value="{{ time_range }}" >
                   <input type="hidden" name="safesearch" value="{{ safesearch }}" >
+                  {% if results_per_page %}<input type="hidden" name="results_per_page" value="{{ results_per_page }}" >{% endif %}
                   <input type="hidden" name="theme" value="{{ theme }}" >
                   {% if timeout_limit %}<input type="hidden" name="timeout_limit" value="{{ timeout_limit|e }}" >{% endif %}
                   {{- engine_data_form(engine_data) -}}
@@ -107,6 +205,7 @@
                 <input type="hidden" name="language" value="{{ current_language }}" >
                 <input type="hidden" name="time_range" value="{{ time_range }}" >
                 <input type="hidden" name="safesearch" value="{{ safesearch }}" >
+                {% if results_per_page %}<input type="hidden" name="results_per_page" value="{{ results_per_page }}" >{% endif %}
                 <input type="hidden" name="theme" value="{{ theme }}" >
                 {% if timeout_limit %}<input type="hidden" name="timeout_limit" value="{{ timeout_limit|e }}" >{% endif %}
                 {{- engine_data_form(engine_data) -}}
@@ -132,6 +231,7 @@
                 <input type="hidden" name="language" value="{{ current_language }}" >
                 <input type="hidden" name="time_range" value="{{ time_range }}" >
                 <input type="hidden" name="safesearch" value="{{ safesearch }}" >
+                {% if results_per_page %}<input type="hidden" name="results_per_page" value="{{ results_per_page }}" >{% endif %}
                 <input type="hidden" name="theme" value="{{ theme }}" >
                 {% if timeout_limit %}<input type="hidden" name="timeout_limit" value="{{ timeout_limit|e }}" >{% endif %}
                 {{- engine_data_form(engine_data) -}}

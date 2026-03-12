@@ -12,6 +12,7 @@
           <input type="hidden" name="time_range" value="{{ time_range }}">
           <input type="hidden" name="safesearch" value="{{ safesearch }}">
           <input type="hidden" name="theme" value="{{ theme }}">
+          {% if results_per_page %}<input type="hidden" name="results_per_page" value="{{ results_per_page }}">{% endif %}
           {%- if timeout_limit -%}
             <input type="hidden" name="timeout_limit" value="{{ timeout_limit|e }}" >
           {%- endif -%}
