@@ -19,3 +19,5 @@ assignees: ''
 
 **Additional context**
 <!-- Add any other context or screenshots about the feature request here. -->
+
+- [ ] I read the [AI Policy](https://github.com/searxng/searxng/blob/master/AI_POLICY.rst) and hereby confirm that this issue conforms with the policy.

@@ -29,3 +29,5 @@ You can add multiple categories at the same time. -->
 
 **Additional context**
 <!-- Add any other context about this engine here. -->
+
+- [ ] I read the [AI Policy](https://github.com/searxng/searxng/blob/master/AI_POLICY.rst) and hereby confirm that this issue conforms with the policy.

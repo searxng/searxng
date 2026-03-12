@@ -13,7 +13,7 @@ assignees: ''
 in order to fetch the latest commit ID:
 ```
 git log -1
-``` 
+```
 If you are using searxng-docker then look at the bottom of the SearXNG page
 and check for the version after "Powered by SearXNG"
 
@@ -37,3 +37,5 @@ or manually by executing the searx/webapp.py file? -->
 
 **Additional context**
 <!-- Add any other context about the problem here. -->
+
+- [ ] I read the [AI Policy](https://github.com/searxng/searxng/blob/master/AI_POLICY.rst) and hereby confirm that this issue conforms with the policy.
