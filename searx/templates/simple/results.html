@@ -19,6 +19,9 @@
 {% endfor %}
 {% set has_videos = ns.has_videos %}
 
+
+{% block meta %}<link rel="alternate" type="application/rss+xml" title="Searx search: {{ q|e }}" href="{{ url_for('search', _external=True) }}?q={{ q|urlencode }}&amp;categories={{ selected_categories|join(",") | replace(' ','+') }}&amp;pageno={{ pageno }}&amp;time_range={{ time_range }}&amp;language={{ current_language }}&amp;safesearch={{ safesearch }}&amp;format=rss">{% endblock %}
+{% block content %}
 <script>
   (function() {
     function setCookie(name, value, days) {
@@ -105,8 +108,6 @@
     }
   })();
 </script>
-{% block meta %}<link rel="alternate" type="application/rss+xml" title="Searx search: {{ q|e }}" href="{{ url_for('search', _external=True) }}?q={{ q|urlencode }}&amp;categories={{ selected_categories|join(",") | replace(' ','+') }}&amp;pageno={{ pageno }}&amp;time_range={{ time_range }}&amp;language={{ current_language }}&amp;safesearch={{ safesearch }}&amp;format=rss">{% endblock %}
-{% block content %}
 {% include 'simple/search.html' %}
 
 {% if results and results|map(attribute='template')|unique|list|count == 1 %}
@@ -194,25 +195,7 @@
                 </div>
             </form>
         {% endif %}
-        {%- if results | count > 0 -%}
-          <form method="{{ method or 'POST' }}" action="{{ url_for('search') }}" class="next_page">
-              <div class="{% if rtl %}left{% else %}right{% endif %}">
-                <input type="hidden" name="q" value="{{ q|e }}" >
-                {% for category in selected_categories %}
-                <input type="hidden" name="category_{{ category }}" value="1" >
-                {% endfor %}
-                <input type="hidden" name="pageno" value="{{ pageno+1 }}" >
-                <input type="hidden" name="language" value="{{ current_language }}" >
-                <input type="hidden" name="time_range" value="{{ time_range }}" >
-                <input type="hidden" name="safesearch" value="{{ safesearch }}" >
-                {% if results_per_page %}<input type="hidden" name="results_per_page" value="{{ results_per_page }}" >{% endif %}
-                <input type="hidden" name="theme" value="{{ theme }}" >
-                {% if timeout_limit %}<input type="hidden" name="timeout_limit" value="{{ timeout_limit|e }}" >{% endif %}
-                {{- engine_data_form(engine_data) -}}
-                <button role="link"  type="submit">{{ _('Next page') }} {{ icon_small('navigate-right') }}</button>
-              </div>
-          </form>
-        {%- endif -%}
+        
         {% set pstart = 1 %}
         {% set pend = 11 %}
         {% if pageno > 5 %}
@@ -243,6 +226,25 @@
             </form>
         {% endfor %}
         </div>
+{%- if results | count > 0 -%}
+          <form method="{{ method or 'POST' }}" action="{{ url_for('search') }}" class="next_page">
+              <div class="{% if rtl %}left{% else %}right{% endif %}">
+                <input type="hidden" name="q" value="{{ q|e }}" >
+                {% for category in selected_categories %}
+                <input type="hidden" name="category_{{ category }}" value="1" >
+                {% endfor %}
+                <input type="hidden" name="pageno" value="{{ pageno+1 }}" >
+                <input type="hidden" name="language" value="{{ current_language }}" >
+                <input type="hidden" name="time_range" value="{{ time_range }}" >
+                <input type="hidden" name="safesearch" value="{{ safesearch }}" >
+                {% if results_per_page %}<input type="hidden" name="results_per_page" value="{{ results_per_page }}" >{% endif %}
+                <input type="hidden" name="theme" value="{{ theme }}" >
+                {% if timeout_limit %}<input type="hidden" name="timeout_limit" value="{{ timeout_limit|e }}" >{% endif %}
+                {{- engine_data_form(engine_data) -}}
+                <button role="link"  type="submit">{{ _('Next page') }} {{ icon_small('navigate-right') }}</button>
+              </div>
+          </form>
+        {%- endif -%}
     </nav>
     {% endif %}
 </div>
