@@ -32,10 +32,10 @@
     </tr>
     {%- endif %}
     {%- for info in result.data -%}
-    <tr><th scope="row">{{ info.label }}</th><td>{{ info.value|safe }}</td></tr>
+    <tr><th scope="row">{{ info.label }}</th><td>{{ info.value }}</td></tr>
     {%- endfor -%}
     {%- for link in result.links -%}
-    <tr><th scope="row">{{ link.label }}</th><td><a class="text-info cursor-pointer" href="{{ link.url }}">{{ link.url_label|safe }}</a></td></tr>
+    <tr><th scope="row">{{ link.label }}</th><td><a class="text-info cursor-pointer" href="{{ link.url }}">{{ link.url_label }}</a></td></tr>
     {%- endfor -%}
 </table>
 

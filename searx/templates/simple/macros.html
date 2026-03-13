@@ -41,7 +41,7 @@
   {%- if result.length and not result.thumbnail %}<div class="result_length">{{ _('Length') }}: {{ result.length }}</div>{% endif -%}
   {%- if result.views %}<div class="result_views">{{ _('Views') }}: {{ result.views }}</div>{% endif -%}
   {%- if result.author %}<div class="result_author">{{ _('Author') }}: {{ result.author }}</div>{% endif -%}
-  {%- if result.metadata %}<div class="highlight">{{ result.metadata|safe }}</div>{% endif -%}
+  {%- if result.metadata %}<div class="highlight">{{ result.metadata }}</div>{% endif -%}
 {%- endmacro -%}
 
 <!-- Draw result sub footer -->
