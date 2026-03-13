@@ -1216,6 +1216,29 @@ def opensearch():
     return resp
 
 
+@app.route('/manifest.json', methods=['GET'])
+def manifest():
+    theme = sxng_request.preferences.get_value('simple_style')
+    if theme not in ("light", "dark", "black"):
+        theme = "light"
+
+    theme_color = get_setting(f'brand.pwa_colors.theme_color_{theme}')
+    background_color = get_setting(f'brand.pwa_colors.background_color_{theme}')
+    ret = render('manifest.json', theme_color=theme_color, background_color=background_color)
+    resp = Response(response=ret, status=200, mimetype="application/json")
+    return resp
+
+
+@app.route('/logo/<resolution>')
+def manifest_logo(resolution=0):
+    theme = sxng_request.preferences.get_value("theme")
+    return send_from_directory(
+        os.path.join(app.root_path, settings['ui']['static_path'], 'themes', theme, 'img', 'logos'),  # type: ignore
+        resolution,
+        mimetype='image/vnd.microsoft.icon',
+    )
+
+
 @app.route('/favicon.ico')
 def favicon():
     theme = sxng_request.preferences.get_value("theme")
