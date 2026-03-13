@@ -238,6 +238,9 @@ plugins:
   searx.plugins.hostnames.SXNGPlugin:
     active: true
 
+  searx.plugins.blocklists.SXNGPlugin:
+    active: true
+
   searx.plugins.time_zone.SXNGPlugin:
     active: true
 
@@ -276,6 +279,13 @@ plugins:
 # '(.*\.)?youtube\.com$': 'yt.example.com'
 # '(.*\.)?youtu\.be$': 'yt.example.com'
 #
+
+
+# Configuration of the "Blocklists plugin":
+#
+# blocklists:
+#   - "https://raw.githubusercontent.com/alvi-se/ai-ublock-blacklist/refs/heads/master/list.txt"
+#   - "https://raw.githubusercontent.com/iam-py-test/my_filters_001/refs/heads/main/antimalware.txt"
 
 
 categories_as_tabs:
