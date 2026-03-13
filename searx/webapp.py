@@ -1204,6 +1204,13 @@ def opensearch():
     method = sxng_request.preferences.get_value('method')
     autocomplete = sxng_request.preferences.get_value('autocomplete')
 
+    # chrome/chromium only supports HTTP GET....
+    if sxng_request.headers.get('User-Agent', '').lower().find('webkit') >= 0:
+        method = 'GET'
+
+    if method not in ('POST', 'GET'):
+        method = 'POST'
+
     ret = render('opensearch.xml', opensearch_method=method, autocomplete=autocomplete)
     resp = Response(response=ret, status=200, mimetype="application/opensearchdescription+xml")
     return resp
