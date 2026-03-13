@@ -68,7 +68,6 @@ def request(query, params):
                 'tbm': "vid",
                 'start': start,
                 **google_info['params'],
-                # Use async parameters to ensure results are returned correctly across regions
                 'asearch': 'arc',
                 'async': ui_async(start),
             }
@@ -111,9 +110,7 @@ def response(resp):
         title = extract_text(
             eval_xpath_getindex(
                 result,
-                './/h3[contains(@class, "DKV0Md")]'
-                ' | .//h3[contains(@class, "LC20lb")]'
-                ' | .//div[@role="heading"]',
+                './/h3[contains(@class, "DKV0Md")]' ' | .//h3[contains(@class, "LC20lb")]' ' | .//div[@role="heading"]',
                 0,
                 default=None,
             ),
@@ -122,7 +119,10 @@ def response(resp):
 
         # URL extraction via stable jsname="UWckNb" or fallback redirector decoding
         url = eval_xpath_getindex(
-            result, './/a[@jsname="UWckNb"]/@href | .//a[contains(@href, "/url?q=")]/@href | .//a/@href', 0, default=None
+            result,
+            './/a[@jsname="UWckNb"]/@href | .//a[contains(@href, "/url?q=")]/@href | .//a/@href',
+            0,
+            default=None,
         )
         if url and url.startswith('/url?q='):
             url = unquote(url[7:].split('&sa=U')[0])
