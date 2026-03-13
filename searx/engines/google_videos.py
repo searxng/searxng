@@ -68,6 +68,7 @@ def request(query, params):
                 'tbm': "vid",
                 'start': start,
                 **google_info['params'],
+                # Use async parameters to ensure results are returned correctly across regions
                 'asearch': 'arc',
                 'async': ui_async(start),
             }
@@ -95,23 +96,58 @@ def response(resp):
     # convert the text to dom
     dom = html.fromstring(resp.text)
 
-    result_divs = eval_xpath_list(dom, '//div[contains(@class, "MjjYud")]')
+    # Target individual result containers (jsname="pKB8Bc" and WVV5ke are modern stable attributes)
+    # Exclude top-level MjjYud if it contains pKB8Bc to avoid duplicate results.
+    result_divs = eval_xpath_list(
+        dom,
+        '//div[@jsname="pKB8Bc"]'
+        ' | //div[contains(@class, "WVV5ke")]'
+        ' | //div[contains(@class, "g ") and not(descendant::div[@jsname="pKB8Bc"])]',
+    )
 
     # parse results
     for result in result_divs:
+        # Title extraction supporting modern heading roles and LC20lb/DKV0Md classes
         title = extract_text(
-            eval_xpath_getindex(result, './/h3[contains(@class, "LC20lb")] | .//div[@role="heading"]', 0, default=None),
+            eval_xpath_getindex(
+                result,
+                './/h3[contains(@class, "DKV0Md")]'
+                ' | .//h3[contains(@class, "LC20lb")]'
+                ' | .//div[@role="heading"]',
+                0,
+                default=None,
+            ),
             allow_none=True,
         )
+
+        # URL extraction via stable jsname="UWckNb" or fallback redirector decoding
         url = eval_xpath_getindex(
-            result, './/a[@jsname="UWckNb"]/@href | .//a[contains(@href, "/url?q=")]/@href', 0, default=None
+            result, './/a[@jsname="UWckNb"]/@href | .//a[contains(@href, "/url?q=")]/@href | .//a/@href', 0, default=None
         )
         if url and url.startswith('/url?q='):
             url = unquote(url[7:].split('&sa=U')[0])
 
+        # Multi-layered description extraction
+        # 1. Search for known modern snippet containers (ITZIwc, p4wth, data-sncf, fzUZNc)
         content = extract_text(
-            eval_xpath_getindex(result, './/div[contains(@class, "ITZIwc")]', 0, default=None), allow_none=True
+            eval_xpath_list(
+                result,
+                './/div[contains(@class, "ITZIwc")]'
+                ' | .//div[contains(@class, "p4wth")]'
+                ' | .//div[@data-sncf="1" or @data-sncf="2"]'
+                ' | .//div[contains(@class, "VwiC3b")]'
+                ' | .//div[contains(@class, "MUwY9d")]'
+                ' | .//span[contains(@class, "MUwY9d")]'
+                ' | .//div[contains(@class, "fzUZNc")]',
+            ),
+            allow_none=True,
         )
+
+        if not content:
+            # 2. Fallback for "Grid" layouts where the HTML body omits the snippet:
+            # The descriptive text is often still present in the link's aria-label.
+            content = eval_xpath_getindex(result, './/a[@aria-label]/@aria-label', 0, default='')
+
         pub_info = extract_text(
             eval_xpath_getindex(
                 result, './/div[contains(@class, "gqF9jc")] | .//div[contains(@class, "WRu9Cd")]', 0, default=None
