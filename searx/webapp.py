@@ -1216,6 +1216,23 @@ def opensearch():
     return resp
 
 
+@app.route('/manifest.json', methods=['GET'])
+def manifest():
+    ret = render('manifest.json')
+    resp = Response(response=ret, status=200, mimetype="application/json")
+    return resp
+
+
+@app.route('/logo/<resolution>')
+def manifest_logo(resolution=0):
+    theme = sxng_request.preferences.get_value("theme")
+    return send_from_directory(
+        os.path.join(app.root_path, settings['ui']['static_path'], 'themes', theme, 'img', 'logos'),  # type: ignore
+        resolution,
+        mimetype='image/vnd.microsoft.icon',
+    )
+
+
 @app.route('/favicon.ico')
 def favicon():
     theme = sxng_request.preferences.get_value("theme")
