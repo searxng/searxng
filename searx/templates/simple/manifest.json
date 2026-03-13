@@ -1,0 +1,25 @@
+{
+  "name": "{{ instance_name }}",
+  "short_name": "{{ instance_name }}",
+  "icons": [
+    {
+      "src": "{{ url_for('static', filename='img/favicon.svg', _external=True) }}",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    },
+    {
+      "src": "{{ url_for('static', filename='img/192.png', _external=True) }}",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "{{ url_for('static', filename='img/512.png', _external=True) }}",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "start_url": "{{ url_for('index') }}",
+  "theme_color": "{{ theme_color }}" ,
+  "background_color": "{{ background_color }}",
+  "display": "standalone"
+}
