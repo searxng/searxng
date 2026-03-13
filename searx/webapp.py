@@ -1208,11 +1208,13 @@ def opensearch():
     resp = Response(response=ret, status=200, mimetype="application/opensearchdescription+xml")
     return resp
 
+
 @app.route('/manifest.json', methods=['GET'])
 def manifest():
     ret = render('manifest.json')
     resp = Response(response=ret, status=200, mimetype="application/json")
     return resp
+
 
 @app.route('/logo/<resolution>')
 def manifest_logo(resolution=0):
@@ -1222,6 +1224,7 @@ def manifest_logo(resolution=0):
         resolution,
         mimetype='image/vnd.microsoft.icon',
     )
+
 
 @app.route('/favicon.ico')
 def favicon():
