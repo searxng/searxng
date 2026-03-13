@@ -110,7 +110,7 @@ def response(resp):
         title = extract_text(
             eval_xpath_getindex(
                 result,
-                './/h3[contains(@class, "DKV0Md")]' ' | .//h3[contains(@class, "LC20lb")]' ' | .//div[@role="heading"]',
+                './/h3[contains(@class, "DKV0Md")] | .//h3[contains(@class, "LC20lb")] | .//div[@role="heading"]',
                 0,
                 default=None,
             ),
@@ -144,7 +144,7 @@ def response(resp):
         )
 
         if not content:
-            # 2. Fallback for "Grid" layouts where the HTML body omits the snippet:
+            # 2. Fallback for "dense" layouts where the HTML body omits the snippet:
             # The descriptive text is often still present in the link's aria-label.
             content = eval_xpath_getindex(result, './/a[@aria-label]/@aria-label', 0, default='')
 
