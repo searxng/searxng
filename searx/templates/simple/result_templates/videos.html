@@ -18,7 +18,11 @@
 {{- result_sub_footer(result) -}}
 {% if result.iframe_src -%}
 <div id="result-video-{{ index }}" class="embedded-video invisible">
-  <iframe data-src="{{result.iframe_src}}" frameborder="0" allowfullscreen></iframe>
+  <iframe data-src="{{result.iframe_src}}" frameborder="0" allowfullscreen
+    {% if result.parsed_url.hostname in ("www.youtube.com", ) -%}
+    allow="picture-in-picture" referrerpolicy="origin">
+    {%- endif -%}
+  </iframe>
 </div>
 {%- endif %}
 {{ result_footer(result) }}
