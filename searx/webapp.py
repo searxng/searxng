@@ -1210,10 +1210,7 @@ def opensearch():
 
 @app.route('/manifest.json', methods=['GET'])
 def manifest():
-    method = sxng_request.preferences.get_value('method')
-    autocomplete = sxng_request.preferences.get_value('autocomplete')
-
-    ret = render('manifest.json', opensearch_method=method, autocomplete=autocomplete)
+    ret = render('manifest.json')
     resp = Response(response=ret, status=200, mimetype="application/json")
     return resp
 
