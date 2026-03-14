@@ -51,7 +51,6 @@ def response(resp):
     )
 
     for result in json_resp['resource_response']['data']['results']:
-
         if result['type'] == 'story':
             continue
 

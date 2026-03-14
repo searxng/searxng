@@ -53,7 +53,6 @@ def response(resp):
 
     # parse results
     for r in json.get('features', {}):
-
         properties = r.get('properties')
 
         if not properties:
@@ -114,7 +113,8 @@ def response(resp):
                     'house_number': properties.get('housenumber'),
                     'road': properties.get('street'),
                     'locality': properties.get(
-                        'city', properties.get('town', properties.get('village'))  # noqa
+                        'city',
+                        properties.get('town', properties.get('village')),  # noqa
                     ),  # noqa
                     'postcode': properties.get('postcode'),
                     'country': properties.get('country'),

@@ -13,7 +13,6 @@ from tests import SearxTestCase
 
 
 class TinEyeTests(SearxTestCase):
-
     TEST_SETTINGS = "test_tineye.yml"
 
     def setUp(self):

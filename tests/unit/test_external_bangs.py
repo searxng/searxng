@@ -35,7 +35,6 @@ TEST_DB = {
 
 
 class TestGetNode(SearxTestCase):
-
     DB = {  # pylint:disable=invalid-name
         'trie': {
             'exam': {
@@ -66,7 +65,6 @@ class TestGetNode(SearxTestCase):
 
 
 class TestResolveBangDefinition(SearxTestCase):
-
     def test_https(self):
         url, rank = resolve_bang_definition('//example.com/' + chr(2) + chr(1) + '42', 'query')
         self.assertEqual(url, 'https://example.com/query')
@@ -79,7 +77,6 @@ class TestResolveBangDefinition(SearxTestCase):
 
 
 class TestGetBangDefinitionAndAutocomplete(SearxTestCase):
-
     def test_found(self):
         bang_definition, new_autocomplete = get_bang_definition_and_autocomplete('exam', external_bangs_db=TEST_DB)
         self.assertEqual(bang_definition, TEST_DB['trie']['exam'][LEAF_KEY])
@@ -112,7 +109,6 @@ class TestGetBangDefinitionAndAutocomplete(SearxTestCase):
 
 
 class TestExternalBangJson(SearxTestCase):
-
     def test_no_external_bang_query(self):
         result = get_bang_url(SearchQuery('test', engineref_list=[EngineRef('wikipedia', 'general')]))
         self.assertIsNone(result)

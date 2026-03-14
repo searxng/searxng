@@ -37,13 +37,13 @@ safesearch = False
 paging = True
 categories = ['news']
 
+# fmt: off
 # search-url
 search_url = (
-    # fmt: off
     'https://news.search.yahoo.com/search'
     '?{query}&b={offset}'
-    # fmt: on
 )
+# fmt: on
 
 AGO_RE = re.compile(r'([0-9]+)\s*(year|month|week|day|minute|hour)')
 AGO_TIMEDELTA = {
@@ -70,7 +70,6 @@ def response(resp):
 
     # parse results
     for result in eval_xpath_list(dom, '//ol[contains(@class,"searchCenterMiddle")]//li'):
-
         url = eval_xpath_getindex(result, './/h4/a/@href', 0, None)
         if url is None:
             continue

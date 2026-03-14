@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
-import  sys, os
+import sys, os
 from pathlib import Path
 from pallets_sphinx_themes import ProjectLink
 
@@ -55,9 +55,7 @@ jinja_contexts = {
     'searx': {
         'engines': searx.engines.engines,
         'plugins': searx.plugins.STORAGE,
-        'version': {
-            'node': os.getenv('NODE_MINIMUM_VERSION')
-        },
+        'version': {'node': os.getenv('NODE_MINIMUM_VERSION')},
         'enabled_engine_count': sum(not x.disabled for x in searx.engines.engines.values()),
         'categories': searx.engines.categories,
         'categories_as_tabs': {c: searx.engines.categories[c] for c in searx.settings['categories_as_tabs']},
@@ -66,6 +64,7 @@ jinja_contexts = {
 jinja_filters = {
     'group_engines_in_tab': searx.webutils.group_engines_in_tab,
 }
+
 
 # Let the Jinja template in configured_engines.rst access documented_modules
 # to automatically link documentation for modules if it exists.
@@ -86,6 +85,7 @@ def setup(app):
     app.connect('env-before-read-docs', before_read_docs)
     app.connect('source-read', source_read)
 
+
 # usage::   lorem :patch:`f373169` ipsum
 extlinks = {}
 
@@ -100,16 +100,12 @@ extlinks['patch'] = (GIT_URL + '/commit/%s', '#%s')
 extlinks['docs'] = (DOCS_URL + '/%s', 'docs: %s')
 extlinks['pypi'] = ('https://pypi.org/project/%s', 'PyPi: %s')
 extlinks['man'] = ('https://manpages.debian.org/jump?q=%s', '%s')
-#extlinks['role'] = (
+# extlinks['role'] = (
 #    'https://www.sphinx-doc.org/en/master/usage/restructuredtext/roles.html#role-%s', '')
-extlinks['duref'] = (
-    'https://docutils.sourceforge.io/docs/ref/rst/restructuredtext.html#%s', '%s')
-extlinks['durole'] = (
-    'https://docutils.sourceforge.io/docs/ref/rst/roles.html#%s', '%s')
-extlinks['dudir'] =  (
-    'https://docutils.sourceforge.io/docs/ref/rst/directives.html#%s', '%s')
-extlinks['ctan'] =  (
-    'https://ctan.org/pkg/%s', 'CTAN: %s')
+extlinks['duref'] = ('https://docutils.sourceforge.io/docs/ref/rst/restructuredtext.html#%s', '%s')
+extlinks['durole'] = ('https://docutils.sourceforge.io/docs/ref/rst/roles.html#%s', '%s')
+extlinks['dudir'] = ('https://docutils.sourceforge.io/docs/ref/rst/directives.html#%s', '%s')
+extlinks['ctan'] = ('https://ctan.org/pkg/%s', 'CTAN: %s')
 
 extensions = [
     'sphinx.ext.imgmath',
@@ -118,13 +114,13 @@ extensions = [
     "sphinx.ext.autodoc",
     "sphinx.ext.intersphinx",
     "pallets_sphinx_themes",
-    "sphinx_issues", # https://github.com/sloria/sphinx-issues/blob/master/README.rst
+    "sphinx_issues",  # https://github.com/sloria/sphinx-issues/blob/master/README.rst
     "sphinx_jinja",  # https://github.com/tardyp/sphinx-jinja
     "sphinxcontrib.programoutput",  # https://github.com/NextThought/sphinxcontrib-programoutput
     'linuxdoc.kernel_include',  # Implementation of the 'kernel-include' reST-directive.
-    'linuxdoc.rstFlatTable',    # Implementation of the 'flat-table' reST-directive.
-    'linuxdoc.kfigure',         # Sphinx extension which implements scalable image handling.
-    "sphinx_tabs.tabs", # https://github.com/djungelorm/sphinx-tabs
+    'linuxdoc.rstFlatTable',  # Implementation of the 'flat-table' reST-directive.
+    'linuxdoc.kfigure',  # Sphinx extension which implements scalable image handling.
+    "sphinx_tabs.tabs",  # https://github.com/djungelorm/sphinx-tabs
     'myst_parser',  # https://www.sphinx-doc.org/en/master/usage/markdown.html
     'notfound.extension',  # https://github.com/readthedocs/sphinx-notfound-page
 ]
@@ -134,21 +130,19 @@ autodoc_default_options = {
     'member-order': 'bysource',
 }
 
-myst_enable_extensions = [
-  "replacements", "smartquotes"
-]
+myst_enable_extensions = ["replacements", "smartquotes"]
 
 suppress_warnings = ['myst.domains']
 
 intersphinx_mapping = {
     "python": ("https://docs.python.org/3/", None),
-    "babel" : ("https://babel.readthedocs.io/en/latest/", None),
+    "babel": ("https://babel.readthedocs.io/en/latest/", None),
     "flask": ("https://flask.palletsprojects.com/en/stable/", None),
     "flask_babel": ("https://python-babel.github.io/flask-babel/", None),
     "werkzeug": ("https://werkzeug.palletsprojects.com/en/stable/", None),
     "jinja": ("https://jinja.palletsprojects.com/en/stable/", None),
-    "linuxdoc" : ("https://return42.github.io/linuxdoc/", None),
-    "sphinx" : ("https://www.sphinx-doc.org/en/master/", None),
+    "linuxdoc": ("https://return42.github.io/linuxdoc/", None),
+    "sphinx": ("https://www.sphinx-doc.org/en/master/", None),
     "valkey": ('https://valkey-py.readthedocs.io/en/stable/', None),
     "pygments": ("https://pygments.org/", None),
     "lxml": ('https://lxml.de/apidoc', None),
@@ -175,7 +169,7 @@ imgmath_font_size = 14
 
 html_show_sphinx = False
 html_theme_options = {"index_sidebar_logo": True}
-html_context = {"project_links": [] }
+html_context = {"project_links": []}
 html_context["project_links"].append(ProjectLink("Source", GIT_URL + '/tree/' + GIT_BRANCH))
 
 if WIKI_URL:
@@ -189,6 +183,7 @@ if PRIVACYPOLICY_URL:
 if CONTACT_URL:
     html_context["project_links"].append(ProjectLink("Contact", CONTACT_URL))
 
+# fmt: off
 html_sidebars = {
     "**": [
         "globaltoc.html",
@@ -198,6 +193,8 @@ html_sidebars = {
         "sourcelink.html"
     ],
 }
+# fmt: on
+
 singlehtml_sidebars = {"index": ["project.html", "localtoc.html"]}
 html_logo = "../client/simple/src/brand/searxng-wordmark.svg"
 html_title = "SearXNG Documentation ({})".format(VERSION_STRING)
@@ -205,6 +202,4 @@ html_show_sourcelink = True
 
 # LaTeX ----------------------------------------------------------------
 
-latex_documents = [
-    (master_doc, "searxng-{}.tex".format(VERSION_STRING), html_title, author, "manual")
-]
+latex_documents = [(master_doc, "searxng-{}.tex".format(VERSION_STRING), html_title, author, "manual")]

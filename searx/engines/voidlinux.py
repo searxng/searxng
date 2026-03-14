@@ -56,7 +56,6 @@ def response(resp):
 
     packages = {}
     for result in resp.json()['data']:
-
         # 32bit and dbg packages don't have their own package templates
         github_slug = re.sub(r"-(32bit|dbg)$", "", result['name'])
         pkg_url = f"{pkg_repo_url}/tree/master/srcpkgs/{github_slug}"
@@ -75,7 +74,6 @@ def response(resp):
 
     results = []
     for pkg_url, pkg_list in packages.items():
-
         results.append(
             {
                 'url': pkg_url,

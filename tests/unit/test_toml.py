@@ -7,7 +7,6 @@ from searx.favicons.config import DEFAULT_CFG_TOML_PATH
 
 
 class CompatTest(SearxTestCase):
-
     def test_toml(self):
         with DEFAULT_CFG_TOML_PATH.open("rb") as f:
             _ = compat.tomllib.load(f)

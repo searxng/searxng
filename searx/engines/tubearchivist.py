@@ -41,7 +41,7 @@ Steps to enable **unauthenticated** metadata access for channels and videos:
 
    With ``docker compose``, this would be::
 
-     - "./your-new-config.yml:/etc/nginx/sites-available/default:ro"
+     -"./your-new-config.yml:/etc/nginx/sites-available/default:ro"
 
 #. Start the TA container.
 
@@ -73,7 +73,6 @@ Optional settings:
 Implementations
 ===============
 """
-
 
 from urllib.parse import urlencode
 from dateutil.parser import parse

@@ -1,5 +1,6 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 """Bing-Images: description see :py:obj:`searx.engines.bing`."""
+
 # pylint: disable=invalid-name
 import json
 from urllib.parse import urlencode
@@ -71,7 +72,6 @@ def response(resp):
     dom = html.fromstring(resp.text)
 
     for result in dom.xpath('//ul[contains(@class, "dgControl_list")]/li'):
-
         metadata = result.xpath('.//a[@class="iusc"]/@m')
         if not metadata:
             continue

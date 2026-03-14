@@ -114,7 +114,7 @@ class ExpireCacheStats:
                 if expire:
                     valid_until = datetime.datetime.fromtimestamp(expire).strftime("%Y-%m-%d %H:%M:%S")
                 c_kv += 1
-                lines.append(f"[{ctx_name:20s}] {valid_until} {key:12}" f" --> ({type(value).__name__}) {value} ")
+                lines.append(f"[{ctx_name:20s}] {valid_until} {key:12} --> ({type(value).__name__}) {value} ")
 
         lines.append(f"Number of contexts: {c_ctx}")
         lines.append(f"number of key/value pairs: {c_kv}")
@@ -408,7 +408,6 @@ class ExpireCacheSQLite(sqlitedb.SQLiteAppl, ExpireCache):
 
         err_msg_list: list[str] = []
         for key, _val, expire in opt_list:
-
             value: bytes = self.serialize(value=_val)
             if len(value) > self.cfg.MAX_VALUE_LEN:
                 err_msg_list.append(f"{table}.key='{key}' - serialized value too big to cache (len: {len(value)}) ")

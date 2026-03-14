@@ -33,7 +33,6 @@ query_res = [
 
 
 class PluginHashTest(SearxTestCase):
-
     def setUp(self):
         super().setUp()
         engines = {}

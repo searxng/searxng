@@ -61,9 +61,7 @@ class SXNGPlugin(Plugin):
             date_time = DateTime(datetime.datetime.now(tz=geo.zoneinfo))
             tz_name = geo.timezone.replace('_', ' ')
             results.add(
-                results.types.Answer(
-                    answer=(f"{tz_name}:" f" {date_time.l10n()} ({date_time.datetime.strftime('%Z')})")
-                )
+                results.types.Answer(answer=(f"{tz_name}: {date_time.l10n()} ({date_time.datetime.strftime('%Z')})"))
             )
 
         return results

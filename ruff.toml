@@ -1,0 +1,13 @@
+cache-dir = "./.cache/ruff/"
+extend-exclude = ["./.cache/"]
+fix = true
+line-length = 120
+
+[format]
+docstring-code-format = true
+docstring-code-line-length = 120
+exclude = ["./client/*", "./searx/static/*", "./searx/languages.py"]
+indent-style = "space"
+line-ending = "lf"
+# TODO: switch to "double"
+quote-style = "preserve"

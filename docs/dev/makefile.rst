@@ -198,8 +198,8 @@ sources of the theme need to be rebuild.  You can do that by running::
 .. _shfmt: https://github.com/mvdan/sh?tab=readme-ov-file#shfmt
 .. _EditorConfig: https://github.com/patrickvane/shfmt?tab=readme-ov-file#description
 
-- Format Python source code using `Black code style`_.  See ``$BLACK_OPTIONS``
-  and ``$BLACK_TARGETS`` in :origin:`Makefile`.
+- Format Python source using `Black code style`_. The formatter ``ruff`` reads
+  the rules from :origin:`ruff.toml`.
 
 - Format Shell scripts using shfmt_. The formatter ``shfmt`` reads the rules
   from the EditorConfig_ files.

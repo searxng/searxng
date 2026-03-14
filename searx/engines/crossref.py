@@ -52,7 +52,6 @@ def response(resp: "SXNG_Response") -> EngineResults:
         return str(record.get(k, ""))
 
     for record in json_data["message"]["items"]:
-
         if record["type"] == "component":
             # These seem to be files published along with papers. Not something
             # you'd search for.

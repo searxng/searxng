@@ -114,8 +114,8 @@ DUMMY_ENTITY_URLS = set(
 
 # https://www.w3.org/TR/sparql11-query/#rSTRING_LITERAL1
 # https://lists.w3.org/Archives/Public/public-rdf-dawg/2011OctDec/0175.html
+# fmt: off
 sparql_string_escape = get_string_replaces_function(
-    # fmt: off
     {
         '\t': '\\\t',
         '\n': '\\\n',
@@ -126,8 +126,8 @@ sparql_string_escape = get_string_replaces_function(
         '\'': '\\\'',
         '\\': '\\\\'
     }
-    # fmt: on
 )
+# fmt: on
 
 replace_http_by_https = get_string_replaces_function({'http:': 'https:'})
 
@@ -526,9 +526,7 @@ class WDAmountAttribute(WDAttribute):
     def get_where(self):
         return """  OPTIONAL { ?item p:{name} ?{name}Node .
     ?{name}Node rdf:type wikibase:BestRank ; ps:{name} ?{name} .
-    OPTIONAL { ?{name}Node psv:{name}/wikibase:quantityUnit ?{name}Unit. } }""".replace(
-            '{name}', self.name
-        )
+    OPTIONAL { ?{name}Node psv:{name}/wikibase:quantityUnit ?{name}Unit. } }""".replace('{name}', self.name)
 
     def get_group_by(self):
         return self.get_select()
@@ -543,7 +541,6 @@ class WDAmountAttribute(WDAttribute):
 
 
 class WDArticle(WDAttribute):
-
     __slots__ = 'language', 'kwargs'
 
     def __init__(self, language, kwargs=None):
@@ -562,9 +559,7 @@ class WDArticle(WDAttribute):
         return """OPTIONAL { ?article{language} schema:about ?item ;
              schema:inLanguage "{language}" ;
              schema:isPartOf <https://{language}.wikipedia.org/> ;
-             schema:name ?articleName{language} . }""".replace(
-            '{language}', self.language
-        )
+             schema:name ?articleName{language} . }""".replace('{language}', self.language)
 
     def get_group_by(self):
         return self.get_select()
@@ -589,7 +584,6 @@ class WDLabelAttribute(WDAttribute):
 
 
 class WDURLAttribute(WDAttribute):
-
     HTTP_WIKIMEDIA_IMAGE = 'http://commons.wikimedia.org/wiki/Special:FilePath/'
 
     __slots__ = 'url_id', 'url_path_prefix', 'kwargs'
@@ -649,9 +643,7 @@ class WDGeoAttribute(WDAttribute):
     def get_where(self):
         return """OPTIONAL { ?item p:{name}/psv:{name} [
     wikibase:geoLatitude ?{name}Lat ;
-    wikibase:geoLongitude ?{name}Long ] }""".replace(
-            '{name}', self.name
-        )
+    wikibase:geoLongitude ?{name}Long ] }""".replace('{name}', self.name)
 
     def get_group_by(self):
         return self.get_select()
@@ -672,7 +664,6 @@ class WDGeoAttribute(WDAttribute):
 
 
 class WDImageAttribute(WDURLAttribute):
-
     __slots__ = ('priority',)
 
     def __init__(self, name, url_id=None, priority=100):
@@ -694,9 +685,7 @@ class WDDateAttribute(WDAttribute):
     wikibase:timePrecision ?{name}timePrecision ;
     wikibase:timeTimezone ?{name}timeZone ;
     wikibase:timeCalendarModel ?{name}timeCalendar ] . }
-    hint:Prior hint:rangeSafe true;""".replace(
-            '{name}', self.name
-        )
+    hint:Prior hint:rangeSafe true;""".replace('{name}', self.name)
 
     def get_group_by(self):
         return self.get_select()

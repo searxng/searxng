@@ -15,7 +15,6 @@ logger = logger.getChild('searx.metrics')
 
 
 class Histogram:  # pylint: disable=missing-class-docstring
-
     _slots__ = '_lock', '_size', '_sum', '_quartiles', '_count', '_width'
 
     def __init__(self, width=10, size=200):
@@ -102,7 +101,6 @@ class Histogram:  # pylint: disable=missing-class-docstring
 
 
 class HistogramStorage:  # pylint: disable=missing-class-docstring
-
     __slots__ = 'measures', 'histogram_class'
 
     def __init__(self, histogram_class=Histogram):
@@ -128,7 +126,6 @@ class HistogramStorage:  # pylint: disable=missing-class-docstring
 
 
 class CounterStorage:  # pylint: disable=missing-class-docstring
-
     __slots__ = 'counters', 'lock'
 
     def __init__(self):

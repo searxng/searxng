@@ -1,6 +1,5 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-"""build environment used by shell scripts
-"""
+"""build environment used by shell scripts"""
 
 # set path
 import sys

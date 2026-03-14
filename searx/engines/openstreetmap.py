@@ -290,7 +290,8 @@ def get_title_address(result):
                 'house_number': address_raw.get('house_number'),
                 'road': address_raw.get('road'),
                 'locality': address_raw.get(
-                    'city', address_raw.get('town', address_raw.get('village'))  # noqa
+                    'city',
+                    address_raw.get('town', address_raw.get('village')),  # noqa
                 ),  # noqa
                 'postcode': address_raw.get('postcode'),
                 'country': address_raw.get('country'),

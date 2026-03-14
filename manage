@@ -50,8 +50,6 @@ PYOBJECTS="searx"
 PY_SETUP_EXTRAS='[test]'
 GECKODRIVER_VERSION="v0.36.0"
 # SPHINXOPTS=
-BLACK_OPTIONS=("--target-version" "py311" "--line-length" "120" "--skip-string-normalization")
-BLACK_TARGETS=("--exclude" "(searx/static|searx/languages.py)" "--include" 'searxng.msg|\.pyi?$' "searx" "searxng_extra" "tests")
 
 YAMLLINT_FILES=()
 while IFS= read -r line; do
@@ -88,6 +86,7 @@ valkey:
   install   : create user (${VALKEY_USER}) and install systemd service (${VALKEY_SERVICE_NAME})
 py.:
   build     : Build python packages at ./${PYDIST}
+  format    : format Python code source using ruff
   clean     : delete virtualenv and intermediate py files
 pyenv.:
   install   : developer install of SearXNG into virtualenv
@@ -95,7 +94,6 @@ pyenv.:
   cmd ...   : run command ... in virtualenv
   OK        : test if virtualenv is OK
 format.:
-  python    : format Python code source using black
   shell     : format Shell scripts using shfmt
 EOF
     go.help
@@ -208,6 +206,12 @@ py.build() {
         bdist_wheel --bdist-dir "${PYBUILD}" -d "${PYDIST}"
 }
 
+py.format() {
+    build_msg TEST "[py.format] ruff"
+    pyenv.cmd ruff format
+    dump_return $?
+}
+
 py.clean() {
     build_msg CLEAN pyenv
     (
@@ -254,12 +258,6 @@ pyenv.uninstall() {
     pyenv.cmd python setup.py develop --uninstall 2>&1 |
         prefix_stdout "${_Blue}PYENV     ${_creset}[pyenv.uninstall] "
 
-}
-
-format.python() {
-    build_msg TEST "[format.python] black ${BLACK_TARGETS[*]}"
-    pyenv.cmd black "${BLACK_OPTIONS[@]}" "${BLACK_TARGETS[@]}"
-    dump_return $?
 }
 
 format.shell() {
