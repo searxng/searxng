@@ -327,23 +327,16 @@ def request(query: str, params: "OnlineParams") -> None:
     params["headers"].update(google_info["headers"])
 
 
-# =26;[3,"dimg_ZNMiZPCqE4apxc8P3a2tuAQ_137"]a87;data:image/jpeg;base64,/9j/4AAQSkZJRgABA
-# ...6T+9Nl4cnD+gr9OK8I56/tX3l86nWYw//2Q==26;
-RE_DATA_IMAGE = re.compile(r'"(dimg_[^"]*)"[^;]*;(data:image[^;]*;[^;]*);')
-RE_DATA_IMAGE_end = re.compile(r'"(dimg_[^"]*)"[^;]*;(data:image[^;]*;[^;]*)$')
+# regex match to get image map that is found inside the returned javascript:
+# (function(){google.ldi={ ... };google.pim={ ... };google.sib=false;google ...
+RE_DATA_IMAGE = re.compile(r'"((?:dimg|pimg|tsuid)_[^"]*)":"((?:https?:)?//[^"]*)')
 
 
-def parse_data_images(text: str):
+def parse_url_images(text: str):
     data_image_map = {}
 
-    for img_id, data_image in RE_DATA_IMAGE.findall(text):
-        end_pos = data_image.rfind("=")
-        if end_pos > 0:
-            data_image = data_image[: end_pos + 1]
-        data_image_map[img_id] = data_image
-    last = RE_DATA_IMAGE_end.search(text)
-    if last:
-        data_image_map[last.group(1)] = last.group(2)
+    for img_id, image_url in RE_DATA_IMAGE.findall(text):
+        data_image_map[img_id] = image_url.encode('utf-8').decode("unicode-escape")
     logger.debug("data:image objects --> %s", list(data_image_map.keys()))
     return data_image_map
 
@@ -352,7 +345,7 @@ def response(resp: "SXNG_Response"):
     """Get response from google's search request"""
     # pylint: disable=too-many-branches, too-many-statements
     detect_google_sorry(resp)
-    data_image_map = parse_data_images(resp.text)
+    data_image_map = parse_url_images(resp.text)
 
     results = EngineResults()
 
@@ -392,15 +385,16 @@ def response(resp: "SXNG_Response"):
 
             content = extract_text(content_nodes)
 
-            thumbnail = result.xpath(".//img/@src")
-            if thumbnail:
-                thumbnail = thumbnail[0]
+            # Images that are NOT the favicon
+            xpath_image = eval_xpath_getindex(result, './/img[not(@class="XNo5Ab")]', index=0, default=None)
+
+            thumbnail = None
+            if xpath_image is not None:
+                thumbnail = xpath_image.get("src")
                 if thumbnail.startswith("data:image"):
-                    img_id = result.xpath(".//img/@id")
+                    img_id = xpath_image.get("id")
                     if img_id:
-                        thumbnail = data_image_map.get(img_id[0])
-            else:
-                thumbnail = None
+                        thumbnail = data_image_map.get(img_id)
 
             results.append({"url": url, "title": title, "content": content or '', "thumbnail": thumbnail})
 
