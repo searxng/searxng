@@ -175,35 +175,25 @@ def parse_generic(preferences: Preferences, form: Dict[str, str], disabled_engin
 
     # set categories/engines
     explicit_engine_list = False
+    if 'engines' in form:
+        pd_engines = [
+            EngineRef(engine_name, engines[engine_name].categories[0])
+            for engine_name in map(str.strip, form['engines'].split(','))
+            if engine_name in engines
+        ]
+        if pd_engines:
+            query_engineref_list.extend(pd_engines)
+            explicit_engine_list = True
+
     if not is_locked('categories'):
-        # parse the form only if the categories are not locked
         for pd_name, pd in form.items():  # pylint: disable=invalid-name
-            if pd_name == 'engines':
-                pd_engines = [
-                    EngineRef(engine_name, engines[engine_name].categories[0])
-                    for engine_name in map(str.strip, pd.split(','))
-                    if engine_name in engines
-                ]
-                if pd_engines:
-                    query_engineref_list.extend(pd_engines)
-                    explicit_engine_list = True
-            else:
+            if pd_name != 'engines':
                 parse_category_form(query_categories, pd_name, pd)
 
-    if explicit_engine_list:
-        # explicit list of engines with the "engines" parameter in the form
-        if query_categories:
-            # add engines from referenced by the "categories" parameter and the "category_*"" parameters
-            query_engineref_list.extend(get_engineref_from_category_list(query_categories, disabled_engines))
-    else:
-        # no "engines" parameters in the form
+    if not explicit_engine_list:
         if not query_categories:
-            # and neither "categories" parameter nor "category_*"" parameters in the form
-            # -> get the categories from the preferences (the cookies or the settings)
             query_categories = get_selected_categories(preferences, None)
 
-        # using all engines for that search, which are
-        # declared under the specific categories
         query_engineref_list.extend(get_engineref_from_category_list(query_categories, disabled_engines))
 
     return query_engineref_list
