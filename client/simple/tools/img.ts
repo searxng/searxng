@@ -18,8 +18,10 @@ export type Src2Dest = {
  * Convert a list of SVG files to PNG.
  *
  * @param items - Array of SVG files (src: SVG, dest:PNG) to convert.
+ * @param width - (optional) width of the PNG pictures
+ * @param height - (optional) height of the PNG pictures.
  */
-export const svg2png = (items: Src2Dest[]): void => {
+export const svg2png = (items: Src2Dest[], width?: number, height?: number): void => {
   for (const item of items) {
     fs.mkdirSync(path.dirname(item.dest), { recursive: true });
 
@@ -28,6 +30,9 @@ export const svg2png = (items: Src2Dest[]): void => {
         force: true,
         compressionLevel: 9,
         palette: true
+      })
+      .resize(width, height, {
+        fit: "contain"
       })
       .toFile(item.dest)
       .then((info) => {
