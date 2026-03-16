@@ -17,13 +17,15 @@ import { type Src2Dest, svg2png, svg2svg } from "./img.ts";
  * Vite plugin to convert a list of SVG files to PNG.
  *
  * @param items - Array of SVG files (src: SVG, dest:PNG) to convert.
+ * @param width - (optional) width of the PNG picture
+ * @param height - (optional) height of the PNG picture
  */
-export const plg_svg2png = (items: Src2Dest[]): Plugin => {
+export const plg_svg2png = (items: Src2Dest[], width?: number, height?: number): Plugin => {
   return {
     name: "searxng-simple-svg2png",
     apply: "build",
     writeBundle: () => {
-      svg2png(items);
+      svg2png(items, width, height);
     }
   };
 };
