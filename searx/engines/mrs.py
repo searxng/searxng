@@ -47,7 +47,7 @@ def init(engine_settings):  # pylint: disable=unused-argument
 
 
 def request(query, params):
-    params['url'] = f"{base_url}/search/{quote_plus(query)}/{page_size}/{(params['pageno']-1)*page_size}"
+    params['url'] = f"{base_url}/search/{quote_plus(query)}/{page_size}/{(params['pageno'] - 1) * page_size}"
     return params
 
 

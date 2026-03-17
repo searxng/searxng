@@ -88,7 +88,6 @@ def response(resp):
     dom = html.fromstring(resp.text)
 
     for newsitem in eval_xpath_list(dom, '//div[contains(@class, "newsitem")]'):
-
         link = eval_xpath_getindex(newsitem, './/a[@class="title"]', 0, None)
         if link is None:
             continue

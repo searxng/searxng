@@ -59,7 +59,6 @@ def response(resp):
 
     doc = html.fromstring(resp.text)
     for result in eval_xpath_list(doc, "//table/tbody/tr"):
-
         if len(result.xpath("./td")) < 9:
             # skip non valid entries in the result table
             # e.g the "No item found..." message

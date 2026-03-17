@@ -53,7 +53,6 @@ def response(resp) -> EngineResults:
     dom = html.fromstring(resp.text)
 
     for result in eval_xpath(dom, ".//table[@id='r']//tr"):
-
         # each row is an Translations.Item
 
         td_list = result.xpath("./td")
@@ -70,7 +69,6 @@ def response(resp) -> EngineResults:
         p_list = col_to.xpath(".//p")
 
         for i, p_item in enumerate(p_list):
-
             smpl: str = extract_text(p_list[i].xpath("./i[@class='smpl']"))  # type: ignore
             _clean_up_node(p_item)
             p_text: str = extract_text(p_item)  # type: ignore

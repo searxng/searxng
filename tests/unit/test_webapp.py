@@ -16,7 +16,6 @@ from tests import SearxTestCase
 
 
 class ViewsTestCase(SearxTestCase):  # pylint: disable=too-many-public-methods
-
     def setUp(self):
         super().setUp()
 

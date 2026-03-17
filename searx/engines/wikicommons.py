@@ -124,7 +124,6 @@ def response(resp: "SXNG_Response") -> EngineResults:
     pages = json_data.get("query", {}).get("pages", {}).values()
 
     for item in pages:
-
         if not item.get("imageinfo", []):
             continue
         imageinfo = item["imageinfo"][0]

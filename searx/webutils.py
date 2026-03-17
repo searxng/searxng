@@ -244,7 +244,7 @@ def contains_cjko(s: str) -> bool:
         '\uac00-\ud7af'  # Korean hangul syllables
         '\u1100-\u11ff'  # Korean hangul jamo
     )
-    return bool(re.search(fr'[{unicode_ranges}]', s))
+    return bool(re.search(rf'[{unicode_ranges}]', s))
 
 
 def regex_highlight_cjk(word: str) -> str:
@@ -263,8 +263,8 @@ def regex_highlight_cjk(word: str) -> str:
     """
     rword = re.escape(word)
     if contains_cjko(rword):
-        return fr'({rword})'
-    return fr'\b({rword})(?!\w)'
+        return rf'({rword})'
+    return rf'\b({rword})(?!\w)'
 
 
 def highlight_content(content, query):

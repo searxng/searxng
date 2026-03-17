@@ -12,7 +12,6 @@ the User-Agent_ header is unset or matches the regular expression
 
 """
 
-
 import re
 from ipaddress import (
     IPv4Network,

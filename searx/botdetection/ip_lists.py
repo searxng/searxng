@@ -25,7 +25,6 @@ The ``ip_lists`` method implements :py:obj:`block-list <block_ip>` and
 """
 # pylint: disable=unused-argument
 
-
 from typing import Tuple
 from ipaddress import (
     ip_network,

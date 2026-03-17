@@ -12,7 +12,6 @@ from searx.result_types import EngineResults
 
 
 class GithubCodeTests(SearxTestCase):
-
     TEST_SETTINGS = "test_github_code.yml"
 
     def setUp(self):

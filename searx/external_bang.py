@@ -61,9 +61,7 @@ def resolve_bang_definition(bang_definition: str, query: str) -> tuple[str, int]
     return (url, rank)
 
 
-def get_bang_definition_and_autocomplete(
-    bang: str, external_bangs_db: dict[str, t.Any] | None = None
-):  # pylint: disable=invalid-name
+def get_bang_definition_and_autocomplete(bang: str, external_bangs_db: dict[str, t.Any] | None = None):  # pylint: disable=invalid-name
     if external_bangs_db is None:
         external_bangs_db = EXTERNAL_BANGS
 

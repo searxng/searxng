@@ -4,7 +4,7 @@
 
 usage::
 
-    load_engines( settings['engines'] )
+    load_engines(settings['engines'])
 
 """
 

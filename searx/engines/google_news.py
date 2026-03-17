@@ -85,14 +85,12 @@ def request(query, params):
     google_info['params']['hl'] = ceid_lang
 
     if ceid_suffix and ceid_suffix not in ['Hans', 'Hant']:
-
         if ceid_region.lower() == ceid_lang:
             google_info['params']['hl'] = ceid_lang + '-' + ceid_region
         else:
             google_info['params']['hl'] = ceid_lang + '-' + ceid_suffix
 
     elif ceid_region.lower() != ceid_lang:
-
         if ceid_region in ['AT', 'BE', 'CH', 'IL', 'SA', 'IN', 'BD', 'PT']:
             google_info['params']['hl'] = ceid_lang
         else:
@@ -130,7 +128,6 @@ def response(resp):
     dom = html.fromstring(resp.text)
 
     for result in eval_xpath_list(dom, '//div[@class="xrnccd"]'):
-
         # The first <a> tag in the <article> contains the link to the article
         # The href attribute of the <a> tag is a google internal link, we have
         # to decode

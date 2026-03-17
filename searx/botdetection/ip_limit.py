@@ -108,7 +108,6 @@ def filter_request(
             return too_many_requests(network, "too many request in API_WINDOW")
 
     if cfg['botdetection.ip_limit.link_token']:
-
         suspicious = link_token.is_suspicious(network, request, True)
 
         if not suspicious:

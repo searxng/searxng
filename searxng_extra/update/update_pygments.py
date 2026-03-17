@@ -47,7 +47,6 @@ END_DARK_THEME = """
 
 
 class Formatter(HtmlFormatter):  # pylint: disable=missing-class-docstring
-
     def get_style_lines(self, arg=None):
         style_lines = []
         style_lines.extend(self.get_linenos_style_defs())

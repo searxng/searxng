@@ -55,7 +55,6 @@ def response(resp):
     results = []
 
     for item in json_resp['search']['webResults']['results']:
-
         pubdate_original = item.get('pubdate_original')
         if pubdate_original:
             pubdate_original = dateutil.parser.parse(pubdate_original)

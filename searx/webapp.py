@@ -212,7 +212,6 @@ def code_highlighter(codelines, language=None, hl_lines=None, strip_whitespace=T
 
         # new codeblock is detected
         if last_line is not None and last_line + 1 != line:
-
             # highlight last codepart
             formatter = HtmlFormatter(
                 linenos='inline',
@@ -261,7 +260,6 @@ def custom_url_for(endpoint: str, **values):
 
     # handled by WhiteNoise
     if endpoint == "static" and values.get("filename"):
-
         # We need to verify the "filename" argument: in the jinja templates
         # there could be call like:
         #     url_for('static', filename='img/favicon.png')
@@ -280,7 +278,6 @@ def custom_url_for(endpoint: str, **values):
         return f"{app_prefix}static/{values['filename']}"
 
     if endpoint == "info" and "locale" not in values:
-
         # We need to verify the "locale" argument: in the jinja templates there
         # could be call like:
         #     url_for('info', pagename='about')
@@ -572,10 +569,8 @@ def index_error(output_format: str, error_message: str):
     # html
     sxng_request.errors.append(gettext('search error'))
     return render(
-        # fmt: off
         'index.html',
         selected_categories=get_selected_categories(sxng_request.preferences, sxng_request.form),
-        # fmt: on
     )
 
 
@@ -589,11 +584,9 @@ def index():
         return redirect(url_for('search') + query, 308)
 
     return render(
-        # fmt: off
         'index.html',
         selected_categories=get_selected_categories(sxng_request.preferences, sxng_request.form),
-        current_locale = sxng_request.preferences.get_value("locale"),
-        # fmt: on
+        current_locale=sxng_request.preferences.get_value("locale"),
     )
 
 
@@ -637,10 +630,8 @@ def search():
     if not sxng_request.form.get('q'):
         if output_format == 'html':
             return render(
-                # fmt: off
                 'index.html',
                 selected_categories=get_selected_categories(sxng_request.preferences, sxng_request.form),
-                # fmt: on
             )
         return index_error(output_format, 'No query'), 400
 
@@ -673,12 +664,10 @@ def search():
     # 3. formats without a template
 
     if output_format == 'json':
-
         response = webutils.get_json_response(search_query, result_container)
         return Response(response, mimetype='application/json')
 
     if output_format == 'csv':
-
         csv = webutils.CSVWriter(StringIO())
         webutils.write_csv_response(csv, result_container)
         csv.stream.seek(0)
@@ -754,34 +743,30 @@ def search():
     # when the user choice is "auto", search.search_query.lang contains the detected language
     # otherwise it is equals to search_query.lang
     return render(
-        # fmt: off
         'results.html',
-        results = results,
+        results=results,
         q=sxng_request.form['q'],
-        selected_categories = search_query.categories,
-        pageno = search_query.pageno,
-        time_range = search_query.time_range or '',
-        number_of_results = format_decimal(result_container.number_of_results),
-        suggestions = suggestion_urls,
-        answers = result_container.answers,
-        corrections = correction_urls,
-        infoboxes = result_container.infoboxes,
-        engine_data = result_container.engine_data,
-        paging = result_container.paging,
-        unresponsive_engines = webutils.get_translated_errors(
-            result_container.unresponsive_engines
-        ),
-        current_locale = sxng_request.preferences.get_value("locale"),
-        current_language = selected_locale,
-        search_language = match_locale(
+        selected_categories=search_query.categories,
+        pageno=search_query.pageno,
+        time_range=search_query.time_range or '',
+        number_of_results=format_decimal(result_container.number_of_results),
+        suggestions=suggestion_urls,
+        answers=result_container.answers,
+        corrections=correction_urls,
+        infoboxes=result_container.infoboxes,
+        engine_data=result_container.engine_data,
+        paging=result_container.paging,
+        unresponsive_engines=webutils.get_translated_errors(result_container.unresponsive_engines),
+        current_locale=sxng_request.preferences.get_value("locale"),
+        current_language=selected_locale,
+        search_language=match_locale(
             search_obj.search_query.lang,
             settings['search']['languages'],
-            fallback=sxng_request.preferences.get_value("language")
+            fallback=sxng_request.preferences.get_value("language"),
         ),
-        timeout_limit = sxng_request.form.get('timeout_limit', None),
-        timings = engine_timings_pairs,
-        max_response_time = max_response_time
-        # fmt: on
+        timeout_limit=sxng_request.form.get('timeout_limit', None),
+        timings=engine_timings_pairs,
+        max_response_time=max_response_time,
     )
 
 
@@ -829,7 +814,6 @@ def autocompleter():
     # normal autocompletion results only appear if no inner results returned
     # and there is a query part
     if len(raw_text_query.autocomplete_list) == 0 and len(sug_prefix) > 0:
-
         # get SearXNG's locale and autocomplete backend from cookie
         sxng_locale = sxng_request.preferences.get_value('language')
         backend_name = sxng_request.preferences.get_value('autocomplete')
@@ -968,31 +952,29 @@ def preferences():
         }
 
     return render(
-        # fmt: off
         'preferences.html',
-        preferences = True,
-        selected_categories = get_selected_categories(sxng_request.preferences, sxng_request.form),
-        locales = LOCALE_NAMES,
-        current_locale = sxng_request.preferences.get_value("locale"),
-        image_proxy = image_proxy,
-        engines_by_category = engines_by_category,
-        stats = stats,
-        max_rate95 = max_rate95,
-        reliabilities = reliabilities,
-        supports = supports,
-        answer_storage = searx.answerers.STORAGE.info,
-        disabled_engines = disabled_engines,
-        autocomplete_backends = autocomplete_backends,
-        favicon_resolver_names = favicons.proxy.CFG.resolver_map.keys(),
-        shortcuts = {y: x for x, y in engine_shortcuts.items()},
-        themes = themes,
-        plugins_storage = searx.plugins.STORAGE.info,
-        current_doi_resolver = get_doi_resolver(),
-        allowed_plugins = allowed_plugins,
-        preferences_url_params = sxng_request.preferences.get_as_url_params(),
-        locked_preferences = get_setting("preferences.lock", []),
-        doi_resolvers = get_setting("doi_resolvers", {}),
-        # fmt: on
+        preferences=True,
+        selected_categories=get_selected_categories(sxng_request.preferences, sxng_request.form),
+        locales=LOCALE_NAMES,
+        current_locale=sxng_request.preferences.get_value("locale"),
+        image_proxy=image_proxy,
+        engines_by_category=engines_by_category,
+        stats=stats,
+        max_rate95=max_rate95,
+        reliabilities=reliabilities,
+        supports=supports,
+        answer_storage=searx.answerers.STORAGE.info,
+        disabled_engines=disabled_engines,
+        autocomplete_backends=autocomplete_backends,
+        favicon_resolver_names=favicons.proxy.CFG.resolver_map.keys(),
+        shortcuts={y: x for x, y in engine_shortcuts.items()},
+        themes=themes,
+        plugins_storage=searx.plugins.STORAGE.info,
+        current_doi_resolver=get_doi_resolver(),
+        allowed_plugins=allowed_plugins,
+        preferences_url_params=sxng_request.preferences.get_as_url_params(),
+        locked_preferences=get_setting("preferences.lock", []),
+        doi_resolvers=get_setting("doi_resolvers", {}),
     )
 
 
@@ -1136,26 +1118,22 @@ def stats():
             f"\
             Error: {error['exception_classname'] or error['log_message']} \
             Parameters: {error['log_parameters']} \
-            File name: {error['filename'] }:{ error['line_no'] } \
+            File name: {error['filename']}:{error['line_no']} \
             Error Function: {error['function']} \
             Code: {error['code']} \
-            ".replace(
-                ' ' * 12, ''
-            ).strip()
+            ".replace(' ' * 12, '').strip()
         )
     technical_report = ' '.join(technical_report)
 
     engine_stats['time'] = sorted(engine_stats['time'], reverse=reverse, key=get_key)
     return render(
-        # fmt: off
         'stats.html',
-        sort_order = sort_order,
-        engine_stats = engine_stats,
-        engine_reliabilities = engine_reliabilities,
-        selected_engine_name = selected_engine_name,
-        searx_git_branch = GIT_BRANCH,
-        technical_report = technical_report,
-        # fmt: on
+        sort_order=sort_order,
+        engine_stats=engine_stats,
+        engine_reliabilities=engine_reliabilities,
+        selected_engine_name=selected_engine_name,
+        searx_git_branch=GIT_BRANCH,
+        technical_report=technical_report,
     )
 
 

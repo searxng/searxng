@@ -104,7 +104,6 @@ def response(resp: "SXNG_Response") -> EngineResults:
     )
 
     for result in json_data["data"]:
-
         if not result["image_id"]:
             continue
 

@@ -43,7 +43,6 @@ def response(resp):
     results = []
 
     for package in resp.json()["crates"]:
-
         published_date = package.get("updated_at")
         published_date = parser.parse(published_date)
 

@@ -84,7 +84,6 @@ def response(resp):
     data = resp.json()
 
     for result in data.get("collection", []):
-
         if result["kind"] in ("track", "playlist"):
             url = result.get("permalink_url")
             if not url:
@@ -137,7 +136,6 @@ def get_client_id() -> str | None:
     # extracts valid app_js urls from soundcloud.com content
 
     for url in app_js_urls[::-1]:
-
         # gets app_js and search for the client_id
         resp = http_get(url)
 

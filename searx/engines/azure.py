@@ -25,6 +25,7 @@ To use this engine, add an entry similar to the following to your engine list in
     https://learn.microsoft.com/en-us/entra/identity-platform/quickstart-register-app
 
 """
+
 import typing as t
 
 from searx.enginelib import EngineCache

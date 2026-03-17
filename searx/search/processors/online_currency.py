@@ -16,7 +16,6 @@ if t.TYPE_CHECKING:
     from .abstract import EngineProcessor
     from searx.search.models import SearchQuery
 
-
 search_syntax = re.compile(r".*?(\d+(?:\.\d+)?) ([^.0-9]+) (?:in|to) ([^.0-9]+)", re.I)
 """Search syntax used for from/to currency (e.g. ``10 usd to eur``)"""
 
@@ -91,11 +90,13 @@ class OnlineCurrencyProcessor(OnlineProcessor):
 
         ui_locale = flask_babel.get_locale() or babel.Locale.parse("en")
         from_name: str = CURRENCIES.iso4217_to_name(
-            from_iso4217, ui_locale.language
-        )  # pyright: ignore[reportAssignmentType]
+            from_iso4217,
+            ui_locale.language,  # pyright: ignore[reportAssignmentType]
+        )
         to_name: str = CURRENCIES.iso4217_to_name(
-            to_iso4217, ui_locale.language
-        )  # pyright: ignore[reportAssignmentType]
+            to_iso4217,
+            ui_locale.language,  # pyright: ignore[reportAssignmentType]
+        )
 
         params: OnlineCurrenciesParams = {
             **online_params,
