@@ -12,6 +12,7 @@ from searx.engines.bing import (  # pylint: disable=unused-import
     override_accept_language,
 )
 from searx.engines.bing_images import time_map
+from searx.utils import eval_xpath, eval_xpath_getindex
 
 about = {
     "website": "https://www.bing.com/videos",
@@ -71,18 +72,23 @@ def response(resp):
 
     dom = html.fromstring(resp.text)
 
-    for result in dom.xpath('//div[@class="dg_u"]//div[contains(@id, "mc_vtvc_video")]'):
-        metadata = json.loads(result.xpath('.//div[@class="vrhdata"]/@vrhm')[0])
-        info = " - ".join(result.xpath('.//div[@class="mc_vtvc_meta_block"]//span/text()')).strip()
-        content = "{0} - {1}".format(metadata["du"], info)
-        thumbnail = result.xpath('.//div[contains(@class, "mc_vtvc_th")]//img/@src')[0]
+    for result in dom.xpath('//div[contains(@id, "mc_vtvc_video")]'):
+        metadata = json.loads(eval_xpath_getindex(result, './/div[@class="vrhdata"]/@vrhm', index=0))
+        info = " - ".join(eval_xpath(result, './/div[@class="mc_vtvc_meta_block"]//span/text()')).strip()
+        thumbnail = eval_xpath_getindex(
+            result,
+            './/img[starts-with(@class, "rms")]/@data-src-hq',
+            index=0,
+            default=None,
+        )
 
         results.append(
             {
                 "url": metadata["murl"],
                 "thumbnail": thumbnail,
                 "title": metadata.get("vt", ""),
-                "content": content,
+                "content": info,
+                "length": metadata["du"],
                 "template": "videos.html",
             }
         )
