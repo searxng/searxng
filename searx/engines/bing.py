@@ -1,34 +1,20 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-"""This is the implementation of the Bing-WEB engine. Some of this
+"""This is the implementation of the Bing-Web engine.  Some of this
 implementations are shared by other engines:
 
 - :ref:`bing images engine`
 - :ref:`bing news engine`
 - :ref:`bing videos engine`
 
-On the `preference page`_ Bing offers a lot of languages an regions (see section
-LANGUAGE and COUNTRY/REGION).  The Language is the language of the UI, we need
-in SearXNG to get the translations of data such as *"published last week"*.
+.. note::
 
-There is a description of the official search-APIs_, unfortunately this is not
-the API we can use or that bing itself would use.  You can look up some things
-in the API to get a better picture of bing, but the value specifications like
-the market codes are usually outdated or at least no longer used by bing itself.
-
-The market codes have been harmonized and are identical for web, video and
-images.  The news area has also been harmonized with the other categories.  Only
-political adjustments still seem to be made -- for example, there is no news
-category for the Chinese market.
-
-.. _preference page: https://www.bing.com/account/general
-.. _search-APIs: https://learn.microsoft.com/en-us/bing/search-apis/
-
+   Some functionality (paging and time-range results) are not supported
+   since they depend on JavaScript.
 """
-# pylint: disable=too-many-branches, invalid-name
 
 import base64
 import re
-import time
+import typing as t
 from urllib.parse import parse_qs, urlencode, urlparse
 
 import babel
@@ -36,14 +22,17 @@ import babel.languages
 from lxml import html
 
 from searx.enginelib.traits import EngineTraits
-from searx.exceptions import SearxEngineAPIException
-from searx.locales import language_tag, region_tag
+from searx.locales import region_tag
 from searx.utils import eval_xpath, eval_xpath_getindex, eval_xpath_list, extract_text
 
-about = {
+if t.TYPE_CHECKING:
+    from searx.extended_types import SXNG_Response
+    from searx.search.processors import OnlineParams
+
+about: dict[str, t.Any] = {
     "website": "https://www.bing.com",
     "wikidata_id": "Q182496",
-    "official_api_documentation": "https://www.microsoft.com/en-us/bing/apis/bing-web-search-api",
+    "official_api_documentation": "https://github.com/MicrosoftDocs/bing-docs",
     "use_official_api": False,
     "require_api_key": False,
     "results": "HTML",
@@ -51,68 +40,77 @@ about = {
 
 # engine dependent config
 categories = ["general", "web"]
-paging = True
-max_page = 200
-"""200 pages maximum (``&first=1991``)"""
-
-time_range_support = True
 safesearch = True
-"""Bing results are always SFW.  To get NSFW links from bing some age
-verification by a cookie is needed / thats not possible in SearXNG.
-"""
+_safesearch_map: dict[int, str] = {
+    0: "off",
+    1: "moderate",
+    2: "strict",
+}
+"""Filter results. 0: None, 1: Moderate, 2: Strict"""
 
 base_url = "https://www.bing.com/search"
-"""Bing (Web) search URL"""
+"""Bing-Web search URL"""
 
 
-def _page_offset(pageno):
-    return (int(pageno) - 1) * 10 + 1
+def get_locale_params(engine_region: str | None) -> dict[str, str] | None:
+    """API documentation states the ``mkt`` parameter is *the
+    recommended primary signal* for locale:
+
+        If known, you are encouraged to always specify the market.
+        Specifying the market helps Bing route the request and return an
+        appropriate and optimal response.
+
+    The ``mkt`` parameter takes a full ``<language>-<country>`` code.
+
+    This function is shared with :py:mod:`searx.engines.bing_images`,
+    :py:mod:`searx.engines.bing_news`, and :py:mod:`searx.engines.bing_videos`.
+    """
+
+    if not engine_region or engine_region == "clear":
+        return None
+
+    return {"mkt": engine_region}
 
 
-def set_bing_cookies(params, engine_language, engine_region):
-    params["cookies"]["_EDGE_CD"] = f"m={engine_region}&u={engine_language}"
-    params["cookies"]["_EDGE_S"] = f"mkt={engine_region}&ui={engine_language}"
-    logger.debug("bing cookies: %s", params["cookies"])
+def override_accept_language(params: "OnlineParams", engine_region: str | None) -> None:
+    """Override the ``Accept-Language`` header.
+
+    The default header built by :py:class:`~searx.search.processors.online.OnlineProcessor`
+    appends ``en;q=0.3`` as a fallback language::
+
+        Accept-Language: de,de-DE;q=0.7,en;q=0.3
+
+    Bing seems to better select the results locale based on the
+    ``Accept-Language`` value header.
+
+    This function is shared with :py:mod:`searx.engines.bing_images`,
+    :py:mod:`searx.engines.bing_news`, and :py:mod:`searx.engines.bing_videos`.
+    """
+
+    if not engine_region or engine_region == "clear":
+        return
+
+    lang = engine_region.split("-")[0]
+    params["headers"]["Accept-Language"] = f"{engine_region},{lang};q=0.9"
 
 
-def request(query, params):
+def request(query: str, params: "OnlineParams") -> "OnlineParams":
     """Assemble a Bing-Web request."""
 
-    engine_region = traits.get_region(params["searxng_locale"], traits.all_locale)  # type: ignore
-    engine_language = traits.get_language(params["searxng_locale"], "en")  # type: ignore
-    set_bing_cookies(params, engine_language, engine_region)
+    engine_region = traits.get_region(params["searxng_locale"], traits.all_locale)
 
-    page = params.get("pageno", 1)
-    query_params = {
+    override_accept_language(params, engine_region)
+
+    query_params: dict[str, str | int] = {
         "q": query,
-        # if arg 'pq' is missed, sometimes on page 4 we get results from page 1,
-        # don't ask why it is only sometimes / its M$ and they have never been
-        # deterministic ;)
-        "pq": query,
+        "adlt": _safesearch_map.get(params.get("safesearch", 0), "off"),
     }
 
-    # To get correct page, arg first and this arg FORM is needed, the value PERE
-    # is on page 2, on page 3 its PERE1 and on page 4 its PERE2 .. and so forth.
-    # The 'first' arg should never send on page 1.
-
-    if page > 1:
-        query_params["first"] = _page_offset(page)  # see also arg FORM
-    if page == 2:
-        query_params["FORM"] = "PERE"
-    elif page > 2:
-        query_params["FORM"] = "PERE%s" % (page - 2)
+    locale_params = get_locale_params(engine_region)
+    if locale_params:
+        query_params.update(locale_params)
 
     params["url"] = f"{base_url}?{urlencode(query_params)}"
-
-    if params.get("time_range"):
-        unix_day = int(time.time() / 86400)
-        time_ranges = {
-            "day": "1",
-            "week": "2",
-            "month": "3",
-            "year": f"5_{unix_day - 365}_{unix_day}",
-        }
-        params["url"] += f'&filters=ex1:"ez{time_ranges[params["time_range"]]}"'
 
     # in some regions where geoblocking is employed (e.g. China),
     # www.bing.com redirects to the regional version of Bing
@@ -121,82 +119,57 @@ def request(query, params):
     return params
 
 
-def response(resp):
-    # pylint: disable=too-many-locals
+def response(resp: "SXNG_Response") -> list[dict[str, t.Any]]:
+    """Get response from Bing-Web"""
 
-    results = []
-    result_len = 0
+    results: list[dict[str, t.Any]] = []
 
     dom = html.fromstring(resp.text)
 
-    # parse results again if nothing is found yet
-
-    for result in eval_xpath_list(dom, '//ol[@id="b_results"]/li[contains(@class, "b_algo")]'):
-        link = eval_xpath_getindex(result, ".//h2/a", 0, None)
+    for item in eval_xpath_list(dom, '//ol[@id="b_results"]/li[contains(@class, "b_algo")]'):
+        link = eval_xpath_getindex(item, ".//h2/a", 0, None)
         if link is None:
             continue
-        url = link.attrib.get("href")
+
+        href = link.attrib.get("href", "")
         title = extract_text(link)
 
-        content = eval_xpath(result, ".//p")
-        for p in content:
-            # Make sure that the element is free of:
-            #  <span class="algoSlug_icon" # data-priority="2">Web</span>
-            for e in p.xpath('.//span[@class="algoSlug_icon"]'):
-                e.getparent().remove(e)
-        content = extract_text(content)
+        if not href or not title:
+            continue
 
-        # get the real URL
-        if url.startswith("https://www.bing.com/ck/a?"):
-            # get the first value of u parameter
-            url_query = urlparse(url).query
-            parsed_url_query = parse_qs(url_query)
-            param_u = parsed_url_query["u"][0]
-            # remove "a1" in front
-            encoded_url = param_u[2:]
-            # add padding
-            encoded_url = encoded_url + "=" * (-len(encoded_url) % 4)
-            # decode base64 encoded URL
-            url = base64.urlsafe_b64decode(encoded_url).decode()
+        # what about cn.bing.com, ..?
+        if href.startswith("https://www.bing.com/ck/a?"):
+            qs = parse_qs(urlparse(href).query)
+            u_values = qs.get("u")
+            if u_values:
+                u_val = u_values[0]
+                if u_val.startswith("a1"):
+                    encoded = u_val[2:]
+                    # base64url without padding
+                    encoded += "=" * (-len(encoded) % 4)
+                    href = base64.urlsafe_b64decode(encoded).decode("utf-8", errors="replace")
 
-        # append result
-        results.append({"url": url, "title": title, "content": content})
+        # remove decorative icons that Bing injects into <p> elements
+        # (`<span class="algoSlug_icon">`)
+        content_els = eval_xpath(item, ".//p")
+        for p in content_els:
+            for icon in p.xpath('.//span[@class="algoSlug_icon"]'):
+                icon.getparent().remove(icon)
+        content = extract_text(content_els)
 
-    # get number_of_results
+        results.append({"url": href, "title": title, "content": content})
+
     if results:
         result_len_container = "".join(eval_xpath(dom, '//span[@class="sb_count"]//text()'))
-        if "-" in result_len_container:
-            start_str, result_len_container = re.split(r"-\d+", result_len_container)
-            start = int(start_str)
-        else:
-            start = 1
+        result_len_container = re.sub(r"[^0-9]", "", result_len_container)
+        if result_len_container:
+            results.append({"number_of_results": int(result_len_container)})
 
-        result_len_container = re.sub("[^0-9]", "", result_len_container)
-        if len(result_len_container) > 0:
-            result_len = int(result_len_container)
-
-        expected_start = _page_offset(resp.search_params.get("pageno", 1))
-
-        if expected_start != start:
-            if expected_start > result_len:
-                # Avoid reading more results than available.
-                # For example, if there is 100 results from some search and we try to get results from 120 to 130,
-                # Bing will send back the results from 0 to 10 and no error.
-                # If we compare results count with the first parameter of the request we can avoid this "invalid"
-                # results.
-                return []
-
-            # Sometimes Bing will send back the first result page instead of the requested page as a rate limiting
-            # measure.
-            msg = f"Expected results to start at {expected_start}, but got results starting at {start}"
-            raise SearxEngineAPIException(msg)
-
-    results.append({"number_of_results": result_len})
     return results
 
 
-def fetch_traits(engine_traits: EngineTraits):
-    """Fetch languages and regions from Bing-Web."""
+def fetch_traits(engine_traits: EngineTraits) -> None:
+    """Fetch regions from Bing-Web."""
     # pylint: disable=import-outside-toplevel
 
     from searx.network import get  # see https://github.com/searxng/searxng/issues/762
@@ -219,47 +192,10 @@ def fetch_traits(engine_traits: EngineTraits):
 
     dom = html.fromstring(resp.text)
 
-    # languages
-
-    engine_traits.languages["zh"] = "zh-hans"
-
-    map_lang = {"prs": "fa-AF", "en": "en-us"}
-    bing_ui_lang_map = {
-        # HINT: this list probably needs to be supplemented
-        "en": "us",  # en --> en-us
-        "da": "dk",  # da --> da-dk
+    map_market_codes: dict[str, str] = {
+        "zh-hk": "en-hk",  # not sure why, but at Microslop this is the market code for Hongkong
     }
 
-    for href in eval_xpath(dom, '//div[@id="language-section-content"]//div[@class="languageItem"]/a/@href'):
-        eng_lang = parse_qs(urlparse(href).query)["setlang"][0]
-        babel_lang = map_lang.get(eng_lang, eng_lang)
-        try:
-            sxng_tag = language_tag(babel.Locale.parse(babel_lang.replace("-", "_")))
-        except babel.UnknownLocaleError:
-            print("ERROR: language (%s) is unknown by babel" % (babel_lang))
-            continue
-        # Language (e.g. 'en' or 'de') from https://www.bing.com/account/general
-        # is converted by bing to 'en-us' or 'de-de'.  But only if there is not
-        # already a '-' delemitter in the language.  For instance 'pt-PT' -->
-        # 'pt-pt' and 'pt-br' --> 'pt-br'
-        bing_ui_lang = eng_lang.lower()
-        if "-" not in bing_ui_lang:
-            bing_ui_lang = bing_ui_lang + "-" + bing_ui_lang_map.get(bing_ui_lang, bing_ui_lang)
-
-        conflict = engine_traits.languages.get(sxng_tag)
-        if conflict:
-            if conflict != bing_ui_lang:
-                print(f"CONFLICT: babel {sxng_tag} --> {conflict}, {bing_ui_lang}")
-            continue
-        engine_traits.languages[sxng_tag] = bing_ui_lang
-
-    # regions (aka "market codes")
-
-    engine_traits.regions["zh-CN"] = "zh-cn"
-
-    map_market_codes = {
-        "zh-hk": "en-hk",  # not sure why, but at M$ this is the market code for Hongkong
-    }
     for href in eval_xpath(dom, '//div[@id="region-section-content"]//div[@class="regionItem"]/a/@href'):
         cc_tag = parse_qs(urlparse(href).query)["cc"][0]
         if cc_tag == "clear":
@@ -268,17 +204,20 @@ def fetch_traits(engine_traits: EngineTraits):
 
         # add market codes from official languages of the country ..
         for lang_tag in babel.languages.get_official_languages(cc_tag, de_facto=True):
-            if lang_tag not in engine_traits.languages.keys():
-                # print("ignore lang: %s <-- %s" % (cc_tag, lang_tag))
-                continue
             lang_tag = lang_tag.split("_")[0]  # zh_Hant --> zh
             market_code = f"{lang_tag}-{cc_tag}"  # zh-tw
-
             market_code = map_market_codes.get(market_code, market_code)
-            sxng_tag = region_tag(babel.Locale.parse("%s_%s" % (lang_tag, cc_tag.upper())))
+
+            try:
+                sxng_tag = region_tag(babel.Locale.parse("%s_%s" % (lang_tag, cc_tag.upper())))
+            except babel.UnknownLocaleError:
+                # silently ignore unknown languages
+                continue
+
             conflict = engine_traits.regions.get(sxng_tag)
             if conflict:
                 if conflict != market_code:
                     print("CONFLICT: babel %s --> %s, %s" % (sxng_tag, conflict, market_code))
-                    continue
+                continue
+
             engine_traits.regions[sxng_tag] = market_code
