@@ -1206,6 +1206,31 @@ engines:
     timeout: 3.0
     disabled: true
 
+  - name: karmasearch
+    engine: karmasearch
+    categories: [general, web]
+    search_type: web
+    shortcut: ka
+
+  - name: karmasearch images
+    engine: karmasearch
+    categories: [images, web]
+    search_type: images
+    shortcut: kai
+    paging: false
+
+  - name: karmasearch videos
+    engine: karmasearch
+    categories: [general, web]
+    search_type: videos
+    shortcut: kav
+
+  - name: karmasearch news
+    engine: karmasearch
+    categories: [news, web]
+    search_type: news
+    shortcut: kan
+
   - name: kickass
     engine: kickass
     base_url:
