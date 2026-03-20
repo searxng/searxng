@@ -187,7 +187,9 @@
       {%- include 'simple/preferences/safesearch.html' -%}
     {%- endif -%}
     {%- include 'simple/preferences/tokens.html' -%}
-    {{- plugin_preferences('general') -}}
+    {%- if 'plugins' not in locked_preferences -%}
+      {{- plugin_preferences('general') -}}
+    {%- endif -%}
 
 
     {%- if 'doi_resolver' not in locked_preferences %}
@@ -210,9 +212,15 @@
     {%- if 'search_on_category_select' not in locked_preferences -%}
       {%- include 'simple/preferences/search_on_category_select.html' -%}
     {%- endif -%}
-    {%- include 'simple/preferences/hotkeys.html' -%}
-    {%- include 'simple/preferences/urlformatting.html' -%}
-    {{- plugin_preferences('ui') -}}
+    {%- if 'hotkeys' not in locked_preferences -%}
+      {%- include 'simple/preferences/hotkeys.html' -%}
+    {%- endif -%}
+    {%- if 'url_formatting' not in locked_preferences -%}
+      {%- include 'simple/preferences/urlformatting.html' -%}
+    {%- endif -%}
+    {%- if 'plugins' not in locked_preferences -%}
+      {{- plugin_preferences('ui') -}}
+    {%- endif -%}
     {{- tab_footer() -}}
 
     {# tab: privacy #}
@@ -227,11 +235,14 @@
     {%- if 'query_in_title' not in locked_preferences -%}
       {%- include 'simple/preferences/query_in_title.html' -%}
     {%- endif -%}
-    {{- plugin_preferences('privacy') -}}
+    {%- if 'plugins' not in locked_preferences -%}
+      {{- plugin_preferences('privacy') -}}
+    {%- endif -%}
     {{- tab_footer() -}}
 
     {# tab: enignes #}
 
+    {%- if 'engines' not in locked_preferences -%}
     {{- tab_header('maintab', 'engines', _('Engines')) -}}
     <p>
       {{- _('Currently used search engines') -}}
@@ -240,6 +251,7 @@
     {%- include 'simple/preferences/engines.html' -%}
     {{- tabs_close() -}}
     {{- tab_footer() -}}
+    {%- endif -%}
 
     {# tab: query #}
 

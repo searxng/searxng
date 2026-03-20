@@ -262,6 +262,8 @@ class BooleanChoices:
         return values
 
     def parse_cookie(self, data_disabled: str, data_enabled: str):
+        if self.locked:
+            return
         for disabled in data_disabled.split(','):
             if disabled in self.choices:
                 self.choices[disabled] = False
@@ -303,14 +305,14 @@ class BooleanChoices:
 class EnginesSetting(BooleanChoices):
     """Engine settings"""
 
-    def __init__(self, default_value, engines: Iterable[Engine]):
+    def __init__(self, default_value, engines: Iterable[Engine], locked: bool = False):
         choices = {}
         for engine in engines:
             for category in engine.categories:
                 if not category in list(settings['categories_as_tabs'].keys()) + [DEFAULT_CATEGORY]:
                     continue
                 choices['{}__{}'.format(engine.name, category)] = not engine.disabled
-        super().__init__(default_value, choices)
+        super().__init__(default_value, choices, locked)
 
     def transform_form_items(self, items):
         return [item[len('engine_') :].replace('_', ' ').replace('  ', '__') for item in items]
@@ -328,8 +330,8 @@ class EnginesSetting(BooleanChoices):
 class PluginsSetting(BooleanChoices):
     """Plugin settings"""
 
-    def __init__(self, default_value, plugins: Iterable[searx.plugins.Plugin]):
-        super().__init__(default_value, {plugin.id: plugin.active for plugin in plugins})
+    def __init__(self, default_value, plugins: Iterable[searx.plugins.Plugin], locked: bool = False):
+        super().__init__(default_value, {plugin.id: plugin.active for plugin in plugins}, locked)
 
     def transform_form_items(self, items):
         return [item[len('plugin_') :] for item in items]
@@ -482,17 +484,19 @@ class Preferences:
             ),
             'hotkeys': EnumStringSetting(
                 settings['ui']['hotkeys'],
-                choices=['default', 'vim']
+                choices=['default', 'vim'],
+                locked=is_locked('hotkeys')
             ),
             'url_formatting': EnumStringSetting(
                 settings['ui']['url_formatting'],
-                choices=['pretty', 'full', 'host']
+                choices=['pretty', 'full', 'host'],
+                locked=is_locked('url_formatting')
             ),
             # fmt: on
         }
 
-        self.engines = EnginesSetting('engines', engines=engines.values())
-        self.plugins = PluginsSetting('plugins', plugins=plugins)
+        self.engines = EnginesSetting('engines', engines=engines.values(), locked=is_locked('engines'))
+        self.plugins = PluginsSetting('plugins', plugins=plugins, locked=is_locked('plugins'))
         self.tokens = SetSetting('tokens')
         self.client = client or ClientPref()
 
@@ -582,8 +586,10 @@ class Preferences:
             if self.key_value_settings[user_setting_name].locked:
                 continue
             user_setting.save(user_setting_name, resp)
-        self.engines.save(resp)
-        self.plugins.save(resp)
+        if not self.engines.locked:
+            self.engines.save(resp)
+        if not self.plugins.locked:
+            self.plugins.save(resp)
         self.tokens.save('tokens', resp)
         return resp
 
