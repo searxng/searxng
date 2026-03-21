@@ -173,6 +173,8 @@ import typing as t
 import babel
 import lxml.html
 
+from random import choice
+
 from searx import locales
 from searx.enginelib import EngineCache
 from searx.enginelib.traits import EngineTraits
@@ -215,8 +217,6 @@ time_range_dict: dict[str, str] = {"day": "d", "week": "w", "month": "m", "year"
 _CACHE: EngineCache = None  # pyright: ignore[reportAssignmentType]
 """Persistent (SQLite) key/value cache that deletes its values after ``expire``
 seconds."""
-
-_HTTP_User_Agent: str = gen_useragent()
 
 
 def get_cache() -> EngineCache:
@@ -378,12 +378,24 @@ def request(query: str, params: "OnlineParams") -> None:
 
     # The vqd value is generated from the query and the UA header. To be able to
     # reuse the vqd value, the UA header must be static.
-    headers["User-Agent"] = _HTTP_User_Agent
-    headers["Referer"] = "https://html.duckduckgo.com/"
+    headers["User-Agent"] = gen_useragent()
+    headers["Referer"] = "https://html.duckduckgo.com/html/"
+    headers["Accept"] = choice([
+        "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+        "text/html,application/xhtml+xml,*/*;q=0.8",
+        "text/html,*/*;q=0.8",
+        "*/*"
+        ])
 
     ui_lang = params["searxng_locale"]
-    if not headers.get("Accept-Language"):
-        headers["Accept-Language"] = f"{ui_lang},{ui_lang}-{ui_lang.upper()};q=0.7"
+    langs = []
+    if headers.get("Accept-Language"):
+        langs.append(headers.get("Accept-Language"))
+    langs.append(f"{ui_lang},{ui_lang}-{ui_lang.upper()};q=0.7")
+    langs.append(f"{ui_lang}-{ui_lang.upper()},{ui_lang};q=0.7")
+    langs.append(f"{ui_lang},{ui_lang}-{ui_lang.upper()};q=0.9")
+    langs.append(f"{ui_lang}-{ui_lang.upper()},{ui_lang};q=0.9")
+    headers["Accept-Language"] = choice(langs)
 
     # DDG search form (POST data)
     # ===========================
