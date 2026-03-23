@@ -13,7 +13,7 @@ from collections.abc import MutableMapping, Callable
 
 from numbers import Number
 from os.path import splitext, join
-from random import choice
+from random import choice, randint
 from html.parser import HTMLParser
 from html import escape
 from urllib.parse import urljoin, urlparse, parse_qs, urlencode
@@ -82,11 +82,11 @@ def gen_useragent(os_string: str | None = None) -> str:
 
 
 def gen_gsa_useragent() -> str:
-    """Return a random GSA User Agent suitable for Google
+    """Return a random "Android Google App" User Agent suitable for Google
 
     See searx/data/gsa_useragents.txt
     """
-    return choice(gsa_useragents_loader())
+    return choice(gsa_useragents_loader()) + " GoogleApp/" + str(randint(0, 9))
 
 
 class HTMLTextExtractor(HTMLParser):
