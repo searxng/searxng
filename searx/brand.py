@@ -53,16 +53,3 @@ class SettingsBrand(msgspec.Struct, kw_only=True, forbid_unknown_fields=True):
     .. autoclass:: searx.brand.BrandCustom
        :members:
     """
-
-    # new_issue_url is a hackish solution tailored for only one hoster (GH).  As
-    # long as we don't have a more general solution, we should support it in the
-    # given function, but it should not be expanded further.
-
-    new_issue_url: str = "https://github.com/searxng/searxng/issues/new"
-    """If you host your own issue tracker not on GitHub, then unset this URL.
-
-    Note: This URL will create a pre-filled GitHub bug report form for an
-    engine.  Since this feature is implemented only for GH (and limited to
-    engines), it will probably be replaced by another solution in the near
-    future.
-    """
