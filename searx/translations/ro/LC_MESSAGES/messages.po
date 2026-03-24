@@ -30,7 +30,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-02-22 13:48+0000\n"
+"POT-Creation-Date: 2026-03-24 15:00+0000\n"
 "PO-Revision-Date: 2025-10-22 02:09+0000\n"
 "Last-Translator: return42 <return42@noreply.codeberg.org>\n"
 "Language: ro\n"
@@ -84,7 +84,7 @@ msgid "videos"
 msgstr "videouri"
 
 #. CATEGORY_NAMES['RADIO']
-#: searx/engines/radio_browser.py:142 searx/searxng.msg
+#: searx/engines/radio_browser.py:146 searx/searxng.msg
 msgid "radio"
 msgstr "radio"
 
@@ -558,7 +558,7 @@ msgstr "răspuns"
 msgid "No item found"
 msgstr "Niciun element găsit"
 
-#: searx/engines/qwant.py:296
+#: searx/engines/qwant.py:291
 #: searx/templates/simple/result_templates/images.html:23 searx/webapp.py:329
 msgid "Source"
 msgstr "Sursă"
@@ -654,6 +654,11 @@ msgstr "Generează valori aleatoare diferite"
 msgid "Compute {func} of the arguments"
 msgstr "Calculați {func} argumentelor"
 
+#: searx/engines/boardreader.py:107
+#, python-brace-format
+msgid "Posted by {author}"
+msgstr ""
+
 #: searx/engines/openstreetmap.py:155
 msgid "Show route in map .."
 msgstr "Arată ruta în hartă .."
@@ -667,19 +672,19 @@ msgstr "{title} (OBSOLETE)"
 msgid "This entry has been superseded by"
 msgstr "Această intrare a fost inlocuită de"
 
-#: searx/engines/qwant.py:298
+#: searx/engines/qwant.py:293
 msgid "Channel"
 msgstr "Canal"
 
-#: searx/engines/radio_browser.py:144
+#: searx/engines/radio_browser.py:148
 msgid "bitrate"
 msgstr "rata de biți"
 
-#: searx/engines/radio_browser.py:145
+#: searx/engines/radio_browser.py:149
 msgid "votes"
 msgstr "voturi"
 
-#: searx/engines/radio_browser.py:146
+#: searx/engines/radio_browser.py:150
 msgid "clicks"
 msgstr "click-uri"
 
@@ -714,15 +719,15 @@ msgstr ""
 msgid "The image could not be downloaded."
 msgstr "Imaginea nu a putut fi descărcată."
 
-#: searx/engines/zlibrary.py:78
+#: searx/engines/zlibrary.py:79
 msgid "Language"
 msgstr "Limba"
 
-#: searx/engines/zlibrary.py:79
+#: searx/engines/zlibrary.py:80
 msgid "Book rating"
 msgstr "Recenzia cărții"
 
-#: searx/engines/zlibrary.py:80
+#: searx/engines/zlibrary.py:81
 msgid "File quality"
 msgstr "Calitatea fișierului"
 

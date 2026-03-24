@@ -21,7 +21,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-02-22 13:48+0000\n"
+"POT-Creation-Date: 2026-03-24 15:00+0000\n"
 "PO-Revision-Date: 2025-12-23 13:21+0000\n"
 "Last-Translator: Priit Jõerüüt <jrtcdbrg@noreply.codeberg.org>\n"
 "Language: et\n"
@@ -74,7 +74,7 @@ msgid "videos"
 msgstr "videod"
 
 #. CATEGORY_NAMES['RADIO']
-#: searx/engines/radio_browser.py:142 searx/searxng.msg
+#: searx/engines/radio_browser.py:146 searx/searxng.msg
 msgid "radio"
 msgstr "raadio"
 
@@ -548,7 +548,7 @@ msgstr "vastatud"
 msgid "No item found"
 msgstr "Üksust ei leitud"
 
-#: searx/engines/qwant.py:296
+#: searx/engines/qwant.py:291
 #: searx/templates/simple/result_templates/images.html:23 searx/webapp.py:329
 msgid "Source"
 msgstr "Allikas"
@@ -644,6 +644,11 @@ msgstr "Genereeri erinevaid juhuslikke väärtusi"
 msgid "Compute {func} of the arguments"
 msgstr "Arvuta argumentidest {func}"
 
+#: searx/engines/boardreader.py:107
+#, python-brace-format
+msgid "Posted by {author}"
+msgstr ""
+
 #: searx/engines/openstreetmap.py:155
 msgid "Show route in map .."
 msgstr "Näita teekonda kaardil..."
@@ -657,19 +662,19 @@ msgstr "{title} (VANANENUD)"
 msgid "This entry has been superseded by"
 msgstr "See üksus on asendatud"
 
-#: searx/engines/qwant.py:298
+#: searx/engines/qwant.py:293
 msgid "Channel"
 msgstr "Kanal"
 
-#: searx/engines/radio_browser.py:144
+#: searx/engines/radio_browser.py:148
 msgid "bitrate"
 msgstr "bitikiirus"
 
-#: searx/engines/radio_browser.py:145
+#: searx/engines/radio_browser.py:149
 msgid "votes"
 msgstr "hääled"
 
-#: searx/engines/radio_browser.py:146
+#: searx/engines/radio_browser.py:150
 msgid "clicks"
 msgstr "klikid"
 
@@ -704,15 +709,15 @@ msgstr ""
 msgid "The image could not be downloaded."
 msgstr "Pilti ei saanud alla laadida."
 
-#: searx/engines/zlibrary.py:78
+#: searx/engines/zlibrary.py:79
 msgid "Language"
 msgstr "Keel"
 
-#: searx/engines/zlibrary.py:79
+#: searx/engines/zlibrary.py:80
 msgid "Book rating"
 msgstr "Raamatu hinnang"
 
-#: searx/engines/zlibrary.py:80
+#: searx/engines/zlibrary.py:81
 msgid "File quality"
 msgstr "Faili kvaliteet"
 

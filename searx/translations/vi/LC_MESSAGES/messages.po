@@ -27,19 +27,18 @@
 # namhv05 <namhv05@noreply.codeberg.org>, 2026.
 msgid ""
 msgstr ""
-"Project-Id-Version: searx\n"
+"Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-02-22 13:48+0000\n"
+"POT-Creation-Date: 2026-03-24 15:00+0000\n"
 "PO-Revision-Date: 2026-03-24 07:38+0000\n"
 "Last-Translator: namhv05 <namhv05@noreply.codeberg.org>\n"
-"Language-Team: Vietnamese <https://translate.codeberg.org/projects/searxng/"
-"searxng/vi/>\n"
 "Language: vi\n"
+"Language-Team: Vietnamese "
+"<https://translate.codeberg.org/projects/searxng/searxng/vi/>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.16.2\n"
 "Generated-By: Babel 2.18.0\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
@@ -83,7 +82,7 @@ msgid "videos"
 msgstr "video"
 
 #. CATEGORY_NAMES['RADIO']
-#: searx/engines/radio_browser.py:142 searx/searxng.msg
+#: searx/engines/radio_browser.py:146 searx/searxng.msg
 msgid "radio"
 msgstr "radio"
 
@@ -557,7 +556,7 @@ msgstr "đã trả lời"
 msgid "No item found"
 msgstr "Không tìm thấy gì"
 
-#: searx/engines/qwant.py:296
+#: searx/engines/qwant.py:291
 #: searx/templates/simple/result_templates/images.html:23 searx/webapp.py:329
 msgid "Source"
 msgstr "Nguồn"
@@ -653,6 +652,11 @@ msgstr "Tạo các giá trị ngẫu nhiên khác nhau"
 msgid "Compute {func} of the arguments"
 msgstr "Tính toán {func} của các đối số"
 
+#: searx/engines/boardreader.py:107
+#, python-brace-format
+msgid "Posted by {author}"
+msgstr ""
+
 #: searx/engines/openstreetmap.py:155
 msgid "Show route in map .."
 msgstr "Hiển thị đường đi trên bản đồ .."
@@ -666,19 +670,19 @@ msgstr "{title} (HẾT HẠN)"
 msgid "This entry has been superseded by"
 msgstr "Mục này đã được thay thế bằng"
 
-#: searx/engines/qwant.py:298
+#: searx/engines/qwant.py:293
 msgid "Channel"
 msgstr "Kênh"
 
-#: searx/engines/radio_browser.py:144
+#: searx/engines/radio_browser.py:148
 msgid "bitrate"
 msgstr "tốc độ bit"
 
-#: searx/engines/radio_browser.py:145
+#: searx/engines/radio_browser.py:149
 msgid "votes"
 msgstr "bình chọn"
 
-#: searx/engines/radio_browser.py:146
+#: searx/engines/radio_browser.py:150
 msgid "clicks"
 msgstr "nhấp chuột"
 
@@ -713,15 +717,15 @@ msgstr ""
 msgid "The image could not be downloaded."
 msgstr "Không thể tải hình ảnh."
 
-#: searx/engines/zlibrary.py:78
+#: searx/engines/zlibrary.py:79
 msgid "Language"
 msgstr "Ngôn ngữ"
 
-#: searx/engines/zlibrary.py:79
+#: searx/engines/zlibrary.py:80
 msgid "Book rating"
 msgstr "Đánh giá của sách"
 
-#: searx/engines/zlibrary.py:80
+#: searx/engines/zlibrary.py:81
 msgid "File quality"
 msgstr "Chất lượng tệp"
 
@@ -1006,8 +1010,8 @@ msgid ""
 "This is a preview of the settings used by the 'Search URL' you used to "
 "get here."
 msgstr ""
-"Đây là bản xem trước các cài đặt được sử dụng bởi 'URL tìm kiếm' mà bạn đã "
-"dùng để truy cập trang này."
+"Đây là bản xem trước các cài đặt được sử dụng bởi 'URL tìm kiếm' mà bạn "
+"đã dùng để truy cập trang này."
 
 #: searx/templates/simple/preferences.html:158
 msgid "Press save to copy these preferences to your browser."
@@ -2410,3 +2414,4 @@ msgstr "ẩn video"
 
 #~ msgid "Comment(s)"
 #~ msgstr "Bình luận"
+

@@ -26,20 +26,19 @@
 # omeritzics <omeritzics@noreply.codeberg.org>, 2026.
 msgid ""
 msgstr ""
-"Project-Id-Version: searx\n"
+"Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-02-22 13:48+0000\n"
+"POT-Creation-Date: 2026-03-24 15:00+0000\n"
 "PO-Revision-Date: 2026-03-11 17:29+0000\n"
 "Last-Translator: omeritzics <omeritzics@noreply.codeberg.org>\n"
-"Language-Team: Hebrew <https://translate.codeberg.org/projects/searxng/"
-"searxng/he/>\n"
 "Language: he\n"
+"Language-Team: Hebrew "
+"<https://translate.codeberg.org/projects/searxng/searxng/he/>\n"
+"Plural-Forms: nplurals=4; plural=(n == 1) ? 0 : ((n == 2) ? 1 : ((n > 10 "
+"&& n % 10 == 0) ? 2 : 3));\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=4; plural=(n == 1) ? 0 : ((n == 2) ? 1 : ((n > 10 && "
-"n % 10 == 0) ? 2 : 3));\n"
-"X-Generator: Weblate 5.15.2\n"
 "Generated-By: Babel 2.18.0\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
@@ -83,7 +82,7 @@ msgid "videos"
 msgstr "וידאו"
 
 #. CATEGORY_NAMES['RADIO']
-#: searx/engines/radio_browser.py:142 searx/searxng.msg
+#: searx/engines/radio_browser.py:146 searx/searxng.msg
 msgid "radio"
 msgstr "רדיו"
 
@@ -557,7 +556,7 @@ msgstr "נענו"
 msgid "No item found"
 msgstr "לא נמצא פריט"
 
-#: searx/engines/qwant.py:296
+#: searx/engines/qwant.py:291
 #: searx/templates/simple/result_templates/images.html:23 searx/webapp.py:329
 msgid "Source"
 msgstr "מקור"
@@ -653,6 +652,11 @@ msgstr "מייצרת ערכים אקראיים שונים"
 msgid "Compute {func} of the arguments"
 msgstr "חשב {func} של הארגומנטים"
 
+#: searx/engines/boardreader.py:107
+#, python-brace-format
+msgid "Posted by {author}"
+msgstr ""
+
 #: searx/engines/openstreetmap.py:155
 msgid "Show route in map .."
 msgstr "הצג מסלול במפה .."
@@ -666,19 +670,19 @@ msgstr "{title} (OBSOLETE)"
 msgid "This entry has been superseded by"
 msgstr "רשומה זו הוחלפה על ידי"
 
-#: searx/engines/qwant.py:298
+#: searx/engines/qwant.py:293
 msgid "Channel"
 msgstr "ערוץ"
 
-#: searx/engines/radio_browser.py:144
+#: searx/engines/radio_browser.py:148
 msgid "bitrate"
 msgstr "קצב נתונים"
 
-#: searx/engines/radio_browser.py:145
+#: searx/engines/radio_browser.py:149
 msgid "votes"
 msgstr "הצבעות"
 
-#: searx/engines/radio_browser.py:146
+#: searx/engines/radio_browser.py:150
 msgid "clicks"
 msgstr "לחיצות"
 
@@ -713,15 +717,15 @@ msgstr ""
 msgid "The image could not be downloaded."
 msgstr "אי אפשר להוריד את תמונה זו."
 
-#: searx/engines/zlibrary.py:78
+#: searx/engines/zlibrary.py:79
 msgid "Language"
 msgstr "שפה"
 
-#: searx/engines/zlibrary.py:79
+#: searx/engines/zlibrary.py:80
 msgid "Book rating"
 msgstr "דירוג ספרים"
 
-#: searx/engines/zlibrary.py:80
+#: searx/engines/zlibrary.py:81
 msgid "File quality"
 msgstr "איכות קובץ"
 
@@ -2365,3 +2369,4 @@ msgstr "הסתר וידאו"
 
 #~ msgid "Comment(s)"
 #~ msgstr "הערות"
+

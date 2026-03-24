@@ -23,7 +23,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-02-22 13:48+0000\n"
+"POT-Creation-Date: 2026-03-24 15:00+0000\n"
 "PO-Revision-Date: 2025-10-22 02:09+0000\n"
 "Last-Translator: return42 <return42@noreply.codeberg.org>\n"
 "Language: bg\n"
@@ -76,7 +76,7 @@ msgid "videos"
 msgstr "видео"
 
 #. CATEGORY_NAMES['RADIO']
-#: searx/engines/radio_browser.py:142 searx/searxng.msg
+#: searx/engines/radio_browser.py:146 searx/searxng.msg
 msgid "radio"
 msgstr "радио"
 
@@ -550,7 +550,7 @@ msgstr "Отговорено"
 msgid "No item found"
 msgstr "Не е намерен артикул"
 
-#: searx/engines/qwant.py:296
+#: searx/engines/qwant.py:291
 #: searx/templates/simple/result_templates/images.html:23 searx/webapp.py:329
 msgid "Source"
 msgstr "Източник"
@@ -646,6 +646,11 @@ msgstr "Генерирайте различни произволни стойн�
 msgid "Compute {func} of the arguments"
 msgstr "Изчислете {func} на аргументите"
 
+#: searx/engines/boardreader.py:107
+#, python-brace-format
+msgid "Posted by {author}"
+msgstr ""
+
 #: searx/engines/openstreetmap.py:155
 msgid "Show route in map .."
 msgstr "Покажи маршрута в картата.."
@@ -659,19 +664,19 @@ msgstr "{title} (ОСТАРЯЛО)"
 msgid "This entry has been superseded by"
 msgstr "Този запис е заменен от"
 
-#: searx/engines/qwant.py:298
+#: searx/engines/qwant.py:293
 msgid "Channel"
 msgstr "Канал"
 
-#: searx/engines/radio_browser.py:144
+#: searx/engines/radio_browser.py:148
 msgid "bitrate"
 msgstr "Скорост"
 
-#: searx/engines/radio_browser.py:145
+#: searx/engines/radio_browser.py:149
 msgid "votes"
 msgstr "Гласове"
 
-#: searx/engines/radio_browser.py:146
+#: searx/engines/radio_browser.py:150
 msgid "clicks"
 msgstr "клика"
 
@@ -707,15 +712,15 @@ msgstr ""
 msgid "The image could not be downloaded."
 msgstr "Снимката не може да бъде свалена."
 
-#: searx/engines/zlibrary.py:78
+#: searx/engines/zlibrary.py:79
 msgid "Language"
 msgstr "Език"
 
-#: searx/engines/zlibrary.py:79
+#: searx/engines/zlibrary.py:80
 msgid "Book rating"
 msgstr "Рейтинг на книги"
 
-#: searx/engines/zlibrary.py:80
+#: searx/engines/zlibrary.py:81
 msgid "File quality"
 msgstr "Качество на файл"
 

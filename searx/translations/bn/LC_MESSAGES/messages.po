@@ -29,7 +29,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-02-22 13:48+0000\n"
+"POT-Creation-Date: 2026-03-24 15:00+0000\n"
 "PO-Revision-Date: 2025-10-22 02:09+0000\n"
 "Last-Translator: return42 <return42@noreply.codeberg.org>\n"
 "Language: bn\n"
@@ -82,7 +82,7 @@ msgid "videos"
 msgstr "ভিডিও"
 
 #. CATEGORY_NAMES['RADIO']
-#: searx/engines/radio_browser.py:142 searx/searxng.msg
+#: searx/engines/radio_browser.py:146 searx/searxng.msg
 msgid "radio"
 msgstr "বেতার"
 
@@ -556,7 +556,7 @@ msgstr "উত্তরকৃত"
 msgid "No item found"
 msgstr "কোন আইটেম পাওয়া যায়নি"
 
-#: searx/engines/qwant.py:296
+#: searx/engines/qwant.py:291
 #: searx/templates/simple/result_templates/images.html:23 searx/webapp.py:329
 msgid "Source"
 msgstr "উৎস"
@@ -652,6 +652,11 @@ msgstr "বিভিন্ন এলোমেলো মান তৈরি ক�
 msgid "Compute {func} of the arguments"
 msgstr "{func} এই আদেশ কম্পিউট করো"
 
+#: searx/engines/boardreader.py:107
+#, python-brace-format
+msgid "Posted by {author}"
+msgstr ""
+
 #: searx/engines/openstreetmap.py:155
 msgid "Show route in map .."
 msgstr "মানচিত্রে সেরা রাস্তা দেখাও .।"
@@ -665,19 +670,19 @@ msgstr "{title} (অচল)"
 msgid "This entry has been superseded by"
 msgstr "এই এনট্রিটি দ্বারা বাতিল করা হয়েছে৷"
 
-#: searx/engines/qwant.py:298
+#: searx/engines/qwant.py:293
 msgid "Channel"
 msgstr "চ্যানেল"
 
-#: searx/engines/radio_browser.py:144
+#: searx/engines/radio_browser.py:148
 msgid "bitrate"
 msgstr "বিটরেট"
 
-#: searx/engines/radio_browser.py:145
+#: searx/engines/radio_browser.py:149
 msgid "votes"
 msgstr "ভোট"
 
-#: searx/engines/radio_browser.py:146
+#: searx/engines/radio_browser.py:150
 msgid "clicks"
 msgstr "ক্লিক সংখ্যা"
 
@@ -712,15 +717,15 @@ msgstr ""
 msgid "The image could not be downloaded."
 msgstr "ছবিটি ডাউনলোড করা যায়নি ।"
 
-#: searx/engines/zlibrary.py:78
+#: searx/engines/zlibrary.py:79
 msgid "Language"
 msgstr "ভাষা"
 
-#: searx/engines/zlibrary.py:79
+#: searx/engines/zlibrary.py:80
 msgid "Book rating"
 msgstr "বই পর্যালোচনা"
 
-#: searx/engines/zlibrary.py:80
+#: searx/engines/zlibrary.py:81
 msgid "File quality"
 msgstr "নথি মান"
 
