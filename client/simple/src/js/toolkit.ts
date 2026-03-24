@@ -123,10 +123,10 @@ export const ready = (callback: () => void, options?: ReadyOptions): void => {
     }
   }
 
-  if (document.readyState !== "loading") {
-    callback();
-  } else {
+  if (document.readyState === "loading") {
     listen("DOMContentLoaded", document, callback, { once: true });
+  } else {
+    callback();
   }
 };
 

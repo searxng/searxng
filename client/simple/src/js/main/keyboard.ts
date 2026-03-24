@@ -190,9 +190,7 @@ const highlightResult =
 
     let next: HTMLElement | undefined;
 
-    if (typeof effectiveWhich !== "string") {
-      next = effectiveWhich;
-    } else {
+    if (typeof effectiveWhich === "string") {
       switch (effectiveWhich) {
         case "visible": {
           const top = document.documentElement.scrollTop || document.body.scrollTop;
@@ -222,6 +220,8 @@ const highlightResult =
         default:
           [next] = results;
       }
+    } else {
+      next = effectiveWhich;
     }
 
     if (next) {
