@@ -29,7 +29,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-03-24 15:00+0000\n"
+"POT-Creation-Date: 2026-03-24 18:43+0000\n"
 "PO-Revision-Date: 2026-03-24 07:38+0000\n"
 "Last-Translator: namhv05 <namhv05@noreply.codeberg.org>\n"
 "Language: vi\n"
@@ -904,7 +904,7 @@ msgstr "Mã nguồn"
 msgid "Issue tracker"
 msgstr "Trang theo dõi vấn đề"
 
-#: searx/templates/simple/base.html:71 searx/templates/simple/stats.html:18
+#: searx/templates/simple/base.html:71 searx/templates/simple/stats.html:17
 msgid "Engine stats"
 msgstr "Thông số về trình tìm kiếm"
 
@@ -944,30 +944,6 @@ msgstr "Tác giả"
 msgid "cached"
 msgstr "đã lưu cache"
 
-#: searx/templates/simple/new_issue.html:60
-msgid "Start submitting a new issue on GitHub"
-msgstr "Bắt đầu đăng một vấn đề mới trên Github"
-
-#: searx/templates/simple/new_issue.html:62
-msgid "Please check for existing bugs about this engine on GitHub"
-msgstr ""
-"Vui lòng kiểm tra các lỗi đang tồn tại của công cụ tìm kiếm này trên "
-"Github"
-
-#: searx/templates/simple/new_issue.html:65
-msgid "I confirm there is no existing bug about the issue I encounter"
-msgstr "Tôi xác nhận rằng không có lỗi nào đang tồn tại về vấn đề mà tôi gặp phải"
-
-#: searx/templates/simple/new_issue.html:67
-msgid "If this is a public instance, please specify the URL in the bug report"
-msgstr ""
-"Nếu đây là một thực thể công khai, vui lòng nêu rõ địa chỉ trong bản báo "
-"cáo lỗi"
-
-#: searx/templates/simple/new_issue.html:68
-msgid "Submit a new issue on Github including the above information"
-msgstr "Đăng một vấn đề mới trên Github cùng với các thông tin trên"
-
 #: searx/templates/simple/preferences.html:65
 msgid "No HTTPS"
 msgstr "Không hỗ trợ HTTPS"
@@ -987,17 +963,17 @@ msgid "!bang for its categories"
 msgstr "!bang cho các danh mục của nó"
 
 #: searx/templates/simple/preferences.html:102
-#: searx/templates/simple/stats.html:64
+#: searx/templates/simple/stats.html:63
 msgid "Median"
 msgstr "Trung vị"
 
 #: searx/templates/simple/preferences.html:103
-#: searx/templates/simple/stats.html:70
+#: searx/templates/simple/stats.html:69
 msgid "P80"
 msgstr "P80"
 
 #: searx/templates/simple/preferences.html:104
-#: searx/templates/simple/stats.html:76
+#: searx/templates/simple/stats.html:75
 msgid "P95"
 msgstr "P95"
 
@@ -1092,81 +1068,81 @@ msgstr "Xoá"
 msgid "search"
 msgstr "tìm kiếm"
 
-#: searx/templates/simple/stats.html:21
+#: searx/templates/simple/stats.html:20
 msgid "There is currently no data available. "
 msgstr "Hiện không có dữ liệu nào."
 
 #: searx/templates/simple/preferences/engines.html:24
-#: searx/templates/simple/stats.html:25
+#: searx/templates/simple/stats.html:24
 msgid "Engine name"
 msgstr "Tên trình tìm kiếm"
 
-#: searx/templates/simple/stats.html:26
+#: searx/templates/simple/stats.html:25
 msgid "Scores"
 msgstr "Điểm số"
 
-#: searx/templates/simple/stats.html:27
+#: searx/templates/simple/stats.html:26
 msgid "Result count"
 msgstr "Số lượng kết quả"
 
 #: searx/templates/simple/elements/engines_msg.html:7
 #: searx/templates/simple/preferences/engines.html:31
-#: searx/templates/simple/stats.html:28
+#: searx/templates/simple/stats.html:27
 msgid "Response time"
 msgstr "Thời gian phản hồi"
 
 #: searx/templates/simple/preferences/engines.html:35
-#: searx/templates/simple/stats.html:29
+#: searx/templates/simple/stats.html:28
 msgid "Reliability"
 msgstr "Độ tin cậy"
 
-#: searx/templates/simple/stats.html:59
+#: searx/templates/simple/stats.html:58
 msgid "Total"
 msgstr "Tổng"
 
-#: searx/templates/simple/stats.html:60
+#: searx/templates/simple/stats.html:59
 msgid "HTTP"
 msgstr "HTTP"
 
-#: searx/templates/simple/stats.html:61
+#: searx/templates/simple/stats.html:60
 msgid "Processing"
 msgstr "Xử lý"
 
-#: searx/templates/simple/stats.html:99
+#: searx/templates/simple/stats.html:98
 msgid "Warnings"
 msgstr "Cảnh báo"
 
-#: searx/templates/simple/stats.html:99
+#: searx/templates/simple/stats.html:98
 msgid "Errors and exceptions"
 msgstr "Lỗi và ngoại lệ"
 
-#: searx/templates/simple/stats.html:105
+#: searx/templates/simple/stats.html:104
 msgid "Exception"
 msgstr "Ngoại lệ"
 
-#: searx/templates/simple/stats.html:107
+#: searx/templates/simple/stats.html:106
 msgid "Message"
 msgstr "Tin nhắn"
 
-#: searx/templates/simple/stats.html:109
+#: searx/templates/simple/stats.html:108
 msgid "Percentage"
 msgstr "Phần trăm"
 
-#: searx/templates/simple/stats.html:111
+#: searx/templates/simple/stats.html:110
 msgid "Parameter"
 msgstr "Tham số"
 
 #: searx/templates/simple/result_templates/code.html:29
 #: searx/templates/simple/result_templates/file.html:24
-#: searx/templates/simple/stats.html:119
+#: searx/templates/simple/stats.html:118
 msgid "Filename"
 msgstr "Tên tệp"
 
-#: searx/templates/simple/stats.html:120
+#: searx/templates/simple/stats.html:119
 msgid "Function"
 msgstr "Hàm"
 
-#: searx/templates/simple/stats.html:121
+#: searx/templates/simple/stats.html:120
 msgid "Code"
 msgstr "Mã nguồn"
 
@@ -2414,4 +2390,28 @@ msgstr "ẩn video"
 
 #~ msgid "Comment(s)"
 #~ msgstr "Bình luận"
+
+#~ msgid "Start submitting a new issue on GitHub"
+#~ msgstr "Bắt đầu đăng một vấn đề mới trên Github"
+
+#~ msgid "Please check for existing bugs about this engine on GitHub"
+#~ msgstr ""
+#~ "Vui lòng kiểm tra các lỗi đang "
+#~ "tồn tại của công cụ tìm kiếm "
+#~ "này trên Github"
+
+#~ msgid "I confirm there is no existing bug about the issue I encounter"
+#~ msgstr ""
+#~ "Tôi xác nhận rằng không có lỗi "
+#~ "nào đang tồn tại về vấn đề "
+#~ "mà tôi gặp phải"
+
+#~ msgid "If this is a public instance, please specify the URL in the bug report"
+#~ msgstr ""
+#~ "Nếu đây là một thực thể công "
+#~ "khai, vui lòng nêu rõ địa chỉ "
+#~ "trong bản báo cáo lỗi"
+
+#~ msgid "Submit a new issue on Github including the above information"
+#~ msgstr "Đăng một vấn đề mới trên Github cùng với các thông tin trên"
 

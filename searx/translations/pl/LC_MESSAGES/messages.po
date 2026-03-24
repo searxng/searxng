@@ -36,7 +36,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-03-24 15:00+0000\n"
+"POT-Creation-Date: 2026-03-24 18:43+0000\n"
 "PO-Revision-Date: 2026-03-02 08:29+0000\n"
 "Last-Translator: return42 <return42@noreply.codeberg.org>\n"
 "Language: pl\n"
@@ -919,7 +919,7 @@ msgstr "Kod źródłowy"
 msgid "Issue tracker"
 msgstr "Śledzenie błędów"
 
-#: searx/templates/simple/base.html:71 searx/templates/simple/stats.html:18
+#: searx/templates/simple/base.html:71 searx/templates/simple/stats.html:17
 msgid "Engine stats"
 msgstr "Statystyki wyszukiwarki"
 
@@ -959,28 +959,6 @@ msgstr "Autor"
 msgid "cached"
 msgstr "buforowane"
 
-#: searx/templates/simple/new_issue.html:60
-msgid "Start submitting a new issue on GitHub"
-msgstr "Zgłoś nowy problem na GitHubie"
-
-#: searx/templates/simple/new_issue.html:62
-msgid "Please check for existing bugs about this engine on GitHub"
-msgstr "Sprawdź istniejące błędy dotyczące tego silnika na GitHub"
-
-#: searx/templates/simple/new_issue.html:65
-msgid "I confirm there is no existing bug about the issue I encounter"
-msgstr "Potwierdzam, że nie ma istniejącego błędu dotyczącego napotkanego problemu"
-
-#: searx/templates/simple/new_issue.html:67
-msgid "If this is a public instance, please specify the URL in the bug report"
-msgstr ""
-"Jeśli jest to instancja publiczna, podaj adres URL w zgłoszeniu "
-"dotyczącego tego błędu"
-
-#: searx/templates/simple/new_issue.html:68
-msgid "Submit a new issue on Github including the above information"
-msgstr "Zgłoś nowy problem na Githubie, podając powyższe informacje"
-
 #: searx/templates/simple/preferences.html:65
 msgid "No HTTPS"
 msgstr "Brak HTTPS"
@@ -1000,17 +978,17 @@ msgid "!bang for its categories"
 msgstr "!bang dla jej kategorii"
 
 #: searx/templates/simple/preferences.html:102
-#: searx/templates/simple/stats.html:64
+#: searx/templates/simple/stats.html:63
 msgid "Median"
 msgstr "Mediana"
 
 #: searx/templates/simple/preferences.html:103
-#: searx/templates/simple/stats.html:70
+#: searx/templates/simple/stats.html:69
 msgid "P80"
 msgstr "P80"
 
 #: searx/templates/simple/preferences.html:104
-#: searx/templates/simple/stats.html:76
+#: searx/templates/simple/stats.html:75
 msgid "P95"
 msgstr "P95"
 
@@ -1103,81 +1081,81 @@ msgstr "wyczyść"
 msgid "search"
 msgstr "wyszukaj"
 
-#: searx/templates/simple/stats.html:21
+#: searx/templates/simple/stats.html:20
 msgid "There is currently no data available. "
 msgstr "Obecnie nie ma dostępnych danych. "
 
 #: searx/templates/simple/preferences/engines.html:24
-#: searx/templates/simple/stats.html:25
+#: searx/templates/simple/stats.html:24
 msgid "Engine name"
 msgstr "Nazwa wyszukiwarki"
 
-#: searx/templates/simple/stats.html:26
+#: searx/templates/simple/stats.html:25
 msgid "Scores"
 msgstr "Wyniki"
 
-#: searx/templates/simple/stats.html:27
+#: searx/templates/simple/stats.html:26
 msgid "Result count"
 msgstr "Ilość wyników"
 
 #: searx/templates/simple/elements/engines_msg.html:7
 #: searx/templates/simple/preferences/engines.html:31
-#: searx/templates/simple/stats.html:28
+#: searx/templates/simple/stats.html:27
 msgid "Response time"
 msgstr "Czas odpowiedzi"
 
 #: searx/templates/simple/preferences/engines.html:35
-#: searx/templates/simple/stats.html:29
+#: searx/templates/simple/stats.html:28
 msgid "Reliability"
 msgstr "Niezawodność"
 
-#: searx/templates/simple/stats.html:59
+#: searx/templates/simple/stats.html:58
 msgid "Total"
 msgstr "Suma"
 
-#: searx/templates/simple/stats.html:60
+#: searx/templates/simple/stats.html:59
 msgid "HTTP"
 msgstr "HTTP"
 
-#: searx/templates/simple/stats.html:61
+#: searx/templates/simple/stats.html:60
 msgid "Processing"
 msgstr "Przetwarzanie"
 
-#: searx/templates/simple/stats.html:99
+#: searx/templates/simple/stats.html:98
 msgid "Warnings"
 msgstr "Ostrzeżenia"
 
-#: searx/templates/simple/stats.html:99
+#: searx/templates/simple/stats.html:98
 msgid "Errors and exceptions"
 msgstr "Błędy i wyjątki"
 
-#: searx/templates/simple/stats.html:105
+#: searx/templates/simple/stats.html:104
 msgid "Exception"
 msgstr "Wyjątek"
 
-#: searx/templates/simple/stats.html:107
+#: searx/templates/simple/stats.html:106
 msgid "Message"
 msgstr "Wiadomość"
 
-#: searx/templates/simple/stats.html:109
+#: searx/templates/simple/stats.html:108
 msgid "Percentage"
 msgstr "Odsetek"
 
-#: searx/templates/simple/stats.html:111
+#: searx/templates/simple/stats.html:110
 msgid "Parameter"
 msgstr "Parametr"
 
 #: searx/templates/simple/result_templates/code.html:29
 #: searx/templates/simple/result_templates/file.html:24
-#: searx/templates/simple/stats.html:119
+#: searx/templates/simple/stats.html:118
 msgid "Filename"
 msgstr "Nazwa pliku"
 
-#: searx/templates/simple/stats.html:120
+#: searx/templates/simple/stats.html:119
 msgid "Function"
 msgstr "Funkcja"
 
-#: searx/templates/simple/stats.html:121
+#: searx/templates/simple/stats.html:120
 msgid "Code"
 msgstr "Kod"
 
@@ -2429,4 +2407,24 @@ msgstr "ukryj wideo"
 
 #~ msgid "Comment(s)"
 #~ msgstr "Komentarz(e)"
+
+#~ msgid "Start submitting a new issue on GitHub"
+#~ msgstr "Zgłoś nowy problem na GitHubie"
+
+#~ msgid "Please check for existing bugs about this engine on GitHub"
+#~ msgstr "Sprawdź istniejące błędy dotyczące tego silnika na GitHub"
+
+#~ msgid "I confirm there is no existing bug about the issue I encounter"
+#~ msgstr ""
+#~ "Potwierdzam, że nie ma istniejącego "
+#~ "błędu dotyczącego napotkanego problemu"
+
+#~ msgid "If this is a public instance, please specify the URL in the bug report"
+#~ msgstr ""
+#~ "Jeśli jest to instancja publiczna, podaj"
+#~ " adres URL w zgłoszeniu dotyczącego "
+#~ "tego błędu"
+
+#~ msgid "Submit a new issue on Github including the above information"
+#~ msgstr "Zgłoś nowy problem na Githubie, podając powyższe informacje"
 
