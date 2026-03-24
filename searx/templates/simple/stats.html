@@ -1,5 +1,4 @@
 {% from 'simple/icons.html' import icon_big %}
-{% from 'simple/new_issue.html' import new_issue with context %}
 
 {% extends "simple/page_with_header.html" %}
 
@@ -124,7 +123,6 @@
                 {% endif %}
             {% endfor %}
         {% endfor %}
-        {{ new_issue(selected_engine_name, engine_reliabilities[selected_engine_name]) }}
     </div>
 {% endif %}
 
