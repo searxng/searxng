@@ -269,15 +269,6 @@ def get_google_info(params: "OnlineParams", eng_traits: EngineTraits) -> dict[st
     ret_val["headers"]["Accept"] = "*/*"
     ret_val["headers"]["User-Agent"] = gen_gsa_useragent()
 
-    # Hardcoded default ENID Header required alongside the Android Google App
-    # User Agent
-    ret_val["headers"]["__Secure-ENID"] = (
-        "28.SE=II9FMkz92GewodDwKRBFsMISph7GsQs8JYLdXmAlprl6UcC02O2p7kfQlAWuwT"
-        "oygcrqHpmwQSH57b0c2kXfRfo35J8aV5FYSeUzYB67hqZQ2tZB7-o0hlTKwb5qMjn8Cf"
-        "w_AZ2s_6KIFMAl2goXGcXHSfgu4jwZOqShlHCcag0ppy_NnxJYWxpLkaeuGCICwWoIFJ"
-        "HP6Gy4BOkIEsl1N_k6F6jMF_OklE9qIubiyKkNaA"
-    )
-
     # Cookies
 
     # - https://github.com/searxng/searxng/pull/1679#issuecomment-1235432746
