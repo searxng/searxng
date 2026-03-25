@@ -238,24 +238,81 @@ Target ``docs`` builds the documentation:
    ...
    The HTML pages are in dist/docs.
 
+.. _contrib docs:
+
 .. _make docs.clean:
 
 ``make docs.clean docs.live``
 ----------------------------------
 
-We describe the usage of the ``doc.*`` targets in the :ref:`How to contribute /
-Documentation <contrib docs>` section.  If you want to edit the documentation
-read our :ref:`make docs.live` section.  If you are working in your own brand,
-adjust your :ref:`settings brand`.
+.. _Sphinx: https://www.sphinx-doc.org
+.. _reST: https://www.sphinx-doc.org/en/master/usage/restructuredtext/basics.html
 
+The documentation is built using Sphinx_.  So in order to be able to generate
+the required files, you have to install it on your system.  Much easier, use
+our :ref:`makefile`.
+
+Here is an example which makes a complete rebuild:
+
+.. code:: sh
+
+   $ make docs.clean docs.html
+   ...
+   The HTML pages are in dist/docs.
+
+.. _make docs.live:
+
+Live build
+~~~~~~~~~~
+
+.. _sphinx-autobuild:
+   https://github.com/executablebooks/sphinx-autobuild/blob/master/README.md
+
+Live build is like WYSIWYG.  It's the recommended way to go if you want to edit
+the documentation.  The Makefile target ``docs.live`` builds the docs, opens URL
+in your favorite browser and rebuilds every time a reST file has been changed.
+
+.. code:: sh
+
+   $ make docs.live
+   ...
+   The HTML pages are in dist/docs.
+   ... Serving on http://0.0.0.0:8000
+   ... Start watching changes
+
+Live builds are implemented by sphinx-autobuild_.  Use environment
+``$(SPHINXOPTS)`` to pass arguments to the sphinx-autobuild_ command.  You can
+pass any argument except for the ``--host`` option (which is always set to
+``0.0.0.0``).  E.g., to find and use a free port, use:
+
+.. code:: sh
+
+   $ SPHINXOPTS="--port 0" make docs.live
+   ...
+   ... Serving on http://0.0.0.0:50593
+   ...
+
+If you are working in your own brand, adjust your :ref:`settings brand`.
 
 .. _make docs.gh-pages:
+
+.. _deploy on github.io:
 
 ``make docs.gh-pages``
 ----------------------
 
-To deploy on github.io first adjust your :ref:`settings brand`.  For any
-further read :ref:`deploy on github.io`.
+To deploy documentation at :docs:`github.io <.>` use Makefile target ``make
+docs.gh-pages``, which builds the documentation and runs all the needed git add,
+commit and push:
+
+.. code:: sh
+
+   $ make docs.clean docs.gh-pages
+
+.. attention::
+
+   If you are working in your own brand, don't forget to adjust your
+   :ref:`settings brand`.
 
 .. _make test:
 

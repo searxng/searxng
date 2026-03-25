@@ -7,7 +7,6 @@ Developer documentation
 
    quickstart
    commits
-   contribution_guide
    extended_types
    engines/index
    result_types/index

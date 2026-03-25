@@ -50,7 +50,8 @@ Here is how a minimal workflow looks like:
 If you think at some point something fails, go back to *start*.  Otherwise,
 choose a meaningful commit message and we are happy to receive your pull
 request. To not end in *wild west* we have some directives, please pay attention
-to our ":ref:`how to contribute`" guideline.
+to our `Contributing guidelines
+<https://github.com/searxng/searxng/blob/master/CONTRIBUTING.rst>`_.
 
 .. _pdb: https://docs.python.org/3/library/pdb.html#module-pdb
 
