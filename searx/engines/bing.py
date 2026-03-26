@@ -97,6 +97,15 @@ def override_accept_language(params: "OnlineParams", engine_region: str | None) 
 def request(query: str, params: "OnlineParams") -> "OnlineParams":
     """Assemble a Bing-Web request."""
 
+    # 修复：检测并纠正 UTF-8 被 Latin-1 错误解码的问题
+    try:
+        # 检测是否包含 Latin-1 错误解码的特征字符
+        if any(ord(c) > 127 and ord(c) < 256 for c in query):
+            # 尝试将 Latin-1 错误解码的字节重新编码为 UTF-8
+            query = query.encode("latin-1").decode("utf-8")
+    except (UnicodeDecodeError, UnicodeEncodeError):
+        pass  # 如果修复失败，使用原始 query
+
     engine_region = traits.get_region(params["searxng_locale"], traits.all_locale)
 
     override_accept_language(params, engine_region)
