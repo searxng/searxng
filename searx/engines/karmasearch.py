@@ -125,7 +125,11 @@ def _parse_images(result: dict[str, t.Any]) -> LegacyResult:
 def response(resp: "SXNG_Response") -> EngineResults:
     res = EngineResults()
 
-    for result in resp.json()["results"]:
+    json_resp: dict[str, t.Any] = resp.json()
+    if not isinstance(json_resp, dict):
+        return res  # pyright: ignore[reportUnreachable]
+
+    for result in json_resp["results"]:
         # hide sponsored results
         if result.get("sponsored", False):
             continue
