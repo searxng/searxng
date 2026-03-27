@@ -18,7 +18,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-02-22 13:48+0000\n"
+"POT-Creation-Date: 2026-03-24 18:43+0000\n"
 "PO-Revision-Date: 2025-09-02 04:50+0000\n"
 "Last-Translator: return42 <return42@noreply.codeberg.org>\n"
 "Language: th\n"
@@ -71,7 +71,7 @@ msgid "videos"
 msgstr "วิดีโอ"
 
 #. CATEGORY_NAMES['RADIO']
-#: searx/engines/radio_browser.py:142 searx/searxng.msg
+#: searx/engines/radio_browser.py:146 searx/searxng.msg
 msgid "radio"
 msgstr "วิทยุ"
 
@@ -545,7 +545,7 @@ msgstr "ตอบแล้ว"
 msgid "No item found"
 msgstr "ไม่พบรายการ"
 
-#: searx/engines/qwant.py:296
+#: searx/engines/qwant.py:291
 #: searx/templates/simple/result_templates/images.html:23 searx/webapp.py:329
 msgid "Source"
 msgstr "แหล่งที่มา"
@@ -641,6 +641,11 @@ msgstr "ทำการสุ่มค่าที่แตกต่างกั
 msgid "Compute {func} of the arguments"
 msgstr "คำนวณ {func} ของอาร์กิวเมนต์"
 
+#: searx/engines/boardreader.py:107
+#, python-brace-format
+msgid "Posted by {author}"
+msgstr ""
+
 #: searx/engines/openstreetmap.py:155
 msgid "Show route in map .."
 msgstr "แสดงเส้นทางบนแผนที่ .."
@@ -654,19 +659,19 @@ msgstr "{title} (ล้าสมัย)"
 msgid "This entry has been superseded by"
 msgstr "รายการนี้ถูกแทนที่โดย"
 
-#: searx/engines/qwant.py:298
+#: searx/engines/qwant.py:293
 msgid "Channel"
 msgstr "ช่องทาง"
 
-#: searx/engines/radio_browser.py:144
+#: searx/engines/radio_browser.py:148
 msgid "bitrate"
 msgstr "บิตเรต"
 
-#: searx/engines/radio_browser.py:145
+#: searx/engines/radio_browser.py:149
 msgid "votes"
 msgstr "โหวต"
 
-#: searx/engines/radio_browser.py:146
+#: searx/engines/radio_browser.py:150
 msgid "clicks"
 msgstr "คลิก"
 
@@ -701,15 +706,15 @@ msgstr ""
 msgid "The image could not be downloaded."
 msgstr "ไม่สามารถดาวน์โหลดภาพนี้ได้"
 
-#: searx/engines/zlibrary.py:78
+#: searx/engines/zlibrary.py:79
 msgid "Language"
 msgstr "ภาษา"
 
-#: searx/engines/zlibrary.py:79
+#: searx/engines/zlibrary.py:80
 msgid "Book rating"
 msgstr "บันทึกการให้คะแนน"
 
-#: searx/engines/zlibrary.py:80
+#: searx/engines/zlibrary.py:81
 msgid "File quality"
 msgstr "คุณภาพไฟล์"
 
@@ -884,7 +889,7 @@ msgstr "แหล่งที่เก็บโค้ด"
 msgid "Issue tracker"
 msgstr "ตัวติดตามปัญหา"
 
-#: searx/templates/simple/base.html:71 searx/templates/simple/stats.html:18
+#: searx/templates/simple/base.html:71 searx/templates/simple/stats.html:17
 msgid "Engine stats"
 msgstr "เครื่องมือสถิติ"
 
@@ -924,26 +929,6 @@ msgstr "ผู้เขียน"
 msgid "cached"
 msgstr "แคช"
 
-#: searx/templates/simple/new_issue.html:60
-msgid "Start submitting a new issue on GitHub"
-msgstr "เริ่มส่งฉบับใหม่บน GitHub"
-
-#: searx/templates/simple/new_issue.html:62
-msgid "Please check for existing bugs about this engine on GitHub"
-msgstr "โปรดตรวจสอบข้อบกพร่องที่มีอยู่เกี่ยวกับกลไกนี้บน GitHub"
-
-#: searx/templates/simple/new_issue.html:65
-msgid "I confirm there is no existing bug about the issue I encounter"
-msgstr "ฉันยืนยันว่าไม่มีข้อบกพร่องเกี่ยวกับปัญหาที่ฉันพบ"
-
-#: searx/templates/simple/new_issue.html:67
-msgid "If this is a public instance, please specify the URL in the bug report"
-msgstr "หากนี่เป็นกรณีสาธารณะ โปรดระบุ URL ในรายงานข้อบกพร่อง"
-
-#: searx/templates/simple/new_issue.html:68
-msgid "Submit a new issue on Github including the above information"
-msgstr "ส่งปัญหาใหม่บน Github รวมทั้งข้อมูลข้างต้นด้วย"
-
 #: searx/templates/simple/preferences.html:65
 msgid "No HTTPS"
 msgstr "ไม่มี HTTPS"
@@ -963,17 +948,17 @@ msgid "!bang for its categories"
 msgstr "!bang สำหรับหมวดหมู่ของมัน"
 
 #: searx/templates/simple/preferences.html:102
-#: searx/templates/simple/stats.html:64
+#: searx/templates/simple/stats.html:63
 msgid "Median"
 msgstr "ค่าเฉลี่ย"
 
 #: searx/templates/simple/preferences.html:103
-#: searx/templates/simple/stats.html:70
+#: searx/templates/simple/stats.html:69
 msgid "P80"
 msgstr "P80"
 
 #: searx/templates/simple/preferences.html:104
-#: searx/templates/simple/stats.html:76
+#: searx/templates/simple/stats.html:75
 msgid "P95"
 msgstr "P95"
 
@@ -1066,81 +1051,81 @@ msgstr "ล้าง"
 msgid "search"
 msgstr "ค้นหา"
 
-#: searx/templates/simple/stats.html:21
+#: searx/templates/simple/stats.html:20
 msgid "There is currently no data available. "
 msgstr "ขณะนี้ยังไม่มีข้อมูลที่มีอยู่"
 
 #: searx/templates/simple/preferences/engines.html:24
-#: searx/templates/simple/stats.html:25
+#: searx/templates/simple/stats.html:24
 msgid "Engine name"
 msgstr "ชื่อเครื่องมือ"
 
-#: searx/templates/simple/stats.html:26
+#: searx/templates/simple/stats.html:25
 msgid "Scores"
 msgstr "คะแนน"
 
-#: searx/templates/simple/stats.html:27
+#: searx/templates/simple/stats.html:26
 msgid "Result count"
 msgstr "จำนวนผลลัพธ์"
 
 #: searx/templates/simple/elements/engines_msg.html:7
 #: searx/templates/simple/preferences/engines.html:31
-#: searx/templates/simple/stats.html:28
+#: searx/templates/simple/stats.html:27
 msgid "Response time"
 msgstr "เวลาตอบสนอง"
 
 #: searx/templates/simple/preferences/engines.html:35
-#: searx/templates/simple/stats.html:29
+#: searx/templates/simple/stats.html:28
 msgid "Reliability"
 msgstr "ความน่าเชื่อถือ"
 
-#: searx/templates/simple/stats.html:59
+#: searx/templates/simple/stats.html:58
 msgid "Total"
 msgstr "ทั้งหมด"
 
-#: searx/templates/simple/stats.html:60
+#: searx/templates/simple/stats.html:59
 msgid "HTTP"
 msgstr "HTTP"
 
-#: searx/templates/simple/stats.html:61
+#: searx/templates/simple/stats.html:60
 msgid "Processing"
 msgstr "กำลังประมวลผล"
 
-#: searx/templates/simple/stats.html:99
+#: searx/templates/simple/stats.html:98
 msgid "Warnings"
 msgstr "คำเตือน"
 
-#: searx/templates/simple/stats.html:99
+#: searx/templates/simple/stats.html:98
 msgid "Errors and exceptions"
 msgstr "ข้อผิดพลาดและข้อยกเว้น"
 
-#: searx/templates/simple/stats.html:105
+#: searx/templates/simple/stats.html:104
 msgid "Exception"
 msgstr "ข้อยกเว้น"
 
-#: searx/templates/simple/stats.html:107
+#: searx/templates/simple/stats.html:106
 msgid "Message"
 msgstr "ข้อความ"
 
-#: searx/templates/simple/stats.html:109
+#: searx/templates/simple/stats.html:108
 msgid "Percentage"
 msgstr "เปอร์เซ็นต์"
 
-#: searx/templates/simple/stats.html:111
+#: searx/templates/simple/stats.html:110
 msgid "Parameter"
 msgstr "พารามิเตอร์"
 
 #: searx/templates/simple/result_templates/code.html:29
 #: searx/templates/simple/result_templates/file.html:24
-#: searx/templates/simple/stats.html:119
+#: searx/templates/simple/stats.html:118
 msgid "Filename"
 msgstr "ชื่อไฟล์"
 
-#: searx/templates/simple/stats.html:120
+#: searx/templates/simple/stats.html:119
 msgid "Function"
 msgstr "ฟังก์ชั่น"
 
-#: searx/templates/simple/stats.html:121
+#: searx/templates/simple/stats.html:120
 msgid "Code"
 msgstr "โค้ด"
 
@@ -2090,4 +2075,19 @@ msgstr "ซ่อนวิดีโอ"
 
 #~ msgid "Comment(s)"
 #~ msgstr "ความคิดเห็น"
+
+#~ msgid "Start submitting a new issue on GitHub"
+#~ msgstr "เริ่มส่งฉบับใหม่บน GitHub"
+
+#~ msgid "Please check for existing bugs about this engine on GitHub"
+#~ msgstr "โปรดตรวจสอบข้อบกพร่องที่มีอยู่เกี่ยวกับกลไกนี้บน GitHub"
+
+#~ msgid "I confirm there is no existing bug about the issue I encounter"
+#~ msgstr "ฉันยืนยันว่าไม่มีข้อบกพร่องเกี่ยวกับปัญหาที่ฉันพบ"
+
+#~ msgid "If this is a public instance, please specify the URL in the bug report"
+#~ msgstr "หากนี่เป็นกรณีสาธารณะ โปรดระบุ URL ในรายงานข้อบกพร่อง"
+
+#~ msgid "Submit a new issue on Github including the above information"
+#~ msgstr "ส่งปัญหาใหม่บน Github รวมทั้งข้อมูลข้างต้นด้วย"
 
