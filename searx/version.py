@@ -95,12 +95,12 @@ def get_information() -> tuple[str, str, str, str, str]:
 
     try:
         version_string, version_tag, docker_tag = get_git_version()
-    except subprocess.CalledProcessError as ex:
-        logger.error("Error while getting the version: %s", ex.stderr)
+    except Exception as ex:
+        logger.error("Error while getting the version: %s", ex)
     try:
         git_url, git_branch = get_git_url_and_branch()
-    except subprocess.CalledProcessError as ex:
-        logger.error("Error while getting the git URL & branch: %s", ex.stderr)
+    except Exception as ex:
+        logger.error("Error while getting the git URL & branch: %s", ex)
 
     return version_string, version_tag, docker_tag, git_url, git_branch
 
