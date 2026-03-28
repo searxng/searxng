@@ -36,7 +36,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-02-22 13:48+0000\n"
+"POT-Creation-Date: 2026-03-24 18:43+0000\n"
 "PO-Revision-Date: 2025-12-07 17:10+0000\n"
 "Last-Translator: c2qd <c2qd@noreply.codeberg.org>\n"
 "Language: ja\n"
@@ -89,7 +89,7 @@ msgid "videos"
 msgstr "動画"
 
 #. CATEGORY_NAMES['RADIO']
-#: searx/engines/radio_browser.py:142 searx/searxng.msg
+#: searx/engines/radio_browser.py:146 searx/searxng.msg
 msgid "radio"
 msgstr "ラジオ"
 
@@ -563,7 +563,7 @@ msgstr "回答"
 msgid "No item found"
 msgstr "アイテムが見つかりません"
 
-#: searx/engines/qwant.py:296
+#: searx/engines/qwant.py:291
 #: searx/templates/simple/result_templates/images.html:23 searx/webapp.py:329
 msgid "Source"
 msgstr "ソース"
@@ -659,6 +659,11 @@ msgstr "異なるランダムな値を生成する"
 msgid "Compute {func} of the arguments"
 msgstr "引数の {func} を計算する"
 
+#: searx/engines/boardreader.py:107
+#, python-brace-format
+msgid "Posted by {author}"
+msgstr ""
+
 #: searx/engines/openstreetmap.py:155
 msgid "Show route in map .."
 msgstr "地図にルートを表示.."
@@ -672,19 +677,19 @@ msgstr "{title} (廃止)"
 msgid "This entry has been superseded by"
 msgstr "このエントリは、置き換えられました:"
 
-#: searx/engines/qwant.py:298
+#: searx/engines/qwant.py:293
 msgid "Channel"
 msgstr "チャンネル"
 
-#: searx/engines/radio_browser.py:144
+#: searx/engines/radio_browser.py:148
 msgid "bitrate"
 msgstr "ビットレート"
 
-#: searx/engines/radio_browser.py:145
+#: searx/engines/radio_browser.py:149
 msgid "votes"
 msgstr "票数"
 
-#: searx/engines/radio_browser.py:146
+#: searx/engines/radio_browser.py:150
 msgid "clicks"
 msgstr "クリック"
 
@@ -714,15 +719,15 @@ msgstr "画像が単純すぎます。TinEyeが正しく照合を行うにはあ
 msgid "The image could not be downloaded."
 msgstr "この画像はダウンロードはできません。"
 
-#: searx/engines/zlibrary.py:78
+#: searx/engines/zlibrary.py:79
 msgid "Language"
 msgstr "言語"
 
-#: searx/engines/zlibrary.py:79
+#: searx/engines/zlibrary.py:80
 msgid "Book rating"
 msgstr "書籍評価点数"
 
-#: searx/engines/zlibrary.py:80
+#: searx/engines/zlibrary.py:81
 msgid "File quality"
 msgstr "ファイル品質"
 
@@ -892,7 +897,7 @@ msgstr "ソースコード"
 msgid "Issue tracker"
 msgstr "課題報告"
 
-#: searx/templates/simple/base.html:71 searx/templates/simple/stats.html:18
+#: searx/templates/simple/base.html:71 searx/templates/simple/stats.html:17
 msgid "Engine stats"
 msgstr "検索エンジンの状態"
 
@@ -932,26 +937,6 @@ msgstr "作者"
 msgid "cached"
 msgstr "キャッシュ"
 
-#: searx/templates/simple/new_issue.html:60
-msgid "Start submitting a new issue on GitHub"
-msgstr "Start submiting a new issue on GitHub"
-
-#: searx/templates/simple/new_issue.html:62
-msgid "Please check for existing bugs about this engine on GitHub"
-msgstr "Githubで、すでにこの件が出ていないか確認をしてください"
-
-#: searx/templates/simple/new_issue.html:65
-msgid "I confirm there is no existing bug about the issue I encounter"
-msgstr "発生している問題がすでに提出済みのバグ出ないことを確認してください"
-
-#: searx/templates/simple/new_issue.html:67
-msgid "If this is a public instance, please specify the URL in the bug report"
-msgstr "パブリックインスタンスなら、このURLにバグの報告をしてください"
-
-#: searx/templates/simple/new_issue.html:68
-msgid "Submit a new issue on Github including the above information"
-msgstr "Githubで情報を含めて新たな問題を提起"
-
 #: searx/templates/simple/preferences.html:65
 msgid "No HTTPS"
 msgstr "No HTTPS"
@@ -971,17 +956,17 @@ msgid "!bang for its categories"
 msgstr "そのカテゴリの!bang"
 
 #: searx/templates/simple/preferences.html:102
-#: searx/templates/simple/stats.html:64
+#: searx/templates/simple/stats.html:63
 msgid "Median"
 msgstr "中央値"
 
 #: searx/templates/simple/preferences.html:103
-#: searx/templates/simple/stats.html:70
+#: searx/templates/simple/stats.html:69
 msgid "P80"
 msgstr "P80"
 
 #: searx/templates/simple/preferences.html:104
-#: searx/templates/simple/stats.html:76
+#: searx/templates/simple/stats.html:75
 msgid "P95"
 msgstr "P95"
 
@@ -1074,81 +1059,81 @@ msgstr "消す"
 msgid "search"
 msgstr "検索"
 
-#: searx/templates/simple/stats.html:21
+#: searx/templates/simple/stats.html:20
 msgid "There is currently no data available. "
 msgstr "現在データがありません。 "
 
 #: searx/templates/simple/preferences/engines.html:24
-#: searx/templates/simple/stats.html:25
+#: searx/templates/simple/stats.html:24
 msgid "Engine name"
 msgstr "検索エンジン名"
 
-#: searx/templates/simple/stats.html:26
+#: searx/templates/simple/stats.html:25
 msgid "Scores"
 msgstr "スコア"
 
-#: searx/templates/simple/stats.html:27
+#: searx/templates/simple/stats.html:26
 msgid "Result count"
 msgstr "結果カウント"
 
 #: searx/templates/simple/elements/engines_msg.html:7
 #: searx/templates/simple/preferences/engines.html:31
-#: searx/templates/simple/stats.html:28
+#: searx/templates/simple/stats.html:27
 msgid "Response time"
 msgstr "応答時間"
 
 #: searx/templates/simple/preferences/engines.html:35
-#: searx/templates/simple/stats.html:29
+#: searx/templates/simple/stats.html:28
 msgid "Reliability"
 msgstr "信頼性"
 
-#: searx/templates/simple/stats.html:59
+#: searx/templates/simple/stats.html:58
 msgid "Total"
 msgstr "合計"
 
-#: searx/templates/simple/stats.html:60
+#: searx/templates/simple/stats.html:59
 msgid "HTTP"
 msgstr "HTTP"
 
-#: searx/templates/simple/stats.html:61
+#: searx/templates/simple/stats.html:60
 msgid "Processing"
 msgstr "処理"
 
-#: searx/templates/simple/stats.html:99
+#: searx/templates/simple/stats.html:98
 msgid "Warnings"
 msgstr "注意"
 
-#: searx/templates/simple/stats.html:99
+#: searx/templates/simple/stats.html:98
 msgid "Errors and exceptions"
 msgstr "エラーと例外"
 
-#: searx/templates/simple/stats.html:105
+#: searx/templates/simple/stats.html:104
 msgid "Exception"
 msgstr "例外"
 
-#: searx/templates/simple/stats.html:107
+#: searx/templates/simple/stats.html:106
 msgid "Message"
 msgstr "メッセージ"
 
-#: searx/templates/simple/stats.html:109
+#: searx/templates/simple/stats.html:108
 msgid "Percentage"
 msgstr "確率"
 
-#: searx/templates/simple/stats.html:111
+#: searx/templates/simple/stats.html:110
 msgid "Parameter"
 msgstr "パラメータ"
 
 #: searx/templates/simple/result_templates/code.html:29
 #: searx/templates/simple/result_templates/file.html:24
-#: searx/templates/simple/stats.html:119
+#: searx/templates/simple/stats.html:118
 msgid "Filename"
 msgstr "ファイル名"
 
-#: searx/templates/simple/stats.html:120
+#: searx/templates/simple/stats.html:119
 msgid "Function"
 msgstr "ファンクション"
 
-#: searx/templates/simple/stats.html:121
+#: searx/templates/simple/stats.html:120
 msgid "Code"
 msgstr "コード"
 
@@ -2319,4 +2304,19 @@ msgstr "動画を隠す"
 
 #~ msgid "Comment(s)"
 #~ msgstr "コメント"
+
+#~ msgid "Start submitting a new issue on GitHub"
+#~ msgstr "Start submiting a new issue on GitHub"
+
+#~ msgid "Please check for existing bugs about this engine on GitHub"
+#~ msgstr "Githubで、すでにこの件が出ていないか確認をしてください"
+
+#~ msgid "I confirm there is no existing bug about the issue I encounter"
+#~ msgstr "発生している問題がすでに提出済みのバグ出ないことを確認してください"
+
+#~ msgid "If this is a public instance, please specify the URL in the bug report"
+#~ msgstr "パブリックインスタンスなら、このURLにバグの報告をしてください"
+
+#~ msgid "Submit a new issue on Github including the above information"
+#~ msgstr "Githubで情報を含めて新たな問題を提起"
 

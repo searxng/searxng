@@ -21,7 +21,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-02-22 13:48+0000\n"
+"POT-Creation-Date: 2026-03-24 18:43+0000\n"
 "PO-Revision-Date: 2025-10-22 02:09+0000\n"
 "Last-Translator: return42 <return42@noreply.codeberg.org>\n"
 "Language: ko\n"
@@ -74,7 +74,7 @@ msgid "videos"
 msgstr "비디오"
 
 #. CATEGORY_NAMES['RADIO']
-#: searx/engines/radio_browser.py:142 searx/searxng.msg
+#: searx/engines/radio_browser.py:146 searx/searxng.msg
 msgid "radio"
 msgstr "라디오"
 
@@ -548,7 +548,7 @@ msgstr "응답"
 msgid "No item found"
 msgstr "검색 결과가 없습니다"
 
-#: searx/engines/qwant.py:296
+#: searx/engines/qwant.py:291
 #: searx/templates/simple/result_templates/images.html:23 searx/webapp.py:329
 msgid "Source"
 msgstr "소스"
@@ -644,6 +644,11 @@ msgstr "다른 난수 생성"
 msgid "Compute {func} of the arguments"
 msgstr "인수들의 {func}를 계산하세요"
 
+#: searx/engines/boardreader.py:107
+#, python-brace-format
+msgid "Posted by {author}"
+msgstr ""
+
 #: searx/engines/openstreetmap.py:155
 msgid "Show route in map .."
 msgstr "지도에서 경로 표시 .."
@@ -657,19 +662,19 @@ msgstr "{title} (사용되지 않음)"
 msgid "This entry has been superseded by"
 msgstr "이 항목은 다음으로 대체되었습니다"
 
-#: searx/engines/qwant.py:298
+#: searx/engines/qwant.py:293
 msgid "Channel"
 msgstr "채널"
 
-#: searx/engines/radio_browser.py:144
+#: searx/engines/radio_browser.py:148
 msgid "bitrate"
 msgstr "비트 레이트"
 
-#: searx/engines/radio_browser.py:145
+#: searx/engines/radio_browser.py:149
 msgid "votes"
 msgstr "표"
 
-#: searx/engines/radio_browser.py:146
+#: searx/engines/radio_browser.py:150
 msgid "clicks"
 msgstr "클릭"
 
@@ -703,15 +708,15 @@ msgstr ""
 msgid "The image could not be downloaded."
 msgstr "다운로드할 수 없는 이미지입니다."
 
-#: searx/engines/zlibrary.py:78
+#: searx/engines/zlibrary.py:79
 msgid "Language"
 msgstr "언어"
 
-#: searx/engines/zlibrary.py:79
+#: searx/engines/zlibrary.py:80
 msgid "Book rating"
 msgstr "책 평점"
 
-#: searx/engines/zlibrary.py:80
+#: searx/engines/zlibrary.py:81
 msgid "File quality"
 msgstr "파일 품질"
 
@@ -883,7 +888,7 @@ msgstr "소스 코드"
 msgid "Issue tracker"
 msgstr "이슈 트래커"
 
-#: searx/templates/simple/base.html:71 searx/templates/simple/stats.html:18
+#: searx/templates/simple/base.html:71 searx/templates/simple/stats.html:17
 msgid "Engine stats"
 msgstr "검색 엔진 상태"
 
@@ -923,26 +928,6 @@ msgstr "저자"
 msgid "cached"
 msgstr "캐시"
 
-#: searx/templates/simple/new_issue.html:60
-msgid "Start submitting a new issue on GitHub"
-msgstr "GitHub 에서 새 이슈 시작하기"
-
-#: searx/templates/simple/new_issue.html:62
-msgid "Please check for existing bugs about this engine on GitHub"
-msgstr "GitHub 에서 이 엔진에 대한 기존 버그를 확인하세요"
-
-#: searx/templates/simple/new_issue.html:65
-msgid "I confirm there is no existing bug about the issue I encounter"
-msgstr "제가 격은 버그에 대한 이슈가 존재하지 않은 것을 확인했습니다"
-
-#: searx/templates/simple/new_issue.html:67
-msgid "If this is a public instance, please specify the URL in the bug report"
-msgstr "공개 인스턴스라면 버그 보고서에 URL을 적어주세요"
-
-#: searx/templates/simple/new_issue.html:68
-msgid "Submit a new issue on Github including the above information"
-msgstr "Github에 위 정보를 포함한 새 이슈 작성하기"
-
 #: searx/templates/simple/preferences.html:65
 msgid "No HTTPS"
 msgstr "HTTPS 없음"
@@ -962,17 +947,17 @@ msgid "!bang for its categories"
 msgstr "카테고리 사용을 위해 !bang"
 
 #: searx/templates/simple/preferences.html:102
-#: searx/templates/simple/stats.html:64
+#: searx/templates/simple/stats.html:63
 msgid "Median"
 msgstr "중앙값"
 
 #: searx/templates/simple/preferences.html:103
-#: searx/templates/simple/stats.html:70
+#: searx/templates/simple/stats.html:69
 msgid "P80"
 msgstr "P80"
 
 #: searx/templates/simple/preferences.html:104
-#: searx/templates/simple/stats.html:76
+#: searx/templates/simple/stats.html:75
 msgid "P95"
 msgstr "P95"
 
@@ -1065,81 +1050,81 @@ msgstr "지우기"
 msgid "search"
 msgstr "검색"
 
-#: searx/templates/simple/stats.html:21
+#: searx/templates/simple/stats.html:20
 msgid "There is currently no data available. "
 msgstr "데이터가 존재하지 않습니다. "
 
 #: searx/templates/simple/preferences/engines.html:24
-#: searx/templates/simple/stats.html:25
+#: searx/templates/simple/stats.html:24
 msgid "Engine name"
 msgstr "검색엔진 이름"
 
-#: searx/templates/simple/stats.html:26
+#: searx/templates/simple/stats.html:25
 msgid "Scores"
 msgstr "점수"
 
-#: searx/templates/simple/stats.html:27
+#: searx/templates/simple/stats.html:26
 msgid "Result count"
 msgstr "결과 개수"
 
 #: searx/templates/simple/elements/engines_msg.html:7
 #: searx/templates/simple/preferences/engines.html:31
-#: searx/templates/simple/stats.html:28
+#: searx/templates/simple/stats.html:27
 msgid "Response time"
 msgstr "응답시간"
 
 #: searx/templates/simple/preferences/engines.html:35
-#: searx/templates/simple/stats.html:29
+#: searx/templates/simple/stats.html:28
 msgid "Reliability"
 msgstr "신뢰성"
 
-#: searx/templates/simple/stats.html:59
+#: searx/templates/simple/stats.html:58
 msgid "Total"
 msgstr "합계"
 
-#: searx/templates/simple/stats.html:60
+#: searx/templates/simple/stats.html:59
 msgid "HTTP"
 msgstr "HTTP"
 
-#: searx/templates/simple/stats.html:61
+#: searx/templates/simple/stats.html:60
 msgid "Processing"
 msgstr "처리"
 
-#: searx/templates/simple/stats.html:99
+#: searx/templates/simple/stats.html:98
 msgid "Warnings"
 msgstr "경고"
 
-#: searx/templates/simple/stats.html:99
+#: searx/templates/simple/stats.html:98
 msgid "Errors and exceptions"
 msgstr "에러와 예외"
 
-#: searx/templates/simple/stats.html:105
+#: searx/templates/simple/stats.html:104
 msgid "Exception"
 msgstr "예외"
 
-#: searx/templates/simple/stats.html:107
+#: searx/templates/simple/stats.html:106
 msgid "Message"
 msgstr "메시지"
 
-#: searx/templates/simple/stats.html:109
+#: searx/templates/simple/stats.html:108
 msgid "Percentage"
 msgstr "백분율"
 
-#: searx/templates/simple/stats.html:111
+#: searx/templates/simple/stats.html:110
 msgid "Parameter"
 msgstr "매개변수"
 
 #: searx/templates/simple/result_templates/code.html:29
 #: searx/templates/simple/result_templates/file.html:24
-#: searx/templates/simple/stats.html:119
+#: searx/templates/simple/stats.html:118
 msgid "Filename"
 msgstr "파일명"
 
-#: searx/templates/simple/stats.html:120
+#: searx/templates/simple/stats.html:119
 msgid "Function"
 msgstr "함수"
 
-#: searx/templates/simple/stats.html:121
+#: searx/templates/simple/stats.html:120
 msgid "Code"
 msgstr "코드"
 
@@ -2194,4 +2179,19 @@ msgstr "비디오 숨기기"
 
 #~ msgid "Comment(s)"
 #~ msgstr "댓글"
+
+#~ msgid "Start submitting a new issue on GitHub"
+#~ msgstr "GitHub 에서 새 이슈 시작하기"
+
+#~ msgid "Please check for existing bugs about this engine on GitHub"
+#~ msgstr "GitHub 에서 이 엔진에 대한 기존 버그를 확인하세요"
+
+#~ msgid "I confirm there is no existing bug about the issue I encounter"
+#~ msgstr "제가 격은 버그에 대한 이슈가 존재하지 않은 것을 확인했습니다"
+
+#~ msgid "If this is a public instance, please specify the URL in the bug report"
+#~ msgstr "공개 인스턴스라면 버그 보고서에 URL을 적어주세요"
+
+#~ msgid "Submit a new issue on Github including the above information"
+#~ msgstr "Github에 위 정보를 포함한 새 이슈 작성하기"
 

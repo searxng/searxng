@@ -48,21 +48,22 @@
 # yfdyh000 <yfdyh000@users.noreply.translate.codeberg.org>, 2025.
 # Jeex <jeex@users.noreply.translate.codeberg.org>, 2025.
 # BBTranslate <bbtranslate@users.noreply.translate.codeberg.org>, 2025.
-# Outbreak2096 <outbreak2096@noreply.codeberg.org>, 2025.
+# Outbreak2096 <outbreak2096@noreply.codeberg.org>, 2025, 2026.
 msgid ""
 msgstr ""
-"Project-Id-Version:  searx\n"
+"Project-Id-Version: searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-02-22 13:48+0000\n"
-"PO-Revision-Date: 2025-12-23 13:21+0000\n"
+"POT-Creation-Date: 2026-03-24 18:43+0000\n"
+"PO-Revision-Date: 2026-03-26 03:57+0000\n"
 "Last-Translator: Outbreak2096 <outbreak2096@noreply.codeberg.org>\n"
+"Language-Team: Chinese (Simplified Han script) <https://"
+"translate.codeberg.org/projects/searxng/searxng/zh_Hans/>\n"
 "Language: zh_Hans_CN\n"
-"Language-Team: Chinese (Simplified Han script) "
-"<https://translate.codeberg.org/projects/searxng/searxng/zh_Hans/>\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Weblate 5.16.2\n"
 "Generated-By: Babel 2.18.0\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
@@ -106,7 +107,7 @@ msgid "videos"
 msgstr "视频"
 
 #. CATEGORY_NAMES['RADIO']
-#: searx/engines/radio_browser.py:142 searx/searxng.msg
+#: searx/engines/radio_browser.py:146 searx/searxng.msg
 msgid "radio"
 msgstr "电台"
 
@@ -580,7 +581,7 @@ msgstr "回答"
 msgid "No item found"
 msgstr "未找到项目"
 
-#: searx/engines/qwant.py:296
+#: searx/engines/qwant.py:291
 #: searx/templates/simple/result_templates/images.html:23 searx/webapp.py:329
 msgid "Source"
 msgstr "来源"
@@ -676,6 +677,11 @@ msgstr "生成不同的随机数"
 msgid "Compute {func} of the arguments"
 msgstr "计算参数的 {func}"
 
+#: searx/engines/boardreader.py:107
+#, python-brace-format
+msgid "Posted by {author}"
+msgstr "发布者：{author}"
+
 #: searx/engines/openstreetmap.py:155
 msgid "Show route in map .."
 msgstr "在地图上显示路线…"
@@ -689,19 +695,19 @@ msgstr "{title} （已过时）"
 msgid "This entry has been superseded by"
 msgstr "此条目已被以下内容取代"
 
-#: searx/engines/qwant.py:298
+#: searx/engines/qwant.py:293
 msgid "Channel"
 msgstr "频道"
 
-#: searx/engines/radio_browser.py:144
+#: searx/engines/radio_browser.py:148
 msgid "bitrate"
 msgstr "比特率"
 
-#: searx/engines/radio_browser.py:145
+#: searx/engines/radio_browser.py:149
 msgid "votes"
 msgstr "投票数"
 
-#: searx/engines/radio_browser.py:146
+#: searx/engines/radio_browser.py:150
 msgid "clicks"
 msgstr "点击数"
 
@@ -731,15 +737,15 @@ msgstr "图像过于简单，无法找到匹配项。TinEye 需要基本级别�
 msgid "The image could not be downloaded."
 msgstr "无法下载该图像。"
 
-#: searx/engines/zlibrary.py:78
+#: searx/engines/zlibrary.py:79
 msgid "Language"
 msgstr "语言"
 
-#: searx/engines/zlibrary.py:79
+#: searx/engines/zlibrary.py:80
 msgid "Book rating"
 msgstr "书籍评分"
 
-#: searx/engines/zlibrary.py:80
+#: searx/engines/zlibrary.py:81
 msgid "File quality"
 msgstr "文件质量"
 
@@ -909,7 +915,7 @@ msgstr "源代码"
 msgid "Issue tracker"
 msgstr "问题跟踪系统"
 
-#: searx/templates/simple/base.html:71 searx/templates/simple/stats.html:18
+#: searx/templates/simple/base.html:71 searx/templates/simple/stats.html:17
 msgid "Engine stats"
 msgstr "搜索引擎统计"
 
@@ -949,26 +955,6 @@ msgstr "作者"
 msgid "cached"
 msgstr "快照"
 
-#: searx/templates/simple/new_issue.html:60
-msgid "Start submitting a new issue on GitHub"
-msgstr "在 GitHub 上开始提交新问题"
-
-#: searx/templates/simple/new_issue.html:62
-msgid "Please check for existing bugs about this engine on GitHub"
-msgstr "请在 GitHub 上检查有关此引擎的现有错误"
-
-#: searx/templates/simple/new_issue.html:65
-msgid "I confirm there is no existing bug about the issue I encounter"
-msgstr "我确定提交的 Bug 没有与现存 Issue 重复"
-
-#: searx/templates/simple/new_issue.html:67
-msgid "If this is a public instance, please specify the URL in the bug report"
-msgstr "如果这是公共实例，请在错误报告中指定 URL"
-
-#: searx/templates/simple/new_issue.html:68
-msgid "Submit a new issue on Github including the above information"
-msgstr "在 GitHub 上提交包含上述信息的 Issue"
-
 #: searx/templates/simple/preferences.html:65
 msgid "No HTTPS"
 msgstr "无 HTTPS"
@@ -988,17 +974,17 @@ msgid "!bang for its categories"
 msgstr "对于这个类别的 !bang"
 
 #: searx/templates/simple/preferences.html:102
-#: searx/templates/simple/stats.html:64
+#: searx/templates/simple/stats.html:63
 msgid "Median"
 msgstr "中位数"
 
 #: searx/templates/simple/preferences.html:103
-#: searx/templates/simple/stats.html:70
+#: searx/templates/simple/stats.html:69
 msgid "P80"
 msgstr "P80"
 
 #: searx/templates/simple/preferences.html:104
-#: searx/templates/simple/stats.html:76
+#: searx/templates/simple/stats.html:75
 msgid "P95"
 msgstr "P95"
 
@@ -1091,81 +1077,81 @@ msgstr "清除"
 msgid "search"
 msgstr "搜索"
 
-#: searx/templates/simple/stats.html:21
+#: searx/templates/simple/stats.html:20
 msgid "There is currently no data available. "
 msgstr "目前没有可用的数据。 "
 
 #: searx/templates/simple/preferences/engines.html:24
-#: searx/templates/simple/stats.html:25
+#: searx/templates/simple/stats.html:24
 msgid "Engine name"
 msgstr "引擎名称"
 
-#: searx/templates/simple/stats.html:26
+#: searx/templates/simple/stats.html:25
 msgid "Scores"
 msgstr "得分"
 
-#: searx/templates/simple/stats.html:27
+#: searx/templates/simple/stats.html:26
 msgid "Result count"
 msgstr "结果数量"
 
 #: searx/templates/simple/elements/engines_msg.html:7
 #: searx/templates/simple/preferences/engines.html:31
-#: searx/templates/simple/stats.html:28
+#: searx/templates/simple/stats.html:27
 msgid "Response time"
 msgstr "响应时间"
 
 #: searx/templates/simple/preferences/engines.html:35
-#: searx/templates/simple/stats.html:29
+#: searx/templates/simple/stats.html:28
 msgid "Reliability"
 msgstr "可靠性"
 
-#: searx/templates/simple/stats.html:59
+#: searx/templates/simple/stats.html:58
 msgid "Total"
 msgstr "总计"
 
-#: searx/templates/simple/stats.html:60
+#: searx/templates/simple/stats.html:59
 msgid "HTTP"
 msgstr "HTTP"
 
-#: searx/templates/simple/stats.html:61
+#: searx/templates/simple/stats.html:60
 msgid "Processing"
 msgstr "正在处理"
 
-#: searx/templates/simple/stats.html:99
+#: searx/templates/simple/stats.html:98
 msgid "Warnings"
 msgstr "警告"
 
-#: searx/templates/simple/stats.html:99
+#: searx/templates/simple/stats.html:98
 msgid "Errors and exceptions"
 msgstr "错误和异常"
 
-#: searx/templates/simple/stats.html:105
+#: searx/templates/simple/stats.html:104
 msgid "Exception"
 msgstr "异常"
 
-#: searx/templates/simple/stats.html:107
+#: searx/templates/simple/stats.html:106
 msgid "Message"
 msgstr "消息"
 
-#: searx/templates/simple/stats.html:109
+#: searx/templates/simple/stats.html:108
 msgid "Percentage"
 msgstr "百分比"
 
-#: searx/templates/simple/stats.html:111
+#: searx/templates/simple/stats.html:110
 msgid "Parameter"
 msgstr "参数"
 
 #: searx/templates/simple/result_templates/code.html:29
 #: searx/templates/simple/result_templates/file.html:24
-#: searx/templates/simple/stats.html:119
+#: searx/templates/simple/stats.html:118
 msgid "Filename"
 msgstr "文件名"
 
-#: searx/templates/simple/stats.html:120
+#: searx/templates/simple/stats.html:119
 msgid "Function"
 msgstr "函数"
 
-#: searx/templates/simple/stats.html:121
+#: searx/templates/simple/stats.html:120
 msgid "Code"
 msgstr "代码"
 
@@ -2331,3 +2317,17 @@ msgstr "隐藏视频"
 #~ msgid "Comment(s)"
 #~ msgstr "注释"
 
+#~ msgid "Start submitting a new issue on GitHub"
+#~ msgstr "在 GitHub 上开始提交新问题"
+
+#~ msgid "Please check for existing bugs about this engine on GitHub"
+#~ msgstr "请在 GitHub 上检查有关此引擎的现有错误"
+
+#~ msgid "I confirm there is no existing bug about the issue I encounter"
+#~ msgstr "我确定提交的 Bug 没有与现存 Issue 重复"
+
+#~ msgid "If this is a public instance, please specify the URL in the bug report"
+#~ msgstr "如果这是公共实例，请在错误报告中指定 URL"
+
+#~ msgid "Submit a new issue on Github including the above information"
+#~ msgstr "在 GitHub 上提交包含上述信息的 Issue"

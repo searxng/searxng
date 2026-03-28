@@ -32,7 +32,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-02-22 13:48+0000\n"
+"POT-Creation-Date: 2026-03-24 18:43+0000\n"
 "PO-Revision-Date: 2025-12-27 12:21+0000\n"
 "Last-Translator: tace16 <tace16@noreply.codeberg.org>\n"
 "Language: ta\n"
@@ -85,7 +85,7 @@ msgid "videos"
 msgstr "காணொளிகள்"
 
 #. CATEGORY_NAMES['RADIO']
-#: searx/engines/radio_browser.py:142 searx/searxng.msg
+#: searx/engines/radio_browser.py:146 searx/searxng.msg
 msgid "radio"
 msgstr "வானொலி"
 
@@ -559,7 +559,7 @@ msgstr "பதில் அளிக்கப்பட்டது"
 msgid "No item found"
 msgstr "எதுவும் கிடைக்கவில்லை"
 
-#: searx/engines/qwant.py:296
+#: searx/engines/qwant.py:291
 #: searx/templates/simple/result_templates/images.html:23 searx/webapp.py:329
 msgid "Source"
 msgstr "ஆதாரம்"
@@ -655,6 +655,11 @@ msgstr "வெவ்வாறான சீரற்ற மதிப்புக�
 msgid "Compute {func} of the arguments"
 msgstr "வாதங்களின் {func} கணக்கிடவும்"
 
+#: searx/engines/boardreader.py:107
+#, python-brace-format
+msgid "Posted by {author}"
+msgstr ""
+
 #: searx/engines/openstreetmap.py:155
 msgid "Show route in map .."
 msgstr "வரைபடத்தில் வழியைக் காட்டு.."
@@ -668,19 +673,19 @@ msgstr "{title} (காலாவதியானது)"
 msgid "This entry has been superseded by"
 msgstr "இந்த நுழைவு மாற்றப்பட்டது"
 
-#: searx/engines/qwant.py:298
+#: searx/engines/qwant.py:293
 msgid "Channel"
 msgstr "சேனல்"
 
-#: searx/engines/radio_browser.py:144
+#: searx/engines/radio_browser.py:148
 msgid "bitrate"
 msgstr "தகவல் விகிதம்"
 
-#: searx/engines/radio_browser.py:145
+#: searx/engines/radio_browser.py:149
 msgid "votes"
 msgstr "வாக்குகள்"
 
-#: searx/engines/radio_browser.py:146
+#: searx/engines/radio_browser.py:150
 msgid "clicks"
 msgstr "சொடுக்குகள்"
 
@@ -716,15 +721,15 @@ msgstr ""
 msgid "The image could not be downloaded."
 msgstr "இப்படத்தைப் பதிவிறக்க முடியவில்லை."
 
-#: searx/engines/zlibrary.py:78
+#: searx/engines/zlibrary.py:79
 msgid "Language"
 msgstr "மொழி"
 
-#: searx/engines/zlibrary.py:79
+#: searx/engines/zlibrary.py:80
 msgid "Book rating"
 msgstr "புத்தகத்தின் மதிப்பீடு"
 
-#: searx/engines/zlibrary.py:80
+#: searx/engines/zlibrary.py:81
 msgid "File quality"
 msgstr "கோப்பின் தரம்"
 
@@ -913,7 +918,7 @@ msgstr "மூல குறியீடு"
 msgid "Issue tracker"
 msgstr "பிரச்சினை டிராக்கர்"
 
-#: searx/templates/simple/base.html:71 searx/templates/simple/stats.html:18
+#: searx/templates/simple/base.html:71 searx/templates/simple/stats.html:17
 msgid "Engine stats"
 msgstr "எந்திரத்தின் புள்ளி விவரங்கள்"
 
@@ -953,28 +958,6 @@ msgstr "நூலாசிரியர்"
 msgid "cached"
 msgstr "தற்காலிக சேமிப்பு"
 
-#: searx/templates/simple/new_issue.html:60
-msgid "Start submitting a new issue on GitHub"
-msgstr "புதிய சிக்கலைச் GitHub இல் சமர்ப்பிக்கத் தொடங்குங்கள்"
-
-#: searx/templates/simple/new_issue.html:62
-msgid "Please check for existing bugs about this engine on GitHub"
-msgstr "இந்த இன்ஜினைப் பற்றி GitHub இல் ஏற்கனவே உள்ள பிழைகளைச் சரிபார்க்கவும்"
-
-#: searx/templates/simple/new_issue.html:65
-msgid "I confirm there is no existing bug about the issue I encounter"
-msgstr ""
-"நான் எதிர்கொள்ளும் சிக்கலில் எந்தப் பிழையும் இல்லை என்பதை "
-"உறுதிப்படுத்துகிறேன்"
-
-#: searx/templates/simple/new_issue.html:67
-msgid "If this is a public instance, please specify the URL in the bug report"
-msgstr "இது ஒரு பொது நிகழ்வாக இருந்தால், பிழை அறிக்கையில் URL ஐக் குறிப்பிடவும்"
-
-#: searx/templates/simple/new_issue.html:68
-msgid "Submit a new issue on Github including the above information"
-msgstr "மேலே உள்ள தகவல் உட்பட Github இல் புதிய பிழையைச் சமர்ப்பிக்கவும்"
-
 #: searx/templates/simple/preferences.html:65
 msgid "No HTTPS"
 msgstr "HTTPS இல்லை"
@@ -994,17 +977,17 @@ msgid "!bang for its categories"
 msgstr "!அதன் வகைகளுக்கு பேங்"
 
 #: searx/templates/simple/preferences.html:102
-#: searx/templates/simple/stats.html:64
+#: searx/templates/simple/stats.html:63
 msgid "Median"
 msgstr "இடைநிலை"
 
 #: searx/templates/simple/preferences.html:103
-#: searx/templates/simple/stats.html:70
+#: searx/templates/simple/stats.html:69
 msgid "P80"
 msgstr "P80"
 
 #: searx/templates/simple/preferences.html:104
-#: searx/templates/simple/stats.html:76
+#: searx/templates/simple/stats.html:75
 msgid "P95"
 msgstr "அலறல்"
 
@@ -1101,81 +1084,81 @@ msgstr "அழி"
 msgid "search"
 msgstr "தேடு"
 
-#: searx/templates/simple/stats.html:21
+#: searx/templates/simple/stats.html:20
 msgid "There is currently no data available. "
 msgstr "தற்போது தரவுகள் ஏதும் இல்லை."
 
 #: searx/templates/simple/preferences/engines.html:24
-#: searx/templates/simple/stats.html:25
+#: searx/templates/simple/stats.html:24
 msgid "Engine name"
 msgstr "எந்திரத்தின் பெயர்"
 
-#: searx/templates/simple/stats.html:26
+#: searx/templates/simple/stats.html:25
 msgid "Scores"
 msgstr "மதிப்புகள்"
 
-#: searx/templates/simple/stats.html:27
+#: searx/templates/simple/stats.html:26
 msgid "Result count"
 msgstr "முடிவு எண்ணிக்கை"
 
 #: searx/templates/simple/elements/engines_msg.html:7
 #: searx/templates/simple/preferences/engines.html:31
-#: searx/templates/simple/stats.html:28
+#: searx/templates/simple/stats.html:27
 msgid "Response time"
 msgstr "பதில் நேரம்"
 
 #: searx/templates/simple/preferences/engines.html:35
-#: searx/templates/simple/stats.html:29
+#: searx/templates/simple/stats.html:28
 msgid "Reliability"
 msgstr "நம்பகத்தன்மை"
 
-#: searx/templates/simple/stats.html:59
+#: searx/templates/simple/stats.html:58
 msgid "Total"
 msgstr "மொத்தம்"
 
-#: searx/templates/simple/stats.html:60
+#: searx/templates/simple/stats.html:59
 msgid "HTTP"
 msgstr "HTTP"
 
-#: searx/templates/simple/stats.html:61
+#: searx/templates/simple/stats.html:60
 msgid "Processing"
 msgstr "செயலாக்கம்"
 
-#: searx/templates/simple/stats.html:99
+#: searx/templates/simple/stats.html:98
 msgid "Warnings"
 msgstr "எச்சரிக்கைகள்"
 
-#: searx/templates/simple/stats.html:99
+#: searx/templates/simple/stats.html:98
 msgid "Errors and exceptions"
 msgstr "பிழைகள் மற்றும் விதிவிலக்குகள்"
 
-#: searx/templates/simple/stats.html:105
+#: searx/templates/simple/stats.html:104
 msgid "Exception"
 msgstr "விதிவிலக்கு"
 
-#: searx/templates/simple/stats.html:107
+#: searx/templates/simple/stats.html:106
 msgid "Message"
 msgstr "செய்தி"
 
-#: searx/templates/simple/stats.html:109
+#: searx/templates/simple/stats.html:108
 msgid "Percentage"
 msgstr "சதவிதம்"
 
-#: searx/templates/simple/stats.html:111
+#: searx/templates/simple/stats.html:110
 msgid "Parameter"
 msgstr "அளவுரு"
 
 #: searx/templates/simple/result_templates/code.html:29
 #: searx/templates/simple/result_templates/file.html:24
-#: searx/templates/simple/stats.html:119
+#: searx/templates/simple/stats.html:118
 msgid "Filename"
 msgstr "கோப்பு பெயர்"
 
-#: searx/templates/simple/stats.html:120
+#: searx/templates/simple/stats.html:119
 msgid "Function"
 msgstr "செயல்பாடு"
 
-#: searx/templates/simple/stats.html:121
+#: searx/templates/simple/stats.html:120
 msgid "Code"
 msgstr "குறியீடு"
 
@@ -2397,4 +2380,21 @@ msgstr "காணொளிகளை மறை"
 
 #~ msgid "Comment(s)"
 #~ msgstr "கருத்து(கள்)"
+
+#~ msgid "Start submitting a new issue on GitHub"
+#~ msgstr "புதிய சிக்கலைச் GitHub இல் சமர்ப்பிக்கத் தொடங்குங்கள்"
+
+#~ msgid "Please check for existing bugs about this engine on GitHub"
+#~ msgstr "இந்த இன்ஜினைப் பற்றி GitHub இல் ஏற்கனவே உள்ள பிழைகளைச் சரிபார்க்கவும்"
+
+#~ msgid "I confirm there is no existing bug about the issue I encounter"
+#~ msgstr ""
+#~ "நான் எதிர்கொள்ளும் சிக்கலில் எந்தப் பிழையும்"
+#~ " இல்லை என்பதை உறுதிப்படுத்துகிறேன்"
+
+#~ msgid "If this is a public instance, please specify the URL in the bug report"
+#~ msgstr "இது ஒரு பொது நிகழ்வாக இருந்தால், பிழை அறிக்கையில் URL ஐக் குறிப்பிடவும்"
+
+#~ msgid "Submit a new issue on Github including the above information"
+#~ msgstr "மேலே உள்ள தகவல் உட்பட Github இல் புதிய பிழையைச் சமர்ப்பிக்கவும்"
 

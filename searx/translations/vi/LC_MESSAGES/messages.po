@@ -24,13 +24,14 @@
 # return42 <return42@noreply.codeberg.org>, 2025.
 # nhthinh <nhthinh@noreply.codeberg.org>, 2025.
 # recreationalprogamer <recreationalprogamer@noreply.codeberg.org>, 2025.
+# namhv05 <namhv05@noreply.codeberg.org>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-02-22 13:48+0000\n"
-"PO-Revision-Date: 2025-10-22 02:09+0000\n"
-"Last-Translator: return42 <return42@noreply.codeberg.org>\n"
+"POT-Creation-Date: 2026-03-24 18:43+0000\n"
+"PO-Revision-Date: 2026-03-24 07:38+0000\n"
+"Last-Translator: namhv05 <namhv05@noreply.codeberg.org>\n"
 "Language: vi\n"
 "Language-Team: Vietnamese "
 "<https://translate.codeberg.org/projects/searxng/searxng/vi/>\n"
@@ -81,19 +82,19 @@ msgid "videos"
 msgstr "video"
 
 #. CATEGORY_NAMES['RADIO']
-#: searx/engines/radio_browser.py:142 searx/searxng.msg
+#: searx/engines/radio_browser.py:146 searx/searxng.msg
 msgid "radio"
 msgstr "radio"
 
 #. CATEGORY_NAMES['TV']
 #: searx/searxng.msg
 msgid "tv"
-msgstr "TV"
+msgstr "tv"
 
 #. CATEGORY_NAMES['IT']
 #: searx/searxng.msg
 msgid "it"
-msgstr "CNTT"
+msgstr "cntt"
 
 #. CATEGORY_NAMES['NEWS']
 #: searx/searxng.msg
@@ -555,7 +556,7 @@ msgstr "đã trả lời"
 msgid "No item found"
 msgstr "Không tìm thấy gì"
 
-#: searx/engines/qwant.py:296
+#: searx/engines/qwant.py:291
 #: searx/templates/simple/result_templates/images.html:23 searx/webapp.py:329
 msgid "Source"
 msgstr "Nguồn"
@@ -651,6 +652,11 @@ msgstr "Tạo các giá trị ngẫu nhiên khác nhau"
 msgid "Compute {func} of the arguments"
 msgstr "Tính toán {func} của các đối số"
 
+#: searx/engines/boardreader.py:107
+#, python-brace-format
+msgid "Posted by {author}"
+msgstr ""
+
 #: searx/engines/openstreetmap.py:155
 msgid "Show route in map .."
 msgstr "Hiển thị đường đi trên bản đồ .."
@@ -664,19 +670,19 @@ msgstr "{title} (HẾT HẠN)"
 msgid "This entry has been superseded by"
 msgstr "Mục này đã được thay thế bằng"
 
-#: searx/engines/qwant.py:298
+#: searx/engines/qwant.py:293
 msgid "Channel"
 msgstr "Kênh"
 
-#: searx/engines/radio_browser.py:144
+#: searx/engines/radio_browser.py:148
 msgid "bitrate"
 msgstr "tốc độ bit"
 
-#: searx/engines/radio_browser.py:145
+#: searx/engines/radio_browser.py:149
 msgid "votes"
 msgstr "bình chọn"
 
-#: searx/engines/radio_browser.py:146
+#: searx/engines/radio_browser.py:150
 msgid "clicks"
 msgstr "nhấp chuột"
 
@@ -711,15 +717,15 @@ msgstr ""
 msgid "The image could not be downloaded."
 msgstr "Không thể tải hình ảnh."
 
-#: searx/engines/zlibrary.py:78
+#: searx/engines/zlibrary.py:79
 msgid "Language"
 msgstr "Ngôn ngữ"
 
-#: searx/engines/zlibrary.py:79
+#: searx/engines/zlibrary.py:80
 msgid "Book rating"
 msgstr "Đánh giá của sách"
 
-#: searx/engines/zlibrary.py:80
+#: searx/engines/zlibrary.py:81
 msgid "File quality"
 msgstr "Chất lượng tệp"
 
@@ -733,11 +739,11 @@ msgstr "Lọc các liên kết .onion xuất hiện trong danh sách đen của 
 
 #: searx/plugins/calculator.py:25
 msgid "Calculator"
-msgstr ""
+msgstr "Máy tính cầm tay"
 
 #: searx/plugins/calculator.py:26
 msgid "Parses and solves mathematical expressions."
-msgstr ""
+msgstr "Phân tích và giải các biểu thức toán học."
 
 #: searx/plugins/hash_plugin.py:33
 msgid "Hash plugin"
@@ -771,7 +777,7 @@ msgstr "Cuộn liên tục"
 msgid ""
 "Automatically loads the next page when scrolling to bottom of the current"
 " page"
-msgstr ""
+msgstr "Tự động tải trang tiếp theo khi cuộn xuống cuối trang hiện tại"
 
 #: searx/plugins/oa_doi_rewrite.py:54
 msgid "Open Access DOI rewrite"
@@ -811,7 +817,7 @@ msgstr "Tiện ích múi giờ"
 
 #: searx/plugins/time_zone.py:34
 msgid "Display the current time on different time zones."
-msgstr "HIện thời gian hiện tại trong nhiều múi giờ khác nhau."
+msgstr "Hiện thời gian hiện tại trong nhiều múi giờ khác nhau."
 
 #: searx/plugins/tor_check.py:41
 msgid "Tor check plugin"
@@ -898,7 +904,7 @@ msgstr "Mã nguồn"
 msgid "Issue tracker"
 msgstr "Trang theo dõi vấn đề"
 
-#: searx/templates/simple/base.html:71 searx/templates/simple/stats.html:18
+#: searx/templates/simple/base.html:71 searx/templates/simple/stats.html:17
 msgid "Engine stats"
 msgstr "Thông số về trình tìm kiếm"
 
@@ -938,30 +944,6 @@ msgstr "Tác giả"
 msgid "cached"
 msgstr "đã lưu cache"
 
-#: searx/templates/simple/new_issue.html:60
-msgid "Start submitting a new issue on GitHub"
-msgstr "Bắt đầu đăng một vấn đề mới trên Github"
-
-#: searx/templates/simple/new_issue.html:62
-msgid "Please check for existing bugs about this engine on GitHub"
-msgstr ""
-"Vui lòng kiểm tra các lỗi đang tồn tại của công cụ tìm kiếm này trên "
-"Github"
-
-#: searx/templates/simple/new_issue.html:65
-msgid "I confirm there is no existing bug about the issue I encounter"
-msgstr "Tôi xác nhận rằng không có lỗi nào đang tồn tại về vấn đề mà tôi gặp phải"
-
-#: searx/templates/simple/new_issue.html:67
-msgid "If this is a public instance, please specify the URL in the bug report"
-msgstr ""
-"Nếu đây là một thực thể công khai, vui lòng nêu rõ địa chỉ trong bản báo "
-"cáo lỗi"
-
-#: searx/templates/simple/new_issue.html:68
-msgid "Submit a new issue on Github including the above information"
-msgstr "Đăng một vấn đề mới trên Github cùng với các thông tin trên"
-
 #: searx/templates/simple/preferences.html:65
 msgid "No HTTPS"
 msgstr "Không hỗ trợ HTTPS"
@@ -981,17 +963,17 @@ msgid "!bang for its categories"
 msgstr "!bang cho các danh mục của nó"
 
 #: searx/templates/simple/preferences.html:102
-#: searx/templates/simple/stats.html:64
+#: searx/templates/simple/stats.html:63
 msgid "Median"
 msgstr "Trung vị"
 
 #: searx/templates/simple/preferences.html:103
-#: searx/templates/simple/stats.html:70
+#: searx/templates/simple/stats.html:69
 msgid "P80"
 msgstr "P80"
 
 #: searx/templates/simple/preferences.html:104
-#: searx/templates/simple/stats.html:76
+#: searx/templates/simple/stats.html:75
 msgid "P95"
 msgstr "P95"
 
@@ -1004,14 +986,16 @@ msgid ""
 "This is a preview of the settings used by the 'Search URL' you used to "
 "get here."
 msgstr ""
+"Đây là bản xem trước các cài đặt được sử dụng bởi 'URL tìm kiếm' mà bạn "
+"đã dùng để truy cập trang này."
 
 #: searx/templates/simple/preferences.html:158
 msgid "Press save to copy these preferences to your browser."
-msgstr ""
+msgstr "Nhấn lưu để sao chép các cài đặt này vào trình duyệt của bạn."
 
 #: searx/templates/simple/preferences.html:159
 msgid "Click here to view your browser preferences instead:"
-msgstr ""
+msgstr "Nhấp vào đây để xem cài đặt trình duyệt của bạn:"
 
 #: searx/templates/simple/preferences.html:169
 msgid "General"
@@ -1084,81 +1068,81 @@ msgstr "Xoá"
 msgid "search"
 msgstr "tìm kiếm"
 
-#: searx/templates/simple/stats.html:21
+#: searx/templates/simple/stats.html:20
 msgid "There is currently no data available. "
 msgstr "Hiện không có dữ liệu nào."
 
 #: searx/templates/simple/preferences/engines.html:24
-#: searx/templates/simple/stats.html:25
+#: searx/templates/simple/stats.html:24
 msgid "Engine name"
 msgstr "Tên trình tìm kiếm"
 
-#: searx/templates/simple/stats.html:26
+#: searx/templates/simple/stats.html:25
 msgid "Scores"
 msgstr "Điểm số"
 
-#: searx/templates/simple/stats.html:27
+#: searx/templates/simple/stats.html:26
 msgid "Result count"
 msgstr "Số lượng kết quả"
 
 #: searx/templates/simple/elements/engines_msg.html:7
 #: searx/templates/simple/preferences/engines.html:31
-#: searx/templates/simple/stats.html:28
+#: searx/templates/simple/stats.html:27
 msgid "Response time"
 msgstr "Thời gian phản hồi"
 
 #: searx/templates/simple/preferences/engines.html:35
-#: searx/templates/simple/stats.html:29
+#: searx/templates/simple/stats.html:28
 msgid "Reliability"
 msgstr "Độ tin cậy"
 
-#: searx/templates/simple/stats.html:59
+#: searx/templates/simple/stats.html:58
 msgid "Total"
 msgstr "Tổng"
 
-#: searx/templates/simple/stats.html:60
+#: searx/templates/simple/stats.html:59
 msgid "HTTP"
 msgstr "HTTP"
 
-#: searx/templates/simple/stats.html:61
+#: searx/templates/simple/stats.html:60
 msgid "Processing"
 msgstr "Xử lý"
 
-#: searx/templates/simple/stats.html:99
+#: searx/templates/simple/stats.html:98
 msgid "Warnings"
 msgstr "Cảnh báo"
 
-#: searx/templates/simple/stats.html:99
+#: searx/templates/simple/stats.html:98
 msgid "Errors and exceptions"
 msgstr "Lỗi và ngoại lệ"
 
-#: searx/templates/simple/stats.html:105
+#: searx/templates/simple/stats.html:104
 msgid "Exception"
 msgstr "Ngoại lệ"
 
-#: searx/templates/simple/stats.html:107
+#: searx/templates/simple/stats.html:106
 msgid "Message"
 msgstr "Tin nhắn"
 
-#: searx/templates/simple/stats.html:109
+#: searx/templates/simple/stats.html:108
 msgid "Percentage"
 msgstr "Phần trăm"
 
-#: searx/templates/simple/stats.html:111
+#: searx/templates/simple/stats.html:110
 msgid "Parameter"
 msgstr "Tham số"
 
 #: searx/templates/simple/result_templates/code.html:29
 #: searx/templates/simple/result_templates/file.html:24
-#: searx/templates/simple/stats.html:119
+#: searx/templates/simple/stats.html:118
 msgid "Filename"
 msgstr "Tên tệp"
 
-#: searx/templates/simple/stats.html:120
+#: searx/templates/simple/stats.html:119
 msgid "Function"
 msgstr "Hàm"
 
-#: searx/templates/simple/stats.html:121
+#: searx/templates/simple/stats.html:120
 msgid "Code"
 msgstr "Mã nguồn"
 
@@ -2406,4 +2390,28 @@ msgstr "ẩn video"
 
 #~ msgid "Comment(s)"
 #~ msgstr "Bình luận"
+
+#~ msgid "Start submitting a new issue on GitHub"
+#~ msgstr "Bắt đầu đăng một vấn đề mới trên Github"
+
+#~ msgid "Please check for existing bugs about this engine on GitHub"
+#~ msgstr ""
+#~ "Vui lòng kiểm tra các lỗi đang "
+#~ "tồn tại của công cụ tìm kiếm "
+#~ "này trên Github"
+
+#~ msgid "I confirm there is no existing bug about the issue I encounter"
+#~ msgstr ""
+#~ "Tôi xác nhận rằng không có lỗi "
+#~ "nào đang tồn tại về vấn đề "
+#~ "mà tôi gặp phải"
+
+#~ msgid "If this is a public instance, please specify the URL in the bug report"
+#~ msgstr ""
+#~ "Nếu đây là một thực thể công "
+#~ "khai, vui lòng nêu rõ địa chỉ "
+#~ "trong bản báo cáo lỗi"
+
+#~ msgid "Submit a new issue on Github including the above information"
+#~ msgstr "Đăng một vấn đề mới trên Github cùng với các thông tin trên"
 

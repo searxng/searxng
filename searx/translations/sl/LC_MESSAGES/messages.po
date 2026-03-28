@@ -20,7 +20,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-02-22 13:48+0000\n"
+"POT-Creation-Date: 2026-03-24 18:43+0000\n"
 "PO-Revision-Date: 2025-10-22 02:09+0000\n"
 "Last-Translator: return42 <return42@noreply.codeberg.org>\n"
 "Language: sl\n"
@@ -74,7 +74,7 @@ msgid "videos"
 msgstr "videi"
 
 #. CATEGORY_NAMES['RADIO']
-#: searx/engines/radio_browser.py:142 searx/searxng.msg
+#: searx/engines/radio_browser.py:146 searx/searxng.msg
 msgid "radio"
 msgstr "radio"
 
@@ -548,7 +548,7 @@ msgstr "odgovorjeno"
 msgid "No item found"
 msgstr "Ni zadetkov"
 
-#: searx/engines/qwant.py:296
+#: searx/engines/qwant.py:291
 #: searx/templates/simple/result_templates/images.html:23 searx/webapp.py:329
 msgid "Source"
 msgstr "Vir"
@@ -644,6 +644,11 @@ msgstr "Generiraj različne naključne vrednosti"
 msgid "Compute {func} of the arguments"
 msgstr "Izračunaj {func} argumentov"
 
+#: searx/engines/boardreader.py:107
+#, python-brace-format
+msgid "Posted by {author}"
+msgstr ""
+
 #: searx/engines/openstreetmap.py:155
 msgid "Show route in map .."
 msgstr "Prikaži pot na zemljevidu .."
@@ -657,19 +662,19 @@ msgstr "{title} (neveljaven)"
 msgid "This entry has been superseded by"
 msgstr "Ta vnos je bil nadomeščen z"
 
-#: searx/engines/qwant.py:298
+#: searx/engines/qwant.py:293
 msgid "Channel"
 msgstr "Kanal"
 
-#: searx/engines/radio_browser.py:144
+#: searx/engines/radio_browser.py:148
 msgid "bitrate"
 msgstr "bitna hitrost"
 
-#: searx/engines/radio_browser.py:145
+#: searx/engines/radio_browser.py:149
 msgid "votes"
 msgstr "glasov"
 
-#: searx/engines/radio_browser.py:146
+#: searx/engines/radio_browser.py:150
 msgid "clicks"
 msgstr "klikov"
 
@@ -704,15 +709,15 @@ msgstr ""
 msgid "The image could not be downloaded."
 msgstr "Slike ni bilo mogoče prevesti."
 
-#: searx/engines/zlibrary.py:78
+#: searx/engines/zlibrary.py:79
 msgid "Language"
 msgstr "Jezik"
 
-#: searx/engines/zlibrary.py:79
+#: searx/engines/zlibrary.py:80
 msgid "Book rating"
 msgstr "Ocena knjige"
 
-#: searx/engines/zlibrary.py:80
+#: searx/engines/zlibrary.py:81
 msgid "File quality"
 msgstr "Kakovost datoteke"
 
@@ -891,7 +896,7 @@ msgstr "Izvorna koda"
 msgid "Issue tracker"
 msgstr "Sledilnik napak/problemov"
 
-#: searx/templates/simple/base.html:71 searx/templates/simple/stats.html:18
+#: searx/templates/simple/base.html:71 searx/templates/simple/stats.html:17
 msgid "Engine stats"
 msgstr "Statistike iskalnika"
 
@@ -931,26 +936,6 @@ msgstr "Avtor"
 msgid "cached"
 msgstr "predpomnjeno"
 
-#: searx/templates/simple/new_issue.html:60
-msgid "Start submitting a new issue on GitHub"
-msgstr "Začni oddajo novega hrošča na GitHub-u"
-
-#: searx/templates/simple/new_issue.html:62
-msgid "Please check for existing bugs about this engine on GitHub"
-msgstr "Prosim preveri že aktivne hrošče glede engine-a na GitHub-u"
-
-#: searx/templates/simple/new_issue.html:65
-msgid "I confirm there is no existing bug about the issue I encounter"
-msgstr "Potrjujem da o problemu, na katerega sem naletel, ni že obstoječega hrošča"
-
-#: searx/templates/simple/new_issue.html:67
-msgid "If this is a public instance, please specify the URL in the bug report"
-msgstr "Če je to javna instanca, prosim specificirajte URL v poročilu o napaki"
-
-#: searx/templates/simple/new_issue.html:68
-msgid "Submit a new issue on Github including the above information"
-msgstr "Predloži novo težavo na Githubu, vključno z zgornjimi informacijami"
-
 #: searx/templates/simple/preferences.html:65
 msgid "No HTTPS"
 msgstr "Brez HTTPS"
@@ -970,17 +955,17 @@ msgid "!bang for its categories"
 msgstr "!bang za njegove kategorije"
 
 #: searx/templates/simple/preferences.html:102
-#: searx/templates/simple/stats.html:64
+#: searx/templates/simple/stats.html:63
 msgid "Median"
 msgstr "Mediana"
 
 #: searx/templates/simple/preferences.html:103
-#: searx/templates/simple/stats.html:70
+#: searx/templates/simple/stats.html:69
 msgid "P80"
 msgstr "P80"
 
 #: searx/templates/simple/preferences.html:104
-#: searx/templates/simple/stats.html:76
+#: searx/templates/simple/stats.html:75
 msgid "P95"
 msgstr "P95"
 
@@ -1073,81 +1058,81 @@ msgstr "počisti"
 msgid "search"
 msgstr "Išči"
 
-#: searx/templates/simple/stats.html:21
+#: searx/templates/simple/stats.html:20
 msgid "There is currently no data available. "
 msgstr "Trenutno ni podatkov na voljo."
 
 #: searx/templates/simple/preferences/engines.html:24
-#: searx/templates/simple/stats.html:25
+#: searx/templates/simple/stats.html:24
 msgid "Engine name"
 msgstr "Ime iskalnika"
 
-#: searx/templates/simple/stats.html:26
+#: searx/templates/simple/stats.html:25
 msgid "Scores"
 msgstr "Točke"
 
-#: searx/templates/simple/stats.html:27
+#: searx/templates/simple/stats.html:26
 msgid "Result count"
 msgstr "Število rezultatov"
 
 #: searx/templates/simple/elements/engines_msg.html:7
 #: searx/templates/simple/preferences/engines.html:31
-#: searx/templates/simple/stats.html:28
+#: searx/templates/simple/stats.html:27
 msgid "Response time"
 msgstr "Odzivni čas"
 
 #: searx/templates/simple/preferences/engines.html:35
-#: searx/templates/simple/stats.html:29
+#: searx/templates/simple/stats.html:28
 msgid "Reliability"
 msgstr "Zanesljivost"
 
-#: searx/templates/simple/stats.html:59
+#: searx/templates/simple/stats.html:58
 msgid "Total"
 msgstr "Skupaj"
 
-#: searx/templates/simple/stats.html:60
+#: searx/templates/simple/stats.html:59
 msgid "HTTP"
 msgstr "HTTP"
 
-#: searx/templates/simple/stats.html:61
+#: searx/templates/simple/stats.html:60
 msgid "Processing"
 msgstr "obdelava"
 
-#: searx/templates/simple/stats.html:99
+#: searx/templates/simple/stats.html:98
 msgid "Warnings"
 msgstr "Opozorila"
 
-#: searx/templates/simple/stats.html:99
+#: searx/templates/simple/stats.html:98
 msgid "Errors and exceptions"
 msgstr "Napake in izjeme"
 
-#: searx/templates/simple/stats.html:105
+#: searx/templates/simple/stats.html:104
 msgid "Exception"
 msgstr "Izjeme"
 
-#: searx/templates/simple/stats.html:107
+#: searx/templates/simple/stats.html:106
 msgid "Message"
 msgstr "Sporočilo"
 
-#: searx/templates/simple/stats.html:109
+#: searx/templates/simple/stats.html:108
 msgid "Percentage"
 msgstr "Odstotek"
 
-#: searx/templates/simple/stats.html:111
+#: searx/templates/simple/stats.html:110
 msgid "Parameter"
 msgstr "Parameter"
 
 #: searx/templates/simple/result_templates/code.html:29
 #: searx/templates/simple/result_templates/file.html:24
-#: searx/templates/simple/stats.html:119
+#: searx/templates/simple/stats.html:118
 msgid "Filename"
 msgstr "Ime datoteke"
 
-#: searx/templates/simple/stats.html:120
+#: searx/templates/simple/stats.html:119
 msgid "Function"
 msgstr "Funkcija"
 
-#: searx/templates/simple/stats.html:121
+#: searx/templates/simple/stats.html:120
 msgid "Code"
 msgstr "Koda"
 
@@ -2383,4 +2368,21 @@ msgstr "skrij video"
 
 #~ msgid "Comment(s)"
 #~ msgstr "Komentar(ji)"
+
+#~ msgid "Start submitting a new issue on GitHub"
+#~ msgstr "Začni oddajo novega hrošča na GitHub-u"
+
+#~ msgid "Please check for existing bugs about this engine on GitHub"
+#~ msgstr "Prosim preveri že aktivne hrošče glede engine-a na GitHub-u"
+
+#~ msgid "I confirm there is no existing bug about the issue I encounter"
+#~ msgstr ""
+#~ "Potrjujem da o problemu, na katerega "
+#~ "sem naletel, ni že obstoječega hrošča"
+
+#~ msgid "If this is a public instance, please specify the URL in the bug report"
+#~ msgstr "Če je to javna instanca, prosim specificirajte URL v poročilu o napaki"
+
+#~ msgid "Submit a new issue on Github including the above information"
+#~ msgstr "Predloži novo težavo na Githubu, vključno z zgornjimi informacijami"
 
