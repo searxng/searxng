@@ -380,12 +380,14 @@ def request(query: str, params: "OnlineParams") -> None:
     # reuse the vqd value, the UA header must be static.
     headers["User-Agent"] = gen_useragent()
     headers["Referer"] = "https://html.duckduckgo.com/html/"
-    headers["Accept"] = choice([
-        "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
-        "text/html,application/xhtml+xml,*/*;q=0.8",
-        "text/html,*/*;q=0.8",
-        "*/*"
-        ])
+    headers["Accept"] = choice(
+        [
+            "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+            "text/html,application/xhtml+xml,*/*;q=0.8",
+            "text/html,*/*;q=0.8",
+            "*/*",
+        ]
+    )
 
     ui_lang = params["searxng_locale"]
     langs = []
