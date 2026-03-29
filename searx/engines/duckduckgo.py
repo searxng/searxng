@@ -170,10 +170,10 @@ import json
 import re
 import typing as t
 
+from random import choice
+
 import babel
 import lxml.html
-
-from random import choice
 
 from searx import locales
 from searx.enginelib import EngineCache
