@@ -127,7 +127,7 @@ def request(query, params):
         return False
 
     args = {'query': query}
-    params['url'] = f"{base_url.rstrip('/')}/api/search?{urlencode(args)}"
+    params['url'] = f"{base_url.rstrip('/')}/api/search/?{urlencode(args)}"
     params['headers']['Authorization'] = f'Token {ta_token}'
 
     return params
