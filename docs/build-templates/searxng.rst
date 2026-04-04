@@ -119,8 +119,12 @@ ${fedora_build}
        pip install -U pip
        pip install -U setuptools
        pip install -U wheel
+
+       # additional packages required for installation
        pip install -U pyyaml
        pip install -U msgspec
+       pip install -U typing-extensions
+       pip install -U pybind11
 
        # jump to SearXNG's working tree and install SearXNG into virtualenv
        (${SERVICE_USER})$ cd \"$SEARXNG_SRC\"

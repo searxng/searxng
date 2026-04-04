@@ -556,6 +556,8 @@ pip install -U setuptools
 pip install -U wheel
 pip install -U pyyaml
 pip install -U msgspec
+pip install -U typing-extensions
+pip install -U pybind11
 pip install -U --use-pep517 --no-build-isolation -e .
 EOF
     rst_para "update instance's settings.yml from ${SEARXNG_SETTINGS_PATH}"
