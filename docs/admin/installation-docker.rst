@@ -92,11 +92,18 @@ Setup
    $ cd ./searxng/
 
    # Fetch the latest compose template
-   $ curl -fsSLO \
-       https://raw.githubusercontent.com/searxng/searxng/master/container/docker-compose.yml \
-       https://raw.githubusercontent.com/searxng/searxng/master/container/.env.example
+   $ curl -fsSL \
+       -O https://raw.githubusercontent.com/searxng/searxng/master/container/docker-compose.yml \
+       -O https://raw.githubusercontent.com/searxng/searxng/master/container/.env.example
 
-2. Rename the ``.env.example`` file to ``.env`` and edit the values as needed.
+2. Copy the ``.env.example`` file and edit the values as needed:
+
+.. code:: sh
+
+   $ cp -i .env.example .env
+
+   # nano or your preferred text editor...
+   $ nano .env
 
 3. Start & stop the services:
 
@@ -312,8 +319,12 @@ the old mount to the new one:
 
    $ mv ./searxng-docker/searxng/* ./searxng/core-config/
 
-If you have any custom environment variables in the old ``.env`` file, make
-sure to add them manually to the new one.
+If using Valkey features like bot protection (limiter), you will need to update
+the URL hostname in :origin:`searx/settings.yml` file to ``valkey`` or
+``searxng-valkey``.
+
+If you have any environment variables in the old ``.env`` file, make
+sure to add them to the new one.
 
 Consider setting up a reverse proxy if exposing the instance to the public.
 
