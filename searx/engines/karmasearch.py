@@ -64,6 +64,9 @@ def request(query: str, params: "OnlineParams") -> None:
     if params["time_range"]:
         args["freshness"] = time_range_map[params["time_range"]]
 
+    # Needed to circumvent Cloudflare bot protection
+    params['headers']['Referer'] = "https://karmasearch.org"
+
     params["url"] = f"{base_url}/search/{search_type}?{urlencode(args)}"
 
 
