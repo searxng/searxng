@@ -6,10 +6,8 @@ import re
 from urllib.parse import urlencode
 from lxml import html
 
-import cloudscraper
-
 from searx.result_types import EngineResults
-from searx.utils import eval_xpath_list
+from searx.utils import eval_xpath_list, gen_useragent
 from searx.enginelib import EngineCache
 from searx.exceptions import SearxEngineAPIException
 from searx.network import get
@@ -40,6 +38,8 @@ SECRET_KEY_DB_KEY = "secret-key"
 CACHE: EngineCache
 """Cache to store the secret API key for the engine."""
 
+enable_http2 = False
+
 
 def init(engine_settings):
     global CACHE  # pylint: disable=global-statement
@@ -47,8 +47,15 @@ def init(engine_settings):
 
 
 def _get_secret_key():
-    scraper = cloudscraper.create_scraper()
-    resp = scraper.get(base_url)
+    resp = get(
+        base_url,
+        headers={
+            # circumvents Cloudflare bot protections
+            "User-Agent": gen_useragent(),
+            "Referer": base_url,
+        },
+    )
+
     if resp.status_code != 200:
         raise SearxEngineAPIException("failed to obtain secret key")
 
