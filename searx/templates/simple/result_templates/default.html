@@ -1,4 +1,4 @@
-{% from 'simple/macros.html' import result_header, result_sub_header, result_sub_footer, result_footer with context %}
+{% from 'simple/macros.html' import iframe, result_header, result_sub_header, result_sub_footer, result_footer with context %}
 
 {{ result_header(result, favicons, image_proxify) -}}
 {{- result_sub_header(result) -}}
@@ -17,7 +17,7 @@
 {{- result_sub_footer(result) -}}
 {% if result.iframe_src -%}
 <div id="result-media-{{ index }}" class="embedded-content invisible">
-  <iframe data-src="{{result.iframe_src}}" frameborder="0" allowfullscreen></iframe>
+  {{ iframe(result.iframe_src) }}
 </div>
 {%- endif %}
 {% if result.audio_src -%}
