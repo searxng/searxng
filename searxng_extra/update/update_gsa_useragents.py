@@ -26,7 +26,12 @@ def fetch_gsa_useragents() -> list[str]:
 
     suas: set[str] = set()
     for ua in loads(decompress(response.content)):
-        if "Android" in ua["userAgent"] and "Chrome" in ua["userAgent"] and "Samsung" not in ua["userAgent"]:
+        if (
+            "Android" in ua["userAgent"]
+            and "Chrome" in ua["userAgent"]
+            and "Samsung" not in ua["userAgent"]
+            and "Android 10; K" not in ua["userAgent"]
+        ):
             suas.add(ua["userAgent"])
 
     luas = list(suas)
