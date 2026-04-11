@@ -25,6 +25,11 @@ about = {
 
 base_url = 'https://www.pexels.com'
 categories = ['images']
+
+api_key = "H2jk9uKnhRmL6WPwh89zBezWvr"
+"""
+Fallback API key to use when SearXNG fails to automatically extract one from the website.
+"""
 results_per_page = 20
 
 paging = True
@@ -87,10 +92,14 @@ def request(query, params):
     # cache api key for future requests
     secret_key = CACHE.get(SECRET_KEY_DB_KEY)
     if not secret_key:
-        secret_key = _get_secret_key()
-        CACHE.set(SECRET_KEY_DB_KEY, secret_key)
+        try:
+            secret_key = _get_secret_key()
+            CACHE.set(SECRET_KEY_DB_KEY, secret_key)
+        except SearxEngineAPIException as e:
+            logger.debug("failed to extract API key %s" % e)
+            secret_key = api_key
 
-    params["headers"]["secret-key"] = CACHE.get(SECRET_KEY_DB_KEY)
+    params["headers"]["secret-key"] = secret_key
 
     return params
 
