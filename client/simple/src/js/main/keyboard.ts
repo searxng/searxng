@@ -19,56 +19,56 @@ const baseKeyBinding: Record<string, KeyBinding> = {
   Escape: {
     key: "ESC",
     fun: (event: KeyboardEvent) => removeFocus(event),
-    des: "remove focus from the focused input",
-    cat: "Control"
+    des: settings.translations?.hotkey_remove_focus || "remove focus from the focused input",
+    cat: settings.translations?.hotkey_control || "Control"
   },
   c: {
     key: "c",
     fun: () => copyURLToClipboard(),
-    des: "copy url of the selected result to the clipboard",
-    cat: "Results"
+    des: settings.translations?.hotkey_copy_url || "copy url of the selected result to the clipboard",
+    cat: settings.translations?.hotkey_results || "Results"
   },
   h: {
     key: "h",
     fun: () => toggleHelp(keyBindings),
-    des: "toggle help window",
-    cat: "Other"
+    des: settings.translations?.hotkey_toggle_help || "toggle help window",
+    cat: settings.translations?.hotkey_other || "Other"
   },
   i: {
     key: "i",
     fun: () => searchInputFocus(),
-    des: "focus on the search input",
-    cat: "Control"
+    des: settings.translations?.hotkey_focus_search || "focus on the search input",
+    cat: settings.translations?.hotkey_control || "Control"
   },
   n: {
     key: "n",
     fun: () => GoToNextPage(),
-    des: "go to next page",
-    cat: "Results"
+    des: settings.translations?.hotkey_next_page || "go to next page",
+    cat: settings.translations?.hotkey_results || "Results"
   },
   o: {
     key: "o",
     fun: () => openResult(false),
-    des: "open search result",
-    cat: "Results"
+    des: settings.translations?.hotkey_open_result || "open search result",
+    cat: settings.translations?.hotkey_results || "Results"
   },
   p: {
     key: "p",
     fun: () => GoToPreviousPage(),
-    des: "go to previous page",
-    cat: "Results"
+    des: settings.translations?.hotkey_previous_page || "go to previous page",
+    cat: settings.translations?.hotkey_results || "Results"
   },
   r: {
     key: "r",
     fun: () => reloadPage(),
-    des: "reload page from the server",
-    cat: "Control"
+    des: settings.translations?.hotkey_reload || "reload page from the server",
+    cat: settings.translations?.hotkey_control || "Control"
   },
   t: {
     key: "t",
     fun: () => openResult(true),
-    des: "open the result in a new tab",
-    cat: "Results"
+    des: settings.translations?.hotkey_open_result_new_tab || "open the result in a new tab",
+    cat: settings.translations?.hotkey_results || "Results"
   }
 };
 
@@ -78,14 +78,14 @@ const keyBindingLayouts: Record<KeyBindingLayout, Record<string, KeyBinding>> = 
     ArrowLeft: {
       key: "←",
       fun: () => highlightResult("up")(),
-      des: "select previous search result",
-      cat: "Results"
+      des: settings.translations?.hotkey_select_previous || "select previous search result",
+      cat: settings.translations?.hotkey_results || "Results"
     },
     ArrowRight: {
       key: "→",
       fun: () => highlightResult("down")(),
-      des: "select next search result",
-      cat: "Results"
+      des: settings.translations?.hotkey_select_next || "select next search result",
+      cat: settings.translations?.hotkey_results || "Results"
     },
     ...baseKeyBinding
   },
@@ -95,56 +95,56 @@ const keyBindingLayouts: Record<KeyBindingLayout, Record<string, KeyBinding>> = 
     b: {
       key: "b",
       fun: () => scrollPage(-window.innerHeight),
-      des: "scroll one page up",
-      cat: "Navigation"
+      des: settings.translations?.hotkey_scroll_page_up || "scroll one page up",
+      cat: settings.translations?.hotkey_navigation || "Navigation"
     },
     d: {
       key: "d",
       fun: () => scrollPage(window.innerHeight / 2),
-      des: "scroll half a page down",
-      cat: "Navigation"
+      des: settings.translations?.hotkey_scroll_half_page_down || "scroll half a page down",
+      cat: settings.translations?.hotkey_navigation || "Navigation"
     },
     f: {
       key: "f",
       fun: () => scrollPage(window.innerHeight),
-      des: "scroll one page down",
-      cat: "Navigation"
+      des: settings.translations?.hotkey_scroll_page_down || "scroll one page down",
+      cat: settings.translations?.hotkey_navigation || "Navigation"
     },
     g: {
       key: "g",
       fun: () => scrollPageTo(-document.body.scrollHeight, "top"),
-      des: "scroll to the top of the page",
-      cat: "Navigation"
+      des: settings.translations?.hotkey_scroll_to_top || "scroll to the top of the page",
+      cat: settings.translations?.hotkey_navigation || "Navigation"
     },
     j: {
       key: "j",
       fun: () => highlightResult("down")(),
-      des: "select next search result",
-      cat: "Results"
+      des: settings.translations?.hotkey_select_next || "select next search result",
+      cat: settings.translations?.hotkey_results || "Results"
     },
     k: {
       key: "k",
       fun: () => highlightResult("up")(),
-      des: "select previous search result",
-      cat: "Results"
+      des: settings.translations?.hotkey_select_previous || "select previous search result",
+      cat: settings.translations?.hotkey_results || "Results"
     },
     u: {
       key: "u",
       fun: () => scrollPage(-window.innerHeight / 2),
-      des: "scroll half a page up",
-      cat: "Navigation"
+      des: settings.translations?.hotkey_scroll_half_page_up || "scroll half a page up",
+      cat: settings.translations?.hotkey_navigation || "Navigation"
     },
     v: {
       key: "v",
       fun: () => scrollPageTo(document.body.scrollHeight, "bottom"),
-      des: "scroll to the bottom of the page",
-      cat: "Navigation"
+      des: settings.translations?.hotkey_scroll_to_bottom || "scroll to the bottom of the page",
+      cat: settings.translations?.hotkey_navigation || "Navigation"
     },
     y: {
       key: "y",
       fun: () => copyURLToClipboard(),
-      des: "copy url of the selected result to the clipboard",
-      cat: "Results"
+      des: settings.translations?.hotkey_copy_url || "copy url of the selected result to the clipboard",
+      cat: settings.translations?.hotkey_results || "Results"
     },
     ...baseKeyBinding
   }

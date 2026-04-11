@@ -329,6 +329,30 @@ def get_translations():
         'Source': gettext('Source'),
         # infinite scroll
         'error_loading_next_page': gettext('Error loading the next page'),
+        # keyboard shortcuts (hotkeys)
+        'hotkey_remove_focus': gettext('remove focus from the focused input'),
+        'hotkey_copy_url': gettext('copy url of the selected result to the clipboard'),
+        'hotkey_toggle_help': gettext('toggle help window'),
+        'hotkey_focus_search': gettext('focus on the search input'),
+        'hotkey_next_page': gettext('go to next page'),
+        'hotkey_open_result': gettext('open search result'),
+        'hotkey_previous_page': gettext('go to previous page'),
+        'hotkey_reload': gettext('reload page from the server'),
+        'hotkey_open_result_new_tab': gettext('open the result in a new tab'),
+        'hotkey_select_previous': gettext('select previous search result'),
+        'hotkey_select_next': gettext('select next search result'),
+        'hotkey_scroll_page_up': gettext('scroll one page up'),
+        'hotkey_scroll_half_page_down': gettext('scroll half a page down'),
+        'hotkey_scroll_page_down': gettext('scroll one page down'),
+        'hotkey_scroll_to_top': gettext('scroll to the top of the page'),
+        'hotkey_scroll_to_bottom': gettext('scroll to the bottom of the page'),
+        'hotkey_scroll_half_page_up': gettext('scroll half a page up'),
+        'hotkey_go_to_next_page': gettext('go to next page'),
+        'hotkey_go_to_previous_page': gettext('go to previous page'),
+        'hotkey_results': gettext('Results'),
+        'hotkey_control': gettext('Control'),
+        'hotkey_navigation': gettext('Navigation'),
+        'hotkey_other': gettext('Other'),
     }
 
 
