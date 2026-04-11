@@ -5,11 +5,11 @@ A command-line interface for searching with SearXNG, a privacy-respecting meta s
 ## Installation
 
 ```bash
-npm install -g searxng-cli
+npm install -g sxng-cli
 # or
-pnpm add -g searxng-cli
+pnpm add -g sxng-cli
 # or
-yarn global add searxng-cli
+yarn global add sxng-cli
 ```
 
 ## Quick Start
@@ -27,7 +27,7 @@ cp searxng.config.example.json searxng.config.json
 
 3. Run a search:
 ```bash
-searxng "your search query"
+sxng "your search query"
 ```
 
 ## Configuration
@@ -43,31 +43,31 @@ See `searxng.config.example.json` for an example configuration.
 
 ```bash
 # Simple search
-searxng "TypeScript tutorial"
+sxng "TypeScript tutorial"
 
 # Limit results
-searxng "TypeScript tutorial" --limit 5
+sxng "TypeScript tutorial" --limit 5
 
 # Use specific engines
-searxng --engines google,github "react hooks"
+sxng --engines google,github "react hooks"
 
 # Search in specific categories
-searxng --categories it,science "machine learning"
+sxng --categories it,science "machine learning"
 
 # Recent results only
-searxng --time week "latest news"
+sxng --time week "latest news"
 
 # Output as CSV
-searxng "docker tutorial" --format csv > results.csv
+sxng "docker tutorial" --format csv > results.csv
 
 # Check server health
-searxng --health
+sxng --health
 
 # List available engines
-searxng --engines-list
+sxng --engines-list
 
 # List available categories
-searxng --categories-list
+sxng --categories-list
 ```
 
 ## Environment Variables

@@ -9,10 +9,10 @@ import { config, VALID_CATEGORIES, COMMON_ENGINES } from './config.js';
 const HELP_TEXT = `SearXNG CLI - Web Search Tool
 
 Usage:
-  searxng <query> [options]
-  searxng --engines <engine1,engine2> <query>
-  searxng --categories <category> <query>
-  searxng --health
+  sxng <query> [options]
+  sxng --engines <engine1,engine2> <query>
+  sxng --categories <category> <query>
+  sxng --health
 
 Options:
   -e, --engines <engines>      Comma-separated list of search engines
@@ -28,10 +28,10 @@ Options:
   -h, --help                   Show this help message
 
 Examples:
-  searxng "TypeScript tutorial"
-  searxng --engines google,github "react hooks"
-  searxng --categories it,science "machine learning"
-  searxng --limit 5 --time week "latest news"
+  sxng "TypeScript tutorial"
+  sxng --engines google,github "react hooks"
+  sxng --categories it,science "machine learning"
+  sxng --limit 5 --time week "latest news"
 
 Environment Variables:
   SEARXNG_BASE_URL             SearXNG server URL
@@ -247,7 +247,7 @@ export async function runCli(args: string[], service: SearXNGService): Promise<n
         const envelope = createErrorEnvelope(
             'MISSING_QUERY',
             'No search query provided',
-            { hint: 'Use: searxng "your search query"' }
+            { hint: 'Use: sxng "your search query"' }
         );
         console.log(JSON.stringify(envelope, null, 2));
         return 1;

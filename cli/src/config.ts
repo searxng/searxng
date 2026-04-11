@@ -3,7 +3,7 @@
  *
  * Configuration priority (highest to lowest):
  * 1. Environment variables
- * 2. Config file (./searxng.config.json)
+ * 2. Config file (./sxng.config.json)
  * 3. Default values (localhost only)
  */
 
@@ -50,7 +50,7 @@ function readBoolEnv(name: string, defaultValue: boolean): boolean {
 }
 
 function findConfigFile(): string | null {
-    const localConfig = './searxng.config.json';
+    const localConfig = './sxng.config.json';
     if (existsSync(localConfig)) {
         return localConfig;
     }
