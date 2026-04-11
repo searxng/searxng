@@ -81,7 +81,7 @@ def _story(item):
         'title': item['title'],
         'thumbnail': item.get('teaserImage', {}).get('imageVariants', {}).get('16x9-256'),
         'publishedDate': datetime.strptime(item['date'][:19], '%Y-%m-%dT%H:%M:%S'),
-        'content': item['firstSentence'],
+        'content': item.get('firstSentence'),
         'url': item['shareURL'] if use_source_url else item['detailsweb'],
     }
 
