@@ -1,0 +1,55 @@
+general:
+  debug: false
+  instance_name: "SearXNG-Go"
+
+search:
+  safe_search: 0
+  default_lang: "en"
+  max_page: 50
+
+server:
+  port: 8888
+  bind_address: "127.0.0.1"
+  secret_key: "change-me-in-production"
+  base_url: "http://localhost:8888"
+
+outgoing:
+  request_timeout: 3.0
+  max_request_timeout: 10.0
+  pool_connections: 100
+  pool_maxsize: 20
+
+engines:
+  - name: google
+    engine: google
+    shortcut: go
+    categories: [general, web]
+    timeout: 3.0
+    weight: 1.2
+
+  - name: bing
+    engine: bing
+    shortcut: bi
+    categories: [general, web]
+    timeout: 3.0
+
+  - name: duckduckgo
+    engine: duckduckgo
+    shortcut: ddg
+    categories: [general, web]
+    timeout: 3.0
+
+  - name: brave
+    engine: brave
+    shortcut: br
+    categories: [general, web]
+    timeout: 3.0
+    paging: true
+    time_range_support: true
+
+  - name: wikipedia
+    engine: wikipedia
+    shortcut: wp
+    categories: [general]
+    timeout: 3.0
+    weight: 0.8
