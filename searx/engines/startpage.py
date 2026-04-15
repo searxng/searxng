@@ -345,7 +345,10 @@ def _get_news_result(result):
 
     publishedDate = None
     if result.get("date"):
-        publishedDate = datetime.fromtimestamp(result["date"] / 1000)
+        try:
+            publishedDate = datetime.fromtimestamp(float(result["date"]) / 1000)
+        except (ValueError, TypeError):
+            pass
 
     thumbnailUrl = None
     if result.get("thumbnailUrl"):
