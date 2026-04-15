@@ -88,6 +88,7 @@ def request(query: str, params: "OnlineParams") -> None:
 
     params["cookies"]["sB"] = f"vm={safesearch_map[params['safesearch']]}"
     params["url"] = f"{base_url}/aol/{search_type}?{urlencode(args)}"
+    params["allow_redirects"] = True
     logger.debug(params)
 
 
