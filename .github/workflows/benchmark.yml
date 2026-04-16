@@ -1,0 +1,39 @@
+name: Performance Benchmark
+
+on:
+  push:
+    branches: [master, improvements/fork-doctor]
+  pull_request:
+    branches: [master]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  benchmark:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: |
+          pip install --upgrade pip
+          pip install pytest-benchmark pytest
+
+      - name: Run benchmarks
+        run: |
+          python -m pytest tests/ --benchmark-only --benchmark-autosave --benchmark-json=benchmark-results.json || true
+
+      - name: Store benchmark result
+        uses: benchmark-action/github-action-benchmark@v1
+        with:
+          tool: "pytest"
+          output-file-path: benchmark-results.json
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          auto-push: false
