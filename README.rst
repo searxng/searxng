@@ -1,5 +1,24 @@
 .. SPDX-License-Identifier: AGPL-3.0-or-later
 
+.. Badges
+
+.. image:: https://img.shields.io/github/actions/workflow/status/searxng/searxng/ci.yml?branch=master&label=CI
+   :target: https://github.com/searxng/searxng/actions
+   :alt: CI Status
+
+.. image:: https://demo.searxng.org/?badge
+   :target: https://demo.searxng.org/
+   :alt: Demo
+
+.. image:: https://img.shields.io/github/license/searxng/searxng?label=License
+   :target: https://github.com/searxng/searxng/blob/master/LICENSE
+   :alt=License
+
+.. image:: https://img.shields.io/matrix/searxng:matrix.org?label=Chat
+   :target: https://matrix.to/#/#searxng:matrix.org
+   :alt: Chat
+
+
 .. _metasearch engine: https://en.wikipedia.org/wiki/Metasearch_engine
 .. _Installation guide: https://docs.searxng.org/admin/installation.html
 .. _Configuration guide: https://docs.searxng.org/admin/settings/index.html
