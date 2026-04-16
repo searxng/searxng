@@ -10,6 +10,7 @@ services:
     restart: always
     ports:
       - ${SEARXNG_HOST:+${SEARXNG_HOST}:}${SEARXNG_PORT:-8080}:${SEARXNG_PORT:-8080}
+      - ${SEARXNG_MCP_PORT:-8765}:${SEARXNG_MCP_PORT:-8765}
     env_file: ./.env
     volumes:
       - ./core-config/:/etc/searxng/:Z
