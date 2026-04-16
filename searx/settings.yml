@@ -89,6 +89,9 @@ server:
   # Is overwritten by ${SEARXNG_PORT} and ${SEARXNG_BIND_ADDRESS}
   port: 8888
   bind_address: "127.0.0.1"
+  # MCP service port (enabled via plugins.mcp.MCPPlugin)
+  # Is overwritten by ${SEARXNG_MCP_PORT}
+  mcp_port: 8765
   # public URL of the instance, to ensure correct inbound links. Is overwritten
   # by ${SEARXNG_BASE_URL}.
   base_url: false  # "http://example.com/location"
@@ -256,6 +259,9 @@ plugins:
     active: false
 
   searx.plugins.tracker_url_remover.SXNGPlugin:
+    active: true
+
+  searx.plugins.mcp.MCPPlugin:
     active: true
 
 
