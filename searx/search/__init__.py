@@ -12,7 +12,7 @@ from uuid import uuid4
 from flask import copy_current_request_context
 
 from searx import logger
-from searx import settings
+from searx import get_setting
 import searx.answerers
 import searx.plugins
 from searx.engines import load_engines
@@ -31,13 +31,13 @@ logger = logger.getChild('search')
 
 
 def initialize(
-    settings_engines: list[dict[str, t.Any]] = None,  # pyright: ignore[reportArgumentType]
     check_network: bool = False,
     enable_metrics: bool = True,
 ):
-    settings_engines = settings_engines or settings['engines']
+
+    settings_engines: list[dict[str, t.Any]] = get_setting("engines")
     load_engines(settings_engines)
-    initialize_network(settings_engines, settings['outgoing'])
+    initialize_network(settings_engines)
     if check_network:
         check_network_configuration()
     initialize_metrics([engine['name'] for engine in settings_engines], enable_metrics)
@@ -108,20 +108,20 @@ class Search:
             default_timeout = max(default_timeout, processor.engine.timeout)
 
         # adjust timeout
-        max_request_timeout = settings['outgoing']['max_request_timeout']
+        max_request_timeout = get_setting("outgoing.max_request_timeout")
         actual_timeout = default_timeout
         query_timeout = self.search_query.timeout_limit
 
-        if max_request_timeout is None and query_timeout is None:
+        if not max_request_timeout and query_timeout is None:
             # No max, no user query: default_timeout
             pass
-        elif max_request_timeout is None and query_timeout is not None:
+        elif not max_request_timeout and query_timeout is not None:
             # No max, but user query: From user query except if above default
             actual_timeout = min(default_timeout, query_timeout)
-        elif max_request_timeout is not None and query_timeout is None:
+        elif not max_request_timeout and query_timeout is None:
             # Max, no user query: Default except if above max
             actual_timeout = min(default_timeout, max_request_timeout)
-        elif max_request_timeout is not None and query_timeout is not None:
+        elif max_request_timeout and query_timeout is not None:
             # Max & user query: From user query except if above max
             actual_timeout = min(query_timeout, max_request_timeout)
 

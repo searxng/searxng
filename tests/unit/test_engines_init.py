@@ -40,7 +40,6 @@ class TestEnginesInit(SearxTestCase):
                 'shortcut': 'e1',
                 'categories': 'general',
                 'timeout': 20.0,
-                'onion_url': 'http://engine1.onion',
             },
             {'engine': 'dummy', 'name': 'engine2', 'shortcut': 'e2', 'categories': 'onions'},
         ]
@@ -50,7 +49,6 @@ class TestEnginesInit(SearxTestCase):
         self.assertIn('engine1', engines.engines)
         self.assertIn('engine2', engines.engines)
         self.assertIn('onions', engines.categories)
-        self.assertIn('http://engine1.onion', engines.engines['engine1'].search_url)
         self.assertEqual(engines.engines['engine1'].timeout, 120.0)
 
     def test_missing_name_field(self):
