@@ -136,6 +136,10 @@ engine is shown.  Most of the options have a default value or even are optional.
   Remove the engine from the settings (*disabled & removed*).  This defaults to ``true`` for engines
   that require an API key, please see the ``api_key`` section if you want to enable such an engine.
 
+  Example use cases include optional API-backed engines such as
+  ``google_api`` and its related ``google_images_api``, ``google_news_api``
+  and ``google_videos_api`` variants.
+
 ``language`` : optional
   If you want to use another language for a specific engine, you can define it
   by using the ISO code of language (and region), like ``fr``, ``en-US``,
