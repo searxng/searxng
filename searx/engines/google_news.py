@@ -24,18 +24,21 @@ The google news API ignores some parameters from the common :ref:`google API`:
 .. _save: https://developers.google.com/custom-search/docs/xml_results#safesp
 """
 
-from urllib.parse import urlencode
+import re
+import json
 import base64
+from urllib.parse import urlencode
 from lxml import html
 import babel
 
-from searx import locales
+from searx import locales, get_setting
 from searx.utils import (
     eval_xpath,
     eval_xpath_list,
     eval_xpath_getindex,
     extract_text,
 )
+from searx.webutils import new_hmac
 
 from searx.engines.google import fetch_traits as _fetch_traits  # pylint: disable=unused-import
 from searx.engines.google import (
@@ -118,6 +121,10 @@ def request(query, params):
     params['url'] = query_url
     params['cookies'] = google_info['cookies']
     params['headers'].update(google_info['headers'])
+    # Use a fixed modern browser UA to ensure consistent HTML structure and avoid blocking
+    params['headers']['User-Agent'] = (
+        'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
+    )
     return params
 
 
@@ -129,37 +136,64 @@ def response(resp):
     # convert the text to dom
     dom = html.fromstring(resp.text)
 
-    for result in eval_xpath_list(dom, '//div[@class="xrnccd"]'):
+    for result in eval_xpath_list(dom, '//div[contains(@class, "IFHyqb")]'):
 
-        # The first <a> tag in the <article> contains the link to the article
-        # The href attribute of the <a> tag is a google internal link, we have
-        # to decode
+        # The link to the article is in a tag with class "JtKRv"
+        # However, the real URL is often encoded in the "jslog" attribute of a sibling tag with class "WwrzSb"
+        href = eval_xpath_getindex(result, './/a[contains(@class, "JtKRv")]/@href', 0, default=None)
+        if not href:
+            continue
 
-        href = eval_xpath_getindex(result, './article/a/@href', 0)
-        href = href.split('?')[0]
-        href = href.split('/')[-1]
-        href = base64.urlsafe_b64decode(href + '====')
-        href = href[href.index(b'http') :].split(b'\xd2')[0]
-        href = href.decode()
+        url = href
+        if href.startswith('./'):
+            url = 'https://news.google.com' + href[1:]
 
-        title = extract_text(eval_xpath(result, './article/h3[1]'))
+        # Try to extract the real URL from jslog
+        jslog = eval_xpath_getindex(result, './/a[contains(@class, "WwrzSb")]/@jslog', 0, default=None)
+        if jslog:
+            try:
+                # jslog format is usually: "95014; 5:<base64>; track:click,vis"
+                # We want the second part (index 1) after splitting by ";"
+                parts = jslog.split(';')
+                if len(parts) > 1:
+                    b64_data = parts[1].split(':')[-1].strip()
+                    # Pad base64 if necessary
+                    b64_data += '=' * (-len(b64_data) % 4)
+                    decoded_data = json.loads(base64.b64decode(b64_data).decode('utf-8'))
+                    # The URL is typically the last element in the decoded array
+                    if isinstance(decoded_data, list) and len(decoded_data) > 0 and isinstance(decoded_data[-1], str):
+                        if decoded_data[-1].startswith('http'):
+                            url = decoded_data[-1]
+            except Exception:  # pylint: disable=broad-except
+                pass
+
+        title = extract_text(eval_xpath(result, './/a[contains(@class, "JtKRv")]'))
 
         # The pub_date is mostly a string like 'yesterday', not a real
         # timezone date or time.  Therefore we can't use publishedDate.
-        pub_date = extract_text(eval_xpath(result, './article//time'))
-        pub_origin = extract_text(eval_xpath(result, './article//a[@data-n-tid]'))
+        pub_date = extract_text(eval_xpath(result, './/time'))
+        pub_origin = extract_text(eval_xpath(result, './/div[contains(@class, "vr1PYe")]'))
 
         content = ' / '.join([x for x in [pub_origin, pub_date] if x])
 
-        # The image URL is located in a preceding sibling <img> tag, e.g.:
-        # "https://lh3.googleusercontent.com/DjhQh7DMszk.....z=-p-h100-w100"
-        # These URL are long but not personalized (double checked via tor).
+        # The image URL is often in an <img> tag with class "Quavad"
+        thumbnail = eval_xpath_getindex(result, './/img[contains(@class, "Quavad")]/@src', 0, default=None)
+        if not thumbnail:
+            # Fallback to any image that isn't a favicon
+            thumbnail = eval_xpath_getindex(result, './/img[not(contains(@src, "favicon"))]/@src', 0, default=None)
 
-        thumbnail = extract_text(result.xpath('preceding-sibling::a/figure/img/@src'))
+        if thumbnail and thumbnail.startswith('/'):
+            thumbnail = 'https://news.google.com' + thumbnail
+
+        # Force proxy for Google News thumbnails to avoid Referer/CORP blocks
+        # This is agnostic and uses the standard Google-provided thumbnails
+        if thumbnail and 'news.google.com/api/attachments' in thumbnail:
+            h = new_hmac(get_setting('server.secret_key'), thumbnail.encode())
+            thumbnail = '/image_proxy?' + urlencode(dict(url=thumbnail.encode(), h=h))
 
         results.append(
             {
-                'url': href,
+                'url': url,
                 'title': title,
                 'content': content,
                 'thumbnail': thumbnail,
@@ -229,6 +263,7 @@ ceid_list = [
     'NO:no',
     'NZ:en',
     'PE:es-419',
+    'PE:es',
     'PH:en',
     'PK:en',
     'PL:pl',
