@@ -355,7 +355,6 @@ engines:
     shortcut: ads
     # read https://docs.searxng.org/dev/engines/online/astrophysics_data_system.html
     api_key: ""
-    inactive: true
 
   - name: alpine linux packages
     engine: alpinelinux
@@ -481,7 +480,6 @@ engines:
     # azure_tenant_id: "your_tenant_id"
     # azure_client_id: "your_client_id"
     # azure_client_secret: "your_client_secret"
-    inactive: true
 
   # tmp suspended:  dh key too small
   # - name: base
@@ -618,7 +616,6 @@ engines:
     chinaso_category: news
     chinaso_news_source: all
     disabled: true
-    inactive: true
 
   - name: chinaso images
     engine: chinaso
@@ -627,7 +624,6 @@ engines:
     categories: [images]
     chinaso_category: images
     disabled: true
-    inactive: true
 
   - name: chinaso videos
     engine: chinaso
@@ -636,7 +632,6 @@ engines:
     categories: [videos]
     chinaso_category: videos
     disabled: true
-    inactive: true
 
   - name: cloudflareai
     engine: cloudflareai
@@ -653,14 +648,12 @@ engines:
     # cf_ai_model_assistant: 'prompts_for_assistant_role'
     # cf_ai_model_system: 'prompts_for_system_role'
     timeout: 30
-    inactive: true
 
   - name: core.ac.uk
     engine: core
     shortcut: cor
     # read https://docs.searxng.org/dev/engines/online/core.html
     api_key: ""
-    inactive: true
 
   - name: crossref
     engine: crossref
@@ -799,7 +792,6 @@ engines:
     # if query_type is set to custom, provide your query here
     # custom_query_json: {"query":{"match_all": {}}}
     # show_metadata: false
-    inactive: true
 
   - name: wikidata
     engine: wikidata
@@ -877,7 +869,6 @@ engines:
     engine: ebay
     shortcut: eb
     base_url: 'https://www.ebay.com'
-    inactive: true
     timeout: 5
 
   - name: 1x
@@ -908,7 +899,6 @@ engines:
     categories: images
     shortcut: fla
     # api_key: 'apikey' # required!
-    inactive: true
 
   - name: free software directory
     engine: mediawiki
@@ -928,7 +918,6 @@ engines:
     timeout: 15.0
     # API key required, see: https://freesound.org/docs/api/overview.html
     # api_key: MyAPIkey
-    inactive: true
 
   - name: frinkiac
     engine: frinkiac
@@ -1008,7 +997,6 @@ engines:
   - name: github code
     engine: github_code
     shortcut: ghc
-    inactive: true
     ghc_auth:
       # type is one of:
       # * none
@@ -1085,7 +1073,6 @@ engines:
     engine: grokipedia
     shortcut: gp
     disabled: true
-    inactive: true
 
   - name: material icons
     engine: material_icons
@@ -1292,14 +1279,6 @@ engines:
       require_api_key: false
       results: HTML
 
-  - name: z-library
-    engine: zlibrary
-    shortcut: zlib
-    timeout: 7.0
-    disabled: true
-    # https://github.com/searxng/searxng/issues/3610
-    inactive: true
-
   - name: library of congress
     engine: loc
     shortcut: loc
@@ -1313,7 +1292,6 @@ engines:
       - https://libretranslate.com/translate
     # api_key: ''
     shortcut: lt
-    inactive: true
 
   - name: lingva
     engine: lingva
@@ -1353,7 +1331,6 @@ engines:
     # - https://about.marginalia-search.com/article/api/
     # api_key: ''
     disabled: true
-    inactive: true
 
   - name: mastodon users
     engine: mastodon
@@ -1542,7 +1519,6 @@ engines:
   - name: openclipart
     engine: openclipart
     shortcut: ocl
-    inactive: true
     disabled: true
     timeout: 30
 
@@ -1629,7 +1605,6 @@ engines:
     categories: videos
     piped_filter: videos
     timeout: 3.0
-    inactive: true
 
     # URL to use as link and for embeds
     frontend_url: https://srv.piped.video
@@ -1645,7 +1620,6 @@ engines:
     categories: music
     piped_filter: music_songs
     timeout: 3.0
-    inactive: true
 
   - name: piratebay
     engine: piratebay
@@ -1673,7 +1647,6 @@ engines:
     shortcut: pv
     engine: pixiv
     disabled: true
-    inactive: true
     remove_ai_images: false
     pixiv_image_proxies:
       - https://pximg.example.org
@@ -2001,8 +1974,7 @@ engines:
     timeout: 5
     # read https://docs.searxng.org/dev/engines/online/springer.html
     api_key: ""
-    inactive: true
-
+    
   - name: startpage
     engine: startpage
     shortcut: sp
@@ -2120,7 +2092,6 @@ engines:
     torznab_categories:  # optional
       - 2000
       - 5000
-    inactive: true
 
   # tmp suspended - too slow, too many errors
   #  - name: urbandictionary
@@ -2176,7 +2147,6 @@ engines:
     engine: youtube_api
     # api_key: ''  # required!
     shortcut: yta
-    inactive: true
 
   - name: dailymotion
     engine: dailymotion
@@ -2330,7 +2300,6 @@ engines:
     shortcut: waa
     timeout: 6.0
     categories: general
-    inactive: true
 
   - name: dictzone
     engine: dictzone
@@ -2386,7 +2355,6 @@ engines:
     # See: https://www.deepl.com/pro-api?cta=header-pro-api
     # api_key: ''  # required!
     timeout: 5.0
-    inactive: true
 
   - name: mojeek
     shortcut: mjk
@@ -2521,7 +2489,6 @@ engines:
     engine: repology
     shortcut: rep
     disabled: true
-    inactive: true
 
   - name: wordnik
     engine: wordnik
@@ -2571,7 +2538,6 @@ engines:
     engine: wallhaven
     # api_key: abcdefghijklmnopqrstuvwxyz
     shortcut: wh
-    inactive: true
 
     # wikimini: online encyclopedia for children
     # The fulltext and title parameter is necessary for Wikimini because
@@ -2602,7 +2568,6 @@ engines:
     engine: braveapi
     # read https://docs.searxng.org/dev/engines/online/brave.html
     api_key: ""
-    inactive: true
 
   - name: brave
     engine: brave
