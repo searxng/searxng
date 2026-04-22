@@ -80,7 +80,7 @@ def response(resp: 'SXNG_Response') -> EngineResults:
 
     results = resp.json()["results"]
 
-    for suggestion in results["rs"]:
+    for suggestion in results.get("rs", []):
         res.add(res.types.LegacyResult({"suggestion": suggestion["t"]}))
 
     for result in results["hits"]:
