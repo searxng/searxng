@@ -345,7 +345,19 @@ def _get_news_result(result):
 
     publishedDate = None
     if result.get("date"):
-        publishedDate = datetime.fromtimestamp(result["date"] / 1000)
+        date_val = result["date"]
+        # Handle both integer and string date values
+        if isinstance(date_val, str):
+            try:
+                date_val = int(date_val)
+            except (ValueError, TypeError):
+                # If it's a non-numeric string, try parsing it directly
+                try:
+                    publishedDate = dateutil.parser.parse(date_val)
+                except (ValueError, TypeError):
+                    pass
+        if isinstance(date_val, (int, float)):
+            publishedDate = datetime.fromtimestamp(date_val / 1000)
 
     thumbnailUrl = None
     if result.get("thumbnailUrl"):
