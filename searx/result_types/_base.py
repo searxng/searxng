@@ -32,7 +32,7 @@ import msgspec
 from searx import logger as log
 
 WHITESPACE_REGEX = re.compile('( |\t|\n)+', re.M | re.U)
-UNKNOWN = object()
+UNSET = object()
 
 
 def _normalize_url_fields(result: "Result | LegacyResult"):
@@ -326,12 +326,13 @@ class Result(msgspec.Struct, kw_only=True):
 
     def defaults_from(self, other: "Result"):
         """Fields not set in *self* will be updated from the field values of the
-        *other*.
+        *other*.  If a field is set (exists) but contains an empty string
+        or the value ``None``, it is also considered *not set*.
         """
         for field_name in self.__struct_fields__:
-            self_val = getattr(self, field_name, False)
-            other_val = getattr(other, field_name, False)
-            if self_val:
+            self_val = getattr(self, field_name, UNSET)
+            other_val = getattr(other, field_name, UNSET)
+            if self_val is UNSET and other_val not in (UNSET, "", None):
                 setattr(self, field_name, other_val)
 
 
@@ -440,8 +441,6 @@ class LegacyResult(dict[str, t.Any]):
        Do not use this class in your own implementations!
     """
 
-    UNSET: object = object()
-
     # emulate field types from type class Result
     url: str | None
     template: str
@@ -512,7 +511,7 @@ class LegacyResult(dict[str, t.Any]):
             )
 
     def __getattr__(self, name: str, default: t.Any = UNSET) -> t.Any:
-        if default == self.UNSET and name not in self:
+        if default == UNSET and name not in self:
             raise AttributeError(f"LegacyResult object has no field named: {name}")
         return self[name]
 
@@ -563,9 +562,12 @@ class LegacyResult(dict[str, t.Any]):
             self.engines.add(self.engine)
 
     def defaults_from(self, other: "LegacyResult"):
-        for k, v in other.items():
-            if not self.get(k):
-                self[k] = v
+        # If a field is set (exists) but contains an empty string or the value
+        # ``None``, it is also considered *not set*.
+        for field_name, other_val in other.items():
+            self_val = self.get(field_name, UNSET)
+            if self_val is UNSET and other_val not in ("", UNSET):
+                self[field_name] = other_val
 
     def filter_urls(self, filter_func: "Callable[[Result | LegacyResult, str, str], str | bool]"):
         """See :py:obj:`Result.filter_urls`"""
