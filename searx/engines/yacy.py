@@ -53,14 +53,18 @@ Implementations
 # pylint: disable=fixme
 
 
+import logging
 import random
+from datetime import datetime, timedelta, timezone
 from json import loads
-from urllib.parse import urlencode
+from urllib.parse import urlencode, urlparse, parse_qs
 from dateutil import parser
 
 from httpx import DigestAuth
 
 from searx.utils import html_to_text
+
+logger = logging.getLogger('searx.engines.yacy')
 
 # about
 about = {
@@ -75,6 +79,7 @@ about = {
 # engine dependent config
 categories = ['general']
 paging = True
+time_range_support = True
 number_of_results = 10
 http_digest_auth_user = ""
 """HTTP digest user for the local YACY instance"""
@@ -100,6 +105,13 @@ base_url: list[str] | str = []
 """The value is an URL or a list of URLs.  In the latter case instance will be
 selected randomly.
 """
+
+_TIME_RANGE_OFFSETS = {
+    'day': timedelta(days=1),
+    'week': timedelta(weeks=1),
+    'month': timedelta(days=31),
+    'year': timedelta(days=365),
+}
 
 
 def init(_):
@@ -138,6 +150,14 @@ def request(query, params):
     if params['language'] != 'all':
         args['lr'] = 'lang_' + params['language'].split('-')[0]
 
+    # add date range if specified
+    time_range = params.get('time_range')
+    if time_range and time_range in _TIME_RANGE_OFFSETS:
+        now = datetime.now(timezone.utc)
+        start = now - _TIME_RANGE_OFFSETS[time_range]
+        args['datestart'] = start.strftime('%Y/%m/%d')
+        args['dateend'] = now.strftime('%Y/%m/%d')
+
     params["url"] = f"{_base_url()}/yacysearch.json?{urlencode(args)}"
 
     if http_digest_auth_user and http_digest_auth_pass:
@@ -159,6 +179,13 @@ def response(resp):
 
     if len(search_results) == 0:
         return []
+
+    # parse date filter bounds from request URL (YaCy ignores them server-side in global mode)
+    date_start = date_end = None
+    qs = parse_qs(urlparse(str(resp.request.url)).query)
+    if 'datestart' in qs and 'dateend' in qs:
+        date_start = datetime.strptime(qs['datestart'][0], '%Y/%m/%d').replace(tzinfo=timezone.utc)
+        date_end = datetime.strptime(qs['dateend'][0], '%Y/%m/%d').replace(tzinfo=timezone.utc)
 
     for result in search_results[0].get('items', []):
         # parse image results
@@ -186,7 +213,18 @@ def response(resp):
         else:
             publishedDate = None
             if 'pubDate' in result:
-                publishedDate = parser.parse(result['pubDate'])
+                try:
+                    publishedDate = parser.parse(result['pubDate'])
+                except Exception:  # pylint: disable=broad-except
+                    pass
+
+            # skip results outside the requested date range
+            if date_start and date_end:
+                if publishedDate is None:
+                    continue
+                pub = publishedDate if publishedDate.tzinfo else publishedDate.replace(tzinfo=timezone.utc)
+                if not (date_start <= pub <= date_end):
+                    continue
 
             # append result
             results.append(
