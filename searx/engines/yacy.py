@@ -53,18 +53,15 @@ Implementations
 # pylint: disable=fixme
 
 
-import logging
 import random
 from datetime import datetime, timedelta, timezone
 from json import loads
-from urllib.parse import urlencode, urlparse, parse_qs
+from urllib.parse import urlencode
 from dateutil import parser
 
 from httpx import DigestAuth
 
 from searx.utils import html_to_text
-
-logger = logging.getLogger('searx.engines.yacy')
 
 # about
 about = {
@@ -150,13 +147,13 @@ def request(query, params):
     if params['language'] != 'all':
         args['lr'] = 'lang_' + params['language'].split('-')[0]
 
-    # add date range if specified
+    # store date filter bounds for client-side filtering in response()
+    # YaCy does not enforce datestart/dateend server-side in global (P2P) mode
     time_range = params.get('time_range')
     if time_range and time_range in _TIME_RANGE_OFFSETS:
         now = datetime.now(timezone.utc)
-        start = now - _TIME_RANGE_OFFSETS[time_range]
-        args['datestart'] = start.strftime('%Y/%m/%d')
-        args['dateend'] = now.strftime('%Y/%m/%d')
+        params['date_start'] = now - _TIME_RANGE_OFFSETS[time_range]
+        params['date_end'] = now
 
     params["url"] = f"{_base_url()}/yacysearch.json?{urlencode(args)}"
 
@@ -180,12 +177,8 @@ def response(resp):
     if len(search_results) == 0:
         return []
 
-    # parse date filter bounds from request URL (YaCy ignores them server-side in global mode)
-    date_start = date_end = None
-    qs = parse_qs(urlparse(str(resp.request.url)).query)
-    if 'datestart' in qs and 'dateend' in qs:
-        date_start = datetime.strptime(qs['datestart'][0], '%Y/%m/%d').replace(tzinfo=timezone.utc)
-        date_end = datetime.strptime(qs['dateend'][0], '%Y/%m/%d').replace(tzinfo=timezone.utc)
+    date_start = resp.search_params.get('date_start')
+    date_end = resp.search_params.get('date_end')
 
     for result in search_results[0].get('items', []):
         # parse image results
