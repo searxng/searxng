@@ -174,51 +174,44 @@ ui:
 #     - query_in_title
 
 # communication with search engines
-#
 outgoing:
-  # default timeout in seconds, can be override by engine
-  request_timeout: 3.0
-  # the maximum timeout in seconds
-  # max_request_timeout: 10.0
-  # suffix of searxng_useragent, could contain information like an email address
-  # to the administrator
+
+  # Suffix to the user-agent SearXNG uses to send requests to others engines.
   useragent_suffix: ""
-  # The maximum number of concurrent connections that may be established.
-  pool_connections: 100
-  # Allow the connection pool to maintain keep-alive connections below this
-  # point.
-  pool_maxsize: 20
+  # Default timeout in seconds, can be overridden individually by the engines.
+  request_timeout: 3.0
+  # The maximum timeout in seconds (cannot be exceeded by the engines).
+  max_request_timeout: 0.0
+  # Number of retry in case of an HTTP error
+  retries: 0
+  max_redirects: 30
   # See https://www.python-httpx.org/http2/
   enable_http2: true
-  # uncomment below section if you want to use a custom server certificate
-  # see https://www.python-httpx.org/advanced/#changing-the-verification-defaults
-  # and https://www.python-httpx.org/compatibility/#ssl-configuration
+  # Resource Limits: https://www.python-httpx.org/advanced/resource-limits/
+  # Number of allowable keep-alive connections.
+  pool_maxsize: 10
+  # Maximum number of allowable connections
+  pool_connections: 100
+  # Number of seconds to keep a connection in the pool.
+  keepalive_expiry: 5.0
+  # Allow to specify a path to certificate ($SSL_CERT_FILE, $SSL_CERT_DIR).
   #  verify: ~/.mitmproxy/mitmproxy-ca-cert.cer
   #
-  # uncomment below section if you want to use a proxyq see: SOCKS proxies
-  #   https://2.python-requests.org/en/latest/user/advanced/#proxies
-  # are also supported: see
-  #   https://2.python-requests.org/en/latest/user/advanced/#socks
+  # If you have more than one network interface which can be the source of
+  # outgoing search requests.
   #
+  #  source_ips: [ ... ]
+  #
+  # To use proxy mounts
   #  proxies:
   #    all://:
   #      - http://proxy1:8080
-  #      - http://proxy2:8080
+  #      - socks5://user:pass@host:port
   #
-  #  using_tor_proxy: true
-  #
-  # Extra seconds to add in order to account for the time taken by the proxy
-  #
-  #  extra_proxy_timeout: 10
-  #
-  # uncomment below section only if you have more than one network interface
-  # which can be the source of outgoing search requests
-  #
-  #  source_ips:
-  #    - 1.1.1.1
-  #    - 1.1.1.2
-  #    - fe80::/126
-
+  # Tor configuration
+  using_tor_proxy: false
+  # Extra seconds to add in order to account for the time taken by the (tor) proxy
+  extra_proxy_timeout: 0
 
 # Plugin configuration, for more details see
 #   https://docs.searxng.org/admin/settings/settings_plugins.html
@@ -434,6 +427,9 @@ engines:
     categories: [images]
     shortcut: aoli
     disabled: true
+    network:
+      impersonate: "firefox"
+
 
   - name: aol videos
     engine: aol
@@ -2390,12 +2386,15 @@ engines:
 
   - name: mojeek
     shortcut: mjk
+    network:
+      impersonate: "chrome"
     engine: mojeek
     categories: [general, web]
     disabled: true
 
   - name: mojeek images
     shortcut: mjkimg
+    network: mojeek
     engine: mojeek
     categories: [images, web]
     search_type: images
@@ -2404,6 +2403,7 @@ engines:
 
   - name: mojeek news
     shortcut: mjknews
+    network: mojeek
     engine: mojeek
     categories: [news, web]
     search_type: news

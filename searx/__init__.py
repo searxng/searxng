@@ -56,12 +56,7 @@ def init_settings():
         logging.getLogger('werkzeug').setLevel(level=LOG_LEVEL_PROD)
         logger.info(msg)
 
-    # log max_request_timeout
-    max_request_timeout: int | None = settings['outgoing']['max_request_timeout']
-    if max_request_timeout is None:
-        logger.info('max_request_timeout=%s', repr(max_request_timeout))
-    else:
-        logger.info('max_request_timeout=%i second(s)', max_request_timeout)
+    logger.info("max_request_timeout: %s (sec)", get_setting("outgoing.max_request_timeout"))
 
     if settings['server']['public_instance']:
         logger.warning(

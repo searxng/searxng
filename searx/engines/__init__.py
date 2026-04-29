@@ -17,7 +17,7 @@ from os.path import realpath, dirname
 import types
 import inspect
 
-from searx import logger, settings
+from searx import logger, get_setting
 from searx.utils import load_module
 
 if t.TYPE_CHECKING:
@@ -28,25 +28,22 @@ ENGINE_DIR = dirname(realpath(__file__))
 
 # Defaults for the namespace of an engine module, see load_engine()
 ENGINE_DEFAULT_ARGS: dict[str, int | str | list[t.Any] | dict[str, t.Any] | bool] = {
-    # Common options in the engine module
     "engine_type": "online",
     "paging": False,
     "time_range_support": False,
     "safesearch": False,
-    # settings.yml
     "categories": ["general"],
-    "enable_http": False,
     "shortcut": "-",
-    "timeout": settings["outgoing"]["request_timeout"],
+    "timeout": get_setting("outgoing.request_timeout"),
     "display_error_messages": True,
     "disabled": False,
     "inactive": False,
     "about": {},
-    "using_tor_proxy": False,
     "send_accept_language_header": True,
     "tokens": [],
     "max_page": 0,
 }
+
 # set automatically when an engine does not have any tab category
 DEFAULT_CATEGORY = 'other'
 
@@ -150,7 +147,7 @@ def load_engine(engine_data: dict[str, t.Any]) -> "Engine | types.ModuleType | N
     if not call_engine_setup(engine, engine_data):
         return None
 
-    if not any(cat in settings['categories_as_tabs'] for cat in engine.categories):
+    if not any(cat in get_setting("categories_as_tabs") for cat in engine.categories):
         engine.categories.append(DEFAULT_CATEGORY)
 
     return engine
@@ -158,7 +155,7 @@ def load_engine(engine_data: dict[str, t.Any]) -> "Engine | types.ModuleType | N
 
 def set_loggers(engine: "Engine|types.ModuleType", engine_name: str):
     # set the logger for engine
-    engine.logger = logger.getChild(engine_name)
+    engine.logger = logger.getChild(engine_name)  # type: ignore
     # the engine may have load some other engines
     # may sure the logger is initialized
     # use sys.modules.copy() to avoid "RuntimeError: dictionary changed size during iteration"
@@ -194,16 +191,13 @@ def update_engine_attributes(engine: "Engine | types.ModuleType", engine_data: d
 
 
 def update_attributes_for_tor(engine: "Engine | types.ModuleType"):
-    if using_tor_proxy(engine) and hasattr(engine, 'onion_url'):
-        engine.search_url = engine.onion_url + getattr(engine, 'search_path', '')  # type: ignore
-        engine.timeout += settings['outgoing'].get('extra_proxy_timeout', 0)  # type: ignore
+    if is_using_tor_proxy(engine):
+        engine.timeout += get_setting("outgoing.extra_proxy_timeout")  # type: ignore
 
 
 def is_missing_required_attributes(engine: "Engine | types.ModuleType"):
     """An attribute is required when its name doesn't start with ``_`` (underline).
-    Required attributes must not be ``None``.
-
-    """
+    Required attributes must not be ``None``."""
     missing = False
     for engine_attr in dir(engine):
         if not engine_attr.startswith('_') and getattr(engine, engine_attr) is None:
@@ -212,9 +206,9 @@ def is_missing_required_attributes(engine: "Engine | types.ModuleType"):
     return missing
 
 
-def using_tor_proxy(engine: "Engine | types.ModuleType"):
+def is_using_tor_proxy(engine: "Engine | types.ModuleType") -> bool:
     """Return True if the engine configuration declares to use Tor."""
-    return settings['outgoing'].get('using_tor_proxy') or getattr(engine, 'using_tor_proxy', False)
+    return bool(get_setting("outgoing.using_tor_proxy", None) or getattr(engine, "using_tor_proxy", False))
 
 
 def is_engine_active(engine: "Engine | types.ModuleType"):
@@ -223,7 +217,7 @@ def is_engine_active(engine: "Engine | types.ModuleType"):
         return False
 
     # exclude onion engines if not using tor
-    if 'onions' in engine.categories and not using_tor_proxy(engine):
+    if "onions" in engine.categories and not is_using_tor_proxy(engine):
         return False
 
     return True
