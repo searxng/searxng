@@ -521,7 +521,21 @@ def pre_request():
 @app.after_request
 def add_default_headers(response: flask.Response):
     # set default http headers
-    for header, value in settings['server']['default_http_headers'].items():
+    response.headers["Cache-Control"] = "no-cache"
+    response.headers["Content-Security-Policy"] = (
+        "default-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline'; form-action 'self' https:; "
+        "font-src 'self'; frame-ancestors 'self'; base-uri 'self'; connect-src 'self'; img-src * data:; "
+        "frame-src https:; manifest-src 'self';"
+    )
+    response.headers["Permissions-Policy"] = (
+        "accelerometer=(),camera=(),geolocation=(),gyroscope=(),magnetometer=(),microphone=(),payment=(),usb=()"
+    )
+    response.headers["Referrer-Policy"] = "same-origin"
+    response.headers["X-Content-Type-Options"] = "nosniff"
+    response.headers["X-Download-Options"] = "noopen"
+    response.headers["X-Robots-Tag"] = "noindex, noimageindex, nofollow"
+
+    for header, value in settings["server"]["default_http_headers"].items():
         if header in response.headers:
             continue
         response.headers[header] = value
@@ -1384,9 +1398,21 @@ def init():
 
 
 def static_headers(headers: Headers, _path: str, _url: str) -> None:
-    headers['Cache-Control'] = 'public, max-age=30, stale-while-revalidate=60'
+    headers["Cache-Control"] = "public, max-age=30, stale-while-revalidate=60"
+    headers["Content-Security-Policy"] = (
+        "default-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline'; form-action 'self' https:; "
+        "font-src 'self'; frame-ancestors 'self'; base-uri 'self'; connect-src 'self'; img-src * data:; "
+        "frame-src https:; manifest-src 'self';"
+    )
+    headers["Permissions-Policy"] = (
+        "accelerometer=(),camera=(),geolocation=(),gyroscope=(),magnetometer=(),microphone=(),payment=(),usb=()"
+    )
+    headers["Referrer-Policy"] = "same-origin"
+    headers["X-Content-Type-Options"] = "nosniff"
+    headers["X-Download-Options"] = "noopen"
+    headers["X-Robots-Tag"] = "noindex, noimageindex, nofollow"
 
-    for header, value in settings['server']['default_http_headers'].items():
+    for header, value in settings["server"]["default_http_headers"].items():
         # cast value to string, as WhiteNoise requires header values to be strings
         headers[header] = str(value)
 
