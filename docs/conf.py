@@ -158,6 +158,8 @@ issues_github_path = "searxng/searxng"
 
 # HTML -----------------------------------------------------------------
 
+templates_path = ["_templates"]
+
 # https://searxng.github.io/searxng --> '/searxng/'
 # https://docs.searxng.org --> '/'
 notfound_urls_prefix = '/'
