@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>searx.engines.bing &#8212; SearXNG Documentation (2026.4.29+cba0cffa8)</title>
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=6625fa76" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/searxng.css?v=52e4ff28" />
+    <script src="../../../_static/documentation_options.js?v=ce9cf2b0"></script>
+    <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script data-project="searxng" data-version="2026.4.29+cba0cffa8" src="../../../_static/describe_version.js?v=fa7f30d0"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">SearXNG Documentation (2026.4.29+cba0cffa8)</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" >Module code</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../engines.html" accesskey="U">searx.engines</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">searx.engines.bing</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for searx.engines.bing</h1><div class="highlight"><pre>
+<span></span><span class="c1"># SPDX-License-Identifier: AGPL-3.0-or-later</span>
+<span class="sd">&quot;&quot;&quot;This is the implementation of the Bing-Web engine.  Some of this</span>
+<span class="sd">implementations are shared by other engines:</span>
+
+<span class="sd">- :ref:`bing images engine`</span>
+<span class="sd">- :ref:`bing news engine`</span>
+<span class="sd">- :ref:`bing videos engine`</span>
+
+<span class="sd">.. note::</span>
+
+<span class="sd">   Some functionality (paging and time-range results) are not supported</span>
+<span class="sd">   since they depend on JavaScript.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">base64</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">t</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">urllib.parse</span><span class="w"> </span><span class="kn">import</span> <span class="n">parse_qs</span><span class="p">,</span> <span class="n">urlencode</span><span class="p">,</span> <span class="n">urlparse</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">babel</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">babel.languages</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">lxml</span><span class="w"> </span><span class="kn">import</span> <span class="n">html</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">searx.enginelib.traits</span><span class="w"> </span><span class="kn">import</span> <span class="n">EngineTraits</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">searx.locales</span><span class="w"> </span><span class="kn">import</span> <span class="n">region_tag</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">searx.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">eval_xpath</span><span class="p">,</span> <span class="n">eval_xpath_getindex</span><span class="p">,</span> <span class="n">eval_xpath_list</span><span class="p">,</span> <span class="n">extract_text</span>
+
+<span class="k">if</span> <span class="n">t</span><span class="o">.</span><span class="n">TYPE_CHECKING</span><span class="p">:</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">searx.extended_types</span><span class="w"> </span><span class="kn">import</span> <span class="n">SXNG_Response</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">searx.search.processors</span><span class="w"> </span><span class="kn">import</span> <span class="n">OnlineParams</span>
+
+<span class="n">about</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">t</span><span class="o">.</span><span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;website&quot;</span><span class="p">:</span> <span class="s2">&quot;https://www.bing.com&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;wikidata_id&quot;</span><span class="p">:</span> <span class="s2">&quot;Q182496&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;official_api_documentation&quot;</span><span class="p">:</span> <span class="s2">&quot;https://github.com/MicrosoftDocs/bing-docs&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;use_official_api&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="s2">&quot;require_api_key&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="s2">&quot;results&quot;</span><span class="p">:</span> <span class="s2">&quot;HTML&quot;</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="c1"># engine dependent config</span>
+<span class="n">categories</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;general&quot;</span><span class="p">,</span> <span class="s2">&quot;web&quot;</span><span class="p">]</span>
+<span class="n">safesearch</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">_safesearch_map</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="mi">0</span><span class="p">:</span> <span class="s2">&quot;off&quot;</span><span class="p">,</span>
+    <span class="mi">1</span><span class="p">:</span> <span class="s2">&quot;moderate&quot;</span><span class="p">,</span>
+    <span class="mi">2</span><span class="p">:</span> <span class="s2">&quot;strict&quot;</span><span class="p">,</span>
+<span class="p">}</span>
+<span class="sd">&quot;&quot;&quot;Filter results. 0: None, 1: Moderate, 2: Strict&quot;&quot;&quot;</span>
+
+<span class="n">base_url</span> <span class="o">=</span> <span class="s2">&quot;https://www.bing.com/search&quot;</span>
+<span class="sd">&quot;&quot;&quot;Bing-Web search URL&quot;&quot;&quot;</span>
+
+
+<div class="viewcode-block" id="get_locale_params">
+<a class="viewcode-back" href="../../../dev/engines/online/bing.html#searx.engines.bing.get_locale_params">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_locale_params</span><span class="p">(</span><span class="n">engine_region</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;API documentation states the ``mkt`` parameter is *the</span>
+<span class="sd">    recommended primary signal* for locale:</span>
+
+<span class="sd">        If known, you are encouraged to always specify the market.</span>
+<span class="sd">        Specifying the market helps Bing route the request and return an</span>
+<span class="sd">        appropriate and optimal response.</span>
+
+<span class="sd">    The ``mkt`` parameter takes a full ``&lt;language&gt;-&lt;country&gt;`` code.</span>
+
+<span class="sd">    This function is shared with :py:mod:`searx.engines.bing_images`,</span>
+<span class="sd">    :py:mod:`searx.engines.bing_news`, and :py:mod:`searx.engines.bing_videos`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">engine_region</span> <span class="ow">or</span> <span class="n">engine_region</span> <span class="o">==</span> <span class="s2">&quot;clear&quot;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span>
+
+    <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;mkt&quot;</span><span class="p">:</span> <span class="n">engine_region</span><span class="p">}</span></div>
+
+
+
+<div class="viewcode-block" id="override_accept_language">
+<a class="viewcode-back" href="../../../dev/engines/online/bing.html#searx.engines.bing.override_accept_language">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">override_accept_language</span><span class="p">(</span><span class="n">params</span><span class="p">:</span> <span class="s2">&quot;OnlineParams&quot;</span><span class="p">,</span> <span class="n">engine_region</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Override the ``Accept-Language`` header.</span>
+
+<span class="sd">    The default header built by :py:class:`~searx.search.processors.online.OnlineProcessor`</span>
+<span class="sd">    appends ``en;q=0.3`` as a fallback language::</span>
+
+<span class="sd">        Accept-Language: de,de-DE;q=0.7,en;q=0.3</span>
+
+<span class="sd">    Bing seems to better select the results locale based on the</span>
+<span class="sd">    ``Accept-Language`` value header.</span>
+
+<span class="sd">    This function is shared with :py:mod:`searx.engines.bing_images`,</span>
+<span class="sd">    :py:mod:`searx.engines.bing_news`, and :py:mod:`searx.engines.bing_videos`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">engine_region</span> <span class="ow">or</span> <span class="n">engine_region</span> <span class="o">==</span> <span class="s2">&quot;clear&quot;</span><span class="p">:</span>
+        <span class="k">return</span>
+
+    <span class="n">lang</span> <span class="o">=</span> <span class="n">engine_region</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;-&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">params</span><span class="p">[</span><span class="s2">&quot;headers&quot;</span><span class="p">][</span><span class="s2">&quot;Accept-Language&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">engine_region</span><span class="si">}</span><span class="s2">,</span><span class="si">{</span><span class="n">lang</span><span class="si">}</span><span class="s2">;q=0.9&quot;</span></div>
+
+
+
+<div class="viewcode-block" id="request">
+<a class="viewcode-back" href="../../../dev/engines/online/bing.html#searx.engines.bing.request">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">request</span><span class="p">(</span><span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">params</span><span class="p">:</span> <span class="s2">&quot;OnlineParams&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;OnlineParams&quot;</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Assemble a Bing-Web request.&quot;&quot;&quot;</span>
+
+    <span class="n">engine_region</span> <span class="o">=</span> <span class="n">traits</span><span class="o">.</span><span class="n">get_region</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="s2">&quot;searxng_locale&quot;</span><span class="p">],</span> <span class="n">traits</span><span class="o">.</span><span class="n">all_locale</span><span class="p">)</span>
+
+    <span class="n">override_accept_language</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">engine_region</span><span class="p">)</span>
+
+    <span class="n">query_params</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span> <span class="o">|</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;q&quot;</span><span class="p">:</span> <span class="n">query</span><span class="p">,</span>
+        <span class="s2">&quot;adlt&quot;</span><span class="p">:</span> <span class="n">_safesearch_map</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;safesearch&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="s2">&quot;off&quot;</span><span class="p">),</span>
+    <span class="p">}</span>
+
+    <span class="n">locale_params</span> <span class="o">=</span> <span class="n">get_locale_params</span><span class="p">(</span><span class="n">engine_region</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">locale_params</span><span class="p">:</span>
+        <span class="n">query_params</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">locale_params</span><span class="p">)</span>
+
+    <span class="n">params</span><span class="p">[</span><span class="s2">&quot;url&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">base_url</span><span class="si">}</span><span class="s2">?</span><span class="si">{</span><span class="n">urlencode</span><span class="p">(</span><span class="n">query_params</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+
+    <span class="c1"># in some regions where geoblocking is employed (e.g. China),</span>
+    <span class="c1"># www.bing.com redirects to the regional version of Bing</span>
+    <span class="n">params</span><span class="p">[</span><span class="s2">&quot;allow_redirects&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+
+    <span class="k">return</span> <span class="n">params</span></div>
+
+
+
+<div class="viewcode-block" id="response">
+<a class="viewcode-back" href="../../../dev/engines/online/bing.html#searx.engines.bing.response">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">response</span><span class="p">(</span><span class="n">resp</span><span class="p">:</span> <span class="s2">&quot;SXNG_Response&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">t</span><span class="o">.</span><span class="n">Any</span><span class="p">]]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get response from Bing-Web&quot;&quot;&quot;</span>
+
+    <span class="n">results</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">t</span><span class="o">.</span><span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="n">dom</span> <span class="o">=</span> <span class="n">html</span><span class="o">.</span><span class="n">fromstring</span><span class="p">(</span><span class="n">resp</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">eval_xpath_list</span><span class="p">(</span><span class="n">dom</span><span class="p">,</span> <span class="s1">&#39;//ol[@id=&quot;b_results&quot;]/li[contains(@class, &quot;b_algo&quot;)]&#39;</span><span class="p">):</span>
+        <span class="n">link</span> <span class="o">=</span> <span class="n">eval_xpath_getindex</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="s2">&quot;.//h2/a&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">link</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">continue</span>
+
+        <span class="n">href</span> <span class="o">=</span> <span class="n">link</span><span class="o">.</span><span class="n">attrib</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;href&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+        <span class="n">title</span> <span class="o">=</span> <span class="n">extract_text</span><span class="p">(</span><span class="n">link</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">href</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">title</span><span class="p">:</span>
+            <span class="k">continue</span>
+
+        <span class="c1"># what about cn.bing.com, ..?</span>
+        <span class="k">if</span> <span class="n">href</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;https://www.bing.com/ck/a?&quot;</span><span class="p">):</span>
+            <span class="n">qs</span> <span class="o">=</span> <span class="n">parse_qs</span><span class="p">(</span><span class="n">urlparse</span><span class="p">(</span><span class="n">href</span><span class="p">)</span><span class="o">.</span><span class="n">query</span><span class="p">)</span>
+            <span class="n">u_values</span> <span class="o">=</span> <span class="n">qs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;u&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">u_values</span><span class="p">:</span>
+                <span class="n">u_val</span> <span class="o">=</span> <span class="n">u_values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="k">if</span> <span class="n">u_val</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;a1&quot;</span><span class="p">):</span>
+                    <span class="n">encoded</span> <span class="o">=</span> <span class="n">u_val</span><span class="p">[</span><span class="mi">2</span><span class="p">:]</span>
+                    <span class="c1"># base64url without padding</span>
+                    <span class="n">encoded</span> <span class="o">+=</span> <span class="s2">&quot;=&quot;</span> <span class="o">*</span> <span class="p">(</span><span class="o">-</span><span class="nb">len</span><span class="p">(</span><span class="n">encoded</span><span class="p">)</span> <span class="o">%</span> <span class="mi">4</span><span class="p">)</span>
+                    <span class="n">href</span> <span class="o">=</span> <span class="n">base64</span><span class="o">.</span><span class="n">urlsafe_b64decode</span><span class="p">(</span><span class="n">encoded</span><span class="p">)</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">,</span> <span class="n">errors</span><span class="o">=</span><span class="s2">&quot;replace&quot;</span><span class="p">)</span>
+
+        <span class="c1"># remove decorative icons that Bing injects into &lt;p&gt; elements</span>
+        <span class="c1"># (`&lt;span class=&quot;algoSlug_icon&quot;&gt;`)</span>
+        <span class="n">content_els</span> <span class="o">=</span> <span class="n">eval_xpath</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="s2">&quot;.//p&quot;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">content_els</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">icon</span> <span class="ow">in</span> <span class="n">p</span><span class="o">.</span><span class="n">xpath</span><span class="p">(</span><span class="s1">&#39;.//span[@class=&quot;algoSlug_icon&quot;]&#39;</span><span class="p">):</span>
+                <span class="n">icon</span><span class="o">.</span><span class="n">getparent</span><span class="p">()</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">icon</span><span class="p">)</span>
+        <span class="n">content</span> <span class="o">=</span> <span class="n">extract_text</span><span class="p">(</span><span class="n">content_els</span><span class="p">)</span>
+
+        <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s2">&quot;url&quot;</span><span class="p">:</span> <span class="n">href</span><span class="p">,</span> <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="n">title</span><span class="p">,</span> <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="n">content</span><span class="p">})</span>
+
+    <span class="k">if</span> <span class="n">results</span><span class="p">:</span>
+        <span class="n">result_len_container</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">eval_xpath</span><span class="p">(</span><span class="n">dom</span><span class="p">,</span> <span class="s1">&#39;//span[@class=&quot;sb_count&quot;]//text()&#39;</span><span class="p">))</span>
+        <span class="n">result_len_container</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;[^0-9]&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">result_len_container</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">result_len_container</span><span class="p">:</span>
+            <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s2">&quot;number_of_results&quot;</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">result_len_container</span><span class="p">)})</span>
+
+    <span class="k">return</span> <span class="n">results</span></div>
+
+
+
+<div class="viewcode-block" id="fetch_traits">
+<a class="viewcode-back" href="../../../dev/engines/online/bing.html#searx.engines.bing.fetch_traits">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">fetch_traits</span><span class="p">(</span><span class="n">engine_traits</span><span class="p">:</span> <span class="n">EngineTraits</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Fetch regions from Bing-Web.&quot;&quot;&quot;</span>
+    <span class="c1"># pylint: disable=import-outside-toplevel</span>
+
+    <span class="kn">from</span><span class="w"> </span><span class="nn">searx.network</span><span class="w"> </span><span class="kn">import</span> <span class="n">get</span>  <span class="c1"># see https://github.com/searxng/searxng/issues/762</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">searx.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">gen_useragent</span>
+
+    <span class="n">headers</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;User-Agent&quot;</span><span class="p">:</span> <span class="n">gen_useragent</span><span class="p">(),</span>
+        <span class="s2">&quot;Accept&quot;</span><span class="p">:</span> <span class="s2">&quot;text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;Accept-Language&quot;</span><span class="p">:</span> <span class="s2">&quot;en-US;q=0.5,en;q=0.3&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;DNT&quot;</span><span class="p">:</span> <span class="s2">&quot;1&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;Connection&quot;</span><span class="p">:</span> <span class="s2">&quot;keep-alive&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;Upgrade-Insecure-Requests&quot;</span><span class="p">:</span> <span class="s2">&quot;1&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;Sec-GPC&quot;</span><span class="p">:</span> <span class="s2">&quot;1&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;Cache-Control&quot;</span><span class="p">:</span> <span class="s2">&quot;max-age=0&quot;</span><span class="p">,</span>
+    <span class="p">}</span>
+
+    <span class="n">resp</span> <span class="o">=</span> <span class="n">get</span><span class="p">(</span><span class="s2">&quot;https://www.bing.com/account/general&quot;</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">resp</span><span class="o">.</span><span class="n">ok</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;Response from Bing is not OK.&quot;</span><span class="p">)</span>
+
+    <span class="n">dom</span> <span class="o">=</span> <span class="n">html</span><span class="o">.</span><span class="n">fromstring</span><span class="p">(</span><span class="n">resp</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+
+    <span class="n">map_market_codes</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;zh-hk&quot;</span><span class="p">:</span> <span class="s2">&quot;en-hk&quot;</span><span class="p">,</span>  <span class="c1"># not sure why, but at Microslop this is the market code for Hongkong</span>
+    <span class="p">}</span>
+
+    <span class="k">for</span> <span class="n">href</span> <span class="ow">in</span> <span class="n">eval_xpath</span><span class="p">(</span><span class="n">dom</span><span class="p">,</span> <span class="s1">&#39;//div[@id=&quot;region-section-content&quot;]//div[@class=&quot;regionItem&quot;]/a/@href&#39;</span><span class="p">):</span>
+        <span class="n">cc_tag</span> <span class="o">=</span> <span class="n">parse_qs</span><span class="p">(</span><span class="n">urlparse</span><span class="p">(</span><span class="n">href</span><span class="p">)</span><span class="o">.</span><span class="n">query</span><span class="p">)[</span><span class="s2">&quot;cc&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">cc_tag</span> <span class="o">==</span> <span class="s2">&quot;clear&quot;</span><span class="p">:</span>
+            <span class="n">engine_traits</span><span class="o">.</span><span class="n">all_locale</span> <span class="o">=</span> <span class="n">cc_tag</span>
+            <span class="k">continue</span>
+
+        <span class="c1"># add market codes from official languages of the country ..</span>
+        <span class="k">for</span> <span class="n">lang_tag</span> <span class="ow">in</span> <span class="n">babel</span><span class="o">.</span><span class="n">languages</span><span class="o">.</span><span class="n">get_official_languages</span><span class="p">(</span><span class="n">cc_tag</span><span class="p">,</span> <span class="n">de_facto</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+            <span class="n">lang_tag</span> <span class="o">=</span> <span class="n">lang_tag</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>  <span class="c1"># zh_Hant --&gt; zh</span>
+            <span class="n">market_code</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">lang_tag</span><span class="si">}</span><span class="s2">-</span><span class="si">{</span><span class="n">cc_tag</span><span class="si">}</span><span class="s2">&quot;</span>  <span class="c1"># zh-tw</span>
+            <span class="n">market_code</span> <span class="o">=</span> <span class="n">map_market_codes</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">market_code</span><span class="p">,</span> <span class="n">market_code</span><span class="p">)</span>
+
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">sxng_tag</span> <span class="o">=</span> <span class="n">region_tag</span><span class="p">(</span><span class="n">babel</span><span class="o">.</span><span class="n">Locale</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2">_</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">lang_tag</span><span class="p">,</span> <span class="n">cc_tag</span><span class="o">.</span><span class="n">upper</span><span class="p">())))</span>
+            <span class="k">except</span> <span class="n">babel</span><span class="o">.</span><span class="n">UnknownLocaleError</span><span class="p">:</span>
+                <span class="c1"># silently ignore unknown languages</span>
+                <span class="k">continue</span>
+
+            <span class="n">conflict</span> <span class="o">=</span> <span class="n">engine_traits</span><span class="o">.</span><span class="n">regions</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">sxng_tag</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">conflict</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">conflict</span> <span class="o">!=</span> <span class="n">market_code</span><span class="p">:</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;CONFLICT: babel </span><span class="si">%s</span><span class="s2"> --&gt; </span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">sxng_tag</span><span class="p">,</span> <span class="n">conflict</span><span class="p">,</span> <span class="n">market_code</span><span class="p">))</span>
+                <span class="k">continue</span>
+
+            <span class="n">engine_traits</span><span class="o">.</span><span class="n">regions</span><span class="p">[</span><span class="n">sxng_tag</span><span class="p">]</span> <span class="o">=</span> <span class="n">market_code</span></div>
+
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+  <span id="sidebar-top"></span>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+  
+    
+            <p class="logo"><a href="../../../index.html">
+              <img class="logo" src="../../../_static/searxng-wordmark.svg" alt="Logo of SearXNG"/>
+            </a></p>
+  
+
+<h3><a href="../../../index.html">Table of Contents</a></h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../user/index.html">User information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../own-instance.html">Why use a private instance?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../admin/index.html">Administrator documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../dev/index.html">Developer documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../utils/index.html">DevOps tooling box</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/index.html">Source-Code</a></li>
+</ul>
+
+  <h3>Project Links</h3>
+  <ul>
+    <li><a href="https://github.com/searxng/searxng/tree/master">Source</a>
+  
+    <li><a href="https://github.com/searxng/searxng/wiki">Wiki</a>
+  
+    <li><a href="https://searx.space">Public instances</a>
+  
+    <li><a href="https://github.com/searxng/searxng/issues">Issue Tracker</a>
+  </ul><h3>Navigation</h3>
+<ul>
+  <li><a href="../../../index.html">Overview</a>
+    <ul>
+      <li><a href="../../index.html">Module code</a>
+        <ul>
+      <li><a href="../engines.html">searx.engines</a>
+        
+          
+          </ul>
+      </li></ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright SearXNG team.
+    </div>
+  </body>
+</html>
