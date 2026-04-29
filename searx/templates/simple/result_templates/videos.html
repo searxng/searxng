@@ -1,4 +1,4 @@
-{% from 'simple/macros.html' import result_header, result_sub_header, result_sub_footer, result_footer with context %}
+{% from 'simple/macros.html' import iframe, result_header, result_sub_header, result_sub_footer, result_footer with context %}
 
 {{ result_header(result, favicons, image_proxify) }}
 {{ result_sub_header(result) }}
@@ -18,11 +18,7 @@
 {{- result_sub_footer(result) -}}
 {% if result.iframe_src -%}
 <div id="result-video-{{ index }}" class="embedded-video invisible">
-  <iframe data-src="{{result.iframe_src}}" frameborder="0" allowfullscreen
-    {% if result.parsed_url.hostname in ("www.youtube.com", ) -%}
-    allow="picture-in-picture" referrerpolicy="origin">
-    {%- endif -%}
-  </iframe>
+  {{ iframe(result.iframe_src) }}
 </div>
 {%- endif %}
 {{ result_footer(result) }}

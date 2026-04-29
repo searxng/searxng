@@ -67,3 +67,13 @@
          class="checkbox-onoff"{{- ' ' -}}
          {%- if checked -%} checked{%- endif -%}/>
 {%- endmacro -%}
+
+<!-- iframe that additionally sets some extra feature attrs for videos -->
+{%- macro iframe(iframe_src) -%}
+  <iframe data-src="{{iframe_src}}" frameborder="0" allowfullscreen
+    {% if result.parsed_url.hostname in ("www.youtube.com", ) -%}
+    allow="picture-in-picture" referrerpolicy="origin"
+    {%- endif -%}
+    >
+  </iframe>
+{%- endmacro -%}
