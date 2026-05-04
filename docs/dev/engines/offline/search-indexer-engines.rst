@@ -37,8 +37,8 @@ in section :ref:`private engines`.
 
 .. _engine meilisearch:
 
-MeiliSearch
-===========
+MeiliSearch Engine
+==================
 
 .. automodule:: searx.engines.meilisearch
   :members:
@@ -46,17 +46,16 @@ MeiliSearch
 
 .. _engine elasticsearch:
 
-Elasticsearch
-=============
+Elasticsearch Engine
+====================
 
 .. automodule:: searx.engines.elasticsearch
   :members:
 
 .. _engine solr:
 
-Solr
-====
+Solr Engine
+===========
 
 .. automodule:: searx.engines.solr
   :members:
-

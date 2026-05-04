@@ -6,7 +6,7 @@ NoSQL databases
 
 .. sidebar:: further read
 
-   - `NoSQL databases <https://en.wikipedia.org/wiki/NoSQL>`_
+   - `NoSQL database <https://en.wikipedia.org/wiki/NoSQL>`_
    - `valkey.io <https://valkey.io/>`_
    - `MongoDB <https://www.mongodb.com>`_
 
@@ -20,7 +20,7 @@ NoSQL databases
    Initial sponsored by `Search and Discovery Fund
    <https://nlnet.nl/discovery>`_ of `NLnet Foundation <https://nlnet.nl/>`_.
 
-The following `NoSQL databases`_ are supported:
+The following `NoSQL database`_ are supported:
 
 - :ref:`engine valkey_server`
 - :ref:`engine mongodb`
@@ -57,7 +57,7 @@ instance.  To switch into the environment (:ref:`searxng-src`) you can use
 Configure the engines
 =====================
 
-`NoSQL databases`_ are used for storing arbitrary data without first defining
+`NoSQL database`_ are used for storing arbitrary data without first defining
 their structure.
 
 
@@ -75,13 +75,13 @@ Valkey Server
    - :origin:`valkey_server.py <searx/engines/valkey_server.py>`
 
 .. automodule:: searx.engines.valkey_server
-  :members:
+   :members:
 
 
 .. _engine mongodb:
 
-MongoDB
--------
+MongoDB / PyMongo
+-----------------
 
 .. _pymongo: https://github.com/mongodb/mongo-python-driver#installation
 
@@ -93,4 +93,4 @@ MongoDB
 
 
 .. automodule:: searx.engines.mongodb
-  :members:
+   :members:
