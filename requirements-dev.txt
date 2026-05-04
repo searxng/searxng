@@ -6,7 +6,8 @@ pylint==4.0.5
 splinter==0.21.0
 selenium==4.43.0
 Pallets-Sphinx-Themes==2.5.0
-Sphinx==8.2.3
+Sphinx==8.2.3;python_version <= "3.11"
+Sphinx==9.1.0; python_version > "3.11"
 sphinx-issues==6.0.0
 sphinx-jinja==2.0.2
 sphinx-tabs==3.5.0
@@ -14,12 +15,13 @@ sphinxcontrib-programoutput==0.19
 sphinx-autobuild==2025.8.25
 sphinx-notfound-page==1.1.0
 myst-parser==5.0.0
-linuxdoc==20240924
+linuxdoc==20260504
 aiounittest==1.5.0
 yamllint==1.38.0
 wlc==1.17.2
 coloredlogs==15.0.1
-docutils>=0.21.2
+docutils>=0.21.2;python_version <= "3.11"
+docutils>=0.22.4; python_version > "3.11"
 parameterized==0.9.0
 granian[reload]==2.7.4
 basedpyright==1.39.3
