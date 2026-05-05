@@ -39,11 +39,12 @@ def response(resp):
 
     for result in json_results:
         title_parts = [title['value'] for title in result['title']]
+        extract_parts = [extract['value'] for extract in result.get('extract', [])]
         results.append(
             {
                 'url': result['url'],
                 'title': ''.join(title_parts),
-                'content': result['extract'][0]['value'],
+                'content': ''.join(extract_parts),
             }
         )
 
