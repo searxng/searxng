@@ -146,7 +146,7 @@ class WDAttribute:
         self.name: str = name
 
     def get_select(self):
-        return "(group_concat(distinct ?{name};separator=", ") as ?{name}s)".replace("{name}", self.name)
+        return "(group_concat(distinct ?{name};separator=', ') as ?{name}s)".replace("{name}", self.name)
 
     def get_label(self, language: str):
         return get_label_for_entity(self.name, language)
@@ -222,7 +222,7 @@ class WDArticle(WDAttribute):
 
 class WDLabelAttribute(WDAttribute):
     def get_select(self):
-        return "(group_concat(distinct ?{name}Label;separator=", ") as ?{name}Labels)".replace("{name}", self.name)
+        return "(group_concat(distinct ?{name}Label;separator=', ') as ?{name}Labels)".replace("{name}", self.name)
 
     def get_where(self):
         return "OPTIONAL { ?item wdt:{name} ?{name} . }".replace("{name}", self.name)
