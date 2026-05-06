@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
-import sys, os
+import os
 from pathlib import Path
 
 from searx import get_setting
@@ -156,6 +156,26 @@ issues_github_path = "searxng/searxng"
 # HTML -----------------------------------------------------------------
 
 html_theme = "furo"
+html_theme_options = {
+    # link to project source at GitHub for editing and viewing docs code
+    "source_repository": "https://github.com/searxng/searxng/",
+    "source_branch": "master",
+    "source_directory": "docs/",
+
+    # Show link to repository & searx.space in footer
+    "footer_icons": [
+        {
+            "name": "GitHub",
+            "url": "https://github.com/searxng/searxng/",
+            "html": "&#x1F4BE;",
+        },
+        {
+            "name": "searx.space",
+            "url": "https://searx.space/",
+            "html": "&#x1F310;",
+        },
+    ],
+}
 
 html_sidebars = {
     "**": [
@@ -188,6 +208,7 @@ html_show_sphinx = False
 html_logo = "../client/simple/src/brand/searxng-wordmark.svg"
 html_title = "SearXNG Documentation ({})".format(VERSION_STRING)
 html_show_sourcelink = True
+html_copy_source = True
 
 # LaTeX ----------------------------------------------------------------
 
