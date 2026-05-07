@@ -102,11 +102,18 @@ The built-in plugins are all located in the namespace `searx.plugins`.
 external plugins
 ================
 
+SearXNG supports :ref:`external plugins <dev plugin>` / there is no need to
+install one, SearXNG runs out of the box.
+
+`Only show green hosted results`_:
+  SearXNG plugin to check if a domain is part of the Green WEB.
+
+`SearXNG BM25 Reranker`_:
+  SearXNG plugin that reranks search results using BM25 text relevance scoring
+  to improve search quality.
+
 .. _Only show green hosted results:
-   https://github.com/return42/tgwf-searx-plugins/
+    https://github.com/return42/tgwf-searx-plugins/
 
-SearXNG supports *external plugins* / there is no need to install one, SearXNG
-runs out of the box.
-
-- `Only show green hosted results`_
-- ..
+.. _SearXNG BM25 Reranker:
+    https://github.com/Oaklight/searxng-bm25-reranker
