@@ -84,6 +84,10 @@ def request(query, params):
 
 
 def response(resp):
+    # sometimes 360search returns empty response when called from non-chinese ips
+    if not resp.text or not resp.text.strip():
+        return []
+
     dom = html.fromstring(resp.text)
     results = []
 
