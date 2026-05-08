@@ -190,7 +190,10 @@ def get_static_file_list() -> list[str]:
                 # ignore hidden file
                 continue
             if f.is_file():
-                file_list.append(str(f.relative_to(static_path)))
+                # Use forward slashes so lookups work on Windows too
+                # (os.path / pathlib use backslashes on Windows, but the
+                # template url_for calls always use forward slashes).
+                file_list.append(f.relative_to(static_path).as_posix())
             if f.is_dir():
                 _walk(f)
 
@@ -202,10 +205,14 @@ def get_result_templates(templates_path):
     result_templates = set()
     templates_path_length = len(templates_path) + 1
     for directory, _, files in os.walk(templates_path):
-        if directory.endswith('result_templates'):
+        # endswith check must handle both / and \ as separator (Windows)
+        norm_dir = directory.replace('\\', '/')
+        if norm_dir.endswith('result_templates'):
             for filename in files:
                 f = os.path.join(directory[templates_path_length:], filename)
-                result_templates.add(f)
+                # Normalise to forward slashes so the lookup in get_result_template
+                # succeeds on Windows (os.path.join uses backslashes there).
+                result_templates.add(f.replace('\\', '/'))
     return result_templates
 
 
