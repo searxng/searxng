@@ -18,7 +18,6 @@ from searx.network import get as http_get
 if t.TYPE_CHECKING:
     from searx.cache import CacheRowType
 
-
 RuleType = tuple[str, list[str], list[str]]
 
 

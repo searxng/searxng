@@ -51,7 +51,6 @@ OSM_KEYS_TAGS: dict[str, dict[str, t.Any]]
 ENGINE_DESCRIPTIONS: dict[str, dict[str, t.Any]]
 ENGINE_TRAITS: dict[str, dict[str, t.Any]]
 
-
 lazy_globals = {
     "CURRENCIES": CurrenciesDB(),
     "USER_AGENTS": None,

@@ -15,7 +15,6 @@ _DATA_CACHE: ExpireCacheSQLite | None = None
 
 
 def get_cache():
-
     global _DATA_CACHE  # pylint: disable=global-statement
 
     if _DATA_CACHE is None:
