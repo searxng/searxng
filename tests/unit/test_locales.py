@@ -4,6 +4,7 @@
 """Test some code from module :py:obj:`searx.locales`"""
 
 from parameterized import parameterized
+
 from searx import locales
 from searx.sxng_locales import sxng_locales
 from tests import SearxTestCase

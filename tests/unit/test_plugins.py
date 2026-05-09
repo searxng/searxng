@@ -8,10 +8,8 @@ import searx
 import searx.plugins
 import searx.preferences
 import searx.results
-
-from searx.result_types import Result
 from searx.extended_types import sxng_request
-
+from searx.result_types import Result
 from tests import SearxTestCase
 
 plg_store = searx.plugins.PluginStorage()
@@ -19,7 +17,6 @@ plg_store.load_settings(searx.get_setting("plugins"))
 
 
 def get_search_mock(query, **kwargs):
-
     lang = kwargs.get("lang", "en-US")
     kwargs["pageno"] = kwargs.get("pageno", 1)
     kwargs["locale"] = babel.Locale.parse(lang, sep="-")
@@ -33,14 +30,12 @@ def get_search_mock(query, **kwargs):
 
 
 def do_pre_search(query, storage, **kwargs) -> bool:
-
     search = get_search_mock(query, **kwargs)
     ret = storage.pre_search(sxng_request, search)
     return ret
 
 
 def do_post_search(query, storage, **kwargs) -> Mock:
-
     search = get_search_mock(query, **kwargs)
     storage.post_search(sxng_request, search)
     return search
@@ -85,11 +80,9 @@ class PluginStorage(SearxTestCase):
         self.pref.parse_dict({"locale": "en"})
 
     def test_init(self):
-
         self.assertEqual(2, len(self.storage))
 
     def test_hooks(self):
-
         with self.app.test_request_context():
             sxng_request.preferences = self.pref
             query = ""

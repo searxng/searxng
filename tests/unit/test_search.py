@@ -4,10 +4,9 @@
 from copy import copy
 
 import searx.search
-from searx.search.models import SearchQuery, EngineRef
 from searx import settings
+from searx.search.models import SearchQuery, EngineRef
 from tests import SearxTestCase
-
 
 SAFESEARCH = 0
 PAGENO = 1

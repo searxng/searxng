@@ -14,7 +14,6 @@ import math
 from parameterized import parameterized
 
 from searx.utils import js_obj_str_to_python
-
 from tests import SearxTestCase
 
 

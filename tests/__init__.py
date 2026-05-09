@@ -1,10 +1,10 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 # pylint: disable=missing-module-docstring,disable=missing-class-docstring,invalid-name
 
-import pathlib
 import os
-import aiounittest
+import pathlib
 
+import aiounittest
 
 os.environ.pop('SEARXNG_SETTINGS_PATH', None)
 os.environ['SEARXNG_DISABLE_ETC_SETTINGS'] = '1'
@@ -63,8 +63,6 @@ class SearxTestCase(aiounittest.AsyncTestCase):
         os.environ['SEARXNG_SETTINGS_PATH'] = str(self.SETTINGS_FOLDER / self.TEST_SETTINGS)
 
         # pylint: disable=import-outside-toplevel
-        import searx
-        import searx.locales
         import searx.plugins
         import searx.search
         import searx.webapp

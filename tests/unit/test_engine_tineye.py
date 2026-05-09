@@ -4,11 +4,12 @@
 import logging
 from datetime import datetime
 from unittest.mock import Mock
-from requests import HTTPError
-from parameterized import parameterized
 
-import searx.search
+from parameterized import parameterized
+from requests import HTTPError
+
 import searx.engines
+import searx.search
 from tests import SearxTestCase
 
 

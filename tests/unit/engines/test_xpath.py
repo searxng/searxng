@@ -2,11 +2,11 @@
 # pylint: disable=missing-module-docstring,disable=missing-class-docstring,invalid-name
 
 from collections import defaultdict
+
 import mock
 
-from searx.engines import xpath
 from searx import logger
-
+from searx.engines import xpath
 from tests import SearxTestCase
 
 logger = logger.getChild('engines')

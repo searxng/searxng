@@ -2,12 +2,12 @@
 # pylint: disable=missing-module-docstring,disable=missing-class-docstring,invalid-name
 """Shared testing code."""
 
-import sys
 import os
-import subprocess
-import traceback
 import pathlib
 import shutil
+import subprocess
+import sys
+import traceback
 
 from splinter import Browser
 
