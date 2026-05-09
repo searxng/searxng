@@ -29,7 +29,7 @@ class Beaufort:
 
     # fmt: off
     scale: list[float] = [
-         0.2,  1.5,  3.3,  5.4,  7.9,
+        0.2, 1.5, 3.3, 5.4, 7.9,
         10.7, 13.8, 17.1, 20.7, 24.4,
         28.4, 32.6, 32.7, 41.1, 45.8,
         50.8, 55.6
@@ -97,7 +97,6 @@ or a callable_ (val in / converted value returned).
 .. _callable: https://docs.python.org/3/glossary.html#term-callable
 """
 
-
 ALIAS_SYMBOLS = {
     '°C': ('C',),
     '°F': ('F',),
@@ -110,7 +109,6 @@ ALIAS_SYMBOLS = {
     '°F': ('F', ...),  # list of alias symbols for °F (Q99490479)
     'mi': ('L',),      # list of alias symbols for mi (Q253276)
 """
-
 
 SYMBOL_TO_SI = []
 UNITS_BY_SI_NAME: dict = {}
@@ -135,7 +133,6 @@ def convert_to_si(si_name: str, symbol: str, value: float | int) -> float:
 
 
 def units_by_si_name(si_name):
-
     global UNITS_BY_SI_NAME  # pylint: disable=global-statement,global-variable-not-assigned
     if UNITS_BY_SI_NAME:
         return UNITS_BY_SI_NAME[si_name]

@@ -3,7 +3,6 @@
 
 import warnings
 
-
 # limiter backward compatibility
 # ------------------------------
 
@@ -16,7 +15,6 @@ LIMITER_CFG_DEPRECATED = {
 
 
 def limiter_fix_cfg(cfg, cfg_file):
-
     kwargs = {
         "category": DeprecationWarning,
         "filename": str(cfg_file),

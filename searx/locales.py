@@ -30,10 +30,10 @@ import typing as t
 from pathlib import Path
 
 import babel
-from babel.support import Translations
-import babel.languages
 import babel.core
+import babel.languages
 import flask_babel  # pyright: ignore[reportMissingTypeStubs]
+from babel.support import Translations
 from flask.ctx import has_request_context
 
 from searx import (
@@ -44,7 +44,6 @@ from searx import (
 from searx.extended_types import sxng_request
 
 logger = logger.getChild('locales')
-
 
 # safe before monkey patching flask_babel.get_translations
 _flask_babel_get_translations = flask_babel.get_translations

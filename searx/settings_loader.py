@@ -17,8 +17,8 @@ to be loaded. The rules used for this can be found in the
 
 """
 
-import typing as t
 import os.path
+import typing as t
 from collections.abc import MutableMapping
 from itertools import filterfalse
 from pathlib import Path
@@ -180,7 +180,6 @@ def update_settings(default_settings: MutableMapping[str, t.Any], user_settings:
 
 
 def is_use_default_settings(user_settings: SettingsType) -> bool:
-
     use_default_settings: bool | JSONType = user_settings.get('use_default_settings')
     if use_default_settings is True:
         return True

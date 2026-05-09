@@ -3,32 +3,21 @@
 """WebApp"""
 # pylint: disable=use-dict-literal
 
+import base64
 import json
 import os
 import sys
-import base64
-
-from timeit import default_timer
-from html import escape
-from io import StringIO
 import typing
-
 import urllib
 import urllib.parse
+import warnings
+from html import escape
+from io import StringIO
+from timeit import default_timer
 from urllib.parse import urlencode, urlparse, unquote
 
-import warnings
-import httpx
-
-from pygments import highlight
-from pygments.lexers import get_lexer_by_name
-from pygments.formatters import HtmlFormatter  # pylint: disable=no-name-in-module
-
-from whitenoise import WhiteNoise
-from whitenoise.base import Headers
-
 import flask
-
+import httpx
 from flask import (
     Flask,
     render_template,
@@ -37,40 +26,75 @@ from flask import (
     redirect,
     send_from_directory,
 )
-from flask.wrappers import Response
 from flask.json import jsonify
-
+from flask.wrappers import Response
 from flask_babel import (
     Babel,
     gettext,
     format_decimal,
 )
+from pygments import highlight
+from pygments.formatters import HtmlFormatter  # pylint: disable=no-name-in-module
+from pygments.lexers import get_lexer_by_name
+from whitenoise import WhiteNoise
+from whitenoise.base import Headers
 
 import searx
-from searx.extended_types import sxng_request
+import searx.answerers
+import searx.plugins
+import searx.search
+from searx import favicons
+from searx import infopage
+from searx import limiter
 from searx import (
     logger,
     get_setting,
     settings,
 )
+from searx import webutils
 
-from searx import infopage
-from searx import limiter
+# renaming names from searx imports ...
+from searx.autocomplete import search_autocomplete, backends as autocomplete_backends
 from searx.botdetection import link_token, ProxyFix
-
 from searx.data import ENGINE_DESCRIPTIONS
-from searx.result_types import Answer
-from searx.settings_defaults import OUTPUT_FORMATS
-from searx.settings_loader import DEFAULT_SETTINGS_FILE
-from searx.exceptions import SearxParameterException
 from searx.engines import (
     DEFAULT_CATEGORY,
     categories,
     engines,
     engine_shortcuts,
 )
-
-from searx import webutils
+from searx.exceptions import SearxParameterException
+from searx.extended_types import sxng_request
+from searx.flaskfix import patch_application
+from searx.locales import (
+    LOCALE_BEST_MATCH,
+    LOCALE_NAMES,
+    RTL_LOCALES,
+    localeselector,
+    locales_initialize,
+    match_locale,
+)
+from searx.metrics import get_engines_stats, get_engine_errors, get_reliabilities, histogram, counter, openmetrics
+from searx.network import stream as http_stream, set_context_network_name
+from searx.plugins.oa_doi_rewrite import get_doi_resolver
+from searx.preferences import (
+    Preferences,
+    ClientPref,
+    ValidationException,
+)
+from searx.query import RawTextQuery
+from searx.result_types import Answer
+from searx.settings_defaults import OUTPUT_FORMATS
+from searx.settings_loader import DEFAULT_SETTINGS_FILE
+from searx.sxng_locales import sxng_locales
+from searx.utils import gen_useragent, dict_subset
+from searx.valkeydb import initialize as valkey_initialize
+from searx.version import VERSION_STRING, GIT_URL, GIT_BRANCH
+from searx.webadapter import (
+    get_search_query_from_webapp,
+    get_selected_categories,
+    parse_lang,
+)
 from searx.webutils import (
     highlight_content,
     get_result_templates,
@@ -80,45 +104,6 @@ from searx.webutils import (
     is_hmac_of,
     group_engines_in_tab,
 )
-from searx.webadapter import (
-    get_search_query_from_webapp,
-    get_selected_categories,
-    parse_lang,
-)
-from searx.utils import gen_useragent, dict_subset
-from searx.version import VERSION_STRING, GIT_URL, GIT_BRANCH
-from searx.query import RawTextQuery
-from searx.plugins.oa_doi_rewrite import get_doi_resolver
-from searx.preferences import (
-    Preferences,
-    ClientPref,
-    ValidationException,
-)
-import searx.answerers
-import searx.plugins
-
-
-from searx.metrics import get_engines_stats, get_engine_errors, get_reliabilities, histogram, counter, openmetrics
-from searx.flaskfix import patch_application
-
-from searx.locales import (
-    LOCALE_BEST_MATCH,
-    LOCALE_NAMES,
-    RTL_LOCALES,
-    localeselector,
-    locales_initialize,
-    match_locale,
-)
-
-# renaming names from searx imports ...
-from searx.autocomplete import search_autocomplete, backends as autocomplete_backends
-from searx import favicons
-
-from searx.valkeydb import initialize as valkey_initialize
-from searx.sxng_locales import sxng_locales
-import searx.search
-from searx.network import stream as http_stream, set_context_network_name
-
 
 logger = logger.getChild('webapp')
 
@@ -1339,7 +1324,6 @@ def run():
 
 
 def init():
-
     if searx.sxng_debug or app.debug:
         app.debug = True
         searx.sxng_debug = True

@@ -4,8 +4,8 @@
 __all__ = ["get_bang_url"]
 
 import typing as t
-
 from urllib.parse import quote_plus, urlparse
+
 from searx.data import EXTERNAL_BANGS
 
 LEAF_KEY = chr(16)

@@ -92,20 +92,19 @@ Implementation
 
 """
 
-from ipaddress import ip_address
 import sys
-
+from ipaddress import ip_address
 from pathlib import Path
+
 import flask
 import werkzeug
 
 import searx.compat
+from searx import botdetection
 from searx import (
     logger,
     valkeydb,
 )
-from searx import botdetection
-from searx.extended_types import SXNG_Request, sxng_request
 from searx.botdetection import (
     config,
     http_accept,
@@ -118,6 +117,7 @@ from searx.botdetection import (
     get_network,
     dump_request,
 )
+from searx.extended_types import SXNG_Request, sxng_request
 
 # the configuration are limiter.toml and "limiter" in settings.yml so, for
 # coherency, the logger is "limiter"

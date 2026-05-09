@@ -14,22 +14,21 @@ __all__ = [
     "GeoLocation",
 ]
 
+import base64
+import datetime
+import typing as t
+import zoneinfo
+
 # msgspec: note that if using PEP 563 “postponed evaluation of annotations”
 # (e.g. from __future__ import annotations) only the following spellings will
 # work: https://jcristharif.com/msgspec/structs.html#class-variables
 from typing import ClassVar
-import typing as t
-
-import base64
-import datetime
-import zoneinfo
-
 from urllib.parse import quote_plus
 
 import babel
-import babel.numbers
 import babel.dates
 import babel.languages
+import babel.numbers
 import flask_babel  # pyright: ignore[reportMissingTypeStubs]
 import msgspec
 
@@ -45,14 +44,14 @@ YR_WEATHER_SYMBOL_URL = "https://raw.githubusercontent.com/nrkno/yr-weather-symb
 
 
 def get_WEATHER_DATA_CACHE():
-
     global WEATHER_DATA_CACHE  # pylint: disable=global-statement
 
     if WEATHER_DATA_CACHE is None:
         WEATHER_DATA_CACHE = ExpireCache.build_cache(
             ExpireCacheCfg(
                 name="WEATHER_DATA_CACHE",
-                MAX_VALUE_LEN=1024 * 200,  # max. 200kB per icon (icons have most often 10-20kB)
+                # max. 200kB per icon (icons have most often 10-20kB)
+                MAX_VALUE_LEN=1024 * 200,
                 MAXHOLD_TIME=60 * 60 * 24 * 7 * 4,  # 4 weeks
             )
         )

@@ -4,26 +4,23 @@
 # pylint: disable=useless-object-inheritance
 
 import typing as t
-
 from base64 import urlsafe_b64encode, urlsafe_b64decode
-from zlib import compress, decompress
-from urllib.parse import parse_qs, urlencode
 from collections import OrderedDict
 from collections.abc import Iterable
+from urllib.parse import parse_qs, urlencode
+from zlib import compress, decompress
 
-import flask
 import babel
 import babel.core
+import flask
 
 import searx.plugins
-
 from searx import settings, autocomplete, favicons
 from searx.enginelib import Engine
 from searx.engines import DEFAULT_CATEGORY
 from searx.extended_types import SXNG_Request
 from searx.locales import LOCALE_NAMES
 from searx.webutils import VALID_LANGUAGE_CODE
-
 
 COOKIE_MAX_AGE = 60 * 60 * 24 * 365 * 5  # 5 years
 DOI_RESOLVERS = list(settings['doi_resolvers'])
@@ -368,7 +365,7 @@ class ClientPref:
         pairs: list[tuple[babel.Locale, float]] = []
         for l in al_header.split(','):
             # fmt: off
-            lang, qvalue = [_.strip() for _ in (l.split(';') + ['q=1',])[:2]]
+            lang, qvalue = [_.strip() for _ in (l.split(';') + ['q=1', ])[:2]]
             # fmt: on
             try:
                 qvalue = float(qvalue.split('=')[-1])

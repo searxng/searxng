@@ -2,25 +2,23 @@
 # pylint: disable=missing-module-docstring, invalid-name
 
 
-import os
-import pathlib
 import csv
 import hashlib
 import hmac
-import re
 import itertools
 import json
-from datetime import datetime, timedelta
-from typing import Iterable, List, Tuple, TYPE_CHECKING
-
-from io import StringIO
+import os
+import pathlib
+import re
 from codecs import getincrementalencoder
+from datetime import datetime, timedelta
+from io import StringIO
+from typing import Iterable, List, Tuple, TYPE_CHECKING
 
 import msgspec
 from flask_babel import gettext, format_date  # type: ignore
 
 from searx import logger, get_setting
-
 from searx.engines import DEFAULT_CATEGORY
 
 if TYPE_CHECKING:
@@ -268,7 +266,6 @@ def regex_highlight_cjk(word: str) -> str:
 
 
 def highlight_content(content, query):
-
     if not content:
         return None
 
