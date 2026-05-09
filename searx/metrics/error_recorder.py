@@ -1,21 +1,21 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 # pylint: disable=missing-module-docstring, invalid-name
 
-import typing as t
-
 import inspect
+import typing as t
 from json import JSONDecodeError
 from urllib.parse import urlparse
+
 from httpx import HTTPError, HTTPStatusError
+
+from searx import searx_parent_dir, settings
+from searx.engines import engines
 from searx.exceptions import (
     SearxXPathSyntaxException,
     SearxEngineXPathException,
     SearxEngineAPIException,
     SearxEngineAccessDeniedException,
 )
-from searx import searx_parent_dir, settings
-from searx.engines import engines
-
 
 errors_per_engines: dict[str, t.Any] = {}
 

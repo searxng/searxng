@@ -1,14 +1,14 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 # pylint: disable=missing-module-docstring
 
-import math
 import contextlib
+import math
 from timeit import default_timer
 
 from searx.engines import engines
 from searx.openmetrics import OpenMetricsFamily
-from .models import HistogramStorage, CounterStorage, VoidHistogram, VoidCounterStorage
 from .error_recorder import count_error, count_exception, errors_per_engines
+from .models import HistogramStorage, CounterStorage, VoidHistogram, VoidCounterStorage
 
 __all__ = [
     "initialize",
@@ -24,9 +24,7 @@ __all__ = [
     "count_exception",
 ]
 
-
 ENDPOINTS = {'search'}
-
 
 histogram_storage: HistogramStorage = None  # type: ignore
 counter_storage: CounterStorage = None  # type: ignore
