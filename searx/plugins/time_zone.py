@@ -8,7 +8,6 @@ from flask_babel import gettext
 
 from searx.result_types import EngineResults
 from searx.weather import DateTime, GeoLocation
-
 from . import Plugin, PluginInfo
 
 if t.TYPE_CHECKING:

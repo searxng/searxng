@@ -96,7 +96,6 @@ Implementation
 
 __all__ = ["PluginInfo", "Plugin", "PluginStorage", "PluginCfg"]
 
-
 import searx
 from ._core import PluginInfo, Plugin, PluginStorage, PluginCfg
 

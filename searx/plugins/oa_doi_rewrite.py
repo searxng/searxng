@@ -1,15 +1,14 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 # pylint: disable=missing-module-docstring
-import typing
-
 import re
+import typing
 from urllib.parse import parse_qsl
 
 from flask_babel import gettext
-from searx import get_setting
-from searx.plugins import Plugin, PluginInfo
-from searx.extended_types import sxng_request
 
+from searx import get_setting
+from searx.extended_types import sxng_request
+from searx.plugins import Plugin, PluginInfo
 from ._core import log
 
 if typing.TYPE_CHECKING:
@@ -17,7 +16,6 @@ if typing.TYPE_CHECKING:
     from searx.extended_types import SXNG_Request
     from searx.result_types import Result, LegacyResult
     from searx.plugins import PluginCfg
-
 
 ahmia_blacklist: list = []
 

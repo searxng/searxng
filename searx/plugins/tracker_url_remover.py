@@ -7,7 +7,6 @@ import typing as t
 from flask_babel import gettext  # pyright: ignore[reportUnknownVariableType]
 
 from searx.data import TRACKER_PATTERNS
-
 from . import Plugin, PluginInfo
 
 if t.TYPE_CHECKING:
@@ -16,7 +15,6 @@ if t.TYPE_CHECKING:
     from searx.extended_types import SXNG_Request
     from searx.result_types import Result, LegacyResult  # pyright: ignore[reportPrivateLocalImportUsage]
     from searx.plugins import PluginCfg
-
 
 log = logging.getLogger("searx.plugins.tracker_url_remover")
 
@@ -28,7 +26,6 @@ class SXNGPlugin(Plugin):
     id = "tracker_url_remover"
 
     def __init__(self, plg_cfg: "PluginCfg") -> None:
-
         super().__init__(plg_cfg)
         self.info = PluginInfo(
             id=self.id,
@@ -42,7 +39,6 @@ class SXNGPlugin(Plugin):
         return True
 
     def on_result(self, request: "SXNG_Request", search: "SearchWithPlugins", result: "Result") -> bool:
-
         result.filter_urls(self.filter_url_field)
         return True
 

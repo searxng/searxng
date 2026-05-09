@@ -1,14 +1,12 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 # pylint: disable=missing-module-docstring, missing-class-docstring
-import typing
-
 import re
+import typing
 from ipaddress import ip_address
 
 from flask_babel import gettext
 
 from searx.result_types import EngineResults
-
 from . import Plugin, PluginInfo
 
 if typing.TYPE_CHECKING:
