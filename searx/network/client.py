@@ -1,14 +1,13 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 # pylint: disable=missing-module-docstring, global-statement
 
-import typing as t
-from types import TracebackType
-
 import asyncio
 import logging
 import random
-from ssl import SSLContext
 import threading
+import typing as t
+from ssl import SSLContext
+from types import TracebackType
 
 import httpx
 from httpx_socks import AsyncProxyTransport
