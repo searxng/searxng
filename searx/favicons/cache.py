@@ -17,22 +17,21 @@
 
 """
 
-import typing as t
-
-import os
 import abc
 import dataclasses
 import hashlib
 import logging
+import os
 import sqlite3
 import tempfile
 import time
-import typer
+import typing as t
 
 import msgspec
+import typer
 
-from searx import sqlitedb
 from searx import logger
+from searx import sqlitedb
 from searx.utils import humanize_bytes, humanize_number
 
 CACHE: "FaviconCache"

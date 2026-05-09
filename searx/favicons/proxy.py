@@ -1,25 +1,22 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 """Implementations for a favicon proxy"""
 
-from typing import Callable
-
-import importlib
 import base64
+import importlib
 import pathlib
 import urllib.parse
+from typing import Callable
 
 import flask
-from httpx import HTTPError
 import msgspec
+from httpx import HTTPError
 
 from searx import get_setting
-
-from searx.webutils import new_hmac, is_hmac_of
 from searx.exceptions import SearxEngineResponseException
 from searx.extended_types import sxng_request
-
-from .resolvers import DEFAULT_RESOLVER_MAP
+from searx.webutils import new_hmac, is_hmac_of
 from . import cache
+from .resolvers import DEFAULT_RESOLVER_MAP
 
 DEFAULT_FAVICON_URL = {}
 CFG: "FaviconProxyConfig" = None  # type: ignore

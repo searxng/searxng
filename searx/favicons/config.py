@@ -3,6 +3,7 @@
 
 
 import pathlib
+
 import msgspec
 
 from .cache import FaviconCacheConfig
