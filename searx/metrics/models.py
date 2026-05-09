@@ -1,13 +1,11 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 # pylint: disable=missing-module-docstring
 
-import typing as t
-
 import decimal
 import threading
+import typing as t
 
 from searx import logger
-
 
 __all__ = ["Histogram", "HistogramStorage", "CounterStorage"]
 
