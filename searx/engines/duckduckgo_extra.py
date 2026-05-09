@@ -5,19 +5,15 @@ DuckDuckGo Extra (images, videos, news)
 """
 
 import typing as t
-
 from datetime import datetime
-from urllib.parse import urlencode
 from urllib.parse import quote_plus
+from urllib.parse import urlencode
 
-from searx.utils import get_embeded_stream_url, html_to_text, gen_useragent, extr
-from searx.network import get  # see https://github.com/searxng/searxng/issues/762
-
-from searx.engines.duckduckgo import fetch_traits  # pylint: disable=unused-import
 from searx.engines.duckduckgo import get_ddg_lang, get_vqd, set_vqd
+from searx.network import get  # see https://github.com/searxng/searxng/issues/762
+from searx.utils import get_embeded_stream_url, html_to_text, gen_useragent, extr
 
 if t.TYPE_CHECKING:
-    from searx.extended_types import SXNG_Response
     from searx.search.processors import OnlineParams
 
 # about
@@ -45,7 +41,6 @@ _HTTP_User_Agent: str = gen_useragent()
 
 
 def init(engine_settings: dict[str, t.Any]):
-
     if engine_settings["ddg_category"] not in ["images", "videos", "news"]:
         raise ValueError(f"Unsupported DuckDuckGo category: {engine_settings['ddg_category']}")
 
@@ -54,7 +49,6 @@ def fetch_vqd(
     query: str,
     params: "OnlineParams",
 ):
-
     logger.debug("fetch_vqd: request value from from duckduckgo.com")
     resp = get(
         url=f"https://duckduckgo.com/?q={quote_plus(query)}&iar=images&t=h_",
@@ -81,7 +75,6 @@ def fetch_vqd(
 
 
 def request(query: str, params: "OnlineParams") -> None:
-
     if len(query) >= 500:
         # DDG does not accept queries with more than 499 chars
         params["url"] = None

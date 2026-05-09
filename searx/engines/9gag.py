@@ -2,8 +2,8 @@
 # pylint: disable=invalid-name
 """9GAG (social media)"""
 
-from json import loads
 from datetime import datetime
+from json import loads
 from urllib.parse import urlencode
 
 about = {

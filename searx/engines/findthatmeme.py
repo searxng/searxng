@@ -1,8 +1,9 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 """FindThatMeme (Images)"""
 
-from json import dumps
 from datetime import datetime
+from json import dumps
+
 from searx.utils import humanize_bytes
 
 about = {
@@ -19,7 +20,6 @@ paging = True
 
 
 def request(query, params):
-
     start_index = (params["pageno"] - 1) * 50
     data = {"search": query, "offset": start_index}
     params["url"] = base_url

@@ -5,8 +5,8 @@ peertube engines.
 
 """
 
-from urllib.parse import urlencode
 from datetime import datetime
+from urllib.parse import urlencode
 
 from searx.engines.peertube import fetch_traits  # pylint: disable=unused-import
 from searx.engines.peertube import (

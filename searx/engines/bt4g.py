@@ -73,7 +73,6 @@ bt4g_category = 'all'
 
 
 def request(query, params):
-
     order_by = bt4g_order_by
     if params['time_range']:
         order_by = 'time'

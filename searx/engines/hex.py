@@ -2,8 +2,8 @@
 """hex.pm"""
 
 from urllib.parse import urlencode
-from dateutil import parser
 
+from dateutil import parser
 
 about = {
     # pylint: disable=line-too-long
@@ -16,7 +16,6 @@ about = {
 }
 
 categories = ["it", "packages"]
-
 
 # engine dependent config
 paging = True

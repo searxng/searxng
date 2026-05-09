@@ -195,7 +195,6 @@ time_range_map: dict[str, str] = {
 
 
 def request(query: str, params: dict[str, t.Any]) -> None:
-
     args: dict[str, t.Any] = {
         "q": query,
         "source": "web",
@@ -262,7 +261,6 @@ def extract_json_data(text: str) -> dict[str, t.Any]:
 
 
 def response(resp: SXNG_Response) -> EngineResults:
-
     if brave_category in ("search", "goggles"):
         return _parse_search(resp)
 

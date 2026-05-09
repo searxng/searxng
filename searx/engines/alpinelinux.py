@@ -10,10 +10,10 @@ servers and for Docker images.
 """
 
 import re
-
 from urllib.parse import urlencode
-from lxml import html
+
 from dateutil import parser
+from lxml import html
 
 from searx.utils import eval_xpath, eval_xpath_list, extract_text
 

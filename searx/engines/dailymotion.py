@@ -96,7 +96,6 @@ iframe_src = "https://www.dailymotion.com/embed/video/{video_id}"
 
 
 def request(query, params):
-
     if not query:
         return False
 

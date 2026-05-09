@@ -12,6 +12,7 @@
 """
 
 from urllib.parse import urlencode
+
 from searx.network import raise_for_httperror
 
 about = {
@@ -32,7 +33,6 @@ search_string = "/{endpoint}/?sp={page}&{query}&fo=json"
 
 
 def request(query, params):
-
     search_path = search_string.format(
         endpoint=endpoint,
         query=urlencode({'q': query}),
@@ -44,7 +44,6 @@ def request(query, params):
 
 
 def response(resp):
-
     results = []
     json_data = resp.json()
 

@@ -3,7 +3,9 @@
 """1337x"""
 
 from urllib.parse import quote, urljoin
+
 from lxml import html
+
 from searx.utils import extract_text, eval_xpath, eval_xpath_list, eval_xpath_getindex
 
 # about

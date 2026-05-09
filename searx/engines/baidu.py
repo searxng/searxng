@@ -7,11 +7,11 @@
 # There exits a https://github.com/ohblue/baidu-serp-api/
 # but we don't use it here (may we can learn from).
 
-from urllib.parse import urlencode
+import json
+import time
 from datetime import datetime
 from html import unescape
-import time
-import json
+from urllib.parse import urlencode
 
 from searx.exceptions import SearxEngineAPIException, SearxEngineCaptchaException
 from searx.utils import html_to_text

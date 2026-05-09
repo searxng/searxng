@@ -40,7 +40,6 @@ def request(_query, params):
 
 
 def response(resp) -> EngineResults:
-
     res = EngineResults()
     data = resp.json()
     if not data.get('translations'):

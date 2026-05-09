@@ -10,13 +10,11 @@ from urllib.parse import quote
 
 from dateutil import parser as date_parser
 
+from searx import weather
 from searx.engines.duckduckgo import fetch_traits  # pylint: disable=unused-import
 from searx.engines.duckduckgo import get_ddg_lang
-
-from searx.result_types import EngineResults
 from searx.extended_types import SXNG_Response
-from searx import weather
-
+from searx.result_types import EngineResults
 
 about = {
     "website": 'https://duckduckgo.com/',
@@ -71,7 +69,6 @@ WEATHERKIT_TO_CONDITION: dict[str, weather.WeatherConditionType] = {
 
 
 def _weather_data(location: weather.GeoLocation, data: dict[str, t.Any]):
-
     return EngineResults.types.WeatherAnswer.Item(
         location=location,
         temperature=weather.Temperature(val=data['temperature'], unit="°C"),
@@ -86,7 +83,6 @@ def _weather_data(location: weather.GeoLocation, data: dict[str, t.Any]):
 
 
 def request(query: str, params: dict[str, t.Any]):
-
     eng_region = traits.get_region(params['searxng_locale'], traits.all_locale)
     eng_lang = get_ddg_lang(traits, params['searxng_locale'])
 

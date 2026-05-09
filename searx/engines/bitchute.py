@@ -1,8 +1,9 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 """bitchute (Videos)"""
 
-from json import dumps
 from datetime import datetime
+from json import dumps
+
 from searx.utils import html_to_text
 
 about = {
@@ -21,7 +22,6 @@ results_per_page = 20
 
 
 def request(query, params):
-
     start_index = (params["pageno"] - 1) * results_per_page
     data = {"offset": start_index, "limit": results_per_page, "query": query, "sensitivity_id": "normal", "sort": "new"}
     params["url"] = base_url

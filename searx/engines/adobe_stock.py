@@ -82,6 +82,7 @@ Additional subcategories:
 - Vectors: ``zip_vector`` (Vectors),
 """
 
+
 # Do we need support for "free_collection" and "include_stock_enterprise"?
 
 
@@ -110,7 +111,6 @@ def init(_):
 
 
 def request(query, params):
-
     args = {
         "k": query,
         "limit": results_per_page,
@@ -146,7 +146,6 @@ def parse_image_item(item):
 
 
 def parse_video_item(item):
-
     # in video items, the title is more or less a "content description", we try
     # to reduce the length of the title ..
 

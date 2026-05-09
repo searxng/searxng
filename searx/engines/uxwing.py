@@ -2,6 +2,7 @@
 """UXwing (images)"""
 
 from urllib.parse import quote_plus
+
 from lxml import html
 
 from searx.utils import eval_xpath, eval_xpath_list, extract_text

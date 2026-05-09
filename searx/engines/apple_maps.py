@@ -5,8 +5,8 @@ from json import loads
 from time import time
 from urllib.parse import urlencode
 
-from searx.network import get as http_get
 from searx.engines.openstreetmap import get_key_label
+from searx.network import get as http_get
 
 about = {
     "website": 'https://www.apple.com/maps/',

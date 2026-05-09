@@ -1,13 +1,14 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 """Yandex (Web, images)"""
 
+from html import unescape
 from json import loads
 from urllib.parse import urlencode
-from html import unescape
+
 from lxml import html
+
 from searx.exceptions import SearxEngineCaptchaException
 from searx.utils import humanize_bytes, eval_xpath, eval_xpath_list, extract_text, extr
-
 
 # Engine metadata
 about = {

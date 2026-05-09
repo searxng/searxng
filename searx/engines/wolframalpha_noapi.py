@@ -6,8 +6,8 @@ Wolfram|Alpha (Science)
 from json import loads
 from urllib.parse import urlencode
 
-from searx.network import get as http_get
 from searx.enginelib import EngineCache
+from searx.network import get as http_get
 
 # about
 about = {
@@ -43,7 +43,6 @@ referer_url = url + 'input/?{query}'
 # pods to display as image in infobox
 # this pods do return a plaintext, but they look better and are more useful as images
 image_pods = {'VisualRepresentation', 'Illustration', 'Symbol'}
-
 
 CACHE: EngineCache
 """Persistent (SQLite) key/value cache that deletes its values after ``expire``

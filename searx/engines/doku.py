@@ -5,7 +5,9 @@ Doku Wiki
 
 from urllib.parse import urlencode
 from urllib.parse import urljoin
+
 from lxml.html import fromstring
+
 from searx.utils import extract_text, eval_xpath
 
 # about
@@ -32,6 +34,8 @@ search_url = (
     '/?do=search'
     '&{query}'
 )
+
+
 # fmt: on
 
 # '&startRecord={offset}'
@@ -40,7 +44,6 @@ search_url = (
 
 # do search-request
 def request(query, params):
-
     params['url'] = base_url + search_url.format(query=urlencode({'id': query}))
 
     return params

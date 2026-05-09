@@ -158,7 +158,6 @@ search_form_xpath = '//form[@id="search"]'
     </form>
 """
 
-
 CACHE: EngineCache
 """Persistent (SQLite) key/value cache that deletes its values after ``expire``
 seconds."""
@@ -339,7 +338,6 @@ def _get_web_result(result):
 
 
 def _get_news_result(result):
-
     title = remove_pua_from_str(html_to_text(result["title"]))
     content = remove_pua_from_str(html_to_text(result.get("description")))
 
@@ -426,7 +424,8 @@ def fetch_traits(engine_traits: EngineTraits):
 
     headers = {
         "User-Agent": gen_useragent(),
-        "Accept-Language": "en-US,en;q=0.5",  # bing needs to set the English language
+        "Accept-Language": "en-US,en;q=0.5",
+        # bing needs to set the English language
     }
 
     resp = get(

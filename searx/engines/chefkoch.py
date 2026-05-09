@@ -19,7 +19,6 @@ categories = []
 number_of_results = 20
 skip_premium = True
 
-
 base_url = "https://api.chefkoch.de"
 thumbnail_format = "crop-240x300"
 

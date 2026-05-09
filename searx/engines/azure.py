@@ -113,7 +113,6 @@ def get_auth_token(t_id: str, c_id: str, c_secret: str) -> str:
 
 
 def request(query: str, params: "OnlineParams") -> None:
-
     token = get_auth_token(azure_tenant_id, azure_client_id, azure_client_secret)
 
     params["url"] = azure_batch_endpoint

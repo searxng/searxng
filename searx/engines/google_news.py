@@ -24,25 +24,25 @@ The google news API ignores some parameters from the common :ref:`google API`:
 .. _save: https://developers.google.com/custom-search/docs/xml_results#safesp
 """
 
-from urllib.parse import urlencode
 import base64
-from lxml import html
+from urllib.parse import urlencode
+
 import babel
+from lxml import html
 
 from searx import locales
+from searx.enginelib.traits import EngineTraits
+from searx.engines.google import fetch_traits as _fetch_traits  # pylint: disable=unused-import
+from searx.engines.google import (
+    get_google_info,
+    detect_google_sorry,
+)
 from searx.utils import (
     eval_xpath,
     eval_xpath_list,
     eval_xpath_getindex,
     extract_text,
 )
-
-from searx.engines.google import fetch_traits as _fetch_traits  # pylint: disable=unused-import
-from searx.engines.google import (
-    get_google_info,
-    detect_google_sorry,
-)
-from searx.enginelib.traits import EngineTraits
 
 # about
 about = {
@@ -255,7 +255,6 @@ ceid_list = [
 ]
 """List of region/language combinations supported by Google News.  Values of the
 ``ceid`` argument of the Google News REST API."""
-
 
 _skip_values = [
     'ET:en',  # english (ethiopia)

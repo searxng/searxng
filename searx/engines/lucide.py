@@ -14,7 +14,6 @@ if t.TYPE_CHECKING:
     from extended_types import SXNG_Response
     from search.processors.online import OnlineParams
 
-
 about = {
     "website": "https://lucide.dev/",
     "wikidata_id": None,

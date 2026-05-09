@@ -359,7 +359,6 @@ def quote_ddg_bangs(query: str) -> str:
 
 
 def request(query: str, params: "OnlineParams") -> None:
-
     if len(query) >= 500:
         # DDG does not accept queries with more than 499 chars
         params["url"] = None

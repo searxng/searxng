@@ -2,9 +2,10 @@
 """Flickr (Images)"""
 
 import json
-from time import time
 import re
+from time import time
 from urllib.parse import urlencode
+
 from searx.utils import ecma_unescape, html_to_text
 
 # about

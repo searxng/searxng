@@ -75,9 +75,11 @@ Implementations
 """
 
 from urllib.parse import urlencode
+
 from dateutil.parser import parse
-from searx.utils import html_to_text, humanize_number
+
 from searx.result_types import EngineResults
+from searx.utils import html_to_text, humanize_number
 
 about = {
     # pylint: disable=line-too-long

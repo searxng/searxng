@@ -1,8 +1,8 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 """Sogou-Videos: A search engine for retrieving videos from Sogou."""
 
-from urllib.parse import urlencode
 from datetime import datetime, timedelta
+from urllib.parse import urlencode
 
 from searx.exceptions import SearxEngineAPIException
 

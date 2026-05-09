@@ -2,8 +2,10 @@
 """Ask.com"""
 
 from urllib.parse import urlencode
+
 import dateutil
 from lxml import html
+
 from searx import utils
 
 # Metadata
@@ -27,7 +29,6 @@ base_url = "https://www.ask.com/web"
 
 
 def request(query, params):
-
     query_params = {
         "q": query,
         "page": params["pageno"],
@@ -38,7 +39,6 @@ def request(query, params):
 
 
 def response(resp):
-
     start_tag = 'window.MESON.initialState = {'
     end_tag = '}};'
 

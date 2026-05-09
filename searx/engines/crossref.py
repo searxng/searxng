@@ -8,9 +8,9 @@ globe.
 """
 
 import typing as t
-
-from urllib.parse import urlencode
 from datetime import datetime
+from urllib.parse import urlencode
+
 from searx.result_types import EngineResults
 
 if t.TYPE_CHECKING:

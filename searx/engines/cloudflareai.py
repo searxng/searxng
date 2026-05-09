@@ -2,6 +2,7 @@
 """Cloudflare AI engine"""
 
 from json import loads, dumps
+
 from searx.exceptions import SearxEngineAPIException
 
 about = {
@@ -27,7 +28,6 @@ cf_ai_model_system = 'You are a self-aware language model who is honest and dire
 
 
 def request(query, params):
-
     params['query'] = query
 
     params['url'] = f'https://gateway.ai.cloudflare.com/v1/{cf_account_id}/{cf_ai_gateway}/workers-ai/{cf_ai_model}'

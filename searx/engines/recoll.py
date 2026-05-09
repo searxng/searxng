@@ -37,7 +37,6 @@ Implementations
 """
 
 import typing as t
-
 from datetime import date, timedelta
 from urllib.parse import urlencode
 
@@ -47,7 +46,6 @@ from searx.utils import html_to_text
 if t.TYPE_CHECKING:
     from searx.extended_types import SXNG_Response
     from searx.search.processors import OnlineParams
-
 
 about = {
     "website": None,
@@ -113,7 +111,6 @@ def request(query: str, params: "OnlineParams") -> None:
 
 
 def response(resp: "SXNG_Response") -> EngineResults:
-
     res = EngineResults()
     json_data = resp.json()
 

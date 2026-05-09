@@ -22,14 +22,13 @@ Implementations
 """
 
 import typing as t
-
 from urllib.parse import urlencode
+
 from searx.result_types import EngineResults
 
 if t.TYPE_CHECKING:
     from searx.extended_types import SXNG_Response
     from searx.search.processors import OnlineParams
-
 
 engine_type = "online"
 # send_accept_language_header = False
@@ -51,7 +50,6 @@ about = {
     "require_api_key": False,
     "results": "JSON",
 }
-
 
 # if there is a need for globals, use a leading underline
 _my_online_engine = None

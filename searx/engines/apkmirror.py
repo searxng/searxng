@@ -4,6 +4,7 @@
 # pylint: disable=invalid-name
 
 from urllib.parse import urlencode
+
 from lxml import html
 
 from searx.utils import (

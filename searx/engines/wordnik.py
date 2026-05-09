@@ -2,9 +2,9 @@
 """Wordnik (general)"""
 
 from lxml.html import fromstring
-from searx.utils import extract_text
 
 from searx.result_types import EngineResults
+from searx.utils import extract_text
 
 # about
 about = {

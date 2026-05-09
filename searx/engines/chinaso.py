@@ -54,12 +54,11 @@ Implementations
 
 """
 
-import typing as t
 import base64
 import secrets
-
-from urllib.parse import urlencode
+import typing as t
 from datetime import datetime
+from urllib.parse import urlencode
 
 from searx.exceptions import SearxEngineAPIException
 from searx.utils import html_to_text

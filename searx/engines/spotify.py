@@ -1,9 +1,9 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 """Spotify (Music)"""
 
+import base64
 from json import loads
 from urllib.parse import urlencode
-import base64
 
 from searx.network import post as http_post
 

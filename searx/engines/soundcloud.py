@@ -1,16 +1,15 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 """SoundCloud is a German audio streaming service."""
 
-import re
 import datetime
-
+import re
 from urllib.parse import quote_plus, urlencode
 
 from dateutil import parser
 from lxml import html
 
-from searx.network import get as http_get
 from searx.enginelib import EngineCache
+from searx.network import get as http_get
 
 about = {
     "website": "https://soundcloud.com",
@@ -55,7 +54,6 @@ seconds."""
 
 
 def request(query, params):
-
     # missing attributes: user_id, app_version
     # - user_id=451561-497874-703312-310156
     # - app_version=1740727428
@@ -120,7 +118,6 @@ def init(engine_settings):  # pylint: disable=unused-argument
 
 
 def get_client_id() -> str | None:
-
     client_id = ""
     url = "https://soundcloud.com"
     resp = http_get(url, timeout=3)

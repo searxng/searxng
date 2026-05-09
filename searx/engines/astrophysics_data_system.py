@@ -37,13 +37,12 @@ Implementations
 """
 
 import typing as t
-
 from datetime import datetime
 from urllib.parse import urlencode
 
-from searx.utils import html_to_text
 from searx.exceptions import SearxEngineAPIException
 from searx.result_types import EngineResults
+from searx.utils import html_to_text
 
 if t.TYPE_CHECKING:
     from searx.extended_types import SXNG_Response
@@ -108,7 +107,6 @@ def setup(engine_settings: dict[str, t.Any]) -> bool:
 
 
 def request(query: str, params: "OnlineParams") -> None:
-
     args: dict[str, str | int] = {
         "q": query,
         "fl": ",".join(ads_field_list),
@@ -123,7 +121,6 @@ def request(query: str, params: "OnlineParams") -> None:
 
 
 def response(resp: "SXNG_Response") -> EngineResults:
-
     res = EngineResults()
     json_data: dict[str, dict[str, t.Any]] = resp.json()
 

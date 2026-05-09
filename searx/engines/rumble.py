@@ -2,8 +2,8 @@
 """Rumble (Videos)"""
 
 from datetime import datetime
-
 from urllib.parse import urlencode
+
 from lxml import html
 
 # about

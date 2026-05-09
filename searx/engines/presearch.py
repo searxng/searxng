@@ -71,6 +71,7 @@ Implementations
 """
 
 from urllib.parse import urlencode, urlparse
+
 from searx import locales
 from searx.network import get
 from searx.utils import gen_useragent, html_to_text, parse_duration_string
@@ -104,7 +105,6 @@ def init(_):
 
 
 def _get_request_id(query, params):
-
     args = {
         "q": query,
         "page": params["pageno"],

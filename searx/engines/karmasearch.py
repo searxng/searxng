@@ -7,18 +7,16 @@ However, the advantages of this engine are:
 - it has a JSON API, so it's less likely to break
 """
 
+import typing as t
 from datetime import datetime
 from urllib.parse import urlencode
-import typing as t
 
 from dateutil import parser
 
 from searx.enginelib.traits import EngineTraits
-
-from searx.utils import html_to_text
 from searx.result_types import EngineResults, MainResult
 from searx.result_types._base import LegacyResult
-
+from searx.utils import html_to_text
 
 if t.TYPE_CHECKING:
     from searx.extended_types import SXNG_Response
@@ -58,7 +56,8 @@ def request(query: str, params: "OnlineParams") -> None:
         "adultFilter": safe_search_map[params["safesearch"]],
         "pageNumber": params["pageno"],
         "country": engine_region.split("-")[-1],
-        "userLanguage": "en",  # UI language: en, es or fr / no effect on search results
+        # UI language: en, es or fr / no effect on search results
+        "userLanguage": "en",
         "market": engine_region,
     }
     if params["time_range"]:

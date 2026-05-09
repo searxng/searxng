@@ -6,6 +6,7 @@ Ebay (Videos, Music, Files)
 from urllib.parse import quote
 
 from lxml import html
+
 from searx.engines.xpath import extract_text
 
 # about

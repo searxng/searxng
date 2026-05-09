@@ -6,8 +6,8 @@
 
 import random
 import string
-from urllib.parse import urlencode
 from datetime import datetime, timedelta
+from urllib.parse import urlencode
 
 from searx import utils
 

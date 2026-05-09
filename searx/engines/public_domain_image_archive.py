@@ -1,12 +1,12 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 """Public domain image archive"""
 
-from urllib.parse import urlencode, urlparse, urlunparse, parse_qsl
 from json import dumps
+from urllib.parse import urlencode, urlparse, urlunparse, parse_qsl
 
+from searx.exceptions import SearxEngineAccessDeniedException, SearxEngineException
 from searx.network import get
 from searx.utils import extr
-from searx.exceptions import SearxEngineAccessDeniedException, SearxEngineException
 
 THUMBNAIL_SUFFIX = "?fit=max&h=360&w=360"
 """
@@ -45,7 +45,6 @@ pdia_config_end = ".js"
 categories = ['images']
 page_size = 20
 paging = True
-
 
 __CACHED_API_URL = None
 

@@ -30,10 +30,10 @@ This is an example configuration for searching in the collection
 # pylint: disable=global-statement
 
 from urllib.parse import urlencode
-from searx.exceptions import SearxEngineAPIException
-from searx.result_types import EngineResults
-from searx.extended_types import SXNG_Response
 
+from searx.exceptions import SearxEngineAPIException
+from searx.extended_types import SXNG_Response
+from searx.result_types import EngineResults
 
 base_url = 'http://localhost:8983'
 collection = ''

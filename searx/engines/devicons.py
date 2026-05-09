@@ -9,7 +9,6 @@ if t.TYPE_CHECKING:
     from extended_types import SXNG_Response
     from search.processors.online import OnlineParams
 
-
 about = {
     "website": "https://devicon.dev/",
     "wikidata_id": None,

@@ -14,8 +14,9 @@ billion images `[tineye.com] <https://tineye.com/how>`_.
 
 """
 
-from urllib.parse import urlencode
 from datetime import datetime
+from urllib.parse import urlencode
+
 from flask_babel import gettext
 
 from searx.result_types import EngineResults

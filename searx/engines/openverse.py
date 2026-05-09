@@ -8,7 +8,6 @@ Openverse (formerly known as: Creative Commons search engine) [Images]
 from json import loads
 from urllib.parse import urlencode
 
-
 about = {
     "website": 'https://openverse.org/',
     "wikidata_id": None,
@@ -28,7 +27,6 @@ search_string = '?page={page}&page_size={nb_per_page}&format=json&{query}'
 
 
 def request(query, params):
-
     search_path = search_string.format(query=urlencode({'q': query}), nb_per_page=nb_per_page, page=params['pageno'])
 
     params['url'] = base_url + search_path

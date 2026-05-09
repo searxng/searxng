@@ -49,12 +49,11 @@ Implementations
 
 """
 
-from urllib.parse import urlencode
-from datetime import datetime, timedelta
 import html
+from datetime import datetime, timedelta
+from urllib.parse import urlencode
 
 from dateutil import parser
-
 from flask_babel import gettext
 
 about = {
@@ -99,7 +98,6 @@ AGO_TIMEDELTA = {
 
 
 def request(query, params):
-
     if len(query) <= 2:
         return None
 
@@ -130,7 +128,6 @@ def request(query, params):
 
 
 def response(resp):
-
     results = []
     json_data = resp.json()
 

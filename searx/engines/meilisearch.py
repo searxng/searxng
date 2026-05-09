@@ -37,8 +37,9 @@ Here is a simple example to query a Meilisearch instance:
 # pylint: disable=global-statement
 
 from json import dumps
-from searx.result_types import EngineResults
+
 from searx.extended_types import SXNG_Response
+from searx.result_types import EngineResults
 
 base_url = 'http://localhost:7700'
 index = ''

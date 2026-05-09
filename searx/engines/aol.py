@@ -25,11 +25,11 @@ search term (AOL is basically just a proxy for Bing).
 
 """
 
-from urllib.parse import urlencode, unquote_plus
 import typing as t
+from urllib.parse import urlencode, unquote_plus
 
-from lxml import html
 from dateutil import parser
+from lxml import html
 
 from searx.result_types import EngineResults
 from searx.utils import eval_xpath_list, eval_xpath, extract_text
@@ -55,7 +55,6 @@ safesearch = True
 time_range_support = True
 results_per_page = 10
 
-
 base_url = "https://search.aol.com"
 time_range_map = {"day": "1d", "week": "1w", "month": "1m", "year": "1y"}
 safesearch_map = {0: "p", 1: "r", 2: "i"}
@@ -67,7 +66,6 @@ def init(_):
 
 
 def request(query: str, params: "OnlineParams") -> None:
-
     language, region = (params["searxng_locale"].split("-") + [None])[:2]
     if language and language != "all":
         query = f"{query} language:{language}"

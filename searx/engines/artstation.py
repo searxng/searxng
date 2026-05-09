@@ -5,9 +5,9 @@ import re
 import typing as t
 from json import dumps
 
-from searx.result_types import EngineResults
-from searx.network import post
 from searx.enginelib import EngineCache
+from searx.network import post
+from searx.result_types import EngineResults
 
 # Engine metadata
 about = {
@@ -42,7 +42,6 @@ def setup(engine_settings: dict[str, t.Any]) -> bool:
 
 
 def fetch_csrf_tokens():
-
     public_token: str | None = CACHE.get(CSRF_PUBLICKEY_CACHE)
     private_token: str | None = CACHE.get(CSRF_PRIVATEKEY_CACHE)
 
@@ -60,7 +59,6 @@ def fetch_csrf_tokens():
 
 
 def request(query, params):
-
     public_token, private_token = fetch_csrf_tokens()
 
     form_data = {

@@ -1,8 +1,8 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 """Podcast Index"""
 
-from urllib.parse import quote_plus
 from datetime import datetime
+from urllib.parse import quote_plus
 
 about = {
     'website': 'https://podcastindex.org',

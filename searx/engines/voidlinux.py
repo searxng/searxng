@@ -10,8 +10,8 @@ XBPS source packages collection.
 """
 
 import re
-
 from urllib.parse import quote_plus
+
 from searx.utils import humanize_bytes
 
 about = {

@@ -8,9 +8,10 @@ No public instance offer a public API now
 
 """
 
-import time
 import random
+import time
 from urllib.parse import quote_plus, urlparse
+
 from dateutil import parser
 
 from searx.utils import humanize_number

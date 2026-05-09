@@ -16,9 +16,9 @@ This SearXNG engine uses the `/api2u/search`_ API.
 
 """
 
+import re
 from datetime import datetime
 from urllib.parse import urlencode
-import re
 
 about = {
     'website': "https://tagesschau.de",

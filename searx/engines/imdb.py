@@ -37,7 +37,6 @@ search_categories = {"nm": "name", "tt": "title", "kw": "keyword", "co": "compan
 
 
 def request(query, params):
-
     query = query.replace(" ", "_").lower()
     params['url'] = suggestion_url.format(letter=query[0], query=query)
 
@@ -45,7 +44,6 @@ def request(query, params):
 
 
 def response(resp):
-
     suggestions = json.loads(resp.text)
     results = []
 

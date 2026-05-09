@@ -2,9 +2,10 @@
 """pypi.org"""
 
 from urllib.parse import urlencode
-from dateutil import parser
 
+from dateutil import parser
 from lxml import html
+
 from searx.utils import (
     eval_xpath_getindex,
     eval_xpath_list,
@@ -22,7 +23,6 @@ about = {
 }
 
 categories = ['it', 'packages']
-
 
 # engine dependent config
 first_page_num = 1

@@ -1,12 +1,13 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 """Ollama model search engine for searxng"""
 
-from urllib.parse import urlencode
 from datetime import datetime
+from urllib.parse import urlencode
+
 from lxml import html
 
-from searx.utils import eval_xpath_list, eval_xpath_getindex, eval_xpath, extract_text
 from searx.result_types import EngineResults
+from searx.utils import eval_xpath_list, eval_xpath_getindex, eval_xpath, extract_text
 
 about = {
     "website": "https://ollama.com",

@@ -71,7 +71,6 @@ filter_mapping = {0: "off", 1: "medium", 2: "high"}
 # from the links not the links itself.
 suggestion_xpath = '//div[contains(@class, "gGQDvd iIWm4b")]//a'
 
-
 _arcid_range = string.ascii_letters + string.digits + "_-"
 _arcid_random: tuple[str, int] | None = None
 

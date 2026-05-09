@@ -14,7 +14,9 @@ list in ``settings.yml``:
 """
 
 from urllib.parse import urlencode
+
 from lxml import html
+
 from searx.result_types import EngineResults, MainResult
 from searx.utils import eval_xpath, eval_xpath_list, extract_text
 

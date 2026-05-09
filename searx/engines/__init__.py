@@ -8,14 +8,12 @@ usage::
 
 """
 
-import typing as t
-
-import sys
 import copy
-from os.path import realpath, dirname
-
-import types
 import inspect
+import sys
+import types
+import typing as t
+from os.path import realpath, dirname
 
 from searx import logger, settings
 from searx.utils import load_module

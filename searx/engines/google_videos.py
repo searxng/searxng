@@ -14,15 +14,9 @@
 
 import re
 from urllib.parse import urlencode, urlparse, parse_qs, unquote
+
 from lxml import html
 
-from searx.utils import (
-    eval_xpath_list,
-    eval_xpath_getindex,
-    extract_text,
-)
-
-from searx.engines.google import fetch_traits  # pylint: disable=unused-import
 from searx.engines.google import (
     get_google_info,
     time_range_dict,
@@ -30,6 +24,11 @@ from searx.engines.google import (
     suggestion_xpath,
     detect_google_sorry,
     ui_async,
+)
+from searx.utils import (
+    eval_xpath_list,
+    eval_xpath_getindex,
+    extract_text,
 )
 from searx.utils import get_embeded_stream_url
 
@@ -50,7 +49,6 @@ max_page = 50
 language_support = True
 time_range_support = True
 safesearch = True
-
 
 # =26;[3,"dimg_ZNMiZPCqE4apxc8P3a2tuAQ_137"]a87;data:image/jpeg;base64,/9j/4AAQSkZJRgABA
 # ...6T+9Nl4cnD+gr9OK8I56/tX3l86nWYw//2Q==26;

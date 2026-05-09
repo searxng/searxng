@@ -19,7 +19,6 @@ about = {
 paging = True
 categories = ['general']
 
-
 base_url = "https://www.bpb.de"
 
 

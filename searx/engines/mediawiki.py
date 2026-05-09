@@ -101,7 +101,6 @@ timestamp_format = '%Y-%m-%dT%H:%M:%SZ'
 
 
 def request(query, params):
-
     # write search-language back to params, required in response
 
     if params['language'] == 'all':
@@ -132,7 +131,6 @@ def request(query, params):
 
 # get response from search-request
 def response(resp):
-
     results = []
     search_results = resp.json()
 

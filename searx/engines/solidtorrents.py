@@ -1,9 +1,9 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 """SolidTorrents"""
 
+import random
 from datetime import datetime
 from urllib.parse import urlencode
-import random
 
 from lxml import html
 

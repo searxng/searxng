@@ -24,7 +24,6 @@ nb_per_page = 15
 paging = True
 api_key = None
 
-
 url = (
     'https://api.flickr.com/services/rest/?method=flickr.photos.search'
     + '&api_key={api_key}&{text}&sort=relevance'

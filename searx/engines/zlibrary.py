@@ -138,7 +138,6 @@ def _text(item: ElementType, selector: str) -> str | None:
 
 
 def _parse_result(item: ElementType) -> dict[str, t.Any]:
-
     author_elements = eval_xpath_list(item, './/div[@class="authors"]//a[@itemprop="author"]')
 
     result = {
@@ -185,7 +184,6 @@ def fetch_traits(engine_traits: EngineTraits) -> None:
     """Fetch languages and other search arguments from zlibrary's search form."""
     # pylint: disable=import-outside-toplevel, too-many-branches, too-many-statements
 
-    import babel
     import babel.core
 
     from searx.locales import language_tag

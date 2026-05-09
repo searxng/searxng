@@ -8,13 +8,12 @@ most of the results are still in English."""
 
 import time
 import typing as t
-
 from urllib.parse import urlencode
 
-from searx.result_types import EngineResults
 from searx.extended_types import SXNG_Response
-from searx.utils import extr, gen_useragent, html_to_text
 from searx.network import get
+from searx.result_types import EngineResults
+from searx.utils import extr, gen_useragent, html_to_text
 
 if t.TYPE_CHECKING:
     from searx.search.processors import OnlineParams

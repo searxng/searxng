@@ -4,7 +4,9 @@ F-Droid (a repository of FOSS applications for Android)
 """
 
 from urllib.parse import urlencode
+
 from lxml import html
+
 from searx.utils import extract_text
 
 # about

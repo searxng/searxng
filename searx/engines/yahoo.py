@@ -10,6 +10,7 @@ from urllib.parse import (
     unquote,
     urlencode,
 )
+
 from lxml import html
 
 from searx.utils import (
@@ -162,7 +163,7 @@ def request(query, params):
     if params['pageno'] == 1:
         url_params['iscqry'] = ''
     elif params['pageno'] >= 2:
-        url_params['b'] = params['pageno'] * 7 + 1  #  8, 15, 21, etc.
+        url_params['b'] = params['pageno'] * 7 + 1  # 8, 15, 21, etc.
         url_params['pz'] = 7
         url_params['bct'] = 0
         url_params['xargs'] = 0

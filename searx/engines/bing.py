@@ -193,7 +193,8 @@ def fetch_traits(engine_traits: EngineTraits) -> None:
     dom = html.fromstring(resp.text)
 
     map_market_codes: dict[str, str] = {
-        "zh-hk": "en-hk",  # not sure why, but at Microslop this is the market code for Hongkong
+        # not sure why, but at Microslop this is the market code for Hongkong
+        "zh-hk": "en-hk",
     }
 
     for href in eval_xpath(dom, '//div[@id="region-section-content"]//div[@class="regionItem"]/a/@href'):

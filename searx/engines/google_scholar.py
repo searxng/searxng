@@ -23,12 +23,19 @@ Implementations
 """
 
 import typing as t
-
-from urllib.parse import urlencode
 from datetime import datetime
-from lxml import html
-import httpx
+from urllib.parse import urlencode
 
+import httpx
+from lxml import html
+
+from searx.engines.google import fetch_traits  # pylint: disable=unused-import
+from searx.engines.google import (
+    get_google_info,
+    time_range_dict,
+)
+from searx.exceptions import SearxEngineCaptchaException, SearxEngineAccessDeniedException
+from searx.result_types import EngineResults
 from searx.utils import (
     eval_xpath,
     eval_xpath_getindex,
@@ -36,16 +43,6 @@ from searx.utils import (
     extract_text,
     ElementType,
 )
-
-from searx.exceptions import SearxEngineCaptchaException, SearxEngineAccessDeniedException
-
-from searx.engines.google import fetch_traits  # pylint: disable=unused-import
-from searx.engines.google import (
-    get_google_info,
-    time_range_dict,
-)
-
-from searx.result_types import EngineResults
 
 if t.TYPE_CHECKING:
     from searx.extended_types import SXNG_Response

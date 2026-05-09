@@ -12,6 +12,7 @@ intended monkey patching of the engine modules.
 """
 
 import logging
+
 from searx.enginelib import traits as _traits
 
 logger: logging.Logger

@@ -3,8 +3,8 @@
 
 from datetime import datetime
 from json import loads, JSONDecodeError
-
 from urllib.parse import quote_plus
+
 from lxml import html
 
 from searx.utils import extr, extract_text, eval_xpath, eval_xpath_list
@@ -19,7 +19,6 @@ about = {
 
 paging = True
 categories = ['images']
-
 
 base_url = 'https://www.ipernity.com'
 page_size = 10

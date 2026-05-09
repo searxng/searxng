@@ -72,9 +72,10 @@ Implementations
 from urllib.parse import urlencode
 
 from lxml import html
-from searx.utils import extract_text, extract_url, eval_xpath, eval_xpath_list
+
 from searx.network import raise_for_httperror
 from searx.result_types import EngineResults
+from searx.utils import extract_text, extract_url, eval_xpath, eval_xpath_list
 
 search_url = None
 """
