@@ -8,13 +8,13 @@
 """
 # pylint: disable=invalid-name
 
-from typing import Set
 import json
 from pathlib import Path
+from typing import Set
 
 import babel
-import babel.languages
 import babel.core
+import babel.languages
 
 from searx import searx_dir
 from searx.locales import (
@@ -28,7 +28,6 @@ TRANSLATIONS_FOLDER = Path(searx_dir) / 'translations'
 
 
 def main():
-
     LOCALE_NAMES = {}
     RTL_LOCALES: Set[str] = set()
 

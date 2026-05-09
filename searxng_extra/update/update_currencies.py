@@ -9,13 +9,13 @@ Output file: :origin:`searx/data/currencies.json` (:origin:`CI Update data ...
 
 # pylint: disable=invalid-name
 
+import json
 import re
 import unicodedata
-import json
 
-from searx.locales import LOCALE_NAMES, locales_initialize
-from searx.engines import wikidata, set_loggers
 from searx.data.currencies import CurrenciesDB
+from searx.engines import wikidata, set_loggers
+from searx.locales import LOCALE_NAMES, locales_initialize
 
 set_loggers(wikidata, 'wikidata')
 locales_initialize()
@@ -50,7 +50,6 @@ SELECT DISTINCT ?iso4217 ?article_name WHERE {
 }
 ORDER BY ?iso4217 ?article_name
 """
-
 
 LANGUAGES = LOCALE_NAMES.keys()
 LANGUAGES_SPARQL = ', '.join(set(map(lambda l: repr(l.split('_')[0]), LANGUAGES)))
@@ -129,7 +128,6 @@ def fetch_db():
 
 
 def main():
-
     db = fetch_db()
 
     # static

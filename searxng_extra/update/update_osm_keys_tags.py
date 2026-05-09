@@ -42,19 +42,18 @@ Output file: :origin:`searx/data/osm_keys_tags` (:origin:`CI Update data ...
 
 """
 
-import json
 import collections
+import json
 
-from searx.network import set_timeout_for_thread
-from searx.engines import wikidata, set_loggers
-from searx.sxng_locales import sxng_locales
-from searx.engines.openstreetmap import get_key_rank, VALUE_TO_LINK
 from searx.data import data_dir
+from searx.engines import wikidata, set_loggers
+from searx.engines.openstreetmap import get_key_rank, VALUE_TO_LINK
+from searx.network import set_timeout_for_thread
+from searx.sxng_locales import sxng_locales
 
 DATA_FILE = data_dir / 'osm_keys_tags.json'
 
 set_loggers(wikidata, 'wikidata')
-
 
 SPARQL_TAGS_REQUEST = """
 SELECT ?tag ?item ?itemLabel WHERE {
