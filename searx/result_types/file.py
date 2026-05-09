@@ -15,8 +15,8 @@ template.
 
 __all__ = ["File"]
 
-import typing as t
 import mimetypes
+import typing as t
 
 from ._base import MainResult
 
