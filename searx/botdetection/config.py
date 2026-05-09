@@ -10,9 +10,8 @@ structure and the configuration data is given in a dictionary structure.
 import copy
 import logging
 import pathlib
-import typing
-
 import tomllib
+import typing
 
 __all__ = ['Config', 'UNSET', 'SchemaIssue', 'set_global_cfg', 'get_global_cfg']
 
@@ -272,7 +271,6 @@ def _validate(
     data_dict: dict[str, typing.Any],
     deprecated: dict[str, str],
 ) -> tuple[bool, list[SchemaIssue]]:
-
     is_valid = True
 
     data_value: dict[str, typing.Any]

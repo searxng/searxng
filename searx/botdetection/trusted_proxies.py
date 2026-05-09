@@ -4,9 +4,9 @@
 # pylint: disable=too-many-branches
 
 import typing as t
-
 from collections import abc
 from ipaddress import IPv4Address, IPv6Address, ip_address, ip_network, IPv4Network, IPv6Network
+
 from werkzeug.http import parse_list_header
 
 from . import config

@@ -46,15 +46,13 @@ import flask
 import werkzeug
 
 from searx.valkeylib import incr_sliding_window, drop_counter
-
-from . import link_token
 from . import config
+from . import link_token
 from . import valkeydb
 from ._helpers import (
     too_many_requests,
     logger,
 )
-
 
 logger = logger.getChild('ip_limit')
 
@@ -94,7 +92,6 @@ def filter_request(
     request: flask.Request,
     cfg: config.Config,
 ) -> werkzeug.Response | None:
-
     # pylint: disable=too-many-return-statements
     valkey_client = valkeydb.get_valkey_client()
 

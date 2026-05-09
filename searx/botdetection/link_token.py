@@ -35,25 +35,23 @@ And in the HTML template from flask a stylesheet link is needed (the value of
 
 """
 
+import random
+import string
 from ipaddress import (
     IPv4Network,
     IPv6Network,
     ip_address,
 )
 
-import string
-import random
 import flask
 
 from searx.valkeylib import secret_hash
-
+from . import config
+from . import valkeydb
 from ._helpers import (
     get_network,
     logger,
 )
-
-from . import config
-from . import valkeydb
 
 TOKEN_LIVE_TIME = 600
 """Lifetime (sec) of limiter's CSS token."""
