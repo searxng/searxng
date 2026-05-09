@@ -2,6 +2,7 @@
 # pylint: disable=missing-module-docstring
 
 import typing
+
 import babel
 
 

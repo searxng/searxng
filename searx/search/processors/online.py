@@ -3,21 +3,21 @@
 
 __all__ = ["OnlineProcessor", "OnlineParams"]
 
-import typing as t
-
-from timeit import default_timer
 import asyncio
 import ssl
+import typing as t
+from timeit import default_timer
+
 import httpx
 
 import searx.network
-from searx.utils import gen_useragent
 from searx.exceptions import (
     SearxEngineAccessDeniedException,
     SearxEngineCaptchaException,
     SearxEngineTooManyRequestsException,
 )
 from searx.metrics.error_recorder import count_error
+from searx.utils import gen_useragent
 from .abstract import EngineProcessor, RequestParams
 
 if t.TYPE_CHECKING:

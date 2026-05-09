@@ -1,8 +1,8 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 """Processor used for ``online_dictionary`` engines."""
 
-import typing as t
 import re
+import typing as t
 
 from searx.sxng_locales import sxng_locales
 from .online import OnlineProcessor, OnlineParams

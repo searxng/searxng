@@ -15,14 +15,13 @@ __all__ = [
 
 import typing as t
 
-from searx import logger
 from searx import engines
-
+from searx import logger
 from .abstract import EngineProcessor, RequestParams
 from .offline import OfflineProcessor
 from .online import OnlineProcessor, OnlineParams
-from .online_dictionary import OnlineDictionaryProcessor, OnlineDictParams
 from .online_currency import OnlineCurrencyProcessor, OnlineCurrenciesParams
+from .online_dictionary import OnlineDictionaryProcessor, OnlineDictParams
 from .online_url_search import OnlineUrlSearchProcessor, OnlineUrlSearchParams
 
 logger = logger.getChild("search.processors")
