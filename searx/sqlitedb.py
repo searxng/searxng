@@ -20,13 +20,13 @@ Examplarical implementations based on :py:obj:`SQLiteAppl`:
 ----
 """
 
-import typing as t
 import abc
 import datetime
 import re
 import sqlite3
 import sys
 import threading
+import typing as t
 import uuid
 
 from searx import logger
@@ -121,11 +121,12 @@ class SQLiteAppl(abc.ABC):
 
     .. _WAL: https://sqlite.org/wal.html
     """
-    SQLITE_CONNECT_ARGS: dict[str,str|int|bool|None] = {
+    SQLITE_CONNECT_ARGS: dict[str, str | int | bool | None] = {
         # "timeout": 5.0,
         # "detect_types": 0,
         "check_same_thread": bool(SQLITE_THREADING_MODE != "serialized"),
-        "cached_statements": 0,  # https://github.com/python/cpython/issues/118172
+        # https://github.com/python/cpython/issues/118172
+        "cached_statements": 0,
         # "uri": False,
         # "isolation_level": "",
         # "autocommit": sqlite3.LEGACY_TRANSACTION_CONTROL,

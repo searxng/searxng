@@ -3,17 +3,17 @@
 
 from __future__ import annotations
 
-import typing as t
-import numbers
 import errno
-import os
 import logging
+import numbers
+import os
+import typing as t
 from base64 import b64decode
 from os.path import dirname, abspath
 
 import msgspec
-
 from typing_extensions import override
+
 from .brand import SettingsBrand
 from .sxng_locales import sxng_locales
 

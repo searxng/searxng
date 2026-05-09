@@ -2,13 +2,12 @@
 # pylint: disable=missing-module-docstring, missing-class-docstring
 
 import typing as t
-
 import warnings
 from collections import defaultdict
 from threading import RLock
 
-from searx import logger as log
 import searx.engines
+from searx import logger as log
 from searx.metrics import histogram_observe, counter_add
 from searx.result_types import Result, LegacyResult, MainResult
 from searx.result_types.answer import AnswerSet, BaseAnswer

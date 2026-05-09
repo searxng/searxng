@@ -24,6 +24,7 @@
 __all__ = ["SXNG_Request", "sxng_request", "SXNG_Response"]
 
 import typing
+
 import flask
 import httpx
 

@@ -8,7 +8,6 @@
 __all__ = ["ExpireCacheCfg", "ExpireCacheStats", "ExpireCache", "ExpireCacheSQLite"]
 
 import abc
-from collections.abc import Iterator
 import dataclasses
 import datetime
 import hashlib
@@ -20,12 +19,13 @@ import string
 import tempfile
 import time
 import typing
+from collections.abc import Iterator
 
 import msgspec
 
-from searx import sqlitedb
-from searx import logger
 from searx import get_setting
+from searx import logger
+from searx import sqlitedb
 
 log = logger.getChild("cache")
 

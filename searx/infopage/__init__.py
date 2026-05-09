@@ -20,22 +20,20 @@ Usage in a Flask app route:
 
 __all__ = ['InfoPage', 'InfoPageSet']
 
-import typing as t
-
+import logging
 import os
 import os.path
-import logging
-
+import typing as t
 import urllib.parse
 from functools import cached_property
+
 import jinja2
 from flask.helpers import url_for
 from markdown_it import MarkdownIt
 
 from .. import get_setting
-from ..version import GIT_URL
 from ..locales import LOCALE_NAMES
-
+from ..version import GIT_URL
 
 logger = logging.getLogger('searx.infopage')
 _INFO_FOLDER = os.path.abspath(os.path.dirname(__file__))

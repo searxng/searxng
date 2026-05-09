@@ -1,33 +1,31 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 """Utility functions for the engines"""
 
-import re
 import importlib
 import importlib.util
 import json
+import re
 import types
-
 import typing as t
 from collections.abc import MutableMapping, Callable
-
+from datetime import timedelta
+from html import escape
+from html.parser import HTMLParser
 from numbers import Number
 from os.path import splitext, join
 from random import choice
-from html.parser import HTMLParser
-from html import escape
 from urllib.parse import urljoin, urlparse, parse_qs, urlencode
-from datetime import timedelta
-from markdown_it import MarkdownIt
 
 from lxml import html
-from lxml.etree import XPath, XPathError, XPathSyntaxError
 from lxml.etree import ElementBase, _Element  # pyright: ignore[reportPrivateUsage]
+from lxml.etree import XPath, XPathError, XPathSyntaxError
+from markdown_it import MarkdownIt
 
+from searx import logger
 from searx import settings
 from searx.data import USER_AGENTS, gsa_useragents_loader
-from searx.version import VERSION_TAG
 from searx.exceptions import SearxXPathSyntaxException, SearxEngineXPathException
-from searx import logger
+from searx.version import VERSION_TAG
 
 logger = logger.getChild('utils')
 
@@ -36,7 +34,6 @@ XPathSpecType: t.TypeAlias = str | XPath
 :py:obj:`searx.utils.eval_xpath` and other XPath selectors."""
 
 ElementType: t.TypeAlias = ElementBase | _Element
-
 
 _BLOCKED_TAGS = ('script', 'style')
 

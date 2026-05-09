@@ -18,12 +18,13 @@ A valkey DB connect can be tested by::
 
 """
 
+import logging
 import os
 import pwd
-import logging
 import warnings
 
 import valkey
+
 from searx import get_setting
 
 _CLIENT: valkey.Valkey | None = None

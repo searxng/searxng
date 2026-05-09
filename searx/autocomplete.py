@@ -1,11 +1,11 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 """This module implements functions needed for the autocompleter."""
 
-# pylint: disable=use-dict-literal
-import string
+import json
 import random
 
-import json
+# pylint: disable=use-dict-literal
+import string
 import typing as t
 from urllib.parse import urlencode
 
@@ -18,8 +18,8 @@ from searx.engines import (
     engines,
     google,
 )
-from searx.network import get as http_get, post as http_post
 from searx.exceptions import SearxEngineResponseException
+from searx.network import get as http_get, post as http_post
 from searx.utils import extr, gen_useragent
 
 if t.TYPE_CHECKING:
