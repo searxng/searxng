@@ -30,8 +30,8 @@ template.
 
 __all__ = ["AnswerSet", "Answer", "Translations", "WeatherAnswer"]
 
-from flask_babel import gettext
 import msgspec
+from flask_babel import gettext
 
 from searx import weather
 from ._base import Result

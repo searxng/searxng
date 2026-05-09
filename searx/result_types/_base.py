@@ -18,13 +18,11 @@
 
 __all__ = ["Result"]
 
-import typing as t
-
+import datetime
 import re
+import typing as t
 import urllib.parse
 import warnings
-import datetime
-
 from collections.abc import Callable
 
 import msgspec
@@ -36,7 +34,6 @@ UNSET = object()
 
 
 def _normalize_url_fields(result: "Result | LegacyResult"):
-
     # As soon we need LegacyResult not any longer, we can move this function to
     # method Result.normalize_result_fields
 
@@ -83,7 +80,6 @@ def _normalize_url_fields(result: "Result | LegacyResult"):
 
 
 def _normalize_text_fields(result: "MainResult | LegacyResult"):
-
     # As soon we need LegacyResult not any longer, we can move this function to
     # method MainResult.normalize_result_fields
 
@@ -217,7 +213,6 @@ def _filter_urls(
 
 
 def _normalize_date_fields(result: "MainResult | LegacyResult"):
-
     if result.publishedDate:  # do not try to get a date from an empty string or a None type
         try:  # test if publishedDate >= 1900 (datetime module bug)
             result.pubdate = result.publishedDate.strftime('%Y-%m-%d %H:%M:%S%z')

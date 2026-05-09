@@ -25,15 +25,15 @@ __all__ = [
     "File",
 ]
 
-import typing as t
 import abc
+import typing as t
 
 from ._base import Result, MainResult, LegacyResult
 from .answer import AnswerSet, Answer, Translations, WeatherAnswer
-from .keyvalue import KeyValue
 from .code import Code
-from .paper import Paper
 from .file import File
+from .keyvalue import KeyValue
+from .paper import Paper
 
 
 class ResultList(list[Result | LegacyResult], abc.ABC):

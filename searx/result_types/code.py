@@ -19,13 +19,12 @@ __all__ = ["Code"]
 import typing as t
 
 from pygments import highlight  # pyright: ignore[reportUnknownVariableType]
-from pygments.lexers._mapping import LEXERS  # pyright: ignore[reportMissingTypeStubs]
-from pygments.lexers import guess_lexer, get_lexer_by_name, guess_lexer_for_filename
-from pygments.util import ClassNotFound
 from pygments.formatters import HtmlFormatter  # pylint: disable=no-name-in-module
+from pygments.lexers import guess_lexer, get_lexer_by_name, guess_lexer_for_filename
+from pygments.lexers._mapping import LEXERS  # pyright: ignore[reportMissingTypeStubs]
+from pygments.util import ClassNotFound
 
 from ._base import MainResult
-
 
 _pygments_languages: list[str] = []
 
