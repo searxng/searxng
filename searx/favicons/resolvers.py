@@ -9,8 +9,9 @@ timeout``) and returns a tuple ``(data, mime)``.
 __all__ = ["DEFAULT_RESOLVER_MAP", "allesedv", "duckduckgo", "google", "yandex"]
 
 from typing import Callable
-from searx import network
+
 from searx import logger
+from searx import network
 
 DEFAULT_RESOLVER_MAP: dict[str, Callable]
 logger = logger.getChild('favicons.resolvers')

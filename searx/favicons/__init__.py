@@ -11,8 +11,9 @@ an example in which the command line is called in the development environment::
 __all__ = ["init", "favicon_url", "favicon_proxy"]
 
 import pathlib
-from searx import logger
+
 from searx import get_setting
+from searx import logger
 from .proxy import favicon_url, favicon_proxy
 
 logger = logger.getChild('favicons')
@@ -23,7 +24,6 @@ def is_active():
 
 
 def init():
-
     # pylint: disable=import-outside-toplevel
 
     from . import config, cache, proxy
