@@ -3,6 +3,7 @@
 
 import mock
 from parameterized.parameterized import parameterized
+
 from searx import webutils
 from tests import SearxTestCase
 

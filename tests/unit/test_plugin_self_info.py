@@ -1,18 +1,15 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 # pylint: disable=missing-module-docstring,disable=missing-class-docstring,invalid-name,line-too-long
 
+from flask_babel import gettext
 from parameterized.parameterized import parameterized
 
-from flask_babel import gettext
-
+import searx.botdetection
+import searx.limiter
 import searx.plugins
 import searx.preferences
-import searx.limiter
-import searx.botdetection
-
 from searx.extended_types import sxng_request
 from searx.result_types import Answer
-
 from tests import SearxTestCase
 from .test_plugins import do_post_search
 
@@ -121,7 +118,6 @@ class PluginIPSelfInfo(SearxTestCase):
         ]
     )
     def test_user_agent_in_answer(self, query: str):
-
         query = "user-agent"
 
         with self.app.test_request_context():

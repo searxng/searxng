@@ -1,15 +1,14 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 # pylint: disable=missing-module-docstring,disable=missing-class-docstring,invalid-name
 
-from pathlib import Path
-
 import os
+from pathlib import Path
 from unittest.mock import patch
 
 from parameterized import parameterized
 
-from searx.exceptions import SearxSettingsException
 from searx import settings_loader
+from searx.exceptions import SearxSettingsException
 from tests import SearxTestCase
 
 

@@ -3,12 +3,13 @@
 
 import random
 import string
+
 import lxml.etree
 from lxml import html
 from parameterized.parameterized import parameterized
 
-from searx.exceptions import SearxXPathSyntaxException, SearxEngineXPathException
 from searx import utils
+from searx.exceptions import SearxXPathSyntaxException, SearxEngineXPathException
 from tests import SearxTestCase
 
 

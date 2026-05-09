@@ -2,16 +2,16 @@
 # pylint: disable=missing-module-docstring,disable=missing-class-docstring,invalid-name
 
 import json
+
 import babel
 from mock import Mock
 
-import searx.webapp
 import searx.search
 import searx.search.processors
-from searx.result_types._base import MainResult
-
-from searx.results import Timing
+import searx.webapp
 from searx.preferences import Preferences
+from searx.result_types._base import MainResult
+from searx.results import Timing
 from tests import SearxTestCase
 
 

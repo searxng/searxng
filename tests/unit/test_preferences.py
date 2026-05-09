@@ -4,8 +4,10 @@
 import flask
 from mock import Mock
 
+import searx.plugins
 from searx import favicons
 from searx.locales import locales_initialize
+from searx.preferences import Preferences
 from searx.preferences import (
     Setting,
     EnumStringSetting,
@@ -15,12 +17,8 @@ from searx.preferences import (
     PluginsSetting,
     ValidationException,
 )
-import searx.plugins
-from searx.preferences import Preferences
-
 from tests import SearxTestCase
 from .test_plugins import PluginMock
-
 
 locales_initialize()
 favicons.init()

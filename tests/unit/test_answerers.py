@@ -3,12 +3,10 @@
 
 from parameterized import parameterized
 
-import searx.plugins
 import searx.answerers
+import searx.plugins
 import searx.preferences
-
 from searx.extended_types import sxng_request
-
 from tests import SearxTestCase
 
 
@@ -23,7 +21,6 @@ class AnswererTest(SearxTestCase):
 
     @parameterized.expand(searx.answerers.STORAGE.answerer_list)
     def test_unicode_input(self, answerer_obj: searx.answerers.Answerer):
-
         with self.app.test_request_context():
             sxng_request.preferences = self.pref
 

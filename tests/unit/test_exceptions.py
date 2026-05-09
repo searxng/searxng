@@ -2,9 +2,10 @@
 # pylint: disable=missing-module-docstring,disable=missing-class-docstring,invalid-name
 
 from parameterized import parameterized
-from tests import SearxTestCase
+
 import searx.exceptions
 from searx import get_setting
+from tests import SearxTestCase
 
 
 class TestExceptions(SearxTestCase):
