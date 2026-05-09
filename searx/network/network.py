@@ -4,13 +4,11 @@
 
 __all__ = ["get_network"]
 
+import asyncio
+import atexit
+import ipaddress
 import typing as t
 from collections.abc import Generator
-
-
-import atexit
-import asyncio
-import ipaddress
 from itertools import cycle
 
 import httpx
@@ -19,7 +17,6 @@ from searx import logger, sxng_debug
 from searx.extended_types import SXNG_Response
 from .client import new_client, get_loop, AsyncHTTPTransportNoHttp
 from .raise_for_httperror import raise_for_httperror
-
 
 logger = logger.getChild('network')
 DEFAULT_NAME = '__DEFAULT__'

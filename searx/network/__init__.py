@@ -3,23 +3,22 @@
 
 __all__ = ["get_network", "initialize", "check_network_configuration", "raise_for_httperror"]
 
-import typing as t
-
 import asyncio
-import threading
 import concurrent.futures
-from queue import SimpleQueue
-from types import MethodType
-from timeit import default_timer
+import threading
+import typing as t
 from collections.abc import Iterable
 from contextlib import contextmanager
+from queue import SimpleQueue
+from timeit import default_timer
+from types import MethodType
 
-import httpx
 import anyio
+import httpx
 
 from searx.extended_types import SXNG_Response
-from .network import get_network, initialize, check_network_configuration  # pylint:disable=cyclic-import
 from .client import get_loop
+from .network import get_network, initialize, check_network_configuration  # pylint:disable=cyclic-import
 from .raise_for_httperror import raise_for_httperror
 
 if t.TYPE_CHECKING:

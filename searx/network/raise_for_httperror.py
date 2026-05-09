@@ -2,12 +2,13 @@
 """Raise exception for an HTTP response is an error."""
 
 import typing as t
+
+from searx import get_setting
 from searx.exceptions import (
     SearxEngineCaptchaException,
     SearxEngineTooManyRequestsException,
     SearxEngineAccessDeniedException,
 )
-from searx import get_setting
 
 if t.TYPE_CHECKING:
     from searx.extended_types import SXNG_Response
