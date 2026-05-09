@@ -6,11 +6,11 @@ import hashlib
 import random
 import string
 import uuid
+
 from flask_babel import gettext
 
 from searx.result_types import Answer
 from searx.result_types.answer import BaseAnswer
-
 from . import Answerer, AnswererInfo
 
 
@@ -62,7 +62,6 @@ class SXNGAnswerer(Answerer):
     }
 
     def info(self):
-
         return AnswererInfo(
             name=gettext(self.__doc__),
             description=gettext("Generate different random values"),
@@ -71,7 +70,6 @@ class SXNGAnswerer(Answerer):
         )
 
     def answer(self, query: str) -> list[BaseAnswer]:
-
         parts = query.split()
         if len(parts) != 2 or parts[1] not in self.random_types:
             return []

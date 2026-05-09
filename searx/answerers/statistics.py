@@ -12,7 +12,6 @@ from flask_babel import gettext
 from searx.extended_types import sxng_request
 from searx.result_types import Answer
 from searx.result_types.answer import BaseAnswer
-
 from . import Answerer, AnswererInfo
 
 kw2func = [

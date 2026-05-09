@@ -40,7 +40,6 @@ area:
 
 __all__ = ["AnswererInfo", "Answerer", "AnswerStorage"]
 
-
 from ._core import AnswererInfo, Answerer, AnswerStorage
 
 STORAGE: AnswerStorage = AnswerStorage()
