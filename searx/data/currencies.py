@@ -3,9 +3,9 @@
 
 __all__ = ["CurrenciesDB"]
 
-import typing as t
 import json
 import pathlib
+import typing as t
 
 from .core import get_cache, log
 
