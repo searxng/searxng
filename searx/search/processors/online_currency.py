@@ -1,19 +1,17 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 """Processor used for ``online_currency`` engines."""
 
-import typing as t
-
-import unicodedata
 import re
+import typing as t
+import unicodedata
 
-import flask_babel
 import babel
+import flask_babel
 
 from searx.data import CURRENCIES
 from .online import OnlineProcessor, OnlineParams
 
 if t.TYPE_CHECKING:
-    from .abstract import EngineProcessor
     from searx.search.models import SearchQuery
 
 search_syntax = re.compile(r".*?(\d+(?:\.\d+)?) ([^.0-9]+) (?:in|to) ([^.0-9]+)", re.I)

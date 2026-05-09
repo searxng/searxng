@@ -3,18 +3,17 @@
 
 __all__ = ["SearchWithPlugins"]
 
-import typing as t
-
 import threading
+import typing as t
 from timeit import default_timer
 from uuid import uuid4
 
 from flask import copy_current_request_context
 
-from searx import logger
-from searx import settings
 import searx.answerers
 import searx.plugins
+from searx import logger
+from searx import settings
 from searx.engines import load_engines
 from searx.external_bang import get_bang_url
 from searx.metrics import initialize as initialize_metrics, counter_inc
@@ -199,7 +198,6 @@ class SearchWithPlugins(Search):
         return searx.plugins.STORAGE.on_result(self.request, self, result)
 
     def search(self) -> ResultContainer:
-
         if searx.plugins.STORAGE.pre_search(self.request, self):
             super().search()
 

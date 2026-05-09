@@ -1,19 +1,18 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 """Abstract base classes for all engine processors."""
 
-import typing as t
-
 import logging
 import threading
+import typing as t
 from abc import abstractmethod, ABC
 from timeit import default_timer
 
 from searx import get_setting
 from searx import logger
 from searx.engines import engines
-from searx.network import get_time_for_thread, get_network
-from searx.metrics import histogram_observe, counter_inc, count_exception, count_error
 from searx.exceptions import SearxEngineAccessDeniedException
+from searx.metrics import histogram_observe, counter_inc, count_exception, count_error
+from searx.network import get_time_for_thread, get_network
 from searx.utils import get_engine_from_settings
 
 if t.TYPE_CHECKING:
@@ -22,7 +21,6 @@ if t.TYPE_CHECKING:
     from searx.search.models import SearchQuery
     from searx.results import ResultContainer
     from searx.result_types import Result, LegacyResult  # pyright: ignore[reportPrivateLocalImportUsage]
-
 
 logger = logger.getChild("searx.search.processor")
 SUSPENDED_STATUS: dict[int | str, "SuspendedStatus"] = {}

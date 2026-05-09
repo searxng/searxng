@@ -1,15 +1,13 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 """Processor used for ``online_url_search`` engines."""
 
-import typing as t
 import re
+import typing as t
 
 from .online import OnlineProcessor, OnlineParams
 
 if t.TYPE_CHECKING:
-    from .abstract import EngineProcessor
     from searx.search.models import SearchQuery
-
 
 search_syntax = {
     "http": re.compile(r"https?:\/\/[^ ]*"),
