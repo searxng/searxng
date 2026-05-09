@@ -18,12 +18,11 @@ from ipaddress import (
     IPv6Network,
 )
 
-import werkzeug
 import flask
+import werkzeug
 
 from . import config
 from ._helpers import too_many_requests
-
 
 USER_AGENT = (
     r'('
@@ -57,7 +56,6 @@ def filter_request(
     request: flask.Request,
     cfg: config.Config,  # pylint: disable=unused-argument
 ) -> werkzeug.Response | None:
-
     user_agent = request.headers.get('User-Agent', 'unknown')
     if regexp_user_agent().match(user_agent):
         return too_many_requests(network, f"bot detected, HTTP header User-Agent: {user_agent}")

@@ -22,12 +22,12 @@ Metadata`_.  A request is filtered out in case of:
 """
 # pylint: disable=unused-argument
 
+import re
 from ipaddress import (
     IPv4Network,
     IPv6Network,
 )
 
-import re
 import flask
 import werkzeug
 
@@ -78,7 +78,6 @@ def filter_request(
     request: flask.Request,
     cfg: config.Config,
 ) -> werkzeug.Response | None:
-
     if not request.is_secure:
         logger.warning(
             "Sec-Fetch cannot be verified for non-secure requests (HTTP headers are not set/sent by the client)."

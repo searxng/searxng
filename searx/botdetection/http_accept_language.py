@@ -16,8 +16,8 @@ from ipaddress import (
     IPv6Network,
 )
 
-import werkzeug
 import flask
+import werkzeug
 
 from . import config
 from ._helpers import too_many_requests
