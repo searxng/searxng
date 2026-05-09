@@ -13,16 +13,18 @@ the :origin:`CI Update data ... <.github/workflows/data-update.yml>`
 
 """
 
-# pylint: disable=invalid-name
-from unicodedata import lookup
 from pathlib import Path
 from pprint import pformat
+
+# pylint: disable=invalid-name
+from unicodedata import lookup
+
 import babel
 
-from searx import settings, searx_dir
 from searx import network
-from searx.engines import load_engines
+from searx import settings, searx_dir
 from searx.enginelib.traits import EngineTraitsMap
+from searx.engines import load_engines
 
 # Output files.
 languages_file = Path(searx_dir) / 'sxng_locales.py'
@@ -66,7 +68,6 @@ A list of five-digit tuples:
 '''
 """
 
-
 lang2emoji = {
     'ha': '\U0001f1f3\U0001f1ea',  # Hausa / Niger
     'bs': '\U0001f1e7\U0001f1e6',  # Bosnian / Bosnia & Herzegovina
@@ -77,7 +78,6 @@ lang2emoji = {
 
 
 def main():
-
     engines_cfg = []
 
     for eng_data in settings["engines"]:
@@ -140,7 +140,6 @@ def filter_locales(traits_map: EngineTraitsMap):
 
 
 def write_languages_file(sxng_tag_list):
-
     language_codes = []
 
     for sxng_tag in sorted(sxng_tag_list):

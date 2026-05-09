@@ -10,19 +10,19 @@ Output file: :origin:`searx/data/engine_descriptions.json`.
 # pylint: disable=invalid-name, global-statement
 
 import json
-from urllib.parse import urlparse
 from os.path import join
+from urllib.parse import urlparse
 
 from lxml.html import fromstring
 
-from searx.engines import wikidata, set_loggers
-from searx.utils import extract_text, searxng_useragent
-from searx.locales import LOCALE_NAMES, locales_initialize, match_locale
-from searx import searx_dir
-from searx.utils import gen_useragent
-import searx.search
 import searx.network
+import searx.search
+from searx import searx_dir
 from searx.data import data_dir
+from searx.engines import wikidata, set_loggers
+from searx.locales import LOCALE_NAMES, locales_initialize, match_locale
+from searx.utils import extract_text, searxng_useragent
+from searx.utils import gen_useragent
 
 DATA_FILE = data_dir / 'engine_descriptions.json'
 
@@ -77,7 +77,6 @@ WIKIPEDIA_LANGUAGES = {}
 LANGUAGES_SPARQL = ''
 IDS = None
 WIKIPEDIA_LANGUAGE_VARIANTS = {'zh_Hant': 'zh-tw'}
-
 
 descriptions = {}
 wd_to_engine_name = {}

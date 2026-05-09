@@ -11,10 +11,11 @@ Output file: :origin:`searx/data/useragents.json` (:origin:`CI Update data ...
 import json
 import re
 from urllib.parse import urlparse, urljoin
-from packaging.version import parse
 
 import requests
 from lxml import html
+from packaging.version import parse
+
 from searx.data import data_dir
 
 DATA_FILE = data_dir / 'useragents.json'
