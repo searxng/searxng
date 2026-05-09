@@ -1,9 +1,10 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 """Sogou-WeChat search engine for retrieving WeChat Article from Sogou"""
 
-from urllib.parse import urlencode
-from datetime import datetime
 import re
+from datetime import datetime
+from urllib.parse import urlencode
+
 from lxml import html
 
 from searx.utils import extract_text

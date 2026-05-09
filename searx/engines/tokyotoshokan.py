@@ -6,6 +6,7 @@ from datetime import datetime
 from urllib.parse import urlencode
 
 from lxml import html
+
 from searx.utils import extract_text, int_or_zero
 
 # about

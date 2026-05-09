@@ -38,7 +38,6 @@ main_wiki = "wiki.archlinux.org"
 
 
 def request(query, params):
-
     sxng_lang = params["searxng_locale"].split("-")[0]
     netloc: str = traits.custom["wiki_netloc"].get(sxng_lang, main_wiki)  # type: ignore
     title: str = traits.custom["title"].get(sxng_lang, "Special:Search")  # type: ignore
@@ -67,7 +66,6 @@ def request(query, params):
 
 
 def response(resp):
-
     results = []
     dom = lxml.html.fromstring(resp.text)  # type: ignore
 

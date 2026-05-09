@@ -2,16 +2,15 @@
 """Pexels (images)"""
 
 import re
-
 from urllib.parse import urlencode
+
 from lxml import html
 
-from searx.result_types import EngineResults
-from searx.utils import eval_xpath_list, gen_useragent
 from searx.enginelib import EngineCache
 from searx.exceptions import SearxEngineAPIException
 from searx.network import get
-
+from searx.result_types import EngineResults
+from searx.utils import eval_xpath_list, gen_useragent
 
 # about
 about = {
@@ -38,7 +37,6 @@ time_range_map = {'day': 'last_24_hours', 'week': 'last_week', 'month': 'last_mo
 
 SECRET_KEY_RE = re.compile('"secret-key":\b*"(.*?)"')
 SECRET_KEY_DB_KEY = "secret-key"
-
 
 CACHE: EngineCache
 """Cache to store the secret API key for the engine."""

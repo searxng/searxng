@@ -4,13 +4,14 @@ Ahmia (Onions)
 """
 
 import typing as t
-
 from urllib.parse import urlencode, urlparse, parse_qs
+
 from lxml.html import fromstring
-from searx.utils import gen_useragent, ElementType
+
+from searx.enginelib import EngineCache
 from searx.engines.xpath import extract_url, extract_text, eval_xpath_list, eval_xpath
 from searx.network import get
-from searx.enginelib import EngineCache
+from searx.utils import gen_useragent, ElementType
 
 # about
 about = {

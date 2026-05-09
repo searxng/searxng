@@ -5,7 +5,9 @@ INA (Videos)
 
 from html import unescape
 from urllib.parse import urlencode
+
 from lxml import html
+
 from searx.utils import extract_text, eval_xpath, eval_xpath_list, eval_xpath_getindex
 
 # about

@@ -1,11 +1,12 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 """BASE (Scholar publications)"""
 
-from datetime import datetime
 import re
-
+from datetime import datetime
 from urllib.parse import urlencode
+
 from lxml import etree
+
 from searx.utils import searxng_useragent
 
 # about

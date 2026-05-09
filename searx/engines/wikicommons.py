@@ -38,14 +38,13 @@ Implementations
 
 """
 
-import typing as t
-
 import datetime
 import pathlib
+import typing as t
 from urllib.parse import urlencode, unquote
 
-from searx.utils import html_to_text, humanize_bytes
 from searx.result_types import EngineResults
+from searx.utils import html_to_text, humanize_bytes
 
 if t.TYPE_CHECKING:
     from searx.extended_types import SXNG_Response
@@ -73,6 +72,8 @@ SEARCH_TYPES: dict[str, str] = {
     "audio": "audio",
     "file": "multimedia|office|archive|3d",
 }
+
+
 # FileType = t.Literal["bitmap", "drawing", "video", "audio", "multimedia", "office", "archive", "3d"]
 # FILE_TYPES = list(t.get_args(FileType))
 
@@ -105,7 +106,8 @@ def request(query: str, params: "OnlineParams") -> None:
         "prop": "info|imageinfo",
         # generator (gsr optins) https://commons.wikimedia.org/w/api.php?action=help&modules=query%2Bsearch
         "generator": "search",
-        "gsrnamespace": "6",  # https://www.mediawiki.org/wiki/Help:Namespaces#Renaming_namespaces
+        # https://www.mediawiki.org/wiki/Help:Namespaces#Renaming_namespaces
+        "gsrnamespace": "6",
         "gsrprop": "snippet",
         "gsrlimit": number_of_results,
         "gsroffset": number_of_results * (params["pageno"] - 1),
@@ -118,7 +120,6 @@ def request(query: str, params: "OnlineParams") -> None:
 
 
 def response(resp: "SXNG_Response") -> EngineResults:
-
     res = EngineResults()
     json_data = resp.json()
     pages = json_data.get("query", {}).get("pages", {}).values()

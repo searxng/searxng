@@ -2,6 +2,7 @@
 """1x (Images)"""
 
 from urllib.parse import urlencode, urljoin
+
 from lxml import html, etree
 
 from searx.utils import extract_text, eval_xpath_list, eval_xpath_getindex

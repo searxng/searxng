@@ -25,8 +25,8 @@ The API supports paging and time filters.
 """
 
 import typing as t
-
 from urllib.parse import urlencode
+
 from dateutil import parser
 
 from searx.exceptions import SearxEngineAPIException

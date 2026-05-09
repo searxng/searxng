@@ -3,7 +3,9 @@
 
 from datetime import timedelta
 from urllib.parse import quote_plus, urlencode
+
 from dateutil import parser
+
 from searx.utils import gen_useragent
 
 # about

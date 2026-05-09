@@ -33,12 +33,12 @@ Implementations
 
 """
 
-from urllib.parse import urlencode
 from datetime import datetime
+from urllib.parse import urlencode
 
 from searx.exceptions import SearxEngineAPIException
-from searx.utils import html_to_text
 from searx.result_types import EngineResults, MainResult
+from searx.utils import html_to_text
 
 about = {
     "website": "https://huggingface.co/",

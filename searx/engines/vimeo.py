@@ -3,8 +3,9 @@
 Wikipedia (Web
 """
 
-from urllib.parse import urlencode
 from json import loads
+from urllib.parse import urlencode
+
 from dateutil import parser
 
 from searx.utils import extr

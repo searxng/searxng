@@ -1,10 +1,11 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 """Acfun search engine for searxng"""
 
-from urllib.parse import urlencode
-import re
 import json
+import re
 from datetime import datetime, timedelta
+from urllib.parse import urlencode
+
 from lxml import html
 
 from searx.utils import extract_text

@@ -2,8 +2,9 @@
 """Grokipedia (general)"""
 
 from urllib.parse import urlencode
-from searx.utils import html_to_text
+
 from searx.result_types import EngineResults
+from searx.utils import html_to_text
 
 about = {
     "website": 'https://grokipedia.com',
@@ -21,7 +22,6 @@ results_per_page = 10
 
 
 def request(query, params):
-
     start_index = (params["pageno"] - 1) * results_per_page
 
     query_params = {

@@ -90,9 +90,9 @@ Implementation
 """
 
 import typing as t
-
 from datetime import datetime
 from urllib.parse import urlencode
+
 from searx.result_types import EngineResults
 
 if t.TYPE_CHECKING:
@@ -108,7 +108,6 @@ about = {
     "require_api_key": False,
     "results": "JSON",
 }
-
 
 # engine dependent config
 categories = ["science", "scientific publications"]

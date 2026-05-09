@@ -29,9 +29,10 @@ Implementations
 
 import typing as t
 from urllib.parse import urlencode
-from searx.utils import searxng_useragent
-from searx.result_types import EngineResults
+
 from searx.extended_types import SXNG_Response
+from searx.result_types import EngineResults
+from searx.utils import searxng_useragent
 
 about = {
     "website": "https://marginalia.nu",
@@ -84,7 +85,6 @@ class ApiSearchResults(t.TypedDict):
 
 
 def request(query: str, params: dict[str, t.Any]):
-
     query_params = {"count": results_per_page, "nsfw": min(params["safesearch"], 1), "query": query}
 
     params["url"] = f"{base_url}/search?{urlencode(query_params)}"
@@ -93,7 +93,6 @@ def request(query: str, params: dict[str, t.Any]):
 
 
 def response(resp: SXNG_Response):
-
     res = EngineResults()
     resp_json: ApiSearchResults = resp.json()  # type: ignore
 
@@ -110,7 +109,6 @@ def response(resp: SXNG_Response):
 
 
 def init(engine_settings: dict[str, t.Any]):
-
     _api_key = engine_settings.get("api_key")
     if not _api_key:
         logger.error("missing api_key: see https://about.marginalia-search.com/article/api")

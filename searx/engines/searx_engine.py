@@ -4,6 +4,7 @@ Searx (all)
 """
 
 from json import loads
+
 from searx.engines import categories as searx_categories
 
 # about
@@ -45,7 +46,6 @@ def request(query, params):
 
 # get response from search-request
 def response(resp):
-
     response_json = loads(resp.text)
     results = response_json['results']
 

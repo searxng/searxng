@@ -1,8 +1,9 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 """Niconico search engine for searxng"""
 
-from urllib.parse import urlencode
 from datetime import datetime, timedelta
+from urllib.parse import urlencode
+
 from lxml import html
 
 from searx.utils import eval_xpath_getindex, eval_xpath_list, eval_xpath, extract_text

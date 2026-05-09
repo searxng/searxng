@@ -2,12 +2,11 @@
 """wttr.in (weather forecast service)"""
 
 import typing as t
-
-from urllib.parse import quote
 from datetime import datetime
+from urllib.parse import quote
 
-from searx.result_types import EngineResults, WeatherAnswer
 from searx import weather
+from searx.result_types import EngineResults, WeatherAnswer
 
 about = {
     "website": "https://wttr.in",

@@ -5,6 +5,7 @@ Photon (Map)
 
 from json import loads
 from urllib.parse import urlencode
+
 from searx.utils import searxng_useragent
 
 # about

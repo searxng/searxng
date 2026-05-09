@@ -1,13 +1,13 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 """Quark (Shenma) search engine for searxng"""
 
-from urllib.parse import urlencode
-from datetime import datetime
-import re
 import json
+import re
+from datetime import datetime
+from urllib.parse import urlencode
 
-from searx.utils import html_to_text
 from searx.exceptions import SearxEngineAPIException, SearxEngineCaptchaException
+from searx.utils import html_to_text
 
 # Metadata
 about = {

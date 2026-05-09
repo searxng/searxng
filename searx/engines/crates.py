@@ -17,7 +17,6 @@ about = {
 
 categories = ["it", "packages", "cargo"]
 
-
 # engine dependent config
 paging = True
 page_size = 10
@@ -33,7 +32,6 @@ linked_terms = OrderedDict(
 
 
 def request(query: str, params):
-
     args = urlencode({"page": params["pageno"], "q": query, "per_page": page_size})
     params["url"] = f"{search_url}?{args}"
     return params

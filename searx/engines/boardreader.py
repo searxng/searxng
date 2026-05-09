@@ -22,7 +22,6 @@ if t.TYPE_CHECKING:
     from searx.extended_types import SXNG_Response
     from searx.search.processors import OnlineParams
 
-
 about = {
     "website": "https://boardreader.com",
     "official_api_documentation": None,
@@ -70,7 +69,8 @@ def _get_session_id() -> str:
 def request(query: str, params: "OnlineParams"):
     session_id = _get_session_id()
 
-    language: str = traits.get_language(  # pyright: ignore[reportAssignmentType]
+    language: str = traits.get_language(
+        # pyright: ignore[reportAssignmentType]
         params["searxng_locale"],
         default="All",
     )

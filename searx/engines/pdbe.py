@@ -4,6 +4,7 @@ PDBe (Protein Data Bank in Europe)
 """
 
 from json import loads
+
 from flask_babel import gettext
 
 # about
@@ -31,7 +32,6 @@ pdbe_preview_url = 'https://www.ebi.ac.uk/pdbe/static/entry/{pdb_id}_deposited_c
 
 
 def request(query, params):
-
     params['url'] = pdbe_solr_url
     params['method'] = 'POST'
     params['data'] = {'q': query, 'wt': "json"}  # request response in parsable format
@@ -80,7 +80,6 @@ def construct_body(result):
 
 
 def response(resp):
-
     results = []
     json = loads(resp.text)['response']['docs']
 

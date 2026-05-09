@@ -2,13 +2,11 @@
 """Open Meteo (weather)"""
 
 import typing as t
-
-from urllib.parse import urlencode
 from datetime import datetime
+from urllib.parse import urlencode
 
-from searx.result_types import EngineResults, WeatherAnswer
 from searx import weather
-
+from searx.result_types import EngineResults, WeatherAnswer
 
 about = {
     "website": "https://open-meteo.com",
@@ -40,7 +38,6 @@ data_of_interest = (
 
 
 def request(query, params):
-
     try:
         location = weather.GeoLocation.by_query(query)
     except ValueError:
@@ -109,7 +106,6 @@ WMO_TO_CONDITION: dict[int, weather.WeatherConditionType] = {
 
 
 def _weather_data(location: weather.GeoLocation, data: dict[str, t.Any]):
-
     return WeatherAnswer.Item(
         location=location,
         temperature=weather.Temperature(val=data["temperature_2m"], unit="°C"),

@@ -3,14 +3,13 @@
 
 import re
 import urllib.parse
-
 from functools import partial
 
 from flask_babel import gettext
 
 from searx.data import OSM_KEYS_TAGS, CURRENCIES
-from searx.external_urls import get_external_url
 from searx.engines.wikidata import send_wikidata_query, sparql_string_escape, get_thumbnail
+from searx.external_urls import get_external_url
 from searx.result_types import EngineResults
 
 # about

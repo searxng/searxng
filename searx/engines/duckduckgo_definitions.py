@@ -14,18 +14,18 @@ most of the features are based on English terms.
 """
 
 import typing as t
-
 from urllib.parse import urlencode, urlparse, urljoin
+
 from lxml import html
 
 from searx.data import WIKIDATA_UNITS
-from searx.utils import extract_text, html_to_text, get_string_replaces_function
 from searx.external_urls import (
     get_external_url,
     get_earth_coordinates_url,
     area_to_osm_zoom,
 )
 from searx.result_types import EngineResults
+from searx.utils import extract_text, html_to_text, get_string_replaces_function
 
 if t.TYPE_CHECKING:
     from searx.extended_types import SXNG_Response
@@ -39,7 +39,6 @@ about = {
     "require_api_key": False,
     "results": "JSON",
 }
-
 
 URL = "https://api.duckduckgo.com/" + "?{query}&format=json&pretty=0&no_redirect=1&d=1"
 

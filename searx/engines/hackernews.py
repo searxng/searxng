@@ -3,9 +3,10 @@
 
 from datetime import datetime
 from urllib.parse import urlencode
-from dateutil.relativedelta import relativedelta
 
+from dateutil.relativedelta import relativedelta
 from flask_babel import gettext
+
 from searx.utils import html_to_text
 
 # Engine metadata

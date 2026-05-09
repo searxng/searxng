@@ -2,6 +2,7 @@
 """Deviantart (Images)"""
 
 import urllib.parse
+
 from lxml import html
 
 from searx.utils import extract_text, eval_xpath, eval_xpath_list
@@ -34,7 +35,6 @@ cursor_xpath = '(//a[@class="vQ2brP"]/@href)[last()]'
 
 
 def request(query, params):
-
     # https://www.deviantart.com/search?q=foo
 
     nextpage_url = params['engine_data'].get('nextpage')
@@ -48,7 +48,6 @@ def request(query, params):
 
 
 def response(resp):
-
     results = []
     dom = html.fromstring(resp.text)
 

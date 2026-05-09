@@ -10,14 +10,14 @@ The engine uses the `arXiv API`_.
 """
 
 import typing as t
-
 from datetime import datetime
 from urllib.parse import urlencode
 
 from lxml import etree
 from lxml.etree import XPath
-from searx.utils import eval_xpath, eval_xpath_list, eval_xpath_getindex
+
 from searx.result_types import EngineResults
+from searx.utils import eval_xpath, eval_xpath_list, eval_xpath_getindex
 
 if t.TYPE_CHECKING:
     from searx.extended_types import SXNG_Response
@@ -66,7 +66,6 @@ xpath_comment = XPath("./arxiv:comment", namespaces=arxiv_namespaces)
 
 
 def request(query: str, params: "OnlineParams") -> None:
-
     args = {
         "search_query": f"{arxiv_search_prefix}:{query}",
         "start": (params["pageno"] - 1) * arxiv_max_results,
@@ -76,7 +75,6 @@ def request(query: str, params: "OnlineParams") -> None:
 
 
 def response(resp: "SXNG_Response") -> EngineResults:
-
     res = EngineResults()
 
     dom = etree.fromstring(resp.content)

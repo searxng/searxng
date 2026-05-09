@@ -2,7 +2,9 @@
 """Google Play Apps & Google Play Movies"""
 
 from urllib.parse import urlencode
+
 from lxml import html
+
 from searx.utils import (
     eval_xpath,
     extract_url,
@@ -25,7 +27,6 @@ search_url = base_url + "/store/search?{query}&c={play_categ}"
 
 
 def request(query, params):
-
     if play_categ not in ('movies', 'apps'):
         raise ValueError(f"unknown google play category: {play_categ}")
 
@@ -39,7 +40,6 @@ def request(query, params):
 
 
 def response(resp):
-
     if play_categ == 'movies':
         return response_movies(resp)
     if play_categ == 'apps':
@@ -49,7 +49,6 @@ def response(resp):
 
 
 def response_movies(resp):
-
     results = []
     dom = html.fromstring(resp.text)
 
@@ -76,7 +75,6 @@ def response_movies(resp):
 
 
 def response_apps(resp):
-
     results = []
     dom = html.fromstring(resp.text)
 

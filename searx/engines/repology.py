@@ -22,8 +22,8 @@ If you want to offer the engine, the ``inactive`` flag must be set to ``false``.
 """
 
 import typing as t
-
 from urllib.parse import urlencode
+
 from searx.result_types import EngineResults
 
 if t.TYPE_CHECKING:
@@ -87,7 +87,8 @@ def response(resp: 'SXNG_Response') -> EngineResults:
                 package_name=_get_most_common([pkg.get("visiblename") for pkg in repositories]),
                 version=latest_version,
                 license_name=_get_most_common(_flatten([pkg.get("licenses", []) for pkg in repositories])),
-                tags=list({pkg.get("repo") for pkg in repositories}),  # ensure that tags are unique
+                # ensure that tags are unique
+                tags=list({pkg.get("repo") for pkg in repositories}),
             )
         )
 

@@ -2,8 +2,8 @@
 """SensCritique (movies)"""
 
 import typing as t
-
 from json import dumps, loads
+
 from searx.result_types import EngineResults, MainResult
 
 about = {

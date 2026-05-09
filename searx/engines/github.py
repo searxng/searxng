@@ -2,6 +2,7 @@
 """Github (IT)"""
 
 from urllib.parse import urlencode
+
 from dateutil import parser
 
 # about
@@ -23,7 +24,6 @@ accept_header = 'application/vnd.github.preview.text-match+json'
 
 
 def request(query, params):
-
     params['url'] = search_url.format(query=urlencode({'q': query}))
     params['headers']['Accept'] = accept_header
 

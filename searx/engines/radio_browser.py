@@ -63,7 +63,6 @@ def init(_):
 
 
 def server_list() -> list[str]:
-
     servers = CACHE.get("servers", [])
     if servers:
         return servers
@@ -88,7 +87,6 @@ def server_list() -> list[str]:
 
 
 def request(query, params):
-
     servers = server_list()
     if not servers:
         logger.error("Fetched server list is empty!")

@@ -20,15 +20,14 @@ Implementations
 
 """
 
-import typing as t
 import json
+import typing as t
 
-from searx.result_types import EngineResults
 from searx.enginelib import EngineCache
+from searx.result_types import EngineResults
 
 if t.TYPE_CHECKING:
     from searx.search.processors import RequestParams
-
 
 engine_type = "offline"
 categories = ["general"]

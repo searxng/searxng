@@ -8,18 +8,18 @@ Yahoo News is "English only" and do not offer localized nor language queries.
 # pylint: disable=invalid-name
 
 import re
-from urllib.parse import urlencode
 from datetime import datetime, timedelta
+from urllib.parse import urlencode
+
 from dateutil import parser
 from lxml import html
 
+from searx.engines.yahoo import parse_url
 from searx.utils import (
     eval_xpath_list,
     eval_xpath_getindex,
     extract_text,
 )
-
-from searx.engines.yahoo import parse_url
 
 # about
 about = {

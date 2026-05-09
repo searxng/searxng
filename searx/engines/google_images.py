@@ -13,8 +13,8 @@ This internal API offer results in
 .. _Protobuf: https://en.wikipedia.org/wiki/Protocol_Buffers
 """
 
-from urllib.parse import urlencode
 from json import loads
+from urllib.parse import urlencode
 
 from searx.engines.google import fetch_traits  # pylint: disable=unused-import
 from searx.engines.google import (

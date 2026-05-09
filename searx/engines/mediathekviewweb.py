@@ -21,7 +21,6 @@ safesearch = False
 
 
 def request(query, params):
-
     params['url'] = 'https://mediathekviewweb.de/api/query'
     params['method'] = 'POST'
     params['headers']['Content-type'] = 'text/plain'
@@ -47,7 +46,6 @@ def request(query, params):
 
 
 def response(resp):
-
     resp = loads(resp.text)
 
     mwv_result = resp['result']

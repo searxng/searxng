@@ -2,8 +2,8 @@
 # pylint: disable=invalid-name
 """Genius"""
 
-from urllib.parse import urlencode
 from datetime import datetime
+from urllib.parse import urlencode
 
 # about
 about = {

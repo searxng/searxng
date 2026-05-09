@@ -51,6 +51,7 @@ Implementations
 import typing as t
 from datetime import datetime
 from urllib.parse import quote
+
 from lxml import etree  # type: ignore
 
 from searx.exceptions import SearxEngineAPIException
@@ -58,7 +59,6 @@ from searx.utils import humanize_bytes
 
 if t.TYPE_CHECKING:
     from searx.extended_types import SXNG_Response
-
 
 # engine settings
 about: dict[str, t.Any] = {

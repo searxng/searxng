@@ -1,8 +1,9 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 """Currency convert (DuckDuckGo)"""
 
-import typing as t
 import json
+import typing as t
+
 from searx.result_types import EngineResults
 
 if t.TYPE_CHECKING:

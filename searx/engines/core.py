@@ -30,7 +30,6 @@ Implementations
 """
 
 import typing as t
-
 from datetime import datetime
 from urllib.parse import urlencode
 
@@ -39,7 +38,6 @@ from searx.result_types import EngineResults
 if t.TYPE_CHECKING:
     from searx.extended_types import SXNG_Response
     from searx.search.processors import OnlineParams
-
 
 about = {
     "website": "https://core.ac.uk",
@@ -73,7 +71,6 @@ def setup(engine_settings: dict[str, t.Any]) -> bool:
 
 
 def request(query: str, params: "OnlineParams") -> None:
-
     # API v3 uses different parameters
     search_params = {
         "q": query,

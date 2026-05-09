@@ -3,11 +3,11 @@
 Piratebay (Videos, Music, Files)
 """
 
-from json import loads
 from datetime import datetime
+from json import loads
 from operator import itemgetter
-
 from urllib.parse import quote
+
 from searx.utils import humanize_bytes
 
 # about

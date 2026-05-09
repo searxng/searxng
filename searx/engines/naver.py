@@ -3,6 +3,7 @@
 """Naver for SearXNG"""
 
 from urllib.parse import urlencode
+
 from lxml import html
 
 from searx.exceptions import SearxEngineAPIException, SearxEngineXPathException

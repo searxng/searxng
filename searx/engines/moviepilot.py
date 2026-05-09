@@ -27,6 +27,7 @@ For a list of all public filters, observe the url path when browsing
 """
 
 from urllib.parse import urlencode
+
 from searx.utils import html_to_text
 
 about = {

@@ -30,7 +30,6 @@ search_api = 'https://api.stackexchange.com/2.3/search/advanced?'
 
 
 def request(query, params):
-
     args = urlencode(
         {
             'q': query,
@@ -47,7 +46,6 @@ def request(query, params):
 
 
 def response(resp):
-
     results = []
     json_data = loads(resp.text)
 

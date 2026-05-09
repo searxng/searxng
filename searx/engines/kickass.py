@@ -6,6 +6,7 @@ from operator import itemgetter
 from urllib.parse import quote
 
 from lxml import html
+
 from searx.utils import (
     eval_xpath,
     eval_xpath_getindex,

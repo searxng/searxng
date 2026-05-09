@@ -28,7 +28,6 @@ image_api = 'https://www.artic.edu/iiif/2/'
 
 
 def request(query, params):
-
     args = urlencode(
         {
             'q': query,
@@ -44,7 +43,6 @@ def request(query, params):
 
 
 def response(resp):
-
     results = []
     json_data = loads(resp.text)
 

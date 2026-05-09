@@ -6,28 +6,26 @@ from :ref:`wikipedia engine`.
 # pylint: disable=missing-class-docstring
 
 import typing as t
-
 from hashlib import md5
-from urllib.parse import urlencode, unquote
 from json import loads
+from urllib.parse import urlencode, unquote
 
-from dateutil.parser import isoparse
 from babel.dates import format_datetime, format_date, format_time, get_datetime_format
+from dateutil.parser import isoparse
 
 from searx.data import WIKIDATA_UNITS
-from searx.network import post, get
-from searx.utils import searxng_useragent, get_string_replaces_function
-from searx.external_urls import get_external_url, get_earth_coordinates_url, area_to_osm_zoom
+from searx.enginelib.traits import EngineTraits
 from searx.engines.wikipedia import (
     fetch_wikimedia_traits,
     get_wiki_params,
 )
-from searx.enginelib.traits import EngineTraits
+from searx.external_urls import get_external_url, get_earth_coordinates_url, area_to_osm_zoom
+from searx.network import post, get
+from searx.utils import searxng_useragent, get_string_replaces_function
 
 if t.TYPE_CHECKING:
     from searx.extended_types import SXNG_Response
     from searx.search.processors import OnlineParams
-
 
 # about
 about = {
@@ -43,7 +41,6 @@ display_type = ["infobox"]
 """A list of display types composed from ``infobox`` and ``list``.  The latter
 one will add a hit to the result list.  The first one will show a hit in the
 info box.  Both values can be set, or one of the two can be set."""
-
 
 # SPARQL
 SPARQL_ENDPOINT_URL = "https://query.wikidata.org/sparql"
@@ -117,7 +114,6 @@ WHERE {
 DUMMY_ENTITY_URLS = set(
     "http://www.wikidata.org/entity/" + wid for wid in ("Q4115189", "Q13406268", "Q15397819", "Q17339402")
 )
-
 
 # https://www.w3.org/TR/sparql11-query/#rSTRING_LITERAL1
 # https://lists.w3.org/Archives/Public/public-rdf-dawg/2011OctDec/0175.html
@@ -457,7 +453,6 @@ def send_wikidata_query(query: str, method="GET", **kwargs) -> dict[str, t.Any]:
 
 
 def request(query: str, params: "OnlineParams") -> None:
-
     attributes: tuple[str, list[WDAttribute | WDAmountAttribute | WDLabelAttribute | WDImageAttribute]]
     eng_tag, _wiki_netloc = get_wiki_params(params["searxng_locale"], traits)
     query, attributes = get_query(query, eng_tag)
@@ -472,7 +467,6 @@ def request(query: str, params: "OnlineParams") -> None:
 
 
 def response(resp: "SXNG_Response") -> list[dict[str, t.Any]]:
-
     results: list[dict[str, t.Any]] = []
     jsonresponse = loads(resp.content.decode())
 

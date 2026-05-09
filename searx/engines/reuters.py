@@ -22,9 +22,10 @@ Implementations
 
 """
 
+from datetime import datetime, timedelta
 from json import dumps
 from urllib.parse import quote_plus
-from datetime import datetime, timedelta
+
 from dateutil import parser
 
 from searx.result_types import EngineResults

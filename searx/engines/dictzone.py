@@ -4,11 +4,12 @@ Dictzone
 """
 
 import urllib.parse
+
 from lxml import html
 
-from searx.utils import eval_xpath, extract_text
-from searx.result_types import EngineResults
 from searx.network import get as http_get  # https://github.com/searxng/searxng/issues/762
+from searx.result_types import EngineResults
+from searx.utils import eval_xpath, extract_text
 
 # about
 about = {

@@ -13,6 +13,7 @@ in ``settings.yml``:
 """
 
 from urllib.parse import urlencode
+
 from searx.result_types import EngineResults
 
 engine_type = "online"
@@ -35,7 +36,6 @@ about = {
 
 
 def request(query, params):
-
     if params['language'] == 'all':
         params['language'] = 'en-us'
 

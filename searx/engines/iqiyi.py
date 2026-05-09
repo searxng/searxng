@@ -2,9 +2,8 @@
 """iQiyi: A search engine for retrieving videos from iQiyi."""
 
 import typing
-
-from urllib.parse import urlencode
 from datetime import datetime, timedelta
+from urllib.parse import urlencode
 
 from searx.exceptions import SearxEngineAPIException
 

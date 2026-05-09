@@ -3,9 +3,11 @@
 
 import re
 from urllib.parse import quote, urljoin
+
 from lxml import html
-from searx.utils import extract_text, eval_xpath, eval_xpath_list, eval_xpath_getindex
+
 from searx.network import raise_for_httperror
+from searx.utils import extract_text, eval_xpath, eval_xpath_list, eval_xpath_getindex
 
 # about
 about = {
@@ -27,7 +29,6 @@ search_url = base_url + 'suchen/dudenonline/{query}?search_api_fulltext=&page={o
 
 
 def request(query, params):
-
     offset = params['pageno'] - 1
     if offset == 0:
         search_url_fmt = base_url + 'suchen/dudenonline/{query}'

@@ -48,10 +48,11 @@ Implementations
 
 """
 
-import time
-import random
-from urllib.parse import urlencode
 import datetime
+import random
+import time
+from urllib.parse import urlencode
+
 from dateutil import parser
 
 from searx.utils import humanize_number
@@ -108,7 +109,6 @@ def _frontend_url() -> str:
 
 
 def request(query, params):
-
     args = {
         'q': query,
         'filter': piped_filter,

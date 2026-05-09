@@ -2,8 +2,8 @@
 # pylint: disable=invalid-name
 """360Search-Videos: A search engine for retrieving videos from 360Search."""
 
-from urllib.parse import urlencode
 from datetime import datetime
+from urllib.parse import urlencode
 
 from searx.exceptions import SearxEngineAPIException
 from searx.utils import html_to_text, get_embeded_stream_url

@@ -13,7 +13,6 @@ about = {
 }
 categories = ['images', 'icons']
 
-
 cdn_base_url = 'https://cdn.jsdelivr.net/gh/selfhst/icons'
 
 

@@ -4,6 +4,7 @@
 import re
 from datetime import datetime
 from urllib.parse import urlencode
+
 from lxml import html
 
 from searx.exceptions import SearxEngineCaptchaException

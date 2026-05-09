@@ -2,8 +2,8 @@
 """npms.io"""
 
 from urllib.parse import urlencode
-from dateutil import parser
 
+from dateutil import parser
 
 about = {
     "website": "https://npms.io/",
@@ -16,7 +16,6 @@ about = {
 
 categories = ['it', 'packages']
 
-
 # engine dependent config
 paging = True
 page_size = 25
@@ -24,7 +23,6 @@ search_api = "https://api.npms.io/v2/search?"
 
 
 def request(query: str, params):
-
     args = urlencode(
         {
             'from': (params["pageno"] - 1) * page_size,

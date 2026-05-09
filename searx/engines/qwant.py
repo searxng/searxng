@@ -149,7 +149,6 @@ def request(query, params):
 
 
 def response(resp):
-
     if qwant_categ == "web-lite":
         return parse_web_lite(resp)
     return parse_web_api(resp)
@@ -319,7 +318,6 @@ def parse_web_api(resp):
 
 
 def fetch_traits(engine_traits: EngineTraits):
-
     # pylint: disable=import-outside-toplevel
     from searx.locales import region_tag
     from searx.network import get  # see https://github.com/searxng/searxng/issues/762

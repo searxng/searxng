@@ -4,6 +4,7 @@
 from urllib.parse import urlencode
 
 from lxml import html
+
 from searx.utils import (
     eval_xpath_getindex,
     extract_text,

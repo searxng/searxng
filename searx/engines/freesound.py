@@ -3,9 +3,9 @@
 Freesound (Sound)
 """
 
+from datetime import datetime
 from json import loads
 from urllib.parse import urlencode
-from datetime import datetime
 
 disabled = True
 api_key = ""

@@ -55,8 +55,8 @@ Implementations
 import random
 from json import loads
 from urllib.parse import urlencode
-from dateutil import parser
 
+from dateutil import parser
 from httpx import DigestAuth
 
 from searx.utils import html_to_text
@@ -123,7 +123,6 @@ def _base_url() -> str:
 
 
 def request(query, params):
-
     offset = (params['pageno'] - 1) * number_of_results
     args = {
         'query': query,

@@ -68,9 +68,9 @@ code blocks in a single file might be returned from the API).
 import typing as t
 from urllib.parse import urlencode
 
-from searx.result_types import EngineResults
 from searx.extended_types import SXNG_Response
 from searx.network import raise_for_httperror
+from searx.result_types import EngineResults
 
 # about
 about = {
@@ -84,7 +84,6 @@ about = {
 
 # engine dependent config
 categories = ['code']
-
 
 search_url = 'https://api.github.com/search/code?sort=indexed&{query}&{page}'
 # https://docs.github.com/en/rest/search/search?apiVersion=2022-11-28#text-match-metadata
@@ -141,7 +140,6 @@ This might break the lexer and thus result in the lack of code highlighting.
 
 
 def request(query: str, params: dict[str, t.Any]) -> None:
-
     params['url'] = search_url.format(query=urlencode({'q': query}), page=urlencode({'page': params['pageno']}))
     params['headers']['Accept'] = accept_header
     params['headers']['X-GitHub-Api-Version'] = ghc_api_version

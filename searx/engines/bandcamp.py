@@ -9,6 +9,7 @@
 """
 
 from urllib.parse import urlencode, urlparse, parse_qs
+
 from dateutil.parser import parse as dateparse
 from lxml import html
 
@@ -37,14 +38,12 @@ iframe_src = "https://bandcamp.com/EmbeddedPlayer/{type}={result_id}/size=large/
 
 
 def request(query, params):
-
     search_path = search_string.format(query=urlencode({'q': query}), page=params['pageno'])
     params['url'] = base_url + search_path
     return params
 
 
 def response(resp):
-
     results = []
     dom = html.fromstring(resp.text)
 

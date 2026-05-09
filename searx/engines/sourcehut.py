@@ -23,17 +23,16 @@ Implementations
 """
 
 import typing as t
-
 from urllib.parse import urlencode
+
 from lxml import html
 
-from searx.utils import eval_xpath, eval_xpath_list, extract_text, searxng_useragent
 from searx.result_types import EngineResults
+from searx.utils import eval_xpath, eval_xpath_list, extract_text, searxng_useragent
 
 if t.TYPE_CHECKING:
     from searx.extended_types import SXNG_Response
     from searx.search.processors import OnlineParams
-
 
 about = {
     "website": "https://sourcehut.org",
@@ -50,7 +49,6 @@ paging = True
 base_url: str = "https://sr.ht/projects"
 """Browse public projects."""
 
-
 sourcehut_sort_order: str = "recently-updated"
 """The sort order of the results.  Possible values:
 
@@ -60,7 +58,6 @@ sourcehut_sort_order: str = "recently-updated"
 
 
 def request(query: str, params: "OnlineParams") -> None:
-
     args = {"search": query, "page": params["pageno"], "sort": sourcehut_sort_order}
     params["url"] = f"{base_url}?{urlencode(args)}"
 
@@ -69,7 +66,6 @@ def request(query: str, params: "OnlineParams") -> None:
 
 
 def response(resp: "SXNG_Response") -> EngineResults:
-
     res = EngineResults()
     doc = html.fromstring(resp.text)
 

@@ -45,9 +45,9 @@ Implementations
 
 """
 
-import typing as t
-import sqlite3
 import contextlib
+import sqlite3
+import typing as t
 
 from searx.result_types import EngineResults
 from searx.result_types import MainResult, KeyValue

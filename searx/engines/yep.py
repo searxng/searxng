@@ -2,7 +2,6 @@
 """Yep (general, images, news)"""
 
 import typing as t
-
 from urllib.parse import urlencode
 
 from searx.result_types import EngineResults

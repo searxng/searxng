@@ -1,8 +1,8 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 """Pixiv (images)"""
 
-from urllib.parse import urlencode
 import random
+from urllib.parse import urlencode
 
 # Engine metadata
 about = {

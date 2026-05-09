@@ -20,14 +20,13 @@ Implementations
 """
 
 import typing as t
-
 from datetime import datetime
 from urllib.parse import urlencode
 
 from lxml import etree
 
-from searx.result_types import EngineResults
 from searx.network import get
+from searx.result_types import EngineResults
 from searx.utils import (
     eval_xpath_getindex,
     eval_xpath_list,
@@ -38,7 +37,6 @@ from searx.utils import (
 if t.TYPE_CHECKING:
     from searx.extended_types import SXNG_Response
     from searx.search.processors import OnlineParams
-
 
 about = {
     "website": "https://www.ncbi.nlm.nih.gov/pubmed/",
@@ -62,7 +60,6 @@ pubmed_url = "https://www.ncbi.nlm.nih.gov/pubmed/"
 
 
 def request(query: str, params: "OnlineParams") -> None:
-
     args = urlencode(
         {
             "db": "pubmed",

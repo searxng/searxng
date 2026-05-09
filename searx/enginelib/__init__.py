@@ -25,11 +25,12 @@ an example in which the command line is called in the development environment::
 
 __all__ = ["EngineCache", "Engine", "ENGINES_CACHE"]
 
-import typing as t
 import abc
-from collections.abc import Callable
 import logging
 import string
+import typing as t
+from collections.abc import Callable
+
 import typer
 
 from ..cache import ExpireCacheSQLite, ExpireCacheCfg

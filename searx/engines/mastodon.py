@@ -16,8 +16,8 @@ for users, accounts or other types of content on Mastodon however.
 
 """
 
-from urllib.parse import urlencode
 from datetime import datetime
+from urllib.parse import urlencode
 
 about = {
     "website": 'https://joinmastodon.org/',
