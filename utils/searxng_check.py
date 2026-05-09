@@ -1,9 +1,8 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 """Implement some checks in the active installation"""
 
-import os
-import sys
 import logging
+import os
 import warnings
 from pathlib import Path
 
@@ -14,8 +13,6 @@ logging.basicConfig(level=logging.getLevelName('DEBUG'), format=LOG_FORMAT_DEBUG
 os.environ['SEARXNG_DEBUG'] = '1'
 
 # from here on implement the checks of the installation
-
-import searx
 
 OLD_SETTING = '/etc/searx/settings.yml'
 
