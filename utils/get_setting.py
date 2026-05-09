@@ -1,18 +1,16 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 """build environment used by shell scripts"""
 
-# set path
-import sys
-import importlib.util
 import re
 
+# set path
+import sys
 from pathlib import Path
 
 repo_root = Path(__file__).resolve().parent.parent
 
 
 def main(setting_name):
-
     settings_path = repo_root / "searx" / "settings.yml"
     with open(settings_path) as f:
         settings = parse_yaml(f.read())
