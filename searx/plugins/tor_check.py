@@ -5,10 +5,10 @@ user searches for ``tor-check``.  It fetches the tor exit node list from
 user's IP address is in it.
 """
 
-from ipaddress import ip_address
-import typing
-
 import re
+import typing
+from ipaddress import ip_address
+
 from flask_babel import gettext
 from httpx import HTTPError
 
@@ -20,7 +20,6 @@ if typing.TYPE_CHECKING:
     from searx.search import SearchWithPlugins
     from searx.extended_types import SXNG_Request
     from searx.plugins import PluginCfg
-
 
 # Regex for exit node addresses in the list.
 reg = re.compile(r"(?<=ExitAddress )\S+")

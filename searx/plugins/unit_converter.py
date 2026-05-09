@@ -9,21 +9,20 @@ of measurement are evaluated.  The weighting in the evaluation results from the
 sorting of the :py:obj:`list of unit converters<symbol_to_si>`.
 """
 
-import typing
 import re
-import babel.numbers
+import typing
 
+import babel.numbers
 from flask_babel import gettext, get_locale
 
-from searx.wikidata_units import symbol_to_si
 from searx.plugins import Plugin, PluginInfo
 from searx.result_types import EngineResults
+from searx.wikidata_units import symbol_to_si
 
 if typing.TYPE_CHECKING:
     from searx.search import SearchWithPlugins
     from searx.extended_types import SXNG_Request
     from searx.plugins import PluginCfg
-
 
 CONVERT_KEYWORDS = ["in", "to", "as"]
 
@@ -81,7 +80,6 @@ RE_MEASURE = r'''
 
 
 def _parse_text_and_convert(from_query, to_query) -> str | None:
-
     # pylint: disable=too-many-branches, too-many-locals
 
     if not (from_query and to_query):

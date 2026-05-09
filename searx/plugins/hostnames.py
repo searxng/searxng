@@ -80,18 +80,16 @@ something like this:
 
 """
 
-import typing as t
-
 import re
+import typing as t
 from urllib.parse import urlunparse, urlparse
 
 from flask_babel import gettext  # pyright: ignore[reportUnknownVariableType]
 
 from searx import settings
+from searx.plugins import Plugin, PluginInfo
 from searx.result_types._base import MainResult, LegacyResult
 from searx.settings_loader import get_yaml_cfg
-from searx.plugins import Plugin, PluginInfo
-
 from ._core import log
 
 if t.TYPE_CHECKING:

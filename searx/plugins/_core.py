@@ -8,10 +8,8 @@ import importlib
 import inspect
 import logging
 import re
-
 import typing as t
 from collections.abc import Generator
-
 from dataclasses import dataclass, field
 
 from searx.extended_types import SXNG_Request
