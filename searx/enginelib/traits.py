@@ -146,6 +146,7 @@ class EngineTraits:
         if fetch_traits:
             engine_traits = cls()
             fetch_traits(engine_traits)
+            print(engine_traits)
         return engine_traits
 
     def set_traits(self, engine: "Engine | types.ModuleType") -> None:
@@ -196,10 +197,25 @@ class EngineTraitsMap(dict[str, EngineTraits]):
     ENGINE_TRAITS_FILE: pathlib.Path = (data_dir / "engine_traits.json").resolve()
     """File with persistence of the :py:obj:`EngineTraitsMap`."""
 
-    def save_data(self):
-        """Store EngineTraitsMap in in file :py:obj:`self.ENGINE_TRAITS_FILE`"""
+    def save_data(self, merge_with_existing_data: bool):
+        """
+        Store EngineTraitsMap in in file :py:obj:`self.ENGINE_TRAITS_FILE`
+
+        :param merge_with_existing_data: Whether to keep the data of engines
+               whose traits weren't loaded into :py:obj:`EngineTraitsMap`.
+        """
+
+        traits = {}
+        if merge_with_existing_data:
+            with open(self.ENGINE_TRAITS_FILE, "r", encoding="utf-8") as f:
+                traits = json.loads(f.read())
+
+        # write traits data of all updated engines into traits dictionary
+        for engine_name, new_traits in self.items():
+            traits[engine_name] = new_traits
+
         with open(self.ENGINE_TRAITS_FILE, "w", encoding="utf-8") as f:
-            json.dump(self, f, indent=2, sort_keys=True, cls=EngineTraitsEncoder)
+            json.dump(traits, f, indent=2, sort_keys=True, cls=EngineTraitsEncoder)
 
     @classmethod
     def from_data(cls) -> "EngineTraitsMap":
@@ -221,26 +237,34 @@ class EngineTraitsMap(dict[str, EngineTraits]):
 
         for engine_name in names:
             engine: Engine | types.ModuleType = engines.engines[engine_name]
-            traits = None
-
-            # pylint: disable=broad-exception-caught
-            try:
-                traits = EngineTraits.fetch_traits(engine)
-            except Exception as exc:
-                log("ERROR: while fetch_traits %s: %s" % (engine_name, exc))
-                v = ENGINE_TRAITS.get(engine_name)
-                if v:
-                    log("WARNING: re-use old values from fetch_traits - ENGINE_TRAITS[%s]" % engine_name)
-                    traits = EngineTraits(**v)
-                else:
-                    log("WARNING: no old values available for ENGINE_TRAITS[%s], skipping" % engine_name)
-
-            if traits is not None:
-                log("%-20s: SearXNG languages --> %s " % (engine_name, len(traits.languages)))
-                log("%-20s: SearXNG regions   --> %s" % (engine_name, len(traits.regions)))
+            traits = cls.fetch_traits_for_engine(engine, log)
+            if traits:
                 obj[engine_name] = traits
 
         return obj
+
+    def fetch_traits_for_engine(
+        engine: "Engine | types.ModuleType", log: t.Callable[[str], None]
+    ) -> EngineTraits | None:
+        traits = None
+
+        # pylint: disable=broad-exception-caught
+        try:
+            traits = EngineTraits.fetch_traits(engine)
+        except Exception as exc:
+            log("ERROR: while fetch_traits %s: %s" % (engine.name, exc))
+            v = ENGINE_TRAITS.get(engine.name)
+            if v:
+                log("WARNING: re-use old values from fetch_traits - ENGINE_TRAITS[%s]" % engine.name)
+                traits = EngineTraits(**v)
+            else:
+                log("WARNING: no old values available for ENGINE_TRAITS[%s], skipping" % engine.name)
+
+        if traits is not None:
+            log("%-20s: SearXNG languages --> %s " % (engine.name, len(traits.languages)))
+            log("%-20s: SearXNG regions   --> %s" % (engine.name, len(traits.regions)))
+
+        return traits
 
     def set_traits(self, engine: "Engine | types.ModuleType"):
         """Set traits in a :py:obj:`Engine` namespace.

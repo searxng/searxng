@@ -43,7 +43,7 @@ data.traits() {
         set -e
         pyenv.activate
         build_msg DATA "update searx/data/engine_traits.json"
-        python searxng_extra/update/update_engine_traits.py
+        python searxng_extra/update/update_engine_traits.py $ENGINES
         build_msg ENGINES "update searx/sxng_locales.py"
     )
     dump_return $?
