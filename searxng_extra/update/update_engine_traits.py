@@ -12,12 +12,15 @@ The script :origin:`searxng_extra/update/update_engine_traits.py` is called in
 the :origin:`CI Update data ... <.github/workflows/data-update.yml>`
 
 """
-
 # pylint: disable=invalid-name
+
+import typing as t
+
 from unicodedata import lookup
 from pathlib import Path
 from pprint import pformat
 import babel
+import typer
 
 from searx import settings, searx_dir
 from searx import network
@@ -75,23 +78,45 @@ lang2emoji = {
     'he': '\U0001f1ee\U0001f1f1',  # Hebrew
 }
 
+app = typer.Typer()
 
-def main():
 
-    engines_cfg = []
+@app.command()
+def cli(engines: t.Annotated[list[str] | None, typer.Argument()] = None):
+    """Update ``data/engine_traits.json`` and ``languages.py``.
 
+    Optionally, if arguments are provided via the command line, these are
+    interpreted as the names of the engines that should be updated.  All other
+    engines will be left untouched.
+    """
+
+    all_eng_names: list[str] = [_["name"] for _ in settings["engines"]]
+    if engines:
+        unknown: list[str] = [_ for _ in engines if _ not in all_eng_names]
+        if unknown:
+            print(f"ERROR: unknown engines --> {', '.join(unknown)}")
+            raise typer.Exit(42)
+
+    engines_cfg: list[dict[str, t.Any]] = []
     for eng_data in settings["engines"]:
-        eng_data["inactive"] = False
-        engines_cfg.append(eng_data)
+        if not engines or eng_data["name"] in engines:
+            eng_data["inactive"] = False
+            engines_cfg.append(eng_data)
 
     load_engines(engines_cfg)
-    # traits_map = EngineTraitsMap.from_data()
-    traits_map = fetch_traits_map()
+    traits_map: EngineTraitsMap = fetch_traits_map()
+    if engines:
+        _map = EngineTraitsMap.from_data()
+        _map.update(traits_map)
+        traits_map = _map
+
+    print("write json file: %s" % traits_map.ENGINE_TRAITS_FILE)
+    traits_map.save_data()
     sxng_tag_list = filter_locales(traits_map)
     write_languages_file(sxng_tag_list)
 
 
-def fetch_traits_map():
+def fetch_traits_map() -> EngineTraitsMap:
     """Fetches supported languages for each engine and writes json file with those."""
     network.set_timeout_for_thread(10.0)
 
@@ -100,8 +125,6 @@ def fetch_traits_map():
 
     traits_map = EngineTraitsMap.fetch_traits(log=log)
     print("fetched properties from %s engines" % len(traits_map))
-    print("write json file: %s" % traits_map.ENGINE_TRAITS_FILE)
-    traits_map.save_data()
     return traits_map
 
 
@@ -203,4 +226,4 @@ def get_unicode_flag(locale: babel.Locale):
 
 
 if __name__ == "__main__":
-    main()
+    app()
