@@ -1,11 +1,11 @@
 #!/usr/bin/env python
 # SPDX-License-Identifier: AGPL-3.0-or-later
-"""Update :py:obj:`searx.enginelib.traits.EngineTraitsMap` and :origin:`searx/languages.py`
+"""Update :py:obj:`searx.enginelib.traits.EngineTraitsMap` and :origin:`searx/sxng_locales.py`
 
 :py:obj:`searx.enginelib.traits.EngineTraitsMap.ENGINE_TRAITS_FILE`:
   Persistence of engines traits, fetched from the engines.
 
-:origin:`searx/languages.py`
+:origin:`searx/sxng_locales.py`
   Is generated  from intersecting each engine's supported traits.
 
 The script :origin:`searxng_extra/update/update_engine_traits.py` is called in
@@ -28,8 +28,8 @@ from searx.engines import load_engines
 from searx.enginelib.traits import EngineTraitsMap
 
 # Output files.
-languages_file = Path(searx_dir) / 'sxng_locales.py'
-languages_file_header = """\
+sxng_locales_file = Path(searx_dir) / 'sxng_locales.py'
+sxng_locales_file_header = """\
 # SPDX-License-Identifier: AGPL-3.0-or-later
 '''List of SearXNG's locale codes used for the search language/region.
 
@@ -42,7 +42,7 @@ languages_file_header = """\
 
 sxng_locales = (
 """
-languages_file_footer = """,
+sxng_locales_file_footer = """,
 )
 '''
 A list of five-digit tuples:
@@ -83,16 +83,16 @@ app = typer.Typer()
 
 @app.command()
 def cli(engines: t.Annotated[list[str] | None, typer.Argument()] = None):
-    """Update ``data/engine_traits.json`` and ``languages.py``.
+    """Update ``data/engine_traits.json`` and ``sxng_locales.py``.
 
     Optionally, if arguments are provided via the command line, these are
     interpreted as the names of the engines that should be updated.  All other
     engines will be left untouched.
     """
 
-    all_eng_names: list[str] = [_["name"] for _ in settings["engines"]]
+    all_eng_names: list[str] = [e["name"] for e in settings["engines"]]
     if engines:
-        unknown: list[str] = [_ for _ in engines if _ not in all_eng_names]
+        unknown: list[str] = [e for e in engines if e not in all_eng_names]
         if unknown:
             print(f"ERROR: unknown engines --> {', '.join(unknown)}")
             raise typer.Exit(42)
@@ -113,14 +113,14 @@ def cli(engines: t.Annotated[list[str] | None, typer.Argument()] = None):
     print("write json file: %s" % traits_map.ENGINE_TRAITS_FILE)
     traits_map.save_data()
     sxng_tag_list = filter_locales(traits_map)
-    write_languages_file(sxng_tag_list)
+    write_sxng_locales_file(sxng_tag_list)
 
 
 def fetch_traits_map() -> EngineTraitsMap:
     """Fetches supported languages for each engine and writes json file with those."""
     network.set_timeout_for_thread(10.0)
 
-    def log(msg):
+    def log(msg: str):
         print(msg)
 
     traits_map = EngineTraitsMap.fetch_traits(log=log)
@@ -128,13 +128,13 @@ def fetch_traits_map() -> EngineTraitsMap:
     return traits_map
 
 
-def filter_locales(traits_map: EngineTraitsMap):
+def filter_locales(traits_map: EngineTraitsMap) -> set[str]:
     """Filter language & region tags by a threshold."""
 
     min_eng_per_region = 18
     min_eng_per_lang = 22
 
-    _ = {}
+    _: dict[str, int] = {}
     for eng in traits_map.values():
         for reg in eng.regions.keys():
             _[reg] = _.get(reg, 0) + 1
@@ -154,7 +154,7 @@ def filter_locales(traits_map: EngineTraitsMap):
 
     languages = set(k for k, v in _.items() if v >= min_eng_per_lang)
 
-    sxng_tag_list = set()
+    sxng_tag_list: set[str] = set()
     sxng_tag_list.update(regions)
     sxng_tag_list.update(lang_from_region)
     sxng_tag_list.update(languages)
@@ -162,9 +162,9 @@ def filter_locales(traits_map: EngineTraitsMap):
     return sxng_tag_list
 
 
-def write_languages_file(sxng_tag_list):
+def write_sxng_locales_file(sxng_tag_list: set[str]):
 
-    language_codes = []
+    language_codes: list[tuple[str, str, str, str, str]] = []
 
     for sxng_tag in sorted(sxng_tag_list):
         sxng_locale: babel.Locale = babel.Locale.parse(sxng_tag, sep='-')
@@ -173,7 +173,7 @@ def write_languages_file(sxng_tag_list):
 
         item = (
             sxng_tag,
-            sxng_locale.get_language_name().title(),  # type: ignore
+            sxng_locale.get_language_name().title(),  # pyright: ignore[reportOptionalMemberAccess]
             sxng_locale.get_territory_name() or '',
             sxng_locale.english_name.split(' (')[0] if sxng_locale.english_name else '',
             UnicodeEscape(flag),
@@ -181,13 +181,13 @@ def write_languages_file(sxng_tag_list):
 
         language_codes.append(item)
 
-    language_codes = tuple(language_codes)
+    _codes = tuple(language_codes)
 
-    with languages_file.open('w', encoding='utf-8') as new_file:
+    with sxng_locales_file.open('w', encoding='utf-8') as new_file:
         file_content = "{header} {language_codes}{footer}".format(
-            header=languages_file_header,
-            language_codes=pformat(language_codes, width=120, indent=4)[1:-1],
-            footer=languages_file_footer,
+            header=sxng_locales_file_header,
+            language_codes=pformat(_codes, width=120, indent=4)[1:-1],
+            footer=sxng_locales_file_footer,
         )
         new_file.write(file_content)
         new_file.close()
