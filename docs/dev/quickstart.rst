@@ -60,10 +60,28 @@ into the developer environment and start a python based HTTP server by::
 
     $ ./manage dev.env
     ...
-    (dev.env)$ SEARXNG_DEBUG=1 python -m searx.webapp
+    (dev.env)$ SEARXNG_DEBUG=1 searxng-run
 
 Since this is a pure Python solution, you can set breakpoints in your code with
 ``pdb.set_trace()`` and the debugger will wait for you in the terminal prompt.
+
+Any other script or command line provided by SearXNG can also be used in the
+same environment, here are a few examples::
+
+    # tools related to favicons
+    (dev.env)$ python -m searx.favicons
+
+    # tools related to DATA stored in searx/data
+    (dev.env)$ python -m searx.data --help
+
+    # tools related to engines
+    (dev.env)$ python -m searx.enginelib --help
+
+    # to test one of the update scripts
+    (dev.env)$ searxng_extra/update/update_engine_traits.py --help
+
+    # to test the update of the wikidata units
+    (dev.env)$ searxng_extra/update/update_wikidata_units.py
 
 
 .. sidebar:: further read
