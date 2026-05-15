@@ -114,7 +114,13 @@ class ExpireCacheStats:
                 if expire:
                     valid_until = datetime.datetime.fromtimestamp(expire).strftime("%Y-%m-%d %H:%M:%S")
                 c_kv += 1
-                lines.append(f"[{ctx_name:20s}] {valid_until} {key:12}" f" --> ({type(value).__name__}) {value} ")
+                value_str = str(value)
+                if len(value_str) > 120:
+                    value_str = f"{value_str[:120]} ..."
+                lines.append(
+                    f"[{ctx_name:20s}] {valid_until} {key:12}"
+                    f" --> ({type(value).__name__}:{len(value)}) {value_str} "
+                )
 
         lines.append(f"Number of contexts: {c_ctx}")
         lines.append(f"number of key/value pairs: {c_kv}")

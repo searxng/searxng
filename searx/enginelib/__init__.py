@@ -8,8 +8,8 @@
 There is a command line for developer purposes and for deeper analysis.  Here is
 an example in which the command line is called in the development environment::
 
-  $ ./manage pyenv.cmd bash --norc --noprofile
-  (py3) python -m searx.enginelib --help
+  $ ./manage dev.env
+  (dev.env)$ python -m searx.enginelib --help
 
 .. hint::
 
@@ -46,6 +46,7 @@ ENGINES_CACHE: ExpireCacheSQLite = ExpireCacheSQLite.build_cache(
         name="ENGINES_CACHE",
         MAXHOLD_TIME=60 * 60 * 24 * 7,  # 7 days
         MAINTENANCE_PERIOD=60 * 60,  # 2h
+        MAX_VALUE_LEN=1024 * 1024 * 1024,  # 1MB
     )
 )
 """Global :py:obj:`searx.cache.ExpireCacheSQLite` instance where the cached
@@ -71,9 +72,9 @@ def state():
 
 
 @app.command()
-def maintenance(force: bool = True):
+def maintenance(force: bool = True, truncate: bool = False):
     """Carry out maintenance on cache of the engines."""
-    ENGINES_CACHE.maintenance(force=force)
+    ENGINES_CACHE.maintenance(force=force, truncate=truncate)
 
 
 class EngineCache:
@@ -111,8 +112,8 @@ class EngineCache:
     For introspection of the DB, jump into developer environment and run command to
     show cache state::
 
-        $ ./manage pyenv.cmd bash --norc --noprofile
-        (py3) python -m searx.enginelib cache state
+        $ ./manage dev.env
+        (dev.env)$ python -m searx.enginelib cache state
 
         cache tables and key/values
         ===========================
