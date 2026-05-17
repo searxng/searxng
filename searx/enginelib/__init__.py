@@ -160,7 +160,8 @@ class EngineCache:
     def __init__(self, engine_name: str, expire: int | None = None):
         self.expire: int = expire or ENGINES_CACHE.cfg.MAXHOLD_TIME
         _valid = "-_." + string.ascii_letters + string.digits
-        self.table_name: str = "".join([c if c in _valid else "_" for c in engine_name])
+        # engine_name is a table and SQL table names must start with a letter
+        self.table_name: str = "eng_" + "".join([c if c in _valid else "_" for c in engine_name])
 
     def set(self, key: str, value: t.Any, expire: int | None = None) -> bool:
         return ENGINES_CACHE.set(
