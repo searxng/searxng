@@ -23,7 +23,6 @@
         <th class="checkbox-col">{{- _("Allow") -}}</th>{{- '' -}}
         <th class="name">{{- _("Engine name") -}}</th>{{- '' -}}
         <th class="shortcut">{{ _("!bang") -}}</th>{{- '' -}}
-        <th>{{- _("Supports selected language") -}}</th>{{- '' -}}
         <th>{{- _("SafeSearch") -}}</th>{{- '' -}}
         <th>{{- _("Time range") -}}</th>{{- '' -}}
         <th>{{- _("Weight") }}</th>
@@ -69,9 +68,6 @@
               </th>{{- '' -}}
               <td class="shortcut">{{- '' -}}
                 <span class="bang">{{ '!' + shortcuts[search_engine.name] }}</span>{{- '' -}}
-              </td>{{- '' -}}
-              <td>
-                {{- checkbox(None, supports[search_engine.name]['supports_selected_language'], true) -}}
               </td>{{- '' -}}
               <td>
                 {{- checkbox(None, supports[search_engine.name]['safesearch'], true) -}}

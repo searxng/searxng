@@ -116,19 +116,6 @@ class EngineTraits:
             return self.all_locale
         return locales.get_engine_locale(searxng_locale, self.regions, default=default)
 
-    def is_locale_supported(self, searxng_locale: str) -> bool:
-        """A *locale* (SearXNG's internal representation) is considered to be
-        supported by the engine if the *region* or the *language* is supported
-        by the engine.
-
-        For verification the functions :py:func:`EngineTraits.get_region` and
-        :py:func:`EngineTraits.get_language` are used.
-        """
-        if self.data_type == "traits_v1":
-            return bool(self.get_region(searxng_locale) or self.get_language(searxng_locale))
-
-        raise TypeError("engine traits of type %s is unknown" % self.data_type)
-
     def copy(self):
         """Create a copy of the dataclass object."""
         return EngineTraits(**dataclasses.asdict(self))

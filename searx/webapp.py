@@ -918,9 +918,6 @@ def preferences():
             'rate80': rate80,
             'rate95': rate95,
             'warn_timeout': e.timeout > settings['outgoing']['request_timeout'],
-            'supports_selected_language': e.traits.is_locale_supported(
-                str(sxng_request.preferences.get_value('language') or 'all')
-            ),
             'result_count': result_count,
         }
     # end of stats
@@ -956,15 +953,9 @@ def preferences():
     # supports
     supports = {}
     for _, e in filtered_engines.items():
-        supports_selected_language = e.traits.is_locale_supported(
-            str(sxng_request.preferences.get_value('language') or 'all')
-        )
-        safesearch = e.safesearch
-        time_range_support = e.time_range_support
         supports[e.name] = {
-            'supports_selected_language': supports_selected_language,
-            'safesearch': safesearch,
-            'time_range_support': time_range_support,
+            'safesearch': e.safesearch,
+            'time_range_support': e.time_range_support,
         }
 
     return render(
