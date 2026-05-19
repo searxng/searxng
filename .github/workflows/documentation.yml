@@ -50,6 +50,9 @@ jobs:
             python-${{ env.PYTHON_VERSION }}-${{ runner.arch }}-
           path: "./local/"
 
+      - name: Install Ubuntu packages
+        run: sudo -H ./utils/searxng.sh install buildhost
+
       - name: Setup venv
         run: make V=1 install
 
