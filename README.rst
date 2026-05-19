@@ -45,6 +45,7 @@ For Android/Termux installation, see the guide:
 To fine-tune SearXNG, see `Configuration guide`_.
 
 Further information on *how-to* can be found `here <https://docs.searxng.org/admin/index.html>`_.
+
 Connect
 =======
 
