@@ -10,6 +10,7 @@ Prerequisites
 -------------
 
 - Android device with Termux installed (`F-Droid recommended <https://f-droid.org/en/packages/com.termux/>`_)
+- (`Termux Documentation <https://termux.dev/en/docs/index.html>`_)
 - Sufficient storage and stable internet connection
 - Basic familiarity with Python and Linux commands
 
@@ -61,17 +62,7 @@ Accessing SearXNG
 - If you cannot connect, set ``bind_address: "0.0.0.0"`` in ``searx/settings.yml``, restart SearXNG, and try accessing from another device on the LAN.
 - For browser issues, try **Firefox for Android** or Termux's web CLI tools.
 
-Extra Tips
-----------
-
-- To access SearXNG from other devices on your network:
-  
-  - Find your phone's IP in Termux with::
-
-        ip addr
-
-  - Then browse to ``http://<ip>:8888`` from your other device.
-
+-----------------
 
 ----
 
