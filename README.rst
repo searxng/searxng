@@ -40,7 +40,7 @@ Setup
 To install SearXNG, see `Installation guide`_.
 
 For Android/Termux installation, see the guide:
-`docs/android_termux.rst <docs/android_termux.rst>`_
+`docs/android_termux.rst <docs/admin/android_termux.rst>`_
 
 To fine-tune SearXNG, see `Configuration guide`_.
 
