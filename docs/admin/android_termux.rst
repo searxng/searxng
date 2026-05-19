@@ -64,7 +64,6 @@ Accessing SearXNG
 Extra Tips
 ----------
 
-- To disable problematic engines, edit ``searx/settings.yml`` and comment out or remove entries.
 - To access SearXNG from other devices on your network:
   
   - Find your phone's IP in Termux with::
