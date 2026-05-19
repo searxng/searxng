@@ -1,12 +1,7 @@
 Android / Termux Installation
 =============================
 
-It is possible to run SearXNG on Android devices using the Termux app, turning your mobile phone into a private self-hosted search engine. This platform is ideal for:
-
-- Privacy enthusiasts
-- Self-hosters
-- Developers and cybersecurity learners
-- Repurposing old Android phones
+It is possible to run SearXNG on Android devices using the Termux app, turning your mobile phone into a private self-hosted search engine.
 
 .. note::
    This setup is somewhat advanced and not all search engines will work on Android. Community support is limited.
