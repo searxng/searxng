@@ -1,19 +1,20 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 # pylint: disable=invalid-name
-"""Swisscows images"""
+"""Swisscows (images, videos)"""
 
-import json
-
-import random
 import base64
 import codecs
 import hashlib
+import json
+import random
 
+from datetime import datetime
 from urllib.parse import urlencode
 
 import typing as t
 
 from searx.result_types import EngineResults
+from searx.utils import humanize_number, html_to_text
 
 if t.TYPE_CHECKING:
     from searx.extended_types import SXNG_Response
@@ -30,7 +31,8 @@ about = {
 }
 
 
-categories = ["images"]
+categories = ["videos"]
+swisscows_category = "videos"  # possible: "videos", "images"
 paging = True
 results_per_page = 50
 
@@ -92,22 +94,42 @@ def generate_nonce_and_signature(url_path: str) -> tuple[str, str]:
     return (nonce, signature)
 
 
+def init(_):
+    if swisscows_category not in ("videos", "images"):
+        raise ValueError("illegal swisscows category: %s" % swisscows_category)
+
+    if swisscows_category == "videos" and results_per_page > 10:
+        raise ValueError("results_per_page for swisscows videos can be at most 10")
+
+
 def request(query: str, params: "OnlineParams") -> None:
-    # engine only supports 2 pages
-    if params["pageno"] > 2:
+    # swisscows images only supports 2 pages
+    if swisscows_category == "images" and params["pageno"] > 2:
         params["url"] = None
         return
 
     # the keys have to be sorted in alphabetic order,
     # otherwise the generated signature won't be accepted!
-    args = {
-        "itemsCount": results_per_page,
-        "locale": "en-US",
-        "offset": (params["pageno"] - 1) * results_per_page,
-        "query": query,
-        "spellcheck": True,
-    }
-    url_path = f"/v5/images/search?{urlencode(args)}"
+    url_path = ""
+    if swisscows_category == "images":
+        args = {
+            "itemsCount": results_per_page,
+            "locale": "en-US",
+            "offset": (params["pageno"] - 1) * results_per_page,
+            "query": query,
+            "spellcheck": True,
+        }
+        url_path = f"/v5/images/search?{urlencode(args)}"
+    else:
+        args = {
+            "itemsCount": results_per_page,
+            "offset": (params["pageno"] - 1) * results_per_page,
+            "query": query,
+            "region": "en-US",
+            "spellcheck": True,
+        }
+        url_path = f"/v2/videos/search?{urlencode(args)}"
+
     nonce, signature = generate_nonce_and_signature(url_path)
 
     params["headers"].update(
@@ -122,21 +144,50 @@ def request(query: str, params: "OnlineParams") -> None:
 def response(resp: "SXNG_Response"):
     res = EngineResults()
 
-    payload = resp.json()["payload"].split(".")[1]
-    decoded = base64.urlsafe_b64decode(payload + '=' * (4 - len(payload) % 4))
-    json_data = json.loads(decoded.decode())
+    json_data = resp.json()
+
+    # only appears to be the case for images, for videos the data doesn't seem to be encoded
+    # payload is encoded as a JSON web token -> 3 parts, separated by "."
+    # the actual data is in the center of the encoded string
+    if "payload" in json_data:
+        payload = json_data["payload"].split(".")[1]
+        # pad with '=' to be valid base64
+        payload = payload + '=' * (4 - len(payload) % 4)
+        decoded = base64.urlsafe_b64decode(payload)
+        json_data = json.loads(decoded.decode())
 
     for result in json_data["items"]:
-        res.add(
-            res.types.LegacyResult(
-                {
-                    "template": "images.html",
-                    "url": result["url"],
-                    "thumbnail_src": result["thumbnail"]["url"],
-                    "img_src": result["contentUrl"],
-                    "title": result["name"],
-                }
+        if swisscows_category == "images":
+            res.add(
+                res.types.LegacyResult(
+                    {
+                        "template": "images.html",
+                        "url": result["url"],
+                        "thumbnail_src": result["thumbnail"]["url"],
+                        "img_src": result["contentUrl"],
+                        "title": result["name"],
+                    }
+                )
             )
-        )
+        else:
+            published_date = None
+            if result["datePublished"]:
+                published_date = datetime.fromisoformat(result["datePublished"])
+
+            res.add(
+                res.types.LegacyResult(
+                    {
+                        "template": "videos.html",
+                        "url": result["url"],
+                        "title": html_to_text(result["title"]),
+                        "content": result["description"],
+                        "thumbnail": result["thumbnailUrl"],
+                        "length": result["duration"],
+                        "iframe_src": result["embedUrl"],
+                        "publishedDate": published_date,
+                        "views": humanize_number(result["viewCount"]),
+                    }
+                )
+            )
 
     return res
