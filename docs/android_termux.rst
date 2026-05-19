@@ -89,4 +89,4 @@ Extra Tips
 
 ----
 
-*Guide contributed by Z-Hussein. Feedback encouraged!*
+*Guide contributed by Z-Hussein.
