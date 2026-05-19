@@ -39,10 +39,12 @@ Setup
 
 To install SearXNG, see `Installation guide`_.
 
+For Android/Termux installation, see the guide:
+`docs/android_termux.rst <docs/android_termux.rst>`_
+
 To fine-tune SearXNG, see `Configuration guide`_.
 
 Further information on *how-to* can be found `here <https://docs.searxng.org/admin/index.html>`_.
-
 Connect
 =======
 
