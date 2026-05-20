@@ -2512,15 +2512,23 @@ engines:
     disabled: true
     inactive: true
 
+  - name: swisscows
+    engine: swisscows
+    categories: general
+    swisscows_category: web
+    results_per_page: 20
+    shortcut: sw
+    disabled: true
+
   - name: swisscows images
-    engine: swisscows_extra
+    engine: swisscows
     categories: images
     swisscows_category: images
     shortcut: swi
     disabled: true
 
   - name: swisscows videos
-    engine: swisscows_extra
+    engine: swisscows
     categories: videos
     swisscows_category: videos
     results_per_page: 10

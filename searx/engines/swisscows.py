@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 # pylint: disable=invalid-name
-"""Swisscows (images, videos)"""
+"""Swisscows (general, images, videos)"""
 
 import base64
 import codecs
@@ -13,7 +13,7 @@ from urllib.parse import urlencode
 
 import typing as t
 
-from searx.result_types import EngineResults
+from searx.result_types import EngineResults, LegacyResult
 from searx.utils import humanize_number, html_to_text
 
 if t.TYPE_CHECKING:
@@ -31,15 +31,19 @@ about = {
 }
 
 
-categories = ["videos"]
-swisscows_category = "videos"  # possible: "videos", "images"
-paging = True
+categories = ["general"]
+swisscows_category = "web"  # possible: "web", "videos", "images"
 results_per_page = 50
+
+time_range_support = True
+paging = True
 
 base_url = "https://api.swisscows.com"
 
 CAESAR_ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 NONCE_ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-._~"
+
+time_range_map = {"day": "Day", "week": "Week", "month": "Month", "year": "Year"}
 
 
 def generate_nonce(length: int = 32) -> str:
@@ -82,7 +86,7 @@ def sha256_hash_b64_url(s: str) -> str:
     return hash_base64_url_encoded
 
 
-def generate_nonce_and_signature(url_path: str) -> tuple[str, str]:
+def generate_nonce_and_signature(base_path: str, args: dict[str, t.Any]) -> tuple[str, str]:
     """
     Generate "X-Request-Nonce" and "X-Request-Signature" which are required for accessing
     Swisscows images (reverse engineered from their official website).
@@ -90,16 +94,30 @@ def generate_nonce_and_signature(url_path: str) -> tuple[str, str]:
     nonce = generate_nonce()
     nonce_shifted = caesar_shift_with_switch_case(nonce, 13)
 
-    signature = sha256_hash_b64_url(url_path + nonce_shifted)
+    # in the path, all keys must be sorted in alphabetic order,
+    # otherwise the generated signature won't be accepted!
+    # additionally, the values may not be URL encoded, they have to be plain text
+    # hence we don't use urlencode here
+    args_sorted = sorted(args.items(), key=lambda arg: arg[0])
+    query_string = "&".join(f"{key}={value}" for (key, value) in args_sorted)
+    full_path = f"{base_path}?{query_string}"
+
+    signature = sha256_hash_b64_url(full_path + nonce_shifted)
     return (nonce, signature)
 
 
+maximum_page_size = {"web": 20, "images": 50, "videos": 10}
+
+
 def init(_):
-    if swisscows_category not in ("videos", "images"):
+    if swisscows_category not in ("web", "images", "videos"):
         raise ValueError("illegal swisscows category: %s" % swisscows_category)
 
-    if swisscows_category == "videos" and results_per_page > 10:
-        raise ValueError("results_per_page for swisscows videos can be at most 10")
+    if results_per_page > maximum_page_size[swisscows_category]:
+        raise ValueError(
+            "results_per_page for swisscows %s can be at most %d"
+            % (swisscows_category, maximum_page_size[swisscows_category])
+        )
 
 
 def request(query: str, params: "OnlineParams") -> None:
@@ -108,10 +126,22 @@ def request(query: str, params: "OnlineParams") -> None:
         params["url"] = None
         return
 
-    # the keys have to be sorted in alphabetic order,
-    # otherwise the generated signature won't be accepted!
-    url_path = ""
-    if swisscows_category == "images":
+    base_path = ""
+    args = dict[str, t.Any]
+    if swisscows_category == "web":
+        freshness = "All"
+        if params["time_range"]:
+            freshness = time_range_map[params["time_range"]]
+        args = {
+            "freshness": freshness,
+            "itemsCount": results_per_page,
+            "locale": "en-US",
+            "offset": (params["pageno"] - 1) * results_per_page,
+            "query": query,
+            "spellcheck": True,
+        }
+        base_path = "/v5/web/search"
+    elif swisscows_category == "images":
         args = {
             "itemsCount": results_per_page,
             "locale": "en-US",
@@ -119,7 +149,7 @@ def request(query: str, params: "OnlineParams") -> None:
             "query": query,
             "spellcheck": True,
         }
-        url_path = f"/v5/images/search?{urlencode(args)}"
+        base_path = "/v5/images/search"
     else:
         args = {
             "itemsCount": results_per_page,
@@ -128,9 +158,9 @@ def request(query: str, params: "OnlineParams") -> None:
             "region": "en-US",
             "spellcheck": True,
         }
-        url_path = f"/v2/videos/search?{urlencode(args)}"
+        base_path = "/v2/videos/search"
 
-    nonce, signature = generate_nonce_and_signature(url_path)
+    nonce, signature = generate_nonce_and_signature(base_path, args)
 
     params["headers"].update(
         {
@@ -138,7 +168,31 @@ def request(query: str, params: "OnlineParams") -> None:
             "X-Request-Signature": signature,
         }
     )
-    params["url"] = base_url + url_path
+    params["url"] = f"{base_url}{base_path}?{urlencode(args)}"
+
+
+def _video_result(result: dict[str, t.Any]) -> LegacyResult:
+    published_date = None
+    if result.get("datePublished"):
+        published_date = datetime.fromisoformat(result["datePublished"])
+
+    view_count = None
+    if result.get("viewCount"):
+        view_count = humanize_number(result["viewCount"])
+
+    return LegacyResult(
+        {
+            "template": "videos.html",
+            "url": result["url"],
+            "title": html_to_text(result.get("title") or result["name"]),
+            "content": result["description"],
+            "thumbnail": result.get("thumbnailUrl") or result.get("thumbnail", {}).get("url"),
+            "length": result.get("duration"),
+            "iframe_src": result.get("embedUrl"),
+            "publishedDate": published_date,
+            "views": view_count,
+        }
+    )
 
 
 def response(resp: "SXNG_Response"):
@@ -146,7 +200,8 @@ def response(resp: "SXNG_Response"):
 
     json_data = resp.json()
 
-    # only appears to be the case for images, for videos the data doesn't seem to be encoded
+    # the payload encoding is only used for general and images,
+    # for videos the data gets returned directly as a normal JSON response
     # payload is encoded as a JSON web token -> 3 parts, separated by "."
     # the actual data is in the center of the encoded string
     if "payload" in json_data:
@@ -157,7 +212,19 @@ def response(resp: "SXNG_Response"):
         json_data = json.loads(decoded.decode())
 
     for result in json_data["items"]:
-        if swisscows_category == "images":
+        if result["type"] == "WebPage":
+            res.add(
+                res.types.MainResult(
+                    url=result["url"],
+                    title=result["name"],
+                    content=html_to_text(result["description"]),
+                    thumbnail=result.get("thumbnail", {}).get("url"),
+                )
+            )
+        elif result["type"] == "VideoCollection":
+            for video in result["hasPart"]:
+                res.add(_video_result(video))
+        elif result["type"] == "ImageObject":
             res.add(
                 res.types.LegacyResult(
                     {
@@ -169,25 +236,7 @@ def response(resp: "SXNG_Response"):
                     }
                 )
             )
-        else:
-            published_date = None
-            if result["datePublished"]:
-                published_date = datetime.fromisoformat(result["datePublished"])
-
-            res.add(
-                res.types.LegacyResult(
-                    {
-                        "template": "videos.html",
-                        "url": result["url"],
-                        "title": html_to_text(result["title"]),
-                        "content": result["description"],
-                        "thumbnail": result["thumbnailUrl"],
-                        "length": result["duration"],
-                        "iframe_src": result["embedUrl"],
-                        "publishedDate": published_date,
-                        "views": humanize_number(result["viewCount"]),
-                    }
-                )
-            )
+        elif result["type"] == "video":
+            res.add(_video_result(result))
 
     return res
