@@ -11,11 +11,11 @@ through our exclusive distribution partners.
 
 import typing as t
 
+import codecs
 import random
 import string
 
 from searx.result_types import EngineResults
-from searx.enginelib import EngineCache
 
 if t.TYPE_CHECKING:
     from searx.extended_types import SXNG_Response
@@ -44,27 +44,6 @@ results_per_page = 30
 The default was taken from the WEB UI, where the GraphQL query sets the value to
 *static*: ``first: 30``.
 """
-
-
-def page_hash(pageno: int, query: str):
-    return f"<pageno:{pageno} ({results_per_page})>" + CACHE.secret_hash(query)
-
-
-CACHE: EngineCache
-"""Persistent (SQLite) key/value cache that deletes its values after ``expire``
-seconds.
-
-For introspection (in the developer environment) use::
-
-    $ ./manage dev.env
-    (dev.env)$ python -m searx.enginelib cache status
-    ...
-    [eng_500px] 2026-05-18 18:52:38 <pageno:2 (40)>6da7...76a3f7 --> (str:8) cG9zLTM5
-    [eng_500px] 2026-05-18 18:52:43 <pageno:3 (40)>6da7...76a3f7 --> (str:8) cG9zLTc5
-
-In the output from the example above, we see cached *cursor* for follow up
-pages, the query term is a hash value and the date shows the expire date and
-time."""
 
 
 SXNG_query = """query PhotoSearchPaginationContainerQuery(
@@ -96,31 +75,22 @@ fragment SXNG_query on Query {
       }
       cursor
     }
-    pageInfo {
-      endCursor
-      hasNextPage
-    }
   }
 }
 """
 
 
-def setup(engine_settings: dict[str, t.Any]) -> bool:
-    global CACHE, SXNG_query  # pylint: disable=global-statement
-    CACHE = EngineCache(str(engine_settings.get("name")))
+def setup(_) -> bool:
+    global SXNG_query  # pylint: disable=global-statement
     rand_str: str = "".join(random.choice(string.ascii_letters) for _ in range(5))
     SXNG_query = SXNG_query.replace("SXNG_query", "PhotoSearchPaginationContainer_query_1" + rand_str)
     return True
 
 
 def request(query: str, params: "OnlineParams") -> None:
-
-    cursor: str | None = None
-    if params["pageno"] > 1:
-        cursor = CACHE.get(page_hash(pageno=params["pageno"], query=query))
-        if not cursor:
-            params["url"] = None
-            return
+    # cursor is the base64 hash of the string "pos-<offset-1>", e.g. "pos-29" -> "cG9zLTI5"
+    offset = ((params["pageno"] - 1) * results_per_page) - 1
+    cursor = codecs.encode(f"pos-{offset}".encode("utf-8"), "base64").decode("utf-8")
 
     params["url"] = f"{api_url}/graphql"
     params["method"] = "POST"
@@ -163,10 +133,5 @@ def response(resp: "SXNG_Response"):
                 }
             )
         )
-
-    page_info: dict[str, str] = json_data["pageInfo"]  # pyright: ignore[reportAny]
-    if page_info["hasNextPage"]:
-        key = page_hash(pageno=resp.search_params["pageno"] + 1, query=resp.search_params["query"])
-        CACHE.set(key=key, value=page_info["endCursor"], expire=3600)
 
     return res
