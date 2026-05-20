@@ -121,7 +121,7 @@ def parse_tineye_match(match_json):
 
             crawl_date = backlink_json.get("crawl_date")
             if crawl_date:
-                crawl_date = datetime.strptime(crawl_date, '%Y-%m-%d')
+                crawl_date = datetime.fromisoformat(crawl_date)
             else:
                 crawl_date = datetime.min
 

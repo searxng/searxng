@@ -83,7 +83,7 @@ def extract_video_data(video_block):
         published_date = None
         if create_time:
             try:
-                published_date = datetime.strptime(create_time.strip(), "%Y-%m-%d")
+                published_date = datetime.fromisoformat(create_time.strip())
             except (ValueError, TypeError):
                 pass
 

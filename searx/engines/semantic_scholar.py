@@ -120,7 +120,7 @@ def response(resp: "SXNG_Response") -> EngineResults:
 
         publishedDate: datetime | None
         if "pubDate" in result:
-            publishedDate = datetime.strptime(result["pubDate"], "%Y-%m-%d")
+            publishedDate = datetime.fromisoformat(result["pubDate"])
         else:
             publishedDate = None
 
