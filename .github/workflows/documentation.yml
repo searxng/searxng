@@ -42,6 +42,11 @@ jobs:
           persist-credentials: "false"
           fetch-depth: "0"
 
+      - name: Install documentation build tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install --no-install-recommends --yes graphviz
+
       - name: Setup cache Python
         uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae  # v5.0.5
         with:
