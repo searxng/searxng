@@ -1,15 +1,23 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 """Fyyd (podcasts)"""
 
+import typing as t
+
 from datetime import datetime
 from urllib.parse import urlencode
 
+from searx.result_types import EngineResults
+
+if t.TYPE_CHECKING:
+    from searx.extended_types import SXNG_Response
+    from searx.search.processors import OnlineParams
+
 about = {
-    'website': 'https://fyyd.de',
-    'official_api_documentation': 'https://github.com/eazyliving/fyyd-api',
-    'use_official_api': True,
-    'require_api_key': False,
-    'results': 'JSON',
+    "website": "https://fyyd.de",
+    "official_api_documentation": "https://github.com/eazyliving/fyyd-api",
+    "use_official_api": True,
+    "require_api_key": False,
+    "results": "JSON",
 }
 categories = []
 paging = True
@@ -18,31 +26,30 @@ base_url = "https://api.fyyd.de"
 page_size = 10
 
 
-def request(query, params):
+def request(query: str, params: "OnlineParams") -> None:
     args = {
-        'term': query,
-        'count': page_size,
-        'page': params['pageno'] - 1,
+        "term": query,
+        "count": page_size,
+        "page": params["pageno"] - 1,
     }
-    params['url'] = f"{base_url}/0.2/search/podcast?{urlencode(args)}"
-    return params
+    params["url"] = f"{base_url}/0.2/search/podcast?{urlencode(args)}"
 
 
-def response(resp):
-    results = []
+def response(resp: "SXNG_Response"):
+    res = EngineResults()
 
-    json_results = resp.json()['data']
+    json_results: list[dict[str, str]] = resp.json()["data"]  # pyright: ignore[reportAny]
 
     for result in json_results:
-        results.append(
-            {
-                'url': result['htmlURL'],
-                'title': result['title'],
-                'content': result['description'],
-                'thumbnail': result['smallImageURL'],
-                'publishedDate': datetime.strptime(result['status_since'], '%Y-%m-%d %H:%M:%S'),
-                'metadata': f"Rank: {result['rank']} || {result['episode_count']} episodes",
-            }
+        res.add(
+            res.types.MainResult(
+                url=result["htmlURL"],
+                title=result["title"],
+                content=result["description"],
+                thumbnail=result["smallImageURL"],
+                publishedDate=datetime.strptime(result["status_since"], "%Y-%m-%d %H:%M:%S"),
+                metadata=f"Rank: {result['rank']} || {result['episode_count']} episodes",
+            )
         )
 
-    return results
+    return res
