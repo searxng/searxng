@@ -31,6 +31,11 @@ jobs:
       contents: write
 
     steps:
+      - name: Setup dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y graphviz imagemagick
+
       - name: Setup Python
         uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405  # v6.2.0
         with:
@@ -54,7 +59,7 @@ jobs:
         run: make V=1 install
 
       - name: Build documentation
-        run: make V=1 docs.clean docs.html
+        run: make V=1 docs.html
 
       - if: github.ref_name == 'master'
         name: Release
