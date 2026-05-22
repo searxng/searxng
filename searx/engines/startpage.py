@@ -134,7 +134,7 @@ time_range_support = True
 safesearch = True
 
 time_range_dict = {"day": "d", "week": "w", "month": "m", "year": "y"}
-safesearch_dict = {0: "1", 1: "0", 2: "0"}
+safesearch_dict = {0: "none", 1: "moderate", 2: "heavy"}
 
 # search-url
 base_url = "https://www.startpage.com"
@@ -251,9 +251,10 @@ def request(query, params):
         "t": "device",
         "sc": get_sc_code(params),
         "with_date": time_range_dict.get(params["time_range"], ""),
-        "abp": "1",
         "abd": "1",
         "abe": "1",
+        "qsr": "all",
+        "qadf": safesearch_dict[params["safesearch"]],
     }
 
     if engine_language:
