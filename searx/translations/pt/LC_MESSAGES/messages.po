@@ -30,16 +30,16 @@
 # rodgui <rodgui@noreply.codeberg.org>, 2025.
 # AndersNordh <andersnordh@noreply.codeberg.org>, 2025.
 # bdcdo <bdcdo@noreply.codeberg.org>, 2025.
-# return42 <return42@noreply.codeberg.org>, 2025.
+# return42 <return42@noreply.codeberg.org>, 2025, 2026.
 # reis2724 <reis2724@noreply.codeberg.org>, 2025.
 # danilo-jlle <danilo-jlle@noreply.codeberg.org>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-03-24 18:43+0000\n"
-"PO-Revision-Date: 2026-01-13 18:21+0000\n"
-"Last-Translator: danilo-jlle <danilo-jlle@noreply.codeberg.org>\n"
+"POT-Creation-Date: 2026-05-21 19:19+0000\n"
+"PO-Revision-Date: 2026-05-19 12:08+0000\n"
+"Last-Translator: return42 <return42@noreply.codeberg.org>\n"
 "Language: pt\n"
 "Language-Team: Portuguese "
 "<https://translate.codeberg.org/projects/searxng/searxng/pt/>\n"
@@ -195,7 +195,7 @@ msgid "Uptime"
 msgstr "Tempo em funcionamento"
 
 #. BRAND_CUSTOM_LINKS['ABOUT']
-#: searx/searxng.msg searx/templates/simple/base.html:46
+#: searx/searxng.msg searx/templates/simple/base.html:47
 msgid "About"
 msgstr "Acerca"
 
@@ -775,7 +775,7 @@ msgstr "Plugin hostnames"
 
 #: searx/plugins/hostnames.py:120
 msgid "Rewrite hostnames and remove or prioritize results based on the hostname"
-msgstr ""
+msgstr "Reescreve hostname, apaga resultados ou prioriza-os com base no hostname"
 
 #: searx/plugins/infinite_scroll.py:25
 msgid "Infinite scroll"
@@ -786,6 +786,8 @@ msgid ""
 "Automatically loads the next page when scrolling to bottom of the current"
 " page"
 msgstr ""
+"Carregar automaticamente a página seguinte ao descer para o final da "
+"página atual"
 
 #: searx/plugins/oa_doi_rewrite.py:54
 msgid "Open Access DOI rewrite"
@@ -885,45 +887,45 @@ msgstr "Ir para %(search_page)s."
 msgid "search page"
 msgstr "pesquisar página"
 
-#: searx/templates/simple/base.html:50
+#: searx/templates/simple/base.html:51
 msgid "Donate"
 msgstr "Doar"
 
-#: searx/templates/simple/base.html:55 searx/templates/simple/base.html:57
+#: searx/templates/simple/base.html:56 searx/templates/simple/base.html:58
 #: searx/templates/simple/preferences.html:152
 msgid "Preferences"
 msgstr "Preferências"
 
-#: searx/templates/simple/base.html:68
+#: searx/templates/simple/base.html:69
 msgid "Powered by"
 msgstr "Produzido por"
 
-#: searx/templates/simple/base.html:68
+#: searx/templates/simple/base.html:69
 msgid "a privacy-respecting, open metasearch engine"
 msgstr "Um motor de multi-pesquisa, que respeita a privacidade"
 
-#: searx/templates/simple/base.html:69
+#: searx/templates/simple/base.html:70
 #: searx/templates/simple/result_templates/packages.html:59
 msgid "Source code"
 msgstr "Código fonte"
 
-#: searx/templates/simple/base.html:70
+#: searx/templates/simple/base.html:71
 msgid "Issue tracker"
 msgstr "Rastreador de problemas"
 
-#: searx/templates/simple/base.html:71 searx/templates/simple/stats.html:17
+#: searx/templates/simple/base.html:72 searx/templates/simple/stats.html:17
 msgid "Engine stats"
 msgstr "Estatísticas de motor de pesquisa"
 
-#: searx/templates/simple/base.html:73
+#: searx/templates/simple/base.html:74
 msgid "Public instances"
 msgstr "Instâncias públicas"
 
-#: searx/templates/simple/base.html:76
+#: searx/templates/simple/base.html:77
 msgid "Privacy policy"
 msgstr "Política de privacidade"
 
-#: searx/templates/simple/base.html:79
+#: searx/templates/simple/base.html:80
 msgid "Contact instance maintainer"
 msgstr "Contate o mantenedor da instância"
 
@@ -1091,12 +1093,12 @@ msgid "Result count"
 msgstr "Quantidade de resultados"
 
 #: searx/templates/simple/elements/engines_msg.html:7
-#: searx/templates/simple/preferences/engines.html:31
+#: searx/templates/simple/preferences/engines.html:30
 #: searx/templates/simple/stats.html:27
 msgid "Response time"
 msgstr "Tempo de resposta"
 
-#: searx/templates/simple/preferences/engines.html:35
+#: searx/templates/simple/preferences/engines.html:34
 #: searx/templates/simple/stats.html:28
 msgid "Reliability"
 msgstr "Confiabilidade"
@@ -1225,7 +1227,7 @@ msgstr "Auto-detetar"
 #: searx/templates/simple/filters/safesearch.html:2
 #: searx/templates/simple/filters/safesearch.html:3
 #: searx/templates/simple/filters/safesearch.html:4
-#: searx/templates/simple/preferences/engines.html:27
+#: searx/templates/simple/preferences/engines.html:26
 #: searx/templates/simple/preferences/safesearch.html:2
 msgid "SafeSearch"
 msgstr "Pesquisa segura"
@@ -1246,7 +1248,7 @@ msgid "None"
 msgstr "Nenhum"
 
 #: searx/templates/simple/filters/time_range.html:1
-#: searx/templates/simple/preferences/engines.html:28
+#: searx/templates/simple/preferences/engines.html:27
 msgid "Time range"
 msgstr "Período de tempo"
 
@@ -1447,15 +1449,11 @@ msgstr "Desactiva tudo"
 msgid "!bang"
 msgstr "!bang"
 
-#: searx/templates/simple/preferences/engines.html:26
-msgid "Supports selected language"
-msgstr "Suporta idioma selecionado"
-
-#: searx/templates/simple/preferences/engines.html:29
+#: searx/templates/simple/preferences/engines.html:28
 msgid "Weight"
 msgstr "Peso"
 
-#: searx/templates/simple/preferences/engines.html:33
+#: searx/templates/simple/preferences/engines.html:32
 msgid "Max time"
 msgstr "Tempo máximo"
 
@@ -2434,4 +2432,7 @@ msgstr "esconder vídeo"
 
 #~ msgid "Submit a new issue on Github including the above information"
 #~ msgstr "Submeta um novo problema no Github incluindo a informação acima"
+
+#~ msgid "Supports selected language"
+#~ msgstr "Suporta idioma selecionado"
 

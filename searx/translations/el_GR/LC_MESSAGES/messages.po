@@ -18,15 +18,15 @@
 # Anonymous <anonymous@users.noreply.translate.codeberg.org>, 2025.
 # RaptaG <raptag@users.noreply.translate.codeberg.org>, 2025.
 # KDesp73 <kdesp73@users.noreply.translate.codeberg.org>, 2025.
-# return42 <return42@noreply.codeberg.org>, 2025.
+# return42 <return42@noreply.codeberg.org>, 2025, 2026.
 # sakistzimas <sakistzimas@noreply.codeberg.org>, 2025.
 # gkalathas <gkalathas@noreply.codeberg.org>, 2025.
 msgid ""
 msgstr ""
 "Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-03-24 18:43+0000\n"
-"PO-Revision-Date: 2025-10-22 02:09+0000\n"
+"POT-Creation-Date: 2026-05-21 19:19+0000\n"
+"PO-Revision-Date: 2026-05-19 12:07+0000\n"
 "Last-Translator: return42 <return42@noreply.codeberg.org>\n"
 "Language: el_GR\n"
 "Language-Team: Greek "
@@ -183,7 +183,7 @@ msgid "Uptime"
 msgstr "χρόνο λειτουργίας"
 
 #. BRAND_CUSTOM_LINKS['ABOUT']
-#: searx/searxng.msg searx/templates/simple/base.html:46
+#: searx/searxng.msg searx/templates/simple/base.html:47
 msgid "About"
 msgstr "Σχετικά με το SearXNG"
 
@@ -779,6 +779,8 @@ msgid ""
 "Automatically loads the next page when scrolling to bottom of the current"
 " page"
 msgstr ""
+"Αυτόματη φόρτωση της επόμενης σελίδας κατά την κύλιση στο κάτω μέρος της "
+"τρέχουσας σελίδας"
 
 #: searx/plugins/oa_doi_rewrite.py:54
 msgid "Open Access DOI rewrite"
@@ -879,45 +881,45 @@ msgstr "Μετάβαση στο %(search_page)s."
 msgid "search page"
 msgstr "σελίδα αναζήτησης"
 
-#: searx/templates/simple/base.html:50
+#: searx/templates/simple/base.html:51
 msgid "Donate"
 msgstr "Κάνε δωρεά"
 
-#: searx/templates/simple/base.html:55 searx/templates/simple/base.html:57
+#: searx/templates/simple/base.html:56 searx/templates/simple/base.html:58
 #: searx/templates/simple/preferences.html:152
 msgid "Preferences"
 msgstr "Προτιμήσεις"
 
-#: searx/templates/simple/base.html:68
+#: searx/templates/simple/base.html:69
 msgid "Powered by"
 msgstr "Με την υποστήριξη του"
 
-#: searx/templates/simple/base.html:68
+#: searx/templates/simple/base.html:69
 msgid "a privacy-respecting, open metasearch engine"
 msgstr "μια ανοικτή μηχανή μετα-αναζήτησης που σέβεται την ιδιωτικότητα"
 
-#: searx/templates/simple/base.html:69
+#: searx/templates/simple/base.html:70
 #: searx/templates/simple/result_templates/packages.html:59
 msgid "Source code"
 msgstr "Πηγαίος κώδικας"
 
-#: searx/templates/simple/base.html:70
+#: searx/templates/simple/base.html:71
 msgid "Issue tracker"
 msgstr "Παρακολούθηση ζητημάτων"
 
-#: searx/templates/simple/base.html:71 searx/templates/simple/stats.html:17
+#: searx/templates/simple/base.html:72 searx/templates/simple/stats.html:17
 msgid "Engine stats"
 msgstr "Στατιστικά μηχανής"
 
-#: searx/templates/simple/base.html:73
+#: searx/templates/simple/base.html:74
 msgid "Public instances"
 msgstr "Δημόσιες εκφάνσεις"
 
-#: searx/templates/simple/base.html:76
+#: searx/templates/simple/base.html:77
 msgid "Privacy policy"
 msgstr "Πολιτική απορρήτου"
 
-#: searx/templates/simple/base.html:79
+#: searx/templates/simple/base.html:80
 msgid "Contact instance maintainer"
 msgstr "Επικοινωνήστε με τον συντηρητή αυτής της σελίδας"
 
@@ -1085,12 +1087,12 @@ msgid "Result count"
 msgstr "Αριθμός αποτελεσμάτων"
 
 #: searx/templates/simple/elements/engines_msg.html:7
-#: searx/templates/simple/preferences/engines.html:31
+#: searx/templates/simple/preferences/engines.html:30
 #: searx/templates/simple/stats.html:27
 msgid "Response time"
 msgstr "Χρόνος απόκρισης"
 
-#: searx/templates/simple/preferences/engines.html:35
+#: searx/templates/simple/preferences/engines.html:34
 #: searx/templates/simple/stats.html:28
 msgid "Reliability"
 msgstr "Αξιοπιστία"
@@ -1219,7 +1221,7 @@ msgstr "Αυτόματη αναγνώριση της γλώσσας"
 #: searx/templates/simple/filters/safesearch.html:2
 #: searx/templates/simple/filters/safesearch.html:3
 #: searx/templates/simple/filters/safesearch.html:4
-#: searx/templates/simple/preferences/engines.html:27
+#: searx/templates/simple/preferences/engines.html:26
 #: searx/templates/simple/preferences/safesearch.html:2
 msgid "SafeSearch"
 msgstr "Ασφαλής Αναζήτηση"
@@ -1240,7 +1242,7 @@ msgid "None"
 msgstr "Κανένα"
 
 #: searx/templates/simple/filters/time_range.html:1
-#: searx/templates/simple/preferences/engines.html:28
+#: searx/templates/simple/preferences/engines.html:27
 msgid "Time range"
 msgstr "Εύρος χρόνου"
 
@@ -1444,15 +1446,11 @@ msgstr "Απενεργοποίηση όλων"
 msgid "!bang"
 msgstr "!bang"
 
-#: searx/templates/simple/preferences/engines.html:26
-msgid "Supports selected language"
-msgstr "Υποστηρίζει την επιλεγμένη γλώσσα"
-
-#: searx/templates/simple/preferences/engines.html:29
+#: searx/templates/simple/preferences/engines.html:28
 msgid "Weight"
 msgstr "Βάρος"
 
-#: searx/templates/simple/preferences/engines.html:33
+#: searx/templates/simple/preferences/engines.html:32
 msgid "Max time"
 msgstr "Μέγιστος χρόνος"
 
@@ -2431,4 +2429,7 @@ msgstr "απόκρυψη βίντεο"
 
 #~ msgid "Submit a new issue on Github including the above information"
 #~ msgstr "Υποβολή νέου ζητήματος στο Github με τις παραπάνω πληροφορίες"
+
+#~ msgid "Supports selected language"
+#~ msgstr "Υποστηρίζει την επιλεγμένη γλώσσα"
 

@@ -18,19 +18,18 @@
 # return42 <return42@noreply.codeberg.org>, 2025.
 msgid ""
 msgstr ""
-"Project-Id-Version: searx\n"
+"Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-03-24 18:43+0000\n"
+"POT-Creation-Date: 2026-05-21 19:19+0000\n"
 "PO-Revision-Date: 2026-05-01 07:50+0000\n"
 "Last-Translator: alexgabi <alexgabi@noreply.codeberg.org>\n"
-"Language-Team: Basque <https://translate.codeberg.org/projects/searxng/"
-"searxng/eu/>\n"
 "Language: eu\n"
+"Language-Team: Basque "
+"<https://translate.codeberg.org/projects/searxng/searxng/eu/>\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.17\n"
 "Generated-By: Babel 2.18.0\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
@@ -179,7 +178,7 @@ msgid "Uptime"
 msgstr "Epea"
 
 #. BRAND_CUSTOM_LINKS['ABOUT']
-#: searx/searxng.msg searx/templates/simple/base.html:46
+#: searx/searxng.msg searx/templates/simple/base.html:47
 msgid "About"
 msgstr "Honi buruz"
 
@@ -772,7 +771,8 @@ msgid ""
 "Automatically loads the next page when scrolling to bottom of the current"
 " page"
 msgstr ""
-"Automatikoki hurrengo orria kargatzen du uneko orriaren behealdera korritzean"
+"Automatikoki hurrengo orria kargatzen du uneko orriaren behealdera "
+"korritzean"
 
 #: searx/plugins/oa_doi_rewrite.py:54
 msgid "Open Access DOI rewrite"
@@ -873,45 +873,45 @@ msgstr "%(search_page)s(e)ra joan."
 msgid "search page"
 msgstr "bilaketa orria"
 
-#: searx/templates/simple/base.html:50
+#: searx/templates/simple/base.html:51
 msgid "Donate"
 msgstr "Lagundu diruz"
 
-#: searx/templates/simple/base.html:55 searx/templates/simple/base.html:57
+#: searx/templates/simple/base.html:56 searx/templates/simple/base.html:58
 #: searx/templates/simple/preferences.html:152
 msgid "Preferences"
 msgstr "Hobespenak"
 
-#: searx/templates/simple/base.html:68
+#: searx/templates/simple/base.html:69
 msgid "Powered by"
 msgstr "Garatzailea"
 
-#: searx/templates/simple/base.html:68
+#: searx/templates/simple/base.html:69
 msgid "a privacy-respecting, open metasearch engine"
 msgstr "pribatutasuna errespetatzen duen metabilatzaile irekia"
 
-#: searx/templates/simple/base.html:69
+#: searx/templates/simple/base.html:70
 #: searx/templates/simple/result_templates/packages.html:59
 msgid "Source code"
 msgstr "Iturburu-kodea"
 
-#: searx/templates/simple/base.html:70
+#: searx/templates/simple/base.html:71
 msgid "Issue tracker"
 msgstr "Arazoen jarraipena"
 
-#: searx/templates/simple/base.html:71 searx/templates/simple/stats.html:17
+#: searx/templates/simple/base.html:72 searx/templates/simple/stats.html:17
 msgid "Engine stats"
 msgstr "Bilatzaileen estatistikak"
 
-#: searx/templates/simple/base.html:73
+#: searx/templates/simple/base.html:74
 msgid "Public instances"
 msgstr "Instantzia publikoak"
 
-#: searx/templates/simple/base.html:76
+#: searx/templates/simple/base.html:77
 msgid "Privacy policy"
 msgstr "Pribatutasun politika"
 
-#: searx/templates/simple/base.html:79
+#: searx/templates/simple/base.html:80
 msgid "Contact instance maintainer"
 msgstr "Instantziaren mantentzailearekin harremanetan jarri"
 
@@ -1079,12 +1079,12 @@ msgid "Result count"
 msgstr "Emaitzen zenbaketa"
 
 #: searx/templates/simple/elements/engines_msg.html:7
-#: searx/templates/simple/preferences/engines.html:31
+#: searx/templates/simple/preferences/engines.html:30
 #: searx/templates/simple/stats.html:27
 msgid "Response time"
 msgstr "Erantzuteko denbora"
 
-#: searx/templates/simple/preferences/engines.html:35
+#: searx/templates/simple/preferences/engines.html:34
 #: searx/templates/simple/stats.html:28
 msgid "Reliability"
 msgstr "Fidagarritasuna"
@@ -1213,7 +1213,7 @@ msgstr "Auto-detektatu"
 #: searx/templates/simple/filters/safesearch.html:2
 #: searx/templates/simple/filters/safesearch.html:3
 #: searx/templates/simple/filters/safesearch.html:4
-#: searx/templates/simple/preferences/engines.html:27
+#: searx/templates/simple/preferences/engines.html:26
 #: searx/templates/simple/preferences/safesearch.html:2
 msgid "SafeSearch"
 msgstr "Bilaketa segurua"
@@ -1234,7 +1234,7 @@ msgid "None"
 msgstr "Bat ere ez"
 
 #: searx/templates/simple/filters/time_range.html:1
-#: searx/templates/simple/preferences/engines.html:28
+#: searx/templates/simple/preferences/engines.html:27
 msgid "Time range"
 msgstr "Denbora tartea"
 
@@ -1432,15 +1432,11 @@ msgstr "Desgaitu dena"
 msgid "!bang"
 msgstr "!bang"
 
-#: searx/templates/simple/preferences/engines.html:26
-msgid "Supports selected language"
-msgstr "Hautatutako hizkuntza onartzen du"
-
-#: searx/templates/simple/preferences/engines.html:29
+#: searx/templates/simple/preferences/engines.html:28
 msgid "Weight"
 msgstr "Pisua"
 
-#: searx/templates/simple/preferences/engines.html:33
+#: searx/templates/simple/preferences/engines.html:32
 msgid "Max time"
 msgstr "Gehienezko denbora"
 
@@ -2389,3 +2385,7 @@ msgstr "ezkutatu bideoa"
 
 #~ msgid "Submit a new issue on Github including the above information"
 #~ msgstr "Bidali gai -issue- berri bat Github-en goiko informazioa barne"
+
+#~ msgid "Supports selected language"
+#~ msgstr "Hautatutako hizkuntza onartzen du"
+

@@ -13,7 +13,7 @@
 # Anonymous <anonymous@users.noreply.translate.codeberg.org>, 2025.
 # mystery-z <mystery-z@users.noreply.translate.codeberg.org>, 2025.
 # curtwheeler <curtwheeler@users.noreply.translate.codeberg.org>, 2025.
-# return42 <return42@noreply.codeberg.org>, 2025.
+# return42 <return42@noreply.codeberg.org>, 2025, 2026.
 # yoonhahwang <yoonhahwang@noreply.codeberg.org>, 2025.
 # choonarine <choonarine@noreply.codeberg.org>, 2025.
 # pywc <pywc@noreply.codeberg.org>, 2025.
@@ -21,8 +21,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-03-24 18:43+0000\n"
-"PO-Revision-Date: 2025-10-22 02:09+0000\n"
+"POT-Creation-Date: 2026-05-21 19:19+0000\n"
+"PO-Revision-Date: 2026-05-19 12:07+0000\n"
 "Last-Translator: return42 <return42@noreply.codeberg.org>\n"
 "Language: ko\n"
 "Language-Team: Korean "
@@ -179,7 +179,7 @@ msgid "Uptime"
 msgstr "가동 시간"
 
 #. BRAND_CUSTOM_LINKS['ABOUT']
-#: searx/searxng.msg searx/templates/simple/base.html:46
+#: searx/searxng.msg searx/templates/simple/base.html:47
 msgid "About"
 msgstr "정보"
 
@@ -766,7 +766,7 @@ msgstr "무한 스크롤"
 msgid ""
 "Automatically loads the next page when scrolling to bottom of the current"
 " page"
-msgstr ""
+msgstr "페이지 가장 밑으로 스크롤 시 자동으로 다음 페이지 로드하기"
 
 #: searx/plugins/oa_doi_rewrite.py:54
 msgid "Open Access DOI rewrite"
@@ -862,45 +862,45 @@ msgstr "%(search_page)s로 이동합니다."
 msgid "search page"
 msgstr "검색 페이지"
 
-#: searx/templates/simple/base.html:50
+#: searx/templates/simple/base.html:51
 msgid "Donate"
 msgstr "기부"
 
-#: searx/templates/simple/base.html:55 searx/templates/simple/base.html:57
+#: searx/templates/simple/base.html:56 searx/templates/simple/base.html:58
 #: searx/templates/simple/preferences.html:152
 msgid "Preferences"
 msgstr "설정"
 
-#: searx/templates/simple/base.html:68
+#: searx/templates/simple/base.html:69
 msgid "Powered by"
 msgstr "Powered by"
 
-#: searx/templates/simple/base.html:68
+#: searx/templates/simple/base.html:69
 msgid "a privacy-respecting, open metasearch engine"
 msgstr "개인정보를 존중하는 개방형 메타 검색 엔진"
 
-#: searx/templates/simple/base.html:69
+#: searx/templates/simple/base.html:70
 #: searx/templates/simple/result_templates/packages.html:59
 msgid "Source code"
 msgstr "소스 코드"
 
-#: searx/templates/simple/base.html:70
+#: searx/templates/simple/base.html:71
 msgid "Issue tracker"
 msgstr "이슈 트래커"
 
-#: searx/templates/simple/base.html:71 searx/templates/simple/stats.html:17
+#: searx/templates/simple/base.html:72 searx/templates/simple/stats.html:17
 msgid "Engine stats"
 msgstr "검색 엔진 상태"
 
-#: searx/templates/simple/base.html:73
+#: searx/templates/simple/base.html:74
 msgid "Public instances"
 msgstr "공개 인스턴스"
 
-#: searx/templates/simple/base.html:76
+#: searx/templates/simple/base.html:77
 msgid "Privacy policy"
 msgstr "개인 정보 정책"
 
-#: searx/templates/simple/base.html:79
+#: searx/templates/simple/base.html:80
 msgid "Contact instance maintainer"
 msgstr "인스턴스 관리자에게 문의"
 
@@ -1068,12 +1068,12 @@ msgid "Result count"
 msgstr "결과 개수"
 
 #: searx/templates/simple/elements/engines_msg.html:7
-#: searx/templates/simple/preferences/engines.html:31
+#: searx/templates/simple/preferences/engines.html:30
 #: searx/templates/simple/stats.html:27
 msgid "Response time"
 msgstr "응답시간"
 
-#: searx/templates/simple/preferences/engines.html:35
+#: searx/templates/simple/preferences/engines.html:34
 #: searx/templates/simple/stats.html:28
 msgid "Reliability"
 msgstr "신뢰성"
@@ -1202,7 +1202,7 @@ msgstr "자동 감지"
 #: searx/templates/simple/filters/safesearch.html:2
 #: searx/templates/simple/filters/safesearch.html:3
 #: searx/templates/simple/filters/safesearch.html:4
-#: searx/templates/simple/preferences/engines.html:27
+#: searx/templates/simple/preferences/engines.html:26
 #: searx/templates/simple/preferences/safesearch.html:2
 msgid "SafeSearch"
 msgstr "세이프서치"
@@ -1223,7 +1223,7 @@ msgid "None"
 msgstr "없음"
 
 #: searx/templates/simple/filters/time_range.html:1
-#: searx/templates/simple/preferences/engines.html:28
+#: searx/templates/simple/preferences/engines.html:27
 msgid "Time range"
 msgstr "기간"
 
@@ -1413,15 +1413,11 @@ msgstr "모두 해제"
 msgid "!bang"
 msgstr "!bang"
 
-#: searx/templates/simple/preferences/engines.html:26
-msgid "Supports selected language"
-msgstr "선택 언어 지원함"
-
-#: searx/templates/simple/preferences/engines.html:29
+#: searx/templates/simple/preferences/engines.html:28
 msgid "Weight"
 msgstr "무게"
 
-#: searx/templates/simple/preferences/engines.html:33
+#: searx/templates/simple/preferences/engines.html:32
 msgid "Max time"
 msgstr "최대시간"
 
@@ -2194,4 +2190,7 @@ msgstr "비디오 숨기기"
 
 #~ msgid "Submit a new issue on Github including the above information"
 #~ msgstr "Github에 위 정보를 포함한 새 이슈 작성하기"
+
+#~ msgid "Supports selected language"
+#~ msgstr "선택 언어 지원함"
 
