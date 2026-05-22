@@ -59,8 +59,6 @@ def request(query, params):
     args = {
         "q": query,
         "safe": min(params["safesearch"], 1),
-        language_param: traits.get_language(params["searxng_locale"], traits.custom["language_all"]),
-        region_param: traits.get_region(params["searxng_locale"], traits.custom["region_all"]),
     }
 
     if search_type:
@@ -76,6 +74,10 @@ def request(query, params):
         logger.debug(args["since"])
 
     params["url"] = f"{base_url}/search?{urlencode(args)}"
+    params["cookies"] = {
+        language_param: traits.get_language(params["searxng_locale"], traits.custom["language_all"]),
+        region_param: traits.get_region(params["searxng_locale"], traits.custom["region_all"]),
+    }
 
     return params
 
