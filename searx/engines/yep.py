@@ -43,7 +43,7 @@ def request(query: str, params: 'OnlineParams') -> None:
     if engine_language:
         args["hl"] = engine_language
 
-    params['url'] = f"{base_url}/fs/2/search?{urlencode(args)}"
+    params['url'] = f"{base_url}/search?{urlencode(args)}"
     params['headers']['Referer'] = 'https://yep.com/'
     params['headers']['Origin'] = 'https://yep.com'
 
