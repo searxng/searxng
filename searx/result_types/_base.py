@@ -19,6 +19,7 @@
 __all__ = ["Result"]
 
 import typing as t
+import types
 
 import re
 import urllib.parse
@@ -29,7 +30,9 @@ from collections.abc import Callable
 
 import msgspec
 
-from searx import logger as log
+from searx import logger
+
+log = logger.getChild("result_types")
 
 WHITESPACE_REGEX = re.compile('( |\t|\n)+', re.M | re.U)
 UNSET = object()
@@ -125,8 +128,20 @@ def _filter_urls(
         if not url_src:
             continue
 
-        new_url = filter_func(result, field_name, url_src)
-        # log.debug("filter_urls: filter_func(result, %s) '%s' -> '%s'", field_name, field_value, new_url)
+        try:
+            new_url = filter_func(result, field_name, url_src)
+        except Exception as exc:  # pylint: disable=broad-exception-caught
+            # pylint: disable=no-member
+            _tb: types.TracebackType = exc.__traceback__.tb_next.tb_next  # type: ignore
+            log.error(
+                "filter_urls (field '%s'): ignore %s from callback %s:%s",
+                field_name,
+                repr(exc),
+                _tb.tb_frame.f_code.co_filename,
+                _tb.tb_lineno,
+            )
+            continue
+
         if isinstance(new_url, bool):
             if new_url:
                 # log.debug("filter_urls: unchanged field %s URL %s", field_name, field_value)
