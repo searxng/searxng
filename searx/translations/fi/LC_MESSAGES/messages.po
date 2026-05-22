@@ -16,16 +16,16 @@
 # Implosion <implosion@users.noreply.translate.codeberg.org>, 2025.
 # Anonymous <anonymous@users.noreply.translate.codeberg.org>, 2025.
 # Ricky-Tigg <ricky-tigg@users.noreply.translate.codeberg.org>, 2025.
-# return42 <return42@noreply.codeberg.org>, 2025.
+# return42 <return42@noreply.codeberg.org>, 2025, 2026.
 # artnay <artnay@noreply.codeberg.org>, 2025.
 # Ricky-Tigg <ricky-tigg@noreply.codeberg.org>, 2025.
 msgid ""
 msgstr ""
 "Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-03-24 18:43+0000\n"
-"PO-Revision-Date: 2025-12-12 07:12+0000\n"
-"Last-Translator: artnay <artnay@noreply.codeberg.org>\n"
+"POT-Creation-Date: 2026-05-21 19:19+0000\n"
+"PO-Revision-Date: 2026-05-19 12:07+0000\n"
+"Last-Translator: return42 <return42@noreply.codeberg.org>\n"
 "Language: fi\n"
 "Language-Team: Finnish "
 "<https://translate.codeberg.org/projects/searxng/searxng/fi/>\n"
@@ -181,7 +181,7 @@ msgid "Uptime"
 msgstr "Käytettävyysaika"
 
 #. BRAND_CUSTOM_LINKS['ABOUT']
-#: searx/searxng.msg searx/templates/simple/base.html:46
+#: searx/searxng.msg searx/templates/simple/base.html:47
 msgid "About"
 msgstr "Tietoa SearXNG:stä"
 
@@ -649,7 +649,7 @@ msgstr "Laske argumenteista {func}"
 #: searx/engines/boardreader.py:107
 #, python-brace-format
 msgid "Posted by {author}"
-msgstr ""
+msgstr "Lähettäjä {author}"
 
 #: searx/engines/openstreetmap.py:155
 msgid "Show route in map .."
@@ -876,45 +876,45 @@ msgstr "Siirry %(search_page)s."
 msgid "search page"
 msgstr "hakusivulle"
 
-#: searx/templates/simple/base.html:50
+#: searx/templates/simple/base.html:51
 msgid "Donate"
 msgstr "Lahjoita"
 
-#: searx/templates/simple/base.html:55 searx/templates/simple/base.html:57
+#: searx/templates/simple/base.html:56 searx/templates/simple/base.html:58
 #: searx/templates/simple/preferences.html:152
 msgid "Preferences"
 msgstr "Asetukset"
 
-#: searx/templates/simple/base.html:68
+#: searx/templates/simple/base.html:69
 msgid "Powered by"
 msgstr "Taustavoimana"
 
-#: searx/templates/simple/base.html:68
+#: searx/templates/simple/base.html:69
 msgid "a privacy-respecting, open metasearch engine"
 msgstr "yksityisyyttä kunnioittava, avoin metahakukone"
 
-#: searx/templates/simple/base.html:69
+#: searx/templates/simple/base.html:70
 #: searx/templates/simple/result_templates/packages.html:59
 msgid "Source code"
 msgstr "Lähdekoodi"
 
-#: searx/templates/simple/base.html:70
+#: searx/templates/simple/base.html:71
 msgid "Issue tracker"
 msgstr "Ongelmien seuranta"
 
-#: searx/templates/simple/base.html:71 searx/templates/simple/stats.html:17
+#: searx/templates/simple/base.html:72 searx/templates/simple/stats.html:17
 msgid "Engine stats"
 msgstr "Hakukoneen tilastot"
 
-#: searx/templates/simple/base.html:73
+#: searx/templates/simple/base.html:74
 msgid "Public instances"
 msgstr "Julkiset palvelimet"
 
-#: searx/templates/simple/base.html:76
+#: searx/templates/simple/base.html:77
 msgid "Privacy policy"
 msgstr "Tietosuojakäytäntö"
 
-#: searx/templates/simple/base.html:79
+#: searx/templates/simple/base.html:80
 msgid "Contact instance maintainer"
 msgstr "Ota yhteyttä palvelun ylläpitäjään"
 
@@ -984,6 +984,8 @@ msgid ""
 "This is a preview of the settings used by the 'Search URL' you used to "
 "get here."
 msgstr ""
+"Tämä on esikatselu asetuksista, joita käytit tänne pääsemiseen "
+"käyttämässäsi 'Haku-URL-osoitteessa'."
 
 #: searx/templates/simple/preferences.html:158
 msgid "Press save to copy these preferences to your browser."
@@ -1082,12 +1084,12 @@ msgid "Result count"
 msgstr "Tulosten määrä"
 
 #: searx/templates/simple/elements/engines_msg.html:7
-#: searx/templates/simple/preferences/engines.html:31
+#: searx/templates/simple/preferences/engines.html:30
 #: searx/templates/simple/stats.html:27
 msgid "Response time"
 msgstr "Vastausaika"
 
-#: searx/templates/simple/preferences/engines.html:35
+#: searx/templates/simple/preferences/engines.html:34
 #: searx/templates/simple/stats.html:28
 msgid "Reliability"
 msgstr "Luotettavuus"
@@ -1216,7 +1218,7 @@ msgstr "Havaitse automaattisesti"
 #: searx/templates/simple/filters/safesearch.html:2
 #: searx/templates/simple/filters/safesearch.html:3
 #: searx/templates/simple/filters/safesearch.html:4
-#: searx/templates/simple/preferences/engines.html:27
+#: searx/templates/simple/preferences/engines.html:26
 #: searx/templates/simple/preferences/safesearch.html:2
 msgid "SafeSearch"
 msgstr "Turvahaku"
@@ -1237,7 +1239,7 @@ msgid "None"
 msgstr "Ei mitään"
 
 #: searx/templates/simple/filters/time_range.html:1
-#: searx/templates/simple/preferences/engines.html:28
+#: searx/templates/simple/preferences/engines.html:27
 msgid "Time range"
 msgstr "Aikaväli"
 
@@ -1436,15 +1438,11 @@ msgstr "Poista kaikki käytöstä"
 msgid "!bang"
 msgstr "!bang"
 
-#: searx/templates/simple/preferences/engines.html:26
-msgid "Supports selected language"
-msgstr "Tukee valittua kieltä"
-
-#: searx/templates/simple/preferences/engines.html:29
+#: searx/templates/simple/preferences/engines.html:28
 msgid "Weight"
 msgstr "Paino"
 
-#: searx/templates/simple/preferences/engines.html:33
+#: searx/templates/simple/preferences/engines.html:32
 msgid "Max time"
 msgstr "Enimmäisaika"
 
@@ -2406,4 +2404,7 @@ msgstr "piilota video"
 
 #~ msgid "Submit a new issue on Github including the above information"
 #~ msgstr "Lähetä uusi ongelma Githubiin sisältäen edellä mainitut tiedot"
+
+#~ msgid "Supports selected language"
+#~ msgstr "Tukee valittua kieltä"
 

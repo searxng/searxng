@@ -22,15 +22,15 @@
 # Thecode764 <thecode764@users.noreply.translate.codeberg.org>, 2025.
 # Parsa Ranjbar <parsa@users.noreply.translate.codeberg.org>, 2025.
 # arashe22 <arashe22@users.noreply.translate.codeberg.org>, 2025.
-# return42 <return42@noreply.codeberg.org>, 2025.
+# return42 <return42@noreply.codeberg.org>, 2025, 2026.
 # ehsanrs2 <ehsanrs2@noreply.codeberg.org>, 2025.
 # Artiman <artiman@noreply.codeberg.org>, 2025.
 msgid ""
 msgstr ""
 "Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-03-24 18:43+0000\n"
-"PO-Revision-Date: 2025-09-02 04:50+0000\n"
+"POT-Creation-Date: 2026-05-21 19:19+0000\n"
+"PO-Revision-Date: 2026-05-19 12:07+0000\n"
 "Last-Translator: return42 <return42@noreply.codeberg.org>\n"
 "Language: fa_IR\n"
 "Language-Team: Persian "
@@ -187,7 +187,7 @@ msgid "Uptime"
 msgstr "زمان به کار سرور"
 
 #. BRAND_CUSTOM_LINKS['ABOUT']
-#: searx/searxng.msg searx/templates/simple/base.html:46
+#: searx/searxng.msg searx/templates/simple/base.html:47
 msgid "About"
 msgstr "درباره"
 
@@ -775,7 +775,7 @@ msgstr "پایین رفتن بی‌پایان"
 msgid ""
 "Automatically loads the next page when scrolling to bottom of the current"
 " page"
-msgstr ""
+msgstr "هنگام پیمایش به پایین صفحه فعلی، صفحه بعدی به صورت خودکار بارگیری می شود"
 
 #: searx/plugins/oa_doi_rewrite.py:54
 msgid "Open Access DOI rewrite"
@@ -876,45 +876,45 @@ msgstr "برو به ‎%(search_page)s‎."
 msgid "search page"
 msgstr "صفحهٔ جست‌وجو"
 
-#: searx/templates/simple/base.html:50
+#: searx/templates/simple/base.html:51
 msgid "Donate"
 msgstr "اهداء کردن"
 
-#: searx/templates/simple/base.html:55 searx/templates/simple/base.html:57
+#: searx/templates/simple/base.html:56 searx/templates/simple/base.html:58
 #: searx/templates/simple/preferences.html:152
 msgid "Preferences"
 msgstr "تنظیمات"
 
-#: searx/templates/simple/base.html:68
+#: searx/templates/simple/base.html:69
 msgid "Powered by"
 msgstr "قدرت گرفته از<br>"
 
-#: searx/templates/simple/base.html:68
+#: searx/templates/simple/base.html:69
 msgid "a privacy-respecting, open metasearch engine"
 msgstr "یک موتور فراجستجوی آزاد که به حریم خصوصی احترام می گذارد"
 
-#: searx/templates/simple/base.html:69
+#: searx/templates/simple/base.html:70
 #: searx/templates/simple/result_templates/packages.html:59
 msgid "Source code"
 msgstr "کد منبع"
 
-#: searx/templates/simple/base.html:70
+#: searx/templates/simple/base.html:71
 msgid "Issue tracker"
 msgstr "ردیاب مشکل"
 
-#: searx/templates/simple/base.html:71 searx/templates/simple/stats.html:17
+#: searx/templates/simple/base.html:72 searx/templates/simple/stats.html:17
 msgid "Engine stats"
 msgstr "وضعیت موتور"
 
-#: searx/templates/simple/base.html:73
+#: searx/templates/simple/base.html:74
 msgid "Public instances"
 msgstr "نمونه‌های عمومی"
 
-#: searx/templates/simple/base.html:76
+#: searx/templates/simple/base.html:77
 msgid "Privacy policy"
 msgstr "سیاست حفظ حریم خصوصی"
 
-#: searx/templates/simple/base.html:79
+#: searx/templates/simple/base.html:80
 msgid "Contact instance maintainer"
 msgstr "تماس با نگهدارنده نمونه"
 
@@ -1082,12 +1082,12 @@ msgid "Result count"
 msgstr "تعداد نتیجه ها"
 
 #: searx/templates/simple/elements/engines_msg.html:7
-#: searx/templates/simple/preferences/engines.html:31
+#: searx/templates/simple/preferences/engines.html:30
 #: searx/templates/simple/stats.html:27
 msgid "Response time"
 msgstr "زمان پاسخ‌دهی"
 
-#: searx/templates/simple/preferences/engines.html:35
+#: searx/templates/simple/preferences/engines.html:34
 #: searx/templates/simple/stats.html:28
 msgid "Reliability"
 msgstr "اعتمادپذیری"
@@ -1216,7 +1216,7 @@ msgstr "انتخاب خودکار"
 #: searx/templates/simple/filters/safesearch.html:2
 #: searx/templates/simple/filters/safesearch.html:3
 #: searx/templates/simple/filters/safesearch.html:4
-#: searx/templates/simple/preferences/engines.html:27
+#: searx/templates/simple/preferences/engines.html:26
 #: searx/templates/simple/preferences/safesearch.html:2
 msgid "SafeSearch"
 msgstr "جست‌وجوی امن"
@@ -1237,7 +1237,7 @@ msgid "None"
 msgstr "هیچ"
 
 #: searx/templates/simple/filters/time_range.html:1
-#: searx/templates/simple/preferences/engines.html:28
+#: searx/templates/simple/preferences/engines.html:27
 msgid "Time range"
 msgstr "بازهٔ زمانی"
 
@@ -1418,6 +1418,8 @@ msgid ""
 "This tab does not exist in the user interface, but you can search with "
 "these engines via !bangs."
 msgstr ""
+"این تب در رابط کاربری وجود ندارد، اما می توانید در این موتورها با !بنگ "
+"های آن جستجو کنید."
 
 #: searx/templates/simple/preferences/engines.html:15
 msgid "Enable all"
@@ -1431,15 +1433,11 @@ msgstr "غیرفعال‌سازی همه"
 msgid "!bang"
 msgstr "!بنگ"
 
-#: searx/templates/simple/preferences/engines.html:26
-msgid "Supports selected language"
-msgstr "پشتیبانی از زبان انتخاب شده"
-
-#: searx/templates/simple/preferences/engines.html:29
+#: searx/templates/simple/preferences/engines.html:28
 msgid "Weight"
 msgstr "وزن"
 
-#: searx/templates/simple/preferences/engines.html:33
+#: searx/templates/simple/preferences/engines.html:32
 msgid "Max time"
 msgstr "زمان بیشینه"
 
@@ -1456,10 +1454,14 @@ msgid ""
 "These settings are stored in your cookies. This allows us not to store "
 "this data about you."
 msgstr ""
+"این تنظیمات در کلوچک‌های شما ذخیره می‌شوند و به ما توانایی ذخیرهٔ این "
+"دادهٔ مربوط به شما را نداریم."
 
 #: searx/templates/simple/preferences/footer.html:3
 msgid "These cookies serve your sole convenience; we don't use them to track you."
 msgstr ""
+"این کلوچک‌ها تنها برای آسودگی شما هستند و ما از این کلوچک‌ها برای ردیابی "
+"شما استفاده نمی‌کنیم."
 
 #: searx/templates/simple/preferences/footer.html:6
 msgid "Save"
@@ -1495,7 +1497,7 @@ msgstr "پروکسی تصویر"
 
 #: searx/templates/simple/preferences/image_proxy.html:14
 msgid "Proxy image results through SearXNG"
-msgstr ""
+msgstr "گذر تصویر از پروکسی به‌وسیلهٔ SearXNG"
 
 #: searx/templates/simple/preferences/language.html:24
 msgid "What language do you prefer for search?"
@@ -1546,6 +1548,8 @@ msgid ""
 "Perform a search immediately if a category is selected. Disable to select"
 " multiple categories"
 msgstr ""
+"انجام دادن جست‌وجو درجا درصورت انتخاب یک دسته بندی. برای انتخاب بیش از یک"
+" دسته بندی غیر فعال کنید"
 
 #: searx/templates/simple/preferences/theme.html:2
 msgid "Theme"
@@ -2393,4 +2397,7 @@ msgstr "پنهان‌سازی ویدئو"
 
 #~ msgid "Submit a new issue on Github including the above information"
 #~ msgstr "در گیتهاب مشکل جدید را با توجه به اطلاعات فوق ثبت نمایید"
+
+#~ msgid "Supports selected language"
+#~ msgstr "پشتیبانی از زبان انتخاب شده"
 

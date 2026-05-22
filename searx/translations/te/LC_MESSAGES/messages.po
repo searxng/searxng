@@ -12,16 +12,15 @@
 # Anonymous <anonymous@users.noreply.translate.codeberg.org>, 2025.
 # Harshith-10 <harshith-10@users.noreply.translate.codeberg.org>, 2025.
 # Kranthi294 <kranthi294@noreply.codeberg.org>, 2025.
-# return42 <return42@noreply.codeberg.org>, 2025.
+# return42 <return42@noreply.codeberg.org>, 2025, 2026.
 # krishna_medapati <krishna_medapati@noreply.codeberg.org>, 2025.
 msgid ""
 msgstr ""
 "Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-03-24 18:43+0000\n"
-"PO-Revision-Date: 2025-11-04 03:40+0000\n"
-"Last-Translator: krishna_medapati <krishna_medapati@noreply.codeberg.org>"
-"\n"
+"POT-Creation-Date: 2026-05-21 19:19+0000\n"
+"PO-Revision-Date: 2026-05-19 12:08+0000\n"
+"Last-Translator: return42 <return42@noreply.codeberg.org>\n"
 "Language: te\n"
 "Language-Team: Telugu "
 "<https://translate.codeberg.org/projects/searxng/searxng/te/>\n"
@@ -177,7 +176,7 @@ msgid "Uptime"
 msgstr "సేవ లభ్యత సమయం"
 
 #. BRAND_CUSTOM_LINKS['ABOUT']
-#: searx/searxng.msg searx/templates/simple/base.html:46
+#: searx/searxng.msg searx/templates/simple/base.html:47
 msgid "About"
 msgstr "గురించి"
 
@@ -766,6 +765,8 @@ msgid ""
 "Automatically loads the next page when scrolling to bottom of the current"
 " page"
 msgstr ""
+"ప్రస్తుత పేజీ దిగువకు స్క్రోల్ చేస్తున్నప్పుడు తదుపరి పేజీని స్వయంచాలకంగా"
+" లోడ్ చేయండి"
 
 #: searx/plugins/oa_doi_rewrite.py:54
 msgid "Open Access DOI rewrite"
@@ -864,45 +865,45 @@ msgstr "%(search_page)sకు వెళ్ళు"
 msgid "search page"
 msgstr "శోధన పుట"
 
-#: searx/templates/simple/base.html:50
+#: searx/templates/simple/base.html:51
 msgid "Donate"
 msgstr "దానం చేయండి"
 
-#: searx/templates/simple/base.html:55 searx/templates/simple/base.html:57
+#: searx/templates/simple/base.html:56 searx/templates/simple/base.html:58
 #: searx/templates/simple/preferences.html:152
 msgid "Preferences"
 msgstr "అభిరుచులు"
 
-#: searx/templates/simple/base.html:68
+#: searx/templates/simple/base.html:69
 msgid "Powered by"
 msgstr "ద్వారా ఆధారితం"
 
-#: searx/templates/simple/base.html:68
+#: searx/templates/simple/base.html:69
 msgid "a privacy-respecting, open metasearch engine"
 msgstr "గోప్యతను గౌరవించే, ఓపెన్ మెటా సెర్చ్ ఇంజిన్"
 
-#: searx/templates/simple/base.html:69
+#: searx/templates/simple/base.html:70
 #: searx/templates/simple/result_templates/packages.html:59
 msgid "Source code"
 msgstr "సోర్స్ కోడ్"
 
-#: searx/templates/simple/base.html:70
+#: searx/templates/simple/base.html:71
 msgid "Issue tracker"
 msgstr "ఇష్యూ ట్రాకర్"
 
-#: searx/templates/simple/base.html:71 searx/templates/simple/stats.html:17
+#: searx/templates/simple/base.html:72 searx/templates/simple/stats.html:17
 msgid "Engine stats"
 msgstr "ఇంజిన్ గణాంకాలు"
 
-#: searx/templates/simple/base.html:73
+#: searx/templates/simple/base.html:74
 msgid "Public instances"
 msgstr "పబ్లిక్ ఇన్స్తంచెస్"
 
-#: searx/templates/simple/base.html:76
+#: searx/templates/simple/base.html:77
 msgid "Privacy policy"
 msgstr "గోప్యతా విధానం"
 
-#: searx/templates/simple/base.html:79
+#: searx/templates/simple/base.html:80
 msgid "Contact instance maintainer"
 msgstr "నిర్వహించేవాడిని సంప్రదించండి"
 
@@ -1070,12 +1071,12 @@ msgid "Result count"
 msgstr "ఫలితాల గణన"
 
 #: searx/templates/simple/elements/engines_msg.html:7
-#: searx/templates/simple/preferences/engines.html:31
+#: searx/templates/simple/preferences/engines.html:30
 #: searx/templates/simple/stats.html:27
 msgid "Response time"
 msgstr "ప్రతిస్పందన సమయం"
 
-#: searx/templates/simple/preferences/engines.html:35
+#: searx/templates/simple/preferences/engines.html:34
 #: searx/templates/simple/stats.html:28
 msgid "Reliability"
 msgstr "విశ్వసనీయత"
@@ -1204,7 +1205,7 @@ msgstr "ఆటో-డిటెక్ట్"
 #: searx/templates/simple/filters/safesearch.html:2
 #: searx/templates/simple/filters/safesearch.html:3
 #: searx/templates/simple/filters/safesearch.html:4
-#: searx/templates/simple/preferences/engines.html:27
+#: searx/templates/simple/preferences/engines.html:26
 #: searx/templates/simple/preferences/safesearch.html:2
 msgid "SafeSearch"
 msgstr "సురక్షితశోధన"
@@ -1225,7 +1226,7 @@ msgid "None"
 msgstr "ఏమీ లేదు"
 
 #: searx/templates/simple/filters/time_range.html:1
-#: searx/templates/simple/preferences/engines.html:28
+#: searx/templates/simple/preferences/engines.html:27
 msgid "Time range"
 msgstr "కాల శ్రేణి"
 
@@ -1333,7 +1334,7 @@ msgstr "మధ్య అమరిక"
 
 #: searx/templates/simple/preferences/center_alignment.html:14
 msgid "Display results in the center of the page (Oscar layout)."
-msgstr ""
+msgstr "పేజీ మధ్యలో ఫలితాలను ప్రదర్శిస్తుంది (ఆస్కార్ లేఅవుట్)."
 
 #: searx/templates/simple/preferences/cookies.html:2
 msgid ""
@@ -1421,15 +1422,11 @@ msgstr "అన్నిటిని డిసేబుల్ చేయి"
 msgid "!bang"
 msgstr "!bang"
 
-#: searx/templates/simple/preferences/engines.html:26
-msgid "Supports selected language"
-msgstr "ఎంచుకున్న భాషకు మద్దతు ఇస్తుంది"
-
-#: searx/templates/simple/preferences/engines.html:29
+#: searx/templates/simple/preferences/engines.html:28
 msgid "Weight"
 msgstr "బరువు"
 
-#: searx/templates/simple/preferences/engines.html:33
+#: searx/templates/simple/preferences/engines.html:32
 msgid "Max time"
 msgstr "గరిష్ఠ సమయం"
 
@@ -1446,10 +1443,14 @@ msgid ""
 "These settings are stored in your cookies. This allows us not to store "
 "this data about you."
 msgstr ""
+"ఈ సెట్టింగ్‌లు మీ కుక్కీలలో నిల్వ చేయబడ్డాయి, ఇది మీ గురించిన ఈ డేటాను "
+"నిల్వ చేయకుండా ఉండటానికి మాకు అనుమతిస్తుంది."
 
 #: searx/templates/simple/preferences/footer.html:3
 msgid "These cookies serve your sole convenience; we don't use them to track you."
 msgstr ""
+"ఈ కుక్కీలు మీ సౌకర్యార్థం, మిమ్మల్ని ట్రాక్ చేయడానికి మేము ఈ కుక్కీలను "
+"ఉపయోగించము."
 
 #: searx/templates/simple/preferences/footer.html:6
 msgid "Save"
@@ -1485,7 +1486,7 @@ msgstr "చిత్రం ప్రాక్సీ"
 
 #: searx/templates/simple/preferences/image_proxy.html:14
 msgid "Proxy image results through SearXNG"
-msgstr ""
+msgstr "SearXNG ద్వారా ఇమేజ్ ఫలితాలను ప్రాక్సీ చేస్తోంది"
 
 #: searx/templates/simple/preferences/language.html:24
 msgid "What language do you prefer for search?"
@@ -1538,6 +1539,8 @@ msgid ""
 "Perform a search immediately if a category is selected. Disable to select"
 " multiple categories"
 msgstr ""
+"ఒక వర్గం ఎంచుకోబడితే వెంటనే శోధనను నిర్వహించండి. బహుళ వర్గాలను ఎంచుకోవడం "
+"కోసం నిలిపివేయండి"
 
 #: searx/templates/simple/preferences/theme.html:2
 msgid "Theme"
@@ -2365,4 +2368,7 @@ msgstr "వీడియోను దాచిపెట్టు"
 
 #~ msgid "Submit a new issue on Github including the above information"
 #~ msgstr "పై సమాచారంతో సహా Github పై కొత్త సంచికను సమర్పించండి"
+
+#~ msgid "Supports selected language"
+#~ msgstr "ఎంచుకున్న భాషకు మద్దతు ఇస్తుంది"
 

@@ -8,13 +8,13 @@
 # return42 <markus.heiser@darmarit.de>, 2023.
 # Anonymous <anonymous@users.noreply.translate.codeberg.org>, 2025.
 # return42 <return42@users.noreply.translate.codeberg.org>, 2025.
-# return42 <return42@noreply.codeberg.org>, 2025.
+# return42 <return42@noreply.codeberg.org>, 2025, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-03-24 18:43+0000\n"
-"PO-Revision-Date: 2025-10-22 02:09+0000\n"
+"POT-Creation-Date: 2026-05-21 19:19+0000\n"
+"PO-Revision-Date: 2026-05-19 12:07+0000\n"
 "Last-Translator: return42 <return42@noreply.codeberg.org>\n"
 "Language: bo\n"
 "Language-Team: Tibetan "
@@ -171,7 +171,7 @@ msgid "Uptime"
 msgstr ""
 
 #. BRAND_CUSTOM_LINKS['ABOUT']
-#: searx/searxng.msg searx/templates/simple/base.html:46
+#: searx/searxng.msg searx/templates/simple/base.html:47
 msgid "About"
 msgstr ""
 
@@ -752,7 +752,7 @@ msgstr "མཐའ་མེད་པའི་འཆར་ངོས།"
 msgid ""
 "Automatically loads the next page when scrolling to bottom of the current"
 " page"
-msgstr ""
+msgstr "དྲ་ངོས་མར་འདྲུད་ནས་ཞབས་ལ་སླེབས་དུས་རང་འགུལ་སྒོས་འཕྲོ་མའི་ནང་དོན་འཆར་པར་བྱེད།"
 
 #: searx/plugins/oa_doi_rewrite.py:54
 msgid "Open Access DOI rewrite"
@@ -846,45 +846,45 @@ msgstr "%(search_page)s ལ་བསྐྱོད།"
 msgid "search page"
 msgstr "འཚོལ་བཤེར་དྲ་ངོས།"
 
-#: searx/templates/simple/base.html:50
+#: searx/templates/simple/base.html:51
 msgid "Donate"
 msgstr ""
 
-#: searx/templates/simple/base.html:55 searx/templates/simple/base.html:57
+#: searx/templates/simple/base.html:56 searx/templates/simple/base.html:58
 #: searx/templates/simple/preferences.html:152
 msgid "Preferences"
 msgstr "སྒྲིག་བཀོད།"
 
-#: searx/templates/simple/base.html:68
+#: searx/templates/simple/base.html:69
 msgid "Powered by"
 msgstr "བཟོ་སྐུན་པ་ནི"
 
-#: searx/templates/simple/base.html:68
+#: searx/templates/simple/base.html:69
 msgid "a privacy-respecting, open metasearch engine"
 msgstr ""
 
-#: searx/templates/simple/base.html:69
+#: searx/templates/simple/base.html:70
 #: searx/templates/simple/result_templates/packages.html:59
 msgid "Source code"
 msgstr ""
 
-#: searx/templates/simple/base.html:70
+#: searx/templates/simple/base.html:71
 msgid "Issue tracker"
 msgstr ""
 
-#: searx/templates/simple/base.html:71 searx/templates/simple/stats.html:17
+#: searx/templates/simple/base.html:72 searx/templates/simple/stats.html:17
 msgid "Engine stats"
 msgstr "སྒུལ་བྱེད་ཀྱི་སྡོམ་རྩིས།"
 
-#: searx/templates/simple/base.html:73
+#: searx/templates/simple/base.html:74
 msgid "Public instances"
 msgstr ""
 
-#: searx/templates/simple/base.html:76
+#: searx/templates/simple/base.html:77
 msgid "Privacy policy"
 msgstr ""
 
-#: searx/templates/simple/base.html:79
+#: searx/templates/simple/base.html:80
 msgid "Contact instance maintainer"
 msgstr ""
 
@@ -1052,12 +1052,12 @@ msgid "Result count"
 msgstr ""
 
 #: searx/templates/simple/elements/engines_msg.html:7
-#: searx/templates/simple/preferences/engines.html:31
+#: searx/templates/simple/preferences/engines.html:30
 #: searx/templates/simple/stats.html:27
 msgid "Response time"
 msgstr ""
 
-#: searx/templates/simple/preferences/engines.html:35
+#: searx/templates/simple/preferences/engines.html:34
 #: searx/templates/simple/stats.html:28
 msgid "Reliability"
 msgstr ""
@@ -1186,7 +1186,7 @@ msgstr ""
 #: searx/templates/simple/filters/safesearch.html:2
 #: searx/templates/simple/filters/safesearch.html:3
 #: searx/templates/simple/filters/safesearch.html:4
-#: searx/templates/simple/preferences/engines.html:27
+#: searx/templates/simple/preferences/engines.html:26
 #: searx/templates/simple/preferences/safesearch.html:2
 msgid "SafeSearch"
 msgstr "བདེ་འཇགས་འཚོལ་བཤེར།"
@@ -1207,7 +1207,7 @@ msgid "None"
 msgstr "གང་ཡང་མེད།"
 
 #: searx/templates/simple/filters/time_range.html:1
-#: searx/templates/simple/preferences/engines.html:28
+#: searx/templates/simple/preferences/engines.html:27
 msgid "Time range"
 msgstr "དུས་ཀྱི་ཁྱབ་ཁོངས།"
 
@@ -1397,15 +1397,11 @@ msgstr ""
 msgid "!bang"
 msgstr ""
 
-#: searx/templates/simple/preferences/engines.html:26
-msgid "Supports selected language"
-msgstr "རྒྱབ་སྐྱོར་ཐོབ་པའི་སྐད་རིགས་གདམ་གསེས།"
-
-#: searx/templates/simple/preferences/engines.html:29
+#: searx/templates/simple/preferences/engines.html:28
 msgid "Weight"
 msgstr ""
 
-#: searx/templates/simple/preferences/engines.html:33
+#: searx/templates/simple/preferences/engines.html:32
 msgid "Max time"
 msgstr "མང་མཐའི་དུས་ཚོད།"
 
@@ -1508,6 +1504,8 @@ msgid ""
 "Perform a search immediately if a category is selected. Disable to select"
 " multiple categories"
 msgstr ""
+"གལ་ཏེ་སྡེ་ཚན་ཞིག་འདེམས་ན་འཕྲལ་མར་འཚོལ་ཞིབ་བྱེད་དགོས། "
+"རིགས་སྣ་ཚོགས་འདེམས་པར་ལྕོགས་མིན་བཟོས།"
 
 #: searx/templates/simple/preferences/theme.html:2
 msgid "Theme"
@@ -2287,4 +2285,7 @@ msgstr "རྙན་ཟློས་སྦས།"
 
 #~ msgid "Submit a new issue on Github including the above information"
 #~ msgstr ""
+
+#~ msgid "Supports selected language"
+#~ msgstr "རྒྱབ་སྐྱོར་ཐོབ་པའི་སྐད་རིགས་གདམ་གསེས།"
 
