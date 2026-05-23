@@ -47,6 +47,7 @@
   activated:
 
   - :py:obj:`searx.botdetection.link_token` in the :ref:`limiter`
+  - :ref:`image_proxy`
 
 .. _image_proxy:
 
