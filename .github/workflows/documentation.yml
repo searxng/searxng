@@ -18,43 +18,55 @@ concurrency:
 permissions:
   contents: read
 
-env:
-  PYTHON_VERSION: "3.14"
-
 jobs:
   release:
     if: github.repository_owner == 'searxng' || github.event_name == 'workflow_dispatch'
     name: Release
     runs-on: ubuntu-24.04-arm
+    container:
+      image: ghcr.io/searxng/base:searxng-builder
+      # not useful here, kept as template
+      #volumes:
+      #  - /tmp/uv/:/github/home/.cache/uv/
     permissions:
       # for JamesIves/github-pages-deploy-action to push
       contents: write
 
     steps:
-      - name: Setup Python
-        uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405  # v6.2.0
-        with:
-          python-version: "${{ env.PYTHON_VERSION }}"
-
       - name: Checkout
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd  # v6.0.2
         with:
           persist-credentials: "false"
           fetch-depth: "0"
 
-      - name: Setup cache Python
-        uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae  # v5.0.5
-        with:
-          key: "python-${{ env.PYTHON_VERSION }}-${{ runner.arch }}-${{ hashFiles('./requirements*.txt') }}"
-          restore-keys: |
-            python-${{ env.PYTHON_VERSION }}-${{ runner.arch }}-
-          path: "./local/"
+      # not useful here, kept as template
+      #- name: Setup cache
+      #  uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae  # v5.0.5
+      #  with:
+      #    key: "cpython-${{ runner.arch }}-${{ hashFiles('./requirements*.txt') }}"
+      #    restore-keys: |
+      #      cpython-${{ runner.arch }}-
+      #    path: "/github/home/.cache/uv/"
 
-      - name: Setup venv
-        run: make V=1 install
+      - name: Setup dependencies
+        run: |
+          uv venv
+          uv pip install --requirements ./requirements.txt --requirements ./requirements-dev.txt
+          # not useful here, kept as template
+          #uv cache prune --ci
 
       - name: Build documentation
-        run: make V=1 docs.clean docs.html
+        env:
+          PYTHONPATH: ${{ github.workspace }}
+          DOCS_DIST: "dist/docs"
+          DOCS_BUILD: "build/docs"
+        run: |
+          mkdir -p ./build/docs/includes
+          ./utils/searxng.sh searxng.doc.rst >"$DOCS_BUILD/includes/searxng.rst"
+          uv run searxng_extra/docs_prebuild
+
+          # shellcheck disable=SC2086
+          uv run sphinx-build -b html -c ./docs -d "./$DOCS_BUILD/.doctrees" ./docs "./$DOCS_DIST"
 
       - if: github.ref_name == 'master'
         name: Release
