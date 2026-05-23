@@ -44,6 +44,12 @@ def init_settings():
     cfg = cfg or {}
     apply_schema(cfg, SCHEMA, [])
 
+    if cfg['server']['public_instance']:
+        cfg['server']['image_proxy'] = True
+        lock = cfg.setdefault('preferences', {}).setdefault('lock', [])
+        if 'image_proxy' not in lock:
+            lock.append('image_proxy')
+
     settings.clear()
     settings.update(cfg)
 
@@ -66,7 +72,7 @@ def init_settings():
     if settings['server']['public_instance']:
         logger.warning(
             "Be aware you have activated features intended only for public instances. "
-            "This force the usage of the limiter and link_token / "
+            "This force the usage of the limiter, link_token and image proxy / "
             "see https://docs.searxng.org/admin/searx.limiter.html"
         )
 
