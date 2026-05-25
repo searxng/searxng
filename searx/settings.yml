@@ -2608,6 +2608,23 @@ engines:
     shortcut: wttr
     timeout: 9.0
 
+  - name: zapmeta
+    engine: xpath
+    shortcut: zpm
+    search_url: https://www.zapmeta.com/search?q={query}&pg={pageno}
+    results_xpath: //article[contains(@class, "organic-results-item")]
+    url_xpath: ./h2/a/@href
+    title_xpath: ./h2
+    content_xpath: ./p
+    paging: true
+    send_page_num_on_first_page: false  # otherwise blocks requests
+    disabled: true
+    about:
+      website: https://www.zapmeta.com/
+      use_official_api: false
+      require_api_key: false
+      results: HTML
+
   - name: braveapi
     engine: braveapi
     # read https://docs.searxng.org/dev/engines/online/brave.html

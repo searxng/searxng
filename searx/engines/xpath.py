@@ -174,6 +174,10 @@ number, but an offset.'''
 first_page_num = 1
 '''Number of the first page (usually 0 or 1).'''
 
+send_page_num_on_first_page = True
+'''Whether to include the page number in the request for the first page.
+This can help if an engine blocks request that send a page number for the first page.'''
+
 time_range_support = False
 '''Engine supports search time range.'''
 
@@ -238,10 +242,14 @@ def request(query, params):
     if safe_search_val is not None:
         safe_search = safe_search_map[safe_search_val]
 
+    pageno = ""
+    if send_page_num_on_first_page or params["pageno"] != 1:
+        pageno = (params['pageno'] - 1) * page_size + first_page_num
+
     fargs = {
         'query': urlencode({'q': query})[2:],
         'lang': lang,
-        'pageno': (params['pageno'] - 1) * page_size + first_page_num,
+        'pageno': pageno,
         'time_range': time_range,
         'safe_search': safe_search,
     }
