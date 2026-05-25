@@ -163,7 +163,6 @@ def get_json_response(sq: "SearchQuery", rc: "ResultContainer") -> str:
     """Returns the JSON string of the results to a query (``application/json``)"""
     data = {
         'query': sq.query,
-        'number_of_results': rc.number_of_results,
         'results': [_.as_dict() for _ in rc.get_ordered_results()],
         'answers': [_.as_dict() for _ in rc.answers],
         'corrections': list(rc.corrections),

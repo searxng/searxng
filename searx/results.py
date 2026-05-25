@@ -69,7 +69,6 @@ class ResultContainer:
         self.answers = AnswerSet()
         self.corrections = set()
 
-        self._number_of_results: list[int] = []
         self.engine_data: dict[str, dict[str, str]] = defaultdict(dict)
         self._closed: bool = False
         self.paging: bool = False
@@ -133,11 +132,6 @@ class ResultContainer:
                 if "infobox" in result:
                     if self.on_result(result):
                         self._merge_infobox(result)
-                    continue
-
-                if "number_of_results" in result:
-                    if self.on_result(result):
-                        self._number_of_results.append(result["number_of_results"])
                     continue
 
                 if "engine_data" in result:
@@ -251,25 +245,6 @@ class ResultContainer:
 
         self._main_results_sorted = gresults
         return self._main_results_sorted
-
-    @property
-    def number_of_results(self) -> int:
-        """Returns the average of results number, returns zero if the average
-        result number is smaller than the actual result count."""
-
-        if not self._closed:
-            log.error("call to ResultContainer.number_of_results before ResultContainer.close")
-            return 0
-
-        with self._lock:
-            resultnum_sum = sum(self._number_of_results)
-            if not resultnum_sum or not self._number_of_results:
-                return 0
-
-            average = int(resultnum_sum / len(self._number_of_results))
-            if average < len(self.get_ordered_results()):
-                average = 0
-            return average
 
     def add_unresponsive_engine(self, engine_name: str, error_type: str, suspended: bool = False):
         with self._lock:

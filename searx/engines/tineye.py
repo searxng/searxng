@@ -211,8 +211,4 @@ def response(resp) -> EngineResults:
 
     # append number of results
 
-    number_of_results = json_data.get('num_matches')
-    if number_of_results:
-        results.append({'number_of_results': number_of_results})
-
     return results

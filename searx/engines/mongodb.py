@@ -93,7 +93,6 @@ def search(query, params) -> EngineResults:
 
     query = _client.find({key: q}).skip((params['pageno'] - 1) * results_per_page).limit(results_per_page)
 
-    res.add(res.types.LegacyResult(number_of_results=query.count()))
     for row in query:
         del row['_id']
         kvmap = {str(k): str(v) for k, v in row.items()}
