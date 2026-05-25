@@ -29,7 +29,7 @@ Time Range:
 
 Safe-Search:
 
-- :py:obj:`safe_search_support`
+- :py:obj:`safesearch`
 - :py:obj:`safe_search_map`
 
 Response:
@@ -103,7 +103,7 @@ Replacements are:
 
 ``{safe_search}``:
   Safe-search :py:obj:`URL parameter <safe_search_map>` if engine
-  :py:obj:`supports safe-search <safe_search_support>`.  The ``{safe_search}``
+  :py:obj:`supports safe-search <safesearch>`.  The ``{safe_search}``
   replacement is taken from the :py:obj:`safes_search_map`.  Filter results::
 
       0: none, 1: moderate, 2:strict
@@ -236,7 +236,7 @@ time_range_map = {
       year: 365
 '''
 
-safe_search_support = False
+safesearch = False
 '''Engine supports safe-search.'''
 
 safe_search_map = {0: '&filter=none', 1: '&filter=moderate', 2: '&filter=strict'}
@@ -286,7 +286,6 @@ def do_query(data, q):  # pylint: disable=invalid-name
     qkey = q[0]
 
     for key, value in iterate(data):
-
         if len(q) == 1:
             if key == qkey:
                 ret.append(value)

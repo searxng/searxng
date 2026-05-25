@@ -31,7 +31,7 @@ Time Range:
 
 Safe-Search:
 
-- :py:obj:`safe_search_support`
+- :py:obj:`safesearch`
 - :py:obj:`safe_search_map`
 
 Response:
@@ -100,7 +100,7 @@ Replacements are:
 
 ``{safe_search}``:
   Safe-search :py:obj:`URL parameter <safe_search_map>` if engine
-  :py:obj:`supports safe-search <safe_search_support>`.  The ``{safe_search}``
+  :py:obj:`supports safe-search <safesearch>`.  The ``{safe_search}``
   replacement is taken from the :py:obj:`safes_search_map`.  Filter results::
 
       0: none, 1: moderate, 2:strict
@@ -205,7 +205,7 @@ time_range_map = {
       year: 365
 '''
 
-safe_search_support = False
+safesearch = False
 '''Engine supports safe-search.'''
 
 safe_search_map = {0: '&filter=none', 1: '&filter=moderate', 2: '&filter=strict'}
@@ -280,7 +280,6 @@ def response(resp) -> EngineResults:  # pylint: disable=too-many-branches
 
     if results_xpath:
         for result in eval_xpath_list(dom, results_xpath):
-
             url = extract_url(eval_xpath_list(result, url_xpath, min_len=1), search_url)
             title = extract_text(eval_xpath_list(result, title_xpath, min_len=1))
             content = extract_text(eval_xpath_list(result, content_xpath))
