@@ -109,7 +109,6 @@ def search(query: str, params: "RequestParams") -> EngineResults:
                 kvmap=kvmap,
             )
         )
-    res.add(res.types.LegacyResult(number_of_results=count))
 
     # cache counter value for 20sec
     CACHE.set("count", count, expire=20)

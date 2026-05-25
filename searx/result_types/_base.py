@@ -529,7 +529,7 @@ class LegacyResult(dict[str, t.Any]):
             # the img_src are equal.
             return hash(f"{self.template}|{self.url}|{self.img_src}")
 
-        if not any(cls in self for cls in ["suggestion", "correction", "infobox", "number_of_results", "engine_data"]):
+        if not any(cls in self for cls in ["suggestion", "correction", "infobox", "engine_data"]):
             # Ordinary url-results are equal if their values for template,
             # parsed_url (without schema) and img_src` are equal.
 

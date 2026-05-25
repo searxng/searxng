@@ -1,7 +1,6 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 """Duden"""
 
-import re
 from urllib.parse import quote, urljoin
 from lxml import html
 from searx.utils import extract_text, eval_xpath, eval_xpath_list, eval_xpath_getindex
@@ -50,13 +49,6 @@ def response(resp):
     raise_for_httperror(resp)
 
     dom = html.fromstring(resp.text)
-
-    number_of_results_element = eval_xpath_getindex(
-        dom, '//a[@class="active" and contains(@href,"/suchen/dudenonline")]/span/text()', 0, default=None
-    )
-    if number_of_results_element is not None:
-        number_of_results_string = re.sub('[^0-9]', '', number_of_results_element)
-        results.append({'number_of_results': int(number_of_results_string)})
 
     for result in eval_xpath_list(dom, '//section[not(contains(@class, "essay"))]'):
         url = eval_xpath_getindex(result, './/h2/a', 0).get('href')

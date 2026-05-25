@@ -54,6 +54,4 @@ def response(resp):
 
     results.extend({'suggestion': s} for s in response_json['suggestions'])
 
-    results.append({'number_of_results': response_json['number_of_results']})
-
     return results

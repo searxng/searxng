@@ -39,7 +39,6 @@ url_xpath = './h4/a/@href'
 title_xpath = './h4/a[1]'
 content_xpath = './/p[1]'
 correction_xpath = '//*[@id="didYouMean"]//a'
-number_of_results_xpath = '//*[@id="totalResults"]'
 name_token_xpath = '//form[@id="searchForm"]/input[@type="hidden"]/@name'
 value_token_xpath = '//form[@id="searchForm"]/input[@type="hidden"]/@value'
 
@@ -106,14 +105,6 @@ def response(resp):
     # get spelling corrections
     for correction in eval_xpath_list(dom, correction_xpath):
         results.append({'correction': extract_text(correction)})
-
-    # get number of results
-    number_of_results = eval_xpath(dom, number_of_results_xpath)
-    if number_of_results:
-        try:
-            results.append({'number_of_results': int(extract_text(number_of_results))})
-        except:  # pylint: disable=bare-except
-            pass
 
     # Update the tokens to the newest ones
     token_str = _get_tokens(dom)
