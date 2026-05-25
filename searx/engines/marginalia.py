@@ -45,7 +45,7 @@ about = {
 base_url = "https://api2.marginalia-search.com"
 safesearch = True
 categories = ["general"]
-paging = False
+paging = True
 results_per_page = 20
 api_key = None
 """To get an API key, please follow the instructions from `Key and license`_
@@ -85,7 +85,12 @@ class ApiSearchResults(t.TypedDict):
 
 def request(query: str, params: dict[str, t.Any]):
 
-    query_params = {"count": results_per_page, "nsfw": min(params["safesearch"], 1), "query": query}
+    query_params = {
+        "page": params["pageno"],
+        "count": results_per_page,
+        "nsfw": min(params["safesearch"], 1),
+        "query": query,
+    }
 
     params["url"] = f"{base_url}/search?{urlencode(query_params)}"
     params["headers"]["User-Agent"] = searxng_useragent()
