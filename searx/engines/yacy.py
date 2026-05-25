@@ -75,7 +75,7 @@ about = {
 # engine dependent config
 categories = ['general']
 paging = True
-number_of_results = 10
+page_size = 10
 http_digest_auth_user = ""
 """HTTP digest user for the local YACY instance"""
 http_digest_auth_pass = ""
@@ -125,11 +125,11 @@ def _base_url() -> str:
 
 def request(query, params):
 
-    offset = (params['pageno'] - 1) * number_of_results
+    offset = (params['pageno'] - 1) * page_size
     args = {
         'query': query,
         'startRecord': offset,
-        'maximumRecords': number_of_results,
+        'maximumRecords': page_size,
         'contentdom': search_type,
         'resource': search_mode,
     }

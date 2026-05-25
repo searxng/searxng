@@ -16,7 +16,7 @@ about = {
 paging = True
 categories = []
 
-number_of_results = 20
+page_size = 20
 skip_premium = True
 
 
@@ -25,7 +25,7 @@ thumbnail_format = "crop-240x300"
 
 
 def request(query, params):
-    args = {'query': query, 'limit': number_of_results, 'offset': (params['pageno'] - 1) * number_of_results}
+    args = {'query': query, 'limit': page_size, 'offset': (params['pageno'] - 1) * page_size}
     params['url'] = f"{base_url}/v2/search-gateway/recipes?{urlencode(args)}"
     return params
 

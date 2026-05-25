@@ -56,7 +56,7 @@ the API key in the engine :ref:`core engine config`."""
 
 categories = ["science", "scientific publications"]
 paging = True
-nb_per_page = 10
+page_size = 10
 base_url = "https://api.core.ac.uk/v3/search/works/"
 
 
@@ -77,8 +77,8 @@ def request(query: str, params: "OnlineParams") -> None:
     # API v3 uses different parameters
     search_params = {
         "q": query,
-        "offset": (params["pageno"] - 1) * nb_per_page,
-        "limit": nb_per_page,
+        "offset": (params["pageno"] - 1) * page_size,
+        "limit": page_size,
         "sort": "relevance",
     }
 

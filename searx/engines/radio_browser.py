@@ -28,7 +28,7 @@ about = {
 paging = True
 categories = ["music", "radio"]
 
-number_of_results = 10
+page_size = 10
 
 station_filters = []  # ['countrycode', 'language']
 """A list of filters to be applied to the search of radio stations.  By default
@@ -100,8 +100,8 @@ def request(query, params):
     args = {
         "name": query,
         "order": "votes",
-        "offset": (params["pageno"] - 1) * number_of_results,
-        "limit": number_of_results,
+        "offset": (params["pageno"] - 1) * page_size,
+        "limit": page_size,
         "hidebroken": "true",
         "reverse": "true",
     }

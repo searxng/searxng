@@ -62,7 +62,7 @@ about = {
 
 categories: list[str] = []
 paging = True
-number_of_results = 10
+page_size = 10
 
 wc_api_url = "https://commons.wikimedia.org/w/api.php"
 wc_search_type: str = ""
@@ -107,8 +107,8 @@ def request(query: str, params: "OnlineParams") -> None:
         "generator": "search",
         "gsrnamespace": "6",  # https://www.mediawiki.org/wiki/Help:Namespaces#Renaming_namespaces
         "gsrprop": "snippet",
-        "gsrlimit": number_of_results,
-        "gsroffset": number_of_results * (params["pageno"] - 1),
+        "gsrlimit": page_size,
+        "gsroffset": page_size * (params["pageno"] - 1),
         "gsrsearch": f"filetype:{filetype} {query}",
         # imageinfo: https://commons.wikimedia.org/w/api.php?action=help&modules=query%2Bimageinfo
         "iiprop": "url|size|mime",

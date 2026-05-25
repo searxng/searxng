@@ -21,15 +21,15 @@ about = {
 categories = ['images']
 
 paging = True
-nb_per_page = 20
+page_size = 20
 
 base_url = 'https://api.openverse.org/v1/images/'
-search_string = '?page={page}&page_size={nb_per_page}&format=json&{query}'
+search_string = '?page={page}&page_size={page_size}&format=json&{query}'
 
 
 def request(query, params):
 
-    search_path = search_string.format(query=urlencode({'q': query}), nb_per_page=nb_per_page, page=params['pageno'])
+    search_path = search_string.format(query=urlencode({'q': query}), page_size=page_size, page=params['pageno'])
 
     params['url'] = base_url + search_path
 

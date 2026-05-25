@@ -20,7 +20,7 @@ about = {
 
 categories = ['images']
 
-nb_per_page = 15
+page_size = 15
 paging = True
 api_key = None
 
@@ -29,7 +29,7 @@ url = (
     'https://api.flickr.com/services/rest/?method=flickr.photos.search'
     + '&api_key={api_key}&{text}&sort=relevance'
     + '&extras=description%2C+owner_name%2C+url_o%2C+url_n%2C+url_z'
-    + '&per_page={nb_per_page}&format=json&nojsoncallback=1&page={page}'
+    + '&per_page={page_size}&format=json&nojsoncallback=1&page={page}'
 )
 photo_url = 'https://www.flickr.com/photos/{userid}/{photoid}'
 
@@ -42,7 +42,7 @@ def build_flickr_url(user_id, photo_id):
 
 def request(query, params):
     params['url'] = url.format(
-        text=urlencode({'text': query}), api_key=api_key, nb_per_page=nb_per_page, page=params['pageno']
+        text=urlencode({'text': query}), api_key=api_key, page_size=page_size, page=params['pageno']
     )
     return params
 
