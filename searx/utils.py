@@ -813,7 +813,7 @@ def parse_duration_string(duration_str: str) -> timedelta | None:
 
 
 # Format the video duration
-def format_duration(duration):
+def format_duration(duration: str | int) -> str:
     seconds = int(duration)
     length = time.gmtime(seconds)
     if length.tm_hour:
