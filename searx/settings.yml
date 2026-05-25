@@ -965,6 +965,21 @@ engines:
     timeout: 8.0
     disabled: true
 
+  - name: gabanza
+    engine: xpath
+    search_url: https://www.gabanza.com/search?query={query}
+    shortcut: gab
+    disabled: true
+    results_xpath: //div[contains(@class, "border-t")]/div/div
+    url_xpath: .//a/@href
+    title_xpath: ./a
+    content_xpath: .//p
+    about:
+      website: https://www.gabanza.com
+      use_official_api: false
+      require_api_key: false
+      results: HTML
+
   - name: geizhals
     engine: geizhals
     shortcut: geiz
