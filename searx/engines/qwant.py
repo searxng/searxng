@@ -191,20 +191,21 @@ def response(resp: "SXNG_Response") -> EngineResults:
         mainline_items: list[dict[str, t.Any]] = row.get("items", [])
         for item in mainline_items:
 
-            title: str = str(item.get("title", ""))
-            res_url: str = str(item.get("url", ""))
+            title: str = item.get("title", "")
+            res_url: str = item.get("url", "")
             pub_date: datetime | None = None
             thumbnail: str = ""
+            content: str = item.get("desc", "")
 
             _date: float | None = item.get("date")
             if _date:
                 try:
                     pub_date = datetime.fromtimestamp(_date)
                 except ValueError:
+                    # news' date value milli seconds
                     pub_date = datetime.fromtimestamp(_date / 1000)
 
             if mainline_type == "web":
-                content: str = str(item.get("desc", ""))
                 res.add(
                     res.types.MainResult(
                         title=title,
@@ -216,11 +217,12 @@ def response(resp: "SXNG_Response") -> EngineResults:
             elif mainline_type == "news":
                 news_media = item.get("media", [])
                 if news_media:
-                    thumbnail = str(news_media[0].get("pict", {}).get("url", ""))
+                    thumbnail = news_media[0].get("pict", {}).get("url", "")
 
                 res.add(
                     res.types.MainResult(
                         title=title,
+                        content=content,
                         url=res_url,
                         publishedDate=pub_date,
                         thumbnail=thumbnail,
@@ -236,7 +238,7 @@ def response(resp: "SXNG_Response") -> EngineResults:
                         thumbnail_src=item["thumbnail"] or "",
                         img_src=item["media"] or "",
                         resolution=f"{item['width']} x {item['height']}",
-                        img_format=str(item.get("thumb_type")),
+                        img_format=item.get("thumb_type"),
                     )
                 )
 
