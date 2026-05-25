@@ -35,6 +35,7 @@ from .keyvalue import KeyValue
 from .code import Code
 from .paper import Paper
 from .file import File
+from .image import Image
 
 
 class ResultList(list[Result | LegacyResult], abc.ABC):
@@ -50,6 +51,7 @@ class ResultList(list[Result | LegacyResult], abc.ABC):
         Code = Code
         Paper = Paper
         File = File
+        Image = Image
         MainResult = MainResult
         Result = Result
         Translations = Translations
