@@ -51,7 +51,7 @@ about = {
 # engine dependent config
 categories = ['general']
 paging = True
-number_of_results = 5
+page_size = 5
 
 search_type: str = 'nearmatch'
 """Which type of search to perform.  One of the following values: ``nearmatch``,
@@ -110,7 +110,7 @@ def request(query, params):
         params['language'] = params['language'].split('-')[0]
 
     api_url = f"{base_url.rstrip('/')}/{api_path}?".format(language=params['language'])
-    offset = (params['pageno'] - 1) * number_of_results
+    offset = (params['pageno'] - 1) * page_size
 
     args = {
         'action': 'query',
@@ -118,7 +118,7 @@ def request(query, params):
         'format': 'json',
         'srsearch': query,
         'sroffset': offset,
-        'srlimit': number_of_results,
+        'srlimit': page_size,
         'srwhat': search_type,
         'srprop': srprop,
         'srsort': srsort,

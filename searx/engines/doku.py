@@ -21,7 +21,6 @@ about = {
 # engine dependent config
 categories = ['general']  # 'images', 'music', 'videos', 'files'
 paging = False
-number_of_results = 5
 
 # search-url
 # Doku is OpenSearch compatible

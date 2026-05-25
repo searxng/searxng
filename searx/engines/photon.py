@@ -20,7 +20,7 @@ about = {
 # engine dependent config
 categories = ['map']
 paging = False
-number_of_results = 10
+page_size = 10
 
 # search-url
 base_url = 'https://photon.komoot.io/'
@@ -33,7 +33,7 @@ supported_languages = ['de', 'en', 'fr', 'it']
 
 # do search-request
 def request(query, params):
-    params['url'] = base_url + search_string.format(query=urlencode({'q': query}), limit=number_of_results)
+    params['url'] = base_url + search_string.format(query=urlencode({'q': query}), limit=page_size)
 
     if params['language'] != 'all':
         language = params['language'].split('_')[0]

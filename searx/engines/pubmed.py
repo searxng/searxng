@@ -57,7 +57,7 @@ categories = ["science", "scientific publications"]
 eutils_api = "https://eutils.ncbi.nlm.nih.gov/entrez/eutils"
 
 # engine dependent config
-number_of_results = 10
+page_size = 10
 pubmed_url = "https://www.ncbi.nlm.nih.gov/pubmed/"
 
 
@@ -67,8 +67,8 @@ def request(query: str, params: "OnlineParams") -> None:
         {
             "db": "pubmed",
             "term": query,
-            "retstart": (params["pageno"] - 1) * number_of_results,
-            "hits": number_of_results,
+            "retstart": (params["pageno"] - 1) * page_size,
+            "hits": page_size,
         }
     )
     esearch_url = f"{eutils_api}/esearch.fcgi?{args}"

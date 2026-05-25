@@ -107,7 +107,7 @@ module:
    ======================= =========== ===========================================
    base_url                string      base-url, can be overwritten to use same
                                        engine on other URL
-   number_of_results       int         maximum number of results per request
+   page_size               int         maximum number of results per request
    language                string      ISO code of language and country like en_US
    api_key                 string      api-key if required by engine
    ======================= =========== ===========================================

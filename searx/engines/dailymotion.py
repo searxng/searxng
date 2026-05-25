@@ -38,7 +38,7 @@ about = {
 # engine dependent config
 categories = ["videos"]
 paging = True
-number_of_results = 10
+page_size = 10
 
 time_range_support = True
 time_delta_dict = {
@@ -113,7 +113,7 @@ def request(query, params):
         "password_protected": "false",
         "private": "false",
         "sort": "relevance",
-        "limit": number_of_results,
+        "limit": page_size,
         "fields": ",".join(result_fields),
     }
 
