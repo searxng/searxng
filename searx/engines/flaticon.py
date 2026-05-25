@@ -54,16 +54,13 @@ def response(resp: "SXNG_Response"):
     result: dict[str, str]  # TBH: dict[str, t.Any]
     for result in resp.json()["items"]:
         res.add(
-            res.types.LegacyResult(
-                {
-                    "template": "images.html",
-                    "url": _fix_url(result["slug"]),
-                    "thumbnail_src": _fix_url(result["png"]),
-                    "img_src": _fix_url(result["png512"]),
-                    "title": result["name"],
-                    "content": ", ".join([tag["tag"] for tag in result["tags"]]),  # pyright: ignore[reportArgumentType]
-                    "author": result["team_name"],
-                }
+            res.types.Image(
+                title=result["name"],
+                content=", ".join([tag["tag"] for tag in result["tags"]]),  # pyright: ignore[reportArgumentType]
+                url=_fix_url(result["slug"]),
+                thumbnail_src=_fix_url(result["png"]),
+                img_src=_fix_url(result["png512"]),
+                author=result["team_name"],
             )
         )
 
