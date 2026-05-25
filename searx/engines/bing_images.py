@@ -66,6 +66,10 @@ def request(query, params):
 
     params["url"] = base_url + "?" + urlencode(query_params)
 
+    # in some regions where geoblocking is employed (e.g. China),
+    # www.bing.com redirects to the regional version of Bing
+    params['allow_redirects'] = True
+
     return params
 
 
