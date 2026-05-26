@@ -60,6 +60,8 @@ base_url = "https://search.aol.com"
 time_range_map = {"day": "1d", "week": "1w", "month": "1m", "year": "1y"}
 safesearch_map = {0: "p", 1: "r", 2: "i"}
 
+enable_http2 = False
+
 
 def init(_):
     if search_type not in ("search", "image", "video"):
