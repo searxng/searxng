@@ -9,7 +9,7 @@ from lxml import html
 from searx.result_types import EngineResults
 from searx.utils import eval_xpath_list, gen_useragent
 from searx.enginelib import EngineCache
-from searx.exceptions import SearxEngineAPIException
+from searx.exceptions import SearxEngineAPIException, SearxEngineAccessDeniedException
 from searx.network import get
 
 
@@ -58,6 +58,8 @@ def _get_secret_key():
             # circumvents Cloudflare bot protections
             "User-Agent": gen_useragent(),
             "Referer": base_url,
+            "Sec-GPC": "1",
+            "Connection": "keep-alive",
         },
     )
 
@@ -95,7 +97,7 @@ def request(query, params):
         try:
             secret_key = _get_secret_key()
             CACHE.set(SECRET_KEY_DB_KEY, secret_key)
-        except SearxEngineAPIException as e:
+        except (SearxEngineAPIException, SearxEngineAccessDeniedException) as e:
             logger.debug("failed to extract API key %s" % e)
             secret_key = api_key
 
