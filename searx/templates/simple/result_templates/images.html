@@ -51,7 +51,13 @@
       <hr>
       <p class="result-author">{{ _label(_("Author"), result.author) }}</p>
       <p class="result-resolution">{{ _label(_("Resolution"), result.resolution) }}</p>
-      <p class="result-format">{{ _label(_("Format"), result.img_format) }}</p>
+      <p class="result-format">
+        <span>{{ _("Image formats") }}:</span>
+        {{- "" -}}<a {{ _target(results_on_new_tab) }} href="{{ result.img_src }}">{{- result.img_format or _("original format") -}}</a>
+        {%- for ref in result.formats -%}
+          &nbsp;| <a {{ _target(results_on_new_tab) }} href="{{ ref.url }}">{{ ref.label }}</a>
+        {%- endfor %}
+      </p>
       <p class="result-filesize">{{ _label(_("Filesize"), result.filesize) }}</p>
       <p class="result-source">{{ _label(_("Source"), result.source) }}</p>
       <p class="result-engine">{{ _label(_("Engine"), result.engine) }}</p>

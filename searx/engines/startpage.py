@@ -382,6 +382,9 @@ def _get_image_result(result) -> dict[str, t.Any] | None:
         size_str = "".join(filter(str.isdigit, result["filesize"]))
         filesize = humanize_bytes(int(size_str))
 
+    img_format = result.get("format").upper()
+    if img_format == "UNKNOWN":
+        img_format = ""
     return {
         "template": "images.html",
         "url": url,
@@ -390,7 +393,7 @@ def _get_image_result(result) -> dict[str, t.Any] | None:
         "img_src": result.get("rawImageUrl"),
         "thumbnail_src": thumbnailUrl,
         "resolution": resolution,
-        "img_format": result.get("format"),
+        "img_format": img_format,
         "filesize": filesize,
     }
 
