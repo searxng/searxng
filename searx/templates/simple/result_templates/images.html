@@ -49,6 +49,14 @@
         {%- endif -%}
       </p>
       <hr>
+      {%- if result.formats %}
+        <p class="result-formats"><span>{{ _("Alternative formats") }}:</span>
+          {%- for ref in result.formats -%}
+            <a {{ _target(results_on_new_tab) }} href="{{ ref.url }}">{{ ref.label }}</a>
+            {%- if not loop.last %} | {% endif -%}
+          {%- endfor %}
+          <hr>
+      {%- endif %}
       <p class="result-author">{{ _label(_("Author"), result.author) }}</p>
       <p class="result-resolution">{{ _label(_("Resolution"), result.resolution) }}</p>
       <p class="result-format">{{ _label(_("Format"), result.img_format) }}</p>
