@@ -23,7 +23,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-05-21 19:19+0000\n"
+"POT-Creation-Date: 2026-05-25 10:44+0000\n"
 "PO-Revision-Date: 2026-05-19 12:07+0000\n"
 "Last-Translator: return42 <return42@noreply.codeberg.org>\n"
 "Language: bg\n"
@@ -546,28 +546,28 @@ msgstr "Затворено"
 msgid "answered"
 msgstr "Отговорено"
 
-#: searx/webapp.py:327
+#: searx/webapp.py:326
 msgid "No item found"
 msgstr "Не е намерен артикул"
 
 #: searx/engines/qwant.py:291
-#: searx/templates/simple/result_templates/images.html:23 searx/webapp.py:329
+#: searx/templates/simple/result_templates/images.html:23 searx/webapp.py:328
 msgid "Source"
 msgstr "Източник"
 
-#: searx/webapp.py:331
+#: searx/webapp.py:330
 msgid "Error loading the next page"
 msgstr "Грешка при зареждането на следващата страница"
 
-#: searx/webapp.py:480 searx/webapp.py:881
+#: searx/webapp.py:479 searx/webapp.py:877
 msgid "Invalid settings, please edit your preferences"
 msgstr "Неправилни настройки, моля редактирайте предпочитанията си"
 
-#: searx/webapp.py:496
+#: searx/webapp.py:495
 msgid "Invalid settings"
 msgstr "Невалидни настройки"
 
-#: searx/webapp.py:573 searx/webapp.py:663
+#: searx/webapp.py:571 searx/webapp.py:661
 msgid "search error"
 msgstr "Грешка при търсенето"
 
@@ -627,12 +627,12 @@ msgstr "грешка в API на сървъра"
 msgid "Suspended"
 msgstr "преустановен"
 
-#: searx/webutils.py:308
+#: searx/webutils.py:307
 #, python-brace-format
 msgid "{minutes} minute(s) ago"
 msgstr "преди {minutes} минута(минути)"
 
-#: searx/webutils.py:309
+#: searx/webutils.py:308
 #, python-brace-format
 msgid "{hours} hour(s), {minutes} minute(s) ago"
 msgstr "преди {hours} час(ове), {minutes} минута(минути)"
@@ -1021,23 +1021,19 @@ msgstr "Специялни Запитвания"
 msgid "Cookies"
 msgstr "Бисквитки"
 
-#: searx/templates/simple/results.html:30
-msgid "Number of results"
-msgstr "Брой резултати"
-
-#: searx/templates/simple/results.html:36
+#: searx/templates/simple/results.html:32
 msgid "Info"
 msgstr "Инф."
 
-#: searx/templates/simple/results.html:77
+#: searx/templates/simple/results.html:73
 msgid "Back to top"
 msgstr "Обратно към началото"
 
-#: searx/templates/simple/results.html:95
+#: searx/templates/simple/results.html:91
 msgid "Previous page"
 msgstr "Предишна страница"
 
-#: searx/templates/simple/results.html:113
+#: searx/templates/simple/results.html:109
 msgid "Next page"
 msgstr "Следваща страница"
 
@@ -2397,4 +2393,7 @@ msgstr "скрий видеото"
 
 #~ msgid "Supports selected language"
 #~ msgstr "Поддържка на избраният език"
+
+#~ msgid "Number of results"
+#~ msgstr "Брой резултати"
 
