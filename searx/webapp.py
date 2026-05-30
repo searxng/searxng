@@ -377,7 +377,6 @@ def get_client_settings():
         'theme_static_path': custom_url_for('static', filename='themes/simple'),
         'results_on_new_tab': req_pref.get_value('results_on_new_tab'),
         'favicon_resolver': req_pref.get_value('favicon_resolver'),
-        'advanced_search': req_pref.get_value('advanced_search'),
         'query_in_title': req_pref.get_value('query_in_title'),
         'safesearch': req_pref.get_value('safesearch'),
         'theme': req_pref.get_value('theme'),
@@ -977,7 +976,7 @@ def preferences():
         current_doi_resolver = get_doi_resolver(),
         allowed_plugins = allowed_plugins,
         preferences_url_params = sxng_request.preferences.get_as_url_params(),
-        locked_preferences = get_setting("preferences.lock", []),
+        locked_preferences = get_setting("preferences").lock,
         doi_resolvers = get_setting("doi_resolvers", {}),
         # fmt: on
     )

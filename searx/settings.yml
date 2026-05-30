@@ -154,14 +154,13 @@ ui:
   # URL formatting: pretty, full or host
   url_formatting: pretty
 
-# Lock arbitrary settings on the preferences page.
-#
-# preferences:
-#   lock:
+preferences:
+  # Lock arbitrary settings on the preferences page.
+  lock: []
 #     - categories
 #     - language
 #     - autocomplete
-#     - favicon
+#     - favicon_resolver
 #     - safesearch
 #     - method
 #     - doi_resolver

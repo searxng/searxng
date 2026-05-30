@@ -15,6 +15,7 @@ import msgspec
 from typing_extensions import override
 from .brand import SettingsBrand
 from .sxng_locales import sxng_locales
+from ._settings import SettingsPref
 
 searx_dir = abspath(dirname(__file__))
 
@@ -236,16 +237,13 @@ SCHEMA: dict[str, t.Any] = {
         },
         'center_alignment': SettingsValue(bool, False),
         'results_on_new_tab': SettingsValue(bool, False),
-        'advanced_search': SettingsValue(bool, False),
         'query_in_title': SettingsValue(bool, False),
         'cache_url': SettingsValue(str, 'https://web.archive.org/web/'),
         'search_on_category_select': SettingsValue(bool, True),
         'hotkeys': SettingsValue(('default', 'vim'), 'default'),
         'url_formatting': SettingsValue(('pretty', 'full', 'host'), 'pretty'),
     },
-    'preferences': {
-        'lock': SettingsValue(list, []),
-    },
+    "preferences": SettingsPref,
     'outgoing': {
         'useragent_suffix': SettingsValue(str, ''),
         'request_timeout': SettingsValue(numbers.Real, 3.0),
