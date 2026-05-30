@@ -147,6 +147,8 @@ def apply_schema(settings: dict[str, t.Any], schema: dict[str, t.Any], path_list
                 # Type Validation at runtime:
                 # https://jcristharif.com/msgspec/structs.html#type-validation
                 cfg_dict = settings.get(key)
+                if cfg_dict is None:
+                    cfg_dict = {}
                 cfg_json = msgspec.json.encode(cfg_dict)
                 settings[key] = msgspec.json.decode(cfg_json, type=value)
             except msgspec.ValidationError as e:
