@@ -79,7 +79,9 @@ def request(query: str, params: "OnlineParams") -> None:
 
     # Apply time filter if specified
     if params["time_range"]:
-        search_args["time_range"] = time_range_map.get(params["time_range"])
+        mapped = time_range_map.get(params["time_range"])
+        if mapped:
+            search_args["freshness"] = mapped
 
     # Apply SafeSearch if enabled
     if params["safesearch"]:
