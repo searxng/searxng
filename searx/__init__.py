@@ -10,6 +10,7 @@ from os.path import dirname, abspath
 import logging
 
 import msgspec
+from ._settings import SettingsPref
 
 # Debug
 LOG_FORMAT_DEBUG: str = '%(levelname)-7s %(name)-30.30s: %(message)s'
@@ -44,14 +45,14 @@ def init_settings():
     cfg = cfg or {}
     apply_schema(cfg, SCHEMA, [])
 
-    if cfg['server']['public_instance']:
-        cfg['server']['image_proxy'] = True
-        lock = cfg.setdefault('preferences', {}).setdefault('lock', [])
-        if 'image_proxy' not in lock:
-            lock.append('image_proxy')
-
     settings.clear()
     settings.update(cfg)
+
+    if get_setting("server.public_instance"):
+        # enable image proxy for public instances #6125
+        settings["server"]["image_proxy"] = True
+        pref: SettingsPref = get_setting("preferences")
+        pref.lock.add("image_proxy")
 
     sxng_debug = get_setting("general.debug")
     if sxng_debug:

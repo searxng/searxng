@@ -17,13 +17,14 @@ import babel.core
 
 import searx.plugins
 
-from searx import settings, autocomplete, favicons
+from searx import get_setting, settings, autocomplete, favicons
 from searx.enginelib import Engine
 from searx.engines import DEFAULT_CATEGORY
 from searx.extended_types import SXNG_Request
 from searx.locales import LOCALE_NAMES
 from searx.webutils import VALID_LANGUAGE_CODE
 
+from ._settings import SettingsPref
 
 COOKIE_MAX_AGE = 60 * 60 * 24 * 365 * 5  # 5 years
 DOI_RESOLVERS = list(settings['doi_resolvers'])
@@ -386,6 +387,7 @@ class ClientPref:
         return cls(locale=locale)
 
 
+@t.final
 class Preferences:
     """Validates and saves preferences to cookies"""
 
@@ -400,95 +402,91 @@ class Preferences:
 
         super().__init__()
 
+        self.cfg: SettingsPref = get_setting("preferences")
+
         self.key_value_settings: dict[str, Setting] = {
-            # fmt: off
             'categories': MultipleChoiceSetting(
-                ['general'],
-                locked=is_locked('categories'),
-                choices=categories + ['none']
+                ["general"],
+                locked="categories" in self.cfg.lock,
+                choices=categories + ["none"],
             ),
             'language': SearchLanguageSetting(
-                settings['search']['default_lang'],
-                locked=is_locked('language'),
-                choices=settings['search']['languages'] + ['']
+                get_setting("search.default_lang"),
+                locked="language" in self.cfg.lock,
+                choices=get_setting("search.languages") + [""],
             ),
             'locale': EnumStringSetting(
-                settings['ui']['default_locale'],
-                locked=is_locked('locale'),
-                choices=list(LOCALE_NAMES.keys()) + ['']
+                get_setting("ui.default_locale"),
+                locked="locale" in self.cfg.lock,
+                choices=list(LOCALE_NAMES.keys()) + [""],
             ),
             'autocomplete': EnumStringSetting(
-                settings['search']['autocomplete'],
-                locked=is_locked('autocomplete'),
-                choices=list(autocomplete.backends.keys()) + ['']
+                get_setting("search.autocomplete"),
+                locked="autocomplete" in self.cfg.lock,
+                choices=list(autocomplete.backends.keys()) + [""],
             ),
             'favicon_resolver': EnumStringSetting(
-                settings['search']['favicon_resolver'],
-                locked=is_locked('favicon_resolver'),
-                choices=list(favicons.proxy.CFG.resolver_map.keys()) + ['']
+                get_setting("search.favicon_resolver"),
+                locked="favicon_resolver" in self.cfg.lock,
+                choices=list(favicons.proxy.CFG.resolver_map.keys()) + [''],
             ),
             'image_proxy': BooleanSetting(
-                settings['server']['image_proxy'],
-                locked=is_locked('image_proxy')
+                get_setting("server.image_proxy"),
+                locked="image_proxy" in self.cfg.lock,
             ),
             'method': EnumStringSetting(
-                settings['server']['method'],
-                locked=is_locked('method'),
-                choices=('GET', 'POST')
+                get_setting("server.method"),
+                locked="method" in self.cfg.lock,
+                choices=("GET", "POST"),
             ),
             'safesearch': MapSetting(
-                settings['search']['safe_search'],
-                locked=is_locked('safesearch'),
+                get_setting("search.safe_search"),
+                locked="safesearch" in self.cfg.lock,
                 map={
-                    '0': 0,
-                    '1': 1,
-                    '2': 2
-                }
+                    "0": 0,
+                    "1": 1,
+                    "2": 2,
+                },
             ),
             'theme': EnumStringSetting(
-                settings['ui']['default_theme'],
-                locked=is_locked('theme'),
-                choices=themes
+                get_setting("ui.default_theme"),
+                locked="theme" in self.cfg.lock,
+                choices=themes,
             ),
             'results_on_new_tab': BooleanSetting(
-                settings['ui']['results_on_new_tab'],
-                locked=is_locked('results_on_new_tab')
+                get_setting("ui.results_on_new_tab"),
+                locked="results_on_new_tab" in self.cfg.lock,
             ),
             'doi_resolver': MultipleChoiceSetting(
-                [settings['default_doi_resolver'], ],
-                locked=is_locked('doi_resolver'),
-                choices=DOI_RESOLVERS
+                [get_setting("default_doi_resolver")],
+                locked="doi_resolver" in self.cfg.lock,
+                choices=DOI_RESOLVERS,
             ),
             'simple_style': EnumStringSetting(
-                settings['ui']['theme_args']['simple_style'],
-                locked=is_locked('simple_style'),
-                choices=['', 'auto', 'light', 'dark', 'black']
+                get_setting("ui.theme_args.simple_style"),
+                locked="simple_style" in self.cfg.lock,
+                choices=["", "auto", "light", "dark", "black"],
             ),
             'center_alignment': BooleanSetting(
-                settings['ui']['center_alignment'],
-                locked=is_locked('center_alignment')
-            ),
-            'advanced_search': BooleanSetting(
-                settings['ui']['advanced_search'],
-                locked=is_locked('advanced_search')
+                get_setting("ui.center_alignment"),
+                locked="center_alignment" in self.cfg.lock,
             ),
             'query_in_title': BooleanSetting(
-                settings['ui']['query_in_title'],
-                locked=is_locked('query_in_title')
+                get_setting("ui.query_in_title"),
+                locked="query_in_title" in self.cfg.lock,
             ),
             'search_on_category_select': BooleanSetting(
-                settings['ui']['search_on_category_select'],
-                locked=is_locked('search_on_category_select')
+                get_setting("ui.search_on_category_select"),
+                locked="search_on_category_select" in self.cfg.lock,
             ),
             'hotkeys': EnumStringSetting(
-                settings['ui']['hotkeys'],
-                choices=['default', 'vim']
+                get_setting("ui.hotkeys"),
+                choices=["default", "vim"],
             ),
             'url_formatting': EnumStringSetting(
-                settings['ui']['url_formatting'],
-                choices=['pretty', 'full', 'host']
+                get_setting("ui.url_formatting"),
+                choices=["pretty", "full", "host"],
             ),
-            # fmt: on
         }
 
         self.engines = EnginesSetting('engines', engines=engines.values())
@@ -597,12 +595,3 @@ class Preferences:
                     break
 
         return valid
-
-
-def is_locked(setting_name: str):
-    """Checks if a given setting name is locked by settings.yml"""
-    if 'preferences' not in settings:
-        return False
-    if 'lock' not in settings['preferences']:
-        return False
-    return setting_name in settings['preferences']['lock']
