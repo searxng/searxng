@@ -41,7 +41,9 @@ safesearch_cookies = {0: "-2", 1: None, 2: "1"}
 safesearch_args = {0: "1", 1: None, 2: "1"}
 
 search_path_map = {"images": "i", "videos": "v", "news": "news"}
+
 _HTTP_User_Agent: str = gen_useragent()
+send_accept_language_header = False
 
 
 def init(engine_settings: dict[str, t.Any]):
