@@ -327,7 +327,6 @@ class SQLiteAppl(abc.ABC):
 
         if self._init_done:
             return False
-        self._init_done = True
 
         logger.debug("init DB: %s", self.db_url)
         self.properties.init(conn)
@@ -342,6 +341,7 @@ class SQLiteAppl(abc.ABC):
                 raise sqlite3.DatabaseError("Expected DB schema v%s, DB schema is v%s" % (self.DB_SCHEMA, ver))
             logger.debug("DB_SCHEMA = %s", ver)
 
+        self._init_done = True
         return True
 
     def create_schema(self, conn: sqlite3.Connection):
@@ -368,6 +368,9 @@ class SQLiteProperties(SQLiteAppl):
          PRIMARY KEY (name))
 
     """
+
+    _locks: dict[str, threading.Lock] = {}
+    _locks_lock = threading.Lock()
 
     SQLITE_JOURNAL_MODE: str = "WAL"
 
@@ -406,11 +409,16 @@ CREATE TABLE IF NOT EXISTS properties (
 
         if self._init_done:
             return False
-        self._init_done = True
-        logger.debug("init properties of DB: %s", self.db_url)
-        res = conn.execute(self.SQL_TABLE_EXISTS)
-        if res.fetchone() is None:  # DB schema needs to be be created
-            self.create_schema(conn)
+        with self._locks_lock:
+            db_lock = self._locks.setdefault(self.db_url, threading.Lock())
+        with db_lock:
+            if self._init_done:
+                return False
+            logger.debug("init properties of DB: %s", self.db_url)
+            res = conn.execute(self.SQL_TABLE_EXISTS)
+            if res.fetchone() is None:  # DB schema needs to be be created
+                self.create_schema(conn)
+            self._init_done = True
         return True
 
     def __call__(self, name: str, default: t.Any = None) -> t.Any:
