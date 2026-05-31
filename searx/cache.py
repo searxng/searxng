@@ -444,12 +444,10 @@ class ExpireCacheSQLite(sqlitedb.SQLiteAppl, ExpireCache):
     def get(self, key: str, default: typing.Any = None, ctx: str | None = None) -> typing.Any:
         """Get value of ``key`` from table given by argument ``ctx``.  If
         ``ctx`` argument is ``None`` (the default), a table name is generated
-        from the :py:obj:`ExpireCacheCfg.name`.  If ``key`` not exists (in
-        table), the ``default`` value is returned.
-
+        from the :py:obj:`ExpireCacheCfg.name`.  If ``key`` not exists in
+        the table or the table not exists, the ``default`` value is returned.
         """
         table = ctx
-        self.maintenance()
 
         if not table:
             table = self.normalize_name(self.cfg.name)
@@ -457,6 +455,9 @@ class ExpireCacheSQLite(sqlitedb.SQLiteAppl, ExpireCache):
         if table not in self.table_names:
             return default
 
+        # Before values are taken from the table, a maintenance interval may
+        # need to be carried out.
+        self.maintenance()
         sql = f"SELECT value FROM {table} WHERE key = ?"
         row = self.DB.execute(sql, (key,)).fetchone()
         if row is None:
@@ -469,12 +470,14 @@ class ExpireCacheSQLite(sqlitedb.SQLiteAppl, ExpireCache):
         If ``ctx`` argument is ``None`` (the default), a table name is
         generated from the :py:obj:`ExpireCacheCfg.name`."""
         table = ctx
-        self.maintenance()
 
         if not table:
             table = self.normalize_name(self.cfg.name)
 
         if table in self.table_names:
+            # Before values are taken from the table, a maintenance interval may
+            # need to be carried out.
+            self.maintenance()
             for row in self.DB.execute(f"SELECT key, value FROM {table}"):
                 yield row[0], self.deserialize(row[1])
 
