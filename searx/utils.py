@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 """Utility functions for the engines"""
 
+import time
 
 import re
 import importlib
@@ -809,3 +810,12 @@ def parse_duration_string(duration_str: str) -> timedelta | None:
         pass
 
     return None
+
+
+# Format the video duration
+def format_duration(duration):
+    seconds = int(duration)
+    length = time.gmtime(seconds)
+    if length.tm_hour:
+        return time.strftime("%H:%M:%S", length)
+    return time.strftime("%M:%S", length)

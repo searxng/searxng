@@ -4,7 +4,6 @@
 .. _Odysee: https://github.com/OdyseeTeam/odysee-frontend
 """
 
-import time
 from datetime import datetime
 from urllib.parse import urlencode
 
@@ -12,6 +11,7 @@ import babel
 
 from searx.enginelib.traits import EngineTraits
 from searx.locales import language_tag
+from searx.utils import format_duration
 
 # Engine metadata
 about = {
@@ -59,15 +59,6 @@ def request(query, params):
 
     params["url"] = f"{base_url}?{urlencode(query_params)}"
     return params
-
-
-# Format the video duration
-def format_duration(duration):
-    seconds = int(duration)
-    length = time.gmtime(seconds)
-    if length.tm_hour:
-        return time.strftime("%H:%M:%S", length)
-    return time.strftime("%M:%S", length)
 
 
 def response(resp):
