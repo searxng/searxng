@@ -42,3 +42,4 @@ VOLUME $__SEARXNG_DATA_PATH
 EXPOSE 8080
 
 ENTRYPOINT ["/usr/local/searxng/entrypoint.sh"]
+USER searxng
