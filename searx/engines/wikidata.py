@@ -7,6 +7,7 @@ Some implementations are shared from :ref:`wikipedia engine`.
 
 import typing as t
 
+import os
 from hashlib import md5
 from urllib.parse import urlencode, unquote
 from json import loads
@@ -827,7 +828,19 @@ def debug_explain_wikidata_query(query: str, method: str = "GET"):
 def init(_):
     global CACHE  # pylint: disable=global-statement
     CACHE = EngineCache("wikidata")
-    init_wikidata_properties()
+
+    # In an environment with competing processes, the initial loading of the
+    # cache is required only once.
+    eng_state: str | None = CACHE.get("eng_state")
+    if not eng_state or not eng_state.startswith("STATE:"):
+        CACHE.set("eng_state", f"STATE: being initialized by PID {os.getpid()}")
+        try:
+            init_wikidata_properties()
+        except Exception:
+            CACHE.set("eng_state", f"ERROR: initialization by PID {os.getpid()} failed.")
+            raise
+    else:
+        logger.debug(eng_state)
 
 
 def init_wikidata_properties():

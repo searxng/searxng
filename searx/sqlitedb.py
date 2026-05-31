@@ -121,8 +121,8 @@ class SQLiteAppl(abc.ABC):
 
     .. _WAL: https://sqlite.org/wal.html
     """
-    SQLITE_CONNECT_ARGS: dict[str,str|int|bool|None] = {
-        # "timeout": 5.0,
+    SQLITE_CONNECT_ARGS: dict[str, str | float | int | bool | None] = {
+        "timeout": 3.0,  # default is 5sec
         # "detect_types": 0,
         "check_same_thread": bool(SQLITE_THREADING_MODE != "serialized"),
         "cached_statements": 0,  # https://github.com/python/cpython/issues/118172
@@ -195,6 +195,7 @@ class SQLiteAppl(abc.ABC):
         self.db_url: str = db_url
         self.properties: SQLiteProperties = SQLiteProperties(db_url)
         self._init_done: bool = False
+        self._DB: sqlite3.Connection | None = None
         self._compatibility()
         # atexit.register(self.tear_down)
 
@@ -209,7 +210,7 @@ class SQLiteAppl(abc.ABC):
     def _compatibility(self):
 
         if self.SQLITE_THREADING_MODE == "serialized":
-            self._DB: sqlite3.Connection | None = None
+            self._DB = None
         else:
             msg = (
                 f"SQLite library is compiled with {self.SQLITE_THREADING_MODE} mode,"
@@ -228,7 +229,13 @@ class SQLiteAppl(abc.ABC):
 
     def _connect(self) -> sqlite3.Connection:
         conn = sqlite3.Connection(self.db_url, **self.SQLITE_CONNECT_ARGS)  # type: ignore
-        conn.execute(f"PRAGMA journal_mode={self.SQLITE_JOURNAL_MODE}")
+        try:
+            with conn:
+                conn.execute(f"PRAGMA journal_mode={self.SQLITE_JOURNAL_MODE}")
+        except sqlite3.OperationalError:
+            # when database is locked, the journal_mode is already set by
+            # different but concurrent process (no need to set it once more)
+            pass
         self.register_functions(conn)
         return conn
 
@@ -312,7 +319,8 @@ class SQLiteAppl(abc.ABC):
         # Since more than one instance of SQLiteAppl share the same DB
         # connection, we need to make sure that each SQLiteAppl instance has run
         # its init method at least once.
-        self.init(conn)
+        with conn:
+            self.init(conn)
 
         return conn
 
@@ -330,7 +338,8 @@ class SQLiteAppl(abc.ABC):
         self._init_done = True
 
         logger.debug("init DB: %s", self.db_url)
-        self.properties.init(conn)
+        with conn:
+            self.properties.init(conn)
 
         ver = self.properties("DB_SCHEMA")
         if ver is None:
@@ -409,7 +418,7 @@ CREATE TABLE IF NOT EXISTS properties (
         self._init_done = True
         logger.debug("init properties of DB: %s", self.db_url)
         res = conn.execute(self.SQL_TABLE_EXISTS)
-        if res.fetchone() is None:  # DB schema needs to be be created
+        if res.fetchone() is None:  # DB schema needs to be created
             self.create_schema(conn)
         return True
 

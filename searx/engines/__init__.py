@@ -12,6 +12,7 @@ import typing as t
 
 import sys
 import copy
+import os
 from os.path import realpath, dirname
 
 import types
@@ -278,6 +279,8 @@ def load_engines(engine_list: list[dict[str, t.Any]]):
         else:
             # if an engine can't be loaded (if for example the engine is missing
             # tor or some other requirements) its set to inactive!
-            logger.error("loading engine %s failed: set engine to inactive!", engine_data.get("name", "???"))
+            logger.error(
+                f"(PID {os.getpid()}) loading engine %s failed: set engine to inactive!", engine_data.get("name", "???")
+            )
             engine_data["inactive"] = True
     return engines
