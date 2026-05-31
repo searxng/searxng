@@ -24,7 +24,7 @@ from lxml import html
 from lxml.etree import XPath, XPathError, XPathSyntaxError
 from lxml.etree import ElementBase, _Element  # pyright: ignore[reportPrivateUsage]
 
-from searx import settings
+from searx import settings, get_setting
 from searx.data import USER_AGENTS, gsa_useragents_loader
 from searx.version import VERSION_TAG
 from searx.exceptions import SearxXPathSyntaxException, SearxEngineXPathException
@@ -67,7 +67,7 @@ _NOTSET = _NotSetClass()
 
 def searxng_useragent() -> str:
     """Return the SearXNG User Agent"""
-    return f"SearXNG/{VERSION_TAG} {settings['outgoing']['useragent_suffix']}".strip()
+    return f"SearXNG/{VERSION_TAG} {get_setting('outgoing.useragent_suffix')}".strip()
 
 
 def gen_useragent(os_string: str | None = None) -> str:
