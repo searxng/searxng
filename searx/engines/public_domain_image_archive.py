@@ -1,6 +1,8 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 """Public domain image archive"""
 
+import re
+
 from urllib.parse import urlencode, urlparse, urlunparse, parse_qsl
 from json import dumps
 
@@ -49,6 +51,8 @@ paging = True
 
 __CACHED_API_URL = None
 
+_API_URL_RE = re.compile(r"\"(https://.*?/search-proxy)\"")
+
 
 def _clean_url(url):
     parsed = urlparse(url)
@@ -74,10 +78,11 @@ def _get_algolia_api_url():
     if resp.status_code != 200:
         raise LookupError("Failed to obtain AWS api url for PDImageArchive")
 
-    api_url = extr(resp.text, 'const r="', '"', default=None)
-
-    if api_url is None:
+    api_url_match = _API_URL_RE.search(resp.text)
+    if api_url_match is None:
         raise LookupError("Couldn't obtain AWS api url for PDImageArchive")
+
+    api_url = api_url_match.group(1)
 
     __CACHED_API_URL = api_url
     return api_url
