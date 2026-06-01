@@ -803,9 +803,16 @@ engines:
     display_type: ["infobox"]
     categories: [general]
 
+  # duckduckgo uses html.duckduckgo.com,
+  # duckduckgo web uses duckduckgo.com
   - name: duckduckgo
     engine: duckduckgo
     shortcut: ddg
+
+  - name: duckduckgo web
+    engine: duckduckgo_web
+    shortcut: ddgw
+    disabled: true
 
   - name: duckduckgo images
     engine: duckduckgo_extra
