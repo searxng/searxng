@@ -226,10 +226,11 @@ class SQLiteAppl(abc.ABC):
                 "SQLite runtime library version %s is not supported (require >= 3.35)", sqlite3.sqlite_version
             )
 
-    def _connect(self) -> sqlite3.Connection:
+    def _connect(self, register: bool = True) -> sqlite3.Connection:
         conn = sqlite3.Connection(self.db_url, **self.SQLITE_CONNECT_ARGS)  # type: ignore
         conn.execute(f"PRAGMA journal_mode={self.SQLITE_JOURNAL_MODE}")
-        self.register_functions(conn)
+        if register:
+            self.register_functions(conn)
         return conn
 
     def connect(self) -> sqlite3.Connection:
@@ -334,8 +335,7 @@ class SQLiteAppl(abc.ABC):
 
         ver = self.properties("DB_SCHEMA")
         if ver is None:
-            with conn:
-                self.create_schema(conn)
+            self.create_schema()
         else:
             ver = int(ver)
             if ver != self.DB_SCHEMA:
@@ -344,15 +344,21 @@ class SQLiteAppl(abc.ABC):
 
         return True
 
-    def create_schema(self, conn: sqlite3.Connection):
+    def create_schema(self):
 
         logger.debug("create schema ..")
         self.properties.set("DB_SCHEMA", self.DB_SCHEMA)
         self.properties.set("LAST_MAINTENANCE", "")
-        with conn:
+
+        # to force "commit" separate schema creation into dedicated
+        # connection and close the connection after schema creation.
+        # https://github.com/searxng/searxng/pull/6185#issuecomment-4587477179
+
+        with self._connect(register=False) as conn:
             for table_name, sql in self.DDL_CREATE_TABLES.items():
                 conn.execute(sql)
                 self.properties.set(f"Table {table_name} created", table_name)
+        conn.close()
 
 
 class SQLiteProperties(SQLiteAppl):
@@ -409,8 +415,8 @@ CREATE TABLE IF NOT EXISTS properties (
         self._init_done = True
         logger.debug("init properties of DB: %s", self.db_url)
         res = conn.execute(self.SQL_TABLE_EXISTS)
-        if res.fetchone() is None:  # DB schema needs to be be created
-            self.create_schema(conn)
+        if res.fetchone() is None:  # DB schema needs to be created
+            self.create_schema()
         return True
 
     def __call__(self, name: str, default: t.Any = None) -> t.Any:
@@ -455,9 +461,13 @@ CREATE TABLE IF NOT EXISTS properties (
             return default
         return int(row[0])
 
-    def create_schema(self, conn: sqlite3.Connection):
-        with conn:
+    def create_schema(self):
+        # to force "commit" separate schema creation into dedicated
+        # connection and close the connection after schema creation.
+        # https://github.com/searxng/searxng/pull/6185#issuecomment-4587477179
+        with self._connect(register=False) as conn:
             conn.execute(self.DDL_PROPERTIES)
+        conn.close()
 
     def __str__(self) -> str:
         lines: list[str] = []
