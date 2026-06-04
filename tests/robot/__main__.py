@@ -9,6 +9,8 @@ import traceback
 import pathlib
 import shutil
 
+from time import sleep
+
 from splinter import Browser
 
 import tests as searx_tests
@@ -43,14 +45,61 @@ class SearxRobotLayer:
         del os.environ['SEARXNG_SETTINGS_PATH']
 
 
+def _format_log_entry(entry):
+    """Build a readable one-line message from a BiDi log entry."""
+    level = getattr(entry, 'level', None) or '?'
+    text = getattr(entry, 'text', None) or repr(entry)
+    return '[{0}] {1}'.format(level, text)
+
+
+def _collect_browser_errors(browser):
+    """Register WebDriver BiDi handlers that collect JavaScript errors and
+    error-level console messages emitted by the browser.
+
+    The returned list is filled asynchronously while the test interacts with
+    the page, so it must be inspected only after the test has finished.
+    """
+    errors = []
+
+    script = browser.driver.script
+    script.add_javascript_error_handler(lambda entry: errors.append(_format_log_entry(entry)))
+
+    def on_console_message(entry):
+        if getattr(entry, 'level', None) == 'error':
+            errors.append(_format_log_entry(entry))
+
+    script.add_console_message_handler(on_console_message)
+    return errors
+
+
 def run_robot_tests(tests):
     print('Running {0} tests'.format(len(tests)))
     print(f'{shutil.which("geckodriver")}')
     print(f'{shutil.which("firefox")}')
 
+    failures = []
     for test in tests:
-        with Browser('firefox', headless=True, profile_preferences={'intl.accept_languages': 'en'}) as browser:
+        # 'webSocketUrl' enables the WebDriver BiDi protocol, which lets us
+        # subscribe to the browser's log entries (see _collect_browser_errors).
+        with Browser(
+            'firefox',
+            headless=True,
+            profile_preferences={'intl.accept_languages': 'en'},
+            capabilities={'webSocketUrl': True},
+        ) as browser:
+            errors = _collect_browser_errors(browser)
             test(browser)
+            # give the asynchronous BiDi log events a moment to be delivered
+            sleep(1)
+            if errors:
+                failures.append((test.__name__, errors))
+
+    if failures:
+        report = ['JavaScript errors were detected in the browser console:']
+        for name, errors in failures:
+            report.append('  {0}:'.format(name))
+            report.extend('    - {0}'.format(error) for error in errors)
+        raise AssertionError('\n'.join(report))
 
 
 def main():
