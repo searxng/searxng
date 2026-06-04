@@ -1722,6 +1722,11 @@ engines:
   #    query_str: 'SELECT * from my_table WHERE my_column = %(query)s'
   #    shortcut : psql
 
+  - name: podchaser
+    engine: podchaser
+    shortcut: poc
+    disabled: true
+
   - name: presearch
     engine: presearch
     search_type: search
