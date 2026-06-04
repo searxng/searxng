@@ -20,6 +20,7 @@ Paging:
 - :py:obj:`paging`
 - :py:obj:`page_size`
 - :py:obj:`first_page_num`
+- :py:obj:`send_page_num_on_first_page`
 
 Time Range:
 
@@ -168,6 +169,10 @@ number, but an offset.'''
 
 first_page_num = 1
 '''Number of the first page (usually 0 or 1).'''
+
+send_page_num_on_first_page = True
+'''Whether to include the page number in the request for the first page.
+This can help if an engine blocks request that send a page number for the first page.'''
 
 results_query = ''
 '''JSON query for the list of result items.
@@ -322,10 +327,13 @@ def request(query, params):  # pylint: disable=redefined-outer-name
     if params['safesearch']:
         safe_search = safe_search_map[params['safesearch']]
 
+    pageno = ""
+    if send_page_num_on_first_page or params["pageno"] != 1:
+        pageno = (params['pageno'] - 1) * page_size + first_page_num
     fp = {  # pylint: disable=invalid-name
         'query': urlencode({'q': query})[2:],
         'lang': lang,
-        'pageno': (params['pageno'] - 1) * page_size + first_page_num,
+        'pageno': pageno,
         'time_range': time_range,
         'safe_search': safe_search,
     }
