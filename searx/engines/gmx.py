@@ -10,10 +10,12 @@ import time
 import typing as t
 
 from urllib.parse import urlencode
+from lxml import html
 
 from searx.result_types import EngineResults
+from searx.exceptions import SearxEngineCaptchaException
 from searx.extended_types import SXNG_Response
-from searx.utils import extr, gen_useragent, html_to_text
+from searx.utils import extr, gen_useragent, html_to_text, eval_xpath
 from searx.network import get
 
 if t.TYPE_CHECKING:
@@ -39,6 +41,11 @@ time_range_map = {"day": "d", "week": "w", "month": "m", "year": "y"}
 
 def _get_page_hash(query: str, page: int, headers: dict[str, str]) -> str:
     resp = get(f"{base_url}/web/result?q={query}&page={page}", headers=headers)
+
+    # detect captcha (if any)
+    doc = html.fromstring(resp.text)
+    if eval_xpath(doc, "//*[@id='spam-messages']"):
+        raise SearxEngineCaptchaException()
 
     # the text we search for looks like:
     # load("/desk?lang="+eV.p.param['hl']+"&q="+eV['p']['q_encode']+"&page=5&h=aa45603&t=177582576&origin=web&comp=web_serp_pag&p=gmx-com&sp=&lr="+eV.p.param['lr0']+"&mkt="+eV.p.param['mkt0']+"&family="+eV.p.param['familyFilter']+"&fcons="+eV.p.perm.fCons,"google", "eMMO", "eMH","eMP");  # pylint: disable=line-too-long
