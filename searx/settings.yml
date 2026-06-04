@@ -968,9 +968,10 @@ engines:
     engine: xpath
     search_url: https://www.gabanza.com/search?query={query}
     shortcut: gab
+    timeout: 4
     disabled: true
     results_xpath: //div[contains(@class, "border-t")]/div/div
-    url_xpath: .//a/@href
+    url_xpath: (.//a/@href)[1]
     title_xpath: ./a
     content_xpath: .//p
     about:
