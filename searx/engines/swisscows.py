@@ -2,6 +2,8 @@
 # pylint: disable=invalid-name
 """Swisscows (general, images, videos)"""
 
+import typing as t
+
 import base64
 import codecs
 import hashlib
@@ -11,9 +13,9 @@ import random
 from datetime import datetime
 from urllib.parse import urlencode
 
-import typing as t
+from babel.core import get_global
 
-from searx.result_types import EngineResults, LegacyResult
+from searx.result_types import EngineResults, LegacyResult  # pyright: ignore[reportPrivateLocalImportUsage]
 from searx.utils import humanize_number, html_to_text
 
 if t.TYPE_CHECKING:
@@ -33,6 +35,7 @@ about = {
 
 categories = ["general"]
 swisscows_category = "web"  # possible: "web", "videos", "images"
+
 results_per_page = 50
 
 time_range_support = True
@@ -44,6 +47,45 @@ CAESAR_ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 NONCE_ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-._~"
 
 time_range_map = {"day": "Day", "week": "Week", "month": "Month", "year": "Year"}
+
+# fmt: off
+swisscows_regions: list[str] = [
+    "AR", "AU", "AT", "BE", "BR", "CA", "CL", "CN", "DK", "FI",
+    "FR", "DE", "HK", "HU", "IN", "ID", "IT", "JP", "KR", "LV",
+    "MY", "MX", "NL", "NZ", "NO", "PH", "PL", "PT", "RU", "SA",
+    "ZA", "ES", "SE", "CH", "TW", "TR", "UA", "GB", "US"
+]
+"""Regions supported by swisscows."""
+# fmt: on
+
+# swisscows_languages = [
+#     "GB", "DE", "ES", "FR", "IT", "LV", "HU", "NL", "PT", "RU", "UA"
+# ]
+
+
+def appropriate_locale(searxng_locale: str, regions: list[str], default: str) -> str:
+    """Returns the appropriate swisscows locale for the region or language
+    selected by the user.  If no value is determined, ``default`` is returned
+    """
+    _locale = searxng_locale.split("-")
+
+    if _locale[0] == "all":
+        return default
+
+    if len(_locale) == 1 or _locale[1] in regions:
+        return searxng_locale
+
+    sxng_lang = _locale[0]
+    if sxng_lang.upper() in regions:
+        return f"{sxng_lang}-{sxng_lang.upper()}"
+
+    likely_subtag: str | None = get_global("likely_subtags").get(sxng_lang)
+    if likely_subtag:
+        _tag: list[str] = likely_subtag.split("_")
+        if _tag[-1] in regions:
+            return f"{_tag[0]}-{_tag[-1]}"
+
+    return default
 
 
 def generate_nonce(length: int = 32) -> str:
@@ -126,6 +168,7 @@ def request(query: str, params: "OnlineParams") -> None:
         params["url"] = None
         return
 
+    locale = appropriate_locale(params["searxng_locale"], swisscows_regions, "en-US")
     base_path = ""
     args = dict[str, t.Any]
     if swisscows_category == "web":
@@ -135,7 +178,7 @@ def request(query: str, params: "OnlineParams") -> None:
         args = {
             "freshness": freshness,
             "itemsCount": results_per_page,
-            "locale": "en-US",
+            "locale": locale,
             "offset": (params["pageno"] - 1) * results_per_page,
             "query": query,
             "spellcheck": True,
@@ -144,7 +187,7 @@ def request(query: str, params: "OnlineParams") -> None:
     elif swisscows_category == "images":
         args = {
             "itemsCount": results_per_page,
-            "locale": "en-US",
+            "locale": locale,
             "offset": (params["pageno"] - 1) * results_per_page,
             "query": query,
             "spellcheck": True,
@@ -155,7 +198,7 @@ def request(query: str, params: "OnlineParams") -> None:
             "itemsCount": results_per_page,
             "offset": (params["pageno"] - 1) * results_per_page,
             "query": query,
-            "region": "en-US",
+            "region": locale,
             "spellcheck": True,
         }
         base_path = "/v2/videos/search"
@@ -171,14 +214,14 @@ def request(query: str, params: "OnlineParams") -> None:
     params["url"] = f"{base_url}{base_path}?{urlencode(args)}"
 
 
-def _video_result(result: dict[str, t.Any]) -> LegacyResult:
+def _video_result(result: dict[str, str]) -> LegacyResult:
     published_date = None
     if result.get("datePublished"):
         published_date = datetime.fromisoformat(result["datePublished"])
 
     view_count = None
     if result.get("viewCount"):
-        view_count = humanize_number(result["viewCount"])
+        view_count = humanize_number(result["viewCount"])  # pyright: ignore[reportArgumentType]
 
     return LegacyResult(
         {
@@ -186,7 +229,8 @@ def _video_result(result: dict[str, t.Any]) -> LegacyResult:
             "url": result["url"],
             "title": html_to_text(result.get("title") or result["name"]),
             "content": result["description"],
-            "thumbnail": result.get("thumbnailUrl") or result.get("thumbnail", {}).get("url"),
+            "thumbnail": result.get("thumbnailUrl")
+            or result.get("thumbnail", {}).get("url"),  # pyright: ignore[reportAttributeAccessIssue]
             "length": result.get("duration"),
             "iframe_src": result.get("embedUrl"),
             "publishedDate": published_date,
@@ -195,7 +239,7 @@ def _video_result(result: dict[str, t.Any]) -> LegacyResult:
     )
 
 
-def response(resp: "SXNG_Response"):
+def response(resp: "SXNG_Response") -> EngineResults:
     res = EngineResults()
 
     json_data = resp.json()
@@ -211,6 +255,7 @@ def response(resp: "SXNG_Response"):
         decoded = base64.urlsafe_b64decode(payload)
         json_data = json.loads(decoded.decode())
 
+    result: dict[str, t.Any]
     for result in json_data["items"]:
         if result["type"] == "WebPage":
             res.add(
