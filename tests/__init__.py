@@ -46,10 +46,14 @@ class SearxTestCase(aiounittest.AsyncTestCase):
     def setattr4test(self, obj, attr, value):
         """setattr(obj, attr, value) but reset to the previous value in the
         cleanup."""
-        previous_value = getattr(obj, attr)
+        _missing = object()
+        previous_value = getattr(obj, attr, _missing)
 
         def cleanup_patch():
-            setattr(obj, attr, previous_value)
+            if previous_value is _missing:
+                delattr(obj, attr)
+            else:
+                setattr(obj, attr, previous_value)
 
         self.addCleanup(cleanup_patch)
         setattr(obj, attr, value)
