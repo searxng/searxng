@@ -266,7 +266,7 @@ def response(resp: "SXNG_Response") -> EngineResults:
                     thumbnail=result.get("thumbnail", {}).get("url"),
                 )
             )
-        elif result["type"] == "VideoCollection":
+        elif swisscows_category == "videos" and result["type"] == "VideoCollection":
             for video in result["hasPart"]:
                 res.add(_video_result(video))
         elif result["type"] == "ImageObject":
