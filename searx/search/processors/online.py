@@ -152,10 +152,13 @@ class OnlineProcessor(EngineProcessor):
         # add Accept-Language header
         # https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Accept-Language
 
-        if self.engine.send_accept_language_header and search_query.locale:
-            _l = search_query.locale.language
-            _t = search_query.locale.territory or _l
-            headers["Accept-Language"] = f"{_l},{_l}-{_t};q=0.7,en;q=0.3"
+        if self.engine.send_accept_language_header:
+            if search_query.locale:
+                _l = search_query.locale.language
+                _t = search_query.locale.territory or _l
+                headers["Accept-Language"] = f"{_l},{_l}-{_t};q=0.7,en;q=0.3"
+            else:
+                headers["Accept-Language"] = "en-US,en;q=0.9"
         self.logger.debug("HTTP Accept-Language: %s", headers.get("Accept-Language", ""))
 
         return params
