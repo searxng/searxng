@@ -2076,6 +2076,28 @@ engines:
     base_url: 'https://discourse.pi-hole.net'
     disabled: true
 
+  - name: privacywall
+    engine: privacywall
+    categories: general
+    privacywall_category: general
+    paging: false  # only images and videos support pagination
+    shortcut: pw
+    disabled: true
+
+  - name: privacywall images
+    engine: privacywall
+    categories: images
+    privacywall_category: images
+    shortcut: pwi
+    disabled: true
+
+  - name: privacywall videos
+    engine: privacywall
+    categories: videos
+    privacywall_category: videos
+    shortcut: pwv
+    disabled: true
+
   # - name: searx
   #   engine: searx_engine
   #   shortcut: se
