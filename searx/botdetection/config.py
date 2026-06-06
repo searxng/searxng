@@ -72,14 +72,21 @@ class Config:
     UNSET: object = UNSET
 
     @classmethod
-    def from_toml(cls, schema_file: pathlib.Path, cfg_file: pathlib.Path, deprecated: dict[str, str]) -> "Config":
+    def from_toml(
+        cls,
+        schema_file: pathlib.Path,
+        cfg_file: pathlib.Path,
+        deprecated: dict[str, str],
+        warn_missing: bool = True,
+    ) -> "Config":
 
         # init schema
 
         log.debug("load schema file: %s", schema_file)
         cfg = cls(cfg_schema=toml_load(schema_file), deprecated=deprecated)
         if not cfg_file.exists():
-            log.warning("missing config file: %s", cfg_file)
+            if warn_missing:
+                log.warning("missing config file: %s", cfg_file)
             return cfg
 
         # load configuration

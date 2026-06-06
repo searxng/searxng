@@ -130,7 +130,7 @@ LIMITER_CFG_SCHEMA = Path(__file__).parent / "limiter.toml"
 """Base configuration (schema) of the botdetection."""
 
 
-def get_cfg() -> config.Config:
+def get_cfg(warn_missing: bool = True) -> config.Config:
     """Returns SearXNG's global limiter configuration."""
     global CFG  # pylint: disable=global-statement
 
@@ -138,7 +138,12 @@ def get_cfg() -> config.Config:
         from . import settings_loader  # pylint: disable=import-outside-toplevel
 
         cfg_file = (settings_loader.get_user_cfg_folder() or Path("/etc/searxng")) / "limiter.toml"
-        CFG = config.Config.from_toml(LIMITER_CFG_SCHEMA, cfg_file, searx.compat.LIMITER_CFG_DEPRECATED)
+        CFG = config.Config.from_toml(
+            LIMITER_CFG_SCHEMA,
+            cfg_file,
+            searx.compat.LIMITER_CFG_DEPRECATED,
+            warn_missing=warn_missing,
+        )
         searx.compat.limiter_fix_cfg(CFG, cfg_file)
 
     return CFG
@@ -226,7 +231,7 @@ def initialize(app: flask.Flask, settings):
     # even if the limiter is not activated, the botdetection must be activated
     # (e.g. the self_info plugin uses the botdetection to get client IP)
 
-    cfg = get_cfg()
+    cfg = get_cfg(warn_missing=settings['server']['limiter'] or settings['server']['public_instance'])
     valkey_client = valkeydb.client()
     botdetection.init(cfg, valkey_client)
 
