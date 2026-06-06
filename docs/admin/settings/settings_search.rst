@@ -43,6 +43,7 @@
   - ``google``
   - ``mwmbl``
   - ``naver``
+  - ``privacywall``
   - ``quark``
   - ``qwant``
   - ``seznam``
