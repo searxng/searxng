@@ -179,6 +179,23 @@ def naver(query: str, _sxng_locale: str) -> list[str]:
     return results
 
 
+def privacywall(query: str, sxng_locale: str) -> list[str]:
+    # Privacywall search autocompleter
+    country = None
+    if "-" in sxng_locale:
+        country = sxng_locale.split("-")[1]
+    args = {'q': query, 'cc': country}
+
+    url = f"https://www.privacywall.org/search/secure/suggestions.php?{urlencode(args)}"
+    response = get(url)
+
+    if not response.ok:
+        return []
+
+    data: list[list[str]] = response.json()
+    return data[1]
+
+
 def qihu360search(query: str, _sxng_locale: str) -> list[str]:
     # 360Search search autocompleter
     url = f"https://sug.so.360.cn/suggest?{urlencode({'format': 'json', 'word': query})}"
@@ -361,6 +378,7 @@ backends: dict[str, t.Callable[[str, str], list[str]]] = {
     'google': google_complete,
     'mwmbl': mwmbl,
     'naver': naver,
+    'privacywall': privacywall,
     'quark': quark,
     'qwant': qwant,
     'seznam': seznam,
