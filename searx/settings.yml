@@ -1989,6 +1989,14 @@ engines:
   #       - ...
   #   disabled: true
 
+  - name: seekninja
+    engine: seekninja
+    shortcut: sen
+    # very slow due to its server-side events architecture
+    timeout: 10
+    disabled: true
+    inactive: true
+
   - name: semantic scholar
     engine: semantic_scholar
     shortcut: se
