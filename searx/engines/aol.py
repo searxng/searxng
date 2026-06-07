@@ -40,7 +40,7 @@ if t.TYPE_CHECKING:
 
 about = {
     "website": "https://www.aol.com",
-    "wikidata_id": "Q2407",
+    "wikidata_id": "Q27585",
     "official_api_documentation": None,
     "use_official_api": False,
     "require_api_key": False,
