@@ -331,7 +331,8 @@ class SQLiteAppl(abc.ABC):
         logger.debug("init DB: %s", self.db_url)
         self.properties.init(conn)
 
-        ver = self.properties("DB_SCHEMA")
+        res = conn.execute(self.properties.SQL_GET, ("DB_SCHEMA",)).fetchone()
+        ver = res[0] if res else None
         if ver is None:
             with conn:
                 self.create_schema(conn)
@@ -347,12 +348,13 @@ class SQLiteAppl(abc.ABC):
     def create_schema(self, conn: sqlite3.Connection):
 
         logger.debug("create schema ..")
-        self.properties.set("DB_SCHEMA", self.DB_SCHEMA)
-        self.properties.set("LAST_MAINTENANCE", "")
+        sql_set = self.properties.SQL_SET
         with conn:
+            conn.execute(sql_set, ("DB_SCHEMA", self.DB_SCHEMA))
+            conn.execute(sql_set, ("LAST_MAINTENANCE", ""))
             for table_name, sql in self.DDL_CREATE_TABLES.items():
                 conn.execute(sql)
-                self.properties.set(f"Table {table_name} created", table_name)
+                conn.execute(sql_set, (f"Table {table_name} created", table_name))
 
 
 class SQLiteProperties(SQLiteAppl):
