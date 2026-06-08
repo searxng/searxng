@@ -29,7 +29,7 @@ template.
 # pylint: disable=too-few-public-methods
 
 
-__all__ = ["AnswerSet", "Answer", "Translations", "WeatherAnswer"]
+__all__ = ["AnswerSet", "Answer", "ColorPicker", "Translations", "WeatherAnswer"]
 
 from flask_babel import gettext
 import msgspec
@@ -91,6 +91,10 @@ class Answer(BaseAnswer, kw_only=True):
         equal, when the hash values of both objects are equal."""
         return hash(self.answer)
 
+class ColorPicker(BaseAnswer, kw_only=True):
+    """Renders an html color picker as answer"""
+
+    template: str = "answer/color_picker.html"
 
 class Translations(BaseAnswer, kw_only=True):
     """Answer type with a list of translations.
