@@ -221,13 +221,25 @@ def is_installed():
 
 def initialize(app: flask.Flask, settings):
     """Install the limiter"""
-    global _INSTALLED  # pylint: disable=global-statement
+    global CFG, _INSTALLED  # pylint: disable=global-statement
 
-    # even if the limiter is not activated, the botdetection must be activated
-    # (e.g. the self_info plugin uses the botdetection to get client IP)
-
-    cfg = get_cfg()
     valkey_client = valkeydb.client()
+
+    # keep botdetection initialised even when limiter is disabled
+    # (e.g. the self_info plugin uses botdetection to get client IP)
+
+    if settings['server']['limiter'] or settings['server']['public_instance']:
+        cfg = get_cfg()
+    else:
+        # Load just the schema defaults when limiter is disabled.  Avoid the
+        # warning from Config.from_toml() that fires when limiter.toml does
+        # not exist (GitHub issue #6172).
+        cfg = config.Config(
+            cfg_schema=config.toml_load(LIMITER_CFG_SCHEMA),
+            deprecated=searx.compat.LIMITER_CFG_DEPRECATED,
+        )
+        CFG = cfg
+
     botdetection.init(cfg, valkey_client)
 
     if not (settings['server']['limiter'] or settings['server']['public_instance']):
