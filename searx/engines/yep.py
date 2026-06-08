@@ -16,17 +16,18 @@ if t.TYPE_CHECKING:
     from searx.search.processors import OnlineParams
 
 about = {
-    'website': 'https://yep.com/',
-    'official_api_documentation': 'https://docs.developer.yelp.com',
-    'use_official_api': False,
-    'require_api_key': False,
-    'results': 'JSON',
+    "website": "https://yep.com/",
+    "official_api_documentation": "https://docs.developer.yelp.com",
+    "use_official_api": False,
+    "require_api_key": False,
+    "results": "JSON",
 }
 
 base_url = "https://api.yep.com"
+web_base_url = "https://yep.com"
 
 safesearch = True
-safesearch_map = {0: 'off', 1: 'moderate', 2: 'strict'}
+safesearch_map = {0: "off", 1: "moderate", 2: "strict"}
 
 enable_http2 = False
 
@@ -36,34 +37,42 @@ _IMPORT_RE = re.compile(r"import\"(.*?)\";")
 _LANGUAGE_RE = re.compile(r"\{english:\".*?\",code_string:\"(.*?)\",code:\".*?\"\}")
 
 
-def request(query: str, params: 'OnlineParams') -> None:
-    args = {'query': query, 'safeSearch': safesearch_map[params['safesearch']], 'limit': results_per_page}
+def request(query: str, params: "OnlineParams") -> None:
+    args = {"query": query, "safeSearch": safesearch_map[params["safesearch"]], "limit": results_per_page}
 
-    engine_language: str = traits.get_language(params["searxng_locale"])
+    engine_language: str | None = traits.get_language(params["searxng_locale"])
     if engine_language:
         args["hl"] = engine_language
 
-    params['url'] = f"{base_url}/search?{urlencode(args)}"
-    params['headers']['Referer'] = 'https://yep.com/'
-    params['headers']['Origin'] = 'https://yep.com'
+    params["url"] = f"{base_url}/search?{urlencode(args)}"
+    params["headers"].update(
+        {
+            "Referer": f"{web_base_url}/",
+            "Origin": web_base_url,
+            "Sec-Fetch-Dest": "empty",
+            "Sec-Fetch-Mode": "cors",
+            "Sec-Fetch-Site": "same-site",
+        }
+    )
 
 
-def response(resp: 'SXNG_Response') -> EngineResults:
+def response(resp: "SXNG_Response") -> EngineResults:
     res = EngineResults()
 
-    for result in resp.json()[1]['results']:
+    result: dict[str, str]
+    for result in resp.json()[1]["results"]:
         res.add(
             res.types.MainResult(
-                url=result['url'],
-                title=result['title'],
-                content=html_to_text(result['snippet']),
+                url=result["url"],
+                title=result["title"],
+                content=html_to_text(result["snippet"]),
             )
         )
 
     return res
 
 
-def fetch_traits(engine_traits: 'EngineTraits'):
+def fetch_traits(engine_traits: "EngineTraits"):
     """Fetch :ref:`languages <yep languages>` and :ref:`regions <yep
     regions>` from Yep.
 
@@ -82,8 +91,6 @@ def fetch_traits(engine_traits: 'EngineTraits'):
     from searx.network import get  # see https://github.com/searxng/searxng/issues/762
 
     from searx.utils import gen_useragent
-
-    web_base_url = "https://yep.com"
 
     headers = {
         "User-Agent": gen_useragent(),
