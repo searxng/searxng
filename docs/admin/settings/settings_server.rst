@@ -12,6 +12,7 @@
        bind_address: "127.0.0.1"
        secret_key: "ultrasecretkey"           # change this!
        limiter: false
+       limiter_bypass_key: false
        public_instance: false
        image_proxy: false
        method: "POST"
@@ -37,6 +38,11 @@
 ``limiter`` :  ``$SEARXNG_LIMITER``
   Rate limit the number of request on the instance, block some bots.  The
   :ref:`limiter` requires a :ref:`settings valkey` database.
+
+``limiter_bypass_key`` : ``$SEARXNG_LIMITER_BYPASS_KEY``
+  Optional key that bypasses the :ref:`limiter` when sent in the
+  ``X-SearXNG-Limiter-Bypass`` HTTP header.  This bypass is usefull if
+  you want to give unrestricted access to your public instance to certain users.
 
 .. _public_instance:
 
