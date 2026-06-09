@@ -214,6 +214,7 @@ SCHEMA: dict[str, t.Any] = {
         'port': SettingsValue((int, str), 8888, 'SEARXNG_PORT'),
         'bind_address': SettingsValue(str, '127.0.0.1', 'SEARXNG_BIND_ADDRESS'),
         'limiter': SettingsValue(bool, False, 'SEARXNG_LIMITER'),
+        'limiter_bypass_key': SettingsValue((None, False, str), False, 'SEARXNG_LIMITER_BYPASS_KEY'),
         'public_instance': SettingsValue(bool, False, 'SEARXNG_PUBLIC_INSTANCE'),
         'secret_key': SettingsValue(str, environ_name='SEARXNG_SECRET'),
         'base_url': SettingsValue((False, str), False, 'SEARXNG_BASE_URL'),

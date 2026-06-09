@@ -16,6 +16,8 @@ server:
   # Is overwritten by ${SEARXNG_SECRET}
   secret_key: "ultrasecretkey"
   limiter: true
+  # Is overwritten by ${SEARXNG_LIMITER_BYPASS_KEY}
+  limiter_bypass_key: false
   image_proxy: true
   # public URL of the instance, to ensure correct inbound links. Is overwritten
   # by ${SEARXNG_BASE_URL}.

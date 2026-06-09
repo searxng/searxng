@@ -37,6 +37,7 @@ class TestDefaultSettings(SearxTestCase):
         self.assertFalse(settings['general']['debug'])
         self.assertIsInstance(settings['general']['instance_name'], str)
         self.assertEqual(settings['server']['secret_key'], "ultrasecretkey")
+        self.assertFalse(settings['server']['limiter_bypass_key'])
         self.assertIsInstance(settings['server']['port'], int)
         self.assertIsInstance(settings['server']['bind_address'], str)
         self.assertIsInstance(settings['engines'], list)
@@ -117,3 +118,14 @@ class TestUserSettings(SearxTestCase):
             self.assertEqual(settings['server']['secret_key'], "user_settings_secret")
             engine_names = [engine['name'] for engine in settings['engines']]
             self.assertEqual(engine_names, ['wikidata', 'wikibooks', 'wikinews', 'wikiquote'])
+
+    def test_limiter_bypass_key_from_environment(self):
+        with patch.dict(
+            os.environ,
+            {
+                'SEARXNG_SETTINGS_PATH': _settings("user_settings_simple.yml"),
+                'SEARXNG_LIMITER_BYPASS_KEY': 'test-bypass-key',
+            },
+        ):
+            settings, _msg = settings_loader.load_settings()
+            self.assertEqual(settings['server']['limiter_bypass_key'], 'test-bypass-key')
