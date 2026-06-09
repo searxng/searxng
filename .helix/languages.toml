@@ -1,0 +1,10 @@
+[[language]]
+name = "python"
+language-servers = ["basedpyright", "pylsp"]
+formatter = { command = "black", args = [
+    "--target-version",
+    "py311",
+    "--line-length",
+    "120",
+    "--skip-string-normalization",
+] }
