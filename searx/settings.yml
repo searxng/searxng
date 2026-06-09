@@ -320,6 +320,23 @@ engines:
     shortcut: 9g
     disabled: true
 
+  - name: abcnyheter
+    engine: xpath
+    paging: true
+    search_url: https://startsiden.abcnyheter.no/sok/?q={query}&page={pageno}
+    shortcut: abc
+    disabled: true
+    results_xpath: //ul[contains(@class, "results__list")]/li[contains(@class, "result")]
+    url_xpath: ./a/@href
+    title_xpath: ./a/h3
+    content_xpath: ./div
+    about:
+      website: https://abcnyheter.no
+      use_official_api: false
+      require_api_key: false
+      results: HTML
+      lang: "no"
+
   - name: acfun
     engine: acfun
     shortcut: acf
