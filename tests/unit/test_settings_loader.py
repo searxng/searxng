@@ -10,6 +10,7 @@ from parameterized import parameterized
 
 from searx.exceptions import SearxSettingsException
 from searx import settings_loader
+from searx.settings_defaults import SCHEMA, apply_schema
 from tests import SearxTestCase
 
 
@@ -128,4 +129,5 @@ class TestUserSettings(SearxTestCase):
             },
         ):
             settings, _msg = settings_loader.load_settings()
+            apply_schema(settings, SCHEMA, [])
             self.assertEqual(settings['server']['limiter_bypass_key'], 'test-bypass-key')
