@@ -92,6 +92,8 @@ Implementation
 
 """
 
+import hmac
+
 from ipaddress import ip_address
 import sys
 
@@ -101,6 +103,7 @@ import werkzeug
 
 import searx.compat
 from searx import (
+    get_setting,
     logger,
     valkeydb,
 )
@@ -129,6 +132,9 @@ _INSTALLED = False
 LIMITER_CFG_SCHEMA = Path(__file__).parent / "limiter.toml"
 """Base configuration (schema) of the botdetection."""
 
+BYPASS_HEADER = 'X-SearXNG-Limiter-Bypass'
+"""Header that bypasses limiter checks when it matches the configured key."""
+
 
 def get_cfg() -> config.Config:
     """Returns SearXNG's global limiter configuration."""
@@ -144,8 +150,25 @@ def get_cfg() -> config.Config:
     return CFG
 
 
+def is_bypass_request(request: SXNG_Request) -> bool:
+    """Returns ``True`` when a request carries the configured limiter bypass key."""
+    bypass_key = get_setting('server.limiter_bypass_key')
+    if not bypass_key:
+        return False
+
+    request_key = request.headers.get(BYPASS_HEADER)
+    if not request_key or len(request_key) != len(bypass_key):
+        return False
+
+    return hmac.compare_digest(request_key, bypass_key)
+
+
 def filter_request(request: SXNG_Request) -> werkzeug.Response | None:
     # pylint: disable=too-many-return-statements
+
+    if is_bypass_request(request):
+        logger.warning("PASS limiter bypass key: %s", request.path)
+        return None
 
     cfg = get_cfg()
     real_ip = ip_address(request.remote_addr)
