@@ -3,6 +3,7 @@
 
 import typing as t
 
+import os
 import logging
 import threading
 from abc import abstractmethod, ABC
@@ -154,7 +155,9 @@ class EngineProcessor(ABC):
         try:
             init_ok = self.engine.init(eng_setting)
         except Exception:  # pylint: disable=broad-except
-            logger.exception("Init method of engine %s failed due to an exception.", self.engine.name)
+            logger.exception(
+                f"(PID {os.getpid()}) Init method of engine %s failed due to an exception.", self.engine.name
+            )
             init_ok = False
         # In older engines, None is returned from the init method, which is
         # equivalent to indicating that the initialization was successful.

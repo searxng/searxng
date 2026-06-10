@@ -1348,6 +1348,8 @@ def run():
 
 def init():
 
+    # pylint: disable=import-outside-toplevel
+
     if searx.sxng_debug or app.debug:
         app.debug = True
         searx.sxng_debug = True
@@ -1358,6 +1360,18 @@ def init():
         logger.error("server.secret_key is not changed. Please use something else instead of ultrasecretkey.")
         sys.exit(1)
 
+    # init database schema first / DB schema is created with the first connect
+    from searx.data import get_cache
+    from searx.enginelib import ENGINES_CACHE
+
+    conn = get_cache().connect()
+    conn.close()
+    conn = ENGINES_CACHE.connect()
+    conn.close()
+
+    favicons.init()
+
+    # init application
     locales_initialize()
     valkey_initialize()
     searx.plugins.initialize(app)
@@ -1366,7 +1380,6 @@ def init():
     searx.search.initialize(check_network=True, enable_metrics=metrics)
 
     limiter.initialize(app, settings)
-    favicons.init()
 
 
 def static_headers(headers: Headers, _path: str, _url: str) -> None:
