@@ -1,7 +1,8 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 """Fireball_ is a Germany-based, privacy-focused search engine.
 
-It likely doesn't have its own index, but it's unclear where its results come from.
+It likely doesn't have its own index, but it's unclear where its results come
+from.
 
 .. _Fireball: https://fireball.com
 """
@@ -46,15 +47,12 @@ CACHE_VALID_DURATION = 30 * 24 * 3600  # one month, same as website
 """Duration how long settings cookies are valid."""
 
 
-def init(_):
-    if fireball_category not in ("web", "news", "videos"):
-        raise ValueError(f"Unsupported category: {fireball_category}")
-
-
-def setup(engine_settings: dict[str, t.Any]) -> bool:
+def init(engine_settings: dict[str, t.Any]):
     global CACHE  # pylint: disable=global-statement
     CACHE = EngineCache(engine_settings["name"])
-    return True
+
+    if fireball_category not in ("web", "news", "videos"):
+        raise ValueError(f"Unsupported category: {fireball_category}")
 
 
 def _cache_key(fireball_settings: dict[str, str]) -> str:
@@ -62,13 +60,12 @@ def _cache_key(fireball_settings: dict[str, str]) -> str:
 
 
 def _get_search_settings_cookie(params: 'OnlineParams') -> str:
-    """
-    Get a 'fireball' cookie for the given locale and safesearch setting set in params.
-    """
+    """Get a 'fireball' cookie for the given locale and safesearch setting set
+    in params."""
 
-    # the language is set by only specifying the search country
-    # on their website, they only list DE and US, but in fact it
-    # supports much more countries
+    # the language is set by only specifying the search country on their
+    # website, they only list DE and US, but in fact it supports much more
+    # countries
     country = "US"
     if params["searxng_locale"] != "all":
         language_parts = params["searxng_locale"].split("-")
@@ -101,9 +98,9 @@ def _get_search_settings_cookie(params: 'OnlineParams') -> str:
     return cookie
 
 
-def request(query: str, params: 'OnlineParams'):
-    # no matter the category, the request is always the same
-    # i.e. we get all different categories with one HTTP request
+def request(query: str, params: "OnlineParams"):
+    # no matter the category, the request is always the same, i.e. we get all
+    # different categories with one HTTP request
 
     args = {
         "f": "web",
@@ -117,7 +114,7 @@ def request(query: str, params: 'OnlineParams'):
     params["headers"]["Referer"] = f"{base_url}/search?{urlencode(args)}"
 
 
-def response(resp: 'SXNG_Response') -> EngineResults:
+def response(resp: "SXNG_Response") -> EngineResults:
     res = EngineResults()
 
     json_data = resp.json()
@@ -151,10 +148,6 @@ def response(resp: 'SXNG_Response') -> EngineResults:
                 )
             )
         elif fireball_category == "videos":
-            thumbnail = None
-            if result.get("thumbnail"):
-                thumbnail = result["thumbnail"]["original"]
-
             length = None
             if result.get("video"):
                 length = result["video"].get("duration")
@@ -166,7 +159,7 @@ def response(resp: 'SXNG_Response') -> EngineResults:
                         "url": result["url"],
                         "title": html_to_text(result["title"]),
                         "content": html_to_text(result["description"]),
-                        "thumbnail": thumbnail,
+                        "thumbnail": result.get("thumbnail", {}).get("original"),
                         "length": length,
                         "publishedDate": published_date,
                     }
