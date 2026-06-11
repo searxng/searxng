@@ -50,11 +50,14 @@ jobs:
             python-${{ env.PYTHON_VERSION }}-${{ runner.arch }}-
           path: "./local/"
 
+      - name: Setup dependencies
+        run: sudo ./utils/searxng.sh install buildhost
+
       - name: Setup venv
         run: make V=1 install
 
       - name: Build documentation
-        run: make V=1 docs.clean docs.html
+        run: make V=1 docs.html
 
       - if: github.ref_name == 'master'
         name: Release
