@@ -42,10 +42,10 @@ To enable Kagi, add the following to the ``engines`` seciton of
 .. _Api Portal: https://help.kagi.com/kagi/api/overview.html
 """
 
-
 from datetime import datetime, timedelta
 
 import typing as t
+
 
 from searx.extended_types import SXNG_Response
 from searx.result_types import EngineResults
@@ -76,7 +76,12 @@ kagi_categ: t.Literal["search", "images", "news", "videos"] = "search"
 base_url = "https://kagi.com"
 
 safe_search_map = {0: False, 1: True, 2: True}
-time_range_to_days_map: dict[TimeRangeType, int] = {"day": 1, "week": 7, "month": 30, "year": 365}
+time_range_to_days_map: dict[TimeRangeType, int] = {
+    "day": 1,
+    "week": 7,
+    "month": 30,
+    "year": 365,
+}
 
 api_key = ""
 """Kagi API key. Required for using this engine."""
@@ -147,8 +152,8 @@ def response(resp: "SXNG_Response") -> EngineResults:
             res.add(
                 res.types.MainResult(
                     url=result["url"],
-                    title=html_to_text(result["title"]),
-                    content=html_to_text(result["snippet"]),
+                    title=html_to_text(result.get("title", "no title available")),
+                    content=html_to_text(result.get("snippet", "")),
                     thumbnail=result.get("image", {}).get("url") or "",
                     publishedDate=published_date,
                 )
@@ -157,15 +162,15 @@ def response(resp: "SXNG_Response") -> EngineResults:
             res.add(
                 res.types.Image(
                     url=result["url"],
-                    title=html_to_text(result.get("title")),
+                    title=html_to_text(result.get("title", "no title available")),
                     img_src=result.get("image", {}).get("url"),
-                    resolution=f"{result['image']['width']}x{result['image']['height']}",
+                    resolution=f"{result.get('image', {}).get('width')}x{result.get('image', {}).get('height')}",
                     thumbnail_src=result.get("props", {}).get("thumbnail", {}).get("url"),
                 )
             )
         elif kagi_categ == "videos":
             length: timedelta | None = None
-            if result["props"].get("duration"):
+            if result.get("props", {}).get("duration"):
                 length = parse_duration_string(result["props"]["duration"])
 
             res.add(
@@ -173,11 +178,11 @@ def response(resp: "SXNG_Response") -> EngineResults:
                     {
                         "template": "videos.html",
                         "url": result["url"],
-                        "title": html_to_text(result["title"]),
-                        "content": html_to_text(result["snippet"]),
+                        "title": html_to_text(result.get("title", "no title available")),
+                        "content": html_to_text(result.get("snippet", "")),
                         "thumbnail": result.get("image", {}).get("url"),
                         "publishedDate": published_date,
-                        "author": result["props"].get("creator_name"),
+                        "author": result.get("props", {}).get("creator_name"),
                         "length": length,
                     }
                 )
