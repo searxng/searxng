@@ -2,12 +2,12 @@
   "$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
   "files": {
     "ignoreUnknown": true,
-    "includes": ["**", "!node_modules"]
+    "includes": ["**", "!node_modules", "!src/brand", "!src/svg"]
   },
   "assist": {
     "enabled": true,
     "actions": {
-      "recommended": true,
+      "preset": "recommended",
       "source": {
         "useSortedAttributes": "on",
         "useSortedProperties": "on"
@@ -27,12 +27,14 @@
   "linter": {
     "enabled": true,
     "rules": {
-      "recommended": true,
+      "preset": "recommended",
       "complexity": {
         "noForEach": "error",
         "noImplicitCoercions": "error",
+        "noRedundantDefaultExport": "error",
         "noUselessCatchBinding": "error",
         "noUselessUndefined": "error",
+        "useArrayFind": "error",
         "useSimplifiedLogicExpression": "error"
       },
       "correctness": {
@@ -42,25 +44,11 @@
         "useSingleJsDocAsterisk": "error"
       },
       "nursery": {
-        "noContinue": "warn",
-        "noEqualsToNull": "warn",
         "noFloatingPromises": "warn",
-        "noForIn": "warn",
-        "noIncrementDecrement": "warn",
         "noMisusedPromises": "warn",
-        "noMultiAssign": "warn",
-        "noMultiStr": "warn",
-        "noNestedPromises": "warn",
-        "noParametersOnlyUsedInRecursion": "warn",
-        "noRedundantDefaultExport": "warn",
-        "noReturnAssign": "warn",
-        "noUselessReturn": "off",
         "useAwaitThenable": "off",
-        "useConsistentEnumValueType": "warn",
-        "useDestructuring": "warn",
         "useExhaustiveSwitchCases": "warn",
         "useExplicitType": "off",
-        "useFind": "warn",
         "useRegexpExec": "warn"
       },
       "performance": {
@@ -75,23 +63,15 @@
         "noCommonJs": "error",
         "noEnum": "error",
         "noImplicitBoolean": "error",
+        "noIncrementDecrement": "error",
         "noInferrableTypes": "error",
+        "noMultiAssign": "error",
+        "noMultilineString": "error",
         "noNamespace": "error",
         "noNegationElse": "error",
         "noNestedTernary": "error",
         "noParameterAssign": "error",
         "noParameterProperties": "error",
-        "noRestrictedTypes": {
-          "level": "error",
-          "options": {
-            "types": {
-              "Element": {
-                "message": "Element is too generic",
-                "use": "HTMLElement"
-              }
-            }
-          }
-        },
         "noSubstr": "error",
         "noUnusedTemplateLiteral": "error",
         "noUselessElse": "error",
@@ -107,6 +87,7 @@
           }
         },
         "useConsistentBuiltinInstantiation": "error",
+        "useConsistentEnumValueType": "error",
         "useConsistentMemberAccessibility": {
           "level": "error",
           "options": {
@@ -126,6 +107,7 @@
           }
         },
         "useDefaultSwitchClause": "error",
+        "useDestructuring": "error",
         "useExplicitLengthCheck": "error",
         "useForOf": "error",
         "useGroupedAccessorPairs": "error",
@@ -142,13 +124,17 @@
         "useUnifiedTypeSignatures": "error"
       },
       "suspicious": {
-        "noAlert": "error",
         "noBitwiseOperators": "error",
         "noConstantBinaryExpressions": "error",
         "noDeprecatedImports": "error",
         "noEmptyBlockStatements": "error",
+        "noEqualsToNull": "error",
         "noEvolvingTypes": "error",
+        "noForIn": "error",
         "noImportCycles": "error",
+        "noNestedPromises": "error",
+        "noParametersOnlyUsedInRecursion": "error",
+        "noReturnAssign": "error",
         "noUnassignedVariables": "error",
         "noVar": "error",
         "useNumberToFixedDigitsArgument": "error",
