@@ -43,10 +43,11 @@ To enable Kagi, add the following to the ``engines`` seciton of
 """
 
 
+import html
+import typing as t
 from datetime import datetime, timedelta
 
-import typing as t
-import html
+from flask_babel import gettext
 
 from searx.extended_types import SXNG_Response
 from searx.result_types import EngineResults
@@ -77,7 +78,12 @@ kagi_categ: t.Literal["search", "images", "news", "videos"] = "search"
 base_url = "https://kagi.com"
 
 safe_search_map = {0: False, 1: True, 2: True}
-time_range_to_days_map: dict[TimeRangeType, int] = {"day": 1, "week": 7, "month": 30, "year": 365}
+time_range_to_days_map: dict[TimeRangeType, int] = {
+    "day": 1,
+    "week": 7,
+    "month": 30,
+    "year": 365,
+}
 
 api_key = ""
 """Kagi API key. Required for using this engine."""
@@ -88,7 +94,9 @@ def init(_):
         raise ValueError("api_key is required for using kagi")
 
     if kagi_categ not in ("search", "images", "news", "videos"):
-        raise ValueError(f"Unsupported category: {kagi_categ}")  # pyright: ignore[reportUnreachable]
+        raise ValueError(
+            f"Unsupported category: {kagi_categ}"
+        )  # pyright: ignore[reportUnreachable]
 
 
 def request(query: str, params: "OnlineParams"):
@@ -148,8 +156,8 @@ def response(resp: "SXNG_Response") -> EngineResults:
             res.add(
                 res.types.MainResult(
                     url=result["url"],
-                    title=html.unescape(result["title"]),
-                    content=html.unescape(result["snippet"]),
+                    title=html.unescape(result.get("title", "no title available")),
+                    content=html.unescape(result.get("snippet", "")),
                     thumbnail=result.get("image", {}).get("url") or "",
                     publishedDate=published_date,
                 )
@@ -158,15 +166,17 @@ def response(resp: "SXNG_Response") -> EngineResults:
             res.add(
                 res.types.Image(
                     url=result["url"],
-                    title=html.unescape(result.get("title")),
+                    title=html.unescape(result.get("title", "no title available")),
                     img_src=result.get("image", {}).get("url"),
-                    resolution=f"{result['image']['width']}x{result['image']['height']}",
-                    thumbnail_src=result.get("props", {}).get("thumbnail", {}).get("url"),
+                    resolution=f"{result.get('image', {}).get('width')}x{result.get('image', {}).get('height')}",
+                    thumbnail_src=result.get("props", {})
+                    .get("thumbnail", {})
+                    .get("url"),
                 )
             )
         elif kagi_categ == "videos":
             length: timedelta | None = None
-            if result["props"].get("duration"):
+            if result.get("props", {}).get("duration"):
                 length = parse_duration_string(result["props"]["duration"])
 
             res.add(
@@ -174,11 +184,13 @@ def response(resp: "SXNG_Response") -> EngineResults:
                     {
                         "template": "videos.html",
                         "url": result["url"],
-                        "title": html.unescape(result["title"]),
-                        "content": html.unescape(result["snippet"]),
+                        "title": html.unescape(
+                            result.get("title", "no title available")
+                        ),
+                        "content": html.unescape(result.get("snippet", "")),
                         "thumbnail": result.get("image", {}).get("url"),
                         "publishedDate": published_date,
-                        "author": result["props"].get("creator_name"),
+                        "author": result.get("props", {}).get("creator_name"),
                         "length": length,
                     }
                 )
