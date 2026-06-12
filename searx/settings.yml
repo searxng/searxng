@@ -2163,6 +2163,36 @@ engines:
     shortcut: tm
     disabled: true
 
+  - name: tonline
+    engine: tonline
+    shortcut: tol
+    disabled: true
+    inactive: true
+
+  - name: tonline images
+    engine: tonline
+    categories: images
+    tonline_categ: images
+    shortcut: toli
+    disabled: true
+    inactive: true
+
+  - name: tonline videos
+    engine: tonline
+    categories: videos
+    tonline_categ: videos
+    shortcut: tolv
+    disabled: true
+    inactive: true
+
+  - name: tonline news
+    engine: tonline
+    categories: news
+    tonline_categ: news
+    shortcut: toln
+    disabled: true
+    inactive: true
+
   # Requires Tor
   - name: torch
     engine: xpath
