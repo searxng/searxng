@@ -1979,6 +1979,27 @@ engines:
     engine: radio_browser
     shortcut: rb
 
+  - name: rawweb
+    engine: json_engine
+    shortcut: rw
+    categories: general
+    paging: true
+    search_url: 'https://api.rawweb.org/api/search?keyword={query}&page={pageno}&lang=*'
+    results_query: data
+    url_query: link
+    title_query: title
+    content_query: content
+    title_html_to_text: true
+    content_html_to_text: true
+    disabled: true
+    inactive: true
+    about:
+      website: https://rawweb.org
+      official_api_documentation:
+      use_official_api: false
+      require_api_key: false
+      results: JSON
+
   - name: reddit
     engine: reddit
     shortcut: re
