@@ -3,6 +3,7 @@
 
 - :py:obj:`searx.enginelib.EngineCache`
 - :py:obj:`searx.enginelib.Engine`
+- :py:obj:`searx.enginelib.EngineAbout`
 - :py:obj:`searx.enginelib.traits`
 
 There is a command line for developer purposes and for deeper analysis.  Here is
@@ -23,7 +24,7 @@ an example in which the command line is called in the development environment::
 
 """
 
-__all__ = ["EngineCache", "Engine", "ENGINES_CACHE"]
+__all__ = ["EngineCache", "Engine", "EngineAbout", "ENGINES_CACHE"]
 
 import typing as t
 import abc
@@ -31,6 +32,7 @@ from collections.abc import Callable
 import logging
 import string
 import typer
+import msgspec
 
 from ..cache import ExpireCacheSQLite, ExpireCacheCfg
 
@@ -178,6 +180,48 @@ class EngineCache:
         return ENGINES_CACHE.secret_hash(name=name)
 
 
+class EngineAbout(msgspec.Struct):
+    """Additional fields describing the engine.
+
+    .. code:: yaml
+
+       about:
+          website: https://example.com
+          wikidata_id: Q306656
+          official_api_documentation: https://example.com/api-doc
+          use_official_api: true
+          require_api_key: true
+          results: HTML
+    """
+
+    # pylint: disable=too-few-public-methods
+
+    website: str = ""
+    """Official web-site of the origin."""
+
+    wikidata_id: str = ""
+    """`Wikidata ID <https://www.wikidata.org/wiki/Wikidata:Identifiers>`_"""
+
+    official_api_documentation: str = ""
+    """URL of the official API (regardless of whether it is used)"""
+
+    use_official_api: bool = False
+    """SearXNG engine makes use of the official API or not"""
+    require_api_key: bool = False
+    """API requires a key or not."""
+
+    results: str = ""
+    """Data format of the source (online-engines: of the response)."""
+
+    language: str = ""
+    """If the engine supports only one language, this language is specified
+    here (``en``, ``de``, ``"no"`` or ..); otherwise, the value remains empty.
+
+    For the YAML configuration: think of the `YAML-Norway problem
+    <https://ruuda.nl/2023/the-yaml-document-from-hell#the-norway-problem>`_
+    """
+
+
 class Engine(abc.ABC):  # pylint: disable=too-few-public-methods
     """Class of engine instances build from YAML settings.
 
@@ -282,19 +326,8 @@ class Engine(abc.ABC):  # pylint: disable=too-few-public-methods
     inactive: bool
     """Remove the engine from the settings (*disabled & removed*)."""
 
-    about: dict[str, dict[str, str]]
-    """Additional fields describing the engine.
-
-    .. code:: yaml
-
-       about:
-          website: https://example.com
-          wikidata_id: Q306656
-          official_api_documentation: https://example.com/api-doc
-          use_official_api: true
-          require_api_key: true
-          results: HTML
-    """
+    about: EngineAbout
+    """Additional fields describing the engine."""
 
     using_tor_proxy: bool
     """Using tor proxy (``true``) or not (``false``) for this engine."""
