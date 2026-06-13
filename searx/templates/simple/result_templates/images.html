@@ -1,28 +1,69 @@
-<article class="result result-images {% if result['category'] %}category-{{ result['category'] }}{% endif %}">{{- "" -}}
-        <a {% if results_on_new_tab %}target="_blank" rel="noopener noreferrer"{% else %}rel="noreferrer"{% endif %} href="{{ result.img_src }}">{{- "" -}}
-                <img class="image_thumbnail" {% if results_on_new_tab %}target="_blank" rel="noopener noreferrer"{% else %}rel="noreferrer"{% endif %} src="{% if result.thumbnail_src %}{{ image_proxify(result.thumbnail_src) }}{% else %}{{ image_proxify(result.img_src) }}{% endif %}" alt="{{ result.title|striptags }}" loading="lazy" width="200" height="200">{{- "" -}}
-		{%- if result.resolution %} <span class="image_resolution">{{ result.resolution }}</span> {%- endif -%}
-		<span class="title">{{ result.title|striptags }}</span>{{- "" -}}
-                <span class="source">{{- result.parsed_url.netloc -}}</span>{{- "" -}}
-        </a>{{- "" -}}
-        <div class="detail swipe-horizontal">{{- "" -}}
-                <a class="result-detail-close" href="#">{{ icon('close') }}</a>{{- "" -}}
-                <a class="result-detail-previous" href="#">{{ icon('navigate-left') }}</a>{{- "" -}}
-                <a class="result-detail-next" href="#">{{ icon('navigate-right') }}</a>{{- "" -}}
-                <a class="result-images-source" {% if results_on_new_tab %}target="_blank" rel="noopener noreferrer"{% else %}rel="noreferrer"{% endif %} href="{{ result.img_src }}">
-                        <img src="" data-src="{{ image_proxify(result.img_src) }}" alt="{{ result.title|striptags }}">{{- "" -}}
-                </a>{{- "" -}}
-                <div class="result-images-labels">{{- "" -}}
-                        <h4>{{ result.title|striptags }}</h4>{{- "" -}}
-                        <p class="result-content">{%- if result.content %}{{ result.content|striptags }}{% else %}&nbsp;{% endif -%}</p>{{- "" -}}
-                        <hr>{{- "" -}}
-                        <p class="result-author">{%- if result.author %}<span>{{ _('Author') }}:</span>{{ result.author|striptags }}{% else %}&nbsp;{% endif -%}</p>{{- "" -}}
-                        <p class="result-resolution">{%- if result.resolution %}<span>{{ _('Resolution') }}:</span>{{ result.resolution }}{% else %}&nbsp;{% endif -%}</p>{{- "" -}}
-                        <p class="result-format">{%- if result.img_format %}<span>{{ _('Format') }}:</span>{{ result.img_format }}{% else %}&nbsp;{% endif -%}</p>{{- "" -}}
-                        <p class="result-filesize">{%- if result.filesize %}<span>{{ _('Filesize') }}:</span>{{ result.filesize}}{% else %}&nbsp;{% endif -%}</p>{{- "" -}}
-                        <p class="result-source">{%- if result.source %}<span>{{ _('Source') }}:</span>{{ result.source }}{% else %}&nbsp;{% endif -%}</p>{{- "" -}}
-                        <p class="result-engine"><span>{{ _('Engine') }}:</span>{{ result.engine }}</p>{{- "" -}}{{- "" -}}
-                        <p class="result-url"><span>{{ _('View source') }}:</span><a {% if results_on_new_tab %}target="_blank" rel="noopener noreferrer"{% else %}rel="noreferrer"{% endif %} href="{{ result.url }}">{{ result.url }}</a></p>{{- "" -}}
-                </div>{{- "" -}}
-        </div>{{- "" -}}
+{% macro _target(url, new_tab=False) -%}
+  {%- if new_tab %} target="_blank" rel="noopener noreferrer"
+  {%- else %} rel="noreferrer"
+  {%- endif %}
+{%- endmacro %}
+
+{% macro _label(label, value) -%}
+  {%- if value -%}<span>{{ label }}:</span>{{ value }}
+  {%- else %} &nbsp;
+  {%- endif -%}
+{%- endmacro %}
+
+<article class="result result-images
+  {%- if result["category"] %} category-{{ result["category"] }}
+  {%- endif -%}"
+>
+  <a {{ _target(results_on_new_tab) }} href="{{ result.img_src }}">
+    <img class="image_thumbnail" {{ _target(results_on_new_tab) }}
+      src="
+      {%- if result.thumbnail_src -%}
+      {{ image_proxify(result.thumbnail_src) }}
+      {%- else -%}
+      {{ image_proxify(result.img_src) }}
+      {%- endif -%}
+      "
+      alt="{{ result.title | striptags }}" loading="lazy" width="200" height="200"
+      {{- "" -}}
+    >
+    {%- if result.resolution %}
+      <span class="image_resolution">{{ result.resolution }}</span>
+    {%- endif -%}
+    <span class="title">{{ result.title | striptags }}</span>
+    <span class="source">{{- result.parsed_url.netloc -}}</span>
+  </a>
+  <div class="detail swipe-horizontal">
+    <a class="result-detail-close" href="#">{{ icon("close") }}</a>
+    <a class="result-detail-previous" href="#">{{ icon("navigate-left") }}</a>
+    <a class="result-detail-next" href="#">{{ icon("navigate-right") }}</a>
+    <a class="result-images-source" {{ _target(results_on_new_tab) }} href="{{ result.img_src }}">
+      <img src=""
+        data-src="{{ image_proxify(result.img_src) }}"
+        alt="{{ result.title | striptags }}">
+    </a>
+    <div class="result-images-labels">
+      <h4>{{ result.title | striptags }}</h4>
+      <p class="result-content">
+        {%- if result.content %} {{ result.content | striptags }}
+        {%- else %} &nbsp;
+        {%- endif -%}
+      </p>
+      <hr>
+      <p class="result-author">{{ _label(_("Author"), result.author) }}</p>
+      <p class="result-resolution">{{ _label(_("Resolution"), result.resolution) }}</p>
+      <p class="result-format">
+        <span>{{ _("Image formats") }}:</span>
+        {{- "" -}}<a {{ _target(results_on_new_tab) }} href="{{ result.img_src }}">{{- result.img_format or _("original format") -}}</a>
+        {%- for ref in result.formats -%}
+          &nbsp;| <a {{ _target(results_on_new_tab) }} href="{{ ref.url }}">{{ ref.label }}</a>
+        {%- endfor %}
+      </p>
+      <p class="result-filesize">{{ _label(_("Filesize"), result.filesize) }}</p>
+      <p class="result-source">{{ _label(_("Source"), result.source) }}</p>
+      <p class="result-engine">{{ _label(_("Engine"), result.engine) }}</p>
+      <p class="result-url"><span>{{ _("View source") }}:</span>{{- "" -}}
+        <a {{ _target(results_on_new_tab) }} href="{{ result.url }}">{{ result.url }}</a>
+      </p>
+    </div>
+  </div>
 </article>

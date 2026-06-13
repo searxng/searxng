@@ -24,6 +24,8 @@ __all__ = [
     "Code",
     "Paper",
     "File",
+    "Image",
+    "ImageRef",
 ]
 
 import typing as t
@@ -35,7 +37,7 @@ from .keyvalue import KeyValue
 from .code import Code
 from .paper import Paper
 from .file import File
-from .image import Image
+from .image import Image, ImageRef
 
 
 class ResultList(list[Result | LegacyResult], abc.ABC):

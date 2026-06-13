@@ -63,6 +63,7 @@ def response(resp: "SXNG_Response"):
                 url=_fix_url(result["slug"]),
                 thumbnail_src=_fix_url(result["png"]),
                 img_src=_fix_url(result["png512"]),
+                img_format="PNG",
                 author=result["team_name"],
             )
         )
