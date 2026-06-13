@@ -2698,6 +2698,25 @@ engines:
     categories: videos
     disabled: true
 
+  - name: reloado
+    engine: xpath
+    paging: true
+    search_url: https://reloado.com/search?q={query}&page={pageno}
+    results_xpath: //div[contains(@class, 'result-item')]
+    url_xpath: .//div[contains(@class, 'result-title')]/a/@href
+    title_xpath: .//div[contains(@class, 'result-title')]/a
+    content_xpath: .//div[contains(@class, 'result-excerpt')]
+    shortcut: rel
+    categories: general
+    disabled: true
+    about:
+      website: https://reloado.com
+      official_api_documentation:
+      use_official_api: false
+      require_api_key: false
+      results: HTML
+      language: de
+
   - name: repology
     engine: repology
     shortcut: rep
