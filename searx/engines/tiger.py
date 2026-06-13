@@ -134,9 +134,12 @@ def response(resp: "SXNG_Response") -> EngineResults:
 
     if tiger_category == "Websuche":
         for result in eval_xpath_list(doc, "//div[@id='mainContainer']//table/tr"):
+            url = extract_text(eval_xpath(result, ".//a[contains(@class, 'weblink')]/@href"))
+            if not url:
+                continue
             res.add(
                 res.types.MainResult(
-                    url=extract_text(eval_xpath(result, ".//a[contains(@class, 'weblink')]/@href")),
+                    url=url,
                     title=extract_text(eval_xpath(result, ".//a[contains(@class, 'weblink')]")) or "",
                     content=extract_text(eval_xpath(result, ".//*[contains(@class, 'webbodynopic')]")) or "",
                 )
