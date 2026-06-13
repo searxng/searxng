@@ -140,7 +140,9 @@ def response(resp: "SXNG_Response"):
         if "u" not in result:
             continue
 
-        res.add(res.types.MainResult(url=result["u"], title=result["t"], content=html_to_text(result["a"])))
+        res.add(
+            res.types.MainResult(url=result["u"], title=html_to_text(result["t"]), content=html_to_text(result["a"]))
+        )
 
     # link to next page
     next_page_path = res_json["results"][-1].get("n")
