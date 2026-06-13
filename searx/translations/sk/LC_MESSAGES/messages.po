@@ -20,7 +20,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-05-25 10:44+0000\n"
+"POT-Creation-Date: 2026-06-13 11:31+0000\n"
 "PO-Revision-Date: 2026-05-19 12:08+0000\n"
 "Last-Translator: return42 <return42@noreply.codeberg.org>\n"
 "Language: sk\n"
@@ -74,7 +74,7 @@ msgid "videos"
 msgstr "videá"
 
 #. CATEGORY_NAMES['RADIO']
-#: searx/engines/radio_browser.py:146 searx/searxng.msg
+#: searx/engines/radio_browser.py:159 searx/searxng.msg
 msgid "radio"
 msgstr "rádio"
 
@@ -548,8 +548,8 @@ msgstr "Odpovedané"
 msgid "No item found"
 msgstr "Nič sa nenašlo"
 
-#: searx/engines/qwant.py:291
-#: searx/templates/simple/result_templates/images.html:23 searx/webapp.py:328
+#: searx/engines/qwant.py:258
+#: searx/templates/simple/result_templates/images.html:62 searx/webapp.py:328
 msgid "Source"
 msgstr "Zdroj"
 
@@ -557,15 +557,15 @@ msgstr "Zdroj"
 msgid "Error loading the next page"
 msgstr "Chyba pri načítaní ďalšej stránky"
 
-#: searx/webapp.py:479 searx/webapp.py:877
+#: searx/webapp.py:478 searx/webapp.py:876
 msgid "Invalid settings, please edit your preferences"
 msgstr "Nesprávne nastavenia, prosím upravte svoje predvoľby"
 
-#: searx/webapp.py:495
+#: searx/webapp.py:494
 msgid "Invalid settings"
 msgstr "Nesprávne nastavenia"
 
-#: searx/webapp.py:571 searx/webapp.py:661
+#: searx/webapp.py:570 searx/webapp.py:660
 msgid "search error"
 msgstr "chyba vyhľadávania"
 
@@ -662,19 +662,19 @@ msgstr "{title} (ZASTARANÉ)"
 msgid "This entry has been superseded by"
 msgstr "Táto položka bola nahradená"
 
-#: searx/engines/qwant.py:293
+#: searx/engines/qwant.py:260
 msgid "Channel"
 msgstr "Kanál"
 
-#: searx/engines/radio_browser.py:148
+#: searx/engines/radio_browser.py:161
 msgid "bitrate"
 msgstr "bitrate"
 
-#: searx/engines/radio_browser.py:149
+#: searx/engines/radio_browser.py:162
 msgid "votes"
 msgstr "hlasy"
 
-#: searx/engines/radio_browser.py:150
+#: searx/engines/radio_browser.py:163
 msgid "clicks"
 msgstr "kliknutia"
 
@@ -926,7 +926,7 @@ msgstr "Zobrazenia"
 
 #: searx/templates/simple/macros.html:43
 #: searx/templates/simple/result_templates/file.html:18
-#: searx/templates/simple/result_templates/images.html:19
+#: searx/templates/simple/result_templates/images.html:52
 #: searx/templates/simple/result_templates/paper.html:14
 msgid "Author"
 msgstr "Autor"
@@ -1619,7 +1619,7 @@ msgid "This site did not provide any description."
 msgstr "Táto stránka neposkytuje žiaden popis."
 
 #: searx/templates/simple/result_templates/file.html:30
-#: searx/templates/simple/result_templates/images.html:22
+#: searx/templates/simple/result_templates/images.html:61
 #: searx/templates/simple/result_templates/torrent.html:18
 msgid "Filesize"
 msgstr "Veľkosť súboru"
@@ -1637,19 +1637,23 @@ msgstr "Typ"
 msgid "Download"
 msgstr ""
 
-#: searx/templates/simple/result_templates/images.html:20
+#: searx/templates/simple/result_templates/images.html:53
 msgid "Resolution"
 msgstr "Rozlíšenie"
 
-#: searx/templates/simple/result_templates/images.html:21
-msgid "Format"
-msgstr "Formát"
+#: searx/templates/simple/result_templates/images.html:55
+msgid "Image formats"
+msgstr ""
 
-#: searx/templates/simple/result_templates/images.html:24
+#: searx/templates/simple/result_templates/images.html:56
+msgid "original format"
+msgstr ""
+
+#: searx/templates/simple/result_templates/images.html:63
 msgid "Engine"
 msgstr "Vyhľadávač"
 
-#: searx/templates/simple/result_templates/images.html:25
+#: searx/templates/simple/result_templates/images.html:64
 msgid "View source"
 msgstr "Zobraziť zdroj"
 
@@ -2389,4 +2393,7 @@ msgstr "skryť video"
 
 #~ msgid "Number of results"
 #~ msgstr "Počet výsledkov"
+
+#~ msgid "Format"
+#~ msgstr "Formát"
 
