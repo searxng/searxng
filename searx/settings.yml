@@ -330,12 +330,12 @@ engines:
     url_xpath: ./a/@href
     title_xpath: ./a/h3
     content_xpath: ./div
+    language: "no"
     about:
       website: https://abcnyheter.no
       use_official_api: false
       require_api_key: false
       results: HTML
-      language: "no"
 
   - name: acfun
     engine: acfun
@@ -2808,13 +2808,13 @@ engines:
     shortcut: rel
     categories: general
     disabled: true
+    language: de
     about:
       website: https://reloado.com
       official_api_documentation:
       use_official_api: false
       require_api_key: false
       results: HTML
-      language: de
 
   - name: repology
     engine: repology
@@ -2927,13 +2927,13 @@ engines:
     content_xpath: //div[@class="synonyms-list-group"]
     title_xpath: //div[@class="upper-synonyms"]/a
     no_result_for_http_status: [404]
+    language: de
     about:
       website: https://www.woxikon.de/
       wikidata_id:  # No Wikidata ID
       use_official_api: false
       require_api_key: false
       results: HTML
-      language: de
 
   - name: tootfinder
     engine: tootfinder
@@ -2988,13 +2988,13 @@ engines:
     content_xpath: //li/div[@class="searchresult"]
     categories: general
     disabled: true
+    language: fr
     about:
       website: https://wikimini.org/
       wikidata_id: Q3568032
       use_official_api: false
       require_api_key: false
       results: HTML
-      language: fr
 
   - name: wttr.in
     engine: wttr

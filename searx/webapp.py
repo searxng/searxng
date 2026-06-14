@@ -1075,10 +1075,9 @@ def engine_descriptions():
         result[engine] = description
 
     # overwrite by about:description (from settings)
-    for engine_name, engine_mod in engines.items():
-        descr = getattr(engine_mod, 'about', {}).get('description', None)
-        if descr is not None:
-            result[engine_name] = [descr, "SearXNG config"]
+    for eng_name, eng_obj in engines.items():
+        if eng_obj.about.description:
+            result[eng_name] = [eng_obj.about.description, "SearXNG config"]
 
     return jsonify(result)
 

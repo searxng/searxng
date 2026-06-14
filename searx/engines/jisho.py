@@ -13,8 +13,8 @@ about = {
     "use_official_api": True,
     "require_api_key": False,
     "results": 'JSON',
-    "language": 'ja',
 }
+language = "ja"
 
 categories = ['dictionaries']
 paging = False
@@ -110,8 +110,8 @@ def get_infobox(alt_forms, result_url, definitions):
     # definitions
     infobox_content.append(
         '''
-        <small><a href="https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project">JMdict</a> 
-        and <a href="https://www.edrdg.org/enamdict/enamdict_doc.html">JMnedict</a> 
+        <small><a href="https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project">JMdict</a>
+        and <a href="https://www.edrdg.org/enamdict/enamdict_doc.html">JMnedict</a>
         by <a href="https://www.edrdg.org/edrdg/licence.html">EDRDG</a>, CC BY-SA 3.0.</small>
         <ul>
     '''

@@ -11,6 +11,7 @@ __all__ = [
     "PROCESSORS",
     "ParamTypes",
     "RequestParams",
+    "ProcessorType",
 ]
 
 import typing as t
@@ -26,6 +27,14 @@ from .online_currency import OnlineCurrencyProcessor, OnlineCurrenciesParams
 from .online_url_search import OnlineUrlSearchProcessor, OnlineUrlSearchParams
 
 logger = logger.getChild("search.processors")
+
+ProcessorType = t.Literal[
+    "offline",
+    "online",
+    "online_currency",
+    "online_dictionary",
+    "online_url_search",
+]
 
 OnlineParamTypes: t.TypeAlias = OnlineParams | OnlineDictParams | OnlineCurrenciesParams | OnlineUrlSearchParams
 OfflineParamTypes: t.TypeAlias = RequestParams

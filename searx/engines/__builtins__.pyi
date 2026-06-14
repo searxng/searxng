@@ -5,19 +5,19 @@ intended monkey patching of the engine modules.
 .. attention::
 
    Monkey-patching modules is a practice from the past that shouldn't be
-   expanded upon.  In the long run, there should be an engine class that can be
-   inherited.  However, as long as this class doesn't exist, and as long as all
-   engine modules aren't converted to an engine class, these builtin types will
-   still be needed.
+   expanded upon.  In the long run, engines should be instances of
+   :py:obj:`searx.enginelib.Engine`. However, as long as long as all engine
+   modules aren't converted to this class, these builtin types will still be
+   needed.
 """
 
 import logging
 from searx.enginelib import traits as _traits
 
 logger: logging.Logger
-supported_languages: str
-language_aliases: str
 language_support: bool
+language: str
+region: str
 traits: _traits.EngineTraits
 
 # from searx.engines.ENGINE_DEFAULT_ARGS

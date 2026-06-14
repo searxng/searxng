@@ -58,8 +58,8 @@ Configured Engines
       {% for mod in engines %}
 
       * - `{{mod.name}} <{{mod.about and mod.about.website}}>`_
-          {%- if mod.about and  mod.about.language %}
-          ({{mod.about.language | upper}})
+          {%- if mod.language %}
+          ({{mod.language | upper}})
           {%- endif %}
         - ``!{{mod.shortcut}}``
         - {%- if 'searx.engines.' + mod.__name__ in documented_modules %}

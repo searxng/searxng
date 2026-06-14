@@ -17,37 +17,44 @@ from os.path import realpath, dirname
 
 import types
 import inspect
+import msgspec
 
 from searx import logger, settings
 from searx.utils import load_module
 
-if t.TYPE_CHECKING:
-    from searx.enginelib import Engine
+from searx.enginelib import Engine, EngineAbout
 
 logger = logger.getChild('engines')
 ENGINE_DIR = dirname(realpath(__file__))
 
 # Defaults for the namespace of an engine module, see load_engine()
-ENGINE_DEFAULT_ARGS: dict[str, int | str | list[t.Any] | dict[str, t.Any] | bool] = {
+ENGINE_DEFAULT_ARGS: dict[str, t.Any] = {
     # Common options in the engine module
     "engine_type": "online",
     "paging": False,
+    "max_page": 0,
     "time_range_support": False,
     "safesearch": False,
+    "language_support": False,
     # settings.yml
     "categories": ["general"],
+    "language": "",
+    "region": "",
     "enable_http": False,
     "shortcut": "-",
     "timeout": settings["outgoing"]["request_timeout"],
     "display_error_messages": True,
     "disabled": False,
     "inactive": False,
-    "about": {},
+    "about": EngineAbout(),
     "using_tor_proxy": False,
     "send_accept_language_header": True,
     "tokens": [],
-    "max_page": 0,
+    "weight": 1.0,
 }
+"""Default values that are set in an engine of type *module*, please compare
+with the class :py:obj:`searx.enginelib.Engine`."""
+
 # set automatically when an engine does not have any tab category
 DEFAULT_CATEGORY = 'other'
 
@@ -178,13 +185,27 @@ def set_loggers(engine: "Engine|types.ModuleType", engine_name: str):
 
 def update_engine_attributes(engine: "Engine | types.ModuleType", engine_data: dict[str, t.Any]):
     # set engine attributes from engine_data
+
+    kvargs: dict[str, t.Any]
+    if isinstance(engine.about, EngineAbout):
+        kvargs = {**msgspec.to_builtins(engine.about), **engine_data.get("about", {})}
+    else:
+        kvargs = {**engine.about, **engine_data.get("about", {})}
+
+    try:
+        engine.about = EngineAbout(**kvargs)
+    except TypeError as exc:
+        raise TypeError(
+            f"engine {engine_data['name']} ({engine_data['engine']}) - in the about section --> {exc}"
+        ) from exc
+
     for param_name, param_value in engine_data.items():
+        if param_name == "about":
+            continue
         if param_name == 'categories':
             if isinstance(param_value, str):
                 param_value = list(map(str.strip, param_value.split(',')))
             engine.categories = param_value  # type: ignore
-        elif hasattr(engine, 'about') and param_name == 'about':
-            engine.about = {**engine.about, **engine_data['about']}  # type: ignore
         else:
             setattr(engine, param_name, param_value)
 

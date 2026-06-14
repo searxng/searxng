@@ -16,20 +16,17 @@ from lxml import html
 
 from searx.utils import eval_xpath_list, eval_xpath, extract_text, get_embeded_stream_url, ElementType
 from searx.result_types import EngineResults
+from searx.enginelib import EngineAbout
 
 if t.TYPE_CHECKING:
     from searx.extended_types import SXNG_Response
     from searx.search.processors import OnlineParams
 
-about = {
-    "website": "https://www.t-online.de",
-    "wikidata_id": "Q590940",
-    "official_api_documentation": None,
-    "use_official_api": False,
-    "require_api_key": False,
-    "results": "HTML",
-    "language": "de",
-}
+about = EngineAbout(
+    website="https://www.t-online.de",
+    wikidata_id="Q590940",
+    results="HTML",
+)
 
 paging = True
 time_range_support = True
@@ -43,6 +40,8 @@ time_range_map = {"day": "d", "week": "w", "month": "m", "year": "y"}
 # result provider has to be specified during pagination, pagination can alternatively
 # use "tonline" to only search for results from t-online news articles
 tonline_channel_map = {"images": "flickr", "videos": "yt"}
+
+language = "de"
 
 
 def init(_):

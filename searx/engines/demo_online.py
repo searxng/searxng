@@ -25,6 +25,7 @@ import typing as t
 
 from urllib.parse import urlencode
 from searx.result_types import EngineResults
+from searx.enginelib import EngineAbout
 
 if t.TYPE_CHECKING:
     from searx.extended_types import SXNG_Response
@@ -43,14 +44,14 @@ page_size = 20
 search_api = "https://api.artic.edu/api/v1/artworks/search"
 image_api = "https://www.artic.edu/iiif/2/"
 
-about = {
-    "website": "https://www.artic.edu",
-    "wikidata_id": "Q239303",
-    "official_api_documentation": "http://api.artic.edu/docs/",
-    "use_official_api": True,
-    "require_api_key": False,
-    "results": "JSON",
-}
+about = EngineAbout(
+    website="https://www.artic.edu",
+    wikidata_id="Q239303",
+    official_api_documentation="http://api.artic.edu/docs/",
+    use_official_api=True,
+    require_api_key=False,
+    results="JSON",
+)
 
 
 # if there is a need for globals, use a leading underline

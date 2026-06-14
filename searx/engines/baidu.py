@@ -23,8 +23,8 @@ about = {
     "use_official_api": False,
     "require_api_key": False,
     "results": "JSON",
-    "language": "zh",
 }
+language = "zh"
 
 paging = True
 categories = []

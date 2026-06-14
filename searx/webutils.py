@@ -323,7 +323,7 @@ def group_engines_in_tab(engines: "Iterable[Engine]") -> List[Tuple[str, "Iterab
         return (group[0] == NO_SUBGROUPING, group[0].lower())
 
     def engine_sort_key(engine):
-        return (engine.about.get('language', ''), engine.name)
+        return (engine.language, engine.name)
 
     tabs = list(get_setting('categories_as_tabs').keys())
     subgroups = itertools.groupby(sorted(engines, key=get_subgroup), get_subgroup)
