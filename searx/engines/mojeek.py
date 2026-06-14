@@ -79,6 +79,11 @@ def request(query, params):
         region_param: traits.get_region(params["searxng_locale"], traits.custom["region_all"]),
     }
 
+    if search_type == "images":
+        # At least in the impersonate mode we have to overwrite the "Accept" header
+        # from curl_cffi default headers:
+        params["headers"]["Accept"] = "*/*"
+
     return params
 
 
