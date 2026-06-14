@@ -27,8 +27,9 @@ about = {
     'use_official_api': True,
     'require_api_key': False,
     'results': 'JSON',
-    'language': 'de',
 }
+language = "de"
+
 categories = ['general', 'news']
 paging = True
 

@@ -27,8 +27,8 @@ about = {
     'official_api_documentation': None,
     'require_api_key': False,
     'results': 'HTML',
-    'language': 'de',
 }
+language = "de"
 paging = True
 categories = ['shopping']
 

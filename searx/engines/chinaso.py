@@ -70,13 +70,13 @@ about = {
     "use_official_api": False,
     "require_api_key": False,
     "results": "JSON",
-    "language": "zh",
 }
 
 paging = True
 time_range_support = True
 results_per_page = 10
 categories = []
+language = "zh"
 
 ChinasoCategoryType = t.Literal['news', 'videos', 'images']
 """ChinaSo supports news, videos, images search.

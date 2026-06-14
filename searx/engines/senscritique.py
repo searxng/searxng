@@ -13,8 +13,8 @@ about = {
     "use_official_api": False,
     "require_api_key": False,
     "results": 'JSON',
-    'language': 'fr',
 }
+language = "fr"
 
 categories = ['movies']
 paging = True

@@ -54,8 +54,8 @@ about = {
     "use_official_api": True,
     "require_api_key": True,
     "results": "JSON",
-    "language": "en",
 }
+language = "en"
 
 CACHE: EngineCache
 """Persistent (SQLite) key/value cache that deletes its values after ``expire``

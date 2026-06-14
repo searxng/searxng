@@ -55,7 +55,7 @@ about = {
     'official_api_documentation': 'https://www.elastic.co/guide/en/elasticsearch/reference/current/search-search.html',
     'use_official_api': True,
     'require_api_key': False,
-    'format': 'JSON',
+    "results": "JSON",
 }
 
 base_url = 'http://localhost:9200'

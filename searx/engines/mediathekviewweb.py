@@ -11,9 +11,9 @@ about = {
     "use_official_api": True,
     "require_api_key": False,
     "results": 'JSON',
-    "language": "de",
 }
 
+language = "de"
 categories = ['videos']
 paging = True
 time_range_support = False

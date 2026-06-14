@@ -24,7 +24,7 @@ import typing as t
 import json
 
 from searx.result_types import EngineResults
-from searx.enginelib import EngineCache
+from searx.enginelib import EngineCache, EngineAbout
 
 if t.TYPE_CHECKING:
     from searx.search.processors import RequestParams
@@ -35,13 +35,11 @@ categories = ["general"]
 disabled = True
 timeout = 2.0
 
-about = {
-    "wikidata_id": None,
-    "official_api_documentation": None,
-    "use_official_api": False,
-    "require_api_key": False,
-    "results": "JSON",
-}
+language = "en"
+about = EngineAbout(
+    results="JSON",
+    description="Demo offline engine Engine with results in the English language.",
+)
 
 # if there is a need for globals, use a leading underline
 _my_offline_engine: str = ""

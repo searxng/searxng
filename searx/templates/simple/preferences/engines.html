@@ -60,8 +60,8 @@
                 {%- endif -%}
                 <label for="{{ engine_id }}">
                   {{- ' ' -}}{{- search_engine.name -}}
-                  {%- if search_engine.about and search_engine.about.language -%}
-                    {{- ' ' -}}({{search_engine.about.language | upper}})
+                  {%- if search_engine.language -%}
+                    {{- ' ' -}}({{search_engine.language | upper}})
                   {%- endif -%}
                   </label>
                   {{- engine_about(search_engine) -}}

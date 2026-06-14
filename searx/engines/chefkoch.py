@@ -10,8 +10,8 @@ about = {
     'use_official_api': False,
     'require_api_key': False,
     'results': 'JSON',
-    'language': 'de',
 }
+language = "de"
 
 paging = True
 categories = []

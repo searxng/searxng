@@ -16,12 +16,12 @@ about = {
     "use_official_api": False,
     "require_api_key": False,
     "results": "HTML",
-    "language": "zh",
 }
 
 # Engine Configuration
 categories = ["videos"]
 paging = True
+language = "zh"
 
 # Base URL
 base_url = "https://www.acfun.cn"

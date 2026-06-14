@@ -77,7 +77,7 @@ from searx.utils import gen_useragent, html_to_text, parse_duration_string
 
 about = {
     "website": "https://presearch.io",
-    "wikidiata_id": "Q7240905",
+    "wikidata_id": "Q7240905",
     "official_api_documentation": "https://docs.presearch.io/nodes/api",
     "use_official_api": False,
     "require_api_key": False,

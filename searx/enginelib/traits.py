@@ -142,11 +142,11 @@ class EngineTraits:
         """
 
         if self.data_type == "traits_v1":
-            self._set_traits_v1(engine)
+            self._set_traits_v1(engine)  # pyright: ignore[reportArgumentType]
         else:
             raise TypeError("engine traits of type %s is unknown" % self.data_type)
 
-    def _set_traits_v1(self, engine: "Engine | types.ModuleType") -> None:
+    def _set_traits_v1(self, engine: "Engine") -> None:
         # For an engine, when there is `language: ...` in the YAML settings the engine
         # does support only this one language (region)::
         #
@@ -159,22 +159,25 @@ class EngineTraits:
 
         _msg = "settings.yml - engine: '%s' / %s: '%s' not supported"
 
-        languages = traits.languages
-        if hasattr(engine, "language"):
-            if engine.language not in languages:
-                raise ValueError(_msg % (engine.name, "language", engine.language))
-            traits.languages = {engine.language: languages[engine.language]}
+        if engine.language:
+            if engine.language_support:
+                if not len(traits.languages) > 1:
+                    raise ValueError(
+                        f"engine {engine.name}: activated language_support with just one or less languages"
+                    )
+                if engine.language not in traits.languages:
+                    raise ValueError(_msg % (engine.name, "language", engine.language))
+                traits.languages = {engine.language: traits.languages[engine.language]}
 
-        regions = traits.regions
-        if hasattr(engine, "region"):
-            if engine.region not in regions:
+        if engine.region:
+            if engine.region not in traits.regions:
                 raise ValueError(_msg % (engine.name, "region", engine.region))
-            traits.regions = {engine.region: regions[engine.region]}
+            traits.regions = {engine.region: traits.regions[engine.region]}
 
         engine.language_support = bool(traits.languages or traits.regions)
 
         # set the copied & modified traits in engine's namespace
-        engine.traits = traits  # pyright: ignore[reportAttributeAccessIssue]
+        engine.traits = traits
 
 
 class EngineTraitsMap(dict[str, EngineTraits]):

@@ -26,8 +26,8 @@ about = {
     "use_official_api": False,
     "require_api_key": False,
     "results": "HTML",
-    "language": "ko",
 }
+language = "ko"
 
 categories = []
 paging = True

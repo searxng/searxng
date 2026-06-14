@@ -79,6 +79,9 @@ from json import loads
 from urllib.parse import urlencode
 from searx.utils import to_string, html_to_text
 from searx.network import raise_for_httperror
+from searx.enginelib import EngineAbout
+
+about = EngineAbout()
 
 search_url = None
 """

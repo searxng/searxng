@@ -36,7 +36,7 @@ test.pylint() {
         build_msg TEST "[pylint] ./searx/engines"
         # shellcheck disable=SC2086
         pylint ${PYLINT_OPTIONS} ${PYLINT_VERBOSE} \
-            --additional-builtins="traits,supported_languages,language_aliases,logger,categories" \
+            --additional-builtins="traits,logger,categories" \
             searx/engines
 
         build_msg TEST "[pylint] ./searx ./searxng_extra ./tests"
