@@ -3311,6 +3311,36 @@ engines:
     base_url: https://info.searchtoday.site
     disabled: true
 
+  - name: sina
+    engine: json_engine
+    shortcut: sina
+    categories: news
+    paging: true
+    first_page_num: 1
+    search_url: https://search.sina.com.cn/api/search?q={query}&tp=mix&sort=0&page={pageno}&size=10&from=search_result
+    results_query: data/list
+    url_query: url
+    title_query: title
+    content_query: intro
+    thumbnail_query: thumb
+    title_html_to_text: true
+    time_range_map:
+      day: d
+      week: w
+      month: m
+      year: y
+    time_range_support: true
+    time_range_url: "&from=advanced_search&time={time_range_val}"
+    disabled: true
+    inactive: true
+    language: zh
+    about:
+      website: https://search.sina.com.cn
+      wikidata_id: Q938668
+      use_official_api: false
+      require_api_key: false
+      results: JSON
+
   # - name: webcrawler
   #   engine: s1search
   #   shortcut: wc
