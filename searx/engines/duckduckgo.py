@@ -203,6 +203,7 @@ about: dict[str, str | bool] = {
 categories: list[str] = ["general", "web"]
 paging: bool = True
 time_range_support: bool = True
+language_support = True
 safesearch: bool = True
 """DDG-lite: user can't select but the results are filtered."""
 

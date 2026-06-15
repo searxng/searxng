@@ -26,6 +26,7 @@ about = {
 # Engine configuration
 paging = True
 time_range_support = True
+language_support = True
 results_per_page = 20
 categories = ["videos"]
 

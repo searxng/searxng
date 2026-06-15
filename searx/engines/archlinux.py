@@ -35,6 +35,7 @@ about = {
 categories = ["it", "software wikis"]
 paging = True
 main_wiki = "wiki.archlinux.org"
+language_support = True
 
 
 def request(query, params):

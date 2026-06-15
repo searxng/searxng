@@ -34,6 +34,7 @@ about = {
 categories = ["general", "social media"]
 paging = True
 time_range_support = True
+language_support = True
 
 base_url = "https://boardreader.com"
 time_range_map = {"day": "1", "week": "7", "month": "30", "year": "365"}

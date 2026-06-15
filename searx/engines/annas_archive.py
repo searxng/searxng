@@ -64,6 +64,7 @@ about: dict[str, t.Any] = {
 # engine dependent config
 categories = ["files", "books"]
 paging: bool = True
+language_support = True
 
 # search-url
 base_url: list[str] | str = []

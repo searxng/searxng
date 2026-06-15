@@ -131,6 +131,7 @@ max_page = 18
 """Tested 18 pages maximum (argument ``page``), to be save max is set to 20."""
 
 time_range_support = True
+language_support = True
 safesearch = True
 
 time_range_dict = {"day": "d", "week": "w", "month": "m", "year": "y"}

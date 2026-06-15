@@ -40,6 +40,7 @@ categories = ["videos"]
 paging = True
 page_size = 10
 
+language_support = True
 time_range_support = True
 time_delta_dict = {
     "day": timedelta(days=1),

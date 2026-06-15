@@ -61,6 +61,7 @@ about: dict[str, t.Any] = {
 
 categories: list[str] = ["files", "books"]
 paging: bool = True
+language_support = True
 base_url: str = "https://zlibrary-global.se"
 
 zlib_year_from: str = ""

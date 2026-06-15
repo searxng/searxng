@@ -26,6 +26,7 @@ about = {
     "require_api_key": False,
     "results": "JSON",
 }
+language_support = True
 paging = True
 categories = ["music", "radio"]
 
