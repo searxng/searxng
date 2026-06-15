@@ -1292,6 +1292,17 @@ engines:
       require_api_key: false
       results: JSON
 
+  - name: icons8
+    engine: icons8
+    shortcut: i8
+    # Uncomment the lines below to do extra requests to fetch
+    # the SVG image files with infinite resolution
+    # otherwise limited-resolution JPEG files are loaded
+    # fetch_svg: true
+    # results_per_page: 10
+    # timeout: 10
+    disabled: true
+
   - name: il post
     engine: il_post
     shortcut: pst
