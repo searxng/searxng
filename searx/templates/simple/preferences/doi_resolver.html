@@ -1,20 +1,17 @@
-<div class="pref-group">{{- _('Digital Object Identifier (DOI)') -}}</div>
-
-{{- plugin_preferences('general/doi_resolver') -}}
-
 <fieldset>{{- '' -}}
-  <legend id="pref_doi_resolver">{{- _('Open Access DOI resolver') -}}</legend>{{- '' -}}
+  <legend id="pref_doi_resolver">{{- _('DOI Resolver') -}}</legend>{{- '' -}}
   <div class="value">{{- '' -}}
-    <select id='doi_resolver' name='doi_resolver' aria-labelledby="pref_doi_resolver">{{- '' -}}
-      {%- for doi_resolver_name,doi_resolver_url in doi_resolvers.items() -%}
+    <select name="doi_resolver" aria-labelledby="pref_doi_resolver">{{- '' -}}
+      <option value=""> - </option>
+      {%- for doi_resolver_name in doi_resolvers -%}
         <option value="{{ doi_resolver_name }}"
-                {%- if doi_resolver_url == current_doi_resolver %} selected="selected" {%- endif -%}>
-          {{- doi_resolver_name }} - {{ doi_resolver_url -}}
+                {%- if doi_resolver_name == current_doi_resolver %} selected="selected" {%- endif -%}>
+          {{- doi_resolver_name -}}
         </option>
       {%- endfor -%}
     </select>{{- '' -}}
   </div>{{- '' -}}
   <div class="description">
-    {{- _('Select service used by DOI rewrite') -}}
+    {{- _('Avoid paywalls by redirecting to open-access versions of publications when available') -}}
   </div>{{- '' -}}
 </fieldset>{{- '' -}}
