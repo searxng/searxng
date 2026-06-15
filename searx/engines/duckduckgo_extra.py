@@ -28,6 +28,7 @@ about = {
     "require_api_key": False,
     "results": "JSON (site requires js to get images)",
 }
+language_support = True
 
 # engine dependent config
 categories = []

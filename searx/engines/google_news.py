@@ -66,6 +66,7 @@ about = {
 categories = ["news"]
 paging = False
 time_range_support = False
+language_support = True
 
 # Google-News results are always *SafeSearch*. Option 'safesearch' is set to
 # False here.

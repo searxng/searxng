@@ -21,7 +21,7 @@ import msgspec
 
 from searx import logger, settings
 from searx.utils import load_module
-
+from searx.data import ENGINE_TRAITS
 from searx.enginelib import Engine, EngineAbout
 
 logger = logger.getChild('engines')
@@ -196,7 +196,7 @@ def update_engine_attributes(engine: "Engine | types.ModuleType", engine_data: d
         engine.about = EngineAbout(**kvargs)
     except TypeError as exc:
         raise TypeError(
-            f"engine {engine_data['name']} ({engine_data['engine']}) - in the about section --> {exc}"
+            f"engine '{engine_data['name']}' ({engine_data['engine']}) - in the about section --> {exc}"
         ) from exc
 
     for param_name, param_value in engine_data.items():
@@ -213,6 +213,9 @@ def update_engine_attributes(engine: "Engine | types.ModuleType", engine_data: d
     for arg_name, arg_value in ENGINE_DEFAULT_ARGS.items():
         if not hasattr(engine, arg_name):
             setattr(engine, arg_name, copy.deepcopy(arg_value))
+
+    if ENGINE_TRAITS.get(engine.name, {}).get("languages") and not engine.language_support:
+        raise ValueError(f"engine '{engine.name}' ({engine_data['engine']}) language_support should be set to True")
 
 
 def update_attributes_for_tor(engine: "Engine | types.ModuleType"):

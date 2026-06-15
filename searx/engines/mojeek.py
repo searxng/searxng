@@ -20,6 +20,7 @@ about = {
 }
 paging = True  # paging is only supported for general search
 safesearch = True
+language_support = True
 time_range_support = True  # time range search is supported for general and news
 max_page = 10
 

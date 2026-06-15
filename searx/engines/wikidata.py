@@ -40,6 +40,7 @@ about = {
     "require_api_key": False,
     "results": 'JSON',
 }
+language_support = True
 
 display_type = ["infobox"]
 """A list of display types composed from ``infobox`` and ``list``.  The latter

@@ -57,6 +57,7 @@ max_page = 50
 .. _Google max 50 pages: https://github.com/searxng/searxng/issues/2982
 """
 time_range_support = True
+language_support = True
 safesearch = True
 
 time_range_dict = {"day": "d", "week": "w", "month": "m", "year": "y"}
