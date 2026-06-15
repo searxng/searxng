@@ -1,0 +1,118 @@
+<script src="https://cdn.jsdelivr.net/npm/@jaames/iro@5"></script>
+
+<section class="container">
+  <div class="row">
+    <div id="picker"></div>
+    <div class="column">
+      <canvas id="preview" width=256 height=128></canvas>
+      <div class="row">
+        <label for="rgb">RGB</label>
+        <input type="text" id="rgb">
+        <button onclick="copyText('rgb')">Copy</button>
+      </div>
+      <div class="row">
+        <label for="hsl">HSL</label>
+        <input type="text" id="hsl">
+        <button onclick="copyText('hsl')">Copy</button>
+      </div>
+      <div class="row">
+        <label for="hex">Hex</label>
+        <input type="text" id="hex">
+        <button onclick="copyText('hex')">Copy</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  function copyText(id) {
+    // Get the text field
+    let copyText = document.getElementById(id);
+
+    // Select the text field
+    copyText.select();
+    copyText.setSelectionRange(0, 99999); // For mobile devices
+
+    // Copy the text inside the text field
+    navigator.clipboard.writeText(copyText.value);
+  }
+
+  function render(color) {
+    let preview = document.querySelector("#preview");
+    let rgb = document.querySelector("#rgb");
+    let hsl = document.querySelector("#hsl");
+    let hex = document.querySelector("#hex");
+
+    preview.style.backgroundColor = colorPicker.color.hexString;
+    // TODO: clean up input
+    // copy + paste button
+    // how to divide R|G|B?
+    rgb.value = colorPicker.color.rgbString;
+    hsl.value = colorPicker.color.hslString;
+    hex.value = colorPicker.color.hexString;
+  }
+
+  let randomColor = "#" + ((1 << 24) * Math.random() | 0).toString(16).padStart(6, "0");
+
+  let colorPicker = new iro.ColorPicker('#picker', {
+    width: 256,
+    color: randomColor,
+    borderWidth: 0,
+    margin: 16,
+    layout: [
+      { 
+        component: iro.ui.Box,
+      },
+      { 
+        component: iro.ui.Slider,
+        options: {
+          // can also be 'saturation', 'value', 'red', 'green', 'blue', 'alpha' or 'kelvin'
+          sliderType: 'hue'
+        }
+      },
+    ],
+    layoutDirection: "vertical"
+  });
+
+  render(randomColor);
+  colorPicker.on("color:change", render);
+</script>
+
+<style>
+
+.row {
+  display: flex;
+  flex-direction: row;
+  gap: 16px;
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  flex: 1;
+}
+
+canvas {
+  border-radius: 14px;
+  background-color: var(--randomColor);
+}
+
+input {
+  background: var(--color-search-background);
+  color: var(--color-search-font);
+  border: 1px solid var(--color-search-border);
+  border-radius: 4px;
+  width: 100%;
+  min-width: none;
+}
+
+label {
+  color: var(--color-search-font);
+}
+
+button {
+  float: left;
+  margin: 0;
+}
+</style>

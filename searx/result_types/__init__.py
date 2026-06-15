@@ -32,7 +32,7 @@ import typing as t
 import abc
 
 from ._base import Result, MainResult, LegacyResult
-from .answer import AnswerSet, Answer, Translations, WeatherAnswer
+from .answer import AnswerSet, Answer, ColorPicker, Translations, WeatherAnswer
 from .keyvalue import KeyValue
 from .code import Code
 from .paper import Paper
@@ -51,6 +51,7 @@ class ResultList(list[Result | LegacyResult], abc.ABC):
         Answer = Answer
         KeyValue = KeyValue
         Code = Code
+        ColorPicker = ColorPicker
         Paper = Paper
         File = File
         Image = Image
