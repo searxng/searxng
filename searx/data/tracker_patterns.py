@@ -43,6 +43,11 @@ class TrackerPatternsDB:
 
     def __init__(self):
         self.cache = get_cache()
+        # In-process copy of the materialized rule set.  ``None`` means "not yet
+        # built"; it is (re)built lazily from the SQLite cache by
+        # :py:obj:`self._cached_rules` and invalidated whenever the underlying
+        # cache is written (:py:obj:`self.load` / :py:obj:`self.add`).
+        self._rules: "list[RuleType] | None" = None
 
     def init(self):
         if self.cache.properties("tracker_patterns loaded") != "OK":
@@ -66,6 +71,8 @@ class TrackerPatternsDB:
             rows.append((key, value, None))
 
         self.cache.setmany(rows, ctx=self.ctx_name)
+        # the rule set in the cache changed -> drop the in-process copy
+        self._rules = None
 
     def add(self, rule: RuleType):
         key = rule[self.Fields.url_regexp]
@@ -74,11 +81,34 @@ class TrackerPatternsDB:
             rule[self.Fields.del_args],
         )
         self.cache.set(key=key, value=value, ctx=self.ctx_name, expire=None)
+        # the rule set in the cache changed -> drop the in-process copy
+        self._rules = None
 
     def rules(self) -> Iterator[RuleType]:
         self.init()
         for key, value in self.cache.pairs(ctx=self.ctx_name):
             yield key, value[0], value[1]
+
+    def _cached_rules(self) -> "list[RuleType]":
+        """Return the rule set as an in-process list, building it from the
+        SQLite cache on first use.
+
+        :py:obj:`self.clean_url` is called once per result URL and previously
+        re-read *and* re-deserialized the whole ClearURL rule set from the
+        SQLite cache on every call (via :py:obj:`self.rules` ->
+        :py:obj:`ExpireCacheSQLite.pairs`).  That made the tracker-URL-remover
+        plugin the dominant per-result CPU cost at high result counts.  The
+        rule set only changes when the cache is (re)written, so we materialize
+        it once and reuse it.
+        """
+        rules = self._rules
+        if rules is None:
+            # Idempotent build: concurrent callers may each construct the list,
+            # but the result is identical and the final assignment is atomic
+            # under the GIL, so no lock is required.
+            rules = list(self.rules())
+            self._rules = rules
+        return rules
 
     def iter_clear_list(self) -> Iterator[RuleType]:
         resp = None
@@ -118,7 +148,7 @@ class TrackerPatternsDB:
         new_url = url
         parsed_new_url = urlparse(url=new_url)
 
-        for rule in self.rules():
+        for rule in self._cached_rules():
 
             query_str: str = parsed_new_url.query
             if not query_str:
