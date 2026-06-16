@@ -156,6 +156,13 @@ def response(resp):
     except Exception as e:
         raise SearxEngineAPIException(f"Invalid response: {e}") from e
 
+    # Upstream returns {'status': 0, 'msg': 'empty result', 'data': {}} when there
+    # are no results; this is a valid empty result rather than an API error.
+    if not isinstance(data, dict) or "data" not in data:
+        raise SearxEngineAPIException("Invalid response")
+    if not data["data"]:
+        return []
+
     parsers = {'news': parse_news, 'images': parse_images, 'videos': parse_videos}
 
     return parsers[chinaso_category](data)
