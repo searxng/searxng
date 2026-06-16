@@ -14,6 +14,7 @@ template.
 # pylint: disable=too-few-public-methods
 __all__ = ["Image", "ImageRef"]
 
+import mimetypes
 import types
 import typing as t
 from collections.abc import Callable
@@ -71,7 +72,7 @@ class Image(MainResult, kw_only=True):
     """The resolution of the image (e.g. ``1920 x 1080`` pixel)"""
 
     img_format: str = ""
-    """The format of the image (e.g. ``png``)."""
+    """The format of the image :py:obj:`.MainResult.img_src` (e.g. ``png``)."""
 
     source: str = ""
     """Source of the image."""
@@ -82,6 +83,19 @@ class Image(MainResult, kw_only=True):
 
     formats: list[ImageRef] = []
     """List of links to alternative image formats."""
+
+    def __post_init__(self):
+        super().__post_init__()
+
+        if not self.img_format:
+            # automatically guess the image format based on the path of the image
+            mimetype = mimetypes.guess_type(self.img_src)[0]
+            if mimetype:
+                subtype = mimetype.split("/")[-1]
+                if subtype in MIMESUB:
+                    self.img_format = MIMESUB[subtype]
+                else:
+                    self.img_format = subtype.upper()
 
     def filter_urls(self, filter_func: "Callable[[Result | LegacyResult, str, str], str | bool ]"):
 
