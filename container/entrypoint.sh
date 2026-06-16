@@ -77,43 +77,23 @@ volume_handler() {
     setup_ownership "$target" "directory"
 }
 
-# Handle configuration file updates
-config_handler() {
-    local target="$1"
-    local template="$2"
-    local new_template_target="$target.new"
+setup() {
+    local template_settings="/usr/local/searxng/settings.template.yml"
+    local target_settings="$__SEARXNG_CONFIG_PATH/settings.yml"
 
-    # Create/Update the configuration file
-    if [ -f "$target" ]; then
-        setup_ownership "$target" "file"
-
-        if [ "$template" -nt "$target" ]; then
-            cp -pfT "$template" "$new_template_target"
-
-            cat <<EOF
-...
-... INFORMATION
-... Update available for "$target"
-... It is recommended to update the configuration file to ensure proper functionality
-...
-... New version placed at "$new_template_target"
-... Please review and merge changes
-...
-EOF
-        fi
-    else
+    if [ ! -f "$target_settings" ]; then
         cat <<EOF
 ...
 ... INFORMATION
-... "$target" does not exist, creating from template...
+... "$target_settings" does not exist, creating from template...
 ...
 EOF
-        cp -pfT "$template" "$target"
+        cp -pfT "$template_settings" "$target_settings"
 
-        sed -i "s/ultrasecretkey/$(head -c 24 /dev/urandom | base64 | tr -dc 'a-zA-Z0-9')/g" "$target"
+        sed -i "s/ultrasecretkey/$(head -c 24 /dev/urandom | base64 | tr -dc 'a-zA-Z0-9')/g" "$target_settings"
     fi
 
-    check_file "$target"
+    check_file "$target_settings"
 }
 
 cat <<EOF
@@ -124,8 +104,7 @@ EOF
 volume_handler "$__SEARXNG_CONFIG_PATH"
 volume_handler "$__SEARXNG_DATA_PATH"
 
-# Check for files
-config_handler "$__SEARXNG_SETTINGS_PATH" "/usr/local/searxng/searx/settings.yml"
+setup
 
 # root only features
 if [ "$(id -u)" -eq 0 ]; then

@@ -21,8 +21,6 @@ RUN --mount=type=cache,id=uv,target=/root/.cache/uv set -eux -o pipefail; \
 
 COPY --exclude=./searx/version_frozen.py ./searx/ ./searx/
 
-ARG TIMESTAMP_SETTINGS="0"
-
 RUN set -eux -o pipefail; \
     python -m compileall -q -f -j 0 --invalidation-mode=unchecked-hash ./searx/; \
     find ./searx/static/ -type f \
@@ -30,5 +28,4 @@ RUN set -eux -o pipefail; \
     -exec gzip -9 -k {} + \
     -exec brotli -9 -k {} + \
     -exec gzip --test {}.gz + \
-    -exec brotli --test {}.br +; \
-    touch -c --date="@$TIMESTAMP_SETTINGS" ./searx/settings.yml
+    -exec brotli --test {}.br +
