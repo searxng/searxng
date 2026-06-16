@@ -14,6 +14,7 @@ import sys
 import copy
 import os
 from os.path import realpath, dirname
+import warnings
 
 import types
 import inspect
@@ -184,8 +185,9 @@ def set_loggers(engine: "Engine|types.ModuleType", engine_name: str):
 
 
 def update_engine_attributes(engine: "Engine | types.ModuleType", engine_data: dict[str, t.Any]):
-    # set engine attributes from engine_data
+    # pylint: disable=too-many-branches
 
+    # set engine attributes from engine_data
     kvargs: dict[str, t.Any]
     if isinstance(engine.about, EngineAbout):
         kvargs = {**msgspec.to_builtins(engine.about), **engine_data.get("about", {})}
@@ -198,6 +200,18 @@ def update_engine_attributes(engine: "Engine | types.ModuleType", engine_data: d
         raise TypeError(
             f"engine '{engine_data['name']}' ({engine_data['engine']}) - in the about section --> {exc}"
         ) from exc
+
+    # warn about deprecated engine settings
+
+    if engine.about.language:
+        if hasattr(engine, "language") and not engine.language:
+            engine.language = engine.about.language
+        warnings.warn(
+            f"engine '{engine_data['name']}' ({engine_data['engine']})"
+            f" - migrate engine.about.language to engine.language!",
+            DeprecationWarning,
+            2,
+        )
 
     for param_name, param_value in engine_data.items():
         if param_name == "about":

@@ -220,6 +220,10 @@ class EngineAbout(msgspec.Struct, kw_only=True):
     is available via a :py:obj:`EngineAbout.wikidata_id`.
     """
 
+    language: str = ""
+    """Deprecated! Migrate your setting from `engine.about.language` to
+    `engine.language`"""
+
 
 class Engine(abc.ABC):  # pylint: disable=too-few-public-methods
     """Class of engine instances build from YAML settings.
