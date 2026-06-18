@@ -667,6 +667,26 @@ engines:
     disabled: true
     inactive: true
 
+  - name: cl0q
+    engine: json_engine
+    shortcut: cl
+    categories: general
+    paging: true
+    first_page_num: 0
+    page_size: 20
+    search_url: https://cl0q.com/search?q={query}&limit=20&offset={pageno}
+    results_query: results
+    url_query: domain
+    url_prefix: https://
+    title_query: title
+    content_query: description
+    disabled: true
+    inactive: true
+    about:
+      website: https://cl0q.com
+      description: "Open source network for searching domains"
+      results: JSON
+
   - name: cloudflareai
     engine: cloudflareai
     shortcut: cfai
