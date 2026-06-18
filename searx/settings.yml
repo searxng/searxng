@@ -2836,6 +2836,25 @@ engines:
     shortcut: rehi
     disabled: true
 
+  - name: searchch
+    engine: xpath
+    shortcut: sch
+    paging: true
+    search_url: https://search.ch/web/api/loadmore.html?path=/web/&q={query}&page={pageno}
+    results_xpath: //div[contains(@class, 'www-feed-web-result')]
+    # the URL looks like "//search.ch/web/r/redirect?...result!uffe8997e781e241d/https://example.com"
+    url_xpath: concat('https://', substring-after(.//a[contains(@class, 'sl-gus-result-url')]/@href, '://'))
+    title_xpath: .//a[contains(@class, 'sl-gus-result-title')]
+    content_xpath: .//div[contains(@class, 'sl-gus-result-body')]
+    language: "ch"
+    disabled: true
+    about:
+      website: https://search.ch/web
+      description: "Swiss search engine with its own Swiss index"
+      use_official_api: false
+      require_api_key: false
+      results: HTML
+
   - name: searchzee
     engine: json_engine
     search_url: https://searchzee.com/api/search?q={query}&type=web&offset={pageno}
