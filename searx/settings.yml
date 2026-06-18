@@ -2425,6 +2425,24 @@ engines:
     engine: unsplash
     shortcut: us
 
+  - name: unobtanium
+    engine: xpath
+    shortcut: uno
+    categories: [general, blogs]
+    paging: true
+    first_page_num: 0
+    search_url: https://unobtanium.rocks/search?search={query}&page={pageno}
+    results_xpath: //ul[contains(@class, 'search-results')]/li
+    url_xpath: .//a/@href
+    title_xpath: .//a/b
+    content_xpath: .//p[2]
+    disabled: true
+    inactive: true
+    about:
+      website: https://unobtanium.rocks
+      description: "Personal websites focused search engine."
+      results: HTML
+
   - name: yandex
     engine: yandex
     categories: general
