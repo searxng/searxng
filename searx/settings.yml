@@ -977,6 +977,34 @@ engines:
     shortcut: fd
     disabled: true
 
+  - name: findfiles
+    engine: findfiles
+    findfiles_categ: all
+    categories: files
+    shortcut: fif
+    disabled: true
+
+  - name: findfiles images
+    engine: findfiles
+    findfiles_categ: image
+    categories: images
+    shortcut: fifi
+    disabled: true
+
+  - name: findfiles videos
+    engine: findfiles
+    findfiles_categ: video
+    categories: videos
+    shortcut: fifv
+    disabled: true
+
+  - name: findfiles music
+    engine: findfiles
+    findfiles_categ: audio
+    categories: music
+    shortcut: fifm
+    disabled: true
+
   - name: findthatmeme
     engine: findthatmeme
     shortcut: ftm
