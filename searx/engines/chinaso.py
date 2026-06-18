@@ -19,11 +19,9 @@ Configuration
 
 The engine has the following additional settings:
 
-- :py:obj:`chinaso_category` (:py:obj:`ChinasoCategoryType`)
 - :py:obj:`chinaso_news_source` (:py:obj:`ChinasoNewsSourceType`)
 
-In the example below, all three ChinaSO engines are using the :ref:`network
-<engine network>` from the ``chinaso news`` engine.
+In the example below, ChinaSO is configured for news search.
 
 .. code:: yaml
 
@@ -31,22 +29,7 @@ In the example below, all three ChinaSO engines are using the :ref:`network
      engine: chinaso
      shortcut: chinaso
      categories: [news]
-     chinaso_category: news
      chinaso_news_source: all
-
-   - name: chinaso images
-     engine: chinaso
-     network: chinaso news
-     shortcut: chinasoi
-     categories: [images]
-     chinaso_category: images
-
-   - name: chinaso videos
-     engine: chinaso
-     network: chinaso news
-     shortcut: chinasov
-     categories: [videos]
-     chinaso_category: videos
 
 
 Implementations
@@ -78,19 +61,6 @@ results_per_page = 10
 categories = []
 language = "zh"
 
-ChinasoCategoryType = t.Literal['news', 'videos', 'images']
-"""ChinaSo supports news, videos, images search.
-
-- ``news``: search for news
-- ``videos``: search for videos
-- ``images``: search for images
-
-In the category ``news`` you can additionally filter by option
-:py:obj:`chinaso_news_source`.
-"""
-chinaso_category = 'news'
-"""Configure ChinaSo category (:py:obj:`ChinasoCategoryType`)."""
-
 ChinasoNewsSourceType = t.Literal['CENTRAL', 'LOCAL', 'BUSINESS', 'EPAPER', 'all']
 """Filtering ChinaSo-News results by source:
 
@@ -109,39 +79,24 @@ base_url = "https://www.chinaso.com"
 
 
 def init(_):
-    if chinaso_category not in ('news', 'videos', 'images'):
-        raise ValueError(f"Unsupported category: {chinaso_category}")
-    if chinaso_category == 'news' and chinaso_news_source not in t.get_args(ChinasoNewsSourceType):
+    if chinaso_news_source not in t.get_args(ChinasoNewsSourceType):
         raise ValueError(f"Unsupported news source: {chinaso_news_source}")
 
 
 def request(query, params):
-    query_params = {"q": query}
+    query_params = {'q': query, 'pn': params["pageno"], 'ps': results_per_page}
 
     if time_range_dict.get(params['time_range']):
         query_params["stime"] = time_range_dict[params['time_range']]
         query_params["etime"] = 'now'
 
-    category_config = {
-        'news': {'endpoint': '/v5/general/v1/web/search', 'params': {'pn': params["pageno"], 'ps': results_per_page}},
-        'images': {
-            'endpoint': '/v5/general/v1/search/image',
-            'params': {'start_index': (params["pageno"] - 1) * results_per_page, 'rn': results_per_page},
-        },
-        'videos': {
-            'endpoint': '/v5/general/v1/search/video',
-            'params': {'start_index': (params["pageno"] - 1) * results_per_page, 'rn': results_per_page},
-        },
-    }
     if chinaso_news_source != 'all':
         if chinaso_news_source == 'EPAPER':
-            category_config['news']['params']["type"] = 'EPAPER'
+            query_params["type"] = 'EPAPER'
         else:
-            category_config['news']['params']["cate"] = chinaso_news_source
+            query_params["cate"] = chinaso_news_source
 
-    query_params.update(category_config[chinaso_category]['params'])
-
-    params["url"] = f"{base_url}{category_config[chinaso_category]['endpoint']}?{urlencode(query_params)}"
+    params["url"] = f"{base_url}/v5/general/v1/web/search?{urlencode(query_params)}"
     cookie = {
         "uid": base64.b64encode(secrets.token_bytes(16)).decode("utf-8"),
     }
@@ -163,12 +118,6 @@ def response(resp):
     if not data["data"]:
         return []
 
-    parsers = {'news': parse_news, 'images': parse_images, 'videos': parse_videos}
-
-    return parsers[chinaso_category](data)
-
-
-def parse_news(data):
     results = []
     if not data.get("data", {}).get("data"):
         raise SearxEngineAPIException("Invalid response")
@@ -187,50 +136,6 @@ def parse_news(data):
                 'url': entry["url"],
                 'content': html_to_text(entry["snippet"]),
                 'publishedDate': published_date,
-            }
-        )
-    return results
-
-
-def parse_images(data):
-    results = []
-    if not data.get("data", {}).get("arrRes"):
-        raise SearxEngineAPIException("Invalid response")
-
-    for entry in data["data"]["arrRes"]:
-        results.append(
-            {
-                'url': entry["web_url"],
-                'title': html_to_text(entry["title"]),
-                'content': html_to_text(entry.get("ImageInfo", "")),
-                'template': 'images.html',
-                'img_src': entry["url"].replace("http://", "https://"),
-                'thumbnail_src': entry["largeimage"].replace("http://", "https://"),
-            }
-        )
-    return results
-
-
-def parse_videos(data):
-    results = []
-    if not data.get("data", {}).get("arrRes"):
-        raise SearxEngineAPIException("Invalid response")
-
-    for entry in data["data"]["arrRes"]:
-        published_date = None
-        if entry.get("VideoPubDate"):
-            try:
-                published_date = datetime.fromtimestamp(int(entry["VideoPubDate"]))
-            except (ValueError, TypeError):
-                pass
-
-        results.append(
-            {
-                'url': entry["url"],
-                'title': html_to_text(entry["raw_title"]),
-                'template': 'videos.html',
-                'publishedDate': published_date,
-                'thumbnail': entry["image_src"].replace("http://", "https://"),
             }
         )
     return results
