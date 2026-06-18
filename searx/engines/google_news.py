@@ -176,13 +176,14 @@ def response(resp: "SXNG_Response") -> EngineResults:
 
         title = extract_text(eval_xpath(result, "./h4")) or ""
 
-        # The pub_date is mostly a string like 'yesterday', not a real timezone
-        # date or time.  Therefore we can't use publishedDate and place the
-        # *pub* sting into the content.
+        # The pub_date is mostly a relative string like '3 hours ago', not a
+        # real timezone date/time, so we can't use publishedDate.
+        # pub_origin and pub_date go into metadata; content is left empty since
+        # Google News HTML does not provide article snippets.
 
         pub_date = extract_text(eval_xpath(result, ".//time"))
         pub_origin = extract_text(eval_xpath(result, ".//div[contains(@class, 'vr1PYe')]"))
-        content = " / ".join([x for x in [pub_origin, pub_date] if x])
+        metadata = " / ".join([x for x in [pub_origin, pub_date] if x])
 
         thumbnail: str = eval_xpath_getindex(result, ".//figure/img/@src", 0, default="")
         if thumbnail and thumbnail.startswith("/"):
@@ -192,7 +193,8 @@ def response(resp: "SXNG_Response") -> EngineResults:
             res.types.MainResult(
                 url=url,
                 title=title,
-                content=content,
+                content="",
+                metadata=metadata,
                 thumbnail=thumbnail,
             )
         )
