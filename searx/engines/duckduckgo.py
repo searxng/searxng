@@ -229,7 +229,7 @@ def get_cache() -> EngineCache:
 
 def set_vqd(query: str | int, value: str, params: "OnlineParams") -> None:
     cache = get_cache()
-    key = cache.secret_hash(f"{query}//{params['headers']['User-Agent']}")
+    key = cache.secret_hash(f"{query}//{params['headers']['User-Agent']}//{params.get('iar', '')}")
     cache.set(key=key, value=value, expire=3600)
 
 
@@ -244,7 +244,7 @@ def get_vqd(
     :param params: request parameters
     """
     cache = get_cache()
-    key = cache.secret_hash(f"{query}//{params['headers']['User-Agent']}")
+    key = cache.secret_hash(f"{query}//{params['headers']['User-Agent']}//{params.get('iar', '')}")
     value: str = cache.get(key=key) or ""
     if value:
         logger.debug("get_vqd: re-use cached value: %s", value)
