@@ -77,9 +77,9 @@ export default class Calculator extends Plugin {
 
   protected async run(): Promise<string | undefined> {
     const searchInput = getElement<HTMLInputElement>("q");
-    const node = Calculator.math.parse(searchInput.value);
 
     try {
+      const node = Calculator.math.parse(searchInput.value);
       return `${node.toString()} = ${node.evaluate()}`;
     } catch {
       // not a compatible math expression
