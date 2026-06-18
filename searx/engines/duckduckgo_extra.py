@@ -60,7 +60,7 @@ def fetch_vqd(
 
     logger.debug("fetch_vqd: request value from from duckduckgo.com")
     resp = get(
-        url=f"https://duckduckgo.com/?q={quote_plus(query)}&iar=images&t=h_",
+        url=f"https://duckduckgo.com/?q={quote_plus(query)}&iar={iar_param}&t=h_",
         headers=params["headers"],
         timeout=2,
     )
