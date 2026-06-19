@@ -2030,7 +2030,7 @@ engines:
   - name: rawweb
     engine: json_engine
     shortcut: rw
-    categories: general
+    categories: [general, blogs]
     paging: true
     search_url: 'https://api.rawweb.org/api/search?keyword={query}&page={pageno}&lang=*'
     results_query: data
@@ -2085,7 +2085,7 @@ engines:
   - name: searchmysite
     engine: xpath
     shortcut: sms
-    categories: general
+    categories: [general, blogs]
     paging: true
     search_url: https://searchmysite.net/search/?q={query}&page={pageno}
     results_xpath: //div[contains(@class,'search-result')]
@@ -2473,7 +2473,7 @@ engines:
     url_query: URL
     title_query: Title
     content_query: Snippet
-    categories: [general, web]
+    categories: [general, blogs]
     shortcut: wib
     disabled: true
     about:
