@@ -148,37 +148,42 @@ def response(resp: "SXNG_Response") -> EngineResults:
             res.add(
                 res.types.MainResult(
                     url=result["url"],
-                    title=html.unescape(result["title"]),
-                    content=html.unescape(result["snippet"]),
+                    title=html.unescape(result.get("title", "")),
+                    content=html.unescape(result.get("snippet", "")),
                     thumbnail=result.get("image", {}).get("url") or "",
                     publishedDate=published_date,
                 )
             )
         elif kagi_categ == "images":
+            image = result.get("image", {})
+            width = image.get("width")
+            height = image.get("height")
+            resolution = f"{width}x{height}" if width and height else ""
             res.add(
                 res.types.Image(
                     url=result["url"],
-                    title=html.unescape(result.get("title")),
-                    img_src=result.get("image", {}).get("url"),
-                    resolution=f"{result['image']['width']}x{result['image']['height']}",
+                    title=html.unescape(result.get("title", "")),
+                    img_src=image.get("url", ""),
+                    resolution=resolution,
                     thumbnail_src=result.get("props", {}).get("thumbnail", {}).get("url"),
                 )
             )
         elif kagi_categ == "videos":
+            props = result.get("props", {})
             length: timedelta | None = None
-            if result["props"].get("duration"):
-                length = parse_duration_string(result["props"]["duration"])
+            if props.get("duration"):
+                length = parse_duration_string(props["duration"])
 
             res.add(
                 res.types.LegacyResult(
                     {
                         "template": "videos.html",
                         "url": result["url"],
-                        "title": html.unescape(result["title"]),
-                        "content": html.unescape(result["snippet"]),
+                        "title": html.unescape(result.get("title", "")),
+                        "content": html.unescape(result.get("snippet", "")),
                         "thumbnail": result.get("image", {}).get("url"),
                         "publishedDate": published_date,
-                        "author": result["props"].get("creator_name"),
+                        "author": props.get("creator_name"),
                         "length": length,
                     }
                 )

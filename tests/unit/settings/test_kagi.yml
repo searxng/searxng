@@ -1,0 +1,24 @@
+# This SearXNG setup is used in unit tests
+
+use_default_settings:
+
+  engines:
+    # remove all engines
+    keep_only: []
+
+search:
+
+  formats: [html, csv, json, rss]
+
+server:
+
+  secret_key: "user_secret_key"
+
+engines:
+
+  - name: kagi
+    engine: kagi
+    shortcut: kg
+    api_key: "test-api-key"
+    kagi_categ: search
+    disabled: true
