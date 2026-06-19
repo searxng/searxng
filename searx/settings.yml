@@ -3020,6 +3020,22 @@ engines:
     shortcut: wttr
     timeout: 9.0
 
+  - name: xonaly
+    engine: xpath
+    search_url: https://xonaly.com/?query={query}
+    categories: general
+    shortcut: xo
+    disabled: true
+    inactive: true
+    results_xpath: //div[contains(@class, 'results-block')]/ul/li
+    url_xpath: ./div[contains(@class, 'result-title')]/a/@href
+    title_xpath: ./div[contains(@class, 'result-title')]/a
+    content_xpath: ./p[contains(@class, 'excerpt')]
+    about:
+      website: https://xonaly.com
+      description: "Canadian search engine with its own index"
+      results: HTML
+
   - name: zapmeta
     engine: xpath
     shortcut: zpm
