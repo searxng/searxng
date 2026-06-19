@@ -44,7 +44,7 @@ about = {
 
 base_url = "https://api2.marginalia-search.com"
 safesearch = True
-categories = ["general"]
+categories = ["general", "blogs"]
 paging = True
 results_per_page = 20
 api_key = None
