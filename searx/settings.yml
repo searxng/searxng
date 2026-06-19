@@ -322,6 +322,7 @@ engines:
 
   - name: abcnyheter
     engine: xpath
+    categories: general
     paging: true
     search_url: https://startsiden.abcnyheter.no/sok/?q={query}&page={pageno}
     shortcut: abc
@@ -493,6 +494,7 @@ engines:
 
   - name: ayo
     engine: xpath
+    categories: general
     shortcut: ayo
     search_url: https://search.ayo.de/search?q={query}
     results_xpath: //div[contains(@class, 'search-result')]/div
@@ -1079,6 +1081,7 @@ engines:
 
   - name: gabanza
     engine: xpath
+    categories: general
     search_url: https://www.gabanza.com/search?query={query}
     shortcut: gab
     timeout: 4
@@ -3023,6 +3026,7 @@ engines:
   - name: zapmeta
     engine: xpath
     shortcut: zpm
+    categories: general
     search_url: https://www.zapmeta.com/search?q={query}&pg={pageno}
     results_xpath: //article[contains(@class, "organic-results-item")]
     url_xpath: ./h2/a/@href
