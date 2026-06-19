@@ -23,18 +23,19 @@
 # return42 <return42@noreply.codeberg.org>, 2025.
 msgid ""
 msgstr ""
-"Project-Id-Version:  searx\n"
+"Project-Id-Version: searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-05-25 10:44+0000\n"
-"PO-Revision-Date: 2026-03-26 03:57+0000\n"
+"POT-Creation-Date: 2026-06-13 11:31+0000\n"
+"PO-Revision-Date: 2026-06-16 07:07+0000\n"
 "Last-Translator: kratos <makesocialfoss32@keemail.me>\n"
+"Language-Team: Hungarian <https://translate.codeberg.org/projects/searxng/"
+"searxng/hu/>\n"
 "Language: hu\n"
-"Language-Team: Hungarian "
-"<https://translate.codeberg.org/projects/searxng/searxng/hu/>\n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 2026.6.1\n"
 "Generated-By: Babel 2.18.0\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
@@ -78,7 +79,7 @@ msgid "videos"
 msgstr "videók"
 
 #. CATEGORY_NAMES['RADIO']
-#: searx/engines/radio_browser.py:146 searx/searxng.msg
+#: searx/engines/radio_browser.py:159 searx/searxng.msg
 msgid "radio"
 msgstr "rádió"
 
@@ -552,8 +553,8 @@ msgstr "megválaszolt"
 msgid "No item found"
 msgstr "Nincs találat"
 
-#: searx/engines/qwant.py:291
-#: searx/templates/simple/result_templates/images.html:23 searx/webapp.py:328
+#: searx/engines/qwant.py:258
+#: searx/templates/simple/result_templates/images.html:62 searx/webapp.py:328
 msgid "Source"
 msgstr "Forrás"
 
@@ -561,15 +562,15 @@ msgstr "Forrás"
 msgid "Error loading the next page"
 msgstr "Hiba a következő oldal betöltése során"
 
-#: searx/webapp.py:479 searx/webapp.py:877
+#: searx/webapp.py:478 searx/webapp.py:876
 msgid "Invalid settings, please edit your preferences"
 msgstr "Érvénytelen beállítások, módosítsa őket"
 
-#: searx/webapp.py:495
+#: searx/webapp.py:494
 msgid "Invalid settings"
 msgstr "Érvénytelen beállítások"
 
-#: searx/webapp.py:571 searx/webapp.py:661
+#: searx/webapp.py:570 searx/webapp.py:660
 msgid "search error"
 msgstr "keresési hiba"
 
@@ -666,19 +667,19 @@ msgstr "{title} (elavult)"
 msgid "This entry has been superseded by"
 msgstr "Ezt a bejegyzést leváltotta:"
 
-#: searx/engines/qwant.py:293
+#: searx/engines/qwant.py:260
 msgid "Channel"
 msgstr "Csatorna"
 
-#: searx/engines/radio_browser.py:148
+#: searx/engines/radio_browser.py:161
 msgid "bitrate"
 msgstr "bitráta:"
 
-#: searx/engines/radio_browser.py:149
+#: searx/engines/radio_browser.py:162
 msgid "votes"
 msgstr "szavazatok:"
 
-#: searx/engines/radio_browser.py:150
+#: searx/engines/radio_browser.py:163
 msgid "clicks"
 msgstr "kattintások"
 
@@ -882,7 +883,7 @@ msgstr "keresőoldalra"
 
 #: searx/templates/simple/base.html:51
 msgid "Donate"
-msgstr "Adományozás"
+msgstr "Adakozás"
 
 #: searx/templates/simple/base.html:56 searx/templates/simple/base.html:58
 #: searx/templates/simple/preferences.html:152
@@ -937,7 +938,7 @@ msgstr "Nézetek"
 
 #: searx/templates/simple/macros.html:43
 #: searx/templates/simple/result_templates/file.html:18
-#: searx/templates/simple/result_templates/images.html:19
+#: searx/templates/simple/result_templates/images.html:52
 #: searx/templates/simple/result_templates/paper.html:14
 msgid "Author"
 msgstr "Szerző"
@@ -1634,7 +1635,7 @@ msgid "This site did not provide any description."
 msgstr "Ennek a weblapnak nincsen leírása."
 
 #: searx/templates/simple/result_templates/file.html:30
-#: searx/templates/simple/result_templates/images.html:22
+#: searx/templates/simple/result_templates/images.html:61
 #: searx/templates/simple/result_templates/torrent.html:18
 msgid "Filesize"
 msgstr "Fájlméret"
@@ -1652,19 +1653,23 @@ msgstr "Típus"
 msgid "Download"
 msgstr "Letöltés"
 
-#: searx/templates/simple/result_templates/images.html:20
+#: searx/templates/simple/result_templates/images.html:53
 msgid "Resolution"
 msgstr "Felbontás"
 
-#: searx/templates/simple/result_templates/images.html:21
-msgid "Format"
-msgstr "Formátum"
+#: searx/templates/simple/result_templates/images.html:55
+msgid "Image formats"
+msgstr "Képformátumok"
 
-#: searx/templates/simple/result_templates/images.html:24
+#: searx/templates/simple/result_templates/images.html:56
+msgid "original format"
+msgstr "eredeti formátum"
+
+#: searx/templates/simple/result_templates/images.html:63
 msgid "Engine"
 msgstr "Motor"
 
-#: searx/templates/simple/result_templates/images.html:25
+#: searx/templates/simple/result_templates/images.html:64
 msgid "View source"
 msgstr "Forrás megtekintése"
 
@@ -2414,3 +2419,5 @@ msgstr "videó elrejtése"
 #~ msgid "Number of results"
 #~ msgstr "Találatok száma"
 
+#~ msgid "Format"
+#~ msgstr "Formátum"

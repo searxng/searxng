@@ -51,18 +51,19 @@
 # Outbreak2096 <outbreak2096@noreply.codeberg.org>, 2025, 2026.
 msgid ""
 msgstr ""
-"Project-Id-Version:  searx\n"
+"Project-Id-Version: searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-05-25 10:44+0000\n"
-"PO-Revision-Date: 2026-03-26 03:57+0000\n"
+"POT-Creation-Date: 2026-06-13 11:31+0000\n"
+"PO-Revision-Date: 2026-06-14 13:07+0000\n"
 "Last-Translator: Outbreak2096 <outbreak2096@noreply.codeberg.org>\n"
+"Language-Team: Chinese (Simplified Han script) <https://"
+"translate.codeberg.org/projects/searxng/searxng/zh_Hans/>\n"
 "Language: zh_Hans_CN\n"
-"Language-Team: Chinese (Simplified Han script) "
-"<https://translate.codeberg.org/projects/searxng/searxng/zh_Hans/>\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Weblate 2026.6.1\n"
 "Generated-By: Babel 2.18.0\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
@@ -106,7 +107,7 @@ msgid "videos"
 msgstr "视频"
 
 #. CATEGORY_NAMES['RADIO']
-#: searx/engines/radio_browser.py:146 searx/searxng.msg
+#: searx/engines/radio_browser.py:159 searx/searxng.msg
 msgid "radio"
 msgstr "电台"
 
@@ -580,8 +581,8 @@ msgstr "回答"
 msgid "No item found"
 msgstr "未找到项目"
 
-#: searx/engines/qwant.py:291
-#: searx/templates/simple/result_templates/images.html:23 searx/webapp.py:328
+#: searx/engines/qwant.py:258
+#: searx/templates/simple/result_templates/images.html:62 searx/webapp.py:328
 msgid "Source"
 msgstr "来源"
 
@@ -589,15 +590,15 @@ msgstr "来源"
 msgid "Error loading the next page"
 msgstr "载入下个页面时发生错误"
 
-#: searx/webapp.py:479 searx/webapp.py:877
+#: searx/webapp.py:478 searx/webapp.py:876
 msgid "Invalid settings, please edit your preferences"
 msgstr "无效设置，请编辑您的首选项"
 
-#: searx/webapp.py:495
+#: searx/webapp.py:494
 msgid "Invalid settings"
 msgstr "无效设置"
 
-#: searx/webapp.py:571 searx/webapp.py:661
+#: searx/webapp.py:570 searx/webapp.py:660
 msgid "search error"
 msgstr "搜索错误"
 
@@ -694,19 +695,19 @@ msgstr "{title} （已过时）"
 msgid "This entry has been superseded by"
 msgstr "此条目已被以下内容取代"
 
-#: searx/engines/qwant.py:293
+#: searx/engines/qwant.py:260
 msgid "Channel"
 msgstr "频道"
 
-#: searx/engines/radio_browser.py:148
+#: searx/engines/radio_browser.py:161
 msgid "bitrate"
 msgstr "比特率"
 
-#: searx/engines/radio_browser.py:149
+#: searx/engines/radio_browser.py:162
 msgid "votes"
 msgstr "投票数"
 
-#: searx/engines/radio_browser.py:150
+#: searx/engines/radio_browser.py:163
 msgid "clicks"
 msgstr "点击数"
 
@@ -730,11 +731,13 @@ msgstr "无法读取该图片网址。这可能是由于文件格式不受支持
 msgid ""
 "The image is too simple to find matches. TinEye requires a basic level of"
 " visual detail to successfully identify matches."
-msgstr "图像过于简单，无法找到匹配项。TinEye 需要基本级别的视觉细节才能成功识别匹配项。"
+msgstr ""
+"图片过于简单，无法找到匹配项。TinEye 需要基本级别的视觉细节才能成功识别匹配项"
+"。"
 
 #: searx/engines/tineye.py:53
 msgid "The image could not be downloaded."
-msgstr "无法下载该图像。"
+msgstr "无法下载该图片。"
 
 #: searx/engines/zlibrary.py:79
 msgid "Language"
@@ -945,7 +948,7 @@ msgstr "查看次数"
 
 #: searx/templates/simple/macros.html:43
 #: searx/templates/simple/result_templates/file.html:18
-#: searx/templates/simple/result_templates/images.html:19
+#: searx/templates/simple/result_templates/images.html:52
 #: searx/templates/simple/result_templates/paper.html:14
 msgid "Author"
 msgstr "作者"
@@ -1618,7 +1621,7 @@ msgid "This site did not provide any description."
 msgstr "此站点未提供任何描述。"
 
 #: searx/templates/simple/result_templates/file.html:30
-#: searx/templates/simple/result_templates/images.html:22
+#: searx/templates/simple/result_templates/images.html:61
 #: searx/templates/simple/result_templates/torrent.html:18
 msgid "Filesize"
 msgstr "文件大小"
@@ -1636,19 +1639,23 @@ msgstr "输入"
 msgid "Download"
 msgstr "下载"
 
-#: searx/templates/simple/result_templates/images.html:20
+#: searx/templates/simple/result_templates/images.html:53
 msgid "Resolution"
 msgstr "分辨率"
 
-#: searx/templates/simple/result_templates/images.html:21
-msgid "Format"
-msgstr "格式"
+#: searx/templates/simple/result_templates/images.html:55
+msgid "Image formats"
+msgstr "图片格式"
 
-#: searx/templates/simple/result_templates/images.html:24
+#: searx/templates/simple/result_templates/images.html:56
+msgid "original format"
+msgstr "原始格式"
+
+#: searx/templates/simple/result_templates/images.html:63
 msgid "Engine"
 msgstr "引擎"
 
-#: searx/templates/simple/result_templates/images.html:25
+#: searx/templates/simple/result_templates/images.html:64
 msgid "View source"
 msgstr "查看来源"
 
@@ -2329,3 +2336,5 @@ msgstr "隐藏视频"
 #~ msgid "Number of results"
 #~ msgstr "结果个数"
 
+#~ msgid "Format"
+#~ msgstr "格式"

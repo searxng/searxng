@@ -44,22 +44,23 @@
 # rodgui <rodgui@noreply.codeberg.org>, 2025.
 # bdcdo <bdcdo@noreply.codeberg.org>, 2025.
 # "lucasmz.dev" <lucasmz.dev@noreply.codeberg.org>, 2025.
-# return42 <return42@noreply.codeberg.org>, 2025.
+# return42 <return42@noreply.codeberg.org>, 2025, 2026.
 # danilo-jlle <danilo-jlle@noreply.codeberg.org>, 2026.
 msgid ""
 msgstr ""
-"Project-Id-Version:  searx\n"
+"Project-Id-Version: searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-05-25 10:44+0000\n"
-"PO-Revision-Date: 2026-03-31 16:57+0000\n"
-"Last-Translator: danilo-jlle <danilo-jlle@noreply.codeberg.org>\n"
+"POT-Creation-Date: 2026-06-13 11:31+0000\n"
+"PO-Revision-Date: 2026-06-17 20:19+0000\n"
+"Last-Translator: return42 <return42@noreply.codeberg.org>\n"
+"Language-Team: Portuguese (Brazil) <https://translate.codeberg.org/projects/"
+"searxng/searxng/pt_BR/>\n"
 "Language: pt_BR\n"
-"Language-Team: Portuguese (Brazil) "
-"<https://translate.codeberg.org/projects/searxng/searxng/pt_BR/>\n"
-"Plural-Forms: nplurals=2; plural=n > 1;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n > 1;\n"
+"X-Generator: Weblate 2026.6.1\n"
 "Generated-By: Babel 2.18.0\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
@@ -103,7 +104,7 @@ msgid "videos"
 msgstr "vídeos"
 
 #. CATEGORY_NAMES['RADIO']
-#: searx/engines/radio_browser.py:146 searx/searxng.msg
+#: searx/engines/radio_browser.py:159 searx/searxng.msg
 msgid "radio"
 msgstr "rádio"
 
@@ -577,8 +578,8 @@ msgstr "respondido"
 msgid "No item found"
 msgstr "Nenhum item encontrado"
 
-#: searx/engines/qwant.py:291
-#: searx/templates/simple/result_templates/images.html:23 searx/webapp.py:328
+#: searx/engines/qwant.py:258
+#: searx/templates/simple/result_templates/images.html:62 searx/webapp.py:328
 msgid "Source"
 msgstr "Fonte"
 
@@ -586,15 +587,15 @@ msgstr "Fonte"
 msgid "Error loading the next page"
 msgstr "Erro ao carregar a próxima página"
 
-#: searx/webapp.py:479 searx/webapp.py:877
+#: searx/webapp.py:478 searx/webapp.py:876
 msgid "Invalid settings, please edit your preferences"
 msgstr "Configurações inválidas, por favor, edite suas preferências"
 
-#: searx/webapp.py:495
+#: searx/webapp.py:494
 msgid "Invalid settings"
 msgstr "Configurações inválidas"
 
-#: searx/webapp.py:571 searx/webapp.py:661
+#: searx/webapp.py:570 searx/webapp.py:660
 msgid "search error"
 msgstr "erro de pesquisa"
 
@@ -691,19 +692,19 @@ msgstr "{title} (OBSOLETO)"
 msgid "This entry has been superseded by"
 msgstr "Esta entrada foi substituída por"
 
-#: searx/engines/qwant.py:293
+#: searx/engines/qwant.py:260
 msgid "Channel"
 msgstr "Canal"
 
-#: searx/engines/radio_browser.py:148
+#: searx/engines/radio_browser.py:161
 msgid "bitrate"
 msgstr "taxa de bits"
 
-#: searx/engines/radio_browser.py:149
+#: searx/engines/radio_browser.py:162
 msgid "votes"
 msgstr "votos"
 
-#: searx/engines/radio_browser.py:150
+#: searx/engines/radio_browser.py:163
 msgid "clicks"
 msgstr "cliques"
 
@@ -958,7 +959,7 @@ msgstr "Visualizações"
 
 #: searx/templates/simple/macros.html:43
 #: searx/templates/simple/result_templates/file.html:18
-#: searx/templates/simple/result_templates/images.html:19
+#: searx/templates/simple/result_templates/images.html:52
 #: searx/templates/simple/result_templates/paper.html:14
 msgid "Author"
 msgstr "Autor"
@@ -1653,7 +1654,7 @@ msgid "This site did not provide any description."
 msgstr "Este site não disponibilizou uma descrição."
 
 #: searx/templates/simple/result_templates/file.html:30
-#: searx/templates/simple/result_templates/images.html:22
+#: searx/templates/simple/result_templates/images.html:61
 #: searx/templates/simple/result_templates/torrent.html:18
 msgid "Filesize"
 msgstr "Tamanho do arquivo"
@@ -1671,19 +1672,23 @@ msgstr "Tipo"
 msgid "Download"
 msgstr "Baixar"
 
-#: searx/templates/simple/result_templates/images.html:20
+#: searx/templates/simple/result_templates/images.html:53
 msgid "Resolution"
 msgstr "Resolução"
 
-#: searx/templates/simple/result_templates/images.html:21
-msgid "Format"
-msgstr "Formato"
+#: searx/templates/simple/result_templates/images.html:55
+msgid "Image formats"
+msgstr "Formatos de imagem"
 
-#: searx/templates/simple/result_templates/images.html:24
+#: searx/templates/simple/result_templates/images.html:56
+msgid "original format"
+msgstr "formato original"
+
+#: searx/templates/simple/result_templates/images.html:63
 msgid "Engine"
 msgstr "Mecanismo de pesquisa"
 
-#: searx/templates/simple/result_templates/images.html:25
+#: searx/templates/simple/result_templates/images.html:64
 msgid "View source"
 msgstr "Ver código-fonte"
 
@@ -2454,3 +2459,5 @@ msgstr "ocultar vídeo"
 #~ msgid "Number of results"
 #~ msgstr "Número de resultados"
 
+#~ msgid "Format"
+#~ msgstr "Formato"
