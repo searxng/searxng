@@ -845,7 +845,10 @@ def autocompleter():
         mimetype = 'application/json'
     else:
         # the suggestion request comes from browser's URL bar
-        suggestions = json.dumps([sug_prefix, results])
+        relevances = {
+            'google:suggestrelevance': [600 - i for i in range(len(results))]
+        }  # chromium only shows 3 suggestions unless we attach relevances
+        suggestions = json.dumps([sug_prefix, results, [], [], relevances])
         mimetype = 'application/x-suggestions+json'
 
     suggestions = escape(suggestions, False)
