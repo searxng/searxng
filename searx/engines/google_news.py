@@ -194,16 +194,12 @@ def response(resp: "SXNG_Response") -> EngineResults:
         # pub_origin and pub_date go into metadata.
 
         pub_date = extract_text(eval_xpath(result, ".//time"))
-        pub_origin = extract_text(
-            eval_xpath(result, ".//div[contains(@class, 'vr1PYe')]")
-        )
+        pub_origin = extract_text(eval_xpath(result, ".//a[contains(@class, 'wEwyrc')]"))
         metadata = " / ".join([x for x in [pub_origin, pub_date] if x])
 
         # Google News HTML does not provide article snippets.
         # Use the author name (bInasb) as content if present.
-        content = (
-            extract_text(eval_xpath(result, ".//div[contains(@class, 'bInasb')]")) or ""
-        )
+        author = extract_text(eval_xpath(result, ".//div[contains(@class, 'uQIVzc')]")) or ""
 
         thumbnail: str = eval_xpath_getindex(
             result, ".//figure/img/@src", 0, default=""
@@ -215,7 +211,7 @@ def response(resp: "SXNG_Response") -> EngineResults:
             res.types.MainResult(
                 url=url,
                 title=title,
-                content=content,
+                author=author,
                 metadata=metadata,
                 thumbnail=thumbnail,
             )
