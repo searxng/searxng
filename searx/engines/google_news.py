@@ -143,18 +143,14 @@ def response(resp: "SXNG_Response") -> EngineResults:
 
     for result in eval_xpath_list(dom, "//div[@jslog and @data-n-tid and @jsdata]"):
 
-        url: str = eval_xpath_getindex(
-            result, "./a[@target='_blank']/@href", 0, default=0
-        )
+        url: str = eval_xpath_getindex(result, "./a[@target='_blank']/@href", 0, default=0)
         if not url:
             continue
         if url.startswith("./"):
             url = base_url + url[1:]
 
         # The real URL is often encoded in the "jslog" attribute
-        jslog: str | None = eval_xpath_getindex(
-            result, "./a[@target='_blank']/@jslog", 0, default=None
-        )
+        jslog: str | None = eval_xpath_getindex(result, "./a[@target='_blank']/@jslog", 0, default=None)
 
         # Try to extract the real URL from jslog
         real_url: str | None = None
@@ -166,9 +162,7 @@ def response(resp: "SXNG_Response") -> EngineResults:
                 b64_data: str = parts[1].split(":")[-1].strip()
                 # Pad base64 if necessary
                 b64_data += "=" * (-len(b64_data) % 4)
-                decoded_data: list[str | None] = json.loads(
-                    base64.b64decode(b64_data).decode("utf-8")
-                )
+                decoded_data: list[str | None] = json.loads(base64.b64decode(b64_data).decode("utf-8"))
                 # The URL is typically the last element in the decoded array
                 if (
                     isinstance(decoded_data, list)
@@ -184,9 +178,7 @@ def response(resp: "SXNG_Response") -> EngineResults:
 
         # title is in <h4> or (since Google changed DOM) in the <a target='_blank'> link text
         title = (
-            extract_text(eval_xpath(result, "./h4"))
-            or extract_text(eval_xpath(result, ".//a[@target='_blank']"))
-            or ""
+            extract_text(eval_xpath(result, "./h4")) or extract_text(eval_xpath(result, ".//a[@target='_blank']")) or ""
         )
 
         # The pub_date is mostly a relative string like '3 hours ago', not a
@@ -201,9 +193,7 @@ def response(resp: "SXNG_Response") -> EngineResults:
         # Use the author name (bInasb) as content if present.
         author = extract_text(eval_xpath(result, ".//div[contains(@class, 'uQIVzc')]")) or ""
 
-        thumbnail: str = eval_xpath_getindex(
-            result, ".//figure/img/@src", 0, default=""
-        )
+        thumbnail: str = eval_xpath_getindex(result, ".//figure/img/@src", 0, default="")
         if thumbnail and thumbnail.startswith("/"):
             thumbnail = base_url + thumbnail
 
