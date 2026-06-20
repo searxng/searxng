@@ -39,7 +39,9 @@ from searx.utils import (
     extract_text,
 )
 
-from searx.engines.google import fetch_traits as _fetch_traits  # pylint: disable=unused-import
+from searx.engines.google import (
+    fetch_traits as _fetch_traits,
+)  # pylint: disable=unused-import
 from searx.engines.google import (
     get_google_info,
     detect_google_sorry,
@@ -141,14 +143,18 @@ def response(resp: "SXNG_Response") -> EngineResults:
 
     for result in eval_xpath_list(dom, "//div[@jslog and @data-n-tid and @jsdata]"):
 
-        url: str = eval_xpath_getindex(result, "./a[@target='_blank']/@href", 0, default=0)
+        url: str = eval_xpath_getindex(
+            result, "./a[@target='_blank']/@href", 0, default=0
+        )
         if not url:
             continue
         if url.startswith("./"):
             url = base_url + url[1:]
 
         # The real URL is often encoded in the "jslog" attribute
-        jslog: str | None = eval_xpath_getindex(result, "./a[@target='_blank']/@jslog", 0, default=None)
+        jslog: str | None = eval_xpath_getindex(
+            result, "./a[@target='_blank']/@jslog", 0, default=None
+        )
 
         # Try to extract the real URL from jslog
         real_url: str | None = None
@@ -160,7 +166,9 @@ def response(resp: "SXNG_Response") -> EngineResults:
                 b64_data: str = parts[1].split(":")[-1].strip()
                 # Pad base64 if necessary
                 b64_data += "=" * (-len(b64_data) % 4)
-                decoded_data: list[str | None] = json.loads(base64.b64decode(b64_data).decode("utf-8"))
+                decoded_data: list[str | None] = json.loads(
+                    base64.b64decode(b64_data).decode("utf-8")
+                )
                 # The URL is typically the last element in the decoded array
                 if (
                     isinstance(decoded_data, list)
@@ -175,22 +183,31 @@ def response(resp: "SXNG_Response") -> EngineResults:
             continue
 
         # title is in <h4> or (since Google changed DOM) in the <a target='_blank'> link text
-        title = extract_text(eval_xpath(result, "./h4")) or \
-                extract_text(eval_xpath(result, ".//a[@target='_blank']")) or ""
+        title = (
+            extract_text(eval_xpath(result, "./h4"))
+            or extract_text(eval_xpath(result, ".//a[@target='_blank']"))
+            or ""
+        )
 
         # The pub_date is mostly a relative string like '3 hours ago', not a
         # real timezone date/time, so we can't use publishedDate.
         # pub_origin and pub_date go into metadata.
 
         pub_date = extract_text(eval_xpath(result, ".//time"))
-        pub_origin = extract_text(eval_xpath(result, ".//div[contains(@class, 'vr1PYe')]"))
+        pub_origin = extract_text(
+            eval_xpath(result, ".//div[contains(@class, 'vr1PYe')]")
+        )
         metadata = " / ".join([x for x in [pub_origin, pub_date] if x])
 
         # Google News HTML does not provide article snippets.
         # Use the author name (bInasb) as content if present.
-        content = extract_text(eval_xpath(result, ".//div[contains(@class, 'bInasb')]")) or ""
+        content = (
+            extract_text(eval_xpath(result, ".//div[contains(@class, 'bInasb')]")) or ""
+        )
 
-        thumbnail: str = eval_xpath_getindex(result, ".//figure/img/@src", 0, default="")
+        thumbnail: str = eval_xpath_getindex(
+            result, ".//figure/img/@src", 0, default=""
+        )
         if thumbnail and thumbnail.startswith("/"):
             thumbnail = base_url + thumbnail
 
