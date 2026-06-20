@@ -14,7 +14,6 @@ from searx.extended_types import SXNG_Response
 from searx.network import get, post
 from searx.result_types import EngineResults
 from searx.utils import html_to_text
-from searx.enginelib import EngineCache
 
 if t.TYPE_CHECKING:
     from searx.search.processors import OnlineParams
@@ -42,21 +41,7 @@ search_index = "cw22"
 <https://www.chatnoir.eu/docs/api-general>`_ for a full list."""
 
 
-CACHE: EngineCache
-"""Cache to store session info (i.e. api key, csrf token, session id)."""
-
-
-def setup(engine_settings: dict[str, t.Any]) -> bool:
-    global CACHE  # pylint: disable=global-statement
-    CACHE = EngineCache(engine_settings["name"])
-    return True
-
-
 def _obtain_api_key() -> tuple[str, str, str]:
-    cached_session = CACHE.get("session")
-    if cached_session:
-        return tuple(cached_session.split("|"))
-
     home_resp = get(base_url)
     if not home_resp.ok:
         raise SearxEngineAPIException("failed to obtain api key")
@@ -75,10 +60,6 @@ def _obtain_api_key() -> tuple[str, str, str]:
         raise SearxEngineAPIException("failed to obtain api key")
     session_id = token_resp.cookies["sessionid"]
     scraped_api_key = token_resp.json()["token"]["token"]
-
-    # session keys seem to become rate-limited very fast, so only remembering
-    # for 1 minute here
-    CACHE.set("session", f"{csrf_token}|{session_id}|{scraped_api_key}", expire=60)
 
     return csrf_token, session_id, scraped_api_key
 
