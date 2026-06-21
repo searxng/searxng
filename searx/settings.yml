@@ -1382,6 +1382,23 @@ engines:
   #   api_key: ""  # required
   #   kagi_categ: videos
 
+  - name: kozmonavt
+    engine: xpath
+    paging: true
+    # pageno query param key is U+1D5D1 (looks like an "x")
+    search_url: https://kozmonavt.su/s?q={query}&%F0%9D%97%91={pageno}
+    shortcut: koz
+    disabled: true
+    # inactive: true
+    results_xpath: //div[contains(@class, 'list')]/section
+    url_xpath: concat('https://', substring-after(.//a/@href, '?q='))
+    title_xpath: .//a
+    content_xpath: .//div[contains(@class, 'snip')]
+    about:
+      website: https://kozmonavt.su
+      description: "Web site directory with its own index"
+      results: HTML
+
   - name: jisho
     engine: jisho
     shortcut: js
