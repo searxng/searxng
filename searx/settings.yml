@@ -1397,6 +1397,22 @@ engines:
     shortcut: kc
     timeout: 4.0
 
+  - name: kukei
+    engine: xpath
+    categories: [general, blogs]
+    search_url: https://kukei.eu/?q={query}
+    shortcut: kuk
+    disabled: true
+    inactive: true
+    results_xpath: //ul/li[contains(@class, "result-item-first-level")]
+    url_xpath: .//a/@href
+    title_xpath: .//h3
+    content_xpath: .//p
+    about:
+      website: https://kukei.eu
+      description: "Curated search for the small web"
+      results: HTML
+
   - name: lemmy communities
     engine: lemmy
     lemmy_type: Communities
