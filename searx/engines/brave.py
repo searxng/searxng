@@ -336,7 +336,7 @@ def _parse_search(resp: SXNG_Response) -> EngineResults:
             # Pass upstream CDN credentials to the internal image proxy stack
             _image_proxy_headers={
                 "Referer": "https://search.brave.com/",
-                "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36"
+                "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36"
             }
         )
         res.add(item)
