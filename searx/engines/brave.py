@@ -317,7 +317,14 @@ def _parse_search(resp: SXNG_Response) -> EngineResults:
                 pub_date = _extract_published_date(_pub_date)
                 content = content.lstrip(_pub_date).strip("- \n\t")
 
-        thumbnail: str = eval_xpath_getindex(result, ".//a[contains(@class, 'thumbnail')]//img/@src", 0, default="")
+        img_node = eval_xpath_getindex(result, ".//a[contains(@class, 'thumbnail')]//img", 0, default=None)
+        thumbnail: str = ""
+
+        if img_node is not None:
+            thumbnail = img_node.get("data-src") or img_node.get("src", "")
+            # If standard src grabbed a transparent base64 SVG or relative path, force data-src
+            if thumbnail.startswith("data:image/") or thumbnail.startswith("/"):
+                thumbnail = img_node.get("data-src", thumbnail)
 
         item = res.types.LegacyResult(
             template="default.html",
@@ -326,6 +333,11 @@ def _parse_search(resp: SXNG_Response) -> EngineResults:
             content=content,
             publishedDate=pub_date,
             thumbnail=thumbnail,
+            # Pass upstream CDN credentials to the internal image proxy stack
+            _image_proxy_headers={
+                "Referer": "https://search.brave.com/",
+                "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36"
+            }
         )
         res.add(item)
 
