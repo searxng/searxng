@@ -17,7 +17,7 @@ from lxml.html import fromstring
 
 import searx.engines
 from searx.engines import wikidata, set_loggers
-from searx.utils import extract_text, searxng_useragent
+from searx.utils import extract_text
 from searx.locales import LOCALE_NAMES, locales_initialize, match_locale
 from searx import searx_dir
 from searx.utils import gen_useragent
