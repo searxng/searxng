@@ -207,6 +207,7 @@ class EngineAbout(msgspec.Struct, kw_only=True):
 
     use_official_api: bool = False
     """SearXNG engine makes use of the official API or not"""
+
     require_api_key: bool = False
     """API requires a key or not."""
 
@@ -217,8 +218,7 @@ class EngineAbout(msgspec.Struct, kw_only=True):
     """Brief description of the engine and where it gets its data from.
 
     This value should only be set as long as no description of the data source
-    is available via a :py:obj:`EngineAbout.wikidata_id`.
-    """
+    is available via a :py:obj:`EngineAbout.wikidata_id`."""
 
     language: str = ""
     """Deprecated! Migrate your setting from `engine.about.language` to
