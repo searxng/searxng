@@ -60,7 +60,7 @@
       </p>
       <p class="result-filesize">{{ _label(_("Filesize"), result.filesize) }}</p>
       <p class="result-source">{{ _label(_("Source"), result.source) }}</p>
-      <p class="result-engine">{{ _label(_("Engine"), result.engine) }}</p>
+      <p class="result-engines">{{ _label(_("Engines"), ", ".join(result.engines)) }}</p>
       <p class="result-url"><span>{{ _("View source") }}:</span>{{- "" -}}
         <a {{ _target(results_on_new_tab) }} href="{{ result.url }}">{{ result.url }}</a>
       </p>
