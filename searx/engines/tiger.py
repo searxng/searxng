@@ -125,7 +125,9 @@ def request(query: str, params: "OnlineParams"):
     code = _obtain_session_code()
     args = {"w": query, "page": params["pageno"]}
     params["url"] = f"{base_url}/{tiger_category}?{urlencode(args)}"
-    params["cookies"]["Tiger.ch"] = f"Code={code}"
+    # Setting Checked=1 shows related search terms / suggestions
+    # Language and country could be set with Lng= and Land= in the future
+    params["cookies"]["Tiger.ch"] = f"Tiger.ch=&Code={code}&Checked=1"
 
 
 def response(resp: "SXNG_Response") -> EngineResults:
@@ -144,6 +146,9 @@ def response(resp: "SXNG_Response") -> EngineResults:
                     content=extract_text(eval_xpath(result, ".//*[contains(@class, 'webbodynopic')]")) or "",
                 )
             )
+
+        for suggestion in eval_xpath_list(doc, "//a[contains(@class, 'linkAnders')]"):
+            res.add(res.types.LegacyResult(suggestion=extract_text(suggestion)))
     elif tiger_category == "News":
         for result in eval_xpath_list(doc, "//div[@id='panNews']/div"):
             publishedDate = None
