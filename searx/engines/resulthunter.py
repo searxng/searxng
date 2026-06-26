@@ -101,7 +101,7 @@ def _image_results(doc: "ElementBase") -> EngineResults:
                 res.types.Image(
                     url=extract_text(eval_xpath(result, "./@href")) or "",
                     title=extract_text(eval_xpath(result, "./img/@alt")) or "",
-                    thumbnail_src=extract_text(eval_xpath(result, "./img/@src")) or "",
+                    img_src=extract_text(eval_xpath(result, "./img/@src")) or "",
                 ),
             )
         )
