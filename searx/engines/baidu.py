@@ -7,13 +7,17 @@
 # There exits a https://github.com/ohblue/baidu-serp-api/
 # but we don't use it here (may we can learn from).
 
+import typing as t
+
 from urllib.parse import urlencode
 from datetime import datetime
 from html import unescape
 import time
 import json
 
-from searx.exceptions import SearxEngineAPIException, SearxEngineCaptchaException
+from searx.exceptions import SearxEngineAPIException, SearxEngineCaptchaException, SearxEngineAccessDeniedException
+from searx.enginelib import EngineCache
+from searx.network import get as http_get
 from searx.utils import html_to_text
 
 about = {
@@ -34,6 +38,31 @@ baidu_category = 'general'
 
 time_range_support = True
 time_range_dict = {"day": 86400, "week": 604800, "month": 2592000, "year": 31536000}
+
+image_base_url = "https://image.baidu.com/"
+
+COOKIE_CACHE_KEY = "cookie"
+COOKIE_CACHE_EXPIRATION_SECONDS = 3600
+
+CACHE: EngineCache
+"""Stores cookies from Baidu image search warmup."""
+
+
+def setup(engine_settings: dict[str, t.Any]) -> bool:
+    global CACHE  # pylint: disable=global-statement
+    CACHE = EngineCache(engine_settings["name"])
+    return True
+
+
+def get_image_cookies(headers: dict[str, str]) -> dict[str, str]:
+    cookies: dict[str, str] | None = CACHE.get(COOKIE_CACHE_KEY)
+    if cookies:
+        return cookies
+
+    warmup = http_get(image_base_url, headers=headers, timeout=10)
+    cookies = dict(warmup.cookies.items())
+    CACHE.set(key=COOKIE_CACHE_KEY, value=cookies, expire=COOKIE_CACHE_EXPIRATION_SECONDS)
+    return cookies
 
 
 def init(_):
@@ -88,6 +117,9 @@ def request(query, params):
         if baidu_category == 'it':
             query_params["paramList"] += f",timestamp_range={past}-{now}"
 
+    if baidu_category == 'images':
+        params["cookies"] = get_image_cookies(params["headers"])
+
     params["url"] = f"{query_url}?{urlencode(query_params)}"
     params["allow_redirects"] = False
     return params
@@ -103,6 +135,8 @@ def response(resp):
         # baidu's JSON encoder wrongly quotes / and ' characters by \\ and \'
         text = text.replace(r"\/", "/").replace(r"\'", "'")
     data = json.loads(text, strict=False)
+    if data.get("antiFlag") == 1:
+        raise SearxEngineAccessDeniedException(data.get("message", "Forbid spider access"))
     parsers = {'general': parse_general, 'images': parse_images, 'it': parse_it}
 
     return parsers[baidu_category](data)
