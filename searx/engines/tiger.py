@@ -73,7 +73,7 @@ def _obtain_session_code() -> str:
     if cached_session:
         return cached_session
 
-    results_page = get(f"{base_url}/_internCode.aspx")
+    results_page = get(f"{base_url}/checkCode.aspx")
     doc = html.fromstring(results_page.text)
 
     extra_data: dict[str, str] = {}
@@ -107,7 +107,7 @@ def _obtain_session_code() -> str:
     }
 
     challenge_response = post(
-        f"{base_url}/_internCode.aspx",
+        f"{base_url}/checkCode.aspx",
         cookies=results_page.cookies,
         data=data,
     )
