@@ -24,7 +24,7 @@ import babel.languages
 from lxml import html
 
 from searx.enginelib.traits import EngineTraits
-from searx.exceptions import SearxEngineCaptchaException
+from searx.exceptions import SearxEngineCaptchaException, SearxEngineResponseException
 from searx.locales import get_official_locales, language_tag, region_tag
 from searx.result_types import EngineResults
 from searx.utils import (
@@ -424,6 +424,80 @@ def response(resp: "SXNG_Response"):
     for suggestion in eval_xpath_list(dom, suggestion_xpath):
         # append suggestion
         results.append({"suggestion": extract_text(suggestion)})
+
+    # If no results were parsed despite a successful HTTP response, log
+    # diagnostics and raise an error so the user gets feedback instead of a
+    # silent empty page.  Google can return a 200 OK page without organic
+    # result blocks (e.g. direct answer widgets, knowledge panels, or 'no
+    # results found' messages).
+    #
+    # https://github.com/searxng/searxng/issues/6171
+    if len(results) == 0:
+        _page_text = extract_text(dom)
+        _title_text = extract_text(eval_xpath(dom, '//title'))
+
+        # Try to classify the page content for diagnostic purposes
+        _diag_parts: list[str] = []
+
+        # Look for Google's "no results found" message
+        _no_result_signals = [
+            'did not match any documents',
+            'keine Ergebnisse',
+            'no results',
+            'aucun r\u00e9sultat',
+            'nessun risultato',
+            'geen resultaten',
+            '\u6ca1\u6709\u7b26\u5408\u6761\u4ef6\u7684\u641c\u7d22\u7ed3\u679c',
+        ]
+        for _signal in _no_result_signals:
+            if _signal in _page_text[:800]:
+                _diag_parts.append('no_results_message')
+                break
+
+        # Direct answer widgets (weather, time, calculator, translate, etc.)
+        # are often wrapped in a div with role="heading" or data-attributed
+        # knowledge-panel elements.
+        if eval_xpath(dom, '//*[@data-attrid and contains(@data-attrid, "_answer")]'):
+            _diag_parts.append('direct_answer_widget')
+
+        # Knowledge panels (entities, places, people)
+        if eval_xpath(dom, '//*[@data-attrid and contains(@data-attrid, "_knowledge")]'):
+            _diag_parts.append('knowledge_panel')
+
+        # Top stories carousel (common for newsy queries)
+        if eval_xpath(dom, '//div[contains(@class, "WIdY2d") or contains(@class, "xrnccd")]'):
+            _diag_parts.append('top_stories_carousel')
+
+        # Weather results widget
+        if eval_xpath(dom, '//div[contains(@id, "wob_wc")]'):
+            _diag_parts.append('weather_widget')
+
+        # Math / calculator result
+        if eval_xpath(dom, '//div[contains(@class, "jfenQc")]'):
+            _diag_parts.append('calculator_widget')
+
+        # Did-you-mean / spelling correction
+        if eval_xpath(dom, '//a[contains(@href, "spell=1")]'):
+            _diag_parts.append('spelling_correction')
+
+        _body_pg_len = len(resp.text)
+        _diag_indicators = ", ".join(_diag_parts) if _diag_parts else "none"
+        _diag_msg = (
+            f'Google returned {_body_pg_len} byte page with 0 parsed organic results. '
+            f'Title: "{_title_text}". '
+            f'Page indicators: {_diag_indicators}. '
+            f'Snippet: "{_page_text[:300].strip()}"'
+        )
+        logger.warning(_diag_msg)
+
+        # Raise an API-like exception so the user sees an engine error
+        # message instead of a blank result page.
+        _raised_detail = f"Indicators: {_diag_indicators}. " if _diag_parts else ""
+        raise SearxEngineResponseException(
+            'Google returned a page without organic search results. '
+            + _raised_detail
+            + 'Check the SearXNG logs for details.'
+        )
 
     # return results
     return results
