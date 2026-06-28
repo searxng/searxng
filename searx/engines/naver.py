@@ -99,23 +99,35 @@ def parse_general(data):
 
     dom = html.fromstring(data)
 
-    for item in eval_xpath_list(dom, "//ul[contains(@class, 'lst_total')]/li[contains(@class, 'bx')]"):
-        thumbnail = None
+    for item in eval_xpath_list(dom, "//div[contains(@class, 'fds-web-normal-doc-root')]"):
+        thumbnail = extract_text(
+            eval_xpath(
+                item,
+                ".//div[contains(@class, 'sds-comps-image') and not(contains(@class, 'sds-comps-image-circle'))]/img/@src",
+            )
+        )
+
+        title = extract_text(eval_xpath(item, ".//span[contains(@class, 'sds-comps-text-type-headline1')]"))
+
+        url = None
         try:
-            thumbnail = eval_xpath_getindex(item, ".//div[contains(@class, 'thumb_single')]//img/@data-lazysrc", 0)
+            url = eval_xpath_getindex(
+                item, ".//a[starts-with(@href, 'http') and not(contains(@href, 'keep.naver.com'))]/@href", 0
+            )
         except (ValueError, TypeError, SearxEngineXPathException):
             pass
 
-        results.add(
-            MainResult(
-                title=extract_text(eval_xpath(item, ".//a[contains(@class, 'link_tit')]")),
-                url=eval_xpath_getindex(item, ".//a[contains(@class, 'link_tit')]/@href", 0),
-                content=extract_text(
-                    eval_xpath(item, ".//div[contains(@class, 'total_dsc_wrap')]//a[contains(@class, 'api_txt_lines')]")
-                ),
-                thumbnail=thumbnail,
+        content = extract_text(eval_xpath(item, ".//span[contains(@class, 'sds-comps-text-type-body1')]"))
+
+        if title and url:
+            results.add(
+                MainResult(
+                    title=title,
+                    url=url,
+                    content=content or "",
+                    thumbnail=thumbnail or "",
+                )
             )
-        )
 
     return results
 
@@ -173,7 +185,7 @@ def parse_news(data):
                     title=title,
                     url=url,
                     content=content,
-                    thumbnail=thumbnail,
+                    thumbnail=thumbnail or "",
                 )
             )
 
@@ -196,7 +208,7 @@ def parse_videos(data):
 
         length = None
         try:
-            length = parse_duration_string(extract_text(eval_xpath(item, ".//span[contains(@class, 'time')]")))
+            length = parse_duration_string(extract_text(eval_xpath(item, ".//span[contains(@class, 'time')]")) or "")
         except (ValueError, TypeError):
             pass
 
