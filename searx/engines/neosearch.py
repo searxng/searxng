@@ -48,6 +48,9 @@ def response(resp: "SXNG_Response") -> EngineResults:
     for lens in json_resp["lenses"]:
         for category in lens["categories"]:
             for result in category["links"]:
+                if not result["url"]:
+                    continue
+
                 res.add(
                     res.types.MainResult(
                         url=result["url"],
