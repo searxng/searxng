@@ -74,6 +74,8 @@ sxng_locales = (
     ('ja-JP', '日本語', '日本', 'Japanese', '\U0001f1ef\U0001f1f5'),
     ('ko', '한국어', '', 'Korean', '\U0001f310'),
     ('ko-KR', '한국어', '대한민국', 'Korean', '\U0001f1f0\U0001f1f7'),
+    ('mi', 'Māori', '', 'Māori', '\U0001f310'),
+    ('mi-NZ', 'Māori', 'Aotearoa', 'Māori', '\U0001f1f3\U0001f1ff'),
     ('nb', 'Norsk Bokmål', '', 'Norwegian Bokmål', '\U0001f310'),
     ('nb-NO', 'Norsk Bokmål', 'Norge', 'Norwegian Bokmål', '\U0001f1f3\U0001f1f4'),
     ('nl', 'Nederlands', '', 'Dutch', '\U0001f310'),
