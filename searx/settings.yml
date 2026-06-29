@@ -2989,44 +2989,17 @@ engines:
       results: HTML
 
   - name: searchzee
-    engine: json_engine
-    search_url: https://searchzee.com/api/search?q={query}&type=web&offset={pageno}
-    paging: true
-    first_page_num: 0
-    results_query: results
-    url_query: url
-    title_query: title
-    content_query: summary
-    content_html_to_text: true
+    engine: searchzee
     categories: general
+    searchzee_categ: web
     shortcut: sz
     disabled: true
     inactive: true
-    about:
-      website: https://searchzee.com
-      use_official_api: false
-      require_api_key: false
-      results: JSON
 
   - name: searchzee news
-    engine: json_engine
-    search_url: https://searchzee.com/api/search?q={query}&type=news&offset={pageno}{time_range}
-    paging: true
-    first_page_num: 0
-    time_range_support: true
-    time_range_url: "&freshness={time_range_val}"
-    time_range_map:
-      day: pd
-      week: pw
-      month: pm
-      year: py
-    results_query: results
-    url_query: url
-    title_query: title
-    content_query: summary
-    thumbnail_query: thumbnail
-    content_html_to_text: true
+    engine: searchzee
     categories: news
+    searchzee_categ: news
     shortcut: sznw
     disabled: true
     inactive: true
