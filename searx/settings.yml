@@ -2521,6 +2521,23 @@ engines:
       description: "Personal websites focused search engine."
       results: HTML
 
+  - name: uruky
+    engine: uruky
+    shortcut: ur
+    categories: [general, web]
+    api_key: ""
+    disabled: true
+    inactive: true
+
+  - name: uruky.images
+    engine: uruky
+    shortcut: uri
+    categories: [images]
+    uruky_categ: images
+    api_key: ""
+    disabled: true
+    inactive: true
+
   - name: yandex
     engine: yandex
     categories: general
