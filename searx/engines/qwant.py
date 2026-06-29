@@ -38,6 +38,7 @@ Implementations
 
 """
 
+import random
 import typing as t
 
 from datetime import (
@@ -89,6 +90,11 @@ qwant_categ: str = None  # pyright: ignore[reportAssignmentType]
 
 safesearch = True
 
+# tgp seems to be short for "test group" - its actual value doesn't matter, as
+# long as it's sent and at the correct position in the query params and doesn't
+# change too frequently
+test_group_value = random.randint(1, 3)
+
 # fmt: off
 qwant_news_locales = [
     "ca_ad", "ca_es", "ca_fr", "co_fr", "de_at", "de_ch", "de_de", "en_au",
@@ -114,17 +120,24 @@ def request(query: str, params: "OnlineParams") -> None:
     results_per_page = 10
     if qwant_categ == "images":
         results_per_page = 50
+
     args = {
         "q": query,
         "count": results_per_page,
         "locale": q_locale,
         "offset": (params["pageno"] - 1) * results_per_page,
+        "tgp": test_group_value,
         "device": "desktop",
         "safesearch": params["safesearch"],
-        "tgp": 1,
         "display": True,
         "llm": True,
     }
+
+    # shuffle query parameters to be harder to fingerprint
+    args = list(args.items())
+    random.shuffle(args)
+    args = dict(args)
+
     params["raise_for_httperror"] = False
 
     params["url"] = f"{api_url}{qwant_categ}?{urlencode(args)}"
@@ -190,7 +203,6 @@ def response(resp: "SXNG_Response") -> EngineResults:
 
         mainline_items: list[dict[str, t.Any]] = row.get("items", [])
         for item in mainline_items:
-
             title: str = item.get("title", "")
             res_url: str = item.get("url", "")
             pub_date: datetime | None = None
