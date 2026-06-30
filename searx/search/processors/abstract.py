@@ -150,19 +150,26 @@ class EngineProcessor(ABC):
         threading.Thread(target=__init_processor_thread, daemon=True).start()
 
     def init_engine(self) -> bool:
+
         eng_setting = get_engine_from_settings(self.engine.name)
         init_ok: bool | None = False
+
         try:
             init_ok = self.engine.init(eng_setting)
-        except Exception:  # pylint: disable=broad-except
-            logger.exception(
-                f"(PID {os.getpid()}) Init method of engine %s failed due to an exception.", self.engine.name
-            )
+        except Exception as e:  # pylint: disable=broad-except
+            logger.exception(f"(PID {os.getpid()}) {self.engine.name}: engine INIT failed, exception: {e}")
             init_ok = False
+
         # In older engines, None is returned from the init method, which is
-        # equivalent to indicating that the initialization was successful.
+        # equivalent to indicating that the initialization was successful
+        # (compare: Engine.setup).
+
         if init_ok is None:
             init_ok = True
+
+        if not init_ok:
+            logger.error(f"(PID {os.getpid()}) {self.engine.name}: engine init was not successful")
+
         return init_ok
 
     def handle_exception(

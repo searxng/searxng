@@ -16,6 +16,7 @@ __all__ = [
 
 import typing as t
 
+import os
 from searx import logger
 from searx import engines
 
@@ -92,7 +93,9 @@ class ProcessorMap(dict[str, EngineProcessor]):
             self[eng_proc.engine.name] = eng_proc
             # logger.debug("registered engine processor: %s", eng_proc.engine.name)
         else:
-            logger.error("can't register engine processor: %s (init failed)", eng_proc.engine.name)
+            logger.error(
+                f"(PID {os.getpid()}) {eng_proc.engine.name}: can't register engines processor (init engine failed)"
+            )
 
         return eng_proc_ok
 
