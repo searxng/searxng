@@ -1,4 +1,4 @@
-FROM ghcr.io/searxng/base:searxng-builder AS builder
+FROM docker.io/searxng/base:searxng-builder AS builder
 
 COPY ./requirements.txt ./requirements-server.txt ./
 
