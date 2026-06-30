@@ -2522,10 +2522,12 @@ engines:
       results: HTML
 
   - name: uruky
+    # https://docs.searxng.org/dev/engines/online/uruky.html
     engine: uruky
     shortcut: ur
     categories: [general, web]
     api_key: ""
+    uruky_categ: search
     disabled: true
     inactive: true
 
@@ -2533,8 +2535,9 @@ engines:
     engine: uruky
     shortcut: uri
     categories: [images]
-    uruky_categ: images
+    network: uruky
     api_key: ""
+    uruky_categ: images
     disabled: true
     inactive: true
 
