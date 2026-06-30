@@ -3123,6 +3123,55 @@ engines:
     engine: tootfinder
     shortcut: toot
 
+  - name: toutiao
+    engine: toutiao
+    shortcut: toutiao
+    disabled: true
+    inactive: true
+
+  - name: toutiao site
+    engine: toutiao
+    shortcut: ttsite
+    toutiao_filter_vendor: site
+    disabled: true
+    inactive: true
+
+  - name: toutiao news
+    engine: toutiao
+    shortcut: ttnews
+    categories: news
+    toutiao_pd: information
+    time_range_support: false
+    disabled: true
+    inactive: true
+
+  - name: toutiao images
+    engine: toutiao
+    shortcut: ttimg
+    categories: images
+    toutiao_pd: atlas
+    time_range_support: false
+    disabled: true
+    inactive: true
+
+  - name: toutiao weitoutiao
+    engine: toutiao
+    shortcut: ttwtt
+    categories: social media
+    toutiao_pd: weitoutiao
+    time_range_support: false
+    disabled: true
+    inactive: true
+
+  - name: toutiao videos
+    engine: toutiao
+    shortcut: ttvid
+    categories: videos
+    toutiao_pd: video
+    time_range_support: false
+    disabled: true
+    inactive: true
+
   - name: uxwing
     engine: uxwing
     shortcut: ux
