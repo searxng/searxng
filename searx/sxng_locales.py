@@ -9,7 +9,6 @@
 '''
 
 sxng_locales = (
-    ('af', 'Afrikaans', '', 'Afrikaans', '\U0001f310'),
     ('ar', 'العربية', '', 'Arabic', '\U0001f310'),
     ('ar-SA', 'العربية', 'المملكة العربية السعودية', 'Arabic', '\U0001f1f8\U0001f1e6'),
     ('bg', 'Български', '', 'Bulgarian', '\U0001f310'),
@@ -46,7 +45,6 @@ sxng_locales = (
     ('es-ES', 'Español', 'España', 'Spanish', '\U0001f1ea\U0001f1f8'),
     ('es-MX', 'Español', 'México', 'Spanish', '\U0001f1f2\U0001f1fd'),
     ('es-PE', 'Español', 'Perú', 'Spanish', '\U0001f1f5\U0001f1ea'),
-    ('es-VE', 'Español', 'Venezuela', 'Spanish', '\U0001f1fb\U0001f1ea'),
     ('et', 'Eesti', '', 'Estonian', '\U0001f310'),
     ('et-EE', 'Eesti', 'Eesti', 'Estonian', '\U0001f1ea\U0001f1ea'),
     ('fi', 'Suomi', '', 'Finnish', '\U0001f310'),
@@ -58,7 +56,6 @@ sxng_locales = (
     ('fr-CA', 'Français', 'Canada', 'French', '\U0001f1e8\U0001f1e6'),
     ('fr-CH', 'Français', 'Suisse', 'French', '\U0001f1e8\U0001f1ed'),
     ('fr-FR', 'Français', 'France', 'French', '\U0001f1eb\U0001f1f7'),
-    ('gl', 'Galego', '', 'Galician', '\U0001f310'),
     ('hi', 'हिन्दी', '', 'Hindi', '\U0001f310'),
     ('hi-IN', 'हिन्दी', 'भारत', 'Hindi', '\U0001f1ee\U0001f1f3'),
     ('hr', 'Hrvatski', '', 'Croatian', '\U0001f310'),
@@ -92,8 +89,6 @@ sxng_locales = (
     ('ro-RO', 'Română', 'România', 'Romanian', '\U0001f1f7\U0001f1f4'),
     ('ru', 'Русский', '', 'Russian', '\U0001f310'),
     ('ru-RU', 'Русский', 'Россия', 'Russian', '\U0001f1f7\U0001f1fa'),
-    ('sk', 'Slovenčina', '', 'Slovak', '\U0001f310'),
-    ('sq', 'Shqip', '', 'Albanian', '\U0001f310'),
     ('sv', 'Svenska', '', 'Swedish', '\U0001f310'),
     ('sv-FI', 'Svenska', 'Finland', 'Swedish', '\U0001f1eb\U0001f1ee'),
     ('sv-SE', 'Svenska', 'Sverige', 'Swedish', '\U0001f1f8\U0001f1ea'),
@@ -101,7 +96,6 @@ sxng_locales = (
     ('th-TH', 'ไทย', 'ไทย', 'Thai', '\U0001f1f9\U0001f1ed'),
     ('tr', 'Türkçe', '', 'Turkish', '\U0001f310'),
     ('tr-TR', 'Türkçe', 'Türkiye', 'Turkish', '\U0001f1f9\U0001f1f7'),
-    ('uk', 'Українська', '', 'Ukrainian', '\U0001f310'),
     ('vi', 'Tiếng Việt', '', 'Vietnamese', '\U0001f310'),
     ('vi-VN', 'Tiếng Việt', 'Việt Nam', 'Vietnamese', '\U0001f1fb\U0001f1f3'),
     ('zh', '中文', '', 'Chinese', '\U0001f310'),
