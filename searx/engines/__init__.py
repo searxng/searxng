@@ -269,21 +269,27 @@ def is_engine_active(engine: "Engine | types.ModuleType"):
 
 
 def call_engine_setup(engine: "Engine | types.ModuleType", engine_data: dict[str, t.Any]) -> bool:
-    setup_ok = False
+
+    setup_ok: bool | None = False
     setup_func = getattr(engine, "setup", None)
 
     if setup_func is None:
         setup_ok = True
     elif not callable(setup_func):
-        logger.error("engine's setup method isn't a callable (is of type: %s)", type(setup_func))
+        logger.error(f"engine's setup method isn't a callable (is of type: {type(setup_func)})")
     else:
         try:
             setup_ok = engine.setup(engine_data)
         except Exception as e:  # pylint: disable=broad-except
-            logger.exception('exception : {0}'.format(e))
+            logger.exception(f"(PID {os.getpid()}) {engine.name}: engine SETUP failed, exception: {e}")
+            setup_ok = False
+
+    # The evaluation of the return value is analogous to Engine.init
+    if setup_ok is None:
+        setup_ok = True
 
     if not setup_ok:
-        logger.error("%s: Engine setup was not successful, engine is set to inactive.", engine.name)
+        logger.error(f"(PID {os.getpid()}) {engine.name}: engine setup was not successful")
     return setup_ok
 
 
@@ -311,14 +317,16 @@ def load_engines(engine_list: list[dict[str, t.Any]]):
     for engine_data in engine_list:
         if engine_data.get("inactive") is True:
             continue
+
         engine = load_engine(engine_data)
+
         if engine:
             register_engine(engine)
         else:
             # if an engine can't be loaded (if for example the engine is missing
             # tor or some other requirements) its set to inactive!
             logger.error(
-                f"(PID {os.getpid()}) loading engine %s failed: set engine to inactive!", engine_data.get("name", "???")
+                f"(PID {os.getpid()}) {engine_data.get('name', '???')}: can't register engine (loading engine failed)"
             )
             engine_data["inactive"] = True
     return engines
