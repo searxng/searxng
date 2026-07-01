@@ -1,0 +1,1180 @@
+<!doctype html>
+<html class="no-js" lang="en" data-content_root="../../">
+  <head><meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="index" title="Index" href="../../genindex.html"><link rel="search" title="Search" href="../../search.html"><link rel="next" title="SearXNG’s engines loader" href="engines.html"><link rel="prev" title="Engine Implementations" href="index.html">
+        <link rel="prefetch" href="../../_static/searxng-wordmark.svg" as="image">
+
+    <!-- Generated with Sphinx 9.1.0 and Furo 2025.12.19 -->
+        <title>Engine Library - SearXNG Documentation (2026.7.1+c5d8d05f0)</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=d111a655" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=7bdb33bb" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?v=8dab3a3b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/searxng.css?v=4b1b1f10" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f2f2f2;
+  --color-code-foreground: #1e1e1e;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
+    <title>Auto light/dark, in light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
+      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
+      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
+      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
+      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
+      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
+      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
+      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
+      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
+      <circle cx="14.5" cy="9.55" r="3.6"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
+    <title>Auto light/dark, in dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
+      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
+      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
+      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
+      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
+      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
+      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
+      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-pencil" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
+      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+      <path d="M13.5 6.5l4 4" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+  <symbol id="svg-eye" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+      <path
+        d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle site navigation sidebar">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc" aria-label="Toggle table of contents sidebar">
+<label class="overlay sidebar-overlay" for="__navigation"></label>
+<label class="overlay toc-overlay" for="__toc"></label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <span class="icon"><svg><use href="#svg-menu"></use></svg></span>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../../index.html"><div class="brand">SearXNG Documentation (2026.7.1+c5d8d05f0)</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
+          <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+          <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><div class="sidebar-scroll"><a class="sidebar-brand" href="../../index.html">
+  <div class="sidebar-logo-container">
+    <img class="sidebar-logo" src="../../_static/searxng-wordmark.svg" alt="Logo"/>
+  </div>
+  
+  <span class="sidebar-brand-text">SearXNG Documentation (2026.7.1+c5d8d05f0)</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../../search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-tree">
+  <ul class="current">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../user/index.html">User information</a><input aria-label="Toggle navigation of User information" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../user/search-syntax.html">Search syntax</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../user/configured_engines.html">Configured Engines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../user/about.html">About SearXNG</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../own-instance.html">Why use a private instance?</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../admin/index.html">Administrator documentation</a><input aria-label="Toggle navigation of Administrator documentation" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../admin/settings/index.html">Settings</a><input aria-label="Toggle navigation of Settings" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../admin/settings/settings.html"><code class="docutils literal notranslate"><span class="pre">settings.yml</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../admin/settings/settings_engines.html"><code class="docutils literal notranslate"><span class="pre">engines:</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../admin/settings/settings_brand.html"><code class="docutils literal notranslate"><span class="pre">brand:</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../admin/settings/settings_general.html"><code class="docutils literal notranslate"><span class="pre">general:</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../admin/settings/settings_search.html"><code class="docutils literal notranslate"><span class="pre">search:</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../admin/settings/settings_server.html"><code class="docutils literal notranslate"><span class="pre">server:</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../admin/settings/settings_ui.html"><code class="docutils literal notranslate"><span class="pre">ui:</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../admin/settings/settings_preferences.html"><code class="docutils literal notranslate"><span class="pre">preferences:</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../admin/settings/settings_redis.html"><code class="docutils literal notranslate"><span class="pre">redis:</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../admin/settings/settings_valkey.html"><code class="docutils literal notranslate"><span class="pre">valkey:</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../admin/settings/settings_outgoing.html"><code class="docutils literal notranslate"><span class="pre">outgoing:</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../admin/settings/settings_categories_as_tabs.html"><code class="docutils literal notranslate"><span class="pre">categories_as_tabs:</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../admin/settings/settings_plugins.html"><code class="docutils literal notranslate"><span class="pre">plugins:</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../admin/installation.html">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../admin/installation-docker.html">Installation container</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../admin/installation-scripts.html">Installation Script</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../admin/installation-searxng.html">Step by step installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../admin/installation-granian.html">Granian</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../admin/installation-uwsgi.html">uWSGI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../admin/installation-nginx.html">NGINX</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../admin/installation-apache.html">Apache</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../admin/update-searxng.html">SearXNG maintenance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../admin/answer-captcha.html">Answer CAPTCHA from server’s IP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../admin/searx.favicons.html">Favicons</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../admin/searx.limiter.html">Limiter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../admin/api.html">Administration API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../admin/architecture.html">Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../admin/plugins.html">List of plugins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../admin/buildhosts.html">Buildhosts</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current has-children"><a class="reference internal" href="../index.html">Developer documentation</a><input aria-label="Toggle navigation of Developer documentation" checked="" class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../quickstart.html">Development Quickstart</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../commits.html">Git Commits &amp; Change Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contribution_guide.html">How to contribute</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../extended_types.html">Extended Types</a></li>
+<li class="toctree-l2 current has-children"><a class="reference internal" href="index.html">Engine Implementations</a><input aria-label="Toggle navigation of Engine Implementations" checked="" class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul class="current">
+<li class="toctree-l3 current current-page"><a class="current reference internal" href="#">Engine Library</a></li>
+<li class="toctree-l3"><a class="reference internal" href="engines.html">SearXNG’s engines loader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="engine_overview.html">Engine Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="demo/demo_online.html">Demo Online Engine</a></li>
+<li class="toctree-l3"><a class="reference internal" href="xpath.html">XPath Engine</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mediawiki.html">MediaWiki Engine</a></li>
+<li class="toctree-l3"><a class="reference internal" href="json_engine.html">JSON Engine</a></li>
+<li class="toctree-l3"><a class="reference internal" href="online/500px.html">500px</a></li>
+<li class="toctree-l3"><a class="reference internal" href="online/adobe_stock.html">Adobe Stock</a></li>
+<li class="toctree-l3"><a class="reference internal" href="online/alpinelinux.html">Alpine Linux Packages</a></li>
+<li class="toctree-l3"><a class="reference internal" href="online/annas_archive.html">Anna’s Archive</a></li>
+<li class="toctree-l3"><a class="reference internal" href="online/archlinux.html">Arch Linux</a></li>
+<li class="toctree-l3"><a class="reference internal" href="online/arxiv.html">arXiv</a></li>
+<li class="toctree-l3"><a class="reference internal" href="online/astrophysics_data_system.html">Astrophysics Data System (ADS)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="online/azure.html">Azure Resources</a></li>
+<li class="toctree-l3"><a class="reference internal" href="online/bing.html">Bing Engines</a></li>
+<li class="toctree-l3"><a class="reference internal" href="online/bpb.html">Bpb</a></li>
+<li class="toctree-l3"><a class="reference internal" href="online/brave.html">Brave Engines</a></li>
+<li class="toctree-l3"><a class="reference internal" href="online/bt4g.html">BT4G</a></li>
+<li class="toctree-l3"><a class="reference internal" href="online/cara.html">Cara Images</a></li>
+<li class="toctree-l3"><a class="reference internal" href="online/chinaso.html">ChinaSo</a></li>
+<li class="toctree-l3"><a class="reference internal" href="online/core.html">CORE</a></li>
+<li class="toctree-l3"><a class="reference internal" href="online/crossref.html">Crossref</a></li>
+<li class="toctree-l3"><a class="reference internal" href="online/dailymotion.html">Dailymotion</a></li>
+<li class="toctree-l3"><a class="reference internal" href="online/discourse.html">Discourse Forums</a></li>
+<li class="toctree-l3"><a class="reference internal" href="online/duckduckgo.html">DuckDuckGo Engines</a></li>
+<li class="toctree-l3"><a class="reference internal" href="online/geizhals.html">Geizhals</a></li>
+<li class="toctree-l3"><a class="reference internal" href="online/gitea.html">Gitea</a></li>
+<li class="toctree-l3"><a class="reference internal" href="online/github_code.html">Github Code</a></li>
+<li class="toctree-l3"><a class="reference internal" href="online/gitlab.html">GitLab</a></li>
+<li class="toctree-l3"><a class="reference internal" href="online/google.html">Google Engines</a></li>
+<li class="toctree-l3"><a class="reference internal" href="online/huggingface.html">Hugging Face</a></li>
+<li class="toctree-l3"><a class="reference internal" href="online/kagi.html">Kagi Engines</a></li>
+<li class="toctree-l3"><a class="reference internal" href="online/lemmy.html">Lemmy</a></li>
+<li class="toctree-l3"><a class="reference internal" href="online/loc.html">Library of Congress</a></li>
+<li class="toctree-l3"><a class="reference internal" href="online/marginalia.html">Marginalia Search</a></li>
+<li class="toctree-l3"><a class="reference internal" href="online/mastodon.html">Mastodon</a></li>
+<li class="toctree-l3"><a class="reference internal" href="online/moviepilot.html">Moviepilot</a></li>
+<li class="toctree-l3"><a class="reference internal" href="online/mrs.html">Matrix Rooms Search (MRS)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="online/mwmbl.html">Mwmbl Engine</a></li>
+<li class="toctree-l3"><a class="reference internal" href="online/odysee.html">Odysee</a></li>
+<li class="toctree-l3"><a class="reference internal" href="online/openalex.html">OpenAlex</a></li>
+<li class="toctree-l3"><a class="reference internal" href="online/openlibrary.html">Open Library</a></li>
+<li class="toctree-l3"><a class="reference internal" href="online/peertube.html">Peertube Engines</a></li>
+<li class="toctree-l3"><a class="reference internal" href="online/piped.html">Piped</a></li>
+<li class="toctree-l3"><a class="reference internal" href="online/presearch.html">Presearch Engine</a></li>
+<li class="toctree-l3"><a class="reference internal" href="online/pubmed.html">PubMed</a></li>
+<li class="toctree-l3"><a class="reference internal" href="online/qwant.html">Qwant</a></li>
+<li class="toctree-l3"><a class="reference internal" href="online/radio_browser.html">RadioBrowser</a></li>
+<li class="toctree-l3"><a class="reference internal" href="online/recoll.html">Recoll Engine</a></li>
+<li class="toctree-l3"><a class="reference internal" href="online/repology.html">Repology</a></li>
+<li class="toctree-l3"><a class="reference internal" href="online/reuters.html">Reuters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="online/semantic_scholar.html">Semantic Scholar</a></li>
+<li class="toctree-l3"><a class="reference internal" href="online/soundcloud.html">Soundcloud</a></li>
+<li class="toctree-l3"><a class="reference internal" href="online/sourcehut.html">Sourcehut</a></li>
+<li class="toctree-l3"><a class="reference internal" href="online/springer.html">Springer Nature</a></li>
+<li class="toctree-l3"><a class="reference internal" href="online/startpage.html">Startpage Engines</a></li>
+<li class="toctree-l3"><a class="reference internal" href="online/tagesschau.html">Tagesschau API</a></li>
+<li class="toctree-l3"><a class="reference internal" href="online/torznab.html">Torznab WebAPI</a></li>
+<li class="toctree-l3"><a class="reference internal" href="online/tubearchivist.html">Tube Archivist</a></li>
+<li class="toctree-l3"><a class="reference internal" href="online/void.html">Void Linux binary packages</a></li>
+<li class="toctree-l3"><a class="reference internal" href="online/wallhaven.html">Wallhaven</a></li>
+<li class="toctree-l3"><a class="reference internal" href="online/wikipedia.html">Wikimedia</a></li>
+<li class="toctree-l3"><a class="reference internal" href="online/yacy.html">Yacy</a></li>
+<li class="toctree-l3"><a class="reference internal" href="online/yahoo.html">Yahoo Engine</a></li>
+<li class="toctree-l3"><a class="reference internal" href="online/zlibrary.html">Z-Library</a></li>
+<li class="toctree-l3"><a class="reference internal" href="offline_concept.html">Offline Concept</a></li>
+<li class="toctree-l3"><a class="reference internal" href="demo/demo_offline.html">Demo Offline Engine</a></li>
+<li class="toctree-l3"><a class="reference internal" href="offline/command-line-engines.html">Command Line Engines</a></li>
+<li class="toctree-l3"><a class="reference internal" href="offline/nosql-engines.html">NoSQL databases</a></li>
+<li class="toctree-l3"><a class="reference internal" href="offline/search-indexer-engines.html">Local Search APIs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="offline/sql-engines.html">SQL Engines</a></li>
+<li class="toctree-l3"><a class="reference internal" href="online_url_search/tineye.html">Tineye</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../result_types/index.html">Result Types</a><input aria-label="Toggle navigation of Result Types" class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../result_types/base_result.html">Result</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../result_types/main_result.html">Main Search Results</a><input aria-label="Toggle navigation of Main Search Results" class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../result_types/main/mainresult.html">Main Results</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../result_types/main/keyvalue.html">Key-Value Results</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../result_types/main/code.html">Code Results</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../result_types/main/paper.html">Paper Results</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../result_types/main/file.html">File Results</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../result_types/main/image.html">Image Results</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../result_types/answer.html">Answer Results</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../result_types/correction.html">Correction Results</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../result_types/suggestion.html">Suggestion Results</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../result_types/infobox.html">Infobox Results</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../templates.html">Simple Theme Templates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../search_api.html">Search API</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../plugins/index.html">Plugins</a><input aria-label="Toggle navigation of Plugins" class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../plugins/development.html">Plugin Development</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../plugins/builtins.html">Built-in Plugins</a><input aria-label="Toggle navigation of Built-in Plugins" class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../plugins/calculator.html">Calculator</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../plugins/hash_plugin.html">Hash Values</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../plugins/hostnames.html">Hostnames</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../plugins/infinite_scroll.html">Infinite scroll</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../plugins/self_info.html">Self-Info</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../plugins/tor_check.html">Tor check</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../plugins/unit_converter.html">Unit Converter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../plugins/time_zone.html">Time Zone</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../answerers/index.html">Answerers</a><input aria-label="Toggle navigation of Answerers" class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../answerers/development.html">Answerer Development</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../answerers/builtins.html">Built-in Answerers</a><input aria-label="Toggle navigation of Built-in Answerers" class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" role="switch" type="checkbox"/><label for="toctree-checkbox-11"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../answerers/random.html">Random</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../answerers/statistics.html">Statistics</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../translation.html">Translation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../makefile.html">Makefile &amp; <code class="docutils literal notranslate"><span class="pre">./manage</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reST.html">reST primer</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../searxng_extra/index.html">Tooling box <code class="docutils literal notranslate"><span class="pre">searxng_extra</span></code></a><input aria-label="Toggle navigation of Tooling box searxng_extra" class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" role="switch" type="checkbox"/><label for="toctree-checkbox-12"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../searxng_extra/update.html"><code class="docutils literal notranslate"><span class="pre">searxng_extra/update/</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../utils/index.html">DevOps tooling box</a><input aria-label="Toggle navigation of DevOps tooling box" class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" role="switch" type="checkbox"/><label for="toctree-checkbox-13"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../utils/searxng.sh.html"><code class="docutils literal notranslate"><span class="pre">utils/searxng.sh</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../src/index.html">Source-Code</a><input aria-label="Toggle navigation of Source-Code" class="toctree-checkbox" id="toctree-checkbox-14" name="toctree-checkbox-14" role="switch" type="checkbox"/><label for="toctree-checkbox-14"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../src/searx.babel_extract.html">Custom message extractor (i18n)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../src/searx.botdetection.html">Bot Detection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../src/searx.cache.html">Caches</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../src/searx.exceptions.html">SearXNG Exceptions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../src/searx.favicons.html">Favicons (source)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../src/searx.infopage.html">Online <code class="docutils literal notranslate"><span class="pre">/info</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../src/searx.locales.html">Locales</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../src/searx.search.html">Search</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../src/searx.search.processors.html">Search processors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../src/searx.settings.html">Settings Loader</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../src/searx.sqlitedb.html">SQLite DB</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../src/searx.utils.html">Utility functions for the engines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../src/searx.valkeydb.html">Valkey DB</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../src/searx.valkeylib.html">Valkey Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../src/searx.weather.html">Weather</a></li>
+</ul>
+</li>
+</ul>
+
+</div>
+</div>
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="view-this-page">
+  <a class="muted-link" href="https://github.com/searxng/searxng/blob/master/docs/dev/engines/enginelib.rst?plain=true" title="View this page">
+    <svg><use href="#svg-eye"></use></svg>
+    <span class="visually-hidden">View this page</span>
+  </a>
+</div><div class="edit-this-page">
+  <a class="muted-link" href="https://github.com/searxng/searxng/edit/master/docs/dev/engines/enginelib.rst" rel="edit" title="Edit this page">
+    <svg><use href="#svg-pencil"></use></svg>
+    <span class="visually-hidden">Edit this page</span>
+  </a>
+</div><div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
+              <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+              <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
+          </label>
+        </div>
+        <article role="main" id="furo-main-content">
+          <section id="module-searx.enginelib">
+<span id="engine-library"></span><span id="searx-enginelib"></span><h1>Engine Library<a class="headerlink" href="#module-searx.enginelib" title="Link to this heading">¶</a></h1>
+<p>Implementations of the framework for the SearXNG engines.</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#searx.enginelib.EngineCache" title="searx.enginelib.EngineCache"><code class="xref py py-obj docutils literal notranslate"><span class="pre">searx.enginelib.EngineCache</span></code></a></p></li>
+<li><p><a class="reference internal" href="#searx.enginelib.Engine" title="searx.enginelib.Engine"><code class="xref py py-obj docutils literal notranslate"><span class="pre">searx.enginelib.Engine</span></code></a></p></li>
+<li><p><a class="reference internal" href="#searx.enginelib.EngineAbout" title="searx.enginelib.EngineAbout"><code class="xref py py-obj docutils literal notranslate"><span class="pre">searx.enginelib.EngineAbout</span></code></a></p></li>
+<li><p><a class="reference internal" href="#module-searx.enginelib.traits" title="searx.enginelib.traits"><code class="xref py py-obj docutils literal notranslate"><span class="pre">searx.enginelib.traits</span></code></a></p></li>
+</ul>
+<p>There is a command line for developer purposes and for deeper analysis.  Here is
+an example in which the command line is called in the development environment:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ ./manage dev.env
+(dev.env)$ python -m searx.enginelib --help
+</pre></div>
+</div>
+<div class="admonition hint">
+<p class="admonition-title">Hint</p>
+<p>The long term goal is to modularize all implementations of the engine
+framework here in this Python package.  ToDo:</p>
+<ul class="simple">
+<li><p>move implementations of the <a class="reference internal" href="engines.html#searx-engines-loader"><span class="std std-ref">SearXNG’s engines loader</span></a> to a new module in
+the <a class="reference internal" href="#module-searx.enginelib" title="searx.enginelib"><code class="xref py py-obj docutils literal notranslate"><span class="pre">searx.enginelib</span></code></a> namespace.</p></li>
+</ul>
+</div>
+<hr class="docutils" />
+<dl class="py class">
+<dt class="sig sig-object py" id="searx.enginelib.EngineCache">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">searx.enginelib.</span></span><span class="sig-name descname"><span class="pre">EngineCache</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">engine_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">expire</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/searx/enginelib.html#EngineCache"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.enginelib.EngineCache" title="Link to this definition">¶</a></dt>
+<dd><p>Persistent (SQLite) key/value cache that deletes its values again after
+<code class="docutils literal notranslate"><span class="pre">expire</span></code> seconds (default/max: <a class="reference internal" href="../../src/searx.cache.html#searx.cache.ExpireCacheCfg.MAXHOLD_TIME" title="searx.cache.ExpireCacheCfg.MAXHOLD_TIME"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MAXHOLD_TIME</span></code></a>).  This class is a wrapper around
+<a class="reference internal" href="#searx.enginelib.ENGINES_CACHE" title="searx.enginelib.ENGINES_CACHE"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ENGINES_CACHE</span></code></a> (<a class="reference internal" href="../../src/searx.cache.html#searx.cache.ExpireCacheSQLite" title="searx.cache.ExpireCacheSQLite"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ExpireCacheSQLite</span></code></a>).</p>
+<p>In the <a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/searx/engines/demo_offline.py">git://searx/engines/demo_offline.py</a> engine you can find an
+exemplary implementation of such a cache other examples are implemented
+in:</p>
+<ul class="simple">
+<li><p><a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/searx/engines/radio_browser.py">git://searx/engines/radio_browser.py</a></p></li>
+<li><p><a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/searx/engines/soundcloud.py">git://searx/engines/soundcloud.py</a></p></li>
+<li><p><a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/searx/engines/startpage.py">git://searx/engines/startpage.py</a></p></li>
+</ul>
+<p>For introspection of the DB, jump into developer environment and run command to
+show cache state:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ ./manage dev.env
+(dev.env)$ python -m searx.enginelib cache state
+
+cache tables and key/values
+===========================
+[demo_offline        ] 2025-04-22 11:32:50 count        --&gt; (int) 4
+[startpage           ] 2025-04-22 12:32:30 SC_CODE      --&gt; (str) fSOBnhEMlDfE20
+[duckduckgo          ] 2025-04-22 12:32:31 4dff493e.... --&gt; (str) 4-128634958369380006627592672385352473325
+[duckduckgo          ] 2025-04-22 12:40:06 3e2583e2.... --&gt; (str) 4-263126175288871260472289814259666848451
+[radio_browser       ] 2025-04-23 11:33:08 servers      --&gt; (list) [&#39;https://de2.api.radio-browser.info&#39;,  ...]
+[soundcloud          ] 2025-04-29 11:40:06 guest_client_id --&gt; (str) EjkRJG0BLNEZquRiPZYdNtJdyGtTuHdp
+[wolframalpha        ] 2025-04-22 12:40:06 code         --&gt; (str) 5aa79f86205ad26188e0e26e28fb7ae7
+number of tables: 6
+number of key/value pairs: 7
+</pre></div>
+</div>
+<p>In the “cache tables and key/values” section, the table name (engine name) is at
+first position on the second there is the calculated expire date and on the
+third and fourth position the key/value is shown.</p>
+<p>About duckduckgo: The <em>vqd coode</em> of ddg depends on the query term and therefore
+the key is a hash value of the query term (to not to store the raw query term).</p>
+<p>In the “properties of ENGINES_CACHE” section all properties of the SQLiteAppl /
+ExpireCache and their last modification date are shown:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">properties</span> <span class="n">of</span> <span class="n">ENGINES_CACHE</span>
+<span class="o">===========================</span>
+<span class="p">[</span><span class="n">last</span> <span class="n">modified</span><span class="p">:</span> <span class="mi">2025</span><span class="o">-</span><span class="mi">04</span><span class="o">-</span><span class="mi">22</span> <span class="mi">11</span><span class="p">:</span><span class="mi">32</span><span class="p">:</span><span class="mi">27</span><span class="p">]</span> <span class="n">DB_SCHEMA</span>           <span class="p">:</span> <span class="mi">1</span>
+<span class="p">[</span><span class="n">last</span> <span class="n">modified</span><span class="p">:</span> <span class="mi">2025</span><span class="o">-</span><span class="mi">04</span><span class="o">-</span><span class="mi">22</span> <span class="mi">11</span><span class="p">:</span><span class="mi">32</span><span class="p">:</span><span class="mi">27</span><span class="p">]</span> <span class="n">LAST_MAINTENANCE</span>    <span class="p">:</span>
+<span class="p">[</span><span class="n">last</span> <span class="n">modified</span><span class="p">:</span> <span class="mi">2025</span><span class="o">-</span><span class="mi">04</span><span class="o">-</span><span class="mi">22</span> <span class="mi">11</span><span class="p">:</span><span class="mi">32</span><span class="p">:</span><span class="mi">27</span><span class="p">]</span> <span class="n">crypt_hash</span>          <span class="p">:</span> <span class="n">ca612e3566fdfd7cf7efe</span><span class="o">...</span>
+<span class="p">[</span><span class="n">last</span> <span class="n">modified</span><span class="p">:</span> <span class="mi">2025</span><span class="o">-</span><span class="mi">04</span><span class="o">-</span><span class="mi">22</span> <span class="mi">11</span><span class="p">:</span><span class="mi">32</span><span class="p">:</span><span class="mi">30</span><span class="p">]</span> <span class="n">CACHE</span><span class="o">-</span><span class="n">TABLE</span><span class="o">--</span><span class="n">demo_offline</span><span class="p">:</span> <span class="n">demo_offline</span>
+<span class="p">[</span><span class="n">last</span> <span class="n">modified</span><span class="p">:</span> <span class="mi">2025</span><span class="o">-</span><span class="mi">04</span><span class="o">-</span><span class="mi">22</span> <span class="mi">11</span><span class="p">:</span><span class="mi">32</span><span class="p">:</span><span class="mi">30</span><span class="p">]</span> <span class="n">CACHE</span><span class="o">-</span><span class="n">TABLE</span><span class="o">--</span><span class="n">startpage</span><span class="p">:</span> <span class="n">startpage</span>
+<span class="p">[</span><span class="n">last</span> <span class="n">modified</span><span class="p">:</span> <span class="mi">2025</span><span class="o">-</span><span class="mi">04</span><span class="o">-</span><span class="mi">22</span> <span class="mi">11</span><span class="p">:</span><span class="mi">32</span><span class="p">:</span><span class="mi">31</span><span class="p">]</span> <span class="n">CACHE</span><span class="o">-</span><span class="n">TABLE</span><span class="o">--</span><span class="n">duckduckgo</span><span class="p">:</span> <span class="n">duckduckgo</span>
+<span class="p">[</span><span class="n">last</span> <span class="n">modified</span><span class="p">:</span> <span class="mi">2025</span><span class="o">-</span><span class="mi">04</span><span class="o">-</span><span class="mi">22</span> <span class="mi">11</span><span class="p">:</span><span class="mi">33</span><span class="p">:</span><span class="mi">08</span><span class="p">]</span> <span class="n">CACHE</span><span class="o">-</span><span class="n">TABLE</span><span class="o">--</span><span class="n">radio_browser</span><span class="p">:</span> <span class="n">radio_browser</span>
+<span class="p">[</span><span class="n">last</span> <span class="n">modified</span><span class="p">:</span> <span class="mi">2025</span><span class="o">-</span><span class="mi">04</span><span class="o">-</span><span class="mi">22</span> <span class="mi">11</span><span class="p">:</span><span class="mi">40</span><span class="p">:</span><span class="mi">06</span><span class="p">]</span> <span class="n">CACHE</span><span class="o">-</span><span class="n">TABLE</span><span class="o">--</span><span class="n">soundcloud</span><span class="p">:</span> <span class="n">soundcloud</span>
+<span class="p">[</span><span class="n">last</span> <span class="n">modified</span><span class="p">:</span> <span class="mi">2025</span><span class="o">-</span><span class="mi">04</span><span class="o">-</span><span class="mi">22</span> <span class="mi">11</span><span class="p">:</span><span class="mi">40</span><span class="p">:</span><span class="mi">06</span><span class="p">]</span> <span class="n">CACHE</span><span class="o">-</span><span class="n">TABLE</span><span class="o">--</span><span class="n">wolframalpha</span><span class="p">:</span> <span class="n">wolframalpha</span>
+</pre></div>
+</div>
+<p>These properties provide information about the state of the ExpireCache and
+control the behavior.  For example, the maintenance intervals are controlled by
+the last modification date of the LAST_MAINTENANCE property and the hash value
+of the password can be used to detect whether the password has been changed (in
+this case the DB entries can no longer be decrypted and the entire cache must be
+discarded).</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="searx.enginelib.Engine">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">searx.enginelib.</span></span><span class="sig-name descname"><span class="pre">Engine</span></span><a class="reference internal" href="../../_modules/searx/enginelib.html#Engine"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.enginelib.Engine" title="Link to this definition">¶</a></dt>
+<dd><p>Class of engine instances build from YAML settings.</p>
+<p>Further documentation see <a class="reference internal" href="engine_overview.html#general-engine-configuration"><span class="std std-ref">General Engine Configuration</span></a>.</p>
+<p>The defaults are taken from <a class="reference internal" href="engines.html#searx.engines.ENGINE_DEFAULT_ARGS" title="searx.engines.ENGINE_DEFAULT_ARGS"><code class="xref py py-obj docutils literal notranslate"><span class="pre">searx.engines.ENGINE_DEFAULT_ARGS</span></code></a>.</p>
+<div class="admonition hint">
+<p class="admonition-title">Hint</p>
+<p>This class is currently never initialized and only used for type hinting.</p>
+</div>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="searx.enginelib.Engine.engine_type">
+<span class="sig-name descname"><span class="pre">engine_type</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ProcessorType</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'online'</span></span><a class="headerlink" href="#searx.enginelib.Engine.engine_type" title="Link to this definition">¶</a></dt>
+<dd><p>Type of the engine (<a class="reference internal" href="../../src/searx.search.processors.html#searx-search-processors"><span class="std std-ref">Search processors</span></a>)</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="searx.enginelib.Engine.paging">
+<span class="sig-name descname"><span class="pre">paging</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></span><a class="headerlink" href="#searx.enginelib.Engine.paging" title="Link to this definition">¶</a></dt>
+<dd><p>Engine supports multiple pages.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="searx.enginelib.Engine.max_page">
+<span class="sig-name descname"><span class="pre">max_page</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0</span></span><a class="headerlink" href="#searx.enginelib.Engine.max_page" title="Link to this definition">¶</a></dt>
+<dd><p>If the engine supports paging, then this is the value for the last page
+that is still supported. <code class="docutils literal notranslate"><span class="pre">0</span></code> means unlimited numbers of pages.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="searx.enginelib.Engine.time_range_support">
+<span class="sig-name descname"><span class="pre">time_range_support</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></span><a class="headerlink" href="#searx.enginelib.Engine.time_range_support" title="Link to this definition">¶</a></dt>
+<dd><p>Engine supports search time range.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="searx.enginelib.Engine.safesearch">
+<span class="sig-name descname"><span class="pre">safesearch</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></span><a class="headerlink" href="#searx.enginelib.Engine.safesearch" title="Link to this definition">¶</a></dt>
+<dd><p>Engine supports SafeSearch</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="searx.enginelib.Engine.language_support">
+<span class="sig-name descname"><span class="pre">language_support</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></span><a class="headerlink" href="#searx.enginelib.Engine.language_support" title="Link to this definition">¶</a></dt>
+<dd><p>Engine supports languages (locales) search.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="searx.enginelib.Engine.fetch_traits">
+<span class="sig-name descname"><span class="pre">fetch_traits</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#searx.enginelib.traits.EngineTraits" title="searx.enginelib.traits.EngineTraits"><span class="pre">EngineTraits</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a><span class="p"><span class="pre">]</span></span></span><a class="headerlink" href="#searx.enginelib.Engine.fetch_traits" title="Link to this definition">¶</a></dt>
+<dd><p>Function to to fetch engine’s traits from origin.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="searx.enginelib.Engine.traits">
+<span class="sig-name descname"><span class="pre">traits</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#searx.enginelib.traits.EngineTraits" title="searx.enginelib.traits.EngineTraits"><span class="pre">traits.EngineTraits</span></a></span><a class="headerlink" href="#searx.enginelib.Engine.traits" title="Link to this definition">¶</a></dt>
+<dd><p>Traits of the engine.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="searx.enginelib.Engine.name">
+<span class="sig-name descname"><span class="pre">name</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span><a class="headerlink" href="#searx.enginelib.Engine.name" title="Link to this definition">¶</a></dt>
+<dd><p>Name that will be used across SearXNG to define this engine.  In settings, on
+the result page ..</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="searx.enginelib.Engine.engine">
+<span class="sig-name descname"><span class="pre">engine</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span><a class="headerlink" href="#searx.enginelib.Engine.engine" title="Link to this definition">¶</a></dt>
+<dd><p>Name of the python file used to handle requests and responses to and from
+this search engine (file name from <a class="extlink-origin reference external" href="https://github.com/searxng/searxng/blob/master/searx/engines">git://searx/engines</a> without
+<code class="docutils literal notranslate"><span class="pre">.py</span></code>).</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="searx.enginelib.Engine.categories">
+<span class="sig-name descname"><span class="pre">categories</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['general']</span></span><a class="headerlink" href="#searx.enginelib.Engine.categories" title="Link to this definition">¶</a></dt>
+<dd><p>Specifies to which <a class="reference internal" href="../../admin/settings/settings_engines.html#engine-categories"><span class="std std-ref">categories</span></a> the engine should be added.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="searx.enginelib.Engine.language">
+<span class="sig-name descname"><span class="pre">language</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">''</span></span><a class="headerlink" href="#searx.enginelib.Engine.language" title="Link to this definition">¶</a></dt>
+<dd><p>If the engine supports only one language, this language is specified here
+(<code class="docutils literal notranslate"><span class="pre">en</span></code>, <code class="docutils literal notranslate"><span class="pre">de</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;no&quot;</span></code> or ..); otherwise, the value remains empty. For
+the YAML configuration: think of the <a class="reference external" href="https://ruuda.nl/2023/the-yaml-document-from-hell#the-norway-problem">YAML-Norway problem</a></p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">google norway</span>
+<span class="w">  </span><span class="nt">engine</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">google</span>
+<span class="w">  </span><span class="nt">language</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;no&quot;</span>
+</pre></div>
+</div>
+<p>Depending on <code class="docutils literal notranslate"><span class="pre">language_support</span></code>, this value has similar but also slightly
+different meanings.</p>
+<ul class="simple">
+<li><p>When <code class="docutils literal notranslate"><span class="pre">language_support</span></code> is <strong>true</strong>, the map of
+<a class="reference internal" href="#searx.enginelib.traits.EngineTraits.languages" title="searx.enginelib.traits.EngineTraits.languages"><code class="xref py py-obj docutils literal notranslate"><span class="pre">traits.EngineTraits.languages</span></code></a> is reduced to the selected
+language</p></li>
+<li><p>When <code class="docutils literal notranslate"><span class="pre">language_support</span></code> is <strong>false</strong>, then the implementation of the
+engine only supports this one <code class="docutils literal notranslate"><span class="pre">language</span></code></p></li>
+</ul>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="searx.enginelib.Engine.region">
+<span class="sig-name descname"><span class="pre">region</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">''</span></span><a class="headerlink" href="#searx.enginelib.Engine.region" title="Link to this definition">¶</a></dt>
+<dd><p>For an engine, when there is <code class="docutils literal notranslate"><span class="pre">region:</span> <span class="pre">...</span></code> in the YAML settings the engine
+does support only this one region:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">..</span> <span class="n">code</span><span class="p">::</span> <span class="n">yaml</span>
+</pre></div>
+</div>
+<blockquote>
+<div><ul class="simple">
+<li><p>name: google belgium
+engine: google
+region: fr-BE</p></li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="searx.enginelib.Engine.enable_http">
+<span class="sig-name descname"><span class="pre">enable_http</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span><a class="headerlink" href="#searx.enginelib.Engine.enable_http" title="Link to this definition">¶</a></dt>
+<dd><p>Enable HTTP (by default only HTTPS is enabled).</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="searx.enginelib.Engine.shortcut">
+<span class="sig-name descname"><span class="pre">shortcut</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span><a class="headerlink" href="#searx.enginelib.Engine.shortcut" title="Link to this definition">¶</a></dt>
+<dd><p>Code used to execute bang requests (<code class="docutils literal notranslate"><span class="pre">!foo</span></code>)</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="searx.enginelib.Engine.timeout">
+<span class="sig-name descname"><span class="pre">timeout</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a></span><a class="headerlink" href="#searx.enginelib.Engine.timeout" title="Link to this definition">¶</a></dt>
+<dd><p>Specific timeout for search-engine.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="searx.enginelib.Engine.display_error_messages">
+<span class="sig-name descname"><span class="pre">display_error_messages</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span><a class="headerlink" href="#searx.enginelib.Engine.display_error_messages" title="Link to this definition">¶</a></dt>
+<dd><p>Display error messages on the web UI.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="searx.enginelib.Engine.disabled">
+<span class="sig-name descname"><span class="pre">disabled</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></span><a class="headerlink" href="#searx.enginelib.Engine.disabled" title="Link to this definition">¶</a></dt>
+<dd><p>To disable by default the engine, but not deleting it.  It will allow the
+user to manually activate it in the settings.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="searx.enginelib.Engine.inactive">
+<span class="sig-name descname"><span class="pre">inactive</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></span><a class="headerlink" href="#searx.enginelib.Engine.inactive" title="Link to this definition">¶</a></dt>
+<dd><p>Remove the engine from the settings (<em>disabled &amp; removed</em>).</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="searx.enginelib.Engine.about">
+<span class="sig-name descname"><span class="pre">about</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#searx.enginelib.EngineAbout" title="searx.enginelib.EngineAbout"><span class="pre">EngineAbout</span></a></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">EngineAbout(website='',</span> <span class="pre">wikidata_id='',</span> <span class="pre">official_api_documentation='',</span> <span class="pre">use_official_api=False,</span> <span class="pre">require_api_key=False,</span> <span class="pre">results='',</span> <span class="pre">description='',</span> <span class="pre">language='')</span></span><a class="headerlink" href="#searx.enginelib.Engine.about" title="Link to this definition">¶</a></dt>
+<dd><p>Additional fields describing the engine.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="searx.enginelib.Engine.using_tor_proxy">
+<span class="sig-name descname"><span class="pre">using_tor_proxy</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></span><a class="headerlink" href="#searx.enginelib.Engine.using_tor_proxy" title="Link to this definition">¶</a></dt>
+<dd><p>Using tor proxy (<code class="docutils literal notranslate"><span class="pre">true</span></code>) or not (<code class="docutils literal notranslate"><span class="pre">false</span></code>) for this engine.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="searx.enginelib.Engine.send_accept_language_header">
+<span class="sig-name descname"><span class="pre">send_accept_language_header</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">True</span></span><a class="headerlink" href="#searx.enginelib.Engine.send_accept_language_header" title="Link to this definition">¶</a></dt>
+<dd><p>When this option is activated (default), the language (locale) that is
+selected by the user is used to build and send a <code class="docutils literal notranslate"><span class="pre">Accept-Language</span></code> header
+in the request to the origin search engine.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="searx.enginelib.Engine.tokens">
+<span class="sig-name descname"><span class="pre">tokens</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></span><a class="headerlink" href="#searx.enginelib.Engine.tokens" title="Link to this definition">¶</a></dt>
+<dd><p>A list of secret tokens to make this engine <em>private</em>, more details see
+<a class="reference internal" href="../../admin/settings/settings_engines.html#private-engines"><span class="std std-ref">Private Engines (tokens)</span></a>.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="searx.enginelib.Engine.weight">
+<span class="sig-name descname"><span class="pre">weight</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1.0</span></span><a class="headerlink" href="#searx.enginelib.Engine.weight" title="Link to this definition">¶</a></dt>
+<dd><p>Weighting of the results of this engine (<a class="reference internal" href="../../admin/settings/settings_engines.html#settings-engines"><span class="std std-ref">weight</span></a>).</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="searx.enginelib.Engine.proxies">
+<span class="sig-name descname"><span class="pre">proxies</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.14)"><span class="pre">dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.14)"><span class="pre">dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><a class="headerlink" href="#searx.enginelib.Engine.proxies" title="Link to this definition">¶</a></dt>
+<dd><p>Set proxies for a specific engine (YAML):</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">proxies </span><span class="p">:</span>
+<span class="w">  </span><span class="nt">http</span><span class="p">:</span><span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">socks5://proxy:port</span>
+<span class="w">  </span><span class="nt">https</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">socks5://proxy:port</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="searx.enginelib.Engine.setup">
+<span class="sig-name descname"><span class="pre">setup</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">engine_settings</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.14)"><span class="pre">dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.14)"><span class="pre">Any</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span></span><a class="reference internal" href="../../_modules/searx/enginelib.html#Engine.setup"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.enginelib.Engine.setup" title="Link to this definition">¶</a></dt>
+<dd><p>Dynamic setup of the engine settings.</p>
+<p>With this method, the engine’s setup is carried out.  For example, to
+check or dynamically adapt the values handed over in the parameter
+<code class="docutils literal notranslate"><span class="pre">engine_settings</span></code>.</p>
+<p>Whether the initialization was successful can be indicated by the return
+value <code class="docutils literal notranslate"><span class="pre">True</span></code> or even <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p>
+<ul class="simple">
+<li><p>If no return value (<code class="docutils literal notranslate"><span class="pre">None</span></code> ) is given from this method , this is
+equivalent to <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p></li>
+<li><p>If an exception is thrown as part of the initialization, this is
+equivalent to <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p></li>
+</ul>
+<p>The method is optional and is called <strong>synchronously</strong> as part of the
+initialization of the service and is therefore only suitable for simple
+(local) exams/changes at the engine setting.</p>
+<p>The <a class="reference internal" href="#searx.enginelib.Engine.init" title="searx.enginelib.Engine.init"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Engine.init</span></code></a> method must be used for longer tasks in which
+values of a remote must be determined, for example.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="searx.enginelib.Engine.init">
+<span class="sig-name descname"><span class="pre">init</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">engine_settings</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.14)"><span class="pre">dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.14)"><span class="pre">Any</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span></span><a class="reference internal" href="../../_modules/searx/enginelib.html#Engine.init"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.enginelib.Engine.init" title="Link to this definition">¶</a></dt>
+<dd><p>Initialization of the engine.</p>
+<p>The method is optional and called <strong>asynchronous</strong> (in a thread).  The
+method is comparable to <a class="reference internal" href="#searx.enginelib.Engine.setup" title="searx.enginelib.Engine.setup"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Engine.setup</span></code></a>, it is suitable, for
+caching data that first needs to be requested from a remote.</p>
+<p>The method is optional and runs <strong>asynchronously</strong> (in a thread), it is
+comparable to <a class="reference internal" href="#searx.enginelib.Engine.setup" title="searx.enginelib.Engine.setup"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Engine.setup</span></code></a>. For instance, it is suitable for
+caching data that first needs to be requested from a remote source.</p>
+<p>The evaluation of the return value is analogous to <a class="reference internal" href="#searx.enginelib.Engine.setup" title="searx.enginelib.Engine.setup"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Engine.setup</span></code></a>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="searx.enginelib.Engine.search">
+<span class="property"><span class="k"><span class="pre">abstractmethod</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">search</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">query</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">params</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">OfflineParamTypes</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="index.html#searx.result_types.EngineResults" title="searx.result_types.EngineResults"><span class="pre">EngineResults</span></a></span></span><a class="reference internal" href="../../_modules/searx/enginelib.html#Engine.search"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.enginelib.Engine.search" title="Link to this definition">¶</a></dt>
+<dd><p>Search method of the <code class="docutils literal notranslate"><span class="pre">offline</span></code> engines</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="searx.enginelib.Engine.request">
+<span class="property"><span class="k"><span class="pre">abstractmethod</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">request</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">query</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">params</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">OnlineParamTypes</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span></span><a class="reference internal" href="../../_modules/searx/enginelib.html#Engine.request"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.enginelib.Engine.request" title="Link to this definition">¶</a></dt>
+<dd><p>Method to build the parameters for the request of an <code class="docutils literal notranslate"><span class="pre">online</span></code>
+engine.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="searx.enginelib.Engine.response">
+<span class="property"><span class="k"><span class="pre">abstractmethod</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">response</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">resp</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../extended_types.html#searx.extended_types.SXNG_Response" title="searx.extended_types.SXNG_Response"><span class="pre">SXNG_Response</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="index.html#searx.result_types.EngineResults" title="searx.result_types.EngineResults"><span class="pre">EngineResults</span></a></span></span><a class="reference internal" href="../../_modules/searx/enginelib.html#Engine.response"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.enginelib.Engine.response" title="Link to this definition">¶</a></dt>
+<dd><p>Method to parse the response of an <code class="docutils literal notranslate"><span class="pre">online</span></code> engine.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="searx.enginelib.EngineAbout">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">searx.enginelib.</span></span><span class="sig-name descname"><span class="pre">EngineAbout</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">website</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wikidata_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">official_api_documentation</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_official_api</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">require_api_key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">results</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">description</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">language</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/searx/enginelib.html#EngineAbout"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.enginelib.EngineAbout" title="Link to this definition">¶</a></dt>
+<dd><p>Additional fields describing the engine.</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">about</span><span class="p">:</span>
+<span class="w">   </span><span class="nt">website</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://example.com</span>
+<span class="w">   </span><span class="nt">wikidata_id</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Q306656</span>
+<span class="w">   </span><span class="nt">official_api_documentation</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://example.com/api-doc</span>
+<span class="w">   </span><span class="nt">use_official_api</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">   </span><span class="nt">require_api_key</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">   </span><span class="nt">results</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">HTML</span>
+</pre></div>
+</div>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="searx.enginelib.EngineAbout.website">
+<span class="sig-name descname"><span class="pre">website</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span><a class="headerlink" href="#searx.enginelib.EngineAbout.website" title="Link to this definition">¶</a></dt>
+<dd><p>Official web-site of the origin.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="searx.enginelib.EngineAbout.wikidata_id">
+<span class="sig-name descname"><span class="pre">wikidata_id</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span><a class="headerlink" href="#searx.enginelib.EngineAbout.wikidata_id" title="Link to this definition">¶</a></dt>
+<dd><p><a class="reference external" href="https://www.wikidata.org/wiki/Wikidata:Identifiers">Wikidata ID</a></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="searx.enginelib.EngineAbout.official_api_documentation">
+<span class="sig-name descname"><span class="pre">official_api_documentation</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span><a class="headerlink" href="#searx.enginelib.EngineAbout.official_api_documentation" title="Link to this definition">¶</a></dt>
+<dd><p>URL of the official API (regardless of whether it is used)</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="searx.enginelib.EngineAbout.use_official_api">
+<span class="sig-name descname"><span class="pre">use_official_api</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span><a class="headerlink" href="#searx.enginelib.EngineAbout.use_official_api" title="Link to this definition">¶</a></dt>
+<dd><p>SearXNG engine makes use of the official API or not</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="searx.enginelib.EngineAbout.require_api_key">
+<span class="sig-name descname"><span class="pre">require_api_key</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span><a class="headerlink" href="#searx.enginelib.EngineAbout.require_api_key" title="Link to this definition">¶</a></dt>
+<dd><p>API requires a key or not.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="searx.enginelib.EngineAbout.results">
+<span class="sig-name descname"><span class="pre">results</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span><a class="headerlink" href="#searx.enginelib.EngineAbout.results" title="Link to this definition">¶</a></dt>
+<dd><p>Data format of the source (online-engines: of the response).</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="searx.enginelib.EngineAbout.description">
+<span class="sig-name descname"><span class="pre">description</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span><a class="headerlink" href="#searx.enginelib.EngineAbout.description" title="Link to this definition">¶</a></dt>
+<dd><p>Brief description of the engine and where it gets its data from.</p>
+<p>This value should only be set as long as no description of the data source
+is available via a <a class="reference internal" href="#searx.enginelib.EngineAbout.wikidata_id" title="searx.enginelib.EngineAbout.wikidata_id"><code class="xref py py-obj docutils literal notranslate"><span class="pre">EngineAbout.wikidata_id</span></code></a>.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="searx.enginelib.EngineAbout.language">
+<span class="sig-name descname"><span class="pre">language</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span><a class="headerlink" href="#searx.enginelib.EngineAbout.language" title="Link to this definition">¶</a></dt>
+<dd><p>Deprecated! Migrate your setting from <cite>engine.about.language</cite> to
+<cite>engine.language</cite></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="searx.enginelib.ENGINES_CACHE">
+<span class="sig-prename descclassname"><span class="pre">searx.enginelib.</span></span><span class="sig-name descname"><span class="pre">ENGINES_CACHE</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="../../src/searx.cache.html#searx.cache.ExpireCacheSQLite" title="searx.cache.ExpireCacheSQLite"><span class="pre">ExpireCacheSQLite</span></a></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;searx.cache.ExpireCacheSQLite</span> <span class="pre">object&gt;</span></span><a class="headerlink" href="#searx.enginelib.ENGINES_CACHE" title="Link to this definition">¶</a></dt>
+<dd><p>Global <a class="reference internal" href="../../src/searx.cache.html#searx.cache.ExpireCacheSQLite" title="searx.cache.ExpireCacheSQLite"><code class="xref py py-obj docutils literal notranslate"><span class="pre">searx.cache.ExpireCacheSQLite</span></code></a> instance where the cached
+values from all engines are stored.  The <cite>MAXHOLD_TIME</cite> is 7 days and the
+<cite>MAINTENANCE_PERIOD</cite> is set to two hours.</p>
+</dd></dl>
+
+<section id="module-searx.enginelib.traits">
+<span id="engine-traits"></span><span id="searx-enginelib-traits"></span><h2>Engine traits<a class="headerlink" href="#module-searx.enginelib.traits" title="Link to this heading">¶</a></h2>
+<p>Engine’s traits are fetched from the origin engines and stored in a JSON file
+in the <em>data folder</em>.  Most often traits are languages and region codes and
+their mapping from SearXNG’s representation to the representation in the origin
+search engine.  For new traits new properties can be added to the class
+<a class="reference internal" href="#searx.enginelib.traits.EngineTraits" title="searx.enginelib.traits.EngineTraits"><code class="xref py py-class docutils literal notranslate"><span class="pre">EngineTraits</span></code></a>.</p>
+<p>To load traits from the persistence <a class="reference internal" href="#searx.enginelib.traits.EngineTraitsMap.from_data" title="searx.enginelib.traits.EngineTraitsMap.from_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">EngineTraitsMap.from_data</span></code></a> can be
+used.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="searx.enginelib.traits.EngineTraitsEncoder">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">searx.enginelib.traits.</span></span><span class="sig-name descname"><span class="pre">EngineTraitsEncoder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">skipkeys</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ensure_ascii</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">check_circular</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">allow_nan</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sort_keys</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">indent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">separators</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/searx/enginelib/traits.html#EngineTraitsEncoder"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.enginelib.traits.EngineTraitsEncoder" title="Link to this definition">¶</a></dt>
+<dd><p>Encodes <a class="reference internal" href="#searx.enginelib.traits.EngineTraits" title="searx.enginelib.traits.EngineTraits"><code class="xref py py-class docutils literal notranslate"><span class="pre">EngineTraits</span></code></a> to a serializable object, see
+<a class="reference external" href="https://docs.python.org/3/library/json.html#json.JSONEncoder" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">json.JSONEncoder</span></code></a>.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="searx.enginelib.traits.EngineTraitsEncoder.default">
+<span class="sig-name descname"><span class="pre">default</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">o</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.14)"><span class="pre">Any</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.14)"><span class="pre">Any</span></a></span></span><a class="reference internal" href="../../_modules/searx/enginelib/traits.html#EngineTraitsEncoder.default"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.enginelib.traits.EngineTraitsEncoder.default" title="Link to this definition">¶</a></dt>
+<dd><p>Return dictionary of a <a class="reference internal" href="#searx.enginelib.traits.EngineTraits" title="searx.enginelib.traits.EngineTraits"><code class="xref py py-class docutils literal notranslate"><span class="pre">EngineTraits</span></code></a> object.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="searx.enginelib.traits.EngineTraits">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">searx.enginelib.traits.</span></span><span class="sig-name descname"><span class="pre">EngineTraits</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">regions</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict[str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">str]</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">&lt;factory&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">languages</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict[str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">str]</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">&lt;factory&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">all_locale</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Literal" title="(in Python v3.14)"><span class="pre">Literal</span></a><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'traits_v1'</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'traits_v1'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">custom</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict[str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">~typing.Any]</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">&lt;factory&gt;</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/searx/enginelib/traits.html#EngineTraits"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.enginelib.traits.EngineTraits" title="Link to this definition">¶</a></dt>
+<dd><p>The class is intended to be instantiated for each engine.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="searx.enginelib.traits.EngineTraits.regions">
+<span class="sig-name descname"><span class="pre">regions</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.14)"><span class="pre">dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></span><a class="headerlink" href="#searx.enginelib.traits.EngineTraits.regions" title="Link to this definition">¶</a></dt>
+<dd><p>Maps SearXNG’s internal representation of a region to the one of the engine.</p>
+<p>SearXNG’s internal representation can be parsed by babel and the value is
+send to the engine:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">regions</span> <span class="o">=</span><span class="p">{</span>
+    <span class="s1">&#39;fr-BE&#39;</span> <span class="p">:</span> <span class="o">&lt;</span><span class="n">engine</span><span class="s1">&#39;s region name&gt;,</span>
+<span class="p">}</span>
+
+<span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">egnine_region</span> <span class="n">regions</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+   <span class="n">searxng_region</span> <span class="o">=</span> <span class="n">babel</span><span class="o">.</span><span class="n">Locale</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;-&#39;</span><span class="p">)</span>
+   <span class="o">...</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="searx.enginelib.traits.EngineTraits.languages">
+<span class="sig-name descname"><span class="pre">languages</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.14)"><span class="pre">dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></span><a class="headerlink" href="#searx.enginelib.traits.EngineTraits.languages" title="Link to this definition">¶</a></dt>
+<dd><p>Maps SearXNG’s internal representation of a language to the one of the engine.</p>
+<p>SearXNG’s internal representation can be parsed by babel and the value is
+send to the engine:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">languages</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;ca&#39;</span> <span class="p">:</span> <span class="o">&lt;</span><span class="n">engine</span><span class="s1">&#39;s language name&gt;,</span>
+<span class="p">}</span>
+
+<span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">egnine_lang</span> <span class="ow">in</span> <span class="n">languages</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+   <span class="n">searxng_lang</span> <span class="o">=</span> <span class="n">babel</span><span class="o">.</span><span class="n">Locale</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+   <span class="o">...</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="searx.enginelib.traits.EngineTraits.all_locale">
+<span class="sig-name descname"><span class="pre">all_locale</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></span><a class="headerlink" href="#searx.enginelib.traits.EngineTraits.all_locale" title="Link to this definition">¶</a></dt>
+<dd><p>To which locale value SearXNG’s <code class="docutils literal notranslate"><span class="pre">all</span></code> language is mapped (shown a “Default
+language”).</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="searx.enginelib.traits.EngineTraits.data_type">
+<span class="sig-name descname"><span class="pre">data_type</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Literal" title="(in Python v3.14)"><span class="pre">Literal</span></a><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'traits_v1'</span></span><span class="p"><span class="pre">]</span></span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'traits_v1'</span></span><a class="headerlink" href="#searx.enginelib.traits.EngineTraits.data_type" title="Link to this definition">¶</a></dt>
+<dd><p>Data type, default is ‘traits_v1’.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="searx.enginelib.traits.EngineTraits.custom">
+<span class="sig-name descname"><span class="pre">custom</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.14)"><span class="pre">dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.14)"><span class="pre">Any</span></a><span class="p"><span class="pre">]</span></span></span><a class="headerlink" href="#searx.enginelib.traits.EngineTraits.custom" title="Link to this definition">¶</a></dt>
+<dd><p>A place to store engine’s custom traits, not related to the SearXNG core.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="searx.enginelib.traits.EngineTraits.get_language">
+<span class="sig-name descname"><span class="pre">get_language</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">searxng_locale</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">default</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span></span><a class="reference internal" href="../../_modules/searx/enginelib/traits.html#EngineTraits.get_language"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.enginelib.traits.EngineTraits.get_language" title="Link to this definition">¶</a></dt>
+<dd><p>Return engine’s language string that <em>best fits</em> to SearXNG’s locale.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>searxng_locale</strong> – SearXNG’s internal representation of locale
+selected by the user.</p></li>
+<li><p><strong>default</strong> – engine’s default language</p></li>
+</ul>
+</dd>
+</dl>
+<p>The <em>best fits</em> rules are implemented in
+<a class="reference internal" href="../../src/searx.locales.html#searx.locales.get_engine_locale" title="searx.locales.get_engine_locale"><code class="xref py py-obj docutils literal notranslate"><span class="pre">searx.locales.get_engine_locale</span></code></a>.  Except for the special value <code class="docutils literal notranslate"><span class="pre">all</span></code>
+which is determined from <a class="reference internal" href="#searx.enginelib.traits.EngineTraits.all_locale" title="searx.enginelib.traits.EngineTraits.all_locale"><code class="xref py py-obj docutils literal notranslate"><span class="pre">EngineTraits.all_locale</span></code></a>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="searx.enginelib.traits.EngineTraits.get_region">
+<span class="sig-name descname"><span class="pre">get_region</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">searxng_locale</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">default</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span></span><a class="reference internal" href="../../_modules/searx/enginelib/traits.html#EngineTraits.get_region"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.enginelib.traits.EngineTraits.get_region" title="Link to this definition">¶</a></dt>
+<dd><p>Return engine’s region string that best fits to SearXNG’s locale.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>searxng_locale</strong> – SearXNG’s internal representation of locale
+selected by the user.</p></li>
+<li><p><strong>default</strong> – engine’s default region</p></li>
+</ul>
+</dd>
+</dl>
+<p>The <em>best fits</em> rules are implemented in
+<a class="reference internal" href="../../src/searx.locales.html#searx.locales.get_engine_locale" title="searx.locales.get_engine_locale"><code class="xref py py-obj docutils literal notranslate"><span class="pre">searx.locales.get_engine_locale</span></code></a>.  Except for the special value <code class="docutils literal notranslate"><span class="pre">all</span></code>
+which is determined from <a class="reference internal" href="#searx.enginelib.traits.EngineTraits.all_locale" title="searx.enginelib.traits.EngineTraits.all_locale"><code class="xref py py-obj docutils literal notranslate"><span class="pre">EngineTraits.all_locale</span></code></a>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="searx.enginelib.traits.EngineTraits.copy">
+<span class="sig-name descname"><span class="pre">copy</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/searx/enginelib/traits.html#EngineTraits.copy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.enginelib.traits.EngineTraits.copy" title="Link to this definition">¶</a></dt>
+<dd><p>Create a copy of the dataclass object.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="searx.enginelib.traits.EngineTraits.fetch_traits">
+<span class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">fetch_traits</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">engine</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#searx.enginelib.Engine" title="searx.enginelib.Engine"><span class="pre">Engine</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/types.html#types.ModuleType" title="(in Python v3.14)"><span class="pre">types.ModuleType</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#searx.enginelib.traits.EngineTraits" title="searx.enginelib.traits.EngineTraits"><span class="pre">EngineTraits</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span></span><a class="reference internal" href="../../_modules/searx/enginelib/traits.html#EngineTraits.fetch_traits"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.enginelib.traits.EngineTraits.fetch_traits" title="Link to this definition">¶</a></dt>
+<dd><p>Call a function <code class="docutils literal notranslate"><span class="pre">fetch_traits(engine_traits)</span></code> from engines namespace to fetch
+and set properties from the origin engine in the object <code class="docutils literal notranslate"><span class="pre">engine_traits</span></code>.  If
+function does not exists, <code class="docutils literal notranslate"><span class="pre">None</span></code> is returned.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="searx.enginelib.traits.EngineTraits.set_traits">
+<span class="sig-name descname"><span class="pre">set_traits</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">engine</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#searx.enginelib.Engine" title="searx.enginelib.Engine"><span class="pre">Engine</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/types.html#types.ModuleType" title="(in Python v3.14)"><span class="pre">types.ModuleType</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span></span><a class="reference internal" href="../../_modules/searx/enginelib/traits.html#EngineTraits.set_traits"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.enginelib.traits.EngineTraits.set_traits" title="Link to this definition">¶</a></dt>
+<dd><p>Set traits from self object in a <a class="reference internal" href="#searx.enginelib.Engine" title="searx.enginelib.Engine"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Engine</span></code></a> namespace.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>engine</strong> – engine instance build by <a class="reference internal" href="engines.html#searx.engines.load_engine" title="searx.engines.load_engine"><code class="xref py py-func docutils literal notranslate"><span class="pre">searx.engines.load_engine()</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="searx.enginelib.traits.EngineTraitsMap">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">searx.enginelib.traits.</span></span><span class="sig-name descname"><span class="pre">EngineTraitsMap</span></span><a class="reference internal" href="../../_modules/searx/enginelib/traits.html#EngineTraitsMap"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.enginelib.traits.EngineTraitsMap" title="Link to this definition">¶</a></dt>
+<dd><p>A python dictionary to map <a class="reference internal" href="#searx.enginelib.traits.EngineTraits" title="searx.enginelib.traits.EngineTraits"><code class="xref py py-class docutils literal notranslate"><span class="pre">EngineTraits</span></code></a> by engine name.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="searx.enginelib.traits.EngineTraitsMap.ENGINE_TRAITS_FILE">
+<span class="sig-name descname"><span class="pre">ENGINE_TRAITS_FILE</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.14)"><span class="pre">Path</span></a></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">PosixPath('/home/runner/work/searxng/searxng/searx/data/engine_traits.json')</span></span><a class="headerlink" href="#searx.enginelib.traits.EngineTraitsMap.ENGINE_TRAITS_FILE" title="Link to this definition">¶</a></dt>
+<dd><p>File with persistence of the <a class="reference internal" href="#searx.enginelib.traits.EngineTraitsMap" title="searx.enginelib.traits.EngineTraitsMap"><code class="xref py py-obj docutils literal notranslate"><span class="pre">EngineTraitsMap</span></code></a>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="searx.enginelib.traits.EngineTraitsMap.save_data">
+<span class="sig-name descname"><span class="pre">save_data</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/searx/enginelib/traits.html#EngineTraitsMap.save_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.enginelib.traits.EngineTraitsMap.save_data" title="Link to this definition">¶</a></dt>
+<dd><p>Store EngineTraitsMap in in file <code class="xref py py-obj docutils literal notranslate"><span class="pre">self.ENGINE_TRAITS_FILE</span></code></p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="searx.enginelib.traits.EngineTraitsMap.from_data">
+<span class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">from_data</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#searx.enginelib.traits.EngineTraitsMap" title="searx.enginelib.traits.EngineTraitsMap"><span class="pre">EngineTraitsMap</span></a></span></span><a class="reference internal" href="../../_modules/searx/enginelib/traits.html#EngineTraitsMap.from_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.enginelib.traits.EngineTraitsMap.from_data" title="Link to this definition">¶</a></dt>
+<dd><p>Instantiate <a class="reference internal" href="#searx.enginelib.traits.EngineTraitsMap" title="searx.enginelib.traits.EngineTraitsMap"><code class="xref py py-class docutils literal notranslate"><span class="pre">EngineTraitsMap</span></code></a> object from <code class="xref py py-obj docutils literal notranslate"><span class="pre">ENGINE_TRAITS</span></code></p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="searx.enginelib.traits.EngineTraitsMap.set_traits">
+<span class="sig-name descname"><span class="pre">set_traits</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">engine</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#searx.enginelib.Engine" title="searx.enginelib.Engine"><span class="pre">Engine</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/types.html#types.ModuleType" title="(in Python v3.14)"><span class="pre">types.ModuleType</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/searx/enginelib/traits.html#EngineTraitsMap.set_traits"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.enginelib.traits.EngineTraitsMap.set_traits" title="Link to this definition">¶</a></dt>
+<dd><p>Set traits in a <code class="xref py py-obj docutils literal notranslate"><span class="pre">Engine</span></code> namespace.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>engine</strong> – engine instance build by <a class="reference internal" href="engines.html#searx.engines.load_engine" title="searx.engines.load_engine"><code class="xref py py-func docutils literal notranslate"><span class="pre">searx.engines.load_engine()</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="engines.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">SearXNG’s engines loader</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="index.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">Engine Implementations</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; SearXNG team
+            </div>
+            Made with 
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            <div class="icons">
+              <a class="muted-link " href="https://github.com/searxng/searxng/" aria-label="GitHub">&#x1F4BE;</a>
+              <a class="muted-link " href="https://searx.space/" aria-label="searx.space">&#x1F310;</a>
+              
+            </div>
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">Engine Library</a><ul>
+<li><a class="reference internal" href="#searx.enginelib.EngineCache"><code class="docutils literal notranslate"><span class="pre">EngineCache</span></code></a></li>
+<li><a class="reference internal" href="#searx.enginelib.Engine"><code class="docutils literal notranslate"><span class="pre">Engine</span></code></a><ul>
+<li><a class="reference internal" href="#searx.enginelib.Engine.engine_type"><code class="docutils literal notranslate"><span class="pre">Engine.engine_type</span></code></a></li>
+<li><a class="reference internal" href="#searx.enginelib.Engine.paging"><code class="docutils literal notranslate"><span class="pre">Engine.paging</span></code></a></li>
+<li><a class="reference internal" href="#searx.enginelib.Engine.max_page"><code class="docutils literal notranslate"><span class="pre">Engine.max_page</span></code></a></li>
+<li><a class="reference internal" href="#searx.enginelib.Engine.time_range_support"><code class="docutils literal notranslate"><span class="pre">Engine.time_range_support</span></code></a></li>
+<li><a class="reference internal" href="#searx.enginelib.Engine.safesearch"><code class="docutils literal notranslate"><span class="pre">Engine.safesearch</span></code></a></li>
+<li><a class="reference internal" href="#searx.enginelib.Engine.language_support"><code class="docutils literal notranslate"><span class="pre">Engine.language_support</span></code></a></li>
+<li><a class="reference internal" href="#searx.enginelib.Engine.fetch_traits"><code class="docutils literal notranslate"><span class="pre">Engine.fetch_traits</span></code></a></li>
+<li><a class="reference internal" href="#searx.enginelib.Engine.traits"><code class="docutils literal notranslate"><span class="pre">Engine.traits</span></code></a></li>
+<li><a class="reference internal" href="#searx.enginelib.Engine.name"><code class="docutils literal notranslate"><span class="pre">Engine.name</span></code></a></li>
+<li><a class="reference internal" href="#searx.enginelib.Engine.engine"><code class="docutils literal notranslate"><span class="pre">Engine.engine</span></code></a></li>
+<li><a class="reference internal" href="#searx.enginelib.Engine.categories"><code class="docutils literal notranslate"><span class="pre">Engine.categories</span></code></a></li>
+<li><a class="reference internal" href="#searx.enginelib.Engine.language"><code class="docutils literal notranslate"><span class="pre">Engine.language</span></code></a></li>
+<li><a class="reference internal" href="#searx.enginelib.Engine.region"><code class="docutils literal notranslate"><span class="pre">Engine.region</span></code></a></li>
+<li><a class="reference internal" href="#searx.enginelib.Engine.enable_http"><code class="docutils literal notranslate"><span class="pre">Engine.enable_http</span></code></a></li>
+<li><a class="reference internal" href="#searx.enginelib.Engine.shortcut"><code class="docutils literal notranslate"><span class="pre">Engine.shortcut</span></code></a></li>
+<li><a class="reference internal" href="#searx.enginelib.Engine.timeout"><code class="docutils literal notranslate"><span class="pre">Engine.timeout</span></code></a></li>
+<li><a class="reference internal" href="#searx.enginelib.Engine.display_error_messages"><code class="docutils literal notranslate"><span class="pre">Engine.display_error_messages</span></code></a></li>
+<li><a class="reference internal" href="#searx.enginelib.Engine.disabled"><code class="docutils literal notranslate"><span class="pre">Engine.disabled</span></code></a></li>
+<li><a class="reference internal" href="#searx.enginelib.Engine.inactive"><code class="docutils literal notranslate"><span class="pre">Engine.inactive</span></code></a></li>
+<li><a class="reference internal" href="#searx.enginelib.Engine.about"><code class="docutils literal notranslate"><span class="pre">Engine.about</span></code></a></li>
+<li><a class="reference internal" href="#searx.enginelib.Engine.using_tor_proxy"><code class="docutils literal notranslate"><span class="pre">Engine.using_tor_proxy</span></code></a></li>
+<li><a class="reference internal" href="#searx.enginelib.Engine.send_accept_language_header"><code class="docutils literal notranslate"><span class="pre">Engine.send_accept_language_header</span></code></a></li>
+<li><a class="reference internal" href="#searx.enginelib.Engine.tokens"><code class="docutils literal notranslate"><span class="pre">Engine.tokens</span></code></a></li>
+<li><a class="reference internal" href="#searx.enginelib.Engine.weight"><code class="docutils literal notranslate"><span class="pre">Engine.weight</span></code></a></li>
+<li><a class="reference internal" href="#searx.enginelib.Engine.proxies"><code class="docutils literal notranslate"><span class="pre">Engine.proxies</span></code></a></li>
+<li><a class="reference internal" href="#searx.enginelib.Engine.setup"><code class="docutils literal notranslate"><span class="pre">Engine.setup()</span></code></a></li>
+<li><a class="reference internal" href="#searx.enginelib.Engine.init"><code class="docutils literal notranslate"><span class="pre">Engine.init()</span></code></a></li>
+<li><a class="reference internal" href="#searx.enginelib.Engine.search"><code class="docutils literal notranslate"><span class="pre">Engine.search()</span></code></a></li>
+<li><a class="reference internal" href="#searx.enginelib.Engine.request"><code class="docutils literal notranslate"><span class="pre">Engine.request()</span></code></a></li>
+<li><a class="reference internal" href="#searx.enginelib.Engine.response"><code class="docutils literal notranslate"><span class="pre">Engine.response()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#searx.enginelib.EngineAbout"><code class="docutils literal notranslate"><span class="pre">EngineAbout</span></code></a><ul>
+<li><a class="reference internal" href="#searx.enginelib.EngineAbout.website"><code class="docutils literal notranslate"><span class="pre">EngineAbout.website</span></code></a></li>
+<li><a class="reference internal" href="#searx.enginelib.EngineAbout.wikidata_id"><code class="docutils literal notranslate"><span class="pre">EngineAbout.wikidata_id</span></code></a></li>
+<li><a class="reference internal" href="#searx.enginelib.EngineAbout.official_api_documentation"><code class="docutils literal notranslate"><span class="pre">EngineAbout.official_api_documentation</span></code></a></li>
+<li><a class="reference internal" href="#searx.enginelib.EngineAbout.use_official_api"><code class="docutils literal notranslate"><span class="pre">EngineAbout.use_official_api</span></code></a></li>
+<li><a class="reference internal" href="#searx.enginelib.EngineAbout.require_api_key"><code class="docutils literal notranslate"><span class="pre">EngineAbout.require_api_key</span></code></a></li>
+<li><a class="reference internal" href="#searx.enginelib.EngineAbout.results"><code class="docutils literal notranslate"><span class="pre">EngineAbout.results</span></code></a></li>
+<li><a class="reference internal" href="#searx.enginelib.EngineAbout.description"><code class="docutils literal notranslate"><span class="pre">EngineAbout.description</span></code></a></li>
+<li><a class="reference internal" href="#searx.enginelib.EngineAbout.language"><code class="docutils literal notranslate"><span class="pre">EngineAbout.language</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#searx.enginelib.ENGINES_CACHE"><code class="docutils literal notranslate"><span class="pre">ENGINES_CACHE</span></code></a></li>
+<li><a class="reference internal" href="#module-searx.enginelib.traits">Engine traits</a><ul>
+<li><a class="reference internal" href="#searx.enginelib.traits.EngineTraitsEncoder"><code class="docutils literal notranslate"><span class="pre">EngineTraitsEncoder</span></code></a><ul>
+<li><a class="reference internal" href="#searx.enginelib.traits.EngineTraitsEncoder.default"><code class="docutils literal notranslate"><span class="pre">EngineTraitsEncoder.default()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#searx.enginelib.traits.EngineTraits"><code class="docutils literal notranslate"><span class="pre">EngineTraits</span></code></a><ul>
+<li><a class="reference internal" href="#searx.enginelib.traits.EngineTraits.regions"><code class="docutils literal notranslate"><span class="pre">EngineTraits.regions</span></code></a></li>
+<li><a class="reference internal" href="#searx.enginelib.traits.EngineTraits.languages"><code class="docutils literal notranslate"><span class="pre">EngineTraits.languages</span></code></a></li>
+<li><a class="reference internal" href="#searx.enginelib.traits.EngineTraits.all_locale"><code class="docutils literal notranslate"><span class="pre">EngineTraits.all_locale</span></code></a></li>
+<li><a class="reference internal" href="#searx.enginelib.traits.EngineTraits.data_type"><code class="docutils literal notranslate"><span class="pre">EngineTraits.data_type</span></code></a></li>
+<li><a class="reference internal" href="#searx.enginelib.traits.EngineTraits.custom"><code class="docutils literal notranslate"><span class="pre">EngineTraits.custom</span></code></a></li>
+<li><a class="reference internal" href="#searx.enginelib.traits.EngineTraits.get_language"><code class="docutils literal notranslate"><span class="pre">EngineTraits.get_language()</span></code></a></li>
+<li><a class="reference internal" href="#searx.enginelib.traits.EngineTraits.get_region"><code class="docutils literal notranslate"><span class="pre">EngineTraits.get_region()</span></code></a></li>
+<li><a class="reference internal" href="#searx.enginelib.traits.EngineTraits.copy"><code class="docutils literal notranslate"><span class="pre">EngineTraits.copy()</span></code></a></li>
+<li><a class="reference internal" href="#searx.enginelib.traits.EngineTraits.fetch_traits"><code class="docutils literal notranslate"><span class="pre">EngineTraits.fetch_traits()</span></code></a></li>
+<li><a class="reference internal" href="#searx.enginelib.traits.EngineTraits.set_traits"><code class="docutils literal notranslate"><span class="pre">EngineTraits.set_traits()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#searx.enginelib.traits.EngineTraitsMap"><code class="docutils literal notranslate"><span class="pre">EngineTraitsMap</span></code></a><ul>
+<li><a class="reference internal" href="#searx.enginelib.traits.EngineTraitsMap.ENGINE_TRAITS_FILE"><code class="docutils literal notranslate"><span class="pre">EngineTraitsMap.ENGINE_TRAITS_FILE</span></code></a></li>
+<li><a class="reference internal" href="#searx.enginelib.traits.EngineTraitsMap.save_data"><code class="docutils literal notranslate"><span class="pre">EngineTraitsMap.save_data()</span></code></a></li>
+<li><a class="reference internal" href="#searx.enginelib.traits.EngineTraitsMap.from_data"><code class="docutils literal notranslate"><span class="pre">EngineTraitsMap.from_data()</span></code></a></li>
+<li><a class="reference internal" href="#searx.enginelib.traits.EngineTraitsMap.set_traits"><code class="docutils literal notranslate"><span class="pre">EngineTraitsMap.set_traits()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script src="../../_static/documentation_options.js?v=56f4e461"></script>
+    <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../_static/scripts/furo.js?v=46bd48cc"></script>
+    </body>
+</html>

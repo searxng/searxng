@@ -1,0 +1,790 @@
+<!doctype html>
+<html class="no-js" lang="en" data-content_root="../../../../">
+  <head><meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../../genindex.html"><link rel="search" title="Search" href="../../../../search.html">
+        <link rel="prefetch" href="../../../../_static/searxng-wordmark.svg" as="image">
+
+    <!-- Generated with Sphinx 9.1.0 and Furo 2025.12.19 -->
+        <title>searx.search.processors.abstract - SearXNG Documentation (2026.7.1+c5d8d05f0)</title>
+      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=d111a655" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?v=7bdb33bb" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo-extensions.css?v=8dab3a3b" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/searxng.css?v=4b1b1f10" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f2f2f2;
+  --color-code-foreground: #1e1e1e;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
+    <title>Auto light/dark, in light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
+      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
+      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
+      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
+      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
+      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
+      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
+      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
+      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
+      <circle cx="14.5" cy="9.55" r="3.6"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
+    <title>Auto light/dark, in dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
+      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
+      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
+      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
+      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
+      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
+      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
+      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-pencil" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
+      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+      <path d="M13.5 6.5l4 4" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+  <symbol id="svg-eye" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+      <path
+        d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle site navigation sidebar">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc" aria-label="Toggle table of contents sidebar">
+<label class="overlay sidebar-overlay" for="__navigation"></label>
+<label class="overlay toc-overlay" for="__toc"></label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <span class="icon"><svg><use href="#svg-menu"></use></svg></span>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../../../../index.html"><div class="brand">SearXNG Documentation (2026.7.1+c5d8d05f0)</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
+          <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+          <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon no-toc" for="__toc">
+        <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><div class="sidebar-scroll"><a class="sidebar-brand" href="../../../../index.html">
+  <div class="sidebar-logo-container">
+    <img class="sidebar-logo" src="../../../../_static/searxng-wordmark.svg" alt="Logo"/>
+  </div>
+  
+  <span class="sidebar-brand-text">SearXNG Documentation (2026.7.1+c5d8d05f0)</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../../../../search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-tree">
+  <ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../../user/index.html">User information</a><input aria-label="Toggle navigation of User information" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../user/search-syntax.html">Search syntax</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../user/configured_engines.html">Configured Engines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../user/about.html">About SearXNG</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../own-instance.html">Why use a private instance?</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../../admin/index.html">Administrator documentation</a><input aria-label="Toggle navigation of Administrator documentation" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../../admin/settings/index.html">Settings</a><input aria-label="Toggle navigation of Settings" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../admin/settings/settings.html"><code class="docutils literal notranslate"><span class="pre">settings.yml</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../admin/settings/settings_engines.html"><code class="docutils literal notranslate"><span class="pre">engines:</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../admin/settings/settings_brand.html"><code class="docutils literal notranslate"><span class="pre">brand:</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../admin/settings/settings_general.html"><code class="docutils literal notranslate"><span class="pre">general:</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../admin/settings/settings_search.html"><code class="docutils literal notranslate"><span class="pre">search:</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../admin/settings/settings_server.html"><code class="docutils literal notranslate"><span class="pre">server:</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../admin/settings/settings_ui.html"><code class="docutils literal notranslate"><span class="pre">ui:</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../admin/settings/settings_preferences.html"><code class="docutils literal notranslate"><span class="pre">preferences:</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../admin/settings/settings_redis.html"><code class="docutils literal notranslate"><span class="pre">redis:</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../admin/settings/settings_valkey.html"><code class="docutils literal notranslate"><span class="pre">valkey:</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../admin/settings/settings_outgoing.html"><code class="docutils literal notranslate"><span class="pre">outgoing:</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../admin/settings/settings_categories_as_tabs.html"><code class="docutils literal notranslate"><span class="pre">categories_as_tabs:</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../admin/settings/settings_plugins.html"><code class="docutils literal notranslate"><span class="pre">plugins:</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../admin/installation.html">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../admin/installation-docker.html">Installation container</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../admin/installation-scripts.html">Installation Script</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../admin/installation-searxng.html">Step by step installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../admin/installation-granian.html">Granian</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../admin/installation-uwsgi.html">uWSGI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../admin/installation-nginx.html">NGINX</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../admin/installation-apache.html">Apache</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../admin/update-searxng.html">SearXNG maintenance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../admin/answer-captcha.html">Answer CAPTCHA from server’s IP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../admin/searx.favicons.html">Favicons</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../admin/searx.limiter.html">Limiter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../admin/api.html">Administration API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../admin/architecture.html">Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../admin/plugins.html">List of plugins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../admin/buildhosts.html">Buildhosts</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../../dev/index.html">Developer documentation</a><input aria-label="Toggle navigation of Developer documentation" class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../dev/quickstart.html">Development Quickstart</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../dev/commits.html">Git Commits &amp; Change Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../dev/contribution_guide.html">How to contribute</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../dev/extended_types.html">Extended Types</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../../dev/engines/index.html">Engine Implementations</a><input aria-label="Toggle navigation of Engine Implementations" class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../dev/engines/enginelib.html">Engine Library</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../dev/engines/engines.html">SearXNG’s engines loader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../dev/engines/engine_overview.html">Engine Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../dev/engines/demo/demo_online.html">Demo Online Engine</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../dev/engines/xpath.html">XPath Engine</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../dev/engines/mediawiki.html">MediaWiki Engine</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../dev/engines/json_engine.html">JSON Engine</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../dev/engines/online/500px.html">500px</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../dev/engines/online/adobe_stock.html">Adobe Stock</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../dev/engines/online/alpinelinux.html">Alpine Linux Packages</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../dev/engines/online/annas_archive.html">Anna’s Archive</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../dev/engines/online/archlinux.html">Arch Linux</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../dev/engines/online/arxiv.html">arXiv</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../dev/engines/online/astrophysics_data_system.html">Astrophysics Data System (ADS)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../dev/engines/online/azure.html">Azure Resources</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../dev/engines/online/bing.html">Bing Engines</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../dev/engines/online/bpb.html">Bpb</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../dev/engines/online/brave.html">Brave Engines</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../dev/engines/online/bt4g.html">BT4G</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../dev/engines/online/cara.html">Cara Images</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../dev/engines/online/chinaso.html">ChinaSo</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../dev/engines/online/core.html">CORE</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../dev/engines/online/crossref.html">Crossref</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../dev/engines/online/dailymotion.html">Dailymotion</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../dev/engines/online/discourse.html">Discourse Forums</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../dev/engines/online/duckduckgo.html">DuckDuckGo Engines</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../dev/engines/online/geizhals.html">Geizhals</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../dev/engines/online/gitea.html">Gitea</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../dev/engines/online/github_code.html">Github Code</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../dev/engines/online/gitlab.html">GitLab</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../dev/engines/online/google.html">Google Engines</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../dev/engines/online/huggingface.html">Hugging Face</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../dev/engines/online/kagi.html">Kagi Engines</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../dev/engines/online/lemmy.html">Lemmy</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../dev/engines/online/loc.html">Library of Congress</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../dev/engines/online/marginalia.html">Marginalia Search</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../dev/engines/online/mastodon.html">Mastodon</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../dev/engines/online/moviepilot.html">Moviepilot</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../dev/engines/online/mrs.html">Matrix Rooms Search (MRS)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../dev/engines/online/mwmbl.html">Mwmbl Engine</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../dev/engines/online/odysee.html">Odysee</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../dev/engines/online/openalex.html">OpenAlex</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../dev/engines/online/openlibrary.html">Open Library</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../dev/engines/online/peertube.html">Peertube Engines</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../dev/engines/online/piped.html">Piped</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../dev/engines/online/presearch.html">Presearch Engine</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../dev/engines/online/pubmed.html">PubMed</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../dev/engines/online/qwant.html">Qwant</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../dev/engines/online/radio_browser.html">RadioBrowser</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../dev/engines/online/recoll.html">Recoll Engine</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../dev/engines/online/repology.html">Repology</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../dev/engines/online/reuters.html">Reuters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../dev/engines/online/semantic_scholar.html">Semantic Scholar</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../dev/engines/online/soundcloud.html">Soundcloud</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../dev/engines/online/sourcehut.html">Sourcehut</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../dev/engines/online/springer.html">Springer Nature</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../dev/engines/online/startpage.html">Startpage Engines</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../dev/engines/online/tagesschau.html">Tagesschau API</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../dev/engines/online/torznab.html">Torznab WebAPI</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../dev/engines/online/tubearchivist.html">Tube Archivist</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../dev/engines/online/void.html">Void Linux binary packages</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../dev/engines/online/wallhaven.html">Wallhaven</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../dev/engines/online/wikipedia.html">Wikimedia</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../dev/engines/online/yacy.html">Yacy</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../dev/engines/online/yahoo.html">Yahoo Engine</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../dev/engines/online/zlibrary.html">Z-Library</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../dev/engines/offline_concept.html">Offline Concept</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../dev/engines/demo/demo_offline.html">Demo Offline Engine</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../dev/engines/offline/command-line-engines.html">Command Line Engines</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../dev/engines/offline/nosql-engines.html">NoSQL databases</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../dev/engines/offline/search-indexer-engines.html">Local Search APIs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../dev/engines/offline/sql-engines.html">SQL Engines</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../dev/engines/online_url_search/tineye.html">Tineye</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../../dev/result_types/index.html">Result Types</a><input aria-label="Toggle navigation of Result Types" class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../dev/result_types/base_result.html">Result</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../../dev/result_types/main_result.html">Main Search Results</a><input aria-label="Toggle navigation of Main Search Results" class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../dev/result_types/main/mainresult.html">Main Results</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../dev/result_types/main/keyvalue.html">Key-Value Results</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../dev/result_types/main/code.html">Code Results</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../dev/result_types/main/paper.html">Paper Results</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../dev/result_types/main/file.html">File Results</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../dev/result_types/main/image.html">Image Results</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../dev/result_types/answer.html">Answer Results</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../dev/result_types/correction.html">Correction Results</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../dev/result_types/suggestion.html">Suggestion Results</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../dev/result_types/infobox.html">Infobox Results</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../dev/templates.html">Simple Theme Templates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../dev/search_api.html">Search API</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../../dev/plugins/index.html">Plugins</a><input aria-label="Toggle navigation of Plugins" class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../dev/plugins/development.html">Plugin Development</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../../dev/plugins/builtins.html">Built-in Plugins</a><input aria-label="Toggle navigation of Built-in Plugins" class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../dev/plugins/calculator.html">Calculator</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../dev/plugins/hash_plugin.html">Hash Values</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../dev/plugins/hostnames.html">Hostnames</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../dev/plugins/infinite_scroll.html">Infinite scroll</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../dev/plugins/self_info.html">Self-Info</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../dev/plugins/tor_check.html">Tor check</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../dev/plugins/unit_converter.html">Unit Converter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../dev/plugins/time_zone.html">Time Zone</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../../dev/answerers/index.html">Answerers</a><input aria-label="Toggle navigation of Answerers" class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../dev/answerers/development.html">Answerer Development</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../../dev/answerers/builtins.html">Built-in Answerers</a><input aria-label="Toggle navigation of Built-in Answerers" class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" role="switch" type="checkbox"/><label for="toctree-checkbox-11"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../dev/answerers/random.html">Random</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../dev/answerers/statistics.html">Statistics</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../dev/translation.html">Translation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../dev/makefile.html">Makefile &amp; <code class="docutils literal notranslate"><span class="pre">./manage</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../dev/reST.html">reST primer</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../../dev/searxng_extra/index.html">Tooling box <code class="docutils literal notranslate"><span class="pre">searxng_extra</span></code></a><input aria-label="Toggle navigation of Tooling box searxng_extra" class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" role="switch" type="checkbox"/><label for="toctree-checkbox-12"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../dev/searxng_extra/update.html"><code class="docutils literal notranslate"><span class="pre">searxng_extra/update/</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../../utils/index.html">DevOps tooling box</a><input aria-label="Toggle navigation of DevOps tooling box" class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" role="switch" type="checkbox"/><label for="toctree-checkbox-13"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../utils/searxng.sh.html"><code class="docutils literal notranslate"><span class="pre">utils/searxng.sh</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../../src/index.html">Source-Code</a><input aria-label="Toggle navigation of Source-Code" class="toctree-checkbox" id="toctree-checkbox-14" name="toctree-checkbox-14" role="switch" type="checkbox"/><label for="toctree-checkbox-14"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../src/searx.babel_extract.html">Custom message extractor (i18n)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../src/searx.botdetection.html">Bot Detection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../src/searx.cache.html">Caches</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../src/searx.exceptions.html">SearXNG Exceptions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../src/searx.favicons.html">Favicons (source)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../src/searx.infopage.html">Online <code class="docutils literal notranslate"><span class="pre">/info</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../src/searx.locales.html">Locales</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../src/searx.search.html">Search</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../src/searx.search.processors.html">Search processors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../src/searx.settings.html">Settings Loader</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../src/searx.sqlitedb.html">SQLite DB</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../src/searx.utils.html">Utility functions for the engines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../src/searx.valkeydb.html">Valkey DB</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../src/searx.valkeylib.html">Valkey Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../src/searx.weather.html">Weather</a></li>
+</ul>
+</li>
+</ul>
+
+</div>
+</div>
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
+              <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+              <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon no-toc" for="__toc">
+            <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
+          </label>
+        </div>
+        <article role="main" id="furo-main-content">
+          <h1>Source code for searx.search.processors.abstract</h1><div class="highlight"><pre>
+<span></span><span class="c1"># SPDX-License-Identifier: AGPL-3.0-or-later</span>
+<span class="sd">&quot;&quot;&quot;Abstract base classes for all engine processors.&quot;&quot;&quot;</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">t</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">threading</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">abstractmethod</span><span class="p">,</span> <span class="n">ABC</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">timeit</span><span class="w"> </span><span class="kn">import</span> <span class="n">default_timer</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">searx</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_setting</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">searx</span><span class="w"> </span><span class="kn">import</span> <span class="n">logger</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">searx.engines</span><span class="w"> </span><span class="kn">import</span> <span class="n">engines</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">searx.network</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_time_for_thread</span><span class="p">,</span> <span class="n">get_network</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">searx.metrics</span><span class="w"> </span><span class="kn">import</span> <span class="n">histogram_observe</span><span class="p">,</span> <span class="n">counter_inc</span><span class="p">,</span> <span class="n">count_exception</span><span class="p">,</span> <span class="n">count_error</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">searx.exceptions</span><span class="w"> </span><span class="kn">import</span> <span class="n">SearxEngineAccessDeniedException</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">searx.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_engine_from_settings</span>
+
+<span class="k">if</span> <span class="n">t</span><span class="o">.</span><span class="n">TYPE_CHECKING</span><span class="p">:</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">types</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">searx.enginelib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Engine</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">searx.search.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">SearchQuery</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">searx.results</span><span class="w"> </span><span class="kn">import</span> <span class="n">ResultContainer</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">searx.result_types</span><span class="w"> </span><span class="kn">import</span> <span class="n">Result</span><span class="p">,</span> <span class="n">LegacyResult</span>  <span class="c1"># pyright: ignore[reportPrivateLocalImportUsage]</span>
+
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logger</span><span class="o">.</span><span class="n">getChild</span><span class="p">(</span><span class="s2">&quot;searx.search.processor&quot;</span><span class="p">)</span>
+<span class="n">SUSPENDED_STATUS</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span> <span class="o">|</span> <span class="nb">str</span><span class="p">,</span> <span class="s2">&quot;SuspendedStatus&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+
+
+<div class="viewcode-block" id="RequestParams">
+<a class="viewcode-back" href="../../../../src/searx.search.processors.html#searx.search.processors.abstract.RequestParams">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">RequestParams</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">TypedDict</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Basic quantity of the Request parameters of all engine types.&quot;&quot;&quot;</span>
+
+    <span class="n">query</span><span class="p">:</span> <span class="nb">str</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Search term, stripped of search syntax arguments.&quot;&quot;&quot;</span>
+
+    <span class="n">category</span><span class="p">:</span> <span class="nb">str</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Current category, like ``general``.</span>
+
+<span class="sd">    .. hint::</span>
+
+<span class="sd">       This field is deprecated, don&#39;t use it in further implementations.</span>
+
+<span class="sd">    This field is currently *arbitrarily* filled with the name of &quot;one&quot;&quot;</span>
+<span class="sd">    category (the name of the first category of the engine). In practice,</span>
+<span class="sd">    however, it is not clear what this &quot;one&quot; category should be; in principle,</span>
+<span class="sd">    multiple categories can also be activated in a search.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">pageno</span><span class="p">:</span> <span class="nb">int</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Current page number, where the first page is ``1``.&quot;&quot;&quot;</span>
+
+    <span class="n">safesearch</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Literal</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Safe-Search filter (0:normal, 1:moderate, 2:strict).&quot;&quot;&quot;</span>
+
+    <span class="n">time_range</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;day&quot;</span><span class="p">,</span> <span class="s2">&quot;week&quot;</span><span class="p">,</span> <span class="s2">&quot;month&quot;</span><span class="p">,</span> <span class="s2">&quot;year&quot;</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Time-range filter.&quot;&quot;&quot;</span>
+
+    <span class="n">engine_data</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Allows the transfer of (engine specific) data to the next request of the</span>
+<span class="sd">    client.  In the case of the ``online`` engines, this data is delivered to</span>
+<span class="sd">    the client via the HTML ``&lt;form&gt;`` in response.</span>
+
+<span class="sd">    If the client then sends this form back to the server with the next request,</span>
+<span class="sd">    this data will be available.</span>
+
+<span class="sd">    This makes it possible to carry data from one request to the next without a</span>
+<span class="sd">    session context, but this feature (is fragile) and should only be used in</span>
+<span class="sd">    exceptional cases. See also :ref:`engine_data`.&quot;&quot;&quot;</span>
+
+    <span class="n">searxng_locale</span><span class="p">:</span> <span class="nb">str</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Language / locale filter from the search request, a string like &#39;all&#39;,</span>
+<span class="sd">    &#39;en&#39;, &#39;en-US&#39;, &#39;zh-HK&#39; .. and others, for more details see</span>
+<span class="sd">    :py:obj:`searx.locales`.&quot;&quot;&quot;</span></div>
+
+
+
+<div class="viewcode-block" id="SuspendedStatus">
+<a class="viewcode-back" href="../../../../src/searx.search.processors.html#searx.search.processors.abstract.SuspendedStatus">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">SuspendedStatus</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Class to handle suspend state.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lock</span><span class="p">:</span> <span class="n">threading</span><span class="o">.</span><span class="n">Lock</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Lock</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">continuous_errors</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">suspend_end_time</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">suspend_reason</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">is_suspended</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">suspend_end_time</span> <span class="o">&gt;=</span> <span class="n">default_timer</span><span class="p">()</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">suspend</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">suspended_time</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">suspend_reason</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">lock</span><span class="p">:</span>
+            <span class="c1"># update continuous_errors / suspend_end_time</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">continuous_errors</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="k">if</span> <span class="n">suspended_time</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">max_ban</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">get_setting</span><span class="p">(</span><span class="s2">&quot;search.max_ban_time_on_fail&quot;</span><span class="p">)</span>
+                <span class="n">ban_fail</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">get_setting</span><span class="p">(</span><span class="s2">&quot;search.ban_time_on_fail&quot;</span><span class="p">)</span>
+                <span class="n">suspended_time</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">max_ban</span><span class="p">,</span> <span class="n">ban_fail</span><span class="p">)</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">suspend_end_time</span> <span class="o">=</span> <span class="n">default_timer</span><span class="p">()</span> <span class="o">+</span> <span class="n">suspended_time</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">suspend_reason</span> <span class="o">=</span> <span class="n">suspend_reason</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Suspend for </span><span class="si">%i</span><span class="s2"> seconds&quot;</span><span class="p">,</span> <span class="n">suspended_time</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">resume</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">lock</span><span class="p">:</span>
+            <span class="c1"># reset the suspend variables</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">continuous_errors</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">suspend_end_time</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">suspend_reason</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span></div>
+
+
+
+<div class="viewcode-block" id="EngineProcessor">
+<a class="viewcode-back" href="../../../../src/searx.search.processors.html#searx.search.processors.abstract.EngineProcessor">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">EngineProcessor</span><span class="p">(</span><span class="n">ABC</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Base classes used for all types of request processors.&quot;&quot;&quot;</span>
+
+    <span class="n">engine_type</span><span class="p">:</span> <span class="nb">str</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">engine</span><span class="p">:</span> <span class="s2">&quot;Engine|types.ModuleType&quot;</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">engine</span><span class="p">:</span> <span class="s2">&quot;Engine&quot;</span> <span class="o">=</span> <span class="n">engine</span>  <span class="c1"># pyright: ignore[reportAttributeAccessIssue]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="p">:</span> <span class="n">logging</span><span class="o">.</span><span class="n">Logger</span> <span class="o">=</span> <span class="n">engines</span><span class="p">[</span><span class="n">engine</span><span class="o">.</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">logger</span>
+        <span class="n">key</span> <span class="o">=</span> <span class="n">get_network</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">engine</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+        <span class="n">key</span> <span class="o">=</span> <span class="nb">id</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="k">if</span> <span class="n">key</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">engine</span><span class="o">.</span><span class="n">name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">suspended_status</span><span class="p">:</span> <span class="n">SuspendedStatus</span> <span class="o">=</span> <span class="n">SUSPENDED_STATUS</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">SuspendedStatus</span><span class="p">())</span>
+
+<div class="viewcode-block" id="EngineProcessor.initialize">
+<a class="viewcode-back" href="../../../../src/searx.search.processors.html#searx.search.processors.abstract.EngineProcessor.initialize">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">initialize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">callback</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Callable</span><span class="p">[[</span><span class="s2">&quot;EngineProcessor&quot;</span><span class="p">,</span> <span class="nb">bool</span><span class="p">],</span> <span class="nb">bool</span><span class="p">]):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialization of *this* :py:obj:`EngineProcessor`.</span>
+
+<span class="sd">        If processor&#39;s engine has an ``init`` method, it is called first.</span>
+<span class="sd">        Engine&#39;s ``init`` method is executed in a thread, meaning that the</span>
+<span class="sd">        *registration* (the ``callback``) may occur later and is not already</span>
+<span class="sd">        established by the return from this registration method.</span>
+
+<span class="sd">        Registration only takes place if the ``init`` method is not available or</span>
+<span class="sd">        is successfully run through.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">engine</span><span class="p">,</span> <span class="s2">&quot;init&quot;</span><span class="p">):</span>
+            <span class="n">callback</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+            <span class="k">return</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">callable</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">engine</span><span class="o">.</span><span class="n">init</span><span class="p">):</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Engine&#39;s init method isn&#39;t a callable (is of type: </span><span class="si">%s</span><span class="s2">).&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">engine</span><span class="o">.</span><span class="n">init</span><span class="p">))</span>
+            <span class="n">callback</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+            <span class="k">return</span>
+
+        <span class="k">def</span><span class="w"> </span><span class="nf">__init_processor_thread</span><span class="p">():</span>
+            <span class="n">eng_ok</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">init_engine</span><span class="p">()</span>
+            <span class="n">callback</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">eng_ok</span><span class="p">)</span>
+
+        <span class="c1"># set up and start a thread</span>
+        <span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="n">__init_processor_thread</span><span class="p">,</span> <span class="n">daemon</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">start</span><span class="p">()</span></div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">init_engine</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+
+        <span class="n">eng_setting</span> <span class="o">=</span> <span class="n">get_engine_from_settings</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">engine</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+        <span class="n">init_ok</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">False</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">init_ok</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">engine</span><span class="o">.</span><span class="n">init</span><span class="p">(</span><span class="n">eng_setting</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>  <span class="c1"># pylint: disable=broad-except</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;(PID </span><span class="si">{</span><span class="n">os</span><span class="o">.</span><span class="n">getpid</span><span class="p">()</span><span class="si">}</span><span class="s2">) </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">engine</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">: engine INIT failed, exception: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">init_ok</span> <span class="o">=</span> <span class="kc">False</span>
+
+        <span class="c1"># In older engines, None is returned from the init method, which is</span>
+        <span class="c1"># equivalent to indicating that the initialization was successful</span>
+        <span class="c1"># (compare: Engine.setup).</span>
+
+        <span class="k">if</span> <span class="n">init_ok</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">init_ok</span> <span class="o">=</span> <span class="kc">True</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">init_ok</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;(PID </span><span class="si">{</span><span class="n">os</span><span class="o">.</span><span class="n">getpid</span><span class="p">()</span><span class="si">}</span><span class="s2">) </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">engine</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">: engine init was not successful&quot;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">init_ok</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">handle_exception</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">result_container</span><span class="p">:</span> <span class="s2">&quot;ResultContainer&quot;</span><span class="p">,</span>
+        <span class="n">exception_or_message</span><span class="p">:</span> <span class="ne">BaseException</span> <span class="o">|</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">suspend</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="c1"># update result_container</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">exception_or_message</span><span class="p">,</span> <span class="ne">BaseException</span><span class="p">):</span>
+            <span class="n">exception_class</span> <span class="o">=</span> <span class="n">exception_or_message</span><span class="o">.</span><span class="vm">__class__</span>
+            <span class="n">module_name</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">exception_class</span><span class="p">,</span> <span class="s1">&#39;__module__&#39;</span><span class="p">,</span> <span class="s1">&#39;builtins&#39;</span><span class="p">)</span>
+            <span class="n">module_name</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span> <span class="k">if</span> <span class="n">module_name</span> <span class="o">==</span> <span class="s1">&#39;builtins&#39;</span> <span class="k">else</span> <span class="n">module_name</span> <span class="o">+</span> <span class="s1">&#39;.&#39;</span>
+            <span class="n">error_message</span> <span class="o">=</span> <span class="n">module_name</span> <span class="o">+</span> <span class="n">exception_class</span><span class="o">.</span><span class="vm">__qualname__</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">error_message</span> <span class="o">=</span> <span class="n">exception_or_message</span>
+        <span class="n">result_container</span><span class="o">.</span><span class="n">add_unresponsive_engine</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">engine</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">error_message</span><span class="p">)</span>
+        <span class="c1"># metrics</span>
+        <span class="n">counter_inc</span><span class="p">(</span><span class="s1">&#39;engine&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">engine</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="s1">&#39;search&#39;</span><span class="p">,</span> <span class="s1">&#39;count&#39;</span><span class="p">,</span> <span class="s1">&#39;error&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">exception_or_message</span><span class="p">,</span> <span class="ne">BaseException</span><span class="p">):</span>
+            <span class="n">count_exception</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">engine</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">exception_or_message</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">count_error</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">engine</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">exception_or_message</span><span class="p">)</span>
+        <span class="c1"># suspend the engine ?</span>
+        <span class="k">if</span> <span class="n">suspend</span><span class="p">:</span>
+            <span class="n">suspended_time</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">exception_or_message</span><span class="p">,</span> <span class="n">SearxEngineAccessDeniedException</span><span class="p">):</span>
+                <span class="n">suspended_time</span> <span class="o">=</span> <span class="n">exception_or_message</span><span class="o">.</span><span class="n">suspended_time</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">suspended_status</span><span class="o">.</span><span class="n">suspend</span><span class="p">(</span><span class="n">suspended_time</span><span class="p">,</span> <span class="n">error_message</span><span class="p">)</span>  <span class="c1"># pylint: disable=no-member</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_extend_container_basic</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">result_container</span><span class="p">:</span> <span class="s2">&quot;ResultContainer&quot;</span><span class="p">,</span>
+        <span class="n">start_time</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">search_results</span><span class="p">:</span> <span class="s2">&quot;list[Result | LegacyResult]&quot;</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="c1"># update result_container</span>
+        <span class="n">result_container</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">engine</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">search_results</span><span class="p">)</span>
+        <span class="n">engine_time</span> <span class="o">=</span> <span class="n">default_timer</span><span class="p">()</span> <span class="o">-</span> <span class="n">start_time</span>
+        <span class="n">page_load_time</span> <span class="o">=</span> <span class="n">get_time_for_thread</span><span class="p">()</span>
+        <span class="n">result_container</span><span class="o">.</span><span class="n">add_timing</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">engine</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">engine_time</span><span class="p">,</span> <span class="n">page_load_time</span><span class="p">)</span>
+        <span class="c1"># metrics</span>
+        <span class="n">counter_inc</span><span class="p">(</span><span class="s1">&#39;engine&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">engine</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="s1">&#39;search&#39;</span><span class="p">,</span> <span class="s1">&#39;count&#39;</span><span class="p">,</span> <span class="s1">&#39;successful&#39;</span><span class="p">)</span>
+        <span class="n">histogram_observe</span><span class="p">(</span><span class="n">engine_time</span><span class="p">,</span> <span class="s1">&#39;engine&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">engine</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="s1">&#39;time&#39;</span><span class="p">,</span> <span class="s1">&#39;total&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">page_load_time</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">histogram_observe</span><span class="p">(</span><span class="n">page_load_time</span><span class="p">,</span> <span class="s1">&#39;engine&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">engine</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="s1">&#39;time&#39;</span><span class="p">,</span> <span class="s1">&#39;http&#39;</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">extend_container</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">result_container</span><span class="p">:</span> <span class="s2">&quot;ResultContainer&quot;</span><span class="p">,</span>
+        <span class="n">start_time</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">search_results</span><span class="p">:</span> <span class="s2">&quot;list[Result | LegacyResult]|None&quot;</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">threading</span><span class="o">.</span><span class="n">current_thread</span><span class="p">(),</span> <span class="s1">&#39;_timeout&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">):</span>
+            <span class="c1"># the main thread is not waiting anymore</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">handle_exception</span><span class="p">(</span><span class="n">result_container</span><span class="p">,</span> <span class="s1">&#39;timeout&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># check if the engine accepted the request</span>
+            <span class="k">if</span> <span class="n">search_results</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_extend_container_basic</span><span class="p">(</span><span class="n">result_container</span><span class="p">,</span> <span class="n">start_time</span><span class="p">,</span> <span class="n">search_results</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">suspended_status</span><span class="o">.</span><span class="n">resume</span><span class="p">()</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">extend_container_if_suspended</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">result_container</span><span class="p">:</span> <span class="s2">&quot;ResultContainer&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">suspended_status</span><span class="o">.</span><span class="n">is_suspended</span><span class="p">:</span>
+            <span class="n">result_container</span><span class="o">.</span><span class="n">add_unresponsive_engine</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">engine</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">suspended_status</span><span class="o">.</span><span class="n">suspend_reason</span><span class="p">,</span> <span class="n">suspended</span><span class="o">=</span><span class="kc">True</span>
+            <span class="p">)</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">return</span> <span class="kc">False</span>
+
+<div class="viewcode-block" id="EngineProcessor.get_params">
+<a class="viewcode-back" href="../../../../src/searx.search.processors.html#searx.search.processors.abstract.EngineProcessor.get_params">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_params</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">search_query</span><span class="p">:</span> <span class="s2">&quot;SearchQuery&quot;</span><span class="p">,</span> <span class="n">engine_category</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">RequestParams</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns a dictionary with the :ref:`request parameters &lt;engine</span>
+<span class="sd">        request arguments&gt;` (:py:obj:`RequestParams`), if the search condition</span>
+<span class="sd">        is not supported by the engine, ``None`` is returned:</span>
+
+<span class="sd">        - *time range* filter in search conditions, but the engine does not have</span>
+<span class="sd">           a corresponding filter</span>
+<span class="sd">        - page number &gt; 1 when engine does not support paging</span>
+<span class="sd">        - page number &gt; ``max_page``</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># if paging is not supported, skip</span>
+        <span class="k">if</span> <span class="n">search_query</span><span class="o">.</span><span class="n">pageno</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">engine</span><span class="o">.</span><span class="n">paging</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+
+        <span class="c1"># if max page is reached, skip</span>
+        <span class="n">max_page</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">engine</span><span class="o">.</span><span class="n">max_page</span> <span class="ow">or</span> <span class="n">get_setting</span><span class="p">(</span><span class="s2">&quot;search.max_page&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">max_page</span> <span class="ow">and</span> <span class="n">max_page</span> <span class="o">&lt;</span> <span class="n">search_query</span><span class="o">.</span><span class="n">pageno</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+
+        <span class="c1"># if time_range is not supported, skip</span>
+        <span class="k">if</span> <span class="n">search_query</span><span class="o">.</span><span class="n">time_range</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">engine</span><span class="o">.</span><span class="n">time_range_support</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+
+        <span class="n">params</span><span class="p">:</span> <span class="n">RequestParams</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;query&quot;</span><span class="p">:</span> <span class="n">search_query</span><span class="o">.</span><span class="n">query</span><span class="p">,</span>
+            <span class="s2">&quot;category&quot;</span><span class="p">:</span> <span class="n">engine_category</span><span class="p">,</span>
+            <span class="s2">&quot;pageno&quot;</span><span class="p">:</span> <span class="n">search_query</span><span class="o">.</span><span class="n">pageno</span><span class="p">,</span>
+            <span class="s2">&quot;safesearch&quot;</span><span class="p">:</span> <span class="n">search_query</span><span class="o">.</span><span class="n">safesearch</span><span class="p">,</span>
+            <span class="s2">&quot;time_range&quot;</span><span class="p">:</span> <span class="n">search_query</span><span class="o">.</span><span class="n">time_range</span><span class="p">,</span>
+            <span class="s2">&quot;engine_data&quot;</span><span class="p">:</span> <span class="n">search_query</span><span class="o">.</span><span class="n">engine_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">engine</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="p">{}),</span>
+            <span class="s2">&quot;searxng_locale&quot;</span><span class="p">:</span> <span class="n">search_query</span><span class="o">.</span><span class="n">lang</span><span class="p">,</span>
+        <span class="p">}</span>
+
+        <span class="c1"># params[&quot;language&quot;] is deprecated --&gt; use params[&quot;searxng_locale&quot;]</span>
+        <span class="c1">#</span>
+        <span class="c1"># Conditions related to engine&#39;s traits are implemented in engine.traits</span>
+        <span class="c1"># module. Don&#39;t do &quot;locale&quot; decisions here in the abstract layer of the</span>
+        <span class="c1"># search processor, just pass the value from user&#39;s choice unchanged to</span>
+        <span class="c1"># the engine request.</span>
+
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">engine</span><span class="p">,</span> <span class="s2">&quot;language&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">engine</span><span class="o">.</span><span class="n">language</span><span class="p">:</span>
+            <span class="n">params</span><span class="p">[</span><span class="s2">&quot;language&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">engine</span><span class="o">.</span><span class="n">language</span>  <span class="c1"># pyright: ignore[reportGeneralTypeIssues]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">params</span><span class="p">[</span><span class="s2">&quot;language&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">search_query</span><span class="o">.</span><span class="n">lang</span>  <span class="c1"># pyright: ignore[reportGeneralTypeIssues]</span>
+
+        <span class="k">return</span> <span class="n">params</span></div>
+
+
+    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">search</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">params</span><span class="p">:</span> <span class="n">RequestParams</span><span class="p">,</span>
+        <span class="n">result_container</span><span class="p">:</span> <span class="s2">&quot;ResultContainer&quot;</span><span class="p">,</span>
+        <span class="n">start_time</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">timeout_limit</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="k">pass</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_tests</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># deprecated!</span>
+        <span class="k">return</span> <span class="p">{}</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_default_tests</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># deprecated!</span>
+        <span class="k">return</span> <span class="p">{}</span></div>
+
+</pre></div>
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          
+          
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; SearXNG team
+            </div>
+            Made with 
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            <div class="icons">
+              <a class="muted-link " href="https://github.com/searxng/searxng/" aria-label="GitHub">&#x1F4BE;</a>
+              <a class="muted-link " href="https://searx.space/" aria-label="searx.space">&#x1F310;</a>
+              
+            </div>
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer no-toc">
+      
+      
+      
+    </aside>
+  </div>
+</div><script src="../../../../_static/documentation_options.js?v=56f4e461"></script>
+    <script src="../../../../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../../../_static/scripts/furo.js?v=46bd48cc"></script>
+    </body>
+</html>

@@ -1,0 +1,1098 @@
+<!doctype html>
+<html class="no-js" lang="en" data-content_root="../">
+  <head><meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="index" title="Index" href="../genindex.html"><link rel="search" title="Search" href="../search.html"><link rel="next" title="Online /info" href="searx.infopage.html"><link rel="prev" title="SearXNG Exceptions" href="searx.exceptions.html">
+        <link rel="prefetch" href="../_static/searxng-wordmark.svg" as="image">
+
+    <!-- Generated with Sphinx 9.1.0 and Furo 2025.12.19 -->
+        <title>Favicons (source) - SearXNG Documentation (2026.7.1+c5d8d05f0)</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=d111a655" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=7bdb33bb" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?v=8dab3a3b" />
+    <link rel="stylesheet" type="text/css" href="../_static/searxng.css?v=4b1b1f10" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f2f2f2;
+  --color-code-foreground: #1e1e1e;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
+    <title>Auto light/dark, in light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
+      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
+      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
+      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
+      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
+      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
+      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
+      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
+      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
+      <circle cx="14.5" cy="9.55" r="3.6"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
+    <title>Auto light/dark, in dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
+      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
+      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
+      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
+      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
+      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
+      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
+      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-pencil" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
+      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+      <path d="M13.5 6.5l4 4" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+  <symbol id="svg-eye" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+      <path
+        d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle site navigation sidebar">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc" aria-label="Toggle table of contents sidebar">
+<label class="overlay sidebar-overlay" for="__navigation"></label>
+<label class="overlay toc-overlay" for="__toc"></label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <span class="icon"><svg><use href="#svg-menu"></use></svg></span>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../index.html"><div class="brand">SearXNG Documentation (2026.7.1+c5d8d05f0)</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
+          <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+          <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><div class="sidebar-scroll"><a class="sidebar-brand" href="../index.html">
+  <div class="sidebar-logo-container">
+    <img class="sidebar-logo" src="../_static/searxng-wordmark.svg" alt="Logo"/>
+  </div>
+  
+  <span class="sidebar-brand-text">SearXNG Documentation (2026.7.1+c5d8d05f0)</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-tree">
+  <ul class="current">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../user/index.html">User information</a><input aria-label="Toggle navigation of User information" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../user/search-syntax.html">Search syntax</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../user/configured_engines.html">Configured Engines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../user/about.html">About SearXNG</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../own-instance.html">Why use a private instance?</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../admin/index.html">Administrator documentation</a><input aria-label="Toggle navigation of Administrator documentation" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../admin/settings/index.html">Settings</a><input aria-label="Toggle navigation of Settings" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../admin/settings/settings.html"><code class="docutils literal notranslate"><span class="pre">settings.yml</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../admin/settings/settings_engines.html"><code class="docutils literal notranslate"><span class="pre">engines:</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../admin/settings/settings_brand.html"><code class="docutils literal notranslate"><span class="pre">brand:</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../admin/settings/settings_general.html"><code class="docutils literal notranslate"><span class="pre">general:</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../admin/settings/settings_search.html"><code class="docutils literal notranslate"><span class="pre">search:</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../admin/settings/settings_server.html"><code class="docutils literal notranslate"><span class="pre">server:</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../admin/settings/settings_ui.html"><code class="docutils literal notranslate"><span class="pre">ui:</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../admin/settings/settings_preferences.html"><code class="docutils literal notranslate"><span class="pre">preferences:</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../admin/settings/settings_redis.html"><code class="docutils literal notranslate"><span class="pre">redis:</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../admin/settings/settings_valkey.html"><code class="docutils literal notranslate"><span class="pre">valkey:</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../admin/settings/settings_outgoing.html"><code class="docutils literal notranslate"><span class="pre">outgoing:</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../admin/settings/settings_categories_as_tabs.html"><code class="docutils literal notranslate"><span class="pre">categories_as_tabs:</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../admin/settings/settings_plugins.html"><code class="docutils literal notranslate"><span class="pre">plugins:</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../admin/installation.html">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../admin/installation-docker.html">Installation container</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../admin/installation-scripts.html">Installation Script</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../admin/installation-searxng.html">Step by step installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../admin/installation-granian.html">Granian</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../admin/installation-uwsgi.html">uWSGI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../admin/installation-nginx.html">NGINX</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../admin/installation-apache.html">Apache</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../admin/update-searxng.html">SearXNG maintenance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../admin/answer-captcha.html">Answer CAPTCHA from server’s IP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../admin/searx.favicons.html">Favicons</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../admin/searx.limiter.html">Limiter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../admin/api.html">Administration API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../admin/architecture.html">Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../admin/plugins.html">List of plugins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../admin/buildhosts.html">Buildhosts</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../dev/index.html">Developer documentation</a><input aria-label="Toggle navigation of Developer documentation" class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../dev/quickstart.html">Development Quickstart</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../dev/commits.html">Git Commits &amp; Change Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../dev/contribution_guide.html">How to contribute</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../dev/extended_types.html">Extended Types</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../dev/engines/index.html">Engine Implementations</a><input aria-label="Toggle navigation of Engine Implementations" class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/enginelib.html">Engine Library</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/engines.html">SearXNG’s engines loader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/engine_overview.html">Engine Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/demo/demo_online.html">Demo Online Engine</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/xpath.html">XPath Engine</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/mediawiki.html">MediaWiki Engine</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/json_engine.html">JSON Engine</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/online/500px.html">500px</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/online/adobe_stock.html">Adobe Stock</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/online/alpinelinux.html">Alpine Linux Packages</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/online/annas_archive.html">Anna’s Archive</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/online/archlinux.html">Arch Linux</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/online/arxiv.html">arXiv</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/online/astrophysics_data_system.html">Astrophysics Data System (ADS)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/online/azure.html">Azure Resources</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/online/bing.html">Bing Engines</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/online/bpb.html">Bpb</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/online/brave.html">Brave Engines</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/online/bt4g.html">BT4G</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/online/cara.html">Cara Images</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/online/chinaso.html">ChinaSo</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/online/core.html">CORE</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/online/crossref.html">Crossref</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/online/dailymotion.html">Dailymotion</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/online/discourse.html">Discourse Forums</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/online/duckduckgo.html">DuckDuckGo Engines</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/online/geizhals.html">Geizhals</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/online/gitea.html">Gitea</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/online/github_code.html">Github Code</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/online/gitlab.html">GitLab</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/online/google.html">Google Engines</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/online/huggingface.html">Hugging Face</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/online/kagi.html">Kagi Engines</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/online/lemmy.html">Lemmy</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/online/loc.html">Library of Congress</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/online/marginalia.html">Marginalia Search</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/online/mastodon.html">Mastodon</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/online/moviepilot.html">Moviepilot</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/online/mrs.html">Matrix Rooms Search (MRS)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/online/mwmbl.html">Mwmbl Engine</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/online/odysee.html">Odysee</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/online/openalex.html">OpenAlex</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/online/openlibrary.html">Open Library</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/online/peertube.html">Peertube Engines</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/online/piped.html">Piped</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/online/presearch.html">Presearch Engine</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/online/pubmed.html">PubMed</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/online/qwant.html">Qwant</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/online/radio_browser.html">RadioBrowser</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/online/recoll.html">Recoll Engine</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/online/repology.html">Repology</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/online/reuters.html">Reuters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/online/semantic_scholar.html">Semantic Scholar</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/online/soundcloud.html">Soundcloud</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/online/sourcehut.html">Sourcehut</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/online/springer.html">Springer Nature</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/online/startpage.html">Startpage Engines</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/online/tagesschau.html">Tagesschau API</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/online/torznab.html">Torznab WebAPI</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/online/tubearchivist.html">Tube Archivist</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/online/void.html">Void Linux binary packages</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/online/wallhaven.html">Wallhaven</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/online/wikipedia.html">Wikimedia</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/online/yacy.html">Yacy</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/online/yahoo.html">Yahoo Engine</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/online/zlibrary.html">Z-Library</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/offline_concept.html">Offline Concept</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/demo/demo_offline.html">Demo Offline Engine</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/offline/command-line-engines.html">Command Line Engines</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/offline/nosql-engines.html">NoSQL databases</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/offline/search-indexer-engines.html">Local Search APIs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/offline/sql-engines.html">SQL Engines</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/online_url_search/tineye.html">Tineye</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../dev/result_types/index.html">Result Types</a><input aria-label="Toggle navigation of Result Types" class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../dev/result_types/base_result.html">Result</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../dev/result_types/main_result.html">Main Search Results</a><input aria-label="Toggle navigation of Main Search Results" class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../dev/result_types/main/mainresult.html">Main Results</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../dev/result_types/main/keyvalue.html">Key-Value Results</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../dev/result_types/main/code.html">Code Results</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../dev/result_types/main/paper.html">Paper Results</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../dev/result_types/main/file.html">File Results</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../dev/result_types/main/image.html">Image Results</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/result_types/answer.html">Answer Results</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/result_types/correction.html">Correction Results</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/result_types/suggestion.html">Suggestion Results</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/result_types/infobox.html">Infobox Results</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../dev/templates.html">Simple Theme Templates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../dev/search_api.html">Search API</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../dev/plugins/index.html">Plugins</a><input aria-label="Toggle navigation of Plugins" class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../dev/plugins/development.html">Plugin Development</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../dev/plugins/builtins.html">Built-in Plugins</a><input aria-label="Toggle navigation of Built-in Plugins" class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../dev/plugins/calculator.html">Calculator</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../dev/plugins/hash_plugin.html">Hash Values</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../dev/plugins/hostnames.html">Hostnames</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../dev/plugins/infinite_scroll.html">Infinite scroll</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../dev/plugins/self_info.html">Self-Info</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../dev/plugins/tor_check.html">Tor check</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../dev/plugins/unit_converter.html">Unit Converter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../dev/plugins/time_zone.html">Time Zone</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../dev/answerers/index.html">Answerers</a><input aria-label="Toggle navigation of Answerers" class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../dev/answerers/development.html">Answerer Development</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../dev/answerers/builtins.html">Built-in Answerers</a><input aria-label="Toggle navigation of Built-in Answerers" class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" role="switch" type="checkbox"/><label for="toctree-checkbox-11"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../dev/answerers/random.html">Random</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../dev/answerers/statistics.html">Statistics</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../dev/translation.html">Translation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../dev/makefile.html">Makefile &amp; <code class="docutils literal notranslate"><span class="pre">./manage</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../dev/reST.html">reST primer</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../dev/searxng_extra/index.html">Tooling box <code class="docutils literal notranslate"><span class="pre">searxng_extra</span></code></a><input aria-label="Toggle navigation of Tooling box searxng_extra" class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" role="switch" type="checkbox"/><label for="toctree-checkbox-12"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../dev/searxng_extra/update.html"><code class="docutils literal notranslate"><span class="pre">searxng_extra/update/</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../utils/index.html">DevOps tooling box</a><input aria-label="Toggle navigation of DevOps tooling box" class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" role="switch" type="checkbox"/><label for="toctree-checkbox-13"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../utils/searxng.sh.html"><code class="docutils literal notranslate"><span class="pre">utils/searxng.sh</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1 current has-children"><a class="reference internal" href="index.html">Source-Code</a><input aria-label="Toggle navigation of Source-Code" checked="" class="toctree-checkbox" id="toctree-checkbox-14" name="toctree-checkbox-14" role="switch" type="checkbox"/><label for="toctree-checkbox-14"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="searx.babel_extract.html">Custom message extractor (i18n)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.botdetection.html">Bot Detection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.cache.html">Caches</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.exceptions.html">SearXNG Exceptions</a></li>
+<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">Favicons (source)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.infopage.html">Online <code class="docutils literal notranslate"><span class="pre">/info</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.locales.html">Locales</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.search.html">Search</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.search.processors.html">Search processors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.settings.html">Settings Loader</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.sqlitedb.html">SQLite DB</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.utils.html">Utility functions for the engines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.valkeydb.html">Valkey DB</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.valkeylib.html">Valkey Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.weather.html">Weather</a></li>
+</ul>
+</li>
+</ul>
+
+</div>
+</div>
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="view-this-page">
+  <a class="muted-link" href="https://github.com/searxng/searxng/blob/master/docs/src/searx.favicons.rst?plain=true" title="View this page">
+    <svg><use href="#svg-eye"></use></svg>
+    <span class="visually-hidden">View this page</span>
+  </a>
+</div><div class="edit-this-page">
+  <a class="muted-link" href="https://github.com/searxng/searxng/edit/master/docs/src/searx.favicons.rst" rel="edit" title="Edit this page">
+    <svg><use href="#svg-pencil"></use></svg>
+    <span class="visually-hidden">Edit this page</span>
+  </a>
+</div><div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
+              <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+              <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
+          </label>
+        </div>
+        <article role="main" id="furo-main-content">
+          <section id="module-searx.favicons">
+<span id="id1"></span><span id="favicons-source"></span><h1>Favicons (source)<a class="headerlink" href="#module-searx.favicons" title="Link to this heading">¶</a></h1>
+<p>Implementations for providing the favicons in SearXNG.</p>
+<p>There is a command line for developer purposes and for deeper analysis.  Here is
+an example in which the command line is called in the development environment:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ ./manage pyenv.cmd bash --norc --noprofile
+(py3) python -m searx.favicons --help
+</pre></div>
+</div>
+<dl class="py function">
+<dt class="sig sig-object py" id="searx.favicons.favicon_url">
+<span class="sig-prename descclassname"><span class="pre">searx.favicons.</span></span><span class="sig-name descname"><span class="pre">favicon_url</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">authority</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></span><a class="reference internal" href="../_modules/searx/favicons/proxy.html#favicon_url"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.favicons.favicon_url" title="Link to this definition">¶</a></dt>
+<dd><p>Function to generate the image URL used for favicons in SearXNG’s result
+lists.  The <code class="docutils literal notranslate"><span class="pre">authority</span></code> argument (aka netloc / <span class="target" id="index-0"></span><a class="rfc reference external" href="https://datatracker.ietf.org/doc/html/rfc3986.html"><strong>RFC 3986</strong></a>) is usually a
+(sub-) domain name.  This function is used in the HTML (jinja) templates.</p>
+<div class="highlight-html notranslate"><div class="highlight"><pre><span></span><span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;favicon&quot;</span><span class="p">&gt;</span>
+   <span class="p">&lt;</span><span class="nt">img</span> <span class="na">src</span><span class="o">=</span><span class="s">&quot;{{ favicon_url(result.parsed_url.netloc) }}&quot;</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+</pre></div>
+</div>
+<p>The returned URL is a route to <a class="reference internal" href="#searx.favicons.favicon_proxy" title="searx.favicons.favicon_proxy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">favicon_proxy</span></code></a> REST API.</p>
+<p>If the favicon is already in the cache, the returned URL is a <a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/Data_URLs">data URL</a>
+(something like <code class="docutils literal notranslate"><span class="pre">data:image/png;base64,...</span></code>).  By generating a data url from
+the <a class="reference internal" href="#searx.favicons.cache.FaviconCache" title="searx.favicons.cache.FaviconCache"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cache.FaviconCache</span></code></a>, additional HTTP roundtripps via the
+<a class="reference internal" href="#searx.favicons.favicon_proxy" title="searx.favicons.favicon_proxy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">favicon_proxy</span></code></a> are saved.  However, it must also be borne in mind
+that data urls are not cached in the client (web browser).</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="searx.favicons.favicon_proxy">
+<span class="sig-prename descclassname"><span class="pre">searx.favicons.</span></span><span class="sig-name descname"><span class="pre">favicon_proxy</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/searx/favicons/proxy.html#favicon_proxy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.favicons.favicon_proxy" title="Link to this definition">¶</a></dt>
+<dd><p>REST API of SearXNG’s favicon proxy service</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>/favicon_proxy?authority=&lt;...&gt;&amp;h=&lt;...&gt;
+</pre></div>
+</div>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">authority</span></code>:</dt><dd><p>Domain name <span class="target" id="index-1"></span><a class="rfc reference external" href="https://datatracker.ietf.org/doc/html/rfc3986.html"><strong>RFC 3986</strong></a> / see <a class="reference internal" href="#searx.favicons.favicon_url" title="searx.favicons.favicon_url"><code class="xref py py-obj docutils literal notranslate"><span class="pre">favicon_url</span></code></a></p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">h</span></code>:</dt><dd><p>HMAC <span class="target" id="index-2"></span><a class="rfc reference external" href="https://datatracker.ietf.org/doc/html/rfc2104.html"><strong>RFC 2104</strong></a>, build up from the <a class="reference internal" href="../admin/settings/settings_server.html#settings-server"><span class="std std-ref">server.secret_key</span></a> setting.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<section id="module-searx.favicons.config">
+<span id="id2"></span><span id="favicons-config"></span><h2>Favicons Config<a class="headerlink" href="#module-searx.favicons.config" title="Link to this heading">¶</a></h2>
+<dl class="py data">
+<dt class="sig sig-object py" id="searx.favicons.config.CONFIG_SCHEMA">
+<span class="sig-prename descclassname"><span class="pre">searx.favicons.config.</span></span><span class="sig-name descname"><span class="pre">CONFIG_SCHEMA</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1</span></span><a class="headerlink" href="#searx.favicons.config.CONFIG_SCHEMA" title="Link to this definition">¶</a></dt>
+<dd><p>Version of the configuration schema.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="searx.favicons.config.TOML_CACHE_CFG">
+<span class="sig-prename descclassname"><span class="pre">searx.favicons.config.</span></span><span class="sig-name descname"><span class="pre">TOML_CACHE_CFG</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.14)"><span class="pre">dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#searx.favicons.config.FaviconConfig" title="searx.favicons.config.FaviconConfig"><span class="pre">FaviconConfig</span></a><span class="p"><span class="pre">]</span></span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></span><a class="headerlink" href="#searx.favicons.config.TOML_CACHE_CFG" title="Link to this definition">¶</a></dt>
+<dd><p>Cache config objects by TOML’s filename.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="searx.favicons.config.FaviconConfig">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">searx.favicons.config.</span></span><span class="sig-name descname"><span class="pre">FaviconConfig</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cfg_schema</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">cache</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#searx.favicons.cache.FaviconCacheConfig" title="searx.favicons.cache.FaviconCacheConfig"><span class="pre">FaviconCacheConfig</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">&lt;factory&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">proxy</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#searx.favicons.proxy.FaviconProxyConfig" title="searx.favicons.proxy.FaviconProxyConfig"><span class="pre">FaviconProxyConfig</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">&lt;factory&gt;</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/searx/favicons/config.html#FaviconConfig"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.favicons.config.FaviconConfig" title="Link to this definition">¶</a></dt>
+<dd><p>The class aggregates configurations of the favicon tools</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="searx.favicons.config.FaviconConfig.cfg_schema">
+<span class="sig-name descname"><span class="pre">cfg_schema</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><a class="headerlink" href="#searx.favicons.config.FaviconConfig.cfg_schema" title="Link to this definition">¶</a></dt>
+<dd><p>Config’s schema version.  The specification of the version of the schema
+is mandatory, currently only version <a class="reference internal" href="#searx.favicons.config.CONFIG_SCHEMA" title="searx.favicons.config.CONFIG_SCHEMA"><code class="xref py py-obj docutils literal notranslate"><span class="pre">CONFIG_SCHEMA</span></code></a> is supported.
+By specifying a version, it is possible to ensure downward compatibility in
+the event of future changes to the configuration schema</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="searx.favicons.config.FaviconConfig.cache">
+<span class="sig-name descname"><span class="pre">cache</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#searx.favicons.cache.FaviconCacheConfig" title="searx.favicons.cache.FaviconCacheConfig"><span class="pre">FaviconCacheConfig</span></a></span><a class="headerlink" href="#searx.favicons.config.FaviconConfig.cache" title="Link to this definition">¶</a></dt>
+<dd><p>Setup of the <a class="reference internal" href="#searx.favicons.cache.FaviconCacheConfig" title="searx.favicons.cache.FaviconCacheConfig"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cache.FaviconCacheConfig</span></code></a>.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="searx.favicons.config.FaviconConfig.proxy">
+<span class="sig-name descname"><span class="pre">proxy</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#searx.favicons.proxy.FaviconProxyConfig" title="searx.favicons.proxy.FaviconProxyConfig"><span class="pre">FaviconProxyConfig</span></a></span><a class="headerlink" href="#searx.favicons.config.FaviconConfig.proxy" title="Link to this definition">¶</a></dt>
+<dd><p>Setup of the <a class="reference internal" href="#searx.favicons.proxy.FaviconProxyConfig" title="searx.favicons.proxy.FaviconProxyConfig"><code class="xref py py-obj docutils literal notranslate"><span class="pre">proxy.FaviconProxyConfig</span></code></a>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="searx.favicons.config.FaviconConfig.from_toml_file">
+<span class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">from_toml_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cfg_file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.14)"><span class="pre">Path</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_cache</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#searx.favicons.config.FaviconConfig" title="searx.favicons.config.FaviconConfig"><span class="pre">FaviconConfig</span></a></span></span><a class="reference internal" href="../_modules/searx/favicons/config.html#FaviconConfig.from_toml_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.favicons.config.FaviconConfig.from_toml_file" title="Link to this definition">¶</a></dt>
+<dd><p>Create a config object from a TOML file, the <code class="docutils literal notranslate"><span class="pre">use_cache</span></code> argument
+specifies whether a cache should be used.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-searx.favicons.proxy">
+<span id="id3"></span><span id="favicons-proxy"></span><h2>Favicons Proxy<a class="headerlink" href="#module-searx.favicons.proxy" title="Link to this heading">¶</a></h2>
+<p>Implementations for a favicon proxy</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="searx.favicons.proxy.FaviconProxyConfig">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">searx.favicons.proxy.</span></span><span class="sig-name descname"><span class="pre">FaviconProxyConfig</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">max_age</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">604800</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">secret_key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resolver_timeout</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">3.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resolver_map</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict[str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">str]</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">&lt;factory&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">favicon_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'/home/runner/work/searxng/searxng/searx/static/themes/{theme}/img/empty_favicon.svg'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">favicon_mime_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'image/svg+xml'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/searx/favicons/proxy.html#FaviconProxyConfig"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.favicons.proxy.FaviconProxyConfig" title="Link to this definition">¶</a></dt>
+<dd><p>Configuration of the favicon proxy.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="searx.favicons.proxy.FaviconProxyConfig.max_age">
+<span class="sig-name descname"><span class="pre">max_age</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><a class="headerlink" href="#searx.favicons.proxy.FaviconProxyConfig.max_age" title="Link to this definition">¶</a></dt>
+<dd><p>HTTP header <a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cache-Control">Cache-Control</a> <code class="docutils literal notranslate"><span class="pre">max-age</span></code></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="searx.favicons.proxy.FaviconProxyConfig.secret_key">
+<span class="sig-name descname"><span class="pre">secret_key</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span><a class="headerlink" href="#searx.favicons.proxy.FaviconProxyConfig.secret_key" title="Link to this definition">¶</a></dt>
+<dd><p>By default, the value from <a class="reference internal" href="../admin/settings/settings_server.html#settings-server"><span class="std std-ref">server.secret_key</span></a>
+setting is used.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="searx.favicons.proxy.FaviconProxyConfig.resolver_timeout">
+<span class="sig-name descname"><span class="pre">resolver_timeout</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><a class="headerlink" href="#searx.favicons.proxy.FaviconProxyConfig.resolver_timeout" title="Link to this definition">¶</a></dt>
+<dd><p>Timeout which the resolvers should not exceed, is usually passed to the
+outgoing request of the resolver.  By default, the value from
+<a class="reference internal" href="../admin/settings/settings_outgoing.html#settings-outgoing"><span class="std std-ref">outgoing.request_timeout</span></a> setting is used.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="searx.favicons.proxy.FaviconProxyConfig.resolver_map">
+<span class="sig-name descname"><span class="pre">resolver_map</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.14)"><span class="pre">dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></span><a class="headerlink" href="#searx.favicons.proxy.FaviconProxyConfig.resolver_map" title="Link to this definition">¶</a></dt>
+<dd><p>The resolver_map is a key / value dictionary where the key is the name of
+the resolver and the value is the fully qualifying name (fqn) of resolver’s
+function (the callable).  The resolvers from the python module
+<code class="xref py py-obj docutils literal notranslate"><span class="pre">searx.favicons.resolver</span></code> are available by default.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="searx.favicons.proxy.FaviconProxyConfig.get_resolver">
+<span class="sig-name descname"><span class="pre">get_resolver</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Callable" title="(in Python v3.14)"><span class="pre">Callable</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span></span><a class="reference internal" href="../_modules/searx/favicons/proxy.html#FaviconProxyConfig.get_resolver"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.favicons.proxy.FaviconProxyConfig.get_resolver" title="Link to this definition">¶</a></dt>
+<dd><p>Returns the callable object (function) of the resolver with the
+<code class="docutils literal notranslate"><span class="pre">name</span></code>.  If no resolver is registered for the <code class="docutils literal notranslate"><span class="pre">name</span></code>, <code class="docutils literal notranslate"><span class="pre">None</span></code> is
+returned.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="searx.favicons.proxy.FaviconProxyConfig.favicon">
+<span class="sig-name descname"><span class="pre">favicon</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">replacements</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/searx/favicons/proxy.html#FaviconProxyConfig.favicon"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.favicons.proxy.FaviconProxyConfig.favicon" title="Link to this definition">¶</a></dt>
+<dd><p>Returns pathname and mimetype of the default favicon.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="searx.favicons.proxy.FaviconProxyConfig.favicon_data_url">
+<span class="sig-name descname"><span class="pre">favicon_data_url</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">replacements</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/searx/favicons/proxy.html#FaviconProxyConfig.favicon_data_url"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.favicons.proxy.FaviconProxyConfig.favicon_data_url" title="Link to this definition">¶</a></dt>
+<dd><p>Returns data image URL of the default favicon.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="searx.favicons.proxy.favicon_proxy">
+<span class="sig-prename descclassname"><span class="pre">searx.favicons.proxy.</span></span><span class="sig-name descname"><span class="pre">favicon_proxy</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/searx/favicons/proxy.html#favicon_proxy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.favicons.proxy.favicon_proxy" title="Link to this definition">¶</a></dt>
+<dd><p>REST API of SearXNG’s favicon proxy service</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>/favicon_proxy?authority=&lt;...&gt;&amp;h=&lt;...&gt;
+</pre></div>
+</div>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">authority</span></code>:</dt><dd><p>Domain name <span class="target" id="index-3"></span><a class="rfc reference external" href="https://datatracker.ietf.org/doc/html/rfc3986.html"><strong>RFC 3986</strong></a> / see <a class="reference internal" href="#searx.favicons.proxy.favicon_url" title="searx.favicons.proxy.favicon_url"><code class="xref py py-obj docutils literal notranslate"><span class="pre">favicon_url</span></code></a></p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">h</span></code>:</dt><dd><p>HMAC <span class="target" id="index-4"></span><a class="rfc reference external" href="https://datatracker.ietf.org/doc/html/rfc2104.html"><strong>RFC 2104</strong></a>, build up from the <a class="reference internal" href="../admin/settings/settings_server.html#settings-server"><span class="std std-ref">server.secret_key</span></a> setting.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="searx.favicons.proxy.search_favicon">
+<span class="sig-prename descclassname"><span class="pre">searx.favicons.proxy.</span></span><span class="sig-name descname"><span class="pre">search_favicon</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">resolver</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">authority</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.14)"><span class="pre">bytes</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/searx/favicons/proxy.html#search_favicon"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.favicons.proxy.search_favicon" title="Link to this definition">¶</a></dt>
+<dd><p>Sends the request to the favicon resolver and returns a tuple for the
+favicon.  The tuple consists of <code class="docutils literal notranslate"><span class="pre">(data,</span> <span class="pre">mime)</span></code>, if the resolver has not
+determined a favicon, both values are <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">data</span></code>:</dt><dd><p>Binary data of the favicon.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">mime</span></code>:</dt><dd><p>Mime type of the favicon.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="searx.favicons.proxy.favicon_url">
+<span class="sig-prename descclassname"><span class="pre">searx.favicons.proxy.</span></span><span class="sig-name descname"><span class="pre">favicon_url</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">authority</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></span><a class="reference internal" href="../_modules/searx/favicons/proxy.html#favicon_url"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.favicons.proxy.favicon_url" title="Link to this definition">¶</a></dt>
+<dd><p>Function to generate the image URL used for favicons in SearXNG’s result
+lists.  The <code class="docutils literal notranslate"><span class="pre">authority</span></code> argument (aka netloc / <span class="target" id="index-5"></span><a class="rfc reference external" href="https://datatracker.ietf.org/doc/html/rfc3986.html"><strong>RFC 3986</strong></a>) is usually a
+(sub-) domain name.  This function is used in the HTML (jinja) templates.</p>
+<div class="highlight-html notranslate"><div class="highlight"><pre><span></span><span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;favicon&quot;</span><span class="p">&gt;</span>
+   <span class="p">&lt;</span><span class="nt">img</span> <span class="na">src</span><span class="o">=</span><span class="s">&quot;{{ favicon_url(result.parsed_url.netloc) }}&quot;</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+</pre></div>
+</div>
+<p>The returned URL is a route to <a class="reference internal" href="#searx.favicons.proxy.favicon_proxy" title="searx.favicons.proxy.favicon_proxy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">favicon_proxy</span></code></a> REST API.</p>
+<p>If the favicon is already in the cache, the returned URL is a <a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/Data_URLs">data URL</a>
+(something like <code class="docutils literal notranslate"><span class="pre">data:image/png;base64,...</span></code>).  By generating a data url from
+the <a class="reference internal" href="#searx.favicons.cache.FaviconCache" title="searx.favicons.cache.FaviconCache"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cache.FaviconCache</span></code></a>, additional HTTP roundtripps via the
+<a class="reference internal" href="#searx.favicons.proxy.favicon_proxy" title="searx.favicons.proxy.favicon_proxy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">favicon_proxy</span></code></a> are saved.  However, it must also be borne in mind
+that data urls are not cached in the client (web browser).</p>
+</dd></dl>
+
+</section>
+<section id="module-searx.favicons.resolvers">
+<span id="id5"></span><span id="favicons-resolver"></span><h2>Favicons Resolver<a class="headerlink" href="#module-searx.favicons.resolvers" title="Link to this heading">¶</a></h2>
+<p>Implementations of the favicon <em>resolvers</em> that are available in the favicon
+proxy by default.  A <em>resolver</em> is a function that obtains the favicon from an
+external source.  The <em>resolver</em> function receives two arguments (<code class="docutils literal notranslate"><span class="pre">domain,</span>
+<span class="pre">timeout</span></code>) and returns a tuple <code class="docutils literal notranslate"><span class="pre">(data,</span> <span class="pre">mime)</span></code>.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="searx.favicons.resolvers.allesedv">
+<span class="sig-prename descclassname"><span class="pre">searx.favicons.resolvers.</span></span><span class="sig-name descname"><span class="pre">allesedv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">domain</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">timeout</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.14)"><span class="pre">bytes</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/searx/favicons/resolvers.html#allesedv"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.favicons.resolvers.allesedv" title="Link to this definition">¶</a></dt>
+<dd><p>Favicon Resolver from allesedv.com / <a class="reference external" href="https://favicon.allesedv.com/">https://favicon.allesedv.com/</a></p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="searx.favicons.resolvers.duckduckgo">
+<span class="sig-prename descclassname"><span class="pre">searx.favicons.resolvers.</span></span><span class="sig-name descname"><span class="pre">duckduckgo</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">domain</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">timeout</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.14)"><span class="pre">bytes</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/searx/favicons/resolvers.html#duckduckgo"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.favicons.resolvers.duckduckgo" title="Link to this definition">¶</a></dt>
+<dd><p>Favicon Resolver from duckduckgo.com / <a class="reference external" href="https://blog.jim-nielsen.com/2021/displaying-favicons-for-any-domain/">https://blog.jim-nielsen.com/2021/displaying-favicons-for-any-domain/</a></p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="searx.favicons.resolvers.google">
+<span class="sig-prename descclassname"><span class="pre">searx.favicons.resolvers.</span></span><span class="sig-name descname"><span class="pre">google</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">domain</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">timeout</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.14)"><span class="pre">bytes</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/searx/favicons/resolvers.html#google"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.favicons.resolvers.google" title="Link to this definition">¶</a></dt>
+<dd><p>Favicon Resolver from google.com</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="searx.favicons.resolvers.yandex">
+<span class="sig-prename descclassname"><span class="pre">searx.favicons.resolvers.</span></span><span class="sig-name descname"><span class="pre">yandex</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">domain</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">timeout</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.14)"><span class="pre">bytes</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/searx/favicons/resolvers.html#yandex"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.favicons.resolvers.yandex" title="Link to this definition">¶</a></dt>
+<dd><p>Favicon Resolver from yandex.com</p>
+</dd></dl>
+
+</section>
+<section id="module-searx.favicons.cache">
+<span id="id6"></span><span id="favicons-cache"></span><h2>Favicons Cache<a class="headerlink" href="#module-searx.favicons.cache" title="Link to this heading">¶</a></h2>
+<p>Implementations for caching favicons.</p>
+<dl class="simple">
+<dt><a class="reference internal" href="#searx.favicons.cache.FaviconCacheConfig" title="searx.favicons.cache.FaviconCacheConfig"><code class="xref py py-obj docutils literal notranslate"><span class="pre">FaviconCacheConfig</span></code></a>:</dt><dd><p>Configuration of the favicon cache</p>
+</dd>
+<dt><a class="reference internal" href="#searx.favicons.cache.FaviconCache" title="searx.favicons.cache.FaviconCache"><code class="xref py py-obj docutils literal notranslate"><span class="pre">FaviconCache</span></code></a>:</dt><dd><p>Abstract base class for the implementation of a favicon cache.</p>
+</dd>
+<dt><a class="reference internal" href="#searx.favicons.cache.FaviconCacheSQLite" title="searx.favicons.cache.FaviconCacheSQLite"><code class="xref py py-obj docutils literal notranslate"><span class="pre">FaviconCacheSQLite</span></code></a>:</dt><dd><p>Favicon cache that manages the favicon BLOBs in a SQLite DB.</p>
+</dd>
+<dt><a class="reference internal" href="#searx.favicons.cache.FaviconCacheNull" title="searx.favicons.cache.FaviconCacheNull"><code class="xref py py-obj docutils literal notranslate"><span class="pre">FaviconCacheNull</span></code></a>:</dt><dd><p>Fallback solution if the configured cache cannot be used for system reasons.</p>
+</dd>
+</dl>
+<hr class="docutils" />
+<dl class="py function">
+<dt class="sig sig-object py" id="searx.favicons.cache.state">
+<span class="sig-prename descclassname"><span class="pre">searx.favicons.cache.</span></span><span class="sig-name descname"><span class="pre">state</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/searx/favicons/cache.html#state"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.favicons.cache.state" title="Link to this definition">¶</a></dt>
+<dd><p>show state of the cache</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="searx.favicons.cache.maintenance">
+<span class="sig-prename descclassname"><span class="pre">searx.favicons.cache.</span></span><span class="sig-name descname"><span class="pre">maintenance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">force</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">debug</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/searx/favicons/cache.html#maintenance"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.favicons.cache.maintenance" title="Link to this definition">¶</a></dt>
+<dd><p>perform maintenance of the cache</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="searx.favicons.cache.init">
+<span class="sig-prename descclassname"><span class="pre">searx.favicons.cache.</span></span><span class="sig-name descname"><span class="pre">init</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cfg</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#searx.favicons.cache.FaviconCacheConfig" title="searx.favicons.cache.FaviconCacheConfig"><span class="pre">FaviconCacheConfig</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/searx/favicons/cache.html#init"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.favicons.cache.init" title="Link to this definition">¶</a></dt>
+<dd><p>Initialization of a global <code class="docutils literal notranslate"><span class="pre">CACHE</span></code></p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="searx.favicons.cache.FaviconCacheConfig">
+<span class="property"><span class="k"><span class="pre">final</span></span><span class="w"> </span><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">searx.favicons.cache.</span></span><span class="sig-name descname"><span class="pre">FaviconCacheConfig</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">db_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Literal" title="(in Python v3.14)"><span class="pre">Literal</span></a><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'sqlite'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'mem'</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'sqlite'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">db_url</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'/tmp/faviconcache.db'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">HOLD_TIME</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">2592000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">LIMIT_TOTAL_BYTES</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">52428800</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">BLOB_MAX_BYTES</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">20480</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">MAINTENANCE_PERIOD</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">3600</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">MAINTENANCE_MODE</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Literal" title="(in Python v3.14)"><span class="pre">Literal</span></a><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'auto'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'off'</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'auto'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/searx/favicons/cache.html#FaviconCacheConfig"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.favicons.cache.FaviconCacheConfig" title="Link to this definition">¶</a></dt>
+<dd><p>Configuration of the favicon cache.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="searx.favicons.cache.FaviconCacheConfig.db_type">
+<span class="sig-name descname"><span class="pre">db_type</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Literal" title="(in Python v3.14)"><span class="pre">Literal</span></a><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'sqlite'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'mem'</span></span><span class="p"><span class="pre">]</span></span></span><a class="headerlink" href="#searx.favicons.cache.FaviconCacheConfig.db_type" title="Link to this definition">¶</a></dt>
+<dd><p>Type of the database:</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">sqlite</span></code>:</dt><dd><p><a class="reference internal" href="#searx.favicons.cache.FaviconCacheSQLite" title="searx.favicons.cache.FaviconCacheSQLite"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cache.FaviconCacheSQLite</span></code></a></p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">mem</span></code>:</dt><dd><p><a class="reference internal" href="#searx.favicons.cache.FaviconCacheMEM" title="searx.favicons.cache.FaviconCacheMEM"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cache.FaviconCacheMEM</span></code></a> (not recommended)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="searx.favicons.cache.FaviconCacheConfig.db_url">
+<span class="sig-name descname"><span class="pre">db_url</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span><a class="headerlink" href="#searx.favicons.cache.FaviconCacheConfig.db_url" title="Link to this definition">¶</a></dt>
+<dd><p>URL of the SQLite DB, the path to the database file.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="searx.favicons.cache.FaviconCacheConfig.HOLD_TIME">
+<span class="sig-name descname"><span class="pre">HOLD_TIME</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><a class="headerlink" href="#searx.favicons.cache.FaviconCacheConfig.HOLD_TIME" title="Link to this definition">¶</a></dt>
+<dd><p>Hold time (default in sec.), after which a BLOB is removed from the cache.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="searx.favicons.cache.FaviconCacheConfig.LIMIT_TOTAL_BYTES">
+<span class="sig-name descname"><span class="pre">LIMIT_TOTAL_BYTES</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><a class="headerlink" href="#searx.favicons.cache.FaviconCacheConfig.LIMIT_TOTAL_BYTES" title="Link to this definition">¶</a></dt>
+<dd><p>Maximum of bytes (default) stored in the cache of all blobs.  Note: The
+limit is only reached at each maintenance interval after which the oldest
+BLOBs are deleted; the limit is exceeded during the maintenance period. If
+the maintenance period is <em>too long</em> or maintenance is switched off
+completely, the cache grows uncontrollably.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="searx.favicons.cache.FaviconCacheConfig.BLOB_MAX_BYTES">
+<span class="sig-name descname"><span class="pre">BLOB_MAX_BYTES</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><a class="headerlink" href="#searx.favicons.cache.FaviconCacheConfig.BLOB_MAX_BYTES" title="Link to this definition">¶</a></dt>
+<dd><p>The maximum BLOB size in bytes that a favicon may have so that it can be
+saved in the cache.  If the favicon is larger, it is not saved in the cache
+and must be requested by the client via the proxy.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="searx.favicons.cache.FaviconCacheConfig.MAINTENANCE_PERIOD">
+<span class="sig-name descname"><span class="pre">MAINTENANCE_PERIOD</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><a class="headerlink" href="#searx.favicons.cache.FaviconCacheConfig.MAINTENANCE_PERIOD" title="Link to this definition">¶</a></dt>
+<dd><p>Maintenance period in seconds / when <a class="reference internal" href="#searx.favicons.cache.FaviconCacheConfig.MAINTENANCE_MODE" title="searx.favicons.cache.FaviconCacheConfig.MAINTENANCE_MODE"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MAINTENANCE_MODE</span></code></a> is set to
+<code class="docutils literal notranslate"><span class="pre">auto</span></code>.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="searx.favicons.cache.FaviconCacheConfig.MAINTENANCE_MODE">
+<span class="sig-name descname"><span class="pre">MAINTENANCE_MODE</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Literal" title="(in Python v3.14)"><span class="pre">Literal</span></a><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'auto'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'off'</span></span><span class="p"><span class="pre">]</span></span></span><a class="headerlink" href="#searx.favicons.cache.FaviconCacheConfig.MAINTENANCE_MODE" title="Link to this definition">¶</a></dt>
+<dd><p>Type of maintenance mode</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">auto</span></code>:</dt><dd><p>Maintenance is carried out automatically as part of the maintenance
+intervals (<a class="reference internal" href="#searx.favicons.cache.FaviconCacheConfig.MAINTENANCE_PERIOD" title="searx.favicons.cache.FaviconCacheConfig.MAINTENANCE_PERIOD"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MAINTENANCE_PERIOD</span></code></a>); no external process is required.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">off</span></code>:</dt><dd><p>Maintenance is switched off and must be carried out by an external process
+if required.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="searx.favicons.cache.FaviconCacheStats">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">searx.favicons.cache.</span></span><span class="sig-name descname"><span class="pre">FaviconCacheStats</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">favicons:</span> <span class="pre">int</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None,</span> <span class="pre">bytes:</span> <span class="pre">int</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None,</span> <span class="pre">domains:</span> <span class="pre">int</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None,</span> <span class="pre">resolvers:</span> <span class="pre">int</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None,</span> <span class="pre">field_descr:</span> <span class="pre">tuple[tuple[str,</span> <span class="pre">str,</span> <span class="pre">~typing.Callable[[int,</span> <span class="pre">int],</span> <span class="pre">str]</span> <span class="pre">|</span> <span class="pre">type],</span> <span class="pre">...]</span> <span class="pre">=</span> <span class="pre">(('favicons',</span> <span class="pre">'number</span> <span class="pre">of</span> <span class="pre">favicons</span> <span class="pre">in</span> <span class="pre">cache',</span> <span class="pre">&lt;function</span> <span class="pre">humanize_number&gt;),</span> <span class="pre">('bytes',</span> <span class="pre">'total</span> <span class="pre">size</span> <span class="pre">(approx.</span> <span class="pre">bytes)</span> <span class="pre">of</span> <span class="pre">cache',</span> <span class="pre">&lt;function</span> <span class="pre">humanize_bytes&gt;),</span> <span class="pre">('domains',</span> <span class="pre">'total</span> <span class="pre">number</span> <span class="pre">of</span> <span class="pre">domains</span> <span class="pre">in</span> <span class="pre">cache',</span> <span class="pre">&lt;function</span> <span class="pre">humanize_number&gt;),</span> <span class="pre">('resolvers',</span> <span class="pre">'number</span> <span class="pre">of</span> <span class="pre">resolvers',</span> <span class="pre">&lt;class</span> <span class="pre">'str'&gt;))</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/searx/favicons/cache.html#FaviconCacheStats"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.favicons.cache.FaviconCacheStats" title="Link to this definition">¶</a></dt>
+<dd><p>Dataclass which provides information on the status of the cache.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="searx.favicons.cache.FaviconCache">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">searx.favicons.cache.</span></span><span class="sig-name descname"><span class="pre">FaviconCache</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cfg</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#searx.favicons.cache.FaviconCacheConfig" title="searx.favicons.cache.FaviconCacheConfig"><span class="pre">FaviconCacheConfig</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/searx/favicons/cache.html#FaviconCache"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.favicons.cache.FaviconCache" title="Link to this definition">¶</a></dt>
+<dd><p>Abstract base class for the implementation of a favicon cache.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="searx.favicons.cache.FaviconCache.set">
+<span class="property"><span class="k"><span class="pre">abstractmethod</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">set</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">resolver</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">authority</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">mime</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.14)"><span class="pre">bytes</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span></span><a class="reference internal" href="../_modules/searx/favicons/cache.html#FaviconCache.set"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.favicons.cache.FaviconCache.set" title="Link to this definition">¶</a></dt>
+<dd><p>Set data and mime-type in the cache.  If data is None, the
+<code class="xref py py-obj docutils literal notranslate"><span class="pre">FALLBACK_ICON</span></code> is registered. in the cache.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="searx.favicons.cache.FaviconCache.state">
+<span class="property"><span class="k"><span class="pre">abstractmethod</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">state</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#searx.favicons.cache.FaviconCacheStats" title="searx.favicons.cache.FaviconCacheStats"><span class="pre">FaviconCacheStats</span></a></span></span><a class="reference internal" href="../_modules/searx/favicons/cache.html#FaviconCache.state"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.favicons.cache.FaviconCache.state" title="Link to this definition">¶</a></dt>
+<dd><p>Returns a <a class="reference internal" href="#searx.favicons.cache.FaviconCacheStats" title="searx.favicons.cache.FaviconCacheStats"><code class="xref py py-obj docutils literal notranslate"><span class="pre">FaviconCacheStats</span></code></a> (key/values) with information
+on the state of the cache.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="searx.favicons.cache.FaviconCache.maintenance">
+<span class="property"><span class="k"><span class="pre">abstractmethod</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">maintenance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">force</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/searx/favicons/cache.html#FaviconCache.maintenance"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.favicons.cache.FaviconCache.maintenance" title="Link to this definition">¶</a></dt>
+<dd><p>Performs maintenance on the cache</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="searx.favicons.cache.FaviconCacheNull">
+<span class="property"><span class="k"><span class="pre">final</span></span><span class="w"> </span><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">searx.favicons.cache.</span></span><span class="sig-name descname"><span class="pre">FaviconCacheNull</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cfg</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#searx.favicons.cache.FaviconCacheConfig" title="searx.favicons.cache.FaviconCacheConfig"><span class="pre">FaviconCacheConfig</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/searx/favicons/cache.html#FaviconCacheNull"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.favicons.cache.FaviconCacheNull" title="Link to this definition">¶</a></dt>
+<dd><p>A dummy favicon cache that caches nothing / a fallback solution. The
+NullCache is used when more efficient caches such as the
+<a class="reference internal" href="#searx.favicons.cache.FaviconCacheSQLite" title="searx.favicons.cache.FaviconCacheSQLite"><code class="xref py py-obj docutils literal notranslate"><span class="pre">FaviconCacheSQLite</span></code></a> cannot be used because, for example, the SQLite
+library is only available in an old version and does not meet the
+requirements.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="searx.favicons.cache.FaviconCacheNull.set">
+<span class="sig-name descname"><span class="pre">set</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">resolver</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">authority</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">mime</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.14)"><span class="pre">bytes</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span></span><a class="reference internal" href="../_modules/searx/favicons/cache.html#FaviconCacheNull.set"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.favicons.cache.FaviconCacheNull.set" title="Link to this definition">¶</a></dt>
+<dd><p>Set data and mime-type in the cache.  If data is None, the
+<code class="xref py py-obj docutils literal notranslate"><span class="pre">FALLBACK_ICON</span></code> is registered. in the cache.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="searx.favicons.cache.FaviconCacheNull.state">
+<span class="sig-name descname"><span class="pre">state</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/searx/favicons/cache.html#FaviconCacheNull.state"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.favicons.cache.FaviconCacheNull.state" title="Link to this definition">¶</a></dt>
+<dd><p>Returns a <a class="reference internal" href="#searx.favicons.cache.FaviconCacheStats" title="searx.favicons.cache.FaviconCacheStats"><code class="xref py py-obj docutils literal notranslate"><span class="pre">FaviconCacheStats</span></code></a> (key/values) with information
+on the state of the cache.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="searx.favicons.cache.FaviconCacheNull.maintenance">
+<span class="sig-name descname"><span class="pre">maintenance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">force</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/searx/favicons/cache.html#FaviconCacheNull.maintenance"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.favicons.cache.FaviconCacheNull.maintenance" title="Link to this definition">¶</a></dt>
+<dd><p>Performs maintenance on the cache</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="searx.favicons.cache.FaviconCacheSQLite">
+<span class="property"><span class="k"><span class="pre">final</span></span><span class="w"> </span><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">searx.favicons.cache.</span></span><span class="sig-name descname"><span class="pre">FaviconCacheSQLite</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cfg</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#searx.favicons.cache.FaviconCacheConfig" title="searx.favicons.cache.FaviconCacheConfig"><span class="pre">FaviconCacheConfig</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/searx/favicons/cache.html#FaviconCacheSQLite"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.favicons.cache.FaviconCacheSQLite" title="Link to this definition">¶</a></dt>
+<dd><p>Favicon cache that manages the favicon BLOBs in a SQLite DB.  The DB
+model in the SQLite DB is implemented using the abstract class
+<code class="xref py py-obj docutils literal notranslate"><span class="pre">sqlitedb.SQLiteAppl</span></code>.</p>
+<p>For introspection of the DB, jump into developer environment and run command
+to show cache state:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ ./manage pyenv.cmd bash --norc --noprofile
+(py3) python -m searx.favicons cache state
+</pre></div>
+</div>
+<p>The following configurations are required / supported:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#searx.favicons.cache.FaviconCacheConfig.db_url" title="searx.favicons.cache.FaviconCacheConfig.db_url"><code class="xref py py-obj docutils literal notranslate"><span class="pre">FaviconCacheConfig.db_url</span></code></a></p></li>
+<li><p><a class="reference internal" href="#searx.favicons.cache.FaviconCacheConfig.HOLD_TIME" title="searx.favicons.cache.FaviconCacheConfig.HOLD_TIME"><code class="xref py py-obj docutils literal notranslate"><span class="pre">FaviconCacheConfig.HOLD_TIME</span></code></a></p></li>
+<li><p><a class="reference internal" href="#searx.favicons.cache.FaviconCacheConfig.LIMIT_TOTAL_BYTES" title="searx.favicons.cache.FaviconCacheConfig.LIMIT_TOTAL_BYTES"><code class="xref py py-obj docutils literal notranslate"><span class="pre">FaviconCacheConfig.LIMIT_TOTAL_BYTES</span></code></a></p></li>
+<li><p><a class="reference internal" href="#searx.favicons.cache.FaviconCacheConfig.BLOB_MAX_BYTES" title="searx.favicons.cache.FaviconCacheConfig.BLOB_MAX_BYTES"><code class="xref py py-obj docutils literal notranslate"><span class="pre">FaviconCacheConfig.BLOB_MAX_BYTES</span></code></a></p></li>
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">MAINTENANCE_PERIOD</span></code></p></li>
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">MAINTENANCE_MODE</span></code></p></li>
+</ul>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="searx.favicons.cache.FaviconCacheSQLite.DB_SCHEMA">
+<span class="sig-name descname"><span class="pre">DB_SCHEMA</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1</span></span><a class="headerlink" href="#searx.favicons.cache.FaviconCacheSQLite.DB_SCHEMA" title="Link to this definition">¶</a></dt>
+<dd><p>As soon as changes are made to the DB schema, the version number must be
+increased.  Changes to the version number require the DB to be recreated (or
+migrated / if an migration path exists and is implemented).</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="searx.favicons.cache.FaviconCacheSQLite.DDL_BLOBS">
+<span class="sig-name descname"><span class="pre">DDL_BLOBS</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'CREATE</span> <span class="pre">TABLE</span> <span class="pre">IF</span> <span class="pre">NOT</span> <span class="pre">EXISTS</span> <span class="pre">blobs</span> <span class="pre">(\n</span>&#160; <span class="pre">sha256</span>&#160;&#160;&#160;&#160; <span class="pre">TEXT,\n</span>&#160; <span class="pre">bytes_c</span>&#160;&#160;&#160; <span class="pre">INTEGER,\n</span>&#160; <span class="pre">mime</span>&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">TEXT</span> <span class="pre">NOT</span> <span class="pre">NULL,\n</span>&#160; <span class="pre">data</span>&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">BLOB</span> <span class="pre">NOT</span> <span class="pre">NULL,\n</span>&#160; <span class="pre">PRIMARY</span> <span class="pre">KEY</span> <span class="pre">(sha256))'</span></span><a class="headerlink" href="#searx.favicons.cache.FaviconCacheSQLite.DDL_BLOBS" title="Link to this definition">¶</a></dt>
+<dd><p>Table to store BLOB objects by their sha256 hash values.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="searx.favicons.cache.FaviconCacheSQLite.DDL_BLOB_MAP">
+<span class="sig-name descname"><span class="pre">DDL_BLOB_MAP</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&quot;CREATE</span> <span class="pre">TABLE</span> <span class="pre">IF</span> <span class="pre">NOT</span> <span class="pre">EXISTS</span> <span class="pre">blob_map</span> <span class="pre">(\n</span>&#160;&#160;&#160; <span class="pre">m_time</span>&#160;&#160;&#160;&#160; <span class="pre">INTEGER</span> <span class="pre">DEFAULT</span> <span class="pre">(strftime('%s',</span> <span class="pre">'now')),</span>&#160; <span class="pre">--</span> <span class="pre">last</span> <span class="pre">modified</span> <span class="pre">(unix</span> <span class="pre">epoch)</span> <span class="pre">time</span> <span class="pre">in</span> <span class="pre">sec.\n</span>&#160;&#160;&#160; <span class="pre">sha256</span>&#160;&#160;&#160;&#160; <span class="pre">TEXT,\n</span>&#160;&#160;&#160; <span class="pre">resolver</span>&#160;&#160; <span class="pre">TEXT,\n</span>&#160;&#160;&#160; <span class="pre">authority</span>&#160; <span class="pre">TEXT,\n</span>&#160;&#160;&#160; <span class="pre">PRIMARY</span> <span class="pre">KEY</span> <span class="pre">(resolver,</span> <span class="pre">authority))&quot;</span></span><a class="headerlink" href="#searx.favicons.cache.FaviconCacheSQLite.DDL_BLOB_MAP" title="Link to this definition">¶</a></dt>
+<dd><p>Table to map from (resolver, authority) to sha256 hash values.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="searx.favicons.cache.FaviconCacheSQLite.SQL_DROP_LEFTOVER_BLOBS">
+<span class="sig-name descname"><span class="pre">SQL_DROP_LEFTOVER_BLOBS</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'DELETE</span> <span class="pre">FROM</span> <span class="pre">blobs</span> <span class="pre">WHERE</span> <span class="pre">sha256</span> <span class="pre">IN</span> <span class="pre">(</span> <span class="pre">SELECT</span> <span class="pre">b.sha256</span>&#160;&#160; <span class="pre">FROM</span> <span class="pre">blobs</span> <span class="pre">b</span>&#160;&#160; <span class="pre">LEFT</span> <span class="pre">JOIN</span> <span class="pre">blob_map</span> <span class="pre">bm</span>&#160;&#160;&#160;&#160; <span class="pre">ON</span> <span class="pre">b.sha256</span> <span class="pre">=</span> <span class="pre">bm.sha256</span>&#160; <span class="pre">WHERE</span> <span class="pre">bm.sha256</span> <span class="pre">IS</span> <span class="pre">NULL)'</span></span><a class="headerlink" href="#searx.favicons.cache.FaviconCacheSQLite.SQL_DROP_LEFTOVER_BLOBS" title="Link to this definition">¶</a></dt>
+<dd><p>Delete blobs.sha256 (BLOBs) no longer in blob_map.sha256.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="searx.favicons.cache.FaviconCacheSQLite.set">
+<span class="sig-name descname"><span class="pre">set</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">resolver</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">authority</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">mime</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.14)"><span class="pre">bytes</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span></span><a class="reference internal" href="../_modules/searx/favicons/cache.html#FaviconCacheSQLite.set"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.favicons.cache.FaviconCacheSQLite.set" title="Link to this definition">¶</a></dt>
+<dd><p>Set data and mime-type in the cache.  If data is None, the
+<code class="xref py py-obj docutils literal notranslate"><span class="pre">FALLBACK_ICON</span></code> is registered. in the cache.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="searx.favicons.cache.FaviconCacheSQLite.next_maintenance_time">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">next_maintenance_time</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><a class="headerlink" href="#searx.favicons.cache.FaviconCacheSQLite.next_maintenance_time" title="Link to this definition">¶</a></dt>
+<dd><p>Returns (unix epoch) time of the next maintenance.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="searx.favicons.cache.FaviconCacheSQLite.maintenance">
+<span class="sig-name descname"><span class="pre">maintenance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">force</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/searx/favicons/cache.html#FaviconCacheSQLite.maintenance"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.favicons.cache.FaviconCacheSQLite.maintenance" title="Link to this definition">¶</a></dt>
+<dd><p>Performs maintenance on the cache</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="searx.favicons.cache.FaviconCacheSQLite.state">
+<span class="sig-name descname"><span class="pre">state</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#searx.favicons.cache.FaviconCacheStats" title="searx.favicons.cache.FaviconCacheStats"><span class="pre">FaviconCacheStats</span></a></span></span><a class="reference internal" href="../_modules/searx/favicons/cache.html#FaviconCacheSQLite.state"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.favicons.cache.FaviconCacheSQLite.state" title="Link to this definition">¶</a></dt>
+<dd><p>Returns a <a class="reference internal" href="#searx.favicons.cache.FaviconCacheStats" title="searx.favicons.cache.FaviconCacheStats"><code class="xref py py-obj docutils literal notranslate"><span class="pre">FaviconCacheStats</span></code></a> (key/values) with information
+on the state of the cache.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="searx.favicons.cache.FaviconCacheMEM">
+<span class="property"><span class="k"><span class="pre">final</span></span><span class="w"> </span><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">searx.favicons.cache.</span></span><span class="sig-name descname"><span class="pre">FaviconCacheMEM</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cfg</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#searx.favicons.cache.FaviconCacheConfig" title="searx.favicons.cache.FaviconCacheConfig"><span class="pre">FaviconCacheConfig</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/searx/favicons/cache.html#FaviconCacheMEM"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.favicons.cache.FaviconCacheMEM" title="Link to this definition">¶</a></dt>
+<dd><p>Favicon cache in process’ memory.  Its just a POC that stores the
+favicons in the memory of the process.</p>
+<div class="admonition attention">
+<p class="admonition-title">Attention</p>
+<p>Don’t use it in production, it will blow up your memory!!</p>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="searx.favicons.cache.FaviconCacheMEM.set">
+<span class="sig-name descname"><span class="pre">set</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">resolver</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">authority</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">mime</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.14)"><span class="pre">bytes</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span></span><a class="reference internal" href="../_modules/searx/favicons/cache.html#FaviconCacheMEM.set"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.favicons.cache.FaviconCacheMEM.set" title="Link to this definition">¶</a></dt>
+<dd><p>Set data and mime-type in the cache.  If data is None, the
+<code class="xref py py-obj docutils literal notranslate"><span class="pre">FALLBACK_ICON</span></code> is registered. in the cache.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="searx.favicons.cache.FaviconCacheMEM.state">
+<span class="sig-name descname"><span class="pre">state</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/searx/favicons/cache.html#FaviconCacheMEM.state"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.favicons.cache.FaviconCacheMEM.state" title="Link to this definition">¶</a></dt>
+<dd><p>Returns a <a class="reference internal" href="#searx.favicons.cache.FaviconCacheStats" title="searx.favicons.cache.FaviconCacheStats"><code class="xref py py-obj docutils literal notranslate"><span class="pre">FaviconCacheStats</span></code></a> (key/values) with information
+on the state of the cache.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="searx.favicons.cache.FaviconCacheMEM.maintenance">
+<span class="sig-name descname"><span class="pre">maintenance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">force</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/searx/favicons/cache.html#FaviconCacheMEM.maintenance"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.favicons.cache.FaviconCacheMEM.maintenance" title="Link to this definition">¶</a></dt>
+<dd><p>Performs maintenance on the cache</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="searx.infopage.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">Online <code class="docutils literal notranslate"><span class="pre">/info</span></code></div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="searx.exceptions.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">SearXNG Exceptions</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; SearXNG team
+            </div>
+            Made with 
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            <div class="icons">
+              <a class="muted-link " href="https://github.com/searxng/searxng/" aria-label="GitHub">&#x1F4BE;</a>
+              <a class="muted-link " href="https://searx.space/" aria-label="searx.space">&#x1F310;</a>
+              
+            </div>
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">Favicons (source)</a><ul>
+<li><a class="reference internal" href="#searx.favicons.favicon_url"><code class="docutils literal notranslate"><span class="pre">favicon_url()</span></code></a></li>
+<li><a class="reference internal" href="#searx.favicons.favicon_proxy"><code class="docutils literal notranslate"><span class="pre">favicon_proxy()</span></code></a></li>
+<li><a class="reference internal" href="#module-searx.favicons.config">Favicons Config</a><ul>
+<li><a class="reference internal" href="#searx.favicons.config.CONFIG_SCHEMA"><code class="docutils literal notranslate"><span class="pre">CONFIG_SCHEMA</span></code></a></li>
+<li><a class="reference internal" href="#searx.favicons.config.TOML_CACHE_CFG"><code class="docutils literal notranslate"><span class="pre">TOML_CACHE_CFG</span></code></a></li>
+<li><a class="reference internal" href="#searx.favicons.config.FaviconConfig"><code class="docutils literal notranslate"><span class="pre">FaviconConfig</span></code></a><ul>
+<li><a class="reference internal" href="#searx.favicons.config.FaviconConfig.cfg_schema"><code class="docutils literal notranslate"><span class="pre">FaviconConfig.cfg_schema</span></code></a></li>
+<li><a class="reference internal" href="#searx.favicons.config.FaviconConfig.cache"><code class="docutils literal notranslate"><span class="pre">FaviconConfig.cache</span></code></a></li>
+<li><a class="reference internal" href="#searx.favicons.config.FaviconConfig.proxy"><code class="docutils literal notranslate"><span class="pre">FaviconConfig.proxy</span></code></a></li>
+<li><a class="reference internal" href="#searx.favicons.config.FaviconConfig.from_toml_file"><code class="docutils literal notranslate"><span class="pre">FaviconConfig.from_toml_file()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-searx.favicons.proxy">Favicons Proxy</a><ul>
+<li><a class="reference internal" href="#searx.favicons.proxy.FaviconProxyConfig"><code class="docutils literal notranslate"><span class="pre">FaviconProxyConfig</span></code></a><ul>
+<li><a class="reference internal" href="#searx.favicons.proxy.FaviconProxyConfig.max_age"><code class="docutils literal notranslate"><span class="pre">FaviconProxyConfig.max_age</span></code></a></li>
+<li><a class="reference internal" href="#searx.favicons.proxy.FaviconProxyConfig.secret_key"><code class="docutils literal notranslate"><span class="pre">FaviconProxyConfig.secret_key</span></code></a></li>
+<li><a class="reference internal" href="#searx.favicons.proxy.FaviconProxyConfig.resolver_timeout"><code class="docutils literal notranslate"><span class="pre">FaviconProxyConfig.resolver_timeout</span></code></a></li>
+<li><a class="reference internal" href="#searx.favicons.proxy.FaviconProxyConfig.resolver_map"><code class="docutils literal notranslate"><span class="pre">FaviconProxyConfig.resolver_map</span></code></a></li>
+<li><a class="reference internal" href="#searx.favicons.proxy.FaviconProxyConfig.get_resolver"><code class="docutils literal notranslate"><span class="pre">FaviconProxyConfig.get_resolver()</span></code></a></li>
+<li><a class="reference internal" href="#searx.favicons.proxy.FaviconProxyConfig.favicon"><code class="docutils literal notranslate"><span class="pre">FaviconProxyConfig.favicon()</span></code></a></li>
+<li><a class="reference internal" href="#searx.favicons.proxy.FaviconProxyConfig.favicon_data_url"><code class="docutils literal notranslate"><span class="pre">FaviconProxyConfig.favicon_data_url()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#searx.favicons.proxy.favicon_proxy"><code class="docutils literal notranslate"><span class="pre">favicon_proxy()</span></code></a></li>
+<li><a class="reference internal" href="#searx.favicons.proxy.search_favicon"><code class="docutils literal notranslate"><span class="pre">search_favicon()</span></code></a></li>
+<li><a class="reference internal" href="#searx.favicons.proxy.favicon_url"><code class="docutils literal notranslate"><span class="pre">favicon_url()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-searx.favicons.resolvers">Favicons Resolver</a><ul>
+<li><a class="reference internal" href="#searx.favicons.resolvers.allesedv"><code class="docutils literal notranslate"><span class="pre">allesedv()</span></code></a></li>
+<li><a class="reference internal" href="#searx.favicons.resolvers.duckduckgo"><code class="docutils literal notranslate"><span class="pre">duckduckgo()</span></code></a></li>
+<li><a class="reference internal" href="#searx.favicons.resolvers.google"><code class="docutils literal notranslate"><span class="pre">google()</span></code></a></li>
+<li><a class="reference internal" href="#searx.favicons.resolvers.yandex"><code class="docutils literal notranslate"><span class="pre">yandex()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-searx.favicons.cache">Favicons Cache</a><ul>
+<li><a class="reference internal" href="#searx.favicons.cache.state"><code class="docutils literal notranslate"><span class="pre">state()</span></code></a></li>
+<li><a class="reference internal" href="#searx.favicons.cache.maintenance"><code class="docutils literal notranslate"><span class="pre">maintenance()</span></code></a></li>
+<li><a class="reference internal" href="#searx.favicons.cache.init"><code class="docutils literal notranslate"><span class="pre">init()</span></code></a></li>
+<li><a class="reference internal" href="#searx.favicons.cache.FaviconCacheConfig"><code class="docutils literal notranslate"><span class="pre">FaviconCacheConfig</span></code></a><ul>
+<li><a class="reference internal" href="#searx.favicons.cache.FaviconCacheConfig.db_type"><code class="docutils literal notranslate"><span class="pre">FaviconCacheConfig.db_type</span></code></a></li>
+<li><a class="reference internal" href="#searx.favicons.cache.FaviconCacheConfig.db_url"><code class="docutils literal notranslate"><span class="pre">FaviconCacheConfig.db_url</span></code></a></li>
+<li><a class="reference internal" href="#searx.favicons.cache.FaviconCacheConfig.HOLD_TIME"><code class="docutils literal notranslate"><span class="pre">FaviconCacheConfig.HOLD_TIME</span></code></a></li>
+<li><a class="reference internal" href="#searx.favicons.cache.FaviconCacheConfig.LIMIT_TOTAL_BYTES"><code class="docutils literal notranslate"><span class="pre">FaviconCacheConfig.LIMIT_TOTAL_BYTES</span></code></a></li>
+<li><a class="reference internal" href="#searx.favicons.cache.FaviconCacheConfig.BLOB_MAX_BYTES"><code class="docutils literal notranslate"><span class="pre">FaviconCacheConfig.BLOB_MAX_BYTES</span></code></a></li>
+<li><a class="reference internal" href="#searx.favicons.cache.FaviconCacheConfig.MAINTENANCE_PERIOD"><code class="docutils literal notranslate"><span class="pre">FaviconCacheConfig.MAINTENANCE_PERIOD</span></code></a></li>
+<li><a class="reference internal" href="#searx.favicons.cache.FaviconCacheConfig.MAINTENANCE_MODE"><code class="docutils literal notranslate"><span class="pre">FaviconCacheConfig.MAINTENANCE_MODE</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#searx.favicons.cache.FaviconCacheStats"><code class="docutils literal notranslate"><span class="pre">FaviconCacheStats</span></code></a></li>
+<li><a class="reference internal" href="#searx.favicons.cache.FaviconCache"><code class="docutils literal notranslate"><span class="pre">FaviconCache</span></code></a><ul>
+<li><a class="reference internal" href="#searx.favicons.cache.FaviconCache.set"><code class="docutils literal notranslate"><span class="pre">FaviconCache.set()</span></code></a></li>
+<li><a class="reference internal" href="#searx.favicons.cache.FaviconCache.state"><code class="docutils literal notranslate"><span class="pre">FaviconCache.state()</span></code></a></li>
+<li><a class="reference internal" href="#searx.favicons.cache.FaviconCache.maintenance"><code class="docutils literal notranslate"><span class="pre">FaviconCache.maintenance()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#searx.favicons.cache.FaviconCacheNull"><code class="docutils literal notranslate"><span class="pre">FaviconCacheNull</span></code></a><ul>
+<li><a class="reference internal" href="#searx.favicons.cache.FaviconCacheNull.set"><code class="docutils literal notranslate"><span class="pre">FaviconCacheNull.set()</span></code></a></li>
+<li><a class="reference internal" href="#searx.favicons.cache.FaviconCacheNull.state"><code class="docutils literal notranslate"><span class="pre">FaviconCacheNull.state()</span></code></a></li>
+<li><a class="reference internal" href="#searx.favicons.cache.FaviconCacheNull.maintenance"><code class="docutils literal notranslate"><span class="pre">FaviconCacheNull.maintenance()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#searx.favicons.cache.FaviconCacheSQLite"><code class="docutils literal notranslate"><span class="pre">FaviconCacheSQLite</span></code></a><ul>
+<li><a class="reference internal" href="#searx.favicons.cache.FaviconCacheSQLite.DB_SCHEMA"><code class="docutils literal notranslate"><span class="pre">FaviconCacheSQLite.DB_SCHEMA</span></code></a></li>
+<li><a class="reference internal" href="#searx.favicons.cache.FaviconCacheSQLite.DDL_BLOBS"><code class="docutils literal notranslate"><span class="pre">FaviconCacheSQLite.DDL_BLOBS</span></code></a></li>
+<li><a class="reference internal" href="#searx.favicons.cache.FaviconCacheSQLite.DDL_BLOB_MAP"><code class="docutils literal notranslate"><span class="pre">FaviconCacheSQLite.DDL_BLOB_MAP</span></code></a></li>
+<li><a class="reference internal" href="#searx.favicons.cache.FaviconCacheSQLite.SQL_DROP_LEFTOVER_BLOBS"><code class="docutils literal notranslate"><span class="pre">FaviconCacheSQLite.SQL_DROP_LEFTOVER_BLOBS</span></code></a></li>
+<li><a class="reference internal" href="#searx.favicons.cache.FaviconCacheSQLite.set"><code class="docutils literal notranslate"><span class="pre">FaviconCacheSQLite.set()</span></code></a></li>
+<li><a class="reference internal" href="#searx.favicons.cache.FaviconCacheSQLite.next_maintenance_time"><code class="docutils literal notranslate"><span class="pre">FaviconCacheSQLite.next_maintenance_time</span></code></a></li>
+<li><a class="reference internal" href="#searx.favicons.cache.FaviconCacheSQLite.maintenance"><code class="docutils literal notranslate"><span class="pre">FaviconCacheSQLite.maintenance()</span></code></a></li>
+<li><a class="reference internal" href="#searx.favicons.cache.FaviconCacheSQLite.state"><code class="docutils literal notranslate"><span class="pre">FaviconCacheSQLite.state()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#searx.favicons.cache.FaviconCacheMEM"><code class="docutils literal notranslate"><span class="pre">FaviconCacheMEM</span></code></a><ul>
+<li><a class="reference internal" href="#searx.favicons.cache.FaviconCacheMEM.set"><code class="docutils literal notranslate"><span class="pre">FaviconCacheMEM.set()</span></code></a></li>
+<li><a class="reference internal" href="#searx.favicons.cache.FaviconCacheMEM.state"><code class="docutils literal notranslate"><span class="pre">FaviconCacheMEM.state()</span></code></a></li>
+<li><a class="reference internal" href="#searx.favicons.cache.FaviconCacheMEM.maintenance"><code class="docutils literal notranslate"><span class="pre">FaviconCacheMEM.maintenance()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script src="../_static/documentation_options.js?v=56f4e461"></script>
+    <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../_static/scripts/furo.js?v=46bd48cc"></script>
+    </body>
+</html>

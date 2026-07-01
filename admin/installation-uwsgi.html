@@ -1,0 +1,971 @@
+<!doctype html>
+<html class="no-js" lang="en" data-content_root="../">
+  <head><meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="index" title="Index" href="../genindex.html"><link rel="search" title="Search" href="../search.html"><link rel="next" title="NGINX" href="installation-nginx.html"><link rel="prev" title="Granian" href="installation-granian.html">
+        <link rel="prefetch" href="../_static/searxng-wordmark.svg" as="image">
+
+    <!-- Generated with Sphinx 9.1.0 and Furo 2025.12.19 -->
+        <title>uWSGI - SearXNG Documentation (2026.7.1+c5d8d05f0)</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=d111a655" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=7bdb33bb" />
+    <link rel="stylesheet" type="text/css" href="../_static/tabs.css?v=a5c4661c" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?v=8dab3a3b" />
+    <link rel="stylesheet" type="text/css" href="../_static/searxng.css?v=4b1b1f10" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f2f2f2;
+  --color-code-foreground: #1e1e1e;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
+    <title>Auto light/dark, in light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
+      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
+      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
+      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
+      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
+      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
+      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
+      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
+      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
+      <circle cx="14.5" cy="9.55" r="3.6"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
+    <title>Auto light/dark, in dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
+      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
+      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
+      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
+      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
+      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
+      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
+      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-pencil" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
+      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+      <path d="M13.5 6.5l4 4" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+  <symbol id="svg-eye" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+      <path
+        d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle site navigation sidebar">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc" aria-label="Toggle table of contents sidebar">
+<label class="overlay sidebar-overlay" for="__navigation"></label>
+<label class="overlay toc-overlay" for="__toc"></label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <span class="icon"><svg><use href="#svg-menu"></use></svg></span>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../index.html"><div class="brand">SearXNG Documentation (2026.7.1+c5d8d05f0)</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
+          <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+          <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><div class="sidebar-scroll"><a class="sidebar-brand" href="../index.html">
+  <div class="sidebar-logo-container">
+    <img class="sidebar-logo" src="../_static/searxng-wordmark.svg" alt="Logo"/>
+  </div>
+  
+  <span class="sidebar-brand-text">SearXNG Documentation (2026.7.1+c5d8d05f0)</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-tree">
+  <ul class="current">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../user/index.html">User information</a><input aria-label="Toggle navigation of User information" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../user/search-syntax.html">Search syntax</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../user/configured_engines.html">Configured Engines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../user/about.html">About SearXNG</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../own-instance.html">Why use a private instance?</a></li>
+<li class="toctree-l1 current has-children"><a class="reference internal" href="index.html">Administrator documentation</a><input aria-label="Toggle navigation of Administrator documentation" checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul class="current">
+<li class="toctree-l2 has-children"><a class="reference internal" href="settings/index.html">Settings</a><input aria-label="Toggle navigation of Settings" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="settings/settings.html"><code class="docutils literal notranslate"><span class="pre">settings.yml</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="settings/settings_engines.html"><code class="docutils literal notranslate"><span class="pre">engines:</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="settings/settings_brand.html"><code class="docutils literal notranslate"><span class="pre">brand:</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="settings/settings_general.html"><code class="docutils literal notranslate"><span class="pre">general:</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="settings/settings_search.html"><code class="docutils literal notranslate"><span class="pre">search:</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="settings/settings_server.html"><code class="docutils literal notranslate"><span class="pre">server:</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="settings/settings_ui.html"><code class="docutils literal notranslate"><span class="pre">ui:</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="settings/settings_preferences.html"><code class="docutils literal notranslate"><span class="pre">preferences:</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="settings/settings_redis.html"><code class="docutils literal notranslate"><span class="pre">redis:</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="settings/settings_valkey.html"><code class="docutils literal notranslate"><span class="pre">valkey:</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="settings/settings_outgoing.html"><code class="docutils literal notranslate"><span class="pre">outgoing:</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="settings/settings_categories_as_tabs.html"><code class="docutils literal notranslate"><span class="pre">categories_as_tabs:</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="settings/settings_plugins.html"><code class="docutils literal notranslate"><span class="pre">plugins:</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation-docker.html">Installation container</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation-scripts.html">Installation Script</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation-searxng.html">Step by step installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation-granian.html">Granian</a></li>
+<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">uWSGI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation-nginx.html">NGINX</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation-apache.html">Apache</a></li>
+<li class="toctree-l2"><a class="reference internal" href="update-searxng.html">SearXNG maintenance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="answer-captcha.html">Answer CAPTCHA from server’s IP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.favicons.html">Favicons</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.limiter.html">Limiter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html">Administration API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="architecture.html">Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plugins.html">List of plugins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="buildhosts.html">Buildhosts</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../dev/index.html">Developer documentation</a><input aria-label="Toggle navigation of Developer documentation" class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../dev/quickstart.html">Development Quickstart</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../dev/commits.html">Git Commits &amp; Change Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../dev/contribution_guide.html">How to contribute</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../dev/extended_types.html">Extended Types</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../dev/engines/index.html">Engine Implementations</a><input aria-label="Toggle navigation of Engine Implementations" class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/enginelib.html">Engine Library</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/engines.html">SearXNG’s engines loader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/engine_overview.html">Engine Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/demo/demo_online.html">Demo Online Engine</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/xpath.html">XPath Engine</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/mediawiki.html">MediaWiki Engine</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/json_engine.html">JSON Engine</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/online/500px.html">500px</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/online/adobe_stock.html">Adobe Stock</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/online/alpinelinux.html">Alpine Linux Packages</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/online/annas_archive.html">Anna’s Archive</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/online/archlinux.html">Arch Linux</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/online/arxiv.html">arXiv</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/online/astrophysics_data_system.html">Astrophysics Data System (ADS)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/online/azure.html">Azure Resources</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/online/bing.html">Bing Engines</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/online/bpb.html">Bpb</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/online/brave.html">Brave Engines</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/online/bt4g.html">BT4G</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/online/cara.html">Cara Images</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/online/chinaso.html">ChinaSo</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/online/core.html">CORE</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/online/crossref.html">Crossref</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/online/dailymotion.html">Dailymotion</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/online/discourse.html">Discourse Forums</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/online/duckduckgo.html">DuckDuckGo Engines</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/online/geizhals.html">Geizhals</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/online/gitea.html">Gitea</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/online/github_code.html">Github Code</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/online/gitlab.html">GitLab</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/online/google.html">Google Engines</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/online/huggingface.html">Hugging Face</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/online/kagi.html">Kagi Engines</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/online/lemmy.html">Lemmy</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/online/loc.html">Library of Congress</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/online/marginalia.html">Marginalia Search</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/online/mastodon.html">Mastodon</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/online/moviepilot.html">Moviepilot</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/online/mrs.html">Matrix Rooms Search (MRS)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/online/mwmbl.html">Mwmbl Engine</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/online/odysee.html">Odysee</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/online/openalex.html">OpenAlex</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/online/openlibrary.html">Open Library</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/online/peertube.html">Peertube Engines</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/online/piped.html">Piped</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/online/presearch.html">Presearch Engine</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/online/pubmed.html">PubMed</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/online/qwant.html">Qwant</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/online/radio_browser.html">RadioBrowser</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/online/recoll.html">Recoll Engine</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/online/repology.html">Repology</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/online/reuters.html">Reuters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/online/semantic_scholar.html">Semantic Scholar</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/online/soundcloud.html">Soundcloud</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/online/sourcehut.html">Sourcehut</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/online/springer.html">Springer Nature</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/online/startpage.html">Startpage Engines</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/online/tagesschau.html">Tagesschau API</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/online/torznab.html">Torznab WebAPI</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/online/tubearchivist.html">Tube Archivist</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/online/void.html">Void Linux binary packages</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/online/wallhaven.html">Wallhaven</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/online/wikipedia.html">Wikimedia</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/online/yacy.html">Yacy</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/online/yahoo.html">Yahoo Engine</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/online/zlibrary.html">Z-Library</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/offline_concept.html">Offline Concept</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/demo/demo_offline.html">Demo Offline Engine</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/offline/command-line-engines.html">Command Line Engines</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/offline/nosql-engines.html">NoSQL databases</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/offline/search-indexer-engines.html">Local Search APIs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/offline/sql-engines.html">SQL Engines</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/online_url_search/tineye.html">Tineye</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../dev/result_types/index.html">Result Types</a><input aria-label="Toggle navigation of Result Types" class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../dev/result_types/base_result.html">Result</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../dev/result_types/main_result.html">Main Search Results</a><input aria-label="Toggle navigation of Main Search Results" class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../dev/result_types/main/mainresult.html">Main Results</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../dev/result_types/main/keyvalue.html">Key-Value Results</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../dev/result_types/main/code.html">Code Results</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../dev/result_types/main/paper.html">Paper Results</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../dev/result_types/main/file.html">File Results</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../dev/result_types/main/image.html">Image Results</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/result_types/answer.html">Answer Results</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/result_types/correction.html">Correction Results</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/result_types/suggestion.html">Suggestion Results</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/result_types/infobox.html">Infobox Results</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../dev/templates.html">Simple Theme Templates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../dev/search_api.html">Search API</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../dev/plugins/index.html">Plugins</a><input aria-label="Toggle navigation of Plugins" class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../dev/plugins/development.html">Plugin Development</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../dev/plugins/builtins.html">Built-in Plugins</a><input aria-label="Toggle navigation of Built-in Plugins" class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../dev/plugins/calculator.html">Calculator</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../dev/plugins/hash_plugin.html">Hash Values</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../dev/plugins/hostnames.html">Hostnames</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../dev/plugins/infinite_scroll.html">Infinite scroll</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../dev/plugins/self_info.html">Self-Info</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../dev/plugins/tor_check.html">Tor check</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../dev/plugins/unit_converter.html">Unit Converter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../dev/plugins/time_zone.html">Time Zone</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../dev/answerers/index.html">Answerers</a><input aria-label="Toggle navigation of Answerers" class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../dev/answerers/development.html">Answerer Development</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../dev/answerers/builtins.html">Built-in Answerers</a><input aria-label="Toggle navigation of Built-in Answerers" class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" role="switch" type="checkbox"/><label for="toctree-checkbox-11"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../dev/answerers/random.html">Random</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../dev/answerers/statistics.html">Statistics</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../dev/translation.html">Translation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../dev/makefile.html">Makefile &amp; <code class="docutils literal notranslate"><span class="pre">./manage</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../dev/reST.html">reST primer</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../dev/searxng_extra/index.html">Tooling box <code class="docutils literal notranslate"><span class="pre">searxng_extra</span></code></a><input aria-label="Toggle navigation of Tooling box searxng_extra" class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" role="switch" type="checkbox"/><label for="toctree-checkbox-12"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../dev/searxng_extra/update.html"><code class="docutils literal notranslate"><span class="pre">searxng_extra/update/</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../utils/index.html">DevOps tooling box</a><input aria-label="Toggle navigation of DevOps tooling box" class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" role="switch" type="checkbox"/><label for="toctree-checkbox-13"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../utils/searxng.sh.html"><code class="docutils literal notranslate"><span class="pre">utils/searxng.sh</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../src/index.html">Source-Code</a><input aria-label="Toggle navigation of Source-Code" class="toctree-checkbox" id="toctree-checkbox-14" name="toctree-checkbox-14" role="switch" type="checkbox"/><label for="toctree-checkbox-14"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../src/searx.babel_extract.html">Custom message extractor (i18n)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../src/searx.botdetection.html">Bot Detection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../src/searx.cache.html">Caches</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../src/searx.exceptions.html">SearXNG Exceptions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../src/searx.favicons.html">Favicons (source)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../src/searx.infopage.html">Online <code class="docutils literal notranslate"><span class="pre">/info</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../src/searx.locales.html">Locales</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../src/searx.search.html">Search</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../src/searx.search.processors.html">Search processors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../src/searx.settings.html">Settings Loader</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../src/searx.sqlitedb.html">SQLite DB</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../src/searx.utils.html">Utility functions for the engines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../src/searx.valkeydb.html">Valkey DB</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../src/searx.valkeylib.html">Valkey Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../src/searx.weather.html">Weather</a></li>
+</ul>
+</li>
+</ul>
+
+</div>
+</div>
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="view-this-page">
+  <a class="muted-link" href="https://github.com/searxng/searxng/blob/master/docs/admin/installation-uwsgi.rst?plain=true" title="View this page">
+    <svg><use href="#svg-eye"></use></svg>
+    <span class="visually-hidden">View this page</span>
+  </a>
+</div><div class="edit-this-page">
+  <a class="muted-link" href="https://github.com/searxng/searxng/edit/master/docs/admin/installation-uwsgi.rst" rel="edit" title="Edit this page">
+    <svg><use href="#svg-pencil"></use></svg>
+    <span class="visually-hidden">Edit this page</span>
+  </a>
+</div><div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
+              <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+              <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
+          </label>
+        </div>
+        <article role="main" id="furo-main-content">
+          <section id="uwsgi">
+<span id="searxng-uwsgi"></span><h1>uWSGI<a class="headerlink" href="#uwsgi" title="Link to this heading">¶</a></h1>
+<aside class="sidebar">
+<p class="sidebar-title">further reading</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://www.freedesktop.org/software/systemd/man/systemd.unit.html">systemd.unit</a></p></li>
+<li><p><a class="reference external" href="https://uwsgi-docs.readthedocs.io/en/latest/Emperor.html">uWSGI Emperor</a></p></li>
+</ul>
+</aside>
+<section id="origin-uwsgi">
+<h2>Origin uWSGI<a class="headerlink" href="#origin-uwsgi" title="Link to this heading">¶</a></h2>
+<p>How uWSGI is implemented by distributors varies. The uWSGI project itself
+recommends two methods:</p>
+<ol class="arabic simple">
+<li><p><a class="reference external" href="https://www.freedesktop.org/software/systemd/man/systemd.unit.html">systemd.unit</a> template file as described here <a class="reference external" href="https://uwsgi-docs.readthedocs.io/en/latest/Systemd.html#one-service-per-app-in-systemd">One service per app in systemd</a>:</p></li>
+</ol>
+<blockquote>
+<div><p>There is one <a class="reference external" href="http://0pointer.de/blog/projects/instances.html">systemd unit template</a> on the system installed and one <a class="reference external" href="https://uwsgi-docs.readthedocs.io/en/latest/Configuration.html#ini-files">uwsgi
+ini file</a> per uWSGI-app placed at dedicated locations.  Take archlinux and a
+<code class="docutils literal notranslate"><span class="pre">searxng.ini</span></code> as example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">systemd</span> <span class="n">template</span> <span class="n">unit</span><span class="p">:</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">systemd</span><span class="o">/</span><span class="n">system</span><span class="o">/</span><span class="n">uwsgi</span><span class="o">@.</span><span class="n">service</span>
+        <span class="n">contains</span><span class="p">:</span> <span class="p">[</span><span class="n">Service</span><span class="p">]</span>
+                  <span class="n">ExecStart</span><span class="o">=/</span><span class="n">usr</span><span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">uwsgi</span> <span class="o">--</span><span class="n">ini</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">uwsgi</span><span class="o">/%</span><span class="n">I</span><span class="o">.</span><span class="n">ini</span>
+
+<span class="n">SearXNG</span> <span class="n">application</span><span class="p">:</span>   <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">uwsgi</span><span class="o">/</span><span class="n">searxng</span><span class="o">.</span><span class="n">ini</span>
+        <span class="n">links</span> <span class="n">to</span><span class="p">:</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">uwsgi</span><span class="o">/</span><span class="n">apps</span><span class="o">-</span><span class="n">available</span><span class="o">/</span><span class="n">searxng</span><span class="o">.</span><span class="n">ini</span>
+</pre></div>
+</div>
+<p>The SearXNG app (template <code class="docutils literal notranslate"><span class="pre">/etc/uwsgi/%I.ini</span></code>) can be maintained as known
+from common systemd units:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>systemctl<span class="w"> </span><span class="nb">enable</span><span class="w">  </span>uwsgi@searxng
+$<span class="w"> </span>systemctl<span class="w"> </span>start<span class="w">   </span>uwsgi@searxng
+$<span class="w"> </span>systemctl<span class="w"> </span>restart<span class="w"> </span>uwsgi@searxng
+$<span class="w"> </span>systemctl<span class="w"> </span>stop<span class="w">    </span>uwsgi@searxng
+</pre></div>
+</div>
+</div></blockquote>
+<ol class="arabic simple" start="2">
+<li><p>The <a class="reference external" href="https://uwsgi-docs.readthedocs.io/en/latest/Emperor.html">uWSGI Emperor</a> which fits for maintaining a large range of uwsgi
+apps and there is a <a class="reference external" href="https://uwsgi-docs.readthedocs.io/en/latest/Emperor.html#tyrant-mode-secure-multi-user-hosting">Tyrant mode</a> to secure multi-user hosting.</p></li>
+</ol>
+<blockquote>
+<div><p>The Emperor mode is a special uWSGI instance that will monitor specific
+events.  The Emperor mode (the service) is started by a (common, not template)
+systemd unit.</p>
+<p>The Emperor service will scan specific directories for <a class="reference external" href="https://uwsgi-docs.readthedocs.io/en/latest/Configuration.html#ini-files">uwsgi ini file</a>s
+(also know as <em>vassals</em>).  If a <em>vassal</em> is added, removed or the timestamp is
+modified, a corresponding action takes place: a new uWSGI instance is started,
+reload or stopped.  Take Fedora and a <code class="docutils literal notranslate"><span class="pre">searxng.ini</span></code> as example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">to</span> <span class="n">install</span> <span class="o">&amp;</span> <span class="n">start</span> <span class="n">SearXNG</span> <span class="n">instance</span> <span class="n">create</span> <span class="o">--&gt;</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">uwsgi</span><span class="o">.</span><span class="n">d</span><span class="o">/</span><span class="n">searxng</span><span class="o">.</span><span class="n">ini</span>
+<span class="n">to</span> <span class="n">reload</span> <span class="n">the</span> <span class="n">instance</span> <span class="n">edit</span> <span class="n">timestamp</span>      <span class="o">--&gt;</span> <span class="n">touch</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">uwsgi</span><span class="o">.</span><span class="n">d</span><span class="o">/</span><span class="n">searxng</span><span class="o">.</span><span class="n">ini</span>
+<span class="n">to</span> <span class="n">stop</span> <span class="n">instance</span> <span class="n">remove</span> <span class="n">ini</span>                <span class="o">--&gt;</span> <span class="n">rm</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">uwsgi</span><span class="o">.</span><span class="n">d</span><span class="o">/</span><span class="n">searxng</span><span class="o">.</span><span class="n">ini</span>
+</pre></div>
+</div>
+</div></blockquote>
+</section>
+<section id="distributors">
+<h2>Distributors<a class="headerlink" href="#distributors" title="Link to this heading">¶</a></h2>
+<p>The <a class="reference external" href="https://uwsgi-docs.readthedocs.io/en/latest/Emperor.html">uWSGI Emperor</a> mode and <a class="reference external" href="http://0pointer.de/blog/projects/instances.html">systemd unit template</a> is what the distributors
+mostly offer their users, even if they differ in the way they implement both
+modes and their defaults.  Another point they might differ in is the packaging of
+plugins (if so, compare <a class="reference internal" href="installation-searxng.html#install-packages"><span class="std std-ref">Install packages</span></a>) and what the default python
+interpreter is (python2 vs. python3).</p>
+<p>While archlinux does not start a uWSGI service by default, Fedora (RHEL) starts
+a Emperor in <a class="reference external" href="https://uwsgi-docs.readthedocs.io/en/latest/Emperor.html#tyrant-mode-secure-multi-user-hosting">Tyrant mode</a> by default (you should have read <a class="reference internal" href="#uwsgi-tyrant-mode-pitfalls"><span class="std std-ref">Pitfalls of the Tyrant mode</span></a>).  Worth to know; debian (ubuntu) follow a complete different
+approach, read see <a class="reference internal" href="#debian-s-uwsgi-layout"><span class="std std-ref">Debian’s uWSGI layout</span></a>.</p>
+<section id="debian-s-uwsgi-layout">
+<span id="id1"></span><h3>Debian’s uWSGI layout<a class="headerlink" href="#debian-s-uwsgi-layout" title="Link to this heading">¶</a></h3>
+<p>Be aware, Debian’s uWSGI layout is quite different from the standard uWSGI
+configuration.  Your are familiar with <a class="reference internal" href="installation-apache.html#debian-s-apache-layout"><span class="std std-ref">Debian’s Apache layout</span></a>? .. they do a
+similar thing for the uWSGI infrastructure. The folders are:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">uwsgi</span><span class="o">/</span><span class="n">apps</span><span class="o">-</span><span class="n">available</span><span class="o">/</span>
+<span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">uwsgi</span><span class="o">/</span><span class="n">apps</span><span class="o">-</span><span class="n">enabled</span><span class="o">/</span>
+</pre></div>
+</div>
+<p>The <a class="reference external" href="https://uwsgi-docs.readthedocs.io/en/latest/Configuration.html#ini-files">uwsgi ini file</a> is enabled by a symbolic link:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ln</span> <span class="o">-</span><span class="n">s</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">uwsgi</span><span class="o">/</span><span class="n">apps</span><span class="o">-</span><span class="n">available</span><span class="o">/</span><span class="n">searxng</span><span class="o">.</span><span class="n">ini</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">uwsgi</span><span class="o">/</span><span class="n">apps</span><span class="o">-</span><span class="n">enabled</span><span class="o">/</span>
+</pre></div>
+</div>
+<p>More details can be found in the <a class="reference external" href="https://salsa.debian.org/uwsgi-team/uwsgi/-/raw/debian/latest/debian/uwsgi.README.Debian">uwsgi.README.Debian</a>
+(<code class="docutils literal notranslate"><span class="pre">/usr/share/doc/uwsgi/README.Debian.gz</span></code>).  Some commands you should know on
+Debian:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Commands recognized by init.d script
+====================================
+
+You can issue to init.d script following commands:
+  * start        | starts daemon
+  * stop         | stops daemon
+  * reload       | sends to daemon SIGHUP signal
+  * force-reload | sends to daemon SIGTERM signal
+  * restart      | issues &#39;stop&#39;, then &#39;start&#39; commands
+  * status       | shows status of daemon instance (running/not running)
+
+&#39;status&#39; command must be issued with exactly one argument: &#39;&lt;confname&gt;&#39;.
+
+Controlling specific instances of uWSGI
+=======================================
+
+You could control specific instance(s) by issuing:
+
+    SYSTEMCTL_SKIP_REDIRECT=1 service uwsgi &lt;command&gt; &lt;confname&gt; &lt;confname&gt;...
+
+where:
+  * &lt;command&gt; is one of &#39;start&#39;, &#39;stop&#39; etc.
+  * &lt;confname&gt; is the name of configuration file (without extension)
+
+For example, this is how instance for /etc/uwsgi/apps-enabled/hello.xml is
+started:
+
+    SYSTEMCTL_SKIP_REDIRECT=1 service uwsgi start hello
+</pre></div>
+</div>
+</section>
+</section>
+<section id="uwsgi-maintenance">
+<span id="id2"></span><h2>uWSGI maintenance<a class="headerlink" href="#uwsgi-maintenance" title="Link to this heading">¶</a></h2>
+<div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-0-VWJ1bnR1IC8gZGViaWFu" aria-selected="true" class="sphinx-tabs-tab group-tab" id="tab-0-VWJ1bnR1IC8gZGViaWFu" name="VWJ1bnR1IC8gZGViaWFu" role="tab" tabindex="0">Ubuntu / debian</button><button aria-controls="panel-0-QXJjaCBMaW51eA==" aria-selected="false" class="sphinx-tabs-tab group-tab" id="tab-0-QXJjaCBMaW51eA==" name="QXJjaCBMaW51eA==" role="tab" tabindex="-1">Arch Linux</button><button aria-controls="panel-0-RmVkb3JhIC8gUkhFTA==" aria-selected="false" class="sphinx-tabs-tab group-tab" id="tab-0-RmVkb3JhIC8gUkhFTA==" name="RmVkb3JhIC8gUkhFTA==" role="tab" tabindex="-1">Fedora / RHEL</button></div><div aria-labelledby="tab-0-VWJ1bnR1IC8gZGViaWFu" class="sphinx-tabs-panel group-tab" id="panel-0-VWJ1bnR1IC8gZGViaWFu" name="VWJ1bnR1IC8gZGViaWFu" role="tabpanel" tabindex="0"><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># init.d --&gt; /usr/share/doc/uwsgi/README.Debian.gz</span>
+<span class="c1"># For uWSGI debian uses the LSB init process, this might be changed</span>
+<span class="c1"># one day, see https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=833067</span>
+
+create<span class="w">     </span>/etc/uwsgi/apps-available/searxng.ini
+enable:<span class="w">    </span>sudo<span class="w"> </span>-H<span class="w"> </span>ln<span class="w"> </span>-s<span class="w"> </span>/etc/uwsgi/apps-available/searxng.ini<span class="w"> </span>/etc/uwsgi/apps-enabled/
+start:<span class="w">     </span>sudo<span class="w"> </span>-H<span class="w"> </span>service<span class="w"> </span>uwsgi<span class="w"> </span>start<span class="w">   </span>searxng
+restart:<span class="w">   </span>sudo<span class="w"> </span>-H<span class="w"> </span>service<span class="w"> </span>uwsgi<span class="w"> </span>restart<span class="w"> </span>searxng
+stop:<span class="w">      </span>sudo<span class="w"> </span>-H<span class="w"> </span>service<span class="w"> </span>uwsgi<span class="w"> </span>stop<span class="w">    </span>searxng
+disable:<span class="w">   </span>sudo<span class="w"> </span>-H<span class="w"> </span>rm<span class="w"> </span>/etc/uwsgi/apps-enabled/searxng.ini
+</pre></div>
+</div>
+</div><div aria-labelledby="tab-0-QXJjaCBMaW51eA==" class="sphinx-tabs-panel group-tab" hidden="true" id="panel-0-QXJjaCBMaW51eA==" name="QXJjaCBMaW51eA==" role="tabpanel" tabindex="0"><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># systemd --&gt; /usr/lib/systemd/system/uwsgi@.service</span>
+<span class="c1"># For uWSGI archlinux uses systemd template units, see</span>
+<span class="c1"># - http://0pointer.de/blog/projects/instances.html</span>
+<span class="c1"># - https://uwsgi-docs.readthedocs.io/en/latest/Systemd.html#one-service-per-app-in-systemd</span>
+
+create:<span class="w">    </span>/etc/uwsgi/searxng.ini
+enable:<span class="w">    </span>sudo<span class="w"> </span>-H<span class="w"> </span>systemctl<span class="w"> </span><span class="nb">enable</span><span class="w">   </span>uwsgi@searxng
+start:<span class="w">     </span>sudo<span class="w"> </span>-H<span class="w"> </span>systemctl<span class="w"> </span>start<span class="w">    </span>uwsgi@searxng
+restart:<span class="w">   </span>sudo<span class="w"> </span>-H<span class="w"> </span>systemctl<span class="w"> </span>restart<span class="w">  </span>uwsgi@searxng
+stop:<span class="w">      </span>sudo<span class="w"> </span>-H<span class="w"> </span>systemctl<span class="w"> </span>stop<span class="w">     </span>uwsgi@searxng
+disable:<span class="w">   </span>sudo<span class="w"> </span>-H<span class="w"> </span>systemctl<span class="w"> </span>disable<span class="w">  </span>uwsgi@searxng
+</pre></div>
+</div>
+</div><div aria-labelledby="tab-0-RmVkb3JhIC8gUkhFTA==" class="sphinx-tabs-panel group-tab" hidden="true" id="panel-0-RmVkb3JhIC8gUkhFTA==" name="RmVkb3JhIC8gUkhFTA==" role="tabpanel" tabindex="0"><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># systemd --&gt; /usr/lib/systemd/system/uwsgi.service</span>
+<span class="c1"># The unit file starts uWSGI in emperor mode (/etc/uwsgi.ini), see</span>
+<span class="c1"># - https://uwsgi-docs.readthedocs.io/en/latest/Emperor.html</span>
+
+create:<span class="w">    </span>/etc/uwsgi.d/searxng.ini
+restart:<span class="w">   </span>sudo<span class="w"> </span>-H<span class="w"> </span>touch<span class="w"> </span>/etc/uwsgi.d/searxng.ini
+disable:<span class="w">   </span>sudo<span class="w"> </span>-H<span class="w"> </span>rm<span class="w"> </span>/etc/uwsgi.d/searxng.ini
+</pre></div>
+</div>
+</div></div>
+</section>
+<section id="uwsgi-setup">
+<span id="id3"></span><h2>uWSGI setup<a class="headerlink" href="#uwsgi-setup" title="Link to this heading">¶</a></h2>
+<p>Create the configuration ini-file according to your distribution and restart the
+uwsgi application.  As shown below, the <a class="reference internal" href="installation-scripts.html#installation-scripts"><span class="std std-ref">Installation Script</span></a> installs by
+default a uWSGI setup that listens on a socket.</p>
+<div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-1-VWJ1bnR1IC8gZGViaWFu" aria-selected="true" class="sphinx-tabs-tab group-tab" id="tab-1-VWJ1bnR1IC8gZGViaWFu" name="VWJ1bnR1IC8gZGViaWFu" role="tab" tabindex="0">Ubuntu / debian</button><button aria-controls="panel-1-QXJjaCBMaW51eA==" aria-selected="false" class="sphinx-tabs-tab group-tab" id="tab-1-QXJjaCBMaW51eA==" name="QXJjaCBMaW51eA==" role="tab" tabindex="-1">Arch Linux</button><button aria-controls="panel-1-RmVkb3JhIC8gUkhFTA==" aria-selected="false" class="sphinx-tabs-tab group-tab" id="tab-1-RmVkb3JhIC8gUkhFTA==" name="RmVkb3JhIC8gUkhFTA==" role="tab" tabindex="-1">Fedora / RHEL</button></div><div aria-labelledby="tab-1-VWJ1bnR1IC8gZGViaWFu" class="sphinx-tabs-panel group-tab" id="panel-1-VWJ1bnR1IC8gZGViaWFu" name="VWJ1bnR1IC8gZGViaWFu" role="tabpanel" tabindex="0"><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># -*- mode: conf; coding: utf-8  -*-</span>
+<span class="o">[</span>uwsgi<span class="o">]</span>
+
+<span class="c1"># uWSGI core</span>
+<span class="c1"># ----------</span>
+<span class="c1">#</span>
+<span class="c1"># https://uwsgi-docs.readthedocs.io/en/latest/Options.html#uwsgi-core</span>
+
+<span class="c1"># Who will run the code / Hint: in emperor-tyrant mode uid &amp; gid setting will be</span>
+<span class="c1"># ignored [1].  Mode emperor-tyrant is the default on fedora (/etc/uwsgi.ini).</span>
+<span class="c1">#</span>
+<span class="c1"># [1] https://uwsgi-docs.readthedocs.io/en/latest/Emperor.html#tyrant-mode-secure-multi-user-hosting</span>
+<span class="c1">#</span>
+<span class="nv">uid</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>searxng
+<span class="nv">gid</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>searxng
+
+<span class="c1"># set (python) default encoding UTF-8</span>
+<span class="nv">env</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">LANG</span><span class="o">=</span>C.UTF-8
+<span class="nv">env</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">LANGUAGE</span><span class="o">=</span>C.UTF-8
+<span class="nv">env</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">LC_ALL</span><span class="o">=</span>C.UTF-8
+
+<span class="c1"># chdir to specified directory before apps loading</span>
+<span class="nv">chdir</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>/usr/local/searxng/searxng-src/searx
+
+<span class="c1"># SearXNG configuration (settings.yml)</span>
+<span class="nv">env</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">SEARXNG_SETTINGS_PATH</span><span class="o">=</span>/etc/searxng/settings.yml
+
+<span class="c1"># disable logging for privacy</span>
+disable-logging<span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span>
+
+<span class="c1"># The right granted on the created socket</span>
+chmod-socket<span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">666</span>
+
+<span class="c1"># Plugin to use and interpreter config</span>
+single-interpreter<span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span>
+
+<span class="c1"># enable master process</span>
+<span class="nv">master</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span>
+
+<span class="c1"># load apps in each worker instead of the master</span>
+lazy-apps<span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span>
+
+<span class="c1"># load uWSGI plugins</span>
+<span class="nv">plugin</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>python3,http
+
+<span class="c1"># By default the Python plugin does not initialize the GIL.  This means your</span>
+<span class="c1"># app-generated threads will not run.  If you need threads, remember to enable</span>
+<span class="c1"># them with enable-threads.  Running uWSGI in multithreading mode (with the</span>
+<span class="c1"># threads options) will automatically enable threading support. This *strange*</span>
+<span class="c1"># default behaviour is for performance reasons.</span>
+enable-threads<span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span>
+
+<span class="c1"># Number of workers (usually CPU count)</span>
+<span class="nv">workers</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>%k
+<span class="nv">threads</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">4</span>
+
+<span class="c1"># plugin: python</span>
+<span class="c1"># --------------</span>
+<span class="c1">#</span>
+<span class="c1"># https://uwsgi-docs.readthedocs.io/en/latest/Options.html#plugin-python</span>
+
+<span class="c1"># load a WSGI module</span>
+<span class="nv">module</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>searx.webapp
+
+<span class="c1"># set PYTHONHOME/virtualenv</span>
+<span class="nv">virtualenv</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>/usr/local/searxng/searx-pyenv
+
+<span class="c1"># add directory (or glob) to pythonpath</span>
+<span class="nv">pythonpath</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>/usr/local/searxng/searxng-src
+
+
+<span class="c1"># speak to upstream</span>
+<span class="c1"># -----------------</span>
+
+<span class="nv">socket</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>/usr/local/searxng/run/socket
+buffer-size<span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">8192</span>
+
+offload-threads<span class="w"> </span><span class="o">=</span><span class="w"> </span>%k
+</pre></div>
+</div>
+</div><div aria-labelledby="tab-1-QXJjaCBMaW51eA==" class="sphinx-tabs-panel group-tab" hidden="true" id="panel-1-QXJjaCBMaW51eA==" name="QXJjaCBMaW51eA==" role="tabpanel" tabindex="0"><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># -*- mode: conf; coding: utf-8  -*-</span>
+<span class="o">[</span>uwsgi<span class="o">]</span>
+
+<span class="c1"># uWSGI core</span>
+<span class="c1"># ----------</span>
+<span class="c1">#</span>
+<span class="c1"># https://uwsgi-docs.readthedocs.io/en/latest/Options.html#uwsgi-core</span>
+
+<span class="c1"># Who will run the code</span>
+<span class="nv">uid</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>searxng
+<span class="nv">gid</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>searxng
+
+<span class="c1"># set (python) default encoding UTF-8</span>
+<span class="nv">env</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">LANG</span><span class="o">=</span>C.UTF-8
+<span class="nv">env</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">LANGUAGE</span><span class="o">=</span>C.UTF-8
+<span class="nv">env</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">LC_ALL</span><span class="o">=</span>C.UTF-8
+
+<span class="c1"># chdir to specified directory before apps loading</span>
+<span class="nv">chdir</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>/usr/local/searxng/searxng-src/searx
+
+<span class="c1"># SearXNG configuration (settings.yml)</span>
+<span class="nv">env</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">SEARXNG_SETTINGS_PATH</span><span class="o">=</span>/etc/searxng/settings.yml
+
+<span class="c1"># disable logging for privacy</span>
+<span class="nv">logger</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>systemd
+disable-logging<span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span>
+
+<span class="c1"># The right granted on the created socket</span>
+chmod-socket<span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">666</span>
+
+<span class="c1"># Plugin to use and interpreter config</span>
+single-interpreter<span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span>
+
+<span class="c1"># enable master process</span>
+<span class="nv">master</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span>
+
+<span class="c1"># load apps in each worker instead of the master</span>
+lazy-apps<span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span>
+
+<span class="c1"># load uWSGI plugins</span>
+<span class="nv">plugin</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>python
+
+<span class="c1"># By default the Python plugin does not initialize the GIL.  This means your</span>
+<span class="c1"># app-generated threads will not run.  If you need threads, remember to enable</span>
+<span class="c1"># them with enable-threads.  Running uWSGI in multithreading mode (with the</span>
+<span class="c1"># threads options) will automatically enable threading support. This *strange*</span>
+<span class="c1"># default behaviour is for performance reasons.</span>
+enable-threads<span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span>
+
+<span class="c1"># Number of workers (usually CPU count)</span>
+<span class="nv">workers</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>%k
+<span class="nv">threads</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">4</span>
+
+<span class="c1"># plugin: python</span>
+<span class="c1"># --------------</span>
+<span class="c1">#</span>
+<span class="c1"># https://uwsgi-docs.readthedocs.io/en/latest/Options.html#plugin-python</span>
+
+<span class="c1"># load a WSGI module</span>
+<span class="nv">module</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>searx.webapp
+
+<span class="c1"># set PYTHONHOME/virtualenv</span>
+<span class="nv">virtualenv</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>/usr/local/searxng/searx-pyenv
+
+<span class="c1"># add directory (or glob) to pythonpath</span>
+<span class="nv">pythonpath</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>/usr/local/searxng/searxng-src
+
+
+<span class="c1"># speak to upstream</span>
+<span class="c1"># -----------------</span>
+
+<span class="nv">socket</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>/usr/local/searxng/run/socket
+buffer-size<span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">8192</span>
+
+offload-threads<span class="w"> </span><span class="o">=</span><span class="w"> </span>%k
+</pre></div>
+</div>
+</div><div aria-labelledby="tab-1-RmVkb3JhIC8gUkhFTA==" class="sphinx-tabs-panel group-tab" hidden="true" id="panel-1-RmVkb3JhIC8gUkhFTA==" name="RmVkb3JhIC8gUkhFTA==" role="tabpanel" tabindex="0"><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># -*- mode: conf; coding: utf-8  -*-</span>
+<span class="o">[</span>uwsgi<span class="o">]</span>
+
+<span class="c1"># uWSGI core</span>
+<span class="c1"># ----------</span>
+<span class="c1">#</span>
+<span class="c1"># https://uwsgi-docs.readthedocs.io/en/latest/Options.html#uwsgi-core</span>
+
+<span class="c1"># Who will run the code / Hint: in emperor-tyrant mode uid &amp; gid setting will be</span>
+<span class="c1"># ignored [1].  Mode emperor-tyrant is the default on fedora (/etc/uwsgi.ini).</span>
+<span class="c1">#</span>
+<span class="c1"># [1] https://uwsgi-docs.readthedocs.io/en/latest/Emperor.html#tyrant-mode-secure-multi-user-hosting</span>
+<span class="c1">#</span>
+<span class="nv">uid</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>searxng
+<span class="nv">gid</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>searxng
+
+<span class="c1"># set (python) default encoding UTF-8</span>
+<span class="nv">env</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">LANG</span><span class="o">=</span>C.UTF-8
+<span class="nv">env</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">LANGUAGE</span><span class="o">=</span>C.UTF-8
+<span class="nv">env</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">LC_ALL</span><span class="o">=</span>C.UTF-8
+
+<span class="c1"># chdir to specified directory before apps loading</span>
+<span class="nv">chdir</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>/usr/local/searxng/searxng-src/searx
+
+<span class="c1"># SearXNG configuration (settings.yml)</span>
+<span class="nv">env</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">SEARXNG_SETTINGS_PATH</span><span class="o">=</span>/etc/searxng/settings.yml
+
+<span class="c1"># disable logging for privacy</span>
+disable-logging<span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span>
+
+<span class="c1"># The right granted on the created socket</span>
+chmod-socket<span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">666</span>
+
+<span class="c1"># Plugin to use and interpreter config</span>
+single-interpreter<span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span>
+
+<span class="c1"># enable master process</span>
+<span class="nv">master</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span>
+
+<span class="c1"># load apps in each worker instead of the master</span>
+lazy-apps<span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span>
+
+<span class="c1"># load uWSGI plugins</span>
+<span class="nv">plugin</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>python3,http
+
+<span class="c1"># By default the Python plugin does not initialize the GIL.  This means your</span>
+<span class="c1"># app-generated threads will not run.  If you need threads, remember to enable</span>
+<span class="c1"># them with enable-threads.  Running uWSGI in multithreading mode (with the</span>
+<span class="c1"># threads options) will automatically enable threading support. This *strange*</span>
+<span class="c1"># default behaviour is for performance reasons.</span>
+enable-threads<span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span>
+
+<span class="c1"># Number of workers (usually CPU count)</span>
+<span class="nv">workers</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>%k
+<span class="nv">threads</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">4</span>
+
+<span class="c1"># plugin: python</span>
+<span class="c1"># --------------</span>
+<span class="c1">#</span>
+<span class="c1"># https://uwsgi-docs.readthedocs.io/en/latest/Options.html#plugin-python</span>
+
+<span class="c1"># load a WSGI module</span>
+<span class="nv">module</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>searx.webapp
+
+<span class="c1"># set PYTHONHOME/virtualenv</span>
+<span class="nv">virtualenv</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>/usr/local/searxng/searx-pyenv
+
+<span class="c1"># add directory (or glob) to pythonpath</span>
+<span class="nv">pythonpath</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>/usr/local/searxng/searxng-src
+
+
+<span class="c1"># speak to upstream</span>
+<span class="c1"># -----------------</span>
+
+<span class="nv">socket</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>/usr/local/searxng/run/socket
+buffer-size<span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">8192</span>
+
+offload-threads<span class="w"> </span><span class="o">=</span><span class="w"> </span>%k
+</pre></div>
+</div>
+</div></div>
+</section>
+<section id="pitfalls-of-the-tyrant-mode">
+<span id="uwsgi-tyrant-mode-pitfalls"></span><h2>Pitfalls of the Tyrant mode<a class="headerlink" href="#pitfalls-of-the-tyrant-mode" title="Link to this heading">¶</a></h2>
+<p>The implementation of the process owners and groups in the <a class="reference external" href="https://uwsgi-docs.readthedocs.io/en/latest/Emperor.html#tyrant-mode-secure-multi-user-hosting">Tyrant mode</a> is
+somewhat unusual and requires special consideration.  In <a class="reference external" href="https://uwsgi-docs.readthedocs.io/en/latest/Emperor.html#tyrant-mode-secure-multi-user-hosting">Tyrant mode</a> mode the
+Emperor will run the vassal using the UID/GID of the vassal configuration file
+(user and group of the app <code class="docutils literal notranslate"><span class="pre">.ini</span></code> file).</p>
+<p>Without option <code class="docutils literal notranslate"><span class="pre">emperor-tyrant-initgroups=true</span></code> in <code class="docutils literal notranslate"><span class="pre">/etc/uwsgi.ini</span></code> the
+process won’t get the additional groups, but this option is not available in
+2.0.x branch (see <a class="reference external" href="https://github.com/unbit/uwsgi/issues/2099">#2099&#64;uWSGI</a>) the feature <a class="reference external" href="https://github.com/unbit/uwsgi/pull/752">#752&#64;uWSGI</a> has been merged (on
+Oct. 2014) to the master branch of uWSGI but had never been released; the last
+major release is from Dec. 2013, since the there had been only bugfix releases
+(see <a class="reference external" href="https://github.com/unbit/uwsgi/issues/2425">#2425uWSGI</a>). To shorten up:</p>
+<blockquote>
+<div><p><strong>In Tyrant mode, there is no way to get additional groups, and the uWSGI
+process misses additional permissions that may be needed.</strong></p>
+</div></blockquote>
+<p>For example on Fedora (RHEL): If you try to install a valkey DB with socket
+communication and you want to connect to it from the SearXNG uWSGI, you will see a
+<em>Permission denied</em> in the log of your instance:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>ERROR:searx.valkeydb: [searxng (993)] can&#39;t connect valkey DB ...
+ERROR:searx.valkeydb:   Error 13 connecting to unix socket: /usr/local/searxng-valkey/run/valkey.sock. Permission denied.
+ERROR:searx.plugins.limiter: init limiter DB failed!!!
+</pre></div>
+</div>
+<p>Even if your <em>searxng</em> user of the uWSGI process is added to additional groups
+to give access to the socket from the valkey DB:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ groups searxng
+searxng : searxng searxng-valkey
+</pre></div>
+</div>
+<p>To see the effective groups of the uwsgi process, you have to look at the status
+of the process, by example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ ps -aef | grep &#39;/usr/sbin/uwsgi --ini searxng.ini&#39;
+searxng       93      92  0 12:43 ?        00:00:00 /usr/sbin/uwsgi --ini searxng.ini
+searxng      186      93  0 12:44 ?        00:00:01 /usr/sbin/uwsgi --ini searxng.ini
+</pre></div>
+</div>
+<p>Here you can see that the additional “Groups” of PID 186 are unset (missing gid
+of <code class="docutils literal notranslate"><span class="pre">searxng-valkey</span></code>):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ cat /proc/186/task/186/status
+...
+Uid:      993     993     993     993
+Gid:      993     993     993     993
+FDSize:   128
+Groups:
+...
+</pre></div>
+</div>
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="installation-nginx.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">NGINX</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="installation-granian.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">Granian</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; SearXNG team
+            </div>
+            Made with 
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            <div class="icons">
+              <a class="muted-link " href="https://github.com/searxng/searxng/" aria-label="GitHub">&#x1F4BE;</a>
+              <a class="muted-link " href="https://searx.space/" aria-label="searx.space">&#x1F310;</a>
+              
+            </div>
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">uWSGI</a><ul>
+<li><a class="reference internal" href="#origin-uwsgi">Origin uWSGI</a></li>
+<li><a class="reference internal" href="#distributors">Distributors</a><ul>
+<li><a class="reference internal" href="#debian-s-uwsgi-layout">Debian’s uWSGI layout</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#uwsgi-maintenance">uWSGI maintenance</a></li>
+<li><a class="reference internal" href="#uwsgi-setup">uWSGI setup</a></li>
+<li><a class="reference internal" href="#pitfalls-of-the-tyrant-mode">Pitfalls of the Tyrant mode</a></li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script src="../_static/documentation_options.js?v=56f4e461"></script>
+    <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../_static/scripts/furo.js?v=46bd48cc"></script>
+    <script src="../_static/tabs.js?v=3030b3cb"></script>
+    </body>
+</html>
