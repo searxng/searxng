@@ -137,6 +137,8 @@ def setup(_) -> bool:
 
 
 def request(query: str, params: "OnlineParams"):
+    logger.debug("query: %r", query)  # pylint: disable=undefined-variable
+
     if len(query) > 400:
         # Yandex rejects a 'queryText' longer than 400 characters; decline the
         # request gracefully instead of provoking an API error.
