@@ -12,6 +12,8 @@ from timeit import default_timer
 from html import escape
 from io import StringIO
 import typing
+import html
+import re
 
 import urllib
 import urllib.parse
@@ -698,9 +700,9 @@ def search():
     for result in results:
         if output_format == 'html':
             if 'content' in result and result['content']:
-                result['content'] = highlight_content(escape(result['content'][:1024]), search_query.query)
+                result['content'] = highlight_content(escape(re.sub('<[^>]+>', '', html.unescape(result['content'][:1024]))), search_query.query)
             if 'title' in result and result['title']:
-                result['title'] = highlight_content(escape(result['title'] or ''), search_query.query)
+                result['title'] = highlight_content(escape(re.sub('<[^>]+>', '', html.unescape(result['title'] or ''))), search_query.query)
 
         # set result['open_group'] = True when the template changes from the previous result
         # set result['close_group'] = True when the template changes on the next result
