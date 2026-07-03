@@ -2,7 +2,7 @@ ARG CONTAINER_IMAGE_ORGANIZATION="searxng"
 ARG CONTAINER_IMAGE_NAME="searxng"
 
 FROM localhost/$CONTAINER_IMAGE_ORGANIZATION/$CONTAINER_IMAGE_NAME:builder AS builder
-FROM ghcr.io/searxng/base:searxng AS dist
+FROM docker.io/searxng/base:searxng AS dist
 
 COPY --chown=977:977 --from=builder /usr/local/searxng/.venv/ ./.venv/
 COPY --chown=977:977 --from=builder /usr/local/searxng/searx/ ./searx/
