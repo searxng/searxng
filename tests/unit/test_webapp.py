@@ -125,6 +125,50 @@ class ViewsTestCase(SearxTestCase):  # pylint: disable=too-many-public-methods
             result.data,
         )
 
+    def test_search_html_strips_engine_markup_in_snippets(self):
+        # Engines (Brave, Kagi, ...) sometimes return snippets that carry
+        # keyword-emphasis markup, either as raw tags or entity-encoded tags.
+        # Both must be stripped before escape() so they don't leak as literal
+        # ``&lt;strong&gt;`` text in the rendered page, while SearXNG's own
+        # ``<span class="highlight">`` emphasis still applies to the query.
+        tagged_results = [
+            MainResult(
+                title="<strong>highlighted</strong> test title",
+                url="http://tagged.test.xyz",
+                content="<strong>first</strong> test &lt;b&gt;content&lt;/b&gt;",
+                engine="startpage",
+            ),
+        ]
+        for r in tagged_results:
+            r.normalize_result_fields()
+
+        def search_mock(search_self, *args):  # pylint: disable=unused-argument
+            search_self.result_container = Mock(
+                get_ordered_results=lambda: tagged_results,
+                answers={},
+                corrections=set(),
+                suggestions=set(),
+                infoboxes=[],
+                unresponsive_engines=set(),
+                results=tagged_results,
+                results_length=lambda: len(tagged_results),
+                get_timings=lambda: [],
+                redirect_url=None,
+                engine_data={},
+            )
+            search_self.search_query.locale = babel.Locale.parse("en-US", sep='-')
+
+        self.setattr4test(searx.search.Search, 'search', search_mock)
+
+        result = self.client.post('/search', data={'q': 'test'})
+
+        # raw and entity-encoded engine tags must not leak as visible text
+        self.assertNotIn(b'&lt;strong&gt;', result.data)
+        self.assertNotIn(b'&lt;b&gt;', result.data)
+        self.assertNotIn(b'<strong>', result.data)
+        # the query keyword is still highlighted by SearXNG's own spans
+        self.assertIn(b'<span class="highlight">test</span>', result.data)
+
     def test_index_json(self):
         result = self.client.post('/', data={'q': 'test', 'format': 'json'})
         self.assertEqual(result.status_code, 308)
