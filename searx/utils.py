@@ -26,7 +26,7 @@ from lxml.etree import XPath, XPathError, XPathSyntaxError
 from lxml.etree import ElementBase, _Element  # pyright: ignore[reportPrivateUsage]
 
 from searx import settings
-from searx.data import USER_AGENTS, gsa_useragents_loader
+from searx.data import USER_AGENTS
 from searx.version import VERSION_TAG
 from searx.exceptions import SearxXPathSyntaxException, SearxEngineXPathException
 from searx import logger
@@ -80,14 +80,6 @@ def gen_useragent(os_string: str | None = None) -> str:
         os=os_string or choice(USER_AGENTS['os']),
         version=choice(USER_AGENTS['versions']),
     )
-
-
-def gen_gsa_useragent() -> str:
-    """Return a random "Google Go App" User Agent suitable for Google
-
-    See searx/data/gsa_useragents.txt
-    """
-    return choice(gsa_useragents_loader()) + " NSTNWV"
 
 
 class HTMLTextExtractor(HTMLParser):

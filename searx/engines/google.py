@@ -32,7 +32,6 @@ from searx.utils import (
     eval_xpath_getindex,
     eval_xpath_list,
     extract_text,
-    # gen_gsa_useragent,
 )
 
 if t.TYPE_CHECKING:
@@ -268,11 +267,6 @@ def get_google_info(params: "OnlineParams", eng_traits: EngineTraits) -> dict[st
     # HTTP headers
 
     ret_val["headers"]["Accept"] = "*/*"
-    # GSA for iPhone useragent had been added in
-    # - https://github.com/searxng/searxng/pull/5644
-    # but doe no longer work
-    # - https://github.com/searxng/searxng/issues/6359
-    # ret_val["headers"]["User-Agent"] = gen_gsa_useragent()
 
     # Cookies
 
