@@ -7,7 +7,6 @@ data.:
   all           : update searx/sxng_locales.py and searx/data/*
   traits        : update searx/data/engine_traits.json & searx/sxng_locales.py
   useragents    : update searx/data/useragents.json with the most recent versions of Firefox
-  gsa_useragents: update searx/data/gsa_useragents.txt with compatible useragents
   locales       : update searx/data/locales.json from babel
   currencies    : update searx/data/currencies.json from wikidata
 EOF
@@ -20,7 +19,6 @@ data.all() {
         pyenv.activate
         data.traits
         data.useragents
-        data.gsa_useragents
         data.locales
 
         build_msg DATA "update searx/data/osm_keys_tags.json"
@@ -52,12 +50,6 @@ data.traits() {
 data.useragents() {
     build_msg DATA "update searx/data/useragents.json"
     pyenv.cmd python searxng_extra/update/update_firefox_version.py
-    dump_return $?
-}
-
-data.gsa_useragents() {
-    build_msg DATA "update searx/data/gsa_useragents.txt"
-    pyenv.cmd python searxng_extra/update/update_gsa_useragents.py
     dump_return $?
 }
 
