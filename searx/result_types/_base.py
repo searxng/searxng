@@ -52,6 +52,12 @@ def _normalize_url_fields(result: "Result | LegacyResult"):
             result.parsed_url = urllib.parse.urlparse(result.url)
 
     if result.parsed_url:
+        # properly format special characters (e.g. "ä", "ö") in IDN domains
+        # e.g. "xn--strung-xxa.de" becomes "störung.de"
+        if result.parsed_url.netloc.startswith("xn--"):
+            netloc = result.parsed_url.netloc.encode().decode("idna")
+            result.parsed_url = result.parsed_url._replace(netloc=netloc)
+
         result.parsed_url = result.parsed_url._replace(
             # if the result has no scheme, use http as default
             scheme=result.parsed_url.scheme or "http",
