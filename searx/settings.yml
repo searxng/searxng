@@ -477,6 +477,24 @@ engines:
     engine: arxiv
     shortcut: arx
 
+  - name: avalw
+    engine: json_engine
+    shortcut: av
+    categories: general
+    paging: true
+    search_url: https://avalw.org/api/search?q={query}&page={pageno}&limit=10&tbm=all
+    results_query: results
+    url_query: url
+    title_query: title
+    content_query: snippet
+    thumbnail: image_url
+    disabled: true
+    inactive: true
+    about:
+      website: https://avalw.com
+      description: "Search engine from the Romanian news company AVALW S.R.L."
+      results: JSON
+
   - name: ayo
     engine: xpath
     categories: general
