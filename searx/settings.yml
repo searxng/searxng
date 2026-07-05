@@ -1201,13 +1201,10 @@ engines:
     shortcut: go
     inactive: true
 
-  - name: google cse
-    engine: google_cse
-    shortcut: goc
-
   - name: google images
     engine: google_images
     shortcut: goi
+    inactive: true
 
   - name: google news
     engine: google_news
@@ -1217,6 +1214,16 @@ engines:
     engine: google_videos
     shortcut: gov
     inactive: true
+
+  - name: google cse
+    engine: google_cse
+    shortcut: goc
+
+  - name: google cse images
+    engine: google_cse
+    categories: [images, web]
+    google_categ: image
+    shortcut: goci
 
   - name: google scholar
     engine: google_scholar
