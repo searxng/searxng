@@ -9,7 +9,7 @@ from urllib.parse import urlencode
 from searx.enginelib import EngineCache
 from searx.exceptions import SearxEngineAPIException, SearxEngineTooManyRequestsException
 from searx.network import get
-from searx.result_types import EngineResults
+from searx.result_types import EngineResults, Result, MainResult, Image
 
 from searx.engines.google import fetch_traits  # pylint: disable=unused-import
 from searx.engines.google import filter_mapping, get_google_info
@@ -36,6 +36,10 @@ time_range_support = True
 language_support = True
 safesearch = True
 
+GoogleCategType = t.Literal["", "image"]
+google_categ: GoogleCategType = ""
+"""Google CSE category. Set to ``""`` for web search."""
+
 CX = "partner-pub-8993703457585266:4862972284"  # blackle.com
 
 CACHE: EngineCache
@@ -43,6 +47,10 @@ CACHE: EngineCache
 
 def setup(engine_settings: dict[str, t.Any]) -> bool:
     global CACHE  # pylint: disable=global-statement
+
+    if google_categ not in t.get_args(GoogleCategType):
+        raise ValueError("invalid google cse category: %s" % google_categ)
+
     CACHE = EngineCache(engine_settings["name"])
     return True
 
@@ -104,6 +112,7 @@ def request(query: str, params: "OnlineParams") -> None:
         "cse_tok": token["cse_tok"],
         "callback": "_",
         "rurl": "",
+        "searchtype": google_categ,
     }
     if params["time_range"]:
         start_date, end_date = _get_start_and_end_date_str(params["time_range"])
@@ -143,16 +152,43 @@ def response(resp: "SXNG_Response") -> EngineResults:
         raise SearxEngineAPIException(f"google cse: {message}")
 
     results = EngineResults()
+
     for item in data.get("results", []):
-        url = item.get("unescapedUrl")
-        if not url:
-            continue
-        results.add(
-            results.types.MainResult(
-                url=url,
-                title=item.get("titleNoFormatting", ""),
-                content=item.get("contentNoFormatting", ""),
-                thumbnail=item.get("richSnippet", {}).get("cseThumbnail", {}).get("src", ""),  # type: ignore
-            )
-        )
+
+        res: Result | None
+        if google_categ == "":
+            res = web_item(item)
+        elif google_categ == "image":
+            res = img_item(item)
+
+        if res is not None:
+            results.add(res)
+
     return results
+
+
+def web_item(item: dict[str, str]) -> MainResult | None:
+    url = item.get("unescapedUrl")
+    if not url:
+        return None
+    return MainResult(
+        url=url,
+        title=item.get("titleNoFormatting", ""),
+        content=item.get("contentNoFormatting", ""),
+        thumbnail=item.get("richSnippet", {}).get("cseThumbnail", {}).get("src", ""),  # type: ignore
+    )
+
+
+def img_item(item: dict[str, str]) -> Image | None:
+    resolution = ""
+    if item.get("height") and item.get("width"):
+        resolution = f"{item['width']}x{item['height']}"
+    return Image(
+        url=item["originalContextUrl"],
+        title=item.get("titleNoFormatting", ""),
+        content=item.get("contentNoFormatting", ""),
+        img_src=item["unescapedUrl"],
+        thumbnail_src=item["tbUrl"],
+        resolution=resolution,
+        img_format=item["fileFormat"].split("/")[-1],
+    )
