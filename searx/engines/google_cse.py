@@ -97,14 +97,10 @@ def request(query: str, params: "OnlineParams") -> None:
     google_info = get_google_info(params, traits)
     info: dict[str, str] = google_info["params"]
 
-    hl = info["hl"]
-    if params.get("searxng_locale", "all") == "all" or "ZZ" in hl:
-        hl = "en"
-
     args = {
         "rsz": "filtered_cse",
         "num": str(page_size),
-        "hl": hl,
+        "hl": info["hl"],
         "cselibv": token["cselibv"],
         "cx": CX,
         "q": query,
