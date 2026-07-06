@@ -75,7 +75,7 @@ max_page = 25
 api_key: str = ""
 """Yandex Cloud API key, passed as ``Authorization: Api-Key <api_key>``."""
 
-folder_id: str = ""
+yandex_folder_id: str = ""
 """Yandex Cloud folder id the API key belongs to."""
 
 # Search tuning, overwritten via settings.yml
