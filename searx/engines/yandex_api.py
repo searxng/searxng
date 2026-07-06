@@ -155,7 +155,7 @@ def request(query: str, params: "OnlineParams"):
         "query": {
             "searchType": req_search_type,
             "queryText": query,
-            "familyMode": safesearch_map.get(params["safesearch"], "FAMILY_MODE_MODERATE"),
+            "familyMode": safesearch_map[params["safesearch"]],
             # the API uses a 0-based page index
             "page": str(params["pageno"] - 1),
         },
