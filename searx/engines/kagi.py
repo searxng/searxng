@@ -46,11 +46,10 @@ To enable Kagi, add the following to the ``engines`` seciton of
 from datetime import datetime, timedelta
 
 import typing as t
-import html
 
 from searx.extended_types import SXNG_Response
 from searx.result_types import EngineResults
-from searx.utils import parse_duration_string
+from searx.utils import html_to_text, parse_duration_string
 
 if t.TYPE_CHECKING:
     from searx.search.processors import OnlineParams
@@ -148,8 +147,8 @@ def response(resp: "SXNG_Response") -> EngineResults:
             res.add(
                 res.types.MainResult(
                     url=result["url"],
-                    title=html.unescape(result["title"]),
-                    content=html.unescape(result["snippet"]),
+                    title=html_to_text(result["title"]),
+                    content=html_to_text(result["snippet"]),
                     thumbnail=result.get("image", {}).get("url") or "",
                     publishedDate=published_date,
                 )
@@ -158,7 +157,7 @@ def response(resp: "SXNG_Response") -> EngineResults:
             res.add(
                 res.types.Image(
                     url=result["url"],
-                    title=html.unescape(result.get("title")),
+                    title=html_to_text(result.get("title")),
                     img_src=result.get("image", {}).get("url"),
                     resolution=f"{result['image']['width']}x{result['image']['height']}",
                     thumbnail_src=result.get("props", {}).get("thumbnail", {}).get("url"),
@@ -174,8 +173,8 @@ def response(resp: "SXNG_Response") -> EngineResults:
                     {
                         "template": "videos.html",
                         "url": result["url"],
-                        "title": html.unescape(result["title"]),
-                        "content": html.unescape(result["snippet"]),
+                        "title": html_to_text(result["title"]),
+                        "content": html_to_text(result["snippet"]),
                         "thumbnail": result.get("image", {}).get("url"),
                         "publishedDate": published_date,
                         "author": result["props"].get("creator_name"),
