@@ -779,7 +779,7 @@ docs.live() {
     SPHINX_AUTOBUILD_DEBUG=1 PATH="${PY_ENV_BIN}:${PATH}" pyenv.cmd sphinx-autobuild \
         ${SPHINX_VERBOSE} ${SPHINXOPTS} \
         --watch ./searx \
-        --re-ignore '(^|/)\.#|^(?!.*\.(rst|py|yml)$).*'\
+        --re-ignore '(^|/)\.#|^(?!.*\.(rst|py|yml)$).*' \
         --open-browser --host 0.0.0.0 \
         -b html -c ./docs -d "${DOCS_BUILD}/.doctrees" ./docs "${DOCS_DIST}"
     dump_return $?

@@ -131,8 +131,8 @@ def fetch_traits_map() -> EngineTraitsMap:
 def filter_locales(traits_map: EngineTraitsMap) -> set[str]:
     """Filter language & region tags by a threshold."""
 
-    min_eng_per_region = 18
-    min_eng_per_lang = 23
+    min_eng_per_region = 19
+    min_eng_per_lang = 24
 
     _: dict[str, int] = {}
     for eng in traits_map.values():

@@ -1199,10 +1199,12 @@ engines:
   - name: google
     engine: google
     shortcut: go
+    inactive: true
 
   - name: google images
     engine: google_images
     shortcut: goi
+    inactive: true
 
   - name: google news
     engine: google_news
@@ -1211,6 +1213,17 @@ engines:
   - name: google videos
     engine: google_videos
     shortcut: gov
+    inactive: true
+
+  - name: google cse
+    engine: google_cse
+    shortcut: goc
+
+  - name: google cse images
+    engine: google_cse
+    categories: [images, web]
+    google_categ: image
+    shortcut: goci
 
   - name: google scholar
     engine: google_scholar
@@ -1690,6 +1703,12 @@ engines:
     # api_url: https://api.mwmbl.org
     shortcut: mwm
     disabled: true
+
+  - name: neocities
+    engine: neocities
+    shortcut: nc
+    disabled: true
+    inactive: true
 
   - name: niconico
     engine: niconico

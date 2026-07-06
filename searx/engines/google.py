@@ -32,7 +32,6 @@ from searx.utils import (
     eval_xpath_getindex,
     eval_xpath_list,
     extract_text,
-    gen_gsa_useragent,
 )
 
 if t.TYPE_CHECKING:
@@ -197,7 +196,7 @@ def get_google_info(params: "OnlineParams", eng_traits: EngineTraits) -> dict[st
     #   https://developers.google.com/custom-search/docs/xml_results_appendices#interfaceLanguages
 
     # https://github.com/searxng/searxng/issues/2515#issuecomment-1607150817
-    ret_val["params"]["hl"] = f"{lang_code}-{country}"
+    ret_val["params"]["hl"] = f"{lang_code}"
 
     # lr parameter:
     #   The lr (language restrict) parameter restricts search results to
@@ -268,7 +267,6 @@ def get_google_info(params: "OnlineParams", eng_traits: EngineTraits) -> dict[st
     # HTTP headers
 
     ret_val["headers"]["Accept"] = "*/*"
-    ret_val["headers"]["User-Agent"] = gen_gsa_useragent()
 
     # Cookies
 
