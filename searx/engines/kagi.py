@@ -139,9 +139,13 @@ def response(resp: "SXNG_Response") -> EngineResults:
 
     if kagi_categ in ("images", "videos"):
         # the JSON key is "image" for "images" and "video" for "videos"
-        json_results = json_data["data"][kagi_categ[:-1]]
+        json_results = json_data["data"].get(kagi_categ[:-1])
     else:
-        json_results = json_data["data"][kagi_categ]
+        json_results = json_data["data"].get(kagi_categ)
+
+    # if no results were found, the response doesn't contain the results field
+    if not json_results:
+        return res
 
     for result in json_results:
         published_date: datetime | None = None
