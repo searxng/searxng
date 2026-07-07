@@ -21,6 +21,8 @@ from searx.engines import (
 from searx.network import get as http_get, post as http_post
 from searx.exceptions import SearxEngineResponseException
 from searx.utils import extr, gen_useragent
+from searx.data import ENGINE_TRAITS
+from searx.enginelib.traits import EngineTraits
 
 if t.TYPE_CHECKING:
     from searx.extended_types import SXNG_Response
@@ -133,7 +135,9 @@ def google_complete(query: str, sxng_locale: str) -> list[str]:
 
     """
 
-    google_info: dict[str, t.Any] = google.get_google_info({'searxng_locale': sxng_locale}, engines['google'].traits)
+    data = ENGINE_TRAITS.get("google") or {}
+    traits = EngineTraits(**data)
+    google_info: dict[str, t.Any] = google.get_google_info({'searxng_locale': sxng_locale}, traits)
     url = 'https://{subdomain}/complete/search?{args}'
     args = urlencode(
         {
