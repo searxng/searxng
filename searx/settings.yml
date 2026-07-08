@@ -1422,6 +1422,27 @@ engines:
   #   api_key: ""  # required
   #   kagi_categ: videos
 
+  - name: kavunka demo
+    engine: xpath
+    categories: general
+    paging: true
+    shortcut: kav
+    search_url: https://kavunka.net/search/kavunka-srv.php
+    method: POST
+    request_body: request={query}&np={pageno}
+    headers:
+      Content-Type: application/x-www-form-urlencoded
+    disabled: true
+    inactive: true
+    results_xpath: //div[contains(@class, "issue")]
+    url_xpath: .//h2/a/@href
+    title_xpath: .//h2
+    content_xpath: .//div[contains(@class, "snip")]
+    about:
+      website: https://kavunka.net
+      description: "Demo index of Kavunka, a statistical search engine"
+      results: HTML
+
   - name: kozmonavt
     engine: xpath
     search_url: https://kozmonavt.su/s?q={query}
