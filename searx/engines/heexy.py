@@ -13,13 +13,12 @@ It seems to use Bing internally, as the image thumbnails are loaded from Bing.
 from urllib.parse import urlencode
 
 import typing as t
-from lxml import html
 
 from searx.enginelib import EngineCache
 from searx.network import get
 from searx.exceptions import SearxEngineAPIException, SearxEngineAccessDeniedException
 from searx.result_types import EngineResults
-from searx.utils import eval_xpath, extract_text, gen_useragent
+from searx.utils import gen_useragent
 
 if t.TYPE_CHECKING:
     from searx.extended_types import SXNG_Response
@@ -73,8 +72,7 @@ def _get_api_token(query: str) -> str:
     if not resp.ok:
         raise SearxEngineAPIException("failed to obtain request token: invalid response code")
 
-    doc = html.fromstring(resp.text)
-    token = extract_text(eval_xpath(doc, "//html/@data-cacheft"))
+    token = resp.cookies["cacheft"]
     if not token:
         raise SearxEngineAPIException("failed to obtain request token: no token found")
 
@@ -92,8 +90,9 @@ def request(query: str, params: "OnlineParams") -> None:
         args["lang"] = params["searxng_locale"].split("-")[0]
 
     params["url"] = f"{api_url}/search/{heexy_categ}?{urlencode(args)}"
-    params["headers"]["X-Data-Cacheft"] = _get_api_token(query)
+
     params["headers"]["Origin"] = api_url
+    params["cookies"]["cacheft"] = _get_api_token(query)
 
 
 def response(resp: "SXNG_Response"):
