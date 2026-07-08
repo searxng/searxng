@@ -31,6 +31,7 @@ from dateutil import parser
 
 from searx.exceptions import SearxEngineAPIException
 from searx.result_types import EngineResults
+from searx.utils import html_to_text
 
 if t.TYPE_CHECKING:
     from searx.extended_types import SXNG_Response
@@ -75,6 +76,7 @@ def request(query: str, params: "OnlineParams") -> None:
         "q": query,
         "count": results_per_page,
         "offset": (params["pageno"] - 1) * results_per_page,
+        "text_decorations": False,
     }
 
     # Apply time filter if specified
@@ -112,14 +114,19 @@ def response(resp: "SXNG_Response") -> EngineResults:
     res = EngineResults()
     data = resp.json()
 
-    for result in data.get("web", {}).get("results", []):
+    for result in (data.get("web") or {}).get("results", []):
+        thumbnail_obj = result.get("thumbnail")
+        thumbnail = ""
+        if thumbnail_obj and not thumbnail_obj.get("logo", False):
+            thumbnail = thumbnail_obj.get("src") or ""
+
         res.add(
             res.types.MainResult(
                 url=result["url"],
-                title=result["title"],
-                content=result.get("description", ""),
+                title=html_to_text(result["title"]),
+                content=html_to_text(result.get("description", "")),
                 publishedDate=_extract_published_date(result.get("age")),
-                thumbnail=result.get("thumbnail", {}).get("src"),
+                thumbnail=thumbnail,
             ),
         )
 
