@@ -1,13 +1,18 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 """Google Custom Search Engine"""
 
+
 import datetime
+import re
 import typing as t
 from json import loads
-from urllib.parse import urlencode
+from urllib.parse import urlencode, urlparse
 
 from searx.enginelib import EngineCache
-from searx.exceptions import SearxEngineAPIException, SearxEngineTooManyRequestsException
+from searx.exceptions import (
+    SearxEngineAPIException,
+    SearxEngineTooManyRequestsException,
+)
 from searx.network import get
 from searx.result_types import EngineResults, Result, MainResult, Image
 
@@ -43,6 +48,9 @@ google_categ: GoogleCategType = ""
 CX = "partner-pub-8993703457585266:4862972284"  # blackle.com
 
 CACHE: EngineCache
+_UNWANTED_THUMBNAIL_RE = re.compile(
+    r"(?:^|[^a-z0-9])(favicon(?:s|v2)?|apple-touch-icon|logos?)(?:$|[^a-z0-9])|\.ico(?:\?|$)"
+)
 
 
 def setup(engine_settings: dict[str, t.Any]) -> bool:
@@ -94,7 +102,7 @@ def _get_start_and_end_date_str(time_range: str) -> tuple[str, str]:
 def request(query: str, params: "OnlineParams") -> None:
     token = _cse_token()
 
-    google_info = get_google_info(params, traits)
+    google_info = get_google_info(params, traits)  # pylint: disable=undefined-variable
     info: dict[str, str] = google_info["params"]
 
     args = {
@@ -163,16 +171,37 @@ def response(resp: "SXNG_Response") -> EngineResults:
     return results
 
 
-def web_item(item: dict[str, str]) -> MainResult | None:
+def web_item(item: dict[str, t.Any]) -> MainResult | None:
     url = item.get("unescapedUrl")
     if not url:
         return None
+
+    thumbnail = item.get("richSnippet", {}).get("cseThumbnail", {}).get("src", "")
+    if thumbnail:
+        src_image = item.get("richSnippet", {}).get("cseImage", {}).get("src", "")
+        if _thumbnail_is_unwanted(thumbnail.lower(), src_image.lower()):
+            thumbnail = ""
+
     return MainResult(
         url=url,
         title=item.get("titleNoFormatting", ""),
         content=item.get("contentNoFormatting", ""),
-        thumbnail=item.get("richSnippet", {}).get("cseThumbnail", {}).get("src", ""),  # type: ignore
+        thumbnail=thumbnail,
     )
+
+
+def _thumbnail_is_unwanted(thumbnail_url: str, src_image: str) -> bool:
+    for candidate in (thumbnail_url, src_image):
+        if not candidate:
+            continue
+
+        parsed = urlparse(candidate)
+        src_text = f"{parsed.netloc}{parsed.path}"
+        if _UNWANTED_THUMBNAIL_RE.search(src_text):
+            return True
+
+    return False
+
 
 
 def img_item(item: dict[str, str]) -> Image | None:
