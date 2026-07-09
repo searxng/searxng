@@ -35,8 +35,9 @@ const imageLoader = (resultElement: HTMLElement): void => {
   }, 1000) as unknown as number;
 };
 
-const imageThumbnails: NodeListOf<HTMLImageElement> =
-  document.querySelectorAll<HTMLImageElement>("#urls img.image_thumbnail");
+const imageThumbnails: NodeListOf<HTMLImageElement> = document.querySelectorAll<HTMLImageElement>(
+  "#urls img.image_thumbnail, img.thumbnail"
+);
 for (const thumbnail of imageThumbnails) {
   if (thumbnail.complete && thumbnail.naturalWidth === 0) {
     thumbnail.src = `${settings.theme_static_path}/img/img_load_error.svg`;
