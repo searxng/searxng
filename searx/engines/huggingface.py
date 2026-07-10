@@ -91,7 +91,7 @@ def response(resp) -> EngineResults:
 
         published_date = None
         try:
-            published_date = datetime.strptime(entry["createdAt"], "%Y-%m-%dT%H:%M:%S.%fZ")
+            published_date = datetime.fromisoformat(entry["createdAt"].rstrip("Z"))
         except (ValueError, TypeError):
             pass
 

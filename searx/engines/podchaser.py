@@ -54,7 +54,7 @@ def response(resp: "SXNG_Response"):
                 title=result["title"],
                 content=result["description"],
                 thumbnail=result["image_url"],
-                publishedDate=datetime.strptime(result["created_at"], "%Y-%m-%d %H:%M:%S"),
+                publishedDate=datetime.fromisoformat(result["created_at"]),
                 metadata=" | ".join(metadata),
             )
         )

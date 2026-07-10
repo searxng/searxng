@@ -43,7 +43,7 @@ def response(resp):
 
         publishedDate = None
         if recipe['submissionDate']:
-            publishedDate = datetime.strptime(result['recipe']['submissionDate'][:19], "%Y-%m-%dT%H:%M:%S")
+            publishedDate = datetime.fromisoformat(result['recipe']['submissionDate'][:19])
 
         content = [
             f"Schwierigkeitsstufe (1-3): {recipe['difficulty']}",

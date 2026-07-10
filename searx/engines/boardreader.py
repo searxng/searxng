@@ -104,7 +104,7 @@ def response(resp: "SXNG_Response") -> EngineResults:
                 title=_remove_keyword_marker(result["Subject"]),
                 content=_remove_keyword_marker(result["Text"]),
                 url=result["Url"],
-                publishedDate=datetime.strptime(result["Published"], "%Y-%m-%d %H:%M:%S"),
+                publishedDate=datetime.fromisoformat(result["Published"]),
                 metadata=gettext.gettext("Posted by {author}").format(author=result["Author"]),
             )
         )

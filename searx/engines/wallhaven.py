@@ -79,7 +79,7 @@ def response(resp):
                 'img_src': result['path'],
                 'thumbnail_src': result['thumbs']['small'],
                 'resolution': result['resolution'].replace('x', ' x '),
-                'publishedDate': datetime.strptime(result['created_at'], '%Y-%m-%d %H:%M:%S'),
+                'publishedDate': datetime.fromisoformat(result['created_at']),
                 'img_format': result['file_type'],
                 'filesize': humanize_bytes(result['file_size']),
             }

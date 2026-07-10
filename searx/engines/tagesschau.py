@@ -81,7 +81,7 @@ def _story(item):
     return {
         'title': item['title'],
         'thumbnail': item.get('teaserImage', {}).get('imageVariants', {}).get('16x9-256'),
-        'publishedDate': datetime.strptime(item['date'][:19], '%Y-%m-%dT%H:%M:%S'),
+        'publishedDate': datetime.fromisoformat(item['date'][:19]),
         'content': item.get('firstSentence'),
         'url': item['shareURL'] if use_source_url else item['detailsweb'],
     }
@@ -103,7 +103,7 @@ def _video(item):
         'template': 'videos.html',
         'title': title,
         'thumbnail': item.get('teaserImage', {}).get('imageVariants', {}).get('16x9-256'),
-        'publishedDate': datetime.strptime(item['date'][:19], '%Y-%m-%dT%H:%M:%S'),
+        'publishedDate': datetime.fromisoformat(item['date'][:19]),
         'content': item.get('firstSentence', ''),
         'iframe_src': video_url,
         'url': url,
