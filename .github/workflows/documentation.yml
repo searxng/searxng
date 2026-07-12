@@ -25,7 +25,7 @@ jobs:
   release:
     if: github.repository_owner == 'searxng' || github.event_name == 'workflow_dispatch'
     name: Release
-    runs-on: ubuntu-24.04-arm
+    runs-on: ubuntu-26.04-arm
     permissions:
       # for JamesIves/github-pages-deploy-action to push
       contents: write
@@ -65,7 +65,7 @@ jobs:
         with:
           folder: "dist/docs"
           branch: "gh-pages"
-          commit-message: "[doc] build from commit ${{ github.sha }}"
+          commit-message: "[mod] docs: build from commit ${{ github.sha }}"
           # Automatically remove deleted files from the deploy branch
           clean: "true"
           single-commit: "true"
