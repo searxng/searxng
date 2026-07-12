@@ -26,8 +26,8 @@ env:
 jobs:
   build:
     if: |
-      github.event.workflow_run.conclusion == 'success'
-      && (github.repository_owner == 'searxng' || github.event_name == 'workflow_dispatch')
+      github.event_name == 'workflow_dispatch'
+      || (github.repository_owner == 'searxng' && github.event.workflow_run.conclusion == 'success')
     name: Build (${{ matrix.arch }})
     runs-on: ${{ matrix.runner }}
     strategy:
@@ -67,7 +67,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0  # v7.0.0
         with:
-          ref: "${{ github.event.workflow_run.head_sha }}"
+          ref: "${{ github.event.workflow_run.head_sha || github.sha }}"
           persist-credentials: "false"
           fetch-depth: "0"
 
@@ -122,7 +122,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0  # v7.0.0
         with:
-          ref: "${{ github.event.workflow_run.head_sha }}"
+          ref: "${{ github.event.workflow_run.head_sha || github.sha }}"
           persist-credentials: "false"
 
       - name: Test
@@ -160,7 +160,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0  # v7.0.0
         with:
-          ref: "${{ github.event.workflow_run.head_sha }}"
+          ref: "${{ github.event.workflow_run.head_sha || github.sha }}"
           persist-credentials: "false"
 
       - name: Release
