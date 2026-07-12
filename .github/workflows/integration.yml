@@ -23,7 +23,7 @@ env:
 jobs:
   test:
     name: Python ${{ matrix.python-version }}
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     strategy:
       matrix:
         python-version:
@@ -59,28 +59,23 @@ jobs:
 
   theme:
     name: Theme
-    runs-on: ubuntu-24.04-arm
+    runs-on: ubuntu-26.04-arm
     steps:
       - name: Setup Python
         uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1  # v6.3.0
         with:
           python-version: "${{ env.PYTHON_VERSION }}"
 
+      - name: Setup Node.js
+        uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e  # v6.4.0
+        with:
+          node-version: "26"
+          check-latest: "true"
+
       - name: Checkout
         uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0  # v7.0.0
         with:
           persist-credentials: "false"
-
-      - name: Setup Node.js
-        uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e  # v6.4.0
-        with:
-          node-version-file: "./.nvmrc"
-
-      - name: Setup cache Node.js
-        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9  # v6.1.0
-        with:
-          key: "nodejs-${{ runner.arch }}-${{ hashFiles('./.nvmrc', './package.json') }}"
-          path: "./client/simple/node_modules/"
 
       - name: Setup cache Python
         uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9  # v6.1.0
@@ -89,6 +84,14 @@ jobs:
           restore-keys: |
             python-${{ env.PYTHON_VERSION }}-${{ runner.arch }}-
           path: "./local/"
+
+      - name: Setup cache Node.js
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9  # v6.1.0
+        with:
+          key: "nodejs-${{ runner.arch }}-${{ hashFiles('**/package-lock.json') }}"
+          restore-keys: |
+            nodejs-${{ runner.arch }}-
+          path: "./client/simple/node_modules/"
 
       - name: Setup venv
         run: make V=1 install

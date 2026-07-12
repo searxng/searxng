@@ -26,9 +26,9 @@ env:
 
 jobs:
   update:
-    if: github.repository_owner == 'searxng' && github.event.workflow_run.conclusion == 'success'
+    if: github.event.workflow_run.conclusion == 'success' && github.repository_owner == 'searxng'
     name: Update
-    runs-on: ubuntu-24.04-arm
+    runs-on: ubuntu-26.04-arm
     permissions:
       # For "make V=1 weblate.push.translations"
       contents: write
@@ -59,7 +59,7 @@ jobs:
       - name: Setup Weblate
         run: |
           mkdir -p ~/.config
-          echo "${{ secrets.WEBLATE_CONFIG }}" > ~/.config/weblate
+          echo "${{ secrets.WEBLATE_CONFIG }}" >~/.config/weblate
 
       - name: Setup Git
         run: |
@@ -74,7 +74,7 @@ jobs:
       github.repository_owner == 'searxng'
       && (github.event_name == 'workflow_dispatch' || github.event_name == 'schedule')
     name: Pull Request
-    runs-on: ubuntu-24.04-arm
+    runs-on: ubuntu-26.04-arm
     permissions:
       # For "make V=1 weblate.translations.commit"
       contents: write
@@ -107,7 +107,7 @@ jobs:
       - name: Setup Weblate
         run: |
           mkdir -p ~/.config
-          echo "${{ secrets.WEBLATE_CONFIG }}" > ~/.config/weblate
+          echo "${{ secrets.WEBLATE_CONFIG }}" >~/.config/weblate
 
       - name: Setup Git
         run: |
@@ -118,23 +118,17 @@ jobs:
         run: make V=1 weblate.translations.commit
 
       - name: Create PR
-        id: cpr
         uses: peter-evans/create-pull-request@5f6978faf089d4d20b00c7766989d076bb2fc7f1  # v8.1.1
         with:
           author: "searxng-bot <searxng-bot@users.noreply.github.com>"
           committer: "searxng-bot <searxng-bot@users.noreply.github.com>"
-          title: "[l10n] update translations from Weblate"
-          commit-message: "[l10n] update translations from Weblate"
+          title: "[mod] i18n: update translations from Weblate"
+          commit-message: "[mod] i18n: update translations from Weblate"
           branch: "translations_update"
           delete-branch: "true"
           draft: "false"
           signoff: "false"
           body: |
-            [l10n] update translations from Weblate
+            Update translations from Weblate
           labels: |
             area:i18n
-
-      - name: Display information
-        run: |
-          echo "Pull Request Number - ${{ steps.cpr.outputs.pull-request-number }}"
-          echo "Pull Request URL - ${{ steps.cpr.outputs.pull-request-url }}"
