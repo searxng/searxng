@@ -32,9 +32,7 @@ Implementations
 ===============
 
 .. _Yandex Search API v2:
-   https://yandex.cloud/en/docs/search-api/api-ref/WebSearch/search
-.. _Yandex XML:
-   https://yandex.com/dev/xml/doc/dg/concepts/response.html
+   https://aistudio.yandex.ru/docs/en/search-api/api-ref/WebSearch/search.html
 """
 
 import math
@@ -55,7 +53,7 @@ if t.TYPE_CHECKING:
 about = {
     "website": "https://yandex.cloud/en/services/search-api",
     "wikidata_id": "Q5281",
-    "official_api_documentation": "https://yandex.cloud/en/docs/search-api/",
+    "official_api_documentation": "https://aistudio.yandex.ru/docs/en/search-api/api-ref/WebSearch/search.html",
     "use_official_api": True,
     "require_api_key": True,
     "results": "XML",
@@ -90,7 +88,7 @@ region: str = ""
 """Optional Yandex `region id`.
 Only meaningful together with ``SEARCH_TYPE_RU``.
 
-__ https://yandex.com/dev/xml/doc/dg/reference/regions.html
+__ https://aistudio.yandex.ru/docs/en/search-api/reference/regions.html
 """
 
 page_size: int = 10
