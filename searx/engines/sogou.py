@@ -96,7 +96,7 @@ def _parse_date(text):
         if date_match:
             try:
                 y, m, d = date_match.group(1).split("-")
-                return datetime.fromisoformat(f"{y}-{int(m):02d}-{int(d):02d}")
+                return datetime(year=int(y), month=int(m), day=int(d))
             except (ValueError, TypeError):
                 pass
     return None
