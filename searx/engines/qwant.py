@@ -51,6 +51,7 @@ from urllib.parse import urlencode
 import babel
 from flask_babel import gettext  # pyright: ignore[reportUnknownVariableType]
 
+from searx.enginelib import EngineCache
 from searx.enginelib.traits import EngineTraits
 from searx.exceptions import (
     SearxEngineAccessDeniedException,
@@ -105,8 +106,18 @@ qwant_news_locales = [
 ]
 # fmt: on
 
+base_url = "https://www.qwant.com"
 api_url = "https://api.qwant.com/v3/search/"
 """URL of Qwant's API (JSON)"""
+
+CACHE: EngineCache
+"""Cache for storing the ``datadome`` cookie."""
+
+
+def setup(engine_settings: dict[str, t.Any]) -> bool:
+    global CACHE  # pylint: disable=global-statement
+    CACHE = EngineCache(engine_settings["name"])
+    return True
 
 
 def request(query: str, params: "OnlineParams") -> None:
@@ -129,23 +140,28 @@ def request(query: str, params: "OnlineParams") -> None:
         "tgp": test_group_value,
         "device": "desktop",
         "safesearch": params["safesearch"],
-        "display": True,
-        "llm": True,
+        # True would be encoded to "True", instead of "true", which makes the request
+        # easier to detect and block
+        "displayed": "true",
+        "llm": "true",
     }
-
-    # shuffle query parameters to be harder to fingerprint
-    args = list(args.items())
-    random.shuffle(args)
-    args = dict(args)
 
     params["raise_for_httperror"] = False
 
     params["url"] = f"{api_url}{qwant_categ}?{urlencode(args)}"
 
+    params["cookies"]["datadome"] = CACHE.get("datadome")
+    params["headers"].update({"Accept": "application/json", "Referer": f"{base_url}/", "Origin": base_url})
+
 
 def response(resp: "SXNG_Response") -> EngineResults:
     """Parse results from Qwant's API"""
     # pylint: disable=too-many-locals, too-many-branches, too-many-statements
+
+    # cache datadome cookie - changes on each request
+    datadome = resp.cookies.get("datadome")
+    if datadome:
+        CACHE.set("datadome", datadome)
 
     res = EngineResults()
 
@@ -163,8 +179,8 @@ def response(resp: "SXNG_Response") -> EngineResults:
         error_code = data.get("error_code")
         if error_code == 24:
             raise SearxEngineTooManyRequestsException()
-        if search_results.get("data", {}).get("error_data", {}).get("captchaUrl") is not None:
-            raise SearxEngineCaptchaException()
+        if search_results.get("url") is not None:
+            raise SearxEngineCaptchaException(suspended_time=0)
         if resp.status_code == 403:
             raise SearxEngineAccessDeniedException()
         msg = ",".join(data.get("message", ["unknown"]))
