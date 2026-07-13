@@ -793,8 +793,9 @@ def parse_duration_string(duration_str: str) -> timedelta | None:
         return None
 
     try:
-        # prepending ["00"] here inits hours to 0 if they are not provided
-        time_parts = (["00"] + duration_str.split(":"))[:3]
+        # prepending ["00"] here inits hours to 0 if they are not provided;
+        # keep the last three parts so an explicit HH:MM:SS is not truncated
+        time_parts = (["00"] + duration_str.split(":"))[-3:]
         hours, minutes, seconds = map(int, time_parts)
         return timedelta(hours=hours, minutes=minutes, seconds=seconds)
 

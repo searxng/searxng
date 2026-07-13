@@ -3,6 +3,7 @@
 
 import random
 import string
+from datetime import timedelta
 import lxml.etree
 from lxml import html
 from parameterized.parameterized import parameterized
@@ -79,6 +80,19 @@ class TestUtils(SearxTestCase):
         self.assertEqual(utils.ecma_unescape('text%20with%20space'), 'text with space')
         self.assertEqual(utils.ecma_unescape('text using %xx: %F3'), 'text using %xx: ó')
         self.assertEqual(utils.ecma_unescape('text using %u: %u5409, %u4E16%u754c'), 'text using %u: 吉, 世界')
+
+    def test_parse_duration_string(self):
+        # MM:SS
+        self.assertEqual(utils.parse_duration_string('02:34'), timedelta(minutes=2, seconds=34))
+        self.assertEqual(utils.parse_duration_string('0:45'), timedelta(seconds=45))
+        # HH:MM:SS must not drop the seconds nor shift the fields
+        self.assertEqual(utils.parse_duration_string('1:02:03'), timedelta(hours=1, minutes=2, seconds=3))
+        self.assertEqual(utils.parse_duration_string('12:34:56'), timedelta(hours=12, minutes=34, seconds=56))
+        self.assertEqual(utils.parse_duration_string('00:03:30'), timedelta(minutes=3, seconds=30))
+        # invalid / empty input returns None
+        self.assertIsNone(utils.parse_duration_string(''))
+        self.assertIsNone(utils.parse_duration_string('   '))
+        self.assertIsNone(utils.parse_duration_string('not a duration'))
 
     @parameterized.expand(
         [
