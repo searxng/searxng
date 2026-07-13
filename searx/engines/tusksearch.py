@@ -13,7 +13,7 @@ from dateutil import parser
 
 from searx.exceptions import SearxEngineAPIException
 from searx.network import get
-from searx.utils import html_to_text
+from searx.utils import gen_useragent, html_to_text
 from searx.result_types import EngineResults
 
 if t.TYPE_CHECKING:
@@ -52,7 +52,7 @@ def _obtain_x_sid() -> tuple[str, str]:
     The header key is usually called `x-sid-{UUIDv4}`, and the value is
     usually a plain UUIDv4 (but a different one than in the header key).
     """
-    resp = get(f"{api_url}/revcontent/embed.js")
+    resp = get(f"{api_url}/revcontent/embed.js", headers={"User-Agent": gen_useragent()})
     if not resp.ok:
         raise SearxEngineAPIException("failed to obtain request x-sid token")
 
@@ -89,12 +89,14 @@ def request(query: str, params: "OnlineParams") -> None:
         params["url"] = f"{api_url}/Search/Web?{urlencode(args)}"
 
     x_sid_header, x_sid_value = _obtain_x_sid()
-    params["headers"] = {
-        x_sid_header: x_sid_value,
-        # required - we send a random longitude and latitude instead of the actual user location
-        'x-lon': str(random.random() * 90),
-        'x-lat': str(random.random() * 90),
-    }
+    params["headers"].update(
+        {
+            x_sid_header: x_sid_value,
+            # required - we send a random longitude and latitude instead of the actual user location
+            "x-lon": str(round(random.random() * 90, 4)),
+            "x-lat": str(round(random.random() * 90, 4)),
+        }
+    )
 
 
 def response(resp: "SXNG_Response"):
