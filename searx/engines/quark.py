@@ -292,7 +292,7 @@ def parse_news_uchq(data):
     results = []
     for item in data.get('feed', []):
         try:
-            published_date = datetime.strptime(item.get('time'), "%Y-%m-%d")
+            published_date = datetime.fromisoformat(item.get('time'))
         except (ValueError, TypeError):
             # Sometime Quark will return non-standard format like "1天前", set published_date as None
             published_date = None

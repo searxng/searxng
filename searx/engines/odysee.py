@@ -76,7 +76,7 @@ def response(resp):
         release_time = item["release_time"]
         duration = item["duration"]
 
-        release_date = datetime.strptime(release_time.split("T")[0], "%Y-%m-%d")
+        release_date = datetime.fromisoformat(release_time.split("T")[0])
         formatted_date = datetime.fromtimestamp(release_date.timestamp())
 
         url = f"https://odysee.com/{name}:{claim_id}"

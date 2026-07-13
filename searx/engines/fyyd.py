@@ -47,7 +47,7 @@ def response(resp: "SXNG_Response"):
                 title=result["title"],
                 content=result["description"],
                 thumbnail=result["smallImageURL"],
-                publishedDate=datetime.strptime(result["status_since"], "%Y-%m-%d %H:%M:%S"),
+                publishedDate=datetime.fromisoformat(result["status_since"]),
                 metadata=f"Rank: {result['rank']} || {result['episode_count']} episodes",
             )
         )

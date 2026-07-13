@@ -95,7 +95,8 @@ def _parse_date(text):
         date_match = re.search(r"(\d{4}-\d{1,2}-\d{1,2})", text)
         if date_match:
             try:
-                return datetime.strptime(date_match.group(1), "%Y-%m-%d")
+                y, m, d = date_match.group(1).split("-")
+                return datetime(year=int(y), month=int(m), day=int(d))
             except (ValueError, TypeError):
                 pass
     return None

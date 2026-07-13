@@ -186,7 +186,7 @@ def parse_images(data):
             img_date = item.get("bdImgnewsDate")
             publishedDate = None
             if img_date:
-                publishedDate = datetime.strptime(img_date, "%Y-%m-%d %H:%M")
+                publishedDate = datetime.fromisoformat(img_date)
             results.append(
                 {
                     "template": "images.html",

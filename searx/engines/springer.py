@@ -134,7 +134,7 @@ def response(resp: "SXNG_Response") -> EngineResults:
         return str(record.get(k, ""))
 
     for record in json_data["records"]:
-        published = datetime.strptime(record["publicationDate"], "%Y-%m-%d")
+        published = datetime.fromisoformat(record["publicationDate"])
         authors: list[str] = [" ".join(author["creator"].split(", ")[::-1]) for author in record["creators"]]
 
         pdf_url = ""
