@@ -68,7 +68,9 @@ def _get_api_token(query: str) -> str:
     if cached_token:
         return cached_token
 
-    resp = get(f"{base_url}/search?q={query}", headers={"User-Agent": gen_useragent()})
+    resp = get(
+        f"{base_url}/search?q={query}", headers={"User-Agent": gen_useragent(), "Accept-Language": "en-US,en:q=0.9"}
+    )
     if not resp.ok:
         raise SearxEngineAPIException("failed to obtain request token: invalid response code")
 
@@ -76,7 +78,7 @@ def _get_api_token(query: str) -> str:
     if not token:
         raise SearxEngineAPIException("failed to obtain request token: no token found")
 
-    CACHE.set("token", token)
+    CACHE.set("token", token, expire=3 * 60)
     return token
 
 
