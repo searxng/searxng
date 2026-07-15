@@ -25,20 +25,19 @@
 # radekjuthner <radekjuthner@noreply.codeberg.org>, 2025.
 msgid ""
 msgstr ""
-"Project-Id-Version: searx\n"
+"Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-06-13 11:31+0000\n"
+"POT-Creation-Date: 2026-07-15 15:45+0000\n"
 "PO-Revision-Date: 2026-06-16 07:07+0000\n"
 "Last-Translator: Fjuro <fjuro@noreply.codeberg.org>\n"
-"Language-Team: Czech <https://translate.codeberg.org/projects/searxng/"
-"searxng/cs/>\n"
 "Language: cs\n"
+"Language-Team: Czech "
+"<https://translate.codeberg.org/projects/searxng/searxng/cs/>\n"
+"Plural-Forms: nplurals=4; plural=(n == 1 && n % 1 == 0) ? 0 : (n >= 2 && "
+"n <= 4 && n % 1 == 0) ? 1: (n % 1 != 0 ) ? 2 : 3;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=4; plural=(n == 1 && n % 1 == 0) ? 0 : (n >= 2 && n "
-"<= 4 && n % 1 == 0) ? 1: (n % 1 != 0 ) ? 2 : 3;\n"
-"X-Generator: Weblate 2026.6.1\n"
 "Generated-By: Babel 2.18.0\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
@@ -82,7 +81,7 @@ msgid "videos"
 msgstr "videa"
 
 #. CATEGORY_NAMES['RADIO']
-#: searx/engines/radio_browser.py:159 searx/searxng.msg
+#: searx/engines/radio_browser.py:160 searx/searxng.msg
 msgid "radio"
 msgstr "rádio"
 
@@ -556,7 +555,7 @@ msgstr "zodpovězené"
 msgid "No item found"
 msgstr "Nic nenalezeno"
 
-#: searx/engines/qwant.py:258
+#: searx/engines/qwant.py:286
 #: searx/templates/simple/result_templates/images.html:62 searx/webapp.py:328
 msgid "Source"
 msgstr "zdroj"
@@ -652,7 +651,7 @@ msgstr "Generování náhodných hodnot"
 msgid "Compute {func} of the arguments"
 msgstr "Vypočítat {func} argumentů"
 
-#: searx/engines/boardreader.py:107
+#: searx/engines/boardreader.py:108
 #, python-brace-format
 msgid "Posted by {author}"
 msgstr "Autor: {author}"
@@ -670,19 +669,19 @@ msgstr "{title} (ZASTARALÉ)"
 msgid "This entry has been superseded by"
 msgstr "Tato položka byla nahrazena položkou"
 
-#: searx/engines/qwant.py:260
+#: searx/engines/qwant.py:288
 msgid "Channel"
 msgstr "Kanál"
 
-#: searx/engines/radio_browser.py:161
+#: searx/engines/radio_browser.py:162
 msgid "bitrate"
 msgstr "datový tok"
 
-#: searx/engines/radio_browser.py:162
+#: searx/engines/radio_browser.py:163
 msgid "votes"
 msgstr "hlasy"
 
-#: searx/engines/radio_browser.py:163
+#: searx/engines/radio_browser.py:164
 msgid "clicks"
 msgstr "kliknutí"
 
@@ -717,15 +716,15 @@ msgstr ""
 msgid "The image could not be downloaded."
 msgstr "Obrázek se nepodařilo stáhnout."
 
-#: searx/engines/zlibrary.py:79
+#: searx/engines/zlibrary.py:80
 msgid "Language"
 msgstr "Jazyk"
 
-#: searx/engines/zlibrary.py:80
+#: searx/engines/zlibrary.py:81
 msgid "Book rating"
 msgstr "Hodnocení knih"
 
-#: searx/engines/zlibrary.py:81
+#: searx/engines/zlibrary.py:82
 msgid "File quality"
 msgstr "Množství souborů"
 
@@ -1016,6 +1015,7 @@ msgid "Privacy"
 msgstr "Soukromí"
 
 #: searx/templates/simple/preferences.html:235
+#: searx/templates/simple/result_templates/images.html:63
 msgid "Engines"
 msgstr "Vyhledávače"
 
@@ -1658,10 +1658,6 @@ msgstr "Formáty obrázků"
 #: searx/templates/simple/result_templates/images.html:56
 msgid "original format"
 msgstr "původní formát"
-
-#: searx/templates/simple/result_templates/images.html:63
-msgid "Engine"
-msgstr "Vyhledávač"
 
 #: searx/templates/simple/result_templates/images.html:64
 msgid "View source"
@@ -2410,3 +2406,7 @@ msgstr "skrýt video"
 
 #~ msgid "Format"
 #~ msgstr "Formát"
+
+#~ msgid "Engine"
+#~ msgstr "Vyhledávač"
+

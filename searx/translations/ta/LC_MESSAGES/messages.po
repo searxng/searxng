@@ -32,7 +32,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-06-13 11:31+0000\n"
+"POT-Creation-Date: 2026-07-15 15:45+0000\n"
 "PO-Revision-Date: 2026-05-19 12:08+0000\n"
 "Last-Translator: return42 <return42@noreply.codeberg.org>\n"
 "Language: ta\n"
@@ -85,7 +85,7 @@ msgid "videos"
 msgstr "காணொளிகள்"
 
 #. CATEGORY_NAMES['RADIO']
-#: searx/engines/radio_browser.py:159 searx/searxng.msg
+#: searx/engines/radio_browser.py:160 searx/searxng.msg
 msgid "radio"
 msgstr "வானொலி"
 
@@ -559,7 +559,7 @@ msgstr "பதில் அளிக்கப்பட்டது"
 msgid "No item found"
 msgstr "எதுவும் கிடைக்கவில்லை"
 
-#: searx/engines/qwant.py:258
+#: searx/engines/qwant.py:286
 #: searx/templates/simple/result_templates/images.html:62 searx/webapp.py:328
 msgid "Source"
 msgstr "ஆதாரம்"
@@ -655,7 +655,7 @@ msgstr "வெவ்வாறான சீரற்ற மதிப்புக�
 msgid "Compute {func} of the arguments"
 msgstr "வாதங்களின் {func} கணக்கிடவும்"
 
-#: searx/engines/boardreader.py:107
+#: searx/engines/boardreader.py:108
 #, python-brace-format
 msgid "Posted by {author}"
 msgstr "பதிவிட்டவர் {author}"
@@ -673,19 +673,19 @@ msgstr "{title} (காலாவதியானது)"
 msgid "This entry has been superseded by"
 msgstr "இந்த நுழைவு மாற்றப்பட்டது"
 
-#: searx/engines/qwant.py:260
+#: searx/engines/qwant.py:288
 msgid "Channel"
 msgstr "சேனல்"
 
-#: searx/engines/radio_browser.py:161
+#: searx/engines/radio_browser.py:162
 msgid "bitrate"
 msgstr "தகவல் விகிதம்"
 
-#: searx/engines/radio_browser.py:162
+#: searx/engines/radio_browser.py:163
 msgid "votes"
 msgstr "வாக்குகள்"
 
-#: searx/engines/radio_browser.py:163
+#: searx/engines/radio_browser.py:164
 msgid "clicks"
 msgstr "சொடுக்குகள்"
 
@@ -721,15 +721,15 @@ msgstr ""
 msgid "The image could not be downloaded."
 msgstr "இப்படத்தைப் பதிவிறக்க முடியவில்லை."
 
-#: searx/engines/zlibrary.py:79
+#: searx/engines/zlibrary.py:80
 msgid "Language"
 msgstr "மொழி"
 
-#: searx/engines/zlibrary.py:80
+#: searx/engines/zlibrary.py:81
 msgid "Book rating"
 msgstr "புத்தகத்தின் மதிப்பீடு"
 
-#: searx/engines/zlibrary.py:81
+#: searx/engines/zlibrary.py:82
 msgid "File quality"
 msgstr "கோப்பின் தரம்"
 
@@ -1030,6 +1030,7 @@ msgid "Privacy"
 msgstr "தனியுரிமை"
 
 #: searx/templates/simple/preferences.html:235
+#: searx/templates/simple/result_templates/images.html:63
 msgid "Engines"
 msgstr "எந்திரங்கள்"
 
@@ -1678,10 +1679,6 @@ msgstr ""
 #: searx/templates/simple/result_templates/images.html:56
 msgid "original format"
 msgstr ""
-
-#: searx/templates/simple/result_templates/images.html:63
-msgid "Engine"
-msgstr "இயந்திரம்"
 
 #: searx/templates/simple/result_templates/images.html:64
 msgid "View source"
@@ -2402,4 +2399,7 @@ msgstr "காணொளிகளை மறை"
 
 #~ msgid "Format"
 #~ msgstr "வடிவம்"
+
+#~ msgid "Engine"
+#~ msgstr "இயந்திரம்"
 

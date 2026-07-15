@@ -19,17 +19,17 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-06-13 11:31+0000\n"
+"POT-Creation-Date: 2026-07-15 15:45+0000\n"
 "PO-Revision-Date: 2026-07-14 15:07+0000\n"
-"Last-Translator: neighbourhoodCat <neighbourhoodcat@noreply.codeberg.org>\n"
-"Language-Team: Thai <https://translate.codeberg.org/projects/searxng/searxng/"
-"th/>\n"
+"Last-Translator: neighbourhoodCat <neighbourhoodcat@noreply.codeberg.org>"
+"\n"
 "Language: th\n"
+"Language-Team: Thai "
+"<https://translate.codeberg.org/projects/searxng/searxng/th/>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 2026.6.1\n"
 "Generated-By: Babel 2.18.0\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
@@ -73,7 +73,7 @@ msgid "videos"
 msgstr "วิดีโอ"
 
 #. CATEGORY_NAMES['RADIO']
-#: searx/engines/radio_browser.py:159 searx/searxng.msg
+#: searx/engines/radio_browser.py:160 searx/searxng.msg
 msgid "radio"
 msgstr "วิทยุ"
 
@@ -547,7 +547,7 @@ msgstr "ตอบแล้ว"
 msgid "No item found"
 msgstr "ไม่พบรายการ"
 
-#: searx/engines/qwant.py:258
+#: searx/engines/qwant.py:286
 #: searx/templates/simple/result_templates/images.html:62 searx/webapp.py:328
 msgid "Source"
 msgstr "แหล่งที่มา"
@@ -643,7 +643,7 @@ msgstr "ทำการสุ่มค่าที่แตกต่างกั
 msgid "Compute {func} of the arguments"
 msgstr "คำนวณ {func} ของอาร์กิวเมนต์"
 
-#: searx/engines/boardreader.py:107
+#: searx/engines/boardreader.py:108
 #, python-brace-format
 msgid "Posted by {author}"
 msgstr "โพสต์โดย {author}"
@@ -661,19 +661,19 @@ msgstr "{title} (ล้าสมัย)"
 msgid "This entry has been superseded by"
 msgstr "รายการนี้ถูกแทนที่โดย"
 
-#: searx/engines/qwant.py:260
+#: searx/engines/qwant.py:288
 msgid "Channel"
 msgstr "ช่องทาง"
 
-#: searx/engines/radio_browser.py:161
+#: searx/engines/radio_browser.py:162
 msgid "bitrate"
 msgstr "บิตเรต"
 
-#: searx/engines/radio_browser.py:162
+#: searx/engines/radio_browser.py:163
 msgid "votes"
 msgstr "โหวต"
 
-#: searx/engines/radio_browser.py:163
+#: searx/engines/radio_browser.py:164
 msgid "clicks"
 msgstr "คลิก"
 
@@ -708,15 +708,15 @@ msgstr ""
 msgid "The image could not be downloaded."
 msgstr "ไม่สามารถดาวน์โหลดภาพนี้ได้"
 
-#: searx/engines/zlibrary.py:79
+#: searx/engines/zlibrary.py:80
 msgid "Language"
 msgstr "ภาษา"
 
-#: searx/engines/zlibrary.py:80
+#: searx/engines/zlibrary.py:81
 msgid "Book rating"
 msgstr "บันทึกการให้คะแนน"
 
-#: searx/engines/zlibrary.py:81
+#: searx/engines/zlibrary.py:82
 msgid "File quality"
 msgstr "คุณภาพไฟล์"
 
@@ -745,8 +745,8 @@ msgid ""
 "Converts strings to different hash digests. Available functions: md5, "
 "sha1, sha224, sha256, sha384, sha512."
 msgstr ""
-"แปลงข้อความให้เป็นค่าแฮชในรูปแบบต่างๆ ฟังก์ชันที่ใช้ได้: md5, sha1, sha224, sha256, "
-"sha384, sha512"
+"แปลงข้อความให้เป็นค่าแฮชในรูปแบบต่างๆ ฟังก์ชันที่ใช้ได้: md5, sha1, "
+"sha224, sha256, sha384, sha512"
 
 #: searx/plugins/hash_plugin.py:63
 msgid "hash digest"
@@ -758,8 +758,7 @@ msgstr "ชื่อโฮส ปลั๊กอิน"
 
 #: searx/plugins/hostnames.py:120
 msgid "Rewrite hostnames and remove or prioritize results based on the hostname"
-msgstr ""
-"เขียนชื่อโฮสต์ใหม่ และลบหรือจัดลำดับความสำคัญของผลลัพธ์โดยอิงจากชื่อโฮสต์"
+msgstr "เขียนชื่อโฮสต์ใหม่ และลบหรือจัดลำดับความสำคัญของผลลัพธ์โดยอิงจากชื่อโฮสต์"
 
 #: searx/plugins/infinite_scroll.py:25
 msgid "Infinite scroll"
@@ -1002,6 +1001,7 @@ msgid "Privacy"
 msgstr "ความเป็นส่วนตัว"
 
 #: searx/templates/simple/preferences.html:235
+#: searx/templates/simple/result_templates/images.html:63
 msgid "Engines"
 msgstr "เครื่องมือ"
 
@@ -1406,7 +1406,8 @@ msgid ""
 "This tab does not exist in the user interface, but you can search with "
 "these engines via !bangs."
 msgstr ""
-"แท็บนี้ไม่มีอยู่ในหน้าอินเทอร์เฟซของผู้ใช้ แต่คุณสามารถค้นหาด้วยเครื่องมือค้นหาเหล่านี้ผ่าน !bangs ได้"
+"แท็บนี้ไม่มีอยู่ในหน้าอินเทอร์เฟซของผู้ใช้ "
+"แต่คุณสามารถค้นหาด้วยเครื่องมือค้นหาเหล่านี้ผ่าน !bangs ได้"
 
 #: searx/templates/simple/preferences/engines.html:15
 msgid "Enable all"
@@ -1638,10 +1639,6 @@ msgstr "รูปแบบไฟล์รูปภาพ"
 #: searx/templates/simple/result_templates/images.html:56
 msgid "original format"
 msgstr "รูปแบบต้นฉบับ"
-
-#: searx/templates/simple/result_templates/images.html:63
-msgid "Engine"
-msgstr "เครื่องมือ"
 
 #: searx/templates/simple/result_templates/images.html:64
 msgid "View source"
@@ -2105,3 +2102,7 @@ msgstr "ซ่อนวิดีโอ"
 
 #~ msgid "Format"
 #~ msgstr "จัดรูปแบบ"
+
+#~ msgid "Engine"
+#~ msgstr "เครื่องมือ"
+
