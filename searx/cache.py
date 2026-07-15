@@ -458,12 +458,22 @@ class ExpireCacheSQLite(sqlitedb.SQLiteAppl, ExpireCache):
         # Before values are taken from the table, a maintenance interval may
         # need to be carried out.
         self.maintenance()
-        sql = f"SELECT value FROM {table} WHERE key = ?"
+        sql = f"SELECT value, expire FROM {table} WHERE key = ?"
         row = self.DB.execute(sql, (key,)).fetchone()
         if row is None:
             return default
 
-        return self.deserialize(row[0])
+        # Check if value is expired. It's possible that it's expired but has not
+        # yet been automatically deleted by the periodic maintenance
+        (value, expire) = row
+        now = time.time()
+        if expire < now:
+            # The record is deleted during the maintenance interval. Deleting
+            # the record at this point offers no advantage, as a SELECT
+            # statement must be executed for every cache.get request anyways.
+            return default
+
+        return self.deserialize(value)
 
     def pairs(self, ctx: str) -> Iterator[tuple[str, typing.Any]]:
         """Iterate over key/value pairs from table given by argument ``ctx``.
