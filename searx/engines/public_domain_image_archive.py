@@ -140,7 +140,7 @@ def response(resp):
         results.append(
             {
                 'template': 'images.html',
-                'url': _clean_url(f"{about['website']}/images/{result['objectID']}"),
+                'url': _clean_url(f"{pdia_base_url}/images/{result['objectID']}"),
                 'img_src': _clean_url(base_image_url),
                 'thumbnail_src': _clean_url(base_image_url + THUMBNAIL_SUFFIX),
                 'title': f"{result['title'].strip()} by {result['artist']} {result.get('displayYear', '')}",
