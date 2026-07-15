@@ -1461,6 +1461,12 @@ engines:
       description: "Demo index of Kavunka, a statistical search engine"
       results: HTML
 
+  - name: keenable
+    engine: keenable
+    shortcut: keen
+    disabled: true
+    inactive: true
+
   - name: kozmonavt
     engine: xpath
     search_url: https://kozmonavt.su/s?q={query}
