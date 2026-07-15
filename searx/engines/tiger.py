@@ -117,7 +117,7 @@ def _obtain_session_code() -> str:
     if not code:
         raise SearxEngineAPIException("failed to obtain session code")
 
-    CACHE.set("session", code, expire=60 * 24 * 60)  # cookie is valid for two months
+    CACHE.set("session", code, expire=60 * 24 * 60 * 60)  # cookie is valid for two months
     return code
 
 
