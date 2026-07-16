@@ -6,6 +6,7 @@ import typing as t
 from datetime import datetime
 from searx.extended_types import SXNG_Response
 from searx.result_types import EngineResults
+from searx.utils import searxng_useragent
 
 if t.TYPE_CHECKING:
     from searx.search.processors import OnlineParams
@@ -18,11 +19,13 @@ about = {
     "results": "JSON",
 }
 api_key = ""
-""" Optional API Key. You can create a ke at keenable website if you need higher rate limits """
+""" Optional API Key. You can create a key at `the official website
+<https://keenable.ai/signup>'_ if you need higher rate limits."""
 
-ategories = ["general"]
+categories = ["general"]
 
 base_url = "https://api.keenable.ai"
+keenable_mode = "pro"
 
 
 def request(query: str, params: "OnlineParams"):
@@ -33,8 +36,8 @@ def request(query: str, params: "OnlineParams"):
         params["url"] = f"{base_url}/v1/search/public"
 
     params["method"] = "POST"
-    params["headers"]["X-Keenable-Title"] = "SearchXNG"
-    params["json"] = {"query": query, "mode": "pro"}
+    params["headers"]["X-Keenable-Title"] = searxng_useragent()
+    params["json"] = {"query": query, "mode": keenable_mode}
 
 
 def response(resp: "SXNG_Response") -> EngineResults:
@@ -49,7 +52,7 @@ def response(resp: "SXNG_Response") -> EngineResults:
             try:
                 published = datetime.fromisoformat(pub.rstrip("Z"))
             except ValueError:
-                published = None
+                pass
 
         res.add(
             res.types.MainResult(
