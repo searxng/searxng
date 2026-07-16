@@ -1,0 +1,20 @@
+services:
+  - type: web
+    name: searxng
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
+    healthCheckPath: /healthz
+    envVars:
+      - key: SEARXNG_SECRET
+        generateValue: true
+      - key: SEARXNG_VALKEY_URL
+        fromService:
+          name: searxng-valkey
+          type: redis
+          property: connectionString
+
+  - type: redis
+    name: searxng-valkey
+    plan: free
+    ipAllowList: []
