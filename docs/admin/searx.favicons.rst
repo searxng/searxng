@@ -29,6 +29,7 @@ By default and without any extensions, SearXNG serves these resolvers:
 - ``duckduckgo``
 - ``allesedv``
 - ``google``
+- ``kagi``
 - ``yandex``
 
 With the above setting favicons are displayed, the user has the option to
@@ -208,6 +209,7 @@ choose from, the following configuration could be used:
    "duckduckgo" = "searx.favicons.resolvers.duckduckgo"
    "allesedv" = "searx.favicons.resolvers.allesedv"
    # "google" = "searx.favicons.resolvers.google"
+   # "kagi" = "searx.favicons.resolvers.kagi"
    # "yandex" = "searx.favicons.resolvers.yandex"
 
 .. note::
@@ -226,6 +228,7 @@ into the *proxy*:
 - :py:obj:`searx.favicons.resolvers.duckduckgo`
 - :py:obj:`searx.favicons.resolvers.allesedv`
 - :py:obj:`searx.favicons.resolvers.google`
+- :py:obj:`searx.favicons.resolvers.kagi`
 - :py:obj:`searx.favicons.resolvers.yandex`
 
 

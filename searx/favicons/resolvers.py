@@ -7,7 +7,7 @@ timeout``) and returns a tuple ``(data, mime)``.
 """
 
 
-__all__ = ["DEFAULT_RESOLVER_MAP", "allesedv", "duckduckgo", "google", "yandex"]
+__all__ = ["DEFAULT_RESOLVER_MAP", "allesedv", "duckduckgo", "google", "kagi", "yandex"]
 
 from typing import Callable
 from searx import network
@@ -76,6 +76,21 @@ def google(domain: str, timeout: int) -> tuple[None | bytes, None | str]:
     return data, mime
 
 
+def kagi(domain: str, timeout: int) -> tuple[None | bytes, None | str]:
+    """Favicon Resolver from kagi.com / https://news.kagi.com/api/favicon-proxy"""
+    data, mime = (None, None)
+    # quality can be either 'fast' or 'best', best is slower and can return svgs (e.g. github.com)
+    url = f"https://news.kagi.com/api/favicon-proxy?domain={domain}&quality=fast"
+    logger.debug("fetch favicon from: %s", url)
+
+    # will return a 404 if the favicon does not exist and a 200 if it does,
+    response = network.get(url, **_req_args(timeout=timeout))
+    if response and response.status_code == 200:
+        mime = response.headers['Content-Type']
+        data = response.content
+    return data, mime
+
+
 def yandex(domain: str, timeout: int) -> tuple[None | bytes, None | str]:
     """Favicon Resolver from yandex.com"""
     data, mime = (None, None)
@@ -95,5 +110,6 @@ DEFAULT_RESOLVER_MAP = {
     "allesedv": allesedv,
     "duckduckgo": duckduckgo,
     "google": google,
+    "kagi": kagi,
     "yandex": yandex,
 }
