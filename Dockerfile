@@ -26,9 +26,12 @@ RUN --mount=type=cache,id=uv,target=/root/.cache/uv set -eux -o pipefail; \
         -exec sort -t, -k1,1 -o {} {} \;; \
     find ./.venv/ -exec touch -h --date="@$TIMESTAMP_VENV" {} +
 
-# version_frozen.py is generated externally (not available in a fresh clone),
-# so we exclude it; the app falls back to runtime git introspection.
 COPY --exclude=./searx/version_frozen.py ./searx/ ./searx/
+
+# version_frozen.py: git is not available at runtime in the container, so we
+# write a static stub here; version.py imports it and skips the git subprocess.
+RUN printf 'VERSION_STRING = "unknown"\nVERSION_TAG = "unknown"\nDOCKER_TAG = "unknown"\nGIT_URL = "unknown"\nGIT_BRANCH = "unknown"\n' \
+    > ./searx/version_frozen.py
 
 RUN set -eux -o pipefail; \
     python -m compileall -q -f -j 0 --invalidation-mode=unchecked-hash ./searx/; \
@@ -51,7 +54,9 @@ COPY --chown=977:977 ./container/entrypoint.sh \
 
 RUN chmod +x ./render-entrypoint.sh
 
-ENV GRANIAN_PROCESS_NAME="searxng" \
+ARG VERSION="unknown"
+ENV __SEARXNG_VERSION="$VERSION" \
+    GRANIAN_PROCESS_NAME="searxng" \
     GRANIAN_INTERFACE="wsgi" \
     GRANIAN_HOST="::" \
     GRANIAN_PORT="8080" \
