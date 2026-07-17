@@ -318,7 +318,7 @@ def fetch_traits(engine_traits: EngineTraits):
     from searx.utils import extr
 
     resp = get(
-        about["website"],  # pyright: ignore[reportArgumentType]
+        base_url,  # pyright: ignore[reportArgumentType]
         timeout=5,
     )
     if not resp.ok:
