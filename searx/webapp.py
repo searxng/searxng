@@ -1177,10 +1177,72 @@ def robots():
     return Response(
         """User-agent: *
 Allow: /info/en/about
+Allow: /info/en/api
+Allow: /llms.txt
 Disallow: /stats
 Disallow: /image_proxy
 Disallow: /preferences
 Disallow: /*?*q=*
+""",
+        mimetype='text/plain',
+    )
+
+
+@app.route('/llms.txt', methods=['GET'])
+def llms():
+    base = sxng_request.url_root.rstrip('/')
+    return Response(
+        f"""# SearXNG — Saudi Arabia Company URL Search API
+# {base}
+
+> A private SearXNG metasearch instance configured for Saudi Arabia (ar-SA).
+> Use the JSON API below to find official company websites from Saudi sources.
+
+## Search API
+
+Base URL: {base}
+
+### Endpoint
+
+GET /search
+
+### Parameters
+
+- q         (required) Search query in Arabic or English
+- format    Use "json" for machine-readable output          [default: html]
+- categories Use "general" for web search                  [default: general]
+- language  Locale code. "ar-SA" targets Saudi Arabia      [default: ar-SA]
+
+### Find a company URL — Arabic query
+
+GET {base}/search?q=أرامكو+السعودية+الموقع+الرسمي&format=json&categories=general&language=ar-SA
+
+### Find a company URL — English query
+
+GET {base}/search?q=Saudi+Aramco+official+website&format=json&categories=general&language=ar-SA
+
+### Response shape (JSON)
+
+{{
+  "query": "...",
+  "results": [
+    {{
+      "url": "https://www.aramco.com",
+      "title": "...",
+      "content": "...",
+      "engine": "google",
+      "score": 1.0
+    }}
+  ]
+}}
+
+### Notes
+
+- CORS enabled — Access-Control-Allow-Origin: *
+- No authentication required
+- Default region: Saudi Arabia (ar-SA), UI locale: Arabic
+- Active engines: Google, Bing, DuckDuckGo (all targeting ar-SA region)
+- Full API docs: {base}/info/en/api
 """,
         mimetype='text/plain',
     )
