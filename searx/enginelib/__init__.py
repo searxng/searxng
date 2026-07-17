@@ -47,7 +47,7 @@ ENGINES_CACHE: ExpireCacheSQLite = ExpireCacheSQLite.build_cache(
     ExpireCacheCfg(
         name="ENGINES_CACHE",
         MAXHOLD_TIME=60 * 60 * 24 * 7,  # 7 days
-        MAINTENANCE_PERIOD=60 * 60,  # 2h
+        MAINTENANCE_PERIOD=60 * 60,  # 1h
         MAX_VALUE_LEN=1024 * 1024 * 1024,  # 1MB
     )
 )

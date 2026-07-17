@@ -48,7 +48,7 @@ class ExpireCacheCfg(msgspec.Struct):  # pylint: disable=too-few-public-methods
     MAXHOLD_TIME: int = 60 * 60 * 24 * 7  # 7 days
     """Hold time (default in sec.), after which a value is removed from the cache."""
 
-    MAINTENANCE_PERIOD: int = 60 * 60  # 2h
+    MAINTENANCE_PERIOD: int = 60 * 60  # 1h
     """Maintenance period in seconds / when :py:obj:`MAINTENANCE_MODE` is set to
     ``auto``."""
 
