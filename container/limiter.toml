@@ -1,0 +1,26 @@
+[botdetection]
+
+ipv4_prefix = 32
+ipv6_prefix = 48
+
+# Trust Render's internal load-balancer and private-network ranges so that
+# X-Forwarded-For is used to determine the real client IP.
+trusted_proxies = [
+  '127.0.0.0/8',
+  '::1',
+  '10.0.0.0/8',
+  '172.16.0.0/12',
+  '192.168.0.0/16',
+]
+
+[botdetection.ip_limit]
+
+filter_link_local = false
+link_token = false
+
+[botdetection.ip_lists]
+
+block_ip = []
+pass_ip = []
+
+pass_searxng_org = false

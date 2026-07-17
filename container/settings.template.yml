@@ -5,17 +5,39 @@ use_default_settings: true
 
 server:
   secret_key: "ultrasecretkey"
-  image_proxy: true
+  image_proxy: false
+  limiter: false
+  public_instance: false
+  default_http_headers:
+    Access-Control-Allow-Origin: "*"
+    Access-Control-Allow-Methods: "GET, OPTIONS"
+    Access-Control-Allow-Headers: "Content-Type, X-Requested-With"
 
 search:
   default_lang: "ar-SA"
+  safe_search: 0
+  formats:
+    - html
+    - json
   languages:
     - "ar-SA"
     - "ar"
     - "en-US"
     - "all"
 
+outgoing:
+  request_timeout: 6.0
+  max_request_timeout: 10.0
+
 ui:
   default_locale: "ar"
   default_theme: simple
 
+engines:
+  # These fail at startup in containerised deployments — disable to clean logs.
+  - name: wikidata
+    disabled: true
+  - name: ahmia
+    disabled: true
+  - name: torch
+    disabled: true

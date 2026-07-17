@@ -50,6 +50,7 @@ COPY --chown=977:977 --from=builder /usr/local/searxng/searx/ ./searx/
 COPY --chown=977:977 ./container/entrypoint.sh \
                       ./container/render-entrypoint.sh \
                       ./container/settings.template.yml \
+                      ./container/limiter.toml \
                       ./
 
 RUN chmod +x ./render-entrypoint.sh
