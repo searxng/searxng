@@ -30,7 +30,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-06-13 11:31+0000\n"
+"POT-Creation-Date: 2026-07-15 15:45+0000\n"
 "PO-Revision-Date: 2026-05-19 12:08+0000\n"
 "Last-Translator: return42 <return42@noreply.codeberg.org>\n"
 "Language: ro\n"
@@ -84,7 +84,7 @@ msgid "videos"
 msgstr "videouri"
 
 #. CATEGORY_NAMES['RADIO']
-#: searx/engines/radio_browser.py:159 searx/searxng.msg
+#: searx/engines/radio_browser.py:160 searx/searxng.msg
 msgid "radio"
 msgstr "radio"
 
@@ -558,7 +558,7 @@ msgstr "răspuns"
 msgid "No item found"
 msgstr "Niciun element găsit"
 
-#: searx/engines/qwant.py:258
+#: searx/engines/qwant.py:286
 #: searx/templates/simple/result_templates/images.html:62 searx/webapp.py:328
 msgid "Source"
 msgstr "Sursă"
@@ -654,7 +654,7 @@ msgstr "Generează valori aleatoare diferite"
 msgid "Compute {func} of the arguments"
 msgstr "Calculați {func} argumentelor"
 
-#: searx/engines/boardreader.py:107
+#: searx/engines/boardreader.py:108
 #, python-brace-format
 msgid "Posted by {author}"
 msgstr ""
@@ -672,19 +672,19 @@ msgstr "{title} (OBSOLETE)"
 msgid "This entry has been superseded by"
 msgstr "Această intrare a fost inlocuită de"
 
-#: searx/engines/qwant.py:260
+#: searx/engines/qwant.py:288
 msgid "Channel"
 msgstr "Canal"
 
-#: searx/engines/radio_browser.py:161
+#: searx/engines/radio_browser.py:162
 msgid "bitrate"
 msgstr "rata de biți"
 
-#: searx/engines/radio_browser.py:162
+#: searx/engines/radio_browser.py:163
 msgid "votes"
 msgstr "voturi"
 
-#: searx/engines/radio_browser.py:163
+#: searx/engines/radio_browser.py:164
 msgid "clicks"
 msgstr "click-uri"
 
@@ -719,15 +719,15 @@ msgstr ""
 msgid "The image could not be downloaded."
 msgstr "Imaginea nu a putut fi descărcată."
 
-#: searx/engines/zlibrary.py:79
+#: searx/engines/zlibrary.py:80
 msgid "Language"
 msgstr "Limba"
 
-#: searx/engines/zlibrary.py:80
+#: searx/engines/zlibrary.py:81
 msgid "Book rating"
 msgstr "Recenzia cărții"
 
-#: searx/engines/zlibrary.py:81
+#: searx/engines/zlibrary.py:82
 msgid "File quality"
 msgstr "Calitatea fișierului"
 
@@ -1018,6 +1018,7 @@ msgid "Privacy"
 msgstr "Confidențialitate"
 
 #: searx/templates/simple/preferences.html:235
+#: searx/templates/simple/result_templates/images.html:63
 msgid "Engines"
 msgstr "Motoare de căutare"
 
@@ -1663,10 +1664,6 @@ msgstr ""
 #: searx/templates/simple/result_templates/images.html:56
 msgid "original format"
 msgstr ""
-
-#: searx/templates/simple/result_templates/images.html:63
-msgid "Engine"
-msgstr "Motor"
 
 #: searx/templates/simple/result_templates/images.html:64
 msgid "View source"
@@ -2443,4 +2440,7 @@ msgstr "ascunde video"
 
 #~ msgid "Format"
 #~ msgstr "Format"
+
+#~ msgid "Engine"
+#~ msgstr "Motor"
 
