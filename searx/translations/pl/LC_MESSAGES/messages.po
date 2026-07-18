@@ -35,21 +35,20 @@
 # JanDziaslo <jandziaslo@noreply.codeberg.org>, 2026.
 msgid ""
 msgstr ""
-"Project-Id-Version: searx\n"
+"Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-06-13 11:31+0000\n"
+"POT-Creation-Date: 2026-07-15 15:45+0000\n"
 "PO-Revision-Date: 2026-06-17 20:19+0000\n"
 "Last-Translator: return42 <return42@noreply.codeberg.org>\n"
-"Language-Team: Polish <https://translate.codeberg.org/projects/searxng/"
-"searxng/pl/>\n"
 "Language: pl\n"
-"MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=utf-8\n"
-"Content-Transfer-Encoding: 8bit\n"
+"Language-Team: Polish "
+"<https://translate.codeberg.org/projects/searxng/searxng/pl/>\n"
 "Plural-Forms: nplurals=4; plural=(n==1 ? 0 : (n%10>=2 && n%10<=4) && "
 "(n%100<12 || n%100>14) ? 1 : n!=1 && (n%10>=0 && n%10<=1) || (n%10>=5 && "
 "n%10<=9) || (n%100>=12 && n%100<=14) ? 2 : 3);\n"
-"X-Generator: Weblate 2026.6.1\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.18.0\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
@@ -93,7 +92,7 @@ msgid "videos"
 msgstr "filmy"
 
 #. CATEGORY_NAMES['RADIO']
-#: searx/engines/radio_browser.py:159 searx/searxng.msg
+#: searx/engines/radio_browser.py:160 searx/searxng.msg
 msgid "radio"
 msgstr "radio"
 
@@ -567,7 +566,7 @@ msgstr "odebrany"
 msgid "No item found"
 msgstr "Nie znaleziono elementu"
 
-#: searx/engines/qwant.py:258
+#: searx/engines/qwant.py:286
 #: searx/templates/simple/result_templates/images.html:62 searx/webapp.py:328
 msgid "Source"
 msgstr "Źródło"
@@ -663,7 +662,7 @@ msgstr "Wygeneruj różne wartości losowe"
 msgid "Compute {func} of the arguments"
 msgstr "Oblicz {func} dla argumentów"
 
-#: searx/engines/boardreader.py:107
+#: searx/engines/boardreader.py:108
 #, python-brace-format
 msgid "Posted by {author}"
 msgstr "Zamieszczone przez {author}"
@@ -681,19 +680,19 @@ msgstr "{title} (PRZESTARZAŁY)"
 msgid "This entry has been superseded by"
 msgstr "Ten wpis został zastąpiony przez"
 
-#: searx/engines/qwant.py:260
+#: searx/engines/qwant.py:288
 msgid "Channel"
 msgstr "Kanał"
 
-#: searx/engines/radio_browser.py:161
+#: searx/engines/radio_browser.py:162
 msgid "bitrate"
 msgstr "bitrate"
 
-#: searx/engines/radio_browser.py:162
+#: searx/engines/radio_browser.py:163
 msgid "votes"
 msgstr "głosy"
 
-#: searx/engines/radio_browser.py:163
+#: searx/engines/radio_browser.py:164
 msgid "clicks"
 msgstr "kliknięcia"
 
@@ -728,15 +727,15 @@ msgstr ""
 msgid "The image could not be downloaded."
 msgstr "Nie można pobrać obrazu."
 
-#: searx/engines/zlibrary.py:79
+#: searx/engines/zlibrary.py:80
 msgid "Language"
 msgstr "Język"
 
-#: searx/engines/zlibrary.py:80
+#: searx/engines/zlibrary.py:81
 msgid "Book rating"
 msgstr "Ocena książki"
 
-#: searx/engines/zlibrary.py:81
+#: searx/engines/zlibrary.py:82
 msgid "File quality"
 msgstr "Jakość pliku"
 
@@ -1029,6 +1028,7 @@ msgid "Privacy"
 msgstr "Prywatność"
 
 #: searx/templates/simple/preferences.html:235
+#: searx/templates/simple/result_templates/images.html:63
 msgid "Engines"
 msgstr "Wyszukiwarki"
 
@@ -1674,10 +1674,6 @@ msgstr "Formaty obrazów"
 #: searx/templates/simple/result_templates/images.html:56
 msgid "original format"
 msgstr "oryginalny format"
-
-#: searx/templates/simple/result_templates/images.html:63
-msgid "Engine"
-msgstr "Wyszukiwarka"
 
 #: searx/templates/simple/result_templates/images.html:64
 msgid "View source"
@@ -2434,3 +2430,7 @@ msgstr "ukryj wideo"
 
 #~ msgid "Format"
 #~ msgstr "Format"
+
+#~ msgid "Engine"
+#~ msgstr "Wyszukiwarka"
+

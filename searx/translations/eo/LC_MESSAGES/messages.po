@@ -23,7 +23,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-06-13 11:31+0000\n"
+"POT-Creation-Date: 2026-07-15 15:45+0000\n"
 "PO-Revision-Date: 2026-05-19 12:07+0000\n"
 "Last-Translator: return42 <return42@noreply.codeberg.org>\n"
 "Language: eo\n"
@@ -76,7 +76,7 @@ msgid "videos"
 msgstr "videoj"
 
 #. CATEGORY_NAMES['RADIO']
-#: searx/engines/radio_browser.py:159 searx/searxng.msg
+#: searx/engines/radio_browser.py:160 searx/searxng.msg
 msgid "radio"
 msgstr "radio"
 
@@ -550,7 +550,7 @@ msgstr ""
 msgid "No item found"
 msgstr "Nenio trovita"
 
-#: searx/engines/qwant.py:258
+#: searx/engines/qwant.py:286
 #: searx/templates/simple/result_templates/images.html:62 searx/webapp.py:328
 msgid "Source"
 msgstr "Fonto"
@@ -646,7 +646,7 @@ msgstr "Generi diversajn hazardajn valorojn"
 msgid "Compute {func} of the arguments"
 msgstr ""
 
-#: searx/engines/boardreader.py:107
+#: searx/engines/boardreader.py:108
 #, python-brace-format
 msgid "Posted by {author}"
 msgstr ""
@@ -664,19 +664,19 @@ msgstr "{title} (MALAKTUALA)"
 msgid "This entry has been superseded by"
 msgstr "Tiu ĉi enigo estis anstataŭigita per"
 
-#: searx/engines/qwant.py:260
+#: searx/engines/qwant.py:288
 msgid "Channel"
 msgstr "Kanalo"
 
-#: searx/engines/radio_browser.py:161
+#: searx/engines/radio_browser.py:162
 msgid "bitrate"
 msgstr "bito-rapido"
 
-#: searx/engines/radio_browser.py:162
+#: searx/engines/radio_browser.py:163
 msgid "votes"
 msgstr "voĉoj"
 
-#: searx/engines/radio_browser.py:163
+#: searx/engines/radio_browser.py:164
 msgid "clicks"
 msgstr "klakoj"
 
@@ -711,15 +711,15 @@ msgstr ""
 msgid "The image could not be downloaded."
 msgstr "La bildo ne eblis elŝuti."
 
-#: searx/engines/zlibrary.py:79
+#: searx/engines/zlibrary.py:80
 msgid "Language"
 msgstr "Lingvo"
 
-#: searx/engines/zlibrary.py:80
+#: searx/engines/zlibrary.py:81
 msgid "Book rating"
 msgstr "Taksado de libro"
 
-#: searx/engines/zlibrary.py:81
+#: searx/engines/zlibrary.py:82
 msgid "File quality"
 msgstr "Dosiera kvalito"
 
@@ -1002,6 +1002,7 @@ msgid "Privacy"
 msgstr "Privateco"
 
 #: searx/templates/simple/preferences.html:235
+#: searx/templates/simple/result_templates/images.html:63
 msgid "Engines"
 msgstr "Serĉiloj"
 
@@ -1639,10 +1640,6 @@ msgstr ""
 #: searx/templates/simple/result_templates/images.html:56
 msgid "original format"
 msgstr ""
-
-#: searx/templates/simple/result_templates/images.html:63
-msgid "Engine"
-msgstr "Serĉilo"
 
 #: searx/templates/simple/result_templates/images.html:64
 msgid "View source"
@@ -2374,4 +2371,7 @@ msgstr "kaŝi videojn"
 
 #~ msgid "Format"
 #~ msgstr "Formato"
+
+#~ msgid "Engine"
+#~ msgstr "Serĉilo"
 
