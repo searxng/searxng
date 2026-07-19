@@ -181,22 +181,48 @@ gecko.driver() {
             build_msg INSTALL "geckodriver already installed"
             return
         fi
-        PLATFORM="$(python -c 'import platform; print(platform.system().lower(), platform.architecture()[0])')"
+        PLATFORM="$(python -c 'import platform; print(platform.system().lower(), platform.machine().lower())')"
+        EXT="tar.gz"
         case "$PLATFORM" in
-            "linux 32bit" | "linux2 32bit") ARCH="linux32" ;;
-            "linux 64bit" | "linux2 64bit") ARCH="linux64" ;;
-            "windows 32 bit") ARCH="win32" ;;
-            "windows 64 bit") ARCH="win64" ;;
-            "mac 64bit") ARCH="macos" ;;
+            "linux x86_64") ARCH="linux64" ;;
+            "linux aarch64") ARCH="linux-aarch64" ;;
+            "darwin x86_64") ARCH="macos" ;;
+            "darwin arm64") ARCH="macos-aarch64" ;;
+            "windows amd64")
+                ARCH="win64"
+                EXT="zip"
+                ;;
+            "windows arm64")
+                ARCH="win-aarch64"
+                EXT="zip"
+                ;;
+            "windows x86")
+                ARCH="win32"
+                EXT="zip"
+                ;;
+            *)
+                err_msg "gecko.driver: unsupported platform: ${PLATFORM}"
+                return 42
+                ;;
         esac
-        GECKODRIVER_URL="https://github.com/mozilla/geckodriver/releases/download/$GECKODRIVER_VERSION/geckodriver-$GECKODRIVER_VERSION-$ARCH.tar.gz"
+        GECKODRIVER_URL="https://github.com/mozilla/geckodriver/releases/download/$GECKODRIVER_VERSION/geckodriver-$GECKODRIVER_VERSION-$ARCH.$EXT"
 
         build_msg GECKO "Installing ${PY_ENV_BIN}/geckodriver from $GECKODRIVER_URL"
 
         FILE="$(mktemp)"
-        wget -qO "$FILE" -- "$GECKODRIVER_URL" && tar xz -C "${PY_ENV_BIN}" -f "$FILE" geckodriver
+        BIN="geckodriver"
+        if [ "$EXT" = "zip" ]; then
+            BIN="geckodriver.exe"
+            if ! command -v unzip > /dev/null 2>&1; then
+                err_msg "gecko.driver: 'unzip' is required to install geckodriver on Windows"
+                return 42
+            fi
+            wget -qO "$FILE" -- "$GECKODRIVER_URL" && unzip -o -q "$FILE" "$BIN" -d "${PY_ENV_BIN}"
+        else
+            wget -qO "$FILE" -- "$GECKODRIVER_URL" && tar xz -C "${PY_ENV_BIN}" -f "$FILE" "$BIN"
+        fi
         rm -- "$FILE"
-        chmod 755 -- "${PY_ENV_BIN}/geckodriver"
+        chmod -- 755 "${PY_ENV_BIN}/${BIN}"
     )
     dump_return $?
 }
