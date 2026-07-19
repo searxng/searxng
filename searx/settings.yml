@@ -2224,6 +2224,14 @@ engines:
     about:
       website: https://searchmysite.net
 
+  - name: sec edgar
+    engine: sec_edgar
+    shortcut: sec
+    # https://docs.searxng.org/dev/engines/online/sec_edgar.html
+    # limit results to a comma separated list of EDGAR form types
+    # sec_edgar_forms: "10-K,10-Q,8-K"
+    disabled: true
+
   - name: selfhst icons
     engine: selfhst
     shortcut: si
