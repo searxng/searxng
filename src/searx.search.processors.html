@@ -1,0 +1,900 @@
+<!doctype html>
+<html class="no-js" lang="en" data-content_root="../">
+  <head><meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="index" title="Index" href="../genindex.html"><link rel="search" title="Search" href="../search.html"><link rel="next" title="Settings Loader" href="searx.settings.html"><link rel="prev" title="Search" href="searx.search.html">
+        <link rel="prefetch" href="../_static/searxng-wordmark.svg" as="image">
+
+    <!-- Generated with Sphinx 9.1.0 and Furo 2025.12.19 -->
+        <title>Search processors - SearXNG Documentation (2026.7.22+ef8f6470e)</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=d111a655" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=7bdb33bb" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?v=8dab3a3b" />
+    <link rel="stylesheet" type="text/css" href="../_static/searxng.css?v=4b1b1f10" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f2f2f2;
+  --color-code-foreground: #1e1e1e;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
+    <title>Auto light/dark, in light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
+      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
+      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
+      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
+      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
+      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
+      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
+      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
+      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
+      <circle cx="14.5" cy="9.55" r="3.6"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
+    <title>Auto light/dark, in dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
+      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
+      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
+      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
+      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
+      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
+      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
+      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-pencil" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
+      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+      <path d="M13.5 6.5l4 4" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+  <symbol id="svg-eye" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+      <path
+        d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle site navigation sidebar">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc" aria-label="Toggle table of contents sidebar">
+<label class="overlay sidebar-overlay" for="__navigation"></label>
+<label class="overlay toc-overlay" for="__toc"></label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <span class="icon"><svg><use href="#svg-menu"></use></svg></span>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../index.html"><div class="brand">SearXNG Documentation (2026.7.22+ef8f6470e)</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
+          <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+          <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><div class="sidebar-scroll"><a class="sidebar-brand" href="../index.html">
+  <div class="sidebar-logo-container">
+    <img class="sidebar-logo" src="../_static/searxng-wordmark.svg" alt="Logo"/>
+  </div>
+  
+  <span class="sidebar-brand-text">SearXNG Documentation (2026.7.22+ef8f6470e)</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-tree">
+  <ul class="current">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../user/index.html">User information</a><input aria-label="Toggle navigation of User information" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../user/search-syntax.html">Search syntax</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../user/configured_engines.html">Configured Engines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../user/about.html">About SearXNG</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../own-instance.html">Why use a private instance?</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../admin/index.html">Administrator documentation</a><input aria-label="Toggle navigation of Administrator documentation" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../admin/settings/index.html">Settings</a><input aria-label="Toggle navigation of Settings" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../admin/settings/settings.html"><code class="docutils literal notranslate"><span class="pre">settings.yml</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../admin/settings/settings_engines.html"><code class="docutils literal notranslate"><span class="pre">engines:</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../admin/settings/settings_brand.html"><code class="docutils literal notranslate"><span class="pre">brand:</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../admin/settings/settings_general.html"><code class="docutils literal notranslate"><span class="pre">general:</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../admin/settings/settings_search.html"><code class="docutils literal notranslate"><span class="pre">search:</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../admin/settings/settings_server.html"><code class="docutils literal notranslate"><span class="pre">server:</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../admin/settings/settings_ui.html"><code class="docutils literal notranslate"><span class="pre">ui:</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../admin/settings/settings_preferences.html"><code class="docutils literal notranslate"><span class="pre">preferences:</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../admin/settings/settings_redis.html"><code class="docutils literal notranslate"><span class="pre">redis:</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../admin/settings/settings_valkey.html"><code class="docutils literal notranslate"><span class="pre">valkey:</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../admin/settings/settings_outgoing.html"><code class="docutils literal notranslate"><span class="pre">outgoing:</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../admin/settings/settings_categories_as_tabs.html"><code class="docutils literal notranslate"><span class="pre">categories_as_tabs:</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../admin/settings/settings_plugins.html"><code class="docutils literal notranslate"><span class="pre">plugins:</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../admin/installation.html">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../admin/installation-docker.html">Installation container</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../admin/installation-scripts.html">Installation Script</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../admin/installation-searxng.html">Step by step installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../admin/installation-granian.html">Granian</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../admin/installation-uwsgi.html">uWSGI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../admin/installation-nginx.html">NGINX</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../admin/installation-apache.html">Apache</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../admin/update-searxng.html">SearXNG maintenance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../admin/answer-captcha.html">Answer CAPTCHA from server’s IP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../admin/searx.favicons.html">Favicons</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../admin/searx.limiter.html">Limiter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../admin/api.html">Administration API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../admin/architecture.html">Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../admin/plugins.html">List of plugins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../admin/buildhosts.html">Buildhosts</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../dev/index.html">Developer documentation</a><input aria-label="Toggle navigation of Developer documentation" class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../dev/quickstart.html">Development Quickstart</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../dev/commits.html">Git Commits &amp; Change Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../dev/contribution_guide.html">How to contribute</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../dev/extended_types.html">Extended Types</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../dev/engines/index.html">Engine Implementations</a><input aria-label="Toggle navigation of Engine Implementations" class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/enginelib.html">Engine Library</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/engines.html">SearXNG’s engines loader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/engine_overview.html">Engine Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/demo/demo_online.html">Demo Online Engine</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/xpath.html">XPath Engine</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/mediawiki.html">MediaWiki Engine</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/json_engine.html">JSON Engine</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/online/500px.html">500px</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/online/adobe_stock.html">Adobe Stock</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/online/alpinelinux.html">Alpine Linux Packages</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/online/annas_archive.html">Anna’s Archive</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/online/archlinux.html">Arch Linux</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/online/arxiv.html">arXiv</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/online/astrophysics_data_system.html">Astrophysics Data System (ADS)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/online/azure.html">Azure Resources</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/online/bing.html">Bing Engines</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/online/bpb.html">Bpb</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/online/brave.html">Brave Engines</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/online/bt4g.html">BT4G</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/online/cara.html">Cara Images</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/online/chinaso.html">ChinaSo</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/online/core.html">CORE</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/online/crossref.html">Crossref</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/online/dailymotion.html">Dailymotion</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/online/discourse.html">Discourse Forums</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/online/duckduckgo.html">DuckDuckGo Engines</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/online/geizhals.html">Geizhals</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/online/gitea.html">Gitea</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/online/github_code.html">Github Code</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/online/gitlab.html">GitLab</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/online/google.html">Google Engines</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/online/huggingface.html">Hugging Face</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/online/kagi.html">Kagi Engines</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/online/lemmy.html">Lemmy</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/online/loc.html">Library of Congress</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/online/marginalia.html">Marginalia Search</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/online/mastodon.html">Mastodon</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/online/moviepilot.html">Moviepilot</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/online/mrs.html">Matrix Rooms Search (MRS)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/online/mwmbl.html">Mwmbl Engine</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/online/odysee.html">Odysee</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/online/openalex.html">OpenAlex</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/online/openlibrary.html">Open Library</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/online/peertube.html">Peertube Engines</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/online/piped.html">Piped</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/online/presearch.html">Presearch Engine</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/online/pubmed.html">PubMed</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/online/qwant.html">Qwant</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/online/radio_browser.html">RadioBrowser</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/online/recoll.html">Recoll Engine</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/online/repology.html">Repology</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/online/reuters.html">Reuters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/online/semantic_scholar.html">Semantic Scholar</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/online/soundcloud.html">Soundcloud</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/online/sourcehut.html">Sourcehut</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/online/springer.html">Springer Nature</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/online/startpage.html">Startpage Engines</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/online/tagesschau.html">Tagesschau API</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/online/torznab.html">Torznab WebAPI</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/online/tubearchivist.html">Tube Archivist</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/online/void.html">Void Linux binary packages</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/online/wallhaven.html">Wallhaven</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/online/wikipedia.html">Wikimedia</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/online/yacy.html">Yacy</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/online/yahoo.html">Yahoo Engine</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/online/zlibrary.html">Z-Library</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/offline_concept.html">Offline Concept</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/demo/demo_offline.html">Demo Offline Engine</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/offline/command-line-engines.html">Command Line Engines</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/offline/nosql-engines.html">NoSQL databases</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/offline/search-indexer-engines.html">Local Search APIs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/offline/sql-engines.html">SQL Engines</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/engines/online_url_search/tineye.html">Tineye</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../dev/result_types/index.html">Result Types</a><input aria-label="Toggle navigation of Result Types" class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../dev/result_types/base_result.html">Result</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../dev/result_types/main_result.html">Main Search Results</a><input aria-label="Toggle navigation of Main Search Results" class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../dev/result_types/main/mainresult.html">Main Results</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../dev/result_types/main/keyvalue.html">Key-Value Results</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../dev/result_types/main/code.html">Code Results</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../dev/result_types/main/paper.html">Paper Results</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../dev/result_types/main/file.html">File Results</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../dev/result_types/main/image.html">Image Results</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/result_types/answer.html">Answer Results</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/result_types/correction.html">Correction Results</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/result_types/suggestion.html">Suggestion Results</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/result_types/infobox.html">Infobox Results</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../dev/templates.html">Simple Theme Templates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../dev/search_api.html">Search API</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../dev/plugins/index.html">Plugins</a><input aria-label="Toggle navigation of Plugins" class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../dev/plugins/development.html">Plugin Development</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../dev/plugins/builtins.html">Built-in Plugins</a><input aria-label="Toggle navigation of Built-in Plugins" class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../dev/plugins/calculator.html">Calculator</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../dev/plugins/hash_plugin.html">Hash Values</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../dev/plugins/hostnames.html">Hostnames</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../dev/plugins/infinite_scroll.html">Infinite scroll</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../dev/plugins/self_info.html">Self-Info</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../dev/plugins/tor_check.html">Tor check</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../dev/plugins/unit_converter.html">Unit Converter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../dev/plugins/time_zone.html">Time Zone</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../dev/answerers/index.html">Answerers</a><input aria-label="Toggle navigation of Answerers" class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../dev/answerers/development.html">Answerer Development</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../dev/answerers/builtins.html">Built-in Answerers</a><input aria-label="Toggle navigation of Built-in Answerers" class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" role="switch" type="checkbox"/><label for="toctree-checkbox-11"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../dev/answerers/random.html">Random</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../dev/answerers/statistics.html">Statistics</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../dev/translation.html">Translation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../dev/makefile.html">Makefile &amp; <code class="docutils literal notranslate"><span class="pre">./manage</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../dev/reST.html">reST primer</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../dev/searxng_extra/index.html">Tooling box <code class="docutils literal notranslate"><span class="pre">searxng_extra</span></code></a><input aria-label="Toggle navigation of Tooling box searxng_extra" class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" role="switch" type="checkbox"/><label for="toctree-checkbox-12"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../dev/searxng_extra/update.html"><code class="docutils literal notranslate"><span class="pre">searxng_extra/update/</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../utils/index.html">DevOps tooling box</a><input aria-label="Toggle navigation of DevOps tooling box" class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" role="switch" type="checkbox"/><label for="toctree-checkbox-13"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../utils/searxng.sh.html"><code class="docutils literal notranslate"><span class="pre">utils/searxng.sh</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1 current has-children"><a class="reference internal" href="index.html">Source-Code</a><input aria-label="Toggle navigation of Source-Code" checked="" class="toctree-checkbox" id="toctree-checkbox-14" name="toctree-checkbox-14" role="switch" type="checkbox"/><label for="toctree-checkbox-14"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="searx.babel_extract.html">Custom message extractor (i18n)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.botdetection.html">Bot Detection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.cache.html">Caches</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.exceptions.html">SearXNG Exceptions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.favicons.html">Favicons (source)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.infopage.html">Online <code class="docutils literal notranslate"><span class="pre">/info</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.locales.html">Locales</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.search.html">Search</a></li>
+<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">Search processors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.settings.html">Settings Loader</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.sqlitedb.html">SQLite DB</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.utils.html">Utility functions for the engines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.valkeydb.html">Valkey DB</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.valkeylib.html">Valkey Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searx.weather.html">Weather</a></li>
+</ul>
+</li>
+</ul>
+
+</div>
+</div>
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="view-this-page">
+  <a class="muted-link" href="https://github.com/searxng/searxng/blob/master/docs/src/searx.search.processors.rst?plain=true" title="View this page">
+    <svg><use href="#svg-eye"></use></svg>
+    <span class="visually-hidden">View this page</span>
+  </a>
+</div><div class="edit-this-page">
+  <a class="muted-link" href="https://github.com/searxng/searxng/edit/master/docs/src/searx.search.processors.rst" rel="edit" title="Edit this page">
+    <svg><use href="#svg-pencil"></use></svg>
+    <span class="visually-hidden">Edit this page</span>
+  </a>
+</div><div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
+              <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+              <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
+          </label>
+        </div>
+        <article role="main" id="furo-main-content">
+          <section id="search-processors">
+<span id="searx-search-processors"></span><h1>Search processors<a class="headerlink" href="#search-processors" title="Link to this heading">¶</a></h1>
+<section id="module-searx.search.processors.abstract">
+<span id="abstract-processor-class"></span><h2>Abstract processor class<a class="headerlink" href="#module-searx.search.processors.abstract" title="Link to this heading">¶</a></h2>
+<p>Abstract base classes for all engine processors.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="searx.search.processors.abstract.RequestParams">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">searx.search.processors.abstract.</span></span><span class="sig-name descname"><span class="pre">RequestParams</span></span><a class="reference internal" href="../_modules/searx/search/processors/abstract.html#RequestParams"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.search.processors.abstract.RequestParams" title="Link to this definition">¶</a></dt>
+<dd><p>Basic quantity of the Request parameters of all engine types.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="searx.search.processors.abstract.RequestParams.query">
+<span class="sig-name descname"><span class="pre">query</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span><a class="headerlink" href="#searx.search.processors.abstract.RequestParams.query" title="Link to this definition">¶</a></dt>
+<dd><p>Search term, stripped of search syntax arguments.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="searx.search.processors.abstract.RequestParams.category">
+<span class="sig-name descname"><span class="pre">category</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span><a class="headerlink" href="#searx.search.processors.abstract.RequestParams.category" title="Link to this definition">¶</a></dt>
+<dd><p>Current category, like <code class="docutils literal notranslate"><span class="pre">general</span></code>.</p>
+<div class="admonition hint">
+<p class="admonition-title">Hint</p>
+<p>This field is deprecated, don’t use it in further implementations.</p>
+</div>
+<p>This field is currently <em>arbitrarily</em> filled with the name of “one””
+category (the name of the first category of the engine). In practice,
+however, it is not clear what this “one” category should be; in principle,
+multiple categories can also be activated in a search.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="searx.search.processors.abstract.RequestParams.pageno">
+<span class="sig-name descname"><span class="pre">pageno</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><a class="headerlink" href="#searx.search.processors.abstract.RequestParams.pageno" title="Link to this definition">¶</a></dt>
+<dd><p>Current page number, where the first page is <code class="docutils literal notranslate"><span class="pre">1</span></code>.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="searx.search.processors.abstract.RequestParams.safesearch">
+<span class="sig-name descname"><span class="pre">safesearch</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Literal" title="(in Python v3.14)"><span class="pre">Literal</span></a><span class="p"><span class="pre">[</span></span><span class="m"><span class="pre">0</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="m"><span class="pre">1</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="m"><span class="pre">2</span></span><span class="p"><span class="pre">]</span></span></span><a class="headerlink" href="#searx.search.processors.abstract.RequestParams.safesearch" title="Link to this definition">¶</a></dt>
+<dd><p>Safe-Search filter (0:normal, 1:moderate, 2:strict).</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="searx.search.processors.abstract.RequestParams.time_range">
+<span class="sig-name descname"><span class="pre">time_range</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Literal" title="(in Python v3.14)"><span class="pre">Literal</span></a><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'day'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'week'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'month'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'year'</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><a class="headerlink" href="#searx.search.processors.abstract.RequestParams.time_range" title="Link to this definition">¶</a></dt>
+<dd><p>Time-range filter.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="searx.search.processors.abstract.RequestParams.engine_data">
+<span class="sig-name descname"><span class="pre">engine_data</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.14)"><span class="pre">dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></span><a class="headerlink" href="#searx.search.processors.abstract.RequestParams.engine_data" title="Link to this definition">¶</a></dt>
+<dd><p>Allows the transfer of (engine specific) data to the next request of the
+client.  In the case of the <code class="docutils literal notranslate"><span class="pre">online</span></code> engines, this data is delivered to
+the client via the HTML <code class="docutils literal notranslate"><span class="pre">&lt;form&gt;</span></code> in response.</p>
+<p>If the client then sends this form back to the server with the next request,
+this data will be available.</p>
+<p>This makes it possible to carry data from one request to the next without a
+session context, but this feature (is fragile) and should only be used in
+exceptional cases. See also <a class="reference internal" href="../dev/templates.html#engine-data"><span class="std std-ref">engine_data_form</span></a>.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="searx.search.processors.abstract.RequestParams.searxng_locale">
+<span class="sig-name descname"><span class="pre">searxng_locale</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span><a class="headerlink" href="#searx.search.processors.abstract.RequestParams.searxng_locale" title="Link to this definition">¶</a></dt>
+<dd><p>Language / locale filter from the search request, a string like ‘all’,
+‘en’, ‘en-US’, ‘zh-HK’ .. and others, for more details see
+<a class="reference internal" href="searx.locales.html#module-searx.locales" title="searx.locales"><code class="xref py py-obj docutils literal notranslate"><span class="pre">searx.locales</span></code></a>.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="searx.search.processors.abstract.SuspendedStatus">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">searx.search.processors.abstract.</span></span><span class="sig-name descname"><span class="pre">SuspendedStatus</span></span><a class="reference internal" href="../_modules/searx/search/processors/abstract.html#SuspendedStatus"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.search.processors.abstract.SuspendedStatus" title="Link to this definition">¶</a></dt>
+<dd><p>Class to handle suspend state.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="searx.search.processors.abstract.EngineProcessor">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">searx.search.processors.abstract.</span></span><span class="sig-name descname"><span class="pre">EngineProcessor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">engine</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../dev/engines/enginelib.html#searx.enginelib.Engine" title="searx.enginelib.Engine"><span class="pre">Engine</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/types.html#types.ModuleType" title="(in Python v3.14)"><span class="pre">types.ModuleType</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/searx/search/processors/abstract.html#EngineProcessor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.search.processors.abstract.EngineProcessor" title="Link to this definition">¶</a></dt>
+<dd><p>Base classes used for all types of request processors.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="searx.search.processors.abstract.EngineProcessor.initialize">
+<span class="sig-name descname"><span class="pre">initialize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">callback</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Callable" title="(in Python v3.14)"><span class="pre">Callable</span></a><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#searx.search.processors.abstract.EngineProcessor" title="searx.search.processors.abstract.EngineProcessor"><span class="pre">EngineProcessor</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/searx/search/processors/abstract.html#EngineProcessor.initialize"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.search.processors.abstract.EngineProcessor.initialize" title="Link to this definition">¶</a></dt>
+<dd><p>Initialization of <em>this</em> <a class="reference internal" href="#searx.search.processors.abstract.EngineProcessor" title="searx.search.processors.abstract.EngineProcessor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">EngineProcessor</span></code></a>.</p>
+<p>If processor’s engine has an <code class="docutils literal notranslate"><span class="pre">init</span></code> method, it is called first.
+Engine’s <code class="docutils literal notranslate"><span class="pre">init</span></code> method is executed in a thread, meaning that the
+<em>registration</em> (the <code class="docutils literal notranslate"><span class="pre">callback</span></code>) may occur later and is not already
+established by the return from this registration method.</p>
+<p>Registration only takes place if the <code class="docutils literal notranslate"><span class="pre">init</span></code> method is not available or
+is successfully run through.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="searx.search.processors.abstract.EngineProcessor.get_params">
+<span class="sig-name descname"><span class="pre">get_params</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">search_query</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="searx.search.html#searx.search.models.SearchQuery" title="searx.search.models.SearchQuery"><span class="pre">SearchQuery</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">engine_category</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#searx.search.processors.abstract.RequestParams" title="searx.search.processors.abstract.RequestParams"><span class="pre">RequestParams</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span></span><a class="reference internal" href="../_modules/searx/search/processors/abstract.html#EngineProcessor.get_params"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.search.processors.abstract.EngineProcessor.get_params" title="Link to this definition">¶</a></dt>
+<dd><p>Returns a dictionary with the <a class="reference internal" href="../dev/engines/engine_overview.html#engine-request-arguments"><span class="std std-ref">request parameters</span></a> (<a class="reference internal" href="#searx.search.processors.abstract.RequestParams" title="searx.search.processors.abstract.RequestParams"><code class="xref py py-obj docutils literal notranslate"><span class="pre">RequestParams</span></code></a>), if the search condition
+is not supported by the engine, <code class="docutils literal notranslate"><span class="pre">None</span></code> is returned:</p>
+<ul class="simple">
+<li><dl class="simple">
+<dt><em>time range</em> filter in search conditions, but the engine does not have</dt><dd><p>a corresponding filter</p>
+</dd>
+</dl>
+</li>
+<li><p>page number &gt; 1 when engine does not support paging</p></li>
+<li><p>page number &gt; <code class="docutils literal notranslate"><span class="pre">max_page</span></code></p></li>
+</ul>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-searx.search.processors.offline">
+<span id="offline-processor"></span><h2>Offline processor<a class="headerlink" href="#module-searx.search.processors.offline" title="Link to this heading">¶</a></h2>
+<p>Processors for engine-type: <code class="docutils literal notranslate"><span class="pre">offline</span></code></p>
+<dl class="py class">
+<dt class="sig sig-object py" id="searx.search.processors.offline.OfflineProcessor">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">searx.search.processors.offline.</span></span><span class="sig-name descname"><span class="pre">OfflineProcessor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">engine</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../dev/engines/enginelib.html#searx.enginelib.Engine" title="searx.enginelib.Engine"><span class="pre">Engine</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/types.html#types.ModuleType" title="(in Python v3.14)"><span class="pre">types.ModuleType</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/searx/search/processors/offline.html#OfflineProcessor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.search.processors.offline.OfflineProcessor" title="Link to this definition">¶</a></dt>
+<dd><p>Processor class used by <code class="docutils literal notranslate"><span class="pre">offline</span></code> engines.</p>
+</dd></dl>
+
+</section>
+<section id="module-searx.search.processors.online">
+<span id="online-processor"></span><h2>Online processor<a class="headerlink" href="#module-searx.search.processors.online" title="Link to this heading">¶</a></h2>
+<p>Processor used for <code class="docutils literal notranslate"><span class="pre">online</span></code> engines.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="searx.search.processors.online.OnlineProcessor">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">searx.search.processors.online.</span></span><span class="sig-name descname"><span class="pre">OnlineProcessor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">engine</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../dev/engines/enginelib.html#searx.enginelib.Engine" title="searx.enginelib.Engine"><span class="pre">Engine</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/types.html#types.ModuleType" title="(in Python v3.14)"><span class="pre">types.ModuleType</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/searx/search/processors/online.html#OnlineProcessor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.search.processors.online.OnlineProcessor" title="Link to this definition">¶</a></dt>
+<dd><p>Processor class for <code class="docutils literal notranslate"><span class="pre">online</span></code> engines.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="searx.search.processors.online.OnlineProcessor.init_engine">
+<span class="sig-name descname"><span class="pre">init_engine</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span></span><a class="reference internal" href="../_modules/searx/search/processors/online.html#OnlineProcessor.init_engine"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.search.processors.online.OnlineProcessor.init_engine" title="Link to this definition">¶</a></dt>
+<dd><p>This method is called in a thread, and before the base method is
+called, the network must be set up for the <code class="docutils literal notranslate"><span class="pre">online</span></code> engines.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="searx.search.processors.online.OnlineProcessor.get_params">
+<span class="sig-name descname"><span class="pre">get_params</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">search_query</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="searx.search.html#searx.search.models.SearchQuery" title="searx.search.models.SearchQuery"><span class="pre">SearchQuery</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">engine_category</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#searx.search.processors.online.OnlineParams" title="searx.search.processors.online.OnlineParams"><span class="pre">OnlineParams</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span></span><a class="reference internal" href="../_modules/searx/search/processors/online.html#OnlineProcessor.get_params"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.search.processors.online.OnlineProcessor.get_params" title="Link to this definition">¶</a></dt>
+<dd><p>Returns a dictionary with the <a class="reference internal" href="../dev/engines/engine_overview.html#engine-request-online"><span class="std std-ref">request params</span></a> (<a class="reference internal" href="#searx.search.processors.online.OnlineParams" title="searx.search.processors.online.OnlineParams"><code class="xref py py-obj docutils literal notranslate"><span class="pre">OnlineParams</span></code></a>), if the search condition is not
+supported by the engine, <code class="docutils literal notranslate"><span class="pre">None</span></code> is returned.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="searx.search.processors.online.OnlineParams">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">searx.search.processors.online.</span></span><span class="sig-name descname"><span class="pre">OnlineParams</span></span><a class="reference internal" href="../_modules/searx/search/processors/online.html#OnlineParams"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.search.processors.online.OnlineParams" title="Link to this definition">¶</a></dt>
+<dd><p>Request parameters of a <code class="docutils literal notranslate"><span class="pre">online</span></code> engine.</p>
+</dd></dl>
+
+</section>
+<section id="module-searx.search.processors.online_currency">
+<span id="online-currency-processor"></span><h2>Online currency processor<a class="headerlink" href="#module-searx.search.processors.online_currency" title="Link to this heading">¶</a></h2>
+<p>Processor used for <code class="docutils literal notranslate"><span class="pre">online_currency</span></code> engines.</p>
+<dl class="py data">
+<dt class="sig sig-object py" id="searx.search.processors.online_currency.search_syntax">
+<span class="sig-prename descclassname"><span class="pre">searx.search.processors.online_currency.</span></span><span class="sig-name descname"><span class="pre">search_syntax</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">re.compile('.*?(\\d+(?:\\.\\d+)?)</span> <span class="pre">([^.0-9]+)</span> <span class="pre">(?:in|to)</span> <span class="pre">([^.0-9]+)',</span> <span class="pre">re.IGNORECASE)</span></span><a class="headerlink" href="#searx.search.processors.online_currency.search_syntax" title="Link to this definition">¶</a></dt>
+<dd><p>Search syntax used for from/to currency (e.g. <code class="docutils literal notranslate"><span class="pre">10</span> <span class="pre">usd</span> <span class="pre">to</span> <span class="pre">eur</span></code>)</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="searx.search.processors.online_currency.CurrenciesParams">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">searx.search.processors.online_currency.</span></span><span class="sig-name descname"><span class="pre">CurrenciesParams</span></span><a class="reference internal" href="../_modules/searx/search/processors/online_currency.html#CurrenciesParams"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.search.processors.online_currency.CurrenciesParams" title="Link to this definition">¶</a></dt>
+<dd><p>Currencies request parameters.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="searx.search.processors.online_currency.CurrenciesParams.amount">
+<span class="sig-name descname"><span class="pre">amount</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a></span><a class="headerlink" href="#searx.search.processors.online_currency.CurrenciesParams.amount" title="Link to this definition">¶</a></dt>
+<dd><p>Currency amount to be converted</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="searx.search.processors.online_currency.CurrenciesParams.to_iso4217">
+<span class="sig-name descname"><span class="pre">to_iso4217</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span><a class="headerlink" href="#searx.search.processors.online_currency.CurrenciesParams.to_iso4217" title="Link to this definition">¶</a></dt>
+<dd><p><a class="reference external" href="https://en.wikipedia.org/wiki/ISO_4217">ISO_4217</a> alpha code of the currency used as the basis for conversion.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="searx.search.processors.online_currency.CurrenciesParams.from_iso4217">
+<span class="sig-name descname"><span class="pre">from_iso4217</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span><a class="headerlink" href="#searx.search.processors.online_currency.CurrenciesParams.from_iso4217" title="Link to this definition">¶</a></dt>
+<dd><p><a class="reference external" href="https://en.wikipedia.org/wiki/ISO_4217">ISO_4217</a> alpha code of the currency to be converted.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="searx.search.processors.online_currency.CurrenciesParams.from_name">
+<span class="sig-name descname"><span class="pre">from_name</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span><a class="headerlink" href="#searx.search.processors.online_currency.CurrenciesParams.from_name" title="Link to this definition">¶</a></dt>
+<dd><p>Name of the currency used as the basis for conversion.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="searx.search.processors.online_currency.CurrenciesParams.to_name">
+<span class="sig-name descname"><span class="pre">to_name</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span><a class="headerlink" href="#searx.search.processors.online_currency.CurrenciesParams.to_name" title="Link to this definition">¶</a></dt>
+<dd><p>Name of the currency of the currency to be converted.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="searx.search.processors.online_currency.OnlineCurrenciesParams">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">searx.search.processors.online_currency.</span></span><span class="sig-name descname"><span class="pre">OnlineCurrenciesParams</span></span><a class="reference internal" href="../_modules/searx/search/processors/online_currency.html#OnlineCurrenciesParams"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.search.processors.online_currency.OnlineCurrenciesParams" title="Link to this definition">¶</a></dt>
+<dd><p>Request parameters of a <code class="docutils literal notranslate"><span class="pre">online_currency</span></code> engine.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="searx.search.processors.online_currency.OnlineCurrencyProcessor">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">searx.search.processors.online_currency.</span></span><span class="sig-name descname"><span class="pre">OnlineCurrencyProcessor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">engine</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../dev/engines/enginelib.html#searx.enginelib.Engine" title="searx.enginelib.Engine"><span class="pre">Engine</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/types.html#types.ModuleType" title="(in Python v3.14)"><span class="pre">types.ModuleType</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/searx/search/processors/online_currency.html#OnlineCurrencyProcessor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.search.processors.online_currency.OnlineCurrencyProcessor" title="Link to this definition">¶</a></dt>
+<dd><p>Processor class used by <code class="docutils literal notranslate"><span class="pre">online_currency</span></code> engines.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="searx.search.processors.online_currency.OnlineCurrencyProcessor.get_params">
+<span class="sig-name descname"><span class="pre">get_params</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">search_query</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="searx.search.html#searx.search.models.SearchQuery" title="searx.search.models.SearchQuery"><span class="pre">SearchQuery</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">engine_category</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#searx.search.processors.online_currency.OnlineCurrenciesParams" title="searx.search.processors.online_currency.OnlineCurrenciesParams"><span class="pre">OnlineCurrenciesParams</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span></span><a class="reference internal" href="../_modules/searx/search/processors/online_currency.html#OnlineCurrencyProcessor.get_params"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.search.processors.online_currency.OnlineCurrencyProcessor.get_params" title="Link to this definition">¶</a></dt>
+<dd><p>Returns a dictionary with the <a class="reference internal" href="../dev/engines/engine_overview.html#engine-request-online-currency"><span class="std std-ref">request params</span></a> (<a class="reference internal" href="#searx.search.processors.online_currency.OnlineCurrenciesParams" title="searx.search.processors.online_currency.OnlineCurrenciesParams"><code class="xref py py-obj docutils literal notranslate"><span class="pre">OnlineCurrenciesParams</span></code></a>).  <code class="docutils literal notranslate"><span class="pre">None</span></code> is
+returned if the search query does not match <a class="reference internal" href="#searx.search.processors.online_currency.search_syntax" title="searx.search.processors.online_currency.search_syntax"><code class="xref py py-obj docutils literal notranslate"><span class="pre">search_syntax</span></code></a>.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-searx.search.processors.online_dictionary">
+<span id="online-dictionary-processor"></span><h2>Online dictionary processor<a class="headerlink" href="#module-searx.search.processors.online_dictionary" title="Link to this heading">¶</a></h2>
+<p>Processor used for <code class="docutils literal notranslate"><span class="pre">online_dictionary</span></code> engines.</p>
+<dl class="py data">
+<dt class="sig sig-object py" id="searx.search.processors.online_dictionary.search_syntax">
+<span class="sig-prename descclassname"><span class="pre">searx.search.processors.online_dictionary.</span></span><span class="sig-name descname"><span class="pre">search_syntax</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">re.compile('.*?([a-z]+)-([a-z]+)</span> <span class="pre">(.+)$',</span> <span class="pre">re.IGNORECASE)</span></span><a class="headerlink" href="#searx.search.processors.online_dictionary.search_syntax" title="Link to this definition">¶</a></dt>
+<dd><p>Search syntax used for from/to language (e.g. <code class="docutils literal notranslate"><span class="pre">en-de</span></code>)</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="searx.search.processors.online_dictionary.FromToType">
+<span class="sig-prename descclassname"><span class="pre">searx.search.processors.online_dictionary.</span></span><span class="sig-name descname"><span class="pre">FromToType</span></span><a class="headerlink" href="#searx.search.processors.online_dictionary.FromToType" title="Link to this definition">¶</a></dt>
+<dd><p>Type of a language descriptions in the context of a <code class="docutils literal notranslate"><span class="pre">online_dictionary</span></code>.</p>
+<p>alias of <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="searx.search.processors.online_dictionary.DictParams">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">searx.search.processors.online_dictionary.</span></span><span class="sig-name descname"><span class="pre">DictParams</span></span><a class="reference internal" href="../_modules/searx/search/processors/online_dictionary.html#DictParams"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.search.processors.online_dictionary.DictParams" title="Link to this definition">¶</a></dt>
+<dd><p>Dictionary request parameters.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="searx.search.processors.online_dictionary.DictParams.from_lang">
+<span class="sig-name descname"><span class="pre">from_lang</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></span><a class="headerlink" href="#searx.search.processors.online_dictionary.DictParams.from_lang" title="Link to this definition">¶</a></dt>
+<dd><p>Language from which is to be translated.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="searx.search.processors.online_dictionary.DictParams.to_lang">
+<span class="sig-name descname"><span class="pre">to_lang</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></span><a class="headerlink" href="#searx.search.processors.online_dictionary.DictParams.to_lang" title="Link to this definition">¶</a></dt>
+<dd><p>Language to translate into.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="searx.search.processors.online_dictionary.DictParams.query">
+<span class="sig-name descname"><span class="pre">query</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span><a class="headerlink" href="#searx.search.processors.online_dictionary.DictParams.query" title="Link to this definition">¶</a></dt>
+<dd><p>Search term, cleaned of search syntax (<em>from-to</em> has been removed).</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="searx.search.processors.online_dictionary.OnlineDictParams">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">searx.search.processors.online_dictionary.</span></span><span class="sig-name descname"><span class="pre">OnlineDictParams</span></span><a class="reference internal" href="../_modules/searx/search/processors/online_dictionary.html#OnlineDictParams"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.search.processors.online_dictionary.OnlineDictParams" title="Link to this definition">¶</a></dt>
+<dd><p>Request parameters of a <code class="docutils literal notranslate"><span class="pre">online_dictionary</span></code> engine.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="searx.search.processors.online_dictionary.OnlineDictionaryProcessor">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">searx.search.processors.online_dictionary.</span></span><span class="sig-name descname"><span class="pre">OnlineDictionaryProcessor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">engine</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../dev/engines/enginelib.html#searx.enginelib.Engine" title="searx.enginelib.Engine"><span class="pre">Engine</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/types.html#types.ModuleType" title="(in Python v3.14)"><span class="pre">types.ModuleType</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/searx/search/processors/online_dictionary.html#OnlineDictionaryProcessor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.search.processors.online_dictionary.OnlineDictionaryProcessor" title="Link to this definition">¶</a></dt>
+<dd><p>Processor class for <code class="docutils literal notranslate"><span class="pre">online_dictionary</span></code> engines.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="searx.search.processors.online_dictionary.OnlineDictionaryProcessor.get_params">
+<span class="sig-name descname"><span class="pre">get_params</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">search_query</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="searx.search.html#searx.search.models.SearchQuery" title="searx.search.models.SearchQuery"><span class="pre">SearchQuery</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">engine_category</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#searx.search.processors.online_dictionary.OnlineDictParams" title="searx.search.processors.online_dictionary.OnlineDictParams"><span class="pre">OnlineDictParams</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span></span><a class="reference internal" href="../_modules/searx/search/processors/online_dictionary.html#OnlineDictionaryProcessor.get_params"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.search.processors.online_dictionary.OnlineDictionaryProcessor.get_params" title="Link to this definition">¶</a></dt>
+<dd><p>Returns a dictionary with the <a class="reference internal" href="../dev/engines/engine_overview.html#engine-request-online-dictionary"><span class="std std-ref">request params</span></a> (<a class="reference internal" href="#searx.search.processors.online_dictionary.OnlineDictParams" title="searx.search.processors.online_dictionary.OnlineDictParams"><code class="xref py py-obj docutils literal notranslate"><span class="pre">OnlineDictParams</span></code></a>).  <code class="docutils literal notranslate"><span class="pre">None</span></code> is returned
+if the search query does not match <a class="reference internal" href="#searx.search.processors.online_dictionary.search_syntax" title="searx.search.processors.online_dictionary.search_syntax"><code class="xref py py-obj docutils literal notranslate"><span class="pre">search_syntax</span></code></a>.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-searx.search.processors.online_url_search">
+<span id="online-url-search-processor"></span><h2>Online URL search processor<a class="headerlink" href="#module-searx.search.processors.online_url_search" title="Link to this heading">¶</a></h2>
+<p>Processor used for <code class="docutils literal notranslate"><span class="pre">online_url_search</span></code> engines.</p>
+<dl class="py data">
+<dt class="sig sig-object py" id="searx.search.processors.online_url_search.search_syntax">
+<span class="sig-prename descclassname"><span class="pre">searx.search.processors.online_url_search.</span></span><span class="sig-name descname"><span class="pre">search_syntax</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'data:image':</span> <span class="pre">re.compile('data:image/[^;</span> <span class="pre">]*;base64,[^</span> <span class="pre">]*'),</span> <span class="pre">'ftp':</span> <span class="pre">re.compile('ftps?:\\/\\/[^</span> <span class="pre">]*'),</span> <span class="pre">'http':</span> <span class="pre">re.compile('https?:\\/\\/[^</span> <span class="pre">]*')}</span></span><a class="headerlink" href="#searx.search.processors.online_url_search.search_syntax" title="Link to this definition">¶</a></dt>
+<dd><p>Search syntax used for a URL search.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="searx.search.processors.online_url_search.UrlParams">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">searx.search.processors.online_url_search.</span></span><span class="sig-name descname"><span class="pre">UrlParams</span></span><a class="reference internal" href="../_modules/searx/search/processors/online_url_search.html#UrlParams"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.search.processors.online_url_search.UrlParams" title="Link to this definition">¶</a></dt>
+<dd><p>URL request parameters.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="searx.search.processors.online_url_search.OnlineUrlSearchParams">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">searx.search.processors.online_url_search.</span></span><span class="sig-name descname"><span class="pre">OnlineUrlSearchParams</span></span><a class="reference internal" href="../_modules/searx/search/processors/online_url_search.html#OnlineUrlSearchParams"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.search.processors.online_url_search.OnlineUrlSearchParams" title="Link to this definition">¶</a></dt>
+<dd><p>Request parameters of a <code class="docutils literal notranslate"><span class="pre">online_url_search</span></code> engine.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="searx.search.processors.online_url_search.OnlineUrlSearchProcessor">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">searx.search.processors.online_url_search.</span></span><span class="sig-name descname"><span class="pre">OnlineUrlSearchProcessor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">engine</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../dev/engines/enginelib.html#searx.enginelib.Engine" title="searx.enginelib.Engine"><span class="pre">Engine</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/types.html#types.ModuleType" title="(in Python v3.14)"><span class="pre">types.ModuleType</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/searx/search/processors/online_url_search.html#OnlineUrlSearchProcessor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.search.processors.online_url_search.OnlineUrlSearchProcessor" title="Link to this definition">¶</a></dt>
+<dd><p>Processor class used by <code class="docutils literal notranslate"><span class="pre">online_url_search</span></code> engines.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="searx.search.processors.online_url_search.OnlineUrlSearchProcessor.get_params">
+<span class="sig-name descname"><span class="pre">get_params</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">search_query</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="searx.search.html#searx.search.models.SearchQuery" title="searx.search.models.SearchQuery"><span class="pre">SearchQuery</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">engine_category</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#searx.search.processors.online_url_search.OnlineUrlSearchParams" title="searx.search.processors.online_url_search.OnlineUrlSearchParams"><span class="pre">OnlineUrlSearchParams</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span></span><a class="reference internal" href="../_modules/searx/search/processors/online_url_search.html#OnlineUrlSearchProcessor.get_params"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#searx.search.processors.online_url_search.OnlineUrlSearchProcessor.get_params" title="Link to this definition">¶</a></dt>
+<dd><p>Returns a dictionary with the <a class="reference internal" href="../dev/engines/engine_overview.html#engine-request-online-currency"><span class="std std-ref">request params</span></a> (<a class="reference internal" href="#searx.search.processors.online_url_search.OnlineUrlSearchParams" title="searx.search.processors.online_url_search.OnlineUrlSearchParams"><code class="xref py py-obj docutils literal notranslate"><span class="pre">OnlineUrlSearchParams</span></code></a>).  <code class="docutils literal notranslate"><span class="pre">None</span></code> is
+returned if the search query does not match <a class="reference internal" href="#searx.search.processors.online_url_search.search_syntax" title="searx.search.processors.online_url_search.search_syntax"><code class="xref py py-obj docutils literal notranslate"><span class="pre">search_syntax</span></code></a>.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="searx.settings.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">Settings Loader</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="searx.search.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">Search</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; SearXNG team
+            </div>
+            Made with 
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            <div class="icons">
+              <a class="muted-link " href="https://github.com/searxng/searxng/" aria-label="GitHub">&#x1F4BE;</a>
+              <a class="muted-link " href="https://searx.space/" aria-label="searx.space">&#x1F310;</a>
+              
+            </div>
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">Search processors</a><ul>
+<li><a class="reference internal" href="#module-searx.search.processors.abstract">Abstract processor class</a><ul>
+<li><a class="reference internal" href="#searx.search.processors.abstract.RequestParams"><code class="docutils literal notranslate"><span class="pre">RequestParams</span></code></a><ul>
+<li><a class="reference internal" href="#searx.search.processors.abstract.RequestParams.query"><code class="docutils literal notranslate"><span class="pre">RequestParams.query</span></code></a></li>
+<li><a class="reference internal" href="#searx.search.processors.abstract.RequestParams.category"><code class="docutils literal notranslate"><span class="pre">RequestParams.category</span></code></a></li>
+<li><a class="reference internal" href="#searx.search.processors.abstract.RequestParams.pageno"><code class="docutils literal notranslate"><span class="pre">RequestParams.pageno</span></code></a></li>
+<li><a class="reference internal" href="#searx.search.processors.abstract.RequestParams.safesearch"><code class="docutils literal notranslate"><span class="pre">RequestParams.safesearch</span></code></a></li>
+<li><a class="reference internal" href="#searx.search.processors.abstract.RequestParams.time_range"><code class="docutils literal notranslate"><span class="pre">RequestParams.time_range</span></code></a></li>
+<li><a class="reference internal" href="#searx.search.processors.abstract.RequestParams.engine_data"><code class="docutils literal notranslate"><span class="pre">RequestParams.engine_data</span></code></a></li>
+<li><a class="reference internal" href="#searx.search.processors.abstract.RequestParams.searxng_locale"><code class="docutils literal notranslate"><span class="pre">RequestParams.searxng_locale</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#searx.search.processors.abstract.SuspendedStatus"><code class="docutils literal notranslate"><span class="pre">SuspendedStatus</span></code></a></li>
+<li><a class="reference internal" href="#searx.search.processors.abstract.EngineProcessor"><code class="docutils literal notranslate"><span class="pre">EngineProcessor</span></code></a><ul>
+<li><a class="reference internal" href="#searx.search.processors.abstract.EngineProcessor.initialize"><code class="docutils literal notranslate"><span class="pre">EngineProcessor.initialize()</span></code></a></li>
+<li><a class="reference internal" href="#searx.search.processors.abstract.EngineProcessor.get_params"><code class="docutils literal notranslate"><span class="pre">EngineProcessor.get_params()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-searx.search.processors.offline">Offline processor</a><ul>
+<li><a class="reference internal" href="#searx.search.processors.offline.OfflineProcessor"><code class="docutils literal notranslate"><span class="pre">OfflineProcessor</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-searx.search.processors.online">Online processor</a><ul>
+<li><a class="reference internal" href="#searx.search.processors.online.OnlineProcessor"><code class="docutils literal notranslate"><span class="pre">OnlineProcessor</span></code></a><ul>
+<li><a class="reference internal" href="#searx.search.processors.online.OnlineProcessor.init_engine"><code class="docutils literal notranslate"><span class="pre">OnlineProcessor.init_engine()</span></code></a></li>
+<li><a class="reference internal" href="#searx.search.processors.online.OnlineProcessor.get_params"><code class="docutils literal notranslate"><span class="pre">OnlineProcessor.get_params()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#searx.search.processors.online.OnlineParams"><code class="docutils literal notranslate"><span class="pre">OnlineParams</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-searx.search.processors.online_currency">Online currency processor</a><ul>
+<li><a class="reference internal" href="#searx.search.processors.online_currency.search_syntax"><code class="docutils literal notranslate"><span class="pre">search_syntax</span></code></a></li>
+<li><a class="reference internal" href="#searx.search.processors.online_currency.CurrenciesParams"><code class="docutils literal notranslate"><span class="pre">CurrenciesParams</span></code></a><ul>
+<li><a class="reference internal" href="#searx.search.processors.online_currency.CurrenciesParams.amount"><code class="docutils literal notranslate"><span class="pre">CurrenciesParams.amount</span></code></a></li>
+<li><a class="reference internal" href="#searx.search.processors.online_currency.CurrenciesParams.to_iso4217"><code class="docutils literal notranslate"><span class="pre">CurrenciesParams.to_iso4217</span></code></a></li>
+<li><a class="reference internal" href="#searx.search.processors.online_currency.CurrenciesParams.from_iso4217"><code class="docutils literal notranslate"><span class="pre">CurrenciesParams.from_iso4217</span></code></a></li>
+<li><a class="reference internal" href="#searx.search.processors.online_currency.CurrenciesParams.from_name"><code class="docutils literal notranslate"><span class="pre">CurrenciesParams.from_name</span></code></a></li>
+<li><a class="reference internal" href="#searx.search.processors.online_currency.CurrenciesParams.to_name"><code class="docutils literal notranslate"><span class="pre">CurrenciesParams.to_name</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#searx.search.processors.online_currency.OnlineCurrenciesParams"><code class="docutils literal notranslate"><span class="pre">OnlineCurrenciesParams</span></code></a></li>
+<li><a class="reference internal" href="#searx.search.processors.online_currency.OnlineCurrencyProcessor"><code class="docutils literal notranslate"><span class="pre">OnlineCurrencyProcessor</span></code></a><ul>
+<li><a class="reference internal" href="#searx.search.processors.online_currency.OnlineCurrencyProcessor.get_params"><code class="docutils literal notranslate"><span class="pre">OnlineCurrencyProcessor.get_params()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-searx.search.processors.online_dictionary">Online dictionary processor</a><ul>
+<li><a class="reference internal" href="#searx.search.processors.online_dictionary.search_syntax"><code class="docutils literal notranslate"><span class="pre">search_syntax</span></code></a></li>
+<li><a class="reference internal" href="#searx.search.processors.online_dictionary.FromToType"><code class="docutils literal notranslate"><span class="pre">FromToType</span></code></a></li>
+<li><a class="reference internal" href="#searx.search.processors.online_dictionary.DictParams"><code class="docutils literal notranslate"><span class="pre">DictParams</span></code></a><ul>
+<li><a class="reference internal" href="#searx.search.processors.online_dictionary.DictParams.from_lang"><code class="docutils literal notranslate"><span class="pre">DictParams.from_lang</span></code></a></li>
+<li><a class="reference internal" href="#searx.search.processors.online_dictionary.DictParams.to_lang"><code class="docutils literal notranslate"><span class="pre">DictParams.to_lang</span></code></a></li>
+<li><a class="reference internal" href="#searx.search.processors.online_dictionary.DictParams.query"><code class="docutils literal notranslate"><span class="pre">DictParams.query</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#searx.search.processors.online_dictionary.OnlineDictParams"><code class="docutils literal notranslate"><span class="pre">OnlineDictParams</span></code></a></li>
+<li><a class="reference internal" href="#searx.search.processors.online_dictionary.OnlineDictionaryProcessor"><code class="docutils literal notranslate"><span class="pre">OnlineDictionaryProcessor</span></code></a><ul>
+<li><a class="reference internal" href="#searx.search.processors.online_dictionary.OnlineDictionaryProcessor.get_params"><code class="docutils literal notranslate"><span class="pre">OnlineDictionaryProcessor.get_params()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-searx.search.processors.online_url_search">Online URL search processor</a><ul>
+<li><a class="reference internal" href="#searx.search.processors.online_url_search.search_syntax"><code class="docutils literal notranslate"><span class="pre">search_syntax</span></code></a></li>
+<li><a class="reference internal" href="#searx.search.processors.online_url_search.UrlParams"><code class="docutils literal notranslate"><span class="pre">UrlParams</span></code></a></li>
+<li><a class="reference internal" href="#searx.search.processors.online_url_search.OnlineUrlSearchParams"><code class="docutils literal notranslate"><span class="pre">OnlineUrlSearchParams</span></code></a></li>
+<li><a class="reference internal" href="#searx.search.processors.online_url_search.OnlineUrlSearchProcessor"><code class="docutils literal notranslate"><span class="pre">OnlineUrlSearchProcessor</span></code></a><ul>
+<li><a class="reference internal" href="#searx.search.processors.online_url_search.OnlineUrlSearchProcessor.get_params"><code class="docutils literal notranslate"><span class="pre">OnlineUrlSearchProcessor.get_params()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script src="../_static/documentation_options.js?v=00e4b482"></script>
+    <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../_static/scripts/furo.js?v=46bd48cc"></script>
+    </body>
+</html>
