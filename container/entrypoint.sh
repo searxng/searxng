@@ -112,6 +112,15 @@ if [ "$(id -u)" -eq 0 ]; then
 fi
 
 # ENVs aliases
-export GRANIAN_PORT="${SEARXNG_PORT:-$GRANIAN_PORT}"
+# https://github.com/searxng/searxng/issues/5934
+case "${SEARXNG_PORT:-}" in
+    '') ;;
+    *[!0-9]*)
+        unset SEARXNG_PORT
+        ;;
+    *)
+        export GRANIAN_PORT="$SEARXNG_PORT"
+        ;;
+esac
 
 exec /usr/local/searxng/.venv/bin/granian searx.webapp:app
