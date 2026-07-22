@@ -112,6 +112,15 @@ if [ "$(id -u)" -eq 0 ]; then
 fi
 
 # ENVs aliases
-export GRANIAN_PORT="${SEARXNG_PORT:-$GRANIAN_PORT}"
+case "${SEARXNG_PORT:-}" in
+    '') ;;
+    *[!0-9]*)
+        echo "WARNING: ignoring non-numeric SEARXNG_PORT='$SEARXNG_PORT'" >&2
+        unset SEARXNG_PORT
+        ;;
+    *)
+        export GRANIAN_PORT="$SEARXNG_PORT"
+        ;;
+esac
 
 exec /usr/local/searxng/.venv/bin/granian searx.webapp:app
