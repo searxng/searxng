@@ -112,10 +112,10 @@ if [ "$(id -u)" -eq 0 ]; then
 fi
 
 # ENVs aliases
+# https://github.com/searxng/searxng/issues/5934
 case "${SEARXNG_PORT:-}" in
     '') ;;
     *[!0-9]*)
-        echo "WARNING: ignoring non-numeric SEARXNG_PORT='$SEARXNG_PORT'" >&2
         unset SEARXNG_PORT
         ;;
     *)
