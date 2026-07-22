@@ -39,7 +39,9 @@ from searx.utils import (
     extract_text,
 )
 
-from searx.engines.google import fetch_traits as _fetch_traits  # pylint: disable=unused-import
+from searx.engines.google import (
+    fetch_traits as _fetch_traits,
+)  # pylint: disable=unused-import
 from searx.engines.google import (
     get_google_info,
     detect_google_sorry,
@@ -174,15 +176,22 @@ def response(resp: "SXNG_Response") -> EngineResults:
             logger.error(f"no real-url found: {url}")
             continue
 
-        title = extract_text(eval_xpath(result, "./h4")) or ""
+        # title is in <h4> or (since Google changed DOM) in the <a target='_blank'> link text
+        title = (
+            extract_text(eval_xpath(result, "./h4")) or extract_text(eval_xpath(result, ".//a[@target='_blank']")) or ""
+        )
 
-        # The pub_date is mostly a string like 'yesterday', not a real timezone
-        # date or time.  Therefore we can't use publishedDate and place the
-        # *pub* sting into the content.
+        # The pub_date is mostly a relative string like '3 hours ago', not a
+        # real timezone date/time, so we can't use publishedDate.
+        # pub_origin and pub_date go into metadata.
 
         pub_date = extract_text(eval_xpath(result, ".//time"))
-        pub_origin = extract_text(eval_xpath(result, ".//div[contains(@class, 'vr1PYe')]"))
-        content = " / ".join([x for x in [pub_origin, pub_date] if x])
+        pub_origin = extract_text(eval_xpath(result, ".//a[contains(@class, 'wEwyrc')]"))
+        metadata = " / ".join([x for x in [pub_origin, pub_date] if x])
+
+        # Google News HTML does not provide article snippets.
+        # Use the author name (bInasb) as content if present.
+        author = extract_text(eval_xpath(result, ".//div[contains(@class, 'uQIVzc')]")) or ""
 
         thumbnail: str = eval_xpath_getindex(result, ".//figure/img/@src", 0, default="")
         if thumbnail and thumbnail.startswith("/"):
@@ -192,7 +201,8 @@ def response(resp: "SXNG_Response") -> EngineResults:
             res.types.MainResult(
                 url=url,
                 title=title,
-                content=content,
+                author=author,
+                metadata=metadata,
                 thumbnail=thumbnail,
             )
         )
