@@ -960,6 +960,7 @@ def preferences():
         # fmt: off
         'preferences.html',
         preferences = True,
+        engines_with_tokens = any(getattr(e, "tokens", None) for e in engines.values()),
         selected_categories = get_selected_categories(sxng_request.preferences, sxng_request.form),
         locales = LOCALE_NAMES,
         current_locale = sxng_request.preferences.get_value("locale"),
@@ -976,7 +977,7 @@ def preferences():
         shortcuts = {y: x for x, y in engine_shortcuts.items()},
         themes = themes,
         plugins_storage = searx.plugins.STORAGE.info,
-        current_doi_resolver = get_doi_resolver(),
+        current_doi_resolver = sxng_request.preferences.get_value("doi_resolver"),
         allowed_plugins = allowed_plugins,
         preferences_url_params = sxng_request.preferences.get_as_url_params(),
         locked_preferences = get_setting("preferences").lock,
