@@ -66,7 +66,7 @@ See LICENSE_ for more details.
 .. _nova-nodes-mcp:
 
 NovaNodes MCP Gateway Integration
-==================================
+=================================
 
 The `NovaNodes MCP Gateway <https://github.com/TheNovaNodes/nova-searxng-mcp>`_ provides a bridge between SearXNG and AI agents using the Model Context Protocol (MCP).
 
