@@ -60,3 +60,37 @@ License
 
 This project is licensed under the GNU Affero General Public License (AGPL-3.0).
 See LICENSE_ for more details.
+
+
+
+.. _nova-nodes-mcp:
+
+NovaNodes MCP Gateway Integration
+==================================
+
+The `NovaNodes MCP Gateway <https://github.com/TheNovaNodes/nova-searxng-mcp>`_ provides a bridge between SearXNG and AI agents using the Model Context Protocol (MCP).
+
+Why use it?
+-----------
+
+* **Private search for AI agents** — route MCP search calls through your own SearXNG instance, no third-party APIs, no tracking
+* **90+ engines** — Bing, Brave, DuckDuckGo, Google, Startpage, Qwant, and more
+* **Zero configuration** — just point SEARXNG_URL to your local SearXNG instance
+* **MCP native** — compatible with Claude Desktop, Continue, and any MCP client
+
+Quick start
+~~~~~~~~~~~
+
+.. code-block:: bash
+
+    pip install nova-searxng-mcp
+    # In your .env: SEARXNG_URL=http://127.0.0.1:8080
+    python -m searxng_gateway.server
+
+See the `repository <https://github.com/TheNovaNodes/nova-searxng-mcp>`_ for full documentation.
+
+Compatible with
+~~~~~~~~~~~~~~~
+
+* `AnythingLLM <https://github.com/Mintplex-Labs/anything-llm>`_ — use SearXNG as private search backend for agent web-browsing
+* `OpenClaw <https://github.com/TheNovaNodes>`_ — multi-agent orchestration with private search and memory
