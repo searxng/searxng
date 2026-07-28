@@ -32,7 +32,7 @@ By default and without any extensions, SearXNG serves these resolvers:
 - ``yandex``
 
 With the above setting favicons are displayed, the user has the option to
-deactivate this feature in his settings.  If the user is to have the option of
+deactivate this feature in their settings.  If the user is to have the option of
 selecting from several *resolvers*, a further setting is required / but this
 setting will be discussed :ref:`later <register resolvers>` in this article,
 first we have to setup the favicons cache.
