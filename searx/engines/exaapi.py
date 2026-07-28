@@ -23,6 +23,7 @@ Optional settings are:
 
   - name: exaapi
     engine: exaapi
+    shortcut: exa
     api_key: "..."
     results_per_page: 10
     search_type: auto
