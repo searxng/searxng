@@ -18,7 +18,6 @@ from searx.utils import (
     html_to_text,
     parse_duration_string,
     js_obj_str_to_python,
-    get_embeded_stream_url,
 )
 
 # engine metadata
@@ -195,7 +194,7 @@ def parse_news(data):
 
 
 def parse_videos(data):
-    results = []
+    res = EngineResults()
 
     dom = html.fromstring(data)
 
@@ -214,15 +213,14 @@ def parse_videos(data):
         except (ValueError, TypeError):
             pass
 
-        results.append(
-            {
-                "template": "videos.html",
-                "title": extract_text(eval_xpath(item, ".//a[contains(@class, 'info_title')]")),
-                "url": url,
-                "thumbnail": thumbnail,
-                "length": length,
-                "iframe_src": get_embeded_stream_url(url),
-            }
+        res.add(
+            res.types.LegacyResult(
+                template="videos.html",
+                title=extract_text(eval_xpath(item, ".//a[contains(@class, 'info_title')]")),
+                url=url,
+                thumbnail=thumbnail,
+                length=length,
+            )
         )
 
-    return results
+    return res
