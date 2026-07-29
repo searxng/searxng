@@ -135,7 +135,7 @@ from searx.utils import (
     eval_xpath_getindex,
     eval_xpath_list,
     extract_text,
-    get_embeded_stream_url,
+    get_embedded_stream_url,
     js_obj_str_to_json_str,
     js_obj_str_to_python,
 )
@@ -338,7 +338,7 @@ def _parse_search(resp: SXNG_Response) -> EngineResults:
         if len(video_tag):
             # In my tests a video tag in the WEB search was most often not a
             # video, except the ones from youtube ..
-            iframe_src = get_embeded_stream_url(url)
+            iframe_src = get_embedded_stream_url(url)
             if iframe_src:
                 item["iframe_src"] = iframe_src
                 item["template"] = "videos.html"
@@ -406,9 +406,6 @@ def _parse_videos(json_resp: dict[str, t.Any]) -> EngineResults:
         )
         if result["thumbnail"] is not None:
             item["thumbnail"] = result["thumbnail"]["src"]
-        iframe_src = get_embeded_stream_url(result["url"])
-        if iframe_src:
-            item["iframe_src"] = iframe_src
 
         res.add(item)
 
