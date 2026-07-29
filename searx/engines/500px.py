@@ -82,7 +82,7 @@ fragment SXNG_query on Query {
 
 def setup(_) -> bool:
     global SXNG_query  # pylint: disable=global-statement
-    rand_str: str = "".join(random.choice(string.ascii_letters) for _ in range(5))
+    rand_str: str = "".join(random.choices(string.ascii_letters, k=5))
     SXNG_query = SXNG_query.replace("SXNG_query", "PhotoSearchPaginationContainer_query_1" + rand_str)
     return True
 

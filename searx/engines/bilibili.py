@@ -32,7 +32,7 @@ base_url = "https://api.bilibili.com/x/web-interface/search/type"
 
 cookie = {
     "innersign": "0",
-    "buvid3": "".join(random.choice(string.hexdigits) for _ in range(16)) + "infoc",
+    "buvid3": "".join(random.choices(string.hexdigits, k=16)) + "infoc",
     "i-wanna-go-back": "-1",
     "b_ut": "7",
     "FEED_LIVE_VERSION": "V8",

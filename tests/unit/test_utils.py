@@ -13,7 +13,7 @@ from tests import SearxTestCase
 
 
 def random_string(length, choices=string.ascii_letters):
-    return ''.join(random.choice(choices) for _ in range(length))
+    return ''.join(random.choices(choices, k=length))
 
 
 class TestUtils(SearxTestCase):

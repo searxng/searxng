@@ -92,7 +92,7 @@ def generate_nonce(length: int = 32) -> str:
     """
     Generate a random char sequence with the given length.
     """
-    return "".join([random.choice(NONCE_ALPHABET) for _ in range(length)])
+    return "".join(random.choices(NONCE_ALPHABET, k=length))
 
 
 def caesar_shift_with_switch_case(s: str, offset: int = 13) -> str:
