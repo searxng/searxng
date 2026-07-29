@@ -62,7 +62,7 @@ def bing(query: str, _sxng_locale: str) -> list[str]:
     # bing search autocompleter
     base_url = "https://www.bing.com/AS/Suggestions?"
     # cvid has to be a 32 character long string consisting of numbers and uppsercase characters
-    cvid = ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(32))
+    cvid = ''.join(random.choices(string.ascii_uppercase + string.digits, k=32))
     response = get(base_url + urlencode({'qry': query, 'csr': 1, 'cvid': cvid}))
     results: list[str] = []
 
