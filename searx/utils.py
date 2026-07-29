@@ -592,7 +592,7 @@ def eval_xpath_getindex(
     return default
 
 
-def get_embeded_stream_url(url: str):
+def get_embedded_stream_url(url: str):
     """
     Converts a standard video URL into its embed format. Supported services include Youtube,
     Facebook, Instagram, TikTok, Dailymotion, and Bilibili.
