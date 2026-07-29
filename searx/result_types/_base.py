@@ -31,6 +31,7 @@ from collections.abc import Callable
 import msgspec
 
 from searx import logger
+from searx.utils import get_embedded_stream_url
 
 log = logger.getChild("result_types")
 
@@ -480,6 +481,7 @@ class LegacyResult(dict[str, t.Any]):
     category: str
     publishedDate: datetime.datetime | None
     pubdate: str = ""
+    iframe_src: str | None
 
     # infobox result
     urls: list[dict[str, str]]
@@ -509,6 +511,7 @@ class LegacyResult(dict[str, t.Any]):
         self["score"] = self.get("score", 0)
         self["category"] = self.get("category", "")
         self["publishedDate"] = self.get("publishedDate")
+        self["iframe_src"] = self.get("iframe_src")
 
         if "infobox" in self:
             self["urls"] = self.get("urls", [])
@@ -530,6 +533,10 @@ class LegacyResult(dict[str, t.Any]):
                 f" / use a class from searx.result_types",
                 DeprecationWarning,
             )
+
+        # TODO: move into typed video results class once it is implemented  # pylint: disable=fixme
+        if self.template == "videos.html" and self.url and not self.iframe_src:
+            self.iframe_src = get_embedded_stream_url(self.url)
 
     def __getattr__(self, name: str, default: t.Any = UNSET) -> t.Any:
         if default == UNSET and name not in self:
