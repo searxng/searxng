@@ -11,10 +11,12 @@
 .. _data URLs:
    https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/Data_URIs
 """
+
 import re
-from urllib.parse import urlencode, urlparse, parse_qs, unquote
+from urllib.parse import urlencode, unquote
 from lxml import html
 
+from searx.result_types import EngineResults
 from searx.utils import (
     eval_xpath_list,
     eval_xpath_getindex,
@@ -30,7 +32,7 @@ from searx.engines.google import (
     detect_google_sorry,
     ui_async,
 )
-from searx.utils import get_embeded_stream_url
+from searx.utils import get_embedded_stream_url
 
 # about
 about = {
@@ -103,7 +105,7 @@ def request(query, params):
 
 def response(resp):
     """Get response from google's search request"""
-    results = []
+    res = EngineResults()
 
     detect_google_sorry(resp)
     data_image_map = parse_data_images(resp.text)
@@ -141,11 +143,6 @@ def response(resp):
         )
         video_id = eval_xpath_getindex(result, './/div[@jscontroller="rTuANe"]/@data-vid', 0, default=None)
 
-        # Fallback for video_id from URL if not found via XPath
-        if not video_id and url and 'youtube.com' in url:
-            parsed_url = urlparse(url)
-            video_id = parse_qs(parsed_url.query).get('v', [None])[0]
-
         # Handle thumbnail
         if thumbnail and thumbnail.startswith('data:image'):
             img_id = eval_xpath_getindex(result, './/img/@id', 0, default=None)
@@ -159,27 +156,25 @@ def response(resp):
         # Handle video embed URL
         embed_url = None
         if video_id:
-            embed_url = get_embeded_stream_url(f"https://www.youtube.com/watch?v={video_id}")
-        elif url:
-            embed_url = get_embeded_stream_url(url)
+            embed_url = get_embedded_stream_url(f"https://www.youtube.com/watch?v={video_id}")
 
         # Only append results with valid title and url
         if title and url:
-            results.append(
-                {
-                    'url': url,
-                    'title': title,
-                    'content': content or '',
-                    'author': pub_info,
-                    'thumbnail': thumbnail,
-                    'length': duration,
-                    'iframe_src': embed_url,
-                    'template': 'videos.html',
-                }
+            res.add(
+                res.types.LegacyResult(
+                    url=url,
+                    title=title,
+                    content=content or '',
+                    author=pub_info,
+                    thumbnail=thumbnail,
+                    length=duration,
+                    iframe_src=embed_url,
+                    template='videos.html',
+                )
             )
 
     # parse suggestion
     for suggestion in eval_xpath_list(dom, suggestion_xpath):
-        results.append({'suggestion': extract_text(suggestion)})
+        res.append(res.types.LegacyResult(suggestion=extract_text(suggestion)))
 
-    return results
+    return res
