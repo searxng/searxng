@@ -9,6 +9,7 @@ import codecs
 import hashlib
 import json
 import random
+import string
 
 from datetime import datetime
 from urllib.parse import urlencode
@@ -43,8 +44,8 @@ paging = True
 
 base_url = "https://api.swisscows.com"
 
-CAESAR_ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-NONCE_ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-._~"
+CAESAR_ALPHABET = string.ascii_uppercase
+NONCE_ALPHABET = string.ascii_letters + string.digits + "-._~"
 
 time_range_map = {"day": "Day", "week": "Week", "month": "Month", "year": "Year"}
 
