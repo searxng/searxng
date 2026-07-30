@@ -1,0 +1,38 @@
+---
+# yamllint disable rule:line-length
+name: AI Policy
+
+# Closes any new issues and PRs from people (or agents) who don't accept the AI Policy
+
+# yamllint disable-line rule:truthy
+on:
+  issues:
+    types: [opened]
+  pull_request_target:
+    types: [opened]
+
+permissions:
+  contents: read
+  issues: write
+  pull-requests: write
+
+jobs:
+  check:
+    name: Check AI Policy
+    # for issues with an author who has not contributed before
+    if: >-
+      github.event.sender.type != 'Bot' &&
+      contains(fromJSON('["NONE","FIRST_TIMER","FIRST_TIME_CONTRIBUTOR"]'),
+               github.event.issue.author_association ||
+               github.event.pull_request.author_association)
+    runs-on: ubuntu-26.04-arm
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+        with:
+          persist-credentials: "false"
+
+      - uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3  # v9.0.0
+        with:
+          script: |
+            const script = require('./.github/scripts/ai_policy.cjs');
+            await script({ github, context });
