@@ -157,6 +157,24 @@ def google_complete(query: str, sxng_locale: str) -> list[str]:
     return results
 
 
+def kagi(query: str, sxng_locale: str) -> list[str]:
+    """Autocomplete from Kagi."""
+
+    args: dict[str, str] = {'q': query}
+
+    if '-' in sxng_locale:
+        args['r'] = sxng_locale.split('-')[1].lower()
+
+    resp = get("https://kagisuggest.com/api/autosuggest?" + urlencode(args))
+    results: list[str] = []
+
+    if resp.ok:
+        data = resp.json()
+        if len(data) > 1:
+            results = data[1]
+    return results
+
+
 def mwmbl(query: str, _sxng_locale: str) -> list[str]:
     """Autocomplete from Mwmbl_."""
 
@@ -380,6 +398,7 @@ backends: dict[str, t.Callable[[str, str], list[str]]] = {
     'dbpedia': dbpedia,
     'duckduckgo': duckduckgo,
     'google': google_complete,
+    'kagi': kagi,
     'mwmbl': mwmbl,
     'naver': naver,
     'privacywall': privacywall,
