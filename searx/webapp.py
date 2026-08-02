@@ -803,7 +803,7 @@ def info(pagename, locale):
     )
 
 
-@app.route('/autocompleter', methods=['GET', 'POST'])
+@app.route('/autocompleter', methods=['GET'])
 def autocompleter():
     """Return autocompleter results"""
 
