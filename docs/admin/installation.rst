@@ -10,6 +10,13 @@ Installation
 - :ref:`installation scripts`
 - :ref:`installation basic`
 
+If you would rather not run a server yourself, a managed instance can be
+deployed in one click:
+
+.. image:: https://cdn.zenith.hosting/buttons/deploy-with-zenith.svg
+   :target: https://zenith.hosting/host/searxng
+   :alt: Deploy with Zenith
+
 The :ref:`installation basic` is an excellent illustration of *how a SearXNG
 instance is build up* (see :ref:`architecture uWSGI`).  If you do not have any
 special preferences, it's recommended to use the :ref:`installation container` or the
