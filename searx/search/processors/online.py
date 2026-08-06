@@ -255,11 +255,11 @@ class OnlineProcessor(EngineProcessor):
         except ssl.SSLError as e:
             # requests timeout (connect or read)
             self.handle_exception(result_container, e, suspend=True)
-            self.logger.error("SSLError {}, verify={}".format(e, searx.network.get_network(self.engine.name).verify))
+            self.logger.debug("SSLError {}, verify={}".format(e, searx.network.get_network(self.engine.name).verify))
         except (httpx.TimeoutException, asyncio.TimeoutError) as e:
             # requests timeout (connect or read)
             self.handle_exception(result_container, e, suspend=True)
-            self.logger.error(
+            self.logger.debug(
                 "HTTP requests timeout (search duration : {0} s, timeout: {1} s) : {2}".format(
                     default_timer() - start_time, timeout_limit, e.__class__.__name__
                 )
@@ -267,7 +267,7 @@ class OnlineProcessor(EngineProcessor):
         except (httpx.HTTPError, httpx.StreamError) as e:
             # other requests exception
             self.handle_exception(result_container, e, suspend=True)
-            self.logger.exception(
+            self.logger.debug(
                 "requests exception (search duration : {0} s, timeout: {1} s) : {2}".format(
                     default_timer() - start_time, timeout_limit, e
                 )
@@ -278,7 +278,7 @@ class OnlineProcessor(EngineProcessor):
             SearxEngineAccessDeniedException,
         ) as e:
             self.handle_exception(result_container, e, suspend=True)
-            self.logger.exception(e.message)
+            self.logger.debug(e.message)
         except Exception as e:  # pylint: disable=broad-except
             self.handle_exception(result_container, e)
-            self.logger.exception("exception : {0}".format(e))
+            self.logger.debug("exception : {0}".format(e))
