@@ -41,9 +41,9 @@ search:
   # Filter results. 0: None, 1: Moderate, 2: Strict
   safe_search: 0
   # Existing autocomplete backends: "360search", "baidu", "bing", "brave", "dbpedia", "duckduckgo", "google",
-  # "kagi", "yandex", "privacywall", "mwmbl", "naver", "seznam", "sogou", "startpage", "swisscows", "quark",
-  # "qwant", "wikipedia" - leave blank to turn it off by default.
-  autocomplete: ""
+  # "yandex", "privacywall", "mwmbl", "naver", "seznam", "sogou", "startpage", "swisscows", "quark", "qwant",
+  # "wikipedia" - set blank to turn it off by default.
+  autocomplete: "duckduckgo"
   # minimun characters to type before autocompleter starts
   autocomplete_min: 4
   # backend for the favicon near URL in search results.
@@ -107,11 +107,10 @@ server:
   image_proxy: false
   # 1.0 and 1.1 are supported
   http_protocol_version: "1.0"
-  # POST queries are "more secure!" but are also the source of hard-to-locate
-  # annoyances, which is why GET may be better for end users and their browsers.
+  # POST keeps search queries out of the browsers history, but causes UX issues.
   # see https://github.com/searxng/searxng/pull/3619
   # Is overwritten by ${SEARXNG_METHOD}
-  method: "POST"
+  method: "GET"
   default_http_headers:
     X-Content-Type-Options: nosniff
     X-Download-Options: noopen

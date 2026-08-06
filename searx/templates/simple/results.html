@@ -75,7 +75,7 @@
     {% if paging %}
     <nav id="pagination" role="navigation">
         {% if pageno > 1 %}
-            <form method="{{ method or 'POST' }}" action="{{ url_for('search') }}" class="previous_page">
+            <form method="{{ method }}" action="{{ url_for('search') }}" class="previous_page">
                 <div class="{% if rtl %}right{% else %}left{% endif %}">
                   <input type="hidden" name="q" value="{{ q|e }}" >
                   {% for category in selected_categories %}
@@ -93,7 +93,7 @@
             </form>
         {% endif %}
         {%- if results | count > 0 -%}
-          <form method="{{ method or 'POST' }}" action="{{ url_for('search') }}" class="next_page">
+          <form method="{{ method }}" action="{{ url_for('search') }}" class="next_page">
               <div class="{% if rtl %}left{% else %}right{% endif %}">
                 <input type="hidden" name="q" value="{{ q|e }}" >
                 {% for category in selected_categories %}
@@ -119,7 +119,7 @@
 
         <div class="numbered_pagination">
         {% for x in range(pstart, pend) %}
-            <form method="{{ method or 'POST' }}" action="{{ url_for('search') }}" class="page_number">
+            <form method="{{ method }}" action="{{ url_for('search') }}" class="page_number">
                 <input type="hidden" name="q" value="{{ q|e }}" >
                 {% for category in selected_categories %}
                 <input type="hidden" name="category_{{ category }}" value="1" >

@@ -192,7 +192,7 @@ SCHEMA: dict[str, t.Any] = {
     'brand': SettingsBrand,
     'search': {
         'safe_search': SettingsValue((0, 1, 2), 0),
-        'autocomplete': SettingsValue(str, ''),
+        'autocomplete': SettingsValue(str, 'duckduckgo'),
         'autocomplete_min': SettingsValue(int, 4),
         'favicon_resolver': SettingsValue(str, ''),
         'default_lang': SettingsValue(tuple(SXNG_LOCALE_TAGS + ['']), ''),
@@ -219,7 +219,7 @@ SCHEMA: dict[str, t.Any] = {
         'base_url': SettingsValue((False, str), False, 'SEARXNG_BASE_URL'),
         'image_proxy': SettingsValue(bool, False, 'SEARXNG_IMAGE_PROXY'),
         'http_protocol_version': SettingsValue(('1.0', '1.1'), '1.0'),
-        'method': SettingsValue(('POST', 'GET'), 'POST', 'SEARXNG_METHOD'),
+        'method': SettingsValue(('POST', 'GET'), 'GET', 'SEARXNG_METHOD'),
         'default_http_headers': SettingsValue(dict, {}),
     },
     # redis is deprecated ..
