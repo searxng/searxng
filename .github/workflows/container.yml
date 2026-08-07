@@ -50,7 +50,7 @@ jobs:
 
     steps:
       - name: Login to GHCR
-        uses: docker/login-action@371161bbe7024a29a25c5e19bfcbc0804fe9ad2c  # v4.5.2
+        uses: docker/login-action@dbcb813823bdd20940b903addbd779551569679f  # v4.6.0
         with:
           registry: "ghcr.io"
           username: "${{ github.repository_owner }}"
@@ -110,7 +110,7 @@ jobs:
 
     steps:
       - name: Login to GHCR
-        uses: docker/login-action@371161bbe7024a29a25c5e19bfcbc0804fe9ad2c  # v4.5.2
+        uses: docker/login-action@dbcb813823bdd20940b903addbd779551569679f  # v4.6.0
         with:
           registry: "ghcr.io"
           username: "${{ github.repository_owner }}"
@@ -144,14 +144,14 @@ jobs:
 
     steps:
       - name: Login to Docker Hub
-        uses: docker/login-action@371161bbe7024a29a25c5e19bfcbc0804fe9ad2c  # v4.5.2
+        uses: docker/login-action@dbcb813823bdd20940b903addbd779551569679f  # v4.6.0
         with:
           registry: "docker.io"
           username: "${{ secrets.DOCKER_USER }}"
           password: "${{ secrets.DOCKER_TOKEN }}"
 
       - name: Login to GHCR
-        uses: docker/login-action@371161bbe7024a29a25c5e19bfcbc0804fe9ad2c  # v4.5.2
+        uses: docker/login-action@dbcb813823bdd20940b903addbd779551569679f  # v4.6.0
         with:
           registry: "ghcr.io"
           username: "${{ github.repository_owner }}"
