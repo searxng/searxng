@@ -6,7 +6,8 @@ from urllib.parse import urlencode
 from datetime import datetime
 
 from searx.exceptions import SearxEngineAPIException
-from searx.utils import html_to_text, get_embeded_stream_url
+from searx.result_types import EngineResults
+from searx.utils import html_to_text
 
 about = {
     "website": "https://tv.360kan.com/",
@@ -29,12 +30,12 @@ def request(query, params):
     return params
 
 
-def response(resp):
+def response(resp) -> EngineResults:
     try:
         data = resp.json()
     except Exception as e:
         raise SearxEngineAPIException(f"Invalid response: {e}") from e
-    results = []
+    res = EngineResults()
 
     if "data" not in data or "result" not in data["data"]:
         raise SearxEngineAPIException("Invalid response")
@@ -50,16 +51,15 @@ def response(resp):
             except (ValueError, TypeError):
                 published_date = None
 
-        results.append(
-            {
-                'url': entry["play_url"],
-                'title': html_to_text(entry["title"]),
-                'content': html_to_text(entry["description"]),
-                'template': 'videos.html',
-                'publishedDate': published_date,
-                'thumbnail': entry["cover_img"],
-                "iframe_src": get_embeded_stream_url(entry["play_url"]),
-            }
+        res.add(
+            res.types.LegacyResult(
+                url=entry["play_url"],
+                title=html_to_text(entry["title"]),
+                content=html_to_text(entry["description"]),
+                template='videos.html',
+                publishedDate=published_date,
+                thumbnail=entry["cover_img"],
+            )
         )
 
-    return results
+    return res
