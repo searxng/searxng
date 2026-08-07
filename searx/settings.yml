@@ -113,10 +113,7 @@ server:
   # Is overwritten by ${SEARXNG_METHOD}
   method: "POST"
   default_http_headers:
-    X-Content-Type-Options: nosniff
-    X-Download-Options: noopen
-    X-Robots-Tag: noindex, nofollow
-    Referrer-Policy: no-referrer
+    Server: SearXNG
 
 valkey:
   # URL to connect valkey database. Is overwritten by ${SEARXNG_VALKEY_URL}.
