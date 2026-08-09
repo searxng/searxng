@@ -1,0 +1,75 @@
+# -*- mode: conf; coding: utf-8  -*-
+[uwsgi]
+
+# uWSGI core
+# ----------
+#
+# https://uwsgi-docs.readthedocs.io/en/latest/Options.html#uwsgi-core
+
+# Who will run the code
+uid = ${SERVICE_USER}
+gid = ${SERVICE_GROUP}
+
+# set (python) default encoding UTF-8
+env = LANG=C.UTF-8
+env = LANGUAGE=C.UTF-8
+env = LC_ALL=C.UTF-8
+
+# chdir to specified directory before apps loading
+chdir = ${SEARXNG_SRC}/searx
+
+# SearXNG configuration (settings.yml)
+env = SEARXNG_SETTINGS_PATH=${SEARXNG_SETTINGS_PATH}
+
+# disable logging for privacy
+logger = systemd
+disable-logging = true
+
+# The right granted on the created socket
+chmod-socket = 666
+
+# Plugin to use and interpreter config
+single-interpreter = true
+
+# enable master process
+master = true
+
+# load apps in each worker instead of the master
+lazy-apps = true
+
+# load uWSGI plugins
+plugin = python
+
+# By default the Python plugin does not initialize the GIL.  This means your
+# app-generated threads will not run.  If you need threads, remember to enable
+# them with enable-threads.  Running uWSGI in multithreading mode (with the
+# threads options) will automatically enable threading support. This *strange*
+# default behaviour is for performance reasons.
+enable-threads = true
+
+# Number of workers (usually CPU count)
+workers = ${UWSGI_WORKERS:-%k}
+threads = ${UWSGI_THREADS:-4}
+
+# plugin: python
+# --------------
+#
+# https://uwsgi-docs.readthedocs.io/en/latest/Options.html#plugin-python
+
+# load a WSGI module
+module = searx.webapp
+
+# set PYTHONHOME/virtualenv
+virtualenv = ${SEARXNG_PYENV}
+
+# add directory (or glob) to pythonpath
+pythonpath = ${SEARXNG_SRC}
+
+
+# speak to upstream
+# -----------------
+
+socket = ${SEARXNG_UWSGI_SOCKET}
+buffer-size = 8192
+
+offload-threads = %k
