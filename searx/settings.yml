@@ -15,7 +15,7 @@ general:
   # expose stats in open metrics format at /metrics
   # leave empty to disable (no password set)
   # open_metrics: <password>
-  open_metrics: ""
+  open_metrics: ''
 
 brand:
   docs_url: https://docs.searxng.org/
@@ -91,7 +91,7 @@ server:
   bind_address: "127.0.0.1"
   # public URL of the instance, to ensure correct inbound links. Is overwritten
   # by ${SEARXNG_BASE_URL}.
-  base_url: false # "http://example.com/location"
+  base_url: false  # "http://example.com/location"
   # rate limit the number of request on the instance, block some bots.
   # Is overwritten by ${SEARXNG_LIMITER}
   limiter: false
@@ -102,7 +102,7 @@ server:
   # If your instance owns a /etc/searxng/settings.yml file, then set the following
   # values there.
 
-  secret_key: "ultrasecretkey" # Is overwritten by ${SEARXNG_SECRET}
+  secret_key: "ultrasecretkey"  # Is overwritten by ${SEARXNG_SECRET}
   # Proxy image results through SearXNG. Is overwritten by ${SEARXNG_IMAGE_PROXY}
   image_proxy: false
   # 1.0 and 1.1 are supported
@@ -217,10 +217,12 @@ outgoing:
   #    - 1.1.1.2
   #    - fe80::/126
 
+
 # Plugin configuration, for more details see
 #   https://docs.searxng.org/admin/settings/settings_plugins.html
 #
 plugins:
+
   searx.plugins.calculator.SXNGPlugin:
     active: true
 
@@ -254,6 +256,7 @@ plugins:
   searx.plugins.tracker_url_remover.SXNGPlugin:
     active: true
 
+
 # Configuration of the "Hostnames plugin":
 #
 # hostnames:
@@ -279,6 +282,7 @@ plugins:
 # '(.*\.)?youtube\.com$': 'yt.example.com'
 # '(.*\.)?youtu\.be$': 'yt.example.com'
 #
+
 
 categories_as_tabs:
   general:
@@ -344,8 +348,7 @@ engines:
     categories: ["images"]
     # https://docs.searxng.org/dev/engines/online/adobe_stock.html
     adobe_order: relevance
-    adobe_content_types:
-      ["photo", "illustration", "zip_vector", "template", "3d", "image"]
+    adobe_content_types: ["photo", "illustration", "zip_vector", "template", "3d", "image"]
     timeout: 6
     disabled: true
 
@@ -648,6 +651,7 @@ engines:
   #   shortcut: cha
   #   search_index: cw22
   #   disabled: true
+
   - name: chefkoch
     engine: chefkoch
     shortcut: chef
@@ -691,12 +695,12 @@ engines:
     engine: cloudflareai
     shortcut: cfai
     # get api token and accont id from https://developers.cloudflare.com/workers-ai/get-started/rest-api/
-    cf_account_id: "your_cf_accout_id"
-    cf_ai_api: "your_cf_api"
+    cf_account_id: 'your_cf_accout_id'
+    cf_ai_api: 'your_cf_api'
     # create your ai gateway by https://developers.cloudflare.com/ai-gateway/get-started/creating-gateway/
-    cf_ai_gateway: "your_cf_ai_gateway_name"
+    cf_ai_gateway: 'your_cf_ai_gateway_name'
     # find the model name from https://developers.cloudflare.com/workers-ai/models/#text-generation
-    cf_ai_model: "ai_model_name"
+    cf_ai_model: 'ai_model_name'
     # custom your preferences
     # cf_ai_model_display_name: 'Cloudflare AI'
     # cf_ai_model_assistant: 'prompts_for_assistant_role'
@@ -945,7 +949,7 @@ engines:
   - name: ebay
     engine: ebay
     shortcut: eb
-    base_url: "https://www.ebay.com"
+    base_url: 'https://www.ebay.com'
     inactive: true
     timeout: 5
 
@@ -1081,9 +1085,9 @@ engines:
     search_url: https://fynd.bot/?search={query}&offset={pageno}{safe_search}
     safesearch: true
     safe_search_map:
-      0: "&safe=0"
-      1: "&safe=1"
-      2: "&safe=1"
+      0: '&safe=0'
+      1: '&safe=1'
+      2: '&safe=1'
     results_xpath: //div[contains(@class, "result-item")]
     url_xpath: .//a/@href
     title_xpath: .//div[contains(@class, "title-line")]
@@ -2132,7 +2136,7 @@ engines:
     shortcut: rw
     categories: [general, blogs]
     paging: true
-    search_url: "https://api.rawweb.org/api/search?keyword={query}&page={pageno}&lang=*"
+    search_url: 'https://api.rawweb.org/api/search?keyword={query}&page={pageno}&lang=*'
     results_query: data
     url_query: link
     title_query: title
@@ -2231,7 +2235,7 @@ engines:
   - name: stackoverflow
     engine: stackexchange
     shortcut: st
-    api_site: "stackoverflow"
+    api_site: 'stackoverflow'
     categories: [it, q&a]
 
   - name: stocksnap
@@ -2242,26 +2246,26 @@ engines:
   - name: askubuntu
     engine: stackexchange
     shortcut: ubuntu
-    api_site: "askubuntu"
+    api_site: 'askubuntu'
     categories: [it, q&a]
 
   - name: superuser
     engine: stackexchange
     shortcut: su
-    api_site: "superuser"
+    api_site: 'superuser'
     categories: [it, q&a]
 
   - name: discuss.python
     engine: discourse
     shortcut: dpy
-    base_url: "https://discuss.python.org"
+    base_url: 'https://discuss.python.org'
     categories: [it, q&a]
     disabled: true
 
   - name: caddy.community
     engine: discourse
     shortcut: caddy
-    base_url: "https://caddy.community"
+    base_url: 'https://caddy.community'
     categories: [it, q&a]
     disabled: true
 
@@ -2269,14 +2273,14 @@ engines:
     engine: discourse
     shortcut: pi
     categories: [it, q&a]
-    base_url: "https://discourse.pi-hole.net"
+    base_url: 'https://discourse.pi-hole.net'
     disabled: true
 
   - name: privacywall
     engine: privacywall
     categories: general
     privacywall_category: general
-    paging: false # only images and videos support pagination
+    paging: false  # only images and videos support pagination
     shortcut: pw
     disabled: true
 
@@ -2467,7 +2471,8 @@ engines:
   - name: torch
     engine: xpath
     paging: true
-    search_url: http://xmh57jrknzkhv6y3ls3ubitzfqnkrwxhopf5aygthi7d6rplyvk3noyd.onion/cgi-bin/omega/omega?P={query}&DEFAULTOP=and
+    search_url:
+      http://xmh57jrknzkhv6y3ls3ubitzfqnkrwxhopf5aygthi7d6rplyvk3noyd.onion/cgi-bin/omega/omega?P={query}&DEFAULTOP=and
     results_xpath: //table//tr
     url_xpath: ./td[2]/a
     title_xpath: ./td[2]/b
@@ -2499,7 +2504,7 @@ engines:
     show_magnet_links: true
     show_torrent_files: false
     # https://github.com/Jackett/Jackett/wiki/Jackett-Categories
-    torznab_categories: # optional
+    torznab_categories:  # optional
       - 2000
       - 5000
     inactive: true
@@ -2941,7 +2946,7 @@ engines:
     disabled: true
     # if you aren't using HTTPS for your local yacy instance disable https
     # enable_http: false
-    search_mode: "global"
+    search_mode: 'global'
     # timeout can be reduced in 'local' search mode
     timeout: 5.0
 
@@ -3120,7 +3125,7 @@ engines:
     language: de
     about:
       website: https://www.woxikon.de/
-      wikidata_id: # No Wikidata ID
+      wikidata_id:  # No Wikidata ID
       use_official_api: false
       require_api_key: false
       results: HTML
@@ -3217,7 +3222,7 @@ engines:
     title_xpath: ./h2
     content_xpath: ./p
     paging: true
-    send_page_num_on_first_page: false # otherwise blocks requests
+    send_page_num_on_first_page: false  # otherwise blocks requests
     disabled: true
     about:
       website: https://www.zapmeta.com/
@@ -3467,10 +3472,10 @@ engines:
 #        keys: ['line']
 
 doi_resolvers:
-  oadoi.org: "https://oadoi.org/"
-  doi.org: "https://doi.org/"
-  sci-hub.se: "https://sci-hub.se/"
-  sci-hub.st: "https://sci-hub.st/"
-  sci-hub.ru: "https://sci-hub.ru/"
+  oadoi.org: 'https://oadoi.org/'
+  doi.org: 'https://doi.org/'
+  sci-hub.se: 'https://sci-hub.se/'
+  sci-hub.st: 'https://sci-hub.st/'
+  sci-hub.ru: 'https://sci-hub.ru/'
 
-default_doi_resolver: "oadoi.org"
+default_doi_resolver: 'oadoi.org'
