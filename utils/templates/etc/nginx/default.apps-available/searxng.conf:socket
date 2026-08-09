@@ -1,0 +1,23 @@
+location ${SEARXNG_URL_PATH} {
+
+    uwsgi_pass unix://${SEARXNG_UWSGI_SOCKET};
+
+    include uwsgi_params;
+
+    uwsgi_param    HTTP_HOST             \$host;
+    uwsgi_param    HTTP_CONNECTION       \$http_connection;
+
+    # see flaskfix.py
+    uwsgi_param    HTTP_X_FORWARDED_PROTO  \$scheme;
+    uwsgi_param    HTTP_X_SCRIPT_NAME    ${SEARXNG_URL_PATH};
+
+    # see botdetection/trusted_proxies.py
+    uwsgi_param    HTTP_X_REAL_IP        \$remote_addr;
+    uwsgi_param    HTTP_X_FORWARDED_FOR  \$proxy_add_x_forwarded_for;
+}
+
+# To serve the static files via the HTTP server
+#
+# location ${SEARXNG_URL_PATH}/static/ {
+#     alias ${SEARXNG_STATIC}/;
+# }
