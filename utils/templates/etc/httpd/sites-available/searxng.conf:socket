@@ -1,0 +1,38 @@
+# -*- coding: utf-8; mode: apache -*-
+
+LoadModule ssl_module           ${APACHE_MODULES}/mod_ssl.so
+LoadModule headers_module       ${APACHE_MODULES}/mod_headers.so
+LoadModule proxy_module         ${APACHE_MODULES}/mod_proxy.so
+LoadModule proxy_uwsgi_module   ${APACHE_MODULES}/mod_proxy_uwsgi.so
+# LoadModule setenvif_module      ${APACHE_MODULES}/mod_setenvif.so
+#
+# SetEnvIf Request_URI "${SEARXNG_URL_PATH}" dontlog
+# CustomLog /dev/null combined env=dontlog
+
+<Location ${SEARXNG_URL_PATH}>
+
+    Require all granted
+    Order deny,allow
+    Deny from all
+    # Allow from fd00::/8 192.168.0.0/16 fe80::/10 127.0.0.0/8 ::1
+    Allow from all
+
+    # add the trailing slash
+    RedirectMatch  308 ${SEARXNG_URL_PATH}\$ ${SEARXNG_URL_PATH}/
+
+    ProxyPreserveHost On
+    ProxyPass unix:${SEARXNG_UWSGI_SOCKET}|uwsgi://uwsgi-uds-searxng/
+
+    # see flaskfix.py
+    RequestHeader set X-Forwarded-Proto %{REQUEST_SCHEME}s
+    RequestHeader set X-Script-Name ${SEARXNG_URL_PATH}
+
+    # see botdetection/trusted_proxies.py
+    RequestHeader set X-Real-IP %{REMOTE_ADDR}s
+    RequestHeader append X-Forwarded-For %{REMOTE_ADDR}s
+
+</Location>
+
+# To serve the static files via the HTTP server
+#
+# Alias ${SEARXNG_URL_PATH}/static/ ${SEARXNG_STATIC}/
