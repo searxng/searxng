@@ -29,7 +29,15 @@ class CurrenciesDB:
         if self.cache.properties("currencies loaded") != "OK":
             # To avoid parallel initializations, the property is set first
             self.cache.properties.set("currencies loaded", "OK")
-            self.load()
+            try:
+                self.load()
+            except Exception:  # pylint: disable=broad-except
+                # The property is set before the rows are written, so a failed
+                # load would leave the cache flagged as loaded while holding no
+                # currency data.  Every later init() would then short-circuit
+                # and the data would stay missing for the lifetime of the DB.
+                self.cache.properties.set("currencies loaded", "")
+                raise
         # F I X M E:
         #     do we need a maintenance .. rember: database is stored
         #     in /tmp and will be rebuild during the reboot anyway
