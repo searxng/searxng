@@ -43,9 +43,10 @@ def init(_):
 
 def request(query: str, params: "OnlineParams"):
     params["url"] = f"{base_url}/api/{dogpile_categ}"
+    params["headers"]["Origin"] = base_url
+
     params["method"] = "POST"
     params["json"] = {"q": query, "qadf": safe_search_map[params["safesearch"]], "page": params["pageno"]}
-    return params
 
 
 def response(resp: "SXNG_Response"):
