@@ -6,8 +6,8 @@ public HTML interface and is prone to CAPTCHA blocking), this engine talks to
 the official, paid Yandex Cloud Search API.  It requires a Yandex Cloud account,
 a *folder id* and an *API key*.
 
-The API answers with a Base64 encoded XML document in the classic
-`Yandex XML`_ format which is decoded and parsed here.
+The API answers with a Base64-encoded XML document, which is decoded and
+parsed here.
 
 Configuration
 =============
@@ -27,9 +27,6 @@ set ``inactive: false`` and add your ``api_key`` and ``yandex_folder_id`` to
     yandex_folder_id: ""  # Yandex Cloud folder id
     # optional, see below:
     yandex_default_language: en
-
-Implementations
-===============
 
 .. _Yandex Search API v2:
    https://aistudio.yandex.ru/docs/en/search-api/api-ref/WebSearch/search.html
@@ -63,11 +60,6 @@ about = {
 categories = ["general", "web"]
 paging = True
 safesearch = True
-
-# A query returns at most 250 results, so the number of reachable pages depends
-# on ``page_size`` (25 for the default of 10).  The exact value -- rounding the
-# last, partial page up -- is (re)computed in setup().
-max_page = 25
 
 # Credentials, overwritten via settings.yml
 api_key: str = ""
@@ -118,7 +110,7 @@ language_map = {
 }
 
 
-def setup(_) -> bool:
+def setup(_):
     """Validate credentials and paging limits when the engine is loaded."""
     if not api_key or not yandex_folder_id:
         raise SearxEngineAPIException("missing 'api_key' and/or 'yandex_folder_id' in engine settings")
@@ -127,13 +119,14 @@ def setup(_) -> bool:
     if yandex_default_language not in language_map:
         raise SearxEngineAPIException(f"'yandex_default_language' must be one of {sorted(language_map)}")
 
-    global max_page  # pylint: disable=global-statement
-    # round up: the last (partial) page of the 250-result cap is still reachable
-    max_page = math.ceil(250 / page_size)
-    return True
-
 
 def request(query: str, params: "OnlineParams"):
+
+    # Yandex returns at most 250 results for a query.
+    max_page = math.ceil(250 / page_size)
+    if params["pageno"] > max_page:
+        params["url"] = None
+        return
 
     if len(query) > 400:
         # Yandex rejects a 'queryText' longer than 400 characters; decline the
