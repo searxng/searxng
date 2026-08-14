@@ -837,9 +837,18 @@ def init(_):
         CACHE.set("eng_state", f"STATE: being initialized by PID {os.getpid()}")
         try:
             init_wikidata_properties()
-        except Exception:
-            CACHE.set("eng_state", f"ERROR: initialization by PID {os.getpid()} failed.")
-            raise
+        except Exception as e:  # pylint: disable=broad-exception-caught
+            # If initialization fails (e.g., due to HTTP 403 from query.wikidata.org),
+            # log a warning but don't fail the engine initialization.
+            # The engine will continue to work with hardcoded WIKIDATA_PROPERTIES,
+            # though with reduced functionality (missing property labels).
+            logger.warning(
+                "Failed to initialize wikidata properties from SPARQL endpoint: %s. "
+                "Using hardcoded properties as fallback. The engine will work with "
+                "reduced functionality.",
+                str(e),
+            )
+            CACHE.set("eng_state", f"WARNING: initialization by PID {os.getpid()} had issues, using fallback.")
     else:
         logger.debug(eng_state)
 
