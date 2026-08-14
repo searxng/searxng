@@ -129,7 +129,7 @@ def _extract_published_date(value: str | None):
         return None
     try:
         return parser.parse(value)
-    except (parser.ParserError, TypeError, OverflowError):
+    except parser.ParserError:
         return None
 
 
