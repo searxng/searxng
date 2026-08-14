@@ -18,7 +18,8 @@ from babel.dates import format_datetime, format_date, format_time, get_datetime_
 from searx.enginelib import EngineCache
 from searx.data import WIKIDATA_UNITS
 from searx.network import post, get
-from searx.utils import searxng_useragent, get_string_replaces_function
+from searx.version import VERSION_TAG
+from searx.utils import get_string_replaces_function
 from searx.external_urls import get_external_url, get_earth_coordinates_url, area_to_osm_zoom
 from searx.engines.wikipedia import (
     fetch_wikimedia_traits,
@@ -448,9 +449,10 @@ WDAttrList = list[WDAttrType]
 
 def get_headers() -> dict[str, str]:
     # user agent: https://www.mediawiki.org/wiki/Wikidata_Query_Service/User_Manual#Query_limits
+    # Policy: https://meta.wikimedia.org/wiki/User-Agent_policy
     return {
         "Accept": "application/sparql-results+json",
-        "User-Agent": f"wikidata engine - {searxng_useragent()}",
+        "User-Agent": f"SearXNG/{VERSION_TAG} (https://github.com/searxng/searxng; contact@searxng.org) wikidata-engine",
     }
 
 
@@ -863,15 +865,18 @@ def init_wikidata_properties():
                 wikidata_property_names.append("wd:" + attribute.name)
     query = QUERY_PROPERTY_NAMES.replace("%ATTRIBUTES%", " ".join(wikidata_property_names))
     kwargs: dict[str, t.Any] = {"timeout": 20}
-    jsonresponse = send_wikidata_query(query, **kwargs)
-    for result in jsonresponse.get("results", {}).get("bindings", {}):
-        name_field = result.get("name")
-        if not name_field:
-            continue
-        name = name_field["value"]
-        lang = name_field["xml:lang"]
-        entity_id = result["item"]["value"].replace("http://www.wikidata.org/entity/", "")
-        WIKIDATA_PROPERTIES[(entity_id, lang)] = name.capitalize()
+    try:
+        jsonresponse = send_wikidata_query(query, **kwargs)
+        for result in jsonresponse.get("results", {}).get("bindings", {}):
+            name_field = result.get("name")
+            if not name_field:
+                continue
+            name = name_field["value"]
+            lang = name_field["xml:lang"]
+            entity_id = result["item"]["value"].replace("http://www.wikidata.org/entity/", "")
+            WIKIDATA_PROPERTIES[(entity_id, lang)] = name.capitalize()
+    except Exception as e:  # pylint: disable=broad-except
+        logger.warning("Failed to initialize Wikidata properties from SPARQL endpoint: %s", e)
 
     CACHE.set(key="WIKIDATA_PROPERTIES", value=WIKIDATA_PROPERTIES)
 
