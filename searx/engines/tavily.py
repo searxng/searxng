@@ -13,11 +13,6 @@ The engine has the following mandatory setting:
 
 You can obtain an API key from the `Tavily dashboard <https://app.tavily.com/home>`_.
 
-The key is configured via ``settings.yml`` only — this engine does **not** read
-any environment variable (there is no ``TAVILY_API_KEY`` fallback), in line with
-the other API-key engines in SearXNG (e.g. ``braveapi``, ``exaapi``). To keep
-the key out of the config file, mount or template your own ``settings.yml`` at
-deployment time.
 
 Optional settings are:
 
@@ -73,7 +68,7 @@ time_range_support = True
 
 base_url = "https://api.tavily.com/search"
 
-results_per_page: int = 10
+page_size: int = 10
 """Maximum number of results per request. Value must be between 1 and 20, default is 10."""
 
 search_depth: SearchDepth = "basic"
