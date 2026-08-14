@@ -90,10 +90,10 @@ Scripts to update static data in :origin:`searx/data/`
   :members:
 
 
-``update_wikidata_units.py``
+``update_wikidata.py``
 ============================
 
-:origin:`[source] <searxng_extra/update/update_wikidata_units.py>`
+:origin:`[source] <searxng_extra/update/update_wikidata.py>`
 
-.. automodule:: searxng_extra.update.update_wikidata_units
+.. automodule:: searxng_extra.update.update_wikidata
   :members:

@@ -26,7 +26,8 @@ data.all() {
         build_msg DATA "update searx/data/ahmia_blacklist.txt"
         python searxng_extra/update/update_ahmia_blacklist.py
         build_msg DATA "update searx/data/wikidata_units.json"
-        python searxng_extra/update/update_wikidata_units.py
+        build_msg DATA "update searx/data/wikidata_properties.json"
+        python searxng_extra/update/update_wikidata.py
         build_msg DATA "update searx/data/currencies.json"
         python searxng_extra/update/update_currencies.py
         build_msg DATA "update searx/data/external_bangs.json"

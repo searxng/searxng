@@ -80,8 +80,8 @@ same environment, here are a few examples::
     # to test one of the update scripts
     (dev.env)$ searxng_extra/update/update_engine_traits.py --help
 
-    # to test the update of the wikidata units
-    (dev.env)$ searxng_extra/update/update_wikidata_units.py
+    # to test the update of the wikidata units and property names
+    (dev.env)$ searxng_extra/update/update_wikidata.py
 
 
 .. sidebar:: further read

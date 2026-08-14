@@ -10,7 +10,8 @@ from flask_babel import gettext
 
 from searx.data import OSM_KEYS_TAGS, CURRENCIES
 from searx.external_urls import get_external_url
-from searx.engines.wikidata import send_wikidata_query, sparql_string_escape, get_thumbnail
+from searx.wikidata import send_wikidata_query
+from searx.engines.wikidata import sparql_string_escape, get_thumbnail
 from searx.result_types import EngineResults
 
 # about
@@ -290,7 +291,8 @@ def get_title_address(result):
                 'house_number': address_raw.get('house_number'),
                 'road': address_raw.get('road'),
                 'locality': address_raw.get(
-                    'city', address_raw.get('town', address_raw.get('village'))  # noqa
+                    'city',
+                    address_raw.get('town', address_raw.get('village')),  # noqa
                 ),  # noqa
                 'postcode': address_raw.get('postcode'),
                 'country': address_raw.get('country'),
