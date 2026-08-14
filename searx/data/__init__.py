@@ -32,6 +32,13 @@ class WikiDataUnitType(t.TypedDict):
     to_si_factor: float
 
 
+WikiDataPropertyNameType = str | dict[str, str]
+"""Name of a Wikidata property. Can be either the plain name or a dictionary of
+language code to property name, e.g. ``{"en": "Date of birth"}``."""
+WikiDataPropertiesType = dict[str, WikiDataPropertyNameType]
+"""Dictionary from wikidata property ID to property name."""
+
+
 class LocalesType(t.TypedDict):
     """Data structure of an item in ``locales.json``"""
 
@@ -41,6 +48,7 @@ class LocalesType(t.TypedDict):
 
 USER_AGENTS: UserAgentType
 WIKIDATA_UNITS: dict[str, WikiDataUnitType]
+WIKIDATA_PROPERTIES: WikiDataPropertiesType
 TRACKER_PATTERNS: TrackerPatternsDB
 LOCALES: LocalesType
 CURRENCIES: CurrenciesDB
@@ -52,11 +60,12 @@ ENGINE_DESCRIPTIONS: dict[str, dict[str, t.Any]]
 ENGINE_TRAITS: dict[str, dict[str, t.Any]]
 
 
-lazy_globals = {
+lazy_globals: dict[str, t.Any] = {
     "CURRENCIES": CurrenciesDB(),
     "USER_AGENTS": None,
     "EXTERNAL_URLS": None,
     "WIKIDATA_UNITS": None,
+    "WIKIDATA_PROPERTIES": None,
     "EXTERNAL_BANGS": None,
     "OSM_KEYS_TAGS": None,
     "ENGINE_DESCRIPTIONS": None,
@@ -69,6 +78,7 @@ data_json_files = {
     "USER_AGENTS": "useragents.json",
     "EXTERNAL_URLS": "external_urls.json",
     "WIKIDATA_UNITS": "wikidata_units.json",
+    "WIKIDATA_PROPERTIES": "wikidata_properties.json",
     "EXTERNAL_BANGS": "external_bangs.json",
     "OSM_KEYS_TAGS": "osm_keys_tags.json",
     "ENGINE_DESCRIPTIONS": "engine_descriptions.json",

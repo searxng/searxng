@@ -11,7 +11,7 @@ __all__ = ["convert_from_si", "convert_to_si", "symbol_to_si"]
 import collections
 
 from searx import data
-from searx.engines import wikidata
+from searx.wikidata import send_wikidata_query
 
 
 class Beaufort:
@@ -142,7 +142,6 @@ def units_by_si_name(si_name):
 
     # build the catalog ..
     for item in symbol_to_si():
-
         item_si_name = item[pos_si_name]
         item_symbol = item[pos_symbol]
 
@@ -266,14 +265,13 @@ ORDER BY ?item DESC(?rank) ?symbol
 """
 
 
-def fetch_units():
+def fetch_units() -> dict[str, data.WikiDataUnitType]:
     """Fetch units from Wikidata.  Function is used to update persistence of
     :py:obj:`searx.data.WIKIDATA_UNITS`."""
 
     results = collections.OrderedDict()
-    response = wikidata.send_wikidata_query(SARQL_REQUEST)
+    response = send_wikidata_query(SARQL_REQUEST)
     for unit in response['results']['bindings']:
-
         symbol = unit['symbol']['value']
         name = unit['item']['value'].rsplit('/', 1)[1]
         si_name = unit.get('tosiUnit', {}).get('value', '')

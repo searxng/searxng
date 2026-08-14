@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # SPDX-License-Identifier: AGPL-3.0-or-later
 """Fetch website description from websites and from
-:origin:`searx/engines/wikidata.py` engine.
+:origin:`searx/wikidata.py`.
 
 Output file: :origin:`searx/data/engine_descriptions.json`.
 
@@ -17,6 +17,7 @@ from lxml.html import fromstring
 
 import searx.engines
 from searx.engines import wikidata, set_loggers
+from searx.wikidata import send_wikidata_query
 from searx.utils import extract_text
 from searx.locales import LOCALE_NAMES, locales_initialize, match_locale
 from searx import searx_dir
@@ -200,7 +201,6 @@ def initialize():
 
     locale2lang = {"nl-BE": "nl"}
     for sxng_ui_lang in LOCALE_NAMES:
-
         sxng_ui_alias = locale2lang.get(sxng_ui_lang, sxng_ui_lang)
         wiki_lang = None
 
@@ -225,7 +225,7 @@ def initialize():
 def fetch_wikidata_descriptions():
     print("Fetching wikidata descriptions")
     searx.network.set_timeout_for_thread(60)
-    result = wikidata.send_wikidata_query(
+    result = send_wikidata_query(
         SPARQL_DESCRIPTION.replace("%IDS%", IDS).replace("%LANGUAGES_SPARQL%", LANGUAGES_SPARQL)
     )
     if not result:
@@ -249,7 +249,7 @@ def fetch_wikidata_descriptions():
 
 def fetch_wikipedia_descriptions():
     print("Fetching wikipedia descriptions")
-    result = wikidata.send_wikidata_query(
+    result = send_wikidata_query(
         SPARQL_WIKIPEDIA_ARTICLE.replace("%IDS%", IDS).replace("%LANGUAGES_SPARQL%", LANGUAGES_SPARQL)
     )
     if not result:
@@ -307,7 +307,6 @@ def fetch_website_description(engine_name: str, website: str):
     previous_count: int = 0
 
     for lang in languages:
-
         if lang in descriptions[engine_name]:
             continue
 

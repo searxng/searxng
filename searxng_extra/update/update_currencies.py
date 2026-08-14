@@ -16,6 +16,7 @@ import json
 from searx.locales import LOCALE_NAMES, locales_initialize
 from searx.engines import wikidata, set_loggers
 from searx.data.currencies import CurrenciesDB
+from searx.wikidata import send_wikidata_query
 
 set_loggers(wikidata, 'wikidata')
 locales_initialize()
@@ -90,7 +91,7 @@ def add_currency_label(db, label, iso4217, language):
 
 
 def wikidata_request_result_iterator(request):
-    result = wikidata.send_wikidata_query(request.replace('%LANGUAGES_SPARQL%', LANGUAGES_SPARQL), timeout=20)
+    result = send_wikidata_query(request.replace('%LANGUAGES_SPARQL%', LANGUAGES_SPARQL), timeout=20)
     if result is not None:
         yield from result['results']['bindings']
 
