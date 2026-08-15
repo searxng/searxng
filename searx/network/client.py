@@ -133,7 +133,6 @@ def get_transport_for_socks_proxy(
         username=proxy_username,
         password=proxy_password,
         rdns=rdns,
-        loop=get_loop(),
         verify=_verify,  # pyright: ignore[reportArgumentType]
         http2=http2,
         local_address=local_address,
