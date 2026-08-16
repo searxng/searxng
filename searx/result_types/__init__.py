@@ -19,6 +19,7 @@ __all__ = [
     "EngineResults",
     "AnswerSet",
     "Answer",
+    "AiSummary",
     "Translations",
     "WeatherAnswer",
     "Code",
@@ -32,7 +33,7 @@ import typing as t
 import abc
 
 from ._base import Result, MainResult, LegacyResult
-from .answer import AnswerSet, Answer, Translations, WeatherAnswer
+from .answer import AnswerSet, Answer, AiSummary, Translations, WeatherAnswer
 from .keyvalue import KeyValue
 from .code import Code
 from .paper import Paper
@@ -49,6 +50,7 @@ class ResultList(list[Result | LegacyResult], abc.ABC):
         implemented)."""
 
         Answer = Answer
+        AiSummary = AiSummary
         KeyValue = KeyValue
         Code = Code
         Paper = Paper

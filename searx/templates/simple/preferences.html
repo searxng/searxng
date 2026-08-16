@@ -249,6 +249,18 @@
     {%- endif -%}
     {{- tab_footer() -}}
 
+    {# tab: ai #}
+
+    {#- the tab is only shown when the administrator activated the plugin in
+        settings.yml, an instance without an AI summary has no AI tab -#}
+    {%- if 'ai_summary' in plugins_active_by_default
+           and plugins_storage | selectattr('preference_section', 'equalto', 'ai') | list -%}
+      {{- tab_header('maintab', 'ai', _('AI Summary')) -}}
+      {{- plugin_preferences('ai') -}}
+      {%- include 'simple/preferences/ai_summary.html' -%}
+      {{- tab_footer() -}}
+    {%- endif -%}
+
     {# tab: cookies #}
 
     {{- tab_header('maintab', 'cookies', _('Cookies')) -}}

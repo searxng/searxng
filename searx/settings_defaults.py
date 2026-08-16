@@ -13,6 +13,7 @@ from os.path import dirname, abspath
 import msgspec
 
 from typing_extensions import override
+from .ai_summary import SettingsAISummary
 from .brand import SettingsBrand
 from .sxng_locales import sxng_locales
 from ._settings import SettingsPref
@@ -267,6 +268,7 @@ SCHEMA: dict[str, t.Any] = {
         'networks': {},
     },
     'plugins': SettingsValue(dict, {}),
+    'ai_summary': SettingsAISummary,
     'categories_as_tabs': SettingsValue(dict, CATEGORIES_AS_TABS),
     'engines': SettingsValue(list, []),
     'doi_resolvers': {},

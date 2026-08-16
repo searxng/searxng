@@ -1,8 +1,4 @@
 {
-  "_BuurKv-k.min.js": {
-    "file": "chunk/BuurKv-k.min.js",
-    "name": "plugin"
-  },
   "_DK4yUVpy.min.js": {
     "file": "chunk/DK4yUVpy.min.js",
     "name": "assertelement"
@@ -23,6 +19,7 @@
       "src/js/plugin/MapView.ts",
       "src/js/plugin/InfiniteScroll.ts",
       "src/js/plugin/Calculator.ts",
+      "src/js/plugin/AiSummary.ts",
       "src/js/main/keyboard.ts",
       "src/js/main/search.ts",
       "src/js/main/autocomplete.ts",
@@ -80,35 +77,44 @@
       "_DcK-mo-Y.min.js"
     ]
   },
+  "src/js/plugin/AiSummary.ts": {
+    "file": "chunk/DBBLNmaq.min.js",
+    "name": "aisummary",
+    "src": "src/js/plugin/AiSummary.ts",
+    "isDynamicEntry": true,
+    "imports": [
+      "src/js/index.ts",
+      "_DK4yUVpy.min.js"
+    ]
+  },
   "src/js/plugin/Calculator.ts": {
-    "file": "chunk/BfLIj3Of.min.js",
+    "file": "chunk/C8c7HJzp.min.js",
     "name": "calculator",
     "src": "src/js/plugin/Calculator.ts",
     "isDynamicEntry": true,
     "imports": [
-      "_BuurKv-k.min.js",
+      "src/js/index.ts",
       "_DcK-mo-Y.min.js"
     ]
   },
   "src/js/plugin/InfiniteScroll.ts": {
-    "file": "chunk/D3mcqWOe.min.js",
+    "file": "chunk/DpvWr1cn.min.js",
     "name": "infinitescroll",
     "src": "src/js/plugin/InfiniteScroll.ts",
     "isDynamicEntry": true,
     "imports": [
-      "_BuurKv-k.min.js",
       "src/js/index.ts",
       "_DK4yUVpy.min.js",
       "_DcK-mo-Y.min.js"
     ]
   },
   "src/js/plugin/MapView.ts": {
-    "file": "chunk/Bc8fcwWx.min.js",
+    "file": "chunk/BnnvKC7b.min.js",
     "name": "mapview",
     "src": "src/js/plugin/MapView.ts",
     "isDynamicEntry": true,
     "imports": [
-      "_BuurKv-k.min.js"
+      "src/js/index.ts"
     ],
     "css": [
       "sxng-mapview.min.css"

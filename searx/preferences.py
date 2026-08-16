@@ -49,10 +49,14 @@ class ValidationException(Exception):
 class Setting:
     """Base class of user settings"""
 
-    def __init__(self, default_value: t.Any, locked: bool = False):
+    def __init__(self, default_value: t.Any, locked: bool = False, secret: bool = False):
         super().__init__()
         self.value: t.Any = default_value
         self.locked: bool = locked
+        self.secret: bool = secret
+        """The value is a credential: it is not included in the preferences URL
+        (:py:obj:`Preferences.get_as_url_params`), which users copy around to
+        transfer or share their preferences."""
 
     def parse(self, data: str):
         """Parse ``data`` and store the result at ``self.value``
@@ -462,6 +466,27 @@ class Preferences:
                 locked="doi_resolver" in self.cfg.lock,
                 choices=DOI_RESOLVERS,
             ),
+            # empty values fall back to the administrator's defaults in the
+            # ai_summary: section (searx.ai_summary.SettingsAISummary)
+            'ai_summary_server': StringSetting(
+                "",
+                locked="ai_summary_server" in self.cfg.lock,
+            ),
+            'ai_summary_api_key': StringSetting(
+                "",
+                locked="ai_summary_api_key" in self.cfg.lock,
+                # a user's API key is only sent to a server the user configured
+                # themselves, and it is never part of the preferences URL
+                secret=True,
+            ),
+            'ai_summary_model': StringSetting(
+                "",
+                locked="ai_summary_model" in self.cfg.lock,
+            ),
+            'ai_summary_grounding': BooleanSetting(
+                get_setting("ai_summary").grounding,
+                locked="ai_summary_grounding" in self.cfg.lock,
+            ),
             'simple_style': EnumStringSetting(
                 get_setting("ui.theme_args.simple_style"),
                 locked="simple_style" in self.cfg.lock,
@@ -498,7 +523,7 @@ class Preferences:
         """Return preferences as URL parameters"""
         settings_kv = {}
         for k, v in self.key_value_settings.items():
-            if v.locked:
+            if v.locked or v.secret:
                 continue
             if isinstance(v, MultipleChoiceSetting):
                 settings_kv[k] = ','.join(v.get_value())

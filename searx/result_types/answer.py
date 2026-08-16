@@ -14,6 +14,10 @@ template.
    :members:
    :show-inheritance:
 
+.. autoclass:: AiSummary
+   :members:
+   :show-inheritance:
+
 .. autoclass:: Translations
    :members:
    :show-inheritance:
@@ -29,7 +33,7 @@ template.
 # pylint: disable=too-few-public-methods
 
 
-__all__ = ["AnswerSet", "Answer", "Translations", "WeatherAnswer"]
+__all__ = ["AnswerSet", "Answer", "AiSummary", "Translations", "WeatherAnswer"]
 
 from flask_babel import gettext
 import msgspec
@@ -90,6 +94,28 @@ class Answer(BaseAnswer, kw_only=True):
         :py:obj:`Answer` object.  :py:obj:`Answer <Result.__eq__>` objects are
         equal, when the hash values of both objects are equal."""
         return hash(self.answer)
+
+
+class AiSummary(BaseAnswer, kw_only=True):
+    """Placeholder for an AI generated summary of the search query
+    (:py:obj:`searx.plugins.ai_summary`).  The summary itself is fetched
+    asynchronously by the client after the result page has been rendered."""
+
+    # The answers of an AnswerSet are sorted by their template name; this
+    # template sorts before the other answer templates, the AI summary is
+    # therefore rendered first in the answer area.
+    template: str = "answer/ai_summary.html"
+
+    query: str
+    """The search query the summary is generated for."""
+
+    grounding: bool = False
+    """Ground the summary on the search results (user's preference)."""
+
+    def __hash__(self):
+        """The hash value of field *query* is the hash value of the
+        :py:obj:`AiSummary` object."""
+        return hash(self.query)
 
 
 class Translations(BaseAnswer, kw_only=True):

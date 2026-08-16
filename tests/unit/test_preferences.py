@@ -169,7 +169,7 @@ class TestPreferences(SearxTestCase):
         self.preferences.parse_encoded_data(url_params)
         self.assertEqual(
             vars(self.preferences.key_value_settings['categories']),
-            {'value': ['general'], 'locked': False, 'choices': ['general', 'none']},
+            {'value': ['general'], 'locked': False, 'secret': False, 'choices': ['general', 'none']},
         )
 
     def test_save_key_value_setting(self):

@@ -1,0 +1,72 @@
+{%- if 'ai_summary_server' not in locked_preferences -%}
+<fieldset>{{- '' -}}
+  <legend id="pref_ai_summary_server">{{- _('AI server URL') -}}</legend>{{- '' -}}
+  <div class="value">{{- '' -}}
+    <input name="ai_summary_server" aria-labelledby="pref_ai_summary_server" type="text"
+           autocomplete="off" spellcheck="false" autocorrect="off"
+           placeholder="{{ ai_summary_default_server or 'http://127.0.0.1:11434' }}"
+           value="{{ preferences.get_value('ai_summary_server') }}">{{- '' -}}
+  </div>{{- '' -}}
+  <div class="description">
+    {{- _('URL of the OpenAI compatible LLM server that generates the summaries (e.g. Ollama, LM Studio, vLLM), e.g. http://192.168.1.10:11434.') -}}
+    {{- ' ' -}}
+    {%- if ai_summary_default_server -%}
+      {{- _('Leave empty to use the default of this instance.') -}}
+    {%- endif -%}
+  </div>{{- '' -}}
+</fieldset>{{- '' -}}
+{%- endif -%}
+{%- if 'ai_summary_api_key' not in locked_preferences -%}
+<fieldset>{{- '' -}}
+  <legend id="pref_ai_summary_api_key">{{- _('AI server API key') -}}</legend>{{- '' -}}
+  <div class="value">{{- '' -}}
+    <input name="ai_summary_api_key" aria-labelledby="pref_ai_summary_api_key" type="password"
+           autocomplete="off" spellcheck="false" autocorrect="off"
+           value="{{ preferences.get_value('ai_summary_api_key') }}">{{- '' -}}
+  </div>{{- '' -}}
+  <div class="description">
+    {{- _('Optional, only needed if your server requires authentication.') -}}
+  </div>{{- '' -}}
+</fieldset>{{- '' -}}
+{%- endif -%}
+{%- if 'ai_summary_model' not in locked_preferences -%}
+<fieldset>{{- '' -}}
+  <legend id="pref_ai_summary_model">{{- _('AI summary model') -}}</legend>{{- '' -}}
+  <div class="value">{{- '' -}}
+    <input name="ai_summary_model" aria-labelledby="pref_ai_summary_model" type="text"
+           autocomplete="off" spellcheck="false" autocorrect="off" list="ai_summary_model_list"
+           placeholder="{{ ai_summary_default_model or 'llama3.2:3b' }}"
+           value="{{ preferences.get_value('ai_summary_model') }}">{{- '' -}}
+    <datalist id="ai_summary_model_list">
+      {%- for model in ai_summary_models -%}
+        <option value="{{ model }}"></option>
+      {%- endfor -%}
+    </datalist>{{- '' -}}
+  </div>{{- '' -}}
+  <div class="description">
+    {{- _('Name of the model used to generate the summaries, e.g. llama3.2:3b or gemma3:4b.') -}}
+    {{- ' ' -}}
+    {%- if ai_summary_default_model -%}
+      {{- _('Leave empty to use the default of this instance.') -}}
+    {%- endif -%}
+  </div>{{- '' -}}
+</fieldset>{{- '' -}}
+{%- endif -%}
+{%- if 'ai_summary_grounding' not in locked_preferences -%}
+<fieldset>{{- '' -}}
+  <legend id="pref_ai_summary_grounding">{{ _('Ground AI summary on search results') }}</legend>{{- '' -}}
+  <p class="value">{{- '' -}}
+    <input type="checkbox" {{- ' ' -}}
+           name="ai_summary_grounding" {{- ' ' -}}
+           aria-labelledby="pref_ai_summary_grounding" {{- ' ' -}}
+           class="checkbox-onoff" {{- ' ' -}}
+           {%- if preferences.get_value('ai_summary_grounding') -%}
+             checked
+           {%- endif -%}{{- ' ' -}}
+           >{{- '' -}}
+  </p>{{- '' -}}
+  <div class="description">
+    {{- _('Send the top search results along with the query, the model answers from this context instead of its own knowledge.  Answers are more accurate and more current, but generating them is slower and needs more memory (VRAM) on the Ollama server.') -}}
+  </div>{{- '' -}}
+</fieldset>{{- '' -}}
+{%- endif -%}

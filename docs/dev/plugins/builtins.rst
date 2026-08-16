@@ -7,6 +7,7 @@ Built-in Plugins
 .. toctree::
    :maxdepth: 1
 
+   ai_summary
    calculator
    hash_plugin
    hostnames

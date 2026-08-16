@@ -42,7 +42,7 @@ class PluginInfo:
     description: str
     """Short description of the *answerer*."""
 
-    preference_section: t.Literal["general", "ui", "privacy", "query"] | None = "general"
+    preference_section: t.Literal["general", "ui", "privacy", "query", "ai"] | None = "general"
     """Section (tab/group) in the preferences where this plugin is shown to the
     user.
 

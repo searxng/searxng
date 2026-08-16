@@ -93,8 +93,10 @@ from searx.preferences import (
     ClientPref,
     ValidationException,
 )
+import searx.ai_summary
 import searx.answerers
 import searx.plugins
+import searx.plugins.ai_summary
 
 
 from searx.metrics import get_engines_stats, get_engine_errors, get_reliabilities, histogram, counter, openmetrics
@@ -328,6 +330,8 @@ def get_translations():
         'Source': gettext('Source'),
         # infinite scroll
         'error_loading_next_page': gettext('Error loading the next page'),
+        # AI summary
+        'error_loading_ai_summary': gettext('Error loading the AI summary'),
     }
 
 
@@ -975,16 +979,25 @@ def preferences():
         shortcuts = {y: x for x, y in engine_shortcuts.items()},
         themes = themes,
         plugins_storage = searx.plugins.STORAGE.info,
+        # plugins the administrator activated in settings.yml; a plugin that is
+        # not activated does not get a preferences tab of its own
+        plugins_active_by_default = {plg.id for plg in searx.plugins.STORAGE if plg.active},
         current_doi_resolver = get_doi_resolver(),
         allowed_plugins = allowed_plugins,
         preferences_url_params = sxng_request.preferences.get_as_url_params(),
         locked_preferences = get_setting("preferences").lock,
         doi_resolvers = get_setting("doi_resolvers", {}),
+        ai_summary_models = searx.ai_summary.model_choices(),
+        ai_summary_default_model = get_setting("ai_summary").model,
+        ai_summary_default_server = get_setting("ai_summary").base_url,
         # fmt: on
     )
 
 
 app.add_url_rule('/favicon_proxy', methods=['GET'], endpoint="favicon_proxy", view_func=favicons.favicon_proxy)
+app.add_url_rule(
+    '/ai_summary', methods=['POST'], endpoint="ai_summary", view_func=searx.plugins.ai_summary.ai_summary_view
+)
 
 
 @app.route('/image_proxy', methods=['GET'])

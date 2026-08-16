@@ -25,3 +25,4 @@ Settings
    settings_outgoing
    settings_categories_as_tabs
    settings_plugins
+   settings_ai_summary

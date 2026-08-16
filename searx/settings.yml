@@ -256,6 +256,9 @@ plugins:
   searx.plugins.tracker_url_remover.SXNGPlugin:
     active: true
 
+  searx.plugins.ai_summary.SXNGPlugin:
+    active: false
+
 
 # Configuration of the "Hostnames plugin":
 #
@@ -282,6 +285,34 @@ plugins:
 # '(.*\.)?youtube\.com$': 'yt.example.com'
 # '(.*\.)?youtu\.be$': 'yt.example.com'
 #
+
+# Configuration of the "AI Summary plugin", for more details see
+#   https://docs.searxng.org/admin/settings/settings_ai_summary.html
+#
+# ai_summary:
+#
+#   # Base URL of an OpenAI compatible LLM server (Ollama, vLLM, LM Studio,
+#   # llama.cpp, Hugging Face TGI, ...), used as the default for the
+#   # ai_summary_server preference.
+#   base_url: "http://127.0.0.1:11434"
+#
+#   # API key of the server above, if it requires authentication (e.g. vLLM or
+#   # llama.cpp with --api-key).  Sent as "Authorization: Bearer" and only to
+#   # base_url, never to a server configured by a user in the preferences.
+#   api_key: ""
+#
+#   # Default model; if empty, the first entry of models: is used.
+#   model: "llama3.2:3b"
+#
+#   # Models suggested to the user in the preferences; if empty, the list
+#   # is requested from the LLM server (GET /v1/models) at startup.
+#   models:
+#     - "llama3.2:3b"
+#     - "gemma3:4b"
+#
+#   # Ground summaries on the search results by default (users can still opt
+#   # in/out in their preferences).
+#   grounding: true
 
 
 categories_as_tabs:
