@@ -6,12 +6,37 @@ Lofgren .
 .. _Marginalia Search:
    https://about.marginalia-search.com/
 
+
+.. _marginalia filters:
+
+Marginalia Filters
+=================
+
+Custom filters enable server-side customization of Marginalia search results.
+Filter definitions are written in XML and scoped to an API key.  Filters can
+not be used with the public API key ``public``.  The
+`Marginalia Filter Editor`_ can be used to create custom filters with a GUI.
+Alternatively, filters can be written manually in XML.  To associate a filter
+definition with an API key, upload the XML data to the ``/filter/<NAME>`` API
+endpoint, where ``<NAME>`` is the name for the newly created filter.  For more
+information, see the `Marginalia filters announcement blogpost`_ and the
+official `Marginalia API documentation`_.
+
+.. _Marginalia Filter Editor: https://marginalia-search.com/filters
+.. _Marginalia filters announcement blogpost: https://www.marginalia.nu/log/a_127_index_filtering/
+.. _Marginalia API documentation: https://about.marginalia-search.com/article/api/
+
+
 Configuration
 =============
 
 The engine has the following required settings:
 
 - :py:obj:`api_key`
+
+The engine has the following optional settings:
+
+- :py:obj:`filter_name`
 
 You can configure a Marginalia engine by:
 
@@ -21,6 +46,7 @@ You can configure a Marginalia engine by:
      engine: marginalia
      shortcut: mar
      api_key: ...
+     filter_name: ...
 
 Implementations
 ===============
@@ -29,6 +55,8 @@ Implementations
 
 import typing as t
 from urllib.parse import urlencode
+
+from searx.network import get
 from searx.utils import searxng_useragent
 from searx.result_types import EngineResults
 from searx.extended_types import SXNG_Response
@@ -54,6 +82,8 @@ api_key = None
    https://about.marginalia-search.com/article/api/
 
 """
+filter_name: str | None = None
+"""The name of the custom filter to apply to each search."""
 
 
 class ApiSearchResult(t.TypedDict):
@@ -83,6 +113,25 @@ class ApiSearchResults(t.TypedDict):
     results: list[ApiSearchResult]
 
 
+def _marginalia_headers() -> dict[str, t.Any]:
+    return {
+        "User-Agent": searxng_useragent(),
+        "API-Key": api_key,
+    }
+
+
+def _get_filter_names() -> list[str]:
+
+    resp = get(f"{base_url}/filter", headers=_marginalia_headers())
+    if resp.ok:
+        filter_names = resp.json()
+    else:
+        filter_names = []
+    if not isinstance(filter_names, list):
+        raise TypeError("marginalia api returned invalid filter list format")
+    return filter_names
+
+
 def request(query: str, params: dict[str, t.Any]):
 
     query_params = {
@@ -91,10 +140,11 @@ def request(query: str, params: dict[str, t.Any]):
         "nsfw": min(params["safesearch"], 1),
         "query": query,
     }
+    if filter_name:
+        query_params["filter"] = filter_name
 
     params["url"] = f"{base_url}/search?{urlencode(query_params)}"
-    params["headers"]["User-Agent"] = searxng_useragent()
-    params["headers"]["API-Key"] = api_key
+    params["headers"].update(_marginalia_headers())
 
 
 def response(resp: SXNG_Response):
@@ -114,14 +164,18 @@ def response(resp: SXNG_Response):
     return res
 
 
-def init(engine_settings: dict[str, t.Any]):
+def init(_: dict[str, t.Any]):
 
-    _api_key = engine_settings.get("api_key")
-    if not _api_key:
+    if not api_key:
         logger.error("missing api_key: see https://about.marginalia-search.com/article/api")
         return False
 
-    if _api_key == "public":
+    if api_key == "public":
         logger.error("invalid api_key (%s): see https://about.marginalia-search.com/article/api", api_key)
+    elif filter_name:
+        filter_names: list[str] = _get_filter_names()
+        if filter_name not in filter_names:
+            logger.error(f"invalid value for filter_name: '{filter_name}'")
+            return False
 
     return True
