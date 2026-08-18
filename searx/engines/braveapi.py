@@ -51,6 +51,8 @@ api_key: str = ""
 
 categories = ["general", "web"]
 paging = True
+# Brave's offset is a zero-based page number and is limited to 9.
+max_page = 10
 safesearch = True
 time_range_support = True
 
@@ -75,7 +77,7 @@ def request(query: str, params: "OnlineParams") -> None:
     search_args: dict[str, str | int | None] = {
         "q": query,
         "count": results_per_page,
-        "offset": (params["pageno"] - 1) * results_per_page,
+        "offset": params["pageno"] - 1,
         "text_decorations": False,
     }
 
