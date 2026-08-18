@@ -46,9 +46,11 @@ Further information on *how-to* can be found `here <https://docs.searxng.org/adm
 Connect
 =======
 
-If you have questions or want to connect with others in the community:
+If you have questions, suggestions, or want to connect with others in the community:
 
-- `#searxng:matrix.org <https://matrix.to/#/#searxng:matrix.org>`_
+- `Discuss with the community <https://matrix.to/#/#searxng:matrix.org>`_
+- `Report bugs and suggestions <https://github.com/searxng/searxng/issues>`_
+- `Help improve translations <https://translate.codeberg.org/projects/searxng/>`_
 
 Contributing
 ============
