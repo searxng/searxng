@@ -63,6 +63,20 @@ class ProxyFix:
         proxy_list: list[str] = cfg.get("botdetection.trusted_proxies", default=[])
         return [ip_network(net, strict=False) for net in proxy_list]
 
+    def is_trusted_proxy(
+        self,
+        addr: IPv4Address | IPv6Address | None,
+        trusted_proxies: list[IPv4Network | IPv6Network],
+    ) -> bool:
+        if addr is None:
+            return False
+
+        for net in trusted_proxies:
+            if addr.version == net.version and addr in net:
+                return True
+
+        return False
+
     def trusted_remote_addr(
         self,
         x_forwarded_for: list[IPv4Address | IPv6Address],
@@ -70,16 +84,8 @@ class ProxyFix:
     ) -> str:
         # always rtl
         for addr in reversed(x_forwarded_for):
-            trust: bool = False
-
-            for net in trusted_proxies:
-                if addr.version == net.version and addr in net:
-                    logger.debug("trust proxy %s (member of %s)", addr, net)
-                    trust = True
-                    break
-
-            # client address
-            if not trust:
+            if not self.is_trusted_proxy(addr, trusted_proxies):
+                logger.debug("client address from X-Forwarded-For: %s", addr)
                 return addr.compressed
 
         # fallback to first address
@@ -95,19 +101,21 @@ class ProxyFix:
         # in this function!
 
         orig_remote_addr: str | None = environ.pop("REMOTE_ADDR")
+        orig_remote_ip: IPv4Address | IPv6Address | None = None
 
         # Validate the IPs involved in this game and delete all invalid ones
         # from the WSGI environment.
 
         if orig_remote_addr:
             try:
-                addr = ip_address(orig_remote_addr)
-                if addr.version == 6 and addr.ipv4_mapped:
-                    addr = addr.ipv4_mapped
-                orig_remote_addr = addr.compressed
+                orig_remote_ip = ip_address(orig_remote_addr)
+                if orig_remote_ip.version == 6 and orig_remote_ip.ipv4_mapped:
+                    orig_remote_ip = orig_remote_ip.ipv4_mapped
+                orig_remote_addr = orig_remote_ip.compressed
             except ValueError as exc:
                 logger.error("REMOTE_ADDR: %s / discard REMOTE_ADDR from WSGI environment", exc)
                 orig_remote_addr = None
+                orig_remote_ip = None
 
         x_real_ip: str | None = environ.get("HTTP_X_REAL_IP")
         if x_real_ip:
@@ -141,11 +149,13 @@ class ProxyFix:
         if not x_forwarded_for and not x_real_ip:
             log_error_only_once("X-Forwarded-For nor X-Real-IP header is set!")
 
-        if x_forwarded_for and not trusted_proxies:
-            log_error_only_once("missing botdetection.trusted_proxies config")
-            # without trusted_proxies, this variable is useless for determining
-            # the real IP
-            x_forwarded_for = []
+        if x_forwarded_for or x_real_ip:
+            if not trusted_proxies:
+                log_error_only_once("missing botdetection.trusted_proxies config")
+
+            if not self.is_trusted_proxy(orig_remote_ip, trusted_proxies):
+                x_forwarded_for = []
+                x_real_ip = None
 
         # securing the WSGI environment variables that are adjusted
 
