@@ -80,7 +80,12 @@ export default class Calculator extends Plugin {
 
     try {
       const node = Calculator.math.parse(searchInput.value);
-      return `${node.toString()} = ${node.evaluate()}`;
+      const value = node.evaluate();
+      if (typeof value !== "number") {
+        return;
+      }
+
+      return `${node.toString()} = ${value}`;
     } catch {
       // not a compatible math expression
       return;
