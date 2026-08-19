@@ -23,7 +23,7 @@ export const appendAnswerElement = (element: HTMLElement | string | number): voi
 
   if (!(element instanceof HTMLElement)) {
     const span = document.createElement("span");
-    span.innerHTML = element.toString();
+    span.textContent = element.toString();
     // biome-ignore lint/style/noParameterAssign: TODO
     element = span;
   }
