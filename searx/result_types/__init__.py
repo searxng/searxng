@@ -15,6 +15,7 @@
 __all__ = [
     "Result",
     "MainResult",
+    "LegacyResult",
     "KeyValue",
     "EngineResults",
     "AnswerSet",
