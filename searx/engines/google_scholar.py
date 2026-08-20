@@ -77,8 +77,6 @@ def request(query: str, params: "OnlineParams") -> None:
     """Google-Scholar search request"""
 
     google_info = get_google_info(params, traits)
-    # subdomain is: scholar.google.xy
-    google_info["subdomain"] = google_info["subdomain"].replace("www.", "scholar.")
 
     args = {
         "q": query,
@@ -89,7 +87,7 @@ def request(query: str, params: "OnlineParams") -> None:
     }
     args.update(time_range_args(params))
 
-    params["url"] = "https://" + google_info["subdomain"] + "/scholar?" + urlencode(args)
+    params["url"] = "https://scholar.google.com/scholar?" + urlencode(args)
     params["cookies"] = google_info["cookies"]
     params["headers"].update(google_info["headers"])
 

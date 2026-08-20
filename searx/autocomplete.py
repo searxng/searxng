@@ -127,18 +127,17 @@ def duckduckgo(query: str, sxng_locale: str) -> list[str]:
 
 
 def google_complete(query: str, sxng_locale: str) -> list[str]:
-    """Autocomplete from Google.  Supports Google's languages and subdomains
+    """Autocomplete from Google.  Supports Google's languages
     (:py:obj:`searx.engines.google.get_google_info`) by using the async REST
     API::
 
-        https://{subdomain}/complete/search?{args}
+        https://www.google.com/complete/search?{args}
 
     """
 
     data = ENGINE_TRAITS.get("google") or {}
     traits = EngineTraits(**data)
     google_info: dict[str, t.Any] = google.get_google_info({'searxng_locale': sxng_locale}, traits)
-    url = 'https://{subdomain}/complete/search?{args}'
     args = urlencode(
         {
             'q': query,
@@ -148,7 +147,7 @@ def google_complete(query: str, sxng_locale: str) -> list[str]:
     )
     results: list[str] = []
 
-    resp = get(url.format(subdomain=google_info['subdomain'], args=args))
+    resp = get('https://www.google.com/complete/search?' + args)
     if resp and resp.ok:
         json_txt = resp.text[resp.text.find('[') : resp.text.find(']', -3) + 1]
         data = json.loads(json_txt)

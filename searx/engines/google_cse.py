@@ -95,12 +95,11 @@ def request(query: str, params: "OnlineParams") -> None:
     token = _cse_token()
 
     google_info = get_google_info(params, traits)
-    info: dict[str, str] = google_info["params"]
 
     args = {
         "rsz": "filtered_cse",
         "num": str(page_size),
-        "hl": info["hl"],
+        "hl": google_info["params"]["hl"],
         "cselibv": token["cselibv"],
         "cx": CX,
         "q": query,
@@ -114,10 +113,6 @@ def request(query: str, params: "OnlineParams") -> None:
         start_date, end_date = _get_start_and_end_date_str(params["time_range"])
         args["sort"] = f"date:r:{start_date}:{end_date}"
 
-    if info.get("lr"):
-        args["lr"] = info["lr"]
-    if info.get("cr"):
-        args["cr"] = info["cr"]
     if google_info["country"] not in (None, "ZZ"):
         args["gl"] = google_info["country"]
     if token["exp"]:

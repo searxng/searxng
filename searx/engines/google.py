@@ -9,12 +9,15 @@ engines:
 - :ref:`google scholar engine`
 - :ref:`google autocomplete`
 
+This implementation uses Nokia user agents to request an XML layout from Google.
+The normal web version requires executing JavaScript to load the results and
+therefore is currently not used here.  See `Google discussion`_ for more
+information on that topic.
+
+.. _Google discussion: https://github.com/searxng/searxng/issues/6359
 """
 
 import random
-import re
-import string
-import time
 import typing as t
 from urllib.parse import unquote, urlencode
 
@@ -44,16 +47,16 @@ about = {
     "official_api_documentation": "https://developers.google.com/custom-search/",
     "use_official_api": False,
     "require_api_key": False,
-    "results": "HTML",
+    "results": "XML",
 }
 
 # engine dependent config
 categories = ["general", "web"]
 paging = True
 max_page = 50
-"""`Google max 50 pages`_
+"""Google supports up to 50 pages of results, see the `Google max_page discussion`_.
 
-.. _Google max 50 pages: https://github.com/searxng/searxng/issues/2982
+.. _Google max_page discussion: https://github.com/searxng/searxng/issues/2982
 """
 time_range_support = True
 language_support = True
@@ -64,38 +67,23 @@ time_range_dict = {"day": "d", "week": "w", "month": "m", "year": "y"}
 # Filter results. 0: None, 1: Moderate, 2: Strict
 filter_mapping = {0: "off", 1: "medium", 2: "high"}
 
+# https://github.com/searxng/searxng/issues/6359
+nokia_useragents = (
+    "Nokia7610/2.0 (5.0509.0) SymbianOS/7.0s Series60/2.1 Profile/MIDP-2.0 Configuration/CLDC-1.0",
+    "Nokia7610/2.0 (7.0642.0) SymbianOS/7.0s Series60/2.1 Profile/MIDP-2.0 Configuration/CLDC-1.0",
+    "Nokia6230/2.0 (05.50) Profile/MIDP-2.0 Configuration/CLDC-1.1",
+    "Nokia6230i/2.0 (03.80) Profile/MIDP-2.0 Configuration/CLDC-1.1",
+    "Nokia6280/2.0 (03.60) Profile/MIDP-2.0 Configuration/CLDC-1.1",
+    "NokiaN72/2.0617.1.0.3 Series60/2.8 Profile/MIDP-2.0 Configuration/CLDC-1.1",
+)
+
+
 # specific xpath variables
 # ------------------------
 
 # Suggestions are links placed in a *card-section*, we extract only the text
 # from the links not the links itself.
-suggestion_xpath = '//div[contains(@class, "gGQDvd iIWm4b")]//a'
-
-
-_arcid_range = string.ascii_letters + string.digits + "_-"
-_arcid_random: tuple[str, int] | None = None
-
-
-def ui_async(start: int) -> str:
-    """Format of the response from UI's async request.
-
-    - ``arc_id:<...>,use_ac:true,_fmt:prog``
-
-    The arc_id is random generated every hour.
-    """
-    global _arcid_random  # pylint: disable=global-statement
-
-    use_ac = "use_ac:true"
-    # _fmt:html returns a HTTP 500 when user search for celebrities like
-    # '!google natasha allegri' or '!google chris evans'
-    _fmt = "_fmt:prog"
-
-    # create a new random arc_id every hour
-    if not _arcid_random or (int(time.time()) - _arcid_random[1]) > 3600:
-        _arcid_random = ("".join(random.choices(_arcid_range, k=23)), int(time.time()))
-    arc_id = f"arc_id:srp_{_arcid_random[0]}_1{start:02}"
-
-    return ",".join([arc_id, use_ac, _fmt])
+suggestion_xpath = '//table[contains(@class, "HExoMb")]//a[contains(@class, "ZWRArf")]'
 
 
 def get_google_info(params: "OnlineParams", eng_traits: EngineTraits) -> dict[str, t.Any]:
@@ -127,19 +115,11 @@ def get_google_info(params: "OnlineParams", eng_traits: EngineTraits) -> dict[st
             A instance of :py:obj:`babel.core.Locale` build from the
             ``searxng_locale`` value.
 
-        subdomain:
-            Google subdomain :py:obj:`google_domains` that fits to the country
-            code.
-
         params:
             Py-Dictionary with additional request arguments (can be passed to
             :py:func:`urllib.parse.urlencode`).
 
             - ``hl`` parameter: specifies the interface language of user interface.
-            - ``lr`` parameter: restricts search results to documents written in
-              a particular language.
-            - ``cr`` parameter: restricts search results to documents
-              originating in a particular country.
             - ``ie`` parameter: sets the character encoding scheme that should
               be used to interpret the query string ('utf8').
             - ``oe`` parameter: sets the character encoding scheme that should
@@ -156,7 +136,6 @@ def get_google_info(params: "OnlineParams", eng_traits: EngineTraits) -> dict[st
     ret_val: dict[str, t.Any] = {
         "language": None,
         "country": None,
-        "subdomain": None,
         "params": {},
         "headers": {},
         "cookies": {},
@@ -169,7 +148,7 @@ def get_google_info(params: "OnlineParams", eng_traits: EngineTraits) -> dict[st
     except babel.core.UnknownLocaleError:
         locale = None
 
-    eng_lang = eng_traits.get_language(sxng_locale, "lang_en")
+    eng_lang = eng_traits.get_language(sxng_locale) or "lang_en"
     lang_code = eng_lang.split("_")[-1]  # lang_zh-TW --> zh-TW / lang_en --> en
     country = eng_traits.get_region(sxng_locale, eng_traits.all_locale)
 
@@ -184,7 +163,6 @@ def get_google_info(params: "OnlineParams", eng_traits: EngineTraits) -> dict[st
     ret_val["language"] = eng_lang
     ret_val["country"] = country
     ret_val["locale"] = locale
-    ret_val["subdomain"] = eng_traits.custom["supported_domains"].get(country.upper(), "www.google.com")
 
     # hl parameter:
     #   The hl parameter specifies the interface language (host language) of
@@ -223,9 +201,11 @@ def get_google_info(params: "OnlineParams", eng_traits: EngineTraits) -> dict[st
 
     # specify a region (country) only if a region is given in the selected
     # locale --> https://github.com/searxng/searxng/issues/2672
-    ret_val["params"]["cr"] = ""
-    if len(sxng_locale.split("-")) > 1:
-        ret_val["params"]["cr"] = "country" + country
+
+    if country is not None:
+        ret_val["params"]["cr"] = ""
+        if len(sxng_locale.split("-")) > 1:
+            ret_val["params"]["cr"] = "country" + country
 
     # gl parameter: (mandatory by Google News)
     #   The gl parameter value is a two-letter country code. For WebSearch
@@ -300,88 +280,77 @@ def detect_google_sorry(resp: "SXNG_Response"):
         raise SearxEngineCaptchaException()
 
 
-def request(query: str, params: "OnlineParams") -> None:
-    """Google search request"""
-    # pylint: disable=line-too-long
-    start = (params["pageno"] - 1) * 10
-    google_info = get_google_info(params, traits)
-
-    # https://www.google.de/search?q=corona&hl=de&lr=lang_de&start=0&tbs=qdr%3Ad&safe=medium
-    query_url = (
-        "https://"
-        + google_info["subdomain"]
-        + "/search"
-        + "?"
-        + urlencode(
-            {
-                "q": query,
-                **google_info["params"],
-                "filter": "0",
-                "start": start,
-                # 'vet': '12ahUKEwik3ZbIzfn7AhXMX_EDHbUDBh0QxK8CegQIARAC..i',
-                # 'ved': '2ahUKEwik3ZbIzfn7AhXMX_EDHbUDBh0Q_skCegQIARAG',
-                # 'cs' : 1,
-                # 'sa': 'N',
-                # 'yv': 3,
-                # 'prmd': 'vin',
-                # 'ei': 'GASaY6TxOcy_xc8PtYeY6AE',
-                # 'sa': 'N',
-                # 'sstk': 'AcOHfVkD7sWCSAheZi-0tx_09XDO55gTWY0JNq3_V26cNN-c8lfD45aZYPI8s_Bqp8s57AHz5pxchDtAGCA_cikAWSjy9kw3kgg'
-                # formally known as use_mobile_ui
-                # "asearch": "arc",
-                # "async": str_async,
-            }
-        )
-    )
-
-    if params["time_range"] in time_range_dict:
-        query_url += "&" + urlencode({"tbs": "qdr:" + time_range_dict[params["time_range"]]})
-    if params["safesearch"]:
-        query_url += "&" + urlencode({"safe": filter_mapping[params["safesearch"]]})
-    params["url"] = query_url
-
-    params["cookies"] = google_info["cookies"]
-    params["headers"].update(google_info["headers"])
+def unwrap_google_url(raw_url: str) -> str:
+    # remove redirector from url
+    if raw_url.startswith("/url?q="):
+        return unquote(raw_url[7:].split("&sa=U")[0])
+    return raw_url
 
 
-# regex match to get image map that is found inside the returned javascript:
-# (function(){var s='...';var i=['...'] ...}
-RE_DATA_IMAGE = re.compile(r"(data:image[^']*?)'[^']*?'((?:dimg|pimg|tsuid)[^']*)")
-
-
-def parse_url_images(text: str):
-    data_image_map = {}
-
-    for image_url, img_id in RE_DATA_IMAGE.findall(text):
-        data_image_map[img_id] = image_url.encode('utf-8').decode("unicode-escape")
-    logger.debug("data:image objects --> %s", list(data_image_map.keys()))
-    return data_image_map
-
-
-def response(resp: "SXNG_Response"):
-    """Get response from google's search request"""
-    # pylint: disable=too-many-branches, too-many-statements
+def wml_dom(resp: "SXNG_Response"):
     detect_google_sorry(resp)
-    data_image_map = parse_url_images(resp.text)
+    text = resp.text
+    if text.lstrip().startswith("<?xml"):
+        text = text.split("?>", 1)[-1]
+    return html.fromstring(text)
 
+
+def google_request(
+    query: str,
+    params: "OnlineParams",
+    extra_args: dict[str, t.Any] | None = None,
+    *,
+    eng_traits: EngineTraits | None = None,
+    use_time_range: bool = True,
+    use_safesearch: bool = True,
+    safesearch_map: dict[int, str] | None = None,
+    use_locales: bool = True,
+) -> None:
+    google_info = get_google_info(params, eng_traits or traits)
+    if not use_locales:
+        google_info["params"].pop("lr")
+        google_info["params"].pop("cr")
+
+    start = (params["pageno"] - 1) * 10
+    args: dict[str, t.Any] = {
+        "q": query,
+        "sca_esv": "1",
+        **google_info["params"],
+        **(extra_args or {}),
+    }
+    if start:
+        args["start"] = start
+    if use_time_range and params["time_range"] in time_range_dict:
+        args["tbs"] = "qdr:" + time_range_dict[params["time_range"]]
+    if use_safesearch and params["safesearch"]:
+        args["safe"] = (safesearch_map or filter_mapping)[params["safesearch"]]
+
+    params["url"] = f"https://www.google.com/wml/search?{urlencode(args)}"
+    params["headers"]["User-Agent"] = random.choice(nokia_useragents)
+
+
+def request(query: str, params: "OnlineParams") -> None:
+    google_request(query, params)
+
+
+def response(resp: "SXNG_Response") -> EngineResults:
     results = EngineResults()
-
-    # convert the text to dom
-    dom = html.fromstring(resp.text)
+    dom = wml_dom(resp)
 
     # parse results
-    for result in eval_xpath_list(dom, '//a[@data-ved and not(@class)]'):
-        # pylint: disable=too-many-nested-blocks
+    for result in eval_xpath_list(dom, '//div[contains(@class, "zMzFAb")]'):
 
         try:
-            title_tag = eval_xpath_getindex(result, './/div[@style]', 0, default=None)
+            title_tag = eval_xpath_getindex(
+                result, './/a[contains(@class, "fuLhoc")]//span[contains(@class, "CVA68e")]', 0, default=None
+            )
             if title_tag is None:
                 # this not one of the common google results *section*
                 logger.debug("ignoring item from the result_xpath list: missing title")
                 continue
             title = extract_text(title_tag)
 
-            raw_url = result.get("href")
+            raw_url = eval_xpath_getindex(result, './/a[contains(@class, "fuLhoc")]/@href', 0, default=None)
             if raw_url is None:
                 logger.debug(
                     'ignoring item from the result_xpath list: missing url of title "%s"',
@@ -389,30 +358,19 @@ def response(resp: "SXNG_Response"):
                 )
                 continue
 
-            if raw_url.startswith('/url?q='):
-                url = unquote(raw_url[7:].split("&sa=U")[0])  # remove the google redirector
-            else:
-                url = raw_url
-
-            content_nodes = eval_xpath(result, '../..//div[contains(@class, "ilUpNd H66NU aSRlid")]')
-            for item in content_nodes:
-                for script in item.xpath(".//script"):
-                    script.getparent().remove(script)
-
-            content = extract_text(content_nodes[0])
-
-            # Images that are NOT the favicon
-            xpath_image = eval_xpath_getindex(result, './/img', index=0, default=None)
-
-            thumbnail = None
-            if xpath_image is not None:
-                thumbnail = xpath_image.get("src")
-                if thumbnail.startswith("data:image"):
-                    img_id = xpath_image.get("id")
-                    if img_id:
-                        thumbnail = data_image_map.get(img_id)
-
-            results.append({"url": url, "title": title, "content": content or '', "thumbnail": thumbnail})
+            url = unwrap_google_url(raw_url)
+            content = extract_text(
+                eval_xpath(result, './/div[contains(@class, "taTFJ")]//span[contains(@class, "FrIlee")]')
+            )
+            thumbnail = eval_xpath_getindex(result, './/img[contains(@src, "encrypted-tbn")]/@src', 0, default=None)
+            results.add(
+                results.types.MainResult(
+                    url=url,
+                    title=title or "",
+                    content=content or "",
+                    thumbnail=thumbnail or "",
+                )
+            )
 
         except Exception as e:  # pylint: disable=broad-except
             logger.error(e, exc_info=True)
@@ -420,10 +378,8 @@ def response(resp: "SXNG_Response"):
 
     # parse suggestion
     for suggestion in eval_xpath_list(dom, suggestion_xpath):
-        # append suggestion
-        results.append({"suggestion": extract_text(suggestion)})
+        results.add(results.types.LegacyResult(suggestion=extract_text(suggestion)))
 
-    # return results
     return results
 
 
@@ -456,13 +412,11 @@ skip_countries = [
 ]
 
 
-def fetch_traits(engine_traits: EngineTraits, add_domains: bool = True):
+def fetch_traits(engine_traits: EngineTraits):
     """Fetch languages from Google."""
     # pylint: disable=import-outside-toplevel, too-many-branches
 
     from searx.network import get  # see https://github.com/searxng/searxng/issues/762
-
-    engine_traits.custom["supported_domains"] = {}
 
     resp = get("https://www.google.com/preferences", timeout=5)
     if not resp.ok:
@@ -514,22 +468,3 @@ def fetch_traits(engine_traits: EngineTraits, add_domains: bool = True):
 
     # alias regions
     engine_traits.regions["zh-CN"] = "HK"
-
-    # supported domains
-
-    if add_domains:
-        resp = get("https://www.google.com/supported_domains", timeout=5)
-        if not resp.ok:
-            raise RuntimeError("Response from Google supported domains is not OK.")
-
-        for domain in resp.text.split():
-            domain = domain.strip()
-            if not domain or domain in [
-                ".google.com",
-            ]:
-                continue
-            region = domain.split(".")[-1].upper()
-            engine_traits.custom["supported_domains"][region] = "www" + domain
-            if region == "HK":
-                # There is no google.cn, we use .com.hk for zh-CN
-                engine_traits.custom["supported_domains"]["CN"] = "www" + domain
