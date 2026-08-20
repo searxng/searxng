@@ -6,7 +6,7 @@
 import typing as t
 
 from base64 import urlsafe_b64encode, urlsafe_b64decode
-from zlib import compress, decompress
+from zlib import compress, decompressobj
 from urllib.parse import parse_qs, urlencode
 from collections import OrderedDict
 from collections.abc import Iterable
@@ -517,7 +517,7 @@ class Preferences:
 
     def parse_encoded_data(self, input_data: str):
         """parse (base64) preferences from request (``flask.request.form['preferences']``)"""
-        bin_data = decompress(urlsafe_b64decode(input_data))
+        bin_data = decompressobj().decompress(urlsafe_b64decode(input_data), 16 * 1024)
         dict_data = {}
         for x, y in parse_qs(bin_data.decode('ascii'), keep_blank_values=True).items():
             dict_data[x] = y[0]
