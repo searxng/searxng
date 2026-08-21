@@ -4,6 +4,7 @@
 make data.all
 
 """
+
 # pylint: disable=invalid-name
 
 __all__ = ["ahmia_blacklist_loader", "data_dir", "get_cache"]

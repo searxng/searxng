@@ -23,6 +23,7 @@ The google news API ignores some parameters from the common :ref:`google API`:
 .. _num: https://developers.google.com/custom-search/docs/xml_results#numsp
 .. _save: https://developers.google.com/custom-search/docs/xml_results#safesp
 """
+
 import typing as t
 
 import json

@@ -3,7 +3,6 @@
 Wolfram|Alpha (Science)
 """
 
-
 from json import loads
 from urllib.parse import urlencode
 
@@ -53,7 +52,7 @@ seconds."""
 
 def init(engine_settings):
     global CACHE  # pylint: disable=global-statement
-    CACHE = EngineCache(engine_settings["name"])  # type:ignore
+    CACHE = EngineCache(engine_settings["name"])  # type: ignore
 
 
 def obtain_token() -> str:

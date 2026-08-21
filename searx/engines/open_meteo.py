@@ -9,7 +9,6 @@ from datetime import datetime
 from searx.result_types import EngineResults, WeatherAnswer
 from searx import weather
 
-
 about = {
     "website": "https://open-meteo.com",
     "wikidata_id": None,
