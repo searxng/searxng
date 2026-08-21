@@ -12,7 +12,6 @@ from searx.enginelib import EngineCache
 from searx.exceptions import SearxEngineAPIException, SearxEngineAccessDeniedException
 from searx.network import get
 
-
 # about
 about = {
     "website": 'https://www.pexels.com',

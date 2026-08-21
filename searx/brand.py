@@ -1,5 +1,6 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 """Implementations needed for a branding of SearXNG."""
+
 # pylint: disable=too-few-public-methods
 
 # Struct fields aren't discovered in Python 3.14

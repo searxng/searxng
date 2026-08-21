@@ -12,6 +12,7 @@ template.  For highlighting the code passages, Pygments_ is used.
    :show-inheritance:
 
 """
+
 # pylint: disable=too-few-public-methods, disable=invalid-name
 
 __all__ = ["Code"]
@@ -25,7 +26,6 @@ from pygments.util import ClassNotFound
 from pygments.formatters import HtmlFormatter  # pylint: disable=no-name-in-module
 
 from ._base import MainResult
-
 
 _pygments_languages: list[str] = []
 

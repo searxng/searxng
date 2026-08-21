@@ -12,6 +12,7 @@ least we could not find out how language support should work.  It seems that
 most of the features are based on English terms.
 
 """
+
 import typing as t
 
 from urllib.parse import urlencode, urlparse, urljoin
