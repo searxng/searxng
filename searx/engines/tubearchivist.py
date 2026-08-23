@@ -75,6 +75,7 @@ Implementations
 """
 
 
+import typing as t
 from urllib.parse import urlencode
 from dateutil.parser import parse
 from searx.utils import html_to_text, humanize_number
@@ -115,7 +116,7 @@ def absolute_url(relative_url):
     return f'{base_url.rstrip("/")}{relative_url}'
 
 
-def init(_):
+def setup(_: dict[str, t.Any]) -> bool | None:
     if not base_url:
         raise ValueError('tubearchivist engine: base_url is unset')
     if not ta_token:

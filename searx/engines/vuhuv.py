@@ -38,7 +38,7 @@ vuhuv_category = "general"
 category_map = {"general": 1, "images": 2, "videos": 3}
 
 
-def init(_):
+def setup(_: dict[str, t.Any]) -> bool | None:
     if vuhuv_category not in category_map:
         raise ValueError("invalid category: %s" % vuhuv_category)
 

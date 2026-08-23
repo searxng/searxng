@@ -61,7 +61,7 @@ video_page_map = {
 }
 
 
-def init(_):
+def setup(_: dict[str, t.Any]) -> bool | None:
     if privacywall_category not in ("general", "images", "videos"):
         raise ValueError("invalid category: %s" % privacywall_category)
 

@@ -78,7 +78,7 @@ content_max_characters: int = 500
 """Maximum characters for the requested content."""
 
 
-def init(_):
+def setup(_: dict[str, t.Any]) -> bool | None:
     if not api_key:
         raise SearxEngineAPIException("No API key provided")
     if not 1 <= results_per_page <= 100:

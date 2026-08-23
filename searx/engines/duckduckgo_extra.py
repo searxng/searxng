@@ -47,7 +47,7 @@ _HTTP_User_Agent: str = gen_useragent()
 send_accept_language_header = False
 
 
-def init(engine_settings: dict[str, t.Any]):
+def setup(engine_settings: dict[str, t.Any]) -> bool | None:
 
     if engine_settings["ddg_category"] not in ["images", "videos", "news"]:
         raise ValueError(f"Unsupported DuckDuckGo category: {engine_settings['ddg_category']}")

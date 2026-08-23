@@ -2,6 +2,8 @@
 # pylint: disable=line-too-long
 """Naver for SearXNG"""
 
+import typing as t
+
 from urllib.parse import urlencode
 from lxml import html
 
@@ -67,7 +69,7 @@ naver_category_dict = {
 }
 
 
-def init(_):
+def setup(_: dict[str, t.Any]) -> bool | None:
     if naver_category not in ('general', 'images', 'news', 'videos'):
         raise SearxEngineAPIException(f"Unsupported category: {naver_category}")
 

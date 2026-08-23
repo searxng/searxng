@@ -152,7 +152,7 @@ def generate_nonce_and_signature(base_path: str, args: dict[str, t.Any]) -> tupl
 maximum_page_size = {"web": 20, "images": 50, "videos": 10}
 
 
-def init(_):
+def setup(_: dict[str, t.Any]) -> bool | None:
     if swisscows_category not in ("web", "images", "videos"):
         raise ValueError("illegal swisscows category: %s" % swisscows_category)
 
