@@ -44,7 +44,7 @@ tonline_channel_map = {"images": "flickr", "videos": "yt"}
 language = "de"
 
 
-def init(_):
+def setup(_: dict[str, t.Any]) -> bool | None:
     if tonline_categ not in ("web", "images", "videos", "news"):
         raise ValueError("invalid category: %s" % tonline_categ)
 

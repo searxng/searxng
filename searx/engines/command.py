@@ -74,6 +74,7 @@ Implementations
 ===============
 """
 
+import typing as t
 import re
 from os.path import expanduser, isabs, realpath, commonprefix
 from shlex import split as shlex_split
@@ -100,7 +101,7 @@ _command_logger = logger.getChild('command')
 _compiled_parse_regex = {}
 
 
-def init(engine_settings):
+def setup(engine_settings: dict[str, t.Any]) -> bool | None:
     check_parsing_options(engine_settings)
 
     if 'command' not in engine_settings:

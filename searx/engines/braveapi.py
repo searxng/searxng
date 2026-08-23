@@ -64,7 +64,7 @@ time_range_map = {"day": "past_day", "week": "past_week", "month": "past_month",
 """Mapping of SearXNG time ranges to Brave API time ranges."""
 
 
-def init(_):
+def setup(_: dict[str, t.Any]) -> bool | None:
     """Initialize the engine."""
     if not api_key:
         raise SearxEngineAPIException("No API key provided")
