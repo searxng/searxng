@@ -6,7 +6,7 @@ import typing as t
 import inspect
 from json import JSONDecodeError
 from urllib.parse import urlparse
-from httpx import HTTPError, HTTPStatusError
+from httpx2 import HTTPError, HTTPStatusError
 from searx.exceptions import (
     SearxXPathSyntaxException,
     SearxEngineXPathException,

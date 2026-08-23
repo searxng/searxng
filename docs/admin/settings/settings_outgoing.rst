@@ -16,16 +16,15 @@ Communication with search engines.
                                 # for no limits. The default is 100.
      pool_maxsize: 10           # Number of allowable keep-alive connections, or null
                                 # to always allow. The default is 10.
-     enable_http2: true         # See https://www.python-httpx.org/http2/
+     enable_http2: true         # See https://httpx2.pydantic.dev/http2/
      # uncomment below section if you want to use a custom server certificate
-     # see https://www.python-httpx.org/advanced/#changing-the-verification-defaults
-     # and https://www.python-httpx.org/compatibility/#ssl-configuration
+     # see https://httpx2.pydantic.dev/advanced/ssl/
+     # and https://httpx2.pydantic.dev/compatibility/#ssl-configuration
      #  verify: ~/.mitmproxy/mitmproxy-ca-cert.cer
      #
-     # uncomment below section if you want to use a proxyq see: SOCKS proxies
-     #   https://2.python-requests.org/en/latest/user/advanced/#proxies
-     # are also supported: see
-     #   https://2.python-requests.org/en/latest/user/advanced/#socks
+     # uncomment below section if you want to use a proxy
+     # http://, https://, socks5://, socks5h://
+     # https://httpx2.pydantic.dev/advanced/proxies/
      #
      #  proxies:
      #    all://:
@@ -49,7 +48,7 @@ Communication with search engines.
   Suffix to the user-agent SearXNG uses to send requests to others engines.  If an
   engine wish to block you, a contact info here may be useful to avoid that.
 
-.. _Pool limit configuration: https://www.python-httpx.org/advanced/#pool-limit-configuration
+.. _Pool limit configuration: https://httpx2.pydantic.dev/advanced/resource-limits/
 
 ``pool_maxsize``:
   Number of allowable keep-alive connections, or ``null`` to always allow.  The
@@ -63,12 +62,16 @@ Communication with search engines.
   Number of seconds to keep a connection in the pool.  By default 5.0 seconds.
   See ``keepalive_expiry`` `Pool limit configuration`_.
 
-.. _httpx proxies: https://www.python-httpx.org/advanced/#http-proxying
+.. _httpx2 proxies: https://httpx2.pydantic.dev/advanced/proxies/
 
 ``proxies`` :
-  Define one or more proxies you wish to use, see `httpx proxies`_.
+  Define one or more proxies you wish to use, see `httpx2 proxies`_.
   If there are more than one proxy for one protocol (http, https),
   requests to the engines are distributed in a round-robin fashion.
+
+  HTTP, HTTPS, SOCKS5 and SOCKS5h proxies are supported
+  (``http://``, ``https://``, ``socks5://``, ``socks5h://``). You should
+  use ``socks5h://`` when using Tor so hostnames are resolved by the proxy.
 
 ``source_ips`` :
   If you use multiple network interfaces, define from which IP the requests must
@@ -89,16 +92,17 @@ Communication with search engines.
 ``enable_http2`` :
   Enable by default. Set to ``false`` to disable HTTP/2.
 
-.. _httpx verification defaults: https://www.python-httpx.org/advanced/#changing-the-verification-defaults
-.. _httpx ssl configuration: https://www.python-httpx.org/compatibility/#ssl-configuration
+.. _httpx2 verification defaults: https://httpx2.pydantic.dev/advanced/ssl/
+.. _httpx2 ssl configuration: https://httpx2.pydantic.dev/compatibility/#ssl-configuration
 
 ``verify``: : ``$SSL_CERT_FILE``, ``$SSL_CERT_DIR``
-  Allow to specify a path to certificate.
-  see `httpx verification defaults`_.
+  HTTPS verification uses the OS's trust store by default.
+  Set a path to use a custom CA file.
+  see `httpx2 verification defaults`_.
 
   In addition to ``verify``, SearXNG supports the ``$SSL_CERT_FILE`` (for a file) and
   ``$SSL_CERT_DIR`` (for a directory) OpenSSL variables.
-  see `httpx ssl configuration`_.
+  see `httpx2 ssl configuration`_.
 
 ``max_redirects`` :
   30 by default. Maximum redirect before it is an error.

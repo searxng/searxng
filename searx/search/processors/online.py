@@ -8,7 +8,7 @@ import typing as t
 from timeit import default_timer
 import asyncio
 import ssl
-import httpx
+import httpx2
 
 import searx.network
 from searx.utils import gen_useragent
@@ -39,21 +39,21 @@ class HTTPParams(t.TypedDict):
     """Sending `form encoded data`_.
 
     .. _form encoded data:
-       https://www.python-httpx.org/quickstart/#sending-form-encoded-data
+       https://httpx2.pydantic.dev/quickstart/#sending-form-encoded-data
     """
 
     json: dict[str, t.Any]
     """`Sending `JSON encoded data`_.
 
     .. _JSON encoded data:
-       https://www.python-httpx.org/quickstart/#sending-json-encoded-data
+       https://httpx2.pydantic.dev/quickstart/#sending-json-encoded-data
     """
 
     content: bytes
     """`Sending `binary request data`_.
 
     .. _binary request data:
-       https://www.python-httpx.org/quickstart/#sending-json-encoded-data
+       https://httpx2.pydantic.dev/quickstart/#sending-binary-request-data
     """
 
     url: str | None
@@ -256,7 +256,7 @@ class OnlineProcessor(EngineProcessor):
             # requests timeout (connect or read)
             self.handle_exception(result_container, e, suspend=True)
             self.logger.debug("SSLError {}, verify={}".format(e, searx.network.get_network(self.engine.name).verify))
-        except (httpx.TimeoutException, asyncio.TimeoutError) as e:
+        except (httpx2.TimeoutException, asyncio.TimeoutError) as e:
             # requests timeout (connect or read)
             self.handle_exception(result_container, e, suspend=True)
             self.logger.debug(
@@ -264,7 +264,7 @@ class OnlineProcessor(EngineProcessor):
                     default_timer() - start_time, timeout_limit, e.__class__.__name__
                 )
             )
-        except (httpx.HTTPError, httpx.StreamError) as e:
+        except (httpx2.HTTPError, httpx2.StreamError) as e:
             # other requests exception
             self.handle_exception(result_container, e, suspend=True)
             self.logger.debug(

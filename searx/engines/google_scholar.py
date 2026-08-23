@@ -27,7 +27,7 @@ import typing as t
 from urllib.parse import urlencode
 from datetime import datetime
 from lxml import html
-import httpx
+import httpx2
 
 from searx.utils import (
     eval_xpath,
@@ -102,7 +102,7 @@ def response(resp: "SXNG_Response") -> EngineResults:  # pylint: disable=too-man
             raise SearxEngineAccessDeniedException(
                 message="google_scholar: unusual traffic detected",
             )
-        raise httpx.TooManyRedirects(f"location {resp.headers['Location'].split('?')[0]}")
+        raise httpx2.TooManyRedirects(f"location {resp.headers['Location'].split('?')[0]}")
 
     res = EngineResults()
     dom = html.fromstring(resp.text)

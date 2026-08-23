@@ -10,7 +10,7 @@ import pathlib
 import urllib.parse
 
 import flask
-from httpx import HTTPError
+from httpx2 import HTTPError
 import msgspec
 
 from searx import get_setting

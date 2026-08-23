@@ -58,7 +58,7 @@ from json import loads
 from urllib.parse import urlencode
 from dateutil import parser
 
-from httpx import DigestAuth
+from httpx2 import DigestAuth
 
 from searx.utils import html_to_text
 

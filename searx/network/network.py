@@ -13,11 +13,11 @@ import asyncio
 import ipaddress
 from itertools import cycle
 
-import httpx
+import httpx2
 
 from searx import logger, sxng_debug
 from searx.extended_types import SXNG_Response
-from .client import new_client, get_loop, AsyncHTTPTransportNoHttp
+from .client import new_client, get_loop
 from .raise_for_httperror import raise_for_httperror
 
 
@@ -28,12 +28,10 @@ NETWORKS: dict[str, "Network"] = {}
 PROXY_PATTERN_MAPPING = {
     'http': 'http://',
     'https': 'https://',
-    'socks4': 'socks4://',
     'socks5': 'socks5://',
     'socks5h': 'socks5h://',
     'http:': 'http://',
     'https:': 'https://',
-    'socks4:': 'socks4://',
     'socks5:': 'socks5://',
     'socks5h:': 'socks5h://',
 }
@@ -137,7 +135,7 @@ class Network:
     def iter_proxies(self) -> Generator[tuple[str, list[str]]]:
         if not self.proxies:
             return
-        # https://www.python-httpx.org/compatibility/#proxy-keys
+        # https://httpx2.pydantic.dev/compatibility/#proxy-keys
         if isinstance(self.proxies, str):
             yield 'all://', [self.proxies]
         else:
@@ -155,7 +153,7 @@ class Network:
             # pylint: disable=stop-iteration-return
             yield tuple((pattern, next(proxy_url_cycle)) for pattern, proxy_url_cycle in proxy_settings.items())
 
-    async def log_response(self, response: httpx.Response):
+    async def log_response(self, response: httpx2.Response):
         request = response.request
         status = f"{response.status_code} {response.reason_phrase}"
         response_line = f"{response.http_version} {status}"
@@ -164,30 +162,20 @@ class Network:
         self._logger.debug(f'HTTP Request: {request.method} {request.url} "{response_line}"{content_type}')
 
     @staticmethod
-    async def check_tor_proxy(client: httpx.AsyncClient, proxies) -> bool:
+    async def check_tor_proxy(client: httpx2.AsyncClient, proxies) -> bool:
         if proxies in Network._TOR_CHECK_RESULT:
             return Network._TOR_CHECK_RESULT[proxies]
 
-        result = True
-        # ignore client._transport because it is not used with all://
-        for transport in client._mounts.values():  # pylint: disable=protected-access
-            if isinstance(transport, AsyncHTTPTransportNoHttp):
-                continue
-            if getattr(transport, "_pool") and getattr(
-                # pylint: disable=protected-access
-                transport._pool,  # type: ignore
-                "_rdns",
-                False,
-            ):
-                continue
+        if not proxies or not all(url.startswith('socks5h://') for _, url in proxies):
+            Network._TOR_CHECK_RESULT[proxies] = False
             return False
+
         response = await client.get("https://check.torproject.org/api/ip", timeout=60)
-        if not response.json()["IsTor"]:
-            result = False
+        result = bool(response.json()["IsTor"])
         Network._TOR_CHECK_RESULT[proxies] = result
         return result
 
-    async def get_client(self, verify: bool | None = None, max_redirects: int | None = None) -> httpx.AsyncClient:
+    async def get_client(self, verify: bool | None = None, max_redirects: int | None = None) -> httpx2.AsyncClient:
         verify = self.verify if verify is None else verify
         max_redirects = self.max_redirects if max_redirects is None else max_redirects
         local_address = next(self._local_addresses_cycle)
@@ -210,7 +198,7 @@ class Network:
             )
             if self.using_tor_proxy and not await self.check_tor_proxy(client, proxies):
                 await client.aclose()
-                raise httpx.ProxyError('Network configuration problem: not using Tor')
+                raise httpx2.ProxyError('Network configuration problem: not using Tor')
             self._clients[key] = client
         return self._clients[key]
 
@@ -218,7 +206,7 @@ class Network:
         async def close_client(client):
             try:
                 await client.aclose()
-            except httpx.HTTPError:
+            except httpx2.HTTPError:
                 pass
 
         await asyncio.gather(*[close_client(client) for client in self._clients.values()], return_exceptions=False)
@@ -231,7 +219,7 @@ class Network:
         if 'max_redirects' in kwargs:
             kwargs_clients['max_redirects'] = kwargs.pop('max_redirects')
         if 'allow_redirects' in kwargs:
-            # see https://github.com/encode/httpx/pull/1808
+            # see https://github.com/encode/httpx/pull/1808 (follow_redirects rename)
             kwargs['follow_redirects'] = kwargs.pop('allow_redirects')
         return kwargs_clients
 
@@ -243,11 +231,11 @@ class Network:
             del kwargs['raise_for_httperror']
         return do_raise_for_httperror
 
-    def patch_response(self, response: httpx.Response, do_raise_for_httperror: bool) -> SXNG_Response:
-        if isinstance(response, httpx.Response):
+    def patch_response(self, response: httpx2.Response, do_raise_for_httperror: bool) -> SXNG_Response:
+        if isinstance(response, httpx2.Response):
             response = t.cast(SXNG_Response, response)
             # requests compatibility (response is not streamed)
-            # see also https://www.python-httpx.org/compatibility/#checking-for-4xx5xx-responses
+            # see also https://httpx2.pydantic.dev/compatibility/#checking-for-success-and-failure-responses
             response.ok = not response.is_error
 
             # raise an exception
@@ -259,7 +247,7 @@ class Network:
                     raise
         return response
 
-    def is_valid_response(self, response: httpx.Response):
+    def is_valid_response(self, response: httpx2.Response):
         # pylint: disable=too-many-boolean-expressions
         if (
             (self.retry_on_http_error is True and 400 <= response.status_code <= 599)
@@ -277,7 +265,7 @@ class Network:
         while retries >= 0:  # pragma: no cover
             client = await self.get_client(**kwargs_clients)
             cookies = kwargs.pop("cookies", None)
-            client.cookies = httpx.Cookies(cookies)
+            client.cookies = httpx2.Cookies(cookies)
             try:
                 if stream:
                     return client.stream(method, url, **kwargs)
@@ -285,17 +273,17 @@ class Network:
                 response = await client.request(method, url, **kwargs)
                 if self.is_valid_response(response) or retries <= 0:
                     return self.patch_response(response, do_raise_for_httperror)
-            except httpx.RemoteProtocolError as e:
+            except httpx2.RemoteProtocolError as e:
                 if not was_disconnected:
                     # the server has closed the connection:
                     # try again without decreasing the retries variable & with a new HTTP client
                     was_disconnected = True
                     await client.aclose()
-                    self._logger.warning('httpx.RemoteProtocolError: the server has disconnected, retrying')
+                    self._logger.warning('httpx2.RemoteProtocolError: the server has disconnected, retrying')
                     continue
                 if retries <= 0:
                     raise e
-            except (httpx.RequestError, httpx.HTTPStatusError) as e:
+            except (httpx2.RequestError, httpx2.HTTPStatusError) as e:
                 if retries <= 0:
                     raise e
             retries -= 1
@@ -346,8 +334,6 @@ def initialize(
     settings_engines = settings_engines or settings['engines']
     settings_outgoing = settings_outgoing or settings['outgoing']
 
-    # default parameters for AsyncHTTPTransport
-    # see https://github.com/encode/httpx/blob/e05a5372eb6172287458b37447c30f650047e1b8/httpx/_transports/default.py#L108-L121  # pylint: disable=line-too-long
     default_params: dict[str, t.Any] = {
         'enable_http': False,
         'verify': settings_outgoing['verify'],

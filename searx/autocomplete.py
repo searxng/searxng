@@ -11,7 +11,7 @@ from urllib.parse import urlencode
 
 import lxml.etree
 import lxml.html
-from httpx import HTTPError
+from httpx2 import HTTPError
 
 from searx import settings
 from searx.engines import (

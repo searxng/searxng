@@ -179,7 +179,7 @@ engine is shown.  Most of the options have a default value or even are optional.
   Using tor proxy (``true``) or not (``false``) for this engine.  The default is
   taken from ``using_tor_proxy`` of the :ref:`settings outgoing`.
 
-.. _Pool limit configuration: https://www.python-httpx.org/advanced/#pool-limit-configuration
+.. _Pool limit configuration: https://httpx2.pydantic.dev/advanced/resource-limits/
 
 ``max_keepalive_connection#s`` :
   `Pool limit configuration`_, overwrites value ``pool_maxsize`` from

@@ -14,7 +14,7 @@ from timeit import default_timer
 from collections.abc import Iterable
 from contextlib import contextmanager
 
-import httpx
+import httpx2
 import anyio
 
 from searx.extended_types import SXNG_Response
@@ -74,7 +74,7 @@ def _get_timeout(start_time: float, kwargs: t.Any) -> float:
     # pylint: disable=too-many-branches
 
     timeout: float | None
-    # timeout (httpx)
+    # timeout (httpx2)
     if 'timeout' in kwargs:
         timeout = kwargs['timeout']
     else:
@@ -105,10 +105,10 @@ def request(method: str, url: str, **kwargs: t.Any) -> SXNG_Response:
         try:
             return future.result(timeout)
         except concurrent.futures.TimeoutError as e:
-            raise httpx.TimeoutException('Timeout', request=None) from e
+            raise httpx2.TimeoutException('Timeout', request=None) from e
 
 
-def multi_requests(request_list: list["Request"]) -> list[httpx.Response | Exception]:
+def multi_requests(request_list: list["Request"]) -> list[httpx2.Response | Exception]:
     """send multiple HTTP requests in parallel. Wait for all requests to finish."""
     with _record_http_time() as start_time:
         # send the requests
@@ -128,7 +128,7 @@ def multi_requests(request_list: list["Request"]) -> list[httpx.Response | Excep
             try:
                 responses.append(future.result(timeout))
             except concurrent.futures.TimeoutError:
-                responses.append(httpx.TimeoutException('Timeout', request=None))
+                responses.append(httpx2.TimeoutException('Timeout', request=None))
             except Exception as e:  # pylint: disable=broad-except
                 responses.append(e)
         return responses
@@ -206,11 +206,11 @@ async def stream_chunk_to_queue(network, queue, method: str, url: str, **kwargs:
         async with await network.stream(method, url, **kwargs) as response:
             queue.put(response)
             # aiter_raw: access the raw bytes on the response without applying any HTTP content decoding
-            # https://www.python-httpx.org/quickstart/#streaming-responses
+            # https://httpx2.pydantic.dev/quickstart/#streaming-responses
             async for chunk in response.aiter_raw(65536):
                 if len(chunk) > 0:
                     queue.put(chunk)
-    except (httpx.StreamClosed, anyio.ClosedResourceError):
+    except (httpx2.StreamClosed, anyio.ClosedResourceError):
         # the response was queued before the exception.
         # the exception was raised on aiter_raw.
         # we do nothing here: in the finally block, None will be queued
@@ -246,22 +246,22 @@ def _close_response_method(self):
     asyncio.run_coroutine_threadsafe(self.aclose(), get_loop())
     # reach the end of _self.generator ( _stream_generator ) to an avoid memory leak.
     # it makes sure that :
-    # * the httpx response is closed (see the stream_chunk_to_queue function)
+    # * the httpx2 response is closed (see the stream_chunk_to_queue function)
     # * to call future.result() in _stream_generator
     for _ in self._generator:  # pylint: disable=protected-access
         continue
 
 
 def stream(method: str, url: str, **kwargs: t.Any) -> tuple[SXNG_Response, Iterable[bytes]]:
-    """Replace httpx.stream.
+    """Replace httpx2.stream.
 
     Usage:
     response, stream = poolrequests.stream(...)
     for chunk in stream:
         ...
 
-    httpx.Client.stream requires to write the httpx.HTTPTransport version of the
-    the httpx.AsyncHTTPTransport declared above.
+    httpx2.Client.stream requires to write the httpx2.HTTPTransport version of the
+    the httpx2.AsyncHTTPTransport declared above.
     """
     generator = _stream_generator(method, url, **kwargs)
 

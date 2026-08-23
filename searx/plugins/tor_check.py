@@ -9,7 +9,7 @@ import typing
 
 import re
 from flask_babel import gettext
-from httpx import HTTPError
+from httpx2 import HTTPError
 
 from searx.network import get
 from searx.plugins import Plugin, PluginInfo

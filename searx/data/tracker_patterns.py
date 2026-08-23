@@ -10,7 +10,7 @@ import re
 from collections.abc import Iterator
 from urllib.parse import urlparse, urlunparse, parse_qsl, urlencode
 
-from httpx import HTTPError
+from httpx2 import HTTPError
 
 from searx.data.core import get_cache, log
 from searx.network import get as http_get

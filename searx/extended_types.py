@@ -3,7 +3,7 @@
 
 - :py:obj:`flask.request` is replaced by :py:obj:`sxng_request`
 - :py:obj:`flask.Request` is replaced by :py:obj:`SXNG_Request`
-- :py:obj:`httpx.response` is replaced by :py:obj:`SXNG_Response`
+- :py:obj:`httpx2.Response` is replaced by :py:obj:`SXNG_Response`
 
 ----
 
@@ -25,7 +25,7 @@ __all__ = ["SXNG_Request", "sxng_request", "SXNG_Response"]
 
 import typing
 import flask
-import httpx
+import httpx2
 
 if typing.TYPE_CHECKING:
     import searx.preferences
@@ -69,13 +69,13 @@ class SXNG_Request(flask.Request):
 sxng_request = typing.cast(SXNG_Request, flask.request)
 
 
-class SXNG_Response(httpx.Response):
-    """SearXNG extends the class :py:obj:`httpx.Response` with properties from
-    *this* class (type cast of :py:obj:`httpx.Response`).
+class SXNG_Response(httpx2.Response):
+    """SearXNG extends the class :py:obj:`httpx2.Response` with properties from
+    *this* class (type cast of :py:obj:`httpx2.Response`).
 
     .. code:: python
 
-       response = httpx.get("https://example.org")
+       response = httpx2.get("https://example.org")
        response = typing.cast(SXNG_Response, response)
        if response.ok:
           ...
