@@ -4,8 +4,10 @@
 from json import loads
 from urllib.parse import urlencode
 from html import unescape
+from httpx import HTTPError
 from lxml import html
-from searx.exceptions import SearxEngineCaptchaException
+from searx.exceptions import SearxEngineCaptchaException, SearxException
+from searx.network import get
 from searx.utils import humanize_bytes, eval_xpath, eval_xpath_list, extract_text, extr
 
 
@@ -48,9 +50,37 @@ title_xpath = './/h3[@class="b-serp-item__title"]/a[@class="b-serp-item__title-l
 content_xpath = './/div[@class="b-serp-item__content"]//div[@class="b-serp-item__text"]'
 
 
+def _refetch(resp):
+    """Yandex anti-bot sometimes replies with an empty 302 response (no
+    Location header) during short periods of time.  One immediate re-request
+    over a fresh connection usually succeeds, so try this once before giving
+    up."""
+    headers = {k: v for k, v in resp.request.headers.items() if k.lower() not in ('host', 'content-length')}
+    try:
+        retried = get(str(resp.request.url), headers=headers)
+    except (HTTPError, SearxException):
+        return None
+    return retried if retried.status_code == 200 and retried.text.strip() else None
+
+
 def catch_bad_response(resp):
+    """Check the response and return a usable response object or raise.
+
+    Besides the captcha check (via the ``x-yandex-captcha`` header), handle
+    Yandex soft-blocking requests with an empty 302 response.
+    """
     if resp.headers.get('x-yandex-captcha') == 'captcha':
-        raise SearxEngineCaptchaException()
+        raise SearxEngineCaptchaException(suspended_time=300)
+
+    if not resp.text.strip():
+        retried = _refetch(resp)
+        if retried is None:
+            # anti-bot soft-block: suspend briefly instead of crashing
+            # with a parse error on the empty body
+            raise SearxEngineCaptchaException(suspended_time=300, message='CAPTCHA (empty anti-bot response)')
+        return retried
+
+    return resp
 
 
 def request(query, params):
@@ -87,7 +117,7 @@ def request(query, params):
 
 def response(resp):
     if search_type == 'web':
-        catch_bad_response(resp)
+        resp = catch_bad_response(resp)
 
         dom = html.fromstring(resp.text)
 
@@ -105,7 +135,7 @@ def response(resp):
         return results
 
     if search_type == 'images':
-        catch_bad_response(resp)
+        resp = catch_bad_response(resp)
 
         html_data = html.fromstring(resp.text)
         html_sample = unescape(html.tostring(html_data, encoding='unicode'))
