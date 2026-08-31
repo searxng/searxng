@@ -37,6 +37,35 @@ log = logger.getChild("result_types")
 WHITESPACE_REGEX = re.compile('( |\t|\n)+', re.M | re.U)
 UNSET = object()
 
+TRACKING_QUERY_PARAMS = {
+    "fbclid",
+    "gclid",
+    "dclid",
+    "msclkid",
+    "mc_cid",
+    "mc_eid",
+    "igshid",
+    "ref",
+    "ref_src",
+}
+
+
+def _normalize_query_for_dedup(query: str) -> str:
+    """Remove known tracking parameters from a URL query for deduplication."""
+    if not query:
+        return ""
+
+    pairs = urllib.parse.parse_qsl(query, keep_blank_values=True)
+
+    filtered = [
+        (key, value)
+        for key, value in pairs
+        if key.lower() not in TRACKING_QUERY_PARAMS
+        and not key.lower().startswith("utm_")
+    ]
+
+    return urllib.parse.urlencode(filtered, doseq=True)
+
 
 def _normalize_url_fields(result: "Result | LegacyResult"):
 
@@ -432,9 +461,10 @@ class MainResult(Result):  # pylint: disable=missing-class-docstring
             raise ValueError(f"missing a value in field 'parsed_url': {self}")
 
         url = self.parsed_url
+        query = _normalize_query_for_dedup(url.query)
         return hash(
             f"{self.template}"
-            + f"|{url.netloc}|{url.path}|{url.params}|{url.query}|{url.fragment}"
+            + f"|{url.netloc}|{url.path}|{url.params}|{query}|{url.fragment}"
             + f"|{self.img_src}"
         )
 
