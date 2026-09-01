@@ -3360,6 +3360,14 @@ engines:
       require_api_key: false
       results: JSON
 
+  - name: tavily
+    engine: tavily
+    shortcut: tvy
+    api_key: ""
+    search_depth: basic
+    topic: general
+    inactive: true
+
   # - name: webcrawler
   #   engine: s1search
   #   shortcut: wc
@@ -3471,3 +3479,4 @@ doi_resolvers:
   sci-hub.ru: 'https://sci-hub.ru/'
 
 default_doi_resolver: 'oadoi.org'
+
