@@ -12,7 +12,6 @@ from lxml import html
 from searx.result_types import EngineResults
 from searx.utils import eval_xpath_list, eval_xpath, extract_text
 
-
 if t.TYPE_CHECKING:
     from lxml.etree import ElementBase
     from searx.extended_types import SXNG_Response

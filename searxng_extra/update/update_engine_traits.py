@@ -12,6 +12,7 @@ The script :origin:`searxng_extra/update/update_engine_traits.py` is called in
 the :origin:`CI Update data ... <.github/workflows/data-update.yml>`
 
 """
+
 # pylint: disable=invalid-name
 
 import typing as t

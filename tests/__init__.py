@@ -5,7 +5,6 @@ import pathlib
 import os
 import aiounittest
 
-
 os.environ.pop('SEARXNG_SETTINGS_PATH', None)
 os.environ['SEARXNG_DISABLE_ETC_SETTINGS'] = '1'
 

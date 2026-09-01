@@ -5,7 +5,6 @@ Implementations used for bot detection.
 
 """
 
-
 __all__ = ["init", "dump_request", "get_network", "too_many_requests", "ProxyFix"]
 
 

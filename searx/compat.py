@@ -3,7 +3,6 @@
 
 import warnings
 
-
 # limiter backward compatibility
 # ------------------------------
 

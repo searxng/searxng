@@ -35,6 +35,7 @@ Implementations
 ===============
 
 """
+
 import typing as t
 
 from datetime import date, timedelta

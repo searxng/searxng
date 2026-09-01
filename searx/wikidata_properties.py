@@ -93,9 +93,7 @@ class WDAmountAttribute(WDAttribute):
     def get_where(self):
         return """  OPTIONAL { ?item p:{name} ?{name}Node .
     ?{name}Node rdf:type wikibase:BestRank ; ps:{name} ?{name} .
-    OPTIONAL { ?{name}Node psv:{name}/wikibase:quantityUnit ?{name}Unit. } }""".replace(
-            '{name}', self.name
-        )
+    OPTIONAL { ?{name}Node psv:{name}/wikibase:quantityUnit ?{name}Unit. } }""".replace('{name}', self.name)
 
     def get_group_by(self) -> str:
         return self.get_select()
@@ -126,9 +124,7 @@ class WDArticle(WDAttribute):
         return """OPTIONAL { ?article{language} schema:about ?item ;
              schema:inLanguage "{language}" ;
              schema:isPartOf <https://{language}.wikipedia.org/> ;
-             schema:name ?articleName{language} . }""".replace(
-            '{language}', self.language
-        )
+             schema:name ?articleName{language} . }""".replace('{language}', self.language)
 
     def get_group_by(self):
         return self.get_select()
@@ -216,9 +212,7 @@ class WDGeoAttribute(WDAttribute):
     def get_where(self):
         return """OPTIONAL { ?item p:{name}/psv:{name} [
     wikibase:geoLatitude ?{name}Lat ;
-    wikibase:geoLongitude ?{name}Long ] }""".replace(
-            '{name}', self.name
-        )
+    wikibase:geoLongitude ?{name}Long ] }""".replace('{name}', self.name)
 
     def get_group_by(self):
         return self.get_select()
@@ -258,9 +252,7 @@ class WDDateAttribute(WDAttribute):
     wikibase:timePrecision ?{name}timePrecision ;
     wikibase:timeTimezone ?{name}timeZone ;
     wikibase:timeCalendarModel ?{name}timeCalendar ] . }
-    hint:Prior hint:rangeSafe true;""".replace(
-            '{name}', self.name
-        )
+    hint:Prior hint:rangeSafe true;""".replace('{name}', self.name)
 
     def get_group_by(self):
         return self.get_select()

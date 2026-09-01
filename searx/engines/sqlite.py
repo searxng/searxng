@@ -44,6 +44,7 @@ Implementations
 ===============
 
 """
+
 import typing as t
 import sqlite3
 import contextlib

@@ -82,6 +82,7 @@ Startpage's category (for Web-search, News, Videos, ..) is set by
   Supported categories are ``web``, ``news`` and ``images``.
 
 """
+
 # pylint: disable=too-many-statements
 
 import re

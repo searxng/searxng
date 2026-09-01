@@ -26,7 +26,6 @@ SearXNG’s locale implementations
 ================================
 """
 
-
 import typing as t
 from pathlib import Path
 

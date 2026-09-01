@@ -8,7 +8,6 @@ from lxml import html
 from searx.exceptions import SearxEngineCaptchaException
 from searx.utils import humanize_bytes, eval_xpath, eval_xpath_list, extract_text, extr
 
-
 # Engine metadata
 about = {
     "website": 'https://yandex.com/',
