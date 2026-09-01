@@ -11,7 +11,6 @@ from searx.external_bang import (
 from searx.search.models import EngineRef, SearchQuery
 from tests import SearxTestCase
 
-
 TEST_DB = {
     'trie': {
         'exam': {

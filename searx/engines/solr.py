@@ -34,7 +34,6 @@ from searx.exceptions import SearxEngineAPIException
 from searx.result_types import EngineResults
 from searx.extended_types import SXNG_Response
 
-
 base_url = 'http://localhost:8983'
 collection = ''
 rows = 10

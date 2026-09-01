@@ -465,7 +465,7 @@ class ExpireCacheSQLite(sqlitedb.SQLiteAppl, ExpireCache):
 
         # Check if value is expired. It's possible that it's expired but has not
         # yet been automatically deleted by the periodic maintenance
-        (value, expire) = row
+        value, expire = row
         now = time.time()
         if expire < now:
             # The record is deleted during the maintenance interval. Deleting

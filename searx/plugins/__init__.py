@@ -94,7 +94,6 @@ Implementation
    :members:
 """
 
-
 __all__ = ["PluginInfo", "Plugin", "PluginStorage", "PluginCfg"]
 
 

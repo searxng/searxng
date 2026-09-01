@@ -8,7 +8,6 @@ an example in which the command line is called in the development environment::
   (py3) python -m searx.favicons --help
 """
 
-
 __all__ = ["init", "favicon_url", "favicon_proxy"]
 
 import pathlib

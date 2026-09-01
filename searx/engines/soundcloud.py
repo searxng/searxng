@@ -117,7 +117,7 @@ def response(resp):
 
 def init(engine_settings):  # pylint: disable=unused-argument
     global CACHE  # pylint: disable=global-statement
-    CACHE = EngineCache(engine_settings["name"])  # type:ignore
+    CACHE = EngineCache(engine_settings["name"])  # type: ignore
 
 
 def get_client_id() -> str | None:
