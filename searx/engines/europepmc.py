@@ -4,12 +4,7 @@ trusted sources.  With Europe PMC you can search and read millions of
 publications, preprints and other documents enriched with links to supporting
 data, reviews, protocols, and other relevant resources.
 
-This engine queries the official Europe PMC `REST API`_ (JSON) and returns
-scientific paper results using the :ref:`result_types.paper` class.  It does not
-require an API key.
-
 .. _Europe PMC: https://europepmc.org/
-.. _REST API: https://europepmc.org/RestfulWebService
 
 Configuration
 =============
@@ -19,18 +14,6 @@ Configuration
    - name: europepmc
      engine: europepmc
      shortcut: epmc
-
-Notes
-=====
-
-- The official search endpoint paginates with a stateful ``cursorMark`` token
-  (returned in each response as ``nextCursorMark``) and does not offer an
-  offset parameter (an ``offset`` argument in the request is silently
-  ignored).  Since SearXNG does not carry that cursor between page requests,
-  the engine always fetches the first ``api_page_size`` (1000) results and
-  slices out the page matching ``pageno`` in :py:func:`response`.  Results
-  beyond the first 1000 are not reachable and every page re-downloads the
-  full set.
 
 Implementations
 ===============
