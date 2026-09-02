@@ -47,33 +47,24 @@ categories = ["science", "scientific publications"]
 # engine dependent config
 paging = True
 page_size = 20
-"""Number of results displayed per SearXNG page."""
-
-api_page_size = 1000
-"""Number of results fetched from the Europe PMC API in one request.  The API
-does not support offset paging (see module docs), so the engine always
-downloads the first ``api_page_size`` results and slices out the requested
-page in :py:func:`response`."""
 
 search_url = "https://www.ebi.ac.uk/europepmc/webservices/rest/search"
 article_url = "https://europepmc.org/article/"
 
 
 def request(query: str, params: "OnlineParams") -> None:
-
     args = urlencode(
         {
             "query": query,
             "format": "json",
             "resultType": "core",
-            "pageSize": api_page_size,
+            "pageSize": 1000,
         }
     )
     params["url"] = f"{search_url}?{args}"
 
 
 def response(resp: "SXNG_Response") -> EngineResults:
-
     res = EngineResults()
 
     # The API does not support paging (cursorMark only), so every request
@@ -84,7 +75,6 @@ def response(resp: "SXNG_Response") -> EngineResults:
     all_results = resp.json().get("resultList", {}).get("result") or []
 
     for item in all_results[start : start + page_size]:
-
         source = item.get("source", "")
         identifier = item.get("id", "")
         url = f"{article_url}{source}/{identifier}" if source and identifier else ""
@@ -121,7 +111,9 @@ def _abstract(abstract_text: str | None) -> str:
 
 def _authors(item: dict[str, t.Any]) -> list[str]:
     author_list = (item.get("authorList") or {}).get("author") or []
-    authors = [a.get("fullName") for a in author_list if isinstance(a.get("fullName"), str)]
+    authors = [
+        a.get("fullName") for a in author_list if isinstance(a.get("fullName"), str)
+    ]
     if authors:
         return authors
     # Fall back to the pre-formatted authorString when no structured list.
@@ -132,7 +124,11 @@ def _authors(item: dict[str, t.Any]) -> list[str]:
 
 
 def _issn(journal: dict[str, t.Any]) -> list[str]:
-    return [issn for issn in (journal.get("issn"), journal.get("essn")) if isinstance(issn, str) and issn]
+    return [
+        issn
+        for issn in (journal.get("issn"), journal.get("essn"))
+        if isinstance(issn, str) and issn
+    ]
 
 
 def _pub_type(item: dict[str, t.Any]) -> str:
@@ -142,7 +138,10 @@ def _pub_type(item: dict[str, t.Any]) -> str:
 
 def _pdf_url(item: dict[str, t.Any]) -> str:
     for url_info in (item.get("fullTextUrlList") or {}).get("fullTextUrl") or []:
-        if url_info.get("documentStyle") == "pdf" and url_info.get("availabilityCode") == "OA":
+        if (
+            url_info.get("documentStyle") == "pdf"
+            and url_info.get("availabilityCode") == "OA"
+        ):
             return url_info.get("url", "")
     return ""
 
