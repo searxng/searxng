@@ -80,7 +80,7 @@ def response(resp: "SXNG_Response") -> EngineResults:
             res.types.MainResult(
                 url=extract_text(eval_xpath(result, ".//a[contains(@class, 'title')]/@href")),
                 title=extract_text(eval_xpath(result, ".//a[contains(@class, 'title')]")),
-                content=extract_text(eval_xpath(result, ".//span[contains(@class, 'description') or @class='']")),
+                content=extract_text(eval_xpath(result, ".//span[contains(@class, 'description') or not(@class)]")),
             )
         )
 
