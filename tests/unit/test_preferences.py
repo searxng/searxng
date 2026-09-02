@@ -211,3 +211,96 @@ class TestPreferences(SearxTestCase):
         }
         self.preferences.save(response_mock)
         self.assertNotIn(setting_key, cookie_callback)
+
+    def test_preferences_doi_resolver_initialization(self):
+        from searx import get_setting
+        from mock import patch
+
+        # Mock get_setting to return a list for default_doi_resolver,
+        # and other necessary settings as strings or lists.
+        def mocked_get(name):
+            settings_map = {
+                "preferences": Mock(lock={}), # Mock the SettingsPref object with a lock dict
+                "ui.default_theme": "simple",
+                "search.default_lang": "en",
+                "ui.default_locale": "en_US",
+                "search.autocomplete": True,
+                "search.favicon_resolver": "none",
+                "server.image_proxy": True,
+                "server.method": "GET",
+                "search.safe_search": "1",
+                "default_doi_resolver": ["crossref"], # This is the problematic one
+            }
+            return settings_map.get(name)
+
+        with patch('searx.preferences.get_setting', side_effect=mocked_get):
+            # This should FAIL in the current state because Preferences will 
+            # wrap ['crossref'] in another list: [['crossref']]
+            try:
+                self.preferences = Preferences(['simple'], ['general'], {}, searx.plugins.PluginStorage())
+            except ValidationException:
+                self.fail("Preferences initialization raised ValidationException due to double nesting of default_doi_resolver")
+
+    def test_preferences_doi_resolver_initialization(self):
+        from unittest.mock import patch
+        
+        # Mock the DOI_RESOLVERS constant and the get_setting call
+        with patch('searx.preferences.DOI_RESOLVERS', ['crossref']), \
+             patch('searx.preferences.get_setting') as mock_get:
+            
+            # Mock various settings to satisfy the constructor
+            mock_get.side_effect = lambda name: {
+                "preferences": MagicMock(lock={}),
+                "ui.default_theme": "simple",
+                "search.default_lang": "en",
+                "ui.default_locale": "en_US",
+                "search.autocomplete": "True",
+                "search.favicon_resolver": "none",
+                "server.image_proxy": True,
+                "server.method": "GET",
+                "search.safe_search": 1,
+                "default_doi_resolver": ["crossref"], # The setting that was bugged
+                "search.languages": ["en", "de", "fr"],
+                "ui.theme_args.simple_style": "auto",
+                "ui.center_alignment": True,
+                "ui.query_in_title": True,
+            }.get(name)
+
+            # This should succeed with the fix (no nested list)
+            # and fail without the fix (nested list)
+            try:
+                Preferences(['simple'], ['general'], {}, MagicMock())
+            except ValidationException:
+                self.fail("Preferences initialization raised ValidationException for doi_resolver")
+
+    def test_preferences_doi_resolver_initialization(self):
+        from unittest.mock import MagicMock, patch
+        
+        # Mock the DOI_RESOLVERS constant and the get_setting call
+        with patch('searx.preferences.DOI_RESOLVERS', ['crossref']), \
+             patch('searx.preferences.get_setting') as mock_get:
+            
+            # Mock various settings to satisfy the constructor
+            mock_get.side_effect = lambda name: {
+                "preferences": MagicMock(lock={}),
+                "ui.default_theme": "simple",
+                "search.default_lang": "en",
+                "ui.default_locale": "en_US",
+                "search.autocomplete": "True",
+                "search.favicon_resolver": "none",
+                "server.image_proxy": True,
+                "server.method": "GET",
+                "search.safe_search": 1,
+                "default_doi_resolver": ["crossref"], # The setting that was bugged
+                "search.languages": ["en", "de", "fr"],
+                "ui.theme_args.simple_style": "auto",
+                "ui.center_alignment": True,
+                "ui.query_in_title": True,
+            }.get(name)
+
+            # This should succeed with the fix (no nested list)
+            # and fail without the fix (nested list)
+            try:
+                Preferences(['simple'], ['general'], {}, MagicMock())
+            except ValidationException:
+                self.fail("Preferences initialization raised ValidationException for doi_resolver")

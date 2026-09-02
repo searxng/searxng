@@ -458,7 +458,7 @@ class Preferences:
                 locked="results_on_new_tab" in self.cfg.lock,
             ),
             'doi_resolver': MultipleChoiceSetting(
-                [get_setting("default_doi_resolver")],
+                get_setting("default_doi_resolver"),
                 locked="doi_resolver" in self.cfg.lock,
                 choices=DOI_RESOLVERS,
             ),
