@@ -41,7 +41,7 @@ search_index = "cw22"
 <https://www.chatnoir.eu/docs/api-general>`_ for a full list."""
 
 
-def _obtain_api_key() -> tuple[str, str, str]:
+def _obtain_api_key() -> tuple[str, str]:
     home_resp = get(base_url)
     if not home_resp.ok:
         raise SearxEngineAPIException("failed to obtain api key")
@@ -58,10 +58,9 @@ def _obtain_api_key() -> tuple[str, str, str]:
     )
     if not token_resp.ok:
         raise SearxEngineAPIException("failed to obtain api key")
-    session_id = token_resp.cookies["sessionid"]
     scraped_api_key = token_resp.json()["token"]["token"]
 
-    return csrf_token, session_id, scraped_api_key
+    return csrf_token, scraped_api_key
 
 
 def request(query: str, params: "OnlineParams"):
@@ -73,7 +72,7 @@ def request(query: str, params: "OnlineParams"):
 
         params["headers"].update(headers)
     else:
-        csrf_token, session_id, scraped_api_key = _obtain_api_key()
+        csrf_token, scraped_api_key = _obtain_api_key()
 
         headers = {
             "Authorization": f"Bearer {scraped_api_key}",
@@ -81,7 +80,7 @@ def request(query: str, params: "OnlineParams"):
         }
 
         params["headers"].update(headers)
-        params["cookies"] = {"csrftoken": session_id, "sessionid": session_id}
+        params["cookies"] = {"csrftoken": csrf_token}
 
     params["url"] = f"{base_url}/api/v1/_search"
     params["method"] = "POST"
