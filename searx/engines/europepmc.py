@@ -46,7 +46,7 @@ categories = ["science", "scientific publications"]
 
 # engine dependent config
 paging = True
-page_size = 100
+page_size = 20
 search_url = "https://www.ebi.ac.uk/europepmc/webservices/rest/search"
 article_url = "https://europepmc.org/article/"
 
@@ -57,7 +57,7 @@ def request(query: str, params: "OnlineParams") -> None:
             "query": query,
             "format": "json",
             "resultType": "core",
-            "pageSize": 1000,
+            "pageSize": 100,
         }
     )
     params["url"] = f"{search_url}?{args}"
