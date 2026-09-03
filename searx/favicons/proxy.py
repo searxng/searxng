@@ -10,7 +10,7 @@ import pathlib
 import urllib.parse
 
 import flask
-from httpx import HTTPError
+from curl_cffi.requests.exceptions import RequestException
 import msgspec
 
 from searx import get_setting
@@ -185,7 +185,7 @@ def search_favicon(resolver: str, authority: str) -> tuple[None | bytes, None | 
         if data is None or mime is None:
             data, mime = (None, None)
 
-    except (HTTPError, SearxEngineResponseException):
+    except (RequestException, SearxEngineResponseException):
         pass
 
     cache.CACHE.set(resolver, authority, mime, data)

@@ -59,13 +59,10 @@ def raise_for_captcha(resp: "SXNG_Response"):
 
 
 def raise_for_httperror(resp: "SXNG_Response") -> None:
-    """Raise exception for an HTTP response is an error.
-
-    Args:
-        resp (requests.Response): Response to check
+    """Raise an exception if the HTTP response is an error.
 
     Raises:
-        requests.HTTPError: raise by resp.raise_for_status()
+        curl_cffi.requests.exceptions.HTTPError: raised by resp.raise_for_status()
         searx.exceptions.SearxEngineAccessDeniedException: raise when the HTTP status code is 402 or 403.
         searx.exceptions.SearxEngineTooManyRequestsException: raise when the HTTP status code is 429.
         searx.exceptions.SearxEngineCaptchaException: raise when if CATPCHA challenge is detected.

@@ -26,6 +26,7 @@ categories: list[str]
 disabled: bool
 display_error_messages: bool
 enable_http: bool
+enable_http3: bool
 engine_type: str
 inactive: bool
 max_page: int

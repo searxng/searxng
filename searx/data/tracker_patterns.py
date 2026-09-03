@@ -10,7 +10,7 @@ import re
 from collections.abc import Iterator
 from urllib.parse import urlparse, urlunparse, parse_qsl, urlencode
 
-from httpx import HTTPError
+from curl_cffi.requests.exceptions import RequestException
 
 from searx.data.core import get_cache, log
 from searx.network import get as http_get
@@ -87,8 +87,8 @@ class TrackerPatternsDB:
             try:
                 resp = http_get(url, timeout=3)
 
-            except HTTPError as exc:
-                log.warning("TRACKER_PATTERNS: HTTPError (%s) occured while fetching %s", url, exc)
+            except RequestException as exc:
+                log.warning("TRACKER_PATTERNS: RequestException while fetching %s: %s", url, exc)
                 continue
 
             if resp.status_code != 200:

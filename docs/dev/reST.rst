@@ -286,7 +286,7 @@ content becomes smart.
    files & folders origin     :origin:`docs/dev/reST.rst`        ``:origin:`docs/dev/reST.rst```
    pull request               :pull:`4`                          ``:pull:`4```
    patch                      :patch:`af2cae6`                   ``:patch:`af2cae6```
-   PyPi package               :pypi:`httpx`                      ``:pypi:`httpx```
+   PyPi package               :pypi:`curl_cffi`                  ``:pypi:`curl_cffi```
    manual page man            :man:`bash`                        ``:man:`bash```
    intersphinx_
    --------------------------------------------------------------------------------------------------

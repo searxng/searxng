@@ -253,8 +253,6 @@ SCHEMA: dict[str, t.Any] = {
         'verify': SettingsValue((bool, str), True),
         'max_request_timeout': SettingsValue((None, numbers.Real), None),
         'pool_connections': SettingsValue(int, 100),
-        'pool_maxsize': SettingsValue(int, 10),
-        'keepalive_expiry': SettingsValue(numbers.Real, 5.0),
         # default maximum redirect
         # from https://github.com/psf/requests/blob/8c211a96cdbe9fe320d63d9e1ae15c5c07e179f8/requests/models.py#L55
         'max_redirects': SettingsValue(int, 30),

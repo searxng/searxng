@@ -151,6 +151,7 @@ about = {
 
 base_url = "https://search.brave.com/"
 categories = []
+enable_http3 = True
 brave_category: t.Literal["search", "videos", "images", "news", "goggles"] = "search"
 """Brave supports common web-search, videos, images, news, and goggles search.
 

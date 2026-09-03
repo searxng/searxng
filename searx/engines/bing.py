@@ -40,6 +40,7 @@ about: dict[str, t.Any] = {
 # engine dependent config
 categories = ["general", "web"]
 safesearch = True
+enable_http3 = True
 _safesearch_map: dict[int, str] = {
     0: "off",
     1: "moderate",

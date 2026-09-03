@@ -8,10 +8,9 @@ import typing as t
 from timeit import default_timer
 import asyncio
 import ssl
-import httpx
+from curl_cffi.requests.exceptions import RequestException, Timeout
 
 import searx.network
-from searx.utils import gen_useragent
 from searx.exceptions import (
     SearxEngineAccessDeniedException,
     SearxEngineCaptchaException,
@@ -39,21 +38,21 @@ class HTTPParams(t.TypedDict):
     """Sending `form encoded data`_.
 
     .. _form encoded data:
-       https://www.python-httpx.org/quickstart/#sending-form-encoded-data
+       https://curl-cffi.readthedocs.io/en/latest/quick_start.html#form-submit
     """
 
     json: dict[str, t.Any]
     """`Sending `JSON encoded data`_.
 
     .. _JSON encoded data:
-       https://www.python-httpx.org/quickstart/#sending-json-encoded-data
+       https://curl-cffi.readthedocs.io/en/latest/quick_start.html#posting-json
     """
 
     content: bytes
     """`Sending `binary request data`_.
 
     .. _binary request data:
-       https://www.python-httpx.org/quickstart/#sending-json-encoded-data
+       https://curl-cffi.readthedocs.io/en/latest/quick_start.html#binary-data
     """
 
     url: str | None
@@ -71,13 +70,13 @@ class HTTPParams(t.TypedDict):
     soft_max_redirects: int
     """Maximum redirects, soft limit. Record an error but don't stop the engine."""
 
-    verify: None | t.Literal[False] | str  # not sure str really works
+    verify: None | t.Literal[False] | str
     """If not ``None``, it overrides the verify value defined in the network.  Use
     ``False`` to accept any server certificate and use a path to file to specify a
     server certificate"""
 
-    auth: str | None
-    """An authentication to use when sending requests."""
+    auth: tuple[str, str] | None
+    """Basic auth credentials ``(username, password)``."""
 
     raise_for_httperror: bool
     """Raise an exception if the `HTTP response status code`_ is ``>= 300``.
@@ -85,6 +84,12 @@ class HTTPParams(t.TypedDict):
     .. _HTTP response status code:
         https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Status
     """
+
+    impersonate: t.NotRequired[str]
+    """curl_cffi impersonate target. Default: ``chrome``."""
+
+    curl_options: t.NotRequired[dict[int, t.Any]]
+    """Any extra libcurl options for the request."""
 
 
 class OnlineParams(HTTPParams, RequestParams):
@@ -141,13 +146,6 @@ class OnlineProcessor(EngineProcessor):
         params: OnlineParams = {**default_request_params(), **base_params}
 
         headers = params["headers"]
-        headers["Accept-Encoding"] = "gzip, deflate"
-        headers["Cache-Control"] = "no-cache"
-        headers["DNT"] = "1"
-        headers["Connection"] = "keep-alive"
-
-        # add an user agent
-        headers["User-Agent"] = gen_useragent()
 
         # add Accept-Language header
         # https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Accept-Language
@@ -171,6 +169,9 @@ class OnlineProcessor(EngineProcessor):
             "cookies": params["cookies"],
             "auth": params["auth"],
         }
+        for key in ("curl_options", "impersonate"):
+            if params.get(key):
+                request_args[key] = params[key]
 
         verify = params.get("verify")
         if verify is not None:
@@ -211,7 +212,7 @@ class OnlineProcessor(EngineProcessor):
             # unexpected redirect : record an error
             # but the engine might still return valid results.
             status_code = str(response.status_code or "")
-            reason = response.reason_phrase or ""
+            reason = response.reason or ""
             hostname = response.url.host
             count_error(
                 self.engine.name,
@@ -256,7 +257,7 @@ class OnlineProcessor(EngineProcessor):
             # requests timeout (connect or read)
             self.handle_exception(result_container, e, suspend=True)
             self.logger.debug("SSLError {}, verify={}".format(e, searx.network.get_network(self.engine.name).verify))
-        except (httpx.TimeoutException, asyncio.TimeoutError) as e:
+        except (Timeout, asyncio.TimeoutError) as e:
             # requests timeout (connect or read)
             self.handle_exception(result_container, e, suspend=True)
             self.logger.debug(
@@ -264,7 +265,7 @@ class OnlineProcessor(EngineProcessor):
                     default_timer() - start_time, timeout_limit, e.__class__.__name__
                 )
             )
-        except (httpx.HTTPError, httpx.StreamError) as e:
+        except RequestException as e:
             # other requests exception
             self.handle_exception(result_container, e, suspend=True)
             self.logger.debug(

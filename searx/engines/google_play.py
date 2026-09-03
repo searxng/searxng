@@ -20,6 +20,7 @@ about = {
 }
 
 play_categ = None  # apps|movies
+enable_http3 = True
 base_url = 'https://play.google.com'
 search_url = base_url + "/store/search?{query}&c={play_categ}"
 

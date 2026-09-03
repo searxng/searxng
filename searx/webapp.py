@@ -18,7 +18,7 @@ import urllib.parse
 from urllib.parse import urlencode, urlparse, unquote
 
 import warnings
-import httpx
+from curl_cffi.requests.exceptions import RequestException
 
 from pygments import highlight
 from pygments.lexers import get_lexer_by_name
@@ -1027,7 +1027,7 @@ def image_proxy():
             return '', 400
 
         forward_resp = True
-    except httpx.HTTPError:
+    except RequestException:
         logger.exception('HTTP error')
         return '', 400
     finally:
@@ -1036,7 +1036,7 @@ def image_proxy():
             # we make sure to close the response between searxng and the HTTP server
             try:
                 resp.close()
-            except httpx.HTTPError:
+            except RequestException:
                 logger.exception('HTTP error on closing')
 
     def close_stream():
@@ -1046,7 +1046,7 @@ def image_proxy():
                 resp.close()
             del resp
             del stream
-        except httpx.HTTPError as e:
+        except RequestException as e:
             logger.debug('Exception while closing response', e)
 
     try:
@@ -1054,7 +1054,7 @@ def image_proxy():
         response = Response(stream, mimetype=resp.headers['Content-Type'], headers=headers, direct_passthrough=True)
         response.call_on_close(close_stream)
         return response
-    except httpx.HTTPError:
+    except RequestException:
         close_stream()
         return '', 400
 

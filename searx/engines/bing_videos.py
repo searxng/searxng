@@ -26,6 +26,7 @@ about = {
 # engine dependent config
 categories = ["videos", "web"]
 paging = True
+enable_http3 = True
 safesearch = True
 time_range_support = True
 
