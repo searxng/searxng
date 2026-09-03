@@ -91,7 +91,7 @@ def response(resp: "SXNG_Response") -> EngineResults:
                 authors=_get_authors(item),
                 doi=item.get("doi", ""),
                 publishedDate=_get_published_date(item.get("firstPublicationDate")),
-                type=_get_pub_type(item),
+                type=(item.get("pubTypeList", {})).get("pubType", []),
                 pdf_url=_get_pdf_url(item),
                 html_url=url,
             )
@@ -117,11 +117,6 @@ def _get_authors(item: dict[str, t.Any]) -> list:
     else:
         authors = []
     return authors
-
-
-def _get_pub_type(item: dict[str, t.Any]) -> str:
-    pub_types = (item.get("pubTypeList") or {}).get("pubType") or []
-    return pub_types[0] if pub_types else ""
 
 
 def _get_pdf_url(item: dict[str, t.Any]) -> str:
