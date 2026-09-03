@@ -33,6 +33,7 @@ CATEGORY_NAMES = {
     'SOCIAL_MEDIA': 'social media',
     'IMAGES': 'images',
     'VIDEOS': 'videos',
+    'ADULT': 'adult',
     'RADIO': 'radio',
     'TV': 'tv',
     'IT': 'it',

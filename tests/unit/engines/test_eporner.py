@@ -13,6 +13,10 @@ from tests import SearxTestCase
 
 class TestEpornerEngine(SearxTestCase):  # pylint: disable=missing-class-docstring
 
+    def test_categories(self):
+        # the engine belongs to the dedicated "adult" tab, not to "videos"
+        self.assertEqual(eporner.categories, ["adult"])
+
     def test_request(self):
         params = eporner.request("test query", {"pageno": 2, "searxng_locale": "en"})
 

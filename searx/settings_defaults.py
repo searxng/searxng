@@ -34,6 +34,7 @@ CATEGORIES_AS_TABS: dict[str, dict[str, t.Any]] = {
     'science': {},
     'files': {},
     'social media': {},
+    'adult': {},
 }
 STR_TO_BOOL = {
     '0': False,

@@ -22,7 +22,7 @@ about = {
 }
 
 # engine dependent config
-categories = ["videos"]
+categories = ["adult"]
 paging = True
 safesearch = False
 """The API does not support a safesearch flag."""
