@@ -28,7 +28,7 @@ This is an example configuration for searching in the collection
 """
 
 # pylint: disable=global-statement
-
+import typing as t
 from urllib.parse import urlencode
 from searx.exceptions import SearxEngineAPIException
 from searx.result_types import EngineResults
@@ -46,7 +46,7 @@ _search_url = ''
 paging = True
 
 
-def init(_):
+def setup(_: dict[str, t.Any]) -> bool | None:
     if collection == '':
         raise ValueError('collection cannot be empty')
 

@@ -47,7 +47,7 @@ CACHE_VALID_DURATION = 30 * 24 * 3600  # one month, same as website
 """Duration how long settings cookies are valid."""
 
 
-def init(engine_settings: dict[str, t.Any]):
+def setup(engine_settings: dict[str, t.Any]) -> bool | None:
     global CACHE  # pylint: disable=global-statement
     CACHE = EngineCache(engine_settings["name"])
 

@@ -41,6 +41,7 @@ authentication configured to read from ``my-index`` index.
 
 """
 
+import typing as t
 from json import loads, dumps
 from searx.exceptions import SearxEngineAPIException
 from searx.result_types import EngineResults
@@ -68,7 +69,7 @@ show_metadata = False
 page_size = 10
 
 
-def init(engine_settings):
+def setup(engine_settings: dict[str, t.Any]) -> bool | None:
     if 'query_type' in engine_settings and engine_settings['query_type'] not in _available_query_types:
         raise ValueError('unsupported query type', engine_settings['query_type'])
 

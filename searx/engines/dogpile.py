@@ -36,7 +36,7 @@ base_url = "https://www.dogpile.com"
 safe_search_map = {0: "none", 1: "moderate", 2: "heavy"}
 
 
-def init(_):
+def setup(_: dict[str, t.Any]) -> bool | None:
     if dogpile_categ not in ("search", "images", "videos", "news"):
         raise ValueError("invalid search type: %s" % dogpile_categ)
 

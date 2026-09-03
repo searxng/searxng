@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 """Quark (Shenma) search engine for searxng"""
 
+import typing as t
 from urllib.parse import urlencode
 from datetime import datetime
 import re
@@ -43,7 +44,7 @@ def is_alibaba_captcha(html):
     return bool(re.search(CAPTCHA_PATTERN, html))
 
 
-def init(_):
+def setup(_: dict[str, t.Any]) -> bool | None:
     if quark_category not in ('general', 'images'):
         raise SearxEngineAPIException(f"Unsupported category: {quark_category}")
 

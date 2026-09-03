@@ -35,7 +35,7 @@ Implementation
 ==============
 
 """
-
+import typing as t
 from datetime import datetime, timedelta
 from urllib.parse import urlencode
 
@@ -85,7 +85,7 @@ Additional subcategories:
 # Do we need support for "free_collection" and "include_stock_enterprise"?
 
 
-def init(_):
+def setup(_: dict[str, t.Any]) -> bool | None:
     if not categories:
         raise ValueError("adobe_stock engine: categories is unset")
 
@@ -100,9 +100,9 @@ def init(_):
         raise ValueError("adobe_stock engine: adobe_content_types is unset")
 
     if isinstance(adobe_content_types, list):
-        for t in adobe_content_types:
-            if t not in ADOBE_VALID_TYPES:
-                raise ValueError("adobe_stock engine: adobe_content_types: '%s' is invalid" % t)
+        for content_type in adobe_content_types:
+            if content_type not in ADOBE_VALID_TYPES:
+                raise ValueError("adobe_stock engine: adobe_content_types: '%s' is invalid" % content_type)
     else:
         raise ValueError(
             "adobe_stock engine: adobe_content_types must be a list of strings not %s" % type(adobe_content_types)

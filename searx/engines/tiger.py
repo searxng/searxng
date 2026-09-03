@@ -45,12 +45,10 @@ CACHE: EngineCache
 """Cache to store session codes (result of solved CAPTCHA)."""
 
 
-def init(_):
+def setup(engine_settings: dict[str, t.Any]) -> bool:
     if tiger_category not in ("Websuche", "News"):
         raise ValueError("invalid search category: %s" % tiger_category)
 
-
-def setup(engine_settings: dict[str, t.Any]) -> bool:
     global CACHE  # pylint: disable=global-statement
     CACHE = EngineCache(engine_settings["name"])
     return True

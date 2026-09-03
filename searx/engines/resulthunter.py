@@ -42,7 +42,7 @@ resulthunter_categ = "web"
 """Supported categories are ``web`` and ``images``."""
 
 
-def init(_):
+def setup(_: dict[str, t.Any]) -> bool | None:
     if resulthunter_categ not in ("web", "images"):
         raise ValueError("invalid category: %s" % resulthunter_categ)
 

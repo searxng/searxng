@@ -8,6 +8,7 @@ No public instance offer a public API now
 
 """
 
+import typing as t
 import time
 import random
 from urllib.parse import quote_plus, urlparse
@@ -34,7 +35,7 @@ time_range_support = True
 base_url: list[str] | str = []
 
 
-def init(_):
+def setup(_: dict[str, t.Any]) -> bool | None:
     if not base_url:
         raise ValueError("missing invidious base_url")
 
