@@ -3307,13 +3307,6 @@ engines:
       website: https://minecraft.wiki/
       wikidata_id: Q105533483
 
-  # s1search google engines / mirrors
-  - name: searchtoday
-    engine: s1search
-    shortcut: std
-    base_url: https://info.searchtoday.site
-    disabled: true
-
   - name: sina
     engine: json_engine
     shortcut: sina
@@ -3356,6 +3349,13 @@ engines:
     engine: s1search
     shortcut: zoo
     base_url: https://search.zoo.com
+    disabled: true
+    inactive: true
+
+  # s1search engines / mirrors with rampjs page layout
+  - name: s1search
+    engine: s1search_rampjs
+    shortcut: s1
     disabled: true
     inactive: true
 
