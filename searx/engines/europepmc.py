@@ -47,7 +47,6 @@ categories = ["science", "scientific publications"]
 # engine dependent config
 paging = True
 page_size = 100
-
 search_url = "https://www.ebi.ac.uk/europepmc/webservices/rest/search"
 article_url = "https://europepmc.org/article/"
 
@@ -72,7 +71,7 @@ def response(resp: "SXNG_Response") -> EngineResults:
     # asked for (same pattern as the ahmia engine).
     pageno: int = resp.search_params.get("pageno", 1) or 1
     start = (pageno - 1) * page_size
-    all_results = resp.json().get("resultList", {}).get("result") or []
+    all_results = resp.json().get("resultList", {}).get("result", [])
 
     for item in all_results[start : start + page_size]:
         source = item.get("source", "")
@@ -86,10 +85,10 @@ def response(resp: "SXNG_Response") -> EngineResults:
             res.types.Paper(
                 url=url,
                 title=item.get("title", ""),
-                content=_get_abstract(item.get("abstractText")),
+                content=_get_abstract(item),
                 authors=_get_authors(item),
                 journal=journal.get("title", ""),
-                issn=_get_issn(journal),
+                issn=[journal.get("issn") or ""],
                 doi=item.get("doi", ""),
                 volume=journal_info.get("volume", ""),
                 pages=item.get("pageInfo", ""),
@@ -104,31 +103,23 @@ def response(resp: "SXNG_Response") -> EngineResults:
     return res
 
 
-def _get_abstract(abstract_text: str | None) -> str:
-    # Abstracts are returned as HTML (e.g. "<h4>Background</h4>...").
-    return html_to_text(abstract_text) if abstract_text else ""
+def _get_abstract(item: dict[str, t.Any]) -> str:
+    """Convert the abstract text from HTML to plain text."""
+    html_abstract = item.get("abstractText", "")
+    return html_to_text(html_abstract)
 
 
-def _get_authors(item: dict[str, t.Any]) -> list[str]:
-    author_list = (item.get("authorList") or {}).get("author") or []
-    authors = [
-        a.get("fullName") for a in author_list if isinstance(a.get("fullName"), str)
-    ]
-    if authors:
-        return authors
-    # Fall back to the pre-formatted authorString when no structured list.
-    author_string = item.get("authorString")
-    if isinstance(author_string, str) and author_string:
-        return [name.strip() for name in author_string.rstrip(".").split(",")]
-    return []
-
-
-def _get_issn(journal: dict[str, t.Any]) -> list[str]:
-    return [
-        issn
-        for issn in (journal.get("issn"), journal.get("essn"))
-        if isinstance(issn, str) and issn
-    ]
+def _get_authors(item: dict[str, t.Any]) -> list:
+    """Extract the list of authors from the item."""
+    if authors := item.get("authorString", None):
+        authors = [
+            author.strip().rstrip(".")
+            for author in authors.split(",")
+            if author.strip()
+        ]
+    else:
+        authors = []
+    return authors
 
 
 def _get_pub_type(item: dict[str, t.Any]) -> str:
