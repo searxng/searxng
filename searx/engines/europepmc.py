@@ -86,30 +86,30 @@ def response(resp: "SXNG_Response") -> EngineResults:
             res.types.Paper(
                 url=url,
                 title=item.get("title", ""),
-                content=_abstract(item.get("abstractText")),
-                authors=_authors(item),
+                content=_get_abstract(item.get("abstractText")),
+                authors=_get_authors(item),
                 journal=journal.get("title", ""),
-                issn=_issn(journal),
+                issn=_get_issn(journal),
                 doi=item.get("doi", ""),
                 volume=journal_info.get("volume", ""),
                 pages=item.get("pageInfo", ""),
-                publishedDate=_published_date(item.get("firstPublicationDate")),
-                type=_pub_type(item),
-                pdf_url=_pdf_url(item),
+                publishedDate=_get_published_date(item.get("firstPublicationDate")),
+                type=_get_pub_type(item),
+                pdf_url=_get_pdf_url(item),
                 html_url=url,
-                comments=_citations(item.get("citedByCount")),
+                comments=_get_citations(item.get("citedByCount")),
             )
         )
 
     return res
 
 
-def _abstract(abstract_text: str | None) -> str:
+def _get_abstract(abstract_text: str | None) -> str:
     # Abstracts are returned as HTML (e.g. "<h4>Background</h4>...").
     return html_to_text(abstract_text) if abstract_text else ""
 
 
-def _authors(item: dict[str, t.Any]) -> list[str]:
+def _get_authors(item: dict[str, t.Any]) -> list[str]:
     author_list = (item.get("authorList") or {}).get("author") or []
     authors = [
         a.get("fullName") for a in author_list if isinstance(a.get("fullName"), str)
@@ -123,7 +123,7 @@ def _authors(item: dict[str, t.Any]) -> list[str]:
     return []
 
 
-def _issn(journal: dict[str, t.Any]) -> list[str]:
+def _get_issn(journal: dict[str, t.Any]) -> list[str]:
     return [
         issn
         for issn in (journal.get("issn"), journal.get("essn"))
@@ -131,12 +131,12 @@ def _issn(journal: dict[str, t.Any]) -> list[str]:
     ]
 
 
-def _pub_type(item: dict[str, t.Any]) -> str:
+def _get_pub_type(item: dict[str, t.Any]) -> str:
     pub_types = (item.get("pubTypeList") or {}).get("pubType") or []
     return pub_types[0] if pub_types else ""
 
 
-def _pdf_url(item: dict[str, t.Any]) -> str:
+def _get_pdf_url(item: dict[str, t.Any]) -> str:
     for url_info in (item.get("fullTextUrlList") or {}).get("fullTextUrl") or []:
         if (
             url_info.get("documentStyle") == "pdf"
@@ -146,13 +146,13 @@ def _pdf_url(item: dict[str, t.Any]) -> str:
     return ""
 
 
-def _citations(cited_by_count: t.Any) -> str:
+def _get_citations(cited_by_count: t.Any) -> str:
     if isinstance(cited_by_count, int) and cited_by_count > 0:
         return f"{cited_by_count} citations"
     return ""
 
 
-def _published_date(value: str | None) -> datetime | None:
+def _get_published_date(value: str | None) -> datetime | None:
     if not value:
         return None
     for fmt in ("%Y-%m-%d", "%Y-%m", "%Y"):
