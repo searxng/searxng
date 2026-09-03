@@ -1569,6 +1569,25 @@ engines:
     shortcut: lt
     inactive: true
 
+  - name: littlelayer
+    engine: json_engine
+    shortcut: ll
+    categories: [general, blogs]
+    paging: false
+    search_url: https://litterlayer.com/load_results/?q={query}&page={pageno}
+    headers:
+      X-Requested-With: XMLHttpRequest
+    results_query: results
+    url_query: url
+    title_query: title
+    content_query: description
+    disabled: true
+    inactive: true
+    about:
+      website: https://littlelayer.com
+      description: Indie search and bookmarking community
+      results: JSON
+
   - name: lingva
     engine: lingva
     shortcut: lv
