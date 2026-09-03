@@ -40,7 +40,7 @@ if t.TYPE_CHECKING:
 about = {
     "website": "https://api.search.brave.com/",
     "wikidata_id": None,
-    "official_api_documentation": "https://api-dashboard.search.brave.com/documentation",
+    "official_api_documentation": "https://api-dashboard.search.brave.com/api-reference/web/search/get",
     "use_official_api": True,
     "require_api_key": True,
     "results": "JSON",
@@ -63,6 +63,8 @@ base_url = "https://api.search.brave.com/res/v1/web/search"
 time_range_map = {"day": "past_day", "week": "past_week", "month": "past_month", "year": "past_year"}
 """Mapping of SearXNG time ranges to Brave API time ranges."""
 
+max_page = 10
+
 
 def setup(_: dict[str, t.Any]) -> bool | None:
     """Initialize the engine."""
@@ -75,7 +77,7 @@ def request(query: str, params: "OnlineParams") -> None:
     search_args: dict[str, str | int | None] = {
         "q": query,
         "count": results_per_page,
-        "offset": (params["pageno"] - 1) * results_per_page,
+        "offset": params["pageno"] - 1,
         "text_decorations": False,
     }
 
