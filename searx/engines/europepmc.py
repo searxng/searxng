@@ -88,7 +88,7 @@ def response(resp: "SXNG_Response") -> EngineResults:
                 content=_get_abstract(item),
                 authors=_get_authors(item),
                 journal=journal.get("title", ""),
-                issn=[journal.get("issn") or ""],
+                issn=[journal.get("issn", "")],
                 doi=item.get("doi", ""),
                 volume=journal_info.get("volume", ""),
                 pages=item.get("pageInfo", ""),
