@@ -327,6 +327,7 @@ def google_request(
 
     params["url"] = f"https://www.google.com/wml/search?{urlencode(args)}"
     params["headers"]["User-Agent"] = random.choice(nokia_useragents)
+    params["impersonate"] = "chrome99_android"
 
 
 def request(query: str, params: "OnlineParams") -> None:

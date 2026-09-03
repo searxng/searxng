@@ -12,20 +12,12 @@ Communication with search engines.
      request_timeout: 2.0       # default timeout in seconds, can be override by engine
      max_request_timeout: 10.0  # the maximum timeout in seconds
      useragent_suffix: ""       # information like an email address to the administrator
-     pool_connections: 100      # Maximum number of allowable connections, or null
-                                # for no limits. The default is 100.
-     pool_maxsize: 10           # Number of allowable keep-alive connections, or null
-                                # to always allow. The default is 10.
-     enable_http2: true         # See https://www.python-httpx.org/http2/
+     pool_connections: 100      # Maximum number of concurrent connections (default: 100)
+     enable_http2: true         # Enables the use of HTTP2
      # uncomment below section if you want to use a custom server certificate
-     # see https://www.python-httpx.org/advanced/#changing-the-verification-defaults
-     # and https://www.python-httpx.org/compatibility/#ssl-configuration
      #  verify: ~/.mitmproxy/mitmproxy-ca-cert.cer
      #
-     # uncomment below section if you want to use a proxyq see: SOCKS proxies
-     #   https://2.python-requests.org/en/latest/user/advanced/#proxies
-     # are also supported: see
-     #   https://2.python-requests.org/en/latest/user/advanced/#socks
+     # uncomment below section if you want to use a proxy
      #
      #  proxies:
      #    all://:
@@ -46,29 +38,25 @@ Communication with search engines.
   timeout to load).  Can be override by ``timeout`` in the :ref:`settings engines`.
 
 ``useragent_suffix`` :
-  Suffix to the user-agent SearXNG uses to send requests to others engines.  If an
-  engine wish to block you, a contact info here may be useful to avoid that.
+  Suffix to add when an engine's User-Agent is set via searxng_useragent().
+  Contact info here may be useful to avoid an engine blocking you.
 
-.. _Pool limit configuration: https://www.python-httpx.org/advanced/#pool-limit-configuration
-
-``pool_maxsize``:
-  Number of allowable keep-alive connections, or ``null`` to always allow.  The
-  default is 10.  See ``max_keepalive_connections`` `Pool limit configuration`_.
+.. _Pool limit configuration: https://curl-cffi.readthedocs.io/en/latest/api.html#sessions
 
 ``pool_connections`` :
-  Maximum number of allowable connections, or ``null`` # for no limits.  The
-  default is 100.  See ``max_connections`` `Pool limit configuration`_.
+  Maximum number of concurrent connections.  The default is 100.
+  See ``max_clients`` `Pool limit configuration`_.
 
-``keepalive_expiry`` :
-  Number of seconds to keep a connection in the pool.  By default 5.0 seconds.
-  See ``keepalive_expiry`` `Pool limit configuration`_.
-
-.. _httpx proxies: https://www.python-httpx.org/advanced/#http-proxying
+.. _curl_cffi proxies: https://curl-cffi.readthedocs.io/en/latest/quick_start.html
 
 ``proxies`` :
-  Define one or more proxies you wish to use, see `httpx proxies`_.
+  Define one or more proxies you wish to use, see `curl_cffi proxies`_.
   If there are more than one proxy for one protocol (http, https),
   requests to the engines are distributed in a round-robin fashion.
+
+  HTTP, HTTPS, SOCKS4, SOCKS5 and SOCKS5h proxies are supported
+  (``http://``, ``https://``, ``socks4://``, ``socks5://``, ``socks5h://``). You should
+  use ``socks5h://`` when using Tor so hostnames are resolved by the proxy.
 
 ``source_ips`` :
   If you use multiple network interfaces, define from which IP the requests must
@@ -87,18 +75,15 @@ Communication with search engines.
   different proxy and source ip.
 
 ``enable_http2`` :
-  Enable by default. Set to ``false`` to disable HTTP/2.
-
-.. _httpx verification defaults: https://www.python-httpx.org/advanced/#changing-the-verification-defaults
-.. _httpx ssl configuration: https://www.python-httpx.org/compatibility/#ssl-configuration
+  Enable by default (HTTP/2).  Set to ``false`` to force HTTP/1.1.
+  HTTP/3 is opt-in per engine (``enable_http3``).
 
 ``verify``: : ``$SSL_CERT_FILE``, ``$SSL_CERT_DIR``
-  Allow to specify a path to certificate.
-  see `httpx verification defaults`_.
+  HTTPS verification uses the OS's trust store by default.
+  Set a path to use a custom CA file.
 
   In addition to ``verify``, SearXNG supports the ``$SSL_CERT_FILE`` (for a file) and
   ``$SSL_CERT_DIR`` (for a directory) OpenSSL variables.
-  see `httpx ssl configuration`_.
 
 ``max_redirects`` :
   30 by default. Maximum redirect before it is an error.

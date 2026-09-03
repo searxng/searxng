@@ -317,6 +317,9 @@ class Engine(abc.ABC):  # pylint: disable=too-few-public-methods
     enable_http: bool
     """Enable HTTP (by default only HTTPS is enabled)."""
 
+    enable_http3: bool = False
+    """Enables the use of HTTP/3 if available"""
+
     shortcut: str
     """Code used to execute bang requests (``!foo``)"""
 

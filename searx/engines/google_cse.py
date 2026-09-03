@@ -30,6 +30,7 @@ about = {
 
 categories = ["general", "web"]
 paging = True
+enable_http3 = True
 max_page = 5
 page_size = 20
 time_range_support = True

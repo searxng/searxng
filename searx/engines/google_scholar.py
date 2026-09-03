@@ -27,7 +27,7 @@ import typing as t
 from urllib.parse import urlencode
 from datetime import datetime
 from lxml import html
-import httpx
+from curl_cffi.requests.exceptions import TooManyRedirects
 
 from searx.utils import (
     eval_xpath,
@@ -63,6 +63,7 @@ about = {
 # engine dependent config
 categories = ["science", "scientific publications"]
 paging = True
+enable_http3 = True
 max_page = 50
 """`Google max 50 pages`_
 
@@ -102,7 +103,7 @@ def response(resp: "SXNG_Response") -> EngineResults:  # pylint: disable=too-man
             raise SearxEngineAccessDeniedException(
                 message="google_scholar: unusual traffic detected",
             )
-        raise httpx.TooManyRedirects(f"location {resp.headers['Location'].split('?')[0]}")
+        raise TooManyRedirects(f"location {resp.headers['Location'].split('?')[0]}")
 
     res = EngineResults()
     dom = html.fromstring(resp.text)

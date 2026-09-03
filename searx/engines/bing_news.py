@@ -33,6 +33,7 @@ categories = ["news"]
 paging = True
 """If go through the pages and there are actually no new results for another
 page, then bing returns the results from the last page again."""
+enable_http3 = True
 
 time_range_support = True
 time_map = {

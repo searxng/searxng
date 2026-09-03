@@ -6,7 +6,7 @@ import typing as t
 import inspect
 from json import JSONDecodeError
 from urllib.parse import urlparse
-from httpx import HTTPError, HTTPStatusError
+from curl_cffi.requests.exceptions import HTTPError, RequestException
 from searx.exceptions import (
     SearxXPathSyntaxException,
     SearxEngineXPathException,
@@ -100,32 +100,22 @@ def get_trace(traces):
     return traces[-1]
 
 
-def get_hostname(exc: HTTPError) -> str | None:
-    url = exc.request.url
-    if url is None and exc.response is not None:
-        url = exc.response.url
-    return urlparse(url).netloc
+def get_hostname(exc: RequestException) -> str | None:
+    url = getattr(getattr(exc, "request", None), "url", None)
+    if url is None:
+        url = getattr(getattr(exc, "response", None), "url", None)
+    return urlparse(str(url)).netloc if url else None
 
 
 def get_request_exception_messages(
-    exc: HTTPError,
+    exc: RequestException,
 ) -> tuple[str | None, str | None, str | None]:
-    url = None
-    status_code = None
-    reason = None
-    hostname = None
-    if hasattr(exc, '_request') and exc._request is not None:  # pylint: disable=protected-access
-        # exc.request is property that raise an RuntimeException
-        # if exc._request is not defined.
-        url = exc.request.url
-    if url is None and hasattr(exc, 'response') and exc.response is not None:
-        url = exc.response.url
-    if url is not None:
-        hostname = url.host
-    if isinstance(exc, HTTPStatusError):
-        status_code = str(exc.response.status_code)
-        reason = exc.response.reason_phrase
-    return (status_code, reason, hostname)
+    response = getattr(exc, "response", None)
+    status_code = reason = None
+    if isinstance(exc, HTTPError) and response is not None:
+        status_code = str(response.status_code)
+        reason = response.reason
+    return (status_code, reason, get_hostname(exc))
 
 
 def get_messages(exc, filename) -> tuple[str, ...]:  # pylint: disable=too-many-return-statements
@@ -135,7 +125,7 @@ def get_messages(exc, filename) -> tuple[str, ...]:  # pylint: disable=too-many-
         return (str(exc),)
     if isinstance(exc, ValueError) and 'lxml' in filename:
         return (str(exc),)
-    if isinstance(exc, HTTPError):
+    if isinstance(exc, RequestException):
         return get_request_exception_messages(exc)
     if isinstance(exc, SearxXPathSyntaxException):
         return (exc.xpath_str, exc.message)

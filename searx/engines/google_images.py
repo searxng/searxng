@@ -26,6 +26,7 @@ about = {
 # engine dependent config
 categories = ["images", "web"]
 paging = True
+enable_http3 = True
 max_page = 50
 """Google supports up to 50 pages of results, see the `Google max_page discussion`_.
 

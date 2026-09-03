@@ -3,7 +3,7 @@
 
 - :py:obj:`flask.request` is replaced by :py:obj:`sxng_request`
 - :py:obj:`flask.Request` is replaced by :py:obj:`SXNG_Request`
-- :py:obj:`httpx.response` is replaced by :py:obj:`SXNG_Response`
+- :py:obj:`curl_cffi.requests.Response` is replaced by :py:obj:`SXNG_Response`
 
 ----
 
@@ -24,8 +24,10 @@
 __all__ = ["SXNG_Request", "sxng_request", "SXNG_Response"]
 
 import typing
+from urllib.parse import urlsplit
+
 import flask
-import httpx
+from curl_cffi.requests import Response as CurlResponse
 
 if typing.TYPE_CHECKING:
     import searx.preferences
@@ -69,18 +71,37 @@ class SXNG_Request(flask.Request):
 sxng_request = typing.cast(SXNG_Request, flask.request)
 
 
-class SXNG_Response(httpx.Response):
-    """SearXNG extends the class :py:obj:`httpx.Response` with properties from
-    *this* class (type cast of :py:obj:`httpx.Response`).
+class SXNG_URL(str):
+    """String URL"""
+
+    @property
+    def host(self) -> str | None:
+        return urlsplit(self).hostname
+
+    @property
+    def path(self) -> str:
+        return urlsplit(self).path
+
+
+class SXNG_Response(CurlResponse):
+    """SearXNG extends :py:obj:`curl_cffi.requests.Response` with properties from
+    *this* class (type cast of the curl_cffi response).
 
     .. code:: python
 
-       response = httpx.get("https://example.org")
        response = typing.cast(SXNG_Response, response)
        if response.ok:
           ...
        query_was = search_params["query"]
     """
 
-    ok: bool
     search_params: "OnlineParamTypes | OnlineDictParams | OnlineCurrenciesParams"
+    _url: str = ""
+
+    @property
+    def url(self) -> SXNG_URL:  # type: ignore[override]
+        return SXNG_URL(self._url)
+
+    @url.setter
+    def url(self, value: str) -> None:
+        self._url = str(value or "")

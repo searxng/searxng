@@ -22,6 +22,7 @@ about = {
 # Engine configuration
 categories = []
 paging = True
+enable_http3 = True
 search_type = ""
 
 # Search URL

@@ -14,8 +14,7 @@ from timeit import default_timer
 from collections.abc import Iterable
 from contextlib import contextmanager
 
-import httpx
-import anyio
+from curl_cffi.requests.exceptions import StreamConsumedError, Timeout
 
 from searx.extended_types import SXNG_Response
 from .network import get_network, initialize, check_network_configuration  # pylint:disable=cyclic-import
@@ -74,7 +73,6 @@ def _get_timeout(start_time: float, kwargs: t.Any) -> float:
     # pylint: disable=too-many-branches
 
     timeout: float | None
-    # timeout (httpx)
     if 'timeout' in kwargs:
         timeout = kwargs['timeout']
     else:
@@ -105,10 +103,10 @@ def request(method: str, url: str, **kwargs: t.Any) -> SXNG_Response:
         try:
             return future.result(timeout)
         except concurrent.futures.TimeoutError as e:
-            raise httpx.TimeoutException('Timeout', request=None) from e
+            raise Timeout('Timeout') from e
 
 
-def multi_requests(request_list: list["Request"]) -> list[httpx.Response | Exception]:
+def multi_requests(request_list: list["Request"]) -> list[SXNG_Response | Exception]:
     """send multiple HTTP requests in parallel. Wait for all requests to finish."""
     with _record_http_time() as start_time:
         # send the requests
@@ -128,7 +126,7 @@ def multi_requests(request_list: list["Request"]) -> list[httpx.Response | Excep
             try:
                 responses.append(future.result(timeout))
             except concurrent.futures.TimeoutError:
-                responses.append(httpx.TimeoutException('Timeout', request=None))
+                responses.append(Timeout('Timeout'))
             except Exception as e:  # pylint: disable=broad-except
                 responses.append(e)
         return responses
@@ -205,14 +203,12 @@ async def stream_chunk_to_queue(network, queue, method: str, url: str, **kwargs:
     try:
         async with await network.stream(method, url, **kwargs) as response:
             queue.put(response)
-            # aiter_raw: access the raw bytes on the response without applying any HTTP content decoding
-            # https://www.python-httpx.org/quickstart/#streaming-responses
-            async for chunk in response.aiter_raw(65536):
+            async for chunk in response.aiter_content():
                 if len(chunk) > 0:
                     queue.put(chunk)
-    except (httpx.StreamClosed, anyio.ClosedResourceError):
+    except StreamConsumedError:
         # the response was queued before the exception.
-        # the exception was raised on aiter_raw.
+        # the exception was raised on aiter_content.
         # we do nothing here: in the finally block, None will be queued
         # so stream(method, url, **kwargs) generator can stop
         pass
@@ -246,22 +242,19 @@ def _close_response_method(self):
     asyncio.run_coroutine_threadsafe(self.aclose(), get_loop())
     # reach the end of _self.generator ( _stream_generator ) to an avoid memory leak.
     # it makes sure that :
-    # * the httpx response is closed (see the stream_chunk_to_queue function)
+    # * the curl_cffi response is closed (see the stream_chunk_to_queue function)
     # * to call future.result() in _stream_generator
     for _ in self._generator:  # pylint: disable=protected-access
         continue
 
 
 def stream(method: str, url: str, **kwargs: t.Any) -> tuple[SXNG_Response, Iterable[bytes]]:
-    """Replace httpx.stream.
+    """Stream for the image proxy.
 
     Usage:
-    response, stream = poolrequests.stream(...)
+    response, stream = searx.network.stream(...)
     for chunk in stream:
         ...
-
-    httpx.Client.stream requires to write the httpx.HTTPTransport version of the
-    the httpx.AsyncHTTPTransport declared above.
     """
     generator = _stream_generator(method, url, **kwargs)
 

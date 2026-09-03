@@ -1,9 +1,10 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 # pylint: disable=missing-module-docstring,disable=missing-class-docstring,invalid-name
 
-import httpx
-from mock import patch
+from curl_cffi.requests.exceptions import RequestException
+from mock import Mock, patch
 
+from searx.network.client import AsyncClient
 from searx.network.network import Network, NETWORKS
 from tests import SearxTestCase
 
@@ -83,10 +84,15 @@ class TestNetwork(SearxTestCase):
         self.assertEqual(len(kwargs), 2)
 
         self.assertEqual(kwargs['timeout'], 2)
-        self.assertEqual(kwargs['follow_redirects'], True)
+        self.assertEqual(kwargs['allow_redirects'], True)
 
         self.assertTrue(kwargs_client['verify'])
         self.assertEqual(kwargs_client['max_redirects'], 5)
+
+        kwargs = {'impersonate': 'chrome99_android', 'curl_options': {1: 'x'}, 'timeout': 1}
+        kwargs_client = Network.extract_kwargs_clients(kwargs)
+        self.assertEqual(kwargs_client, {'impersonate': 'chrome99_android', 'curl_options': {1: 'x'}})
+        self.assertEqual(kwargs, {'timeout': 1})
 
     async def test_get_client(self):
         network = Network(verify=True)
@@ -103,6 +109,9 @@ class TestNetwork(SearxTestCase):
         self.assertNotEqual(client1, client5)
         self.assertEqual(client3, client6)
 
+        client7 = await network.get_client(impersonate="chrome99_android", enable_http3=True)
+        self.assertNotEqual(client1, client7)
+
         await network.aclose()
 
     async def test_aclose(self):
@@ -112,8 +121,8 @@ class TestNetwork(SearxTestCase):
 
     async def test_request(self):
         a_text = 'Lorem Ipsum'
-        response = httpx.Response(status_code=200, text=a_text)
-        with patch.object(httpx.AsyncClient, 'request', return_value=response):
+        response = Mock(status_code=200, text=a_text)
+        with patch.object(AsyncClient, 'request', return_value=response):
             network = Network(enable_http=True)
             response = await network.request('GET', 'https://example.com/')
             self.assertEqual(response.text, a_text)
@@ -135,34 +144,34 @@ class TestNetworkRequestRetries(SearxTestCase):
             nonlocal first
             if first:
                 first = False
-                return httpx.Response(status_code=403, text=TestNetworkRequestRetries.TEXT)
-            return httpx.Response(status_code=200, text=TestNetworkRequestRetries.TEXT)
+                return Mock(status_code=403, text=TestNetworkRequestRetries.TEXT)
+            return Mock(status_code=200, text=TestNetworkRequestRetries.TEXT)
 
         return get_response
 
     async def test_retries_ok(self):
-        with patch.object(httpx.AsyncClient, 'request', new=TestNetworkRequestRetries.get_response_404_then_200()):
+        with patch.object(AsyncClient, 'request', new=TestNetworkRequestRetries.get_response_404_then_200()):
             network = Network(enable_http=True, retries=1, retry_on_http_error=403)
             response = await network.request('GET', 'https://example.com/', raise_for_httperror=False)
             self.assertEqual(response.text, TestNetworkRequestRetries.TEXT)
             await network.aclose()
 
     async def test_retries_fail_int(self):
-        with patch.object(httpx.AsyncClient, 'request', new=TestNetworkRequestRetries.get_response_404_then_200()):
+        with patch.object(AsyncClient, 'request', new=TestNetworkRequestRetries.get_response_404_then_200()):
             network = Network(enable_http=True, retries=0, retry_on_http_error=403)
             response = await network.request('GET', 'https://example.com/', raise_for_httperror=False)
             self.assertEqual(response.status_code, 403)
             await network.aclose()
 
     async def test_retries_fail_list(self):
-        with patch.object(httpx.AsyncClient, 'request', new=TestNetworkRequestRetries.get_response_404_then_200()):
+        with patch.object(AsyncClient, 'request', new=TestNetworkRequestRetries.get_response_404_then_200()):
             network = Network(enable_http=True, retries=0, retry_on_http_error=[403, 429])
             response = await network.request('GET', 'https://example.com/', raise_for_httperror=False)
             self.assertEqual(response.status_code, 403)
             await network.aclose()
 
     async def test_retries_fail_bool(self):
-        with patch.object(httpx.AsyncClient, 'request', new=TestNetworkRequestRetries.get_response_404_then_200()):
+        with patch.object(AsyncClient, 'request', new=TestNetworkRequestRetries.get_response_404_then_200()):
             network = Network(enable_http=True, retries=0, retry_on_http_error=True)
             response = await network.request('GET', 'https://example.com/', raise_for_httperror=False)
             self.assertEqual(response.status_code, 403)
@@ -175,10 +184,10 @@ class TestNetworkRequestRetries(SearxTestCase):
             nonlocal request_count
             request_count += 1
             if request_count < 3:
-                raise httpx.RequestError('fake exception', request=None)
-            return httpx.Response(status_code=200, text=TestNetworkRequestRetries.TEXT)
+                raise RequestException('fake exception')
+            return Mock(status_code=200, text=TestNetworkRequestRetries.TEXT)
 
-        with patch.object(httpx.AsyncClient, 'request', new=get_response):
+        with patch.object(AsyncClient, 'request', new=get_response):
             network = Network(enable_http=True, retries=2)
             response = await network.request('GET', 'https://example.com/', raise_for_httperror=False)
             self.assertEqual(response.status_code, 200)
@@ -187,11 +196,11 @@ class TestNetworkRequestRetries(SearxTestCase):
 
     async def test_retries_exception(self):
         async def get_response(*args, **kwargs):
-            raise httpx.RequestError('fake exception', request=None)
+            raise RequestException('fake exception')
 
-        with patch.object(httpx.AsyncClient, 'request', new=get_response):
+        with patch.object(AsyncClient, 'request', new=get_response):
             network = Network(enable_http=True, retries=0)
-            with self.assertRaises(httpx.RequestError):
+            with self.assertRaises(RequestException):
                 await network.request('GET', 'https://example.com/', raise_for_httperror=False)
             await network.aclose()
 
@@ -211,22 +220,22 @@ class TestNetworkStreamRetries(SearxTestCase):
             nonlocal first
             if first:
                 first = False
-                raise httpx.RequestError('fake exception', request=None)
-            return httpx.Response(status_code=200, text=TestNetworkStreamRetries.TEXT)
+                raise RequestException('fake exception')
+            return Mock(status_code=200, text=TestNetworkStreamRetries.TEXT)
 
         return stream
 
     async def test_retries_ok(self):
-        with patch.object(httpx.AsyncClient, 'stream', new=TestNetworkStreamRetries.get_response_exception_then_200()):
+        with patch.object(AsyncClient, 'stream', new=TestNetworkStreamRetries.get_response_exception_then_200()):
             network = Network(enable_http=True, retries=1, retry_on_http_error=403)
             response = await network.stream('GET', 'https://example.com/')
             self.assertEqual(response.text, TestNetworkStreamRetries.TEXT)
             await network.aclose()
 
     async def test_retries_fail(self):
-        with patch.object(httpx.AsyncClient, 'stream', new=TestNetworkStreamRetries.get_response_exception_then_200()):
+        with patch.object(AsyncClient, 'stream', new=TestNetworkStreamRetries.get_response_exception_then_200()):
             network = Network(enable_http=True, retries=0, retry_on_http_error=403)
-            with self.assertRaises(httpx.RequestError):
+            with self.assertRaises(RequestException):
                 await network.stream('GET', 'https://example.com/')
             await network.aclose()
 
@@ -237,10 +246,10 @@ class TestNetworkStreamRetries(SearxTestCase):
             nonlocal first
             if first:
                 first = False
-                return httpx.Response(status_code=403, text=TestNetworkRequestRetries.TEXT)
-            return httpx.Response(status_code=200, text=TestNetworkRequestRetries.TEXT)
+                return Mock(status_code=403, text=TestNetworkRequestRetries.TEXT)
+            return Mock(status_code=200, text=TestNetworkRequestRetries.TEXT)
 
-        with patch.object(httpx.AsyncClient, 'stream', new=stream):
+        with patch.object(AsyncClient, 'stream', new=stream):
             network = Network(enable_http=True, retries=0, retry_on_http_error=403)
             response = await network.stream('GET', 'https://example.com/', raise_for_httperror=False)
             self.assertEqual(response.status_code, 403)
