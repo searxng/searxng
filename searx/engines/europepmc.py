@@ -96,7 +96,7 @@ def response(resp: "SXNG_Response") -> EngineResults:
     return res
 
 
-def _extract_starting_page(resp):
+def _extract_starting_page(resp: "SXNG_Response") -> int:
     """Extract the starting page number from the response's search parameters.
 
 
