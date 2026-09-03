@@ -2631,6 +2631,12 @@ engines:
     engine: vimeo
     shortcut: vm
 
+  # adult content (18+) -- set disabled: true on public / SFW instances
+  - name: eporner
+    engine: eporner
+    shortcut: ep
+    timeout: 6.0
+
   - name: wiby
     engine: json_engine
     paging: true
