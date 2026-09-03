@@ -6,10 +6,14 @@
 
 from json import loads
 import typing as t
-from urllib.parse import urlencode
 
+from lxml import html
+
+from searx.exceptions import SearxEngineAPIException
 from searx.extended_types import SXNG_Response
+from searx.network import get
 from searx.result_types import EngineResults
+from searx.utils import eval_xpath, extract_text
 
 if t.TYPE_CHECKING:
     from searx.enginelib.traits import EngineTraits
@@ -25,18 +29,33 @@ about = {
     "results": "JSON",
 }
 
+paging = False
+enable_http3 = True
+
 base_url = "https://neosearch.org"
 categories = ["general"]
 
-paging = False
+
+def _obtain_xsrf_token() -> str:
+    resp = get(base_url)
+    doc = html.fromstring(resp.text)
+
+    xsrf_token = extract_text(eval_xpath(doc, "//meta[@name='xsrf-token']/@content"))
+    if not xsrf_token:
+        raise SearxEngineAPIException("failed to obtain xsrf token")
+    return xsrf_token
 
 
 def request(query: str, params: "OnlineParams"):
+    params["url"] = f"{base_url}/search"
+    params["headers"]["X-XSRF-TOKEN"] = _obtain_xsrf_token()
+    params["method"] = "POST"
+
     args = {"q": query, "generate": "auto"}
     countrycode = params["searxng_locale"].split("-")[-1].upper()
     if countrycode in traits.custom["countrycodes"]:
         args["loc"] = countrycode
-    params["url"] = f"{base_url}/search?{urlencode(args)}"
+    params["json"] = args
 
 
 def response(resp: "SXNG_Response") -> EngineResults:
@@ -67,7 +86,6 @@ def response(resp: "SXNG_Response") -> EngineResults:
 
 def fetch_traits(engine_traits: "EngineTraits") -> None:
     # pylint: disable=import-outside-toplevel
-    from searx.network import get
     from searx.utils import extr, js_obj_str_to_python
     from babel.core import get_global
 
