@@ -38,12 +38,10 @@ CACHE: EngineCache
 """Cache to store verification tokens for pagination."""
 
 
-def init(_):
+def setup(engine_settings: dict[str, t.Any]) -> bool:
     if not base_url:
         raise ValueError("base_url must be set")
 
-
-def setup(engine_settings: dict[str, t.Any]) -> bool:
     global CACHE  # pylint: disable=global-statement
     CACHE = EngineCache(engine_settings["name"])
     return True
@@ -82,7 +80,7 @@ def response(resp: "SXNG_Response") -> EngineResults:
             res.types.MainResult(
                 url=extract_text(eval_xpath(result, ".//a[contains(@class, 'title')]/@href")),
                 title=extract_text(eval_xpath(result, ".//a[contains(@class, 'title')]")),
-                content=extract_text(eval_xpath(result, ".//span[contains(@class, 'description') or @class='']")),
+                content=extract_text(eval_xpath(result, ".//span[contains(@class, 'description') or not(@class)]")),
             )
         )
 

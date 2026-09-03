@@ -152,7 +152,7 @@ commit '''
             'date': r'Date: .*',
             'message': r'\n\n.*$',
         }
-        git_log_engine.init({"command": git_log_engine.command, "parse_regex": git_log_engine.parse_regex})
+        git_log_engine.setup({"command": git_log_engine.command, "parse_regex": git_log_engine.parse_regex})
         expected_results = [
             {
                 'commit': '35f9a8c81d162a361b826bbcd4a1081a4fbe76a7',

@@ -33,6 +33,7 @@ Implementations
 
 """
 
+import typing as t
 from urllib.parse import urlencode
 from datetime import datetime
 
@@ -62,7 +63,7 @@ huggingface_endpoint = 'models'
 """
 
 
-def init(_):
+def setup(_: dict[str, t.Any]) -> bool | None:
     if huggingface_endpoint not in ('datasets', 'models', 'spaces'):
         raise SearxEngineAPIException(f"Unsupported Hugging Face endpoint: {huggingface_endpoint}")
 

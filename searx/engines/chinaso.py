@@ -78,7 +78,7 @@ time_range_dict = {'day': '24h', 'week': '1w', 'month': '1m', 'year': '1y'}
 base_url = "https://www.chinaso.com"
 
 
-def init(_):
+def setup(_: dict[str, t.Any]) -> bool | None:
     if chinaso_news_source not in t.get_args(ChinasoNewsSourceType):
         raise ValueError(f"Unsupported news source: {chinaso_news_source}")
 

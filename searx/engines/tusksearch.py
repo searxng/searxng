@@ -39,7 +39,7 @@ tusk_categ = "web"
 api_url = "https://api.tusksearch.com"
 
 
-def init(_):
+def setup(_: dict[str, t.Any]) -> bool | None:
     if tusk_categ not in ("web", "images", "videos", "news"):
         raise ValueError("invalid search type: %s" % tusk_categ)
 

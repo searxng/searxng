@@ -164,7 +164,7 @@ def response(resp: SXNG_Response):
     return res
 
 
-def init(_: dict[str, t.Any]):
+def setup(_: dict[str, t.Any]) -> bool:
 
     if not api_key:
         logger.error("missing api_key: see https://about.marginalia-search.com/article/api")

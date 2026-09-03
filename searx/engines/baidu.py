@@ -49,6 +49,9 @@ CACHE: EngineCache
 
 
 def setup(engine_settings: dict[str, t.Any]) -> bool:
+    if baidu_category not in ('general', 'images', 'it'):
+        raise SearxEngineAPIException(f"Unsupported category: {baidu_category}")
+
     global CACHE  # pylint: disable=global-statement
     CACHE = EngineCache(engine_settings["name"])
     return True
@@ -63,11 +66,6 @@ def get_image_cookies(headers: dict[str, str]) -> dict[str, str]:
     cookies = dict(warmup.cookies.items())
     CACHE.set(key=COOKIE_CACHE_KEY, value=cookies, expire=COOKIE_CACHE_EXPIRATION_SECONDS)
     return cookies
-
-
-def init(_):
-    if baidu_category not in ('general', 'images', 'it'):
-        raise SearxEngineAPIException(f"Unsupported category: {baidu_category}")
 
 
 def request(query, params):

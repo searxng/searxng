@@ -14,7 +14,7 @@ from urllib.parse import urlencode
 
 from lxml import html
 
-from searx.utils import eval_xpath_list, eval_xpath, extract_text, get_embeded_stream_url, ElementType
+from searx.utils import eval_xpath_list, eval_xpath, extract_text, ElementType
 from searx.result_types import EngineResults
 from searx.enginelib import EngineAbout
 
@@ -44,7 +44,7 @@ tonline_channel_map = {"images": "flickr", "videos": "yt"}
 language = "de"
 
 
-def init(_):
+def setup(_: dict[str, t.Any]) -> bool | None:
     if tonline_categ not in ("web", "images", "videos", "news"):
         raise ValueError("invalid category: %s" % tonline_categ)
 
@@ -126,7 +126,6 @@ def _video_results(doc: ElementType, res: EngineResults):
                 url=url,
                 title=" - ".join(extract_text(part) or "" for part in title_parts),
                 thumbnail=extract_text(eval_xpath(result, ".//img/@src") or "") or "",
-                iframe_src=get_embeded_stream_url(url) or "",
             )
         )
 

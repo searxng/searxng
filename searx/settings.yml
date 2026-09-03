@@ -1296,22 +1296,6 @@ engines:
     shortcut: hn
     disabled: true
 
-  - name: heexy
-    engine: heexy
-    categories: general
-    heexy_categ: web
-    shortcut: he
-    disabled: true
-    inactive: true
-
-  - name: heexy images
-    engine: heexy
-    categories: images
-    heexy_categ: image
-    shortcut: hei
-    disabled: true
-    inactive: true
-
   - name: hex
     engine: hex
     shortcut: hex
@@ -3360,30 +3344,20 @@ engines:
       require_api_key: false
       results: JSON
 
-  # - name: webcrawler
-  #   engine: s1search
-  #   shortcut: wc
-  #   base_url: https://www.webcrawler.com
-  #   disabled: true
-
-  # s1search yahoo engines / mirrors
-  # - name: excite
-  #   engine: s1search
-  #   shortcut: exc
-  #   base_url: https://results.excite.com.s1search.co
-  #   disabled: true
-
-  # - name: metacrawler
-  #   engine: s1search
-  #   shortcut: mec
-  #   base_url: https://search.metacrawler.com
-  #   disabled: true
-
-  - name: infospace
+  # s1search engines / mirrors
+  - name: metacrawler
     engine: s1search
-    shortcut: ifs
-    base_url: https://search.infospace.com
+    shortcut: mec
+    base_url: https://search.metacrawler.com
     disabled: true
+    inactive: true
+
+  - name: zoo search
+    engine: s1search
+    shortcut: zoo
+    base_url: https://search.zoo.com
+    disabled: true
+    inactive: true
 
 # Doku engine lets you access to any Doku wiki instance:
 # A public one or a privete/corporate one.

@@ -10,7 +10,6 @@ from searx.utils import (
     eval_xpath_getindex,
     eval_xpath_list,
     extract_text,
-    get_embeded_stream_url,
     parse_duration_string,
 )
 
@@ -79,7 +78,6 @@ def response(resp: "SXNG_Response") -> EngineResults:
                 title=title,
                 thumbnail=thumbnail,
                 length=length,
-                iframe_src=get_embeded_stream_url(url) or "",
                 template="videos.html",
             )
         )

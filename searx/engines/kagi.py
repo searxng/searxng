@@ -87,7 +87,7 @@ api_key = ""
 """Kagi API key. Required for using this engine."""
 
 
-def init(_):
+def setup(_: dict[str, t.Any]) -> bool | None:
     if not api_key:
         raise ValueError("api_key is required for using kagi")
 

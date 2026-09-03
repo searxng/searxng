@@ -28,11 +28,11 @@ class TrackerPatternsDB:
 
     ctx_name = "data_tracker_patterns"
 
+    # ClearURL rule lists, the first one that responds HTTP 200 is used
     CLEAR_LIST_URL = [
-        # ClearURL rule lists, the first one that responds HTTP 200 is used
-        "https://rules1.clearurls.xyz/data.minify.json",
+        "https://cdn.jsdelivr.net/gh/clearurls/rules@refs/heads/gh-pages/data.minify.json",
         "https://rules2.clearurls.xyz/data.minify.json",
-        "https://raw.githubusercontent.com/ClearURLs/Rules/refs/heads/master/data.min.json",
+        "https://rules1.clearurls.xyz/data.minify.json",
     ]
 
     class Fields:

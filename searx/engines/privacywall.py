@@ -14,7 +14,7 @@ from lxml import html
 import babel
 
 from searx.enginelib.traits import EngineTraits
-from searx.utils import eval_xpath_list, eval_xpath, extract_text, get_embeded_stream_url, extr
+from searx.utils import eval_xpath_list, eval_xpath, extract_text, extr
 from searx.locales import region_tag
 from searx.result_types import EngineResults
 
@@ -61,7 +61,7 @@ video_page_map = {
 }
 
 
-def init(_):
+def setup(_: dict[str, t.Any]) -> bool | None:
     if privacywall_category not in ("general", "images", "videos"):
         raise ValueError("invalid category: %s" % privacywall_category)
 
@@ -154,7 +154,6 @@ def _video_results(doc: "ElementBase") -> EngineResults:
                 title=extract_text(eval_xpath(result, ".//h2[contains(@class, 'video-card-title')]")) or "",
                 content=extract_text(eval_xpath(result, ".//p")) or "",
                 thumbnail=thumbnail or "",
-                iframe_src=get_embeded_stream_url(url) or "",
             )
         )
 

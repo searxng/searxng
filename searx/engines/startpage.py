@@ -165,7 +165,7 @@ CACHE: EngineCache
 seconds."""
 
 
-def init(_):
+def setup(_: dict[str, t.Any]) -> bool | None:
     global CACHE  # pylint: disable=global-statement
 
     # hint: all three startpage engines (WEB, Images & News) can/should use the

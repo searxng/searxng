@@ -109,7 +109,19 @@ def response(resp: SXNG_Response):
 
     json_data = loads(resp.text[resp.text.find('\n') + 1 : resp.text.rfind('\n') - 2])
 
-    geoloc = weather.GeoLocation.by_query(resp.search_params["query"])
+    location = json_data.get("location")
+    if not location:
+        return res
+
+    metadata = json_data.get("weatherAlerts", {}).get("metadata", {})
+    geoloc = weather.GeoLocation(
+        name=location,
+        latitude=metadata.get("latitude"),
+        longitude=metadata.get("longitude"),
+        elevation=0,
+        country_code=metadata.get("language").split("-")[-1],
+        timezone=json_data.get("location"),
+    )
 
     weather_answer = EngineResults.types.WeatherAnswer(
         current=_weather_data(geoloc, json_data["currentWeather"]),

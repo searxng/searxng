@@ -39,7 +39,7 @@ page_size = 10
 api_url = "https://search.kompas.services"
 
 
-def init(_):
+def setup(_: dict[str, t.Any]) -> bool | None:
     if startpagina_categ not in ("web", "images", "videos", "news"):
         raise ValueError("invalid search type: %s" % startpagina_categ)
 

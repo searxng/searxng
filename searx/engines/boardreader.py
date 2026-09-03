@@ -45,7 +45,7 @@ CACHE_SESSION_ID_KEY = "session_id_key"
 KEYWORD_RE = re.compile(r"\[\/?Keyword\]")
 
 
-def init(engine_settings: dict[str, t.Any]) -> bool:
+def setup(engine_settings: dict[str, t.Any]) -> bool:
     global CACHE  # pylint: disable=global-statement
     CACHE = EngineCache(engine_name=engine_settings["name"])
     return True

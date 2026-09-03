@@ -66,7 +66,7 @@ limit = 10
 paging = True
 
 
-def init(engine_settings):
+def setup(engine_settings: dict[str, t.Any]) -> bool | None:
     if 'query_str' not in engine_settings:
         raise ValueError('query_str cannot be empty')
 

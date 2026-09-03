@@ -187,8 +187,9 @@ def set_loggers(engine: "Engine|types.ModuleType", engine_name: str):
 def update_engine_attributes(engine: "Engine | types.ModuleType", engine_data: dict[str, t.Any]):
     # pylint: disable=too-many-branches
 
-    # set engine attributes from engine_data
+    # set / update engine attributes from engine_data
     kvargs: dict[str, t.Any]
+    engine.about = getattr(engine, "about", EngineAbout())
     if isinstance(engine.about, EngineAbout):
         kvargs = {**msgspec.to_builtins(engine.about), **engine_data.get("about", {})}
     else:

@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 """SoundCloud is a German audio streaming service."""
 
+import typing as t
 import re
 import datetime
 
@@ -115,9 +116,10 @@ def response(resp):
     return results
 
 
-def init(engine_settings):  # pylint: disable=unused-argument
+def setup(engine_settings: dict[str, t.Any]) -> bool:
     global CACHE  # pylint: disable=global-statement
     CACHE = EngineCache(engine_settings["name"])  # type:ignore
+    return True
 
 
 def get_client_id() -> str | None:

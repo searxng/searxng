@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 """Mojeek (general, images, news)"""
 
+import typing as t
 from datetime import datetime
 from urllib.parse import urlencode
 
@@ -51,7 +52,7 @@ region_param = "arc"
 _delta_kwargs = {"day": "days", "week": "weeks", "month": "months", "year": "years"}
 
 
-def init(_):
+def setup(_: dict[str, t.Any]) -> bool | None:
     if search_type not in ("", "images", "news"):
         raise ValueError(f"Invalid search type {search_type}")
 

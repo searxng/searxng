@@ -52,7 +52,7 @@ Implementations
 """
 # pylint: disable=fixme
 
-
+import typing as t
 import random
 from json import loads
 from urllib.parse import urlencode
@@ -102,7 +102,7 @@ selected randomly.
 """
 
 
-def init(_):
+def setup(_: dict[str, t.Any]) -> bool | None:
     valid_types = [
         'text',
         'image',

@@ -2,6 +2,7 @@
 """Pexels (images)"""
 
 import re
+import typing as t
 
 from urllib.parse import urlencode
 from lxml import html
@@ -46,9 +47,10 @@ CACHE: EngineCache
 enable_http2 = False
 
 
-def init(engine_settings):
+def setup(engine_settings: dict[str, t.Any]) -> bool:
     global CACHE  # pylint: disable=global-statement
     CACHE = EngineCache(engine_settings["name"])
+    return True
 
 
 def _get_secret_key():
