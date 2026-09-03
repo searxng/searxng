@@ -46,7 +46,7 @@ categories = ["science", "scientific publications"]
 
 # engine dependent config
 paging = True
-page_size = 20
+page_size = 100
 
 search_url = "https://www.ebi.ac.uk/europepmc/webservices/rest/search"
 article_url = "https://europepmc.org/article/"
