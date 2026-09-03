@@ -25,6 +25,8 @@ import typing as t
 from datetime import datetime
 from urllib.parse import urlencode
 
+from dateutil.parser import isoparse
+
 from searx.result_types import EngineResults
 from searx.utils import html_to_text
 
@@ -86,7 +88,7 @@ def response(resp: "SXNG_Response") -> EngineResults:
                 issn=[journal.get("issn", "")],
                 authors=_get_authors(item),
                 doi=item.get("doi", ""),
-                publishedDate=_get_published_date(item.get("firstPublicationDate")),
+                publishedDate=_get_published_date(item),
                 type=", ".join((item.get("pubTypeList", {})).get("pubType", [])),
                 pdf_url=_get_pdf_url(item),
                 html_url=url,
@@ -136,12 +138,8 @@ def _get_pdf_url(item: dict[str, t.Any]) -> str:
     return ""
 
 
-def _get_published_date(value: str | None) -> datetime | None:
-    if not value:
-        return None
-    for fmt in ("%Y-%m-%d", "%Y-%m", "%Y"):
-        try:
-            return datetime.strptime(value, fmt)
-        except ValueError:
-            continue
+def _get_published_date(item: dict[str, t.Any]) -> datetime | None:
+    """Extract the published date from the item and convert it to a datetime object."""
+    if unformatted_date := item.get("firstPublicationDate"):
+        return isoparse(unformatted_date)
     return None
