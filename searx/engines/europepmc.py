@@ -103,7 +103,7 @@ def _extract_starting_page(resp: "SXNG_Response") -> int:
 
 
     The Europe PMC API does not support paging (only cursorMark), so we need to slice the results to return only the requested page and redownload with each page."""
-    pageno: int = resp.search_params.get("pageno", 1) or 1
+    pageno: int = resp.search_params.get("pageno", 1)
     starting_page = (pageno - 1) * page_size
     return starting_page
 
