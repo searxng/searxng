@@ -78,25 +78,22 @@ def response(resp: "SXNG_Response") -> EngineResults:
         identifier = item.get("id", "")
         url = f"{article_url}{source}/{identifier}" if source and identifier else ""
 
-        journal_info: dict[str, t.Any] = item.get("journalInfo", {}) or {}
-        journal: dict[str, t.Any] = journal_info.get("journal", {}) or {}
+        journal_info: dict[str, t.Any] = item.get("journalInfo", {})
+        journal: dict[str, t.Any] = journal_info.get("journal", {})
 
         res.add(
             res.types.Paper(
                 url=url,
                 title=item.get("title", ""),
                 content=_get_abstract(item),
-                authors=_get_authors(item),
                 journal=journal.get("title", ""),
                 issn=[journal.get("issn", "")],
+                authors=_get_authors(item),
                 doi=item.get("doi", ""),
-                volume=journal_info.get("volume", ""),
-                pages=item.get("pageInfo", ""),
                 publishedDate=_get_published_date(item.get("firstPublicationDate")),
                 type=_get_pub_type(item),
                 pdf_url=_get_pdf_url(item),
                 html_url=url,
-                comments=_get_citations(item.get("citedByCount")),
             )
         )
 
@@ -134,12 +131,6 @@ def _get_pdf_url(item: dict[str, t.Any]) -> str:
             and url_info.get("availabilityCode") == "OA"
         ):
             return url_info.get("url", "")
-    return ""
-
-
-def _get_citations(cited_by_count: t.Any) -> str:
-    if isinstance(cited_by_count, int) and cited_by_count > 0:
-        return f"{cited_by_count} citations"
     return ""
 
 
