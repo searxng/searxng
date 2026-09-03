@@ -66,14 +66,10 @@ def request(query: str, params: "OnlineParams") -> None:
 def response(resp: "SXNG_Response") -> EngineResults:
     res = EngineResults()
 
-    # The API does not support paging (cursorMark only), so every request
-    # returns the first api_page_size results; slice out the page SearXNG
-    # asked for (same pattern as the ahmia engine).
-    pageno: int = resp.search_params.get("pageno", 1) or 1
-    start = (pageno - 1) * page_size
+    starting_page = _extract_starting_page(resp)
     all_results = resp.json().get("resultList", {}).get("result", [])
 
-    for item in all_results[start : start + page_size]:
+    for item in all_results[starting_page : starting_page + page_size]:
         source = item.get("source", "")
         identifier = item.get("id", "")
         url = f"{article_url}{source}/{identifier}" if source and identifier else ""
@@ -100,6 +96,16 @@ def response(resp: "SXNG_Response") -> EngineResults:
     return res
 
 
+def _extract_starting_page(resp):
+    """Extract the starting page number from the response's search parameters.
+
+
+    The Europe PMC API does not support paging (only cursorMark), so we need to slice the results to return only the requested page and redownload with each page."""
+    pageno: int = resp.search_params.get("pageno", 1) or 1
+    starting_page = (pageno - 1) * page_size
+    return starting_page
+
+
 def _get_abstract(item: dict[str, t.Any]) -> str:
     """Convert the abstract text from HTML to plain text."""
     html_abstract = item.get("abstractText", "")
@@ -120,7 +126,8 @@ def _get_authors(item: dict[str, t.Any]) -> list:
 
 
 def _get_pdf_url(item: dict[str, t.Any]) -> str:
-    for url_info in (item.get("fullTextUrlList") or {}).get("fullTextUrl") or []:
+    """Extract the PDF URL in case it is open access."""
+    for url_info in (item.get("fullTextUrlList", {})).get("fullTextUrl", []):
         if (
             url_info.get("documentStyle") == "pdf"
             and url_info.get("availabilityCode") == "OA"
