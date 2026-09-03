@@ -87,7 +87,7 @@ def response(resp: "SXNG_Response") -> EngineResults:
                 authors=_get_authors(item),
                 doi=item.get("doi", ""),
                 publishedDate=_get_published_date(item.get("firstPublicationDate")),
-                type=(item.get("pubTypeList", {})).get("pubType", []),
+                type=", ".join((item.get("pubTypeList", {})).get("pubType", [])),
                 pdf_url=_get_pdf_url(item),
                 html_url=url,
             )
