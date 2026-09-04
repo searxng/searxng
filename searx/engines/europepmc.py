@@ -82,7 +82,7 @@ def response(resp: "SXNG_Response") -> EngineResults:
             res.types.Paper(
                 url=url,
                 title=item.get("title", ""),
-                content=_get_abstract(item),
+                content=html_to_text(item.get("abstractText", "")),
                 journal=journal.get("title", ""),
                 issn=[journal.get("issn", "")],
                 authors=_get_authors(item),
@@ -95,12 +95,6 @@ def response(resp: "SXNG_Response") -> EngineResults:
         )
 
     return res
-
-
-def _get_abstract(item: dict[str, t.Any]) -> str:
-    """Convert the abstract text from HTML to plain text."""
-    html_abstract = item.get("abstractText", "")
-    return html_to_text(html_abstract)
 
 
 def _get_authors(item: dict[str, t.Any]) -> list:
