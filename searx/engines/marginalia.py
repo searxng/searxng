@@ -10,7 +10,7 @@ Lofgren .
 .. _marginalia filters:
 
 Marginalia Filters
-=================
+==================
 
 Custom filters enable server-side customization of Marginalia search results.
 Filter definitions are written in XML and scoped to an API key.  Filters can

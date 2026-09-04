@@ -305,7 +305,7 @@ class Engine(abc.ABC):  # pylint: disable=too-few-public-methods
 
     region: str = ""
     """For an engine, when there is ``region: ...`` in the YAML settings the engine
-    does support only this one region::
+    does support only this one region:
 
     .. code:: yaml
 

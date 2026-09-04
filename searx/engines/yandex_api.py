@@ -77,10 +77,10 @@ notifications, but only as a fallback -- a request whose own locale matches
 ``kk``, ``uk``, ``tr`` or ``en``."""
 
 region: str = ""
-"""Optional Yandex `region id`.
+"""Optional Yandex `region id`_.
 Only meaningful together with ``SEARCH_TYPE_RU``.
 
-__ https://aistudio.yandex.ru/docs/en/search-api/reference/regions.html
+.. _region id: https://aistudio.yandex.ru/docs/en/search-api/reference/regions.html
 """
 
 page_size: int = 10
