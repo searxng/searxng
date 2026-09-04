@@ -198,7 +198,7 @@ container.test() {
         pid_logs=$!
 
         # Wait until container is ready
-        sleep 5
+        sleep 20
 
         curl -vf --max-time 5 "http://localhost:8080/healthz"
 
