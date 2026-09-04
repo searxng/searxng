@@ -48,7 +48,7 @@ categories = ["science", "scientific publications"]
 
 # engine dependent config
 paging = True
-page_size = 20
+page_size = 900
 search_url = "https://www.ebi.ac.uk/europepmc/webservices/rest/search"
 article_url = "https://europepmc.org/article/"
 
@@ -59,7 +59,7 @@ def request(query: str, params: "OnlineParams") -> None:
             "query": query,
             "format": "json",
             "resultType": "core",
-            "pageSize": 100,
+            "pageSize": page_size,
         }
     )
     params["url"] = f"{search_url}?{args}"
@@ -68,10 +68,9 @@ def request(query: str, params: "OnlineParams") -> None:
 def response(resp: "SXNG_Response") -> EngineResults:
     res = EngineResults()
 
-    starting_page = _extract_starting_page(resp)
     all_results = resp.json().get("resultList", {}).get("result", [])
 
-    for item in all_results[starting_page : starting_page + page_size]:
+    for item in all_results:
         source = item.get("source", "")
         identifier = item.get("id", "")
         url = f"{article_url}{source}/{identifier}" if source and identifier else ""
@@ -96,16 +95,6 @@ def response(resp: "SXNG_Response") -> EngineResults:
         )
 
     return res
-
-
-def _extract_starting_page(resp: "SXNG_Response") -> int:
-    """Extract the starting page number from the response's search parameters.
-
-
-    The Europe PMC API does not support paging (only cursorMark), so we need to slice the results to return only the requested page and redownload with each page."""
-    pageno: int = resp.search_params.get("pageno", 1)
-    starting_page = (pageno - 1) * page_size
-    return starting_page
 
 
 def _get_abstract(item: dict[str, t.Any]) -> str:
