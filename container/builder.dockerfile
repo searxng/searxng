@@ -6,8 +6,10 @@ ENV UV_NO_MANAGED_PYTHON="true"
 ENV UV_NATIVE_TLS="true"
 
 ARG TIMESTAMP_VENV="0"
+ARG TARGETARCH
 
 RUN --mount=type=cache,id=uv,target=/root/.cache/uv set -eux -o pipefail; \
+    if [ "$TARGETARCH" = "arm" ]; then xbps-install -yS libffi-devel; fi; \
     export SOURCE_DATE_EPOCH="$TIMESTAMP_VENV"; \
     uv venv; \
     uv pip install --requirements ./requirements.txt --requirements ./requirements-server.txt; \
