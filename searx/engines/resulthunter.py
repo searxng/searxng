@@ -52,6 +52,7 @@ def request(query: str, params: "OnlineParams") -> None:
         "q": query,
         "search_type": resulthunter_categ,
         "offset": params["pageno"] - 1,
+        "search_source": "other",
     }
 
     # uses Brave's engine traits
