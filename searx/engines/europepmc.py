@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-"""Europe PMC_ provides comprehensive access to life sciences literature from
+"""`Europe PMC`_ provides comprehensive access to life sciences literature from
 trusted sources.  With Europe PMC you can search and read millions of
 publications, preprints and other documents enriched with links to supporting
 data, reviews, protocols, and other relevant resources.
