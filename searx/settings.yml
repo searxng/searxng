@@ -2171,6 +2171,32 @@ engines:
     about:
       website: https://searchmysite.net
 
+  - name: searchrockit
+    engine: searchrockit
+    categories: general
+    searchrockit_categ: web
+    shortcut: sr
+    disabled: true
+    inactive: true
+
+  - name: searchrockit images
+    engine: searchrockit
+    categories: images
+    searchrockit_categ: images
+    shortcut: sri
+    # took up to 60s when testing
+    timeout: 10
+    disabled: true
+    inactive: true
+
+  - name: searchrockit news
+    engine: searchrockit
+    categories: news
+    searchrockit_categ: news
+    shortcut: srn
+    disabled: true
+    inactive: true
+
   - name: selfhst icons
     engine: selfhst
     shortcut: si
