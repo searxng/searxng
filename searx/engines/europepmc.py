@@ -100,11 +100,7 @@ def response(resp: "SXNG_Response") -> EngineResults:
 def _get_authors(item: dict[str, t.Any]) -> list:
     """Extract the list of authors from the item."""
     if authors := item.get("authorString", None):
-        authors = [
-            author.strip().rstrip(".")
-            for author in authors.split(",")
-            if author.strip()
-        ]
+        authors = [author.strip().rstrip(".") for author in authors.split(",") if author.strip()]
     else:
         authors = []
     return authors
@@ -113,10 +109,7 @@ def _get_authors(item: dict[str, t.Any]) -> list:
 def _get_pdf_url(item: dict[str, t.Any]) -> str:
     """Extract the PDF URL in case it is open access."""
     for url_info in (item.get("fullTextUrlList", {})).get("fullTextUrl", []):
-        if (
-            url_info.get("documentStyle") == "pdf"
-            and url_info.get("availabilityCode") == "OA"
-        ):
+        if url_info.get("documentStyle") == "pdf" and url_info.get("availabilityCode") == "OA":
             return url_info.get("url", "")
     return ""
 
