@@ -82,7 +82,7 @@ api_key = None
    https://about.marginalia-search.com/article/api/
 
 """
-filter_name: str | None = None
+filter_name: str = ""
 """The name of the custom filter to apply to each search."""
 
 
