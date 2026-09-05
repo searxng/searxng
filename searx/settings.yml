@@ -792,6 +792,11 @@ engines:
       require_api_key: false
       results: JSON
 
+  - name: europepmc
+    engine: europepmc
+    shortcut: epmc
+    timeout: 6.0
+
   - name: erowid
     engine: xpath
     paging: true
