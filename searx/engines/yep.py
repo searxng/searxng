@@ -30,8 +30,6 @@ web_base_url = "https://yep.com"
 safesearch = True
 safesearch_map = {0: "off", 1: "moderate", 2: "strict"}
 
-enable_http2 = False
-
 results_per_page = 20
 
 _IMPORT_RE = re.compile(r"import\"(.*?)\";")
@@ -50,9 +48,6 @@ def request(query: str, params: "OnlineParams") -> None:
         {
             "Referer": f"{web_base_url}/",
             "Origin": web_base_url,
-            "Sec-Fetch-Dest": "empty",
-            "Sec-Fetch-Mode": "cors",
-            "Sec-Fetch-Site": "same-site",
         }
     )
 

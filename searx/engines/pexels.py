@@ -8,7 +8,7 @@ from urllib.parse import urlencode
 from lxml import html
 
 from searx.result_types import EngineResults
-from searx.utils import eval_xpath_list, gen_useragent
+from searx.utils import eval_xpath_list
 from searx.enginelib import EngineCache
 from searx.exceptions import SearxEngineAPIException, SearxEngineAccessDeniedException
 from searx.network import get
@@ -44,8 +44,6 @@ SECRET_KEY_DB_KEY = "secret-key"
 CACHE: EngineCache
 """Cache to store the secret API key for the engine."""
 
-enable_http2 = False
-
 
 def setup(engine_settings: dict[str, t.Any]) -> bool:
     global CACHE  # pylint: disable=global-statement
@@ -56,13 +54,7 @@ def setup(engine_settings: dict[str, t.Any]) -> bool:
 def _get_secret_key():
     resp = get(
         base_url,
-        headers={
-            # circumvents Cloudflare bot protections
-            "User-Agent": gen_useragent(),
-            "Referer": base_url,
-            "Sec-GPC": "1",
-            "Connection": "keep-alive",
-        },
+        headers={"Referer": base_url},
     )
 
     if resp.status_code != 200:
@@ -104,8 +96,6 @@ def request(query, params):
             secret_key = api_key
 
     params["headers"]["secret-key"] = secret_key
-
-    return params
 
 
 def response(resp):
