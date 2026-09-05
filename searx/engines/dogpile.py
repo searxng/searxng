@@ -8,6 +8,9 @@ import typing as t
 from datetime import datetime, timezone
 import html
 
+from searx.enginelib import EngineCache
+from searx.exceptions import SearxEngineAPIException
+from searx.network import post
 from searx.utils import format_duration, html_to_text, humanize_number
 from searx.result_types import EngineResults
 
@@ -35,15 +38,36 @@ dogpile_categ = "search"
 base_url = "https://www.dogpile.com"
 safe_search_map = {0: "none", 1: "moderate", 2: "heavy"}
 
+CACHE: EngineCache
+"""Cache for the API token from dogpile"""
+
 
 def setup(_: dict[str, t.Any]) -> bool | None:
     if dogpile_categ not in ("search", "images", "videos", "news"):
         raise ValueError("invalid search type: %s" % dogpile_categ)
+    global CACHE  # pylint: disable=global-statement
+    CACHE = EngineCache("dogpile")  # one token for images/videos/news
+    return True
+
+
+def _obtain_token() -> str:
+    token = CACHE.get("token")
+    if token:
+        return token
+    resp = post(f"{base_url}/api/token/refresh", headers={"Origin": base_url}, cookies={"dp_api_token": "1"})
+    if not resp.ok:
+        raise SearxEngineAPIException("failed to obtain dogpile token")
+    token = resp.json()["token"]
+    CACHE.set("token", token, expire=240)  # 300s ttl
+    return token
 
 
 def request(query: str, params: "OnlineParams"):
     params["url"] = f"{base_url}/api/{dogpile_categ}"
     params["headers"]["Origin"] = base_url
+    params["cookies"]["dp_api_token"] = "1"
+    if dogpile_categ != "search":  # web doesnt need token
+        params["headers"]["x-dogpile-token"] = _obtain_token()
 
     params["method"] = "POST"
     params["json"] = {"q": query, "qadf": safe_search_map[params["safesearch"]], "page": params["pageno"]}
