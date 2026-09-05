@@ -248,13 +248,13 @@ def extract_json_data(text: str) -> dict[str, t.Any]:
     #    node_ids: [0, 19],
     #    data: [{type:"data",data: .... ["q","goggles_id"],route:1,url:1}}]
     #          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    text = text[text.index("<script") : text.index("</script")]
-    if not text:
-        raise ValueError("can't find JS/JSON data in the given text")
+    #    form: null,
+    #    error: null
+    # });
     start = text.index("data: [{")
-    end = text.rindex("}}]")
-    js_obj_str = text[start:end]
-    js_obj_str = "{" + js_obj_str + "}}]}"
+    newline = text.index("\n", start)
+    end = text.rindex("}}]", start, newline)
+    js_obj_str = "{" + text[start:end] + "}}]}"
     # js_obj_str = js_obj_str.replace("\xa0", "")  # remove ASCII for &nbsp;
     # js_obj_str = js_obj_str.replace(r"\u003C", "<").replace(r"\u003c", "<")  # fix broken HTML tags in strings
     json_str = js_obj_str_to_json_str(js_obj_str)
@@ -354,14 +354,14 @@ def _parse_news(resp: SXNG_Response) -> EngineResults:
     res = EngineResults()
     dom = html.fromstring(resp.text)
 
-    for result in eval_xpath_list(dom, "//div[contains(@class, 'results')]//div[@data-type='news']"):
-        url = eval_xpath_getindex(result, ".//a[contains(@class, 'result-header')]/@href", 0, default=None)
+    for result in eval_xpath_list(dom, "//div[@data-type='news']"):
+        url = eval_xpath_getindex(result, ".//a/@href", 0, default=None)
         if url is None:
             continue
 
-        title = eval_xpath_list(result, ".//span[contains(@class, 'snippet-title')]")
-        content = eval_xpath_list(result, ".//p[contains(@class, 'desc')]")
-        thumbnail = eval_xpath_getindex(result, ".//div[contains(@class, 'image-wrapper')]//img/@src", 0, default="")
+        title = eval_xpath_list(result, ".//div[contains(@class, 'title')]")
+        content = eval_xpath_list(result, ".//div[contains(@class, 'description')]")
+        thumbnail = eval_xpath_getindex(result, ".//a[contains(@class, 'thumbnail')]//img/@src", 0, default="")
 
         item = res.types.LegacyResult(
             template="default.html",
