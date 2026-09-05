@@ -3189,6 +3189,28 @@ engines:
       description: "Canadian search engine with its own index"
       results: HTML
 
+  - name: xprivo
+    engine: xprivo
+    shortcut: xpr
+    disabled: true
+    inactive: true
+
+  - name: xprivo news
+    engine: xprivo
+    categories: news
+    xprivo_search_type: news
+    shortcut: xprn
+    disabled: true
+    inactive: true
+
+  - name: xprivo videos
+    engine: xprivo
+    categories: videos
+    xprivo_search_type: videos
+    shortcut: xprv
+    disabled: true
+    inactive: true
+
   - name: zapmeta
     engine: xpath
     shortcut: zpm
