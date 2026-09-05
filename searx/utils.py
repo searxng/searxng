@@ -735,13 +735,13 @@ def js_obj_str_to_json_str(js_obj_str: str) -> str:
             if in_string == "'":
                 p = p.replace('"', r'\"')
             parts[i] = p
-            # deal with the sequence blackslash then quote
-            # since js_obj_str splits on quote, we detect this case:
-            # * the previous part ends with a black slash
-            # * the current part is a single quote
-            # when detected the blackslash is removed on the previous part
+            # drop a trailing \ that was escaping the quote
+            # leave it if it has been escaped twice as a literal i.e. two \ and ' in a row
             if blackslash_just_before and p[:1] == "'":
-                parts[i - 1] = parts[i - 1][:-1]
+                prev = parts[i - 1]
+                num_backslashes = len(prev) - len(prev.rstrip("\\"))
+                if num_backslashes % 2 == 1:
+                    parts[i - 1] = prev[:-1]
 
         elif in_string is None and p in ('"', "'", "`"):
             # we are not in string but p is string delimiter
