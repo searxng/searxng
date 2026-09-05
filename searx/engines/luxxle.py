@@ -37,16 +37,12 @@ about = {
 }
 
 categories = []
-safeseach = True
+safesearch = True
 
 base_url = "https://luxxle.com"
 
 luxxle_categ = "search"
 """Supported categories: "search", "news", "images", "videos"."""
-
-# otherwise all requests get blocked (http2-fingerprinted probably)
-enable_http2 = False
-
 
 safe_search_map = {0: "Off", 1: "Moderate", 2: "Strict"}
 

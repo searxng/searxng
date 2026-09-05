@@ -21,8 +21,6 @@ about = {
     "require_api_key": False,
     "results": "JSON",
 }
-# otherwise all requests get blocked, probably HTTP2 fingerprinting
-enable_http2 = False
 
 base_url = "https://stocksnap.io"
 cdn_url = "https://cdn.stocksnap.io"

@@ -27,9 +27,6 @@ time_range_support = True
 safesearch_map = {0: 'off', 1: '1', 2: '1'}
 time_range_map = {'day': '1d', 'week': '1w', 'month': '1m', 'year': '1y'}
 
-# using http2 returns forbidden errors
-enable_http2 = False
-
 
 def request(query, params):
     args = {
@@ -49,8 +46,6 @@ def request(query, params):
 
     # prevent automatic redirects to first page on pagination
     params['allow_redirects'] = False
-
-    return params
 
 
 def _image_result(result):

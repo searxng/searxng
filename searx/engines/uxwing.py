@@ -17,12 +17,10 @@ about = {
 categories = ['images', 'icons']
 
 base_url = "https://uxwing.com"
-enable_http2 = False
 
 
 def request(query, params):
     params['url'] = f"{base_url}/?s={quote_plus(query)}"
-    return params
 
 
 def response(resp):
