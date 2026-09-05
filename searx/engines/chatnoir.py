@@ -84,6 +84,7 @@ def request(query: str, params: "OnlineParams"):
 
     params["url"] = f"{base_url}/api/v1/_search"
     params["method"] = "POST"
+    params["impersonate"] = "none"
 
     json_data = {
         "query": query,
