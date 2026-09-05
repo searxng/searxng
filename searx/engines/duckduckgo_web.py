@@ -14,8 +14,9 @@ can't build it ourselves and must scrape it from the HTML pages.
 """
 
 import typing as t
+import re
 
-from urllib.parse import quote_plus
+from urllib.parse import quote_plus, urljoin
 from lxml import html
 
 from searx.utils import html_to_text, gen_useragent, extract_text, eval_xpath
@@ -55,6 +56,7 @@ def setup(engine_settings: dict[str, str]):
 def _fetch_first_page_link(
     query: str,
     headers: dict[str, str],
+    impersonate: str,
 ):
     """Search for a::
 
@@ -73,6 +75,7 @@ def _fetch_first_page_link(
     resp = get(
         url=f"{base_url}/?q={quote_plus(query)}&t=h_&ia=web",
         headers=headers,
+        impersonate=impersonate,
         timeout=2,
     )
 
@@ -96,6 +99,42 @@ def _cache_key(query: str, pageno: int) -> str:
     return f"nextpage_url|{query}|{pageno}"
 
 
+def _solve_jsa(resp: "SXNG_Response") -> "SXNG_Response":
+    """Duckduckgo sometimes issues a challenge instead of json."""
+
+    # length that a real browser would report for where the broken snippet is
+    html_len = {
+        "<p><div></p><p></div": 32,
+        "<li><div></li><li></div": 29,
+        "<div><div></div><div></div": 33,
+        "<br><div></br><br></div": 23,
+    }
+
+    js = resp.text or ""
+    m = re.search(r"let jsa = (\d+);.*?DDG\.deep\.initialize\('([^']+)'", js, re.S)
+    if not m:
+        return resp
+
+    fns = dict(re.findall(r"let (\w+) = function\(num\) \{([^}]*)\};", js))
+    jsa = int(m.group(1))
+    try:
+        for name in re.findall(r"jsa = (\w+)\(jsa\);", js):
+            body = fns[name]
+            mul = re.search(r"num \* (\d+)", body)
+            jsa = jsa * int(mul.group(1)) if mul else jsa + html_len[re.search(r"`([^`]+)`", body).group(1)]
+    except (KeyError, AttributeError):
+        return resp
+
+    params = resp.search_params
+    follow = get(
+        urljoin("https://links.duckduckgo.com", m.group(2) + str(jsa)),
+        headers=params["headers"],
+        impersonate=params["impersonate"],
+    )
+    follow.search_params = params
+    return follow
+
+
 def request(query: str, params: "OnlineParams") -> None:
 
     if len(query) >= 500:
@@ -108,6 +147,7 @@ def request(query: str, params: "OnlineParams") -> None:
     # The vqd value is generated from the query and the UA header.  To be able
     # to reuse the vqd value, the UA header must be static.
     headers["User-Agent"] = _HTTP_User_Agent
+    params["impersonate"] = "safari15_3"
     headers["Accept"] = "*/*"
     headers["Referer"] = f"{base_url}/"
     headers["Host"] = "duckduckgo.com"
@@ -121,7 +161,7 @@ def request(query: str, params: "OnlineParams") -> None:
     if params["pageno"] > 1:
         api_url = CACHE.get(_cache_key(query, params["pageno"]))
     else:
-        api_url = _fetch_first_page_link(query, headers)
+        api_url = _fetch_first_page_link(query, headers, params["impersonate"])
 
     if not api_url:
         params["url"] = None
@@ -134,9 +174,18 @@ def request(query: str, params: "OnlineParams") -> None:
 
 def response(resp: "SXNG_Response"):
     res = EngineResults()
-    res_json = resp.json()
 
-    for result in res_json["results"]:
+    # check if ddg returns a challenge
+    # e.g. 'site:github.com searxng'
+    if "let jsa =" in (resp.text or ""):
+        resp = _solve_jsa(resp)
+
+    try:
+        results = resp.json()["results"]
+    except (ValueError, KeyError, TypeError):
+        return res
+
+    for result in results:
         if "u" not in result:
             continue
 
@@ -145,7 +194,7 @@ def response(resp: "SXNG_Response"):
         )
 
     # link to next page
-    next_page_path = res_json["results"][-1].get("n")
+    next_page_path = results[-1].get("n")
     if next_page_path:
         CACHE.set(
             _cache_key(resp.search_params["query"], resp.search_params["pageno"] + 1),
