@@ -91,6 +91,7 @@ def request(query: str, params: "OnlineParams") -> None:
 
     params["url"] = f"{base_url}?{urlencode(search_args)}"
     params["headers"]["X-Subscription-Token"] = api_key
+    params["headers"]["Accept"] = "application/json"
 
 
 def _extract_published_date(published_date_raw: str):
