@@ -457,10 +457,10 @@ class Preferences:
                 get_setting("ui.results_on_new_tab"),
                 locked="results_on_new_tab" in self.cfg.lock,
             ),
-            'doi_resolver': MultipleChoiceSetting(
-                [get_setting("default_doi_resolver")],
+            "doi_resolver": EnumStringSetting(
+                get_setting("default_doi_resolver"),
                 locked="doi_resolver" in self.cfg.lock,
-                choices=DOI_RESOLVERS,
+                choices=["", *DOI_RESOLVERS],
             ),
             'simple_style': EnumStringSetting(
                 get_setting("ui.theme_args.simple_style"),
@@ -536,6 +536,8 @@ class Preferences:
                 self.plugins.parse_cookie(input_data.get('disabled_plugins', ''), input_data.get('enabled_plugins', ''))
             elif user_setting_name == 'tokens':
                 self.tokens.parse(user_setting)
+        if "oa_doi_rewrite" in self.plugins.choices:
+            self.plugins.choices["oa_doi_rewrite"] = bool(self.get_value("doi_resolver"))
 
     def parse_form(self, input_data: dict[str, str]):
         """Parse formular (``<input>``) data from a ``flask.request.form``"""
@@ -564,6 +566,8 @@ class Preferences:
         self.key_value_settings['categories'].parse_form(enabled_categories)  # type: ignore
         self.engines.parse_form(disabled_engines)
         self.plugins.parse_form(disabled_plugins)
+        if "oa_doi_rewrite" in self.plugins.choices:
+            self.plugins.choices["oa_doi_rewrite"] = bool(self.get_value("doi_resolver"))
 
     # cannot be used in case of engines or plugins
     def get_value(self, user_setting_name: str) -> t.Any:
