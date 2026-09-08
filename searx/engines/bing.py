@@ -72,43 +72,21 @@ def get_locale_params(engine_region: str | None) -> dict[str, str] | None:
     return {"mkt": engine_region}
 
 
-def override_accept_language(params: "OnlineParams", engine_region: str | None) -> None:
-    """Override the ``Accept-Language`` header.
-
-    The default header built by :py:class:`~searx.search.processors.online.OnlineProcessor`
-    appends ``en;q=0.3`` as a fallback language::
-
-        Accept-Language: de,de-DE;q=0.7,en;q=0.3
-
-    Bing seems to better select the results locale based on the
-    ``Accept-Language`` value header.
-
-    This function is shared with :py:mod:`searx.engines.bing_images`,
-    :py:mod:`searx.engines.bing_news`, and :py:mod:`searx.engines.bing_videos`.
-    """
-
-    if not engine_region or engine_region == "clear":
-        return
-
-    lang = engine_region.split("-")[0]
-    params["headers"]["Accept-Language"] = f"{engine_region},{lang};q=0.9"
-
-
 def request(query: str, params: "OnlineParams"):
     """Assemble a Bing-Web request."""
 
     engine_region = traits.get_region(params["searxng_locale"], traits.all_locale)
-
-    override_accept_language(params, engine_region)
 
     query_params: dict[str, str | int] = {
         "q": query,
         "adlt": _safesearch_map.get(params.get("safesearch", 0), "off"),
     }
 
-    locale_params = get_locale_params(engine_region)
-    if locale_params:
-        query_params.update(locale_params)
+    if engine_region and engine_region != "clear":
+        lang, _, cc = engine_region.partition("-")
+        query_params["setlang"] = lang
+        if cc and cc not in ("us", "cn", "ru"):  # bing just sends junk for these
+            query_params["cc"] = cc
 
     params["url"] = f"{base_url}/search?{urlencode(query_params)}"
 
