@@ -88,6 +88,9 @@ class HTTPParams(t.TypedDict):
     impersonate: t.NotRequired[str]
     """curl_cffi impersonate target. Default: ``chrome``."""
 
+    default_headers: t.NotRequired[bool]
+    """Ask curl_cffi to skip setting the impersonated browser's default headers."""
+
     curl_options: t.NotRequired[dict[int, t.Any]]
     """Any extra libcurl options for the request."""
 
@@ -169,8 +172,8 @@ class OnlineProcessor(EngineProcessor):
             "cookies": params["cookies"],
             "auth": params["auth"],
         }
-        for key in ("curl_options", "impersonate"):
-            if params.get(key):
+        for key in ("curl_options", "impersonate", "default_headers"):
+            if params.get(key) is not None:
                 request_args[key] = params[key]
 
         verify = params.get("verify")
