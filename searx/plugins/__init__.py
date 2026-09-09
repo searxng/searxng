@@ -30,12 +30,12 @@ answer area:
 .. code:: python
 
    from flask_babel import gettext as _
-   from searx.plugins import Plugin
+   from searx.plugins import Plugin, PluginInfo
    from searx.result_types import Answer
 
    class MyPlugin(Plugin):
 
-       id = "hello world"
+       id = "hello_world"
 
        def __init__(self, plg_cfg):
            super().__init__(plg_cfg)
@@ -43,6 +43,16 @@ answer area:
 
        def post_search(self, request, search):
            return [ Answer(answer="Hello World") ]
+
+You will then need to add your new plugin in the :ref:`settings.yml` file like this :
+
+.. code:: yaml
+
+   plugins:
+     ...
+     searx.plugins.hello_world.MyPlugin:
+        active: true
+
 
 .. _filter urls example:
 
