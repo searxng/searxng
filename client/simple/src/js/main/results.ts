@@ -5,6 +5,7 @@ import { listen, mutable, settings } from "../toolkit.ts";
 import { assertElement } from "../util/assertElement.ts";
 
 let imgTimeoutID: number;
+const loadErrorSrc = `${settings.theme_static_path}/img/img_load_error.svg`;
 
 const imageLoader = (resultElement: HTMLElement): void => {
   if (imgTimeoutID) clearTimeout(imgTimeoutID);
@@ -15,7 +16,7 @@ const imageLoader = (resultElement: HTMLElement): void => {
   // use thumbnail until full image loads
   const thumbnail = resultElement.querySelector<HTMLImageElement>(".image_thumbnail");
   if (thumbnail) {
-    if (thumbnail.src === `${settings.theme_static_path}/img/img_load_error.svg`) return;
+    if (thumbnail.src === loadErrorSrc) return;
 
     imgElement.onerror = (): void => {
       imgElement.src = thumbnail.src;
@@ -35,17 +36,27 @@ const imageLoader = (resultElement: HTMLElement): void => {
   }, 1000) as unknown as number;
 };
 
-const imageThumbnails: NodeListOf<HTMLImageElement> = document.querySelectorAll<HTMLImageElement>(
-  "#urls img.image_thumbnail, img.thumbnail"
-);
-for (const thumbnail of imageThumbnails) {
-  if (thumbnail.complete && thumbnail.naturalWidth === 0) {
-    thumbnail.src = `${settings.theme_static_path}/img/img_load_error.svg`;
+const hideBrokenThumbnail = (img: HTMLImageElement): void => {
+  if (img.classList.contains("thumbnail")) {
+    img.closest("a.thumbnail_link")?.remove();
+    return;
   }
+  if (img.classList.contains("image_thumbnail") && img.src !== loadErrorSrc) {
+    img.src = loadErrorSrc;
+  }
+};
 
-  thumbnail.onerror = (): void => {
-    thumbnail.src = `${settings.theme_static_path}/img/img_load_error.svg`;
-  };
+document.addEventListener(
+  "error",
+  (event: Event) => {
+    const img = event.target;
+    if (img instanceof HTMLImageElement) hideBrokenThumbnail(img);
+  },
+  true
+);
+// some images may have already failed
+for (const img of document.querySelectorAll<HTMLImageElement>("img.thumbnail, #urls img.image_thumbnail")) {
+  if (img.complete && img.naturalWidth === 0) hideBrokenThumbnail(img);
 }
 
 const copyUrlButton: HTMLButtonElement | null =
