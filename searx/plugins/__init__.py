@@ -27,6 +27,8 @@ Add Answer example
 Here is an example of a very simple plugin that adds a "Hello World" into the
 answer area:
 
+In ``searx/plugins`` create a file named ``hello_world.py`` with the following content:
+
 .. code:: python
 
    from flask_babel import gettext as _
@@ -35,7 +37,7 @@ answer area:
 
    class MyPlugin(Plugin):
 
-       id = "hello_world"
+       id = "hello world"
 
        def __init__(self, plg_cfg):
            super().__init__(plg_cfg)
@@ -44,7 +46,7 @@ answer area:
        def post_search(self, request, search):
            return [ Answer(answer="Hello World") ]
 
-You will then need to add your new plugin in the :ref:`settings.yml` file like this :
+You will then need to add your new plugin in the :ref:`settings.yml` file like this:
 
 .. code:: yaml
 
@@ -53,6 +55,13 @@ You will then need to add your new plugin in the :ref:`settings.yml` file like t
      searx.plugins.hello_world.MyPlugin:
         active: true
 
+
+``searx.plugins.hello_world.MyPlugin`` is the Python import path of the new plugin we created.
+``searx.plugins.hello_world`` represents the file path, while ``MyPlugin`` represents the name of the plugin class.
+
+If you don't want the plugin to be part of SearXNG's core (i.e. maintain it independently of SearXNG),
+you may also place the file at any other path as long as you update the reference to it in :ref:`settings.yml`.
+For more examples, see :ref:`settings external_plugins`.
 
 .. _filter urls example:
 
@@ -103,7 +112,6 @@ Implementation
 .. autoclass:: PluginCfg
    :members:
 """
-
 
 __all__ = ["PluginInfo", "Plugin", "PluginStorage", "PluginCfg"]
 
