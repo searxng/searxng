@@ -261,18 +261,18 @@ def response(resp: "SXNG_Response") -> EngineResults:
 
     match brave_category:
         case "search" | "goggles":
-            return _parse_results(_parse_search_result, resp)
+            return _parse_results(parse_search_result, resp)
         case "news":
-            return _parse_results(_parse_news_result, resp)
+            return _parse_results(parse_news_result, resp)
         case "images":
-            return _parse_results(_parse_image_result, resp)
+            return _parse_results(parse_image_result, resp)
         case "videos":
-            return _parse_results(_parse_video_result, resp)
+            return _parse_results(parse_video_result, resp)
         case _:
             raise ValueError(f"Unsupported brave category: {brave_category}")  # pyright: ignore[reportUnreachable]
 
 
-def _parse_search_result(result: dict[str, t.Any]) -> MainResult:
+def parse_search_result(result: dict[str, t.Any]) -> MainResult:
     thumbnail: dict[str, t.Any] = result.get("thumbnail", {})
     return MainResult(
         template="default.html",
@@ -291,7 +291,7 @@ def _parse_secondary_items(json_data: dict[str, t.Any], results: EngineResults):
     videos_resp: dict[str, t.Any] = body_resp.get("videos", {})
     if videos_resp and "results" in videos_resp:
         for result in videos_resp.get("results", []):
-            results.add(_parse_video_result(result))
+            results.add(parse_video_result(result))
     # related queries -> suggestion
     query: dict[str, t.Any] = body_resp.get("query", {})
     if query and "related_queries" in query:
@@ -300,7 +300,7 @@ def _parse_secondary_items(json_data: dict[str, t.Any], results: EngineResults):
             results.add(results.types.LegacyResult(suggestion=suggestion))
 
 
-def _parse_news_result(result: dict[str, t.Any]) -> MainResult:
+def parse_news_result(result: dict[str, t.Any]) -> MainResult:
     thumbnail: dict[str, t.Any] = result.get("thumbnail", {})
     return MainResult(
         title=result.get("title", ""),
@@ -312,7 +312,7 @@ def _parse_news_result(result: dict[str, t.Any]) -> MainResult:
     )
 
 
-def _parse_image_result(result: dict[str, t.Any]) -> Image:
+def parse_image_result(result: dict[str, t.Any]) -> Image:
     properties: dict[str, t.Any] = result.get("properties", {})
     thumbnail: dict[str, t.Any] = result.get("thumbnail", {})
     width, height = properties.get("width"), properties.get("height")
@@ -327,7 +327,7 @@ def _parse_image_result(result: dict[str, t.Any]) -> Image:
     )
 
 
-def _parse_video_result(result: dict[str, t.Any]) -> MainResult:
+def parse_video_result(result: dict[str, t.Any]) -> Video:
     video: dict[str, t.Any] = result.get("video", {})
     thumbnail: dict[str, t.Any] = result.get("thumbnail", {})
 
