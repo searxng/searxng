@@ -9,12 +9,10 @@ from json import loads
 import random
 import typing as t
 from urllib.parse import urlencode
-from dateutil import parser
 
+from searx.engines.brave import parse_images_json, parse_news_json, parse_videos_json, parse_web_json
 from searx.exceptions import SearxEngineAPIException
 from searx.network import get
-from searx.utils import html_to_text
-from searx.result_types import EngineResults
 
 if t.TYPE_CHECKING:
     from searx.extended_types import SXNG_Response
@@ -32,7 +30,8 @@ about = {
 paging = True
 
 categories = ["general"]
-tusk_categ = "web"
+TuskCategType = t.Literal["web", "images", "videos", "news"]
+tusk_categ: TuskCategType = "web"
 """Category to search in. Can be either "web", "images", "videos" or "news"."""
 
 
@@ -40,7 +39,7 @@ api_url = "https://api.tusksearch.com"
 
 
 def setup(_: dict[str, t.Any]) -> bool | None:
-    if tusk_categ not in ("web", "images", "videos", "news"):
+    if tusk_categ not in t.get_args(TuskCategType):
         raise ValueError("invalid search type: %s" % tusk_categ)
 
 
@@ -101,65 +100,17 @@ def request(query: str, params: "OnlineParams") -> None:
 
 
 def response(resp: "SXNG_Response"):
-    res = EngineResults()
-
     json_resp = resp.json()["results"]
 
-    if tusk_categ == "web":
-        for result in (json_resp.get("web") or {}).get("results", []):
-            res.add(
-                res.types.MainResult(
-                    url=result["url"],
-                    title=html_to_text(result["title"]),
-                    content=html_to_text(result["description"]),
-                    thumbnail=(result["thumbnail"] or {}).get("src") or "",
-                )
-            )
-    elif tusk_categ == "news":
-        for result in (json_resp.get("news") or {}).get("results", []):
-            publishedDate = None
-            try:
-                publishedDate = parser.parse(result["age"])
-            except parser.ParserError:
-                pass
-
-            res.add(
-                res.types.MainResult(
-                    url=result["url"],
-                    title=html_to_text(result["title"]),
-                    content=html_to_text(result["description"]),
-                    thumbnail=result["thumbnail"]["src"],
-                    publishedDate=publishedDate,
-                )
-            )
-    elif tusk_categ == "videos":
-        for result in (json_resp.get("videos") or {}).get("results", []):
-            publishedDate = None
-            try:
-                publishedDate = parser.parse(result["age"])
-            except parser.ParserError:
-                pass
-
-            res.add(
-                res.types.LegacyResult(
-                    template="videos.html",
-                    url=result["url"],
-                    title=html_to_text(result["title"]),
-                    content=html_to_text(result["description"]),
-                    thumbnail=result["thumbnail"]["src"],
-                    publishedDate=publishedDate,
-                    length=result["video"].get("duration"),
-                )
-            )
-    elif tusk_categ == "images":
-        for result in json_resp:
-            res.add(
-                res.types.Image(
-                    url=result["url"],
-                    title=html_to_text(result["title"]),
-                    img_src=result["properties"]["url"],
-                    thumbnail_src=result["thumbnail"]["src"],
-                )
-            )
-
-    return res
+    match tusk_categ:
+        case "web":
+            results = (json_resp.get("web") or {}).get("results", [])
+            return parse_web_json(results)
+        case "news":
+            results = (json_resp.get("news") or {}).get("results", [])
+            return parse_news_json(results)
+        case "videos":
+            results = (json_resp.get("videos") or {}).get("results", [])
+            return parse_videos_json(results)
+        case "images":
+            return parse_images_json(json_resp)
