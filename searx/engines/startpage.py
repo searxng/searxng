@@ -1,5 +1,8 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-"""Startpage's language & region selectors are a mess ..
+"""Startpage requires solving an Anubis POW captcha (difficulty 4).
+Solving it requires a lot of CPU, so the engine is set inactive by default.
+
+Startpage's language & region selectors are a mess ..
 
 .. _startpage regions:
 
@@ -84,6 +87,7 @@ Startpage's category (for Web-search, News, Videos, ..) is set by
 """
 # pylint: disable=too-many-statements
 
+import hashlib
 import re
 import typing as t
 from collections import OrderedDict
@@ -99,7 +103,7 @@ from searx.enginelib import EngineCache
 from searx.enginelib.traits import EngineTraits
 from searx.exceptions import SearxEngineCaptchaException
 from searx.locales import region_tag
-from searx.network import get  # see https://github.com/searxng/searxng/issues/762
+from searx.network import get, post  # see https://github.com/searxng/searxng/issues/762
 from searx.utils import (
     eval_xpath,
     extr,
@@ -176,6 +180,45 @@ def setup(_: dict[str, t.Any]) -> bool | None:
 sc_code_cache_sec = 3600
 """Time in seconds the sc-code is cached in memory :py:obj:`get_sc_code`."""
 
+# startpage's anubis difficulty is set to 4
+max_difficulty = 4
+
+
+def _solve_anubis(resp) -> str:
+    """Anubis POW solver"""
+    payload = loads(extr(resp.text, '<script id="anubis_challenge" type="application/json">', "</script>"))
+    challenge = payload["challenge"]
+    difficulty = int(payload["rules"]["difficulty"])
+    if difficulty > max_difficulty:
+        raise SearxEngineCaptchaException(message="startpage: Anubis difficulty too high")
+    prefix = "0" * difficulty
+    blob = challenge["randomData"].encode()
+    for nonce in range(16**difficulty * 8):  # max search is 8x average search, e^-8 = 0.034% will fail
+        digest = hashlib.sha256(blob + str(nonce).encode()).hexdigest()
+        if digest.startswith(prefix):
+            break
+    else:
+        raise SearxEngineCaptchaException(message="startpage: Anubis failed")
+
+    pass_resp = get(
+        f"{base_url}/.within.website/x/cmd/anubis/api/pass-challenge",
+        params={
+            "id": challenge["id"],
+            "response": digest,
+            "nonce": nonce,
+            "redir": str(resp.url),
+            "elapsedTime": "1",
+        },
+        cookies=resp.cookies,
+        allow_redirects=False,
+    )
+    auth = pass_resp.cookies.get("spchal-auth")
+    if not auth:
+        raise SearxEngineCaptchaException(message="startpage: Anubis pass-challenge failed")
+    auth = str(auth)
+    CACHE.set("SPCHAL_AUTH", auth, expire=240)
+    return auth
+
 
 def get_sc_code(params):
     """Get an actual ``sc`` argument from Startpage's search form (HTML page).
@@ -200,6 +243,9 @@ def get_sc_code(params):
     headers = {**params["headers"]}
     logger.debug("get_sc_code: request headers: %s", headers)
     resp = get(get_sc_url, headers=headers)
+
+    if 'id="anubis_challenge"' in resp.text:
+        resp = get(get_sc_url, headers=headers, cookies={"spchal-auth": _solve_anubis(resp)})
 
     # ?? x = network.get('https://www.startpage.com/sp/cdn/images/filter-chevron.svg', headers=headers)
     # ?? https://www.startpage.com/sp/cdn/images/filter-chevron.svg
@@ -239,8 +285,8 @@ def request(query, params):
     Additionally the arguments form Startpage's search form needs to be set in
     HTML POST data / compare ``<input>`` elements: :py:obj:`search_form_xpath`.
     """
-    engine_region = traits.get_region(params["searxng_locale"], "en-US")
-    engine_language = traits.get_language(params["searxng_locale"], "en")
+    engine_region = traits.get_region(params["searxng_locale"], "en_US")
+    engine_language = traits.get_language(params["searxng_locale"], "english")
 
     params["headers"]["Origin"] = base_url
     params["headers"]["Referer"] = base_url + "/"
@@ -262,9 +308,9 @@ def request(query, params):
         args["language"] = engine_language
         args["lui"] = engine_language
 
+    args["segment"] = "startpage.udog"
     if params["pageno"] > 1:
         args["page"] = params["pageno"]
-        args["segment"] = "startpage.udog"
 
     # Build cookie
     lang_homepage = "en"
@@ -289,6 +335,8 @@ def request(query, params):
         cookie["search_results_region"] = engine_region
 
     params["cookies"]["preferences"] = "N1N".join(["%sEEE%s" % x for x in cookie.items()])
+    if auth := CACHE.get("SPCHAL_AUTH"):
+        params["cookies"]["spchal-auth"] = auth
     logger.debug("cookie preferences: %s", params["cookies"]["preferences"])
 
     logger.debug("data: %s", args)
@@ -400,6 +448,18 @@ def _get_image_result(result) -> dict[str, t.Any] | None:
 
 
 def response(resp):
+    if 'id="anubis_challenge"' in resp.text:
+        params = resp.search_params
+        params["cookies"]["spchal-auth"] = _solve_anubis(resp)
+        resp = post(
+            params["url"] or search_url,
+            data=params["data"],
+            headers=params["headers"],
+            cookies=params["cookies"],
+        )
+        if 'id="anubis_challenge"' in resp.text:
+            raise SearxEngineCaptchaException()
+
     categ = startpage_categ.capitalize()
     results_raw = "{" + extr(resp.text, f"React.createElement(UIStartpage.AppSerp{categ}, {{", "}})") + "}}"
 
