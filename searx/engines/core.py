@@ -141,12 +141,13 @@ def response(resp: "SXNG_Response") -> EngineResults:
             if name:
                 authors.add(name)
 
+        tag = result.get("fieldOfStudy")
         res.add(
             res.types.Paper(
                 title=result.get("title"),
                 url=url,
                 content=result.get("fullText", "") or "",
-                tags=result.get("fieldOfStudy", []),
+                tags=[tag] if tag else [],
                 publishedDate=published_date,
                 type=result.get("documentType", "") or "",
                 authors=authors,
