@@ -2343,18 +2343,21 @@ engines:
     shortcut: sp
     startpage_categ: web
     categories: [general, web]
+    inactive: true  # uses a Proof Of Work captcha https://github.com/searxng/searxng/pull/6669
 
   - name: startpage news
     engine: startpage
     startpage_categ: news
     categories: [news, web]
     shortcut: spn
+    inactive: true  # uses a Proof Of Work captcha https://github.com/searxng/searxng/pull/6669
 
   - name: startpage images
     engine: startpage
     startpage_categ: images
     categories: [images, web]
     shortcut: spi
+    inactive: true  # uses a Proof Of Work captcha https://github.com/searxng/searxng/pull/6669
 
   - name: steam
     engine: steam
