@@ -27,11 +27,10 @@ The API supports paging and time filters.
 import typing as t
 
 from urllib.parse import urlencode
-from dateutil import parser
 
+from searx.engines.brave import parse_videos_json
 from searx.exceptions import SearxEngineAPIException
 from searx.result_types import EngineResults
-from searx.utils import html_to_text
 
 if t.TYPE_CHECKING:
     from searx.extended_types import SXNG_Response
@@ -94,43 +93,9 @@ def request(query: str, params: "OnlineParams") -> None:
     params["headers"]["Accept"] = "application/json"
 
 
-def _extract_published_date(published_date_raw: str):
-    """Extract and parse the published date from the API response.
-
-    Args:
-        published_date_raw: Raw date string from the API
-
-    Returns:
-        Parsed datetime object or None if parsing fails
-    """
-    if not published_date_raw:
-        return None
-
-    try:
-        return parser.parse(published_date_raw)
-    except parser.ParserError:
-        return None
-
-
 def response(resp: "SXNG_Response") -> EngineResults:
     """Process the API response and return results."""
-    res = EngineResults()
     data = resp.json()
 
-    for result in (data.get("web") or {}).get("results", []):
-        thumbnail_obj = result.get("thumbnail")
-        thumbnail = ""
-        if thumbnail_obj and not thumbnail_obj.get("logo", False):
-            thumbnail = thumbnail_obj.get("src") or ""
-
-        res.add(
-            res.types.MainResult(
-                url=result["url"],
-                title=html_to_text(result["title"]),
-                content=html_to_text(result.get("description", "")),
-                publishedDate=_extract_published_date(result.get("age")),
-                thumbnail=thumbnail,
-            ),
-        )
-
-    return res
+    results_json = (data.get("web") or {}).get("results", [])
+    return parse_videos_json(results_json)
