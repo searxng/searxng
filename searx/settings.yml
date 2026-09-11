@@ -2831,7 +2831,8 @@ engines:
     shortcut: mjk
     engine: mojeek
     categories: [general, web]
-    disabled: true
+    # uses a Proof of Work CAPTCHA that requires much computer power to solve
+    inactive: true
 
   - name: mojeek images
     shortcut: mjkimg
@@ -2839,7 +2840,8 @@ engines:
     categories: [images, web]
     search_type: images
     paging: false
-    disabled: true
+    # uses a Proof of Work CAPTCHA that requires much computer power to solve
+    inactive: true
 
   - name: mojeek news
     shortcut: mjknews
@@ -2847,7 +2849,8 @@ engines:
     categories: [news, web]
     search_type: news
     paging: false
-    disabled: true
+    # uses a Proof of Work CAPTCHA that requires much computer power to solve
+    inactive: true
 
   - name: moviepilot
     engine: moviepilot
