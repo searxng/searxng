@@ -281,6 +281,26 @@ def openmetrics(engine_stats, engine_reliabilities):
             ],
         ),
         OpenMetricsFamily(
+            key="searxng_engines_successful_request_count_total",
+            type_hint="counter",
+            help_hint="The total amount of successful requests made to this engine",
+            data_info=[{'engine_name': engine['name']} for engine in engine_stats['time']],
+            data=[
+                counter('engine', engine['name'], 'search', 'count', 'successful') or 0
+                for engine in engine_stats['time']
+            ],
+        ),
+        OpenMetricsFamily(
+            key="searxng_engines_error_request_count_total",
+            type_hint="counter",
+            help_hint="The total amount of failed requests made to this engine",
+            data_info=[{'engine_name': engine['name']} for engine in engine_stats['time']],
+            data=[
+                counter('engine', engine['name'], 'search', 'count', 'error') or 0
+                for engine in engine_stats['time']
+            ],
+        ),
+        OpenMetricsFamily(
             key="searxng_engines_reliability_total",
             type_hint="counter",
             help_hint="The overall reliability of the engine",
