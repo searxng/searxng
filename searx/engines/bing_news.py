@@ -12,10 +12,7 @@ from urllib.parse import urlencode
 from lxml import html
 
 from searx.enginelib.traits import EngineTraits
-from searx.engines.bing import (
-    get_locale_params,
-    override_accept_language,
-)
+from searx.engines.bing import get_locale_params
 from searx.utils import eval_xpath, eval_xpath_getindex, eval_xpath_list, extract_text
 
 # about
@@ -53,8 +50,6 @@ def request(query, params):
     """Assemble a Bing-News request."""
 
     engine_region = traits.get_region(params["searxng_locale"], traits.all_locale)
-
-    override_accept_language(params, engine_region)
 
     # build URL query
     # - example: https://www.bing.com/news/infinitescrollajax?q=london&first=1

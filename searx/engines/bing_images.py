@@ -9,7 +9,6 @@ from lxml import html
 from searx.engines.bing import (  # pylint: disable=unused-import
     fetch_traits,
     get_locale_params,
-    override_accept_language,
 )
 
 # about
@@ -43,8 +42,6 @@ def request(query, params):
     """Assemble a Bing-Image request."""
 
     engine_region = traits.get_region(params["searxng_locale"], traits.all_locale)
-
-    override_accept_language(params, engine_region)
 
     # build URL query
     # - example: https://www.bing.com/images/async?q=foo&async=1&first=1&count=35
