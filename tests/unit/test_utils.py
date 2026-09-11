@@ -17,7 +17,6 @@ def random_string(length, choices=string.ascii_letters):
 
 
 class TestUtils(SearxTestCase):
-
     def test_gen_useragent(self):
         self.assertIsInstance(utils.gen_useragent(), str)
         self.assertIsNotNone(utils.gen_useragent())
@@ -116,7 +115,6 @@ class TestUtils(SearxTestCase):
 
 
 class TestXPathUtils(SearxTestCase):  # pylint: disable=missing-class-docstring
-
     TEST_DOC = """<ul>
         <li>Text in <b>bold</b> and <i>italic</i> </li>
         <li>Another <b>text</b> <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAUEBAAAACwAAAAAAQABAAACAkQBADs="></li>
@@ -194,3 +192,25 @@ class TestXPathUtils(SearxTestCase):  # pylint: disable=missing-class-docstring
         with self.assertRaises(SearxEngineXPathException) as context:
             utils.eval_xpath_getindex(doc, 'count(//i)', 1)
         self.assertEqual(context.exception.message, 'the result is not a list')
+
+    def test_altcha_solver(self):
+        # copied from a real Mojeek challenge
+        challenge = {
+            "parameters": {
+                "algorithm": "PBKDF2/SHA-256",
+                "cost": 8000,
+                "keyLength": 32,
+                "keyPrefix": "71087e0b10d819181fc5463588a230b5",
+                "nonce": "1449f02d6089fc29dac33c44aa0630cd",
+                "salt": "860b25b9ee8c123e9ad20f24d9752c9e",
+                "keySignature": "9945d6f881232806edf82a953e1742843b30cf9fe9d56054e1e17a9f47435aa6",
+                "expiresAt": 1789121497,
+            },
+            "signature": "aecf8725f019643766920b67c7e21bc383d8ff166a8e1137c6b5f4d6d19d00c1",
+        }
+        solution = utils.solve_altcha(challenge["parameters"])  # pyright: ignore[reportArgumentType]
+        self.assertIsNotNone(solution)
+
+        key, counter = solution  # pyright: ignore[reportGeneralTypeIssues]
+        self.assertEqual(key, "71087e0b10d819181fc5463588a230b5744e6b9f19b86667c71ff73a9c7567aa")
+        self.assertEqual(counter, 260)

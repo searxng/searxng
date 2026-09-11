@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 """Utility functions for the engines"""
 
+from hashlib import pbkdf2_hmac
 import time
 
 import re
@@ -811,3 +812,34 @@ def format_duration(duration: str | int) -> str:
     if length.tm_hour:
         return time.strftime("%H:%M:%S", length)
     return time.strftime("%M:%S", length)
+
+
+def _array_startswith(arr: bytes, prefix: bytes) -> bool:
+    return arr[: len(prefix)] == prefix
+
+
+def solve_altcha(parameters: dict[str, t.Any], maxCounter: int = 1000) -> tuple[str, int] | None:
+    """Solves Altcha CAPTCHAs. It derives keys using PBKDF2 until the derived
+    key starts with the ``keyPrefix``` from the challenge. If the solver does not
+    finish after ``maxCounter`` iterations, returns ``None``."""
+
+    nonce = bytes.fromhex(parameters["nonce"])
+    salt = bytes.fromhex(parameters["salt"])
+    keyPrefix = bytes.fromhex(parameters["keyPrefix"])
+    cost = parameters["cost"]
+    keyLength = parameters["keyLength"]
+    # e.g. "PBKDF2/SHA-256" -> "sha256"
+    hashAlgorithm = parameters["algorithm"].split("/")[-1].replace("-", "").lower()
+
+    counter = 0
+    while counter < maxCounter:
+        # Appends the counter to the nonce, i.e. writes the counter as a big-endian 32-bit integer.
+        secret = nonce + counter.to_bytes(length=4)
+
+        key = pbkdf2_hmac(hash_name=hashAlgorithm, password=secret, salt=salt, iterations=cost, dklen=keyLength)
+        if _array_startswith(key, keyPrefix):
+            return key.hex(), counter
+
+        counter += 1
+
+    return None
