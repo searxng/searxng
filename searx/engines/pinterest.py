@@ -35,6 +35,7 @@ def request(query: str, params: "OnlineParams") -> None:
     }
     params["url"] = f"{base_url}/resource/BaseSearchResource/get/?data={dumps(args)}"
     params["headers"] = {
+        "X-Requested-With": "XMLHttpRequest",
         "X-Pinterest-AppState": "active",
         "X-Pinterest-Source-Url": "/ideas/",
         "X-Pinterest-PWS-Handler": "www/ideas.js",
@@ -67,7 +68,7 @@ def response(resp: "SXNG_Response") -> EngineResults:
             if visual_annotation:
                 title = visual_annotation[0]
             else:
-                title = result.get("name", "--")
+                title = result.get("name") or result.get("auto_alt_text") or ""
 
         res.add(
             res.types.Image(
