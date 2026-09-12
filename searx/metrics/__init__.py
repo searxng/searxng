@@ -296,8 +296,7 @@ def openmetrics(engine_stats, engine_reliabilities):
             help_hint="The total amount of failed requests made to this engine",
             data_info=[{'engine_name': engine['name']} for engine in engine_stats['time']],
             data=[
-                counter('engine', engine['name'], 'search', 'count', 'error') or 0
-                for engine in engine_stats['time']
+                counter('engine', engine['name'], 'search', 'count', 'error') or 0 for engine in engine_stats['time']
             ],
         ),
         OpenMetricsFamily(
