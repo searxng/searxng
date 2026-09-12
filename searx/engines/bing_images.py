@@ -6,10 +6,7 @@ from urllib.parse import urlencode
 
 from lxml import html
 
-from searx.engines.bing import (  # pylint: disable=unused-import
-    fetch_traits,
-    get_locale_params,
-)
+from searx.engines.bing import fetch_traits  # pylint: disable=unused-import
 
 # about
 about = {
@@ -44,18 +41,21 @@ def request(query, params):
     engine_region = traits.get_region(params["searxng_locale"], traits.all_locale)
 
     # build URL query
-    # - example: https://www.bing.com/images/async?q=foo&async=1&first=1&count=35
+    # - example: https://www.bing.com/images/async?q=foo&mmasync=1&first=1&count=35
+
     query_params = {
         "q": query,
-        "async": "1",
+        "mmasync": "1",
         # to simplify the page count lets use the default of 35 images per page
         "first": (int(params.get("pageno", 1)) - 1) * 35 + 1,
         "count": 35,
     }
 
-    locale_params = get_locale_params(engine_region)
-    if locale_params:
-        query_params.update(locale_params)
+    if engine_region and engine_region != "clear":
+        lang, _, cc = engine_region.partition("-")
+        query_params["setlang"] = lang
+        if cc:
+            query_params["cc"] = cc
 
     # time range
     # - example: one year (525600 minutes) 'qft=filterui:age-lt525600'
@@ -79,6 +79,9 @@ def response(resp):
 
         metadata = json.loads(result.xpath('.//a[@class="iusc"]/@m')[0])
         title = " ".join(result.xpath('.//div[@class="infnmpt"]//a/text()')).strip()
+        if not title:
+            title = result.xpath('.//div[@class="infnmpt"]//a/@title')[0]
+
         img_format = " ".join(result.xpath('.//div[@class="imgpt"]/div/span/text()')).strip().split(" · ")
         source = " ".join(result.xpath('.//div[@class="imgpt"]//div[@class="lnkw"]//a/text()')).strip()
         results.append(
