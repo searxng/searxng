@@ -136,9 +136,9 @@ def parse_general(data):
 def parse_images(data):
     results = []
 
-    match = extr(data, '<script>var imageSearchTabData=', '</script>')
+    match = extr(data, 'var imageSearchTabData =', '</script>')
     if match:
-        json = js_obj_str_to_python(match.strip())
+        json = js_obj_str_to_python(match.strip().rstrip(';'))
         items = json.get('content', {}).get('items', [])
 
         for item in items:
