@@ -48,7 +48,6 @@ Implementations
 
 """
 
-
 import time
 import random
 from urllib.parse import urlencode

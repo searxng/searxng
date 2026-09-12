@@ -5,7 +5,6 @@ import math
 
 from searx.data import EXTERNAL_URLS
 
-
 IMDB_PREFIX_TO_URL_ID = {
     'tt': 'imdb_title',
     'mn': 'imdb_name',
