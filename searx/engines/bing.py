@@ -62,8 +62,8 @@ def get_locale_params(engine_region: str | None) -> dict[str, str] | None:
 
     The ``mkt`` parameter takes a full ``<language>-<country>`` code.
 
-    This function is shared with :py:mod:`searx.engines.bing_images`,
-    :py:mod:`searx.engines.bing_news`, and :py:mod:`searx.engines.bing_videos`.
+    This function is shared with :py:mod:`searx.engines.bing_news`, and
+    :py:mod:`searx.engines.bing_videos`.
     """
 
     if not engine_region or engine_region == "clear":
