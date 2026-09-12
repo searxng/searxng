@@ -66,8 +66,7 @@ def request(query: str, params: "OnlineParams"):
     params["url"] = f"{base_url}/api/{dogpile_categ}"
     params["headers"]["Origin"] = base_url
     params["cookies"]["dp_api_token"] = "1"
-    if dogpile_categ != "search":  # web doesnt need token
-        params["headers"]["x-dogpile-token"] = _obtain_token()
+    params["headers"]["x-dogpile-token"] = _obtain_token()
 
     params["method"] = "POST"
     params["json"] = {"q": query, "qadf": safe_search_map[params["safesearch"]], "page": params["pageno"]}
