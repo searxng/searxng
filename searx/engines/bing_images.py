@@ -1,14 +1,20 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 """Bing-Images: description see :py:obj:`searx.engines.bing`."""
 
+import typing as t
 import json
 from urllib.parse import urlencode
 
 from lxml import html
 
 from searx.engines.bing import fetch_traits  # pylint: disable=unused-import
+from searx.result_types import EngineResults
 
-# about
+if t.TYPE_CHECKING:
+    from searx.extended_types import SXNG_Response
+    from searx.search.processors import OnlineParams
+
+
 about = {
     "website": "https://www.bing.com/images",
     "wikidata_id": "Q182496",
@@ -18,7 +24,6 @@ about = {
     "results": "HTML",
 }
 
-# engine dependent config
 categories = ["images", "web"]
 paging = True
 enable_http3 = True
@@ -35,13 +40,13 @@ base_url = "https://www.bing.com"
 """Bing-Image search URL"""
 
 
-def request(query, params):
+def request(query: str, params: "OnlineParams"):
     """Assemble a Bing-Image request."""
 
     engine_region = traits.get_region(params["searxng_locale"], traits.all_locale)
 
-    # build URL query
-    # - example: https://www.bing.com/images/async?q=foo&mmasync=1&first=1&count=35
+    # build URL query / example:
+    # https://www.bing.com/images/async?q=foo&mmasync=1&first=1&count=35
 
     query_params = {
         "q": query,
@@ -65,10 +70,10 @@ def request(query, params):
     params["url"] = base_url + "/images/async?" + urlencode(query_params)
 
 
-def response(resp):
+def response(resp: "SXNG_Response") -> EngineResults:
     """Get response from Bing-Image"""
 
-    results = []
+    res = EngineResults()
 
     dom = html.fromstring(resp.text)
 
@@ -84,17 +89,17 @@ def response(resp):
 
         img_format = " ".join(result.xpath('.//div[@class="imgpt"]/div/span/text()')).strip().split(" · ")
         source = " ".join(result.xpath('.//div[@class="imgpt"]//div[@class="lnkw"]//a/text()')).strip()
-        results.append(
-            {
-                "template": "images.html",
-                "url": metadata["purl"],
-                "thumbnail_src": metadata["turl"],
-                "img_src": metadata["murl"],
-                "content": metadata.get("desc"),
-                "title": title,
-                "source": source,
-                "resolution": img_format[0],
-                "img_format": img_format[1] if len(img_format) >= 2 else None,
-            }
+
+        res.add(
+            res.types.Image(
+                title=title,
+                url=metadata["purl"],
+                thumbnail_src=metadata["turl"],
+                img_src=metadata["murl"],
+                content=metadata.get("desc"),
+                source=source,
+                resolution=img_format[0],
+                img_format=img_format[1] if len(img_format) >= 2 else "",
+            )
         )
-    return results
+    return res
