@@ -27,7 +27,7 @@ about = {
 }
 
 base_url = "https://www.pexels.com"
-categories = ["images"]
+categories = ["gallery"]
 
 api_key = "H2jk9uKnhRmL6WPwh89zBezWvr"
 """
