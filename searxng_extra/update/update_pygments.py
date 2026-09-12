@@ -5,6 +5,7 @@
 Call this script after each upgrade of pygments
 
 """
+
 # pylint: disable=too-few-public-methods
 
 from pathlib import Path

@@ -3,6 +3,7 @@
 
 Some implementations are shared from :ref:`wikipedia engine`.
 """
+
 # pylint: disable=missing-class-docstring
 
 import typing as t

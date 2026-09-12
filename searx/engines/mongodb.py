@@ -49,7 +49,6 @@ except ImportError:
 
 from searx.result_types import EngineResults
 
-
 engine_type = 'offline'
 
 # mongodb connection variables

@@ -21,7 +21,6 @@ from searx.preferences import Preferences
 from tests import SearxTestCase
 from .test_plugins import PluginMock
 
-
 locales_initialize()
 favicons.init()
 

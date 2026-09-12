@@ -7,7 +7,6 @@ from urllib.parse import urlencode
 from searx.network import get, post
 from searx.utils import gen_useragent
 
-
 # SPARQL
 SPARQL_ENDPOINT_URL = "https://query.wikidata.org/sparql"
 SPARQL_EXPLAIN_URL = "https://query.wikidata.org/bigdata/namespace/wdq/sparql?explain"

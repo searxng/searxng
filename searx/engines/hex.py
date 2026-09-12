@@ -4,7 +4,6 @@
 from urllib.parse import urlencode
 from dateutil import parser
 
-
 about = {
     # pylint: disable=line-too-long
     "website": "https://hex.pm/",

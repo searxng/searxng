@@ -74,7 +74,6 @@ Implementations
 ===============
 """
 
-
 import typing as t
 from urllib.parse import urlencode
 from dateutil.parser import parse

@@ -16,7 +16,6 @@ from searx.exceptions import (
 from searx import searx_parent_dir, settings
 from searx.engines import engines
 
-
 errors_per_engines: dict[str, t.Any] = {}
 
 LogParametersType = tuple[str, ...]

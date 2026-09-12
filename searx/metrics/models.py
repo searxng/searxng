@@ -8,7 +8,6 @@ import threading
 
 from searx import logger
 
-
 __all__ = ["Histogram", "HistogramStorage", "CounterStorage"]
 
 logger = logger.getChild('searx.metrics')

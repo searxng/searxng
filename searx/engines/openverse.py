@@ -8,7 +8,6 @@ Openverse (formerly known as: Creative Commons search engine) [Images]
 from json import loads
 from urllib.parse import urlencode
 
-
 about = {
     "website": 'https://openverse.org/',
     "wikidata_id": None,

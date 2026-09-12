@@ -2,7 +2,6 @@
 # pylint: disable=invalid-name
 """Dummy Offline"""
 
-
 # about
 about = {
     "wikidata_id": None,
