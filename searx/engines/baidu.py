@@ -44,6 +44,15 @@ image_base_url = "https://image.baidu.com/"
 COOKIE_CACHE_KEY = "cookie"
 COOKIE_CACHE_EXPIRATION_SECONDS = 3600
 
+CAPTCHA_SUSPEND_TIME = 300
+"""How long the engine is suspended when Baidu answers with a CAPTCHA.
+
+Baidu lifts its block after a short delay, so the default of
+``search.suspended_times.SearxEngineCaptcha`` (86400 sec / 1 day) is far too
+long: after a single CAPTCHA the engine stays disabled long after Baidu is
+reachable again.
+"""
+
 CACHE: EngineCache
 """Stores cookies from Baidu image search warmup."""
 
@@ -126,13 +135,29 @@ def request(query, params):
 def response(resp):
     # Detect Baidu Captcha, it will redirect to wappass.baidu.com
     if 'wappass.baidu.com/static/captcha' in resp.headers.get('Location', ''):
-        raise SearxEngineCaptchaException()
+        raise SearxEngineCaptchaException(
+            suspended_time=CAPTCHA_SUSPEND_TIME,
+            message="Baidu CAPTCHA detected, the engine is suspended for a short time.",
+        )
 
     text = resp.text
     if baidu_category == 'images':
         # baidu's JSON encoder wrongly quotes / and ' characters by \\ and \'
         text = text.replace(r"\/", "/").replace(r"\'", "'")
-    data = json.loads(text, strict=False)
+
+    try:
+        data = json.loads(text, strict=False)
+    except json.JSONDecodeError as exc:
+        # Baidu does not always answer with JSON: instead of the expected JSON
+        # payload, an HTML page is returned (HTTP 200).  Without this branch
+        # the JSONDecodeError propagates to the caller, which does not suspend
+        # the engine (see OnlineProcessor._send_http_request) and every
+        # subsequent request hammers Baidu again until the IP gets banned.
+        raise SearxEngineCaptchaException(
+            suspended_time=CAPTCHA_SUSPEND_TIME,
+            message="Baidu did not return JSON (HTML page / soft-block), the engine is suspended for a short time.",
+        ) from exc
+
     if data.get("antiFlag") == 1:
         raise SearxEngineAccessDeniedException(data.get("message", "Forbid spider access"))
     parsers = {'general': parse_general, 'images': parse_images, 'it': parse_it}
