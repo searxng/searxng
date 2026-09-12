@@ -37,7 +37,7 @@ base_url = "https://neocities.org"
 results_xpath = "//div[@class='result-item']"
 url_xpath = './/div[@class="result-url"]/a/@href'
 title_xpath = './/h3[@class="result-title"]/a/text()'
-content_xpath = './/p[@class="result-snippet"]//text()'
+content_xpath = './/p[@class="result-snippet"]/text()'
 screenshot_xpath = './/a[@class="result-screenshot"]/img/@src'
 
 
@@ -57,7 +57,8 @@ def response(resp: "SXNG_Response") -> EngineResults:
         results.add(
             results.types.MainResult(
                 url=extract_text(eval_xpath(result, url_xpath)),
-                title=extract_text(eval_xpath(result, title_xpath)) or "",
+                # some results have very long titles, so only keep the first 200 chars
+                title=(extract_text(eval_xpath(result, title_xpath)) or "")[:200],
                 content=extract_text(eval_xpath(result, content_xpath)) or "",
                 thumbnail=base_url + (extract_text(eval_xpath(result, screenshot_xpath)) or ""),
             )
