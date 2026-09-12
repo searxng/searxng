@@ -20,6 +20,7 @@
 <!-- Draw result header -->
 {% macro result_header(result, favicons, image_proxify) -%}
 <article class="result {% if result['template'] %}result-{{ result.template|replace('.html', '') }}{% else %}result-default{% endif %} {% if result['category'] %}category-{{ result['category'] }}{% endif %}">
+  {%- if result.thumbnail %}{{ result_open_link(result.url, classes='thumbnail_link') }}<img class="thumbnail" src="{{ image_proxify(result.thumbnail) }}" alt="" loading="lazy">{%- if result.length -%}<span class="thumbnail_length">{{ result.length }}</span>{%- endif -%}{{ result_close_link() }}{% endif -%}
   {{- result_open_link(result.url, "url_header") -}}
   {%- if favicon_resolver != "" %}
   <div class="favicon"><img loading="lazy" src="{{ favicon_url(result.parsed_url.netloc) }}"></div>
@@ -30,7 +31,6 @@
     {%- endfor %}
   </div>
   {{- result_close_link() -}}
-  {%- if result.thumbnail %}{{ result_open_link(result.url, classes='thumbnail_link') }}<img class="thumbnail" src="{{ image_proxify(result.thumbnail) }}" title="{{ result.title|striptags }}" loading="lazy">{%- if result.length -%}<span class="thumbnail_length">{{ result.length }}</span>{%- endif -%}{{ result_close_link() }}{% endif -%}
   <h3>{{ result_link(result.url, result.title|safe) }}</h3>
 {%- endmacro -%}
 
