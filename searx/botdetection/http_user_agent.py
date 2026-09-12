@@ -12,7 +12,6 @@ the User-Agent_ header is unset or matches the regular expression
 
 """
 
-
 import re
 from ipaddress import (
     IPv4Network,
@@ -24,7 +23,6 @@ import flask
 
 from . import config
 from ._helpers import too_many_requests
-
 
 USER_AGENT = (
     r'('

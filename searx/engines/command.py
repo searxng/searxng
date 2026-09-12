@@ -84,7 +84,6 @@ from threading import Thread
 from searx import logger
 from searx.result_types import EngineResults
 
-
 engine_type = 'offline'
 paging = True
 command = []

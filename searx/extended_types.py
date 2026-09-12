@@ -19,6 +19,7 @@
    :members:
 
 """
+
 # pylint: disable=invalid-name
 
 __all__ = ["SXNG_Request", "sxng_request", "SXNG_Response"]

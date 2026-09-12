@@ -36,7 +36,6 @@ from .. import get_setting
 from ..version import GIT_URL
 from ..locales import LOCALE_NAMES
 
-
 logger = logging.getLogger('searx.infopage')
 _INFO_FOLDER = os.path.abspath(os.path.dirname(__file__))
 INFO_PAGES: 'InfoPageSet'

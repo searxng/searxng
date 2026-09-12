@@ -13,7 +13,6 @@ from dataclasses import dataclass
 from searx.utils import load_module
 from searx.result_types.answer import BaseAnswer
 
-
 _default = pathlib.Path(__file__).parent
 log: logging.Logger = logging.getLogger("searx.answerers")
 

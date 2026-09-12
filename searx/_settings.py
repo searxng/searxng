@@ -1,5 +1,6 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 """Implementation of the :py:obj:`preference <searx.preference>` settings."""
+
 # pylint: disable = too-few-public-methods
 
 import typing as t

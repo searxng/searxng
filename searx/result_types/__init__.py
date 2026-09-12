@@ -9,6 +9,7 @@
    gradually.  For more, please read :ref:`result types`.
 
 """
+
 # pylint: disable=too-few-public-methods
 
 
