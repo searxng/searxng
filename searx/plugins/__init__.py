@@ -27,10 +27,12 @@ Add Answer example
 Here is an example of a very simple plugin that adds a "Hello World" into the
 answer area:
 
+In searx/plugins create a file nammed 'hello_world.py'
+
 .. code:: python
 
    from flask_babel import gettext as _
-   from searx.plugins import Plugin
+   from searx.plugins import Plugin, PluginInfo
    from searx.result_types import Answer
 
    class MyPlugin(Plugin):
@@ -43,6 +45,19 @@ answer area:
 
        def post_search(self, request, search):
            return [ Answer(answer="Hello World") ]
+
+You will then need to add your new plugin in the :ref:`settings.yml` file like this:
+
+.. code:: yaml
+
+   plugins:
+     ...
+     searx.plugins.hello_world.MyPlugin:
+        active: true
+
+
+searx.plugins.hello_world represents the path of this new 'hello_world.py' plugin file.
+To create a clean separated plugin in its own package easy to share, see exemples at :ref:`settings external_plugins`
 
 .. _filter urls example:
 
