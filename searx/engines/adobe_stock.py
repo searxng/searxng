@@ -35,6 +35,7 @@ Implementation
 ==============
 
 """
+
 import typing as t
 from datetime import datetime, timedelta
 from urllib.parse import urlencode

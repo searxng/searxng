@@ -17,7 +17,6 @@ if t.TYPE_CHECKING:
     from searx.extended_types import SXNG_Response
     from searx.search.processors import OnlineParams
 
-
 about = {
     "website": "https://openverse.org/",
     "wikidata_id": None,

@@ -8,7 +8,6 @@ from searx import webutils
 from searx import engines
 from searx.weather import WeatherConditionType
 
-
 __all__ = [
     'CONSTANT_NAMES',
     'CATEGORY_NAMES',

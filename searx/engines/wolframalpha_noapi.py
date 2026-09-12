@@ -53,7 +53,7 @@ seconds."""
 
 def setup(engine_settings: dict[str, t.Any]) -> bool | None:
     global CACHE  # pylint: disable=global-statement
-    CACHE = EngineCache(engine_settings["name"])  # type:ignore
+    CACHE = EngineCache(engine_settings["name"])  # type: ignore
 
 
 def obtain_token() -> str:

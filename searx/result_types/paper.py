@@ -19,6 +19,7 @@ Related topics:
    :show-inheritance:
 
 """
+
 # pylint: disable=too-few-public-methods, disable=invalid-name
 
 __all__ = ["Paper"]

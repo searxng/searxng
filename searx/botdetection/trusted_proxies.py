@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 """Implementation of a middleware to determine the real IP of an HTTP request
 (:py:obj:`flask.request.remote_addr`) behind a proxy chain."""
+
 # pylint: disable=too-many-branches
 
 

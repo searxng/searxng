@@ -4,7 +4,6 @@
 from urllib.parse import urlencode
 from dateutil import parser
 
-
 about = {
     "website": "https://npms.io/",
     "wikidata_id": "Q7067518",

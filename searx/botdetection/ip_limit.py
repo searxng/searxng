@@ -55,7 +55,6 @@ from ._helpers import (
     logger,
 )
 
-
 logger = logger.getChild('ip_limit')
 
 BURST_WINDOW = 20

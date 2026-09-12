@@ -25,7 +25,6 @@ from searx.extended_types import SXNG_Response
 from .client import DEFAULT_IMPERSONATE, AsyncClient, new_client, get_loop
 from .raise_for_httperror import raise_for_httperror
 
-
 logger = logger.getChild('network')
 DEFAULT_NAME = '__DEFAULT__'
 NETWORKS: dict[str, "Network"] = {}

@@ -11,6 +11,7 @@ template.
    :members:
 
 """
+
 # pylint: disable=too-few-public-methods
 __all__ = ["Image", "ImageRef"]
 

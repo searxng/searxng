@@ -118,7 +118,7 @@ def response(resp):
 
 def setup(engine_settings: dict[str, t.Any]) -> bool:
     global CACHE  # pylint: disable=global-statement
-    CACHE = EngineCache(engine_settings["name"])  # type:ignore
+    CACHE = EngineCache(engine_settings["name"])  # type: ignore
     return True
 
 

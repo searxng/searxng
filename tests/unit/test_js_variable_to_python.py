@@ -7,6 +7,7 @@ https://github.com/Nykakin/chompjs/blob/c1501b5cd82c0044539875331745b820e7bfd067
 
 The commented-out tests are not yet supported by the current implementation.
 """
+
 # pylint: disable=missing-class-docstring, invalid-name
 
 import math
