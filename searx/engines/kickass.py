@@ -5,7 +5,6 @@ import random
 from operator import itemgetter
 from urllib.parse import quote
 
-from lxml import html
 from searx.utils import (
     eval_xpath,
     eval_xpath_getindex,
@@ -39,7 +38,7 @@ def request(query, params):
 
 def response(resp):
     results = []
-    dom = html.fromstring(resp.text)
+    dom = resp.html()
 
     search_res = eval_xpath_list(dom, '//table[contains(@class, "data")]//tr[descendant::a]', None)
     if search_res is None:

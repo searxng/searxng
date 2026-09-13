@@ -4,7 +4,6 @@
 from datetime import datetime
 
 from urllib.parse import urlencode
-from lxml import html
 
 # about
 from searx.utils import extract_text
@@ -46,7 +45,7 @@ def request(query, params):
 
 def response(resp):
     results = []
-    dom = html.fromstring(resp.text)
+    dom = resp.html()
     results_dom = dom.xpath('//li[contains(@class, "video-listing-entry")]')
 
     if not results_dom:

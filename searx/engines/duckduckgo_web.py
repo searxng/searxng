@@ -17,7 +17,6 @@ import typing as t
 import re
 
 from urllib.parse import quote_plus, urljoin
-from lxml import html
 
 from searx.utils import html_to_text, extract_text, eval_xpath
 from searx.result_types import EngineResults
@@ -81,7 +80,7 @@ def _fetch_first_page_link(
     if resp.status_code != 200:
         logger.error("vqd: got HTTP %s from duckduckgo.com", resp.status_code)
 
-    dom = html.fromstring(resp.text)
+    dom = resp.html()
     first_page_link = extract_text(eval_xpath(dom, "//link[@id='deep_preload_link']/@href"))
 
     if not first_page_link:

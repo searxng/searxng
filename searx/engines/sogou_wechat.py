@@ -4,7 +4,6 @@
 from urllib.parse import urlencode
 from datetime import datetime
 import re
-from lxml import html
 
 from searx.utils import extract_text
 
@@ -37,7 +36,7 @@ def request(query, params):
 
 
 def response(resp):
-    dom = html.fromstring(resp.text)
+    dom = resp.html()
     results = []
 
     for item in dom.xpath('//li[contains(@id, "sogou_vr_")]'):

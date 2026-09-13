@@ -4,7 +4,6 @@
 import typing as t
 
 import urllib.parse
-from lxml import html
 
 from searx.result_types import EngineResults
 from searx.utils import extract_text, eval_xpath, eval_xpath_list
@@ -52,7 +51,7 @@ def request(query: str, params: "OnlineParams"):
 def response(resp: "SXNG_Response") -> EngineResults:
 
     res = EngineResults()
-    dom = html.fromstring(resp.text)
+    dom = resp.html()
 
     for result in eval_xpath_list(dom, results_xpath):
         thumbnail_src = extract_text(eval_xpath(result, thumbnail_src_xpath))

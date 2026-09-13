@@ -2,7 +2,6 @@
 """Duden"""
 
 from urllib.parse import quote, urljoin
-from lxml import html
 from searx.utils import extract_text, eval_xpath, eval_xpath_list, eval_xpath_getindex
 from searx.network import raise_for_httperror
 
@@ -48,7 +47,7 @@ def response(resp):
 
     raise_for_httperror(resp)
 
-    dom = html.fromstring(resp.text)
+    dom = resp.html()
 
     for result in eval_xpath_list(dom, '//section[not(contains(@class, "essay"))]'):
         url = eval_xpath_getindex(result, './/h2/a', 0).get('href')

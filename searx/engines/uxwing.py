@@ -2,7 +2,6 @@
 """UXwing (images)"""
 
 from urllib.parse import quote_plus
-from lxml import html
 
 from searx.utils import eval_xpath, eval_xpath_list, extract_text
 
@@ -26,7 +25,7 @@ def request(query, params):
 def response(resp):
     results = []
 
-    doc = html.fromstring(resp.text)
+    doc = resp.html()
     for result in eval_xpath_list(doc, "//article[starts-with(@id, 'post')]"):
         classes = extract_text(eval_xpath(result, "./@class")).split(" ")
         tags = []

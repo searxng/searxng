@@ -72,7 +72,6 @@ Implementations
 
 from urllib.parse import urlencode
 
-from lxml import html
 from searx.utils import extract_text, extract_url, eval_xpath, eval_xpath_list
 from searx.network import raise_for_httperror
 from searx.result_types import EngineResults
@@ -287,7 +286,7 @@ def response(resp) -> EngineResults:  # pylint: disable=too-many-branches
     if not resp.text:
         return results
 
-    dom = html.fromstring(resp.text)
+    dom = resp.html()
     is_onion = 'onions' in categories
 
     if results_xpath:

@@ -10,7 +10,6 @@ from urllib.parse import urlencode
 
 import curl_cffi
 from dateutil.relativedelta import relativedelta
-from lxml import html
 
 from searx.exceptions import SearxEngineAPIException
 from searx.enginelib import EngineCache
@@ -177,7 +176,7 @@ def _news_results(dom) -> EngineResults:
 
 
 def response(resp: "SXNG_Response") -> EngineResults:
-    dom = html.fromstring(resp.text)
+    dom = resp.html()
 
     if search_type == "":
         return _general_results(dom)
@@ -207,7 +206,7 @@ def fetch_traits(engine_traits: EngineTraits):
     if not resp.ok:
         raise RuntimeError("Response from Mojeek is not OK.")
 
-    dom = html.fromstring(resp.text)
+    dom = resp.html()
 
     languages = eval_xpath_list(dom, f'//select[@name="{language_param}"]/option/@value')
 

@@ -3,7 +3,6 @@
 """1337x"""
 
 from urllib.parse import quote, urljoin
-from lxml import html
 from searx.utils import extract_text, eval_xpath, eval_xpath_list, eval_xpath_getindex
 
 # about
@@ -31,7 +30,7 @@ def request(query, params):
 def response(resp):
     results = []
 
-    dom = html.fromstring(resp.text)
+    dom = resp.html()
 
     for result in eval_xpath_list(dom, '//table[contains(@class, "table-list")]/tbody//tr'):
         href = urljoin(url, eval_xpath_getindex(result, './td[contains(@class, "name")]/a[2]/@href', 0))

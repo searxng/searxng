@@ -11,7 +11,6 @@ Arch Wiki blocks access to it.
 from urllib.parse import urlencode, urljoin, urlparse
 
 import babel
-import lxml
 
 from searx.enginelib.traits import EngineTraits
 from searx.locales import language_tag
@@ -70,7 +69,7 @@ def request(query, params):
 def response(resp):
 
     results = []
-    dom = lxml.html.fromstring(resp.text)  # type: ignore
+    dom = resp.html()  # type: ignore
 
     # get the base URL for the language in which request was made
     sxng_lang = resp.search_params["searxng_locale"].split("-")[0]
@@ -131,7 +130,7 @@ def fetch_traits(engine_traits: EngineTraits):
     if not resp.ok:
         raise RuntimeError("Response from Arch Linux Wiki is not OK.")
 
-    dom = lxml.html.fromstring(resp.text)  # type: ignore
+    dom = resp.html()  # type: ignore
     for a in eval_xpath_list(dom, "//a[@class='interlanguage-link-target']"):
         sxng_tag = language_tag(babel.Locale.parse(a.get("lang"), sep="-"))
         # zh_Hans --> zh

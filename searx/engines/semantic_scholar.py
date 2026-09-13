@@ -26,7 +26,6 @@ Implementations
 import typing as t
 
 from datetime import datetime
-from lxml import html
 from flask_babel import gettext  # pyright: ignore[reportUnknownVariableType]
 
 from searx.network import get
@@ -70,7 +69,7 @@ def get_ui_version() -> str:
         if not resp.ok:
             raise RuntimeError("Can't determine Semantic Scholar UI version")
 
-        doc = html.fromstring(resp.text)
+        doc = resp.html()
         ret_val = eval_xpath_getindex(doc, "//meta[@name='s2-ui-version']/@content", 0)
         if not ret_val:
             raise RuntimeError("Can't determine Semantic Scholar UI version")

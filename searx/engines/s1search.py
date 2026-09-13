@@ -11,8 +11,6 @@ Some of the engines get their results from Google, others get them from Yahoo.
 import typing as t
 from urllib.parse import urlencode, urlparse, parse_qs
 
-from lxml import html
-
 from searx.result_types import EngineResults
 from searx.enginelib import EngineCache
 from searx.utils import eval_xpath_list, eval_xpath, extract_text
@@ -68,7 +66,7 @@ def request(query: str, params: "OnlineParams"):
 def response(resp: "SXNG_Response") -> EngineResults:
     res = EngineResults()
 
-    doc = html.fromstring(resp.text)
+    doc = resp.html()
 
     for suggestion in eval_xpath_list(doc, "//div[@class='aylf-yahoo-bottom' or @class='aylf-yahoo-sidebar']/div"):
         res.add(res.types.LegacyResult({"suggestion": extract_text(suggestion)}))

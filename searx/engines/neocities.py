@@ -7,8 +7,6 @@
 from urllib.parse import urlencode
 import typing as t
 
-from lxml import html
-
 from searx.utils import eval_xpath, eval_xpath_list, extract_text
 from searx.result_types import EngineResults
 
@@ -51,7 +49,7 @@ def request(query: str, params: "OnlineParams") -> None:
 
 def response(resp: "SXNG_Response") -> EngineResults:
     results = EngineResults()
-    dom = html.fromstring(resp.text)
+    dom = resp.html()
 
     for result in eval_xpath_list(dom, results_xpath):
         results.add(

@@ -2,7 +2,6 @@
 """Seznam"""
 
 from urllib.parse import urlencode
-from lxml import html
 from searx.network import get
 from searx.exceptions import SearxEngineAccessDeniedException
 from searx.utils import (
@@ -28,7 +27,7 @@ base_url = 'https://search.seznam.cz/'
 
 def request(query, params):
     response_index = get(base_url, headers=params['headers'], raise_for_httperror=True, timeout=3)
-    dom = html.fromstring(response_index.text)
+    dom = response_index.html()
 
     url_params = {
         'q': query,
@@ -50,7 +49,7 @@ def response(resp):
 
     results = []
 
-    dom = html.fromstring(resp.content.decode())
+    dom = resp.html()
     for result_element in eval_xpath_list(
         dom, '//div[@id="searchpage-root"]//div[@class="Layout--left"]/div[@class="f2c528"]'
     ):

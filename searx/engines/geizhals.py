@@ -16,7 +16,6 @@ to the search term:
 import re
 
 from urllib.parse import urlencode
-from lxml import html
 
 from searx.utils import eval_xpath, eval_xpath_list, extract_text
 
@@ -67,7 +66,7 @@ def request(query, params):
 def response(resp):
     results = []
 
-    dom = html.fromstring(resp.text)
+    dom = resp.html()
     for result in eval_xpath_list(dom, "//article[contains(@class, 'listview__item')]"):
         content = []
         for spec in eval_xpath_list(result, ".//div[contains(@class, 'specs-grid__item')]"):

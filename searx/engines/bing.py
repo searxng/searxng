@@ -18,7 +18,6 @@ from urllib.parse import parse_qs, urlencode, urlparse
 
 import babel
 import babel.languages
-from lxml import html
 
 from searx.enginelib.traits import EngineTraits
 from searx.locales import region_tag
@@ -96,7 +95,7 @@ def response(resp: "SXNG_Response") -> list[dict[str, t.Any]]:
 
     results: list[dict[str, t.Any]] = []
 
-    dom = html.fromstring(resp.text)
+    dom = resp.html()
 
     for item in eval_xpath_list(dom, '//ol[@id="b_results"]/li[contains(@class, "b_algo")]'):
         link = eval_xpath_getindex(item, ".//h2/a", 0, None)
@@ -156,7 +155,7 @@ def fetch_traits(engine_traits: EngineTraits) -> None:
     if not resp.ok:
         raise RuntimeError("Response from Bing is not OK.")
 
-    dom = html.fromstring(resp.text)
+    dom = resp.html()
 
     map_market_codes: dict[str, str] = {
         "zh-hk": "en-hk",  # not sure why, but at Microslop this is the market code for Hongkong

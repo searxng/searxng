@@ -7,8 +7,6 @@ import re
 
 import typing as t
 
-from lxml import html
-
 from searx.enginelib import EngineCache
 from searx.exceptions import SearxEngineAPIException
 from searx.network import get
@@ -67,8 +65,7 @@ def _get_api_key() -> str:
     if cached:
         return cached
 
-    homepage_resp = get(base_url)
-    homepage_doc = html.fromstring(homepage_resp.text)
+    homepage_doc = get(base_url).html()
 
     for script_src in eval_xpath_list(homepage_doc, "//script[contains(@src, 'layout')]/@src"):
         script_resp = get(base_url + script_src)

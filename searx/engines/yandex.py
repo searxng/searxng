@@ -135,7 +135,7 @@ def _parse_json_results(dom: html.HtmlElement) -> dict[str, t.Any]:
 def response(resp: "SXNG_Response") -> EngineResults:
     catch_bad_response(resp)
     results = EngineResults()
-    dom = html.fromstring(resp.text)
+    dom = resp.html()
 
     match search_type:
         case "web":

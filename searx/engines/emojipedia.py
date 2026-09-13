@@ -9,7 +9,6 @@ since 2021. Emojipedia is a voting member of The Unicode Consortium.[1]
 """
 
 from urllib.parse import urlencode
-from lxml import html
 
 from searx.utils import (
     eval_xpath_list,
@@ -41,7 +40,7 @@ def request(query, params):
 def response(resp):
     results = []
 
-    dom = html.fromstring(resp.text)
+    dom = resp.html()
 
     for result in eval_xpath_list(dom, '//div[starts-with(@class, "EmojisList")]/a'):
 
