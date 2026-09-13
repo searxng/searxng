@@ -30,6 +30,8 @@ import flask
 from curl_cffi.requests import Response as CurlResponse
 
 if typing.TYPE_CHECKING:
+    from lxml.html import HtmlElement
+
     import searx.preferences
     import searx.results
     from searx.search.processors import OnlineParamTypes, OnlineDictParams, OnlineCurrenciesParams
@@ -105,3 +107,9 @@ class SXNG_Response(CurlResponse):
     @url.setter
     def url(self, value: str) -> None:
         self._url = str(value or "")
+
+    def html(self) -> "HtmlElement":
+        """Parses the result into a HTML document via :py:obj:`lxml.html`."""
+        from lxml import html  # pylint: disable=import-outside-toplevel
+
+        return html.fromstring(self.text)
