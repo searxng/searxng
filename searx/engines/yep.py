@@ -80,7 +80,6 @@ def fetch_traits(engine_traits: "EngineTraits"):
 
     # pylint: disable=import-outside-toplevel, too-many-branches
 
-    from lxml import html
     import babel
 
     from searx.locales import language_tag
@@ -100,7 +99,7 @@ def fetch_traits(engine_traits: "EngineTraits"):
     if not resp.ok:
         raise RuntimeError("Response from Yep languages is not OK.")
 
-    doc = html.fromstring(resp.text)
+    doc = resp.html()
     url = eval_xpath_getindex(doc, "//script[contains(@src, 'PageApp')]/@src", index=0)
 
     resp = get("https:" + extract_text(url), headers=headers, timeout=5)

@@ -10,7 +10,6 @@ user information with Microsoft and Amazon.
 import typing as t
 from urllib.parse import urlencode, unquote_plus
 
-from lxml import html
 import babel
 
 from searx.enginelib.traits import EngineTraits
@@ -160,7 +159,7 @@ def _video_results(doc: "ElementBase") -> EngineResults:
 
 
 def response(resp: "SXNG_Response") -> EngineResults:
-    doc = html.fromstring(resp.text)
+    doc = resp.html()
     match privacywall_category:
         case "general":
             return _general_results(doc)
@@ -187,7 +186,7 @@ def fetch_traits(engine_traits: EngineTraits) -> None:
     if not resp.ok:
         raise RuntimeError("Response from Privacywall is not OK.")
 
-    dom = html.fromstring(resp.text)
+    dom = resp.html()
 
     # <div class="dropdown-option" onclick="changeMenuLanguage(&quot;CZ&quot;)"></div>
     for onclick_listener in eval_xpath(

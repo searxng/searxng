@@ -9,8 +9,6 @@ named `YBV`, which is cached for 24h before expiring.
 import typing as t
 from urllib.parse import unquote, urlencode, urljoin
 
-from lxml import html
-
 from searx.enginelib import EngineCache
 from searx.network import get  # see https://github.com/searxng/searxng/issues/762
 from searx.result_types import EngineResults
@@ -184,7 +182,6 @@ def parse_url(url_string: str) -> str:
 def _yahoo_html(resp: "SXNG_Response") -> "SXNG_Response":
     cookies = dict(resp.search_params["cookies"])
     params = resp.search_params
-
     for _ in range(_YBV_HOPS):
         if ybv := resp.cookies.get("YBV"):
             cookies["YBV"] = ybv
@@ -215,7 +212,7 @@ def response(resp: "SXNG_Response") -> EngineResults:
     results = EngineResults()
     if resp.status_code != 200:
         resp.raise_for_status()
-    dom = html.fromstring(resp.text)
+    dom = resp.html()
 
     for result in eval_xpath_list(dom, '//div[contains(@class,"algo-sr")]'):
         url = eval_xpath_getindex(result, './/div[contains(@class,"compTitle")]//a/@href', 0, default=None)

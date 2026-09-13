@@ -9,8 +9,6 @@
 
 from urllib.parse import urlencode
 
-from lxml import html
-
 from searx.enginelib.traits import EngineTraits
 from searx.engines.bing import get_locale_params
 from searx.utils import eval_xpath, eval_xpath_getindex, eval_xpath_list, extract_text
@@ -78,7 +76,7 @@ def response(resp):
 
     results = []
 
-    dom = html.fromstring(resp.text)
+    dom = resp.html()
 
     for newsitem in eval_xpath_list(dom, '//div[contains(@class, "newsitem")]'):
         link = eval_xpath_getindex(newsitem, './/a[@class="title"]', 0, None)

@@ -10,7 +10,6 @@
 
 from urllib.parse import urlencode, urlparse, parse_qs
 from dateutil.parser import parse as dateparse
-from lxml import html
 
 from searx.utils import (
     eval_xpath_getindex,
@@ -46,7 +45,7 @@ def request(query, params):
 def response(resp):
 
     results = []
-    dom = html.fromstring(resp.text)
+    dom = resp.html()
 
     for result in eval_xpath_list(dom, '//li[contains(@class, "searchresult")]'):
 

@@ -4,7 +4,6 @@ but the results seem to come from Google."""
 
 import typing as t
 from urllib.parse import urlencode
-from lxml import html
 from dateutil import parser
 
 from searx.result_types import EngineResults
@@ -46,7 +45,7 @@ def request(query: str, params: "OnlineParams") -> None:
 
 
 def response(resp: "SXNG_Response") -> EngineResults:
-    doc = html.fromstring(resp.text)
+    doc = resp.html()
     res = EngineResults()
 
     match searchrockit_categ:

@@ -172,7 +172,6 @@ import re
 import typing as t
 
 import babel
-import lxml.html
 
 from searx import locales
 from searx.enginelib import EngineCache
@@ -470,7 +469,7 @@ def response(resp: "SXNG_Response") -> EngineResults:
     if resp.status_code == 303:
         return res
 
-    doc = lxml.html.fromstring(resp.text)
+    doc = resp.html()
     params = resp.search_params
 
     if is_ddg_captcha(doc):

@@ -5,7 +5,6 @@ import re
 import typing as t
 
 from urllib.parse import urlencode
-from lxml import html
 
 from searx.result_types import EngineResults
 from searx.utils import eval_xpath_list
@@ -62,7 +61,7 @@ def _get_secret_key():
     if resp.status_code != 200:
         raise SearxEngineAPIException("failed to obtain secret key")
 
-    doc = html.fromstring(resp.text)
+    doc = resp.html()
     for script_src in eval_xpath_list(doc, "//script/@src"):
         script = get(script_src)
         if script.status_code != 200:
