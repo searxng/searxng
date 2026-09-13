@@ -105,9 +105,8 @@ jobs:
             arch: amd64
           - runner: ubuntu-26.04-arm
             arch: arm64
-            #  FIXME: https://github.com/searxng/searxng/pull/6655#issuecomment-5550293085
-            # - runner: ubuntu-26.04-arm
-            #   arch: armv7
+          - runner: ubuntu-26.04
+            arch: armv7
 
     steps:
       - name: Login to GHCR

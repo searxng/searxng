@@ -198,9 +198,7 @@ container.test() {
         pid_logs=$!
 
         # Wait until container is ready
-        sleep 20
-
-        curl -vf --max-time 5 "http://localhost:8080/healthz"
+        curl -fsS --retry 30 --retry-delay 2 --retry-all-errors --max-time 5 "http://localhost:8080/healthz"
 
         kill $pid_logs &>/dev/null || true
         podman stop "$name" >/dev/null
