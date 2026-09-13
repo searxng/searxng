@@ -8,7 +8,7 @@ module.exports = async ({ github, context }) => {
 
   // https://github.com/searxng/searxng/pull/6476#discussion_r3683782481
   const hasBox = /\[[Xx]\].*AI Policy/.test(body);
-  const hasRef = /\[AI Policy\]:\s*https:\/\/github\.com\/searxng\/searxng\/.*AI_POLICY/.test(body);
+  const hasRef = /\[AI Policy\](?::\s*|\()https:\/\/github\.com\/searxng\/searxng\/.*AI_POLICY/.test(body);
   if (hasBox && hasRef) {
     return;
   }
