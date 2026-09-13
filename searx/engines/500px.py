@@ -12,8 +12,6 @@ through our exclusive distribution partners.
 import typing as t
 
 import codecs
-import random
-import string
 
 from searx.result_types import EngineResults
 
@@ -33,11 +31,11 @@ about = {
 }
 
 base_url = "https://500px.com"
-api_url = "https://api.500px.com"
+api_url = "https://api-neo.500px.com"
 
 categories = ["images"]
-
 paging = True
+
 results_per_page = 30
 """Number of results to return in the request.
 
@@ -46,45 +44,69 @@ The default was taken from the WEB UI, where the GraphQL query sets the value to
 """
 
 
-SXNG_query = """query PhotoSearchPaginationContainerQuery(
-    $first: Int, $cursor: String, $search: String!, $sort: PhotoSort, $filters: [PhotoSearchFilter!], $nlp: Boolean
+SXNG_query = """
+query searchResource(
+  $keyword: String!
+  $type: SearchType = TEXT
+  $first: Int!
+  $after: String
+  $resourceTypes: [SearchResourceType!]
+  $categories: [String!]
+  $equipments: [String!]
+  $downloadable: PhotoDownloadable
+  $sort: SearchSortOption = RELEVANCE
+  $excludeNsfw: Boolean
 ) {
-  ...SXNG_query
-}
-
-fragment SXNG_query on Query {
-  photoSearch(sort: $sort, first: $first, after: $cursor, search: $search, filters: $filters, nlp: $nlp) {
+  searchResource(
+    keyword: $keyword
+    type: $type
+    first: $first
+    after: $after
+    resourceTypes: $resourceTypes
+    categories: $categories
+    equipments: $equipments
+    downloadable: $downloadable
+    sort: $sort
+    excludeNsfw: $excludeNsfw
+  ) {
     edges {
+      cursor
       node {
-        id
-        canonicalPath
-        name
-        description
-        width
-        height
-        photographer: uploader {
-          displayName
-        }
-        images(sizes: [35, 33]) {
-          size
-          url
-          jpegUrl
-          webpUrl
+        __typename
+        ... on Photo {
           id
+          title
+          description
+          licensing {
+            status
+            __typename
+          }
+          urls {
+            size_600
+            size_1024
+            size_2048
+            size_4k
+            __typename
+          }
+          uploader {
+            displayName
+            __typename
+          }
+          isNsfw
+          width
+          height
+          dominantColorLight
+          dominantColorDark
+          uploadedAt
+          __typename
         }
       }
-      cursor
+      __typename
     }
+    __typename
   }
 }
 """
-
-
-def setup(_) -> bool:
-    global SXNG_query  # pylint: disable=global-statement
-    rand_str: str = "".join(random.choices(string.ascii_letters, k=5))
-    SXNG_query = SXNG_query.replace("SXNG_query", "PhotoSearchPaginationContainer_query_1" + rand_str)
-    return True
 
 
 def request(query: str, params: "OnlineParams") -> None:
@@ -95,14 +117,14 @@ def request(query: str, params: "OnlineParams") -> None:
     params["url"] = f"{api_url}/graphql"
     params["method"] = "POST"
     params["json"] = {
-        "operationName": "PhotoSearchPaginationContainerQuery",
+        "operationName": "searchResource",
         "variables": {
+            "after": cursor,
             "first": results_per_page,
-            "cursor": cursor,
-            "search": query,
+            "keyword": query,
+            "resourceTypes": ["PHOTO"],
             "sort": "RELEVANCE",
-            "filters": [],
-            "nlp": False,
+            "type": "TEXT",
         },
         "query": SXNG_query,
     }
@@ -110,27 +132,20 @@ def request(query: str, params: "OnlineParams") -> None:
 
 def response(resp: "SXNG_Response"):
     res = EngineResults()
-    json_data = resp.json()["data"]["photoSearch"]
+    json_data = resp.json()["data"]["searchResource"]
 
     for edge in json_data["edges"]:
         node = edge["node"]  # pyright: ignore[reportAny]
-        if not node["images"]:
-            continue
-        images: list[dict[str, str]] = sorted(node["images"], key=lambda i: i["size"])
-        thumbnail_src = images[0]["url"]
-        img_src = images[-1]["url"]
+        image_urls = [url for (resolution, url) in node["urls"].items() if resolution.startswith("size_")]
         res.add(
-            res.types.LegacyResult(
-                {
-                    "template": "images.html",
-                    "url": base_url + node["canonicalPath"],
-                    "thumbnail_src": thumbnail_src,
-                    "img_src": img_src,
-                    "title": node["name"],
-                    "content": node["description"],
-                    "author": node["photographer"]["displayName"],
-                    "resolution": f"{node['width']}x{node['height']}",
-                }
+            res.types.Image(
+                url=f"{base_url}/photo/{node['id']}",
+                thumbnail_src=image_urls[0],
+                img_src=image_urls[-1],
+                title=node["title"],
+                content=node["description"],
+                author=node["uploader"]["displayName"],
+                resolution=f"{node['width']}x{node['height']}",
             )
         )
 
