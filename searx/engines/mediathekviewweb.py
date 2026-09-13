@@ -61,7 +61,9 @@ def response(json_resp: "SXNG_Response"):
     for item in mwv_result_list:
         item['hms'] = str(datetime.timedelta(seconds=item['duration']))
 
-        video_url = item["url_video_hd"]
+        video_url = item["url_video_hd"] or item["url_video"] or item["url_video_low"] or item["url_video"]
+        if not video_url:
+            continue
 
         res.add(
             res.types.LegacyResult(
