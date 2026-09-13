@@ -1,8 +1,14 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 """MediathekViewWeb (API)"""
 
+import typing as t
 import datetime
-from json import loads, dumps
+
+from searx.result_types import EngineResults
+
+if t.TYPE_CHECKING:
+    from searx.extended_types import SXNG_Response
+    from searx.search.processors import OnlineParams
 
 about = {
     "website": 'https://mediathekviewweb.de/',
@@ -20,54 +26,52 @@ time_range_support = False
 safesearch = False
 
 
-def request(query, params):
+def request(query: str, params: "OnlineParams"):
 
     params['url'] = 'https://mediathekviewweb.de/api/query'
     params['method'] = 'POST'
     params['headers']['Content-type'] = 'text/plain'
-    params['data'] = dumps(
-        {
-            'queries': [
-                {
-                    'fields': [
-                        'title',
-                        'topic',
-                    ],
-                    'query': query,
-                },
-            ],
-            'sortBy': 'timestamp',
-            'sortOrder': 'desc',
-            'future': True,
-            'offset': (params['pageno'] - 1) * 10,
-            'size': 10,
-        }
-    )
-    return params
+    params['json'] = {
+        'queries': [
+            {
+                'fields': [
+                    'title',
+                    'topic',
+                ],
+                'query': query,
+            },
+        ],
+        'sortBy': 'timestamp',
+        'sortOrder': 'desc',
+        'future': True,
+        'offset': (params['pageno'] - 1) * 10,
+        'size': 10,
+    }
 
 
-def response(resp):
+def response(json_resp: "SXNG_Response"):
 
-    resp = loads(resp.text)
+    json_resp: dict[str, t.Any] = json_resp.json()
 
-    mwv_result = resp['result']
+    mwv_result = json_resp['result']
     mwv_result_list = mwv_result['results']
 
-    results = []
+    res = EngineResults()
 
     for item in mwv_result_list:
-
         item['hms'] = str(datetime.timedelta(seconds=item['duration']))
 
-        results.append(
-            {
-                'url': item['url_video_hd'].replace("http://", "https://"),
-                'title': "%(channel)s: %(title)s (%(hms)s)" % item,
-                'length': item['hms'],
-                'content': "%(description)s" % item,
-                'iframe_src': item['url_video_hd'].replace("http://", "https://"),
-                'template': 'videos.html',
-            }
+        video_url = item["url_video_hd"]
+
+        res.add(
+            res.types.LegacyResult(
+                url=video_url,
+                title="%(channel)s: %(title)s (%(hms)s)" % item,
+                length=item['hms'],
+                content="%(description)s" % item,
+                iframe_src=video_url,
+                template='videos.html',
+            )
         )
 
-    return results
+    return res
