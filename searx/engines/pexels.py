@@ -13,19 +13,21 @@ from searx.enginelib import EngineCache
 from searx.exceptions import SearxEngineAPIException, SearxEngineAccessDeniedException
 from searx.network import get
 
+if t.TYPE_CHECKING:
+    from extended_types import SXNG_Response
+    from search.processors.online import OnlineParams
 
-# about
 about = {
-    "website": 'https://www.pexels.com',
-    "wikidata_id": 'Q101240504',
-    "official_api_documentation": 'https://www.pexels.com/api/',
+    "website": "https://www.pexels.com",
+    "wikidata_id": "Q101240504",
+    "official_api_documentation": "https://www.pexels.com/api/",
     "use_official_api": False,
     "require_api_key": False,
-    "results": 'JSON',
+    "results": "JSON",
 }
 
-base_url = 'https://www.pexels.com'
-categories = ['images']
+base_url = "https://www.pexels.com"
+categories = ["gallery"]
 
 api_key = "H2jk9uKnhRmL6WPwh89zBezWvr"
 """
@@ -35,7 +37,7 @@ results_per_page = 20
 
 paging = True
 time_range_support = True
-time_range_map = {'day': 'last_24_hours', 'week': 'last_week', 'month': 'last_month', 'year': 'last_year'}
+time_range_map = {"day": "last_24_hours", "week": "last_week", "month": "last_month", "year": "last_year"}
 
 SECRET_KEY_RE = re.compile('"secret-key":\b*"(.*?)"')
 SECRET_KEY_DB_KEY = "secret-key"
@@ -74,14 +76,14 @@ def _get_secret_key():
     raise SearxEngineAPIException("failed to obtain secret key")
 
 
-def request(query, params):
+def request(query: str, params: "OnlineParams"):
     args = {
-        'query': query,
-        'page': params['pageno'],
-        'per_page': results_per_page,
+        "query": query,
+        "page": params["pageno"],
+        "per_page": results_per_page,
     }
-    if params['time_range']:
-        args['date_from'] = time_range_map[params['time_range']]
+    if params["time_range"]:
+        args["date_from"] = time_range_map[params["time_range"]]
 
     params["url"] = f"{base_url}/en-us/api/v3/search/photos?{urlencode(args)}"
 
@@ -98,24 +100,21 @@ def request(query, params):
     params["headers"]["secret-key"] = secret_key
 
 
-def response(resp):
+def response(resp: "SXNG_Response") -> EngineResults:
     res = EngineResults()
     json_data = resp.json()
 
-    for result in json_data.get('data', []):
+    for result in json_data.get("data", []):
         attrs = result["attributes"]
         res.add(
-            res.types.LegacyResult(
-                {
-                    'template': 'images.html',
-                    'url': f"{base_url}/photo/{attrs['slug']}-{attrs['id']}/",
-                    'title': attrs["title"],
-                    'content': attrs["description"],
-                    'thumbnail_src': attrs["image"]["small"],
-                    'img_src': attrs["image"]["download_link"],
-                    'resolution': f"{attrs['width']}x{attrs['height']}",
-                    'author': f"{attrs['user']['username']}",
-                }
+            res.types.Image(
+                url=f"{base_url}/photo/{attrs['slug']}-{attrs['id']}/",
+                title=attrs["title"],
+                content=attrs["description"],
+                thumbnail_src=attrs["image"]["small"],
+                img_src=attrs["image"]["download_link"],
+                resolution=f"{attrs['width']}x{attrs['height']}",
+                author=f"{attrs['user']['username']}",
             )
         )
 

@@ -32,6 +32,7 @@ CATEGORY_NAMES = {
     'MUSIC': 'music',
     'SOCIAL_MEDIA': 'social media',
     'IMAGES': 'images',
+    'GALLERY': 'gallery',
     'VIDEOS': 'videos',
     'RADIO': 'radio',
     'TV': 'tv',
