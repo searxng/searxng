@@ -51,7 +51,7 @@ paging = True
 
 __CACHED_API_URL = None
 
-_API_URL_RE = re.compile(r"\"(https://.*?/search-proxy)\"")
+_API_URL_RE = re.compile(r"https://.*?/search-proxy")
 
 
 def _clean_url(url):
@@ -82,8 +82,7 @@ def _get_algolia_api_url():
     if api_url_match is None:
         raise LookupError("Couldn't obtain AWS api url for PDImageArchive")
 
-    api_url = api_url_match.group(1)
-
+    api_url = api_url_match.group(0)
     __CACHED_API_URL = api_url
     return api_url
 
