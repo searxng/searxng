@@ -29,6 +29,7 @@ from urllib.parse import urlsplit
 
 import flask
 from curl_cffi.requests import Response as CurlResponse
+from lxml import html
 
 if typing.TYPE_CHECKING:
     import searx.preferences
@@ -100,9 +101,14 @@ class SXNG_Response(CurlResponse):
     _url: str = ""
 
     @property
-    def url(self) -> SXNG_URL:  # type: ignore[override]
+    def url(self) -> SXNG_URL:
         return SXNG_URL(self._url)
 
     @url.setter
     def url(self, value: str) -> None:
         self._url = str(value or "")
+
+    def html(self) -> html.HtmlElement:
+        """Parses the result into a HTML document via :py:obj:`lxml.html`."""
+
+        return html.fromstring(self.text)
