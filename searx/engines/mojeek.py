@@ -6,7 +6,6 @@ from datetime import datetime
 from urllib.parse import urlencode
 
 from dateutil.relativedelta import relativedelta
-from lxml import html
 
 from searx.enginelib.traits import EngineTraits
 from searx.utils import eval_xpath, eval_xpath_list, extract_text
@@ -135,7 +134,7 @@ def _news_results(dom):
 
 
 def response(resp):
-    dom = html.fromstring(resp.text)
+    dom = resp.html()
 
     if search_type == "":
         return _general_results(dom)
@@ -166,7 +165,7 @@ def fetch_traits(engine_traits: EngineTraits):
     if not resp.ok:
         raise RuntimeError("Response from Mojeek is not OK.")
 
-    dom = html.fromstring(resp.text)
+    dom = resp.html()
 
     languages = eval_xpath_list(dom, f'//select[@name="{language_param}"]/option/@value')
 

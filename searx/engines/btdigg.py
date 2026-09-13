@@ -38,7 +38,7 @@ def request(query, params):
 def response(resp):
     results = []
 
-    dom = html.fromstring(resp.text)
+    dom = resp.html()
 
     search_res = dom.xpath('//div[@class="one_result"]')
 

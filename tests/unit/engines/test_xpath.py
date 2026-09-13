@@ -2,6 +2,7 @@
 # pylint: disable=missing-module-docstring,disable=missing-class-docstring,invalid-name
 
 from collections import defaultdict
+import lxml.html
 import mock
 
 from searx.engines import xpath
@@ -27,6 +28,7 @@ class TestXpathEngine(SearxTestCase):
         </div>
     </div>
     """
+    empty_html = """<html></html>"""
 
     def setUp(self):
         super().setUp()
@@ -65,10 +67,14 @@ class TestXpathEngine(SearxTestCase):
         self.assertRaises(AttributeError, xpath.response, '')
         self.assertRaises(AttributeError, xpath.response, '[]')
 
-        response = mock.Mock(text='<html></html>', status_code=200)
+        response = mock.Mock(
+            text=self.empty_html, status_code=200, html=mock.Mock(return_value=lxml.html.fromstring(self.empty_html))
+        )
         self.assertEqual(xpath.response(response), [])
 
-        response = mock.Mock(text=self.html, status_code=200)
+        response = mock.Mock(
+            text=self.html, status_code=200, html=mock.Mock(return_value=lxml.html.fromstring(self.html))
+        )
         results = xpath.response(response)
         self.assertIsInstance(results, list)
         self.assertEqual(len(results), 2)
@@ -107,10 +113,16 @@ class TestXpathEngine(SearxTestCase):
         self.assertRaises(AttributeError, xpath.response, '')
         self.assertRaises(AttributeError, xpath.response, '[]')
 
-        response = mock.Mock(text='<html></html>', status_code=200)
+        response = mock.Mock(
+            text=self.empty_html, status_code=200, html=mock.Mock(return_value=lxml.html.fromstring(self.empty_html))
+        )
         self.assertEqual(xpath.response(response), [])
 
-        response = mock.Mock(text=self.html, status_code=200)
+        response = mock.Mock(
+            text=self.html,
+            status_code=200,
+            html=mock.Mock(return_value=lxml.html.fromstring(self.html)),
+        )
         results = xpath.response(response)
         self.assertIsInstance(results, list)
         self.assertEqual(len(results), 2)

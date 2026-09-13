@@ -11,7 +11,6 @@ import re
 from urllib.parse import urlencode
 from datetime import datetime, timedelta
 from dateutil import parser
-from lxml import html
 
 from searx.utils import (
     eval_xpath_list,
@@ -66,7 +65,7 @@ def request(query, params):
 
 def response(resp):
     results = []
-    dom = html.fromstring(resp.text)
+    dom = resp.html()
 
     # parse results
     for result in eval_xpath_list(dom, '//ol[contains(@class,"searchCenterMiddle")]//li'):

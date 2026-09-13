@@ -58,7 +58,7 @@ def response(resp):
     ):
         raise SearxEngineCaptchaException()
 
-    dom = html.fromstring(resp.text)
+    dom = resp.html()
     results = []
 
     # pylint: disable=line-too-long

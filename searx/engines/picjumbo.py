@@ -7,8 +7,6 @@
 from urllib.parse import urlparse, urlunparse
 import typing as t
 
-from lxml import html
-
 from searx.result_types import EngineResults
 from searx.utils import eval_xpath, eval_xpath_list, extract_text
 
@@ -46,7 +44,7 @@ def _get_max_res_url(url: str) -> str:
 def response(resp: "SXNG_Response"):
     res = EngineResults()
 
-    doc = html.fromstring(resp.text)
+    doc = resp.html()
 
     for result in eval_xpath_list(doc, "//div[contains(@class, 'photo_query')]/div[contains(@class, 'photo_item')]"):
         thumbnail = extract_text(eval_xpath(result, ".//img[contains(@class, 'image')]/@src")) or ""

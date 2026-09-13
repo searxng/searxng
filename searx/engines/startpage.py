@@ -97,7 +97,6 @@ from unicodedata import combining, normalize
 
 import babel.localedata
 import dateutil.parser
-import lxml.html
 
 from searx.enginelib import EngineCache
 from searx.enginelib.traits import EngineTraits
@@ -256,7 +255,7 @@ def get_sc_code(params):
             message="get_sc_code: got redirected to https://www.startpage.com/sp/captcha",
         )
 
-    dom = lxml.html.fromstring(resp.text)
+    dom = resp.html()
 
     try:
         sc_code = eval_xpath(dom, search_form_xpath + '//input[@name="sc"]/@value')[0]
@@ -502,7 +501,7 @@ def fetch_traits(engine_traits: EngineTraits):
     if not resp.ok:
         raise RuntimeError("Response from Startpage is not OK.")
 
-    dom = lxml.html.fromstring(resp.text)
+    dom = resp.html()
 
     # regions
 

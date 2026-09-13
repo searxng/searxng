@@ -125,7 +125,6 @@ from urllib.parse import (
 )
 
 from dateutil import parser
-from lxml import html
 
 from searx import locales
 from searx.enginelib.traits import EngineTraits
@@ -289,7 +288,7 @@ def response(resp: SXNG_Response) -> EngineResults:
 
 def _parse_search(resp: SXNG_Response) -> EngineResults:
     res = EngineResults()
-    dom = html.fromstring(resp.text)
+    dom = resp.html()
 
     for result in eval_xpath_list(dom, "//div[contains(@class, 'snippet ')]"):
         url: str | None = eval_xpath_getindex(result, ".//a/@href", 0, default=None)
@@ -352,7 +351,7 @@ def _parse_search(resp: SXNG_Response) -> EngineResults:
 
 def _parse_news(resp: SXNG_Response) -> EngineResults:
     res = EngineResults()
-    dom = html.fromstring(resp.text)
+    dom = resp.html()
 
     for result in eval_xpath_list(dom, "//div[@data-type='news']"):
         url = eval_xpath_getindex(result, ".//a/@href", 0, default=None)
@@ -434,7 +433,7 @@ def fetch_traits(engine_traits: EngineTraits):
     if not resp.ok:
         raise RuntimeError("Response from Brave languages is not OK.")
 
-    dom = html.fromstring(resp.text)
+    dom = resp.html()
 
     for option in dom.xpath("//section//option[@value='en-us']/../option"):
         ui_lang = option.get("value")

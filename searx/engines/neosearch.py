@@ -7,8 +7,6 @@
 from json import loads
 import typing as t
 
-from lxml import html
-
 from searx.exceptions import SearxEngineAPIException
 from searx.extended_types import SXNG_Response
 from searx.network import get
@@ -38,7 +36,7 @@ categories = ["general"]
 
 def _obtain_xsrf_token() -> str:
     resp = get(base_url)
-    doc = html.fromstring(resp.text)
+    doc = resp.html()
 
     xsrf_token = extract_text(eval_xpath(doc, "//meta[@name='xsrf-token']/@content"))
     if not xsrf_token:

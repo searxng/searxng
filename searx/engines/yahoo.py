@@ -10,7 +10,6 @@ from urllib.parse import (
     unquote,
     urlencode,
 )
-from lxml import html
 
 from searx.utils import (
     eval_xpath_getindex,
@@ -216,7 +215,7 @@ def response(resp):
     """parse response"""
 
     results = []
-    dom = html.fromstring(resp.text)
+    dom = resp.html()
 
     url_xpath = './/div[contains(@class,"compTitle")]/h3/a/@href'
     title_xpath = './/h3//a/@aria-label'

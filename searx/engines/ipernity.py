@@ -5,7 +5,6 @@ from datetime import datetime
 from json import loads, JSONDecodeError
 
 from urllib.parse import quote_plus
-from lxml import html
 
 from searx.utils import extr, extract_text, eval_xpath, eval_xpath_list
 
@@ -33,7 +32,7 @@ def request(query, params):
 def response(resp):
     results = []
 
-    doc = html.fromstring(resp.text)
+    doc = resp.html()
 
     images = eval_xpath_list(doc, '//a[starts-with(@href, "/doc")]//img')
 

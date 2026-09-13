@@ -5,7 +5,6 @@
 import typing as t
 
 from urllib.parse import urlencode
-from lxml import html
 
 from searx import logger
 from searx.enginelib import EngineCache
@@ -88,7 +87,7 @@ def response(resp):
     if not resp.text or not resp.text.strip():
         return []
 
-    dom = html.fromstring(resp.text)
+    dom = resp.html()
     results = []
 
     for item in dom.xpath('//li[contains(@class, "res-list")]'):

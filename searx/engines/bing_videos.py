@@ -4,8 +4,6 @@
 import json
 from urllib.parse import urlencode
 
-from lxml import html
-
 from searx.engines.bing import (  # pylint: disable=unused-import
     fetch_traits,
     get_locale_params,
@@ -68,7 +66,7 @@ def response(resp):
 
     results = []
 
-    dom = html.fromstring(resp.text)
+    dom = resp.html()
 
     for result in dom.xpath('//div[contains(@id, "mc_vtvc_video")]'):
         metadata = json.loads(eval_xpath_getindex(result, './/div[@class="vrhdata"]/@vrhm', index=0))

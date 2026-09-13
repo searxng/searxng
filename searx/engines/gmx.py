@@ -10,7 +10,6 @@ import time
 import typing as t
 
 from urllib.parse import urlencode
-from lxml import html
 
 from searx.result_types import EngineResults
 from searx.exceptions import SearxEngineCaptchaException
@@ -43,7 +42,7 @@ def _get_page_hash(query: str, page: int, headers: dict[str, str]) -> str:
     resp = get(f"{base_url}/web/result?q={query}&page={page}", headers=headers)
 
     # detect captcha (if any)
-    doc = html.fromstring(resp.text)
+    doc = resp.html()
     if eval_xpath(doc, "//*[@id='spam-messages']"):
         raise SearxEngineCaptchaException()
 
