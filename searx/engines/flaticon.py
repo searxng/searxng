@@ -4,7 +4,7 @@
 .. _Flaticon: https://www.flaticon.com
 """
 
-from urllib.parse import urlencode
+from urllib.parse import quote, urlencode
 
 import typing as t
 
@@ -36,8 +36,7 @@ def request(query: str, params: "OnlineParams") -> None:
     }
     params["headers"].update(
         {
-            # important: query term is not URL encoded in the referer string
-            "Referer": f"{base_url}/search?word={query}",
+            "Referer": f"{base_url}/search?word={quote(query)}",
             "X-Requested-With": "XMLHttpRequest",
         }
     )
