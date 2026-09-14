@@ -41,21 +41,10 @@ jobs:
           - runner: ubuntu-26.04-arm
             arch: armv7
 
-    permissions:
-      packages: write
-
     outputs:
       docker_tag: ${{ steps.build.outputs.docker_tag }}
-      git_url: ${{ steps.build.outputs.git_url }}
 
     steps:
-      - name: Login to GHCR
-        uses: docker/login-action@dbcb813823bdd20940b903addbd779551569679f  # v4.6.0
-        with:
-          registry: "ghcr.io"
-          username: "${{ github.repository_owner }}"
-          password: "${{ secrets.GITHUB_TOKEN }}"
-
       - name: Setup Python
         uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97  # v7.0.0
         with:
@@ -93,6 +82,14 @@ jobs:
           OVERRIDE_ARCH: "${{ matrix.arch }}"
         run: make container.build
 
+      - name: Upload container image
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02  # v4.6.2
+        with:
+          name: container-image-${{ matrix.arch }}
+          path: "/var/tmp/searxng-podman/*.tar"
+          if-no-files-found: error
+          retention-days: 1
+
   test:
     name: Test (${{ matrix.arch }})
     runs-on: ${{ matrix.runner }}
@@ -109,13 +106,6 @@ jobs:
             arch: armv7
 
     steps:
-      - name: Login to GHCR
-        uses: docker/login-action@dbcb813823bdd20940b903addbd779551569679f  # v4.6.0
-        with:
-          registry: "ghcr.io"
-          username: "${{ github.repository_owner }}"
-          password: "${{ secrets.GITHUB_TOKEN }}"
-
       - name: Setup QEMU
         uses: docker/setup-qemu-action@1f40c72289eff860ee54a304f1438e3cff362e0a  # v4.3.0
 
@@ -125,10 +115,16 @@ jobs:
           ref: "${{ github.event.workflow_run.head_sha || github.sha }}"
           persist-credentials: "false"
 
+      - name: Download container image
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093  # v4.3.0
+        with:
+          pattern: container-image-${{ matrix.arch }}
+          path: "/var/tmp/searxng-podman"
+          merge-multiple: true
+
       - name: Test
         env:
           OVERRIDE_ARCH: "${{ matrix.arch }}"
-          GIT_URL: "${{ needs.build.outputs.git_url }}"
         run: make container.test
 
   release:
@@ -163,8 +159,14 @@ jobs:
           ref: "${{ github.event.workflow_run.head_sha || github.sha }}"
           persist-credentials: "false"
 
+      - name: Download container images
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093  # v4.3.0
+        with:
+          pattern: container-image-*
+          path: "/var/tmp/searxng-podman"
+          merge-multiple: true
+
       - name: Release
         env:
-          GIT_URL: "${{ needs.build.outputs.git_url }}"
           DOCKER_TAG: "${{ needs.build.outputs.docker_tag }}"
         run: make container.push
