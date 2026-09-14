@@ -6,7 +6,7 @@ from urllib.parse import urlencode
 from html import unescape
 from lxml import html
 from searx.exceptions import SearxEngineCaptchaException
-from searx.utils import humanize_bytes, eval_xpath, eval_xpath_list, extract_text, extr
+from searx.utils import humanize_bytes, eval_xpath, eval_xpath_list, extract_text
 
 # Engine metadata
 about = {
@@ -51,6 +51,47 @@ content_xpath = './/div[@class="b-serp-item__content"]//div[@class="b-serp-item_
 def catch_bad_response(resp):
     if resp.headers.get('x-yandex-captcha') == 'captcha':
         raise SearxEngineCaptchaException()
+
+
+def extract_json_object(text, marker):
+    """Return the first complete JSON object that starts with ``marker``.
+
+    Yandex embeds a large JSON object in the HTML returned by image search.
+    Looking for a hard-coded suffix is fragile because the same text can occur
+    inside nested objects or JSON strings. This parser tracks braces while
+    respecting quoted strings and escaped characters.
+    """
+
+    start = text.find(marker)
+    if start == -1:
+        raise ValueError(f'JSON marker not found: {marker}')
+
+    depth = 0
+    in_string = False
+    escaped = False
+
+    for index in range(start, len(text)):
+        char = text[index]
+
+        if in_string:
+            if escaped:
+                escaped = False
+            elif char == '\\':
+                escaped = True
+            elif char == '"':
+                in_string = False
+            continue
+
+        if char == '"':
+            in_string = True
+        elif char == '{':
+            depth += 1
+        elif char == '}':
+            depth -= 1
+            if depth == 0:
+                return text[start : index + 1]
+
+    raise ValueError('Incomplete JSON object in Yandex response')
 
 
 def request(query, params):
@@ -110,15 +151,7 @@ def response(resp):
         html_data = html.fromstring(resp.text)
         html_sample = unescape(html.tostring(html_data, encoding='unicode'))
 
-        content_between_tags = extr(
-            html_sample, '{"location":"/images/search/', 'advRsyaSearchColumn":null}}', default="fail"
-        )
-        json_data = '{"location":"/images/search/' + content_between_tags + 'advRsyaSearchColumn":null}}'
-
-        if content_between_tags == "fail":
-            content_between_tags = extr(html_sample, '{"location":"/images/search/', 'false}}}')
-            json_data = '{"location":"/images/search/' + content_between_tags + 'false}}}'
-
+        json_data = extract_json_object(html_sample, '{"location":"/images/search/')
         json_resp = loads(json_data)
 
         results = []
