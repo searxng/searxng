@@ -26,7 +26,6 @@ import typing as t
 
 from urllib.parse import urlencode
 from datetime import datetime
-from lxml import html
 from curl_cffi.requests.exceptions import TooManyRedirects
 
 from searx.utils import (
@@ -106,7 +105,7 @@ def response(resp: "SXNG_Response") -> EngineResults:  # pylint: disable=too-man
         raise TooManyRedirects(f"location {resp.headers['Location'].split('?')[0]}")
 
     res = EngineResults()
-    dom = html.fromstring(resp.text)
+    dom = resp.html()
     detect_google_captcha(dom)
 
     # parse results

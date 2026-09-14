@@ -6,8 +6,6 @@ Shopify.
 import typing as t
 from urllib.parse import urlencode
 
-from lxml import html
-
 from searx.result_types import EngineResults
 from searx.utils import eval_xpath, eval_xpath_list, extract_text
 
@@ -45,7 +43,7 @@ def _get_download_url(url: str) -> str:
 def response(resp: "SXNG_Response"):
     res = EngineResults()
 
-    doc = html.fromstring(resp.text)
+    doc = resp.html()
 
     for result in eval_xpath_list(doc, "//div[contains(@class, 'js-masonry-grid')]/div"):
         url = base_url + (extract_text(eval_xpath(result, ".//a[contains(@class, 'photo-tile')]/@href")) or "")

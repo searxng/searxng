@@ -89,7 +89,7 @@ def response(resp):
     if search_type == 'web':
         catch_bad_response(resp)
 
-        dom = html.fromstring(resp.text)
+        dom = resp.html()
 
         results = []
 
@@ -107,7 +107,7 @@ def response(resp):
     if search_type == 'images':
         catch_bad_response(resp)
 
-        html_data = html.fromstring(resp.text)
+        html_data = resp.html()
         html_sample = unescape(html.tostring(html_data, encoding='unicode'))
 
         content_between_tags = extr(

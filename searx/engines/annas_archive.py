@@ -39,7 +39,6 @@ import random
 import typing as t
 from urllib.parse import urlencode
 
-from lxml import html
 from lxml.etree import ElementBase
 
 from searx.data import ENGINE_TRAITS
@@ -143,7 +142,7 @@ def request(query: str, params: "OnlineParams") -> None:
 
 def response(resp: "SXNG_Response") -> EngineResults:
     res = EngineResults()
-    dom = html.fromstring(resp.text)
+    dom = resp.html()
 
     # Each result is a div with class "flex" inside "js-aarecord-list-outer"
     # container.  The "flex" filter excludes non-result div such as section
@@ -255,7 +254,7 @@ def fetch_traits(engine_traits: EngineTraits) -> None:
     if not resp.ok:
         raise RuntimeError("Response from Anna's Archive is not OK.")
 
-    dom = html.fromstring(resp.text)
+    dom = resp.html()
 
     # supported language codes
     lang_map: dict[str, str] = {}

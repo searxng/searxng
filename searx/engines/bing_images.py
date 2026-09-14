@@ -5,8 +5,6 @@ import typing as t
 import json
 from urllib.parse import urlencode
 
-from lxml import html
-
 from searx.engines.bing import fetch_traits  # pylint: disable=unused-import
 from searx.result_types import EngineResults
 
@@ -75,7 +73,7 @@ def response(resp: "SXNG_Response") -> EngineResults:
 
     res = EngineResults()
 
-    dom = html.fromstring(resp.text)
+    dom = resp.html()
 
     for result in dom.xpath('//ul[contains(@class, "dgControl_list")]/li'):
         metadata = result.xpath('.//a[@class="iusc"]/@m')

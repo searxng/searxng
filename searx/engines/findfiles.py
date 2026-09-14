@@ -13,8 +13,6 @@ from os.path import basename
 from urllib.parse import urlencode
 import typing as t
 
-from lxml import html
-
 from searx.result_types import EngineResults
 from searx.utils import extract_text, eval_xpath, eval_xpath_list
 
@@ -76,7 +74,7 @@ def request(query: str, params: "OnlineParams") -> None:
 def response(resp: "SXNG_Response") -> EngineResults:
     res = EngineResults()
 
-    dom = html.fromstring(resp.text)
+    dom = resp.html()
     if findfiles_categ == "image":
         for result in eval_xpath_list(
             dom, "//div[contains(@class, 'image-mosaic')]/div[contains(@class, 'image-item')]"

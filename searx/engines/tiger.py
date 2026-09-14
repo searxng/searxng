@@ -11,7 +11,6 @@ from urllib.parse import urlencode
 import typing as t
 
 from dateutil import parser
-from lxml import html
 
 from searx.exceptions import SearxEngineAPIException
 from searx.extended_types import SXNG_Response
@@ -72,7 +71,7 @@ def _obtain_session_code() -> str:
         return cached_session
 
     results_page = get(f"{base_url}/checkCode.aspx")
-    doc = html.fromstring(results_page.text)
+    doc = results_page.html()
 
     extra_data: dict[str, str] = {}
     for extra_param in ("__VIEWSTATE", "__VIEWSTATEGENERATOR", "__EVENTVALIDATION"):
@@ -130,7 +129,7 @@ def request(query: str, params: "OnlineParams"):
 
 def response(resp: "SXNG_Response") -> EngineResults:
     res = EngineResults()
-    doc = html.fromstring(resp.text)
+    doc = resp.html()
 
     if tiger_category == "Websuche":
         for result in eval_xpath_list(doc, "//div[@id='mainContainer']//table/tr"):

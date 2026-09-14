@@ -7,8 +7,6 @@
 import typing as t
 from urllib.parse import urlencode
 
-from lxml import html
-
 from searx.result_types import EngineResults
 from searx.utils import eval_xpath_list, eval_xpath, extract_text
 
@@ -101,7 +99,7 @@ def _video_results(doc: "ElementBase") -> EngineResults:
 
 
 def response(resp: "SXNG_Response") -> EngineResults:
-    doc = html.fromstring(resp.text)
+    doc = resp.html()
     match vuhuv_category:
         case "general":
             return _general_results(doc)

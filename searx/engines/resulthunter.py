@@ -7,8 +7,6 @@
 import typing as t
 from urllib.parse import urlencode
 
-from lxml import html
-
 from searx import locales
 from searx.exceptions import SearxEngineResponseException
 from searx.result_types import EngineResults
@@ -111,7 +109,7 @@ def _image_results(doc: "ElementBase") -> EngineResults:
 
 
 def response(resp: "SXNG_Response") -> EngineResults:
-    doc = html.fromstring(resp.text)
+    doc = resp.html()
 
     # if the request was wrong (e.g. missing params), the site doesn't contain a result container
     # and instead shows an "Installation required" page to download the resulthunter browser extension
