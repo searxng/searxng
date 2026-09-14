@@ -255,6 +255,8 @@ article[data-vim-selected].category-social {
     font-size: 1rem;
     color: var(--color-result-url-font);
     flex-flow: row nowrap;
+    flex: 1;
+    min-width: 0;
     overflow: hidden;
     margin: 0;
     padding: 0;
@@ -305,13 +307,18 @@ article[data-vim-selected].category-social {
 
   a.thumbnail_link {
     position: relative;
-    margin-top: 0.6rem;
-    .ltr-margin-right(1rem);
-    .ltr-float-left();
+    .ltr-float-right();
+    .ltr-margin-left(0.5rem);
+    width: 7rem;
+    height: 7rem;
+    border-radius: 1rem;
+    overflow: hidden;
+    background: var(--color-result-border);
 
     img.thumbnail {
-      width: 7rem;
-      height: unset; // remove height value that was needed for lazy loading
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
       display: block;
     }
 
@@ -408,10 +415,6 @@ article[data-vim-selected].category-social {
 }
 
 .result-videos {
-  a.thumbnail_link img.thumbnail {
-    width: 20rem;
-  }
-
   .content {
     overflow: hidden;
   }
@@ -433,6 +436,8 @@ article[data-vim-selected].category-social {
 
 .engines {
   .ltr-float-right();
+  clear: both;
+  margin-top: 0.5rem;
   display: flex;
   flex-wrap: wrap;
   justify-content: flex-end;
@@ -930,10 +935,6 @@ summary.title {
   }
 
   .result {
-    .thumbnail {
-      max-width: 98%;
-    }
-
     .url {
       span.url {
         display: block;
@@ -1144,11 +1145,14 @@ summary.title {
 */
 
 @media screen and (max-width: @small-phone) {
-  .result-videos {
-    img.thumbnail {
-      float: none !important;
+  .result {
+    a.thumbnail_link {
+      width: 5.5rem;
+      height: 5.5rem;
     }
+  }
 
+  .result-videos {
     .content {
       overflow: inherit;
     }
