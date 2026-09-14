@@ -164,14 +164,14 @@ button.category_button {
   &:hover {
     color: var(--color-search-background-hover);
   }
-
-  &.empty * {
-    display: none;
-  }
 }
 
-html.no-js #clear_search.hide_if_nojs {
-  display: none;
+#q:placeholder-shown ~ #clear_search {
+  pointer-events: none;
+
+  * {
+    display: none;
+  }
 }
 
 #q,
@@ -202,12 +202,6 @@ html.no-js #clear_search.hide_if_nojs {
     background-color: var(--color-search-background-hover);
     color: var(--color-search-background);
   }
-}
-
-.no-js #clear_search,
-.no-js #send_search {
-  width: auto !important;
-  .ltr-border-left(1px solid var(--color-search-border));
 }
 
 .search_filters {
