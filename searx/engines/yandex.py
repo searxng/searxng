@@ -98,7 +98,7 @@ def _parse_json_results(dom: html.HtmlElement) -> dict[str, t.Any]:
             json_resp = loads(json_data)
             if json_resp.get("location") == "/images/search/":
                 return json_resp
-        except Exception:
+        except JSONDecodeError:
             logger.debug("failed parsing data-state json")
 
     # fallback to extr(..., 'advRsyaSearchColumn":null}}')
