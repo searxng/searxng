@@ -4,11 +4,10 @@
 import typing as t
 from json import JSONDecodeError, loads
 from urllib.parse import urlencode
-from html import unescape
 from lxml import html
 from searx.exceptions import SearxEngineCaptchaException
 from searx.result_types import EngineResults
-from searx.utils import humanize_bytes, eval_xpath, eval_xpath_list, extract_text, extr, html_to_text
+from searx.utils import humanize_bytes, eval_xpath, eval_xpath_list, extract_text, html_to_text
 
 if t.TYPE_CHECKING:
     from searx import logger  # logger is injected by searx.engines.set_loggers()
@@ -79,8 +78,8 @@ def request(query: str, params: "OnlineParams") -> None:
     }
 
     if params["pageno"] > 1:
-        query_params_web["p"] = params["pageno"] - 1
-        query_params_images["p"] = params["pageno"] - 1
+        query_params_web["p"] = params["pageno"] - 1  # type: ignore
+        query_params_images["p"] = params["pageno"] - 1  # type: ignore
 
     params["cookies"] = {"cookie": "yp=1716337604.sp.family%3A0#1685406411.szm.1:1920x1080:1920x999"}
 
@@ -101,26 +100,7 @@ def _parse_json_results(dom: html.HtmlElement) -> dict[str, t.Any]:
         except JSONDecodeError:
             logger.debug("failed parsing data-state json")
 
-    # fallback to extr(..., 'advRsyaSearchColumn":null}}')
-    return _parse_json_results_fallback(dom)
-
-
-def _parse_json_results_fallback(dom: html.HtmlElement) -> dict:
-    logger.warning('Unable to parse xpath("//*[@data-state]")')
-    html_sample = unescape(html.tostring(dom, encoding="unicode"))
-
-    content_between_tags = extr(
-        html_sample, '{"location":"/images/search/', 'advRsyaSearchColumn":null}}', default="fail"
-    )
-    json_data = '{"location":"/images/search/' + content_between_tags + 'advRsyaSearchColumn":null}}'
-
-    if content_between_tags == "fail":
-        logger.debug('Attempting fallback to "serpFooter" key')
-        # try falling back to a another unique json key and trailing colon
-        content_between_tags = extr(html_sample, '{"location":"/images/search/', '"serpFooter":')
-        json_data = '{"location":"/images/search/' + content_between_tags.rstrip(",") + "}}"
-
-    return loads(json_data)
+    return {}
 
 
 def response(resp: "SXNG_Response") -> EngineResults:
