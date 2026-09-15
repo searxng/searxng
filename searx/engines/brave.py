@@ -136,6 +136,7 @@ from searx.utils import (
     eval_xpath_list,
     extract_text,
     get_embedded_stream_url,
+    html_to_text,
     js_obj_str_to_json_str,
     js_obj_str_to_python,
 )
@@ -280,9 +281,9 @@ def response(resp: SXNG_Response) -> EngineResults:
     json_resp: dict[str, t.Any] = json_data["data"][1]["data"]["body"]["response"]
 
     if brave_category == "images":
-        return _parse_images(json_resp)
+        return parse_images_json(json_resp["results"])
     if brave_category == "videos":
-        return _parse_videos(json_resp)
+        return parse_videos_json(json_resp["results"])
 
     raise ValueError(f"Unsupported brave category: {brave_category}")
 
@@ -375,40 +376,88 @@ def _parse_news(resp: SXNG_Response) -> EngineResults:
     return res
 
 
-def _parse_images(json_resp: dict[str, t.Any]) -> EngineResults:
+def parse_web_json(results: list[dict[str, t.Any]]) -> EngineResults:
     res = EngineResults()
 
-    for result in json_resp["results"]:
-        item = res.types.LegacyResult(
-            template="images.html",
-            url=result["url"],
-            title=result["title"],
-            source=result["source"],
-            img_src=result["properties"]["url"],
-            thumbnail_src=result["thumbnail"]["src"],
+    for result in results:
+        thumbnail_obj = result.get("thumbnail")
+        thumbnail = ""
+        if thumbnail_obj and not thumbnail_obj.get("logo", False):
+            thumbnail = thumbnail_obj.get("src") or ""
+
+        res.add(
+            res.types.MainResult(
+                url=result["url"],
+                title=html_to_text(result["title"]),
+                content=html_to_text(result.get("description", "")),
+                publishedDate=_extract_published_date(result.get("age")),
+                thumbnail=thumbnail,
+            ),
         )
-        res.add(item)
 
     return res
 
 
-def _parse_videos(json_resp: dict[str, t.Any]) -> EngineResults:
+def parse_news_json(results: list[dict[str, t.Any]]) -> EngineResults:
     res = EngineResults()
 
-    for result in json_resp["results"]:
-        item = res.types.LegacyResult(
-            template="videos.html",
-            url=result["url"],
-            title=result["title"],
-            content=result["description"],
-            length=result["video"]["duration"],
-            duration=result["video"]["duration"],
-            publishedDate=_extract_published_date(result["age"]),
-        )
-        if result["thumbnail"] is not None:
-            item["thumbnail"] = result["thumbnail"]["src"]
+    for result in results:
+        publishedDate = None
+        try:
+            publishedDate = parser.parse(result["age"])
+        except parser.ParserError:
+            pass
 
-        res.add(item)
+        res.add(
+            res.types.MainResult(
+                url=result["url"],
+                title=html_to_text(result["title"]),
+                content=html_to_text(result["description"]),
+                thumbnail=result["thumbnail"]["src"],
+                publishedDate=publishedDate,
+            )
+        )
+
+    return res
+
+
+def parse_images_json(results: list[dict[str, t.Any]]) -> EngineResults:
+    res = EngineResults()
+
+    for result in results:
+        res.add(
+            res.types.LegacyResult(
+                template="images.html",
+                url=result["url"],
+                title=result["title"],
+                source=result["source"],
+                img_src=result["properties"]["url"],
+                thumbnail_src=result["thumbnail"]["src"],
+            )
+        )
+
+    return res
+
+
+def parse_videos_json(results: list[dict[str, t.Any]]) -> EngineResults:
+    res = EngineResults()
+
+    for result in results:
+        thumbnail = ""
+        if result["thumbnail"] is not None:
+            thumbnail = result["thumbnail"]["src"]
+        res.add(
+            res.types.LegacyResult(
+                template="videos.html",
+                url=result["url"],
+                title=result["title"],
+                content=result["description"],
+                length=result["video"]["duration"],
+                duration=result["video"]["duration"],
+                publishedDate=_extract_published_date(result["age"]),
+                thumbnail=thumbnail,
+            )
+        )
 
     return res
 
