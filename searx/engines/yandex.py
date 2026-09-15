@@ -54,35 +54,28 @@ def catch_bad_response(resp):
 
 
 def request(query, params):
-    query_params_web = {
-        "tmpl_version": "releases",
+    query_params = {
         "text": query,
-        "web": "1",
-        "frame": "1",
-        "searchid": "3131712",
     }
-
-    lang = params["language"].split("-")[0]
-    if lang in yandex_supported_langs:
-        query_params_web["lang"] = lang
-
-    query_params_images = {
-        "text": query,
-        "uinfo": "sw-1920-sh-1080-ww-1125-wh-999",
-    }
-
     if params['pageno'] > 1:
-        query_params_web.update({"p": params["pageno"] - 1})
-        query_params_images.update({"p": params["pageno"] - 1})
-
-    params["cookies"] = {'cookie': "yp=1716337604.sp.family%3A0#1685406411.szm.1:1920x1080:1920x999"}
+        query_params["p"] = params["pageno"] - 1
 
     if search_type == 'web':
-        params['url'] = f"{base_url_web}?{urlencode(query_params_web)}"
-    elif search_type == 'images':
-        params['url'] = f"{base_url_images}?{urlencode(query_params_images)}"
+        lang = params["language"].split("-")[0]
+        if lang in yandex_supported_langs:
+            query_params["lang"] = lang
 
-    return params
+        query_params.update(
+            {
+                "tmpl_version": "releases",
+                "web": "1",
+                "frame": "1",
+                "searchid": "3131712",
+            }
+        )
+        params['url'] = f"{base_url_web}?{urlencode(query_params)}"
+    elif search_type == 'images':
+        params['url'] = f"{base_url_images}?{urlencode(query_params)}"
 
 
 def response(resp):
