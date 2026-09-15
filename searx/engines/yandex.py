@@ -60,7 +60,7 @@ def catch_bad_response(resp: "SXNG_Response") -> None:
         raise SearxEngineCaptchaException()
 
 
-def request(query: str, params: "OnlineParams") -> "OnlineParams":
+def request(query: str, params: "OnlineParams") -> None:
     query_params_web = {
         "tmpl_version": "releases",
         "text": query,
@@ -89,8 +89,6 @@ def request(query: str, params: "OnlineParams") -> "OnlineParams":
     elif search_type == "images":
         params["url"] = f"{base_url_images}?{urlencode(query_params_images)}"
 
-    return params
-
 
 def _parse_json_results(dom: html.HtmlElement) -> dict:
     json_resp = None
@@ -111,7 +109,7 @@ def _parse_json_results(dom: html.HtmlElement) -> dict:
     return json_resp
 
 
-def _parse_json_results_fallback(dom) -> dict:
+def _parse_json_results_fallback(dom: html.HtmlElement) -> dict:
     logger.warning('Unable to parse xpath("//*[@data-state]")')
     html_sample = unescape(html.tostring(dom, encoding="unicode"))
 
@@ -159,11 +157,11 @@ def response(resp: "SXNG_Response") -> EngineResults:
 
                 results.add(
                     results.types.Image(
-                        title=snippet.get("title"),                 # type: ignore
+                        title=snippet.get("title"),  # type: ignore
                         content=html_to_text(snippet.get("text")),  # type: ignore
                         url=snippet.get("url"),
                         img_src=image_source["url"],
-                        filesize=humanized_filesize,                # type: ignore
+                        filesize=humanized_filesize,  # type: ignore
                         thumbnail_src=item_data["image"],
                         resolution=f"{image_source['w']} x {image_source['h']}",
                     )
