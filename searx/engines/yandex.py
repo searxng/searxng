@@ -79,8 +79,8 @@ def request(query: str, params: "OnlineParams") -> None:
     }
 
     if params["pageno"] > 1:
-        query_params_web |= {"p": params["pageno"] - 1}
-        query_params_images |= {"p": params["pageno"] - 1}
+        query_params_web["p"] = params["pageno"] - 1
+        query_params_images["p"] = params["pageno"] - 1
 
     params["cookies"] = {"cookie": "yp=1716337604.sp.family%3A0#1685406411.szm.1:1920x1080:1920x999"}
 
@@ -90,23 +90,19 @@ def request(query: str, params: "OnlineParams") -> None:
         params["url"] = f"{base_url_images}?{urlencode(query_params_images)}"
 
 
-def _parse_json_results(dom: html.HtmlElement) -> dict:
-    json_resp = None
+def _parse_json_results(dom: html.HtmlElement) -> dict[str, t.Any]:
     # attempt to parse using xpath - finding element with "data-state" attribute
-    data_elements = dom.xpath("//*[@data-state]")
-    for element in data_elements:
-        json_data = element.get("data-state")
-        if json_data and '{"location":"/images/search/' in json_data:
-            try:
-                json_resp = loads(json_data)
-                break
-            except JSONDecodeError:
-                logger.debug("failed parsing data-state json")
-                continue
-    if not json_resp:
-        # fallback to extr(..., 'advRsyaSearchColumn":null}}')
-        json_resp = _parse_json_results_fallback(dom)
-    return json_resp
+    data_elements = dom.xpath("//*[@data-state]/@data-state")
+    for json_data in data_elements:
+        try:
+            json_resp = loads(json_data)
+            if json_resp.get("location") == "/images/search/":
+                return json_resp
+        except Exception:
+            logger.debug("failed parsing data-state json")
+
+    # fallback to extr(..., 'advRsyaSearchColumn":null}}')
+    return _parse_json_results_fallback(dom)
 
 
 def _parse_json_results_fallback(dom: html.HtmlElement) -> dict:
