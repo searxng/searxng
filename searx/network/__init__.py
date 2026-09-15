@@ -201,6 +201,7 @@ def delete(url: str, **kwargs: t.Any) -> SXNG_Response:
 
 async def stream_chunk_to_queue(network, queue, method: str, url: str, **kwargs: t.Any):
     try:
+        kwargs.setdefault('accept_encoding', None)
         async with await network.stream(method, url, **kwargs) as response:
             queue.put(response)
             async for chunk in response.aiter_content():
