@@ -2,7 +2,7 @@
 """Yandex (Web, images)"""
 
 import typing as t
-from json import loads
+from json import JSONDecodeError, loads
 from urllib.parse import urlencode
 from html import unescape
 from lxml import html
@@ -100,7 +100,7 @@ def _parse_json_results(dom: html.HtmlElement) -> dict:
             try:
                 json_resp = loads(json_data)
                 break
-            except Exception:
+            except JSONDecodeError:
                 logger.debug("failed parsing data-state json")
                 continue
     if not json_resp:
