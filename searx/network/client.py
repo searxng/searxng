@@ -80,12 +80,16 @@ def new_client(
     curl_options: dict[int, t.Any] | None = None,
 ) -> AsyncClient:
     extra_curl = dict(curl_options or {})
-    cert_file = os.environ.get("SSL_CERT_FILE")
-    if cert_file:
-        extra_curl.setdefault(CurlOpt.CAINFO, cert_file)
-    cert_dir = os.environ.get("SSL_CERT_DIR")
-    if cert_dir:
-        extra_curl.setdefault(CurlOpt.CAPATH, cert_dir)
+    # Fall back to the OpenSSL CA environment only when verify is left at its
+    # default; an explicit ``outgoing.verify`` path is handed to curl_cffi as
+    # ``verify`` below and must win over the ambient SSL_CERT_FILE / SSL_CERT_DIR.
+    if verify is True:
+        cert_file = os.environ.get("SSL_CERT_FILE")
+        if cert_file:
+            extra_curl.setdefault(CurlOpt.CAINFO, cert_file)
+        cert_dir = os.environ.get("SSL_CERT_DIR")
+        if cert_dir:
+            extra_curl.setdefault(CurlOpt.CAPATH, cert_dir)
     use_impersonate = impersonate not in ("", NO_IMPERSONATE)
     kwargs: dict[str, t.Any] = {
         "enable_http": enable_http,
