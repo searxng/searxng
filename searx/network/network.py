@@ -277,7 +277,6 @@ class Network:
             client = await self.get_client(**kwargs_clients)
             try:
                 method = method.upper()
-                client.check_url(url)
                 if stream:
                     return client.stream(method, url, **kwargs)
 

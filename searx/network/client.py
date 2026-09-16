@@ -9,7 +9,7 @@ import os
 import threading
 
 from curl_cffi import AsyncSession, CurlHttpVersion, CurlOpt
-from curl_cffi.requests.exceptions import InvalidSchema, RequestException
+from curl_cffi.requests.exceptions import RequestException
 
 from searx.extended_types import SXNG_Response
 
@@ -23,18 +23,13 @@ NO_IMPERSONATE = "none"
 class AsyncClient(AsyncSession):
     """:class:`curl_cffi.AsyncSession` with ``aclose`` / ``is_closed``."""
 
-    def __init__(self, enable_http: bool, **kwargs: t.Any):
-        self.enable_http = enable_http
+    def __init__(self, **kwargs: t.Any):
         self._closed = False
         super().__init__(**kwargs)
 
     @property
     def is_closed(self) -> bool:
         return self._closed
-
-    def check_url(self, url: str) -> None:
-        if not self.enable_http and str(url).startswith("http://"):
-            raise InvalidSchema("HTTP protocol is disabled")
 
     async def aclose(self) -> None:
         if self._closed:
@@ -80,6 +75,9 @@ def new_client(
     curl_options: dict[int, t.Any] | None = None,
 ) -> AsyncClient:
     extra_curl = dict(curl_options or {})
+    if not enable_http:
+        extra_curl.setdefault(CurlOpt.PROTOCOLS_STR, "https")
+        extra_curl.setdefault(CurlOpt.REDIR_PROTOCOLS_STR, "https")
     cert_file = os.environ.get("SSL_CERT_FILE")
     if cert_file:
         extra_curl.setdefault(CurlOpt.CAINFO, cert_file)
@@ -88,7 +86,6 @@ def new_client(
         extra_curl.setdefault(CurlOpt.CAPATH, cert_dir)
     use_impersonate = impersonate not in ("", NO_IMPERSONATE)
     kwargs: dict[str, t.Any] = {
-        "enable_http": enable_http,
         "verify": verify,
         "max_redirects": max_redirects,
         "max_clients": max_connections or 10,
