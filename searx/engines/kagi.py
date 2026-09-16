@@ -47,6 +47,7 @@ from datetime import datetime, timedelta
 import typing as t
 
 
+from searx.search.processors.abstract import TimeRangeType
 from searx.extended_types import SXNG_Response
 from searx.result_types import EngineResults
 from searx.utils import html_to_text, parse_duration_string
@@ -54,7 +55,6 @@ from searx.utils import html_to_text, parse_duration_string
 if t.TYPE_CHECKING:
     from searx.search.processors import OnlineParams
 
-TimeRangeType = t.Literal["day", "week", "month", "year"]
 about = {
     "website": "https://kagi.com",
     "wikidata_id": "Q26000117",
