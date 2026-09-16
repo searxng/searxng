@@ -37,6 +37,7 @@ def request(query: str, params: "OnlineParams"):
                 "fields": [
                     "title",
                     "topic",
+                    "description",
                 ],
                 "query": query,
             },
