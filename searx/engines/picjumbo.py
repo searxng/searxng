@@ -28,7 +28,7 @@ about = {
 
 base_url = "https://picjumbo.com"
 
-categories = ["images"]
+categories = ["stock_images"]
 paging = True
 
 

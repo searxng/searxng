@@ -18,7 +18,7 @@ about = {
     "results": 'JSON',
 }
 
-categories = ['images']
+categories = ["stock_images"]
 
 page_size = 15
 paging = True
