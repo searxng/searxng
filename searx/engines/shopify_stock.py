@@ -25,7 +25,7 @@ about = {
 
 base_url = "https://www.shopify.com"
 
-categories = ["images"]
+categories = ["stock_images"]
 paging = True
 
 
