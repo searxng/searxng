@@ -91,10 +91,12 @@ Startpage's category (for Web-search, News, Videos, ..) is set by
 import hashlib
 import re
 import typing as t
+from base64 import b64encode
 from collections import OrderedDict
 from datetime import datetime, timedelta
-from json import loads
+from json import dumps, loads
 from unicodedata import combining, normalize
+from urllib.parse import quote
 
 import babel.localedata
 import dateutil.parser
@@ -336,6 +338,12 @@ def request(query, params):
         cookie["search_results_region"] = engine_region
 
     params["cookies"]["preferences"] = "N1N".join(["%sEEE%s" % x for x in cookie.items()])
+
+    # Startpage's search form also sets a ``locationPref`` cookie; with no user location
+    # selected it carries the "none" preference, base64 of the URL-encoded JSON.  Sending
+    # it keeps the POST identical to the form's (see :issue:`4950`).
+    location_pref = {"type": "none", "locPref": {"type": "none", "device_location": None, "geo_location": None}}
+    params["cookies"]["locationPref"] = b64encode(quote(dumps(location_pref, separators=(",", ":"))).encode()).decode()
     if auth := CACHE.get("SPCHAL_AUTH"):
         params["cookies"]["spchal-auth"] = auth
     logger.debug("cookie preferences: %s", params["cookies"]["preferences"])
