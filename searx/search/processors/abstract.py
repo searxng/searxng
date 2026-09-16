@@ -29,6 +29,10 @@ logger = logger.getChild("searx.search.processor")
 SUSPENDED_STATUS: dict[int | str, "SuspendedStatus"] = {}
 
 
+TimeRangeType = t.Literal["day", "week", "month", "year"]
+SafesearchType = t.Literal[0, 1, 2]
+
+
 class RequestParams(t.TypedDict):
     """Basic quantity of the Request parameters of all engine types."""
 
@@ -51,10 +55,10 @@ class RequestParams(t.TypedDict):
     pageno: int
     """Current page number, where the first page is ``1``."""
 
-    safesearch: t.Literal[0, 1, 2]
+    safesearch: SafesearchType
     """Safe-Search filter (0:normal, 1:moderate, 2:strict)."""
 
-    time_range: t.Literal["day", "week", "month", "year"] | None
+    time_range: TimeRangeType | None
     """Time-range filter."""
 
     engine_data: dict[str, str]
