@@ -31,6 +31,18 @@ log = logger.getChild("cache")
 
 CacheRowType: typing.TypeAlias = tuple[str, typing.Any, int | None]
 
+SIGNATURE_LEN: int = hashlib.sha256().digest_size
+"""Length of the HMAC signature prefixed to every serialized cache value."""
+
+CACHE_VALUE_FORMAT: str = "hmac-sha256-v1"
+"""Format of the serialized values in the cache.  It is part of the
+:py:obj:`ExpireCache.hash_token`, hence values written in a different format are
+discarded on init."""
+
+_UNAUTHENTIC: typing.Any = object()
+"""Sentinel returned by :py:obj:`ExpireCacheSQLite._deserialize_or_default` when
+a cache value failed its integrity check."""
+
 
 class ExpireCacheCfg(msgspec.Struct):  # pylint: disable=too-few-public-methods
     """Configuration of a :py:obj:`ExpireCache` cache."""
@@ -197,12 +209,32 @@ class ExpireCache(abc.ABC):
         _valid = "-_." + string.ascii_letters + string.digits
         return "".join([c for c in name if c in _valid])
 
+    def _sign(self, value: bytes) -> bytes:
+        """Returns the HMAC signature of *value*.
+
+        The signature is used by :py:obj:`serialize` and :py:obj:`deserialize` to
+        authenticate serialized values: since :py:obj:`deserialize` unpickles the
+        value, only data that was written by an instance knowing
+        :py:obj:`ExpireCacheCfg.password` may be deserialized.
+        """
+        return hmac.new(self.cfg.password, value, digestmod='sha256').digest()
+
     def serialize(self, value: typing.Any) -> bytes:
         dump: bytes = pickle.dumps(value)
-        return dump
+        return self._sign(dump) + dump
 
     def deserialize(self, value: bytes) -> typing.Any:
-        obj = pickle.loads(value)
+        """Returns the object stored in the serialized *value*.
+
+        Raises a :py:obj:`ValueError` if the signature of *value* does not match
+        the configured :py:obj:`ExpireCacheCfg.password`.  The cache DB is a
+        regular file which must be considered untrusted, so a value that fails
+        this check is never unpickled.
+        """
+        signature, dump = value[:SIGNATURE_LEN], value[SIGNATURE_LEN:]
+        if not hmac.compare_digest(signature, self._sign(dump)):
+            raise ValueError("serialized value signature mismatch")
+        obj = pickle.loads(dump)
         return obj
 
     def secret_hash(self, name: str | bytes) -> str:
@@ -251,7 +283,10 @@ class ExpireCacheSQLite(sqlitedb.SQLiteAppl, ExpireCache):
         if not ret_val:
             return False
 
-        new = hashlib.sha256(self.cfg.password).hexdigest()
+        # The hash token covers the password and the format of the serialized
+        # values: when either changes, values from the previous generation are
+        # no longer usable and the cache tables are truncated.
+        new = hashlib.sha256(self.cfg.password + CACHE_VALUE_FORMAT.encode()).hexdigest()
         old = self.properties(self.hash_token)
         if old != new:
             if old is not None:
@@ -473,7 +508,20 @@ class ExpireCacheSQLite(sqlitedb.SQLiteAppl, ExpireCache):
             # statement must be executed for every cache.get request anyways.
             return default
 
-        return self.deserialize(value)
+        return self._deserialize_or_default(value, default)
+
+    def _deserialize_or_default(self, value: bytes, default: typing.Any = None) -> typing.Any:
+        """Returns the deserialized *value*, or *default* if the value is not
+        authentic.  A value in the cache DB that was not written by this
+        instance (or that was written in an older format) is treated as a cache
+        miss instead of being unpickled.
+        """
+
+        try:
+            return self.deserialize(value)
+        except ValueError:
+            log.warning("[%s] discard cache value: signature mismatch", self.cfg.name)
+            return default
 
     def pairs(self, ctx: str) -> Iterator[tuple[str, typing.Any]]:
         """Iterate over key/value pairs from table given by argument ``ctx``.
@@ -489,12 +537,15 @@ class ExpireCacheSQLite(sqlitedb.SQLiteAppl, ExpireCache):
             # need to be carried out.
             self.maintenance()
             for row in self.DB.execute(f"SELECT key, value FROM {table}"):
-                yield row[0], self.deserialize(row[1])
+                value = self._deserialize_or_default(row[1], _UNAUTHENTIC)
+                if value is _UNAUTHENTIC:
+                    continue
+                yield row[0], value
 
     def state(self) -> ExpireCacheStats:
         cached_items: dict[str, list[CacheRowType]] = {}
         for table in self.table_names:
             cached_items[table] = []
             for row in self.DB.execute(f"SELECT key, value, expire FROM {table}"):
-                cached_items[table].append((row[0], self.deserialize(row[1]), row[2]))
+                cached_items[table].append((row[0], self._deserialize_or_default(row[1]), row[2]))
         return ExpireCacheStats(cached_items=cached_items)
