@@ -1,10 +1,13 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 """Yandex (Web, images)"""
 
+from datetime import datetime, timedelta
 import typing as t
 from json import JSONDecodeError, loads
 from urllib.parse import urlencode
 from lxml import html
+
+from searx.search.processors.abstract import TimeRangeType
 from searx.exceptions import SearxEngineCaptchaException, SearxEngineResponseException
 from searx.result_types import EngineResults
 from searx.utils import humanize_bytes, eval_xpath, eval_xpath_list, extract_text, html_to_text
@@ -26,8 +29,10 @@ about = {
 
 # Engine configuration
 categories = []
+time_range_support = True
 paging = True
 enable_http3 = True
+
 search_type = ""
 
 # Search URL
@@ -52,11 +57,25 @@ results_xpath = '//li[contains(@class, "serp-item")]'
 url_xpath = './/a[@class="b-serp-item__title-link"]/@href'
 title_xpath = './/h3[@class="b-serp-item__title"]/a[@class="b-serp-item__title-link"]/span'
 content_xpath = './/div[@class="b-serp-item__content"]//div[@class="b-serp-item__text"]'
+date_xpath = './/span[@data-mtime]/@data-mtime'
 
 
 def catch_bad_response(resp: "SXNG_Response") -> None:
     if resp.headers.get("x-yandex-captcha") == "captcha":
         raise SearxEngineCaptchaException()
+
+
+time_range_to_days_map: dict[TimeRangeType, int] = {
+    "day": 1,
+    "week": 7,
+    "month": 30,
+    "year": 365,
+}
+
+
+def _time_range_to_start_date(time_range: TimeRangeType) -> datetime:
+    diff = timedelta(days=time_range_to_days_map[time_range])
+    return datetime.now() - diff
 
 
 def request(query: str, params: "OnlineParams") -> None:
@@ -70,6 +89,21 @@ def request(query: str, params: "OnlineParams") -> None:
         lang = params["searxng_locale"].split("-")[0]
         if lang in yandex_supported_langs:
             args["lang"] = lang
+
+        if time_range := params["time_range"]:
+            start_date = _time_range_to_start_date(time_range)
+            end_date = datetime.now()
+            args.update(
+                {
+                    "within": 777,  # must be set for time range search, meaning unclear
+                    "from_day": start_date.day,
+                    "from_month": start_date.month,
+                    "from_year": start_date.year,
+                    "to_day": end_date.day,
+                    "to_month": end_date.month,
+                    "to_year": end_date.year,
+                }
+            )
 
         args.update(
             {
@@ -109,7 +143,16 @@ def response(resp: "SXNG_Response") -> EngineResults:
                 url = extract_text(eval_xpath(result, url_xpath))
                 title = extract_text(eval_xpath(result, title_xpath))
                 content = extract_text(eval_xpath(result, content_xpath))
-                results.add(results.types.MainResult(url=url, title=str(title), content=str(content)))
+
+                # published date is only shown if time range search is used
+                publishedDate = None
+                if publishedDateMillis := extract_text(eval_xpath(result, date_xpath)):
+                    publishedDate = datetime.utcfromtimestamp(int(publishedDateMillis))
+                results.add(
+                    results.types.MainResult(
+                        url=url, title=str(title), content=str(content), publishedDate=publishedDate
+                    )
+                )
         case "images":
             json_resp = _parse_json_results(dom)
 
