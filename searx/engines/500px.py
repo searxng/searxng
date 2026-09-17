@@ -143,7 +143,7 @@ def response(resp: "SXNG_Response"):
                 thumbnail_src=image_urls[0],
                 img_src=image_urls[-1],
                 title=node["title"],
-                content=node["description"],
+                content=node["description"] or "",
                 author=node["uploader"]["displayName"],
                 resolution=f"{node['width']}x{node['height']}",
             )
