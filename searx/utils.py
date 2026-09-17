@@ -794,9 +794,10 @@ def js_obj_str_to_json_str(js_obj_str: str) -> str:
 
 
 def parse_duration_string(duration_str: str) -> timedelta | None:
-    """Parse a time string in format MM:SS or HH:MM:SS and convert it to a `timedelta` object.
+    """Parse a time string in format MM:SS or HH:MM:SS and convert it to a
+    :obj:`datetime.timedelta` object.
 
-    Returns None if the provided string doesn't match any of the formats.
+    Returns ``None`` if the provided string doesn't match any of the formats.
     """
     duration_str = duration_str.strip()
 
@@ -805,7 +806,7 @@ def parse_duration_string(duration_str: str) -> timedelta | None:
 
     try:
         # prepending ["00"] here inits hours to 0 if they are not provided
-        time_parts = (["00"] + duration_str.split(":"))[:3]
+        time_parts = (["00"] + duration_str.split(":"))[-3:]
         hours, minutes, seconds = map(int, time_parts)
         return timedelta(hours=hours, minutes=minutes, seconds=seconds)
 
