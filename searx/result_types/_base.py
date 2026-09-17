@@ -31,7 +31,6 @@ from collections.abc import Callable
 import msgspec
 
 from searx import logger
-from searx.utils import get_embedded_stream_url
 
 log = logger.getChild("result_types")
 
@@ -386,7 +385,11 @@ class MainResult(Result):  # pylint: disable=missing-class-docstring
     """URL of a image that is displayed in the result item."""
 
     iframe_src: str = ""
-    """URL of an embedded ``<iframe>`` / the frame is collapsible."""
+    """URL of an embedded ``<iframe>`` / the frame is collapsible.
+
+    To convert a standard video URL from a widely know video services into its
+    embed format, have a look at :obj:`searx.utils.get_embedded_stream_url`.
+    """
 
     audio_src: str = ""
     """URL of an embedded ``<audio controls>``."""
@@ -541,10 +544,6 @@ class LegacyResult(dict[str, t.Any]):
                 f" / use a class from searx.result_types",
                 DeprecationWarning,
             )
-
-        # TODO: move into typed video results class once it is implemented  # pylint: disable=fixme
-        if self.template == "videos.html" and self.url and not self.iframe_src:
-            self.iframe_src = get_embedded_stream_url(self.url)
 
     def __getattr__(self, name: str, default: t.Any = UNSET) -> t.Any:
         if default == UNSET and name not in self:
