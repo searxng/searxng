@@ -92,8 +92,7 @@ def response(resp: "SXNG_Response") -> EngineResults:
         ):
             video_src = extract_text(eval_xpath(result, ".//video/@src")) or ""
             res.add(
-                res.types.LegacyResult(
-                    template="videos.html",
+                res.types.Video(
                     url=video_src,
                     title=extract_text(eval_xpath(result, ".//div[contains(@class, 'caption')]/span")) or "",
                     iframe_src=video_src or "",

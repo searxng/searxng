@@ -119,8 +119,7 @@ def _video_results(doc: ElementType, res: EngineResults):
             continue
         title_parts: list[ElementType] = eval_xpath(result, ".//a[starts-with(@class, 'tMMReshl')]")
         res.add(
-            res.types.LegacyResult(
-                template="videos.html",
+            res.types.Video(
                 url=url,
                 title=" - ".join(extract_text(part) or "" for part in title_parts),
                 thumbnail=extract_text(eval_xpath(result, ".//img/@src") or "") or "",

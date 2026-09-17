@@ -85,8 +85,7 @@ def _video_results(doc: "ElementBase") -> EngineResults:
     for result in eval_xpath_list(doc, "//div[contains(@class, 'item video')]"):
         (
             res.add(
-                res.types.MainResult(
-                    template="videos.html",
+                res.types.Video(
                     url=extract_text(eval_xpath(result, "./a/@href")) or "",
                     title=extract_text(eval_xpath(result, "./a/@title")) or "",
                     content=extract_text(eval_xpath(result, ".//div[contains(@class, 'abaslik')]")) or "",

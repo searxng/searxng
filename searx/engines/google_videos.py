@@ -73,12 +73,11 @@ def response(resp: "SXNG_Response") -> EngineResults:
                 break
 
         results.add(
-            results.types.MainResult(
+            results.types.Video(
                 url=url,
                 title=title,
                 thumbnail=thumbnail,
                 length=length,
-                template="videos.html",
             )
         )
 

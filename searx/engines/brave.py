@@ -395,13 +395,11 @@ def _parse_videos(json_resp: dict[str, t.Any]) -> EngineResults:
     res = EngineResults()
 
     for result in json_resp["results"]:
-        item = res.types.LegacyResult(
-            template="videos.html",
+        item = res.types.Video(
             url=result["url"],
             title=result["title"],
             content=result["description"],
             length=result["video"]["duration"],
-            duration=result["video"]["duration"],
             publishedDate=_extract_published_date(result["age"]),
         )
         if result["thumbnail"] is not None:

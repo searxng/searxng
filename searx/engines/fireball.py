@@ -153,16 +153,13 @@ def response(resp: "SXNG_Response") -> EngineResults:
                 length = result["video"].get("duration")
 
             res.add(
-                res.types.LegacyResult(
-                    {
-                        "template": "videos.html",
-                        "url": result["url"],
-                        "title": html_to_text(result["title"]),
-                        "content": html_to_text(result["description"]),
-                        "thumbnail": result.get("thumbnail", {}).get("original"),
-                        "length": length,
-                        "publishedDate": published_date,
-                    }
+                res.types.Video(
+                    url=result["url"],
+                    title=html_to_text(result["title"]),
+                    content=html_to_text(result["description"]),
+                    thumbnail=result.get("thumbnail", {}).get("original"),
+                    length=length,
+                    publishedDate=published_date,
                 )
             )
 

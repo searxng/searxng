@@ -201,7 +201,7 @@ def parse_videos(data):
     for item in eval_xpath_list(dom, "//li[contains(@class, 'video_item')]"):
         url = eval_xpath_getindex(item, ".//a[contains(@class, 'info_title')]/@href", 0)
 
-        thumbnail = None
+        thumbnail = ""
         try:
             thumbnail = eval_xpath_getindex(item, ".//img[contains(@class, 'thumb')]/@src", 0)
         except (ValueError, TypeError, SearxEngineXPathException):
@@ -214,9 +214,8 @@ def parse_videos(data):
             pass
 
         res.add(
-            res.types.LegacyResult(
-                template="videos.html",
-                title=extract_text(eval_xpath(item, ".//a[contains(@class, 'info_title')]")),
+            res.types.Video(
+                title=extract_text(eval_xpath(item, ".//a[contains(@class, 'info_title')]")) or "",
                 url=url,
                 thumbnail=thumbnail,
                 length=length,
