@@ -81,8 +81,8 @@ def response(resp: "SXNG_Response") -> EngineResults:
         ):
             res.add(
                 res.types.Image(
-                    url=extract_text(eval_xpath(result, ".//div[contains(@class, 'caption')]/a/@href")) or "",
-                    title=extract_text(eval_xpath(result, ".//div[contains(@class, 'caption')]/a")) or "",
+                    url=extract_text(eval_xpath(result, ".//figcaption/a/@href")) or "",
+                    title=extract_text(eval_xpath(result, ".//figcaption/a")) or "",
                     thumbnail_src=extract_text(eval_xpath(result, ".//img/@src")) or "",
                 )
             )
