@@ -53,7 +53,7 @@ def response(resp: "SXNG_Response"):
                 template="videos.html",
                 url=item["frontend_link"],
                 title=item["title"],
-                content=item["description"],
+                content=item["description"] or "",
                 thumbnail=item["thumb_url"],
                 publishedDate=publishedDate,
                 length=datetime.timedelta(seconds=item["length"]),
