@@ -77,9 +77,9 @@ def _video_result(result):
 def response(resp):
     results = []
 
-    # if there are no results on this page, we get a redirect
-    # to the first page
-    if resp.status_code == 302:
+    # if there are no results on this page, we get a redirect to the first page
+    # or if it's the first page, to an "auto-corrected" query (i.e. spelling changed)
+    if 300 <= resp.status_code < 400:
         return results
 
     json_data = resp.json()
