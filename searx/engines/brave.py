@@ -258,6 +258,7 @@ def extract_json_data(text: str) -> dict[str, t.Any]:
 
 def response(resp: "SXNG_Response") -> EngineResults:
     # delegate the response to the appropriate parser based on search type
+
     match brave_category:
         case "search" | "goggles":
             return _parse_results(_parse_search_result, resp)
@@ -280,7 +281,7 @@ def _parse_search_result(result: dict[str, t.Any]) -> MainResult:
         url=result.get("url", ""),
         publishedDate=_extract_published_date(result.get("page_age")),
         pubdate=result.get("age", ""),
-        thumbnail=thumbnail.get("src", "") if thumbnail else "",
+        thumbnail=thumbnail.get("src", "") if thumbnail and not thumbnail.get("logo") else "",
     )
 
 
@@ -296,7 +297,7 @@ def _parse_secondary_items(json_data: dict[str, t.Any], results: EngineResults):
     if query and "related_queries" in query:
         for x in query.get("related_queries", []):
             suggestion = " ".join(val[1] for val in x)
-            results.add(results.types.LegacyResult({"suggestion": suggestion}))
+            results.add(results.types.LegacyResult(suggestion=suggestion))
 
 
 def _parse_news_result(result: dict[str, t.Any]) -> MainResult:
@@ -339,7 +340,7 @@ def _parse_video_result(result: dict[str, t.Any]) -> MainResult:
         length=video.get("duration"),
         publishedDate=_extract_published_date(result.get("age")),
         pubdate=result.get("age", ""),
-        views=str(video.get("views", "")),
+        views=video.get("views", ""),
         thumbnail=thumbnail.get("src", "") if thumbnail else "",
     )
 
@@ -378,28 +379,19 @@ def _parse_results(parse_func: Callable[..., MainResult | Image], resp: "SXNG_Re
     #    node_ids: [0, 19],
     #    data: [{type:"data",data: .... ["q","goggles_id"],route:1,url:1}}]
     #          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    json_data: dict[str, t.Any] = extract_json_data(resp.text)
-
-    # map the parse function to a category key
-    category_map = {
-        _parse_search_result: "search",
-        _parse_news_result: "news",
-        _parse_image_result: "images",
-        _parse_video_result: "videos",
-    }
-    category = category_map.get(parse_func, "search")
-
     results = EngineResults()
-    json_resp: dict[str, t.Any] = _get_response_data(json_data, category)
+    json_data: dict[str, t.Any] = extract_json_data(resp.text)
+    json_resp: dict[str, t.Any] = _get_response_data(json_data, brave_category)
     if not json_resp:
         # if _get_response_data returns {} - indicates it was parsed successfully but had "noResults" = True
         return results
+
     json_results: list[dict[str, t.Any]] = json_resp["results"]
     for result in json_results:
         results.add(parse_func(result))
 
     # general search / goggle might have secondary items
-    if parse_func is _parse_search_result:
+    if brave_category in ("search", "goggles"):
         _parse_secondary_items(json_data, results)
 
     return results
