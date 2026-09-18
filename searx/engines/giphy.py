@@ -67,7 +67,7 @@ def _get_api_key() -> str:
 
     homepage_doc = get(base_url).html()
 
-    for script_src in eval_xpath_list(homepage_doc, "//script[contains(@src, 'layout')]/@src"):
+    for script_src in eval_xpath_list(homepage_doc, "//script/@src"):
         script_resp = get(base_url + script_src)
         api_keys = _GIPHY_API_KEY_RE.findall(script_resp.text)
         if api_keys:
