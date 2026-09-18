@@ -17,7 +17,7 @@ about = {
 }
 
 # engine dependent config
-categories = ['files', 'apps']
+categories = ['it', 'apps']
 paging = True
 
 # search-url

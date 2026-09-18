@@ -17,7 +17,7 @@ about = {
     "results": 'JSON',
 }
 
-categories = ['files', 'apps']
+categories = ['it', 'apps']
 safesearch = True
 
 search_url = 'https://itunes.apple.com/search?{query}'
