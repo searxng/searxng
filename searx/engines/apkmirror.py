@@ -21,7 +21,7 @@ about = {
 }
 
 # engine dependent config
-categories = ['files', 'apps']
+categories = ['it', 'apps']
 paging = True
 time_range_support = False
 
