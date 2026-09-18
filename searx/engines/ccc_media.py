@@ -52,7 +52,7 @@ def response(resp: "SXNG_Response") -> EngineResults:
             res.types.Video(
                 url=item["frontend_link"],
                 title=item["title"],
-                content=item["description"],
+                content=item["description"] or "",
                 thumbnail=item["thumb_url"],
                 publishedDate=publishedDate,
                 length=datetime.timedelta(seconds=item["length"]),
