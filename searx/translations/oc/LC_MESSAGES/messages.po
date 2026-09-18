@@ -17,7 +17,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-07-15 15:45+0000\n"
+"POT-Creation-Date: 2026-09-18 14:17+0000\n"
 "PO-Revision-Date: 2026-07-11 09:07+0000\n"
 "Last-Translator: quenty_occitania <quenty_occitania@noreply.codeberg.org>"
 "\n"
@@ -64,6 +64,11 @@ msgstr "mèdias socials"
 #: searx/searxng.msg
 msgid "images"
 msgstr "imatges"
+
+#. CATEGORY_NAMES['STOCK_IMAGES']
+#: searx/searxng.msg
+msgid "stock images"
+msgstr ""
 
 #. CATEGORY_NAMES['VIDEOS']
 #: searx/searxng.msg
@@ -176,7 +181,7 @@ msgid "Uptime"
 msgstr "Temps d’activitat"
 
 #. BRAND_CUSTOM_LINKS['ABOUT']
-#: searx/searxng.msg searx/templates/simple/base.html:47
+#: searx/searxng.msg searx/templates/simple/base.html:50
 msgid "About"
 msgstr "A prepaus"
 
@@ -545,7 +550,7 @@ msgstr ""
 msgid "No item found"
 msgstr "Cap d’element pas trobat"
 
-#: searx/engines/qwant.py:286
+#: searx/engines/qwant.py:283
 #: searx/templates/simple/result_templates/images.html:62 searx/webapp.py:328
 msgid "Source"
 msgstr "Font"
@@ -554,7 +559,7 @@ msgstr "Font"
 msgid "Error loading the next page"
 msgstr "Error en cargant la pagina seguenta"
 
-#: searx/webapp.py:478 searx/webapp.py:876
+#: searx/webapp.py:478 searx/webapp.py:878
 msgid "Invalid settings, please edit your preferences"
 msgstr "Paramètre pas valide, mercés de modificar vòstras preferéncias"
 
@@ -590,44 +595,44 @@ msgstr "Error SSL : la verificacion del certificat a fracassat"
 msgid "unexpected crash"
 msgstr "error inesperada"
 
-#: searx/webutils.py:49
+#: searx/webutils.py:48
 msgid "HTTP error"
 msgstr "error HTTP"
 
-#: searx/webutils.py:50
+#: searx/webutils.py:49 searx/webutils.py:50
 msgid "HTTP connection error"
 msgstr "error de connexion HTTP"
 
-#: searx/webutils.py:56
+#: searx/webutils.py:54
 msgid "proxy error"
 msgstr "Error servidor mandatari"
 
-#: searx/webutils.py:57
+#: searx/webutils.py:56
 msgid "CAPTCHA"
 msgstr "CAPTCHA"
 
-#: searx/webutils.py:58
+#: searx/webutils.py:57
 msgid "too many requests"
 msgstr "tròpas de requèstas"
 
-#: searx/webutils.py:59
+#: searx/webutils.py:58
 msgid "access denied"
 msgstr "accès refusat"
 
-#: searx/webutils.py:60
+#: searx/webutils.py:59
 msgid "server API error"
 msgstr "error de l’API del servidor"
 
-#: searx/webutils.py:79
+#: searx/webutils.py:78
 msgid "Suspended"
 msgstr "Suspendut"
 
-#: searx/webutils.py:307
+#: searx/webutils.py:306
 #, python-brace-format
 msgid "{minutes} minute(s) ago"
 msgstr "fa {minutes} minuta(s)"
 
-#: searx/webutils.py:308
+#: searx/webutils.py:307
 #, python-brace-format
 msgid "{hours} hour(s), {minutes} minute(s) ago"
 msgstr "Fa {hours} ora(s), {minutes} minuta(s)"
@@ -646,7 +651,7 @@ msgstr ""
 msgid "Posted by {author}"
 msgstr ""
 
-#: searx/engines/openstreetmap.py:155
+#: searx/engines/openstreetmap.py:156
 msgid "Show route in map .."
 msgstr ""
 
@@ -659,7 +664,7 @@ msgstr "{title} (OBSOLÈT)"
 msgid "This entry has been superseded by"
 msgstr "Aqueste element es estat remplaçat per"
 
-#: searx/engines/qwant.py:288
+#: searx/engines/qwant.py:285
 msgid "Channel"
 msgstr "Canal"
 
@@ -675,7 +680,7 @@ msgstr "vòtes"
 msgid "clicks"
 msgstr "clics"
 
-#: searx/engines/semantic_scholar.py:141
+#: searx/engines/semantic_scholar.py:140
 #, python-brace-format
 msgid ""
 "{numCitations} citations from the year {firstCitationVelocityYear} to "
@@ -701,15 +706,15 @@ msgstr ""
 msgid "The image could not be downloaded."
 msgstr "Telecargament impossible de l’imatge."
 
-#: searx/engines/zlibrary.py:80
+#: searx/engines/zlibrary.py:79
 msgid "Language"
 msgstr "Lenga"
 
-#: searx/engines/zlibrary.py:81
+#: searx/engines/zlibrary.py:80
 msgid "Book rating"
 msgstr "Nòta del libre"
 
-#: searx/engines/zlibrary.py:82
+#: searx/engines/zlibrary.py:81
 msgid "File quality"
 msgstr "Qualitat del fichièr"
 
@@ -799,25 +804,25 @@ msgstr ""
 msgid "Display the current time on different time zones."
 msgstr ""
 
-#: searx/plugins/tor_check.py:41
+#: searx/plugins/tor_check.py:42
 msgid "Tor check plugin"
 msgstr "Empeuton de verificacion de Tor"
 
-#: searx/plugins/tor_check.py:43
+#: searx/plugins/tor_check.py:44
 msgid ""
 "This plugin checks if the address of the request is a Tor exit-node, and "
 "informs the user if it is; like check.torproject.org, but from SearXNG."
 msgstr ""
 
-#: searx/plugins/tor_check.py:64
+#: searx/plugins/tor_check.py:65
 msgid "Could not download the list of Tor exit-nodes from"
 msgstr ""
 
-#: searx/plugins/tor_check.py:71
+#: searx/plugins/tor_check.py:72
 msgid "You are using Tor and it looks like you have the external IP address"
 msgstr ""
 
-#: searx/plugins/tor_check.py:75
+#: searx/plugins/tor_check.py:76
 msgid "You are not using Tor and you have the external IP address"
 msgstr ""
 
@@ -829,15 +834,15 @@ msgstr "Netejador d'URL de traçat"
 msgid "Remove trackers arguments from the returned URL"
 msgstr "Lèva los arguments de las URL utilizats per vos traçar"
 
-#: searx/plugins/unit_converter.py:42
+#: searx/plugins/unit_converter.py:43
 msgid "Unit converter plugin"
 msgstr ""
 
-#: searx/plugins/unit_converter.py:43
+#: searx/plugins/unit_converter.py:44
 msgid "Convert between units"
 msgstr ""
 
-#: searx/result_types/answer.py:223
+#: searx/result_types/answer.py:224
 #, python-brace-format
 msgid "{location}: {temperature}, {condition}"
 msgstr "{location}: {temperature}, {condition}"
@@ -855,45 +860,45 @@ msgstr "Anar a %(search_page)s."
 msgid "search page"
 msgstr "cercar dins la pagina"
 
-#: searx/templates/simple/base.html:51
+#: searx/templates/simple/base.html:54
 msgid "Donate"
 msgstr "Far un don"
 
-#: searx/templates/simple/base.html:56 searx/templates/simple/base.html:58
+#: searx/templates/simple/base.html:59 searx/templates/simple/base.html:61
 #: searx/templates/simple/preferences.html:152
 msgid "Preferences"
 msgstr "Preferéncias"
 
-#: searx/templates/simple/base.html:69
+#: searx/templates/simple/base.html:72
 msgid "Powered by"
 msgstr "Propulsat per"
 
-#: searx/templates/simple/base.html:69
+#: searx/templates/simple/base.html:72
 msgid "a privacy-respecting, open metasearch engine"
 msgstr ""
 
-#: searx/templates/simple/base.html:70
+#: searx/templates/simple/base.html:73
 #: searx/templates/simple/result_templates/packages.html:59
 msgid "Source code"
 msgstr "Còdi font"
 
-#: searx/templates/simple/base.html:71
+#: searx/templates/simple/base.html:74
 msgid "Issue tracker"
 msgstr "Seguiment d’anomalias"
 
-#: searx/templates/simple/base.html:72 searx/templates/simple/stats.html:17
+#: searx/templates/simple/base.html:75 searx/templates/simple/stats.html:17
 msgid "Engine stats"
 msgstr "Estatistica del motor"
 
-#: searx/templates/simple/base.html:74
+#: searx/templates/simple/base.html:77
 msgid "Public instances"
 msgstr "Instàncias publicas"
 
-#: searx/templates/simple/base.html:77
+#: searx/templates/simple/base.html:80
 msgid "Privacy policy"
 msgstr "Politica de confidencialitat"
 
-#: searx/templates/simple/base.html:80
+#: searx/templates/simple/base.html:83
 msgid "Contact instance maintainer"
 msgstr "Contactar lo responsable de l’instància"
 

@@ -21,7 +21,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-07-15 15:45+0000\n"
+"POT-Creation-Date: 2026-09-18 14:17+0000\n"
 "PO-Revision-Date: 2026-06-14 13:07+0000\n"
 "Last-Translator: Priit Jõerüüt <jrtcdbrg@noreply.codeberg.org>\n"
 "Language: et\n"
@@ -67,6 +67,11 @@ msgstr "sotsiaalmeedia"
 #: searx/searxng.msg
 msgid "images"
 msgstr "pildid"
+
+#. CATEGORY_NAMES['STOCK_IMAGES']
+#: searx/searxng.msg
+msgid "stock images"
+msgstr ""
 
 #. CATEGORY_NAMES['VIDEOS']
 #: searx/searxng.msg
@@ -179,7 +184,7 @@ msgid "Uptime"
 msgstr "Töövõimeaeg"
 
 #. BRAND_CUSTOM_LINKS['ABOUT']
-#: searx/searxng.msg searx/templates/simple/base.html:47
+#: searx/searxng.msg searx/templates/simple/base.html:50
 msgid "About"
 msgstr "SearXNG teave"
 
@@ -548,7 +553,7 @@ msgstr "vastatud"
 msgid "No item found"
 msgstr "Üksust ei leitud"
 
-#: searx/engines/qwant.py:286
+#: searx/engines/qwant.py:283
 #: searx/templates/simple/result_templates/images.html:62 searx/webapp.py:328
 msgid "Source"
 msgstr "Allikas"
@@ -557,7 +562,7 @@ msgstr "Allikas"
 msgid "Error loading the next page"
 msgstr "Viga järgmise lehekülje laadimisel"
 
-#: searx/webapp.py:478 searx/webapp.py:876
+#: searx/webapp.py:478 searx/webapp.py:878
 msgid "Invalid settings, please edit your preferences"
 msgstr "Sobimatud seaded, palun muuda oma eelistusi"
 
@@ -593,44 +598,44 @@ msgstr "SSL viga: sertifikaadi valideerimine ei õnnestunud"
 msgid "unexpected crash"
 msgstr "ootamatu krahh"
 
-#: searx/webutils.py:49
+#: searx/webutils.py:48
 msgid "HTTP error"
 msgstr "HTTP-viga"
 
-#: searx/webutils.py:50
+#: searx/webutils.py:49 searx/webutils.py:50
 msgid "HTTP connection error"
 msgstr "HTTP-ühenduse viga"
 
-#: searx/webutils.py:56
+#: searx/webutils.py:54
 msgid "proxy error"
 msgstr "proksiserveri viga"
 
-#: searx/webutils.py:57
+#: searx/webutils.py:56
 msgid "CAPTCHA"
 msgstr "ROBOTILÕKS"
 
-#: searx/webutils.py:58
+#: searx/webutils.py:57
 msgid "too many requests"
 msgstr "liiga palju päringuid"
 
-#: searx/webutils.py:59
+#: searx/webutils.py:58
 msgid "access denied"
 msgstr "ligipääs keelatud"
 
-#: searx/webutils.py:60
+#: searx/webutils.py:59
 msgid "server API error"
 msgstr "serveri API viga"
 
-#: searx/webutils.py:79
+#: searx/webutils.py:78
 msgid "Suspended"
 msgstr "Peatatud"
 
-#: searx/webutils.py:307
+#: searx/webutils.py:306
 #, python-brace-format
 msgid "{minutes} minute(s) ago"
 msgstr "{minutes} minut(it) tagasi"
 
-#: searx/webutils.py:308
+#: searx/webutils.py:307
 #, python-brace-format
 msgid "{hours} hour(s), {minutes} minute(s) ago"
 msgstr "{hours} tund(i), {minutes} minut(it) tagasi"
@@ -649,7 +654,7 @@ msgstr "Arvuta argumentidest {func}"
 msgid "Posted by {author}"
 msgstr "Postituse autor on {author}"
 
-#: searx/engines/openstreetmap.py:155
+#: searx/engines/openstreetmap.py:156
 msgid "Show route in map .."
 msgstr "Näita teekonda kaardil..."
 
@@ -662,7 +667,7 @@ msgstr "{title} (VANANENUD)"
 msgid "This entry has been superseded by"
 msgstr "See üksus on asendatud"
 
-#: searx/engines/qwant.py:288
+#: searx/engines/qwant.py:285
 msgid "Channel"
 msgstr "Kanal"
 
@@ -678,7 +683,7 @@ msgstr "hääled"
 msgid "clicks"
 msgstr "klikid"
 
-#: searx/engines/semantic_scholar.py:141
+#: searx/engines/semantic_scholar.py:140
 #, python-brace-format
 msgid ""
 "{numCitations} citations from the year {firstCitationVelocityYear} to "
@@ -709,15 +714,15 @@ msgstr ""
 msgid "The image could not be downloaded."
 msgstr "Pilti ei saanud alla laadida."
 
-#: searx/engines/zlibrary.py:80
+#: searx/engines/zlibrary.py:79
 msgid "Language"
 msgstr "Keel"
 
-#: searx/engines/zlibrary.py:81
+#: searx/engines/zlibrary.py:80
 msgid "Book rating"
 msgstr "Raamatu hinnang"
 
-#: searx/engines/zlibrary.py:82
+#: searx/engines/zlibrary.py:81
 msgid "File quality"
 msgstr "Faili kvaliteet"
 
@@ -815,11 +820,11 @@ msgstr "Ajavööndite lisamoodul"
 msgid "Display the current time on different time zones."
 msgstr "Korrektse aja kuvamine eri ajavööndites."
 
-#: searx/plugins/tor_check.py:41
+#: searx/plugins/tor_check.py:42
 msgid "Tor check plugin"
 msgstr "Tor kontrollplugin"
 
-#: searx/plugins/tor_check.py:43
+#: searx/plugins/tor_check.py:44
 msgid ""
 "This plugin checks if the address of the request is a Tor exit-node, and "
 "informs the user if it is; like check.torproject.org, but from SearXNG."
@@ -828,15 +833,15 @@ msgstr ""
 "teavitab kasutajat, kui see on nii: nagu check.torproject.org, aga alates"
 " SearXNG."
 
-#: searx/plugins/tor_check.py:64
+#: searx/plugins/tor_check.py:65
 msgid "Could not download the list of Tor exit-nodes from"
 msgstr "Tori võrgu väljundsõlmede loendi allalaadimine ei õnnestunud allikast"
 
-#: searx/plugins/tor_check.py:71
+#: searx/plugins/tor_check.py:72
 msgid "You are using Tor and it looks like you have the external IP address"
 msgstr "Sa kasutad Tori võrku ja tundub, et olemas on väline ip-aadress"
 
-#: searx/plugins/tor_check.py:75
+#: searx/plugins/tor_check.py:76
 msgid "You are not using Tor and you have the external IP address"
 msgstr "Sa ei kasuta Tori võrku ja sinu arvutil/nutiseadmel on väline ip-aadress"
 
@@ -848,15 +853,15 @@ msgstr "Jälitajate eemaldus URList"
 msgid "Remove trackers arguments from the returned URL"
 msgstr "Eemaldab jälitavad argumendid tagastatud URList"
 
-#: searx/plugins/unit_converter.py:42
+#: searx/plugins/unit_converter.py:43
 msgid "Unit converter plugin"
 msgstr "Ühikute konverteerimise lisamoodul"
 
-#: searx/plugins/unit_converter.py:43
+#: searx/plugins/unit_converter.py:44
 msgid "Convert between units"
 msgstr "Konverteeri eri ühikute vahel"
 
-#: searx/result_types/answer.py:223
+#: searx/result_types/answer.py:224
 #, python-brace-format
 msgid "{location}: {temperature}, {condition}"
 msgstr "{location}: {temperature}, {condition}"
@@ -874,45 +879,45 @@ msgstr "Mine lehele %(search_page)s."
 msgid "search page"
 msgstr "otsinguleht"
 
-#: searx/templates/simple/base.html:51
+#: searx/templates/simple/base.html:54
 msgid "Donate"
 msgstr "Anneta"
 
-#: searx/templates/simple/base.html:56 searx/templates/simple/base.html:58
+#: searx/templates/simple/base.html:59 searx/templates/simple/base.html:61
 #: searx/templates/simple/preferences.html:152
 msgid "Preferences"
 msgstr "Eelistused"
 
-#: searx/templates/simple/base.html:69
+#: searx/templates/simple/base.html:72
 msgid "Powered by"
 msgstr "Põhineb tarkvaral"
 
-#: searx/templates/simple/base.html:69
+#: searx/templates/simple/base.html:72
 msgid "a privacy-respecting, open metasearch engine"
 msgstr "üks privaatsust austav, vaba metaotsingumootor"
 
-#: searx/templates/simple/base.html:70
+#: searx/templates/simple/base.html:73
 #: searx/templates/simple/result_templates/packages.html:59
 msgid "Source code"
 msgstr "Lähtekood"
 
-#: searx/templates/simple/base.html:71
+#: searx/templates/simple/base.html:74
 msgid "Issue tracker"
 msgstr "Veahaldus"
 
-#: searx/templates/simple/base.html:72 searx/templates/simple/stats.html:17
+#: searx/templates/simple/base.html:75 searx/templates/simple/stats.html:17
 msgid "Engine stats"
 msgstr "Mootori statistika"
 
-#: searx/templates/simple/base.html:74
+#: searx/templates/simple/base.html:77
 msgid "Public instances"
 msgstr "Avalikud serverid"
 
-#: searx/templates/simple/base.html:77
+#: searx/templates/simple/base.html:80
 msgid "Privacy policy"
 msgstr "Andmekaitsepõhimõtted"
 
-#: searx/templates/simple/base.html:80
+#: searx/templates/simple/base.html:83
 msgid "Contact instance maintainer"
 msgstr "Võta ühendust serveri haldajaga"
 

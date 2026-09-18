@@ -20,7 +20,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-07-15 15:45+0000\n"
+"POT-Creation-Date: 2026-09-18 14:17+0000\n"
 "PO-Revision-Date: 2026-05-19 12:07+0000\n"
 "Last-Translator: return42 <return42@noreply.codeberg.org>\n"
 "Language: cy\n"
@@ -67,6 +67,11 @@ msgstr "cyfryngau cymdeithasol"
 #: searx/searxng.msg
 msgid "images"
 msgstr "delweddau"
+
+#. CATEGORY_NAMES['STOCK_IMAGES']
+#: searx/searxng.msg
+msgid "stock images"
+msgstr ""
 
 #. CATEGORY_NAMES['VIDEOS']
 #: searx/searxng.msg
@@ -179,7 +184,7 @@ msgid "Uptime"
 msgstr "Amser Llafur"
 
 #. BRAND_CUSTOM_LINKS['ABOUT']
-#: searx/searxng.msg searx/templates/simple/base.html:47
+#: searx/searxng.msg searx/templates/simple/base.html:50
 msgid "About"
 msgstr "Ynghylch"
 
@@ -548,7 +553,7 @@ msgstr "wedi'i ateb"
 msgid "No item found"
 msgstr "Ni chanfuwyd eitem"
 
-#: searx/engines/qwant.py:286
+#: searx/engines/qwant.py:283
 #: searx/templates/simple/result_templates/images.html:62 searx/webapp.py:328
 msgid "Source"
 msgstr "Ffynhonnell"
@@ -557,7 +562,7 @@ msgstr "Ffynhonnell"
 msgid "Error loading the next page"
 msgstr "Gwall wrth lwytho'r dudalen nesaf"
 
-#: searx/webapp.py:478 searx/webapp.py:876
+#: searx/webapp.py:478 searx/webapp.py:878
 msgid "Invalid settings, please edit your preferences"
 msgstr "Gosodiadau annilys, golygwch eich dewisiadau"
 
@@ -593,44 +598,44 @@ msgstr "Gwall SSL: dilysu tystysgrif wedi methu"
 msgid "unexpected crash"
 msgstr "damwain annisgwyl"
 
-#: searx/webutils.py:49
+#: searx/webutils.py:48
 msgid "HTTP error"
 msgstr "gwall HTTP"
 
-#: searx/webutils.py:50
+#: searx/webutils.py:49 searx/webutils.py:50
 msgid "HTTP connection error"
 msgstr "gwall cysylltiad HTTP"
 
-#: searx/webutils.py:56
+#: searx/webutils.py:54
 msgid "proxy error"
 msgstr "gwall dirprwy"
 
-#: searx/webutils.py:57
+#: searx/webutils.py:56
 msgid "CAPTCHA"
 msgstr "CAPTCHA"
 
-#: searx/webutils.py:58
+#: searx/webutils.py:57
 msgid "too many requests"
 msgstr "gormod o geisiadau"
 
-#: searx/webutils.py:59
+#: searx/webutils.py:58
 msgid "access denied"
 msgstr "mynediad wedi ei wrthod"
 
-#: searx/webutils.py:60
+#: searx/webutils.py:59
 msgid "server API error"
 msgstr "gwall API gweinydd"
 
-#: searx/webutils.py:79
+#: searx/webutils.py:78
 msgid "Suspended"
 msgstr "Atal"
 
-#: searx/webutils.py:307
+#: searx/webutils.py:306
 #, python-brace-format
 msgid "{minutes} minute(s) ago"
 msgstr "{minutes} munud yn ôl"
 
-#: searx/webutils.py:308
+#: searx/webutils.py:307
 #, python-brace-format
 msgid "{hours} hour(s), {minutes} minute(s) ago"
 msgstr "{hours} awr, {minutes} munud yn ôl"
@@ -649,7 +654,7 @@ msgstr ""
 msgid "Posted by {author}"
 msgstr ""
 
-#: searx/engines/openstreetmap.py:155
+#: searx/engines/openstreetmap.py:156
 msgid "Show route in map .."
 msgstr ""
 
@@ -662,7 +667,7 @@ msgstr "{title} (OBSOLETE)"
 msgid "This entry has been superseded by"
 msgstr "Mae'r cofnod hwn wedi ei ddisodli gan"
 
-#: searx/engines/qwant.py:288
+#: searx/engines/qwant.py:285
 msgid "Channel"
 msgstr "Sianel"
 
@@ -678,7 +683,7 @@ msgstr "pleidleisiau"
 msgid "clicks"
 msgstr "cliciau"
 
-#: searx/engines/semantic_scholar.py:141
+#: searx/engines/semantic_scholar.py:140
 #, python-brace-format
 msgid ""
 "{numCitations} citations from the year {firstCitationVelocityYear} to "
@@ -710,15 +715,15 @@ msgstr ""
 msgid "The image could not be downloaded."
 msgstr "Doedd dim modd islwytho'r ddelwedd."
 
-#: searx/engines/zlibrary.py:80
+#: searx/engines/zlibrary.py:79
 msgid "Language"
 msgstr "Iaith"
 
-#: searx/engines/zlibrary.py:81
+#: searx/engines/zlibrary.py:80
 msgid "Book rating"
 msgstr "Gradd llyfr"
 
-#: searx/engines/zlibrary.py:82
+#: searx/engines/zlibrary.py:81
 msgid "File quality"
 msgstr "ansawdd ffeil"
 
@@ -810,11 +815,11 @@ msgstr ""
 msgid "Display the current time on different time zones."
 msgstr ""
 
-#: searx/plugins/tor_check.py:41
+#: searx/plugins/tor_check.py:42
 msgid "Tor check plugin"
 msgstr "Ategyn gwirio Tor"
 
-#: searx/plugins/tor_check.py:43
+#: searx/plugins/tor_check.py:44
 msgid ""
 "This plugin checks if the address of the request is a Tor exit-node, and "
 "informs the user if it is; like check.torproject.org, but from SearXNG."
@@ -823,15 +828,15 @@ msgstr ""
 "yn rhoi gwybod i'r defnyddiwr os felly. Mae'n debyg i "
 "check.torproject.org, ond gan SearXNG."
 
-#: searx/plugins/tor_check.py:64
+#: searx/plugins/tor_check.py:65
 msgid "Could not download the list of Tor exit-nodes from"
 msgstr ""
 
-#: searx/plugins/tor_check.py:71
+#: searx/plugins/tor_check.py:72
 msgid "You are using Tor and it looks like you have the external IP address"
 msgstr ""
 
-#: searx/plugins/tor_check.py:75
+#: searx/plugins/tor_check.py:76
 msgid "You are not using Tor and you have the external IP address"
 msgstr ""
 
@@ -843,15 +848,15 @@ msgstr "Tynnu tracwyr URL"
 msgid "Remove trackers arguments from the returned URL"
 msgstr "Tynnu tracwyr sy'n ymddangos mewn URLs"
 
-#: searx/plugins/unit_converter.py:42
+#: searx/plugins/unit_converter.py:43
 msgid "Unit converter plugin"
 msgstr ""
 
-#: searx/plugins/unit_converter.py:43
+#: searx/plugins/unit_converter.py:44
 msgid "Convert between units"
 msgstr "Trosi rhwng unedau"
 
-#: searx/result_types/answer.py:223
+#: searx/result_types/answer.py:224
 #, python-brace-format
 msgid "{location}: {temperature}, {condition}"
 msgstr "{location}: {temperature}, {condition}"
@@ -869,45 +874,45 @@ msgstr "Mynd i %(search_page)s."
 msgid "search page"
 msgstr "tudalen chwilio"
 
-#: searx/templates/simple/base.html:51
+#: searx/templates/simple/base.html:54
 msgid "Donate"
 msgstr "Rhoddi"
 
-#: searx/templates/simple/base.html:56 searx/templates/simple/base.html:58
+#: searx/templates/simple/base.html:59 searx/templates/simple/base.html:61
 #: searx/templates/simple/preferences.html:152
 msgid "Preferences"
 msgstr "Dewisiadau"
 
-#: searx/templates/simple/base.html:69
+#: searx/templates/simple/base.html:72
 msgid "Powered by"
 msgstr "Pwerir gan"
 
-#: searx/templates/simple/base.html:69
+#: searx/templates/simple/base.html:72
 msgid "a privacy-respecting, open metasearch engine"
 msgstr "peiriant metachwilio sy'n parchu preifatrwydd"
 
-#: searx/templates/simple/base.html:70
+#: searx/templates/simple/base.html:73
 #: searx/templates/simple/result_templates/packages.html:59
 msgid "Source code"
 msgstr "Cod ffynhonnell"
 
-#: searx/templates/simple/base.html:71
+#: searx/templates/simple/base.html:74
 msgid "Issue tracker"
 msgstr "Traciwr problemau"
 
-#: searx/templates/simple/base.html:72 searx/templates/simple/stats.html:17
+#: searx/templates/simple/base.html:75 searx/templates/simple/stats.html:17
 msgid "Engine stats"
 msgstr "Ystadegau'r peiriannau"
 
-#: searx/templates/simple/base.html:74
+#: searx/templates/simple/base.html:77
 msgid "Public instances"
 msgstr "Gweinyddion cyhoeddus"
 
-#: searx/templates/simple/base.html:77
+#: searx/templates/simple/base.html:80
 msgid "Privacy policy"
 msgstr "Polisi preifatrwydd"
 
-#: searx/templates/simple/base.html:80
+#: searx/templates/simple/base.html:83
 msgid "Contact instance maintainer"
 msgstr "Cysylltu â chynhaliwr y gweinydd"
 

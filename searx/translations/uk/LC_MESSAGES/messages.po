@@ -24,7 +24,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-07-15 15:45+0000\n"
+"POT-Creation-Date: 2026-09-18 14:17+0000\n"
 "PO-Revision-Date: 2026-06-14 13:07+0000\n"
 "Last-Translator: SomeTr <sometr@noreply.codeberg.org>\n"
 "Language: uk\n"
@@ -73,6 +73,11 @@ msgstr "соцмережі"
 #: searx/searxng.msg
 msgid "images"
 msgstr "зображення"
+
+#. CATEGORY_NAMES['STOCK_IMAGES']
+#: searx/searxng.msg
+msgid "stock images"
+msgstr ""
 
 #. CATEGORY_NAMES['VIDEOS']
 #: searx/searxng.msg
@@ -185,7 +190,7 @@ msgid "Uptime"
 msgstr "Час роботи"
 
 #. BRAND_CUSTOM_LINKS['ABOUT']
-#: searx/searxng.msg searx/templates/simple/base.html:47
+#: searx/searxng.msg searx/templates/simple/base.html:50
 msgid "About"
 msgstr "Про"
 
@@ -554,7 +559,7 @@ msgstr "є відповідь"
 msgid "No item found"
 msgstr "Нічого не знайдено"
 
-#: searx/engines/qwant.py:286
+#: searx/engines/qwant.py:283
 #: searx/templates/simple/result_templates/images.html:62 searx/webapp.py:328
 msgid "Source"
 msgstr "Джерело"
@@ -563,7 +568,7 @@ msgstr "Джерело"
 msgid "Error loading the next page"
 msgstr "Не вдалося завантажити наступну сторінку"
 
-#: searx/webapp.py:478 searx/webapp.py:876
+#: searx/webapp.py:478 searx/webapp.py:878
 msgid "Invalid settings, please edit your preferences"
 msgstr "Неправильні налаштування, будь ласка, зробіть зміни в налаштуваннях"
 
@@ -599,44 +604,44 @@ msgstr "Помилка SSL: не вдалося перевірити серти�
 msgid "unexpected crash"
 msgstr "непередбачена помилка"
 
-#: searx/webutils.py:49
+#: searx/webutils.py:48
 msgid "HTTP error"
 msgstr "помилка HTTP"
 
-#: searx/webutils.py:50
+#: searx/webutils.py:49 searx/webutils.py:50
 msgid "HTTP connection error"
 msgstr "помилка з’єднання HTTP"
 
-#: searx/webutils.py:56
+#: searx/webutils.py:54
 msgid "proxy error"
 msgstr "помилка проксі"
 
-#: searx/webutils.py:57
+#: searx/webutils.py:56
 msgid "CAPTCHA"
 msgstr "CAPTCHA"
 
-#: searx/webutils.py:58
+#: searx/webutils.py:57
 msgid "too many requests"
 msgstr "забагато запитів"
 
-#: searx/webutils.py:59
+#: searx/webutils.py:58
 msgid "access denied"
 msgstr "доступ заборонено"
 
-#: searx/webutils.py:60
+#: searx/webutils.py:59
 msgid "server API error"
 msgstr "помилка API сервера"
 
-#: searx/webutils.py:79
+#: searx/webutils.py:78
 msgid "Suspended"
 msgstr "Призупинено"
 
-#: searx/webutils.py:307
+#: searx/webutils.py:306
 #, python-brace-format
 msgid "{minutes} minute(s) ago"
 msgstr "{minutes} хвилин тому"
 
-#: searx/webutils.py:308
+#: searx/webutils.py:307
 #, python-brace-format
 msgid "{hours} hour(s), {minutes} minute(s) ago"
 msgstr "{hours} годин, {minutes} хвилин тому"
@@ -655,7 +660,7 @@ msgstr "Обчислити {func} від аргументів"
 msgid "Posted by {author}"
 msgstr "Опубліковано {author}"
 
-#: searx/engines/openstreetmap.py:155
+#: searx/engines/openstreetmap.py:156
 msgid "Show route in map .."
 msgstr "Показати маршрут на карті ..."
 
@@ -668,7 +673,7 @@ msgstr "{title} (ЗАСТАРІЛО)"
 msgid "This entry has been superseded by"
 msgstr "Цей запис було замінено на"
 
-#: searx/engines/qwant.py:288
+#: searx/engines/qwant.py:285
 msgid "Channel"
 msgstr "Канал"
 
@@ -684,7 +689,7 @@ msgstr "голоси"
 msgid "clicks"
 msgstr "кліки"
 
-#: searx/engines/semantic_scholar.py:141
+#: searx/engines/semantic_scholar.py:140
 #, python-brace-format
 msgid ""
 "{numCitations} citations from the year {firstCitationVelocityYear} to "
@@ -715,15 +720,15 @@ msgstr ""
 msgid "The image could not be downloaded."
 msgstr "Зображення неможливо завантажити."
 
-#: searx/engines/zlibrary.py:80
+#: searx/engines/zlibrary.py:79
 msgid "Language"
 msgstr "Мова"
 
-#: searx/engines/zlibrary.py:81
+#: searx/engines/zlibrary.py:80
 msgid "Book rating"
 msgstr "Рейтинг книги"
 
-#: searx/engines/zlibrary.py:82
+#: searx/engines/zlibrary.py:81
 msgid "File quality"
 msgstr "Якість файлу"
 
@@ -821,11 +826,11 @@ msgstr "Плагін часового поясу"
 msgid "Display the current time on different time zones."
 msgstr "Показує поточний час у різних часових поясах."
 
-#: searx/plugins/tor_check.py:41
+#: searx/plugins/tor_check.py:42
 msgid "Tor check plugin"
 msgstr "Плагін перевірки Tor"
 
-#: searx/plugins/tor_check.py:43
+#: searx/plugins/tor_check.py:44
 msgid ""
 "This plugin checks if the address of the request is a Tor exit-node, and "
 "informs the user if it is; like check.torproject.org, but from SearXNG."
@@ -833,15 +838,15 @@ msgstr ""
 "Цей плагін перевіряє, чи належить адреса запиту вихідному вузлу Tor і, "
 "якщо так, інформує користувача; як check.torproject.org, але від SearXNG."
 
-#: searx/plugins/tor_check.py:64
+#: searx/plugins/tor_check.py:65
 msgid "Could not download the list of Tor exit-nodes from"
 msgstr "Не вдалося завантажити список вихідних вузлів Tor із"
 
-#: searx/plugins/tor_check.py:71
+#: searx/plugins/tor_check.py:72
 msgid "You are using Tor and it looks like you have the external IP address"
 msgstr "Ви використовуєте Tor, і виглядає так, що у вас зовнішня IP-адреса"
 
-#: searx/plugins/tor_check.py:75
+#: searx/plugins/tor_check.py:76
 msgid "You are not using Tor and you have the external IP address"
 msgstr "Ви не використовуєте Tor, і у вас зовнішня IP-адреса"
 
@@ -853,15 +858,15 @@ msgstr "Видалення URL-адреси трекера"
 msgid "Remove trackers arguments from the returned URL"
 msgstr "Вилучіть аргументи трекера з поверненої URL-адреси"
 
-#: searx/plugins/unit_converter.py:42
+#: searx/plugins/unit_converter.py:43
 msgid "Unit converter plugin"
 msgstr "Плагін-конвертер одиниць вимірювання"
 
-#: searx/plugins/unit_converter.py:43
+#: searx/plugins/unit_converter.py:44
 msgid "Convert between units"
 msgstr "Конвертувати одиниці"
 
-#: searx/result_types/answer.py:223
+#: searx/result_types/answer.py:224
 #, python-brace-format
 msgid "{location}: {temperature}, {condition}"
 msgstr "{location}: {temperature}, {condition}"
@@ -879,45 +884,45 @@ msgstr "Перейти до %(search_page)s."
 msgid "search page"
 msgstr "сторінки пошуку"
 
-#: searx/templates/simple/base.html:51
+#: searx/templates/simple/base.html:54
 msgid "Donate"
 msgstr "Пожертви"
 
-#: searx/templates/simple/base.html:56 searx/templates/simple/base.html:58
+#: searx/templates/simple/base.html:59 searx/templates/simple/base.html:61
 #: searx/templates/simple/preferences.html:152
 msgid "Preferences"
 msgstr "Опції"
 
-#: searx/templates/simple/base.html:69
+#: searx/templates/simple/base.html:72
 msgid "Powered by"
 msgstr "Використовується"
 
-#: searx/templates/simple/base.html:69
+#: searx/templates/simple/base.html:72
 msgid "a privacy-respecting, open metasearch engine"
 msgstr "відкрита пошукова система, що поважає конфіденційність"
 
-#: searx/templates/simple/base.html:70
+#: searx/templates/simple/base.html:73
 #: searx/templates/simple/result_templates/packages.html:59
 msgid "Source code"
 msgstr "Вихідний код"
 
-#: searx/templates/simple/base.html:71
+#: searx/templates/simple/base.html:74
 msgid "Issue tracker"
 msgstr "Трекер помилок"
 
-#: searx/templates/simple/base.html:72 searx/templates/simple/stats.html:17
+#: searx/templates/simple/base.html:75 searx/templates/simple/stats.html:17
 msgid "Engine stats"
 msgstr "Статистика пошукової системи"
 
-#: searx/templates/simple/base.html:74
+#: searx/templates/simple/base.html:77
 msgid "Public instances"
 msgstr "Публічні екземпляри"
 
-#: searx/templates/simple/base.html:77
+#: searx/templates/simple/base.html:80
 msgid "Privacy policy"
 msgstr "Політика приватності"
 
-#: searx/templates/simple/base.html:80
+#: searx/templates/simple/base.html:83
 msgid "Contact instance maintainer"
 msgstr "Зв’язатися з власником екземпляра"
 

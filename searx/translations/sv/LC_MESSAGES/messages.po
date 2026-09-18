@@ -37,7 +37,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-07-15 15:45+0000\n"
+"POT-Creation-Date: 2026-09-18 14:17+0000\n"
 "PO-Revision-Date: 2026-06-16 07:07+0000\n"
 "Last-Translator: AndersNordh <andersnordh@noreply.codeberg.org>\n"
 "Language: sv\n"
@@ -83,6 +83,11 @@ msgstr "sociala medier"
 #: searx/searxng.msg
 msgid "images"
 msgstr "bilder"
+
+#. CATEGORY_NAMES['STOCK_IMAGES']
+#: searx/searxng.msg
+msgid "stock images"
+msgstr ""
 
 #. CATEGORY_NAMES['VIDEOS']
 #: searx/searxng.msg
@@ -195,7 +200,7 @@ msgid "Uptime"
 msgstr "Upptid"
 
 #. BRAND_CUSTOM_LINKS['ABOUT']
-#: searx/searxng.msg searx/templates/simple/base.html:47
+#: searx/searxng.msg searx/templates/simple/base.html:50
 msgid "About"
 msgstr "Om"
 
@@ -564,7 +569,7 @@ msgstr "svarad"
 msgid "No item found"
 msgstr "Inget hittades"
 
-#: searx/engines/qwant.py:286
+#: searx/engines/qwant.py:283
 #: searx/templates/simple/result_templates/images.html:62 searx/webapp.py:328
 msgid "Source"
 msgstr "Källa"
@@ -573,7 +578,7 @@ msgstr "Källa"
 msgid "Error loading the next page"
 msgstr "Fel vid laddning av nästa sida"
 
-#: searx/webapp.py:478 searx/webapp.py:876
+#: searx/webapp.py:478 searx/webapp.py:878
 msgid "Invalid settings, please edit your preferences"
 msgstr "Ogiltiga inställningar, vänligen redigerar dina inställningar"
 
@@ -609,44 +614,44 @@ msgstr "SSL-fel: Valideringsfel av certifikatet"
 msgid "unexpected crash"
 msgstr "oförutsedd krasch"
 
-#: searx/webutils.py:49
+#: searx/webutils.py:48
 msgid "HTTP error"
 msgstr "HTTP-fel"
 
-#: searx/webutils.py:50
+#: searx/webutils.py:49 searx/webutils.py:50
 msgid "HTTP connection error"
 msgstr "HTTP-uppkopplingsfel"
 
-#: searx/webutils.py:56
+#: searx/webutils.py:54
 msgid "proxy error"
 msgstr "proxyfel"
 
-#: searx/webutils.py:57
+#: searx/webutils.py:56
 msgid "CAPTCHA"
 msgstr "CAPTCHA"
 
-#: searx/webutils.py:58
+#: searx/webutils.py:57
 msgid "too many requests"
 msgstr "för många förfrågningar"
 
-#: searx/webutils.py:59
+#: searx/webutils.py:58
 msgid "access denied"
 msgstr "åtkomst nekad"
 
-#: searx/webutils.py:60
+#: searx/webutils.py:59
 msgid "server API error"
 msgstr "server API-fel"
 
-#: searx/webutils.py:79
+#: searx/webutils.py:78
 msgid "Suspended"
 msgstr "Avstängd"
 
-#: searx/webutils.py:307
+#: searx/webutils.py:306
 #, python-brace-format
 msgid "{minutes} minute(s) ago"
 msgstr "{minutes} minut(er) sedan"
 
-#: searx/webutils.py:308
+#: searx/webutils.py:307
 #, python-brace-format
 msgid "{hours} hour(s), {minutes} minute(s) ago"
 msgstr "{hours} timm(e/ar), {minutes} minut(er) sedan"
@@ -665,7 +670,7 @@ msgstr "Beräkna {func} för argument"
 msgid "Posted by {author}"
 msgstr "Postat av {author}"
 
-#: searx/engines/openstreetmap.py:155
+#: searx/engines/openstreetmap.py:156
 msgid "Show route in map .."
 msgstr "Visa rutt på karta ..."
 
@@ -678,7 +683,7 @@ msgstr "{title} (FÖRÅLDRAD)"
 msgid "This entry has been superseded by"
 msgstr "Detta inlägg har ersatts av"
 
-#: searx/engines/qwant.py:288
+#: searx/engines/qwant.py:285
 msgid "Channel"
 msgstr "Kanal"
 
@@ -694,7 +699,7 @@ msgstr "röster"
 msgid "clicks"
 msgstr "klick"
 
-#: searx/engines/semantic_scholar.py:141
+#: searx/engines/semantic_scholar.py:140
 #, python-brace-format
 msgid ""
 "{numCitations} citations from the year {firstCitationVelocityYear} to "
@@ -726,15 +731,15 @@ msgstr ""
 msgid "The image could not be downloaded."
 msgstr "Det gick inte att ladda ner bilden."
 
-#: searx/engines/zlibrary.py:80
+#: searx/engines/zlibrary.py:79
 msgid "Language"
 msgstr "Språk"
 
-#: searx/engines/zlibrary.py:81
+#: searx/engines/zlibrary.py:80
 msgid "Book rating"
 msgstr "Bokbetyg"
 
-#: searx/engines/zlibrary.py:82
+#: searx/engines/zlibrary.py:81
 msgid "File quality"
 msgstr "Filkvalitet"
 
@@ -832,11 +837,11 @@ msgstr "Plugin för tidszoner"
 msgid "Display the current time on different time zones."
 msgstr "Visa aktuell tid i anna tidszon."
 
-#: searx/plugins/tor_check.py:41
+#: searx/plugins/tor_check.py:42
 msgid "Tor check plugin"
 msgstr "Tor kontroll plugin"
 
-#: searx/plugins/tor_check.py:43
+#: searx/plugins/tor_check.py:44
 msgid ""
 "This plugin checks if the address of the request is a Tor exit-node, and "
 "informs the user if it is; like check.torproject.org, but from SearXNG."
@@ -845,15 +850,15 @@ msgstr ""
 "och informerar användaren om det är; som check.torproject.org, men från "
 "SearXNG."
 
-#: searx/plugins/tor_check.py:64
+#: searx/plugins/tor_check.py:65
 msgid "Could not download the list of Tor exit-nodes from"
 msgstr "Kunde inte ladda ned listan över Tor exitnoder från"
 
-#: searx/plugins/tor_check.py:71
+#: searx/plugins/tor_check.py:72
 msgid "You are using Tor and it looks like you have the external IP address"
 msgstr "Du använder Tor och det ser ut som du har den externa IP-adressen"
 
-#: searx/plugins/tor_check.py:75
+#: searx/plugins/tor_check.py:76
 msgid "You are not using Tor and you have the external IP address"
 msgstr "Du använder inte Tor och du har den externa IP-adressen"
 
@@ -865,15 +870,15 @@ msgstr "Ta bort URL för tracker"
 msgid "Remove trackers arguments from the returned URL"
 msgstr "Ta bort tracker-argument från den återgivna webbadressen"
 
-#: searx/plugins/unit_converter.py:42
+#: searx/plugins/unit_converter.py:43
 msgid "Unit converter plugin"
 msgstr "Plugin för enhetskonvertering"
 
-#: searx/plugins/unit_converter.py:43
+#: searx/plugins/unit_converter.py:44
 msgid "Convert between units"
 msgstr "Konvertera mellan enheter"
 
-#: searx/result_types/answer.py:223
+#: searx/result_types/answer.py:224
 #, python-brace-format
 msgid "{location}: {temperature}, {condition}"
 msgstr "{location}: {temperature}, {condition}"
@@ -891,45 +896,45 @@ msgstr "Gå till %(search_page)s."
 msgid "search page"
 msgstr "söksida"
 
-#: searx/templates/simple/base.html:51
+#: searx/templates/simple/base.html:54
 msgid "Donate"
 msgstr "Donera"
 
-#: searx/templates/simple/base.html:56 searx/templates/simple/base.html:58
+#: searx/templates/simple/base.html:59 searx/templates/simple/base.html:61
 #: searx/templates/simple/preferences.html:152
 msgid "Preferences"
 msgstr "Inställningar"
 
-#: searx/templates/simple/base.html:69
+#: searx/templates/simple/base.html:72
 msgid "Powered by"
 msgstr "Drivet av"
 
-#: searx/templates/simple/base.html:69
+#: searx/templates/simple/base.html:72
 msgid "a privacy-respecting, open metasearch engine"
 msgstr "en öppen metasökmotor som respekterar din integritet"
 
-#: searx/templates/simple/base.html:70
+#: searx/templates/simple/base.html:73
 #: searx/templates/simple/result_templates/packages.html:59
 msgid "Source code"
 msgstr "Källkod"
 
-#: searx/templates/simple/base.html:71
+#: searx/templates/simple/base.html:74
 msgid "Issue tracker"
 msgstr "Ärendehanterare"
 
-#: searx/templates/simple/base.html:72 searx/templates/simple/stats.html:17
+#: searx/templates/simple/base.html:75 searx/templates/simple/stats.html:17
 msgid "Engine stats"
 msgstr "Sökmotor statistik"
 
-#: searx/templates/simple/base.html:74
+#: searx/templates/simple/base.html:77
 msgid "Public instances"
 msgstr "Publika instanser"
 
-#: searx/templates/simple/base.html:77
+#: searx/templates/simple/base.html:80
 msgid "Privacy policy"
 msgstr "Integritetspolicy"
 
-#: searx/templates/simple/base.html:80
+#: searx/templates/simple/base.html:83
 msgid "Contact instance maintainer"
 msgstr "Kontakta instansens underhållare"
 

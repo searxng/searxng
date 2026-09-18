@@ -25,7 +25,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-07-15 15:45+0000\n"
+"POT-Creation-Date: 2026-09-18 14:17+0000\n"
 "PO-Revision-Date: 2026-06-16 07:07+0000\n"
 "Last-Translator: kratos <makesocialfoss32@keemail.me>\n"
 "Language: hu\n"
@@ -71,6 +71,11 @@ msgstr "közösségi média"
 #: searx/searxng.msg
 msgid "images"
 msgstr "képek"
+
+#. CATEGORY_NAMES['STOCK_IMAGES']
+#: searx/searxng.msg
+msgid "stock images"
+msgstr ""
 
 #. CATEGORY_NAMES['VIDEOS']
 #: searx/searxng.msg
@@ -183,7 +188,7 @@ msgid "Uptime"
 msgstr "Üzemidő"
 
 #. BRAND_CUSTOM_LINKS['ABOUT']
-#: searx/searxng.msg searx/templates/simple/base.html:47
+#: searx/searxng.msg searx/templates/simple/base.html:50
 msgid "About"
 msgstr "Névjegy"
 
@@ -552,7 +557,7 @@ msgstr "megválaszolt"
 msgid "No item found"
 msgstr "Nincs találat"
 
-#: searx/engines/qwant.py:286
+#: searx/engines/qwant.py:283
 #: searx/templates/simple/result_templates/images.html:62 searx/webapp.py:328
 msgid "Source"
 msgstr "Forrás"
@@ -561,7 +566,7 @@ msgstr "Forrás"
 msgid "Error loading the next page"
 msgstr "Hiba a következő oldal betöltése során"
 
-#: searx/webapp.py:478 searx/webapp.py:876
+#: searx/webapp.py:478 searx/webapp.py:878
 msgid "Invalid settings, please edit your preferences"
 msgstr "Érvénytelen beállítások, módosítsa őket"
 
@@ -597,44 +602,44 @@ msgstr "SSL hiba: a tanúsítvány ellenőrzése nem sikerült"
 msgid "unexpected crash"
 msgstr "váratlan összeomlás"
 
-#: searx/webutils.py:49
+#: searx/webutils.py:48
 msgid "HTTP error"
 msgstr "HTTP hiba"
 
-#: searx/webutils.py:50
+#: searx/webutils.py:49 searx/webutils.py:50
 msgid "HTTP connection error"
 msgstr "HTTP csatlakozási hiba"
 
-#: searx/webutils.py:56
+#: searx/webutils.py:54
 msgid "proxy error"
 msgstr "proxy hiba"
 
-#: searx/webutils.py:57
+#: searx/webutils.py:56
 msgid "CAPTCHA"
 msgstr "CAPTCHA"
 
-#: searx/webutils.py:58
+#: searx/webutils.py:57
 msgid "too many requests"
 msgstr "túl sok kérés"
 
-#: searx/webutils.py:59
+#: searx/webutils.py:58
 msgid "access denied"
 msgstr "hozzáférés megtagadva"
 
-#: searx/webutils.py:60
+#: searx/webutils.py:59
 msgid "server API error"
 msgstr "kiszolgáló API hiba"
 
-#: searx/webutils.py:79
+#: searx/webutils.py:78
 msgid "Suspended"
 msgstr "Felfüggesztve"
 
-#: searx/webutils.py:307
+#: searx/webutils.py:306
 #, python-brace-format
 msgid "{minutes} minute(s) ago"
 msgstr "{minutes} perce"
 
-#: searx/webutils.py:308
+#: searx/webutils.py:307
 #, python-brace-format
 msgid "{hours} hour(s), {minutes} minute(s) ago"
 msgstr "{hours} óra, {minutes} perce"
@@ -653,7 +658,7 @@ msgstr "A(z) {func} értékének kiszámítása az argumentumokból"
 msgid "Posted by {author}"
 msgstr "Közzétette: {author}"
 
-#: searx/engines/openstreetmap.py:155
+#: searx/engines/openstreetmap.py:156
 msgid "Show route in map .."
 msgstr "Útvonal megjelenítése a térképen .."
 
@@ -666,7 +671,7 @@ msgstr "{title} (elavult)"
 msgid "This entry has been superseded by"
 msgstr "Ezt a bejegyzést leváltotta:"
 
-#: searx/engines/qwant.py:288
+#: searx/engines/qwant.py:285
 msgid "Channel"
 msgstr "Csatorna"
 
@@ -682,7 +687,7 @@ msgstr "szavazatok:"
 msgid "clicks"
 msgstr "kattintások"
 
-#: searx/engines/semantic_scholar.py:141
+#: searx/engines/semantic_scholar.py:140
 #, python-brace-format
 msgid ""
 "{numCitations} citations from the year {firstCitationVelocityYear} to "
@@ -713,15 +718,15 @@ msgstr ""
 msgid "The image could not be downloaded."
 msgstr "A kép nem tölthető le."
 
-#: searx/engines/zlibrary.py:80
+#: searx/engines/zlibrary.py:79
 msgid "Language"
 msgstr "Nyelv"
 
-#: searx/engines/zlibrary.py:81
+#: searx/engines/zlibrary.py:80
 msgid "Book rating"
 msgstr "Könyv értékelése"
 
-#: searx/engines/zlibrary.py:82
+#: searx/engines/zlibrary.py:81
 msgid "File quality"
 msgstr "Fájlminőség"
 
@@ -819,11 +824,11 @@ msgstr "Időzónák bővítmény"
 msgid "Display the current time on different time zones."
 msgstr "Az aktuális idő megjelenítése különböző időzónákban."
 
-#: searx/plugins/tor_check.py:41
+#: searx/plugins/tor_check.py:42
 msgid "Tor check plugin"
 msgstr "Tor ellenőrző kiegészítő"
 
-#: searx/plugins/tor_check.py:43
+#: searx/plugins/tor_check.py:44
 msgid ""
 "This plugin checks if the address of the request is a Tor exit-node, and "
 "informs the user if it is; like check.torproject.org, but from SearXNG."
@@ -832,15 +837,15 @@ msgstr ""
 " és értesíti a felhasználót, ha igen; mint a check.torproject.org, de a "
 "SearXNG-től."
 
-#: searx/plugins/tor_check.py:64
+#: searx/plugins/tor_check.py:65
 msgid "Could not download the list of Tor exit-nodes from"
 msgstr "Nem sikerült letölteni a Tor kilépési csomópontok listáját innen"
 
-#: searx/plugins/tor_check.py:71
+#: searx/plugins/tor_check.py:72
 msgid "You are using Tor and it looks like you have the external IP address"
 msgstr "Ön a Tor-t használja, és úgy tűnik, hogy külső IP-címmel rendelkezik"
 
-#: searx/plugins/tor_check.py:75
+#: searx/plugins/tor_check.py:76
 msgid "You are not using Tor and you have the external IP address"
 msgstr "Ön nem használja a Tor-t és külső IP-címmel rendelkezik"
 
@@ -854,15 +859,15 @@ msgstr ""
 "Eltávolítja a felhasználók követéshez használt argumentumokat a találatok"
 " webcíméből"
 
-#: searx/plugins/unit_converter.py:42
+#: searx/plugins/unit_converter.py:43
 msgid "Unit converter plugin"
 msgstr "Egységváltó bővítmény"
 
-#: searx/plugins/unit_converter.py:43
+#: searx/plugins/unit_converter.py:44
 msgid "Convert between units"
 msgstr "Váltson mértékegységek között"
 
-#: searx/result_types/answer.py:223
+#: searx/result_types/answer.py:224
 #, python-brace-format
 msgid "{location}: {temperature}, {condition}"
 msgstr "{location}: {temperature}, {condition}"
@@ -880,45 +885,45 @@ msgstr "Ugrás a %(search_page)s."
 msgid "search page"
 msgstr "keresőoldalra"
 
-#: searx/templates/simple/base.html:51
+#: searx/templates/simple/base.html:54
 msgid "Donate"
 msgstr "Adakozás"
 
-#: searx/templates/simple/base.html:56 searx/templates/simple/base.html:58
+#: searx/templates/simple/base.html:59 searx/templates/simple/base.html:61
 #: searx/templates/simple/preferences.html:152
 msgid "Preferences"
 msgstr "Beállítások"
 
-#: searx/templates/simple/base.html:69
+#: searx/templates/simple/base.html:72
 msgid "Powered by"
 msgstr "Az oldalt kiszolgálja:"
 
-#: searx/templates/simple/base.html:69
+#: searx/templates/simple/base.html:72
 msgid "a privacy-respecting, open metasearch engine"
 msgstr "egy adatvédelmet tiszteletben tartó, nyílt forráskódú metakereső"
 
-#: searx/templates/simple/base.html:70
+#: searx/templates/simple/base.html:73
 #: searx/templates/simple/result_templates/packages.html:59
 msgid "Source code"
 msgstr "Forráskód"
 
-#: searx/templates/simple/base.html:71
+#: searx/templates/simple/base.html:74
 msgid "Issue tracker"
 msgstr "Hibajegykövető"
 
-#: searx/templates/simple/base.html:72 searx/templates/simple/stats.html:17
+#: searx/templates/simple/base.html:75 searx/templates/simple/stats.html:17
 msgid "Engine stats"
 msgstr "Keresőstatisztikák"
 
-#: searx/templates/simple/base.html:74
+#: searx/templates/simple/base.html:77
 msgid "Public instances"
 msgstr "Publikus példányok"
 
-#: searx/templates/simple/base.html:77
+#: searx/templates/simple/base.html:80
 msgid "Privacy policy"
 msgstr "Adatvédelmi irányelvek"
 
-#: searx/templates/simple/base.html:80
+#: searx/templates/simple/base.html:83
 msgid "Contact instance maintainer"
 msgstr "Kapcsolatfelvétel a példány karbantartójával"
 

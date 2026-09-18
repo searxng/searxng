@@ -36,19 +36,18 @@
 # cdli <cdli@noreply.codeberg.org>, 2026.
 msgid ""
 msgstr ""
-"Project-Id-Version: searx\n"
+"Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-07-15 15:45+0000\n"
+"POT-Creation-Date: 2026-09-18 14:17+0000\n"
 "PO-Revision-Date: 2026-08-21 20:55+0000\n"
 "Last-Translator: return42 <return42@noreply.codeberg.org>\n"
-"Language-Team: Turkish <https://translate.codeberg.org/projects/searxng/"
-"searxng/tr/>\n"
 "Language: tr\n"
+"Language-Team: Turkish "
+"<https://translate.codeberg.org/projects/searxng/searxng/tr/>\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Weblate 2026.8.1\n"
 "Generated-By: Babel 2.18.0\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
@@ -85,6 +84,11 @@ msgstr "sosyal medya"
 #: searx/searxng.msg
 msgid "images"
 msgstr "görseller"
+
+#. CATEGORY_NAMES['STOCK_IMAGES']
+#: searx/searxng.msg
+msgid "stock images"
+msgstr ""
 
 #. CATEGORY_NAMES['VIDEOS']
 #: searx/searxng.msg
@@ -197,7 +201,7 @@ msgid "Uptime"
 msgstr "Çalışma Süresi"
 
 #. BRAND_CUSTOM_LINKS['ABOUT']
-#: searx/searxng.msg searx/templates/simple/base.html:47
+#: searx/searxng.msg searx/templates/simple/base.html:50
 msgid "About"
 msgstr "Hakkında"
 
@@ -566,7 +570,7 @@ msgstr "yanıtlandı"
 msgid "No item found"
 msgstr "Öğe bulunamadı"
 
-#: searx/engines/qwant.py:286
+#: searx/engines/qwant.py:283
 #: searx/templates/simple/result_templates/images.html:62 searx/webapp.py:328
 msgid "Source"
 msgstr "Kaynak"
@@ -575,7 +579,7 @@ msgstr "Kaynak"
 msgid "Error loading the next page"
 msgstr "Sonraki sayfa yüklenemedi"
 
-#: searx/webapp.py:478 searx/webapp.py:876
+#: searx/webapp.py:478 searx/webapp.py:878
 msgid "Invalid settings, please edit your preferences"
 msgstr "Geçersiz ayarlar, lütfen tercihlerinizi düzenleyin"
 
@@ -611,44 +615,44 @@ msgstr "SSL Hatası: Sertifika doğrulaması başarısız oldu"
 msgid "unexpected crash"
 msgstr "beklenmeyen çökme"
 
-#: searx/webutils.py:49
+#: searx/webutils.py:48
 msgid "HTTP error"
 msgstr "HTTP hatası"
 
-#: searx/webutils.py:50
+#: searx/webutils.py:49 searx/webutils.py:50
 msgid "HTTP connection error"
 msgstr "HTTP bağlantı hatası"
 
-#: searx/webutils.py:56
+#: searx/webutils.py:54
 msgid "proxy error"
 msgstr "proxy hatası"
 
-#: searx/webutils.py:57
+#: searx/webutils.py:56
 msgid "CAPTCHA"
 msgstr "CAPTCHA"
 
-#: searx/webutils.py:58
+#: searx/webutils.py:57
 msgid "too many requests"
 msgstr "çok fazla istek"
 
-#: searx/webutils.py:59
+#: searx/webutils.py:58
 msgid "access denied"
 msgstr "erişim engellendi"
 
-#: searx/webutils.py:60
+#: searx/webutils.py:59
 msgid "server API error"
 msgstr "sunucu API hatası"
 
-#: searx/webutils.py:79
+#: searx/webutils.py:78
 msgid "Suspended"
 msgstr "Askıya alındı"
 
-#: searx/webutils.py:307
+#: searx/webutils.py:306
 #, python-brace-format
 msgid "{minutes} minute(s) ago"
 msgstr "{minutes} dakika önce"
 
-#: searx/webutils.py:308
+#: searx/webutils.py:307
 #, python-brace-format
 msgid "{hours} hour(s), {minutes} minute(s) ago"
 msgstr "{hours} saat, {minutes} dakika önce"
@@ -667,7 +671,7 @@ msgstr "Argümanların değerini hesapla {func}"
 msgid "Posted by {author}"
 msgstr "{author} tarafından yayınlandı"
 
-#: searx/engines/openstreetmap.py:155
+#: searx/engines/openstreetmap.py:156
 msgid "Show route in map .."
 msgstr "Yol tarifini haritada goster .."
 
@@ -680,7 +684,7 @@ msgstr "{title} (ESKİ)"
 msgid "This entry has been superseded by"
 msgstr "Bu girişin yerini alan"
 
-#: searx/engines/qwant.py:288
+#: searx/engines/qwant.py:285
 msgid "Channel"
 msgstr "Kanal"
 
@@ -696,7 +700,7 @@ msgstr "oylar"
 msgid "clicks"
 msgstr "tıklamalar"
 
-#: searx/engines/semantic_scholar.py:141
+#: searx/engines/semantic_scholar.py:140
 #, python-brace-format
 msgid ""
 "{numCitations} citations from the year {firstCitationVelocityYear} to "
@@ -727,15 +731,15 @@ msgstr ""
 msgid "The image could not be downloaded."
 msgstr "Görsel indirilemedi."
 
-#: searx/engines/zlibrary.py:80
+#: searx/engines/zlibrary.py:79
 msgid "Language"
 msgstr "Dil"
 
-#: searx/engines/zlibrary.py:81
+#: searx/engines/zlibrary.py:80
 msgid "Book rating"
 msgstr "Kitap değerlendirmesi"
 
-#: searx/engines/zlibrary.py:82
+#: searx/engines/zlibrary.py:81
 msgid "File quality"
 msgstr "Dosya kalitesi"
 
@@ -831,11 +835,11 @@ msgstr "Saat Dilimleri Eklentisi"
 msgid "Display the current time on different time zones."
 msgstr "Farklı saat dilimlerindeki zamanı gösterir."
 
-#: searx/plugins/tor_check.py:41
+#: searx/plugins/tor_check.py:42
 msgid "Tor check plugin"
 msgstr "Tor kontrol eklentisi"
 
-#: searx/plugins/tor_check.py:43
+#: searx/plugins/tor_check.py:44
 msgid ""
 "This plugin checks if the address of the request is a Tor exit-node, and "
 "informs the user if it is; like check.torproject.org, but from SearXNG."
@@ -844,15 +848,15 @@ msgstr ""
 "kontrol eder ve varsa kullanıcıyı bilgilendirir; check.torproject.org "
 "gibi, ancak SearXNG'den."
 
-#: searx/plugins/tor_check.py:64
+#: searx/plugins/tor_check.py:65
 msgid "Could not download the list of Tor exit-nodes from"
 msgstr "Tor çıkış noktalarinin listesini indiremiyor"
 
-#: searx/plugins/tor_check.py:71
+#: searx/plugins/tor_check.py:72
 msgid "You are using Tor and it looks like you have the external IP address"
 msgstr "Su anda Tor'a baglisiniz ve dış IP adresiniz var gibi görünüyor"
 
-#: searx/plugins/tor_check.py:75
+#: searx/plugins/tor_check.py:76
 msgid "You are not using Tor and you have the external IP address"
 msgstr "Tor kullanmıyorsunuz ve harici IP adresiniz var"
 
@@ -864,15 +868,15 @@ msgstr "Takip URL kaldırıcı"
 msgid "Remove trackers arguments from the returned URL"
 msgstr "Takip parametrelerini URL'den kaldır"
 
-#: searx/plugins/unit_converter.py:42
+#: searx/plugins/unit_converter.py:43
 msgid "Unit converter plugin"
 msgstr "Birim dönüştürme eklentisi"
 
-#: searx/plugins/unit_converter.py:43
+#: searx/plugins/unit_converter.py:44
 msgid "Convert between units"
 msgstr "Birimler arasında dönüştürme"
 
-#: searx/result_types/answer.py:223
+#: searx/result_types/answer.py:224
 #, python-brace-format
 msgid "{location}: {temperature}, {condition}"
 msgstr "{location}: {temperature}, {condition}"
@@ -890,45 +894,45 @@ msgstr "%(search_page)s sayfasına git."
 msgid "search page"
 msgstr "arama sayfası"
 
-#: searx/templates/simple/base.html:51
+#: searx/templates/simple/base.html:54
 msgid "Donate"
 msgstr "Bağış"
 
-#: searx/templates/simple/base.html:56 searx/templates/simple/base.html:58
+#: searx/templates/simple/base.html:59 searx/templates/simple/base.html:61
 #: searx/templates/simple/preferences.html:152
 msgid "Preferences"
 msgstr "Tercihler"
 
-#: searx/templates/simple/base.html:69
+#: searx/templates/simple/base.html:72
 msgid "Powered by"
 msgstr "Destekleyen"
 
-#: searx/templates/simple/base.html:69
+#: searx/templates/simple/base.html:72
 msgid "a privacy-respecting, open metasearch engine"
 msgstr "Gizliliğiniz önemseyen, açık meta arama motoru"
 
-#: searx/templates/simple/base.html:70
+#: searx/templates/simple/base.html:73
 #: searx/templates/simple/result_templates/packages.html:59
 msgid "Source code"
 msgstr "Kaynak kodu"
 
-#: searx/templates/simple/base.html:71
+#: searx/templates/simple/base.html:74
 msgid "Issue tracker"
 msgstr "Sorun izleyici"
 
-#: searx/templates/simple/base.html:72 searx/templates/simple/stats.html:17
+#: searx/templates/simple/base.html:75 searx/templates/simple/stats.html:17
 msgid "Engine stats"
 msgstr "Motor istatistikleri"
 
-#: searx/templates/simple/base.html:74
+#: searx/templates/simple/base.html:77
 msgid "Public instances"
 msgstr "Açık sunucular"
 
-#: searx/templates/simple/base.html:77
+#: searx/templates/simple/base.html:80
 msgid "Privacy policy"
 msgstr "Gizlilik politikası"
 
-#: searx/templates/simple/base.html:80
+#: searx/templates/simple/base.html:83
 msgid "Contact instance maintainer"
 msgstr "Sunucu sahibi ile iletişime geçin"
 
@@ -2433,3 +2437,4 @@ msgstr "videoyu gizle"
 
 #~ msgid "Engine"
 #~ msgstr "Motor"
+
