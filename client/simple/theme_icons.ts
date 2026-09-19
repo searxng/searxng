@@ -39,14 +39,17 @@ const simple_icons: IconSet[] = [
       alert: "alert-outline.svg",
       appstore: "apps-outline.svg",
       book: "book-outline.svg",
+      camera: "camera-outline.svg",
       close: "close-outline.svg",
       download: "download-outline.svg",
       "ellipsis-vertical": "ellipsis-vertical-outline.svg",
       "file-tray-full": "file-tray-full-outline.svg",
+      "file-tray-stacked": "file-tray-stacked-outline.svg",
       film: "film-outline.svg",
       globe: "globe-outline.svg",
       heart: "heart-outline.svg",
       image: "image-outline.svg",
+      language: "language-outline.svg",
       layers: "layers-outline.svg",
       leecher: "arrow-down.svg",
       location: "location-outline.svg",
@@ -56,15 +59,19 @@ const simple_icons: IconSet[] = [
       "navigate-left": "chevron-back-outline.svg",
       "navigate-right": "chevron-forward-outline.svg",
       "navigate-up": "chevron-up-outline.svg",
+      palette: "color-palette-outline.svg",
       people: "people-outline.svg",
       play: "play-outline.svg",
       radio: "radio-outline.svg",
+      rainy: "rainy-outline.svg",
+      rss: "logo-rss.svg",
       save: "save-outline.svg",
       school: "school-outline.svg",
       search: "search-outline.svg",
       seeder: "swap-vertical.svg",
       settings: "settings-outline.svg",
-      tv: "tv-outline.svg"
+      tv: "tv-outline.svg",
+      videocam: "videocam-outline.svg"
     },
     svgo_opts: sxng_icon_opts
   },
@@ -75,7 +82,9 @@ const simple_icons: IconSet[] = [
     base: resolve(HERE, "src/svg/ionicons"),
     set: {
       "information-circle": "information-circle-outline.svg",
-      newspaper: "newspaper-outline.svg"
+      lyrics: "song-lyric-music.svg",
+      newspaper: "newspaper-outline.svg",
+      tor: "tor-browser.svg"
     },
     svgo_opts: sxng_icon_opts
   }
