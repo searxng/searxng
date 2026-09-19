@@ -292,7 +292,7 @@ def _parse_secondary_items(json_data: dict[str, t.Any], results: EngineResults):
     if videos_resp and "results" in videos_resp:
         for result in videos_resp.get("results", []):
             results.add(_parse_video_result(result))
-    # related queries -> suggestion (No MainResult?)
+    # related queries -> suggestion
     query: dict[str, t.Any] = body_resp.get("query", {})
     if query and "related_queries" in query:
         for x in query.get("related_queries", []):
