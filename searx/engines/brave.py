@@ -303,7 +303,6 @@ def _parse_secondary_items(json_data: dict[str, t.Any], results: EngineResults):
 def _parse_news_result(result: dict[str, t.Any]) -> MainResult:
     thumbnail: dict[str, t.Any] = result.get("thumbnail", {})
     return MainResult(
-        template="default.html",
         title=result.get("title", ""),
         content=result.get("description", ""),
         url=result.get("url"),
