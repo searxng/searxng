@@ -25,7 +25,7 @@ about = {
 base_url = "https://stocksnap.io"
 cdn_url = "https://cdn.stocksnap.io"
 
-categories = ["stock_images"]
+categories = ["stock images"]
 paging = True
 
 

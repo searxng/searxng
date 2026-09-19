@@ -33,7 +33,7 @@ about = {
 base_url = "https://500px.com"
 api_url = "https://api-neo.500px.com"
 
-categories = ["stock_images"]
+categories = ["stock images"]
 paging = True
 
 results_per_page = 30
