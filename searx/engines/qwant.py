@@ -292,7 +292,7 @@ def response(resp: "SXNG_Response") -> EngineResults:
                 thumbnail = thumbnail.replace("https://s2.qwant.com", "https://s1.qwant.com", 1)
 
                 res.add(
-                    res.types.LegacyResult(
+                    res.types.Video(
                         title=title,
                         url=res_url,
                         content=content,

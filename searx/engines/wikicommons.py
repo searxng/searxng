@@ -181,8 +181,7 @@ def response(resp: "SXNG_Response") -> EngineResults:
 
         if wc_search_type == "video":
             res.add(
-                res.types.LegacyResult(
-                    template="videos.html",
+                res.types.Video(
                     title=title,
                     url=url,
                     content=content,

@@ -2,7 +2,6 @@
 """Utility functions for the engines"""
 
 from hashlib import pbkdf2_hmac
-import time
 
 import re
 import importlib
@@ -593,13 +592,24 @@ def eval_xpath_getindex(
     return default
 
 
-def get_embedded_stream_url(url: str):
-    """
-    Converts a standard video URL into its embed format. Supported services include Youtube,
-    Facebook, Instagram, TikTok, Dailymotion, and Bilibili.
+def get_embedded_stream_url(url: str) -> str:
+    """Converts a standard video URL into its embed format.
+
+    Supported services include:
+
+    - Youtube
+    - Facebook
+    - Instagram
+    - TikTok
+    - Dailymotion
+    - Bilibili
+
+    The function is suitable for the field :obj:`MainResult.iframe_src
+    <searx.result_types.MainResult.iframe_src>`.  If ``url`` is not from one of
+    the supported services, an empty string is returned.
     """
     parsed_url = urlparse(url)
-    iframe_src = None
+    iframe_src = ""
 
     # YouTube
     if parsed_url.netloc in ['www.youtube.com', 'youtube.com'] and parsed_url.path == '/watch' and parsed_url.query:
@@ -784,9 +794,10 @@ def js_obj_str_to_json_str(js_obj_str: str) -> str:
 
 
 def parse_duration_string(duration_str: str) -> timedelta | None:
-    """Parse a time string in format MM:SS or HH:MM:SS and convert it to a `timedelta` object.
+    """Parse a time string in format MM:SS or HH:MM:SS and convert it to a
+    :obj:`datetime.timedelta` object.
 
-    Returns None if the provided string doesn't match any of the formats.
+    Returns ``None`` if the provided string doesn't match any of the formats.
     """
     duration_str = duration_str.strip()
 
@@ -795,7 +806,7 @@ def parse_duration_string(duration_str: str) -> timedelta | None:
 
     try:
         # prepending ["00"] here inits hours to 0 if they are not provided
-        time_parts = (["00"] + duration_str.split(":"))[:3]
+        time_parts = (["00"] + duration_str.split(":"))[-3:]
         hours, minutes, seconds = map(int, time_parts)
         return timedelta(hours=hours, minutes=minutes, seconds=seconds)
 
@@ -803,15 +814,6 @@ def parse_duration_string(duration_str: str) -> timedelta | None:
         pass
 
     return None
-
-
-# Format the video duration
-def format_duration(duration: str | int) -> str:
-    seconds = int(duration)
-    length = time.gmtime(seconds)
-    if length.tm_hour:
-        return time.strftime("%H:%M:%S", length)
-    return time.strftime("%M:%S", length)
 
 
 def _array_startswith(arr: bytes, prefix: bytes) -> bool:

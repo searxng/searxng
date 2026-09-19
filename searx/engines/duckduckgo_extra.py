@@ -10,7 +10,7 @@ from datetime import datetime
 from urllib.parse import urlencode
 from urllib.parse import quote_plus
 
-from searx.result_types import EngineResults, MainResult, LegacyResult, Image
+from searx.result_types import EngineResults, MainResult, Image, Video
 from searx.utils import html_to_text, gen_useragent, extr
 from searx.network import get  # see https://github.com/searxng/searxng/issues/762
 
@@ -162,13 +162,11 @@ def _image_result(result):
 
 
 def _video_result(result):
-    return LegacyResult(
-        template='videos.html',
+    return Video(
         url=result['content'],
         title=result['title'],
         content=result['description'],
         thumbnail=result['images'].get('small') or result['images'].get('medium'),
-        source=result['provider'],
         length=result['duration'],
         metadata=result.get('uploader'),
     )

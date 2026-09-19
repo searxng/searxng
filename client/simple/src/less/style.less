@@ -407,30 +407,6 @@ article[data-vim-selected].category-social {
   padding: 10px 0 0 0;
 }
 
-.result-videos {
-  a.thumbnail_link img.thumbnail {
-    width: 20rem;
-  }
-
-  .content {
-    overflow: hidden;
-  }
-
-  .embedded-video iframe {
-    width: 100%;
-    aspect-ratio: 16 / 9;
-    padding: 10px 0 0 0;
-  }
-}
-
-@supports not (aspect-ratio: 1 / 1) {
-  // support older browsers which do not have aspect-ratio
-  // https://caniuse.com/?search=aspect-ratio
-  .result-videos .embedded-video iframe {
-    height: calc(@results-width * 9 / 16);
-  }
-}
-
 .engines {
   .ltr-float-right();
   display: flex;
@@ -1143,18 +1119,6 @@ summary.title {
   small-phone layout
 */
 
-@media screen and (max-width: @small-phone) {
-  .result-videos {
-    img.thumbnail {
-      float: none !important;
-    }
-
-    .content {
-      overflow: inherit;
-    }
-  }
-}
-
 pre code {
   white-space: pre-wrap;
 }
@@ -1165,3 +1129,4 @@ pre code {
 @import "result_types/paper.less";
 @import "result_types/file.less";
 @import "result_types/image.less";
+@import "result_types/video.less";
