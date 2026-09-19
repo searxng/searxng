@@ -26,7 +26,7 @@ about = {
 }
 
 base_url = "https://www.pexels.com"
-categories = ["stock_images"]
+categories = ["stock images"]
 
 api_key = "H2jk9uKnhRmL6WPwh89zBezWvr"
 """

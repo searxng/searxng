@@ -31,7 +31,7 @@ about = {
 
 base_url = "https://www.magnific.com"
 
-categories = ["stock_images"]
+categories = ["stock images"]
 paging = True
 
 free_images_only = True
