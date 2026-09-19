@@ -354,7 +354,6 @@ def _get_response_data(json_data: dict[str, t.Any], category: str | None = None)
         data: dict[str, t.Any] = json_data["data"][1]["data"]
 
         if data.get("noResults"):  # Boolean Value
-            logger.debug("Brave search returned no results.")
             return {}
 
         if category == "news":
