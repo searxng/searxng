@@ -96,6 +96,8 @@ def request(query: str, params: "OnlineParams") -> None:
             "x-lon": str(round(random.random() * 90, 4)),
             "x-lat": str(round(random.random() * 90, 4)),
             "Referer": "https://tusksearch.com/",
+            "Origin": "https://tusksearch.com",
+            "Sec-Fetch-Site": "same-site",
         }
     )
 
