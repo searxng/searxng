@@ -431,34 +431,6 @@ article[data-vim-selected].category-social {
   padding: 10px 0 0 0;
 }
 
-.result-videos {
-  a.thumbnail_link {
-    .ltr-float-left();
-    .ltr-margin-right(1rem);
-    .ltr-margin-left(0);
-    width: 10rem !important;
-    aspect-ratio: 16 / 9 !important;
-  }
-
-  .content {
-    overflow: hidden;
-  }
-
-  .embedded-video iframe {
-    width: 100%;
-    aspect-ratio: 16 / 9;
-    padding: 10px 0 0 0;
-  }
-}
-
-@supports not (aspect-ratio: 1 / 1) {
-  // support older browsers which do not have aspect-ratio
-  // https://caniuse.com/?search=aspect-ratio
-  .result-videos .embedded-video iframe {
-    height: calc(@results-width * 9 / 16);
-  }
-}
-
 .engines {
   .ltr-float-right();
   clear: both;

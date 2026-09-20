@@ -129,29 +129,6 @@ audio_src : uri,
   URL of an embedded ``<audio controls>``.
 
 
-.. _template videos:
-
-``videos.html``
----------------
-
-Displays result fields from:
-
-- :ref:`macro result_header` and
-- :ref:`macro result_sub_header`
-
-Additional fields used in the :origin:`videos.html
-<searx/templates/simple/result_templates/videos.html>`:
-
-iframe_src : :py:class:`str`
-  URL of an embedded ``<iframe>`` / the frame is collapsible.
-
-  The videos are displayed as small thumbnails in the main results list, there
-  is an additional button to collaps/open the embeded video.
-
-content :  :py:class:`str`
-  Description of the code fragment.
-
-
 .. _template torrent:
 
 ``torrent.html``

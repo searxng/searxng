@@ -593,13 +593,24 @@ def eval_xpath_getindex(
     return default
 
 
-def get_embedded_stream_url(url: str):
-    """
-    Converts a standard video URL into its embed format. Supported services include Youtube,
-    Facebook, Instagram, TikTok, Dailymotion, and Bilibili.
+def get_embedded_stream_url(url: str) -> str:
+    """Converts a standard video URL into its embed format.
+
+    Supported services include:
+
+    - Youtube
+    - Facebook
+    - Instagram
+    - TikTok
+    - Dailymotion
+    - Bilibili
+
+    The function is suitable for the field :obj:`MainResult.iframe_src
+    <searx.result_types.MainResult.iframe_src>`.  If ``url`` is not from one of
+    the supported services, an empty string is returned.
     """
     parsed_url = urlparse(url)
-    iframe_src = None
+    iframe_src = ""
 
     # YouTube
     if parsed_url.netloc in ['www.youtube.com', 'youtube.com'] and parsed_url.path == '/watch' and parsed_url.query:
