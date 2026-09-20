@@ -1,0 +1,25 @@
+// SPDX-License-Identifier: AGPL-3.0-or-later
+
+/*
+  Layout of the Video result class
+*/
+
+.result-videos {
+  a.thumbnail_link {
+    .ltr-float-left();
+    .ltr-margin-right(1rem);
+    .ltr-margin-left(0);
+    width: 10rem !important;
+    aspect-ratio: 16 / 9 !important;
+  }
+
+  .content {
+    overflow: hidden;
+  }
+
+  .embedded-video iframe {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    padding: 10px 0 0 0;
+  }
+}
