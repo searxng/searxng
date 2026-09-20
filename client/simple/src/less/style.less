@@ -255,6 +255,8 @@ article[data-vim-selected].category-social {
     font-size: 1rem;
     color: var(--color-result-url-font);
     flex-flow: row nowrap;
+    flex: 1;
+    min-width: 0;
     overflow: hidden;
     margin: 0;
     padding: 0;
@@ -305,20 +307,42 @@ article[data-vim-selected].category-social {
 
   a.thumbnail_link {
     position: relative;
-    margin-top: 0.6rem;
-    .ltr-margin-right(1rem);
-    .ltr-float-left();
+    display: block;
+    .ltr-float-right();
+    .ltr-margin-left(0.5rem);
+    width: 8rem;
+    aspect-ratio: 4 / 3;
+    border-radius: 0.5rem;
+    overflow: hidden;
+    background: var(--color-result-border);
+
+    img.thumbnail_bg {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: blur(0.25rem);
+      pointer-events: none;
+    }
 
     img.thumbnail {
-      width: 7rem;
-      height: unset; // remove height value that was needed for lazy loading
+      position: relative;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
       display: block;
     }
 
     .thumbnail_length {
       .image-label-bottom-right();
       right: 6px;
+      z-index: 1;
     }
+  }
+
+  .result_inner {
+    overflow: hidden;
   }
 
   .break {
@@ -408,8 +432,12 @@ article[data-vim-selected].category-social {
 }
 
 .result-videos {
-  a.thumbnail_link img.thumbnail {
-    width: 20rem;
+  a.thumbnail_link {
+    .ltr-float-left();
+    .ltr-margin-right(1rem);
+    .ltr-margin-left(0);
+    width: 10rem !important;
+    aspect-ratio: 16 / 9 !important;
   }
 
   .content {
@@ -433,6 +461,8 @@ article[data-vim-selected].category-social {
 
 .engines {
   .ltr-float-right();
+  clear: both;
+  margin-top: 0.5rem;
   display: flex;
   flex-wrap: wrap;
   justify-content: flex-end;
@@ -930,10 +960,6 @@ summary.title {
   }
 
   .result {
-    .thumbnail {
-      max-width: 98%;
-    }
-
     .url {
       span.url {
         display: block;
@@ -1144,13 +1170,11 @@ summary.title {
 */
 
 @media screen and (max-width: @small-phone) {
-  .result-videos {
-    img.thumbnail {
-      float: none !important;
-    }
-
-    .content {
-      overflow: inherit;
+  .result {
+    a.thumbnail_link {
+      aspect-ratio: 1 / 1;
+      width: 7rem;
+      border-radius: 1.25rem;
     }
   }
 }
