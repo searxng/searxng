@@ -178,17 +178,14 @@ def response(resp: "SXNG_Response") -> EngineResults:
                 length = parse_duration_string(result["props"]["duration"])
 
             res.add(
-                res.types.LegacyResult(
-                    {
-                        "template": "videos.html",
-                        "url": result["url"],
-                        "title": html_to_text(result.get("title", "no title available")),
-                        "content": html_to_text(result.get("snippet", "")),
-                        "thumbnail": result.get("image", {}).get("url"),
-                        "publishedDate": published_date,
-                        "author": result.get("props", {}).get("creator_name"),
-                        "length": length,
-                    }
+                res.types.Video(
+                    url=result["url"],
+                    title=html_to_text(result.get("title", "no title available")),
+                    content=html_to_text(result.get("snippet", "")),
+                    thumbnail=result.get("image", {}).get("url"),
+                    publishedDate=published_date,
+                    author=result.get("props", {}).get("creator_name"),
+                    length=length,
                 )
             )
 

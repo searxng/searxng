@@ -52,7 +52,7 @@ def response(resp) -> EngineResults:
                 published_date = None
 
         res.add(
-            res.types.LegacyResult(
+            res.types.Video(
                 url=entry["play_url"],
                 title=html_to_text(entry["title"]),
                 content=html_to_text(entry["description"]),

@@ -157,8 +157,7 @@ def _news_results(doc: ElementType, res: EngineResults):
 def _video_results(doc: ElementType, res: EngineResults):
     for result in eval_xpath_list(doc, "//div[@id='mainResults']/div[contains(@class, 'mediaResult')]"):
         res.add(
-            res.types.MainResult(
-                template="videos.html",
+            res.types.Video(
                 url=extract_text(eval_xpath(result, "./@data-url")) or "",
                 title=extract_text(eval_xpath(result, ".//div[contains(@class, 'mediaResultTitleVideo')]/a")) or "",
                 content=extract_text(eval_xpath(result, ".//div[contains(@class, 'mediaResultDescription')]")) or "",
