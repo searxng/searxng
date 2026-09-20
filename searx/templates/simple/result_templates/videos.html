@@ -1,10 +1,11 @@
-{% from 'simple/macros.html' import iframe, result_header, result_sub_header, result_sub_footer, result_footer with context %}
+{% from 'simple/macros.html' import iframe, result_header, result_sub_header, result_sub_footer, result_footer, result_thumbnail with context %}
 
-{{ result_header(result, favicons, image_proxify) }}
+{{ result_header(result, favicons, image_proxify, thumbnail=False) }}
 {{ result_sub_header(result) }}
 {% if result.iframe_src -%}
 <p class="altlink"> <a class="btn-collapse collapsed media-loader disabled_if_nojs" data-target="#result-video-{{ index }}" data-btn-text-collapsed="{{ _('show video') }}" data-btn-text-not-collapsed="{{ _('hide video') }}">{{ icon_small('film') }} {{ _('show video') }}</a></p>
 {%- endif %}
+{{ result_thumbnail(result, image_proxify) }}
 {%- if result.content %}
   <p class="content">
     {{ result.content|safe }}
@@ -14,7 +15,6 @@
     {{ _('This site did not provide any description.')|safe }}
   </p>
 {% endif -%}
-</p>
 {{- result_sub_footer(result) -}}
 {% if result.iframe_src -%}
 <div id="result-video-{{ index }}" class="embedded-video invisible">

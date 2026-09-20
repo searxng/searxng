@@ -17,9 +17,21 @@
     {{ result_open_link(url, classes) }}{{ title }}{{ result_close_link() }}
 {%- endmacro -%}
 
+<!-- Draw result thumbnail -->
+{% macro result_thumbnail(result, image_proxify) -%}
+  {%- if result.thumbnail -%}
+  {%- set thumb_src = image_proxify(result.thumbnail) -%}
+  {{ result_open_link(result.url, classes='thumbnail_link') -}}
+  <img class="thumbnail_bg" src="{{ thumb_src }}" alt="" aria-hidden="true"><img class="thumbnail" src="{{ thumb_src }}" alt="" loading="lazy">{%- if result.length -%}<span class="thumbnail_length">{{ result.length }}</span>{%- endif -%}
+  {{- result_close_link() -}}
+  {%- endif -%}
+{%- endmacro -%}
+
 <!-- Draw result header -->
-{% macro result_header(result, favicons, image_proxify) -%}
+{% macro result_header(result, favicons, image_proxify, thumbnail=True) -%}
 <article class="result {% if result['template'] %}result-{{ result.template|replace('.html', '') }}{% else %}result-default{% endif %} {% if result['category'] %}category-{{ result['category'] }}{% endif %}">
+  {%- if thumbnail %}{{ result_thumbnail(result, image_proxify) }}{% endif -%}
+  <div class="result_inner">
   {{- result_open_link(result.url, "url_header") -}}
   {%- if favicon_resolver != "" %}
   <div class="favicon"><img loading="lazy" src="{{ favicon_url(result.parsed_url.netloc) }}"></div>
@@ -30,7 +42,6 @@
     {%- endfor %}
   </div>
   {{- result_close_link() -}}
-  {%- if result.thumbnail %}{{ result_open_link(result.url, classes='thumbnail_link') }}<img class="thumbnail" src="{{ image_proxify(result.thumbnail) }}" title="{{ result.title|striptags }}" loading="lazy">{%- if result.length -%}<span class="thumbnail_length">{{ result.length }}</span>{%- endif -%}{{ result_close_link() }}{% endif -%}
   <h3>{{ result_link(result.url, result.title|safe) }}</h3>
 {%- endmacro -%}
 
@@ -46,6 +57,7 @@
 
 <!-- Draw result sub footer -->
 {%- macro result_sub_footer(result) -%}
+</div>
 <div class="engines">
   {% for engine in result.engines %}<span>{{ engine }}</span>{% endfor %}
   {{ icon_small('ellipsis-vertical') + result_link(cache_url + result.url, _('cached'), "cache_link") }}
