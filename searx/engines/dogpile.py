@@ -5,13 +5,13 @@
 """
 
 import typing as t
-from datetime import datetime, timezone
+from datetime import datetime, timezone, timedelta
 import html
 
 from searx.enginelib import EngineCache
 from searx.exceptions import SearxEngineAPIException
 from searx.network import post
-from searx.utils import format_duration, html_to_text, humanize_number
+from searx.utils import html_to_text, humanize_number
 from searx.result_types import EngineResults
 
 if t.TYPE_CHECKING:
@@ -98,14 +98,13 @@ def response(resp: "SXNG_Response"):
             )
         elif dogpile_categ == "videos":
             res.add(
-                res.types.LegacyResult(
-                    template="videos.html",
+                res.types.Video(
                     url=result["clickUrl"],
                     title=html_to_text(result["title"]),
                     content=html_to_text(result["description"]),
                     thumbnail=result["thumbnailUrl"],
                     publishedDate=datetime.fromisoformat(result["publishDate"]),
-                    length=format_duration(result["duration"]),
+                    length=timedelta(seconds=result["duration"]),
                     views=humanize_number(result["viewCount"]),
                 )
             )

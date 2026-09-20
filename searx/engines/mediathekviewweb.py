@@ -5,6 +5,7 @@ import typing as t
 import datetime
 
 from searx.result_types import EngineResults
+from searx.utils import parse_duration_string
 
 if t.TYPE_CHECKING:
     from searx.extended_types import SXNG_Response
@@ -67,13 +68,12 @@ def response(resp: "SXNG_Response") -> EngineResults:
             continue
 
         res.add(
-            res.types.LegacyResult(
+            res.types.Video(
                 url=video_url,
                 title="%(channel)s: %(title)s (%(hms)s)" % item,
-                length=item["hms"],
+                length=parse_duration_string(item["hms"]),
                 content="%(description)s" % item,
                 iframe_src=video_url,
-                template="videos.html",
             )
         )
 

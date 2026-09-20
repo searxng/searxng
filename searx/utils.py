@@ -2,7 +2,6 @@
 """Utility functions for the engines"""
 
 from hashlib import pbkdf2_hmac
-import time
 
 import re
 import importlib
@@ -814,15 +813,6 @@ def parse_duration_string(duration_str: str) -> timedelta | None:
         pass
 
     return None
-
-
-# Format the video duration
-def format_duration(duration: str | int) -> str:
-    seconds = int(duration)
-    length = time.gmtime(seconds)
-    if length.tm_hour:
-        return time.strftime("%H:%M:%S", length)
-    return time.strftime("%M:%S", length)
 
 
 def _array_startswith(arr: bytes, prefix: bytes) -> bool:

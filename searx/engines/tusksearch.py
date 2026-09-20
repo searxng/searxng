@@ -143,8 +143,7 @@ def response(resp: "SXNG_Response"):
                 pass
 
             res.add(
-                res.types.LegacyResult(
-                    template="videos.html",
+                res.types.Video(
                     url=result["url"],
                     title=html_to_text(result["title"]),
                     content=html_to_text(result["description"]),

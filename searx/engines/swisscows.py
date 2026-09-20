@@ -16,7 +16,7 @@ from urllib.parse import urlencode
 
 from babel.core import get_global
 
-from searx.result_types import EngineResults, LegacyResult  # pyright: ignore[reportPrivateLocalImportUsage]
+from searx.result_types import EngineResults, Video
 from searx.utils import humanize_number, html_to_text
 
 if t.TYPE_CHECKING:
@@ -215,28 +215,24 @@ def request(query: str, params: "OnlineParams") -> None:
     params["url"] = f"{base_url}{base_path}?{urlencode(args)}"
 
 
-def _video_result(result: dict[str, str]) -> LegacyResult:
+def _video_result(result: dict[str, str]) -> Video:
     published_date = None
     if result.get("datePublished"):
         published_date = datetime.fromisoformat(result["datePublished"])
 
-    view_count = None
+    view_count = ""
     if result.get("viewCount"):
         view_count = humanize_number(result["viewCount"])  # pyright: ignore[reportArgumentType]
 
-    return LegacyResult(
-        {
-            "template": "videos.html",
-            "url": result["url"],
-            "title": html_to_text(result.get("title") or result["name"]),
-            "content": result["description"],
-            "thumbnail": result.get("thumbnailUrl")
-            or result.get("thumbnail", {}).get("url"),  # pyright: ignore[reportAttributeAccessIssue]
-            "length": result.get("duration"),
-            "iframe_src": result.get("embedUrl"),
-            "publishedDate": published_date,
-            "views": view_count,
-        }
+    return Video(
+        url=result["url"],
+        title=html_to_text(result.get("title") or result["name"]),
+        content=result["description"],
+        thumbnail=result.get("thumbnailUrl") or result.get("thumbnail", {}).get("url"),
+        length=result.get("duration"),
+        iframe_src=result.get("embedUrl"),
+        publishedDate=published_date,
+        views=view_count,
     )
 
 
@@ -272,14 +268,11 @@ def response(resp: "SXNG_Response") -> EngineResults:
                 res.add(_video_result(video))
         elif result["type"] == "ImageObject":
             res.add(
-                res.types.LegacyResult(
-                    {
-                        "template": "images.html",
-                        "url": result["url"],
-                        "thumbnail_src": result["thumbnail"]["url"],
-                        "img_src": result["contentUrl"],
-                        "title": result["name"],
-                    }
+                res.types.Image(
+                    url=result["url"],
+                    thumbnail_src=result["thumbnail"]["url"],
+                    img_src=result["contentUrl"],
+                    title=result["name"],
                 )
             )
         elif result["type"] == "video":

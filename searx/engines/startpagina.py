@@ -7,10 +7,9 @@ results from Google.
 
 import typing as t
 from urllib.parse import urlencode
-
+import datetime
 from dateutil import parser
 
-from searx.utils import format_duration
 from searx.result_types import EngineResults
 
 if t.TYPE_CHECKING:
@@ -49,7 +48,7 @@ def request(query: str, params: "OnlineParams") -> None:
     params["url"] = f"{api_url}/api/v2/search/{startpagina_categ}/?{urlencode(args)}"
 
 
-def response(resp: "SXNG_Response"):
+def response(resp: "SXNG_Response") -> EngineResults:
     res = EngineResults()
 
     json_resp = resp.json()
@@ -81,13 +80,12 @@ def response(resp: "SXNG_Response"):
             )
         elif startpagina_categ == "videos":
             res.add(
-                res.types.LegacyResult(
-                    template="videos.html",
+                res.types.Video(
                     url=result["original_url"],
                     title=result["title"],
                     content=result["description"],
                     thumbnail=result["video"]["thumbnail_url"],
-                    length=format_duration(result["video"]["duration"]),
+                    length=datetime.timedelta(seconds=result["video"]["duration"]),
                 )
             )
         elif startpagina_categ == "images":

@@ -127,7 +127,7 @@ from dateutil import parser
 from searx import locales, logger
 from searx.enginelib.traits import EngineTraits
 from searx.exceptions import SearxEngineResponseException
-from searx.result_types import EngineResults, MainResult
+from searx.result_types import EngineResults, MainResult, Video
 from searx.result_types.image import Image
 from searx.utils import html_to_text, js_obj_str_to_json_str, js_obj_str_to_python
 
@@ -331,8 +331,7 @@ def _parse_video_result(result: dict[str, t.Any]) -> MainResult:
     video: dict[str, t.Any] = result.get("video", {})
     thumbnail: dict[str, t.Any] = result.get("thumbnail", {})
 
-    return MainResult(
-        template="videos.html",
+    return Video(
         title=result.get("title", ""),
         url=result.get("url"),
         content=result.get("description", ""),
