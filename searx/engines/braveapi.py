@@ -21,7 +21,10 @@ Optional settings are:
     api_key: 'YOUR-API-KEY'  # required
     results_per_page: 20     # optional
 
-The API supports paging and time filters.
+The API supports paging, time filters and the SearXNG locale: the region part
+(e.g. ``NL`` from ``nl-NL``) is sent as ``country`` and the language part as
+``search_lang``.  For the locale ``all`` (or an unset locale) no ``country`` /
+``search_lang`` is sent and Brave falls back to its own defaults.
 """
 
 import typing as t
@@ -65,6 +68,24 @@ time_range_map = {"day": "past_day", "week": "past_week", "month": "past_month",
 
 max_page = 10
 
+language_support = True
+"""The engine forwards the SearXNG locale as ``country`` and ``search_lang``."""
+
+
+def _locale_args(searxng_locale: str) -> dict[str, str]:
+    """Map a SearXNG locale (``nl-NL``, ``nl``, ``all``) to Brave's ``country``
+    and ``search_lang`` query arguments."""
+    args: dict[str, str] = {}
+    if not searxng_locale or searxng_locale == "all":
+        return args
+    parts = searxng_locale.replace("_", "-").split("-")
+    lang = parts[0].lower()
+    if len(lang) in (2, 3):
+        args["search_lang"] = lang
+    if len(parts) > 1 and len(parts[-1]) == 2:
+        args["country"] = parts[-1].upper()
+    return args
+
 
 def setup(_: dict[str, t.Any]) -> bool | None:
     """Initialize the engine."""
@@ -80,6 +101,9 @@ def request(query: str, params: "OnlineParams") -> None:
         "offset": params["pageno"] - 1,
         "text_decorations": False,
     }
+
+    # Apply region / language from the SearXNG locale
+    search_args.update(_locale_args(params.get("searxng_locale", "")))
 
     # Apply time filter if specified
     if params["time_range"]:
