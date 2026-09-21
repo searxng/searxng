@@ -13,6 +13,7 @@ The engine has the following mandatory setting:
 Optional settings are:
 
 - :py:obj:`results_per_page`
+- :py:obj:`thumbnails`
 
 .. code:: yaml
 
@@ -20,6 +21,7 @@ Optional settings are:
     engine: braveapi
     api_key: 'YOUR-API-KEY'  # required
     results_per_page: 20     # optional
+    thumbnails: false        # optional
 
 The API supports paging and time filters.
 """
@@ -56,6 +58,14 @@ time_range_support = True
 
 results_per_page: int = 20
 """Maximum number of results per page (default 20)."""
+
+thumbnails: bool = True
+"""Show the thumbnail Brave attaches to a web result.  Brave serves these
+through its own image CDN (``imgs.search.brave.com``), which re-fetches the
+origin image on demand; for origins with expiring signed URLs (Facebook, YouTube
+channel avatars, ...) that fetch regularly fails (HTTP 403/404) and the result
+list shows the theme's *image load error* placeholder instead.  Set to ``false``
+to render braveapi results without thumbnails, like most other general engines."""
 
 base_url = "https://api.search.brave.com/res/v1/web/search"
 """Base URL for the Brave Search API."""
@@ -118,7 +128,7 @@ def response(resp: "SXNG_Response") -> EngineResults:
     data = resp.json()
 
     for result in (data.get("web") or {}).get("results", []):
-        thumbnail_obj = result.get("thumbnail")
+        thumbnail_obj = result.get("thumbnail") if thumbnails else None
         thumbnail = ""
         if thumbnail_obj and not thumbnail_obj.get("logo", False):
             thumbnail = thumbnail_obj.get("src") or ""
