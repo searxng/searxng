@@ -98,6 +98,8 @@ def request(query: str, params: "OnlineParams") -> None:
             "Referer": "https://tusksearch.com/",
             "Origin": "https://tusksearch.com",
             "Sec-Fetch-Site": "same-site",
+            "Sec-Fetch-Mode": "cors",
+            "Sec-Fetch-Dest": "empty",
         }
     )
 
