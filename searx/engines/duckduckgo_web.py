@@ -74,7 +74,6 @@ def _fetch_first_page_link(
         headers=headers,
         impersonate="firefox",
         default_headers=False,
-        timeout=2,
     )
 
     if resp.status_code != 200:
