@@ -8,11 +8,25 @@ links to full text content from PubMed Central and publisher web sites.
 Configuration
 =============
 
+Optional settings:
+
+- :py:obj:`api_key`
+- :py:obj:`timeout`
+
+NCBI recommends that E-utilities callers identify themselves with an API key
+and a ``tool`` name. Supplying an API key raises the per-IP rate limit from
+about 3 requests/sec to about 10 requests/sec. See `A General Introduction to
+the E-utilities`_ for details.
+
+.. _A General Introduction to the E-utilities: https://www.ncbi.nlm.nih.gov/books/NBK25500/
+
 .. code:: yaml
 
    - name: pubmed
      engine: pubmed
      shortcut: pub
+     api_key: 'YOUR-NCBI-API-KEY'   # optional
+     timeout: 10.0                  # optional
 
 Implementations
 ===============
@@ -60,6 +74,27 @@ eutils_api = "https://eutils.ncbi.nlm.nih.gov/entrez/eutils"
 page_size = 10
 pubmed_url = "https://www.ncbi.nlm.nih.gov/pubmed/"
 
+api_key: str = ""
+"""API key for the NCBI E-utilities API (optional)."""
+
+timeout: float = 3.0
+"""Request timeout in seconds (default 3.0)."""
+
+
+def setup(engine_settings: dict[str, t.Any]) -> bool:
+    """Read the engine's YAML settings (api_key, timeout)."""
+    global api_key, timeout  # pylint: disable=global-statement
+    api_key = (engine_settings.get("api_key") or "").strip()
+    timeout = float(engine_settings.get("timeout", 3.0))
+    return True
+
+
+def _auth_args() -> str:
+    """Return querystring fragment for ``api_key`` + ``tool``, or ``""``."""
+    if not api_key:
+        return ""
+    return f"&api_key={api_key}&tool=searxng"
+
 
 def request(query: str, params: "OnlineParams") -> None:
 
@@ -71,9 +106,9 @@ def request(query: str, params: "OnlineParams") -> None:
             "hits": page_size,
         }
     )
-    esearch_url = f"{eutils_api}/esearch.fcgi?{args}"
+    esearch_url = f"{eutils_api}/esearch.fcgi?{args}{_auth_args()}"
     # DTD: https://eutils.ncbi.nlm.nih.gov/eutils/dtd/20060628/esearch.dtd
-    esearch_resp: "SXNG_Response" = get(esearch_url, timeout=3)
+    esearch_resp: "SXNG_Response" = get(esearch_url, timeout=timeout)
     pmids_results = etree.XML(esearch_resp.content)
     pmids: list[str] = [i.text for i in pmids_results.xpath("//eSearchResult/IdList/Id")]
 
@@ -85,7 +120,7 @@ def request(query: str, params: "OnlineParams") -> None:
             "id": ",".join(pmids),
         }
     )
-    efetch_url = f"{eutils_api}/efetch.fcgi?{args}"
+    efetch_url = f"{eutils_api}/efetch.fcgi?{args}{_auth_args()}"
     params["url"] = efetch_url
 
 
