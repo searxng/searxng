@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 """Utility functions for the engines"""
 
-from hashlib import pbkdf2_hmac
+from hashlib import pbkdf2_hmac, sha256
 
 import re
 import importlib
@@ -19,6 +19,7 @@ from html.parser import HTMLParser
 from html import escape
 from urllib.parse import urljoin, urlparse, parse_qs, urlencode
 from datetime import timedelta
+from time import sleep
 from markdown_it import MarkdownIt
 
 from lxml import html
@@ -28,7 +29,9 @@ from lxml.etree import ElementBase, _Element  # pyright: ignore[reportPrivateUsa
 from searx import settings
 from searx.data import USER_AGENTS
 from searx.version import VERSION_TAG
-from searx.exceptions import SearxXPathSyntaxException, SearxEngineXPathException
+from searx.exceptions import SearxXPathSyntaxException, SearxEngineXPathException, SearxEngineAPIException
+from searx.extended_types import SXNG_Response
+from searx.network import get
 from searx import logger
 
 logger = logger.getChild('utils')
@@ -845,3 +848,27 @@ def solve_altcha(parameters: dict[str, t.Any], maxCounter: int = 1000) -> tuple[
         counter += 1
 
     return None
+
+
+def solve_anubis_preact_challenge(url: str) -> SXNG_Response:
+    """Solves the Preact challenge from the Anubis bot blocker."""
+    resp = get(url)
+
+    preact_json = extract_text(eval_xpath(resp.html(), "//script[@id='preact_info']"))
+    if not preact_json:
+        raise SearxEngineAPIException("failed to extract Anubis challenge")
+    preact_challenge = json.loads(preact_json)
+
+    result = sha256(preact_challenge["challenge"].encode()).hexdigest()
+
+    # difficulty * 80ms is the minum hardcoded time in Anubis to solve the challenge,
+    # we assume that we need at least 30ms for building the sha256
+    # sum and sending the network requests
+    difficulty = int(preact_challenge["difficulty"])
+    sleep(0.08 * difficulty - 0.03)
+
+    url_parsed = urlparse(url)
+    url = f"{url_parsed.scheme}://{url_parsed.netloc}{preact_challenge['redir']}&result={result}"
+    challenge_resp = get(url, cookies=resp.cookies)
+
+    return challenge_resp

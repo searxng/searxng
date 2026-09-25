@@ -459,21 +459,10 @@ engines:
       results: JSON
 
   - name: ayo
-    engine: xpath
-    categories: general
+    engine: ayo
     shortcut: ayo
-    search_url: https://search.ayo.de/search?q={query}
-    results_xpath: //div[contains(@class, 'search-result')]/div
-    url_xpath: .//a/@href
-    title_xpath: .//h3
-    content_xpath: .//p
-    suggestion_xpath: .//a[starts-with(@href, "https://search.ayo.de")]
-    disabled: true
-    about:
-      website: https://serach.ayo.de
-      use_official_api: false
-      require_api_key: false
-      results: HTML
+    # behind Anubis CAPTCHA
+    inactive: true
 
   - name: azure
     engine: azure
