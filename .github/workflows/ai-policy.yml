@@ -18,7 +18,7 @@ permissions:
 
 jobs:
   check:
-    name: Check AI Policy
+    name: Check
     # for issues with an author who has not contributed before
     if: >-
       github.event.sender.type != 'Bot' &&
@@ -34,5 +34,5 @@ jobs:
       - uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3  # v9.0.0
         with:
           script: |
-            const script = require('./.github/scripts/ai_policy.cjs');
-            await script({ github, context });
+            const script = await import("${{ github.workspace }}/.github/scripts/aiPolicy.mjs")
+            await script.default({ github, context });
