@@ -54,7 +54,11 @@ def _obtain_token() -> str:
     token = CACHE.get("token")
     if token:
         return token
-    resp = post(f"{base_url}/api/token/refresh", headers={"Origin": base_url}, cookies={"dp_api_token": "1"})
+    resp = post(
+        f"{base_url}/api/token/refresh",
+        headers={"Origin": base_url, "Sec-Fetch-Mode": "cors"},
+        cookies={"dp_api_token": "1"},
+    )
     if not resp.ok:
         raise SearxEngineAPIException("failed to obtain dogpile token")
     token = resp.json()["token"]
@@ -65,6 +69,7 @@ def _obtain_token() -> str:
 def request(query: str, params: "OnlineParams"):
     params["url"] = f"{base_url}/api/{dogpile_categ}"
     params["headers"]["Origin"] = base_url
+    params["headers"]["Sec-Fetch-Mode"] = "cors"
     params["cookies"]["dp_api_token"] = "1"
     params["headers"]["x-dogpile-token"] = _obtain_token()
 
