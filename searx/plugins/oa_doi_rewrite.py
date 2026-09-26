@@ -19,9 +19,6 @@ if typing.TYPE_CHECKING:
     from searx.plugins import PluginCfg
 
 
-ahmia_blacklist: list = []
-
-
 def filter_url_field(result: "Result|LegacyResult", field_name: str, url_src: str) -> bool | str:
     """Returns bool ``True`` to use URL unchanged (``False`` to ignore URL).
     If URL should be modified, the returned string is the new URL to use."""
@@ -29,11 +26,15 @@ def filter_url_field(result: "Result|LegacyResult", field_name: str, url_src: st
     if field_name != "url":
         return True  # use it unchanged
 
+    resolver_url = get_doi_resolver()
+    if not resolver_url:
+        return True  # use it unchanged
+
     doi = extract_doi(result.parsed_url)
     if doi and len(doi) < 50:
         for suffix in ("/", ".pdf", ".xml", "/full", "/meta", "/abstract"):
             doi = doi.removesuffix(suffix)
-        new_url = get_doi_resolver() + doi
+        new_url = resolver_url + doi
         if "doi" not in result:
             result["doi"] = doi
         log.debug("oa_doi_rewrite: [URL field: %s] %s -> %s", field_name, url_src, new_url)
@@ -53,7 +54,7 @@ class SXNGPlugin(Plugin):
             id=self.id,
             name=gettext("Open Access DOI rewrite"),
             description=gettext("Avoid paywalls by redirecting to open-access versions of publications when available"),
-            preference_section="general",
+            preference_section=None,
         )
 
     def on_result(
@@ -83,7 +84,7 @@ def extract_doi(url):
 
 def get_doi_resolver() -> str:
     doi_resolvers = get_setting("doi_resolvers")
-    selected_resolver = sxng_request.preferences.get_value('doi_resolver')[0]
-    if selected_resolver not in doi_resolvers:
-        selected_resolver = get_setting("default_doi_resolver")
+    selected_resolver = sxng_request.preferences.get_value("doi_resolver")
+    if not selected_resolver or selected_resolver not in doi_resolvers:
+        return ""
     return doi_resolvers[selected_resolver]
