@@ -198,52 +198,16 @@ class ResultContainer:
         if self._main_results_sorted:
             return self._main_results_sorted
 
-        # first pass, sort results by "score" (descanding)
+        # sort results by score (descending)
         results = sorted(self.main_results_map.values(), key=lambda x: x.score, reverse=True)
 
-        # pass 2 : group results by category and template
-        gresults: list[MainResult | LegacyResult] = []
-        categoryPositions: dict[str, t.Any] = {}
-        max_count = 8
-        max_distance = 20
-
+        # keep the category attribute for backward compatibility with templates
         for res in results:
-            # do we need to handle more than one category per engine?
             engine = searx.engines.engines.get(res.engine or "")
             if engine:
                 res.category = engine.categories[0] if len(engine.categories) > 0 else ""
 
-            # do we need to handle more than one category per engine?
-            category = f"{res.category}:{res.template}:{'img_src' if (res.thumbnail or res.img_src) else ''}"
-            grp = categoryPositions.get(category)
-
-            # group with previous results using the same category, if the group
-            # can accept more result and is not too far from the current
-            # position
-
-            if (grp is not None) and (grp["count"] > 0) and (len(gresults) - grp["index"] < max_distance):
-                # group with the previous results using the same category with
-                # this one
-                index = grp["index"]
-                gresults.insert(index, res)
-
-                # update every index after the current one (including the
-                # current one)
-                for item in categoryPositions.values():
-                    v = item["index"]
-                    if v >= index:
-                        item["index"] = v + 1
-
-                # update this category
-                grp["count"] -= 1
-
-            else:
-                gresults.append(res)
-                # update categoryIndex
-                categoryPositions[category] = {"index": len(gresults), "count": max_count}
-                continue
-
-        self._main_results_sorted = gresults
+        self._main_results_sorted = results
         return self._main_results_sorted
 
     def add_unresponsive_engine(self, engine_name: str, error_type: str, suspended: bool = False):

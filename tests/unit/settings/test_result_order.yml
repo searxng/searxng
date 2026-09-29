@@ -1,0 +1,42 @@
+# This SearXNG setup is used to test result ordering
+
+use_default_settings:
+  engines:
+    remove:
+      - google
+      - duckduckgo
+
+search:
+  formats: [html, json]
+
+server:
+  secret_key: "user_secret_key"
+
+engines:
+  - name: general engine
+    engine: demo_offline
+    categories: ["general"]
+    shortcut: "gengine"
+    timeout: 3
+    weight: 6.0
+
+  - name: news engine
+    engine: demo_offline
+    categories: ["news"]
+    shortcut: "ne"
+    timeout: 3
+    weight: 5.0
+
+  - name: alpha engine
+    engine: demo_offline
+    categories: ["general"]
+    shortcut: "ae"
+    timeout: 3
+    weight: 1.0
+
+  - name: beta engine
+    engine: demo_offline
+    categories: ["general"]
+    shortcut: "be"
+    timeout: 3
+    weight: 0.9

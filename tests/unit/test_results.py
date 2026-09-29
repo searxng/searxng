@@ -58,3 +58,73 @@ class ResultContainerTestCase(SearxTestCase):
         self.assertIn(result, result_list)
         self.assertEqual(result_list[0].title, result.title)
         self.assertEqual(result_list[0].content, result.content)
+
+
+class ResultOrderingTestCase(SearxTestCase):
+    # pylint: disable=use-dict-literal,missing-class-docstring
+
+    TEST_SETTINGS = "test_result_order.yml"
+
+    def assert_scores_descending(self, container: ResultContainer, msg: str = ""):
+        ordered = container.get_ordered_results()
+        scores = [res.score for res in ordered]
+        for i in range(1, len(scores)):
+            self.assertLessEqual(
+                scores[i],
+                scores[i - 1],
+                f"{msg}score ordering is not descending: {scores}; result {i} has score {scores[i]} "
+                f"after result {i - 1} with score {scores[i - 1]}",
+            )
+
+    def test_results_ordered_by_score_descending(self):
+        """Result ordering must be descending by score.
+        """
+        container = ResultContainer()
+
+        container.extend(
+            "general engine",
+            [
+                dict(url="https://general1.example.org", title="General 1", content="x", engine="general engine"),
+                dict(url="https://general2.example.org", title="General 2", content="x", engine="general engine"),
+                dict(url="https://general3.example.org", title="General 3", content="x", engine="general engine"),
+                dict(url="https://general4.example.org", title="General 4", content="x", engine="general engine"),
+            ],
+        )
+        container.extend(
+            "news engine",
+            [dict(url="https://news1.example.org", title="News 1", content="x", engine="news engine")],
+        )
+        container.close()
+        self.assert_scores_descending(container)
+
+    def test_results_ordered_by_score_same_category(self):
+        """Same-category results must also be ordered by score.
+        """
+        container = ResultContainer()
+
+        container.extend(
+            "alpha engine",
+            [
+                dict(url="https://alpha1.example.org", title="Alpha 1", content="x", engine="alpha engine"),
+                dict(url="https://alpha2.example.org", title="Alpha 2", content="x", engine="alpha engine"),
+            ],
+        )
+        container.extend(
+            "beta engine",
+            [
+                dict(url="https://beta1.example.org", title="Beta 1", content="x", engine="beta engine"),
+                dict(url="https://beta2.example.org", title="Beta 2", content="x", engine="beta engine"),
+            ],
+        )
+        container.extend(
+            "alpha engine",
+            [dict(url="https://alpha3.example.org", title="Alpha 3", content="x", engine="alpha engine")],
+        )
+        container.extend(
+            "beta engine",
+            [dict(url="https://beta3.example.org", title="Beta 3", content="x", engine="beta engine")],
+        )
+        container.close()
+        self.assert_scores_descending(container, "same-category engines: ")
+
+
