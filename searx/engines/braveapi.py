@@ -51,6 +51,7 @@ api_key: str = ""
 categories = ["general", "web"]
 paging = True
 safesearch = True
+safesearch_map = {2: "strict", 1: "moderate", 0: "off"}
 time_range_support = True
 
 results_per_page: int = 20
@@ -84,9 +85,8 @@ def request(query: str, params: "OnlineParams") -> None:
     if params["time_range"]:
         search_args["time_range"] = time_range_map.get(params["time_range"])
 
-    # Apply SafeSearch if enabled
-    if params["safesearch"]:
-        search_args["safesearch"] = "strict"
+    # Apply SafeSearch
+    search_args["safesearch"] = safesearch_map.get(params["safesearch"], "off")
 
     params["url"] = f"{base_url}?{urlencode(search_args)}"
     params["headers"]["X-Subscription-Token"] = api_key
