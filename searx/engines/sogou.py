@@ -51,11 +51,7 @@ def request(query, params):
 
 
 def response(resp):
-    if (
-        resp.status_code == 302
-        and resp.next_request is not None
-        and str(resp.next_request.url).startswith("http://www.sogou.com/antispider")
-    ):
+    if resp.status_code == 302 and "www.sogou.com/antispider" in resp.headers.get("Location", ""):
         raise SearxEngineCaptchaException()
 
     dom = resp.html()
