@@ -13,7 +13,7 @@ from urllib.parse import urlparse, urlunparse, parse_qsl, urlencode
 
 from curl_cffi.requests.exceptions import RequestException
 
-from searx.data.core import get_cache, log
+from searx.data.core import ctx_loaded, get_cache, log
 from searx.network import get as http_get
 
 if t.TYPE_CHECKING:
@@ -46,13 +46,10 @@ class TrackerPatternsDB:
         self.cache = get_cache()
 
     def init(self):
-        if self.cache.properties("tracker_patterns loaded") != "OK":
-            # To avoid parallel initializations, the property is set first
-            self.cache.properties.set("tracker_patterns loaded", "OK")
+        if self.cache.get(key="tracker_patterns", ctx=ctx_loaded) != "OK":
+            # To avoid parallel initializations, the marker is set first
+            self.cache.set(key="tracker_patterns", value="OK", expire=None, ctx=ctx_loaded)
             self.load()
-        # F I X M E:
-        #     do we need a maintenance .. remember: database is stored
-        #     in /tmp and will be rebuild during the reboot anyway
 
     def load(self):
         log.debug("init searx.data.TRACKER_PATTERNS")

@@ -9,6 +9,11 @@ from searx.cache import ExpireCacheCfg, ExpireCacheSQLite
 
 log = logger.getChild("data")
 
+ctx_loaded: str = "data_loaded"
+"""Cache context of the markers that indicate whether the data of a DB has been
+loaded into the cache.  The markers are stored in the cache (and not in the
+properties) so they expire and are truncated along with the data."""
+
 data_dir: pathlib.Path = pathlib.Path(__file__).parent
 
 _DATA_CACHE: ExpireCacheSQLite | None = None

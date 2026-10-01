@@ -7,7 +7,7 @@ import typing as t
 import json
 import pathlib
 
-from .core import get_cache, log
+from .core import ctx_loaded, get_cache, log
 
 if t.TYPE_CHECKING:
     from searx.cache import CacheRowType
@@ -26,13 +26,10 @@ class CurrenciesDB:
         self.cache = get_cache()
 
     def init(self):
-        if self.cache.properties("currencies loaded") != "OK":
-            # To avoid parallel initializations, the property is set first
-            self.cache.properties.set("currencies loaded", "OK")
+        if self.cache.get(key="currencies", ctx=ctx_loaded) != "OK":
+            # To avoid parallel initializations, the marker is set first
+            self.cache.set(key="currencies", value="OK", expire=None, ctx=ctx_loaded)
             self.load()
-        # F I X M E:
-        #     do we need a maintenance .. rember: database is stored
-        #     in /tmp and will be rebuild during the reboot anyway
 
     def load(self):
         log.debug("init searx.data.CURRENCIES")
@@ -60,5 +57,7 @@ class CurrenciesDB:
         return iso4217_languages.get(language)
 
     def is_iso4217(self, iso4217: str) -> bool:
+        self.init()
+
         item = self.cache.get(key=iso4217, default={}, ctx=self.ctx_iso4217)
         return bool(item)
