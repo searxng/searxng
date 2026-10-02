@@ -48,16 +48,21 @@ def response(resp: "SXNG_Response") -> EngineResults:
 
     mainline = [s for s in data["search"]["regions"] if s["name"] == "mainline"][0]
     for group in mainline["groups"]:
-        for result in group["results"]:
-            if not ("url" in result or "clickUrl" in result):
-                continue
+        match group["result_type"]:
+            case "web":
+                for result in group["results"]:
+                    res.add(
+                        res.types.MainResult(
+                            url=result.get("url") or result.get("clickUrl"),
+                            title=html_to_text(result["title"]),
+                            content=html_to_text(result["description"]),
+                        )
+                    )
+            case "aylf":
+                for result in group["results"]:
+                    res.add(res.types.LegacyResult(suggestion=result["term"]))
 
-            res.add(
-                res.types.MainResult(
-                    url=result.get("url") or result.get("clickUrl"),
-                    title=html_to_text(result["title"]),
-                    content=html_to_text(result["description"]),
-                )
-            )
+            case _:
+                pass
 
     return res
