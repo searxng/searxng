@@ -3,6 +3,7 @@
 // stylelint-disable no-descending-specificity
 
 @import (inline) "../../node_modules/normalize.css/normalize.css";
+@import (css) "@fontsource-variable/inter/index.css";
 @import "definitions.less";
 @import "mixins.less";
 @import "toolkit.less";
@@ -49,8 +50,9 @@
 
 // Main LESS-Code
 html {
-  font-family: sans-serif;
+  font-family: "Inter Variable", Inter, system-ui, sans-serif;
   font-size: 0.9em;
+  font-feature-settings: "cv11", "ss03";
   .text-size-adjust;
 
   color: var(--color-base-font);
@@ -106,8 +108,22 @@ footer {
   }
 }
 
-.page_with_header .logo {
-  height: 40px;
+.sxng-wordmark {
+  display: inline-block;
+  font-weight: 800;
+  letter-spacing: -0.05em;
+  line-height: 1;
+  white-space: nowrap;
+  color: var(--color-base-font);
+
+  &:visited,
+  &:hover {
+    color: var(--color-base-font);
+  }
+}
+
+.page_with_header .sxng-wordmark {
+  font-size: 2rem;
 }
 
 input[type="submit"],

@@ -183,7 +183,7 @@ def apply_schema(settings: dict[str, t.Any], schema: dict[str, t.Any], path_list
 SCHEMA: dict[str, t.Any] = {
     'general': {
         'debug': SettingsValue(bool, False, 'SEARXNG_DEBUG'),
-        'instance_name': SettingsValue(str, 'SearXNG'),
+        'instance_name': SettingsValue(str, 'rock'),
         'privacypolicy_url': SettingsValue((None, False, str), None),
         'contact_url': SettingsValue((None, False, str), None),
         'donation_url': SettingsValue((bool, str), "https://docs.searxng.org/donate.html"),

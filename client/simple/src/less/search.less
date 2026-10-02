@@ -96,17 +96,16 @@ button.category_button {
 }
 
 #search_logo {
-  padding: 0.5rem 10px 0 10px;
+  padding: 0.5rem 0 0 0;
   grid-area: logo;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
 
-  svg {
-    flex: 1;
-    width: 30px;
-    height: 30px;
-    margin: 0.5rem 0 auto 0;
+  // the wordmark is wider than the 3rem logo column, it overflows into the gap
+  .sxng-wordmark {
+    font-size: 1.5rem;
+    margin: 0.4rem 0 auto 0;
   }
 }
 
@@ -138,7 +137,10 @@ button.category_button {
 }
 
 .search_box {
-  border-radius: 0.8rem;
+  border-radius: 999px;
+  border: 1px solid var(--color-search-border);
+  overflow: hidden;
+  background: var(--color-search-background);
   width: 100%;
   max-width: @search-width;
   display: inline-flex;
@@ -188,14 +190,14 @@ button.category_button {
 
 #q {
   width: 100%;
-  .ltr-padding-left(1rem);
   .ltr-padding-right(0) !important;
-  .ltr-rounded-left-corners(0.8rem);
+  .ltr-rounded-left-corners(999px);
+  .ltr-padding-left(1.4rem);
 }
 
 #send_search {
-  .ltr-rounded-right-corners(0.8rem);
-  padding: 0.8rem;
+  .ltr-rounded-right-corners(999px);
+  padding: 0.8rem 1.1rem;
 
   &:hover {
     cursor: pointer;
