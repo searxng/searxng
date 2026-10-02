@@ -183,16 +183,16 @@
     {%- if 'favicon_resolver' not in locked_preferences -%}
       {%- include 'simple/preferences/favicon.html' -%}
     {%- endif -%}
+    {%- if 'doi_resolver' not in locked_preferences -%}
+      {%- include 'simple/preferences/doi_resolver.html' -%}
+    {%- endif -%}
     {% if 'safesearch' not in locked_preferences %}
       {%- include 'simple/preferences/safesearch.html' -%}
     {%- endif -%}
-    {%- include 'simple/preferences/tokens.html' -%}
-    {{- plugin_preferences('general') -}}
-
-
-    {%- if 'doi_resolver' not in locked_preferences %}
-      {%- include 'simple/preferences/doi_resolver.html' -%}
+    {%- if engines_with_tokens -%}
+      {%- include 'simple/preferences/tokens.html' -%}
     {%- endif -%}
+    {{- plugin_preferences('general') -}}
     {{- tab_footer() -}}
 
     {# tab: ui #}
