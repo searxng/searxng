@@ -323,11 +323,35 @@ def image_proxify(url: str):
 def get_translations():
     return {
         # when there is autocompletion
-        'no_item_found': gettext('No item found'),
+        "no_item_found": gettext("No item found"),
         # /preferences: the source of the engine description (wikipedata, wikidata, website)
-        'Source': gettext('Source'),
+        "Source": gettext("Source"),
         # infinite scroll
-        'error_loading_next_page': gettext('Error loading the next page'),
+        "error_loading_next_page": gettext("Error loading the next page"),
+        # keyboard hotkeys help (client/simple/src/js/main/keyboard.ts)
+        "close": gettext("close"),
+        "hotkeys_navigation_title": gettext("How to navigate SearXNG with hotkeys"),
+        "hotkeys_category_control": gettext("Control"),
+        "hotkeys_category_results": gettext("Results"),
+        "hotkeys_category_navigation": gettext("Navigation"),
+        "hotkeys_category_other": gettext("Other"),
+        "hotkeys_remove_focus": gettext("remove focus from the focused input"),
+        "hotkeys_copy_url": gettext("copy url of the selected result to the clipboard"),
+        "hotkeys_toggle_help": gettext("toggle help window"),
+        "hotkeys_focus_search": gettext("focus on the search input"),
+        "hotkeys_next_page": gettext("go to next page"),
+        "hotkeys_open_result": gettext("open search result"),
+        "hotkeys_previous_page": gettext("go to previous page"),
+        "hotkeys_reload_page": gettext("reload page from the server"),
+        "hotkeys_open_new_tab": gettext("open the result in a new tab"),
+        "hotkeys_select_previous": gettext("select previous search result"),
+        "hotkeys_select_next": gettext("select next search result"),
+        "hotkeys_page_up": gettext("scroll one page up"),
+        "hotkeys_half_page_down": gettext("scroll half a page down"),
+        "hotkeys_page_down": gettext("scroll one page down"),
+        "hotkeys_scroll_top": gettext("scroll to the top of the page"),
+        "hotkeys_half_page_up": gettext("scroll half a page up"),
+        "hotkeys_scroll_bottom": gettext("scroll to the bottom of the page"),
     }
 
 

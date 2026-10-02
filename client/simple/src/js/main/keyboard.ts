@@ -8,67 +8,68 @@ export type KeyBindingLayout = "default" | "vim";
 type KeyBinding = {
   key: string;
   fun: (event: KeyboardEvent) => void;
-  des: string;
-  cat: string;
+  des?: string;
+  cat?: string;
 };
 
 type HighlightResultElement = "down" | "up" | "visible" | "bottom" | "top";
 
 /* common base for layouts */
+
 const baseKeyBinding: Record<string, KeyBinding> = {
   Escape: {
     key: "ESC",
     fun: (event: KeyboardEvent) => removeFocus(event),
-    des: "remove focus from the focused input",
-    cat: "Control"
+    des: settings.translations?.hotkeys_remove_focus,
+    cat: settings.translations?.hotkeys_category_control
   },
   c: {
     key: "c",
     fun: () => copyURLToClipboard(),
-    des: "copy url of the selected result to the clipboard",
-    cat: "Results"
+    des: settings.translations?.hotkeys_copy_url,
+    cat: settings.translations?.hotkeys_category_results
   },
   h: {
     key: "h",
     fun: () => toggleHelp(keyBindings),
-    des: "toggle help window",
-    cat: "Other"
+    des: settings.translations?.hotkeys_toggle_help,
+    cat: settings.translations?.hotkeys_category_other
   },
   i: {
     key: "i",
     fun: () => searchInputFocus(),
-    des: "focus on the search input",
-    cat: "Control"
+    des: settings.translations?.hotkeys_focus_search,
+    cat: settings.translations?.hotkeys_category_control
   },
   n: {
     key: "n",
     fun: () => GoToNextPage(),
-    des: "go to next page",
-    cat: "Results"
+    des: settings.translations?.hotkeys_next_page,
+    cat: settings.translations?.hotkeys_category_results
   },
   o: {
     key: "o",
     fun: () => openResult(false),
-    des: "open search result",
-    cat: "Results"
+    des: settings.translations?.hotkeys_open_result,
+    cat: settings.translations?.hotkeys_category_results
   },
   p: {
     key: "p",
     fun: () => GoToPreviousPage(),
-    des: "go to previous page",
-    cat: "Results"
+    des: settings.translations?.hotkeys_previous_page,
+    cat: settings.translations?.hotkeys_category_results
   },
   r: {
     key: "r",
     fun: () => reloadPage(),
-    des: "reload page from the server",
-    cat: "Control"
+    des: settings.translations?.hotkeys_reload_page,
+    cat: settings.translations?.hotkeys_category_control
   },
   t: {
     key: "t",
     fun: () => openResult(true),
-    des: "open the result in a new tab",
-    cat: "Results"
+    des: settings.translations?.hotkeys_open_new_tab,
+    cat: settings.translations?.hotkeys_category_results
   }
 };
 
@@ -78,14 +79,14 @@ const keyBindingLayouts: Record<KeyBindingLayout, Record<string, KeyBinding>> = 
     ArrowLeft: {
       key: "←",
       fun: () => highlightResult("up")(),
-      des: "select previous search result",
-      cat: "Results"
+      des: settings.translations?.hotkeys_select_previous,
+      cat: settings.translations?.hotkeys_category_results
     },
     ArrowRight: {
       key: "→",
       fun: () => highlightResult("down")(),
-      des: "select next search result",
-      cat: "Results"
+      des: settings.translations?.hotkeys_select_next,
+      cat: settings.translations?.hotkeys_category_results
     },
     ...baseKeyBinding
   },
@@ -95,56 +96,56 @@ const keyBindingLayouts: Record<KeyBindingLayout, Record<string, KeyBinding>> = 
     b: {
       key: "b",
       fun: () => scrollPage(-window.innerHeight),
-      des: "scroll one page up",
-      cat: "Navigation"
+      des: settings.translations?.hotkeys_page_up,
+      cat: settings.translations?.hotkeys_category_navigation
     },
     d: {
       key: "d",
       fun: () => scrollPage(window.innerHeight / 2),
-      des: "scroll half a page down",
-      cat: "Navigation"
+      des: settings.translations?.hotkeys_half_page_down,
+      cat: settings.translations?.hotkeys_category_navigation
     },
     f: {
       key: "f",
       fun: () => scrollPage(window.innerHeight),
-      des: "scroll one page down",
-      cat: "Navigation"
+      des: settings.translations?.hotkeys_page_down,
+      cat: settings.translations?.hotkeys_category_navigation
     },
     g: {
       key: "g",
       fun: () => scrollPageTo(-document.body.scrollHeight, "top"),
-      des: "scroll to the top of the page",
-      cat: "Navigation"
+      des: settings.translations?.hotkeys_scroll_top,
+      cat: settings.translations?.hotkeys_category_navigation
     },
     j: {
       key: "j",
       fun: () => highlightResult("down")(),
-      des: "select next search result",
-      cat: "Results"
+      des: settings.translations?.hotkeys_select_next,
+      cat: settings.translations?.hotkeys_category_results
     },
     k: {
       key: "k",
       fun: () => highlightResult("up")(),
-      des: "select previous search result",
-      cat: "Results"
+      des: settings.translations?.hotkeys_select_previous,
+      cat: settings.translations?.hotkeys_category_results
     },
     u: {
       key: "u",
       fun: () => scrollPage(-window.innerHeight / 2),
-      des: "scroll half a page up",
-      cat: "Navigation"
+      des: settings.translations?.hotkeys_half_page_up,
+      cat: settings.translations?.hotkeys_category_navigation
     },
     v: {
       key: "v",
       fun: () => scrollPageTo(document.body.scrollHeight, "bottom"),
-      des: "scroll to the bottom of the page",
-      cat: "Navigation"
+      des: settings.translations?.hotkeys_scroll_bottom,
+      cat: settings.translations?.hotkeys_category_navigation
     },
     y: {
       key: "y",
       fun: () => copyURLToClipboard(),
-      des: "copy url of the selected result to the clipboard",
-      cat: "Results"
+      des: settings.translations?.hotkeys_copy_url,
+      cat: settings.translations?.hotkeys_category_results
     },
     ...baseKeyBinding
   }
@@ -344,6 +345,7 @@ const initHelpContent = (divElement: HTMLElement, keyBindings: typeof baseKeyBin
 
   for (const binding of Object.values(keyBindings)) {
     const { cat } = binding;
+    if (!cat) continue;
     categories[cat] ??= [];
     categories[cat].push(binding);
   }
@@ -352,8 +354,8 @@ const initHelpContent = (divElement: HTMLElement, keyBindings: typeof baseKeyBin
     (a, b) => (categories[b]?.length ?? 0) - (categories[a]?.length ?? 0)
   );
 
-  let html = '<a href="#" class="close" aria-label="close" title="close">×</a>';
-  html += "<h3>How to navigate SearXNG with hotkeys</h3>";
+  let html = `<a href="#" class="close" aria-label="${settings.translations?.close}" title="${settings.translations?.close}">×</a>`;
+  html += `<h3>${settings.translations?.hotkeys_navigation_title}</h3>`;
   html += "<table>";
 
   for (const [i, categoryKey] of sortedCategoryKeys.entries()) {
@@ -372,6 +374,7 @@ const initHelpContent = (divElement: HTMLElement, keyBindings: typeof baseKeyBin
     html += '<ul class="list-unstyled">';
 
     for (const binding of bindings) {
+      if (!binding.des) continue;
       html += `<li><kbd>${binding.key}</kbd> ${binding.des}</li>`;
     }
 
