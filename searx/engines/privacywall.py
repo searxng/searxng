@@ -88,6 +88,7 @@ def request(query: str, params: "OnlineParams") -> None:
         params["url"] = f"{base_url}/search/secure/?{urlencode(args)}"
     else:
         params["url"] = f"{base_url}/{privacywall_category}/?{urlencode(args)}"
+    params["headers"]["Referer"] = f"{base_url}/"
 
 
 def _general_results(doc: "ElementBase") -> EngineResults:
