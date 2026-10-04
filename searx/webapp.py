@@ -117,7 +117,7 @@ from searx import favicons
 from searx.valkeydb import initialize as valkey_initialize
 from searx.sxng_locales import sxng_locales
 import searx.search
-from searx.network import stream as http_stream, set_context_network_name
+from searx.network import stream as http_stream
 
 logger = logger.getChild('webapp')
 
@@ -988,7 +988,7 @@ def preferences():
 app.add_url_rule('/favicon_proxy', methods=['GET'], endpoint="favicon_proxy", view_func=favicons.favicon_proxy)
 
 
-@app.route('/image_proxy', methods=['GET'])
+@app.route('/image', methods=['GET'])
 def image_proxy():
     # pylint: disable=too-many-return-statements, too-many-branches
 
@@ -1009,7 +1009,6 @@ def image_proxy():
             'Sec-GPC': '1',
             'DNT': '1',
         }
-        set_context_network_name('image_proxy')
         resp, stream = http_stream(method='GET', url=url, headers=request_headers, allow_redirects=True)
         content_length = resp.headers.get('Content-Length')
         if content_length and content_length.isdigit() and int(content_length) > maximum_size:
@@ -1174,7 +1173,7 @@ def robots():
         """User-agent: *
 Allow: /info/en/about
 Disallow: /stats
-Disallow: /image_proxy
+Disallow: /image
 Disallow: /preferences
 Disallow: /*?*q=*
 """,
