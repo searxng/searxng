@@ -182,6 +182,8 @@ class ResultContainer:
 
     def close(self):
         self._closed = True
+        # infobox with images first
+        self.infoboxes.sort(key=lambda infobox: not infobox.img_src)
 
         for result in self.main_results_map.values():
             result.score = calculate_score(result, result.priority)
