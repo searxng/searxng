@@ -21,7 +21,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-09-21 12:54+0000\n"
+"POT-Creation-Date: 2026-10-04 05:47+0000\n"
 "PO-Revision-Date: 2026-08-21 20:55+0000\n"
 "Last-Translator: return42 <return42@noreply.codeberg.org>\n"
 "Language: sk\n"
@@ -806,11 +806,12 @@ msgstr ""
 "Automaticky načítať ďalšiu stránku pri posunutí na koniec aktuálnej "
 "stránky"
 
-#: searx/plugins/oa_doi_rewrite.py:54
+#: searx/plugins/oa_doi_rewrite.py:55
 msgid "Open Access DOI rewrite"
 msgstr "Otvoriť prístup k prepísaniu DOI"
 
-#: searx/plugins/oa_doi_rewrite.py:55
+#: searx/plugins/oa_doi_rewrite.py:56
+#: searx/templates/simple/preferences/doi_resolver.html:15
 msgid ""
 "Avoid paywalls by redirecting to open-access versions of publications "
 "when available"
@@ -1431,17 +1432,9 @@ msgstr "Vložte skopírovaný hash kód predvolieb (bez adresy URL) na obnovenie
 msgid "Preferences hash"
 msgstr "Hash kód predvolieb"
 
-#: searx/templates/simple/preferences/doi_resolver.html:1
-msgid "Digital Object Identifier (DOI)"
-msgstr "Digitálny identifikátor objektu (DOI)"
-
-#: searx/templates/simple/preferences/doi_resolver.html:6
-msgid "Open Access DOI resolver"
-msgstr "DOI vyhodnocovač otvoreným prístupom"
-
-#: searx/templates/simple/preferences/doi_resolver.html:18
-msgid "Select service used by DOI rewrite"
-msgstr "Vyberte službu, ktorú používa DOI rewrite"
+#: searx/templates/simple/preferences/doi_resolver.html:2
+msgid "DOI Resolver"
+msgstr ""
 
 #: searx/templates/simple/preferences/engines.html:9
 msgid ""
@@ -2431,4 +2424,13 @@ msgstr "skryť video"
 
 #~ msgid "Engine"
 #~ msgstr "Vyhľadávač"
+
+#~ msgid "Digital Object Identifier (DOI)"
+#~ msgstr "Digitálny identifikátor objektu (DOI)"
+
+#~ msgid "Open Access DOI resolver"
+#~ msgstr "DOI vyhodnocovač otvoreným prístupom"
+
+#~ msgid "Select service used by DOI rewrite"
+#~ msgstr "Vyberte službu, ktorú používa DOI rewrite"
 

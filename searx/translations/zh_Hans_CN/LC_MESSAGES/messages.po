@@ -51,20 +51,19 @@
 # Outbreak2096 <outbreak2096@noreply.codeberg.org>, 2025, 2026.
 msgid ""
 msgstr ""
-"Project-Id-Version: searx\n"
+"Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-09-21 12:54+0000\n"
+"POT-Creation-Date: 2026-10-04 05:47+0000\n"
 "PO-Revision-Date: 2026-09-27 07:57+0000\n"
 "Last-Translator: Outbreak2096 <outbreak2096@noreply.codeberg.org>\n"
 "Language: zh_Hans_CN\n"
-"Language-Team: Chinese (Simplified Han script) <https://"
-"translate.codeberg.org/projects/searxng/searxng/zh_Hans/>\n"
+"Language-Team: Chinese (Simplified Han script) "
+"<https://translate.codeberg.org/projects/searxng/searxng/zh_Hans/>\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.18.0\n"
-"X-Generator: Weblate 2026.9.1\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
 #: searx/searxng.msg
@@ -827,11 +826,12 @@ msgid ""
 " page"
 msgstr "滚动到当前页面底部时自动加载下一页"
 
-#: searx/plugins/oa_doi_rewrite.py:54
+#: searx/plugins/oa_doi_rewrite.py:55
 msgid "Open Access DOI rewrite"
 msgstr "开放访问 DOI 重写"
 
-#: searx/plugins/oa_doi_rewrite.py:55
+#: searx/plugins/oa_doi_rewrite.py:56
+#: searx/templates/simple/preferences/doi_resolver.html:15
 msgid ""
 "Avoid paywalls by redirecting to open-access versions of publications "
 "when available"
@@ -1439,17 +1439,9 @@ msgstr "插入复制的首选项散列（不带 URL）进行还原"
 msgid "Preferences hash"
 msgstr "首选项散列"
 
-#: searx/templates/simple/preferences/doi_resolver.html:1
-msgid "Digital Object Identifier (DOI)"
-msgstr "数字对象唯一标识符（DOI）"
-
-#: searx/templates/simple/preferences/doi_resolver.html:6
-msgid "Open Access DOI resolver"
-msgstr "开放访问 DOI 解析器"
-
-#: searx/templates/simple/preferences/doi_resolver.html:18
-msgid "Select service used by DOI rewrite"
-msgstr "选择 DOI 重写使用的服务"
+#: searx/templates/simple/preferences/doi_resolver.html:2
+msgid "DOI Resolver"
+msgstr ""
 
 #: searx/templates/simple/preferences/engines.html:9
 msgid ""
@@ -2366,3 +2358,13 @@ msgstr "隐藏视频"
 
 #~ msgid "Engine"
 #~ msgstr "引擎"
+
+#~ msgid "Digital Object Identifier (DOI)"
+#~ msgstr "数字对象唯一标识符（DOI）"
+
+#~ msgid "Open Access DOI resolver"
+#~ msgstr "开放访问 DOI 解析器"
+
+#~ msgid "Select service used by DOI rewrite"
+#~ msgstr "选择 DOI 重写使用的服务"
+

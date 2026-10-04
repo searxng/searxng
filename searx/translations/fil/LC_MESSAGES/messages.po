@@ -20,21 +20,20 @@
 # return42 <return42@noreply.codeberg.org>, 2025, 2026.
 msgid ""
 msgstr ""
-"Project-Id-Version: searx\n"
+"Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-09-21 12:54+0000\n"
+"POT-Creation-Date: 2026-10-04 05:47+0000\n"
 "PO-Revision-Date: 2026-09-22 13:25+0000\n"
 "Last-Translator: marc-lopez <marc-lopez@noreply.codeberg.org>\n"
 "Language: fil\n"
-"Language-Team: Filipino <https://translate.codeberg.org/projects/searxng/"
-"searxng/fil/>\n"
-"Plural-Forms: nplurals=2; plural=(n == 1 || n==2 || n==3) || (n % 10 != 4 || "
-"n % 10 != 6 || n % 10 != 9);\n"
+"Language-Team: Filipino "
+"<https://translate.codeberg.org/projects/searxng/searxng/fil/>\n"
+"Plural-Forms: nplurals=2; plural=(n == 1 || n==2 || n==3) || (n % 10 != 4"
+" || n % 10 != 6 || n % 10 != 9);\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.18.0\n"
-"X-Generator: Weblate 2026.9.1\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
 #: searx/searxng.msg
@@ -803,11 +802,12 @@ msgstr ""
 "Awtomatiko na ikarga ang sumunod na pahina kapag nakarating na sa dulo ng"
 " kasalukuyang pahina"
 
-#: searx/plugins/oa_doi_rewrite.py:54
+#: searx/plugins/oa_doi_rewrite.py:55
 msgid "Open Access DOI rewrite"
 msgstr "Malayang akses sa muling pagsulat ng DOI"
 
-#: searx/plugins/oa_doi_rewrite.py:55
+#: searx/plugins/oa_doi_rewrite.py:56
+#: searx/templates/simple/preferences/doi_resolver.html:15
 msgid ""
 "Avoid paywalls by redirecting to open-access versions of publications "
 "when available"
@@ -1429,17 +1429,9 @@ msgstr ""
 msgid "Preferences hash"
 msgstr "Hash ng mga preference"
 
-#: searx/templates/simple/preferences/doi_resolver.html:1
-msgid "Digital Object Identifier (DOI)"
-msgstr "Digital Object Identifier (DOI)"
-
-#: searx/templates/simple/preferences/doi_resolver.html:6
-msgid "Open Access DOI resolver"
-msgstr "Open Access DOI resolver"
-
-#: searx/templates/simple/preferences/doi_resolver.html:18
-msgid "Select service used by DOI rewrite"
-msgstr "Pumili ng serbisyo na ginagamit sa pagsulat ng DOI"
+#: searx/templates/simple/preferences/doi_resolver.html:2
+msgid "DOI Resolver"
+msgstr ""
 
 #: searx/templates/simple/preferences/engines.html:9
 msgid ""
@@ -2454,3 +2446,13 @@ msgstr "itago ang video"
 
 #~ msgid "Engine"
 #~ msgstr "Engine"
+
+#~ msgid "Digital Object Identifier (DOI)"
+#~ msgstr "Digital Object Identifier (DOI)"
+
+#~ msgid "Open Access DOI resolver"
+#~ msgstr "Open Access DOI resolver"
+
+#~ msgid "Select service used by DOI rewrite"
+#~ msgstr "Pumili ng serbisyo na ginagamit sa pagsulat ng DOI"
+

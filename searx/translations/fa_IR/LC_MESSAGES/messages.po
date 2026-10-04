@@ -30,7 +30,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-09-21 12:54+0000\n"
+"POT-Creation-Date: 2026-10-04 05:47+0000\n"
 "PO-Revision-Date: 2026-08-04 12:25+0000\n"
 "Last-Translator: mvtbh <mvtbh@noreply.codeberg.org>\n"
 "Language: fa_IR\n"
@@ -808,11 +808,12 @@ msgid ""
 " page"
 msgstr "هنگام پیمایش به پایین صفحه فعلی، صفحه بعدی به صورت خودکار بارگیری می شود"
 
-#: searx/plugins/oa_doi_rewrite.py:54
+#: searx/plugins/oa_doi_rewrite.py:55
 msgid "Open Access DOI rewrite"
 msgstr "بازنویسی DOI Access را باز کنید"
 
-#: searx/plugins/oa_doi_rewrite.py:55
+#: searx/plugins/oa_doi_rewrite.py:56
+#: searx/templates/simple/preferences/doi_resolver.html:15
 msgid ""
 "Avoid paywalls by redirecting to open-access versions of publications "
 "when available"
@@ -1429,17 +1430,9 @@ msgstr "هش تنظیمات کپی شده را وارد کنید(بدون URL) �
 msgid "Preferences hash"
 msgstr "هش تنظیمات"
 
-#: searx/templates/simple/preferences/doi_resolver.html:1
-msgid "Digital Object Identifier (DOI)"
-msgstr "شناسه شئ دیجیتال (DOI)"
-
-#: searx/templates/simple/preferences/doi_resolver.html:6
-msgid "Open Access DOI resolver"
-msgstr "واگردان DOI دسترسی آزاد"
-
-#: searx/templates/simple/preferences/doi_resolver.html:18
-msgid "Select service used by DOI rewrite"
-msgstr "سرویس مورد استفاده توسط بازنویسی DOI را انتخاب کنید"
+#: searx/templates/simple/preferences/doi_resolver.html:2
+msgid "DOI Resolver"
+msgstr ""
 
 #: searx/templates/simple/preferences/engines.html:9
 msgid ""
@@ -2437,4 +2430,13 @@ msgstr "پنهان‌سازی ویدئو"
 
 #~ msgid "Engine"
 #~ msgstr "موتور"
+
+#~ msgid "Digital Object Identifier (DOI)"
+#~ msgstr "شناسه شئ دیجیتال (DOI)"
+
+#~ msgid "Open Access DOI resolver"
+#~ msgstr "واگردان DOI دسترسی آزاد"
+
+#~ msgid "Select service used by DOI rewrite"
+#~ msgstr "سرویس مورد استفاده توسط بازنویسی DOI را انتخاب کنید"
 

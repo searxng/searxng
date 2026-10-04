@@ -19,7 +19,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-09-21 12:54+0000\n"
+"POT-Creation-Date: 2026-10-04 05:47+0000\n"
 "PO-Revision-Date: 2026-08-14 19:38+0000\n"
 "Last-Translator: Mooo <mooo@noreply.codeberg.org>\n"
 "Language: lt\n"
@@ -802,11 +802,12 @@ msgid ""
 " page"
 msgstr "Automatiškai įkelia kitą puslapį, kai slenkama į esamo puslapio apačią"
 
-#: searx/plugins/oa_doi_rewrite.py:54
+#: searx/plugins/oa_doi_rewrite.py:55
 msgid "Open Access DOI rewrite"
 msgstr "Atvirosios prieigos DOI perrašymas"
 
-#: searx/plugins/oa_doi_rewrite.py:55
+#: searx/plugins/oa_doi_rewrite.py:56
+#: searx/templates/simple/preferences/doi_resolver.html:15
 msgid ""
 "Avoid paywalls by redirecting to open-access versions of publications "
 "when available"
@@ -1426,16 +1427,8 @@ msgstr ""
 msgid "Preferences hash"
 msgstr ""
 
-#: searx/templates/simple/preferences/doi_resolver.html:1
-msgid "Digital Object Identifier (DOI)"
-msgstr "Skaitmeninis objekto identifikatorius (DOI)"
-
-#: searx/templates/simple/preferences/doi_resolver.html:6
-msgid "Open Access DOI resolver"
-msgstr "Atvirosios prieigos DOI sprendimų įtaisas"
-
-#: searx/templates/simple/preferences/doi_resolver.html:18
-msgid "Select service used by DOI rewrite"
+#: searx/templates/simple/preferences/doi_resolver.html:2
+msgid "DOI Resolver"
 msgstr ""
 
 #: searx/templates/simple/preferences/engines.html:9
@@ -2406,4 +2399,13 @@ msgstr "slėpti vaizdo įrašą"
 
 #~ msgid "Engine"
 #~ msgstr "Sistema"
+
+#~ msgid "Digital Object Identifier (DOI)"
+#~ msgstr "Skaitmeninis objekto identifikatorius (DOI)"
+
+#~ msgid "Open Access DOI resolver"
+#~ msgstr "Atvirosios prieigos DOI sprendimų įtaisas"
+
+#~ msgid "Select service used by DOI rewrite"
+#~ msgstr ""
 
