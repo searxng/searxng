@@ -167,7 +167,7 @@ def get_results(
     infobox_id_lang: str | None = None
     infobox_urls: list[dict[str, str]] = []
     infobox_attributes: list[dict[str, str]] = []
-    infobox_content = attribute_result.get("itemDescription", [])
+    infobox_content: str = attribute_result.get("itemDescription", "")
     img_src: str | None = None
     img_src_priority = 0
 
