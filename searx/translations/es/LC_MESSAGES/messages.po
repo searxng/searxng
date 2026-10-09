@@ -52,8 +52,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-09-21 12:54+0000\n"
-"PO-Revision-Date: 2026-09-22 13:25+0000\n"
+"POT-Creation-Date: 2026-10-04 05:47+0000\n"
+"PO-Revision-Date: 2026-10-05 10:27+0000\n"
 "Last-Translator: gallegonovato <gallegonovato@noreply.codeberg.org>\n"
 "Language: es\n"
 "Language-Team: Spanish <https://translate.codeberg.org/projects/searxng/"
@@ -837,11 +837,12 @@ msgstr ""
 "Carga automáticamente la siguiente página al desplazarse a la parte "
 "inferior de la página actual"
 
-#: searx/plugins/oa_doi_rewrite.py:54
+#: searx/plugins/oa_doi_rewrite.py:55
 msgid "Open Access DOI rewrite"
 msgstr "Reescribir DOI (Identificador de objeto digital) de Open Access"
 
-#: searx/plugins/oa_doi_rewrite.py:55
+#: searx/plugins/oa_doi_rewrite.py:56
+#: searx/templates/simple/preferences/doi_resolver.html:15
 msgid ""
 "Avoid paywalls by redirecting to open-access versions of publications "
 "when available"
@@ -1463,17 +1464,9 @@ msgstr "Inserte el hash de preferencias copiado (sin URL) para restaurar"
 msgid "Preferences hash"
 msgstr "Hash de preferencias"
 
-#: searx/templates/simple/preferences/doi_resolver.html:1
-msgid "Digital Object Identifier (DOI)"
-msgstr "Identificador de Objeto Digital (DOI)"
-
-#: searx/templates/simple/preferences/doi_resolver.html:6
-msgid "Open Access DOI resolver"
-msgstr "Resolutor de DOI de acceso abierto"
-
-#: searx/templates/simple/preferences/doi_resolver.html:18
-msgid "Select service used by DOI rewrite"
-msgstr "Elije el servicio utilizado para reescribir DOI"
+#: searx/templates/simple/preferences/doi_resolver.html:2
+msgid "DOI Resolver"
+msgstr "Resolver DOI"
 
 #: searx/templates/simple/preferences/engines.html:9
 msgid ""
@@ -2493,3 +2486,12 @@ msgstr "ocultar video"
 
 #~ msgid "Engine"
 #~ msgstr "Motor"
+
+#~ msgid "Digital Object Identifier (DOI)"
+#~ msgstr "Identificador de Objeto Digital (DOI)"
+
+#~ msgid "Open Access DOI resolver"
+#~ msgstr "Resolutor de DOI de acceso abierto"
+
+#~ msgid "Select service used by DOI rewrite"
+#~ msgstr "Elije el servicio utilizado para reescribir DOI"

@@ -20,7 +20,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-09-21 12:54+0000\n"
+"POT-Creation-Date: 2026-10-04 05:47+0000\n"
 "PO-Revision-Date: 2026-07-23 22:07+0000\n"
 "Last-Translator: alexgabi <alexgabi@noreply.codeberg.org>\n"
 "Language: eu\n"
@@ -804,11 +804,12 @@ msgstr ""
 "Automatikoki hurrengo orria kargatzen du uneko orriaren behealdera "
 "korritzean"
 
-#: searx/plugins/oa_doi_rewrite.py:54
+#: searx/plugins/oa_doi_rewrite.py:55
 msgid "Open Access DOI rewrite"
 msgstr "Berridatzi Open Access DOI"
 
-#: searx/plugins/oa_doi_rewrite.py:55
+#: searx/plugins/oa_doi_rewrite.py:56
+#: searx/templates/simple/preferences/doi_resolver.html:15
 msgid ""
 "Avoid paywalls by redirecting to open-access versions of publications "
 "when available"
@@ -1427,17 +1428,9 @@ msgstr "Txertatu kopiatutako hobespenen hash (URLrik gabe) leheneratzeko"
 msgid "Preferences hash"
 msgstr "Hobespenen hash"
 
-#: searx/templates/simple/preferences/doi_resolver.html:1
-msgid "Digital Object Identifier (DOI)"
-msgstr "Objektu digitaleko identifikatzailea (DOI)"
-
-#: searx/templates/simple/preferences/doi_resolver.html:6
-msgid "Open Access DOI resolver"
-msgstr "Open Access DOI ebatzi"
-
-#: searx/templates/simple/preferences/doi_resolver.html:18
-msgid "Select service used by DOI rewrite"
-msgstr "Hautatu DOI berridazketa-k erabilitako zerbitzua"
+#: searx/templates/simple/preferences/doi_resolver.html:2
+msgid "DOI Resolver"
+msgstr ""
 
 #: searx/templates/simple/preferences/engines.html:9
 msgid ""
@@ -2424,4 +2417,13 @@ msgstr "ezkutatu bideoa"
 
 #~ msgid "Engine"
 #~ msgstr "Bilatzailea"
+
+#~ msgid "Digital Object Identifier (DOI)"
+#~ msgstr "Objektu digitaleko identifikatzailea (DOI)"
+
+#~ msgid "Open Access DOI resolver"
+#~ msgstr "Open Access DOI ebatzi"
+
+#~ msgid "Select service used by DOI rewrite"
+#~ msgstr "Hautatu DOI berridazketa-k erabilitako zerbitzua"
 

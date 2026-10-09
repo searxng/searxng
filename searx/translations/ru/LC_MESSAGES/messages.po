@@ -29,7 +29,7 @@
 # curtwheeler <curtwheeler@users.noreply.translate.codeberg.org>, 2025.
 # return42 <return42@noreply.codeberg.org>, 2025, 2026.
 # yurtpage <yurtpage@noreply.codeberg.org>, 2025.
-# kotovasia <kotovasia@noreply.codeberg.org>, 2025.
+# kotovasia <kotovasia@noreply.codeberg.org>, 2025, 2026.
 # IcewindX <icewindx@noreply.codeberg.org>, 2025.
 # 0ko <0ko@noreply.codeberg.org>, 2025.
 # greatdng <greatdng@noreply.codeberg.org>, 2026.
@@ -38,9 +38,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-09-21 12:54+0000\n"
-"PO-Revision-Date: 2026-06-24 10:07+0000\n"
-"Last-Translator: code_gremlin <code_gremlin@noreply.codeberg.org>\n"
+"POT-Creation-Date: 2026-10-04 05:47+0000\n"
+"PO-Revision-Date: 2026-09-29 03:27+0000\n"
+"Last-Translator: kotovasia <kotovasia@noreply.codeberg.org>\n"
 "Language: ru\n"
 "Language-Team: Russian "
 "<https://translate.codeberg.org/projects/searxng/searxng/ru/>\n"
@@ -70,7 +70,7 @@ msgstr "приложения"
 #. CATEGORY_NAMES['BLOGS']
 #: searx/searxng.msg
 msgid "blogs"
-msgstr ""
+msgstr "блоги"
 
 #. CATEGORY_NAMES['DICTIONARIES']
 #: searx/searxng.msg
@@ -824,11 +824,12 @@ msgstr ""
 "Автоматически загружает следующую страницу при прокрутке до конца текущей"
 " страницы"
 
-#: searx/plugins/oa_doi_rewrite.py:54
+#: searx/plugins/oa_doi_rewrite.py:55
 msgid "Open Access DOI rewrite"
 msgstr "Искать Open Access DOI"
 
-#: searx/plugins/oa_doi_rewrite.py:55
+#: searx/plugins/oa_doi_rewrite.py:56
+#: searx/templates/simple/preferences/doi_resolver.html:15
 msgid ""
 "Avoid paywalls by redirecting to open-access versions of publications "
 "when available"
@@ -1447,19 +1448,9 @@ msgstr "Вставить скопированный хэш настроек (б�
 msgid "Preferences hash"
 msgstr "Хэш настроек"
 
-#: searx/templates/simple/preferences/doi_resolver.html:1
-msgid "Digital Object Identifier (DOI)"
-msgstr "Цифровой идентификатор объекта (DOI)"
-
-#: searx/templates/simple/preferences/doi_resolver.html:6
-msgid "Open Access DOI resolver"
-msgstr "Источник Open Access DOI"
-
-#: searx/templates/simple/preferences/doi_resolver.html:18
-msgid "Select service used by DOI rewrite"
+#: searx/templates/simple/preferences/doi_resolver.html:2
+msgid "DOI Resolver"
 msgstr ""
-"Выберите службу, используемую переписыванием «Цифрового идентификатора "
-"объекта»"
 
 #: searx/templates/simple/preferences/engines.html:9
 msgid ""
@@ -2472,4 +2463,15 @@ msgstr "скрыть видео"
 
 #~ msgid "Engine"
 #~ msgstr "Движок"
+
+#~ msgid "Digital Object Identifier (DOI)"
+#~ msgstr "Цифровой идентификатор объекта (DOI)"
+
+#~ msgid "Open Access DOI resolver"
+#~ msgstr "Источник Open Access DOI"
+
+#~ msgid "Select service used by DOI rewrite"
+#~ msgstr ""
+#~ "Выберите службу, используемую переписыванием "
+#~ "«Цифрового идентификатора объекта»"
 

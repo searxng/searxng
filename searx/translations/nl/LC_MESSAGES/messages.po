@@ -38,12 +38,13 @@
 # artens <artens@noreply.codeberg.org>, 2025.
 # SecularSteve <secularsteve@noreply.codeberg.org>, 2025.
 # Stephan-P <stephan-p@noreply.codeberg.org>, 2026.
+# zarlin <zarlin@noreply.codeberg.org>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-09-21 12:54+0000\n"
-"PO-Revision-Date: 2026-09-22 13:25+0000\n"
+"POT-Creation-Date: 2026-10-04 05:47+0000\n"
+"PO-Revision-Date: 2026-10-05 10:27+0000\n"
 "Last-Translator: Stephan-P <stephan-p@noreply.codeberg.org>\n"
 "Language: nl\n"
 "Language-Team: Dutch <https://translate.codeberg.org/projects/searxng/"
@@ -138,7 +139,7 @@ msgstr "onions"
 #. CATEGORY_NAMES['PACKAGES']
 #: searx/searxng.msg
 msgid "packages"
-msgstr "paketten"
+msgstr "pakketten"
 
 #. CATEGORY_NAMES['Q_A']
 #: searx/searxng.msg
@@ -828,11 +829,12 @@ msgstr ""
 "Laadt automatisch de volgende pagina wanneer je naar de onderkant van de "
 "huidige pagina scrolt"
 
-#: searx/plugins/oa_doi_rewrite.py:54
+#: searx/plugins/oa_doi_rewrite.py:55
 msgid "Open Access DOI rewrite"
 msgstr "Open Access DOI bewerken"
 
-#: searx/plugins/oa_doi_rewrite.py:55
+#: searx/plugins/oa_doi_rewrite.py:56
+#: searx/templates/simple/preferences/doi_resolver.html:15
 msgid ""
 "Avoid paywalls by redirecting to open-access versions of publications "
 "when available"
@@ -1456,17 +1458,9 @@ msgstr ""
 msgid "Preferences hash"
 msgstr "Instellingen sleutelwaarde (hash)"
 
-#: searx/templates/simple/preferences/doi_resolver.html:1
-msgid "Digital Object Identifier (DOI)"
-msgstr "Digitaal Object Identificatienummer"
-
-#: searx/templates/simple/preferences/doi_resolver.html:6
-msgid "Open Access DOI resolver"
-msgstr "Open Access DOI bronzoeker"
-
-#: searx/templates/simple/preferences/doi_resolver.html:18
-msgid "Select service used by DOI rewrite"
-msgstr "Selecteer gebruikte dienst door DOI bronzoeker"
+#: searx/templates/simple/preferences/doi_resolver.html:2
+msgid "DOI Resolver"
+msgstr "DOI-oplosser"
 
 #: searx/templates/simple/preferences/engines.html:9
 msgid ""
@@ -2489,3 +2483,12 @@ msgstr "verberg video"
 
 #~ msgid "Engine"
 #~ msgstr "Zoekmachine"
+
+#~ msgid "Digital Object Identifier (DOI)"
+#~ msgstr "Digitaal Object Identificatienummer"
+
+#~ msgid "Open Access DOI resolver"
+#~ msgstr "Open Access DOI bronzoeker"
+
+#~ msgid "Select service used by DOI rewrite"
+#~ msgstr "Selecteer gebruikte dienst door DOI bronzoeker"

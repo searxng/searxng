@@ -20,7 +20,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-09-21 12:54+0000\n"
+"POT-Creation-Date: 2026-10-04 05:47+0000\n"
 "PO-Revision-Date: 2026-05-19 12:08+0000\n"
 "Last-Translator: return42 <return42@noreply.codeberg.org>\n"
 "Language: sr\n"
@@ -808,11 +808,12 @@ msgstr ""
 "Аутоматски учитајте следећу страницу приликом померања до дна тренутне "
 "странице"
 
-#: searx/plugins/oa_doi_rewrite.py:54
+#: searx/plugins/oa_doi_rewrite.py:55
 msgid "Open Access DOI rewrite"
 msgstr "Отворени приступ DOI преписа"
 
-#: searx/plugins/oa_doi_rewrite.py:55
+#: searx/plugins/oa_doi_rewrite.py:56
+#: searx/templates/simple/preferences/doi_resolver.html:15
 msgid ""
 "Avoid paywalls by redirecting to open-access versions of publications "
 "when available"
@@ -1428,17 +1429,9 @@ msgstr "Унесите копирани хеш преференци (без УР
 msgid "Preferences hash"
 msgstr "Хеш преференци"
 
-#: searx/templates/simple/preferences/doi_resolver.html:1
-msgid "Digital Object Identifier (DOI)"
-msgstr "Дигитални Идентификатор Објеката (DOI)"
-
-#: searx/templates/simple/preferences/doi_resolver.html:6
-msgid "Open Access DOI resolver"
-msgstr "Отворени приступ DOI решења"
-
-#: searx/templates/simple/preferences/doi_resolver.html:18
-msgid "Select service used by DOI rewrite"
-msgstr "Изаберите услугу коју користи ДОИ изновопис"
+#: searx/templates/simple/preferences/doi_resolver.html:2
+msgid "DOI Resolver"
+msgstr ""
 
 #: searx/templates/simple/preferences/engines.html:9
 msgid ""
@@ -2428,4 +2421,13 @@ msgstr "сакриј видео"
 
 #~ msgid "Engine"
 #~ msgstr "Енџин"
+
+#~ msgid "Digital Object Identifier (DOI)"
+#~ msgstr "Дигитални Идентификатор Објеката (DOI)"
+
+#~ msgid "Open Access DOI resolver"
+#~ msgstr "Отворени приступ DOI решења"
+
+#~ msgid "Select service used by DOI rewrite"
+#~ msgstr "Изаберите услугу коју користи ДОИ изновопис"
 
