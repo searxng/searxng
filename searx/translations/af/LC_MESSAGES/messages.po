@@ -23,8 +23,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-09-21 12:54+0000\n"
-"PO-Revision-Date: 2026-06-19 05:08+0000\n"
+"POT-Creation-Date: 2026-10-04 05:47+0000\n"
+"PO-Revision-Date: 2026-10-01 19:27+0000\n"
 "Last-Translator: Raithlin <raithlin@noreply.codeberg.org>\n"
 "Language: af\n"
 "Language-Team: Afrikaans "
@@ -53,7 +53,7 @@ msgstr "toeps"
 #. CATEGORY_NAMES['BLOGS']
 #: searx/searxng.msg
 msgid "blogs"
-msgstr ""
+msgstr "blogs"
 
 #. CATEGORY_NAMES['DICTIONARIES']
 #: searx/searxng.msg
@@ -73,7 +73,7 @@ msgstr "algemeen"
 #. CATEGORY_NAMES['ICONS']
 #: searx/searxng.msg
 msgid "icons"
-msgstr ""
+msgstr "ikone"
 
 #. CATEGORY_NAMES['IMAGES']
 #: searx/searxng.msg
@@ -98,7 +98,7 @@ msgstr "kaart"
 #. CATEGORY_NAMES['MOVIES']
 #: searx/searxng.msg
 msgid "movies"
-msgstr ""
+msgstr "rolprente"
 
 #. CATEGORY_NAMES['MUSIC']
 #: searx/searxng.msg
@@ -158,12 +158,12 @@ msgstr "sagteware wiki's"
 #. CATEGORY_NAMES['STOCK_IMAGES']
 #: searx/searxng.msg
 msgid "stock images"
-msgstr ""
+msgstr "voorraadbeelde"
 
 #. CATEGORY_NAMES['TRANSLATE']
 #: searx/searxng.msg
 msgid "translate"
-msgstr ""
+msgstr "vertaal"
 
 #. CATEGORY_NAMES['TV']
 #: searx/searxng.msg
@@ -178,7 +178,7 @@ msgstr "videos"
 #. CATEGORY_NAMES['WEATHER']
 #: searx/searxng.msg
 msgid "weather"
-msgstr ""
+msgstr "weer"
 
 #. CATEGORY_NAMES['WEB']
 #: searx/searxng.msg
@@ -808,11 +808,12 @@ msgstr ""
 "Laai die volgende bladsy outomaties wanneer na die onderkant van die "
 "huidige bladsy geblaai word"
 
-#: searx/plugins/oa_doi_rewrite.py:54
+#: searx/plugins/oa_doi_rewrite.py:55
 msgid "Open Access DOI rewrite"
 msgstr "oop toegang DOI oorskryf"
 
-#: searx/plugins/oa_doi_rewrite.py:55
+#: searx/plugins/oa_doi_rewrite.py:56
+#: searx/templates/simple/preferences/doi_resolver.html:15
 msgid ""
 "Avoid paywalls by redirecting to open-access versions of publications "
 "when available"
@@ -1433,17 +1434,9 @@ msgstr "Voeg gekopieerde voorkeur-hash (sonder URL) in om te herstel"
 msgid "Preferences hash"
 msgstr "Voorkeure hash"
 
-#: searx/templates/simple/preferences/doi_resolver.html:1
-msgid "Digital Object Identifier (DOI)"
-msgstr "Digitale Objekidentifiseerder (DOI)"
-
-#: searx/templates/simple/preferences/doi_resolver.html:6
-msgid "Open Access DOI resolver"
-msgstr "Ooptoegang DOI-oplosser"
-
-#: searx/templates/simple/preferences/doi_resolver.html:18
-msgid "Select service used by DOI rewrite"
-msgstr "Kies diens wat deur DOI herskryf gebruik word"
+#: searx/templates/simple/preferences/doi_resolver.html:2
+msgid "DOI Resolver"
+msgstr ""
 
 #: searx/templates/simple/preferences/engines.html:9
 msgid ""
@@ -2195,4 +2188,13 @@ msgstr "versteek video"
 
 #~ msgid "Engine"
 #~ msgstr "Enjin"
+
+#~ msgid "Digital Object Identifier (DOI)"
+#~ msgstr "Digitale Objekidentifiseerder (DOI)"
+
+#~ msgid "Open Access DOI resolver"
+#~ msgstr "Ooptoegang DOI-oplosser"
+
+#~ msgid "Select service used by DOI rewrite"
+#~ msgstr "Kies diens wat deur DOI herskryf gebruik word"
 

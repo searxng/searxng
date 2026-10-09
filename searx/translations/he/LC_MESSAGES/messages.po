@@ -21,7 +21,7 @@
 # Anonymous <anonymous@users.noreply.translate.codeberg.org>, 2025.
 # shoko <shoko@users.noreply.translate.codeberg.org>, 2025.
 # RoyBarina <roybarina@users.noreply.translate.codeberg.org>, 2025.
-# ngf <ngf@noreply.codeberg.org>, 2025.
+# ngf <ngf@noreply.codeberg.org>, 2025, 2026.
 # return42 <return42@noreply.codeberg.org>, 2025, 2026.
 # omeritzics <omeritzics@noreply.codeberg.org>, 2026.
 # ShinyDust <shinydust@noreply.codeberg.org>, 2026.
@@ -29,9 +29,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-09-21 12:54+0000\n"
-"PO-Revision-Date: 2026-08-02 00:25+0000\n"
-"Last-Translator: ShinyDust <shinydust@noreply.codeberg.org>\n"
+"POT-Creation-Date: 2026-10-04 05:47+0000\n"
+"PO-Revision-Date: 2026-09-29 03:27+0000\n"
+"Last-Translator: ngf <ngf@noreply.codeberg.org>\n"
 "Language: he\n"
 "Language-Team: Hebrew "
 "<https://translate.codeberg.org/projects/searxng/searxng/he/>\n"
@@ -185,7 +185,7 @@ msgstr "וידאו"
 #. CATEGORY_NAMES['WEATHER']
 #: searx/searxng.msg
 msgid "weather"
-msgstr ""
+msgstr "מזג האוויר"
 
 #. CATEGORY_NAMES['WEB']
 #: searx/searxng.msg
@@ -810,11 +810,12 @@ msgid ""
 " page"
 msgstr "טען אוטומטית של העמוד הבא בעת גלילה לתחתית העמוד"
 
-#: searx/plugins/oa_doi_rewrite.py:54
+#: searx/plugins/oa_doi_rewrite.py:55
 msgid "Open Access DOI rewrite"
 msgstr "שכתוב Open Access DOI"
 
-#: searx/plugins/oa_doi_rewrite.py:55
+#: searx/plugins/oa_doi_rewrite.py:56
+#: searx/templates/simple/preferences/doi_resolver.html:15
 msgid ""
 "Avoid paywalls by redirecting to open-access versions of publications "
 "when available"
@@ -1432,17 +1433,9 @@ msgstr "הכנס hash העדפות מועתק (ללא URL) על מנת לשחז�
 msgid "Preferences hash"
 msgstr "Hash העדפות"
 
-#: searx/templates/simple/preferences/doi_resolver.html:1
-msgid "Digital Object Identifier (DOI)"
-msgstr "מזהה אוביקט דיגיטלי (DOI)"
-
-#: searx/templates/simple/preferences/doi_resolver.html:6
-msgid "Open Access DOI resolver"
-msgstr "מפענח Open Access DOI"
-
-#: searx/templates/simple/preferences/doi_resolver.html:18
-msgid "Select service used by DOI rewrite"
-msgstr "בחר שירות המשתמש בשכתוב DOI"
+#: searx/templates/simple/preferences/doi_resolver.html:2
+msgid "DOI Resolver"
+msgstr ""
 
 #: searx/templates/simple/preferences/engines.html:9
 msgid ""
@@ -2408,4 +2401,13 @@ msgstr "הסתר וידאו"
 
 #~ msgid "Engine"
 #~ msgstr "מנוע"
+
+#~ msgid "Digital Object Identifier (DOI)"
+#~ msgstr "מזהה אוביקט דיגיטלי (DOI)"
+
+#~ msgid "Open Access DOI resolver"
+#~ msgstr "מפענח Open Access DOI"
+
+#~ msgid "Select service used by DOI rewrite"
+#~ msgstr "בחר שירות המשתמש בשכתוב DOI"
 

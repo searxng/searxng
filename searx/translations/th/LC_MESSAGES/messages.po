@@ -19,7 +19,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-09-21 12:54+0000\n"
+"POT-Creation-Date: 2026-10-04 05:47+0000\n"
 "PO-Revision-Date: 2026-07-14 15:07+0000\n"
 "Last-Translator: neighbourhoodCat <neighbourhoodcat@noreply.codeberg.org>"
 "\n"
@@ -800,11 +800,12 @@ msgid ""
 " page"
 msgstr "โหลดหน้าถัดไปโดยอัตโนมัติเมื่อเลื่อนเมาส์ลงไปที่ด้านล่างของหน้าปัจจุบัน"
 
-#: searx/plugins/oa_doi_rewrite.py:54
+#: searx/plugins/oa_doi_rewrite.py:55
 msgid "Open Access DOI rewrite"
 msgstr "เปิดการเข้าถึง DOI ที่เขียนใหม่"
 
-#: searx/plugins/oa_doi_rewrite.py:55
+#: searx/plugins/oa_doi_rewrite.py:56
+#: searx/templates/simple/preferences/doi_resolver.html:15
 msgid ""
 "Avoid paywalls by redirecting to open-access versions of publications "
 "when available"
@@ -1419,17 +1420,9 @@ msgstr "แทรกแฮชการตั้งค่าที่คัดล
 msgid "Preferences hash"
 msgstr "การตั้งค่าแฮช"
 
-#: searx/templates/simple/preferences/doi_resolver.html:1
-msgid "Digital Object Identifier (DOI)"
-msgstr "รหัส DOI"
-
-#: searx/templates/simple/preferences/doi_resolver.html:6
-msgid "Open Access DOI resolver"
-msgstr "เปิดการเข้าถึงตัวแก้ไข DOI"
-
-#: searx/templates/simple/preferences/doi_resolver.html:18
-msgid "Select service used by DOI rewrite"
-msgstr "เลือกบริการที่ใช้โดย DOI เขียนใหม่"
+#: searx/templates/simple/preferences/doi_resolver.html:2
+msgid "DOI Resolver"
+msgstr ""
 
 #: searx/templates/simple/preferences/engines.html:9
 msgid ""
@@ -2135,4 +2128,13 @@ msgstr "ซ่อนวิดีโอ"
 
 #~ msgid "Engine"
 #~ msgstr "เครื่องมือ"
+
+#~ msgid "Digital Object Identifier (DOI)"
+#~ msgstr "รหัส DOI"
+
+#~ msgid "Open Access DOI resolver"
+#~ msgstr "เปิดการเข้าถึงตัวแก้ไข DOI"
+
+#~ msgid "Select service used by DOI rewrite"
+#~ msgstr "เลือกบริการที่ใช้โดย DOI เขียนใหม่"
 

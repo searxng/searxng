@@ -21,8 +21,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-09-21 12:54+0000\n"
-"PO-Revision-Date: 2026-09-22 13:25+0000\n"
+"POT-Creation-Date: 2026-10-04 05:47+0000\n"
+"PO-Revision-Date: 2026-10-05 10:27+0000\n"
 "Last-Translator: Priit Jõerüüt <jrtcdbrg@noreply.codeberg.org>\n"
 "Language: et\n"
 "Language-Team: Estonian <https://translate.codeberg.org/projects/searxng/"
@@ -806,11 +806,12 @@ msgid ""
 " page"
 msgstr "Käesoleva lehe lõppu kerimisel laadib automaatselt järgmise lehe"
 
-#: searx/plugins/oa_doi_rewrite.py:54
+#: searx/plugins/oa_doi_rewrite.py:55
 msgid "Open Access DOI rewrite"
 msgstr "Avatud juurdepääsu DOI ümberkirjutamine"
 
-#: searx/plugins/oa_doi_rewrite.py:55
+#: searx/plugins/oa_doi_rewrite.py:56
+#: searx/templates/simple/preferences/doi_resolver.html:15
 msgid ""
 "Avoid paywalls by redirecting to open-access versions of publications "
 "when available"
@@ -1431,17 +1432,9 @@ msgstr "Taastamiseks sisesta kopeeritud eelistuste räsi (ilma URL-aadressita)"
 msgid "Preferences hash"
 msgstr "Eelistuste räsi"
 
-#: searx/templates/simple/preferences/doi_resolver.html:1
-msgid "Digital Object Identifier (DOI)"
-msgstr "Objekti digitunnus (DOI)"
-
-#: searx/templates/simple/preferences/doi_resolver.html:6
-msgid "Open Access DOI resolver"
-msgstr "Open Access DOI resolver"
-
-#: searx/templates/simple/preferences/doi_resolver.html:18
-msgid "Select service used by DOI rewrite"
-msgstr "Vali teenus mida kasutab DOI ümberkirjutamine"
+#: searx/templates/simple/preferences/doi_resolver.html:2
+msgid "DOI Resolver"
+msgstr "DOI nimeotsing"
 
 #: searx/templates/simple/preferences/engines.html:9
 msgid ""
@@ -2427,3 +2420,12 @@ msgstr "peida video"
 
 #~ msgid "Engine"
 #~ msgstr "Otsingumootor"
+
+#~ msgid "Digital Object Identifier (DOI)"
+#~ msgstr "Objekti digitunnus (DOI)"
+
+#~ msgid "Open Access DOI resolver"
+#~ msgstr "Open Access DOI resolver"
+
+#~ msgid "Select service used by DOI rewrite"
+#~ msgstr "Vali teenus mida kasutab DOI ümberkirjutamine"

@@ -53,8 +53,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-09-21 12:54+0000\n"
-"PO-Revision-Date: 2026-06-14 13:07+0000\n"
+"POT-Creation-Date: 2026-10-04 05:47+0000\n"
+"PO-Revision-Date: 2026-09-27 07:57+0000\n"
 "Last-Translator: Outbreak2096 <outbreak2096@noreply.codeberg.org>\n"
 "Language: zh_Hans_CN\n"
 "Language-Team: Chinese (Simplified Han script) "
@@ -83,7 +83,7 @@ msgstr "应用"
 #. CATEGORY_NAMES['BLOGS']
 #: searx/searxng.msg
 msgid "blogs"
-msgstr ""
+msgstr "博客"
 
 #. CATEGORY_NAMES['DICTIONARIES']
 #: searx/searxng.msg
@@ -103,7 +103,7 @@ msgstr "综合"
 #. CATEGORY_NAMES['ICONS']
 #: searx/searxng.msg
 msgid "icons"
-msgstr ""
+msgstr "图标"
 
 #. CATEGORY_NAMES['IMAGES']
 #: searx/searxng.msg
@@ -128,7 +128,7 @@ msgstr "地图"
 #. CATEGORY_NAMES['MOVIES']
 #: searx/searxng.msg
 msgid "movies"
-msgstr ""
+msgstr "电影"
 
 #. CATEGORY_NAMES['MUSIC']
 #: searx/searxng.msg
@@ -188,12 +188,12 @@ msgstr "软件维基"
 #. CATEGORY_NAMES['STOCK_IMAGES']
 #: searx/searxng.msg
 msgid "stock images"
-msgstr ""
+msgstr "库存图片"
 
 #. CATEGORY_NAMES['TRANSLATE']
 #: searx/searxng.msg
 msgid "translate"
-msgstr ""
+msgstr "翻译"
 
 #. CATEGORY_NAMES['TV']
 #: searx/searxng.msg
@@ -208,7 +208,7 @@ msgstr "视频"
 #. CATEGORY_NAMES['WEATHER']
 #: searx/searxng.msg
 msgid "weather"
-msgstr ""
+msgstr "天气"
 
 #. CATEGORY_NAMES['WEB']
 #: searx/searxng.msg
@@ -826,11 +826,12 @@ msgid ""
 " page"
 msgstr "滚动到当前页面底部时自动加载下一页"
 
-#: searx/plugins/oa_doi_rewrite.py:54
+#: searx/plugins/oa_doi_rewrite.py:55
 msgid "Open Access DOI rewrite"
 msgstr "开放访问 DOI 重写"
 
-#: searx/plugins/oa_doi_rewrite.py:55
+#: searx/plugins/oa_doi_rewrite.py:56
+#: searx/templates/simple/preferences/doi_resolver.html:15
 msgid ""
 "Avoid paywalls by redirecting to open-access versions of publications "
 "when available"
@@ -1438,17 +1439,9 @@ msgstr "插入复制的首选项散列（不带 URL）进行还原"
 msgid "Preferences hash"
 msgstr "首选项散列"
 
-#: searx/templates/simple/preferences/doi_resolver.html:1
-msgid "Digital Object Identifier (DOI)"
-msgstr "数字对象唯一标识符（DOI）"
-
-#: searx/templates/simple/preferences/doi_resolver.html:6
-msgid "Open Access DOI resolver"
-msgstr "开放访问 DOI 解析器"
-
-#: searx/templates/simple/preferences/doi_resolver.html:18
-msgid "Select service used by DOI rewrite"
-msgstr "选择 DOI 重写使用的服务"
+#: searx/templates/simple/preferences/doi_resolver.html:2
+msgid "DOI Resolver"
+msgstr ""
 
 #: searx/templates/simple/preferences/engines.html:9
 msgid ""
@@ -2365,4 +2358,13 @@ msgstr "隐藏视频"
 
 #~ msgid "Engine"
 #~ msgstr "引擎"
+
+#~ msgid "Digital Object Identifier (DOI)"
+#~ msgstr "数字对象唯一标识符（DOI）"
+
+#~ msgid "Open Access DOI resolver"
+#~ msgstr "开放访问 DOI 解析器"
+
+#~ msgid "Select service used by DOI rewrite"
+#~ msgstr "选择 DOI 重写使用的服务"
 

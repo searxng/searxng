@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-09-21 12:54+0000\n"
+"POT-Creation-Date: 2026-10-04 05:47+0000\n"
 "PO-Revision-Date: 2026-08-04 12:25+0000\n"
 "Last-Translator: Aindriú Mac Giolla Eoin <aindriu80@noreply.codeberg.org>"
 "\n"
@@ -796,11 +796,12 @@ msgstr ""
 "Luchtaíonn sé an chéad leathanach eile go huathoibríoch nuair a "
 "scrollaíonn tú go bun an leathanaigh reatha"
 
-#: searx/plugins/oa_doi_rewrite.py:54
+#: searx/plugins/oa_doi_rewrite.py:55
 msgid "Open Access DOI rewrite"
 msgstr "Athscríobh DOI Rochtana Oscailte"
 
-#: searx/plugins/oa_doi_rewrite.py:55
+#: searx/plugins/oa_doi_rewrite.py:56
+#: searx/templates/simple/preferences/doi_resolver.html:15
 msgid ""
 "Avoid paywalls by redirecting to open-access versions of publications "
 "when available"
@@ -1426,17 +1427,9 @@ msgstr "Cuir isteach hash roghanna cóipeáilte (gan URL) chun athbhunú"
 msgid "Preferences hash"
 msgstr "Roghanna hais"
 
-#: searx/templates/simple/preferences/doi_resolver.html:1
-msgid "Digital Object Identifier (DOI)"
-msgstr "Aitheantóir Oibiachta Digiteach (DOI)"
-
-#: searx/templates/simple/preferences/doi_resolver.html:6
-msgid "Open Access DOI resolver"
-msgstr "Réiteach DOI Rochtana Oscailte"
-
-#: searx/templates/simple/preferences/doi_resolver.html:18
-msgid "Select service used by DOI rewrite"
-msgstr "Roghnaigh seirbhís a úsáideann DOI athscríobh"
+#: searx/templates/simple/preferences/doi_resolver.html:2
+msgid "DOI Resolver"
+msgstr ""
 
 #: searx/templates/simple/preferences/engines.html:9
 msgid ""
@@ -1999,4 +1992,13 @@ msgstr "físeán a cheilt"
 
 #~ msgid "Engine"
 #~ msgstr "Inneall"
+
+#~ msgid "Digital Object Identifier (DOI)"
+#~ msgstr "Aitheantóir Oibiachta Digiteach (DOI)"
+
+#~ msgid "Open Access DOI resolver"
+#~ msgstr "Réiteach DOI Rochtana Oscailte"
+
+#~ msgid "Select service used by DOI rewrite"
+#~ msgstr "Roghnaigh seirbhís a úsáideann DOI athscríobh"
 

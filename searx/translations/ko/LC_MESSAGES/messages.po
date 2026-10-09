@@ -23,8 +23,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-09-21 12:54+0000\n"
-"PO-Revision-Date: 2026-09-22 13:25+0000\n"
+"POT-Creation-Date: 2026-10-04 05:47+0000\n"
+"PO-Revision-Date: 2026-10-06 13:27+0000\n"
 "Last-Translator: lugged9922 <lugged9922@noreply.codeberg.org>\n"
 "Language: ko\n"
 "Language-Team: Korean <https://translate.codeberg.org/projects/searxng/"
@@ -801,11 +801,12 @@ msgid ""
 " page"
 msgstr "페이지 가장 밑으로 스크롤 시 자동으로 다음 페이지 로드하기"
 
-#: searx/plugins/oa_doi_rewrite.py:54
+#: searx/plugins/oa_doi_rewrite.py:55
 msgid "Open Access DOI rewrite"
 msgstr "오픈 액세스 DOI 재작성"
 
-#: searx/plugins/oa_doi_rewrite.py:55
+#: searx/plugins/oa_doi_rewrite.py:56
+#: searx/templates/simple/preferences/doi_resolver.html:15
 msgid ""
 "Avoid paywalls by redirecting to open-access versions of publications "
 "when available"
@@ -1413,17 +1414,9 @@ msgstr "(URL 제외하여) 설정 해시를 복사해 복원"
 msgid "Preferences hash"
 msgstr "설정 해시"
 
-#: searx/templates/simple/preferences/doi_resolver.html:1
-msgid "Digital Object Identifier (DOI)"
-msgstr "디지털 객체 식별자 (DOI)"
-
-#: searx/templates/simple/preferences/doi_resolver.html:6
-msgid "Open Access DOI resolver"
-msgstr "오픈 엑세스 DOI 리졸버"
-
-#: searx/templates/simple/preferences/doi_resolver.html:18
-msgid "Select service used by DOI rewrite"
-msgstr "DOI 재작성에 사용된 서비스 선택"
+#: searx/templates/simple/preferences/doi_resolver.html:2
+msgid "DOI Resolver"
+msgstr "DOI 리졸버"
 
 #: searx/templates/simple/preferences/engines.html:9
 msgid ""
@@ -2232,3 +2225,12 @@ msgstr "비디오 숨기기"
 
 #~ msgid "Engine"
 #~ msgstr "검색엔진"
+
+#~ msgid "Digital Object Identifier (DOI)"
+#~ msgstr "디지털 객체 식별자 (DOI)"
+
+#~ msgid "Open Access DOI resolver"
+#~ msgstr "오픈 엑세스 DOI 리졸버"
+
+#~ msgid "Select service used by DOI rewrite"
+#~ msgstr "DOI 재작성에 사용된 서비스 선택"

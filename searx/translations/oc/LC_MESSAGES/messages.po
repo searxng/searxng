@@ -17,7 +17,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-09-21 12:54+0000\n"
+"POT-Creation-Date: 2026-10-04 05:47+0000\n"
 "PO-Revision-Date: 2026-07-11 09:07+0000\n"
 "Last-Translator: quenty_occitania <quenty_occitania@noreply.codeberg.org>"
 "\n"
@@ -791,11 +791,12 @@ msgid ""
 " page"
 msgstr "Carga automaticament la pagina seguenta quand arribatz en fin de pagina"
 
-#: searx/plugins/oa_doi_rewrite.py:54
+#: searx/plugins/oa_doi_rewrite.py:55
 msgid "Open Access DOI rewrite"
 msgstr "Open Access DOI reescritura"
 
-#: searx/plugins/oa_doi_rewrite.py:55
+#: searx/plugins/oa_doi_rewrite.py:56
+#: searx/templates/simple/preferences/doi_resolver.html:15
 msgid ""
 "Avoid paywalls by redirecting to open-access versions of publications "
 "when available"
@@ -1405,16 +1406,8 @@ msgstr ""
 msgid "Preferences hash"
 msgstr ""
 
-#: searx/templates/simple/preferences/doi_resolver.html:1
-msgid "Digital Object Identifier (DOI)"
-msgstr ""
-
-#: searx/templates/simple/preferences/doi_resolver.html:6
-msgid "Open Access DOI resolver"
-msgstr "Open Access DOI reglador"
-
-#: searx/templates/simple/preferences/doi_resolver.html:18
-msgid "Select service used by DOI rewrite"
+#: searx/templates/simple/preferences/doi_resolver.html:2
+msgid "DOI Resolver"
 msgstr ""
 
 #: searx/templates/simple/preferences/engines.html:9
@@ -2370,4 +2363,13 @@ msgstr "escondre la vidèo"
 
 #~ msgid "Engine"
 #~ msgstr "Motor"
+
+#~ msgid "Digital Object Identifier (DOI)"
+#~ msgstr ""
+
+#~ msgid "Open Access DOI resolver"
+#~ msgstr "Open Access DOI reglador"
+
+#~ msgid "Select service used by DOI rewrite"
+#~ msgstr ""
 

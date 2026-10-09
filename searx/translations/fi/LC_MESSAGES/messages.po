@@ -23,7 +23,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-09-21 12:54+0000\n"
+"POT-Creation-Date: 2026-10-04 05:47+0000\n"
 "PO-Revision-Date: 2026-05-19 12:07+0000\n"
 "Last-Translator: return42 <return42@noreply.codeberg.org>\n"
 "Language: fi\n"
@@ -807,11 +807,12 @@ msgstr ""
 "Lataa automaattisesti seuraavan sivun, kun vieritetään nykyisen sivun "
 "loppuun"
 
-#: searx/plugins/oa_doi_rewrite.py:54
+#: searx/plugins/oa_doi_rewrite.py:55
 msgid "Open Access DOI rewrite"
 msgstr "Open Access DOI -uudelleenkirjoitus"
 
-#: searx/plugins/oa_doi_rewrite.py:55
+#: searx/plugins/oa_doi_rewrite.py:56
+#: searx/templates/simple/preferences/doi_resolver.html:15
 msgid ""
 "Avoid paywalls by redirecting to open-access versions of publications "
 "when available"
@@ -1433,17 +1434,9 @@ msgstr "Syötä kopioitu asetusten tiiviste (ilman URL-osoitetta) palautusta var
 msgid "Preferences hash"
 msgstr "Asetusten tiiviste"
 
-#: searx/templates/simple/preferences/doi_resolver.html:1
-msgid "Digital Object Identifier (DOI)"
-msgstr "Digitaalinen objektin tunniste (Digital Object Identifier (DOI))"
-
-#: searx/templates/simple/preferences/doi_resolver.html:6
-msgid "Open Access DOI resolver"
-msgstr "Open Access DOI -selvitin"
-
-#: searx/templates/simple/preferences/doi_resolver.html:18
-msgid "Select service used by DOI rewrite"
-msgstr "Valitse palvelu, jota käytetään DOI:n uudelleenkirjoituksessa"
+#: searx/templates/simple/preferences/doi_resolver.html:2
+msgid "DOI Resolver"
+msgstr ""
 
 #: searx/templates/simple/preferences/engines.html:9
 msgid ""
@@ -2443,4 +2436,13 @@ msgstr "piilota video"
 
 #~ msgid "Engine"
 #~ msgstr "Hakukone"
+
+#~ msgid "Digital Object Identifier (DOI)"
+#~ msgstr "Digitaalinen objektin tunniste (Digital Object Identifier (DOI))"
+
+#~ msgid "Open Access DOI resolver"
+#~ msgstr "Open Access DOI -selvitin"
+
+#~ msgid "Select service used by DOI rewrite"
+#~ msgstr "Valitse palvelu, jota käytetään DOI:n uudelleenkirjoituksessa"
 

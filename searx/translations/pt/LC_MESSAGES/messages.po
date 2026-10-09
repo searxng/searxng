@@ -38,7 +38,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-09-21 12:54+0000\n"
+"POT-Creation-Date: 2026-10-04 05:47+0000\n"
 "PO-Revision-Date: 2026-07-17 12:20+0000\n"
 "Last-Translator: impar <impar@noreply.codeberg.org>\n"
 "Language: pt\n"
@@ -820,11 +820,12 @@ msgstr ""
 "Carregar automaticamente a página seguinte ao descer para o final da "
 "página atual"
 
-#: searx/plugins/oa_doi_rewrite.py:54
+#: searx/plugins/oa_doi_rewrite.py:55
 msgid "Open Access DOI rewrite"
 msgstr "Reescrita DOI de acesso aberto"
 
-#: searx/plugins/oa_doi_rewrite.py:55
+#: searx/plugins/oa_doi_rewrite.py:56
+#: searx/templates/simple/preferences/doi_resolver.html:15
 msgid ""
 "Avoid paywalls by redirecting to open-access versions of publications "
 "when available"
@@ -1447,17 +1448,9 @@ msgstr "Inserir a assinatura das preferências copiada (sem URL) para restaurar"
 msgid "Preferences hash"
 msgstr "Assinatura das preferências"
 
-#: searx/templates/simple/preferences/doi_resolver.html:1
-msgid "Digital Object Identifier (DOI)"
-msgstr "Identificador de Objeto Digital (DOI)"
-
-#: searx/templates/simple/preferences/doi_resolver.html:6
-msgid "Open Access DOI resolver"
-msgstr "Resolvedor DOI de Acesso Aberto"
-
-#: searx/templates/simple/preferences/doi_resolver.html:18
-msgid "Select service used by DOI rewrite"
-msgstr "Selecione o serviço utilizado pela reescrita do DOI"
+#: searx/templates/simple/preferences/doi_resolver.html:2
+msgid "DOI Resolver"
+msgstr ""
 
 #: searx/templates/simple/preferences/engines.html:9
 msgid ""
@@ -2474,4 +2467,13 @@ msgstr "esconder vídeo"
 
 #~ msgid "Engine"
 #~ msgstr "Engine"
+
+#~ msgid "Digital Object Identifier (DOI)"
+#~ msgstr "Identificador de Objeto Digital (DOI)"
+
+#~ msgid "Open Access DOI resolver"
+#~ msgstr "Resolvedor DOI de Acesso Aberto"
+
+#~ msgid "Select service used by DOI rewrite"
+#~ msgstr "Selecione o serviço utilizado pela reescrita do DOI"
 

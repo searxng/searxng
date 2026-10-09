@@ -30,7 +30,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-09-21 12:54+0000\n"
+"POT-Creation-Date: 2026-10-04 05:47+0000\n"
 "PO-Revision-Date: 2026-05-19 12:08+0000\n"
 "Last-Translator: return42 <return42@noreply.codeberg.org>\n"
 "Language: ro\n"
@@ -815,11 +815,12 @@ msgstr ""
 "Încarcă automat următoarea pagină când derulezi până în josul paginii "
 "curente"
 
-#: searx/plugins/oa_doi_rewrite.py:54
+#: searx/plugins/oa_doi_rewrite.py:55
 msgid "Open Access DOI rewrite"
 msgstr "Rescriere DOI cu acces deschis"
 
-#: searx/plugins/oa_doi_rewrite.py:55
+#: searx/plugins/oa_doi_rewrite.py:56
+#: searx/templates/simple/preferences/doi_resolver.html:15
 msgid ""
 "Avoid paywalls by redirecting to open-access versions of publications "
 "when available"
@@ -1439,17 +1440,9 @@ msgstr "Introduceți hash-ul preferințelor copiate (fără URL) pentru a restau
 msgid "Preferences hash"
 msgstr "Hash-ul preferințelor"
 
-#: searx/templates/simple/preferences/doi_resolver.html:1
-msgid "Digital Object Identifier (DOI)"
-msgstr "Identificator digital de obiect (DOI)"
-
-#: searx/templates/simple/preferences/doi_resolver.html:6
-msgid "Open Access DOI resolver"
-msgstr "Rezolvator de acces deschis DOI"
-
-#: searx/templates/simple/preferences/doi_resolver.html:18
-msgid "Select service used by DOI rewrite"
-msgstr "Selectionarea unui serviciu folosit pentru rescrierea DOI"
+#: searx/templates/simple/preferences/doi_resolver.html:2
+msgid "DOI Resolver"
+msgstr ""
 
 #: searx/templates/simple/preferences/engines.html:9
 msgid ""
@@ -2473,4 +2466,13 @@ msgstr "ascunde video"
 
 #~ msgid "Engine"
 #~ msgstr "Motor"
+
+#~ msgid "Digital Object Identifier (DOI)"
+#~ msgstr "Identificator digital de obiect (DOI)"
+
+#~ msgid "Open Access DOI resolver"
+#~ msgstr "Rezolvator de acces deschis DOI"
+
+#~ msgid "Select service used by DOI rewrite"
+#~ msgstr "Selectionarea unui serviciu folosit pentru rescrierea DOI"
 
