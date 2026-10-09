@@ -32,10 +32,10 @@ def init():
     cfg_file = (settings_loader.get_user_cfg_folder() or pathlib.Path("/etc/searxng")) / "favicons.toml"
     if not cfg_file.exists():
         if is_active():
-            logger.error(f"missing favicon config: {cfg_file}")
+            logger.error("missing favicon config: %s", cfg_file)
         cfg_file = config.DEFAULT_CFG_TOML_PATH
 
-    logger.debug(f"load favicon config: {cfg_file}")
+    logger.debug("load favicon config: %s", cfg_file)
     cfg = config.FaviconConfig.from_toml_file(cfg_file, use_cache=True)
     cache.init(cfg.cache)
     proxy.init(cfg.proxy)

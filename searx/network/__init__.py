@@ -137,7 +137,7 @@ class Request(t.NamedTuple):
 
     method: str
     url: str
-    kwargs: dict[str, str] = {}
+    kwargs: dict[str, str] = {}  # pylint: disable=dangerous-default-value
 
     @staticmethod
     def get(url: str, **kwargs: t.Any):

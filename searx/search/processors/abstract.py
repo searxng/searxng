@@ -161,7 +161,7 @@ class EngineProcessor(ABC):
         try:
             init_ok = self.engine.init(eng_setting)
         except Exception as e:  # pylint: disable=broad-except
-            logger.exception(f"(PID {os.getpid()}) {self.engine.name}: engine INIT failed, exception: {e}")
+            logger.exception("(PID %s) %s: engine INIT failed, exception: %s", os.getpid(), self.engine.name, e)
             init_ok = False
 
         # In older engines, None is returned from the init method, which is
@@ -172,7 +172,7 @@ class EngineProcessor(ABC):
             init_ok = True
 
         if not init_ok:
-            logger.error(f"(PID {os.getpid()}) {self.engine.name}: engine init was not successful")
+            logger.error("(PID %s) %s: engine init was not successful", os.getpid(), self.engine.name)
 
         return init_ok
 

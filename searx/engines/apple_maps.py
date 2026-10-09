@@ -37,8 +37,7 @@ def obtain_token():
         )
         token['value'] = loads(actual_token.text)['authInfo']['access_token']
         token['last_updated'] = update_time
-    # pylint: disable=bare-except
-    except:
+    except:  # pylint: disable=bare-except
         pass
     return token
 
