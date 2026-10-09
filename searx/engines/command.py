@@ -169,7 +169,7 @@ def _get_results_from_process(res: EngineResults, cmd, pageno):
             for raw_result in raw_results:
                 result = __parse_single_result(raw_result)
                 if result is None:
-                    _command_logger.debug('skipped result:', raw_result)
+                    _command_logger.debug('skipped result: %s', raw_result)
                     continue
 
                 if start <= count and count <= end:  # pylint: disable=chained-comparison

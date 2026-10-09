@@ -186,7 +186,7 @@ def code_highlighter(codelines, language=None, hl_lines=None, strip_whitespace=T
         lexer = get_lexer_by_name(language, stripall=strip_whitespace, stripnl=strip_new_lines)
 
     except Exception as e:  # pylint: disable=broad-except
-        logger.warning("pygments lexer: %s " % e)
+        logger.warning("pygments lexer: %s ", e)
         # if lexer is not found, using default one
         lexer = get_lexer_by_name('text', stripall=strip_whitespace, stripnl=strip_new_lines)
 
@@ -1048,7 +1048,7 @@ def image_proxy():
             del resp
             del stream
         except RequestException as e:
-            logger.debug('Exception while closing response', e)
+            logger.debug('Exception while closing response: %s', e)
 
     try:
         headers = dict_subset(resp.headers, {'Content-Type', 'Content-Encoding', 'Content-Length', 'Length'})

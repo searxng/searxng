@@ -71,7 +71,7 @@ class ProcessorMap(dict[str, EngineProcessor]):
             eng_type = getattr(eng_obj, "engine_type", "online")
             proc_cls = self.processor_types.get(eng_type)
             if proc_cls is None:
-                logger.error("Engine '%s' is of unknown engine_type: %s", eng_type)
+                logger.error("Engine of name '%s' is of unknown engine_type: %s", eng_name, eng_type)
                 continue
 
             # initialize (and register) the engine
@@ -94,7 +94,7 @@ class ProcessorMap(dict[str, EngineProcessor]):
             # logger.debug("registered engine processor: %s", eng_proc.engine.name)
         else:
             logger.error(
-                f"(PID {os.getpid()}) {eng_proc.engine.name}: can't register engines processor (init engine failed)"
+                "(PID %s) %s: can't register engines processor (init engine failed)", os.getpid(), eng_proc.engine.name
             )
 
         return eng_proc_ok

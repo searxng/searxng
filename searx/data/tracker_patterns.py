@@ -93,7 +93,7 @@ class TrackerPatternsDB:
                 continue
 
             if resp.status_code != 200:
-                log.warning(f"TRACKER_PATTERNS: ClearURL ignore HTTP {resp.status_code} {url}")
+                log.warning("TRACKER_PATTERNS: ClearURL ignore HTTP %s %s", resp.status_code, url)
                 continue
 
             break
