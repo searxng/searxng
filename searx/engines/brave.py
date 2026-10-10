@@ -129,7 +129,7 @@ from searx.enginelib.traits import EngineTraits
 from searx.exceptions import SearxEngineResponseException
 from searx.result_types import EngineResults, MainResult, Video
 from searx.result_types.image import Image
-from searx.utils import html_to_text, js_obj_str_to_json_str, js_obj_str_to_python
+from searx.utils import html_to_text, js_obj_str_to_python
 
 if t.TYPE_CHECKING:
     from searx.extended_types import SXNG_Response
@@ -140,7 +140,7 @@ about = {
     "official_api_documentation": None,
     "use_official_api": False,
     "require_api_key": False,
-    "results": "HTML",
+    "results": "JSON",
 }
 
 base_url = "https://search.brave.com/"
@@ -207,12 +207,10 @@ def request(query: str, params: dict[str, t.Any]) -> None:
     if brave_category == "goggles":
         args["goggles_id"] = Goggles
 
-    params["headers"]["Accept-Encoding"] = "gzip, deflate"
-    params["url"] = f"{base_url}{brave_category}?{urlencode(args)}"
+    params["url"] = f"{base_url}{brave_category}/__data.json?{urlencode(args)}"
     logger.debug("url %s", params["url"])
 
     # set properties in the cookies
-
     params["cookies"]["safesearch"] = safesearch_map.get(params["safesearch"], "off")
     # the useLocation is IP based, we use cookie "country" for the region
     params["cookies"]["useLocation"] = "0"
@@ -235,25 +233,92 @@ def _extract_published_date(published_date_raw: str | None):
         return None
 
 
-def extract_json_data(text: str) -> dict[str, t.Any]:
-    # Example script source containing the data:
-    #
-    # kit.start(app, element, {
-    #    node_ids: [0, 19],
-    #    data: [{type:"data",data: .... ["q","goggles_id"],route:1,url:1}}]
-    #          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    #    form: null,
-    #    error: null
-    # });
-    start = text.index("data: [{")
-    newline = text.index("\n", start)
-    end = text.rindex("}}]", start, newline)
-    js_obj_str = "{" + text[start:end] + "}}]}"
-    # js_obj_str = js_obj_str.replace("\xa0", "")  # remove ASCII for &nbsp;
-    # js_obj_str = js_obj_str.replace(r"\u003C", "<").replace(r"\u003c", "<")  # fix broken HTML tags in strings
-    json_str = js_obj_str_to_json_str(js_obj_str)
-    data: dict[str, t.Any] = json.loads(json_str)
-    return data
+def _resolve_sveltekit_int_reference(
+    item: int,
+    data_pool: list[t.Any],
+    hydrated: list[t.Any | None],
+) -> t.Any:
+    """Helper to process integer data-pool lookups and handle circularity."""
+    if item == -1:  # devalue / SvelteKit sentinel for undefined
+        return None
+    if not 0 <= item < len(data_pool):
+        return item  # out-of-range → treat as a literal number
+
+    # Already resolved?
+    if hydrated[item] is not None:
+        return hydrated[item]
+
+    # Look up the value once
+    value = data_pool[item]
+
+    # If the looked-up value is itself a structure, resolve it;
+    # otherwise it is a terminal primitive (int, str, …)
+    if isinstance(value, (dict, list)):
+        # placeholder against cycles
+        hydrated[item] = {} if isinstance(value, dict) else []
+        resolved = _resolve_sveltekit_reference(value, data_pool, hydrated)
+        hydrated[item] = resolved
+        return resolved
+
+    # Terminal primitive – store and return as-is
+    hydrated[item] = value
+    return value
+
+
+def _resolve_sveltekit_reference(
+    item: t.Any,
+    data_pool: list[t.Any],
+    hydrated: list[t.Any | None] | None = None,
+) -> t.Any:
+    """Recursively resolve devalue-style numeric indices into real values."""
+    if hydrated is None:
+        hydrated = [None] * len(data_pool)
+
+    # 1. Primitives that are not references
+    if item is None or isinstance(item, (bool, str, float)):
+        return item
+
+    # 2. Delegate integer resolution to a helper to satisfy Pylint R0911
+    if isinstance(item, int):
+        return _resolve_sveltekit_int_reference(item, data_pool, hydrated)
+
+    # 3. Structural containers
+    if isinstance(item, dict):
+        return {k: _resolve_sveltekit_reference(v, data_pool, hydrated) for k, v in item.items()}
+
+    if isinstance(item, list):
+        return [_resolve_sveltekit_reference(x, data_pool, hydrated) for x in item]
+
+    return item
+
+
+def _unflatten_sveltekit_data(payload: dict[str, t.Any] | str) -> dict[str, t.Any]:
+    """Parse and unflatten the SvelteKit / devalue payload returned by /__data.json."""
+    if isinstance(payload, str):
+        payload = json.loads(payload)
+
+    nodes = payload.get("nodes")  # type: ignore
+    if not nodes:
+        raise ValueError("no data nodes found in Brave __data.json payload")
+
+    unflattened: list[dict[str, t.Any]] = []
+    for node in nodes:
+        if node.get("type") != "data" or "data" not in node:
+            unflattened.append(node)
+            continue
+
+        data_pool: list[t.Any] = node["data"]
+        if not data_pool:
+            unflattened.append(node)
+            continue
+
+        # The first element of the pool is the root object of the node
+        root = _resolve_sveltekit_reference(data_pool[0], data_pool)
+        unflattened.append(
+            {"type": "data", "data": root, **{k: v for k, v in node.items() if k not in ("type", "data")}}
+        )
+
+    return {"data": unflattened}
 
 
 def response(resp: "SXNG_Response") -> EngineResults:
@@ -377,7 +442,7 @@ def _parse_results(parse_func: Callable[..., MainResult | Image], resp: "SXNG_Re
     #    data: [{type:"data",data: .... ["q","goggles_id"],route:1,url:1}}]
     #          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
     results = EngineResults()
-    json_data: dict[str, t.Any] = extract_json_data(resp.text)
+    json_data: dict[str, t.Any] = _unflatten_sveltekit_data(resp.json())
     json_resp: dict[str, t.Any] = _get_response_data(json_data, brave_category)
     if not json_resp:
         # if _get_response_data returns {} - indicates it was parsed successfully but had "noResults" = True
