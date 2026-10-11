@@ -7,6 +7,7 @@ import re
 import importlib
 import importlib.util
 import json
+import string
 import types
 
 import typing as t
@@ -440,7 +441,7 @@ def to_string(obj: t.Any) -> str:
     return repr(obj)
 
 
-def ecma_unescape(string: str) -> str:
+def ecma_unescape(text: str) -> str:
     """Python implementation of the unescape javascript function
 
     https://www.ecma-international.org/ecma-262/6.0/#sec-unescape-string
@@ -455,20 +456,20 @@ def ecma_unescape(string: str) -> str:
         'ó'
     """
     # "%u5409" becomes "吉"
-    string = _ECMA_UNESCAPE4_RE.sub(lambda e: chr(int(e.group(1), 16)), string)
+    text = _ECMA_UNESCAPE4_RE.sub(lambda e: chr(int(e.group(1), 16)), text)
     # "%20" becomes " ", "%F3" becomes "ó"
-    string = _ECMA_UNESCAPE2_RE.sub(lambda e: chr(int(e.group(1), 16)), string)
-    return string
+    text = _ECMA_UNESCAPE2_RE.sub(lambda e: chr(int(e.group(1), 16)), text)
+    return text
 
 
-def remove_pua_from_str(string: str):
+def remove_pua_from_str(text: str):
     """Removes unicode's "PRIVATE USE CHARACTER"s (PUA_) from a string.
 
     .. _PUA: https://en.wikipedia.org/wiki/Private_Use_Areas
     """
     pua_ranges = ((0xE000, 0xF8FF), (0xF0000, 0xFFFFD), (0x100000, 0x10FFFD))
     s: list[str] = []
-    for c in string:
+    for c in text:
         i = ord(c)
         if any(a <= i <= b for (a, b) in pua_ranges):
             continue
@@ -791,6 +792,116 @@ def js_obj_str_to_json_str(js_obj_str: str) -> str:
     # replace the surogate character by colon and strip whitespaces
     s = s.replace(chr(1), ':').strip()
     return s
+
+
+def js_find_matching_bracket(text: str, start: int, open_char: str = "{", close_char: str = "}") -> int:
+    """Return index of the matching closing bracket, safely ignoring JS string literals."""
+    depth = 0
+    i = start
+    in_string = None
+    escape_ = False
+
+    while i < len(text):
+        c = text[i]
+        if in_string:
+            if escape_:
+                escape_ = False
+            elif c == "\\":
+                escape_ = True
+            elif c == in_string:
+                in_string = None
+        elif c in ('"', "'", "`"):
+            in_string = c
+        elif c == open_char:
+            depth += 1
+        elif c == close_char:
+            depth -= 1
+            if depth == 0:
+                return i
+        i += 1
+    raise ValueError(f"unbalanced {open_char}{close_char} starting at {start}")
+
+
+def js_split_args(args_str: str) -> list[str]:
+    """Split a JS argument list, respecting strings and nested brackets."""
+    args: list[str] = []
+    last_pos = 0
+    in_string = None
+    escape_ = False
+    depth = 0
+
+    for idx, c in enumerate(f"{args_str},"):
+        if in_string:
+            if escape_:
+                escape_ = False
+            elif c == "\\":
+                escape_ = True
+            elif c == in_string:
+                in_string = None
+        elif c in ('"', "'", "`"):
+            in_string = c
+        elif c in ("(", "[", "{"):
+            depth += 1
+        elif c in (")", "]", "}"):
+            depth -= 1
+        elif c == "," and depth == 0:
+            if item := args_str[last_pos:idx].strip():
+                args.append(item)
+            last_pos = idx + 1
+    return args
+
+
+def js_find_variable_positions(js_obj: str) -> list[tuple[str, int]]:
+    """Find all variables referenced in the JavaScript object."""
+    # pylint: disable=too-many-branches
+    # pylint: disable=unsubscriptable-object
+
+    matches: list[tuple[str, int]] = []
+
+    in_string = False
+    in_escape = False
+
+    # flat array like [1,2,3], not e.g. [{"a": 3}]
+    in_flat_array = False
+    # if the current position is inside the place of
+    # a JS value, e.g. the range of ` bar` in {"foo": bar}
+    in_value = False
+    current_var: tuple[str, int] | None = None
+
+    for pos, c in enumerate(js_obj):
+        if in_string:
+            if in_escape:
+                in_escape = False
+            elif c == "\\":
+                in_escape = True
+            elif c == in_string:
+                in_string = None
+        elif c in ("'", "\"", "`"):
+            in_string = c
+        elif c == ":":
+            in_value = True
+        elif c in (",", "{", "}", "[", "]"):
+            # handle matching variables in arrays like [a,b,c]
+            # i.e. if we encounter a "," in such a flat array,
+            # we're still inside a value
+            if c == "[":
+                in_flat_array = True
+            elif c != ",":
+                in_flat_array = False
+            in_value = in_flat_array
+            if current_var:
+                # reached end of variable name
+                if current_var[0] not in ("void0", "true", "false", "null", "undefined"):
+                    matches.append(current_var)
+                current_var = None
+        elif in_value:
+            if current_var and c in (string.ascii_letters + string.digits + "_$"):
+                current_var = (current_var[0] + c, current_var[1])
+            elif c in string.ascii_letters + "_$":
+                # start of new variable name
+                current_var = (c, pos)
+
+    return matches
 
 
 def parse_duration_string(duration_str: str) -> timedelta | None:
