@@ -118,6 +118,7 @@ Implementations
 """
 
 import json
+import re
 import typing as t
 from collections.abc import Callable
 from urllib.parse import urlencode
@@ -129,7 +130,14 @@ from searx.enginelib.traits import EngineTraits
 from searx.exceptions import SearxEngineResponseException
 from searx.result_types import EngineResults, MainResult, Video
 from searx.result_types.image import Image
-from searx.utils import html_to_text, js_obj_str_to_json_str, js_obj_str_to_python
+from searx.utils import (
+    html_to_text,
+    js_find_matching_bracket,
+    js_obj_str_to_json_str,
+    js_obj_str_to_python,
+    js_split_args,
+    js_find_variable_positions,
+)
 
 if t.TYPE_CHECKING:
     from searx.extended_types import SXNG_Response
@@ -188,6 +196,16 @@ time_range_map: dict[str, str] = {
     "year": "py",
 }
 
+IIFE_RE = re.compile(
+    r"""
+    \(function\s*\(                    # (function(
+        (?P<params>[^)]*)              # formal parameters
+    \)\s*\{\s*return\s*                # ){ return
+        (?P<body>\{)                   # the object literal starts
+    """,
+    re.VERBOSE | re.DOTALL,
+)
+
 
 def request(query: str, params: dict[str, t.Any]) -> None:
 
@@ -207,12 +225,10 @@ def request(query: str, params: dict[str, t.Any]) -> None:
     if brave_category == "goggles":
         args["goggles_id"] = Goggles
 
-    params["headers"]["Accept-Encoding"] = "gzip, deflate"
     params["url"] = f"{base_url}{brave_category}?{urlencode(args)}"
     logger.debug("url %s", params["url"])
 
     # set properties in the cookies
-
     params["cookies"]["safesearch"] = safesearch_map.get(params["safesearch"], "off")
     # the useLocation is IP based, we use cookie "country" for the region
     params["cookies"]["useLocation"] = "0"
@@ -235,25 +251,90 @@ def _extract_published_date(published_date_raw: str | None):
         return None
 
 
+def extract_iife_object(data_src: str, match: re.Match[str]) -> tuple[str, int]:
+    """
+    Extract and substitute the object literal from a JavaScript IIFE.
+    Returns the transformed object literal and the position immediately after the IIFE call.
+    """
+    body_start = match.start("body")
+    body_end = js_find_matching_bracket(data_src, body_start, "{", "}")
+    obj_str = data_src[body_start : body_end + 1]
+
+    # 1. Locate the argument call execution signature block: ...)(arg1, arg2)
+    call_start = data_src.find("(", body_end)
+    if call_start == -1:
+        raise ValueError("IIFE missing call arguments")
+    call_end = js_find_matching_bracket(data_src, call_start, "(", ")")
+
+    # 2. map arguments
+    args = js_split_args(data_src[call_start + 1 : call_end])
+    params = [p.strip() for p in match["params"].split(",") if p.strip()]
+    mapping = dict(zip(params, args))
+
+    # 3. substitute idents
+    variables = js_find_variable_positions(obj_str)
+    for variable_name, pos in reversed(variables):
+        if variable_name in mapping:
+            value = mapping[variable_name]
+            obj_str = obj_str[:pos] + value + obj_str[pos + len(variable_name) :]
+
+    return obj_str, call_end + 1
+
+
 def extract_json_data(text: str) -> dict[str, t.Any]:
-    # Example script source containing the data:
-    #
-    # kit.start(app, element, {
-    #    node_ids: [0, 19],
-    #    data: [{type:"data",data: .... ["q","goggles_id"],route:1,url:1}}]
-    #          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    #    form: null,
-    #    error: null
-    # });
-    start = text.index("data: [{")
-    newline = text.index("\n", start)
-    end = text.rindex("}}]", start, newline)
-    js_obj_str = "{" + text[start:end] + "}}]}"
-    # js_obj_str = js_obj_str.replace("\xa0", "")  # remove ASCII for &nbsp;
-    # js_obj_str = js_obj_str.replace(r"\u003C", "<").replace(r"\u003c", "<")  # fix broken HTML tags in strings
-    json_str = js_obj_str_to_json_str(js_obj_str)
-    data: dict[str, t.Any] = json.loads(json_str)
-    return data
+    """
+    Extract the SvelteKit data payload that Brave embeds in the page.
+
+    Handles:
+    - plain-object form
+    - pure IIFE form
+    - mixed form (IIFE + plain object) that appears on some news pages
+    """
+    marker = "data: ["
+    start = text.find(marker)
+    if start == -1:
+        raise ValueError("Brave data payload not found (no 'data: [')")
+
+    array_start = start + len(marker) - 1  # Points directly at '['
+    array_end = js_find_matching_bracket(text, array_start, "[", "]")
+    data_src = text[array_start + 1 : array_end]
+
+    objects: list[str] = []
+    pos = 0
+    n = len(data_src)
+
+    while pos < n:
+        # Move past whitespace and commas safely
+        while pos < n and data_src[pos] in " \t\n\r,":
+            pos += 1
+        if pos >= n:
+            break
+
+        # Case 1: IIFE Object Signature Matches
+        if m := IIFE_RE.match(data_src, pos):
+            obj_str, next_pos = extract_iife_object(data_src, m)
+            objects.append(obj_str)
+            pos = next_pos
+            # Brave sometimes emits an extra ')' after the IIFE call
+            while pos < n and data_src[pos] in " \t\n\r)":
+                pos += 1
+            continue
+
+        # Case 2: Standard raw plain JSON mapping block {type:"data", ...}
+        if data_src[pos] == "{":
+            obj_end = js_find_matching_bracket(data_src, pos, "{", "}")
+            objects.append(data_src[pos : obj_end + 1])
+            pos = obj_end + 1
+            continue
+
+        raise ValueError(f"unexpected token in data array at offset {pos}: {data_src[pos : pos + 40]!r}")
+
+    if not objects:
+        raise ValueError("no data objects found inside Brave payload")
+
+    combined = '{"data":[' + ",".join(objects) + "]}"
+    json_str = js_obj_str_to_json_str(combined)
+    return json.loads(json_str)
 
 
 def response(resp: "SXNG_Response") -> EngineResults:
