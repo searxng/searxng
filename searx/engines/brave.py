@@ -118,6 +118,7 @@ Implementations
 """
 
 import json
+import re
 import typing as t
 from collections.abc import Callable
 from urllib.parse import urlencode
@@ -188,6 +189,16 @@ time_range_map: dict[str, str] = {
     "year": "py",
 }
 
+_IIFE_RE = re.compile(
+    r"""
+    \(function\s*\(                    # (function(
+        (?P<params>[^)]*)              # formal parameters
+    \)\s*\{\s*return\s*                # ){ return
+        (?P<body>\{)                   # the object literal starts
+    """,
+    re.VERBOSE | re.DOTALL,
+)
+
 
 def request(query: str, params: dict[str, t.Any]) -> None:
 
@@ -207,12 +218,10 @@ def request(query: str, params: dict[str, t.Any]) -> None:
     if brave_category == "goggles":
         args["goggles_id"] = Goggles
 
-    params["headers"]["Accept-Encoding"] = "gzip, deflate"
     params["url"] = f"{base_url}{brave_category}?{urlencode(args)}"
     logger.debug("url %s", params["url"])
 
     # set properties in the cookies
-
     params["cookies"]["safesearch"] = safesearch_map.get(params["safesearch"], "off")
     # the useLocation is IP based, we use cookie "country" for the region
     params["cookies"]["useLocation"] = "0"
@@ -235,25 +244,189 @@ def _extract_published_date(published_date_raw: str | None):
         return None
 
 
+def _find_matching_bracket(text: str, start: int, open_char: str = "{", close_char: str = "}") -> int:
+    """Return index of the matching closing bracket, safely ignoring JS string literals."""
+    depth = 0
+    i = start
+    in_string = None
+    escape = False
+
+    while i < len(text):
+        c = text[i]
+        if in_string:
+            if escape:
+                escape = False
+            elif c == "\\":
+                escape = True
+            elif c == in_string:
+                in_string = None
+        elif c in ('"', "'", "`"):
+            in_string = c
+        elif c == open_char:
+            depth += 1
+        elif c == close_char:
+            depth -= 1
+            if depth == 0:
+                return i
+        i += 1
+    raise ValueError(f"unbalanced {open_char}{close_char} starting at {start}")
+
+
+def _split_js_args(args_str: str) -> list[str]:
+    """Split a JS argument list, respecting strings and nested brackets."""
+    args: list[str] = []
+    last_pos = 0
+    in_string = None
+    escape = False
+    depth = 0
+
+    for idx, c in enumerate(f"{args_str},"):
+        if in_string:
+            if escape:
+                escape = False
+            elif c == "\\":
+                escape = True
+            elif c == in_string:
+                in_string = None
+        elif c in ('"', "'", "`"):
+            in_string = c
+        elif c in ("(", "[", "{"):
+            depth += 1
+        elif c in (")", "]", "}"):
+            depth -= 1
+        elif c == "," and depth == 0:
+            if item := args_str[last_pos:idx].strip():
+                args.append(item)
+            last_pos = idx + 1
+    return args
+
+
+def _substitute_js_identifiers(obj_str: str, mapping: dict[str, str]) -> str:
+    """Replace bare identifiers that appear in *mapping* only when they are outside of string literals."""
+    if not mapping:
+        return obj_str
+
+    # longest first so that "aa" is tried before "a"
+    idents = sorted(mapping.keys(), key=len, reverse=True)
+
+    # JS identifier characters – used for boundaries instead of \b (necessary because $ is not a \w character)
+    id_chars = r'[$_a-zA-Z0-9]'
+    pattern = re.compile(f'(?<!{id_chars})(' + '|'.join(re.escape(i) for i in idents) + f')(?!{id_chars})')
+
+    result: list[str] = []
+    last = 0
+    in_string = None
+    escape = False
+    i = 0
+    while i < len(obj_str):
+        c = obj_str[i]
+        if in_string:
+            if escape:
+                escape = False
+            elif c == '\\':
+                escape = True
+            elif c == in_string:
+                in_string = None
+            i += 1
+            continue
+
+        # outside a string
+        if c in ('"', "'", '`'):
+            in_string = c
+            i += 1
+            continue
+
+        if m := pattern.match(obj_str, i):
+            ident = m[1]
+            result.extend((obj_str[last:i], mapping[ident]))
+            i = m.end()
+            last = i
+        else:
+            i += 1
+
+    result.append(obj_str[last:])
+    return ''.join(result)
+
+
+def _extract_iife_object(data_src: str, match: re.Match[str]) -> tuple[str, int]:
+    """
+    Extract and substitute the object literal from a JavaScript IIFE.
+    Returns the transformed object literal and the position immediately after the IIFE call.
+    """
+    params = [p.strip() for p in match["params"].split(",") if p.strip()]
+    body_start = match.start("body")
+    body_end = _find_matching_bracket(data_src, body_start, "{", "}")
+    obj_str = data_src[body_start : body_end + 1]
+
+    # 1. Locate the argument call execution signature block: ...)(arg1, arg2)
+    call_start = data_src.find("(", body_end)
+    if call_start == -1:
+        raise ValueError("IIFE missing call arguments")
+    call_end = _find_matching_bracket(data_src, call_start, "(", ")")
+
+    # 2. map arguments
+    args = _split_js_args(data_src[call_start + 1 : call_end])
+    mapping = dict(zip(params, args))
+
+    # 3. substitute idents
+    result = _substitute_js_identifiers(obj_str, mapping)
+    return "".join(result), call_end + 1
+
+
 def extract_json_data(text: str) -> dict[str, t.Any]:
-    # Example script source containing the data:
-    #
-    # kit.start(app, element, {
-    #    node_ids: [0, 19],
-    #    data: [{type:"data",data: .... ["q","goggles_id"],route:1,url:1}}]
-    #          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    #    form: null,
-    #    error: null
-    # });
-    start = text.index("data: [{")
-    newline = text.index("\n", start)
-    end = text.rindex("}}]", start, newline)
-    js_obj_str = "{" + text[start:end] + "}}]}"
-    # js_obj_str = js_obj_str.replace("\xa0", "")  # remove ASCII for &nbsp;
-    # js_obj_str = js_obj_str.replace(r"\u003C", "<").replace(r"\u003c", "<")  # fix broken HTML tags in strings
-    json_str = js_obj_str_to_json_str(js_obj_str)
-    data: dict[str, t.Any] = json.loads(json_str)
-    return data
+    """
+    Extract the SvelteKit data payload that Brave embeds in the page.
+
+    Handles:
+    - plain-object form
+    - pure IIFE form
+    - mixed form (IIFE + plain object) that appears on some news pages
+    """
+    marker = "data: ["
+    start = text.find(marker)
+    if start == -1:
+        raise ValueError("Brave data payload not found (no 'data: [')")
+
+    array_start = start + len(marker) - 1  # Points directly at '['
+    array_end = _find_matching_bracket(text, array_start, "[", "]")
+    data_src = text[array_start + 1 : array_end]
+
+    objects: list[str] = []
+    pos = 0
+    n = len(data_src)
+
+    while pos < n:
+        # Move past whitespace and commas safely
+        while pos < n and data_src[pos] in " \t\n\r,":
+            pos += 1
+        if pos >= n:
+            break
+
+        # Case 1: IIFE Object Signature Matches
+        if m := _IIFE_RE.match(data_src, pos):
+            obj_str, next_pos = _extract_iife_object(data_src, m)
+            objects.append(obj_str)
+            pos = next_pos
+            # Brave sometimes emits an extra ')' after the IIFE call
+            while pos < n and data_src[pos] in " \t\n\r)":
+                pos += 1
+            continue
+
+        # Case 2: Standard raw plain JSON mapping block {type:"data", ...}
+        if data_src[pos] == "{":
+            obj_end = _find_matching_bracket(data_src, pos, "{", "}")
+            objects.append(data_src[pos : obj_end + 1])
+            pos = obj_end + 1
+            continue
+
+        raise ValueError(f"unexpected token in data array at offset {pos}: {data_src[pos:pos+40]!r}")
+
+    if not objects:
+        raise ValueError("no data objects found inside Brave payload")
+
+    combined = '{"data":[' + ",".join(objects) + "]}"
+    json_str = js_obj_str_to_json_str(combined)
+    return json.loads(json_str)
 
 
 def response(resp: "SXNG_Response") -> EngineResults:
