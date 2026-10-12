@@ -4,6 +4,7 @@
 import json
 import typing as t
 
+from searx.exceptions import SearxEngineAPIException
 from searx.result_types import EngineResults
 
 if t.TYPE_CHECKING:
@@ -58,8 +59,15 @@ def response(resp: "SXNG_Response") -> EngineResults:
     res = EngineResults()
 
     # response is a Server-Side Events (SSE) stream
-    data_raw = resp.text.split("\n", 1)[0].removeprefix("data: ")
-    data = json.loads(data_raw)
+    # we search for a JSON object with the "results" key
+    data_parts = [line for line in resp.text.split("\n") if line]
+    for data_raw in data_parts:
+        data_raw = data_raw.removeprefix("data: ")
+        data: dict[str, t.Any] = json.loads(data_raw)
+        if "results" in data:
+            break
+    else:
+        raise SearxEngineAPIException("no results in response")
 
     result: dict[str, str]
     for result in data["results"]:
