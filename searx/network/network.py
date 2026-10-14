@@ -409,14 +409,6 @@ def initialize(
         if isinstance(network, str):
             NETWORKS[engine_name] = NETWORKS[network]
 
-    # the /image_proxy endpoint has a dedicated network.
-    # same parameters than the default network, but HTTP/2 is disabled.
-    # It decreases the CPU load average, and the total time is more or less the same
-    if 'image_proxy' not in NETWORKS:
-        image_proxy_params = default_params.copy()
-        image_proxy_params['enable_http2'] = False
-        NETWORKS['image_proxy'] = new_network(image_proxy_params, logger_name='image_proxy')
-
 
 @atexit.register
 def done():
