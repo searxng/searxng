@@ -4,11 +4,14 @@
 .. _Resulthunter : https://resulthunter.com
 """
 
+import re
 import typing as t
 from urllib.parse import urlencode
 
+from searx.enginelib import EngineCache
 from searx import locales
-from searx.exceptions import SearxEngineResponseException
+from searx.exceptions import SearxEngineAPIException, SearxEngineResponseException
+from searx.network import get
 from searx.result_types import EngineResults
 from searx.utils import eval_xpath_list, eval_xpath, extract_text
 
@@ -40,18 +43,46 @@ base_url = "https://resulthunter.com"
 resulthunter_categ = "web"
 """Supported categories are ``web`` and ``images``."""
 
+CACHE: EngineCache
+"""Cache for storing search token and cookies."""
 
-def setup(_: dict[str, t.Any]) -> bool | None:
+
+_SEARCH_TOKEN_RE = re.compile(r"window.__rhSearchToken\s*=\s*'(.*)'")
+
+
+def setup(engine_settings: dict[str, str]) -> bool | None:
+    global CACHE  # pylint: disable=global-statement
+    CACHE = EngineCache("resulthunter")
+
     if resulthunter_categ not in ("web", "images"):
         raise ValueError("invalid category: %s" % resulthunter_categ)
 
 
+def _get_search_token() -> tuple[str, dict[str, str]]:
+    if cached := CACHE.get("token"):
+        return cached
+
+    resp = get(base_url)
+    token = _SEARCH_TOKEN_RE.search(resp.text)
+    if not token:
+        raise SearxEngineAPIException("failed to find search token")
+    token = token.group(1)
+
+    cookies = dict(resp.cookies)
+    CACHE.set("token", (token, cookies))
+    return token, cookies
+
+
 def request(query: str, params: "OnlineParams") -> None:
+    search_token, cookies = _get_search_token()
+    params["cookies"] = cookies
+
     args = {
         "q": query,
         "search_type": resulthunter_categ,
         "offset": params["pageno"] - 1,
-        "search_source": "other",
+        "search_source": "header",
+        "st": search_token,
     }
 
     # uses Brave's engine traits
