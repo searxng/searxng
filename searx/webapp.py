@@ -652,7 +652,7 @@ def search():
         output_format = 'html'
 
     if output_format not in settings['search']['formats']:
-        flask.abort(403)
+        return index_error(output_format, 'format not supported'), 400
 
     # check if there is query (not None and not an empty string)
     if not sxng_request.form.get('q'):

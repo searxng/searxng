@@ -3,7 +3,7 @@
 
 import json
 import babel
-from mock import Mock
+from mock import Mock, patch
 
 import searx.webapp
 import searx.search
@@ -112,6 +112,12 @@ class ViewsTestCase(SearxTestCase):  # pylint: disable=too-many-public-methods
     def test_search_empty_rss(self):
         result = self.client.post('/search', data={'q': '', 'format': 'rss'})
         self.assertEqual(result.status_code, 400)
+
+    def test_search_undeclared_format(self):
+        with patch.dict(searx.webapp.settings['search'], {'formats': ['html']}):
+            result = self.client.post('/search', data={'q': 'test', 'format': 'json'})
+        self.assertEqual(result.status_code, 400)
+        self.assertEqual(json.loads(result.data.decode())['error'], 'format not supported')
 
     def test_search_html(self):
         result = self.client.post('/search', data={'q': 'test'})
