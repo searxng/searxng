@@ -4,7 +4,8 @@
 import json
 import typing as t
 
-from searx.exceptions import SearxEngineAPIException
+from searx.exceptions import SearxEngineAPIException, SearxEngineTooManyRequestsException
+from searx.network import raise_for_httperror
 from searx.result_types import EngineResults
 
 if t.TYPE_CHECKING:
@@ -54,8 +55,15 @@ def request(query: str, params: "OnlineParams"):
         "source": "",
     }
 
+    params["raise_for_httperror"] = False
+
 
 def response(resp: "SXNG_Response") -> EngineResults:
+    if resp.status_code in (400, 429):
+        raise SearxEngineTooManyRequestsException()
+
+    raise_for_httperror(resp)
+
     res = EngineResults()
 
     # response is a Server-Side Events (SSE) stream
