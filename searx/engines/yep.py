@@ -48,6 +48,7 @@ def request(query: str, params: "OnlineParams") -> None:
         {
             "Referer": f"{web_base_url}/",
             "Origin": web_base_url,
+            "x-csrf-protection": "1",
         }
     )
 
