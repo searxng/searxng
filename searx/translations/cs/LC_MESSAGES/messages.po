@@ -25,20 +25,21 @@
 # radekjuthner <radekjuthner@noreply.codeberg.org>, 2025.
 msgid ""
 msgstr ""
-"Project-Id-Version:  searx\n"
+"Project-Id-Version: searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-10-04 05:47+0000\n"
-"PO-Revision-Date: 2026-09-22 13:25+0000\n"
+"POT-Creation-Date: 2026-10-09 19:03+0000\n"
+"PO-Revision-Date: 2026-10-10 22:27+0000\n"
 "Last-Translator: Fjuro <fjuro@noreply.codeberg.org>\n"
 "Language: cs\n"
-"Language-Team: Czech "
-"<https://translate.codeberg.org/projects/searxng/searxng/cs/>\n"
-"Plural-Forms: nplurals=4; plural=(n == 1 && n % 1 == 0) ? 0 : (n >= 2 && "
-"n <= 4 && n % 1 == 0) ? 1: (n % 1 != 0 ) ? 2 : 3;\n"
+"Language-Team: Czech <https://translate.codeberg.org/projects/searxng/"
+"searxng/cs/>\n"
+"Plural-Forms: nplurals=4; plural=(n == 1 && n % 1 == 0) ? 0 : (n >= 2 && n "
+"<= 4 && n % 1 == 0) ? 1: (n % 1 != 0 ) ? 2 : 3;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.18.0\n"
+"X-Generator: Weblate 2026.10.1\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
 #: searx/searxng.msg
@@ -594,15 +595,107 @@ msgstr "zdroj"
 msgid "Error loading the next page"
 msgstr "Chyba při načítání další stránky"
 
-#: searx/webapp.py:478 searx/webapp.py:878
+#: searx/webapp.py:332
+msgid "close"
+msgstr "zavřít"
+
+#: searx/webapp.py:333
+msgid "How to navigate SearXNG with hotkeys"
+msgstr "Jak se pohybovat v SearXNG pomocí klávesových zkratek"
+
+#: searx/webapp.py:334
+msgid "Control"
+msgstr "Ovládání"
+
+#: searx/webapp.py:335
+msgid "Results"
+msgstr "Výsledky"
+
+#: searx/webapp.py:336
+msgid "Navigation"
+msgstr "Navigace"
+
+#: searx/webapp.py:337
+msgid "Other"
+msgstr "Ostatní"
+
+#: searx/webapp.py:338
+msgid "remove focus from the focused input"
+msgstr "odebrat zaměření ze zaměřeného vstupu"
+
+#: searx/webapp.py:339
+msgid "copy url of the selected result to the clipboard"
+msgstr "zkopírovat adresu zvoleného výsledku do schránky"
+
+#: searx/webapp.py:340
+msgid "toggle help window"
+msgstr "přepnout okno nápovědy"
+
+#: searx/webapp.py:341
+msgid "focus on the search input"
+msgstr "zaměřit na vyhledávací pole"
+
+#: searx/webapp.py:342
+msgid "go to next page"
+msgstr "přejít na další stránku"
+
+#: searx/webapp.py:343
+msgid "open search result"
+msgstr "otevřít výsledek vyhledávání"
+
+#: searx/webapp.py:344
+msgid "go to previous page"
+msgstr "přejít na předchozí stránku"
+
+#: searx/webapp.py:345
+msgid "reload page from the server"
+msgstr "znovu načíst stránku ze serveru"
+
+#: searx/webapp.py:346
+msgid "open the result in a new tab"
+msgstr "otevřít výsledek v novém panelu"
+
+#: searx/webapp.py:347
+msgid "select previous search result"
+msgstr "zvolit předchozí výsledek vyhledávání"
+
+#: searx/webapp.py:348
+msgid "select next search result"
+msgstr "zvolit další výsledek vyhledávání"
+
+#: searx/webapp.py:349
+msgid "scroll one page up"
+msgstr "posunout o stránku nahoru"
+
+#: searx/webapp.py:350
+msgid "scroll half a page down"
+msgstr "posunout o půl stránky dolů"
+
+#: searx/webapp.py:351
+msgid "scroll one page down"
+msgstr "posunout o stránku dolů"
+
+#: searx/webapp.py:352
+msgid "scroll to the top of the page"
+msgstr "posunout na vršek stránky"
+
+#: searx/webapp.py:353
+msgid "scroll half a page up"
+msgstr "posunout o půl stránky nahoru"
+
+#: searx/webapp.py:354
+msgid "scroll to the bottom of the page"
+msgstr "posunout na spodek stránky"
+
+#: searx/webapp.py:502 searx/webapp.py:902
 msgid "Invalid settings, please edit your preferences"
 msgstr "Neplatné nastavení, upravte své předvolby"
 
-#: searx/webapp.py:494
+#: searx/webapp.py:518
 msgid "Invalid settings"
 msgstr "Neplatné nastavení"
 
-#: searx/webapp.py:570 searx/webapp.py:660
+#: searx/webapp.py:594 searx/webapp.py:684
 msgid "search error"
 msgstr "chyba vyhledávání"
 
@@ -1438,7 +1531,7 @@ msgstr "Hash předvoleb"
 
 #: searx/templates/simple/preferences/doi_resolver.html:2
 msgid "DOI Resolver"
-msgstr ""
+msgstr "Resolver DOI"
 
 #: searx/templates/simple/preferences/engines.html:9
 msgid ""
@@ -2441,4 +2534,3 @@ msgstr "skrýt video"
 
 #~ msgid "Select service used by DOI rewrite"
 #~ msgstr "Výběr služby použité při přepisu DOI"
-
