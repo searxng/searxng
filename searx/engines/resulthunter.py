@@ -50,7 +50,7 @@ CACHE: EngineCache
 _SEARCH_TOKEN_RE = re.compile(r"window.__rhSearchToken\s*=\s*'(.*)'")
 
 
-def setup(engine_settings: dict[str, str]) -> bool | None:
+def setup(_: dict[str, str]) -> bool | None:
     global CACHE  # pylint: disable=global-statement
     CACHE = EngineCache("resulthunter")
 
