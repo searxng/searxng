@@ -48,8 +48,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-10-04 05:47+0000\n"
-"PO-Revision-Date: 2026-08-21 20:54+0000\n"
+"POT-Creation-Date: 2026-10-09 19:03+0000\n"
+"PO-Revision-Date: 2026-10-09 14:20+0000\n"
 "Last-Translator: return42 <return42@noreply.codeberg.org>\n"
 "Language: it\n"
 "Language-Team: Italian "
@@ -78,7 +78,7 @@ msgstr "applicazioni"
 #. CATEGORY_NAMES['BLOGS']
 #: searx/searxng.msg
 msgid "blogs"
-msgstr ""
+msgstr "blog"
 
 #. CATEGORY_NAMES['DICTIONARIES']
 #: searx/searxng.msg
@@ -98,7 +98,7 @@ msgstr "generale"
 #. CATEGORY_NAMES['ICONS']
 #: searx/searxng.msg
 msgid "icons"
-msgstr ""
+msgstr "icone"
 
 #. CATEGORY_NAMES['IMAGES']
 #: searx/searxng.msg
@@ -123,7 +123,7 @@ msgstr "mappa"
 #. CATEGORY_NAMES['MOVIES']
 #: searx/searxng.msg
 msgid "movies"
-msgstr ""
+msgstr "film"
 
 #. CATEGORY_NAMES['MUSIC']
 #: searx/searxng.msg
@@ -183,12 +183,12 @@ msgstr "wiki del software"
 #. CATEGORY_NAMES['STOCK_IMAGES']
 #: searx/searxng.msg
 msgid "stock images"
-msgstr ""
+msgstr "immagini di repertorio"
 
 #. CATEGORY_NAMES['TRANSLATE']
 #: searx/searxng.msg
 msgid "translate"
-msgstr ""
+msgstr "traduci"
 
 #. CATEGORY_NAMES['TV']
 #: searx/searxng.msg
@@ -203,7 +203,7 @@ msgstr "video"
 #. CATEGORY_NAMES['WEATHER']
 #: searx/searxng.msg
 msgid "weather"
-msgstr ""
+msgstr "meteo"
 
 #. CATEGORY_NAMES['WEB']
 #: searx/searxng.msg
@@ -614,15 +614,107 @@ msgstr "Sorgente"
 msgid "Error loading the next page"
 msgstr "Errore di caricamento della pagina successiva"
 
-#: searx/webapp.py:478 searx/webapp.py:878
+#: searx/webapp.py:332
+msgid "close"
+msgstr ""
+
+#: searx/webapp.py:333
+msgid "How to navigate SearXNG with hotkeys"
+msgstr ""
+
+#: searx/webapp.py:334
+msgid "Control"
+msgstr ""
+
+#: searx/webapp.py:335
+msgid "Results"
+msgstr ""
+
+#: searx/webapp.py:336
+msgid "Navigation"
+msgstr ""
+
+#: searx/webapp.py:337
+msgid "Other"
+msgstr ""
+
+#: searx/webapp.py:338
+msgid "remove focus from the focused input"
+msgstr ""
+
+#: searx/webapp.py:339
+msgid "copy url of the selected result to the clipboard"
+msgstr ""
+
+#: searx/webapp.py:340
+msgid "toggle help window"
+msgstr ""
+
+#: searx/webapp.py:341
+msgid "focus on the search input"
+msgstr ""
+
+#: searx/webapp.py:342
+msgid "go to next page"
+msgstr ""
+
+#: searx/webapp.py:343
+msgid "open search result"
+msgstr ""
+
+#: searx/webapp.py:344
+msgid "go to previous page"
+msgstr ""
+
+#: searx/webapp.py:345
+msgid "reload page from the server"
+msgstr ""
+
+#: searx/webapp.py:346
+msgid "open the result in a new tab"
+msgstr ""
+
+#: searx/webapp.py:347
+msgid "select previous search result"
+msgstr ""
+
+#: searx/webapp.py:348
+msgid "select next search result"
+msgstr ""
+
+#: searx/webapp.py:349
+msgid "scroll one page up"
+msgstr ""
+
+#: searx/webapp.py:350
+msgid "scroll half a page down"
+msgstr ""
+
+#: searx/webapp.py:351
+msgid "scroll one page down"
+msgstr ""
+
+#: searx/webapp.py:352
+msgid "scroll to the top of the page"
+msgstr ""
+
+#: searx/webapp.py:353
+msgid "scroll half a page up"
+msgstr ""
+
+#: searx/webapp.py:354
+msgid "scroll to the bottom of the page"
+msgstr ""
+
+#: searx/webapp.py:502 searx/webapp.py:902
 msgid "Invalid settings, please edit your preferences"
 msgstr "Impostazioni non valide, modifica le tue preferenze"
 
-#: searx/webapp.py:494
+#: searx/webapp.py:518
 msgid "Invalid settings"
 msgstr "Impostazioni non valide"
 
-#: searx/webapp.py:570 searx/webapp.py:660
+#: searx/webapp.py:594 searx/webapp.py:684
 msgid "search error"
 msgstr "errore di ricerca"
 
