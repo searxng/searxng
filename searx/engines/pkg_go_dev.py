@@ -7,7 +7,6 @@ from dateutil import parser
 
 import babel
 import flask_babel
-from lxml import html
 from searx.utils import eval_xpath, eval_xpath_list, extract_text
 
 about = {
@@ -51,7 +50,7 @@ def request(query, params):
 def response(resp):
     results = []
 
-    doc = html.fromstring(resp.text)
+    doc = resp.html()
 
     for result in eval_xpath_list(doc, results_xpath):
         publishedDate = extract_text(eval_xpath(result, updated_xpath))

@@ -1,14 +1,26 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 """Mojeek (general, images, news)"""
 
+import base64
+import json
+import random
+import typing as t
 from datetime import datetime
 from urllib.parse import urlencode
 
+import curl_cffi
 from dateutil.relativedelta import relativedelta
-from lxml import html
 
+from searx.exceptions import SearxEngineAPIException
+from searx.enginelib import EngineCache
+from searx.network import get, post
+from searx.result_types import EngineResults
 from searx.enginelib.traits import EngineTraits
-from searx.utils import eval_xpath, eval_xpath_list, extract_text
+from searx.utils import eval_xpath, eval_xpath_list, extract_text, solve_altcha
+
+if t.TYPE_CHECKING:
+    from searx.extended_types import SXNG_Response
+    from searx.search.processors import OnlineParams
 
 about = {
     "website": "https://mojeek.com",
@@ -20,6 +32,7 @@ about = {
 }
 paging = True  # paging is only supported for general search
 safesearch = True
+language_support = True
 time_range_support = True  # time range search is supported for general and news
 max_page = 10
 
@@ -49,18 +62,47 @@ region_param = "arc"
 
 _delta_kwargs = {"day": "days", "week": "weeks", "month": "months", "year": "years"}
 
+CACHE: EngineCache
+"""Cache for storing the auth cookie after solving the CAPTCHA."""
 
-def init(_):
+
+def setup(engine_settings: dict[str, t.Any]) -> bool | None:
     if search_type not in ("", "images", "news"):
         raise ValueError(f"Invalid search type {search_type}")
 
+    global CACHE  # pylint: disable=global-statement
+    CACHE = EngineCache(engine_settings["engine"])
 
-def request(query, params):
+
+def _captcha_token() -> str:
+    if token := CACHE.get("chllg"):
+        return token
+
+    challenge = get(f"{base_url}/captcha/challenge").json()
+
+    solution = solve_altcha(challenge["parameters"])
+    if not solution:
+        raise SearxEngineAPIException("failed to solve CAPTCHA")
+    key, counter = solution
+
+    solution = {
+        "challenge": challenge,
+        "solution": {"counter": counter, "derivedKey": key, "time": random.randint(100, 200)},
+    }
+    solution_encoded = base64.b64encode(json.dumps(solution).encode())
+    mp = curl_cffi.CurlMime()
+    mp.addpart(name="altcha", data=solution_encoded)
+    resp = post(f"{base_url}/captcha/verify", multipart=mp)
+
+    token = resp.cookies["chllg"]
+    CACHE.set("chllg", token)
+    return token
+
+
+def request(query: str, params: "OnlineParams"):
     args = {
         "q": query,
         "safe": min(params["safesearch"], 1),
-        language_param: traits.get_language(params["searxng_locale"], traits.custom["language_all"]),
-        region_param: traits.get_region(params["searxng_locale"], traits.custom["region_all"]),
     }
 
     if search_type:
@@ -76,62 +118,65 @@ def request(query, params):
         logger.debug(args["since"])
 
     params["url"] = f"{base_url}/search?{urlencode(args)}"
+    params["cookies"] = {
+        language_param: traits.get_language(params["searxng_locale"], traits.custom["language_all"]),
+        region_param: traits.get_region(params["searxng_locale"], traits.custom["region_all"]),
+        "chllg": _captcha_token(),
+    }
 
-    return params
 
-
-def _general_results(dom):
-    results = []
+def _general_results(dom) -> EngineResults:
+    res = EngineResults()
 
     for result in eval_xpath_list(dom, results_xpath):
-        results.append(
-            {
-                "url": extract_text(eval_xpath(result, url_xpath)),
-                "title": extract_text(eval_xpath(result, title_xpath)),
-                "content": extract_text(eval_xpath(result, content_xpath)),
-            }
+        res.add(
+            res.types.MainResult(
+                url=extract_text(eval_xpath(result, url_xpath)),
+                title=extract_text(eval_xpath(result, title_xpath)) or "",
+                content=extract_text(eval_xpath(result, content_xpath)) or "",
+            )
         )
 
     for suggestion in eval_xpath(dom, suggestion_xpath):
-        results.append({"suggestion": extract_text(suggestion)})
+        res.add(res.types.LegacyResult(suggestion=extract_text(suggestion)))
 
-    return results
+    return res
 
 
-def _image_results(dom):
-    results = []
+def _image_results(dom) -> EngineResults:
+    res = EngineResults()
 
     for result in eval_xpath_list(dom, image_results_xpath):
-        results.append(
-            {
-                "template": "images.html",
-                "url": extract_text(eval_xpath(result, image_url_xpath)),
-                "title": extract_text(eval_xpath(result, image_title_xpath)),
-                "img_src": base_url + extract_text(eval_xpath(result, image_img_src_xpath)),  # type: ignore
-                "content": "",
-            }
+        res.add(
+            res.types.Image(
+                template="images.html",
+                url=extract_text(eval_xpath(result, image_url_xpath)),
+                title=extract_text(eval_xpath(result, image_title_xpath)) or "",
+                img_src=base_url + extract_text(eval_xpath(result, image_img_src_xpath)),  # type: ignore
+                content="",
+            )
         )
 
-    return results
+    return res
 
 
-def _news_results(dom):
-    results = []
+def _news_results(dom) -> EngineResults:
+    res = EngineResults()
 
     for result in eval_xpath_list(dom, news_results_xpath):
-        results.append(
-            {
-                "url": extract_text(eval_xpath(result, news_url_xpath)),
-                "title": extract_text(eval_xpath(result, news_title_xpath)),
-                "content": extract_text(eval_xpath(result, news_content_xpath)),
-            }
+        res.add(
+            res.types.MainResult(
+                url=extract_text(eval_xpath(result, news_url_xpath)),
+                title=extract_text(eval_xpath(result, news_title_xpath)) or "",
+                content=extract_text(eval_xpath(result, news_content_xpath)) or "",
+            )
         )
 
-    return results
+    return res
 
 
-def response(resp):
-    dom = html.fromstring(resp.text)
+def response(resp: "SXNG_Response") -> EngineResults:
+    dom = resp.html()
 
     if search_type == "":
         return _general_results(dom)
@@ -152,7 +197,6 @@ def fetch_traits(engine_traits: EngineTraits):
     from babel import Locale, UnknownLocaleError
 
     from searx.locales import get_official_locales, region_tag
-    from searx.network import get  # see https://github.com/searxng/searxng/issues/762
 
     resp = get(
         base_url + "/preferences",
@@ -162,7 +206,7 @@ def fetch_traits(engine_traits: EngineTraits):
     if not resp.ok:
         raise RuntimeError("Response from Mojeek is not OK.")
 
-    dom = html.fromstring(resp.text)
+    dom = resp.html()
 
     languages = eval_xpath_list(dom, f'//select[@name="{language_param}"]/option/@value')
 

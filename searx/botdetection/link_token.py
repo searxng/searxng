@@ -151,6 +151,6 @@ def get_token() -> str:
     if token:
         token = token.decode('UTF-8')  # type: ignore
     else:
-        token = ''.join(random.choice(string.ascii_lowercase + string.digits) for _ in range(16))
+        token = ''.join(random.choices(string.ascii_lowercase + string.digits, k=16))
         valkey_client.set(TOKEN_KEY, token, ex=TOKEN_LIVE_TIME)
     return token

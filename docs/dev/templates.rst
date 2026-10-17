@@ -14,11 +14,6 @@ type of a result is defined by the :py:obj:`result_type.Result.template`.  To
 set another media-type as :ref:`template default`, the field ``template``
 in the result item must be set to the desired type.
 
-.. contents:: Contents
-   :depth: 2
-   :local:
-   :backlinks: entry
-
 
 .. _result template macros:
 
@@ -132,76 +127,6 @@ iframe_src : :py:class:`str`
 
 audio_src : uri,
   URL of an embedded ``<audio controls>``.
-
-
-.. _template images:
-
-``images.html``
----------------
-
-The images are displayed as small thumbnails in the main results list.
-
-title :  :py:class:`str`
-  Title of the image.
-
-thumbnail_src : :py:class:`str`
-  URL of a preview of the image.
-
-resolution :py:class:`str`
-  The resolution of the image (e.g. ``1920 x 1080`` pixel)
-
-
-Image labels
-~~~~~~~~~~~~
-
-Clicking on the preview opens a gallery view in which all further metadata for
-the image is displayed.  Addition fields used in the :origin:`images.html
-<searx/templates/simple/result_templates/images.html>`:
-
-img_src : :py:class:`str`
-  URL of the full size image.
-
-content:  :py:class:`str`
-  Description of the image.
-
-author:  :py:class:`str`
-  Name of the author of the image.
-
-img_format : :py:class:`str`
-  The format of the image (e.g. ``png``).
-
-source : :py:class:`str`
-  Source of the image.
-
-filesize: :py:class:`str`
-  Size of bytes in :py:obj:`human readable <searx.humanize_bytes>` notation
-  (e.g. ``MB`` for 1024 \* 1024 Bytes filesize).
-
-url : :py:class:`str`
-  URL of the page from where the images comes from (source).
-
-
-.. _template videos:
-
-``videos.html``
----------------
-
-Displays result fields from:
-
-- :ref:`macro result_header` and
-- :ref:`macro result_sub_header`
-
-Additional fields used in the :origin:`videos.html
-<searx/templates/simple/result_templates/videos.html>`:
-
-iframe_src : :py:class:`str`
-  URL of an embedded ``<iframe>`` / the frame is collapsible.
-
-  The videos are displayed as small thumbnails in the main results list, there
-  is an additional button to collaps/open the embeded video.
-
-content :  :py:class:`str`
-  Description of the code fragment.
 
 
 .. _template torrent:

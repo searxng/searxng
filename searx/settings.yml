@@ -41,13 +41,13 @@ search:
   # Filter results. 0: None, 1: Moderate, 2: Strict
   safe_search: 0
   # Existing autocomplete backends: "360search", "baidu", "bing", "brave", "dbpedia", "duckduckgo", "google",
-  # "yandex", "mwmbl", "naver", "seznam", "sogou", "startpage", "swisscows", "quark", "qwant", "wikipedia" -
-  # leave blank to turn it off by default.
-  autocomplete: ""
+  # "yandex", "privacywall", "mwmbl", "naver", "seznam", "sogou", "startpage", "swisscows", "quark", "qwant",
+  # "wikipedia" - set blank to turn it off by default.
+  autocomplete: "duckduckgo"
   # minimun characters to type before autocompleter starts
   autocomplete_min: 4
   # backend for the favicon near URL in search results.
-  # Available resolvers: "allesedv", "duckduckgo", "google", "yandex" - leave blank to turn it off by default.
+  # Available resolvers: "allesedv", "duckduckgo", "google", "kagi", "yandex" - leave blank to turn it off by default.
   favicon_resolver: ""
   # Default search language - leave blank to detect from browser information or
   # use codes from 'languages.py'
@@ -107,11 +107,10 @@ server:
   image_proxy: false
   # 1.0 and 1.1 are supported
   http_protocol_version: "1.0"
-  # POST queries are "more secure!" but are also the source of hard-to-locate
-  # annoyances, which is why GET may be better for end users and their browsers.
+  # POST keeps search queries out of the browsers history, but causes UX issues.
   # see https://github.com/searxng/searxng/pull/3619
   # Is overwritten by ${SEARXNG_METHOD}
-  method: "POST"
+  method: "GET"
   default_http_headers:
     X-Content-Type-Options: nosniff
     X-Download-Options: noopen
@@ -154,14 +153,13 @@ ui:
   # URL formatting: pretty, full or host
   url_formatting: pretty
 
-# Lock arbitrary settings on the preferences page.
-#
-# preferences:
-#   lock:
+preferences:
+  # Lock arbitrary settings on the preferences page.
+  lock: []
 #     - categories
 #     - language
 #     - autocomplete
-#     - favicon
+#     - favicon_resolver
 #     - safesearch
 #     - method
 #     - doi_resolver
@@ -185,20 +183,13 @@ outgoing:
   useragent_suffix: ""
   # The maximum number of concurrent connections that may be established.
   pool_connections: 100
-  # Allow the connection pool to maintain keep-alive connections below this
-  # point.
-  pool_maxsize: 20
-  # See https://www.python-httpx.org/http2/
+  # Enables the use of HTTP2
   enable_http2: true
   # uncomment below section if you want to use a custom server certificate
-  # see https://www.python-httpx.org/advanced/#changing-the-verification-defaults
-  # and https://www.python-httpx.org/compatibility/#ssl-configuration
+  # see https://curl-cffi.readthedocs.io/en/latest/quick_start.html
   #  verify: ~/.mitmproxy/mitmproxy-ca-cert.cer
   #
-  # uncomment below section if you want to use a proxyq see: SOCKS proxies
-  #   https://2.python-requests.org/en/latest/user/advanced/#proxies
-  # are also supported: see
-  #   https://2.python-requests.org/en/latest/user/advanced/#socks
+  # uncomment below section if you want to use a proxy
   #
   #  proxies:
   #    all://:
@@ -289,6 +280,7 @@ plugins:
 categories_as_tabs:
   general:
   images:
+  # stock images:
   videos:
   news:
   map:
@@ -302,7 +294,7 @@ engines:
   - name: 360search
     engine: 360search
     shortcut: 360so
-    timeout: 10.0
+    timeout: 20.0
     disabled: true
 
   - name: 360search videos
@@ -310,44 +302,37 @@ engines:
     shortcut: 360sov
     disabled: true
 
+  - name: 500px
+    engine: 500px
+    shortcut: "500"
+    timeout: 5
+
   - name: 9gag
     engine: 9gag
     shortcut: 9g
     disabled: true
 
+  - name: abcnyheter
+    engine: xpath
+    categories: general
+    paging: true
+    search_url: https://startsiden.abcnyheter.no/sok/?q={query}&page={pageno}
+    shortcut: abc
+    disabled: true
+    results_xpath: //ul[contains(@class, "results__list")]/li[contains(@class, "result")]
+    url_xpath: ./a/@href
+    title_xpath: ./a/h3
+    content_xpath: ./div
+    language: "no"
+    about:
+      website: https://abcnyheter.no
+      use_official_api: false
+      require_api_key: false
+      results: HTML
+
   - name: acfun
     engine: acfun
     shortcut: acf
-    disabled: true
-
-  - name: adobe stock
-    engine: adobe_stock
-    shortcut: asi
-    categories: ["images"]
-    # https://docs.searxng.org/dev/engines/online/adobe_stock.html
-    adobe_order: relevance
-    adobe_content_types: ["photo", "illustration", "zip_vector", "template", "3d", "image"]
-    timeout: 6
-    disabled: true
-
-  - name: adobe stock video
-    engine: adobe_stock
-    shortcut: asv
-    network: adobe stock
-    categories: ["videos"]
-    adobe_order: relevance
-    adobe_content_types: ["video"]
-    timeout: 6
-    disabled: true
-
-  - name: adobe stock audio
-    engine: adobe_stock
-    shortcut: asa
-    network: adobe stock
-    categories: ["music"]
-    adobe_order: relevance
-    adobe_content_types: ["audio"]
-    timeout: 6
     disabled: true
 
   - name: astrophysics data system
@@ -361,6 +346,28 @@ engines:
     engine: alpinelinux
     disabled: true
     shortcut: alp
+
+  - name: andisearch
+    engine: andisearch
+    shortcut: andi
+    disabled: true
+    timeout: 10
+
+  - name: andisearch news
+    engine: andisearch
+    andisearch_categ: news
+    categories: news
+    shortcut: andin
+    disabled: true
+    timeout: 10
+
+  - name: andisearch images
+    engine: andisearch
+    andisearch_categ: images
+    categories: images
+    shortcut: andii
+    disabled: true
+    timeout: 10
 
   - name: annas archive
     engine: annas_archive
@@ -420,27 +427,12 @@ engines:
     timeout: 6.0
     shortcut: conda
     disabled: true
-
-  - name: aol
-    engine: aol
-    search_type: search
-    categories: [general]
-    shortcut: aol
-    disabled: true
-
-  - name: aol images
-    engine: aol
-    search_type: image
-    categories: [images]
-    shortcut: aoli
-    disabled: true
-
-  - name: aol videos
-    engine: aol
-    search_type: video
-    categories: [videos]
-    shortcut: aolv
-    disabled: true
+    about:
+      website: https://anaconda.org/search
+      wikidata_id: Q18209310
+      official_api_documentation: https://api.anaconda.org/search
+      use_official_api: false
+      results: HTML
 
   - name: arch linux wiki
     engine: archlinux
@@ -458,6 +450,7 @@ engines:
     engine: artic
     shortcut: arc
     timeout: 4.0
+    disabled: true
 
   - name: artstation
     engine: artstation
@@ -469,10 +462,40 @@ engines:
     engine: arxiv
     shortcut: arx
 
-  - name: ask
-    engine: ask
-    shortcut: ask
+  - name: avalw
+    engine: json_engine
+    shortcut: av
+    categories: general
+    paging: true
+    search_url: https://avalw.org/api/search?q={query}&page={pageno}&limit=10&tbm=all
+    results_query: results
+    url_query: url
+    title_query: title
+    content_query: snippet
+    thumbnail: image_url
     disabled: true
+    inactive: true
+    about:
+      website: https://avalw.com
+      description: "Search engine from the Romanian news company AVALW S.R.L."
+      results: JSON
+
+  - name: ayo
+    engine: xpath
+    categories: general
+    shortcut: ayo
+    search_url: https://search.ayo.de/search?q={query}
+    results_xpath: //div[contains(@class, 'search-result')]/div
+    url_xpath: .//a/@href
+    title_xpath: .//h3
+    content_xpath: .//p
+    suggestion_xpath: .//a[starts-with(@href, "https://search.ayo.de")]
+    disabled: true
+    about:
+      website: https://search.ayo.de
+      use_official_api: false
+      require_api_key: false
+      results: HTML
 
   - name: azure
     engine: azure
@@ -530,18 +553,22 @@ engines:
     engine: bing
     shortcut: bi
     disabled: true
+    # base_url: https://cn.bing.com  # for instances hosted in China
 
   - name: bing images
     engine: bing_images
     shortcut: bii
+    # base_url: https://cn.bing.com  # for instances hosted in China
 
   - name: bing news
     engine: bing_news
     shortcut: bin
+    # base_url: https://cn.bing.com  # for instances hosted in China
 
   - name: bing videos
     engine: bing_videos
     shortcut: biv
+    # base_url: https://cn.bing.com  # for instances hosted in China
 
   - name: bitchute
     engine: bitchute
@@ -586,6 +613,7 @@ engines:
     engine: openverse
     categories: images
     shortcut: opv
+    disabled: true
 
   - name: media.ccc.de
     engine: ccc_media
@@ -599,6 +627,12 @@ engines:
     engine: cachy_os
     shortcut: cos
     disabled: true
+
+  # - name: chatnoir
+  #   engine: chatnoir
+  #   shortcut: cha
+  #   search_index: cw22
+  #   disabled: true
 
   - name: chefkoch
     engine: chefkoch
@@ -615,28 +649,29 @@ engines:
     engine: chinaso
     shortcut: chinaso
     categories: [news]
-    chinaso_category: news
     chinaso_news_source: all
     disabled: true
     inactive: true
 
-  - name: chinaso images
-    engine: chinaso
-    network: chinaso news
-    shortcut: chinasoi
-    categories: [images]
-    chinaso_category: images
+  - name: cl0q
+    engine: json_engine
+    shortcut: cl
+    categories: general
+    paging: true
+    first_page_num: 0
+    page_size: 20
+    search_url: https://cl0q.com/search?q={query}&limit=20&offset={pageno}
+    results_query: results
+    url_query: domain
+    url_prefix: https://
+    title_query: title
+    content_query: description
     disabled: true
     inactive: true
-
-  - name: chinaso videos
-    engine: chinaso
-    network: chinaso news
-    shortcut: chinasov
-    categories: [videos]
-    chinaso_category: videos
-    disabled: true
-    inactive: true
+    about:
+      website: https://cl0q.com
+      description: "Open source network for searching domains"
+      results: JSON
 
   - name: cloudflareai
     engine: cloudflareai
@@ -688,22 +723,6 @@ engines:
     engine: yep
     shortcut: yep
     categories: general
-    search_type: web
-    timeout: 15
-    disabled: true
-
-  - name: yep images
-    engine: yep
-    shortcut: yepi
-    categories: images
-    search_type: images
-    disabled: true
-
-  - name: yep news
-    engine: yep
-    shortcut: yepn
-    categories: news
-    search_type: news
     disabled: true
 
   - name: currency
@@ -724,11 +743,13 @@ engines:
     engine: deviantart
     shortcut: da
     timeout: 3.0
+    inactive: true
 
   - name: devicons
     engine: devicons
     shortcut: di
     timeout: 3.0
+    disabled: true
 
   - name: ddg definitions
     engine: duckduckgo_definitions
@@ -765,6 +786,10 @@ engines:
       use_official_api: true
       require_api_key: false
       results: JSON
+
+  - name: europepmc
+    engine: europepmc
+    shortcut: epmc
 
   - name: erowid
     engine: xpath
@@ -810,9 +835,44 @@ engines:
     display_type: ["infobox"]
     categories: [general]
 
+  - name: dogpile
+    engine: dogpile
+    shortcut: dog
+    dogpile_categ: search
+    categories: general
+    inactive: true
+
+  - name: dogpile images
+    engine: dogpile
+    shortcut: dogi
+    dogpile_categ: images
+    categories: images
+    inactive: true
+
+  - name: dogpile videos
+    engine: dogpile
+    shortcut: dogv
+    dogpile_categ: videos
+    categories: videos
+    inactive: true
+
+  - name: dogpile news
+    engine: dogpile
+    shortcut: dogn
+    dogpile_categ: news
+    categories: news
+    inactive: true
+
+  # duckduckgo uses html.duckduckgo.com,
+  # duckduckgo web uses duckduckgo.com
   - name: duckduckgo
     engine: duckduckgo
     shortcut: ddg
+
+  - name: duckduckgo web
+    engine: duckduckgo_web
+    shortcut: ddgw
+    disabled: true
 
   - name: duckduckgo images
     engine: duckduckgo_extra
@@ -884,11 +944,85 @@ engines:
     engine: www1x
     shortcut: 1x
     timeout: 3.0
+
+  - name: fastbot
+    engine: xpath
+    search_url: https://fastbot.de/search?q={query}
+    results_xpath: //section[contains(@class, 'organic-results')]/div[contains(@class, 'result-item')]
+    url_xpath: (./a/@href)[last()]
+    title_xpath: (./a)[last()]
+    content_xpath: ./div[contains(@class, 'snippet')]
+    suggestion_xpath: //section[contains(@class, 'related-searches')]//a/span[1]
+    shortcut: fa
+    categories: general
     disabled: true
+    about:
+      website: https://fastbot.de
+      official_api_documentation:
+      use_official_api: false
+      require_api_key: false
+      results: HTML
 
   - name: fdroid
     engine: fdroid
     shortcut: fd
+    disabled: true
+
+  - name: findborg
+    engine: findborg
+    shortcut: fi
+    findborg_categ: search
+    categories: general
+    inactive: true
+
+  - name: findborg images
+    engine: findborg
+    shortcut: fii
+    paging: false
+    findborg_categ: images
+    categories: images
+    inactive: true
+
+  - name: findborg videos
+    engine: findborg
+    shortcut: fiv
+    findborg_categ: videos
+    categories: videos
+    inactive: true
+
+  - name: findborg news
+    engine: findborg
+    shortcut: fin
+    findborg_categ: news
+    categories: news
+    inactive: true
+
+  - name: findfiles
+    engine: findfiles
+    findfiles_categ: all
+    categories: files
+    shortcut: fif
+    disabled: true
+
+  - name: findfiles images
+    engine: findfiles
+    findfiles_categ: image
+    categories: images
+    shortcut: fifi
+    disabled: true
+
+  - name: findfiles videos
+    engine: findfiles
+    findfiles_categ: video
+    categories: videos
+    shortcut: fifv
+    disabled: true
+
+  - name: findfiles music
+    engine: findfiles
+    findfiles_categ: audio
+    categories: music
+    shortcut: fifm
     disabled: true
 
   - name: findthatmeme
@@ -896,10 +1030,36 @@ engines:
     shortcut: ftm
     disabled: true
 
+  - name: fireball
+    engine: fireball
+    shortcut: fire
+    categories: general
+    fireball_category: web
+    disabled: true
+
+  - name: fireball news
+    engine: fireball
+    shortcut: firen
+    categories: news
+    fireball_category: news
+    disabled: true
+
+  - name: fireball videos
+    engine: fireball
+    shortcut: firev
+    categories: videos
+    fireball_category: videos
+    disabled: true
+
+  - name: flaticon
+    engine: flaticon
+    shortcut: fli
+    disabled: true
+
   - name: flickr
-    categories: images
     shortcut: fl
     engine: flickr_noapi
+    disabled: true
 
   - name: flickr_api
     # You can use the engine using the official stable API, but you need an API
@@ -966,6 +1126,23 @@ engines:
     timeout: 8.0
     disabled: true
 
+  - name: gabanza
+    engine: xpath
+    categories: general
+    search_url: https://www.gabanza.com/search?query={query}
+    shortcut: gab
+    timeout: 4
+    disabled: true
+    results_xpath: //div[contains(@class, "border-t")]/div/div
+    url_xpath: (.//a/@href)[1]
+    title_xpath: ./a
+    content_xpath: .//p
+    about:
+      website: https://www.gabanza.com
+      use_official_api: false
+      require_api_key: false
+      results: HTML
+
   - name: geizhals
     engine: geizhals
     shortcut: geiz
@@ -983,6 +1160,11 @@ engines:
     api_path: "api.php"
     search_type: text
     timeout: 10
+
+  - name: giphy
+    engine: giphy
+    shortcut: gif
+    disabled: true
 
   - name: gitlab
     engine: gitlab
@@ -1050,10 +1232,12 @@ engines:
   - name: google
     engine: google
     shortcut: go
+    disabled: true
 
   - name: google images
     engine: google_images
     shortcut: goi
+    disabled: true
 
   - name: google news
     engine: google_news
@@ -1063,13 +1247,23 @@ engines:
     engine: google_videos
     shortcut: gov
 
+  - name: google cse
+    engine: google_cse
+    shortcut: goc
+
+  - name: google cse images
+    engine: google_cse
+    categories: [images, web]
+    google_categ: image
+    shortcut: goci
+
   - name: google scholar
     engine: google_scholar
     shortcut: gos
 
   - name: google play apps
     engine: google_play
-    categories: [files, apps]
+    categories: [it, apps]
     shortcut: gpa
     play_categ: apps
     disabled: true
@@ -1149,6 +1343,18 @@ engines:
       require_api_key: false
       results: JSON
 
+  - name: iconify
+    engine: iconify
+    shortcut: ico
+    disabled: true
+
+  - name: iseek
+    engine: iseek
+    shortcut: isk
+    timeout: 4
+    disabled: true
+    inactive: true
+
   - name: il post
     engine: il_post
     shortcut: pst
@@ -1208,36 +1414,88 @@ engines:
     shortcut: iq
     disabled: true
 
+  - name: jina
+    engine: jina
+    shortcut: ji
+    api_key: ""
+    inactive: true
+
+  # - name: kagi
+  #   engine: kagi
+  #   categories: [general, web]
+  #   shortcut: kg
+  #   api_key: ""  # required
+  #   kagi_categ: search
+
+  # - name: kagi.news
+  #   engine: kagi
+  #   categories: [news, web]
+  #   shortcut: kgn
+  #   api_key: ""  # required
+  #   kagi_categ: news
+
+  # - name: kagi.images
+  #   engine: kagi
+  #   categories: [images, web]
+  #   paging: false
+  #   shortcut: kgi
+  #   api_key: ""  # required
+  #   kagi_categ: images
+
+  # - name: kagi.videos
+  #   engine: kagi
+  #   categories: [videos, web]
+  #   shortcut: kgv
+  #   api_key: ""  # required
+  #   kagi_categ: videos
+
+  - name: kavunka demo
+    engine: xpath
+    categories: general
+    paging: true
+    shortcut: kav
+    search_url: https://kavunka.net/search/kavunka-srv.php
+    method: POST
+    request_body: request={query}&np={pageno}
+    headers:
+      Content-Type: application/x-www-form-urlencoded
+    disabled: true
+    inactive: true
+    results_xpath: //div[contains(@class, "issue")]
+    url_xpath: .//h2/a/@href
+    title_xpath: .//h2
+    content_xpath: .//div[contains(@class, "snip")]
+    about:
+      website: https://kavunka.net
+      description: "Demo index of Kavunka, a statistical search engine"
+      results: HTML
+
+  - name: keenable
+    engine: keenable
+    shortcut: keen
+    disabled: true
+    inactive: true
+
+  - name: kozmonavt
+    engine: xpath
+    search_url: https://kozmonavt.su/s?q={query}
+    shortcut: koz
+    disabled: true
+    inactive: true
+    results_xpath: //div[contains(@class, 'list')]/section
+    url_xpath: concat('https://', substring-after(.//a/@href, '?q='))
+    title_xpath: .//a
+    content_xpath: .//div[contains(@class, 'snip')]
+    about:
+      website: https://kozmonavt.su
+      description: "Web site directory with its own index"
+      results: HTML
+
   - name: jisho
     engine: jisho
     shortcut: js
     timeout: 3.0
     disabled: true
-
-  - name: karmasearch
-    engine: karmasearch
-    categories: [general, web]
-    search_type: web
-    shortcut: ka
-
-  - name: karmasearch images
-    engine: karmasearch
-    categories: [images, web]
-    search_type: images
-    shortcut: kai
-    paging: false
-
-  - name: karmasearch videos
-    engine: karmasearch
-    categories: [general, web]
-    search_type: videos
-    shortcut: kav
-
-  - name: karmasearch news
-    engine: karmasearch
-    categories: [news, web]
-    search_type: news
-    shortcut: kan
 
   - name: kickass
     engine: kickass
@@ -1249,6 +1507,22 @@ engines:
       - https://kat.am
     shortcut: kc
     timeout: 4.0
+
+  - name: kukei
+    engine: xpath
+    categories: [general, blogs]
+    search_url: https://kukei.eu/?q={query}
+    shortcut: kuk
+    disabled: true
+    inactive: true
+    results_xpath: //ul/li[contains(@class, "result-item-first-level")]
+    url_xpath: .//a/@href
+    title_xpath: .//h3
+    content_xpath: .//p
+    about:
+      website: https://kukei.eu
+      description: "Curated search for the small web"
+      results: HTML
 
   - name: lemmy communities
     engine: lemmy
@@ -1300,12 +1574,6 @@ engines:
     # https://github.com/searxng/searxng/issues/3610
     inactive: true
 
-  - name: library of congress
-    engine: loc
-    shortcut: loc
-    categories: images
-    disabled: true
-
   - name: libretranslate
     engine: libretranslate
     # https://github.com/LibreTranslate/LibreTranslate?tab=readme-ov-file#mirrors
@@ -1314,6 +1582,25 @@ engines:
     # api_key: ''
     shortcut: lt
     inactive: true
+
+  - name: littlelayer
+    engine: json_engine
+    shortcut: ll
+    categories: [general, blogs]
+    paging: false
+    search_url: https://litterlayer.com/load_results/?q={query}&page={pageno}
+    headers:
+      X-Requested-With: XMLHttpRequest
+    results_query: results
+    url_query: url
+    title_query: title
+    content_query: description
+    disabled: true
+    inactive: true
+    about:
+      website: https://littlelayer.com
+      description: Indie search and bookmarking community
+      results: JSON
 
   - name: lingva
     engine: lingva
@@ -1345,6 +1632,44 @@ engines:
     engine: lucide
     shortcut: luc
     timeout: 3.0
+    disabled: true
+
+  - name: luxxle
+    engine: luxxle
+    categories: general
+    luxxle_categ: search
+    shortcut: lux
+    disabled: true
+    inactive: true
+
+  - name: luxxle images
+    engine: luxxle
+    categories: images
+    luxxle_categ: images
+    shortcut: luxi
+    disabled: true
+    inactive: true
+
+  - name: luxxle videos
+    engine: luxxle
+    categories: videos
+    luxxle_categ: videos
+    shortcut: luxv
+    disabled: true
+    inactive: true
+
+  - name: luxxle news
+    engine: luxxle
+    categories: news
+    luxxle_categ: news
+    shortcut: luxn
+    disabled: true
+    inactive: true
+
+  - name: magnific
+    engine: magnific
+    shortcut: mag
+    disabled: true
 
   - name: marginalia
     engine: marginalia
@@ -1397,7 +1722,6 @@ engines:
     engine: metacpan
     shortcut: cpan
     disabled: true
-    number_of_results: 20
 
   # https://docs.searxng.org/dev/engines/offline/search-indexer-engines.html#module-searx.engines.meilisearch
   # - name: meilisearch
@@ -1447,6 +1771,12 @@ engines:
     # api_url: https://api.mwmbl.org
     shortcut: mwm
     disabled: true
+
+  - name: neocities
+    engine: neocities
+    shortcut: nc
+    disabled: true
+    inactive: true
 
   - name: niconico
     engine: niconico
@@ -1619,6 +1949,10 @@ engines:
     engine: photon
     shortcut: ph
 
+  - name: picjumbo
+    engine: picjumbo
+    shortcut: pj
+
   - name: pinterest
     engine: pinterest
     shortcut: pin
@@ -1658,7 +1992,7 @@ engines:
   - name: pixabay images
     engine: pixabay
     pixabay_type: images
-    categories: images
+    categories: stock images
     shortcut: pixi
     disabled: true
 
@@ -1695,10 +2029,6 @@ engines:
       # image proxy of https://pixiv.perennialte.ch
       # - https://pximg.perennialte.ch
 
-  - name: podcastindex
-    engine: podcastindex
-    shortcut: podcast
-
   # Required dependency: psychopg2
   #  - name: postgresql
   #    engine: postgresql
@@ -1709,39 +2039,9 @@ engines:
   #    query_str: 'SELECT * from my_table WHERE my_column = %(query)s'
   #    shortcut : psql
 
-  - name: presearch
-    engine: presearch
-    search_type: search
-    categories: [general, web]
-    shortcut: ps
-    timeout: 4.0
-    disabled: true
-
-  - name: presearch images
-    engine: presearch
-    network: presearch
-    search_type: images
-    categories: [images, web]
-    timeout: 4.0
-    shortcut: psimg
-    disabled: true
-
-  - name: presearch videos
-    engine: presearch
-    network: presearch
-    search_type: videos
-    categories: [general, web]
-    timeout: 4.0
-    shortcut: psvid
-    disabled: true
-
-  - name: presearch news
-    engine: presearch
-    network: presearch
-    search_type: news
-    categories: [news, web]
-    timeout: 4.0
-    shortcut: psnews
+  - name: podchaser
+    engine: podchaser
+    shortcut: poc
     disabled: true
 
   - name: pub.dev
@@ -1804,6 +2104,7 @@ engines:
     shortcut: qwn
     categories: news
     network: qwant
+    disabled: true
 
   - name: qwant images
     qwant_categ: images
@@ -1811,6 +2112,7 @@ engines:
     shortcut: qwi
     categories: [images, web]
     network: qwant
+    disabled: true
 
   - name: qwant videos
     qwant_categ: videos
@@ -1818,6 +2120,7 @@ engines:
     shortcut: qwv
     categories: [videos, web]
     network: qwant
+    disabled: true
 
   # - name: library
   #   engine: recoll
@@ -1845,11 +2148,26 @@ engines:
     engine: radio_browser
     shortcut: rb
 
-  - name: reddit
-    engine: reddit
-    shortcut: re
-    page_size: 25
+  - name: rawweb
+    engine: json_engine
+    shortcut: rw
+    categories: [general, blogs]
+    paging: true
+    search_url: 'https://api.rawweb.org/api/search?keyword={query}&page={pageno}&lang=*'
+    results_query: data
+    url_query: link
+    title_query: title
+    content_query: content
+    title_html_to_text: true
+    content_html_to_text: true
     disabled: true
+    inactive: true
+    about:
+      website: https://rawweb.org
+      official_api_documentation:
+      use_official_api: false
+      require_api_key: false
+      results: JSON
 
   - name: reuters
     engine: reuters
@@ -1882,7 +2200,7 @@ engines:
   - name: searchmysite
     engine: xpath
     shortcut: sms
-    categories: general
+    categories: [general, blogs]
     paging: true
     search_url: https://searchmysite.net/search/?q={query}&page={pageno}
     results_xpath: //div[contains(@class,'search-result')]
@@ -1893,6 +2211,32 @@ engines:
     about:
       website: https://searchmysite.net
 
+  - name: searchrockit
+    engine: searchrockit
+    categories: general
+    searchrockit_categ: web
+    shortcut: sr
+    disabled: true
+    inactive: true
+
+  - name: searchrockit images
+    engine: searchrockit
+    categories: images
+    searchrockit_categ: images
+    shortcut: sri
+    # took up to 60s when testing
+    timeout: 10
+    disabled: true
+    inactive: true
+
+  - name: searchrockit news
+    engine: searchrockit
+    categories: news
+    searchrockit_categ: news
+    shortcut: srn
+    disabled: true
+    inactive: true
+
   - name: selfhst icons
     engine: selfhst
     shortcut: si
@@ -1901,6 +2245,10 @@ engines:
   - name: sepiasearch
     engine: sepiasearch
     shortcut: sep
+
+  - name: shopify stock
+    engine: shopify_stock
+    shortcut: shs
 
   - name: sogou
     engine: sogou
@@ -1931,6 +2279,10 @@ engines:
     shortcut: st
     api_site: 'stackoverflow'
     categories: [it, q&a]
+
+  - name: stocksnap
+    engine: stocksnap
+    shortcut: sto
 
   - name: askubuntu
     engine: stackexchange
@@ -1965,13 +2317,35 @@ engines:
     base_url: 'https://discourse.pi-hole.net'
     disabled: true
 
-  # - name: searx
-  #   engine: searx_engine
-  #   shortcut: se
-  #   instance_urls :
-  #       - http://127.0.0.1:8888/
-  #       - ...
-  #   disabled: true
+  - name: privacywall
+    engine: privacywall
+    categories: general
+    privacywall_category: general
+    paging: false  # only images and videos support pagination
+    shortcut: pw
+    disabled: true
+
+  - name: privacywall images
+    engine: privacywall
+    categories: images
+    privacywall_category: images
+    shortcut: pwi
+    disabled: true
+
+  - name: privacywall videos
+    engine: privacywall
+    categories: videos
+    privacywall_category: videos
+    shortcut: pwv
+    disabled: true
+
+  - name: seekninja
+    engine: seekninja
+    shortcut: sen
+    # very slow due to its server-side events architecture
+    timeout: 10
+    disabled: true
+    inactive: true
 
   - name: semantic scholar
     engine: semantic_scholar
@@ -2008,18 +2382,21 @@ engines:
     shortcut: sp
     startpage_categ: web
     categories: [general, web]
+    inactive: true  # uses a Proof Of Work captcha https://github.com/searxng/searxng/pull/6669
 
   - name: startpage news
     engine: startpage
     startpage_categ: news
     categories: [news, web]
     shortcut: spn
+    inactive: true  # uses a Proof Of Work captcha https://github.com/searxng/searxng/pull/6669
 
   - name: startpage images
     engine: startpage
     startpage_categ: images
     categories: [images, web]
     shortcut: spi
+    inactive: true  # uses a Proof Of Work captcha https://github.com/searxng/searxng/pull/6669
 
   - name: steam
     engine: steam
@@ -2067,6 +2444,22 @@ engines:
     shortcut: ts
     disabled: true
 
+  - name: tiger
+    engine: tiger
+    categories: general
+    tiger_category: Websuche
+    shortcut: tig
+    disabled: true
+    inactive: true
+
+  - name: tiger news
+    engine: tiger
+    categories: news
+    tiger_category: News
+    shortcut: tign
+    disabled: true
+    inactive: true
+
   - name: tmdb
     engine: xpath
     paging: true
@@ -2079,6 +2472,36 @@ engines:
     content_xpath: .//div[contains(@class,"overview")]
     shortcut: tm
     disabled: true
+
+  - name: tonline
+    engine: tonline
+    shortcut: tol
+    disabled: true
+    inactive: true
+
+  - name: tonline images
+    engine: tonline
+    categories: images
+    tonline_categ: images
+    shortcut: toli
+    disabled: true
+    inactive: true
+
+  - name: tonline videos
+    engine: tonline
+    categories: videos
+    tonline_categ: videos
+    shortcut: tolv
+    disabled: true
+    inactive: true
+
+  - name: tonline news
+    engine: tonline
+    categories: news
+    tonline_categ: news
+    shortcut: toln
+    disabled: true
+    inactive: true
 
   # Requires Tor
   - name: torch
@@ -2122,6 +2545,35 @@ engines:
       - 5000
     inactive: true
 
+  - name: tusksearch
+    engine: tusksearch
+    shortcut: tu
+    tusk_categ: web
+    categories: general
+    disabled: true
+
+  - name: tusksearch images
+    engine: tusksearch
+    shortcut: tui
+    paging: false
+    tusk_categ: images
+    categories: images
+    disabled: true
+
+  - name: tusksearch videos
+    engine: tusksearch
+    shortcut: tuv
+    tusk_categ: videos
+    categories: videos
+    disabled: true
+
+  - name: tusksearch news
+    engine: tusksearch
+    shortcut: tun
+    tusk_categ: news
+    categories: news
+    disabled: true
+
   # tmp suspended - too slow, too many errors
   #  - name: urbandictionary
   #    engine      : xpath
@@ -2134,6 +2586,24 @@ engines:
   - name: unsplash
     engine: unsplash
     shortcut: us
+
+  - name: unobtanium
+    engine: xpath
+    shortcut: uno
+    categories: [general, blogs]
+    paging: true
+    first_page_num: 0
+    search_url: https://unobtanium.rocks/search?search={query}&page={pageno}
+    results_xpath: //ul[contains(@class, 'search-results')]/li
+    url_xpath: .//a/@href
+    title_xpath: .//a/b
+    content_xpath: .//p[2]
+    disabled: true
+    inactive: true
+    about:
+      website: https://unobtanium.rocks
+      description: "Personal websites focused search engine."
+      results: HTML
 
   - name: yandex
     engine: yandex
@@ -2150,6 +2620,16 @@ engines:
     shortcut: ydi
     disabled: true
 
+  - name: yandex api
+    engine: yandex_api
+    categories: [general, web]
+    shortcut: yda
+    inactive: true
+    # api_key: ""
+    # folder_id: ""
+    # search_type: SEARCH_TYPE_COM
+    # l10n: LOCALIZATION_EN
+
   - name: yandex music
     engine: yandex_music
     network: yandex
@@ -2165,6 +2645,7 @@ engines:
   - name: yahoo news
     engine: yahoo_news
     shortcut: yhn
+    inactive: true
 
   - name: youtube
     shortcut: yt
@@ -2193,7 +2674,7 @@ engines:
     url_query: URL
     title_query: Title
     content_query: Snippet
-    categories: [general, web]
+    categories: [general, blogs]
     shortcut: wib
     disabled: true
     about:
@@ -2392,23 +2873,28 @@ engines:
     shortcut: mjk
     engine: mojeek
     categories: [general, web]
-    disabled: true
+    # uses a Proof of Work CAPTCHA that requires much computer power to solve
+    inactive: true
 
   - name: mojeek images
     shortcut: mjkimg
     engine: mojeek
+    network: mojeek
     categories: [images, web]
     search_type: images
     paging: false
-    disabled: true
+    # uses a Proof of Work CAPTCHA that requires much computer power to solve
+    inactive: true
 
   - name: mojeek news
     shortcut: mjknews
     engine: mojeek
+    network: mojeek
     categories: [news, web]
     search_type: news
     paging: false
-    disabled: true
+    # uses a Proof of Work CAPTCHA that requires much computer power to solve
+    inactive: true
 
   - name: moviepilot
     engine: moviepilot
@@ -2446,6 +2932,12 @@ engines:
     engine: naver
     shortcut: nvrv
     disabled: true
+
+  - name: neosearch
+    engine: neosearch
+    shortcut: neo
+    disabled: true
+    inactive: true
 
   - name: rubygems
     shortcut: rbg
@@ -2517,9 +3009,141 @@ engines:
     categories: videos
     disabled: true
 
+  - name: reloado
+    engine: xpath
+    paging: true
+    search_url: https://reloado.com/search?q={query}&page={pageno}
+    results_xpath: //div[contains(@class, 'result-item')]
+    url_xpath: .//div[contains(@class, 'result-title')]/a/@href
+    title_xpath: .//div[contains(@class, 'result-title')]/a
+    content_xpath: .//div[contains(@class, 'result-excerpt')]
+    shortcut: rel
+    categories: general
+    disabled: true
+    language: de
+    about:
+      website: https://reloado.com
+      official_api_documentation:
+      use_official_api: false
+      require_api_key: false
+      results: HTML
+
   - name: repology
     engine: repology
     shortcut: rep
+    disabled: true
+    inactive: true
+
+  - name: resulthunter
+    engine: resulthunter
+    resulthunter_categ: web
+    categories: general
+    shortcut: reh
+    disabled: true
+
+  - name: resulthunter images
+    engine: resulthunter
+    resulthunter_categ: images
+    categories: images
+    shortcut: rehi
+    disabled: true
+
+  - name: searchch
+    engine: xpath
+    shortcut: sch
+    paging: true
+    search_url: https://search.ch/web/api/loadmore.html?path=/web/&q={query}&page={pageno}
+    results_xpath: //div[contains(@class, 'www-feed-web-result')]
+    # the URL looks like "//search.ch/web/r/redirect?...result!uffe8997e781e241d/https://example.com"
+    url_xpath: concat('https://', substring-after(.//a[contains(@class, 'sl-gus-result-url')]/@href, '://'))
+    title_xpath: .//a[contains(@class, 'sl-gus-result-title')]
+    content_xpath: .//div[contains(@class, 'sl-gus-result-body')]
+    language: "ch"
+    disabled: true
+    about:
+      website: https://search.ch/web
+      description: "Swiss search engine with its own Swiss index"
+      use_official_api: false
+      require_api_key: false
+      results: HTML
+
+  - name: searchzee
+    engine: searchzee
+    categories: general
+    searchzee_categ: web
+    shortcut: sz
+    disabled: true
+    inactive: true
+
+  - name: searchzee news
+    engine: searchzee
+    categories: news
+    searchzee_categ: news
+    shortcut: sznw
+    disabled: true
+    inactive: true
+
+  - name: startpagina
+    engine: startpagina
+    shortcut: spnl
+    startpagina_categ: web
+    categories: general
+    disabled: true
+    inactive: true
+
+  - name: startpagina images
+    engine: startpagina
+    shortcut: spnli
+    startpagina_categ: images
+    categories: images
+    disabled: true
+    inactive: true
+
+  - name: startpagina videos
+    engine: startpagina
+    shortcut: spnlv
+    startpagina_categ: videos
+    categories: videos
+    disabled: true
+    inactive: true
+
+  - name: startpagina news
+    engine: startpagina
+    shortcut: spnln
+    startpagina_categ: news
+    categories: news
+    disabled: true
+    inactive: true
+
+  - name: swisscows
+    engine: swisscows
+    categories: general
+    swisscows_category: web
+    results_per_page: 20
+    shortcut: sw
+    disabled: true
+    inactive: true
+
+  - name: swisscows images
+    engine: swisscows
+    categories: images
+    swisscows_category: images
+    shortcut: swi
+    disabled: true
+    inactive: true
+
+  - name: swisscows videos
+    engine: swisscows
+    categories: videos
+    swisscows_category: videos
+    results_per_page: 10
+    shortcut: swv
+    disabled: true
+    inactive: true
+
+  - name: swisscows news
+    engine: swisscows_news
+    shortcut: swn
     disabled: true
     inactive: true
 
@@ -2539,19 +3163,13 @@ engines:
     content_xpath: //div[@class="synonyms-list-group"]
     title_xpath: //div[@class="upper-synonyms"]/a
     no_result_for_http_status: [404]
+    language: de
     about:
       website: https://www.woxikon.de/
       wikidata_id:  # No Wikidata ID
       use_official_api: false
       require_api_key: false
       results: HTML
-      language: de
-
-  - name: svgrepo
-    engine: svgrepo
-    shortcut: svg
-    timeout: 10.0
-    disabled: true
 
   - name: tootfinder
     engine: tootfinder
@@ -2565,6 +3183,27 @@ engines:
   - name: voidlinux
     engine: voidlinux
     shortcut: void
+    disabled: true
+
+  - name: vuhuv
+    engine: vuhuv
+    categories: general
+    vuhuv_category: general
+    shortcut: vu
+    disabled: true
+
+  - name: vuhuv images
+    engine: vuhuv
+    categories: images
+    vuhuv_category: images
+    shortcut: vui
+    disabled: true
+
+  - name: vuhuv videos
+    engine: vuhuv
+    categories: videos
+    vuhuv_category: videos
+    shortcut: vuv
     disabled: true
 
   - name: wallhaven
@@ -2585,18 +3224,74 @@ engines:
     content_xpath: //li/div[@class="searchresult"]
     categories: general
     disabled: true
+    language: fr
     about:
       website: https://wikimini.org/
       wikidata_id: Q3568032
       use_official_api: false
       require_api_key: false
       results: HTML
-      language: fr
 
   - name: wttr.in
     engine: wttr
     shortcut: wttr
     timeout: 9.0
+
+  - name: xonaly
+    engine: xpath
+    search_url: https://xonaly.com/?query={query}
+    categories: general
+    shortcut: xo
+    disabled: true
+    inactive: true
+    results_xpath: //div[contains(@class, 'results-block')]/ul/li
+    url_xpath: ./div[contains(@class, 'result-title')]/a/@href
+    title_xpath: ./div[contains(@class, 'result-title')]/a
+    content_xpath: ./p[contains(@class, 'excerpt')]
+    about:
+      website: https://xonaly.com
+      description: "Canadian search engine with its own index"
+      results: HTML
+
+  - name: xprivo
+    engine: xprivo
+    shortcut: xpr
+    disabled: true
+    inactive: true
+
+  - name: xprivo news
+    engine: xprivo
+    categories: news
+    xprivo_search_type: news
+    shortcut: xprn
+    disabled: true
+    inactive: true
+
+  - name: xprivo videos
+    engine: xprivo
+    categories: videos
+    xprivo_search_type: videos
+    shortcut: xprv
+    disabled: true
+    inactive: true
+
+  - name: zapmeta
+    engine: xpath
+    shortcut: zpm
+    categories: general
+    search_url: https://www.zapmeta.com/search?q={query}&pg={pageno}
+    results_xpath: //article[contains(@class, "organic-results-item")]
+    url_xpath: ./h2/a/@href
+    title_xpath: ./h2
+    content_xpath: ./p
+    paging: true
+    send_page_num_on_first_page: false  # otherwise blocks requests
+    disabled: true
+    about:
+      website: https://www.zapmeta.com/
+      use_official_api: false
+      require_api_key: false
+      results: HTML
 
   - name: braveapi
     engine: braveapi
@@ -2644,6 +3339,14 @@ engines:
   #   brave_category: goggles
   #   Goggles: # required! This should be a URL ending in .goggle
 
+  - name: exaapi
+    engine: exaapi
+    shortcut: exa
+    api_key: ""
+    search_type: auto
+    content_mode: highlights
+    inactive: true
+
   - name: lib.rs
     shortcut: lrs
     engine: lib_rs
@@ -2682,6 +3385,58 @@ engines:
     about:
       website: https://minecraft.wiki/
       wikidata_id: Q105533483
+
+  - name: sina
+    engine: json_engine
+    shortcut: sina
+    categories: news
+    paging: true
+    first_page_num: 1
+    search_url: https://search.sina.com.cn/api/search?q={query}&tp=mix&sort=0&page={pageno}&size=10&from=search_result
+    results_query: data/list
+    url_query: url
+    title_query: title
+    content_query: intro
+    thumbnail_query: thumb
+    title_html_to_text: true
+    time_range_map:
+      day: d
+      week: w
+      month: m
+      year: y
+    time_range_support: true
+    time_range_url: "&from=advanced_search&time={time_range_val}"
+    disabled: true
+    inactive: true
+    language: zh
+    about:
+      website: https://search.sina.com.cn
+      wikidata_id: Q938668
+      use_official_api: false
+      require_api_key: false
+      results: JSON
+
+  # s1search engines / mirrors
+  - name: metacrawler
+    engine: s1search
+    shortcut: mec
+    base_url: https://search.metacrawler.com
+    disabled: true
+    inactive: true
+
+  - name: zoo search
+    engine: s1search
+    shortcut: zoo
+    base_url: https://search.zoo.com
+    disabled: true
+    inactive: true
+
+  # s1search engines / mirrors with rampjs page layout
+  - name: s1search
+    engine: s1search_rampjs
+    shortcut: s1
+    disabled: true
+    inactive: true
 
 # Doku engine lets you access to any Doku wiki instance:
 # A public one or a privete/corporate one.

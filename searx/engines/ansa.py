@@ -14,7 +14,6 @@ list in ``settings.yml``:
 """
 
 from urllib.parse import urlencode
-from lxml import html
 from searx.result_types import EngineResults, MainResult
 from searx.utils import eval_xpath, eval_xpath_list, extract_text
 
@@ -42,8 +41,8 @@ about = {
     'use_official_api': False,
     'require_api_key': False,
     'results': 'HTML',
-    'language': 'it',
 }
+language = "it"
 
 
 def request(query, params):
@@ -62,7 +61,7 @@ def request(query, params):
 
 def response(resp) -> EngineResults:
     res = EngineResults()
-    doc = html.fromstring(resp.text)
+    doc = resp.html()
 
     for result in eval_xpath_list(doc, "//div[@class='article']"):
 

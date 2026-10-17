@@ -57,7 +57,6 @@ class ViewsTestCase(SearxTestCase):  # pylint: disable=too-many-public-methods
                 infoboxes=[],
                 unresponsive_engines=set(),
                 results=test_results,
-                number_of_results=3,
                 results_length=lambda: len(test_results),
                 get_timings=lambda: timings,
                 redirect_url=None,
@@ -160,8 +159,6 @@ class ViewsTestCase(SearxTestCase):  # pylint: disable=too-many-public-methods
         result = self.client.post('/search', data={'q': 'test', 'format': 'rss'})
 
         self.assertIn(b'<description>Search results for "test" - SearXNG</description>', result.data)
-
-        self.assertIn(b'<opensearch:totalResults>3</opensearch:totalResults>', result.data)
 
         self.assertIn(b'<title>First Test</title>', result.data)
 

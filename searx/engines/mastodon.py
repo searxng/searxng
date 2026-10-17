@@ -60,7 +60,7 @@ def response(resp):
                     'title': result['username'] + f" ({result['followers_count']} followers)",
                     'content': result['note'],
                     'thumbnail': result.get('avatar'),
-                    'publishedDate': datetime.strptime(result['created_at'][:10], "%Y-%m-%d"),
+                    'publishedDate': datetime.fromisoformat(result['created_at'][:10]),
                 }
             )
         elif mastodon_type == "hashtags":

@@ -4,9 +4,10 @@
 make data.all
 
 """
+
 # pylint: disable=invalid-name
 
-__all__ = ["ahmia_blacklist_loader", "gsa_useragents_loader", "data_dir", "get_cache"]
+__all__ = ["ahmia_blacklist_loader", "data_dir", "get_cache"]
 
 import json
 import typing as t
@@ -32,6 +33,13 @@ class WikiDataUnitType(t.TypedDict):
     to_si_factor: float
 
 
+WikiDataPropertyNameType = str | dict[str, str]
+"""Name of a Wikidata property. Can be either the plain name or a dictionary of
+language code to property name, e.g. ``{"en": "Date of birth"}``."""
+WikiDataPropertiesType = dict[str, WikiDataPropertyNameType]
+"""Dictionary from wikidata property ID to property name."""
+
+
 class LocalesType(t.TypedDict):
     """Data structure of an item in ``locales.json``"""
 
@@ -41,6 +49,7 @@ class LocalesType(t.TypedDict):
 
 USER_AGENTS: UserAgentType
 WIKIDATA_UNITS: dict[str, WikiDataUnitType]
+WIKIDATA_PROPERTIES: WikiDataPropertiesType
 TRACKER_PATTERNS: TrackerPatternsDB
 LOCALES: LocalesType
 CURRENCIES: CurrenciesDB
@@ -52,24 +61,25 @@ ENGINE_DESCRIPTIONS: dict[str, dict[str, t.Any]]
 ENGINE_TRAITS: dict[str, dict[str, t.Any]]
 
 
-lazy_globals = {
+lazy_globals: dict[str, t.Any] = {
     "CURRENCIES": CurrenciesDB(),
     "USER_AGENTS": None,
     "EXTERNAL_URLS": None,
     "WIKIDATA_UNITS": None,
+    "WIKIDATA_PROPERTIES": None,
     "EXTERNAL_BANGS": None,
     "OSM_KEYS_TAGS": None,
     "ENGINE_DESCRIPTIONS": None,
     "ENGINE_TRAITS": None,
     "LOCALES": None,
     "TRACKER_PATTERNS": TrackerPatternsDB(),
-    "GSA_USER_AGENTS": None,
 }
 
 data_json_files = {
     "USER_AGENTS": "useragents.json",
     "EXTERNAL_URLS": "external_urls.json",
     "WIKIDATA_UNITS": "wikidata_units.json",
+    "WIKIDATA_PROPERTIES": "wikidata_properties.json",
     "EXTERNAL_BANGS": "external_bangs.json",
     "OSM_KEYS_TAGS": "osm_keys_tags.json",
     "ENGINE_DESCRIPTIONS": "engine_descriptions.json",
@@ -106,24 +116,3 @@ def ahmia_blacklist_loader() -> list[str]:
     """
     with open(data_dir / 'ahmia_blacklist.txt', encoding='utf-8') as f:
         return f.read().split()
-
-
-def gsa_useragents_loader() -> list[str]:
-    """Load data from `gsa_useragents.txt` and return a list of user agents
-    suitable for Google.  The user agents are fetched by::
-
-      searxng_extra/update/update_gsa_useragents.py
-
-    This function is used by :py:mod:`searx.engines.google`.
-
-    """
-    data = lazy_globals["GSA_USER_AGENTS"]
-    if data is not None:
-        return data
-
-    log.debug("init searx.data.%s", "GSA_USER_AGENTS")
-
-    with open(data_dir / 'gsa_useragents.txt', encoding='utf-8') as f:
-        lazy_globals["GSA_USER_AGENTS"] = f.read().splitlines()
-
-    return lazy_globals["GSA_USER_AGENTS"]

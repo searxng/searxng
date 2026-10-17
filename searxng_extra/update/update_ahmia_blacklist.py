@@ -8,6 +8,7 @@ Output file: :origin:`searx/data/ahmia_blacklist.txt` (:origin:`CI Update data
 .. _Ahmia's blacklist: https://ahmia.fi/blacklist/
 
 """
+
 # pylint: disable=use-dict-literal
 
 import requests

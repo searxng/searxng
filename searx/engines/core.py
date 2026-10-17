@@ -56,7 +56,7 @@ the API key in the engine :ref:`core engine config`."""
 
 categories = ["science", "scientific publications"]
 paging = True
-nb_per_page = 10
+page_size = 10
 base_url = "https://api.core.ac.uk/v3/search/works/"
 
 
@@ -77,8 +77,8 @@ def request(query: str, params: "OnlineParams") -> None:
     # API v3 uses different parameters
     search_params = {
         "q": query,
-        "offset": (params["pageno"] - 1) * nb_per_page,
-        "limit": nb_per_page,
+        "offset": (params["pageno"] - 1) * page_size,
+        "limit": page_size,
         "sort": "relevance",
     }
 
@@ -141,12 +141,13 @@ def response(resp: "SXNG_Response") -> EngineResults:
             if name:
                 authors.add(name)
 
+        tag = result.get("fieldOfStudy")
         res.add(
             res.types.Paper(
                 title=result.get("title"),
                 url=url,
                 content=result.get("fullText", "") or "",
-                tags=result.get("fieldOfStudy", []),
+                tags=[tag] if tag else [],
                 publishedDate=published_date,
                 type=result.get("documentType", "") or "",
                 authors=authors,

@@ -164,6 +164,7 @@ Terms / phrases that you keep coming across:
    https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Accept-Language
 
 """
+
 # pylint: disable=global-statement
 
 import json
@@ -171,7 +172,6 @@ import re
 import typing as t
 
 import babel
-import lxml.html
 
 from searx import locales
 from searx.enginelib import EngineCache
@@ -203,6 +203,7 @@ about: dict[str, str | bool] = {
 categories: list[str] = ["general", "web"]
 paging: bool = True
 time_range_support: bool = True
+language_support = True
 safesearch: bool = True
 """DDG-lite: user can't select but the results are filtered."""
 
@@ -468,7 +469,7 @@ def response(resp: "SXNG_Response") -> EngineResults:
     if resp.status_code == 303:
         return res
 
-    doc = lxml.html.fromstring(resp.text)
+    doc = resp.html()
     params = resp.search_params
 
     if is_ddg_captcha(doc):

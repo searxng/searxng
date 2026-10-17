@@ -5,7 +5,6 @@ INA (Videos)
 
 from html import unescape
 from urllib.parse import urlencode
-from lxml import html
 from searx.utils import extract_text, eval_xpath, eval_xpath_list, eval_xpath_getindex
 
 # about
@@ -16,8 +15,8 @@ about = {
     "use_official_api": False,
     "require_api_key": False,
     "results": 'HTML',
-    "language": 'fr',
 }
+language = "fr"
 
 # engine dependent config
 categories = ['videos']
@@ -48,7 +47,7 @@ def response(resp):
     results = []
 
     # we get html in a JSON container...
-    dom = html.fromstring(resp.text)
+    dom = resp.html()
 
     # parse results
     for result in eval_xpath_list(dom, results_xpath):

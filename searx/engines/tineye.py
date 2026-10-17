@@ -121,7 +121,7 @@ def parse_tineye_match(match_json):
 
             crawl_date = backlink_json.get("crawl_date")
             if crawl_date:
-                crawl_date = datetime.strptime(crawl_date, '%Y-%m-%d')
+                crawl_date = datetime.fromisoformat(crawl_date)
             else:
                 crawl_date = datetime.min
 
@@ -210,9 +210,5 @@ def response(resp) -> EngineResults:
         )
 
     # append number of results
-
-    number_of_results = json_data.get('num_matches')
-    if number_of_results:
-        results.append({'number_of_results': number_of_results})
 
     return results

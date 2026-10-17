@@ -1,0 +1,56 @@
+name: Engine request
+description: Request a new engine in SearXNG
+labels: ["engine request"]
+type: feature
+body:
+  - type: input
+    id: url
+    attributes:
+      label: Working URL to the engine
+      description: Please check if the engine is responding correctly before submitting.
+      placeholder: https://example.com/search?q=foobar
+    validations:
+      required: true
+
+  - type: textarea
+    id: why
+    attributes:
+      label: Why do you want to add this engine?
+      description: What's special about this engine?
+    validations:
+      required: true
+
+  - type: dropdown
+    id: category
+    attributes:
+      label: Category
+      description: Where should this new engine fit in SearXNG?
+      options:
+        - general
+        - files
+        - images
+        - it
+        - map
+        - music
+        - news
+        - science
+        - social media
+        - videos
+    validations:
+      required: true
+
+  - type: textarea
+    id: fetch
+    attributes:
+      label: How can SearXNG fetch results?
+      description: API URL, example code, etc... anything that you think could be useful. Leave blank if you don't know.
+
+  - type: checkboxes
+    id: ai-policy
+    attributes:
+      label: Code of Conduct
+      options:
+        - label: >
+            I read the [AI Policy](https://github.com/searxng/searxng/blob/master/AI_POLICY.rst)
+            and hereby confirm that this issue conforms with the policy.
+          required: true

@@ -48,7 +48,7 @@ class ExpireCacheCfg(msgspec.Struct):  # pylint: disable=too-few-public-methods
     MAXHOLD_TIME: int = 60 * 60 * 24 * 7  # 7 days
     """Hold time (default in sec.), after which a value is removed from the cache."""
 
-    MAINTENANCE_PERIOD: int = 60 * 60  # 2h
+    MAINTENANCE_PERIOD: int = 60 * 60  # 1h
     """Maintenance period in seconds / when :py:obj:`MAINTENANCE_MODE` is set to
     ``auto``."""
 
@@ -114,7 +114,13 @@ class ExpireCacheStats:
                 if expire:
                     valid_until = datetime.datetime.fromtimestamp(expire).strftime("%Y-%m-%d %H:%M:%S")
                 c_kv += 1
-                lines.append(f"[{ctx_name:20s}] {valid_until} {key:12}" f" --> ({type(value).__name__}) {value} ")
+                value_str = str(value)
+                if len(value_str) > 120:
+                    value_str = f"{value_str[:120]} ..."
+                lines.append(
+                    f"[{ctx_name:20s}] {valid_until} {key:12}"
+                    f" --> ({type(value).__name__}:{len(value)}) {value_str} "
+                )
 
         lines.append(f"Number of contexts: {c_ctx}")
         lines.append(f"number of key/value pairs: {c_kv}")
@@ -438,12 +444,10 @@ class ExpireCacheSQLite(sqlitedb.SQLiteAppl, ExpireCache):
     def get(self, key: str, default: typing.Any = None, ctx: str | None = None) -> typing.Any:
         """Get value of ``key`` from table given by argument ``ctx``.  If
         ``ctx`` argument is ``None`` (the default), a table name is generated
-        from the :py:obj:`ExpireCacheCfg.name`.  If ``key`` not exists (in
-        table), the ``default`` value is returned.
-
+        from the :py:obj:`ExpireCacheCfg.name`.  If ``key`` not exists in
+        the table or the table not exists, the ``default`` value is returned.
         """
         table = ctx
-        self.maintenance()
 
         if not table:
             table = self.normalize_name(self.cfg.name)
@@ -451,24 +455,39 @@ class ExpireCacheSQLite(sqlitedb.SQLiteAppl, ExpireCache):
         if table not in self.table_names:
             return default
 
-        sql = f"SELECT value FROM {table} WHERE key = ?"
+        # Before values are taken from the table, a maintenance interval may
+        # need to be carried out.
+        self.maintenance()
+        sql = f"SELECT value, expire FROM {table} WHERE key = ?"
         row = self.DB.execute(sql, (key,)).fetchone()
         if row is None:
             return default
 
-        return self.deserialize(row[0])
+        # Check if value is expired. It's possible that it's expired but has not
+        # yet been automatically deleted by the periodic maintenance
+        value, expire = row
+        now = time.time()
+        if expire < now:
+            # The record is deleted during the maintenance interval. Deleting
+            # the record at this point offers no advantage, as a SELECT
+            # statement must be executed for every cache.get request anyways.
+            return default
+
+        return self.deserialize(value)
 
     def pairs(self, ctx: str) -> Iterator[tuple[str, typing.Any]]:
         """Iterate over key/value pairs from table given by argument ``ctx``.
         If ``ctx`` argument is ``None`` (the default), a table name is
         generated from the :py:obj:`ExpireCacheCfg.name`."""
         table = ctx
-        self.maintenance()
 
         if not table:
             table = self.normalize_name(self.cfg.name)
 
         if table in self.table_names:
+            # Before values are taken from the table, a maintenance interval may
+            # need to be carried out.
+            self.maintenance()
             for row in self.DB.execute(f"SELECT key, value FROM {table}"):
                 yield row[0], self.deserialize(row[1])
 

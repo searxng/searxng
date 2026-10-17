@@ -50,6 +50,7 @@ from searx.engines import wikidata, set_loggers
 from searx.sxng_locales import sxng_locales
 from searx.engines.openstreetmap import get_key_rank, VALUE_TO_LINK
 from searx.data import data_dir
+from searx.wikidata import send_wikidata_query
 
 DATA_FILE = data_dir / 'osm_keys_tags.json'
 
@@ -102,7 +103,7 @@ def get_preset_keys():
 
 def get_keys():
     results = get_preset_keys()
-    response = wikidata.send_wikidata_query(SPARQL_KEYS_REQUEST)
+    response = send_wikidata_query(SPARQL_KEYS_REQUEST)
 
     for key in response['results']['bindings']:
         keys = key['key']['value'].split(':')[1:]
@@ -148,7 +149,7 @@ def get_keys():
 
 def get_tags():
     results = collections.OrderedDict()
-    response = wikidata.send_wikidata_query(SPARQL_TAGS_REQUEST)
+    response = send_wikidata_query(SPARQL_TAGS_REQUEST)
     for tag in response['results']['bindings']:
         tag_names = tag['tag']['value'].split(':')[1].split('=')
         if len(tag_names) == 2:
@@ -204,7 +205,6 @@ def optimize_keys(data):
 
 
 if __name__ == '__main__':
-
     set_timeout_for_thread(60)
     result = {
         'keys': optimize_keys(get_keys()),

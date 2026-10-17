@@ -126,9 +126,11 @@ class Search:
             actual_timeout = min(query_timeout, max_request_timeout)
 
         logger.debug(
-            "actual_timeout={0} (default_timeout={1}, ?timeout_limit={2}, max_request_timeout={3})".format(
-                actual_timeout, default_timeout, query_timeout, max_request_timeout
-            )
+            "actual_timeout=%s (default_timeout=%s, ?timeout_limit=%s, max_request_timeout=%s)",
+            actual_timeout,
+            default_timeout,
+            query_timeout,
+            max_request_timeout,
         )
 
         return requests, actual_timeout

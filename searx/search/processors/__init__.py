@@ -11,10 +11,12 @@ __all__ = [
     "PROCESSORS",
     "ParamTypes",
     "RequestParams",
+    "ProcessorType",
 ]
 
 import typing as t
 
+import os
 from searx import logger
 from searx import engines
 
@@ -26,6 +28,14 @@ from .online_currency import OnlineCurrencyProcessor, OnlineCurrenciesParams
 from .online_url_search import OnlineUrlSearchProcessor, OnlineUrlSearchParams
 
 logger = logger.getChild("search.processors")
+
+ProcessorType = t.Literal[
+    "offline",
+    "online",
+    "online_currency",
+    "online_dictionary",
+    "online_url_search",
+]
 
 OnlineParamTypes: t.TypeAlias = OnlineParams | OnlineDictParams | OnlineCurrenciesParams | OnlineUrlSearchParams
 OfflineParamTypes: t.TypeAlias = RequestParams
@@ -61,7 +71,7 @@ class ProcessorMap(dict[str, EngineProcessor]):
             eng_type = getattr(eng_obj, "engine_type", "online")
             proc_cls = self.processor_types.get(eng_type)
             if proc_cls is None:
-                logger.error("Engine '%s' is of unknown engine_type: %s", eng_type)
+                logger.error("Engine of name '%s' is of unknown engine_type: %s", eng_name, eng_type)
                 continue
 
             # initialize (and register) the engine
@@ -83,7 +93,9 @@ class ProcessorMap(dict[str, EngineProcessor]):
             self[eng_proc.engine.name] = eng_proc
             # logger.debug("registered engine processor: %s", eng_proc.engine.name)
         else:
-            logger.error("can't register engine processor: %s (init failed)", eng_proc.engine.name)
+            logger.error(
+                "(PID %s) %s: can't register engines processor (init engine failed)", os.getpid(), eng_proc.engine.name
+            )
 
         return eng_proc_ok
 

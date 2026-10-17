@@ -11,8 +11,8 @@ about = {
     "use_official_api": False,
     "require_api_key": False,
     "results": "JSON",
-    "language": "zh",
 }
+language = "zh"
 
 categories = ["videos"]
 paging = True
@@ -54,7 +54,7 @@ def response(resp):
         published_date = None
         if entry.get("date") and entry.get("duration"):
             try:
-                published_date = datetime.strptime(entry['date'], "%Y-%m-%d")
+                published_date = datetime.fromisoformat(entry['date'])
             except (ValueError, TypeError):
                 published_date = None
 

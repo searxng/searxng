@@ -4,12 +4,6 @@
 Bing Engines
 ============
 
-.. contents::
-   :depth: 2
-   :local:
-   :backlinks: entry
-
-
 .. _bing web engine:
 
 Bing WEB

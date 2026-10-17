@@ -10,11 +10,6 @@ NoSQL databases
    - `valkey.io <https://valkey.io/>`_
    - `MongoDB <https://www.mongodb.com>`_
 
-.. contents::
-   :depth: 2
-   :local:
-   :backlinks: entry
-
 .. sidebar:: info
 
    Initial sponsored by `Search and Discovery Fund

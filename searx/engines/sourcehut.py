@@ -25,7 +25,6 @@ Implementations
 import typing as t
 
 from urllib.parse import urlencode
-from lxml import html
 
 from searx.utils import eval_xpath, eval_xpath_list, extract_text, searxng_useragent
 from searx.result_types import EngineResults
@@ -71,7 +70,7 @@ def request(query: str, params: "OnlineParams") -> None:
 def response(resp: "SXNG_Response") -> EngineResults:
 
     res = EngineResults()
-    doc = html.fromstring(resp.text)
+    doc = resp.html()
 
     for item in eval_xpath_list(doc, "(//div[@class='event-list'])[1]/div[contains(@class, 'event')]"):
         res.add(

@@ -14,9 +14,9 @@ about = {
     "use_official_api": False,
     "require_api_key": False,
     "results": "JSON",
-    "language": "zh",
 }
 
+language = "zh"
 paging = True
 time_range_support = True
 categories = ["videos"]
@@ -43,7 +43,7 @@ def _result(video: dict[str, typing.Any], album_info: dict[str, typing.Any]):
     release_time = album_info.get("releaseTime", {}).get("value")
     if release_time:
         try:
-            published_date = datetime.strptime(release_time, "%Y-%m-%d")
+            published_date = datetime.fromisoformat(release_time)
         except (ValueError, TypeError):
             pass
 

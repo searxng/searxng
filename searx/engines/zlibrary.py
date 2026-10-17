@@ -38,7 +38,6 @@ from datetime import datetime
 from urllib.parse import quote
 
 from flask_babel import gettext  # pyright: ignore[reportUnknownVariableType]
-from lxml import html
 
 from searx.data import ENGINE_TRAITS
 from searx.enginelib.traits import EngineTraits
@@ -61,6 +60,7 @@ about: dict[str, t.Any] = {
 
 categories: list[str] = ["files", "books"]
 paging: bool = True
+language_support = True
 base_url: str = "https://zlibrary-global.se"
 
 zlib_year_from: str = ""
@@ -117,7 +117,7 @@ def request(query: str, params: "OnlineParams") -> None:
 
 def response(resp: "SXNG_Response") -> EngineResults:
     res = EngineResults()
-    dom = html.fromstring(resp.text)
+    dom = resp.html()
 
     if domain_is_seized(dom):
         raise SearxException(f"zlibrary domain is seized: {base_url}")
@@ -195,7 +195,7 @@ def fetch_traits(engine_traits: EngineTraits) -> None:
     if not resp.ok:
         raise RuntimeError("Response from zlibrary is not OK.")
 
-    dom = html.fromstring(resp.text)
+    dom = resp.html()
 
     if domain_is_seized(dom):
         raise RuntimeError(f"Response from zlibrary is not OK. ({base_url} seized)")

@@ -17,6 +17,9 @@
   {% else %}
   <link rel="stylesheet" href="{{ url_for('static', filename='sxng-ltr.min.css') }}" type="text/css" media="screen">
   {% endif %}
+  <noscript>
+    <link rel="stylesheet" href="{{ url_for('static', filename='sxng-noscript.min.css') }}" type="text/css">
+  </noscript>
   {% if get_setting('server.limiter') or get_setting('server.public_instance') %}
   <link rel="stylesheet" href="{{ url_for('client_token', token=link_token) }}" type="text/css">
   {% endif %}

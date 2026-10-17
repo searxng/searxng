@@ -52,7 +52,8 @@ export default {
         // stylesheets
         ltr: `${PATH.src}/less/style-ltr.less`,
         rtl: `${PATH.src}/less/style-rtl.less`,
-        rss: `${PATH.src}/less/rss.less`
+        rss: `${PATH.src}/less/rss.less`,
+        noscript: `${PATH.src}/less/noscript.less`
       },
 
       // file naming conventions / pathnames are relative to outDir (PATH.dist)

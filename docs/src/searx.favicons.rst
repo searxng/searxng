@@ -4,11 +4,6 @@
 Favicons (source)
 =================
 
-.. contents::
-   :depth: 2
-   :local:
-   :backlinks: entry
-
 .. automodule:: searx.favicons
    :members:
 
@@ -43,6 +38,3 @@ Favicons Cache
 
 .. automodule:: searx.favicons.cache
    :members:
-
-
-

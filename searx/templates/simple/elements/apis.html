@@ -4,7 +4,7 @@
     <div class="wrapper">
       {%- for output_type in search_formats -%}
         <div class="left">
-          <form method="{{ method or 'POST' }}" action="{{ url_for('search') }}">
+          <form method="{{ method }}" action="{{ url_for('search') }}">
             <input type="hidden" name="q" value="{{ q|e }}">
             {%- for category in selected_categories -%}
               <input type="hidden" name="category_{{ category }}" value="1">

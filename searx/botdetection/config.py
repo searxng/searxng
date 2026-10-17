@@ -182,7 +182,7 @@ class Config:
             if default is UNSET:
                 raise KeyError(name)
             return default
-        (modulename, name) = str(fqn).rsplit('.', 1)
+        modulename, name = str(fqn).rsplit('.', 1)
         m = __import__(modulename, {}, {}, [name], 0)
         return getattr(m, name)
 

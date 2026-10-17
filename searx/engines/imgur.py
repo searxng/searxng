@@ -2,7 +2,6 @@
 """Imgur (images)"""
 
 from urllib.parse import urlencode
-from lxml import html
 from searx.utils import extract_text, eval_xpath, eval_xpath_list
 
 about = {
@@ -40,7 +39,7 @@ def request(query, params):
 def response(resp):
     results = []
 
-    dom = html.fromstring(resp.text)
+    dom = resp.html()
 
     for result in eval_xpath_list(dom, results_xpath):
         thumbnail_src = extract_text(eval_xpath(result, thumbnail_xpath))

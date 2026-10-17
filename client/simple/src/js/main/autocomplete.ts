@@ -5,13 +5,7 @@ import { assertElement } from "../util/assertElement.ts";
 
 const fetchResults = async (qInput: HTMLInputElement, query: string): Promise<void> => {
   try {
-    let res: Response;
-
-    if (settings.method === "GET") {
-      res = await http("GET", `./autocompleter?q=${query}`);
-    } else {
-      res = await http("POST", "./autocompleter", { body: new URLSearchParams({ q: query }) });
-    }
+    const res = await http("GET", `./autocompleter?q=${query}`);
 
     const results = await res.json();
 

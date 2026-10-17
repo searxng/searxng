@@ -1,5 +1,6 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 """Implementations used for weather conditions and forecast."""
+
 # pylint: disable=too-few-public-methods
 
 __all__ = [

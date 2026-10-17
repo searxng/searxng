@@ -661,7 +661,7 @@ searxng.instance.localtest() {
     tee_stderr 0.1 <<EOF | sudo -H -u "${SERVICE_USER}" -i 2>&1 | prefix_stdout "$_service_prefix"
 export SEARXNG_SETTINGS_PATH="${SEARXNG_SETTINGS_PATH}"
 cd ${SEARXNG_SRC}
-timeout 10 python searx/webapp.py &
+timeout 10 python -m searx/webapp &
 sleep 3
 curl --location --verbose --head --insecure ${SEARXNG_INTERNAL_HTTP}
 EOF

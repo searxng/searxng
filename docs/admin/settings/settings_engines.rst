@@ -58,10 +58,9 @@ engine is shown.  Most of the options have a default value or even are optional.
 
      # overwrite values from section 'outgoing:'
      enable_http2: false
+     enable_http3: false
      retries: 1
      max_connections: 100
-     max_keepalive_connections: 10
-     keepalive_expiry: 5.0
      using_tor_proxy: false
      proxies:
        http:
@@ -163,6 +162,16 @@ engine is shown.  Most of the options have a default value or even are optional.
 ``enable_http`` : optional
   Enable HTTP for this engine (by default only HTTPS is enabled).
 
+``enable_http3`` : optional
+  Use HTTP/3 (falls back to HTTP/2).  Default ``false``.
+  Ignored when a proxy is set.
+
+  .. hint::
+
+     HTTP/3 places demands on the IP infrastructure that are not met in every
+     environment.  Enable this option only if you are aware of these requirements
+     and the extent to which they are met.
+
 ``retry_on_http_error`` : optional
   Retry request on some HTTP status code.
 
@@ -179,18 +188,10 @@ engine is shown.  Most of the options have a default value or even are optional.
   Using tor proxy (``true``) or not (``false``) for this engine.  The default is
   taken from ``using_tor_proxy`` of the :ref:`settings outgoing`.
 
-.. _Pool limit configuration: https://www.python-httpx.org/advanced/#pool-limit-configuration
-
-``max_keepalive_connection#s`` :
-  `Pool limit configuration`_, overwrites value ``pool_maxsize`` from
-   :ref:`settings outgoing` for this engine.
+.. _Pool limit configuration: https://curl-cffi.readthedocs.io/en/latest/api.html#sessions
 
 ``max_connections`` :
   `Pool limit configuration`_, overwrites value ``pool_connections`` from
-  :ref:`settings outgoing` for this engine.
-
-``keepalive_expiry`` :
-  `Pool limit configuration`_, overwrites value ``keepalive_expiry`` from
   :ref:`settings outgoing` for this engine.
 
 

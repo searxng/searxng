@@ -8,7 +8,6 @@ from searx.search.models import SearchQuery, EngineRef
 from searx import settings
 from tests import SearxTestCase
 
-
 SAFESEARCH = 0
 PAGENO = 1
 PUBLIC_ENGINE_NAME = "dummy engine"  # from the ./settings/test_settings.yml

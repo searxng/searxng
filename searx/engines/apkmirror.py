@@ -4,7 +4,6 @@
 # pylint: disable=invalid-name
 
 from urllib.parse import urlencode
-from lxml import html
 
 from searx.utils import (
     eval_xpath_list,
@@ -22,7 +21,7 @@ about = {
 }
 
 # engine dependent config
-categories = ['files', 'apps']
+categories = ['it', 'apps']
 paging = True
 time_range_support = False
 
@@ -43,7 +42,7 @@ def request(query, params):
 def response(resp):
     results = []
 
-    dom = html.fromstring(resp.text)
+    dom = resp.html()
 
     # parse results
     for result in eval_xpath_list(dom, "//div[@id='content']//div[@class='listWidget']/div/div[@class='appRow']"):

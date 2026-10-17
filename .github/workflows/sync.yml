@@ -1,0 +1,38 @@
+---
+# yamllint disable rule:line-length
+name: Sync
+
+# yamllint disable-line rule:truthy
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - master
+
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: false
+
+jobs:
+  codeberg:
+    if: github.repository_owner == 'searxng'
+    name: Codeberg
+    runs-on: ubuntu-26.04-arm
+    steps:
+      - name: Sync
+        env:
+          ORIGIN: "github.com/searxng/searxng"
+          DESTINATION: "codeberg.org/searxng/searxng"
+          DESTINATION_USER: "${{ secrets.CODEBERG_USER }}"
+          DESTINATION_TOKEN: "${{ secrets.CODEBERG_TOKEN }}"
+        run: |
+          set -eu
+
+          git init --quiet --bare .sync
+          cd .sync
+
+          git fetch --no-tags "https://${ORIGIN}.git" \
+          '+refs/heads/master:refs/heads/master'
+
+          git push --force "https://${DESTINATION_USER}:${DESTINATION_TOKEN}@${DESTINATION}.git" \
+          'refs/heads/master:refs/heads/master'

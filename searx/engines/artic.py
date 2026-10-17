@@ -21,7 +21,7 @@ about = {
 
 categories = ['images']
 paging = True
-nb_per_page = 20
+page_size = 20
 
 search_api = 'https://api.artic.edu/api/v1/artworks/search?'
 image_api = 'https://www.artic.edu/iiif/2/'
@@ -34,7 +34,7 @@ def request(query, params):
             'q': query,
             'page': params['pageno'],
             'fields': 'id,title,artist_display,medium_display,image_id,date_display,dimensions,artist_titles',
-            'limit': nb_per_page,
+            'limit': page_size,
         }
     )
     params['url'] = search_api + args

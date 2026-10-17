@@ -35,4 +35,4 @@ class TestOnlineProcessor(SearxTestCase):
         online_processor = online.OnlineProcessor(engine)
         search_query = SearchQuery('test', [EngineRef(TEST_ENGINE_NAME, 'general')], 'all', 0, 1, None, None, None)
         params = self._get_params(online_processor, search_query, 'general')
-        self.assertIn('User-Agent', params['headers'])
+        self.assertNotIn('User-Agent', params['headers'])

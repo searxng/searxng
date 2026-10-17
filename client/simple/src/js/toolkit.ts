@@ -5,7 +5,6 @@ import type { KeyBindingLayout } from "./main/keyboard.ts";
 // synced with searx/webapp.py get_client_settings
 type Settings = {
   plugins?: string[];
-  advanced_search?: boolean;
   autocomplete?: string;
   autocomplete_min?: number;
   doi_resolver?: string;

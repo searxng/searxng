@@ -1,5 +1,6 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 """Simple implementation to store TrackerPatterns data in a SQL database."""
+
 # pylint: disable=too-many-branches
 
 import typing as t
@@ -10,7 +11,7 @@ import re
 from collections.abc import Iterator
 from urllib.parse import urlparse, urlunparse, parse_qsl, urlencode
 
-from httpx import HTTPError
+from curl_cffi.requests.exceptions import RequestException
 
 from searx.data.core import get_cache, log
 from searx.network import get as http_get
@@ -28,11 +29,11 @@ class TrackerPatternsDB:
 
     ctx_name = "data_tracker_patterns"
 
+    # ClearURL rule lists, the first one that responds HTTP 200 is used
     CLEAR_LIST_URL = [
-        # ClearURL rule lists, the first one that responds HTTP 200 is used
-        "https://rules1.clearurls.xyz/data.minify.json",
+        "https://cdn.jsdelivr.net/gh/clearurls/rules@refs/heads/gh-pages/data.minify.json",
         "https://rules2.clearurls.xyz/data.minify.json",
-        "https://raw.githubusercontent.com/ClearURLs/Rules/refs/heads/master/data.min.json",
+        "https://rules1.clearurls.xyz/data.minify.json",
     ]
 
     class Fields:
@@ -87,12 +88,12 @@ class TrackerPatternsDB:
             try:
                 resp = http_get(url, timeout=3)
 
-            except HTTPError as exc:
-                log.warning("TRACKER_PATTERNS: HTTPError (%s) occured while fetching %s", url, exc)
+            except RequestException as exc:
+                log.warning("TRACKER_PATTERNS: RequestException while fetching %s: %s", url, exc)
                 continue
 
             if resp.status_code != 200:
-                log.warning(f"TRACKER_PATTERNS: ClearURL ignore HTTP {resp.status_code} {url}")
+                log.warning("TRACKER_PATTERNS: ClearURL ignore HTTP %s %s", resp.status_code, url)
                 continue
 
             break

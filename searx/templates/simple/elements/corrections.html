@@ -2,7 +2,7 @@
       <h4 id="corrections-title">{{ _('Try searching for:') }}</h4>
       {% for correction in corrections %}
       <div class="left">
-	      <form method="{{ method or 'POST' }}" action="{{ url_for('search') }}" role="navigation">
+	      <form method="{{ method }}" action="{{ url_for('search') }}" role="navigation">
           {% for category in selected_categories %}
           <input type="hidden" name="category_{{ category }}" value="1">
           {% endfor %}

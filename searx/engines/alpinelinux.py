@@ -12,7 +12,6 @@ servers and for Docker images.
 import re
 
 from urllib.parse import urlencode
-from lxml import html
 from dateutil import parser
 
 from searx.utils import eval_xpath, eval_xpath_list, extract_text
@@ -57,7 +56,7 @@ def request(query, params):
 def response(resp):
     results = []
 
-    doc = html.fromstring(resp.text)
+    doc = resp.html()
     for result in eval_xpath_list(doc, "//table/tbody/tr"):
 
         if len(result.xpath("./td")) < 9:

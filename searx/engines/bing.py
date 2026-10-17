@@ -13,13 +13,11 @@ implementations are shared by other engines:
 """
 
 import base64
-import re
 import typing as t
 from urllib.parse import parse_qs, urlencode, urlparse
 
 import babel
 import babel.languages
-from lxml import html
 
 from searx.enginelib.traits import EngineTraits
 from searx.locales import region_tag
@@ -41,6 +39,7 @@ about: dict[str, t.Any] = {
 # engine dependent config
 categories = ["general", "web"]
 safesearch = True
+enable_http3 = True
 _safesearch_map: dict[int, str] = {
     0: "off",
     1: "moderate",
@@ -48,7 +47,7 @@ _safesearch_map: dict[int, str] = {
 }
 """Filter results. 0: None, 1: Moderate, 2: Strict"""
 
-base_url = "https://www.bing.com/search"
+base_url = "https://www.bing.com"
 """Bing-Web search URL"""
 
 
@@ -62,8 +61,8 @@ def get_locale_params(engine_region: str | None) -> dict[str, str] | None:
 
     The ``mkt`` parameter takes a full ``<language>-<country>`` code.
 
-    This function is shared with :py:mod:`searx.engines.bing_images`,
-    :py:mod:`searx.engines.bing_news`, and :py:mod:`searx.engines.bing_videos`.
+    This function is shared with :py:mod:`searx.engines.bing_news`, and
+    :py:mod:`searx.engines.bing_videos`.
     """
 
     if not engine_region or engine_region == "clear":
@@ -72,51 +71,23 @@ def get_locale_params(engine_region: str | None) -> dict[str, str] | None:
     return {"mkt": engine_region}
 
 
-def override_accept_language(params: "OnlineParams", engine_region: str | None) -> None:
-    """Override the ``Accept-Language`` header.
-
-    The default header built by :py:class:`~searx.search.processors.online.OnlineProcessor`
-    appends ``en;q=0.3`` as a fallback language::
-
-        Accept-Language: de,de-DE;q=0.7,en;q=0.3
-
-    Bing seems to better select the results locale based on the
-    ``Accept-Language`` value header.
-
-    This function is shared with :py:mod:`searx.engines.bing_images`,
-    :py:mod:`searx.engines.bing_news`, and :py:mod:`searx.engines.bing_videos`.
-    """
-
-    if not engine_region or engine_region == "clear":
-        return
-
-    lang = engine_region.split("-")[0]
-    params["headers"]["Accept-Language"] = f"{engine_region},{lang};q=0.9"
-
-
-def request(query: str, params: "OnlineParams") -> "OnlineParams":
+def request(query: str, params: "OnlineParams"):
     """Assemble a Bing-Web request."""
 
     engine_region = traits.get_region(params["searxng_locale"], traits.all_locale)
-
-    override_accept_language(params, engine_region)
 
     query_params: dict[str, str | int] = {
         "q": query,
         "adlt": _safesearch_map.get(params.get("safesearch", 0), "off"),
     }
 
-    locale_params = get_locale_params(engine_region)
-    if locale_params:
-        query_params.update(locale_params)
+    if engine_region and engine_region != "clear":
+        lang, _, cc = engine_region.partition("-")
+        query_params["setlang"] = lang
+        if cc and cc not in ("us", "cn", "ru"):  # bing just sends junk for these
+            query_params["cc"] = cc
 
-    params["url"] = f"{base_url}?{urlencode(query_params)}"
-
-    # in some regions where geoblocking is employed (e.g. China),
-    # www.bing.com redirects to the regional version of Bing
-    params["allow_redirects"] = True
-
-    return params
+    params["url"] = f"{base_url}/search?{urlencode(query_params)}"
 
 
 def response(resp: "SXNG_Response") -> list[dict[str, t.Any]]:
@@ -124,7 +95,7 @@ def response(resp: "SXNG_Response") -> list[dict[str, t.Any]]:
 
     results: list[dict[str, t.Any]] = []
 
-    dom = html.fromstring(resp.text)
+    dom = resp.html()
 
     for item in eval_xpath_list(dom, '//ol[@id="b_results"]/li[contains(@class, "b_algo")]'):
         link = eval_xpath_getindex(item, ".//h2/a", 0, None)
@@ -159,12 +130,6 @@ def response(resp: "SXNG_Response") -> list[dict[str, t.Any]]:
 
         results.append({"url": href, "title": title, "content": content})
 
-    if results:
-        result_len_container = "".join(eval_xpath(dom, '//span[@class="sb_count"]//text()'))
-        result_len_container = re.sub(r"[^0-9]", "", result_len_container)
-        if result_len_container:
-            results.append({"number_of_results": int(result_len_container)})
-
     return results
 
 
@@ -190,7 +155,7 @@ def fetch_traits(engine_traits: EngineTraits) -> None:
     if not resp.ok:
         raise RuntimeError("Response from Bing is not OK.")
 
-    dom = html.fromstring(resp.text)
+    dom = resp.html()
 
     map_market_codes: dict[str, str] = {
         "zh-hk": "en-hk",  # not sure why, but at Microslop this is the market code for Hongkong

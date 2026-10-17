@@ -1,53 +1,49 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 """Yahoo Search (Web)
 
-Languages are supported by mapping the language to a domain.  If domain is not
-found in :py:obj:`lang2domain` URL ``<lang>.search.yahoo.com`` is used.
+As a bot detection measure, Yahoo has put search behind a cookie
+named `YBV`, which is cached for 24h before expiring.
 
 """
 
-from urllib.parse import (
-    unquote,
-    urlencode,
-)
-from lxml import html
+import typing as t
+from urllib.parse import unquote, urlencode, urljoin
 
-from searx.utils import (
-    eval_xpath_getindex,
-    eval_xpath_list,
-    extract_text,
-    html_to_text,
-)
+from searx.enginelib import EngineCache
+from searx.network import get  # see https://github.com/searxng/searxng/issues/762
+from searx.result_types import EngineResults
+from searx.utils import eval_xpath_getindex, eval_xpath_list, extract_text, html_to_text
 
-# about
+if t.TYPE_CHECKING:
+    from searx.extended_types import SXNG_Response
+    from searx.search.processors import OnlineParams
+
 about = {
-    "website": 'https://search.yahoo.com/',
+    "website": "https://search.yahoo.com/",
     "wikidata_id": None,
-    "official_api_documentation": 'https://developer.yahoo.com/api/',
+    "official_api_documentation": "https://developer.yahoo.com/api/",
     "use_official_api": False,
     "require_api_key": False,
-    "results": 'HTML',
+    "results": "HTML",
 }
 
-# engine dependent config
-categories = ['general', 'web']
+categories = ["general", "web"]
 paging = True
 time_range_support = True
+safesearch = True
 
-time_range_dict = {'day': 'd', 'week': 'w', 'month': 'm'}
-safesearch_dict = {0: 'p', 1: 'i', 2: 'r'}
+time_range_dict = {"day": "d", "week": "w", "month": "m"}
+safesearch_dict = {0: "p", 1: "i", 2: "r"}
 
 region2domain = {
     "CO": "co.search.yahoo.com",  # Colombia
     "TH": "th.search.yahoo.com",  # Thailand
     "VE": "ve.search.yahoo.com",  # Venezuela
     "CL": "cl.search.yahoo.com",  # Chile
-    "HK": "hk.search.yahoo.com",  # Hong Kong
     "PE": "pe.search.yahoo.com",  # Peru
     "CA": "ca.search.yahoo.com",  # Canada
     "DE": "de.search.yahoo.com",  # Germany
     "FR": "fr.search.yahoo.com",  # France
-    "TW": "tw.search.yahoo.com",  # Taiwan
     "GB": "uk.search.yahoo.com",  # United Kingdom
     "UK": "uk.search.yahoo.com",
     "BR": "br.search.yahoo.com",  # Brazil
@@ -57,27 +53,28 @@ region2domain = {
     "AR": "ar.search.yahoo.com",  # Argentina
     "MX": "mx.search.yahoo.com",  # Mexico
     "SG": "sg.search.yahoo.com",  # Singapore
+    "AU": "au.search.yahoo.com",  # Australia
+    "NZ": "nz.search.yahoo.com",  # New Zealand
+    "IE": "ie.search.yahoo.com",  # Ireland
+    "ZA": "za.search.yahoo.com",  # South Africa
+    "US": "search.yahoo.com",
+    "IT": "it.search.yahoo.com",  # Italy
+    "NL": "nl.search.yahoo.com",  # Netherlands
+    "BE": "be.search.yahoo.com",  # Belgium
+    "CH": "ch.search.yahoo.com",  # Switzerland
+    "AT": "at.search.yahoo.com",  # Austria
+    "SE": "se.search.yahoo.com",  # Sweden
+    "NO": "no.search.yahoo.com",  # Norway
+    "DK": "dk.search.yahoo.com",  # Denmark
+    "FI": "fi.search.yahoo.com",  # Finland
+    "GR": "gr.search.yahoo.com",  # Greece
+    "TR": "tr.search.yahoo.com",  # Turkey
+    "MY": "malaysia.search.yahoo.com",  # Malaysia
+    "ID": "id.search.yahoo.com",  # Indonesia
+    "VN": "vn.search.yahoo.com",  # Vietnam
+    "PL": "pl.search.yahoo.com",  # Poland
+    "RO": "ro.search.yahoo.com",  # Romania
 }
-"""Map regions to domain"""
-
-lang2domain = {
-    'zh_chs': 'hk.search.yahoo.com',
-    'zh_cht': 'tw.search.yahoo.com',
-    'any': 'search.yahoo.com',
-    'en': 'search.yahoo.com',
-    'bg': 'search.yahoo.com',
-    'cs': 'search.yahoo.com',
-    'da': 'search.yahoo.com',
-    'el': 'search.yahoo.com',
-    'et': 'search.yahoo.com',
-    'he': 'search.yahoo.com',
-    'hr': 'search.yahoo.com',
-    'ja': 'search.yahoo.com',
-    'ko': 'search.yahoo.com',
-    'sk': 'search.yahoo.com',
-    'sl': 'search.yahoo.com',
-}
-"""Map language to domain"""
 
 yahoo_languages = {
     "all": "any",
@@ -111,94 +108,64 @@ yahoo_languages = {
     "sv": "sv",  # Swedish
     "th": "th",  # Thai
     "tr": "tr",  # Turkish
-    "zh": "zh_chs",  # Chinese (Simplified)
-    "zh_Hans": "zh_chs",
-    'zh-CN': "zh_chs",
-    "zh_Hant": "zh_cht",  # Chinese (Traditional)
-    "zh-HK": "zh_cht",
-    'zh-TW': "zh_cht",
+    "zh": "zh_chs",
 }
 
 
-def build_sb_cookie(cookie_params):
-    """Build sB cookie parameter from provided parameters.
+CACHE: EngineCache
+"""YBV cookie"""
 
-    :param cookie_params: Dictionary of cookie parameters
-    :type cookie_params: dict
-    :returns: Formatted cookie string
-    :rtype: str
-
-    Example:
-        >>> cookie_params = {'v': '1', 'vm': 'p', 'fl': '1', 'vl': 'lang_fr'}
-        >>> build_sb_cookie(cookie_params)
-        'v=1&vm=p&fl=1&vl=lang_fr'
-    """
-
-    cookie_parts = []
-    for key, value in cookie_params.items():
-        cookie_parts.append(f"{key}={value}")
-
-    return "&".join(cookie_parts)
+_YBV_HOPS = 4
+"""Tracking pixel -> gif -> (optional) geo redirect i.e. au.search.yahoo.com -> 200"""
 
 
-def request(query, params):
-    """Build Yahoo search request."""
-
-    lang, region = (params["language"].split("-") + [None])[:2]
-    lang = yahoo_languages.get(lang, "any")
-
-    # Build URL parameters
-    # - p (str): Search query string
-    # - btf (str): Time filter, maps to values like 'd' (day), 'w' (week), 'm' (month)
-    # - iscqry (str): Empty string, necessary for results to appear properly on first page
-    # - b (int): Search offset for pagination
-    # - pz (str): Amount of results expected for the page
-    url_params = {'p': query}
-
-    btf = time_range_dict.get(params['time_range'])
-    if btf:
-        url_params['btf'] = btf
-
-    if params['pageno'] == 1:
-        url_params['iscqry'] = ''
-    elif params['pageno'] >= 2:
-        url_params['b'] = params['pageno'] * 7 + 1  #  8, 15, 21, etc.
-        url_params['pz'] = 7
-        url_params['bct'] = 0
-        url_params['xargs'] = 0
-
-    # Build sB cookie (for filters)
-    # - vm (str): SafeSearch filter, maps to values like 'p' (None), 'i' (Moderate), 'r' (Strict)
-    # - fl (bool): Indicates if a search language is used or not
-    # - vl (str): The search language to use (e.g. lang_fr)
-    sbcookie_params = {
-        'v': 1,
-        'vm': safesearch_dict[params['safesearch']],
-        'fl': 1,
-        'vl': f'lang_{lang}',
-        'pn': 10,
-        'rw': 'new',
-        'userset': 1,
-    }
-    params['cookies']['sB'] = build_sb_cookie(sbcookie_params)
-
-    # Search region/language
-    domain = region2domain.get(region)
-    if not domain:
-        domain = lang2domain.get(lang, f'{lang}.search.yahoo.com')
-    logger.debug(f'domain selected: {domain}')
-    logger.debug(f'cookies: {params["cookies"]}')
-
-    params['url'] = f'https://{domain}/search?{urlencode(url_params)}'
-    params['domain'] = domain
+def setup(engine_settings: dict[str, t.Any]):
+    global CACHE  # pylint: disable=global-statement
+    CACHE = EngineCache(engine_settings["name"])
 
 
-def parse_url(url_string):
+def request(query: str, params: "OnlineParams") -> None:
+    parts = params["searxng_locale"].split("-")
+    lang = yahoo_languages.get(parts[0], "any")
+
+    url_params: dict[str, str | int] = {"p": query}
+    if params["time_range"] in time_range_dict:
+        url_params["btf"] = time_range_dict[params["time_range"]]
+    if params["pageno"] == 1:
+        url_params["iscqry"] = ""
+    else:
+        url_params["b"] = params["pageno"] * 7 + 1
+        url_params["pz"] = 7
+        url_params["bct"] = 0
+        url_params["xargs"] = 0
+
+    params["cookies"]["sB"] = urlencode(
+        {
+            "v": 1,
+            "vm": safesearch_dict[params["safesearch"]],
+            "fl": 1,
+            "vl": f"lang_{lang}",
+            "pn": 10,
+            "rw": "new",
+            "userset": 1,
+        }
+    )
+
+    domain = "search.yahoo.com"
+    if len(parts) > 1 and parts[-1] in region2domain:
+        domain = region2domain[parts[-1]]
+    logger.debug("domain selected: %s", domain)
+    params["url"] = f"https://{domain}/search?{urlencode(url_params)}"
+    if ybv := CACHE.get("YBV"):
+        params["cookies"]["YBV"] = ybv
+
+
+def parse_url(url_string: str) -> str:
     """remove yahoo-specific tracking-url"""
 
-    endings = ['/RS', '/RK']
+    endings = ["/RS", "/RK"]
     endpositions = []
-    start = url_string.find('http', url_string.find('/RU=') + 1)
+    start = url_string.find("http", url_string.find("/RU=") + 1)
 
     for ending in endings:
         endpos = url_string.rfind(ending)
@@ -212,45 +179,63 @@ def parse_url(url_string):
     return unquote(url_string[start:end])
 
 
-def response(resp):
-    """parse response"""
+def _yahoo_html(resp: "SXNG_Response") -> "SXNG_Response":
+    cookies = dict(resp.search_params["cookies"])
+    params = resp.search_params
+    for _ in range(_YBV_HOPS):
+        if ybv := resp.cookies.get("YBV"):
+            cookies["YBV"] = ybv
+            if ybv.startswith("v0.2"):
+                CACHE.set("YBV", ybv, expire=86400)
 
-    results = []
-    dom = html.fromstring(resp.text)
+        if resp.status_code == 200:
+            return resp
 
-    url_xpath = './/div[contains(@class,"compTitle")]/h3/a/@href'
-    title_xpath = './/h3//a/@aria-label'
+        loc = resp.headers.get("location")
+        if resp.status_code not in (302, 307) or not loc:
+            return resp
 
-    domain = resp.search_params['domain']
-    if domain == "search.yahoo.com":
-        url_xpath = './/div[contains(@class,"compTitle")]/a/@href'
-        title_xpath = './/div[contains(@class,"compTitle")]/a/h3/span'
+        # request ourselves instead of following it
+        resp = get(
+            urljoin(resp.url, loc),
+            cookies=cookies,
+            headers=params["headers"],
+            allow_redirects=False,
+        )
+        resp.search_params = params
 
-    # parse results
+    return resp
+
+
+def response(resp: "SXNG_Response") -> EngineResults:
+    resp = _yahoo_html(resp)
+    results = EngineResults()
+    if resp.status_code != 200:
+        resp.raise_for_status()
+    dom = resp.html()
+
     for result in eval_xpath_list(dom, '//div[contains(@class,"algo-sr")]'):
-        url = eval_xpath_getindex(result, url_xpath, 0, default=None)
+        url = eval_xpath_getindex(result, './/div[contains(@class,"compTitle")]//a/@href', 0, default=None)
         if url is None:
             continue
         url = parse_url(url)
-
-        title = eval_xpath_getindex(result, title_xpath, 0, default='')
-        title: str = extract_text(title)
-        content = eval_xpath_getindex(result, './/div[contains(@class, "compText")]', 0, default='')
-        content: str = extract_text(content, allow_none=True)
-
-        # append result
-        results.append(
-            {
-                'url': url,
+        title = extract_text(eval_xpath_getindex(result, ".//h3//a/@aria-label", 0, default=None), allow_none=True)
+        if not title:
+            title = extract_text(eval_xpath_getindex(result, ".//a/h3", 0, default=None), allow_none=True)
+        if not title:
+            continue
+        content = extract_text(eval_xpath_getindex(result, './/div[contains(@class, "compText")]', 0))
+        results.add(
+            results.types.MainResult(
+                url=url,
                 # title sometimes contains HTML tags / see
                 # https://github.com/searxng/searxng/issues/3790
-                'title': " ".join(html_to_text(title).strip().split()),
-                'content': " ".join(html_to_text(content).strip().split()),
-            }
+                title=html_to_text(title),
+                content=html_to_text(content),
+            )
         )
 
     for suggestion in eval_xpath_list(dom, '//div[contains(@class, "AlsoTry")]//table//a'):
-        # append suggestion
-        results.append({'suggestion': extract_text(suggestion)})
+        results.add(results.types.LegacyResult(suggestion=extract_text(suggestion)))
 
     return results

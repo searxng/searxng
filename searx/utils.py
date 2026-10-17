@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 """Utility functions for the engines"""
 
+from hashlib import pbkdf2_hmac
 
 import re
 import importlib
@@ -25,7 +26,7 @@ from lxml.etree import XPath, XPathError, XPathSyntaxError
 from lxml.etree import ElementBase, _Element  # pyright: ignore[reportPrivateUsage]
 
 from searx import settings
-from searx.data import USER_AGENTS, gsa_useragents_loader
+from searx.data import USER_AGENTS
 from searx.version import VERSION_TAG
 from searx.exceptions import SearxXPathSyntaxException, SearxEngineXPathException
 from searx import logger
@@ -79,14 +80,6 @@ def gen_useragent(os_string: str | None = None) -> str:
         os=os_string or choice(USER_AGENTS['os']),
         version=choice(USER_AGENTS['versions']),
     )
-
-
-def gen_gsa_useragent() -> str:
-    """Return a random "Google Go App" User Agent suitable for Google
-
-    See searx/data/gsa_useragents.txt
-    """
-    return choice(gsa_useragents_loader()) + " NSTNWV"
 
 
 class HTMLTextExtractor(HTMLParser):
@@ -599,13 +592,24 @@ def eval_xpath_getindex(
     return default
 
 
-def get_embeded_stream_url(url: str):
-    """
-    Converts a standard video URL into its embed format. Supported services include Youtube,
-    Facebook, Instagram, TikTok, Dailymotion, and Bilibili.
+def get_embedded_stream_url(url: str) -> str:
+    """Converts a standard video URL into its embed format.
+
+    Supported services include:
+
+    - Youtube
+    - Facebook
+    - Instagram
+    - TikTok
+    - Dailymotion
+    - Bilibili
+
+    The function is suitable for the field :obj:`MainResult.iframe_src
+    <searx.result_types.MainResult.iframe_src>`.  If ``url`` is not from one of
+    the supported services, an empty string is returned.
     """
     parsed_url = urlparse(url)
-    iframe_src = None
+    iframe_src = ""
 
     # YouTube
     if parsed_url.netloc in ['www.youtube.com', 'youtube.com'] and parsed_url.path == '/watch' and parsed_url.query:
@@ -742,13 +746,13 @@ def js_obj_str_to_json_str(js_obj_str: str) -> str:
             if in_string == "'":
                 p = p.replace('"', r'\"')
             parts[i] = p
-            # deal with the sequence blackslash then quote
-            # since js_obj_str splits on quote, we detect this case:
-            # * the previous part ends with a black slash
-            # * the current part is a single quote
-            # when detected the blackslash is removed on the previous part
+            # drop a trailing \ that was escaping the quote
+            # leave it if it has been escaped twice as a literal i.e. two \ and ' in a row
             if blackslash_just_before and p[:1] == "'":
-                parts[i - 1] = parts[i - 1][:-1]
+                prev = parts[i - 1]
+                num_backslashes = len(prev) - len(prev.rstrip("\\"))
+                if num_backslashes % 2 == 1:
+                    parts[i - 1] = prev[:-1]
 
         elif in_string is None and p in ('"', "'", "`"):
             # we are not in string but p is string delimiter
@@ -790,9 +794,10 @@ def js_obj_str_to_json_str(js_obj_str: str) -> str:
 
 
 def parse_duration_string(duration_str: str) -> timedelta | None:
-    """Parse a time string in format MM:SS or HH:MM:SS and convert it to a `timedelta` object.
+    """Parse a time string in format MM:SS or HH:MM:SS and convert it to a
+    :obj:`datetime.timedelta` object.
 
-    Returns None if the provided string doesn't match any of the formats.
+    Returns ``None`` if the provided string doesn't match any of the formats.
     """
     duration_str = duration_str.strip()
 
@@ -801,11 +806,42 @@ def parse_duration_string(duration_str: str) -> timedelta | None:
 
     try:
         # prepending ["00"] here inits hours to 0 if they are not provided
-        time_parts = (["00"] + duration_str.split(":"))[:3]
+        time_parts = (["00"] + duration_str.split(":"))[-3:]
         hours, minutes, seconds = map(int, time_parts)
         return timedelta(hours=hours, minutes=minutes, seconds=seconds)
 
     except (ValueError, TypeError):
         pass
+
+    return None
+
+
+def _array_startswith(arr: bytes, prefix: bytes) -> bool:
+    return arr[: len(prefix)] == prefix
+
+
+def solve_altcha(parameters: dict[str, t.Any], maxCounter: int = 1000) -> tuple[str, int] | None:
+    """Solves Altcha CAPTCHAs. It derives keys using PBKDF2 until the derived
+    key starts with the ``keyPrefix``` from the challenge. If the solver does not
+    finish after ``maxCounter`` iterations, returns ``None``."""
+
+    nonce = bytes.fromhex(parameters["nonce"])
+    salt = bytes.fromhex(parameters["salt"])
+    keyPrefix = bytes.fromhex(parameters["keyPrefix"])
+    cost = parameters["cost"]
+    keyLength = parameters["keyLength"]
+    # e.g. "PBKDF2/SHA-256" -> "sha256"
+    hashAlgorithm = parameters["algorithm"].split("/")[-1].replace("-", "").lower()
+
+    counter = 0
+    while counter < maxCounter:
+        # Appends the counter to the nonce, i.e. writes the counter as a big-endian 32-bit integer.
+        secret = nonce + counter.to_bytes(length=4)
+
+        key = pbkdf2_hmac(hash_name=hashAlgorithm, password=secret, salt=salt, iterations=cost, dklen=keyLength)
+        if _array_startswith(key, keyPrefix):
+            return key.hex(), counter
+
+        counter += 1
 
     return None

@@ -7,7 +7,6 @@
 @import "mixins.less";
 @import "toolkit.less";
 @import "autocomplete.less";
-@import "detail.less";
 @import "animations.less";
 @import "embedded.less";
 @import "info.less";
@@ -256,6 +255,8 @@ article[data-vim-selected].category-social {
     font-size: 1rem;
     color: var(--color-result-url-font);
     flex-flow: row nowrap;
+    flex: 1;
+    min-width: 0;
     overflow: hidden;
     margin: 0;
     padding: 0;
@@ -306,20 +307,42 @@ article[data-vim-selected].category-social {
 
   a.thumbnail_link {
     position: relative;
-    margin-top: 0.6rem;
-    .ltr-margin-right(1rem);
-    .ltr-float-left();
+    display: block;
+    .ltr-float-right();
+    .ltr-margin-left(0.5rem);
+    width: 8rem;
+    aspect-ratio: 4 / 3;
+    border-radius: 0.5rem;
+    overflow: hidden;
+    background: var(--color-result-border);
+
+    img.thumbnail_bg {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: blur(2rem) brightness(0.5);
+      pointer-events: none;
+    }
 
     img.thumbnail {
-      width: 7rem;
-      height: unset; // remove height value that was needed for lazy loading
+      position: relative;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
       display: block;
     }
 
     .thumbnail_length {
       .image-label-bottom-right();
       right: 6px;
+      z-index: 1;
     }
+  }
+
+  .result_inner {
+    overflow: hidden;
   }
 
   .break {
@@ -408,32 +431,10 @@ article[data-vim-selected].category-social {
   padding: 10px 0 0 0;
 }
 
-.result-videos {
-  a.thumbnail_link img.thumbnail {
-    width: 20rem;
-  }
-
-  .content {
-    overflow: hidden;
-  }
-
-  .embedded-video iframe {
-    width: 100%;
-    aspect-ratio: 16 / 9;
-    padding: 10px 0 0 0;
-  }
-}
-
-@supports not (aspect-ratio: 1 / 1) {
-  // support older browsers which do not have aspect-ratio
-  // https://caniuse.com/?search=aspect-ratio
-  .result-videos .embedded-video iframe {
-    height: calc(@results-width * 9 / 16);
-  }
-}
-
 .engines {
   .ltr-float-right();
+  clear: both;
+  margin-top: 0.5rem;
   display: flex;
   flex-wrap: wrap;
   justify-content: flex-end;
@@ -472,6 +473,8 @@ article[data-vim-selected].category-social {
   & > a {
     position: relative;
     outline: none;
+    display: inline-block;
+    height: 100%;
   }
 
   img {
@@ -931,10 +934,6 @@ summary.title {
   }
 
   .result {
-    .thumbnail {
-      max-width: 98%;
-    }
-
     .url {
       span.url {
         display: block;
@@ -1145,13 +1144,11 @@ summary.title {
 */
 
 @media screen and (max-width: @small-phone) {
-  .result-videos {
-    img.thumbnail {
-      float: none !important;
-    }
-
-    .content {
-      overflow: inherit;
+  .result {
+    a.thumbnail_link {
+      aspect-ratio: 1 / 1;
+      width: 7rem;
+      border-radius: 1.25rem;
     }
   }
 }
@@ -1165,3 +1162,5 @@ pre code {
 @import "result_types/code.less";
 @import "result_types/paper.less";
 @import "result_types/file.less";
+@import "result_types/image.less";
+@import "result_types/video.less";

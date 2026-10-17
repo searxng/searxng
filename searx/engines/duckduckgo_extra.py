@@ -10,7 +10,8 @@ from datetime import datetime
 from urllib.parse import urlencode
 from urllib.parse import quote_plus
 
-from searx.utils import get_embeded_stream_url, html_to_text, gen_useragent, extr
+from searx.result_types import EngineResults, MainResult, Image, Video
+from searx.utils import html_to_text, gen_useragent, extr
 from searx.network import get  # see https://github.com/searxng/searxng/issues/762
 
 from searx.engines.duckduckgo import fetch_traits  # pylint: disable=unused-import
@@ -28,6 +29,7 @@ about = {
     "require_api_key": False,
     "results": "JSON (site requires js to get images)",
 }
+language_support = True
 
 # engine dependent config
 categories = []
@@ -41,10 +43,12 @@ safesearch_cookies = {0: "-2", 1: None, 2: "1"}
 safesearch_args = {0: "1", 1: None, 2: "1"}
 
 search_path_map = {"images": "i", "videos": "v", "news": "news"}
+
 _HTTP_User_Agent: str = gen_useragent()
+send_accept_language_header = False
 
 
-def init(engine_settings: dict[str, t.Any]):
+def setup(engine_settings: dict[str, t.Any]) -> bool | None:
 
     if engine_settings["ddg_category"] not in ["images", "videos", "news"]:
         raise ValueError(f"Unsupported DuckDuckGo category: {engine_settings['ddg_category']}")
@@ -94,6 +98,7 @@ def request(query: str, params: "OnlineParams") -> None:
     # The vqd value is generated from the query and the UA header. To be able to
     # reuse the vqd value, the UA header must be static.
     headers["User-Agent"] = _HTTP_User_Agent
+    params["impersonate"] = "none"
     vqd = get_vqd(query=query, params=params) or fetch_vqd(query=query, params=params)
 
     headers["Accept"] = "*/*"
@@ -145,54 +150,49 @@ def request(query: str, params: "OnlineParams") -> None:
 
 
 def _image_result(result):
-    return {
-        'template': 'images.html',
-        'url': result['url'],
-        'title': result['title'],
-        'content': '',
-        'thumbnail_src': result['thumbnail'],
-        'img_src': result['image'],
-        'resolution': '%s x %s' % (result['width'], result['height']),
-        'source': result['source'],
-    }
+    return Image(
+        url=result['url'],
+        title=result['title'],
+        content='',
+        thumbnail_src=result['thumbnail'],
+        img_src=result['image'],
+        resolution='%s x %s' % (result['width'], result['height']),
+        source=result['source'],
+    )
 
 
 def _video_result(result):
-    return {
-        'template': 'videos.html',
-        'url': result['content'],
-        'title': result['title'],
-        'content': result['description'],
-        'thumbnail': result['images'].get('small') or result['images'].get('medium'),
-        'iframe_src': get_embeded_stream_url(result['content']),
-        'source': result['provider'],
-        'length': result['duration'],
-        'metadata': result.get('uploader'),
-    }
+    return Video(
+        url=result['content'],
+        title=result['title'],
+        content=result['description'],
+        thumbnail=result['images'].get('small') or result['images'].get('medium'),
+        length=result['duration'],
+        metadata=result.get('uploader'),
+    )
 
 
 def _news_result(result):
-    return {
-        'url': result['url'],
-        'title': result['title'],
-        'content': html_to_text(result['excerpt']),
-        'source': result['source'],
-        'publishedDate': datetime.fromtimestamp(result['date']),
-    }
+    return MainResult(
+        url=result['url'],
+        title=result['title'],
+        content=html_to_text(result['excerpt']),
+        publishedDate=datetime.fromtimestamp(result['date']),
+    )
 
 
-def response(resp):
-    results = []
+def response(resp: "SXNG_Response") -> EngineResults:
+    res = EngineResults()
     res_json = resp.json()
 
     for result in res_json['results']:
         if ddg_category == 'images':
-            results.append(_image_result(result))
+            res.add(_image_result(result))
         elif ddg_category == 'videos':
-            results.append(_video_result(result))
+            res.add(_video_result(result))
         elif ddg_category == 'news':
-            results.append(_news_result(result))
+            res.add(_news_result(result))
         else:
             raise ValueError(f"Invalid duckduckgo category: {ddg_category}")
 
-    return results
+    return res

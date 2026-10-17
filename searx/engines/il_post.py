@@ -34,8 +34,8 @@ about = {
     "use_official_api": True,
     "require_api_key": False,
     "results": "JSON",
-    "language": "it",
 }
+language = "it"
 
 
 def request(query, params):

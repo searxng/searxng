@@ -14,39 +14,50 @@ import os
 import sys
 import copy
 
+import os
+from os.path import realpath, dirname
+import warnings
+
 import types
 import inspect
+import msgspec
 
 from searx import logger, settings
 from searx.utils import load_module
-
-if t.TYPE_CHECKING:
-    from searx.enginelib import Engine
+from searx.data import ENGINE_TRAITS
+from searx.enginelib import Engine, EngineAbout
 
 logger = logger.getChild('engines')
 ENGINE_DIR = os.path.dirname(os.path.realpath(__file__))
 
 # Defaults for the namespace of an engine module, see load_engine()
-ENGINE_DEFAULT_ARGS: dict[str, int | str | list[t.Any] | dict[str, t.Any] | bool] = {
+ENGINE_DEFAULT_ARGS: dict[str, t.Any] = {
     # Common options in the engine module
     "engine_type": "online",
     "paging": False,
+    "max_page": 0,
     "time_range_support": False,
     "safesearch": False,
+    "language_support": False,
     # settings.yml
     "categories": ["general"],
+    "language": "",
+    "region": "",
     "enable_http": False,
     "shortcut": "-",
     "timeout": settings["outgoing"]["request_timeout"],
     "display_error_messages": True,
     "disabled": False,
     "inactive": False,
-    "about": {},
+    "about": EngineAbout(),
     "using_tor_proxy": False,
     "send_accept_language_header": True,
     "tokens": [],
-    "max_page": 0,
+    "weight": 1.0,
 }
+"""Default values that are set in an engine of type *module*, please compare
+with the class :py:obj:`searx.enginelib.Engine`."""
+
 # set automatically when an engine does not have any tab category
 DEFAULT_CATEGORY = 'other'
 
@@ -106,27 +117,27 @@ def load_engine(engine_data: dict[str, t.Any]) -> "Engine | types.ModuleType | N
         logger.error('An engine does not have a "name" field')
         return None
     if '_' in engine_name:
-        logger.error('Engine name contains underscore: "{}"'.format(engine_name))
+        logger.error('Engine name contains underscore: "%s"', engine_name)
         return None
 
     if engine_name.lower() != engine_name:
-        logger.warning('Engine name is not lowercase: "{}", converting to lowercase'.format(engine_name))
+        logger.warning('Engine name is not lowercase: "%s", converting to lowercase', engine_name)
         engine_name = engine_name.lower()
         engine_data['name'] = engine_name
 
     # load_module
     module_name = engine_data.get('engine')
     if module_name is None:
-        logger.error('The "engine" field is missing for the engine named "{}"'.format(engine_name))
+        logger.error('The "engine" field is missing for the engine named "%s"', engine_name)
         return None
     try:
         module_path = os.path.join(ENGINE_DIR, module_name + '.pyc')
         engine = load_module(module_name + '.pyc', ENGINE_DIR) if os.path.exists(module_path) else load_module(module_name + '.py', ENGINE_DIR)
     except (SyntaxError, KeyboardInterrupt, SystemExit, SystemError, ImportError, RuntimeError):
-        logger.exception('Fatal exception in engine "{}"'.format(module_name))
+        logger.exception('Fatal exception in engine "%s"', module_name)
         sys.exit(1)
     except BaseException:
-        logger.exception('Cannot load engine "{}"'.format(module_name))
+        logger.exception('Cannot load engine "%s"', module_name)
         return None
 
     check_engine_module(engine)
@@ -177,14 +188,42 @@ def set_loggers(engine: "Engine|types.ModuleType", engine_name: str):
 
 
 def update_engine_attributes(engine: "Engine | types.ModuleType", engine_data: dict[str, t.Any]):
-    # set engine attributes from engine_data
+    # pylint: disable=too-many-branches
+
+    # set / update engine attributes from engine_data
+    kvargs: dict[str, t.Any]
+    engine.about = getattr(engine, "about", EngineAbout())
+    if isinstance(engine.about, EngineAbout):
+        kvargs = {**msgspec.to_builtins(engine.about), **engine_data.get("about", {})}
+    else:
+        kvargs = {**engine.about, **engine_data.get("about", {})}
+
+    try:
+        engine.about = EngineAbout(**kvargs)
+    except TypeError as exc:
+        raise TypeError(
+            f"engine '{engine_data['name']}' ({engine_data['engine']}) - in the about section --> {exc}"
+        ) from exc
+
+    # warn about deprecated engine settings
+
+    if engine.about.language:
+        if hasattr(engine, "language") and not engine.language:
+            engine.language = engine.about.language
+        warnings.warn(
+            f"engine '{engine_data['name']}' ({engine_data['engine']})"
+            f" - migrate engine.about.language to engine.language!",
+            DeprecationWarning,
+            2,
+        )
+
     for param_name, param_value in engine_data.items():
+        if param_name == "about":
+            continue
         if param_name == 'categories':
             if isinstance(param_value, str):
                 param_value = list(map(str.strip, param_value.split(',')))
             engine.categories = param_value  # type: ignore
-        elif hasattr(engine, 'about') and param_name == 'about':
-            engine.about = {**engine.about, **engine_data['about']}  # type: ignore
         else:
             setattr(engine, param_name, param_value)
 
@@ -192,6 +231,9 @@ def update_engine_attributes(engine: "Engine | types.ModuleType", engine_data: d
     for arg_name, arg_value in ENGINE_DEFAULT_ARGS.items():
         if not hasattr(engine, arg_name):
             setattr(engine, arg_name, copy.deepcopy(arg_value))
+
+    if ENGINE_TRAITS.get(engine.name, {}).get("languages") and not engine.language_support:
+        raise ValueError(f"engine '{engine.name}' ({engine_data['engine']}) language_support should be set to True")
 
 
 def update_attributes_for_tor(engine: "Engine | types.ModuleType"):
@@ -208,7 +250,7 @@ def is_missing_required_attributes(engine: "Engine | types.ModuleType"):
     missing = False
     for engine_attr in dir(engine):
         if not engine_attr.startswith('_') and getattr(engine, engine_attr) is None:
-            logger.error('Missing engine config attribute: "{0}.{1}"'.format(engine.name, engine_attr))
+            logger.error('Missing engine config attribute: "%s.%s"', engine.name, engine_attr)
             missing = True
     return missing
 
@@ -231,7 +273,8 @@ def is_engine_active(engine: "Engine | types.ModuleType"):
 
 
 def call_engine_setup(engine: "Engine | types.ModuleType", engine_data: dict[str, t.Any]) -> bool:
-    setup_ok = False
+
+    setup_ok: bool | None = False
     setup_func = getattr(engine, "setup", None)
 
     if setup_func is None:
@@ -242,21 +285,26 @@ def call_engine_setup(engine: "Engine | types.ModuleType", engine_data: dict[str
         try:
             setup_ok = engine.setup(engine_data)
         except Exception as e:  # pylint: disable=broad-except
-            logger.exception('exception : {0}'.format(e))
+            logger.exception("(PID %s) %s: engine SETUP failed, exception: %s", os.getpid(), engine.name, e)
+            setup_ok = False
+
+    # The evaluation of the return value is analogous to Engine.init
+    if setup_ok is None:
+        setup_ok = True
 
     if not setup_ok:
-        logger.error("%s: Engine setup was not successful, engine is set to inactive.", engine.name)
+        logger.error("(PID %s) %s: engine setup was not successful", os.getpid(), engine.name)
     return setup_ok
 
 
 def register_engine(engine: "Engine | types.ModuleType"):
     if engine.name in engines:
-        logger.error('Engine config error: ambiguous name: {0}'.format(engine.name))
+        logger.error('Engine config error: ambiguous name: %s', engine.name)
         sys.exit(1)
     engines[engine.name] = engine
 
     if engine.shortcut in engine_shortcuts:
-        logger.error('Engine config error: ambiguous shortcut: {0}'.format(engine.shortcut))
+        logger.error('Engine config error: ambiguous shortcut: %s', engine.shortcut)
         sys.exit(1)
     engine_shortcuts[engine.shortcut] = engine.name
 
@@ -273,12 +321,18 @@ def load_engines(engine_list: list[dict[str, t.Any]]):
     for engine_data in engine_list:
         if engine_data.get("inactive") is True:
             continue
+
         engine = load_engine(engine_data)
+
         if engine:
             register_engine(engine)
         else:
             # if an engine can't be loaded (if for example the engine is missing
             # tor or some other requirements) its set to inactive!
-            logger.error("loading engine %s failed: set engine to inactive!", engine_data.get("name", "???"))
+            logger.error(
+                "(PID %s) %s: can't register engine (loading engine failed)",
+                os.getpid(),
+                engine_data.get("name", "???"),
+            )
             engine_data["inactive"] = True
     return engines

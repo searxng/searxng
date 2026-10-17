@@ -38,6 +38,7 @@ Implementation
 
 """
 
+import typing as t
 from urllib.parse import urlencode
 from dateutil import parser
 
@@ -77,7 +78,7 @@ page_size: int = 10
 """Maximum number of results per page (default 10)."""
 
 
-def init(_):
+def setup(_: dict[str, t.Any]) -> bool | None:
     if not base_url:
         raise ValueError('gitea engine: base_url is unset')
 

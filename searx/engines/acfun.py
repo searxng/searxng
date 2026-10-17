@@ -16,12 +16,12 @@ about = {
     "use_official_api": False,
     "require_api_key": False,
     "results": "HTML",
-    "language": "zh",
 }
 
 # Engine Configuration
 categories = ["videos"]
 paging = True
+language = "zh"
 
 # Base URL
 base_url = "https://www.acfun.cn"
@@ -83,7 +83,7 @@ def extract_video_data(video_block):
         published_date = None
         if create_time:
             try:
-                published_date = datetime.strptime(create_time.strip(), "%Y-%m-%d")
+                published_date = datetime.fromisoformat(create_time.strip())
             except (ValueError, TypeError):
                 pass
 

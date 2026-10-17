@@ -176,6 +176,4 @@ def response(resp):
 
         results.append(result)
 
-    results.append({'number_of_results': len(json_data['topics'])})
-
     return results

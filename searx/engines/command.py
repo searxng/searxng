@@ -74,6 +74,7 @@ Implementations
 ===============
 """
 
+import typing as t
 import re
 from os.path import expanduser, isabs, realpath, commonprefix
 from shlex import split as shlex_split
@@ -82,7 +83,6 @@ from threading import Thread
 
 from searx import logger
 from searx.result_types import EngineResults
-
 
 engine_type = 'offline'
 paging = True
@@ -100,7 +100,7 @@ _command_logger = logger.getChild('command')
 _compiled_parse_regex = {}
 
 
-def init(engine_settings):
+def setup(engine_settings: dict[str, t.Any]) -> bool | None:
     check_parsing_options(engine_settings)
 
     if 'command' not in engine_settings:
@@ -169,7 +169,7 @@ def _get_results_from_process(res: EngineResults, cmd, pageno):
             for raw_result in raw_results:
                 result = __parse_single_result(raw_result)
                 if result is None:
-                    _command_logger.debug('skipped result:', raw_result)
+                    _command_logger.debug('skipped result: %s', raw_result)
                     continue
 
                 if start <= count and count <= end:  # pylint: disable=chained-comparison

@@ -4,14 +4,19 @@
 .. _Odysee: https://github.com/OdyseeTeam/odysee-frontend
 """
 
-import time
-from datetime import datetime
+import typing as t
+from datetime import datetime, timedelta
 from urllib.parse import urlencode
 
 import babel
 
 from searx.enginelib.traits import EngineTraits
 from searx.locales import language_tag
+from searx.result_types import EngineResults
+
+if t.TYPE_CHECKING:
+    from searx.extended_types import SXNG_Response
+    from searx.search.processors import OnlineParams
 
 # Engine metadata
 about = {
@@ -26,6 +31,7 @@ about = {
 # Engine configuration
 paging = True
 time_range_support = True
+language_support = True
 results_per_page = 20
 categories = ["videos"]
 
@@ -33,7 +39,7 @@ categories = ["videos"]
 base_url = "https://lighthouse.odysee.tv/search"
 
 
-def request(query, params):
+def request(query: str, params: "OnlineParams"):
     time_range_dict = {
         "day": "today",
         "week": "thisweek",
@@ -58,55 +64,39 @@ def request(query, params):
         query_params["time_filter"] = time_range_dict[params["time_range"]]
 
     params["url"] = f"{base_url}?{urlencode(query_params)}"
-    return params
 
 
-# Format the video duration
-def format_duration(duration):
-    seconds = int(duration)
-    length = time.gmtime(seconds)
-    if length.tm_hour:
-        return time.strftime("%H:%M:%S", length)
-    return time.strftime("%M:%S", length)
-
-
-def response(resp):
+def response(resp: "SXNG_Response") -> EngineResults:
+    res = EngineResults()
     data = resp.json()
-    results = []
 
     for item in data:
         name = item["name"]
         claim_id = item["claimId"]
-        title = item["title"]
         thumbnail_url = item["thumbnail_url"]
-        description = item["description"] or ""
-        channel = item["channel"]
         release_time = item["release_time"]
-        duration = item["duration"]
 
-        release_date = datetime.strptime(release_time.split("T")[0], "%Y-%m-%d")
+        release_date = datetime.fromisoformat(release_time.split("T")[0])
         formatted_date = datetime.fromtimestamp(release_date.timestamp())
 
         url = f"https://odysee.com/{name}:{claim_id}"
         iframe_url = f"https://odysee.com/$/embed/{name}:{claim_id}"
         odysee_thumbnail = f"https://thumbnails.odycdn.com/optimize/s:390:0/quality:85/plain/{thumbnail_url}"
-        formatted_duration = format_duration(duration)
 
-        results.append(
-            {
-                "title": title,
-                "url": url,
-                "content": description,
-                "author": channel,
-                "publishedDate": formatted_date,
-                "length": formatted_duration,
-                "thumbnail": odysee_thumbnail,
-                "iframe_src": iframe_url,
-                "template": "videos.html",
-            }
+        res.add(
+            res.types.Video(
+                title=item["title"],
+                url=url,
+                content=item["description"] or "",
+                author=item["channel"],
+                publishedDate=formatted_date,
+                length=timedelta(seconds=item["duration"]),
+                thumbnail=odysee_thumbnail,
+                iframe_src=iframe_url,
+            )
         )
 
-    return results
+    return res
 
 
 def fetch_traits(engine_traits: EngineTraits):

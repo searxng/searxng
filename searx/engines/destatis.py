@@ -2,7 +2,6 @@
 """DeStatis"""
 
 from urllib.parse import urlencode
-from lxml import html
 from searx.utils import eval_xpath, eval_xpath_list, extract_text
 
 about = {
@@ -11,8 +10,8 @@ about = {
     'use_official_api': False,
     'require_api_key': False,
     'results': 'HTML',
-    'language': 'de',
 }
+language = "de"
 
 categories = []
 paging = True
@@ -42,7 +41,7 @@ def request(query, params):
 def response(resp):
     results = []
 
-    dom = html.fromstring(resp.text)
+    dom = resp.html()
 
     # filter out suggested results on further page because they're the same on each page
     extra_xpath = results_xpath_filter_recommended if resp.search_params['pageno'] > 1 else ''

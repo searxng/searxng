@@ -9,11 +9,6 @@ Command Line Engines
    - :origin:`command.py <searx/engines/command.py>`
    - :ref:`offline engines`
 
-.. contents::
-   :depth: 2
-   :local:
-   :backlinks: entry
-
 .. sidebar:: info
 
    Initial sponsored by `Search and Discovery Fund

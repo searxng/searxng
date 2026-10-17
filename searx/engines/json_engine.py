@@ -20,6 +20,7 @@ Paging:
 - :py:obj:`paging`
 - :py:obj:`page_size`
 - :py:obj:`first_page_num`
+- :py:obj:`send_page_num_on_first_page`
 
 Time Range:
 
@@ -29,7 +30,7 @@ Time Range:
 
 Safe-Search:
 
-- :py:obj:`safe_search_support`
+- :py:obj:`safesearch`
 - :py:obj:`safe_search_map`
 
 Response:
@@ -78,6 +79,9 @@ from json import loads
 from urllib.parse import urlencode
 from searx.utils import to_string, html_to_text
 from searx.network import raise_for_httperror
+from searx.enginelib import EngineAbout
+
+about = EngineAbout()
 
 search_url = None
 """
@@ -103,7 +107,7 @@ Replacements are:
 
 ``{safe_search}``:
   Safe-search :py:obj:`URL parameter <safe_search_map>` if engine
-  :py:obj:`supports safe-search <safe_search_support>`.  The ``{safe_search}``
+  :py:obj:`supports safe-search <safesearch>`.  The ``{safe_search}``
   replacement is taken from the :py:obj:`safes_search_map`.  Filter results::
 
       0: none, 1: moderate, 2:strict
@@ -168,6 +172,10 @@ number, but an offset.'''
 
 first_page_num = 1
 '''Number of the first page (usually 0 or 1).'''
+
+send_page_num_on_first_page = True
+'''Whether to include the page number in the request for the first page.
+This can help if an engine blocks request that send a page number for the first page.'''
 
 results_query = ''
 '''JSON query for the list of result items.
@@ -236,7 +244,7 @@ time_range_map = {
       year: 365
 '''
 
-safe_search_support = False
+safesearch = False
 '''Engine supports safe-search.'''
 
 safe_search_map = {0: '&filter=none', 1: '&filter=moderate', 2: '&filter=strict'}
@@ -286,7 +294,6 @@ def do_query(data, q):  # pylint: disable=invalid-name
     qkey = q[0]
 
     for key, value in iterate(data):
-
         if len(q) == 1:
             if key == qkey:
                 ret.append(value)
@@ -323,10 +330,13 @@ def request(query, params):  # pylint: disable=redefined-outer-name
     if params['safesearch']:
         safe_search = safe_search_map[params['safesearch']]
 
+    pageno = ""
+    if send_page_num_on_first_page or params["pageno"] != 1:
+        pageno = (params['pageno'] - 1) * page_size + first_page_num
     fp = {  # pylint: disable=invalid-name
         'query': urlencode({'q': query})[2:],
         'lang': lang,
-        'pageno': (params['pageno'] - 1) * page_size + first_page_num,
+        'pageno': pageno,
         'time_range': time_range,
         'safe_search': safe_search,
     }

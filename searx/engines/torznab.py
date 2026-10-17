@@ -83,7 +83,7 @@ show_torrent_files: bool = False
 show_magnet_links: bool = True
 
 
-def init(engine_settings=None):  # pylint: disable=unused-argument
+def setup(_: dict[str, t.Any]) -> bool | None:
     """Initialize the engine."""
     if len(base_url) < 1:
         raise ValueError('missing torznab base_url')

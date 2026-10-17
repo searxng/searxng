@@ -352,7 +352,7 @@ CREATE TABLE IF NOT EXISTS blob_map (
         bytes_c = len(data or b"")
         if bytes_c > self.cfg.BLOB_MAX_BYTES:
             logger.info(
-                "favicon of resolver: %s / authority: %s to big to cache (bytes: %s) " % (resolver, authority, bytes_c)
+                "favicon of resolver: %s / authority: %s to big to cache (bytes: %s) ", resolver, authority, bytes_c
             )
             return False
 

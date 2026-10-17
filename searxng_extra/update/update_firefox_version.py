@@ -6,6 +6,7 @@ Output file: :origin:`searx/data/useragents.json` (:origin:`CI Update data ...
 <.github/workflows/data-update.yml>`).
 
 """
+
 # pylint: disable=use-dict-literal
 
 import json

@@ -4,12 +4,13 @@ user searches for ``tor-check``.  It fetches the tor exit node list from
 :py:obj:`url_exit_list` and parses all the IPs into a list, then checks if the
 user's IP address is in it.
 """
+
 from ipaddress import ip_address
 import typing
 
 import re
 from flask_babel import gettext
-from httpx import HTTPError
+from curl_cffi.requests.exceptions import RequestException
 
 from searx.network import get
 from searx.plugins import Plugin, PluginInfo
@@ -59,7 +60,7 @@ class SXNGPlugin(Plugin):
                 resp = get(url_exit_list)
                 node_list = re.findall(reg, resp.text)  # type: ignore
 
-            except HTTPError:
+            except RequestException:
                 # No answer, return error
                 msg = gettext("Could not download the list of Tor exit-nodes from")
                 results.add(results.types.Answer(answer=f"{msg} {url_exit_list}"))

@@ -1,0 +1,11 @@
+[[language]]
+name = "python"
+language-servers = ["basedpyright", "pylsp"]
+auto-format = true
+
+[language-server.pylsp.config.pylsp]
+plugins.pylint.enabled = true
+plugins.isort.enabled = true
+plugins.black.enabled = true
+plugins.black.skip_string_normalization = true
+plugins.black.line_length = 120

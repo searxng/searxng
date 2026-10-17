@@ -26,8 +26,7 @@ import typing as t
 
 from urllib.parse import urlencode
 from datetime import datetime
-from lxml import html
-import httpx
+from curl_cffi.requests.exceptions import TooManyRedirects
 
 from searx.utils import (
     eval_xpath,
@@ -63,6 +62,7 @@ about = {
 # engine dependent config
 categories = ["science", "scientific publications"]
 paging = True
+enable_http3 = True
 max_page = 50
 """`Google max 50 pages`_
 
@@ -77,8 +77,6 @@ def request(query: str, params: "OnlineParams") -> None:
     """Google-Scholar search request"""
 
     google_info = get_google_info(params, traits)
-    # subdomain is: scholar.google.xy
-    google_info["subdomain"] = google_info["subdomain"].replace("www.", "scholar.")
 
     args = {
         "q": query,
@@ -89,7 +87,7 @@ def request(query: str, params: "OnlineParams") -> None:
     }
     args.update(time_range_args(params))
 
-    params["url"] = "https://" + google_info["subdomain"] + "/scholar?" + urlencode(args)
+    params["url"] = "https://scholar.google.com/scholar?" + urlencode(args)
     params["cookies"] = google_info["cookies"]
     params["headers"].update(google_info["headers"])
 
@@ -104,10 +102,10 @@ def response(resp: "SXNG_Response") -> EngineResults:  # pylint: disable=too-man
             raise SearxEngineAccessDeniedException(
                 message="google_scholar: unusual traffic detected",
             )
-        raise httpx.TooManyRedirects(f"location {resp.headers['Location'].split('?')[0]}")
+        raise TooManyRedirects(f"location {resp.headers['Location'].split('?')[0]}")
 
     res = EngineResults()
-    dom = html.fromstring(resp.text)
+    dom = resp.html()
     detect_google_captcha(dom)
 
     # parse results

@@ -2,7 +2,6 @@
 """RottenTomatoes (movies)"""
 
 from urllib.parse import quote_plus
-from lxml import html
 from searx.utils import eval_xpath, eval_xpath_list, extract_text
 
 # about
@@ -35,7 +34,7 @@ def request(query, params):
 def response(resp):
     results = []
 
-    dom = html.fromstring(resp.text)
+    dom = resp.html()
 
     for result in eval_xpath_list(dom, results_xpath):
         content = []

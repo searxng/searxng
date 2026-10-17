@@ -33,6 +33,7 @@ Implementations
 
 """
 
+import typing as t
 from urllib.parse import urlencode
 from datetime import datetime
 
@@ -62,7 +63,7 @@ huggingface_endpoint = 'models'
 """
 
 
-def init(_):
+def setup(_: dict[str, t.Any]) -> bool | None:
     if huggingface_endpoint not in ('datasets', 'models', 'spaces'):
         raise SearxEngineAPIException(f"Unsupported Hugging Face endpoint: {huggingface_endpoint}")
 
@@ -91,7 +92,7 @@ def response(resp) -> EngineResults:
 
         published_date = None
         try:
-            published_date = datetime.strptime(entry["createdAt"], "%Y-%m-%dT%H:%M:%S.%fZ")
+            published_date = datetime.fromisoformat(entry["createdAt"].rstrip("Z"))
         except (ValueError, TypeError):
             pass
 

@@ -14,10 +14,6 @@ const categoryButtons: HTMLButtonElement[] = Array.from(
   document.querySelectorAll<HTMLButtonElement>("#categories_container button.category")
 );
 
-if (searchInput.value.length === 0) {
-  searchReset.classList.add("empty");
-}
-
 // focus search input on large screens
 if (!(isMobile || isResultsPage)) {
   searchInput.focus();
@@ -35,15 +31,10 @@ if (isMobile) {
   });
 }
 
-listen("input", searchInput, () => {
-  searchReset.classList.toggle("empty", searchInput.value.length === 0);
-});
-
 listen("click", searchReset, (event: MouseEvent) => {
   event.preventDefault();
   searchInput.value = "";
   searchInput.focus();
-  searchReset.classList.add("empty");
 });
 
 for (const button of categoryButtons) {

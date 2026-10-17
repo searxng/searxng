@@ -8,6 +8,7 @@ converters, each converter is one item in the list (compare
 of measurement are evaluated.  The weighting in the evaluation results from the
 sorting of the :py:obj:`list of unit converters<symbol_to_si>`.
 """
+
 import typing
 import re
 import babel.numbers

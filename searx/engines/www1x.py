@@ -17,7 +17,7 @@ about = {
 }
 
 # engine dependent config
-categories = ['images']
+categories = ["stock images"]
 paging = False
 
 # search-url

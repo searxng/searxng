@@ -57,7 +57,6 @@ options:
 import urllib.parse
 
 import babel
-from lxml import html
 
 from searx import locales, utils
 from searx import network as _network
@@ -72,6 +71,7 @@ about = {
     "require_api_key": False,
     "results": "JSON",
 }
+language_support = True
 
 display_type = ["infobox"]
 """A list of display types composed from ``infobox`` and ``list``.  The latter
@@ -284,7 +284,7 @@ def fetch_wikimedia_traits(engine_traits: EngineTraits):
     if not resp.ok:
         raise RuntimeError("Response from Wikipedia is not OK.")
 
-    dom = html.fromstring(resp.text)
+    dom = resp.html()
     for row in dom.xpath('//table[contains(@class,"sortable")]//tbody/tr'):
         cols = row.xpath("./td")
         if not cols:

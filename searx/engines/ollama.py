@@ -3,7 +3,6 @@
 
 from urllib.parse import urlencode
 from datetime import datetime
-from lxml import html
 
 from searx.utils import eval_xpath_list, eval_xpath_getindex, eval_xpath, extract_text
 from searx.result_types import EngineResults
@@ -37,7 +36,7 @@ def request(query, params):
 def response(resp) -> EngineResults:
     res = EngineResults()
 
-    dom = html.fromstring(resp.text)
+    dom = resp.html()
 
     for item in eval_xpath_list(dom, results_xpath):
         published_date = None

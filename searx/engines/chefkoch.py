@@ -10,13 +10,13 @@ about = {
     'use_official_api': False,
     'require_api_key': False,
     'results': 'JSON',
-    'language': 'de',
 }
+language = "de"
 
 paging = True
 categories = []
 
-number_of_results = 20
+page_size = 20
 skip_premium = True
 
 
@@ -25,7 +25,7 @@ thumbnail_format = "crop-240x300"
 
 
 def request(query, params):
-    args = {'query': query, 'limit': number_of_results, 'offset': (params['pageno'] - 1) * number_of_results}
+    args = {'query': query, 'limit': page_size, 'offset': (params['pageno'] - 1) * page_size}
     params['url'] = f"{base_url}/v2/search-gateway/recipes?{urlencode(args)}"
     return params
 
@@ -43,7 +43,7 @@ def response(resp):
 
         publishedDate = None
         if recipe['submissionDate']:
-            publishedDate = datetime.strptime(result['recipe']['submissionDate'][:19], "%Y-%m-%dT%H:%M:%S")
+            publishedDate = datetime.fromisoformat(result['recipe']['submissionDate'][:19])
 
         content = [
             f"Schwierigkeitsstufe (1-3): {recipe['difficulty']}",

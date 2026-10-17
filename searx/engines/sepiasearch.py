@@ -25,6 +25,7 @@ about = {
     "require_api_key": False,
     "results": 'JSON',
 }
+language_support = True
 
 # engine dependent config
 categories = ['videos']

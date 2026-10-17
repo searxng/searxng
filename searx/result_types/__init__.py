@@ -9,12 +9,14 @@
    gradually.  For more, please read :ref:`result types`.
 
 """
+
 # pylint: disable=too-few-public-methods
 
 
 __all__ = [
     "Result",
     "MainResult",
+    "LegacyResult",
     "KeyValue",
     "EngineResults",
     "AnswerSet",
@@ -24,6 +26,9 @@ __all__ = [
     "Code",
     "Paper",
     "File",
+    "Image",
+    "ImageRef",
+    "Video",
 ]
 
 import typing as t
@@ -35,6 +40,8 @@ from .keyvalue import KeyValue
 from .code import Code
 from .paper import Paper
 from .file import File
+from .image import Image, ImageRef
+from .video import Video
 
 
 class ResultList(list[Result | LegacyResult], abc.ABC):
@@ -50,6 +57,8 @@ class ResultList(list[Result | LegacyResult], abc.ABC):
         Code = Code
         Paper = Paper
         File = File
+        Image = Image
+        Video = Video
         MainResult = MainResult
         Result = Result
         Translations = Translations

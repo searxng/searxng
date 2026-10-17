@@ -19,6 +19,7 @@ Implementation
 ==============
 """
 
+import typing as t
 from urllib.parse import quote_plus
 
 about = {
@@ -37,7 +38,7 @@ matrix_url = "https://matrix.to"
 page_size = 20
 
 
-def init(engine_settings):  # pylint: disable=unused-argument
+def setup(_: dict[str, t.Any]) -> bool | None:
     """The ``base_url`` must be set in the configuration, if ``base_url`` is not
     set, a :py:obj:`ValueError` is raised during initialization.
 

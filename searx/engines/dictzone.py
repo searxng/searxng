@@ -4,7 +4,6 @@ Dictzone
 """
 
 import urllib.parse
-from lxml import html
 
 from searx.utils import eval_xpath, extract_text
 from searx.result_types import EngineResults
@@ -50,7 +49,7 @@ def response(resp) -> EngineResults:
     if not resp.ok:
         return results
 
-    dom = html.fromstring(resp.text)
+    dom = resp.html()
 
     for result in eval_xpath(dom, ".//table[@id='r']//tr"):
 

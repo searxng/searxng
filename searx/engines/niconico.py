@@ -3,7 +3,6 @@
 
 from urllib.parse import urlencode
 from datetime import datetime, timedelta
-from lxml import html
 
 from searx.utils import eval_xpath_getindex, eval_xpath_list, eval_xpath, extract_text
 
@@ -13,8 +12,8 @@ about = {
     "use_official_api": False,
     "require_api_key": False,
     "results": "HTML",
-    "language": "ja",
 }
+language = "ja"
 
 categories = ["videos"]
 paging = True
@@ -48,7 +47,7 @@ def request(query, params):
 
 def response(resp):
     results = []
-    dom = html.fromstring(resp.text)
+    dom = resp.html()
 
     for item in eval_xpath_list(dom, results_xpath):
         relative_url = eval_xpath_getindex(item, url_xpath, 0)

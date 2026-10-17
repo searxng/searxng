@@ -5,7 +5,6 @@ import math
 
 from searx.data import EXTERNAL_URLS
 
-
 IMDB_PREFIX_TO_URL_ID = {
     'tt': 'imdb_title',
     'mn': 'imdb_name',
@@ -16,12 +15,12 @@ IMDB_PREFIX_TO_URL_ID = {
 HTTP_WIKIMEDIA_IMAGE = 'http://commons.wikimedia.org/wiki/Special:FilePath/'
 
 
-def get_imdb_url_id(imdb_item_id):
+def get_imdb_url_id(imdb_item_id: str):
     id_prefix = imdb_item_id[:2]
     return IMDB_PREFIX_TO_URL_ID.get(id_prefix)
 
 
-def get_wikimedia_image_id(url):
+def get_wikimedia_image_id(url: str):
     if url.startswith(HTTP_WIKIMEDIA_IMAGE):
         return url[len(HTTP_WIKIMEDIA_IMAGE) :]
     if url.startswith('File:'):
@@ -29,7 +28,7 @@ def get_wikimedia_image_id(url):
     return url
 
 
-def get_external_url(url_id, item_id, alternative="default"):
+def get_external_url(url_id: str, item_id: str | None, alternative: str = "default") -> str | None:
     """Return an external URL or None if url_id is not found.
 
     url_id can take value from data/external_urls.json

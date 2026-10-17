@@ -2,11 +2,6 @@
 Brave Engines
 =============
 
-.. contents:: Contents
-   :depth: 2
-   :local:
-   :backlinks: entry
-
 Brave offers two different engines for SearXNG:
 
 1. The standard engine (``brave``) uses the web interface.

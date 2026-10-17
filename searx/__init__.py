@@ -10,6 +10,7 @@ from os.path import dirname, abspath
 import logging
 
 import msgspec
+from ._settings import SettingsPref
 
 # Debug
 LOG_FORMAT_DEBUG: str = '%(levelname)-7s %(name)-30.30s: %(message)s'
@@ -47,6 +48,12 @@ def init_settings():
     settings.clear()
     settings.update(cfg)
 
+    if get_setting("server.public_instance"):
+        # enable image proxy for public instances #6125
+        settings["server"]["image_proxy"] = True
+        pref: SettingsPref = get_setting("preferences")
+        pref.lock.add("image_proxy")
+
     sxng_debug = get_setting("general.debug")
     if sxng_debug:
         _logging_config_debug()
@@ -66,7 +73,7 @@ def init_settings():
     if settings['server']['public_instance']:
         logger.warning(
             "Be aware you have activated features intended only for public instances. "
-            "This force the usage of the limiter and link_token / "
+            "This force the usage of the limiter, link_token and image proxy / "
             "see https://docs.searxng.org/admin/searx.limiter.html"
         )
 

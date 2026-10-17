@@ -61,11 +61,6 @@ section might give you some guidance.
    - `Apache Fedora`_
    - `Apache directives`_
 
-.. contents::
-   :depth: 2
-   :local:
-   :backlinks: entry
-
 
 The Apache HTTP server
 ======================

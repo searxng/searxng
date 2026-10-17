@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 """Quark (Shenma) search engine for searxng"""
 
+import typing as t
 from urllib.parse import urlencode
 from datetime import datetime
 import re
@@ -16,8 +17,8 @@ about = {
     "use_official_api": False,
     "require_api_key": False,
     "results": "HTML",
-    "language": "zh",
 }
+language = "zh"
 
 # Engine Configuration
 categories = []
@@ -43,7 +44,7 @@ def is_alibaba_captcha(html):
     return bool(re.search(CAPTCHA_PATTERN, html))
 
 
-def init(_):
+def setup(_: dict[str, t.Any]) -> bool | None:
     if quark_category not in ('general', 'images'):
         raise SearxEngineAPIException(f"Unsupported category: {quark_category}")
 
@@ -292,7 +293,7 @@ def parse_news_uchq(data):
     results = []
     for item in data.get('feed', []):
         try:
-            published_date = datetime.strptime(item.get('time'), "%Y-%m-%d")
+            published_date = datetime.fromisoformat(item.get('time'))
         except (ValueError, TypeError):
             # Sometime Quark will return non-standard format like "1天前", set published_date as None
             published_date = None

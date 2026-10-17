@@ -2,7 +2,6 @@
 """lib.rs (packages)"""
 
 from urllib.parse import quote_plus
-from lxml import html
 from searx.utils import eval_xpath, eval_xpath_list, extract_text
 
 about = {
@@ -35,7 +34,7 @@ def request(query, params):
 def response(resp):
     results = []
 
-    doc = html.fromstring(resp.text)
+    doc = resp.html()
 
     for result in eval_xpath_list(doc, results_xpath):
         package_name = extract_text(eval_xpath(result, title_xpath))

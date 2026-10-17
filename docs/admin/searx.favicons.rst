@@ -8,11 +8,6 @@ Favicons
 
    Don't activate the favicons before reading the documentation.
 
-.. contents::
-   :depth: 2
-   :local:
-   :backlinks: entry
-
 Activating the favicons in SearXNG is very easy, but this **generates a
 significantly higher load** in the client/server communication and increases
 resources needed on the server.
@@ -34,10 +29,11 @@ By default and without any extensions, SearXNG serves these resolvers:
 - ``duckduckgo``
 - ``allesedv``
 - ``google``
+- ``kagi``
 - ``yandex``
 
 With the above setting favicons are displayed, the user has the option to
-deactivate this feature in his settings.  If the user is to have the option of
+deactivate this feature in their settings.  If the user is to have the option of
 selecting from several *resolvers*, a further setting is required / but this
 setting will be discussed :ref:`later <register resolvers>` in this article,
 first we have to setup the favicons cache.
@@ -213,6 +209,7 @@ choose from, the following configuration could be used:
    "duckduckgo" = "searx.favicons.resolvers.duckduckgo"
    "allesedv" = "searx.favicons.resolvers.allesedv"
    # "google" = "searx.favicons.resolvers.google"
+   # "kagi" = "searx.favicons.resolvers.kagi"
    # "yandex" = "searx.favicons.resolvers.yandex"
 
 .. note::
@@ -231,6 +228,7 @@ into the *proxy*:
 - :py:obj:`searx.favicons.resolvers.duckduckgo`
 - :py:obj:`searx.favicons.resolvers.allesedv`
 - :py:obj:`searx.favicons.resolvers.google`
+- :py:obj:`searx.favicons.resolvers.kagi`
 - :py:obj:`searx.favicons.resolvers.yandex`
 
 
@@ -250,4 +248,3 @@ into the *proxy*:
 .. _data URL:
    https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/Data_URLs
 .. _FQN: https://en.wikipedia.org/wiki/Fully_qualified_name
-

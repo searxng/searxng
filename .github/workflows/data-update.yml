@@ -21,7 +21,7 @@ jobs:
   data:
     if: github.repository_owner == 'searxng'
     name: ${{ matrix.fetch }}
-    runs-on: ubuntu-24.04-arm
+    runs-on: ubuntu-26.04-arm
     strategy:
       fail-fast: false
       matrix:
@@ -31,9 +31,8 @@ jobs:
           - update_external_bangs.py
           - update_firefox_version.py
           - update_engine_traits.py
-          - update_wikidata_units.py
+          - update_wikidata.py
           - update_engine_descriptions.py
-          - update_gsa_useragents.py
 
     permissions:
       contents: write
@@ -41,17 +40,17 @@ jobs:
 
     steps:
       - name: Setup Python
-        uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405  # v6.2.0
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97  # v7.0.0
         with:
           python-version: "${{ env.PYTHON_VERSION }}"
 
       - name: Checkout
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd  # v6.0.2
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
         with:
           persist-credentials: "false"
 
       - name: Setup cache Python
-        uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae  # v5.0.5
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9  # v6.1.0
         with:
           key: "python-${{ env.PYTHON_VERSION }}-${{ runner.arch }}-${{ hashFiles('./requirements*.txt') }}"
           restore-keys: |
@@ -65,23 +64,17 @@ jobs:
         run: V=1 ./manage pyenv.cmd python "./searxng_extra/update/${{ matrix.fetch }}"
 
       - name: Create PR
-        id: cpr
         uses: peter-evans/create-pull-request@5f6978faf089d4d20b00c7766989d076bb2fc7f1  # v8.1.1
         with:
           author: "searxng-bot <searxng-bot@users.noreply.github.com>"
           committer: "searxng-bot <searxng-bot@users.noreply.github.com>"
-          title: "[data] update searx.data - ${{ matrix.fetch }}"
-          commit-message: "[data] update searx.data - ${{ matrix.fetch }}"
-          branch: "update_data_${{ matrix.fetch }}"
+          title: "[mod] data: update searx.data - ${{ matrix.fetch }}"
+          commit-message: "[mod] data: update searx.data - ${{ matrix.fetch }}"
+          branch: "ci-data-${{ matrix.fetch }}"
           delete-branch: "true"
           draft: "false"
           signoff: "false"
           body: |
-            [data] update searx.data - ${{ matrix.fetch }}
+            Update searx.data - ${{ matrix.fetch }}
           labels: |
             data
-
-      - name: Display information
-        run: |
-          echo "Pull Request Number - ${{ steps.cpr.outputs.pull-request-number }}"
-          echo "Pull Request URL - ${{ steps.cpr.outputs.pull-request-url }}"

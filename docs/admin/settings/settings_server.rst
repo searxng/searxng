@@ -14,7 +14,7 @@
        limiter: false
        public_instance: false
        image_proxy: false
-       method: "POST"
+       method: "GET"
        default_http_headers:
          X-Content-Type-Options : nosniff
          X-Download-Options : noopen
@@ -47,6 +47,7 @@
   activated:
 
   - :py:obj:`searx.botdetection.link_token` in the :ref:`limiter`
+  - :ref:`image_proxy`
 
 .. _image_proxy:
 
@@ -57,8 +58,8 @@
 
 ``method`` : ``GET`` | ``POST``
 
-  HTTP method.  By defaults ``POST`` is used / The ``POST`` method has the
-  advantage with some WEB browsers that the history is not easy to read, but
+  HTTP method.  By default, ``GET`` is used / The ``POST`` method has the
+  advantage with some browsers that the history is not saved, but
   there are also various disadvantages that sometimes **severely restrict the
   ease of use for the end user** (e.g. back button to jump back to the previous
   search page and drag & drop of search term to new tabs do not work as

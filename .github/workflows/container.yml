@@ -25,147 +25,112 @@ env:
 
 jobs:
   build:
-    if: github.repository_owner == 'searxng' || github.event_name == 'workflow_dispatch'
+    if: |
+      github.event_name == 'workflow_dispatch'
+      || (github.repository_owner == 'searxng' && github.event.workflow_run.conclusion == 'success')
     name: Build (${{ matrix.arch }})
-    runs-on: ${{ matrix.os }}
+    runs-on: ${{ matrix.runner }}
     strategy:
       fail-fast: false
       matrix:
         include:
-          - arch: amd64
-            march: amd64
-            os: ubuntu-24.04
-            emulation: false
-          - arch: arm64
-            march: arm64
-            os: ubuntu-24.04-arm
-            emulation: false
-          - arch: armv7
-            march: arm64
-            os: ubuntu-24.04-arm
-            emulation: true
-
-    permissions:
-      packages: write
+          - runner: ubuntu-26.04
+            arch: amd64
+          - runner: ubuntu-26.04-arm
+            arch: arm64
+          - runner: ubuntu-26.04-arm
+            arch: armv7
 
     outputs:
       docker_tag: ${{ steps.build.outputs.docker_tag }}
-      git_url: ${{ steps.build.outputs.git_url }}
 
     steps:
-      # yamllint disable rule:line-length
-      - name: Setup podman
-        env:
-          PODMAN_VERSION: "v5.7.1"
-        run: |
-          sudo apt-get purge -y podman runc crun conmon
-
-          curl -fsSLO "https://github.com/mgoltzsche/podman-static/releases/download/${{ env.PODMAN_VERSION }}/podman-linux-${{ matrix.march }}.tar.gz"
-          curl -fsSLO "https://github.com/mgoltzsche/podman-static/releases/download/${{ env.PODMAN_VERSION }}/podman-linux-${{ matrix.march }}.tar.gz.asc"
-          gpg --keyserver hkps://keyserver.ubuntu.com --recv-keys 0CCF102C4F95D89E583FF1D4F8B5AF50344BB503
-          gpg --batch --verify "podman-linux-${{ matrix.march }}.tar.gz.asc" "podman-linux-${{ matrix.march }}.tar.gz"
-
-          tar -xzf "podman-linux-${{ matrix.march }}.tar.gz"
-          sudo cp -rfv ./podman-linux-${{ matrix.march }}/etc/. /etc/
-          sudo cp -rfv ./podman-linux-${{ matrix.march }}/usr/. /usr/
-
-          sudo sysctl -w kernel.apparmor_restrict_unprivileged_userns=0
-      # yamllint enable rule:line-length
-
       - name: Setup Python
-        uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405  # v6.2.0
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97  # v7.0.0
         with:
           python-version: "${{ env.PYTHON_VERSION }}"
 
+      - name: Setup QEMU
+        uses: docker/setup-qemu-action@99012661954931238ded8c8b007157a8430204e1  # v4.4.0
+
       - name: Checkout
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd  # v6.0.2
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
         with:
+          ref: "${{ github.event.workflow_run.head_sha || github.sha }}"
           persist-credentials: "false"
           fetch-depth: "0"
 
       - name: Setup cache Python
-        uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae  # v5.0.5
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9  # v6.1.0
         with:
           key: "python-${{ env.PYTHON_VERSION }}-${{ runner.arch }}-${{ hashFiles('./requirements*.txt') }}"
           restore-keys: |
             python-${{ env.PYTHON_VERSION }}-${{ runner.arch }}-
           path: "./local/"
 
-      - name: Get date
-        id: date
-        run: echo "date=$(date +'%Y%m%d')" >>$GITHUB_OUTPUT
-
       - name: Setup cache container
-        uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae  # v5.0.5
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9  # v6.1.0
         with:
-          key: "container-${{ matrix.arch }}-${{ steps.date.outputs.date }}-${{ hashFiles('./requirements*.txt') }}"
+          key: "container-${{ matrix.arch }}-${{ hashFiles('./requirements*.txt') }}"
           restore-keys: |
-            container-${{ matrix.arch }}-${{ steps.date.outputs.date }}-
             container-${{ matrix.arch }}-
           path: "/var/tmp/buildah-cache-*/*"
-
-      - if: ${{ matrix.emulation }}
-        name: Setup QEMU
-        uses: docker/setup-qemu-action@ce360397dd3f832beb865e1373c09c0e9f86d70a  # v4.0.0
-
-      - name: Login to GHCR
-        uses: docker/login-action@4907a6ddec9925e35a0a9e82d7399ccc52663121  # v4.1.0
-        with:
-          registry: "ghcr.io"
-          username: "${{ github.repository_owner }}"
-          password: "${{ secrets.GITHUB_TOKEN }}"
 
       - name: Build
         id: build
         env:
           OVERRIDE_ARCH: "${{ matrix.arch }}"
-        run: make podman.build
+        run: make container.build
+
+      - name: Upload container image
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9  # v7.0.2
+        with:
+          name: container-image-${{ matrix.arch }}
+          path: "/var/tmp/searxng-podman/*.tar"
+          if-no-files-found: error
+          retention-days: 1
 
   test:
     name: Test (${{ matrix.arch }})
-    runs-on: ${{ matrix.os }}
+    runs-on: ${{ matrix.runner }}
     needs: build
     strategy:
       fail-fast: false
       matrix:
         include:
-          - arch: amd64
-            os: ubuntu-24.04
-            emulation: false
-          - arch: arm64
-            os: ubuntu-24.04-arm
-            emulation: false
-          - arch: armv7
-            os: ubuntu-24.04-arm
-            emulation: true
+          - runner: ubuntu-26.04
+            arch: amd64
+          - runner: ubuntu-26.04-arm
+            arch: arm64
+          - runner: ubuntu-26.04
+            arch: armv7
 
     steps:
+      - name: Setup QEMU
+        uses: docker/setup-qemu-action@99012661954931238ded8c8b007157a8430204e1  # v4.4.0
+
       - name: Checkout
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd  # v6.0.2
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
         with:
+          ref: "${{ github.event.workflow_run.head_sha || github.sha }}"
           persist-credentials: "false"
 
-      - if: ${{ matrix.emulation }}
-        name: Setup QEMU
-        uses: docker/setup-qemu-action@ce360397dd3f832beb865e1373c09c0e9f86d70a  # v4.0.0
-
-      - name: Login to GHCR
-        uses: docker/login-action@4907a6ddec9925e35a0a9e82d7399ccc52663121  # v4.1.0
+      - name: Download container image
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333  # v8.0.2
         with:
-          registry: "ghcr.io"
-          username: "${{ github.repository_owner }}"
-          password: "${{ secrets.GITHUB_TOKEN }}"
+          pattern: container-image-${{ matrix.arch }}
+          path: "/var/tmp/searxng-podman"
+          merge-multiple: true
 
       - name: Test
         env:
           OVERRIDE_ARCH: "${{ matrix.arch }}"
-          GIT_URL: "${{ needs.build.outputs.git_url }}"
         run: make container.test
 
   release:
     if: github.repository_owner == 'searxng' && github.ref_name == 'master'
     name: Release
-    runs-on: ubuntu-24.04-arm
+    runs-on: ubuntu-26.04-arm
     needs:
       - build
       - test
@@ -174,27 +139,34 @@ jobs:
       packages: write
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd  # v6.0.2
-        with:
-          persist-credentials: "false"
-
-      - name: Login to GHCR
-        uses: docker/login-action@4907a6ddec9925e35a0a9e82d7399ccc52663121  # v4.1.0
-        with:
-          registry: "ghcr.io"
-          username: "${{ github.repository_owner }}"
-          password: "${{ secrets.GITHUB_TOKEN }}"
-
       - name: Login to Docker Hub
-        uses: docker/login-action@4907a6ddec9925e35a0a9e82d7399ccc52663121  # v4.1.0
+        uses: docker/login-action@dbcb813823bdd20940b903addbd779551569679f  # v4.6.0
         with:
           registry: "docker.io"
           username: "${{ secrets.DOCKER_USER }}"
           password: "${{ secrets.DOCKER_TOKEN }}"
 
+      - name: Login to GHCR
+        uses: docker/login-action@dbcb813823bdd20940b903addbd779551569679f  # v4.6.0
+        with:
+          registry: "ghcr.io"
+          username: "${{ github.repository_owner }}"
+          password: "${{ secrets.GITHUB_TOKEN }}"
+
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+        with:
+          ref: "${{ github.event.workflow_run.head_sha || github.sha }}"
+          persist-credentials: "false"
+
+      - name: Download container images
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333  # v8.0.2
+        with:
+          pattern: container-image-*
+          path: "/var/tmp/searxng-podman"
+          merge-multiple: true
+
       - name: Release
         env:
-          GIT_URL: "${{ needs.build.outputs.git_url }}"
           DOCKER_TAG: "${{ needs.build.outputs.docker_tag }}"
         run: make container.push

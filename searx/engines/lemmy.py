@@ -92,7 +92,7 @@ def _get_communities(json):
                 'title': result['community']['title'],
                 'content': markdown_to_text(result['community'].get('description', '')),
                 'thumbnail': result['community'].get('icon', result['community'].get('banner')),
-                'publishedDate': datetime.strptime(counts['published'][:19], '%Y-%m-%dT%H:%M:%S'),
+                'publishedDate': datetime.fromisoformat(counts['published'][:19]),
                 'metadata': metadata,
             }
         )
@@ -141,7 +141,7 @@ def _get_posts(json):
                 'title': result['post']['name'],
                 'content': content,
                 'thumbnail': thumbnail,
-                'publishedDate': datetime.strptime(result['post']['published'][:19], '%Y-%m-%dT%H:%M:%S'),
+                'publishedDate': datetime.fromisoformat(result['post']['published'][:19]),
                 'metadata': metadata,
             }
         )
@@ -170,7 +170,7 @@ def _get_comments(json):
                 'url': result['comment']['ap_id'],
                 'title': result['post']['name'],
                 'content': markdown_to_text(result['comment']['content']),
-                'publishedDate': datetime.strptime(result['comment']['published'][:19], '%Y-%m-%dT%H:%M:%S'),
+                'publishedDate': datetime.fromisoformat(result['comment']['published'][:19]),
                 'metadata': metadata,
             }
         )

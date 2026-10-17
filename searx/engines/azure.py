@@ -25,6 +25,7 @@ To use this engine, add an entry similar to the following to your engine list in
     https://learn.microsoft.com/en-us/entra/identity-platform/quickstart-register-app
 
 """
+
 import typing as t
 
 from searx.enginelib import EngineCache
@@ -54,8 +55,8 @@ about = {
     "use_official_api": True,
     "require_api_key": True,
     "results": "JSON",
-    "language": "en",
 }
+language = "en"
 
 CACHE: EngineCache
 """Persistent (SQLite) key/value cache that deletes its values after ``expire``

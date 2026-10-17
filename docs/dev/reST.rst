@@ -36,12 +36,6 @@ docs.live <make docs.live>` to build HTML while editing.
    - SVG_, ImageMagick_
    - DOT_, `Graphviz's dot`_, Graphviz_
 
-
-.. contents::
-   :depth: 3
-   :local:
-   :backlinks: entry
-
 Sphinx_ and reST_ have their place in the python ecosystem.  Over that reST is
 used in popular projects, e.g the Linux kernel documentation `[kernel doc]`_.
 
@@ -292,7 +286,7 @@ content becomes smart.
    files & folders origin     :origin:`docs/dev/reST.rst`        ``:origin:`docs/dev/reST.rst```
    pull request               :pull:`4`                          ``:pull:`4```
    patch                      :patch:`af2cae6`                   ``:patch:`af2cae6```
-   PyPi package               :pypi:`httpx`                      ``:pypi:`httpx```
+   PyPi package               :pypi:`curl_cffi`                  ``:pypi:`curl_cffi```
    manual page man            :man:`bash`                        ``:man:`bash```
    intersphinx_
    --------------------------------------------------------------------------------------------------

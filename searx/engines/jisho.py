@@ -13,8 +13,8 @@ about = {
     "use_official_api": True,
     "require_api_key": False,
     "results": 'JSON',
-    "language": 'ja',
 }
+language = "ja"
 
 categories = ['dictionaries']
 paging = False
@@ -108,14 +108,12 @@ def get_infobox(alt_forms, result_url, definitions):
         infobox_content.append(f'<p><i>Other forms:</i> {", ".join(alt_forms[1:])}</p>')
 
     # definitions
-    infobox_content.append(
-        '''
-        <small><a href="https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project">JMdict</a> 
-        and <a href="https://www.edrdg.org/enamdict/enamdict_doc.html">JMnedict</a> 
+    infobox_content.append('''
+        <small><a href="https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project">JMdict</a>
+        and <a href="https://www.edrdg.org/enamdict/enamdict_doc.html">JMnedict</a>
         by <a href="https://www.edrdg.org/edrdg/licence.html">EDRDG</a>, CC BY-SA 3.0.</small>
         <ul>
-    '''
-    )
+    ''')
     for pos, engdef, extra in definitions:
         if pos == 'Wikipedia definition':
             infobox_content.append('</ul><small>Wikipedia, CC BY-SA 3.0.</small><ul>')

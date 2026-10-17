@@ -169,7 +169,7 @@ ${fedora_build}
        $ sudo -H -u ${SERVICE_USER} -i
        (${SERVICE_USER})$ cd ${SEARXNG_SRC}
        (${SERVICE_USER})$ export SEARXNG_SETTINGS_PATH=\"${SEARXNG_SETTINGS_PATH}\"
-       (${SERVICE_USER})$ python searx/webapp.py
+       (${SERVICE_USER})$ python -m searx.webapp
 
        # disable debug
        $ sudo -H sed -i -e \"s/debug : True/debug : False/g\" \"$SEARXNG_SETTINGS_PATH\"

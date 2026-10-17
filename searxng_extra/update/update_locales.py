@@ -6,6 +6,7 @@
 - :py:obj:`searx.locales.RTL_LOCALES`
 - :py:obj:`searx.locales.LOCALE_NAMES`
 """
+
 # pylint: disable=invalid-name
 
 from typing import Set

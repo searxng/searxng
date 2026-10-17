@@ -4,7 +4,6 @@
 from datetime import datetime
 
 from urllib.parse import urlencode
-from lxml import html
 
 # about
 from searx.utils import extract_text
@@ -46,7 +45,7 @@ def request(query, params):
 
 def response(resp):
     results = []
-    dom = html.fromstring(resp.text)
+    dom = resp.html()
     results_dom = dom.xpath('//li[contains(@class, "video-listing-entry")]')
 
     if not results_dom:
@@ -58,7 +57,7 @@ def response(resp):
         title = extract_text(result_dom.xpath(title_xpath))
         p_date = extract_text(result_dom.xpath(published_date))
         # fix offset date for line 644 webapp.py check
-        fixed_date = datetime.strptime(p_date, '%Y-%m-%dT%H:%M:%S%z')
+        fixed_date = datetime.fromisoformat(p_date)
         earned = extract_text(result_dom.xpath(earned_xpath))
         views = extract_text(result_dom.xpath(views_xpath))
         rumbles = extract_text(result_dom.xpath(rumbles_xpath))

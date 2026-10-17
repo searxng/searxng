@@ -74,7 +74,7 @@ about = {
 categories = ["science", "scientific publications"]
 
 paging = True
-nb_per_page = 10
+page_size = 10
 """Number of results to return in the request, see `Pagination and Limits`_ for
 more details.
 
@@ -109,8 +109,8 @@ def request(query: str, params: "OnlineParams") -> None:
     args = {
         "api_key": api_key,
         "q": query,
-        "s": nb_per_page * (params["pageno"] - 1),
-        "p": nb_per_page,
+        "s": page_size * (params["pageno"] - 1),
+        "p": page_size,
     }
     params["url"] = f"{base_url}?{urlencode(args)}"
     # For example, the ``year:`` filter requires a *Premium Plan* subscription.
@@ -134,7 +134,7 @@ def response(resp: "SXNG_Response") -> EngineResults:
         return str(record.get(k, ""))
 
     for record in json_data["records"]:
-        published = datetime.strptime(record["publicationDate"], "%Y-%m-%d")
+        published = datetime.fromisoformat(record["publicationDate"])
         authors: list[str] = [" ".join(author["creator"].split(", ")[::-1]) for author in record["creators"]]
 
         pdf_url = ""

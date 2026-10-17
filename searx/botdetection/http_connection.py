@@ -11,7 +11,6 @@ the Connection_ header is set to ``close``.
 
 """
 
-
 from ipaddress import (
     IPv4Network,
     IPv6Network,

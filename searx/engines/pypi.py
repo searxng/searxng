@@ -4,7 +4,6 @@
 from urllib.parse import urlencode
 from dateutil import parser
 
-from lxml import html
 from searx.utils import (
     eval_xpath_getindex,
     eval_xpath_list,
@@ -41,7 +40,7 @@ def request(query, params):
 
 def response(resp):
     results = []
-    dom = html.fromstring(resp.text)
+    dom = resp.html()
     for entry in eval_xpath_list(dom, '/html/body/main/div/div/div/form/div/ul/li/a[@class="package-snippet"]'):
         url = base_url + extract_text(eval_xpath_getindex(entry, './@href', 0))  # type: ignore
         title = extract_text(eval_xpath_getindex(entry, './h3/span[@class="package-snippet__name"]', 0))

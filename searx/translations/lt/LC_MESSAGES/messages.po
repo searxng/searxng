@@ -13,14 +13,15 @@
 # Archfiend <archfiend@users.noreply.translate.codeberg.org>, 2025.
 # Mooo <mooo@users.noreply.translate.codeberg.org>, 2025.
 # naktinis <naktinis@users.noreply.translate.codeberg.org>, 2025.
-# return42 <return42@noreply.codeberg.org>, 2025.
+# return42 <return42@noreply.codeberg.org>, 2025, 2026.
+# Mooo <mooo@noreply.codeberg.org>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-03-24 18:43+0000\n"
-"PO-Revision-Date: 2025-09-02 04:50+0000\n"
-"Last-Translator: return42 <return42@noreply.codeberg.org>\n"
+"POT-Creation-Date: 2026-10-04 05:47+0000\n"
+"PO-Revision-Date: 2026-08-14 19:38+0000\n"
+"Last-Translator: Mooo <mooo@noreply.codeberg.org>\n"
 "Language: lt\n"
 "Language-Team: Lithuanian "
 "<https://translate.codeberg.org/projects/searxng/searxng/lt/>\n"
@@ -40,7 +41,22 @@ msgstr "be tolesnio pogrupio"
 #. CONSTANT_NAMES['DEFAULT_CATEGORY']
 #: searx/searxng.msg
 msgid "other"
-msgstr "kitas"
+msgstr "kita"
+
+#. CATEGORY_NAMES['APPS']
+#: searx/searxng.msg
+msgid "apps"
+msgstr "programos"
+
+#. CATEGORY_NAMES['BLOGS']
+#: searx/searxng.msg
+msgid "blogs"
+msgstr ""
+
+#. CATEGORY_NAMES['DICTIONARIES']
+#: searx/searxng.msg
+msgid "dictionaries"
+msgstr "žodynai"
 
 #. CATEGORY_NAMES['FILES']
 #: searx/searxng.msg
@@ -52,105 +68,120 @@ msgstr "failai"
 msgid "general"
 msgstr "bendra"
 
-#. CATEGORY_NAMES['MUSIC']
+#. CATEGORY_NAMES['ICONS']
 #: searx/searxng.msg
-msgid "music"
-msgstr "muzika"
-
-#. CATEGORY_NAMES['SOCIAL_MEDIA']
-#: searx/searxng.msg
-msgid "social media"
-msgstr "socialiniai tinklai"
+msgid "icons"
+msgstr ""
 
 #. CATEGORY_NAMES['IMAGES']
 #: searx/searxng.msg
 msgid "images"
 msgstr "nuotraukos"
 
-#. CATEGORY_NAMES['VIDEOS']
-#: searx/searxng.msg
-msgid "videos"
-msgstr "vaizdo įrašai"
-
-#. CATEGORY_NAMES['RADIO']
-#: searx/engines/radio_browser.py:146 searx/searxng.msg
-msgid "radio"
-msgstr "radijas"
-
-#. CATEGORY_NAMES['TV']
-#: searx/searxng.msg
-msgid "tv"
-msgstr "televizorius"
-
 #. CATEGORY_NAMES['IT']
 #: searx/searxng.msg
 msgid "it"
 msgstr "IT"
 
-#. CATEGORY_NAMES['NEWS']
+#. CATEGORY_NAMES['LYRICS']
 #: searx/searxng.msg
-msgid "news"
-msgstr "naujienos"
+msgid "lyrics"
+msgstr "dainų žodžiai"
 
 #. CATEGORY_NAMES['MAP']
 #: searx/searxng.msg
 msgid "map"
 msgstr "žemėlapis"
 
+#. CATEGORY_NAMES['MOVIES']
+#: searx/searxng.msg
+msgid "movies"
+msgstr ""
+
+#. CATEGORY_NAMES['MUSIC']
+#: searx/searxng.msg
+msgid "music"
+msgstr "muzika"
+
+#. CATEGORY_NAMES['NEWS']
+#: searx/searxng.msg
+msgid "news"
+msgstr "naujienos"
+
 #. CATEGORY_NAMES['ONIONS']
 #: searx/searxng.msg
 msgid "onions"
 msgstr "TOR puslapiai"
+
+#. CATEGORY_NAMES['PACKAGES']
+#: searx/searxng.msg
+msgid "packages"
+msgstr "paketai"
+
+#. CATEGORY_NAMES['Q_A']
+#: searx/searxng.msg
+msgid "q&a"
+msgstr "klausimai ir atsakymai"
+
+#. CATEGORY_NAMES['RADIO']
+#: searx/engines/radio_browser.py:160 searx/searxng.msg
+msgid "radio"
+msgstr "radijas"
+
+#. CATEGORY_NAMES['REPOS']
+#: searx/searxng.msg
+msgid "repos"
+msgstr "saugyklos"
 
 #. CATEGORY_NAMES['SCIENCE']
 #: searx/searxng.msg
 msgid "science"
 msgstr "mokslas"
 
-#. CATEGORY_GROUPS['APPS']
+#. CATEGORY_NAMES['SCIENTIFIC PUBLICATIONS']
 #: searx/searxng.msg
-msgid "apps"
-msgstr "programos"
+msgid "scientific publications"
+msgstr "mokslinės publikacijos"
 
-#. CATEGORY_GROUPS['DICTIONARIES']
+#. CATEGORY_NAMES['SOCIAL_MEDIA']
 #: searx/searxng.msg
-msgid "dictionaries"
-msgstr "žodynai"
+msgid "social media"
+msgstr "socialiniai tinklai"
 
-#. CATEGORY_GROUPS['LYRICS']
-#: searx/searxng.msg
-msgid "lyrics"
-msgstr "dainų žodžiai"
-
-#. CATEGORY_GROUPS['PACKAGES']
-#: searx/searxng.msg
-msgid "packages"
-msgstr "paketai"
-
-#. CATEGORY_GROUPS['Q_A']
-#: searx/searxng.msg
-msgid "q&a"
-msgstr "Dažnai užduodami klausymai"
-
-#. CATEGORY_GROUPS['REPOS']
-#: searx/searxng.msg
-msgid "repos"
-msgstr "saugyklos"
-
-#. CATEGORY_GROUPS['SOFTWARE_WIKIS']
+#. CATEGORY_NAMES['SOFTWARE_WIKIS']
 #: searx/searxng.msg
 msgid "software wikis"
 msgstr "programų žinynai"
 
-#. CATEGORY_GROUPS['WEB']
+#. CATEGORY_NAMES['STOCK_IMAGES']
+#: searx/searxng.msg
+msgid "stock images"
+msgstr ""
+
+#. CATEGORY_NAMES['TRANSLATE']
+#: searx/searxng.msg
+msgid "translate"
+msgstr ""
+
+#. CATEGORY_NAMES['TV']
+#: searx/searxng.msg
+msgid "tv"
+msgstr "televizija"
+
+#. CATEGORY_NAMES['VIDEOS']
+#: searx/searxng.msg
+msgid "videos"
+msgstr "vaizdo įrašai"
+
+#. CATEGORY_NAMES['WEATHER']
+#: searx/searxng.msg
+msgid "weather"
+msgstr ""
+
+#. CATEGORY_NAMES['WEB']
 #: searx/searxng.msg
 msgid "web"
 msgstr "internetas"
-
-#. CATEGORY_GROUPS['SCIENTIFIC PUBLICATIONS']
-#: searx/searxng.msg
-msgid "scientific publications"
-msgstr "mokslinės publikacijos"
 
 #. STYLE_NAMES['AUTO']
 #: searx/searxng.msg
@@ -160,17 +191,17 @@ msgstr "automatinis"
 #. STYLE_NAMES['LIGHT']
 #: searx/searxng.msg
 msgid "light"
-msgstr "šviesi"
+msgstr "šviesus"
 
 #. STYLE_NAMES['DARK']
 #: searx/searxng.msg
 msgid "dark"
-msgstr "tamsi"
+msgstr "tamsus"
 
 #. STYLE_NAMES['BLACK']
 #: searx/searxng.msg
 msgid "black"
-msgstr "juoda"
+msgstr "juodas"
 
 #. BRAND_CUSTOM_LINKS['UPTIME']
 #: searx/searxng.msg
@@ -178,29 +209,29 @@ msgid "Uptime"
 msgstr "Veikimo laikas"
 
 #. BRAND_CUSTOM_LINKS['ABOUT']
-#: searx/searxng.msg searx/templates/simple/base.html:46
+#: searx/searxng.msg searx/templates/simple/base.html:50
 msgid "About"
 msgstr "Apie"
 
 #. WEATHER_TERMS['AVERAGE TEMP.']
 #: searx/searxng.msg
 msgid "Average temp."
-msgstr "Vidutinė temperatura"
+msgstr "Vidutinė temperatūra"
 
 #. WEATHER_TERMS['CLOUD COVER']
 #: searx/searxng.msg
 msgid "Cloud cover"
-msgstr "Debesio serveris"
+msgstr "Debesų padengimas"
 
 #. WEATHER_TERMS['CONDITION']
 #: searx/searxng.msg
 msgid "Condition"
-msgstr "Sąlyga"
+msgstr "Sąlygos"
 
 #. WEATHER_TERMS['CURRENT CONDITION']
 #: searx/searxng.msg
 msgid "Current condition"
-msgstr "Esamos sąlygos"
+msgstr "Dabartinės sąlygos"
 
 #. WEATHER_TERMS['EVENING']
 #: searx/searxng.msg
@@ -220,12 +251,12 @@ msgstr "Dregmė"
 #. WEATHER_TERMS['MAX TEMP.']
 #: searx/searxng.msg
 msgid "Max temp."
-msgstr "Aukščiausia temperatura"
+msgstr "Aukščiausia temperatūra"
 
 #. WEATHER_TERMS['MIN TEMP.']
 #: searx/searxng.msg
 msgid "Min temp."
-msgstr "Mažiausia temperatura"
+msgstr "Mažiausia temperatūra"
 
 #. WEATHER_TERMS['MORNING']
 #: searx/searxng.msg
@@ -260,7 +291,7 @@ msgstr "Saulėlydis"
 #. WEATHER_TERMS['TEMPERATURE']
 #: searx/searxng.msg searx/templates/simple/answer/weather.html:17
 msgid "Temperature"
-msgstr "Temperatura"
+msgstr "Temperatūra"
 
 #. WEATHER_TERMS['UV INDEX']
 #: searx/searxng.msg
@@ -280,207 +311,207 @@ msgstr "Vėjas"
 #. WEATHER_CONDITIONS
 #: searx/searxng.msg
 msgid "Clear sky"
-msgstr ""
+msgstr "Giedra"
 
 #. WEATHER_CONDITIONS
 #: searx/searxng.msg
 msgid "Partly cloudy"
-msgstr ""
+msgstr "Šiek tiek debesuota"
 
 #. WEATHER_CONDITIONS
 #: searx/searxng.msg
 msgid "Cloudy"
-msgstr ""
+msgstr "Debesuota"
 
 #. WEATHER_CONDITIONS
 #: searx/searxng.msg
 msgid "Fair"
-msgstr ""
+msgstr "Nedebesuota"
 
 #. WEATHER_CONDITIONS
 #: searx/searxng.msg
 msgid "Fog"
-msgstr ""
+msgstr "Rūkas"
 
 #. WEATHER_CONDITIONS
 #: searx/searxng.msg
 msgid "Light rain and thunder"
-msgstr ""
+msgstr "Silpnas lietus su perkūnija"
 
 #. WEATHER_CONDITIONS
 #: searx/searxng.msg
 msgid "Light rain showers and thunder"
-msgstr ""
+msgstr "Silpnas liūtinis lietus su perkūnija"
 
 #. WEATHER_CONDITIONS
 #: searx/searxng.msg
 msgid "Light rain showers"
-msgstr ""
+msgstr "Silpnas liūtinis lietus"
 
 #. WEATHER_CONDITIONS
 #: searx/searxng.msg
 msgid "Light rain"
-msgstr ""
+msgstr "Silpnas lietus"
 
 #. WEATHER_CONDITIONS
 #: searx/searxng.msg
 msgid "Rain and thunder"
-msgstr ""
+msgstr "Lietus su perkūnija"
 
 #. WEATHER_CONDITIONS
 #: searx/searxng.msg
 msgid "Rain showers and thunder"
-msgstr ""
+msgstr "Liūtinis lietus su perkūnija"
 
 #. WEATHER_CONDITIONS
 #: searx/searxng.msg
 msgid "Rain showers"
-msgstr ""
+msgstr "Liūtinis lietus"
 
 #. WEATHER_CONDITIONS
 #: searx/searxng.msg
 msgid "Rain"
-msgstr ""
+msgstr "Lietus"
 
 #. WEATHER_CONDITIONS
 #: searx/searxng.msg
 msgid "Heavy rain and thunder"
-msgstr ""
+msgstr "Stiprus lietus su perkūnija"
 
 #. WEATHER_CONDITIONS
 #: searx/searxng.msg
 msgid "Heavy rain showers and thunder"
-msgstr ""
+msgstr "Stiprus liūtinis lietus su perkūnija"
 
 #. WEATHER_CONDITIONS
 #: searx/searxng.msg
 msgid "Heavy rain showers"
-msgstr ""
+msgstr "Stiprus liūtinis lietus"
 
 #. WEATHER_CONDITIONS
 #: searx/searxng.msg
 msgid "Heavy rain"
-msgstr ""
+msgstr "Stiprus lietus"
 
 #. WEATHER_CONDITIONS
 #: searx/searxng.msg
 msgid "Light sleet and thunder"
-msgstr ""
+msgstr "Silpna šlapdriba su perkūnija"
 
 #. WEATHER_CONDITIONS
 #: searx/searxng.msg
 msgid "Light sleet showers and thunder"
-msgstr ""
+msgstr "Silpna šlapdriba, liūtis su perkūnija"
 
 #. WEATHER_CONDITIONS
 #: searx/searxng.msg
 msgid "Light sleet showers"
-msgstr ""
+msgstr "Silpna šlapdriba, liūtis"
 
 #. WEATHER_CONDITIONS
 #: searx/searxng.msg
 msgid "Light sleet"
-msgstr ""
+msgstr "Silpna šlapdriba"
 
 #. WEATHER_CONDITIONS
 #: searx/searxng.msg
 msgid "Sleet and thunder"
-msgstr ""
+msgstr "Šlapdriba su perkūnija"
 
 #. WEATHER_CONDITIONS
 #: searx/searxng.msg
 msgid "Sleet showers and thunder"
-msgstr ""
+msgstr "Šlapdriba, liūtis su perkūnija"
 
 #. WEATHER_CONDITIONS
 #: searx/searxng.msg
 msgid "Sleet showers"
-msgstr ""
+msgstr "Šlapdriba, liūtis"
 
 #. WEATHER_CONDITIONS
 #: searx/searxng.msg
 msgid "Sleet"
-msgstr ""
+msgstr "Šlapdriba"
 
 #. WEATHER_CONDITIONS
 #: searx/searxng.msg
 msgid "Heavy sleet and thunder"
-msgstr ""
+msgstr "Stipri šlapdriba su perkūnija"
 
 #. WEATHER_CONDITIONS
 #: searx/searxng.msg
 msgid "Heavy sleet showers and thunder"
-msgstr ""
+msgstr "Stipri šlapdriba, liūtis su perkūnija"
 
 #. WEATHER_CONDITIONS
 #: searx/searxng.msg
 msgid "Heavy sleet showers"
-msgstr ""
+msgstr "Stipri šlapdriba, liūtis"
 
 #. WEATHER_CONDITIONS
 #: searx/searxng.msg
 msgid "Heavy sleet"
-msgstr ""
+msgstr "Stipri šlapdriba"
 
 #. WEATHER_CONDITIONS
 #: searx/searxng.msg
 msgid "Light snow and thunder"
-msgstr ""
+msgstr "Silpnas sniegas su perkūnija"
 
 #. WEATHER_CONDITIONS
 #: searx/searxng.msg
 msgid "Light snow showers and thunder"
-msgstr ""
+msgstr "Silpnas liūtinis sniegas su perkūnija"
 
 #. WEATHER_CONDITIONS
 #: searx/searxng.msg
 msgid "Light snow showers"
-msgstr ""
+msgstr "Silpnas liūtinis sniegas"
 
 #. WEATHER_CONDITIONS
 #: searx/searxng.msg
 msgid "Light snow"
-msgstr ""
+msgstr "Silpnas sniegas"
 
 #. WEATHER_CONDITIONS
 #: searx/searxng.msg
 msgid "Snow and thunder"
-msgstr ""
+msgstr "Sniegas su perkūnija"
 
 #. WEATHER_CONDITIONS
 #: searx/searxng.msg
 msgid "Snow showers and thunder"
-msgstr ""
+msgstr "Liūtinis sniegas su perkūnija"
 
 #. WEATHER_CONDITIONS
 #: searx/searxng.msg
 msgid "Snow showers"
-msgstr ""
+msgstr "Liūtinis sniegas"
 
 #. WEATHER_CONDITIONS
 #: searx/searxng.msg
 msgid "Snow"
-msgstr ""
+msgstr "Sniegas"
 
 #. WEATHER_CONDITIONS
 #: searx/searxng.msg
 msgid "Heavy snow and thunder"
-msgstr ""
+msgstr "Stiprus sniegas su perkūnija"
 
 #. WEATHER_CONDITIONS
 #: searx/searxng.msg
 msgid "Heavy snow showers and thunder"
-msgstr ""
+msgstr "Stiprus liūtinis sniegas su perkūnija"
 
 #. WEATHER_CONDITIONS
 #: searx/searxng.msg
 msgid "Heavy snow showers"
-msgstr ""
+msgstr "Stiprus liūtinis sniegas"
 
 #. WEATHER_CONDITIONS
 #: searx/searxng.msg
 msgid "Heavy snow"
-msgstr ""
+msgstr "Stiprus sniegas"
 
 #. SOCIAL_MEDIA_TERMS['SUBSCRIBERS']
 #: searx/engines/lemmy.py:85 searx/searxng.msg
@@ -495,7 +526,7 @@ msgstr "Įrašai"
 #. SOCIAL_MEDIA_TERMS['ACTIVE USERS']
 #: searx/engines/lemmy.py:87 searx/searxng.msg
 msgid "active users"
-msgstr "Aktyvus naudotojai"
+msgstr "Aktyvūs naudotojai"
 
 #. SOCIAL_MEDIA_TERMS['COMMENTS']
 #: searx/engines/discourse.py:157 searx/engines/hackernews.py:83
@@ -506,12 +537,12 @@ msgstr "Komentarai"
 #. SOCIAL_MEDIA_TERMS['USER']
 #: searx/engines/lemmy.py:129 searx/engines/lemmy.py:164 searx/searxng.msg
 msgid "user"
-msgstr "Naudotojai"
+msgstr "Naudotojas"
 
 #. SOCIAL_MEDIA_TERMS['COMMUNITY']
 #: searx/engines/lemmy.py:131 searx/engines/lemmy.py:165 searx/searxng.msg
 msgid "community"
-msgstr "Bendruomene"
+msgstr "bendruomenė"
 
 #. SOCIAL_MEDIA_TERMS['POINTS']
 #: searx/engines/hackernews.py:83 searx/searxng.msg
@@ -543,28 +574,28 @@ msgstr "Uždaryta"
 msgid "answered"
 msgstr "atsakyta"
 
-#: searx/webapp.py:327
+#: searx/webapp.py:326
 msgid "No item found"
 msgstr "Elementų nerasta"
 
-#: searx/engines/qwant.py:291
-#: searx/templates/simple/result_templates/images.html:23 searx/webapp.py:329
+#: searx/engines/qwant.py:283
+#: searx/templates/simple/result_templates/images.html:62 searx/webapp.py:328
 msgid "Source"
 msgstr "Šaltinis"
 
-#: searx/webapp.py:331
+#: searx/webapp.py:330
 msgid "Error loading the next page"
-msgstr "Klaida keliant kitą puslapį"
+msgstr "Klaida įkeliant kitą puslapį"
 
-#: searx/webapp.py:480 searx/webapp.py:881
+#: searx/webapp.py:478 searx/webapp.py:878
 msgid "Invalid settings, please edit your preferences"
-msgstr "Neteisingi nustatymai, pakeiskite savo nuostatas"
+msgstr "Neteisingi nustatymai, pataisykite nuostatas"
 
-#: searx/webapp.py:496
+#: searx/webapp.py:494
 msgid "Invalid settings"
 msgstr "Neteisingi nustatymai"
 
-#: searx/webapp.py:573 searx/webapp.py:663
+#: searx/webapp.py:570 searx/webapp.py:660
 msgid "search error"
 msgstr "paieškos klaida"
 
@@ -574,7 +605,7 @@ msgstr "laikas baigėsi"
 
 #: searx/webutils.py:37
 msgid "parsing error"
-msgstr "parsavymo klaida"
+msgstr "nagrinėjimo klaida"
 
 #: searx/webutils.py:38
 msgid "HTTP protocol error"
@@ -590,65 +621,65 @@ msgstr "SSL klaida: liudijimo tikrinimas patyrė nesėkmę"
 
 #: searx/webutils.py:42
 msgid "unexpected crash"
-msgstr "netikėta klaida"
+msgstr "netikėta strigtis"
 
-#: searx/webutils.py:49
+#: searx/webutils.py:48
 msgid "HTTP error"
 msgstr "HTTP klaida"
 
-#: searx/webutils.py:50
+#: searx/webutils.py:49 searx/webutils.py:50
 msgid "HTTP connection error"
 msgstr "HTTP ryšio klaida"
 
-#: searx/webutils.py:56
+#: searx/webutils.py:54
 msgid "proxy error"
-msgstr "persiuntimų serverio klaida"
+msgstr "įgaliotojo serverio klaida"
+
+#: searx/webutils.py:56
+msgid "CAPTCHA"
+msgstr "saugos kodas"
 
 #: searx/webutils.py:57
-msgid "CAPTCHA"
-msgstr "CAPTCHA"
-
-#: searx/webutils.py:58
 msgid "too many requests"
 msgstr "per daug užklausų"
 
-#: searx/webutils.py:59
+#: searx/webutils.py:58
 msgid "access denied"
 msgstr "prieiga uždrausta"
 
-#: searx/webutils.py:60
+#: searx/webutils.py:59
 msgid "server API error"
 msgstr "serverio API klaida"
 
-#: searx/webutils.py:79
+#: searx/webutils.py:78
 msgid "Suspended"
-msgstr "Sustabdytas"
+msgstr "Pristabdyta"
 
-#: searx/webutils.py:308
+#: searx/webutils.py:306
 #, python-brace-format
 msgid "{minutes} minute(s) ago"
-msgstr "prieš {minutes} min"
+msgstr "prieš {minutes} min."
 
-#: searx/webutils.py:309
+#: searx/webutils.py:307
 #, python-brace-format
 msgid "{hours} hour(s), {minutes} minute(s) ago"
-msgstr "prieš {hours} val., {minutes} min"
+msgstr "prieš {hours} val., {minutes} min."
 
 #: searx/answerers/random.py:68
 msgid "Generate different random values"
-msgstr "Generuoja įvairias atsitiktinius skaičius"
+msgstr "Generuoja įvairias atsitiktines reikšmes"
 
 #: searx/answerers/statistics.py:37
 #, python-brace-format
 msgid "Compute {func} of the arguments"
-msgstr "Apskaičiuoti {func} iš argumentų"
+msgstr "Apskaičiuoti argumentų {func}"
 
-#: searx/engines/boardreader.py:107
+#: searx/engines/boardreader.py:108
 #, python-brace-format
 msgid "Posted by {author}"
-msgstr ""
+msgstr "Paskelbė {author}"
 
-#: searx/engines/openstreetmap.py:155
+#: searx/engines/openstreetmap.py:156
 msgid "Show route in map .."
 msgstr "Rodyti maršrutą žemėlapyje"
 
@@ -661,30 +692,30 @@ msgstr "{title} (PASENĘS)"
 msgid "This entry has been superseded by"
 msgstr "Šį įrašą pakeitė"
 
-#: searx/engines/qwant.py:293
+#: searx/engines/qwant.py:285
 msgid "Channel"
 msgstr "Kanalas"
 
-#: searx/engines/radio_browser.py:148
+#: searx/engines/radio_browser.py:162
 msgid "bitrate"
 msgstr "pralaidumas"
 
-#: searx/engines/radio_browser.py:149
+#: searx/engines/radio_browser.py:163
 msgid "votes"
 msgstr "balsai"
 
-#: searx/engines/radio_browser.py:150
+#: searx/engines/radio_browser.py:164
 msgid "clicks"
-msgstr "paspaudimai"
+msgstr "spustelėjimai"
 
-#: searx/engines/semantic_scholar.py:141
+#: searx/engines/semantic_scholar.py:140
 #, python-brace-format
 msgid ""
 "{numCitations} citations from the year {firstCitationVelocityYear} to "
 "{lastCitationVelocityYear}"
 msgstr ""
-"{numCitations} citatos iš metų{firstCitationVelocityYear} to "
-"{lastCitationVelocityYear}"
+"{numCitations} citatos nuo {firstCitationVelocityYear} metų iki "
+"{lastCitationVelocityYear} metų"
 
 #: searx/engines/tineye.py:42
 msgid ""
@@ -692,21 +723,22 @@ msgid ""
 "format. TinEye only supports images that are JPEG, PNG, GIF, BMP, TIFF or"
 " WebP."
 msgstr ""
-"Nepavyko perskaityti šio vaizdo URL. Taip gali būti dėl nepalaikomo failo"
-" formato. TinEye palaiko tik JPEG, PNG, GIF, BMP, TIFF arba WebP vaizdus."
+"Nepavyko perskaityti tos nuotraukos URL. Taip gali būti dėl nepalaikomo "
+"failo formato. TinEye palaiko tik JPEG, PNG, GIF, BMP, TIFF arba WebP "
+"nuotraukas."
 
 #: searx/engines/tineye.py:48
 msgid ""
 "The image is too simple to find matches. TinEye requires a basic level of"
 " visual detail to successfully identify matches."
 msgstr ""
-"Vaizdas per paprastas, kad būtų galima rasti atitikmenų. Norint sėkmingai"
-" nustatyti atitikmenis, „TinEye“ reikalingas pagrindinis vizualinių "
-"detalių lygis."
+"Nuotrauka pernelyg paprasta, kad galima būtų rasti atitikčių. Norint "
+"sėkmingai nustatyti atitiktis, TinEye reikia bazinio vizualinių detalių "
+"lygio."
 
 #: searx/engines/tineye.py:53
 msgid "The image could not be downloaded."
-msgstr "Nepavyko atsisiųsti vaizdo."
+msgstr "Nepavyko atsisiųsti nuotraukos."
 
 #: searx/engines/zlibrary.py:79
 msgid "Language"
@@ -730,11 +762,11 @@ msgstr "Išfiltruoti onion rezultatus esančius Ahmia juodajame sąraše."
 
 #: searx/plugins/calculator.py:25
 msgid "Calculator"
-msgstr ""
+msgstr "Skaičiuotuvas"
 
 #: searx/plugins/calculator.py:26
 msgid "Parses and solves mathematical expressions."
-msgstr ""
+msgstr "Nagrinėja ir sprendžia matematinius reiškinius."
 
 #: searx/plugins/hash_plugin.py:33
 msgid "Hash plugin"
@@ -745,10 +777,12 @@ msgid ""
 "Converts strings to different hash digests. Available functions: md5, "
 "sha1, sha224, sha256, sha384, sha512."
 msgstr ""
+"Konvertuoja eilutes į skirtingas maišos reikšmes. Prieinamos funkcijos: "
+"md5, sha1, sha224, sha256, sha384, sha512."
 
 #: searx/plugins/hash_plugin.py:63
 msgid "hash digest"
-msgstr "maišos santrauka"
+msgstr "maišos reikšmė"
 
 #: searx/plugins/hostnames.py:119
 msgid "Hostnames plugin"
@@ -766,13 +800,14 @@ msgstr "Begalinis slinkimas"
 msgid ""
 "Automatically loads the next page when scrolling to bottom of the current"
 " page"
-msgstr ""
+msgstr "Automatiškai įkelia kitą puslapį, kai slenkama į esamo puslapio apačią"
 
-#: searx/plugins/oa_doi_rewrite.py:54
+#: searx/plugins/oa_doi_rewrite.py:55
 msgid "Open Access DOI rewrite"
 msgstr "Atvirosios prieigos DOI perrašymas"
 
-#: searx/plugins/oa_doi_rewrite.py:55
+#: searx/plugins/oa_doi_rewrite.py:56
+#: searx/templates/simple/preferences/doi_resolver.html:15
 msgid ""
 "Avoid paywalls by redirecting to open-access versions of publications "
 "when available"
@@ -802,17 +837,17 @@ msgstr "Tavo naudotojo agentas (user-agent) yra: "
 
 #: searx/plugins/time_zone.py:33
 msgid "Timezones plugin"
-msgstr ""
+msgstr "Laiko juostų įskiepis"
 
 #: searx/plugins/time_zone.py:34
 msgid "Display the current time on different time zones."
 msgstr ""
 
-#: searx/plugins/tor_check.py:41
+#: searx/plugins/tor_check.py:42
 msgid "Tor check plugin"
 msgstr "„Tor check“ papildinys"
 
-#: searx/plugins/tor_check.py:43
+#: searx/plugins/tor_check.py:44
 msgid ""
 "This plugin checks if the address of the request is a Tor exit-node, and "
 "informs the user if it is; like check.torproject.org, but from SearXNG."
@@ -821,15 +856,15 @@ msgstr ""
 " informuoja vartotoją, jei taip yra; kaip check.torproject.org, bet iš "
 "SearXNG."
 
-#: searx/plugins/tor_check.py:64
+#: searx/plugins/tor_check.py:65
 msgid "Could not download the list of Tor exit-nodes from"
 msgstr "Nepavyko atsisiųsti Tor išėjimo mazgų iš"
 
-#: searx/plugins/tor_check.py:71
+#: searx/plugins/tor_check.py:72
 msgid "You are using Tor and it looks like you have the external IP address"
 msgstr "Jūs naudojate Tor ir atrodo, kad turite išorinį IP adresą"
 
-#: searx/plugins/tor_check.py:75
+#: searx/plugins/tor_check.py:76
 msgid "You are not using Tor and you have the external IP address"
 msgstr "Jūs nenaudojate Tor, tačiau atrodo, kad turite išorinį IP adresą"
 
@@ -841,15 +876,15 @@ msgstr "Seklių URL šalintojas"
 msgid "Remove trackers arguments from the returned URL"
 msgstr "Šalinti seklių argumentus iš grąžinamų URL"
 
-#: searx/plugins/unit_converter.py:42
+#: searx/plugins/unit_converter.py:43
 msgid "Unit converter plugin"
 msgstr "Matavimo vienetų konvertavimo papildinys"
 
-#: searx/plugins/unit_converter.py:43
+#: searx/plugins/unit_converter.py:44
 msgid "Convert between units"
 msgstr "Konvertuoti tarp matavimo vienetų"
 
-#: searx/result_types/answer.py:223
+#: searx/result_types/answer.py:224
 #, python-brace-format
 msgid "{location}: {temperature}, {condition}"
 msgstr "{location}: {temperature}, {condition}"
@@ -867,69 +902,69 @@ msgstr "Pereiti į %(search_page)s."
 msgid "search page"
 msgstr "paieškos puslapį"
 
-#: searx/templates/simple/base.html:50
+#: searx/templates/simple/base.html:54
 msgid "Donate"
 msgstr "Paaukoti"
 
-#: searx/templates/simple/base.html:55 searx/templates/simple/base.html:57
+#: searx/templates/simple/base.html:59 searx/templates/simple/base.html:61
 #: searx/templates/simple/preferences.html:152
 msgid "Preferences"
 msgstr "Nuostatos"
 
-#: searx/templates/simple/base.html:68
+#: searx/templates/simple/base.html:72
 msgid "Powered by"
 msgstr "Veikia su"
 
-#: searx/templates/simple/base.html:68
+#: searx/templates/simple/base.html:72
 msgid "a privacy-respecting, open metasearch engine"
 msgstr "privatumą gerbiantis atviras metapaieškos variklis"
 
-#: searx/templates/simple/base.html:69
+#: searx/templates/simple/base.html:73
 #: searx/templates/simple/result_templates/packages.html:59
 msgid "Source code"
 msgstr "Šaltinio kodas"
 
-#: searx/templates/simple/base.html:70
+#: searx/templates/simple/base.html:74
 msgid "Issue tracker"
 msgstr "Klaidų sekiklis"
 
-#: searx/templates/simple/base.html:71 searx/templates/simple/stats.html:17
+#: searx/templates/simple/base.html:75 searx/templates/simple/stats.html:17
 msgid "Engine stats"
 msgstr "Statistika statistika"
 
-#: searx/templates/simple/base.html:73
+#: searx/templates/simple/base.html:77
 msgid "Public instances"
 msgstr "Viešos instancijos"
 
-#: searx/templates/simple/base.html:76
+#: searx/templates/simple/base.html:80
 msgid "Privacy policy"
 msgstr "Privatumo politika"
 
-#: searx/templates/simple/base.html:79
+#: searx/templates/simple/base.html:83
 msgid "Contact instance maintainer"
 msgstr "Susisiekite su instancijos prižiūrėtoju"
 
-#: searx/templates/simple/categories.html:30
+#: searx/templates/simple/categories.html:40
 msgid "Click on the magnifier to perform search"
 msgstr "Norėdami atlikti paiešką, spustelėkite ant didinamojo stiklo"
 
-#: searx/templates/simple/macros.html:41
+#: searx/templates/simple/macros.html:52
 msgid "Length"
 msgstr "Trukmė"
 
-#: searx/templates/simple/macros.html:42
+#: searx/templates/simple/macros.html:53
 #: searx/templates/simple/result_templates/paper.html:74
 msgid "Views"
 msgstr "Peržiūros"
 
-#: searx/templates/simple/macros.html:43
+#: searx/templates/simple/macros.html:54
 #: searx/templates/simple/result_templates/file.html:18
-#: searx/templates/simple/result_templates/images.html:19
+#: searx/templates/simple/result_templates/images.html:52
 #: searx/templates/simple/result_templates/paper.html:14
 msgid "Author"
 msgstr "Autorius"
 
-#: searx/templates/simple/macros.html:51
+#: searx/templates/simple/macros.html:63
 msgid "cached"
 msgstr "patalpinta"
 
@@ -1001,6 +1036,7 @@ msgid "Privacy"
 msgstr "Privatumas"
 
 #: searx/templates/simple/preferences.html:235
+#: searx/templates/simple/result_templates/images.html:63
 msgid "Engines"
 msgstr "Sistemos"
 
@@ -1016,23 +1052,19 @@ msgstr "Specialios Užklausos"
 msgid "Cookies"
 msgstr "Slapukai"
 
-#: searx/templates/simple/results.html:30
-msgid "Number of results"
-msgstr "Rezultatų skaičius"
-
-#: searx/templates/simple/results.html:36
+#: searx/templates/simple/results.html:32
 msgid "Info"
 msgstr "Informacija"
 
-#: searx/templates/simple/results.html:77
+#: searx/templates/simple/results.html:73
 msgid "Back to top"
 msgstr "Atgal į viršų"
 
-#: searx/templates/simple/results.html:95
+#: searx/templates/simple/results.html:91
 msgid "Previous page"
 msgstr "Praitas puslapis"
 
-#: searx/templates/simple/results.html:113
+#: searx/templates/simple/results.html:109
 msgid "Next page"
 msgstr "Kitas puslapis"
 
@@ -1073,12 +1105,12 @@ msgid "Result count"
 msgstr "Rezultatų skaičius"
 
 #: searx/templates/simple/elements/engines_msg.html:7
-#: searx/templates/simple/preferences/engines.html:31
+#: searx/templates/simple/preferences/engines.html:30
 #: searx/templates/simple/stats.html:27
 msgid "Response time"
 msgstr "Atsakymo greitis"
 
-#: searx/templates/simple/preferences/engines.html:35
+#: searx/templates/simple/preferences/engines.html:34
 #: searx/templates/simple/stats.html:28
 msgid "Reliability"
 msgstr "Patikimumas"
@@ -1207,7 +1239,7 @@ msgstr "Automatiškai aptikti"
 #: searx/templates/simple/filters/safesearch.html:2
 #: searx/templates/simple/filters/safesearch.html:3
 #: searx/templates/simple/filters/safesearch.html:4
-#: searx/templates/simple/preferences/engines.html:27
+#: searx/templates/simple/preferences/engines.html:26
 #: searx/templates/simple/preferences/safesearch.html:2
 msgid "SafeSearch"
 msgstr "Saugi paieška"
@@ -1228,7 +1260,7 @@ msgid "None"
 msgstr "Nėra"
 
 #: searx/templates/simple/filters/time_range.html:1
-#: searx/templates/simple/preferences/engines.html:28
+#: searx/templates/simple/preferences/engines.html:27
 msgid "Time range"
 msgstr "Laiko diapazonas"
 
@@ -1395,16 +1427,8 @@ msgstr ""
 msgid "Preferences hash"
 msgstr ""
 
-#: searx/templates/simple/preferences/doi_resolver.html:1
-msgid "Digital Object Identifier (DOI)"
-msgstr "Skaitmeninis objekto identifikatorius (DOI)"
-
-#: searx/templates/simple/preferences/doi_resolver.html:6
-msgid "Open Access DOI resolver"
-msgstr "Atvirosios prieigos DOI sprendimų įtaisas"
-
-#: searx/templates/simple/preferences/doi_resolver.html:18
-msgid "Select service used by DOI rewrite"
+#: searx/templates/simple/preferences/doi_resolver.html:2
+msgid "DOI Resolver"
 msgstr ""
 
 #: searx/templates/simple/preferences/engines.html:9
@@ -1425,15 +1449,11 @@ msgstr "Išjungti viska"
 msgid "!bang"
 msgstr "!pokšt"
 
-#: searx/templates/simple/preferences/engines.html:26
-msgid "Supports selected language"
-msgstr "Palaiko pasirinktą kalbą"
-
-#: searx/templates/simple/preferences/engines.html:29
+#: searx/templates/simple/preferences/engines.html:28
 msgid "Weight"
 msgstr "Svoris"
 
-#: searx/templates/simple/preferences/engines.html:33
+#: searx/templates/simple/preferences/engines.html:32
 msgid "Max time"
 msgstr "Maksimalus laikas"
 
@@ -1450,10 +1470,14 @@ msgid ""
 "These settings are stored in your cookies. This allows us not to store "
 "this data about you."
 msgstr ""
+"Šie nustatymai yra laikomi jūsų slapukuose, tai leidžia mums nesaugoti "
+"šių duomenų apie jus."
 
 #: searx/templates/simple/preferences/footer.html:3
 msgid "These cookies serve your sole convenience; we don't use them to track you."
 msgstr ""
+"Šie slapukai yra naudojami išskirtinai jūsų patogumui, mes nenaudojame "
+"jų, kad jus sektume."
 
 #: searx/templates/simple/preferences/footer.html:6
 msgid "Save"
@@ -1487,7 +1511,7 @@ msgstr "Paveikslų persiuntimas"
 
 #: searx/templates/simple/preferences/image_proxy.html:14
 msgid "Proxy image results through SearXNG"
-msgstr ""
+msgstr "Persiunčiami paveikslai per SearXNG"
 
 #: searx/templates/simple/preferences/language.html:24
 msgid "What language do you prefer for search?"
@@ -1538,6 +1562,8 @@ msgid ""
 "Perform a search immediately if a category is selected. Disable to select"
 " multiple categories"
 msgstr ""
+"Jei pasirenkama kategorija, nedelsiant atlikti paiešką. Išjunkite "
+"norėdami pasirinkti kelias kategorijas"
 
 #: searx/templates/simple/preferences/theme.html:2
 msgid "Theme"
@@ -1545,7 +1571,7 @@ msgstr "Tema"
 
 #: searx/templates/simple/preferences/theme.html:14
 msgid "Change the layout of SearXNG"
-msgstr ""
+msgstr "Keisti SearXNG išdėstymą"
 
 #: searx/templates/simple/preferences/theme.html:19
 msgid "Theme style"
@@ -1573,15 +1599,15 @@ msgstr "Keisti išdėstymo kalbą"
 
 #: searx/templates/simple/preferences/urlformatting.html:2
 msgid "URL formatting"
-msgstr ""
+msgstr "URL formatavimas"
 
 #: searx/templates/simple/preferences/urlformatting.html:8
 msgid "Pretty"
-msgstr ""
+msgstr "Gražus"
 
 #: searx/templates/simple/preferences/urlformatting.html:13
 msgid "Full"
-msgstr ""
+msgstr "Visas"
 
 #: searx/templates/simple/preferences/urlformatting.html:18
 msgid "Host"
@@ -1607,12 +1633,12 @@ msgid "hide media"
 msgstr "slėpti mediją"
 
 #: searx/templates/simple/result_templates/default.html:14
-#: searx/templates/simple/result_templates/videos.html:14
+#: searx/templates/simple/result_templates/videos.html:15
 msgid "This site did not provide any description."
 msgstr "Šis tiklalapis nepridėjo jokio aprašymo."
 
 #: searx/templates/simple/result_templates/file.html:30
-#: searx/templates/simple/result_templates/images.html:22
+#: searx/templates/simple/result_templates/images.html:61
 #: searx/templates/simple/result_templates/torrent.html:18
 msgid "Filesize"
 msgstr "Failo dydis"
@@ -1628,21 +1654,21 @@ msgstr "Tipas"
 
 #: searx/templates/simple/result_templates/file.html:67
 msgid "Download"
-msgstr ""
+msgstr "Atsisiųsti"
 
-#: searx/templates/simple/result_templates/images.html:20
+#: searx/templates/simple/result_templates/images.html:53
 msgid "Resolution"
 msgstr "Raiška"
 
-#: searx/templates/simple/result_templates/images.html:21
-msgid "Format"
-msgstr "Formatas"
+#: searx/templates/simple/result_templates/images.html:55
+msgid "Image formats"
+msgstr ""
 
-#: searx/templates/simple/result_templates/images.html:24
-msgid "Engine"
-msgstr "Sistema"
+#: searx/templates/simple/result_templates/images.html:56
+msgid "original format"
+msgstr "pradinis formatas"
 
-#: searx/templates/simple/result_templates/images.html:25
+#: searx/templates/simple/result_templates/images.html:64
 msgid "View source"
 msgstr "Rodyti šaltinį"
 
@@ -1664,7 +1690,7 @@ msgstr "Versija"
 
 #: searx/templates/simple/result_templates/packages.html:18
 msgid "Maintainer"
-msgstr ""
+msgstr "Prižiūrėtojas"
 
 #: searx/templates/simple/result_templates/packages.html:24
 msgid "Updated at"
@@ -1689,7 +1715,7 @@ msgstr "Projektas"
 
 #: searx/templates/simple/result_templates/packages.html:55
 msgid "Project homepage"
-msgstr ""
+msgstr "Projekto internetinė svetainė"
 
 #: searx/templates/simple/result_templates/paper.html:8
 msgid "Published date"
@@ -2361,4 +2387,25 @@ msgstr "slėpti vaizdo įrašą"
 
 #~ msgid "Submit a new issue on Github including the above information"
 #~ msgstr "Pateikite nauja klaidą Github, įvedant informaciją viršuje"
+
+#~ msgid "Supports selected language"
+#~ msgstr "Palaiko pasirinktą kalbą"
+
+#~ msgid "Number of results"
+#~ msgstr "Rezultatų skaičius"
+
+#~ msgid "Format"
+#~ msgstr "Formatas"
+
+#~ msgid "Engine"
+#~ msgstr "Sistema"
+
+#~ msgid "Digital Object Identifier (DOI)"
+#~ msgstr "Skaitmeninis objekto identifikatorius (DOI)"
+
+#~ msgid "Open Access DOI resolver"
+#~ msgstr "Atvirosios prieigos DOI sprendimų įtaisas"
+
+#~ msgid "Select service used by DOI rewrite"
+#~ msgstr ""
 

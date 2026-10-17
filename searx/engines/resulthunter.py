@@ -1,0 +1,156 @@
+# SPDX-License-Identifier: AGPL-3.0-or-later
+"""Resulthunter_ is an American search engine with results from Brave.
+
+.. _Resulthunter : https://resulthunter.com
+"""
+
+import re
+import typing as t
+from urllib.parse import urlencode
+
+from searx.enginelib import EngineCache
+from searx import locales
+from searx.exceptions import SearxEngineAPIException, SearxEngineResponseException
+from searx.network import get
+from searx.result_types import EngineResults
+from searx.utils import eval_xpath_list, eval_xpath, extract_text
+
+# as it uses brave internally, it has the same locales and timerange/safesearch types
+from searx.engines.brave import safesearch_map, time_range_map, fetch_traits  # pylint: disable=unused-import
+
+if t.TYPE_CHECKING:
+    from lxml.etree import ElementBase
+    from searx.extended_types import SXNG_Response
+    from searx.search.processors import OnlineParams
+    from searx.enginelib.traits import EngineTraits
+
+    traits: EngineTraits
+
+about = {
+    "website": "https://resulthunter.com",
+    "wikidata_id": None,
+    "official_api_documentation": None,
+    "use_official_api": False,
+    "require_api_key": False,
+    "results": "HTML",
+}
+
+paging = True
+safesearch = True
+time_range_support = True
+
+base_url = "https://resulthunter.com"
+resulthunter_categ = "web"
+"""Supported categories are ``web`` and ``images``."""
+
+CACHE: EngineCache
+"""Cache for storing search token and cookies."""
+
+
+_SEARCH_TOKEN_RE = re.compile(r"window.__rhSearchToken\s*=\s*'(.*)'")
+
+
+def setup(_: dict[str, str]) -> bool | None:
+    global CACHE  # pylint: disable=global-statement
+    CACHE = EngineCache("resulthunter")
+
+    if resulthunter_categ not in ("web", "images"):
+        raise ValueError("invalid category: %s" % resulthunter_categ)
+
+
+def _get_search_token() -> tuple[str, dict[str, str]]:
+    if cached := CACHE.get("token"):
+        return cached
+
+    resp = get(base_url)
+    token = _SEARCH_TOKEN_RE.search(resp.text)
+    if not token:
+        raise SearxEngineAPIException("failed to find search token")
+    token = token.group(1)
+
+    cookies = dict(resp.cookies)
+    CACHE.set("token", (token, cookies))
+    return token, cookies
+
+
+def request(query: str, params: "OnlineParams") -> None:
+    search_token, cookies = _get_search_token()
+    params["cookies"] = cookies
+
+    args = {
+        "q": query,
+        "search_type": resulthunter_categ,
+        "offset": params["pageno"] - 1,
+        "search_source": "header",
+        "st": search_token,
+    }
+
+    # uses Brave's engine traits
+    ui_lang = locales.get_engine_locale(params["searxng_locale"], traits.custom["ui_lang"], "all")
+    if ui_lang and ui_lang != "all":
+        args["search_lang"] = ui_lang.split("-")[0]
+
+    engine_region = traits.get_region(params["searxng_locale"], "all")
+    if engine_region and engine_region != "all":
+        args["country"] = engine_region
+
+    if params["time_range"]:
+        args["freshness"] = time_range_map[params["time_range"]]
+
+    params["cookies"]["safesearch"] = safesearch_map[params["safesearch"]]
+
+    params["url"] = f"{base_url}/search?{urlencode(args)}"
+
+
+def _general_results(doc: "ElementBase") -> EngineResults:
+    res = EngineResults()
+    for result in eval_xpath_list(
+        doc, "//div[contains(@class, 'organic-results-container')]/div/div[contains(@class, 'group')]"
+    ):
+        url = extract_text(eval_xpath(result, ".//a/@href"))
+        if not url:
+            continue
+        (
+            res.add(
+                res.types.MainResult(
+                    url=url,
+                    title=extract_text(eval_xpath(result, ".//a/h3")) or "",
+                    content=extract_text(eval_xpath(result, ".//p")) or "",
+                ),
+            )
+        )
+    return res
+
+
+def _image_results(doc: "ElementBase") -> EngineResults:
+    res = EngineResults()
+    for result in eval_xpath_list(
+        doc, "//div[contains(@class, 'organic-results-container')]//a[contains(@class, 'group')]"
+    ):
+        (
+            res.add(
+                res.types.Image(
+                    url=extract_text(eval_xpath(result, "./@href")) or "",
+                    title=extract_text(eval_xpath(result, "./img/@alt")) or "",
+                    img_src=extract_text(eval_xpath(result, "./img/@src")) or "",
+                ),
+            )
+        )
+    return res
+
+
+def response(resp: "SXNG_Response") -> EngineResults:
+    doc = resp.html()
+
+    # if the request was wrong (e.g. missing params), the site doesn't contain a result container
+    # and instead shows an "Installation required" page to download the resulthunter browser extension
+    if not eval_xpath(doc, "//div[contains(@class, 'organic-results-container')]"):
+        raise SearxEngineResponseException()
+
+    match resulthunter_categ:
+        case "web":
+            return _general_results(doc)
+        case "images":
+            return _image_results(doc)
+        case _:
+            raise ValueError("invalid resulthunter category: %s" % resulthunter_categ)

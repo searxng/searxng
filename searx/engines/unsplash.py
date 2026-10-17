@@ -18,7 +18,7 @@ about = {
 
 base_url = 'https://unsplash.com/'
 search_url = base_url + 'napi/search/photos?'
-categories = ['images']
+categories = ["stock images"]
 page_size = 20
 paging = True
 

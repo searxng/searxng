@@ -4,11 +4,6 @@
 Engine Overview
 ===============
 
-.. contents::
-   :depth: 3
-   :local:
-   :backlinks: entry
-
 .. _metasearch-engine: https://en.wikipedia.org/wiki/Metasearch_engine
 
 .. sidebar:: Further reading ..
@@ -112,7 +107,7 @@ module:
    ======================= =========== ===========================================
    base_url                string      base-url, can be overwritten to use same
                                        engine on other URL
-   number_of_results       int         maximum number of results per request
+   page_size               int         maximum number of results per request
    language                string      ISO code of language and country like en_US
    api_key                 string      api-key if required by engine
    ======================= =========== ===========================================
@@ -148,7 +143,7 @@ parameters with default value can be redefined for special purposes.
    data                   dict           ``{}``
    cookies                dict           ``{}``
    verify                 bool           ``True``
-   headers.User-Agent     str            a random User-Agent
+   headers.User-Agent     str            ``''``
    category               str            current category, like ``'general'``
    safesearch             int            ``0``, between ``0`` and ``2`` (normal, moderate, strict)
    time_range             Optional[str]  ``None``, can be ``day``, ``week``, ``month``, ``year``
@@ -234,6 +229,8 @@ following parameters can be used to specify a search request:
    max_redirects       int         maximum redirects, hard limit
    soft_max_redirects  int         maximum redirects, soft limit. Record an error but don't stop the engine
    raise_for_httperror bool        True by default: raise an exception if the HTTP code of response is >= 300
+   impersonate         str         curl_cffi impersonate target (default: chrome, none to disable)
+   curl_options        dict        Any extra libcurl options for the request
    =================== =========== ==========================================================================
 
 

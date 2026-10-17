@@ -14,7 +14,6 @@ bot if the Accept-Encoding_ header ..
 
 """
 
-
 from ipaddress import (
     IPv4Network,
     IPv6Network,

@@ -8,7 +8,7 @@
 
    search:
      safe_search: 0
-     autocomplete: ""
+     autocomplete: "duckduckgo"
      favicon_resolver: ""
      default_lang: ""
      ban_time_on_fail: 5
@@ -32,7 +32,7 @@
   - ``2``: Strict
 
 ``autocomplete``:
-  Existing autocomplete backends, leave blank to turn it off.
+  Existing autocomplete backends, set blank to turn it off.
 
   - ``360search``
   - ``baidu``
@@ -41,8 +41,10 @@
   - ``dbpedia``
   - ``duckduckgo``
   - ``google``
+  - ``kagi``
   - ``mwmbl``
   - ``naver``
+  - ``privacywall``
   - ``quark``
   - ``qwant``
   - ``seznam``

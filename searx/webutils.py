@@ -42,18 +42,17 @@ exception_classname_to_text = {
     None: gettext('unexpected crash'),
     'timeout': timeout_text,
     'asyncio.TimeoutError': timeout_text,
-    'httpx.TimeoutException': timeout_text,
-    'httpx.ConnectTimeout': timeout_text,
-    'httpx.ReadTimeout': timeout_text,
-    'httpx.WriteTimeout': timeout_text,
-    'httpx.HTTPStatusError': gettext('HTTP error'),
-    'httpx.ConnectError': gettext("HTTP connection error"),
-    'httpx.RemoteProtocolError': http_protocol_error_text,
-    'httpx.LocalProtocolError': http_protocol_error_text,
-    'httpx.ProtocolError': http_protocol_error_text,
-    'httpx.ReadError': network_error_text,
-    'httpx.WriteError': network_error_text,
-    'httpx.ProxyError': gettext("proxy error"),
+    'curl_cffi.requests.exceptions.Timeout': timeout_text,
+    'curl_cffi.requests.exceptions.ConnectTimeout': timeout_text,
+    'curl_cffi.requests.exceptions.ReadTimeout': timeout_text,
+    'curl_cffi.requests.exceptions.HTTPError': gettext('HTTP error'),
+    'curl_cffi.requests.exceptions.ConnectionError': gettext("HTTP connection error"),
+    'curl_cffi.requests.exceptions.DNSError': gettext("HTTP connection error"),
+    'curl_cffi.requests.exceptions.IncompleteRead': http_protocol_error_text,
+    'curl_cffi.requests.exceptions.SSLError': ssl_cert_error_text,
+    'curl_cffi.requests.exceptions.CertificateVerifyError': ssl_cert_error_text,
+    'curl_cffi.requests.exceptions.ProxyError': gettext("proxy error"),
+    'curl_cffi.requests.exceptions.RequestException': network_error_text,
     'searx.exceptions.SearxEngineCaptchaException': gettext("CAPTCHA"),
     'searx.exceptions.SearxEngineTooManyRequestsException': gettext("too many requests"),
     'searx.exceptions.SearxEngineAccessDeniedException': gettext("access denied"),
@@ -163,7 +162,6 @@ def get_json_response(sq: "SearchQuery", rc: "ResultContainer") -> str:
     """Returns the JSON string of the results to a query (``application/json``)"""
     data = {
         'query': sq.query,
-        'number_of_results': rc.number_of_results,
         'results': [_.as_dict() for _ in rc.get_ordered_results()],
         'answers': [_.as_dict() for _ in rc.answers],
         'corrections': list(rc.corrections),
@@ -324,7 +322,7 @@ def group_engines_in_tab(engines: "Iterable[Engine]") -> List[Tuple[str, "Iterab
         return (group[0] == NO_SUBGROUPING, group[0].lower())
 
     def engine_sort_key(engine):
-        return (engine.about.get('language', ''), engine.name)
+        return (engine.language, engine.name)
 
     tabs = list(get_setting('categories_as_tabs').keys())
     subgroups = itertools.groupby(sorted(engines, key=get_subgroup), get_subgroup)

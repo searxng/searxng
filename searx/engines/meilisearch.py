@@ -35,7 +35,7 @@ Here is a simple example to query a Meilisearch instance:
 """
 
 # pylint: disable=global-statement
-
+import typing as t
 from json import dumps
 from searx.result_types import EngineResults
 from searx.extended_types import SXNG_Response
@@ -49,7 +49,7 @@ categories = ['general']
 paging = True
 
 
-def init(_):
+def setup(_: dict[str, t.Any]) -> bool | None:
     if index == '':
         raise ValueError('index cannot be empty')
 
