@@ -126,11 +126,9 @@ container.build() {
         info_msg "Set \$GIT_URL: $GIT_URL"
 
         if [ "$container_engine" = "podman" ]; then
-            params_build_builder="build --format=oci --layers --platform=$platform --identity-label=false"
             params_build="build --format=oci --layers --platform=$platform --identity-label=false"
         else
-            params_build_builder="build --platform=$platform"
-            params_build=$params_build_builder
+            params_build="build --platform=$platform"
         fi
 
         local_tag_arch="localhost/searxng/searxng:$DOCKER_TAG-$arch$variant"
@@ -141,19 +139,12 @@ container.build() {
         fi
 
         # shellcheck disable=SC2086
-        "$container_engine" $params_build_builder \
-            --tag="localhost/searxng/searxng:builder" \
-            --file="./container/builder.dockerfile" \
-            .
-        build_msg CONTAINER "Image \"builder\" built"
-
-        # shellcheck disable=SC2086
         "$container_engine" $params_build \
             --build-arg="CREATED=$(date -u +%Y-%m-%dT%H:%M:%SZ)" \
             --build-arg="VERSION=$DOCKER_TAG" \
             --build-arg="VCS_URL=$GIT_URL" \
             --build-arg="VCS_REVISION=$(git rev-parse HEAD)" \
-            --file="./container/dist.dockerfile" \
+            --file="./container/Dockerfile" \
             .
         build_msg CONTAINER "Image built"
 
