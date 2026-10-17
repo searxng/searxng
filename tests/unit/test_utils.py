@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 # pylint: disable=missing-module-docstring,disable=missing-class-docstring,invalid-name
 
+import json
 import random
 import string
 import lxml.etree
@@ -58,7 +59,7 @@ class TestUtils(SearxTestCase):
 
     def test_extract_text_error_empty(self):
         with self.assertRaises(ValueError):
-            utils.extract_text({})
+            utils.extract_text({})  # pyright: ignore[reportArgumentType]
 
     def test_extract_url(self):
         def f(html_str, search_url):
@@ -132,7 +133,7 @@ class TestXPathUtils(SearxTestCase):  # pylint: disable=missing-class-docstring
         utils.get_xpath(lxml.etree.XPath('//a'))
 
         with self.assertRaises(TypeError):
-            utils.get_xpath([])
+            utils.get_xpath([])  # pyright: ignore[reportArgumentType]
 
     def test_get_xpath_invalid(self):
         invalid_xpath = '//a[0].text'
@@ -214,3 +215,74 @@ class TestXPathUtils(SearxTestCase):  # pylint: disable=missing-class-docstring
         key, counter = solution  # pyright: ignore[reportGeneralTypeIssues]
         self.assertEqual(key, "71087e0b10d819181fc5463588a230b5744e6b9f19b86667c71ff73a9c7567aa")
         self.assertEqual(counter, 260)
+
+
+class TestJsHelpers(SearxTestCase):
+
+    # js_find_matching_bracket
+    @parameterized.expand(
+        [
+            # simple object
+            ('{"a": 1, "b": {"c": 2}}', 0, "{", "}", 22),
+            # nested with strings that contain braces
+            ('{"a": "hello { world }", "b": 2}', 0, "{", "}", 31),
+            # array
+            ("[1, 2, [3, 4], 5]", 0, "[", "]", 16),
+            # string with escaped quote
+            (r'{"a": "he said \"hi\"", "b": 1}', 0, "{", "}", 30),
+        ]
+    )
+    def test_js_find_matching_bracket(self, text, start, open_c, close_c, expected_end):
+        end = utils.js_find_matching_bracket(text, start, open_c, close_c)
+        self.assertEqual(end, expected_end)
+
+    def test_js_find_matching_bracket_unbalanced(self):
+        with self.assertRaises(ValueError):
+            utils.js_find_matching_bracket("{a: 1", 0)
+
+    # js_split_args
+    @parameterized.expand(
+        [
+            ('"first", 2, {"third": 3}', ['"first"', "2", '{"third": 3}']),
+            ('"a", "b,c", [1,2]', ['"a"', '"b,c"', "[1,2]"]),
+            ("$", ["$"]),
+            ("", []),
+            ('"only"', ['"only"']),
+            ('1, "two", true, null', ["1", '"two"', "true", "null"]),
+        ]
+    )
+    def test_js_split_args(self, args_str, expected):
+        self.assertEqual(utils.js_split_args(args_str), expected)
+
+    # js_substitute_identifiers
+    @parameterized.expand(
+        [
+            # basic
+            (
+                '{"a": a, "b": b}',
+                {"a": '"first"', "b": "2"},
+                '{"a": "first", "b": 2}',
+            ),
+            # $ and multi-char
+            (
+                '{"first": $, "second": aa}',
+                {"$": '"actual"', "aa": '"x"'},
+                '{"first": "actual", "second": "x"}',
+            ),
+            # identifier inside a string must NOT be replaced
+            (
+                '{"msg": "hello a world", "val": a}',
+                {"a": "99"},
+                '{"msg": "hello a world", "val": 99}',
+            ),
+            # no free variables
+            (
+                '{"a": 1, "b": true}',
+                {"a": "ignored"},
+                '{"a": 1, "b": true}',
+            ),
+        ]
+    )
+    def test_js_substitute_identifiers(self, js_obj, mapping, expected):
+        result = utils.js_substitute_identifiers(js_obj, mapping)
+        self.assertEqual(json.loads(result), json.loads(expected))
