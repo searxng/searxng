@@ -793,6 +793,110 @@ def js_obj_str_to_json_str(js_obj_str: str) -> str:
     return s
 
 
+def js_find_matching_bracket(text: str, start: int, open_char: str = "{", close_char: str = "}") -> int:
+    """Return index of the matching closing bracket, safely ignoring JS string literals."""
+    depth = 0
+    i = start
+    in_string = None
+    escape_ = False
+
+    while i < len(text):
+        c = text[i]
+        if in_string:
+            if escape_:
+                escape_ = False
+            elif c == "\\":
+                escape_ = True
+            elif c == in_string:
+                in_string = None
+        elif c in ('"', "'", "`"):
+            in_string = c
+        elif c == open_char:
+            depth += 1
+        elif c == close_char:
+            depth -= 1
+            if depth == 0:
+                return i
+        i += 1
+    raise ValueError(f"unbalanced {open_char}{close_char} starting at {start}")
+
+
+def js_split_args(args_str: str) -> list[str]:
+    """Split a JS argument list, respecting strings and nested brackets."""
+    args: list[str] = []
+    last_pos = 0
+    in_string = None
+    escape_ = False
+    depth = 0
+
+    for idx, c in enumerate(f"{args_str},"):
+        if in_string:
+            if escape_:
+                escape_ = False
+            elif c == "\\":
+                escape_ = True
+            elif c == in_string:
+                in_string = None
+        elif c in ('"', "'", "`"):
+            in_string = c
+        elif c in ("(", "[", "{"):
+            depth += 1
+        elif c in (")", "]", "}"):
+            depth -= 1
+        elif c == "," and depth == 0:
+            if item := args_str[last_pos:idx].strip():
+                args.append(item)
+            last_pos = idx + 1
+    return args
+
+
+def js_substitute_identifiers(obj_str: str, mapping: dict[str, str]) -> str:
+    """Replace bare identifiers that appear in *mapping* only when they are outside of string literals."""
+    if not mapping:
+        return obj_str
+
+    # longest first so that "aa" is tried before "a"
+    idents = sorted(mapping.keys(), key=len, reverse=True)
+
+    # JS identifier characters – used for boundaries instead of \b (necessary because $ is not a \w character)
+    id_chars = r'[$_a-zA-Z0-9]'
+    pattern = re.compile(f'(?<!{id_chars})(' + '|'.join(re.escape(i) for i in idents) + f')(?!{id_chars})')
+
+    result: list[str] = []
+    last = 0
+    in_string = None
+    escape_ = False
+    i = 0
+    while i < len(obj_str):
+        c = obj_str[i]
+        if in_string:
+            if escape_:
+                escape_ = False
+            elif c == '\\':
+                escape_ = True
+            elif c == in_string:
+                in_string = None
+            i += 1
+            continue
+
+        # outside a string
+        if c in ('"', "'", '`'):
+            in_string = c
+            i += 1
+            continue
+
+        if m := pattern.match(obj_str, i):
+            ident = m[1]
+            result.extend((obj_str[last:i], mapping[ident]))
+            i = m.end()
+            last = i
+        else:
+            i += 1
+
+    result.append(obj_str[last:])
+    return ''.join(result)
+
+
 def parse_duration_string(duration_str: str) -> timedelta | None:
     """Parse a time string in format MM:SS or HH:MM:SS and convert it to a
     :obj:`datetime.timedelta` object.

@@ -130,7 +130,14 @@ from searx.enginelib.traits import EngineTraits
 from searx.exceptions import SearxEngineResponseException
 from searx.result_types import EngineResults, MainResult, Video
 from searx.result_types.image import Image
-from searx.utils import html_to_text, js_obj_str_to_json_str, js_obj_str_to_python
+from searx.utils import (
+    html_to_text,
+    js_find_matching_bracket,
+    js_obj_str_to_json_str,
+    js_obj_str_to_python,
+    js_split_args,
+    js_substitute_identifiers,
+)
 
 if t.TYPE_CHECKING:
     from searx.extended_types import SXNG_Response
@@ -189,7 +196,7 @@ time_range_map: dict[str, str] = {
     "year": "py",
 }
 
-_IIFE_RE = re.compile(
+IIFE_RE = re.compile(
     r"""
     \(function\s*\(                    # (function(
         (?P<params>[^)]*)              # formal parameters
@@ -244,132 +251,28 @@ def _extract_published_date(published_date_raw: str | None):
         return None
 
 
-def _find_matching_bracket(text: str, start: int, open_char: str = "{", close_char: str = "}") -> int:
-    """Return index of the matching closing bracket, safely ignoring JS string literals."""
-    depth = 0
-    i = start
-    in_string = None
-    escape = False
-
-    while i < len(text):
-        c = text[i]
-        if in_string:
-            if escape:
-                escape = False
-            elif c == "\\":
-                escape = True
-            elif c == in_string:
-                in_string = None
-        elif c in ('"', "'", "`"):
-            in_string = c
-        elif c == open_char:
-            depth += 1
-        elif c == close_char:
-            depth -= 1
-            if depth == 0:
-                return i
-        i += 1
-    raise ValueError(f"unbalanced {open_char}{close_char} starting at {start}")
-
-
-def _split_js_args(args_str: str) -> list[str]:
-    """Split a JS argument list, respecting strings and nested brackets."""
-    args: list[str] = []
-    last_pos = 0
-    in_string = None
-    escape = False
-    depth = 0
-
-    for idx, c in enumerate(f"{args_str},"):
-        if in_string:
-            if escape:
-                escape = False
-            elif c == "\\":
-                escape = True
-            elif c == in_string:
-                in_string = None
-        elif c in ('"', "'", "`"):
-            in_string = c
-        elif c in ("(", "[", "{"):
-            depth += 1
-        elif c in (")", "]", "}"):
-            depth -= 1
-        elif c == "," and depth == 0:
-            if item := args_str[last_pos:idx].strip():
-                args.append(item)
-            last_pos = idx + 1
-    return args
-
-
-def _substitute_js_identifiers(obj_str: str, mapping: dict[str, str]) -> str:
-    """Replace bare identifiers that appear in *mapping* only when they are outside of string literals."""
-    if not mapping:
-        return obj_str
-
-    # longest first so that "aa" is tried before "a"
-    idents = sorted(mapping.keys(), key=len, reverse=True)
-
-    # JS identifier characters – used for boundaries instead of \b (necessary because $ is not a \w character)
-    id_chars = r'[$_a-zA-Z0-9]'
-    pattern = re.compile(f'(?<!{id_chars})(' + '|'.join(re.escape(i) for i in idents) + f')(?!{id_chars})')
-
-    result: list[str] = []
-    last = 0
-    in_string = None
-    escape = False
-    i = 0
-    while i < len(obj_str):
-        c = obj_str[i]
-        if in_string:
-            if escape:
-                escape = False
-            elif c == '\\':
-                escape = True
-            elif c == in_string:
-                in_string = None
-            i += 1
-            continue
-
-        # outside a string
-        if c in ('"', "'", '`'):
-            in_string = c
-            i += 1
-            continue
-
-        if m := pattern.match(obj_str, i):
-            ident = m[1]
-            result.extend((obj_str[last:i], mapping[ident]))
-            i = m.end()
-            last = i
-        else:
-            i += 1
-
-    result.append(obj_str[last:])
-    return ''.join(result)
-
-
-def _extract_iife_object(data_src: str, match: re.Match[str]) -> tuple[str, int]:
+def extract_iife_object(data_src: str, match: re.Match[str]) -> tuple[str, int]:
     """
     Extract and substitute the object literal from a JavaScript IIFE.
     Returns the transformed object literal and the position immediately after the IIFE call.
     """
-    params = [p.strip() for p in match["params"].split(",") if p.strip()]
     body_start = match.start("body")
-    body_end = _find_matching_bracket(data_src, body_start, "{", "}")
+    body_end = js_find_matching_bracket(data_src, body_start, "{", "}")
     obj_str = data_src[body_start : body_end + 1]
 
     # 1. Locate the argument call execution signature block: ...)(arg1, arg2)
     call_start = data_src.find("(", body_end)
     if call_start == -1:
         raise ValueError("IIFE missing call arguments")
-    call_end = _find_matching_bracket(data_src, call_start, "(", ")")
+    call_end = js_find_matching_bracket(data_src, call_start, "(", ")")
 
     # 2. map arguments
-    args = _split_js_args(data_src[call_start + 1 : call_end])
+    args = js_split_args(data_src[call_start + 1 : call_end])
+    params = [p.strip() for p in match["params"].split(",") if p.strip()]
     mapping = dict(zip(params, args))
 
     # 3. substitute idents
-    result = _substitute_js_identifiers(obj_str, mapping)
+    result = js_substitute_identifiers(obj_str, mapping)
     return "".join(result), call_end + 1
 
 
@@ -388,7 +291,7 @@ def extract_json_data(text: str) -> dict[str, t.Any]:
         raise ValueError("Brave data payload not found (no 'data: [')")
 
     array_start = start + len(marker) - 1  # Points directly at '['
-    array_end = _find_matching_bracket(text, array_start, "[", "]")
+    array_end = js_find_matching_bracket(text, array_start, "[", "]")
     data_src = text[array_start + 1 : array_end]
 
     objects: list[str] = []
@@ -403,8 +306,8 @@ def extract_json_data(text: str) -> dict[str, t.Any]:
             break
 
         # Case 1: IIFE Object Signature Matches
-        if m := _IIFE_RE.match(data_src, pos):
-            obj_str, next_pos = _extract_iife_object(data_src, m)
+        if m := IIFE_RE.match(data_src, pos):
+            obj_str, next_pos = extract_iife_object(data_src, m)
             objects.append(obj_str)
             pos = next_pos
             # Brave sometimes emits an extra ')' after the IIFE call
@@ -414,7 +317,7 @@ def extract_json_data(text: str) -> dict[str, t.Any]:
 
         # Case 2: Standard raw plain JSON mapping block {type:"data", ...}
         if data_src[pos] == "{":
-            obj_end = _find_matching_bracket(data_src, pos, "{", "}")
+            obj_end = js_find_matching_bracket(data_src, pos, "{", "}")
             objects.append(data_src[pos : obj_end + 1])
             pos = obj_end + 1
             continue
