@@ -283,12 +283,12 @@ container images are not officially supported):
    $ make container
 
    $ docker images
-   REPOSITORY                 TAG                  IMAGE ID  SIZE
-   localhost/searxng/searxng  2026.6.19-93f66bfb4  ...       265 MB
-   localhost/searxng/searxng  latest               ...       265 MB
-   localhost/searxng/searxng  builder              ...       687 MB
-   docker.io/searxng/base     searxng-builder      ...       565 MB
-   docker.io/searxng/base     searxng              ...       143 MB
+   REPOSITORY                 TAG              IMAGE ID  SIZE
+   localhost/searxng/searxng  latest           ...       271 MB
+   localhost/searxng/searxng  2026.10.17-*     ...       271 MB
+   <none>                     <none>           ...       677 MB
+   docker.io/searxng/base     searxng          ...       144 MB
+   docker.io/searxng/base     searxng-builder  ...       550 MB
 
 Migrate from ``searxng-docker``
 ===============================
