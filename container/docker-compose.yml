@@ -18,7 +18,7 @@ services:
   valkey:
     container_name: searxng-valkey
     image: docker.io/valkey/valkey:9-alpine
-    command: valkey-server --save 30 1 --loglevel warning
+    command: valkey-server --save 300 1 --save 60 1000 --loglevel warning
     restart: always
     volumes:
       - valkey-data:/data/

@@ -13,7 +13,7 @@ check_file() {
 !!! "$target" is not a valid file, exiting...
 !!!
 EOF
-        exit 127
+        exit 1
     fi
 }
 
@@ -28,7 +28,7 @@ check_directory() {
 !!! "$target" is not a valid directory, exiting...
 !!!
 EOF
-        exit 127
+        exit 1
     fi
 }
 
