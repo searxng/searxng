@@ -10,10 +10,8 @@ usage::
 
 import typing as t
 
-import os
 import sys
 import copy
-
 import os
 from os.path import realpath, dirname
 import warnings
