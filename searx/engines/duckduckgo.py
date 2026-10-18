@@ -510,12 +510,13 @@ def response(resp: "SXNG_Response") -> EngineResults:
         and "Your user agent:" not in zero_click
         and "URL Decoded:" not in zero_click
     ):
-        res.add(
-            res.types.Answer(
-                answer=zero_click,
-                url=eval_xpath_getindex(doc, '//div[@id="zero_click_abstract"]/a/@href', 0),
+        if zero_click_url := eval_xpath_getindex(doc, '//div[@id="zero_click_abstract"]/a/@href', 0, None):
+            res.add(
+                res.types.Answer(
+                    answer=zero_click,
+                    url=zero_click_url,
+                )
             )
-        )
     return res
 
 
