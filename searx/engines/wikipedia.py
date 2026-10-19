@@ -155,6 +155,9 @@ def request(query, params):
 
     params["raise_for_httperror"] = False
     params["soft_max_redirects"] = 2
+    params["headers"]["User-Agent"] = utils.searxng_useragent()
+    logger.debug(f"wikipedia.request User-Agent: {params['headers']['User-Agent']}")
+    params["impersonate"] = "none"
 
     return params
 
@@ -265,7 +268,6 @@ def fetch_wikimedia_traits(engine_traits: EngineTraits):
     # pylint: disable=import-outside-toplevel, too-many-branches
 
     from searx.network import get  # see https://github.com/searxng/searxng/issues/762
-    from searx.utils import searxng_useragent
 
     engine_traits.custom["wiki_netloc"] = {}
     engine_traits.custom["WIKIPEDIA_LANGUAGES"] = []
@@ -279,8 +281,9 @@ def fetch_wikimedia_traits(engine_traits: EngineTraits):
         for sxng_tag in sxng_tag_list:
             engine_traits.regions[sxng_tag] = eng_tag
 
-    headers = {"Accept": "*/*", "User-Agent": searxng_useragent()}
-    resp = get(list_of_wikipedias, timeout=5, headers=headers)
+    headers = {"Accept": "*/*", "User-Agent": utils.searxng_useragent()}
+    print("wikipedia.fetch_traits headers: {headers}")
+    resp = get(list_of_wikipedias, timeout=5, headers=headers, impersonate="none")
     if not resp.ok:
         raise RuntimeError("Response from Wikipedia is not OK.")
 
