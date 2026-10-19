@@ -2051,6 +2051,29 @@ engines:
     engine: pubmed
     shortcut: pub
 
+  - name: purili
+    engine: purili
+    categories: general
+    purili_categ: search
+    shortcut: pur
+    inactive: true
+
+  - name: purili images
+    engine: purili
+    categories: images
+    purili_categ: images
+    shortcut: puri
+    inactive: true
+
+  - name: purili news
+    engine: purili
+    categories: news
+    purili_categ: news
+    shortcut: purn
+    paging: false
+    timeout: 5
+    inactive: true
+
   - name: pypi
     shortcut: pypi
     engine: pypi
