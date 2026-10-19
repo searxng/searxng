@@ -78,7 +78,7 @@ display_type = ["infobox"]
 one will add a hit to the result list.  The first one will show a hit in the
 info box.  Both values can be set, or one of the two can be set."""
 
-list_of_wikipedias = "https://meta.wikimedia.org/wiki/List_of_Wikipedias"
+list_of_wikipedias = "https://meta.wikimedia.org/wiki/List_of_Wikipedias/sortable"
 """`List of all wikipedias <https://meta.wikimedia.org/wiki/List_of_Wikipedias>`_
 """
 
@@ -282,7 +282,7 @@ def fetch_wikimedia_traits(engine_traits: EngineTraits):
             engine_traits.regions[sxng_tag] = eng_tag
 
     headers = {"Accept": "*/*", "User-Agent": utils.searxng_useragent()}
-    print("wikipedia.fetch_traits headers: {headers}")
+    print(f"wikipedia.fetch_traits headers: {headers}")
     resp = get(list_of_wikipedias, timeout=5, headers=headers, impersonate="none")
     if not resp.ok:
         raise RuntimeError("Response from Wikipedia is not OK.")
@@ -294,6 +294,10 @@ def fetch_wikimedia_traits(engine_traits: EngineTraits):
             continue
         cols = [c.text_content().strip() for c in cols]
 
+        if len(cols) != 12:
+            # This row is not comming from the main table in:
+            # https://meta.wikimedia.org/wiki/List_of_Wikipedias/sortable
+            continue
         depth = float(cols[11].replace("-", "0").replace(",", ""))
         articles = int(cols[4].replace(",", "").replace(",", ""))
 
