@@ -20,20 +20,21 @@
 # return42 <return42@noreply.codeberg.org>, 2025, 2026.
 msgid ""
 msgstr ""
-"Project-Id-Version:  searx\n"
+"Project-Id-Version: searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-10-04 05:47+0000\n"
-"PO-Revision-Date: 2026-09-22 13:25+0000\n"
+"POT-Creation-Date: 2026-10-09 19:03+0000\n"
+"PO-Revision-Date: 2026-10-20 12:27+0000\n"
 "Last-Translator: marc-lopez <marc-lopez@noreply.codeberg.org>\n"
 "Language: fil\n"
-"Language-Team: Filipino "
-"<https://translate.codeberg.org/projects/searxng/searxng/fil/>\n"
-"Plural-Forms: nplurals=2; plural=(n == 1 || n==2 || n==3) || (n % 10 != 4"
-" || n % 10 != 6 || n % 10 != 9);\n"
+"Language-Team: Filipino <https://translate.codeberg.org/projects/searxng/"
+"searxng/fil/>\n"
+"Plural-Forms: nplurals=2; plural=(n == 1 || n==2 || n==3) || (n % 10 != 4 || "
+"n % 10 != 6 || n % 10 != 9);\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.18.0\n"
+"X-Generator: Weblate 2026.10.1\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
 #: searx/searxng.msg
@@ -589,15 +590,107 @@ msgstr "Pinagmulan"
 msgid "Error loading the next page"
 msgstr "Error sa paglo-load ng susunod na pahina"
 
-#: searx/webapp.py:478 searx/webapp.py:878
+#: searx/webapp.py:332
+msgid "close"
+msgstr "I-sara"
+
+#: searx/webapp.py:333
+msgid "How to navigate SearXNG with hotkeys"
+msgstr "Paano mag-navigate sa SearXNG gamit ang hotkeys"
+
+#: searx/webapp.py:334
+msgid "Control"
+msgstr "Kontrol"
+
+#: searx/webapp.py:335
+msgid "Results"
+msgstr "Mga Resulta"
+
+#: searx/webapp.py:336
+msgid "Navigation"
+msgstr "Nabigasyon"
+
+#: searx/webapp.py:337
+msgid "Other"
+msgstr "Iba Pa"
+
+#: searx/webapp.py:338
+msgid "remove focus from the focused input"
+msgstr "tanggalin ang pagtutok sa tinutukan na input"
+
+#: searx/webapp.py:339
+msgid "copy url of the selected result to the clipboard"
+msgstr "i-kopya ang url ng napiling resulta sa clipboard"
+
+#: searx/webapp.py:340
+msgid "toggle help window"
+msgstr "i-bukas/i-sara ang help window"
+
+#: searx/webapp.py:341
+msgid "focus on the search input"
+msgstr "tumutok sa input para sa paghahanap"
+
+#: searx/webapp.py:342
+msgid "go to next page"
+msgstr "lipat patungo sa susunod na pahina"
+
+#: searx/webapp.py:343
+msgid "open search result"
+msgstr "buksan ang resulta ng paghahanap"
+
+#: searx/webapp.py:344
+msgid "go to previous page"
+msgstr "lipat sa nakalipas na pahina"
+
+#: searx/webapp.py:345
+msgid "reload page from the server"
+msgstr "i-load ulit ang pahina galing sa server"
+
+#: searx/webapp.py:346
+msgid "open the result in a new tab"
+msgstr "buksan ang resulta sa panibagong tab"
+
+#: searx/webapp.py:347
+msgid "select previous search result"
+msgstr "piliin ang nakalipas na resulta ng paghahanap"
+
+#: searx/webapp.py:348
+msgid "select next search result"
+msgstr "piliin ang susunod na resulta ng paghahanap"
+
+#: searx/webapp.py:349
+msgid "scroll one page up"
+msgstr "i-scroll pataas ng isang pahina"
+
+#: searx/webapp.py:350
+msgid "scroll half a page down"
+msgstr "i-scroll pababa ng kalahating pahina"
+
+#: searx/webapp.py:351
+msgid "scroll one page down"
+msgstr "i-scroll pababa ng isang pahina"
+
+#: searx/webapp.py:352
+msgid "scroll to the top of the page"
+msgstr "I-scroll patungo sa tuktok ng pahina"
+
+#: searx/webapp.py:353
+msgid "scroll half a page up"
+msgstr "i-scroll pataas ng kalahating pahina"
+
+#: searx/webapp.py:354
+msgid "scroll to the bottom of the page"
+msgstr "i-scroll patungo sa ilalim ng pahina"
+
+#: searx/webapp.py:502 searx/webapp.py:902
 msgid "Invalid settings, please edit your preferences"
 msgstr "Di-wastong mga setting, pakibago ang iyong mga kagustuhan"
 
-#: searx/webapp.py:494
+#: searx/webapp.py:518
 msgid "Invalid settings"
 msgstr "Di-wastong mga setting"
 
-#: searx/webapp.py:570 searx/webapp.py:660
+#: searx/webapp.py:594 searx/webapp.py:684
 msgid "search error"
 msgstr "nagkaproblema sa paghahanap ng mga resulta"
 
@@ -1360,7 +1453,7 @@ msgstr "Kusang tinatapos"
 
 #: searx/templates/simple/preferences/autocomplete.html:15
 msgid "Show possible queries as you type"
-msgstr ""
+msgstr "Ipakita ang mga posible na query habang nagta-type"
 
 #: searx/templates/simple/preferences/center_alignment.html:2
 msgid "Center Alignment"
@@ -1368,7 +1461,7 @@ msgstr "Pag-align sa Gitnang"
 
 #: searx/templates/simple/preferences/center_alignment.html:14
 msgid "Display results in the center of the page (Oscar layout)."
-msgstr ""
+msgstr "Ipakita ang mga resulta sa gitna ng pahina (layout na Oscar)."
 
 #: searx/templates/simple/preferences/cookies.html:2
 msgid ""
@@ -1381,6 +1474,8 @@ msgstr ""
 #: searx/templates/simple/preferences/cookies.html:3
 msgid "With this list, you can assess the transparency of SearXNG."
 msgstr ""
+"Sa pamamagitan ng listahan na ito, maaaring siyasatin ang katapatan ng "
+"SearXNG."
 
 #: searx/templates/simple/preferences/cookies.html:9
 msgid "Cookie name"
@@ -1431,13 +1526,15 @@ msgstr "Hash ng mga preference"
 
 #: searx/templates/simple/preferences/doi_resolver.html:2
 msgid "DOI Resolver"
-msgstr ""
+msgstr "DOI solver"
 
 #: searx/templates/simple/preferences/engines.html:9
 msgid ""
 "This tab does not exist in the user interface, but you can search with "
 "these engines via !bangs."
 msgstr ""
+"Wala ang tab na ito sa user interface, pero makakahanap ka sa mga makinang "
+"ito gamit ang !bangs."
 
 #: searx/templates/simple/preferences/engines.html:15
 msgid "Enable all"
@@ -2455,4 +2552,3 @@ msgstr "itago ang video"
 
 #~ msgid "Select service used by DOI rewrite"
 #~ msgstr "Pumili ng serbisyo na ginagamit sa pagsulat ng DOI"
-

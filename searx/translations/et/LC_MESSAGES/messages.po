@@ -21,8 +21,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-10-04 05:47+0000\n"
-"PO-Revision-Date: 2026-10-05 10:27+0000\n"
+"POT-Creation-Date: 2026-10-09 19:03+0000\n"
+"PO-Revision-Date: 2026-10-12 06:27+0000\n"
 "Last-Translator: Priit Jõerüüt <jrtcdbrg@noreply.codeberg.org>\n"
 "Language: et\n"
 "Language-Team: Estonian <https://translate.codeberg.org/projects/searxng/"
@@ -32,7 +32,7 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.18.0\n"
-"X-Generator: Weblate 2026.9.1\n"
+"X-Generator: Weblate 2026.10.1\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
 #: searx/searxng.msg
@@ -588,15 +588,107 @@ msgstr "Allikas"
 msgid "Error loading the next page"
 msgstr "Viga järgmise lehekülje laadimisel"
 
-#: searx/webapp.py:478 searx/webapp.py:878
+#: searx/webapp.py:332
+msgid "close"
+msgstr "sulge"
+
+#: searx/webapp.py:333
+msgid "How to navigate SearXNG with hotkeys"
+msgstr "Kiirklahvide kasutus SearXNG-s"
+
+#: searx/webapp.py:334
+msgid "Control"
+msgstr "Tegevuste juhtimine"
+
+#: searx/webapp.py:335
+msgid "Results"
+msgstr "Tulemused"
+
+#: searx/webapp.py:336
+msgid "Navigation"
+msgstr "Liikumine lehel"
+
+#: searx/webapp.py:337
+msgid "Other"
+msgstr "Muu"
+
+#: searx/webapp.py:338
+msgid "remove focus from the focused input"
+msgstr "eemalda hetkel kehtiv fookus"
+
+#: searx/webapp.py:339
+msgid "copy url of the selected result to the clipboard"
+msgstr "kopeeri valitud otsingutulemuse võrguaadress lõikelauale"
+
+#: searx/webapp.py:340
+msgid "toggle help window"
+msgstr "lülita abiteave sisse/välja"
+
+#: searx/webapp.py:341
+msgid "focus on the search input"
+msgstr "säti fookus otsingukastile"
+
+#: searx/webapp.py:342
+msgid "go to next page"
+msgstr "ava järgmine leht"
+
+#: searx/webapp.py:343
+msgid "open search result"
+msgstr "ava otsingutulemused"
+
+#: searx/webapp.py:344
+msgid "go to previous page"
+msgstr "ava eelmine leht"
+
+#: searx/webapp.py:345
+msgid "reload page from the server"
+msgstr "laadi leht serverist uuesti"
+
+#: searx/webapp.py:346
+msgid "open the result in a new tab"
+msgstr "ava otsingutulemus uuel vahekaardil"
+
+#: searx/webapp.py:347
+msgid "select previous search result"
+msgstr "vali eelmine otsingutulemus"
+
+#: searx/webapp.py:348
+msgid "select next search result"
+msgstr "vali järgmine otsingutulemus"
+
+#: searx/webapp.py:349
+msgid "scroll one page up"
+msgstr "keri lehe jagu ülespoole"
+
+#: searx/webapp.py:350
+msgid "scroll half a page down"
+msgstr "keri poole lehe jagu allapoole"
+
+#: searx/webapp.py:351
+msgid "scroll one page down"
+msgstr "keri lehe jagu allapoole"
+
+#: searx/webapp.py:352
+msgid "scroll to the top of the page"
+msgstr "keri lehe ülaäärde"
+
+#: searx/webapp.py:353
+msgid "scroll half a page up"
+msgstr "keri poole lehe jagu ülespoole"
+
+#: searx/webapp.py:354
+msgid "scroll to the bottom of the page"
+msgstr "keri lehe alaäärde"
+
+#: searx/webapp.py:502 searx/webapp.py:902
 msgid "Invalid settings, please edit your preferences"
-msgstr "Sobimatud seaded, palun muuda oma eelistusi"
+msgstr "Vigased seadistused, palun muuda oma eelistusi"
 
-#: searx/webapp.py:494
+#: searx/webapp.py:518
 msgid "Invalid settings"
-msgstr "Sobimatud seaded"
+msgstr "Vigased seadistused"
 
-#: searx/webapp.py:570 searx/webapp.py:660
+#: searx/webapp.py:594 searx/webapp.py:684
 msgid "search error"
 msgstr "otsingu viga"
 
@@ -622,7 +714,7 @@ msgstr "SSL viga: sertifikaadi valideerimine ei õnnestunud"
 
 #: searx/webutils.py:42
 msgid "unexpected crash"
-msgstr "ootamatu krahh"
+msgstr "ootamatu kokkujooksmine"
 
 #: searx/webutils.py:48
 msgid "HTTP error"
