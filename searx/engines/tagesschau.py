@@ -32,7 +32,7 @@ about = {
 }
 language = "de"
 
-categories = ['general', 'news']
+categories = ['news']
 paging = True
 
 results_per_page = 10
