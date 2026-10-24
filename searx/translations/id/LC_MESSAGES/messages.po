@@ -26,8 +26,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-10-04 05:47+0000\n"
-"PO-Revision-Date: 2026-10-05 10:27+0000\n"
+"POT-Creation-Date: 2026-10-09 19:03+0000\n"
+"PO-Revision-Date: 2026-10-12 06:27+0000\n"
 "Last-Translator: Kito <q1t0@noreply.codeberg.org>\n"
 "Language: id\n"
 "Language-Team: Indonesian <https://translate.codeberg.org/projects/searxng/"
@@ -37,7 +37,7 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.18.0\n"
-"X-Generator: Weblate 2026.9.1\n"
+"X-Generator: Weblate 2026.10.1\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
 #: searx/searxng.msg
@@ -593,15 +593,107 @@ msgstr "Sumber"
 msgid "Error loading the next page"
 msgstr "Gagal memuat laman berikutnya"
 
-#: searx/webapp.py:478 searx/webapp.py:878
+#: searx/webapp.py:332
+msgid "close"
+msgstr "tutup"
+
+#: searx/webapp.py:333
+msgid "How to navigate SearXNG with hotkeys"
+msgstr "Bagaimana cara menavigasi SearXNG dengan pintasan papan ketik"
+
+#: searx/webapp.py:334
+msgid "Control"
+msgstr "Kontrol"
+
+#: searx/webapp.py:335
+msgid "Results"
+msgstr "Hasil"
+
+#: searx/webapp.py:336
+msgid "Navigation"
+msgstr "Navigasi"
+
+#: searx/webapp.py:337
+msgid "Other"
+msgstr "Lainnya"
+
+#: searx/webapp.py:338
+msgid "remove focus from the focused input"
+msgstr "hapus fokus dari masukan terfokus"
+
+#: searx/webapp.py:339
+msgid "copy url of the selected result to the clipboard"
+msgstr "salin url dari hasil yang terpilih ke papan klip"
+
+#: searx/webapp.py:340
+msgid "toggle help window"
+msgstr "buka/tutup jendela bantuan"
+
+#: searx/webapp.py:341
+msgid "focus on the search input"
+msgstr "fokus ke masukan pencarian"
+
+#: searx/webapp.py:342
+msgid "go to next page"
+msgstr "pergi ke halaman selanjutnya"
+
+#: searx/webapp.py:343
+msgid "open search result"
+msgstr "buka hasil pencarian"
+
+#: searx/webapp.py:344
+msgid "go to previous page"
+msgstr "pergi ke halaman sebelumnya"
+
+#: searx/webapp.py:345
+msgid "reload page from the server"
+msgstr "muat ulang halaman dari server"
+
+#: searx/webapp.py:346
+msgid "open the result in a new tab"
+msgstr "buka hasil di sebuah tab baru"
+
+#: searx/webapp.py:347
+msgid "select previous search result"
+msgstr "pilih hasil pencarian sebelumnya"
+
+#: searx/webapp.py:348
+msgid "select next search result"
+msgstr "pilih hasil pencarian setelahnya"
+
+#: searx/webapp.py:349
+msgid "scroll one page up"
+msgstr "gulir satu halaman ke atas"
+
+#: searx/webapp.py:350
+msgid "scroll half a page down"
+msgstr "gulir setengah halaman ke bawah"
+
+#: searx/webapp.py:351
+msgid "scroll one page down"
+msgstr "gulir satu halaman ke bawah"
+
+#: searx/webapp.py:352
+msgid "scroll to the top of the page"
+msgstr "gulir ke atas halaman"
+
+#: searx/webapp.py:353
+msgid "scroll half a page up"
+msgstr "gulir setengah halaman ke atas"
+
+#: searx/webapp.py:354
+msgid "scroll to the bottom of the page"
+msgstr "gulir ke bawah halaman"
+
+#: searx/webapp.py:502 searx/webapp.py:902
 msgid "Invalid settings, please edit your preferences"
 msgstr "Pengaturan takvalid. Mohon ubah preferensi Anda"
 
-#: searx/webapp.py:494
+#: searx/webapp.py:518
 msgid "Invalid settings"
 msgstr "Pengaturan takvalid"
 
-#: searx/webapp.py:570 searx/webapp.py:660
+#: searx/webapp.py:594 searx/webapp.py:684
 msgid "search error"
 msgstr "galat pencarian"
 
