@@ -40,6 +40,8 @@ def request(query, params):
 
     params['url'] = base_url + '?' + urlencode(url_params)
     params['cookies'] = response_index.cookies
+    params['allow_redirects'] = True
+    params['soft_max_redirects'] = 10
     return params
 
 
