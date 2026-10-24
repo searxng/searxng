@@ -46,3 +46,11 @@
   e.g. for usage with Prometheus. The ``/metrics`` endpoint is using HTTP Basic Auth,
   where the password is the value of ``open_metrics`` set above. The username used for
   Basic Auth can be randomly chosen as only the password is being validated.
+
+  Per-engine request counters use the ``engine_name`` label. In addition to
+  ``searxng_engines_request_count_total``, SearXNG exports
+  ``searxng_engines_successful_request_count_total`` and
+  ``searxng_engines_error_request_count_total``. A successful request includes a
+  valid response with no results; an error request is one handled by the engine
+  processor's exception path. These counters describe requests sent to upstream
+  engines, not incoming ``/search`` requests.
