@@ -28,19 +28,19 @@ if t.TYPE_CHECKING:
     from searx.extended_types import SXNG_Response
 
 
-def update_kwargs(**kwargs) -> None:  # type: ignore
+def update_kwargs(kwargs) -> None:  # type: ignore
     if 'timeout' not in kwargs:
         kwargs['timeout'] = settings['outgoing']['request_timeout']
     kwargs['raise_for_httperror'] = True
 
 
 def get(*args, **kwargs) -> "SXNG_Response":  # type: ignore
-    update_kwargs(**kwargs)  # pyright: ignore[reportUnknownArgumentType]
+    update_kwargs(kwargs)
     return http_get(*args, **kwargs)  # pyright: ignore[reportUnknownArgumentType]
 
 
 def post(*args, **kwargs) -> "SXNG_Response":  # type: ignore
-    update_kwargs(**kwargs)  # pyright: ignore[reportUnknownArgumentType]
+    update_kwargs(kwargs)
     return http_post(*args, **kwargs)  # pyright: ignore[reportUnknownArgumentType]
 
 
