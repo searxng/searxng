@@ -9,29 +9,28 @@ engines:
 - :ref:`google scholar engine`
 - :ref:`google autocomplete`
 
-This implementation uses Nokia user agents to request an XML layout from Google.
-The normal web version requires executing JavaScript to load the results and
-therefore is currently not used here.  See `Google discussion`_ for more
+This implementation uses two ``User-Agent`` lines to trick Google, we use the Opera 8.65
+line first and SAMSUNG-GT-S5230 second. Web, news, and video use the basic from Samsung
+layout and Images use the rich layout from Opera. See `Google discussion`_ for more
 information on that topic.
 
 .. _Google discussion: https://github.com/searxng/searxng/issues/6359
 """
 
-import random
 import typing as t
-from urllib.parse import unquote, urlencode
+from urllib.parse import parse_qs, urlencode, urlparse
 
 import babel
 import babel.core
 import babel.languages
+from curl_cffi import CurlOpt
 from lxml import html
 
 from searx.enginelib.traits import EngineTraits
-from searx.exceptions import SearxEngineCaptchaException
+from searx.exceptions import SearxEngineAPIException, SearxEngineCaptchaException
 from searx.locales import get_official_locales, language_tag, region_tag
 from searx.result_types import EngineResults
 from searx.utils import (
-    eval_xpath,
     eval_xpath_getindex,
     eval_xpath_list,
     extract_text,
@@ -67,22 +66,9 @@ time_range_dict = {"day": "d", "week": "w", "month": "m", "year": "y"}
 # Filter results. 0: None, 1: Moderate, 2: Strict
 filter_mapping = {0: "off", 1: "medium", 2: "high"}
 
-# https://github.com/searxng/searxng/issues/6359
-nokia_useragents = (
-    "Nokia7610/2.0 (5.0509.0) SymbianOS/7.0s Series60/2.1 Profile/MIDP-2.0 Configuration/CLDC-1.0",
-    "Nokia7610/2.0 (7.0642.0) SymbianOS/7.0s Series60/2.1 Profile/MIDP-2.0 Configuration/CLDC-1.0",
-    "Nokia6230/2.0 (05.50) Profile/MIDP-2.0 Configuration/CLDC-1.1",
-    "Nokia6230i/2.0 (03.80) Profile/MIDP-2.0 Configuration/CLDC-1.1",
-    "Nokia6280/2.0 (03.60) Profile/MIDP-2.0 Configuration/CLDC-1.1",
-    "NokiaN72/2.0617.1.0.3 Series60/2.8 Profile/MIDP-2.0 Configuration/CLDC-1.1",
-)
+opera_useragent = "Mozilla/4.0 (compatible; MSIE 6.0; Symbian OS; SAMSUNG-GT-S5230) Opera 8.65"
+samsung_useragent = "SAMSUNG-GT-S5230"
 
-
-# specific xpath variables
-# ------------------------
-
-# Suggestions are links placed in a *card-section*, we extract only the text
-# from the links not the links itself.
 suggestion_xpath = '//table[contains(@class, "HExoMb")]//a[contains(@class, "ZWRArf")]'
 
 
@@ -258,36 +244,19 @@ def get_google_info(params: "OnlineParams", eng_traits: EngineTraits) -> dict[st
 
 
 def detect_google_sorry(resp: "SXNG_Response"):
-    """Detect Google's bot-protection responses (CAPTCHA / sorry pages).
-
-    Google may block requests in several ways:
-
-    1. Redirect to sorry.google.com (standard CAPTCHA).
-    2. HTTP 302 redirect to ``/sorry/index?...`` on the same host -- when the
-       HTTP client doesn't follow the redirect, the response body is a short
-       HTML stub with a link to the sorry page.
-    3. Short HTML response (<2000 bytes) containing "/sorry/" -- a meta-refresh
-       or JS redirect variant.
-    """
-
-    if resp.url.host == "sorry.google.com" or resp.url.path.startswith("/sorry"):
-        raise SearxEngineCaptchaException()
-
-    if resp.status_code == 302:
-        raise SearxEngineCaptchaException()
-
-    if len(resp.text) < 2000 and "/sorry/" in resp.text:
+    sorry = resp.url.host == "sorry.google.com" or resp.url.path.startswith("/sorry") or resp.status_code == 302
+    if sorry or (len(resp.text) < 2000 and "/sorry/" in resp.text):
         raise SearxEngineCaptchaException()
 
 
 def unwrap_google_url(raw_url: str) -> str:
-    # remove redirector from url
-    if raw_url.startswith("/url?q="):
-        return unquote(raw_url[7:].split("&sa=U")[0])
-    return raw_url
+    target = parse_qs(urlparse(raw_url).query).get("q", [""])[0]
+    if target.startswith("CAES"):
+        raise SearxEngineAPIException("returned goto links")
+    return target if target.startswith("http") else raw_url
 
 
-def wml_dom(resp: "SXNG_Response"):
+def response_dom(resp: "SXNG_Response"):
     detect_google_sorry(resp)
     text = resp.text
     if text.lstrip().startswith("<?xml"):
@@ -295,7 +264,7 @@ def wml_dom(resp: "SXNG_Response"):
     return html.fromstring(text)
 
 
-def google_request(
+def google_request(  # pylint: disable=too-many-arguments
     query: str,
     params: "OnlineParams",
     extra_args: dict[str, t.Any] | None = None,
@@ -305,29 +274,40 @@ def google_request(
     use_safesearch: bool = True,
     safesearch_map: dict[int, str] | None = None,
     use_locales: bool = True,
+    images: bool = False,
 ) -> None:
     google_info = get_google_info(params, eng_traits or traits)
     if not use_locales:
-        google_info["params"].pop("lr")
-        google_info["params"].pop("cr")
+        google_info["params"].pop("lr", None)
+        google_info["params"].pop("cr", None)
 
-    start = (params["pageno"] - 1) * 10
+    page = params["pageno"] - 1
     args: dict[str, t.Any] = {
         "q": query,
         "sca_esv": "1",
         **google_info["params"],
         **(extra_args or {}),
     }
-    if start:
-        args["start"] = start
+    if images:
+        if page:
+            args["ijn"] = page
+    elif page:
+        args["start"] = page * 10
     if use_time_range and params["time_range"] in time_range_dict:
         args["tbs"] = "qdr:" + time_range_dict[params["time_range"]]
     if use_safesearch and params["safesearch"]:
         args["safe"] = (safesearch_map or filter_mapping)[params["safesearch"]]
 
-    params["url"] = f"https://www.google.com/wml/search?{urlencode(args)}"
-    params["headers"]["User-Agent"] = random.choice(nokia_useragents)
-    params["impersonate"] = "chrome99_android"
+    params["url"] = f"https://www.google.com/search?{urlencode(args)}"
+    params["default_headers"] = False
+    params["impersonate"] = "none"
+    params["headers"].pop("Accept-Language", None)
+    # A dict would join these into one header. Order is Opera, then Samsung.
+    params["headers"] = [  # type: ignore[assignment]
+        ("User-Agent", opera_useragent),
+        ("User-Agent", samsung_useragent),
+    ]
+    params["curl_options"] = {CurlOpt.FORBID_REUSE: 1}
 
 
 def request(query: str, params: "OnlineParams") -> None:
@@ -336,46 +316,24 @@ def request(query: str, params: "OnlineParams") -> None:
 
 def response(resp: "SXNG_Response") -> EngineResults:
     results = EngineResults()
-    dom = wml_dom(resp)
+    dom = response_dom(resp)
 
     # parse results
-    for result in eval_xpath_list(dom, '//div[contains(@class, "zMzFAb")]'):
-
-        try:
-            title_tag = eval_xpath_getindex(
-                result, './/a[contains(@class, "fuLhoc")]//span[contains(@class, "CVA68e")]', 0, default=None
-            )
-            if title_tag is None:
-                # this not one of the common google results *section*
-                logger.debug("ignoring item from the result_xpath list: missing title")
-                continue
-            title = extract_text(title_tag)
-
-            raw_url = eval_xpath_getindex(result, './/a[contains(@class, "fuLhoc")]/@href', 0, default=None)
-            if raw_url is None:
-                logger.debug(
-                    'ignoring item from the result_xpath list: missing url of title "%s"',
-                    title,
-                )
-                continue
-
-            url = unwrap_google_url(raw_url)
-            content = extract_text(
-                eval_xpath(result, './/div[contains(@class, "taTFJ")]//span[contains(@class, "FrIlee")]')
-            )
-            thumbnail = eval_xpath_getindex(result, './/img[contains(@src, "encrypted-tbn")]/@src', 0, default=None)
-            results.add(
-                results.types.MainResult(
-                    url=url,
-                    title=title or "",
-                    content=content or "",
-                    thumbnail=thumbnail or "",
-                )
-            )
-
-        except Exception as e:  # pylint: disable=broad-except
-            logger.error(e, exc_info=True)
+    for card in eval_xpath_list(dom, '//div[contains(@class, "zMzFAb") and .//a[contains(@class, "fuLhoc")]]'):
+        url = unwrap_google_url(eval_xpath_getindex(card, './/a[contains(@class, "fuLhoc")]/@href', 0))
+        title = extract_text(eval_xpath_getindex(card, './/span[contains(@class, "CVA68e")]', 0, default=""))
+        if not title:
             continue
+        content = extract_text(
+            eval_xpath_getindex(
+                card,
+                './/span[contains(@class, "FrIlee")]/span[contains(@class, "fYyStc")'
+                ' and not(contains(@class, "YVIcad"))]',
+                0,
+                default="",
+            )
+        )
+        results.add(results.types.MainResult(url=url, title=title, content=content))
 
     # parse suggestion
     for suggestion in eval_xpath_list(dom, suggestion_xpath):

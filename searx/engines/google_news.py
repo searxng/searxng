@@ -4,13 +4,9 @@
 import typing as t
 
 from searx.engines.google import fetch_traits  # pylint: disable=unused-import
-from searx.engines.google import google_request, unwrap_google_url, wml_dom
+from searx.engines.google import google_request, response_dom, unwrap_google_url
 from searx.result_types import EngineResults
-from searx.utils import (
-    eval_xpath_getindex,
-    eval_xpath_list,
-    extract_text,
-)
+from searx.utils import eval_xpath_getindex, eval_xpath_list, extract_text
 
 if t.TYPE_CHECKING:
     from searx.extended_types import SXNG_Response
@@ -51,40 +47,33 @@ def request(query: str, params: "OnlineParams") -> None:
     )
 
 
-def _span_text(link, css_class: str):
-    return extract_text(
-        eval_xpath_getindex(link, f'.//span[contains(@class, "{css_class}")]', 0, default=None),
-        allow_none=True,
-    )
-
-
 def response(resp: "SXNG_Response") -> EngineResults:
     results = EngineResults()
+    dom = response_dom(resp)
     seen = set()
-    for link in eval_xpath_list(wml_dom(resp), '//a[contains(@href, "/url?q=")]'):
-        href = link.get("href")
-        if not href:
+    for link in eval_xpath_list(dom, '//a[contains(@href, "/url?") and .//span[contains(@class, "CVA68e")]]'):
+        url = unwrap_google_url(link.get("href"))
+        title = extract_text(eval_xpath_getindex(link, './/span[contains(@class, "CVA68e")]', 0, default=""))
+        if not title or url in seen:
             continue
-
-        url = unwrap_google_url(href)
-        if url in seen or "google.com/search" in url:
-            continue
-
-        title = _span_text(link, "M3vVJe") or _span_text(link, "fuLhoc")
-        if not title:
-            continue
-
-        source = _span_text(link, "dXDvrc")
-        pub_date = _span_text(link, "YVIcad")
-        thumbnail = eval_xpath_getindex(link, './/img[contains(@src, "encrypted-tbn")]/@src', 0, default=None)
-
+        source = extract_text(eval_xpath_getindex(link, './/span[contains(@class, "dXDvrc")]', 0, default=""))
+        when = extract_text(eval_xpath_getindex(link, './/span[contains(@class, "YVIcad")]', 0, default=""))
+        snippet = extract_text(
+            eval_xpath_getindex(
+                link,
+                './/span[contains(@class, "FrIlee")]/span[contains(@class, "fYyStc")'
+                ' and not(contains(@class, "YVIcad")) and not(contains(@class, "M3vVJe"))'
+                ' and not(contains(@class, "dXDvrc"))]',
+                0,
+                default="",
+            )
+        )
         seen.add(url)
         results.add(
             results.types.MainResult(
                 url=url,
                 title=title,
-                content=" / ".join(x for x in [source, pub_date] if x),
-                thumbnail=thumbnail or "",
+                content=" / ".join(part for part in (source, when, snippet) if part),
             )
         )
 

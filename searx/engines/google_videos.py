@@ -4,7 +4,7 @@
 import typing as t
 
 from searx.engines.google import fetch_traits  # pylint: disable=unused-import
-from searx.engines.google import google_request, unwrap_google_url, wml_dom
+from searx.engines.google import google_request, response_dom, unwrap_google_url
 from searx.result_types import EngineResults
 from searx.utils import (
     eval_xpath_getindex,
@@ -52,33 +52,17 @@ def request(query: str, params: "OnlineParams") -> None:
 
 def response(resp: "SXNG_Response") -> EngineResults:
     results = EngineResults()
-
-    for result in eval_xpath_list(wml_dom(resp), '//div[contains(@class, "zMzFAb")]'):
-        title = extract_text(
-            eval_xpath_getindex(result, './/span[contains(@class, "CVA68e")]', 0, default=None),
-            allow_none=True,
-        )
-        raw_url = eval_xpath_getindex(result, './/a[contains(@class, "fuLhoc")]/@href', 0, default=None)
-        if not title or not raw_url:
+    dom = response_dom(resp)
+    for card in eval_xpath_list(dom, '//div[contains(@class, "zMzFAb") and .//a[contains(@class, "fuLhoc")]]'):
+        url = unwrap_google_url(eval_xpath_getindex(card, './/a[contains(@class, "fuLhoc")]/@href', 0))
+        title = extract_text(eval_xpath_getindex(card, './/span[contains(@class, "CVA68e")]', 0, default=""))
+        if not title:
             continue
-
-        url = unwrap_google_url(raw_url)
-        thumbnail = eval_xpath_getindex(result, './/img[contains(@class, "SygO9d")]/@src', 0, default="")
-        if "/default.jpg" in thumbnail:
-            thumbnail = thumbnail.split("?")[0].replace("/default.jpg", "/hqdefault.jpg")
         length = None
-        for span in eval_xpath_list(result, './/span[contains(@class, "YVIcad")]'):
-            length = parse_duration_string(extract_text(span) or "")
+        for span in eval_xpath_list(card, './/span[contains(@class, "YVIcad")]'):
+            length = parse_duration_string(extract_text(span))
             if length:
                 break
-
-        results.add(
-            results.types.Video(
-                url=url,
-                title=title,
-                thumbnail=thumbnail,
-                length=length,
-            )
-        )
+        results.add(results.types.Video(url=url, title=title, length=length))
 
     return results
