@@ -186,7 +186,7 @@ class Network:
             Network._TOR_CHECK_RESULT[proxies] = False
             return False
 
-        response = await client.get("https://check.torproject.org/api/ip", timeout=60)
+        response = await client.get("https://check.torproject.org/api/ip", timeout=10)
         result = bool(response.json()["IsTor"])
         Network._TOR_CHECK_RESULT[proxies] = result
         return result
