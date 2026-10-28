@@ -69,7 +69,7 @@ search:
   suspended_times:
     # Engine suspension time after error (in seconds; set to 0 to disable)
     # For error "Access denied" and "HTTP error [402, 403]"
-    SearxEngineAccessDenied: 180
+    SearxEngineAccessDenied: 0
     # For error "CAPTCHA"
     SearxEngineCaptcha: 3600
     # For error "Too many request" and "HTTP error 429"
@@ -462,7 +462,7 @@ engines:
     engine: ayo
     shortcut: ayo
     # behind Anubis CAPTCHA
-    inactive: true
+    # inactive: true
 
   - name: azure
     engine: azure

@@ -3,11 +3,17 @@
 
 import typing as t
 import re
+from urllib.parse import quote_plus
 
 from searx.exceptions import SearxEngineAPIException
 from searx.network import get, post
 from searx.result_types import EngineResults
-from searx.utils import eval_xpath, eval_xpath_list, extract_text, solve_anubis_preact_challenge
+from searx.utils import (
+    eval_xpath,
+    eval_xpath_list,
+    extract_text,
+    solve_anubis,
+)
 from searx.enginelib import EngineCache
 
 if t.TYPE_CHECKING:
@@ -29,8 +35,6 @@ paging = True
 
 base_url = "https://search.ayo.de"
 
-_CSRF_TOKEN_RE = re.compile(r"const csrfToken = '(.+)';")
-
 CACHE: EngineCache
 """Cache for storing the cookies and after solving an Anubis CAPTCHA."""
 
@@ -41,19 +45,17 @@ def setup(engine_settings: dict[str, str]):
 
 
 def request(query: str, params: "OnlineParams"):
-    cookies = {}
-    if cached_cookies := CACHE.get("cookies"):
+    if cached_cookies := CACHE.get("cookiesTODO"):
         cookies = cached_cookies
-        resp = get(base_url, cookies=cookies)
     else:
-        resp = solve_anubis_preact_challenge(base_url)
-        cookies = dict(resp.cookies)
+        challenge_resp = get(base_url)
+        cookies = solve_anubis(challenge_resp)
         CACHE.set("cookies", cookies)
 
-    csrf_token = _CSRF_TOKEN_RE.search(resp.text)
+    search_resp = get(f"{base_url}/search?q={quote_plus(query)}", cookies=cookies)
+    csrf_token = extract_text(eval_xpath(search_resp.html(), "//input[@name='_token']/@value"))
     if not csrf_token:
         raise SearxEngineAPIException("csrf token not found")
-    csrf_token = csrf_token.group(1)
 
     # extract the URL of the actual results - base64 encoded JSON + server-side signature,
     # so we can't build the query URL ourselves
