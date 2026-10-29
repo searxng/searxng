@@ -1842,8 +1842,8 @@ engines:
     engine: openalex
     shortcut: oa
     # https://docs.searxng.org/dev/engines/online/openalex.html
-    # Recommended by OpenAlex: join the polite pool with an email address
-    # mailto: "[email protected]"
+    # Optional API key for 10x quota: https://developers.openalex.org/guides/authentication
+    # api_key: ""
     timeout: 5.0
     disabled: true
 

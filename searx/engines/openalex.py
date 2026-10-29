@@ -1,10 +1,11 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 """The OpenAlex engine integrates the `OpenAlex`_ Works API to return scientific
 paper results using the :ref:`result_types.paper` class.  It is an "online" JSON
-engine that uses the official public API and does not require an API key.
+engine that uses the official public API and supports an optional API key.
 
 .. _OpenAlex: https://openalex.org
-.. _OpenAlex API overview: https://docs.openalex.org/how-to-use-the-api/api-overview
+.. _OpenAlex documentation: https://developers.openalex.org/
+.. _OpenAlex authentication: https://developers.openalex.org/guides/authentication
 
 Key features
 ------------
@@ -17,7 +18,7 @@ Key features
   (reconstructed from inverted index), journal/venue, publisher, DOI, tags
   (concepts), PDF/HTML links, pages, volume, issue, published date, and a short
   citations comment
-- Supports OpenAlex "polite pool" by adding a ``mailto`` parameter
+- Supports optional API key (HTTP Authorization header) for higher rate limits
 
 
 Configuration
@@ -32,13 +33,16 @@ Minimal example for :origin:`settings.yml <searx/settings.yml>`:
      shortcut: oa
      categories: science, scientific publications
      timeout: 5.0
-     # Recommended by OpenAlex: join the polite pool with an email address
-     mailto: "[email protected]"
+     # Optional API key for 10x quota: https://developers.openalex.org/guides/authentication
+     # api_key: ""
 
 Notes
 -----
 
-- The ``mailto`` key is optional but recommended by OpenAlex for better service.
+- The ``api_key`` is optional. Supplying an API key increases the rate limit from 10 req/s
+  to 30 req/s and the daily credit budget from 100 to 1,000.
+- The historical "polite pool" (``mailto`` parameter) was retired by OpenAlex in
+  February 2026. The ``mailto`` parameter is deprecated and no longer sent over the wire.
 - Language is inherited from the user's UI language; when it is not ``all``, the
   engine adds ``filter=language:<iso2>`` (e.g. ``language:fr``). If OpenAlex has
   few results for that language, you may see fewer items.
@@ -64,13 +68,13 @@ Each result uses the :ref:`result_types.paper` class and may include:
 - ``type`` and a brief ``comments`` string with citation count
 
 
-Rate limits & polite pool
-=========================
+Rate limits & API key
+=====================
 
-OpenAlex offers a free public API with generous daily limits. For extra courtesy
-and improved service quality, include a contact email in each request via
-``mailto``. You can set it directly in the engine configuration as shown above.
-See: `OpenAlex API overview`_.
+OpenAlex offers a free public API. Keyless access is limited to 10 req/s (100 daily
+credits). To unlock a 10x daily quota (30 req/s, 1,000 credits/day), obtain a free API
+key and configure ``api_key`` as shown above.
+See: `OpenAlex authentication`_.
 
 
 Troubleshooting
@@ -103,7 +107,7 @@ if t.TYPE_CHECKING:
 about = {
     "website": "https://openalex.org/",
     "wikidata_id": "Q110718454",
-    "official_api_documentation": "https://docs.openalex.org/how-to-use-the-api/api-overview",
+    "official_api_documentation": "https://developers.openalex.org/",
     "use_official_api": True,
     "require_api_key": False,
     "results": "JSON",
@@ -115,9 +119,25 @@ categories = ["science", "scientific publications"]
 paging = True
 search_url = "https://api.openalex.org/works"
 
-# Optional: include your email for OpenAlex polite pool. Can be set from settings.yml
-# engines: - name: openalex; engine: openalex; mailto: "[email protected]"
+# Optional API key for 10x quota: https://developers.openalex.org/guides/authentication
+api_key = ""
+
+# Deprecated: OpenAlex retired the polite pool in February 2026.
+# Retained for backward compatibility with existing user configurations (Issue #6513).
 mailto = ""
+
+
+def _normalize_api_key(key: t.Any) -> str:
+    """Normalize API key string by stripping whitespace and redundant prefixes (Issue #6513)."""
+    if not isinstance(key, str):
+        return ""
+    clean = key.strip()
+    lower = clean.lower()
+    if lower.startswith("bearer "):
+        clean = clean[7:].strip()
+    elif lower.startswith("bearer:"):
+        clean = clean[7:].strip()
+    return clean
 
 
 def request(query: str, params: "OnlineParams") -> None:
@@ -142,9 +162,12 @@ def request(query: str, params: "OnlineParams") -> None:
     if filters:
         args["filter"] = ",".join(filters)
 
-    # include mailto if configured for polite pool (engine module setting)
-    if isinstance(mailto, str) and mailto != "":
-        args["mailto"] = mailto
+    # Authenticate via HTTP Authorization header if api_key is configured (Issue #6513)
+    clean_key = _normalize_api_key(api_key)
+    if clean_key:
+        params.setdefault("headers", {})["Authorization"] = f"Bearer {clean_key}"
+
+    # Deprecated: polite pool (mailto) is no longer sent over the wire (Issue #6513)
 
     params["url"] = f"{search_url}?{urlencode(args)}"
 
