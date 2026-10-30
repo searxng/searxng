@@ -79,6 +79,12 @@ def _time_range_to_start_date(time_range: TimeRangeType) -> datetime:
 
 
 def request(query: str, params: "OnlineParams") -> None:
+    # yandex.com redirects to the country specific domain (e.g. yandex.ru from a
+    # russian IP).  Without following the redirect the engine only receives the
+    # empty body of the 302 response and fails with an lxml ParserError.
+    params['allow_redirects'] = True
+    params['soft_max_redirects'] = 1
+
     args: dict[str, t.Any] = {
         "text": query,
     }
