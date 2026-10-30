@@ -38,9 +38,9 @@ Implementations
 
 """
 
+import contextlib
 import random
 import typing as t
-
 from datetime import (
     datetime,
     timedelta,
@@ -49,7 +49,8 @@ from json import loads
 from urllib.parse import urlencode
 
 import babel
-from flask_babel import gettext  # pyright: ignore[reportUnknownVariableType]
+import curl_cffi
+from flask_babel import gettext  # pyright: ignore[reportMissingTypeStubs]
 
 from searx.enginelib import EngineCache
 from searx.enginelib.traits import EngineTraits
@@ -63,8 +64,8 @@ from searx.network import raise_for_httperror
 from searx.result_types import EngineResults
 
 if t.TYPE_CHECKING:
-    from searx.search.processors import OnlineParams
     from searx.extended_types import SXNG_Response
+    from searx.search.processors import OnlineParams
 
 # about
 about = {
@@ -88,10 +89,10 @@ qwant_categ: str = None  # pyright: ignore[reportAssignmentType]
 
 safesearch = True
 
-# tgp seems to be short for "test group" - its actual value doesn't matter, as
+# tgp is normally set by the `ab_test_group` cookie value. Actual value doesn't matter, as
 # long as it's sent and at the correct position in the query params and doesn't
 # change too frequently
-test_group_value = random.randint(1, 3)
+test_group_value = random.randint(1, 4)
 
 # fmt: off
 qwant_news_locales = [
@@ -123,13 +124,10 @@ def request(query: str, params: "OnlineParams") -> None:
     if not query:
         return
 
+    results_per_page = 50 if qwant_categ == "images" else 10
     q_locale = traits.get_region(params["searxng_locale"], default="en_US")
-
-    results_per_page = 10
-    if qwant_categ == "images":
-        results_per_page = 50
-
     args = {
+        "t": qwant_categ,
         "q": query,
         "count": results_per_page,
         "locale": q_locale,
@@ -137,18 +135,32 @@ def request(query: str, params: "OnlineParams") -> None:
         "tgp": test_group_value,
         "device": "desktop",
         "safesearch": params["safesearch"],
-        # True would be encoded to "True", instead of "true", which makes the request
-        # easier to detect and block
-        "displayed": "true",
-        "llm": "true",
     }
 
+    if datadome := CACHE.get("datadome"):
+        params["cookies"]["datadome"] = datadome
+
+    header_order = (
+        "Host,Connection,"
+        "sec-ch-ua-platform,User-Agent,Accept,sec-ch-ua,sec-ch-ua-mobile,"
+        "Origin,Sec-Fetch-Site,Sec-Fetch-Mode,Sec-Fetch-Dest,"
+        "Referer,Accept-Encoding,Accept-Language,Cookie"
+    )
     params["raise_for_httperror"] = False
-
     params["url"] = f"{api_url}{qwant_categ}?{urlencode(args)}"
-
-    params["cookies"]["datadome"] = CACHE.get("datadome")
-    params["headers"].update({"Accept": "application/json", "Referer": f"{base_url}/", "Origin": base_url})
+    params["headers"]["Connection"] = "keep-alive"
+    params["headers"]["Accept"] = "application/json, text/plain, */*"
+    params["headers"]["Origin"] = "https://www.qwant.com"
+    params["headers"]["Sec-Fetch-Site"] = "same-site"
+    params["headers"]["Sec-Fetch-Mode"] = "cors"
+    params["headers"]["Sec-Fetch-Dest"] = "empty"
+    # drop impersonate default headers - curl_cffi will drop header with None as value
+    params["headers"]["sec-fetch-user"] = None  # pyright: ignore[reportArgumentType]
+    params["headers"]["cache-control"] = None  # pyright: ignore[reportArgumentType]
+    params["headers"]["upgrade-insecure-requests"] = None  # pyright: ignore[reportArgumentType]
+    params["headers"]["Referer"] = "https://www.qwant.com/"
+    # ensure same header wire order for chrome
+    params["curl_options"] = {curl_cffi.CurlOpt.HTTPHEADER_ORDER: header_order}
 
 
 def response(resp: "SXNG_Response") -> EngineResults:
@@ -156,20 +168,16 @@ def response(resp: "SXNG_Response") -> EngineResults:
     # pylint: disable=too-many-locals, too-many-branches, too-many-statements
 
     # cache datadome cookie - changes on each request
-    datadome = resp.cookies.get("datadome")
-    if datadome:
+    if datadome := resp.cookies.get("datadome"):
         CACHE.set("datadome", datadome)
 
     res = EngineResults()
 
     # Try to load JSON result
     search_results: dict[str, t.Any] = {}
-    try:
+    with contextlib.suppress(ValueError):
         search_results = resp.json()
-    except ValueError:
-        pass
-
-    data: dict[str, t.Any] = search_results.get("data", {})  # pyright: ignore[reportAny]
+    data: dict[str, t.Any] = search_results.get("data", {})
 
     # check for an API error
     if search_results.get("status") != "success":
@@ -177,7 +185,7 @@ def response(resp: "SXNG_Response") -> EngineResults:
         if error_code == 24:
             raise SearxEngineTooManyRequestsException()
         if search_results.get("url") is not None:
-            raise SearxEngineCaptchaException(suspended_time=0)
+            raise SearxEngineCaptchaException(suspended_time=15)  # needs a short timeout before second request
         if resp.status_code == 403:
             raise SearxEngineAccessDeniedException()
         msg = ",".join(data.get("message", ["unknown"]))
@@ -222,8 +230,7 @@ def response(resp: "SXNG_Response") -> EngineResults:
             thumbnail: str = ""
             content: str = item.get("desc", "")
 
-            _date: float | None = item.get("date")
-            if _date:
+            if _date := item.get("date"):
                 try:
                     pub_date = datetime.fromtimestamp(_date)
                 except ValueError:
@@ -240,8 +247,7 @@ def response(resp: "SXNG_Response") -> EngineResults:
                 )
 
             elif mainline_type == "news":
-                news_media = item.get("media", [])
-                if news_media:
+                if news_media := item.get("media", []):
                     thumbnail = news_media[0].get("pict", {}).get("url", "")
 
                 res.add(
@@ -314,7 +320,7 @@ def fetch_traits(engine_traits: EngineTraits):
     from searx.utils import extr
 
     resp = get(
-        base_url,  # pyright: ignore[reportArgumentType]
+        base_url,
         timeout=5,
     )
     if not resp.ok:
@@ -328,7 +334,7 @@ def fetch_traits(engine_traits: EngineTraits):
 
     for country, v in q_locales.items():
         for lang in v["langs"]:
-            _locale = "{lang}_{country}".format(lang=lang, country=country)
+            _locale = f"{lang}_{country}"
 
             if qwant_categ == "news" and _locale.lower() not in qwant_news_locales:
                 # qwant-news does not support all locales from qwant-web:
@@ -340,12 +346,11 @@ def fetch_traits(engine_traits: EngineTraits):
         try:
             sxng_tag = region_tag(babel.Locale.parse(eng_tag, sep="_"))
         except babel.UnknownLocaleError:
-            print("ERROR: can't determine babel locale of quant's locale %s" % eng_tag)
+            print(f"ERROR: can't determine babel locale of quant's locale {eng_tag}")
             continue
 
-        conflict = engine_traits.regions.get(sxng_tag)
-        if conflict:
+        if conflict := engine_traits.regions.get(sxng_tag):
             if conflict != eng_tag:
-                print("CONFLICT: babel %s --> %s, %s" % (sxng_tag, conflict, eng_tag))
+                print(f"CONFLICT: babel {sxng_tag} --> {conflict}, {eng_tag}")
             continue
         engine_traits.regions[sxng_tag] = eng_tag
