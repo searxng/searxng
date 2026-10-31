@@ -2147,6 +2147,12 @@ engines:
       require_api_key: false
       results: JSON
 
+  - name: readerfunded
+    engine: readerfunded
+    shortcut: rfd
+    timeout: 10.0
+    disabled: true
+
   - name: reuters
     engine: reuters
     shortcut: reu
