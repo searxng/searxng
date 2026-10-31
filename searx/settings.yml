@@ -69,7 +69,7 @@ search:
   suspended_times:
     # Engine suspension time after error (in seconds; set to 0 to disable)
     # For error "Access denied" and "HTTP error [402, 403]"
-    SearxEngineAccessDenied: 180
+    SearxEngineAccessDenied: 0
     # For error "CAPTCHA"
     SearxEngineCaptcha: 3600
     # For error "Too many request" and "HTTP error 429"
@@ -459,21 +459,10 @@ engines:
       results: JSON
 
   - name: ayo
-    engine: xpath
-    categories: general
+    engine: ayo
     shortcut: ayo
-    search_url: https://search.ayo.de/search?q={query}
-    results_xpath: //div[contains(@class, 'search-result')]/div
-    url_xpath: .//a/@href
-    title_xpath: .//h3
-    content_xpath: .//p
-    suggestion_xpath: .//a[starts-with(@href, "https://search.ayo.de")]
-    disabled: true
-    about:
-      website: https://search.ayo.de
-      use_official_api: false
-      require_api_key: false
-      results: HTML
+    # behind Anubis CAPTCHA
+    # inactive: true
 
   - name: azure
     engine: azure
@@ -3416,83 +3405,83 @@ engines:
     disabled: true
     inactive: true
 
-# Doku engine lets you access to any Doku wiki instance:
-# A public one or a privete/corporate one.
-#  - name: ubuntuwiki
-#    engine: doku
-#    shortcut: uw
-#    base_url: 'https://doc.ubuntu-fr.org'
+  # Doku engine lets you access to any Doku wiki instance:
+  # A public one or a privete/corporate one.
+  #  - name: ubuntuwiki
+  #    engine: doku
+  #    shortcut: uw
+  #    base_url: 'https://doc.ubuntu-fr.org'
 
-# Be careful when enabling this engine if you are
-# running a public instance. Do not expose any sensitive
-# information. You can restrict access by configuring a list
-# of access tokens under tokens.
-#  - name: git grep
-#    engine: command
-#    command: ['git', 'grep', '{{QUERY}}']
-#    shortcut: gg
-#    tokens: []
-#    disabled: true
-#    delimiter:
-#        chars: ':'
-#        keys: ['filepath', 'code']
+  # Be careful when enabling this engine if you are
+  # running a public instance. Do not expose any sensitive
+  # information. You can restrict access by configuring a list
+  # of access tokens under tokens.
+  #  - name: git grep
+  #    engine: command
+  #    command: ['git', 'grep', '{{QUERY}}']
+  #    shortcut: gg
+  #    tokens: []
+  #    disabled: true
+  #    delimiter:
+  #        chars: ':'
+  #        keys: ['filepath', 'code']
 
-# Be careful when enabling this engine if you are
-# running a public instance. Do not expose any sensitive
-# information. You can restrict access by configuring a list
-# of access tokens under tokens.
-#  - name: locate
-#    engine: command
-#    command: ['locate', '{{QUERY}}']
-#    shortcut: loc
-#    tokens: []
-#    disabled: true
-#    delimiter:
-#        chars: ' '
-#        keys: ['line']
+  # Be careful when enabling this engine if you are
+  # running a public instance. Do not expose any sensitive
+  # information. You can restrict access by configuring a list
+  # of access tokens under tokens.
+  #  - name: locate
+  #    engine: command
+  #    command: ['locate', '{{QUERY}}']
+  #    shortcut: loc
+  #    tokens: []
+  #    disabled: true
+  #    delimiter:
+  #        chars: ' '
+  #        keys: ['line']
 
-# Be careful when enabling this engine if you are
-# running a public instance. Do not expose any sensitive
-# information. You can restrict access by configuring a list
-# of access tokens under tokens.
-#  - name: find
-#    engine: command
-#    command: ['find', '.', '-name', '{{QUERY}}']
-#    query_type: path
-#    shortcut: fnd
-#    tokens: []
-#    disabled: true
-#    delimiter:
-#        chars: ' '
-#        keys: ['line']
+  # Be careful when enabling this engine if you are
+  # running a public instance. Do not expose any sensitive
+  # information. You can restrict access by configuring a list
+  # of access tokens under tokens.
+  #  - name: find
+  #    engine: command
+  #    command: ['find', '.', '-name', '{{QUERY}}']
+  #    query_type: path
+  #    shortcut: fnd
+  #    tokens: []
+  #    disabled: true
+  #    delimiter:
+  #        chars: ' '
+  #        keys: ['line']
 
-# Be careful when enabling this engine if you are
-# running a public instance. Do not expose any sensitive
-# information. You can restrict access by configuring a list
-# of access tokens under tokens.
-#  - name: pattern search in files
-#    engine: command
-#    command: ['fgrep', '{{QUERY}}']
-#    shortcut: fgr
-#    tokens: []
-#    disabled: true
-#    delimiter:
-#        chars: ' '
-#        keys: ['line']
+  # Be careful when enabling this engine if you are
+  # running a public instance. Do not expose any sensitive
+  # information. You can restrict access by configuring a list
+  # of access tokens under tokens.
+  #  - name: pattern search in files
+  #    engine: command
+  #    command: ['fgrep', '{{QUERY}}']
+  #    shortcut: fgr
+  #    tokens: []
+  #    disabled: true
+  #    delimiter:
+  #        chars: ' '
+  #        keys: ['line']
 
-# Be careful when enabling this engine if you are
-# running a public instance. Do not expose any sensitive
-# information. You can restrict access by configuring a list
-# of access tokens under tokens.
-#  - name: regex search in files
-#    engine: command
-#    command: ['grep', '{{QUERY}}']
-#    shortcut: gr
-#    tokens: []
-#    disabled: true
-#    delimiter:
-#        chars: ' '
-#        keys: ['line']
+  # Be careful when enabling this engine if you are
+  # running a public instance. Do not expose any sensitive
+  # information. You can restrict access by configuring a list
+  # of access tokens under tokens.
+  #  - name: regex search in files
+  #    engine: command
+  #    command: ['grep', '{{QUERY}}']
+  #    shortcut: gr
+  #    tokens: []
+  #    disabled: true
+  #    delimiter:
+  #        chars: ' '
+  #        keys: ['line']
 
 doi_resolvers:
   oadoi.org: 'https://oadoi.org/'

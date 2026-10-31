@@ -88,7 +88,6 @@ Startpage's category (for Web-search, News, Videos, ..) is set by
 
 # pylint: disable=too-many-statements
 
-import hashlib
 import re
 import typing as t
 from collections import OrderedDict
@@ -99,6 +98,8 @@ from unicodedata import combining, normalize
 import babel.localedata
 import dateutil.parser
 
+from extended_types import SXNG_Response
+from search.processors import OnlineParams
 from searx.enginelib import EngineCache
 from searx.enginelib.traits import EngineTraits
 from searx.exceptions import SearxEngineCaptchaException
@@ -112,6 +113,7 @@ from searx.utils import (
     html_to_text,
     humanize_bytes,
     remove_pua_from_str,
+    solve_anubis_pow,
 )
 
 # about
@@ -184,35 +186,9 @@ sc_code_cache_sec = 3600
 max_difficulty = 4
 
 
-def _solve_anubis(resp) -> str:
-    """Anubis POW solver"""
-    payload = loads(extr(resp.text, '<script id="anubis_challenge" type="application/json">', "</script>"))
-    challenge = payload["challenge"]
-    difficulty = int(payload["rules"]["difficulty"])
-    if difficulty > max_difficulty:
-        raise SearxEngineCaptchaException(message="startpage: Anubis difficulty too high")
-    prefix = "0" * difficulty
-    blob = challenge["randomData"].encode()
-    for nonce in range(16**difficulty * 8):  # max search is 8x average search, e^-8 = 0.034% will fail
-        digest = hashlib.sha256(blob + str(nonce).encode()).hexdigest()
-        if digest.startswith(prefix):
-            break
-    else:
-        raise SearxEngineCaptchaException(message="startpage: Anubis failed")
-
-    pass_resp = get(
-        f"{base_url}/.within.website/x/cmd/anubis/api/pass-challenge",
-        params={
-            "id": challenge["id"],
-            "response": digest,
-            "nonce": nonce,
-            "redir": str(resp.url),
-            "elapsedTime": "1",
-        },
-        cookies=resp.cookies,
-        allow_redirects=False,
-    )
-    auth = pass_resp.cookies.get("spchal-auth")
+def _solve_anubis(resp: "SXNG_Response") -> str:
+    pass_resp = solve_anubis_pow(resp)
+    auth = pass_resp.get("spchal-auth")
     if not auth:
         raise SearxEngineCaptchaException(message="startpage: Anubis pass-challenge failed")
     auth = str(auth)
@@ -220,7 +196,7 @@ def _solve_anubis(resp) -> str:
     return auth
 
 
-def get_sc_code(params):
+def get_sc_code(params: "OnlineParams"):
     """Get an actual ``sc`` argument from Startpage's search form (HTML page).
 
     Startpage puts a ``sc`` argument on every HTML :py:obj:`search form

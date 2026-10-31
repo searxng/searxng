@@ -1,13 +1,15 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 """Utility functions for the engines"""
 
-from hashlib import pbkdf2_hmac
+from hashlib import pbkdf2_hmac, sha256
 
+import hashlib
 import re
 import importlib
 import importlib.util
 import json
 import string
+from turtle import delay
 import types
 
 import typing as t
@@ -20,6 +22,7 @@ from html.parser import HTMLParser
 from html import escape
 from urllib.parse import urljoin, urlparse, parse_qs, urlencode
 from datetime import timedelta
+from time import sleep
 from markdown_it import MarkdownIt
 
 from lxml import html
@@ -29,7 +32,14 @@ from lxml.etree import ElementBase, _Element  # pyright: ignore[reportPrivateUsa
 from searx import settings
 from searx.data import USER_AGENTS
 from searx.version import VERSION_TAG
-from searx.exceptions import SearxXPathSyntaxException, SearxEngineXPathException
+from searx.exceptions import (
+    SearxEngineCaptchaException,
+    SearxXPathSyntaxException,
+    SearxEngineXPathException,
+    SearxEngineAPIException,
+)
+from searx.extended_types import SXNG_Response
+from searx.network import get
 from searx import logger
 
 logger = logger.getChild('utils')
@@ -672,7 +682,11 @@ def _j2p_process_escape(match: re.Match[str]) -> str:
     return (
         Rf'\{_escape}'
         if _escape in _JSON_PASSTHROUGH_ESCAPES
-        else R'\u00' if _escape == 'x' else '' if _escape == '\n' else _escape
+        else R'\u00'
+        if _escape == 'x'
+        else ''
+        if _escape == '\n'
+        else _escape
     )
 
 
@@ -956,3 +970,80 @@ def solve_altcha(parameters: dict[str, t.Any], maxCounter: int = 1000) -> tuple[
         counter += 1
 
     return None
+
+
+def solve_anubis(resp: "SXNG_Response"):
+    payload_raw = extract_text(eval_xpath(resp.html(), "//script[@id='anubis_challenge']"))
+    if not payload_raw:
+        raise SearxEngineAPIException("failed to find anubis challenge")
+
+    challenge = json.loads(payload_raw)["challenge"]
+
+    logger.debug(challenge)
+    if challenge["method"] == "preact":
+        return solve_anubis_preact_challenge(resp)
+    elif challenge["method"] == "fast":
+        return solve_anubis_pow(resp)
+    else:
+        raise SearxEngineAPIException(f"no solver for anubis {challenge['method']}")
+
+
+def solve_anubis_pow(resp: "SXNG_Response", max_difficulty: int = 4) -> dict[str, str]:
+    """Anubis POW solver.
+
+    Returns the cookies from the response of the solved challenge."""
+    payload_raw = extract_text(eval_xpath(resp.html(), "//script[@id='anubis_challenge']"))
+    if not payload_raw:
+        raise SearxEngineAPIException("failed to find anubis challenge")
+
+    payload = json.loads(payload_raw)
+    challenge = payload["challenge"]
+    difficulty = int(payload["rules"]["difficulty"])
+    if difficulty > max_difficulty:
+        raise SearxEngineCaptchaException(message="startpage: Anubis difficulty too high")
+
+    prefix = "0" * difficulty
+    blob = challenge["randomData"].encode()
+    for nonce in range(16**difficulty * 8):  # max search is 8x average search, e^-8 = 0.034% will fail
+        digest = hashlib.sha256(blob + str(nonce).encode()).hexdigest()
+        if digest.startswith(prefix):
+            break
+    else:
+        raise SearxEngineCaptchaException(message="startpage: Anubis failed")
+
+    base_url = resp.url.base_url
+    params = {
+        "id": challenge["id"],
+        "response": digest,
+        "nonce": nonce,
+        "redir": str(resp.url),
+        "elapsedTime": "1",
+    }
+
+    pass_resp = get(
+        f"{base_url}/.within.website/x/cmd/anubis/api/pass-challenge",
+        params=params,
+        cookies=resp.cookies,
+        allow_redirects=False,
+        raise_for_httperror=False,
+    )
+    return dict(pass_resp.cookies)
+
+
+def solve_anubis_preact_challenge(resp: "SXNG_Response") -> dict[str, str]:
+    """Solves the Preact challenge from the Anubis bot blocker."""
+    preact_json = extract_text(eval_xpath(resp.html(), "//script[@id='preact_info']"))
+    if not preact_json:
+        raise SearxEngineAPIException("failed to extract Anubis challenge")
+    preact_challenge = json.loads(preact_json)
+
+    result = sha256(preact_challenge["challenge"].encode()).hexdigest()
+
+    # difficulty * 80ms is the minum hardcoded time in Anubis to solve the challenge
+    difficulty = int(preact_challenge["difficulty"])
+    sleep(0.08 * difficulty)
+
+    url = f"{resp.url.base_url}{preact_challenge['redir']}&result={result}"
+    challenge_resp = get(url, cookies=resp.cookies, allow_redirects=False, raise_for_httperror=False)
+
+    return dict(challenge_resp.cookies)
