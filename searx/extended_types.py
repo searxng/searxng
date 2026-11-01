@@ -77,6 +77,11 @@ class SXNG_URL(str):
     """String URL"""
 
     @property
+    def base_url(self) -> str | None:
+        parts = urlsplit(self)
+        return f"{parts.scheme}://{parts.netloc}"
+
+    @property
     def host(self) -> str | None:
         return urlsplit(self).hostname
 
