@@ -158,7 +158,7 @@ def request(query: str, params: "OnlineParams") -> None:
     params["headers"]["sec-fetch-user"] = None  # pyright: ignore[reportArgumentType]
     params["headers"]["cache-control"] = None  # pyright: ignore[reportArgumentType]
     params["headers"]["upgrade-insecure-requests"] = None  # pyright: ignore[reportArgumentType]
-    params["headers"]["Referer"] = "https://www.qwant.com/"
+    params["headers"]["Referer"] = f"{base_url}/"
     # ensure same header wire order for chrome
     params["curl_options"] = {curl_cffi.CurlOpt.HTTPHEADER_ORDER: header_order}
 
