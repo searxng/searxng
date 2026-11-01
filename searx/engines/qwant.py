@@ -150,7 +150,7 @@ def request(query: str, params: "OnlineParams") -> None:
     params["url"] = f"{api_url}{qwant_categ}?{urlencode(args)}"
     params["headers"]["Connection"] = "keep-alive"
     params["headers"]["Accept"] = "application/json, text/plain, */*"
-    params["headers"]["Origin"] = "https://www.qwant.com"
+    params["headers"]["Origin"] = base_url
     params["headers"]["Sec-Fetch-Site"] = "same-site"
     params["headers"]["Sec-Fetch-Mode"] = "cors"
     params["headers"]["Sec-Fetch-Dest"] = "empty"
