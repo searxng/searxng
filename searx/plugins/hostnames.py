@@ -15,6 +15,15 @@ PluginStorage (it is not available for selection).
          '(.*\\.)?youtu\\.be$': 'invidious.example.com'
          ...
 
+  If needed, you can also capture patterns from the URL with ``(?P<name>...)``
+  and use the matched pattern in the replacement term by referencing ``<name>``.
+
+  .. code:: yaml
+
+     '(?P<subdomain>.*)\\.stackexchange\\.com$': 'anonymousoverflow.example.com/<subdomain>'
+
+  For instance, this will rewrite ``math.stackexchange.com`` to ``anonymousoverflow.example.com/math``.
+
 - ``hostnames.remove``: A **list** of regular expressions of the hostnames whose
   results should be taken from the results list.
 
@@ -192,7 +201,12 @@ def filter_url_field(result: "Result|LegacyResult", field_name: str, url_src: st
             return False
 
     for pattern, replacement in REPLACE.items():
-        if pattern.search(url_src_parsed.netloc):
+        if match := pattern.search(url_src_parsed.netloc):
+            # replace named groups, e.g. for the pattern `(?P<subdomain>.*)\.example\.com` and the input
+            # "foo.example.com", this will replace the <subdomain> variable in the result with "foo"
+            for name, value in match.groupdict().items():
+                replacement = replacement.replace(f"<{name}>", value)
+
             new_url = url_src_parsed._replace(netloc=pattern.sub(replacement, url_src_parsed.netloc))
             new_url = urlunparse(new_url)
             return new_url
