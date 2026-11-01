@@ -58,7 +58,7 @@ listen("click", "#copy-hash", async function (this: HTMLElement) {
   assertElement(target);
 
   if (window.isSecureContext) {
-    await navigator.clipboard.writeText(target.innerText);
+    await navigator.clipboard.writeText(target.textContent);
   } else {
     const selection = window.getSelection();
     if (selection) {
@@ -71,6 +71,6 @@ listen("click", "#copy-hash", async function (this: HTMLElement) {
   }
 
   if (this.dataset.copiedText) {
-    this.innerText = this.dataset.copiedText;
+    this.textContent = this.dataset.copiedText;
   }
 });
