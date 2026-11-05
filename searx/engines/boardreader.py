@@ -41,6 +41,7 @@ time_range_map = {"day": "1", "week": "7", "month": "30", "year": "365"}
 
 CACHE: EngineCache
 CACHE_SESSION_ID_KEY = "session_id_key"
+SESSION_ID_EXPIRE = 3600
 
 KEYWORD_RE = re.compile(r"\[\/?Keyword\]")
 
@@ -64,7 +65,7 @@ def _get_session_id() -> str:
     if not session_id:
         raise SearxEngineAPIException("failed to obtain session id")
 
-    CACHE.set(CACHE_SESSION_ID_KEY, session_id)
+    CACHE.set(CACHE_SESSION_ID_KEY, session_id, SESSION_ID_EXPIRE)
     return session_id
 
 
@@ -96,6 +97,10 @@ def _remove_keyword_marker(text: str) -> str:
 
 def response(resp: "SXNG_Response") -> EngineResults:
     res = EngineResults()
+
+    if resp.status_code == 204:
+        CACHE.set(CACHE_SESSION_ID_KEY, "")
+        raise SearxEngineAPIException("session expired")
 
     result: dict[str, str]
     for result in resp.json()["SearchResults"]:
