@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 """wttr.in (weather forecast service)"""
 
+import json
 import typing as t
 
 from urllib.parse import quote
@@ -29,6 +30,7 @@ WWO_TO_CONDITION: dict[str, weather.WeatherConditionType] = {
     "119": "cloudy",
     "122": "fair",
     "143": "fair",
+    "152": "fog",
     "176": "light rain showers",
     "179": "light snow showers",
     "182": "light sleet showers",
@@ -90,7 +92,7 @@ def _weather_data(location: weather.GeoLocation, data: dict[str, t.Any]):
     return WeatherAnswer.Item(
         location=location,
         temperature=weather.Temperature(val=tempC, unit="°C"),
-        condition=WWO_TO_CONDITION[data["weatherCode"]],
+        condition=WWO_TO_CONDITION.get(str(data.get("weatherCode", "")), "fair"),
         feels_like=weather.Temperature(val=data["FeelsLikeC"], unit="°C"),
         wind_from=weather.Compass(int(data["winddirDegree"])),
         wind_speed=weather.WindSpeed(val=data["windspeedKmph"], unit="km/h"),
@@ -103,24 +105,38 @@ def _weather_data(location: weather.GeoLocation, data: dict[str, t.Any]):
 def response(resp):
     res = EngineResults()
 
-    if resp.status_code == 404:
+    if resp.status_code != 200:
         return res
 
-    json_data = resp.json()
-    geoloc = weather.GeoLocation.by_query(resp.search_params["query"])
+    try:
+        json_data = resp.json()
+    except (ValueError, json.JSONDecodeError):
+        return res
 
-    weather_answer = WeatherAnswer(
-        current=_weather_data(geoloc, json_data["current_condition"][0]),
-        service="wttr.in",
-    )
+    if not isinstance(json_data, dict) or not json_data.get("current_condition"):
+        return res
 
-    for day in json_data["weather"]:
-        date = datetime.fromisoformat(day["date"])
-        time_slot_len = 24 // len(day["hourly"])
-        for index, forecast in enumerate(day["hourly"]):
-            forecast_data = _weather_data(geoloc, forecast)
-            forecast_data.datetime = weather.DateTime(date.replace(hour=index * time_slot_len + 1))
-            weather_answer.forecasts.append(forecast_data)
+    try:
+        geoloc = weather.GeoLocation.by_query(resp.search_params["query"])
 
-    res.add(weather_answer)
+        weather_answer = WeatherAnswer(
+            current=_weather_data(geoloc, json_data["current_condition"][0]),
+            service="wttr.in",
+        )
+
+        for day in json_data.get("weather", []):
+            date = datetime.fromisoformat(day["date"])
+            hourly = day.get("hourly", [])
+            if not hourly:
+                continue
+            time_slot_len = 24 // len(hourly)
+            for index, forecast in enumerate(hourly):
+                forecast_data = _weather_data(geoloc, forecast)
+                forecast_data.datetime = weather.DateTime(date.replace(hour=index * time_slot_len + 1))
+                weather_answer.forecasts.append(forecast_data)
+
+        res.add(weather_answer)
+    except (KeyError, IndexError, ValueError):
+        return res
+
     return res
