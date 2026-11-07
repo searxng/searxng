@@ -1,0 +1,58 @@
+# SPDX-License-Identifier: AGPL-3.0-or-later
+"""Simple implementation to store OSM keys and tags in a SQL database."""
+
+__all__ = ["OSMKeysTagsDB"]
+
+import typing as t
+import json
+import pathlib
+
+from .core import get_cache, log
+
+if t.TYPE_CHECKING:
+    from searx.cache import CacheRowType
+
+
+@t.final
+class OSMKeysTagsDB:
+    # pylint: disable=missing-class-docstring
+
+    ctx_keys: str = "data_osm_keys"
+    ctx_tags: str = "data_osm_tags"
+
+    json_file: pathlib.Path = pathlib.Path(__file__).parent / "osm_keys_tags.json"
+
+    def __init__(self):
+        self.cache = get_cache()
+
+    def init(self):
+        if self.cache.properties("osm loaded") != "OK":
+            # To avoid parallel initializations, the property is set first
+            self.cache.properties.set("osm loaded", "OK")
+            self.load()
+        # F I X M E:
+        #     do we need a maintenance .. rember: database is stored
+        #     in /tmp and will be rebuild during the reboot anyway
+
+    def load(self):
+        log.debug("init searx.data.OSM_KEYS_TAGS")
+        with open(self.json_file, encoding="utf-8") as f:
+            data_dict: dict[str, dict[str, dict[str, t.Any]]] = json.load(f)
+
+        rows: list["CacheRowType"] = [(k, v, None) for k, v in data_dict["keys"].items()]
+        self.cache.setmany(rows, ctx=self.ctx_keys)
+
+        rows: list["CacheRowType"] = [(k, v, None) for k, v in data_dict["tags"].items()]
+        self.cache.setmany(rows, ctx=self.ctx_tags)
+
+    def get_key_label(self, key: str) -> dict[str, str] | None:
+        """Returns a dict of language code to translation text."""
+        self.init()
+
+        return self.cache.get(key=key, default=None, ctx=self.ctx_keys)
+
+    def get_tag_label(self, category: str, label: str) -> dict[str, str] | None:
+        """Returns a dict of language code to translation text."""
+        self.init()
+
+        return self.cache.get(key=f"{category}={label}", default=None, ctx=self.ctx_tags)
