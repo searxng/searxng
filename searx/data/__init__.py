@@ -14,6 +14,7 @@ import typing as t
 
 from .core import log, data_dir, get_cache
 from .currencies import CurrenciesDB
+from .osm_keys_tags import OSMKeysTagsDB
 from .tracker_patterns import TrackerPatternsDB
 
 
@@ -53,10 +54,10 @@ WIKIDATA_PROPERTIES: WikiDataPropertiesType
 TRACKER_PATTERNS: TrackerPatternsDB
 LOCALES: LocalesType
 CURRENCIES: CurrenciesDB
+OSM_KEYS_TAGS: OSMKeysTagsDB
 
 EXTERNAL_URLS: dict[str, dict[str, dict[str, str | dict[str, str]]]]
 EXTERNAL_BANGS: dict[str, dict[str, t.Any]]
-OSM_KEYS_TAGS: dict[str, dict[str, t.Any]]
 ENGINE_DESCRIPTIONS: dict[str, dict[str, t.Any]]
 ENGINE_TRAITS: dict[str, dict[str, t.Any]]
 
@@ -68,7 +69,7 @@ lazy_globals: dict[str, t.Any] = {
     "WIKIDATA_UNITS": None,
     "WIKIDATA_PROPERTIES": None,
     "EXTERNAL_BANGS": None,
-    "OSM_KEYS_TAGS": None,
+    "OSM_KEYS_TAGS": OSMKeysTagsDB(),
     "ENGINE_DESCRIPTIONS": None,
     "ENGINE_TRAITS": None,
     "LOCALES": None,
@@ -81,7 +82,6 @@ data_json_files = {
     "WIKIDATA_UNITS": "wikidata_units.json",
     "WIKIDATA_PROPERTIES": "wikidata_properties.json",
     "EXTERNAL_BANGS": "external_bangs.json",
-    "OSM_KEYS_TAGS": "osm_keys_tags.json",
     "ENGINE_DESCRIPTIONS": "engine_descriptions.json",
     "ENGINE_TRAITS": "engine_traits.json",
     "LOCALES": "locales.json",
