@@ -32,6 +32,7 @@ def request(query, params):
     url_params = {
         'q': query,
         'oq': query,
+        'noredirect': '1',
     }
     for e in eval_xpath_list(dom, '//input[@type="hidden"]'):
         name = e.get('name')
