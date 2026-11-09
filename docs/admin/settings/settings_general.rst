@@ -33,8 +33,18 @@
 ``privacypolicy_url``:
   Link to privacy policy.
 
-``contact_url``:
+.. _settings general.contact_url:
+
+``contact_url`` : ``$SEARXNG_CONTACT_URL``
   Contact ``mailto:`` address or WEB form.
+
+  .. attention::
+
+     In order to comply with the policy of Wikidata and other services SearXNG
+     uses, the ``contact_url`` is required!
+
+     - :py:obj:`searx.utils.searxng_useragent`
+     - :py:obj:`searx.wikidata.get_wikidata_headers`
 
 ``enable_metrics``:
   Enabled by default. Record various anonymous metrics available at ``/stats``,

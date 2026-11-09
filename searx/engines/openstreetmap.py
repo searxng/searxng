@@ -1,6 +1,8 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 """OpenStreetMap (Map)"""
 
+import typing as t
+
 import re
 import urllib.parse
 
@@ -8,6 +10,7 @@ from functools import partial
 
 from flask_babel import gettext
 
+from searx import get_setting
 from searx.data import OSM_KEYS_TAGS, CURRENCIES
 from searx.external_urls import get_external_url
 from searx.wikidata import send_wikidata_query
@@ -132,6 +135,13 @@ KEY_ORDER = [
     'internet_access:ssid',
 ]
 KEY_RANKS = {k: i for i, k in enumerate(KEY_ORDER)}
+
+
+def setup(_: dict[str, t.Any]) -> bool:
+    contact: str = get_setting("general.contact_url", "") or ""
+    if not contact:
+        logger.error("OSM engine requires general.contact_url (SEARXNG_CONTACT_URL)")
+    return bool(contact)
 
 
 def request(query, params):
