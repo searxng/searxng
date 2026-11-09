@@ -12,7 +12,7 @@ from hashlib import md5
 from urllib.parse import urlencode, unquote
 from json import loads
 
-
+from searx import get_setting
 from searx.network import post, get
 from searx.utils import get_string_replaces_function
 from searx.external_urls import area_to_osm_zoom
@@ -69,6 +69,13 @@ sparql_string_escape = get_string_replaces_function(
 )
 
 replace_http_by_https = get_string_replaces_function({"http:": "https:"})
+
+
+def setup(_: dict[str, t.Any]) -> bool:
+    contact: str = get_setting("general.contact_url", "") or ""
+    if not contact:
+        logger.error("wikidata engine requires general.contact_url (SEARXNG_CONTACT_URL)")
+    return bool(contact)
 
 
 def request(query: str, params: "OnlineParams") -> None:

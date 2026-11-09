@@ -2,6 +2,8 @@
 # -*- coding: utf-8; mode: sh indent-tabs-mode: nil -*-
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
+export SEARXNG_CONTACT_URL="${SEARXNG_CONTACT_URL:-coolbot@example.org}"
+
 # shellcheck disable=SC2034
 main_cmd="$(basename "$0")"
 
@@ -112,6 +114,7 @@ dev.:
   env: enter developer environment (or exec a command in)
 environment ...
   SEARXNG_VALKEY_URL : ${SEARXNG_VALKEY_URL}
+  SEARXNG_CONTACT_URL: ${SEARXNG_CONTACT_URL}
 EOF
 }
 

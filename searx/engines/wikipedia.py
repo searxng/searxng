@@ -54,10 +54,12 @@ options:
 
 """
 
+import typing as t
 import urllib.parse
 
 import babel
 
+from searx import get_setting
 from searx import locales, utils
 from searx import network as _network
 from searx.enginelib.traits import EngineTraits
@@ -133,6 +135,14 @@ wikipedia_script_variants = {
 }
 
 
+def _contact():
+    contact: str = get_setting("general.contact_url", "") or ""
+    contact = contact.removeprefix("mailto:").strip()
+    if not contact:
+        logger.error("wikipedia engine requires general.contact_url (SEARXNG_CONTACT_URL)")
+    return contact
+
+
 def get_wiki_params(sxng_locale, eng_traits):
     """Returns the Wikipedia language tag and the netloc that fits to the
     ``sxng_locale``.  To support LanguageConverter_ this function rates a locale
@@ -142,6 +152,10 @@ def get_wiki_params(sxng_locale, eng_traits):
     eng_tag = eng_traits.get_region(sxng_locale, eng_traits.get_language(sxng_locale, "en"))
     wiki_netloc = eng_traits.custom["wiki_netloc"].get(eng_tag, "en.wikipedia.org")
     return eng_tag, wiki_netloc
+
+
+def setup(_: dict[str, t.Any]) -> bool:
+    return bool(_contact())
 
 
 def request(query, params):
@@ -155,7 +169,7 @@ def request(query, params):
 
     params["raise_for_httperror"] = False
     params["soft_max_redirects"] = 2
-    params["headers"]["User-Agent"] = utils.searxng_useragent()
+    params["headers"]["User-Agent"] = utils.searxng_useragent(_contact())
     logger.debug(f"wikipedia.request User-Agent: {params['headers']['User-Agent']}")
     params["impersonate"] = "none"
 

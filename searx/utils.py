@@ -28,7 +28,7 @@ from lxml import html
 from lxml.etree import XPath, XPathError, XPathSyntaxError
 from lxml.etree import ElementBase, _Element  # pyright: ignore[reportPrivateUsage]
 
-from searx import settings
+from searx import settings, get_setting
 from searx.data import USER_AGENTS
 from searx.version import VERSION_TAG
 from searx.exceptions import (
@@ -76,9 +76,25 @@ class _NotSetClass:  # pylint: disable=too-few-public-methods
 _NOTSET = _NotSetClass()
 
 
-def searxng_useragent() -> str:
-    """Return the SearXNG User Agent"""
-    return f"SearXNG/{VERSION_TAG} {settings['outgoing']['useragent_suffix']}".strip()
+def searxng_useragent(suffix: str = "") -> str:
+    """Return the SearXNG User Agent.
+
+    The UA header is build up from a string template like::
+
+       SearXNG/{VERSION_TAG} {suffix}
+
+    If argument is empty, ``suffix`` is taken from (first wins):
+
+    1. :ref:`useragent_suffix <settings outgoing.useragent_suffix>`
+    2. :ref:`contact_url <settings general.contact_url>`
+    """
+
+    if not suffix:
+        suffix = get_setting("outgoing.useragent_suffix", "") or ""
+    if not suffix:
+        suffix = get_setting("general.contact_url", "") or ""
+    suffix = suffix.removeprefix("mailto:").strip()
+    return f"SearXNG/{VERSION_TAG} {suffix}".strip()
 
 
 def gen_useragent(os_string: str | None = None) -> str:

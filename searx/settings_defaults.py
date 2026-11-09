@@ -185,7 +185,7 @@ SCHEMA: dict[str, t.Any] = {
         'debug': SettingsValue(bool, False, 'SEARXNG_DEBUG'),
         'instance_name': SettingsValue(str, 'SearXNG'),
         'privacypolicy_url': SettingsValue((None, False, str), None),
-        'contact_url': SettingsValue((None, False, str), None),
+        'contact_url': SettingsValue((None, False, str), "", "SEARXNG_CONTACT_URL"),
         'donation_url': SettingsValue((bool, str), "https://docs.searxng.org/donate.html"),
         'enable_metrics': SettingsValue(bool, True),
         'open_metrics': SettingsValue(str, ''),
@@ -248,7 +248,7 @@ SCHEMA: dict[str, t.Any] = {
     },
     "preferences": SettingsPref,
     'outgoing': {
-        'useragent_suffix': SettingsValue(str, ''),
+        'useragent_suffix': SettingsValue((None, False, str), ""),
         'request_timeout': SettingsValue(numbers.Real, 3.0),
         'enable_http2': SettingsValue(bool, True),
         'verify': SettingsValue((bool, str), True),

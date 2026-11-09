@@ -37,9 +37,13 @@ Communication with search engines.
   will slow SearXNG reactivity (the result page may take the time specified in the
   timeout to load).  Can be override by ``timeout`` in the :ref:`settings engines`.
 
+.. _settings outgoing.useragent_suffix:
+
 ``useragent_suffix`` :
-  Suffix to add when an engine's User-Agent is set via searxng_useragent().
-  Contact info here may be useful to avoid an engine blocking you.
+  Suffix to add when an engine's User-Agent is set via
+  :py:obj:`searx.utils.searxng_useragent`.  Only adjust this value if you are
+  sure of the consequences.  However, contact information should always be
+  configured in the :ref:`settings general.contact_url`.
 
 .. _Pool limit configuration: https://curl-cffi.readthedocs.io/en/latest/api.html#sessions
 
@@ -91,5 +95,3 @@ Communication with search engines.
 ``using_tor_proxy`` :
   Using tor proxy (``true``) or not (``false``) for all engines.  The default is
   ``false`` and can be overwritten in the :ref:`settings engines`
-
-
