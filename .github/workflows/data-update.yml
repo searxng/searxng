@@ -61,6 +61,8 @@ jobs:
         run: make V=1 install
 
       - name: Fetch data
+        env:
+          SEARXNG_CONTACT_URL: "${{ secrets.CONTACT_EMAIL }}"
         run: V=1 ./manage pyenv.cmd python "./searxng_extra/update/${{ matrix.fetch }}"
 
       - name: Create PR
