@@ -1033,7 +1033,16 @@ def image_proxy():
             'Sec-GPC': '1',
             'DNT': '1',
         }
-        resp, stream = http_stream(method='GET', url=url, headers=request_headers, allow_redirects=True)
+        # The browser waits on this worker for as long as the request lives, so
+        # it carries the configured timeout like the other outgoing requests.
+        # No timeout leaves curl waiting for a host that never answers.
+        resp, stream = http_stream(
+            method='GET',
+            url=url,
+            headers=request_headers,
+            allow_redirects=True,
+            timeout=settings['outgoing']['request_timeout'],
+        )
         content_length = resp.headers.get('Content-Length')
         if content_length and content_length.isdigit() and int(content_length) > maximum_size:
             return 'Max size', 400
