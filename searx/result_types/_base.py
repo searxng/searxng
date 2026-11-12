@@ -93,8 +93,11 @@ def _normalize_url_fields(result: "Result | LegacyResult"):
             ).geturl()
 
 
-def _normalize_text_field(text: str, field_name: str, max_length: int) -> str:
-    if text and not isinstance(text, str):
+def _normalize_text_field(text: t.Any, field_name: str, max_length: int) -> str:
+    if text is None:
+        return ""
+
+    if not isinstance(text, str):
         text = str(text)
         log.debug("result: invalid type of field '%s': %s", field_name, text)
 
