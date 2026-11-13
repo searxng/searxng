@@ -422,7 +422,7 @@ def get_key_rank(k):
     return key_rank
 
 
-def get_label(labels, lang):
+def get_label(labels, lang) -> str | None:
     """Get label from labels in OSM_KEYS_TAGS
 
     in OSM_KEYS_TAGS, labels have key == '*'
@@ -443,7 +443,9 @@ def get_label(labels, lang):
 def get_tag_label(tag_category, tag_name, lang):
     """Get tag label from OSM_KEYS_TAGS"""
     tag_name = '' if tag_name is None else tag_name
-    tag_labels = OSM_KEYS_TAGS['tags'].get(tag_category, {}).get(tag_name, {})
+    tag_labels = OSM_KEYS_TAGS.get_tag_label(tag_category, tag_name)
+    if tag_labels is None:
+        return None
     return get_label(tag_labels, lang)
 
 
@@ -462,9 +464,7 @@ def get_key_label(key_name, lang):
                 return get_label(o, lang).lower()
             return currency[1]
 
-    labels = OSM_KEYS_TAGS['keys']
-    for k in key_name.split(':') + ['*']:
-        labels = labels.get(k)
-        if labels is None:
-            return None
+    labels = OSM_KEYS_TAGS.get_key_label(key_name)
+    if labels is None:
+        return None
     return get_label(labels, lang)
