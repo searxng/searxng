@@ -58,3 +58,14 @@ class ResultContainerTestCase(SearxTestCase):
         self.assertIn(result, result_list)
         self.assertEqual(result_list[0].title, result.title)
         self.assertEqual(result_list[0].content, result.content)
+
+    def test_normalize_text_types(self):
+        res_none = LegacyResult(dict(url="https://example.org", title=None, content=None))
+        res_none.normalize_result_fields()
+        self.assertEqual(res_none.title, "")
+        self.assertEqual(res_none.content, "")
+
+        res_int = LegacyResult(dict(url="https://example.org", title=123, content=0))
+        res_int.normalize_result_fields()
+        self.assertEqual(res_int.title, "123")
+        self.assertEqual(res_int.content, "0")

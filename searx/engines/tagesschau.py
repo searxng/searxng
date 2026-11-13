@@ -84,7 +84,7 @@ def _story(item):
         'title': item['title'],
         'thumbnail': item.get('teaserImage', {}).get('imageVariants', {}).get('16x9-256'),
         'publishedDate': datetime.fromisoformat(item['date'][:19]),
-        'content': item.get('firstSentence'),
+        'content': item.get('firstSentence') or '',
         'url': item['shareURL'] if use_source_url else item['detailsweb'],
     }
 
@@ -105,7 +105,7 @@ def _video(item) -> Video:
         title=title,
         thumbnail=item.get('teaserImage', {}).get('imageVariants', {}).get('16x9-256'),
         publishedDate=datetime.fromisoformat(item['date'][:19]),
-        content=item.get('firstSentence', ''),
+        content=item.get('firstSentence') or '',
         iframe_src=video_url,
         url=url,
     )
