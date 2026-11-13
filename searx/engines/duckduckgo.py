@@ -185,7 +185,6 @@ from searx.utils import (
     eval_xpath_getindex,
     extr,
     extract_text,
-    gen_useragent,
 )
 
 if t.TYPE_CHECKING:
@@ -217,8 +216,6 @@ _CACHE: EngineCache = None  # pyright: ignore[reportAssignmentType]
 """Persistent (SQLite) key/value cache that deletes its values after ``expire``
 seconds."""
 
-_HTTP_User_Agent: str = gen_useragent()
-
 
 def get_cache() -> EngineCache:
     global _CACHE
@@ -229,7 +226,7 @@ def get_cache() -> EngineCache:
 
 def set_vqd(query: str | int, value: str, params: "OnlineParams") -> None:
     cache = get_cache()
-    key = cache.secret_hash(f"{query}//{params['headers']['User-Agent']}")
+    key = cache.secret_hash(f"{query}//{params.get('impersonate')}//{params['headers'].get('User-Agent', '')}")
     cache.set(key=key, value=value, expire=3600)
 
 
@@ -237,14 +234,14 @@ def get_vqd(
     query: str,
     params: "OnlineParams",
 ) -> str:
-    """Returns the ``vqd`` value that fits to the *query* (and HTTP User-Agent_
-    header).
+    """Returns the ``vqd`` value that fits to the *query* (and the impersonate
+    mode and HTTP User-Agent_ header).
 
     :param query: the query term
     :param params: request parameters
     """
     cache = get_cache()
-    key = cache.secret_hash(f"{query}//{params['headers']['User-Agent']}")
+    key = cache.secret_hash(f"{query}//{params.get('impersonate')}//{params['headers'].get('User-Agent', '')}")
     value: str = cache.get(key=key) or ""
     if value:
         logger.debug("get_vqd: re-use cached value: %s", value)
@@ -375,11 +372,8 @@ def request(query: str, params: "OnlineParams") -> None:
     # HTTP headers
     # ============
 
+    params["impersonate"] = "firefox"
     headers = params["headers"]
-
-    # The vqd value is generated from the query and the UA header. To be able to
-    # reuse the vqd value, the UA header must be static.
-    headers["User-Agent"] = _HTTP_User_Agent
 
     headers["Sec-Fetch-Dest"] = "document"
     headers["Sec-Fetch-Mode"] = "navigate"
