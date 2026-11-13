@@ -492,12 +492,15 @@ def response(resp: "SXNG_Response") -> EngineResults:
 
     # just select "web-result" and ignore results of class "result--ad result--ad--small"
     for div_result in eval_xpath(doc, '//div[@id="links"]/div[contains(@class, "web-result")]'):
+        url = eval_xpath_getindex(div_result, ".//h2/a/@href", 0, default=None)
+        if not url:
+            continue
         _title = eval_xpath(div_result, ".//h2/a")
         _content = eval_xpath_getindex(div_result, './/a[contains(@class, "result__snippet")]', 0, [])
         res.add(
             res.types.MainResult(
                 title=extract_text(_title) or "",
-                url=eval_xpath(div_result, ".//h2/a/@href")[0],
+                url=url,
                 content=extract_text(_content) or "",
             )
         )
