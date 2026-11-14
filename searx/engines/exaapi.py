@@ -33,6 +33,7 @@ Optional settings are:
 The API supports SafeSearch and region-aware results.
 """
 
+import datetime as dt
 import typing as t
 
 from dateutil import parser
@@ -63,6 +64,14 @@ api_key: str = ""
 
 categories = ["general", "web"]
 safesearch = True
+time_range_support = True
+
+time_delta_dict = {
+    "day": dt.timedelta(days=1),
+    "week": dt.timedelta(weeks=1),
+    "month": dt.timedelta(days=30),
+    "year": dt.timedelta(days=365),
+}
 
 base_url = "https://api.exa.ai/search"
 results_per_page: int = 10
@@ -111,6 +120,10 @@ def request(query: str, params: "OnlineParams") -> None:
         "numResults": results_per_page,
         "contents": _contents_payload(),
     }
+
+    if time_range := params["time_range"]:
+        cutoff = dt.datetime.now(dt.UTC) - time_delta_dict[time_range]
+        body["startPublishedDate"] = cutoff.isoformat()
 
     # Apply SafeSearch if enabled
     if params["safesearch"]:
