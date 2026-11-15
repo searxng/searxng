@@ -11,7 +11,7 @@ from urllib.parse import urlencode
 from urllib.parse import quote_plus
 
 from searx.result_types import EngineResults, MainResult, Image, Video
-from searx.utils import html_to_text, gen_useragent, extr
+from searx.utils import html_to_text, extr
 from searx.network import get  # see https://github.com/searxng/searxng/issues/762
 
 from searx.engines.duckduckgo import fetch_traits  # pylint: disable=unused-import
@@ -44,7 +44,6 @@ safesearch_args = {0: "1", 1: None, 2: "1"}
 
 search_path_map = {"images": "i", "videos": "v", "news": "news"}
 
-_HTTP_User_Agent: str = gen_useragent()
 send_accept_language_header = False
 
 
@@ -63,6 +62,7 @@ def fetch_vqd(
     resp = get(
         url=f"https://duckduckgo.com/?q={quote_plus(query)}&iar=images&t=h_",
         headers=params["headers"],
+        impersonate=params["impersonate"],
         timeout=2,
     )
 
@@ -94,11 +94,8 @@ def request(query: str, params: "OnlineParams") -> None:
     # HTTP headers
     # ============
 
+    params["impersonate"] = "firefox"
     headers = params["headers"]
-    # The vqd value is generated from the query and the UA header. To be able to
-    # reuse the vqd value, the UA header must be static.
-    headers["User-Agent"] = _HTTP_User_Agent
-    params["impersonate"] = "none"
     vqd = get_vqd(query=query, params=params) or fetch_vqd(query=query, params=params)
 
     headers["Accept"] = "*/*"
