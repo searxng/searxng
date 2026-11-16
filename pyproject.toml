@@ -1,0 +1,77 @@
+[tool.black]
+# project specifics
+target-version = ["py311"]
+include = 'searxng.msg|\.pyi?$'
+extend-exclude = '''
+/(
+    searx/static
+  | searx/languages\.py
+)/
+'''
+# formatting specifics
+line-length = 120
+skip-string-normalization = true
+
+[tool.coverage.run]
+branch = true
+source = ["searx"]
+
+[tool.coverage.report]
+show_missing = true
+exclude_lines = ["if __name__ == .__main__.:"]
+
+[tool.coverage.html]
+directory = "coverage"
+
+[tool.pylint]
+# ref https://pylint.pycqa.org/en/stable/user_guide/configuration/all-options.html
+
+[tool.pylint.main]
+extension-pkg-whitelist = ["lxml.etree"]
+ignore = ["CVS", ".git", ".svn"]
+
+[tool.pylint.basic]
+argument-rgx = "(([a-z][a-zA-Z0-9_]{2,30})|(_[a-z0-9_]*))$"
+attr-rgx = "(([a-z][a-z0-9_]{2,30})|(_[a-z0-9_]*)|([A-Z0-9_]*))$"
+class-attribute-rgx = "([A-Za-z_][A-Za-z0-9_]{2,30}|(__.*__))$"
+class-rgx = "[A-Z_][a-zA-Z0-9]+$"
+const-rgx = "(([a-zA-Z_][a-zA-Z0-9_]*)|(__.*__))$"
+function-rgx = "(([a-z][a-zA-Z0-9_]{2,30})|(_[a-z0-9_]*))$"
+good-names = ["i", "j", "k", "ex", "Run", "_", "log", "cfg", "id"]
+inlinevar-rgx = "[A-Za-z_][A-Za-z0-9_]*$"
+method-rgx = "(([a-z][a-zA-Z0-9_]{2,30})|(_[a-z0-9_]*))$"
+module-rgx = "([a-z_][a-z0-9_]*)$"
+variable-rgx = "([a-zA-Z0-9_]*)$"
+
+[tool.pylint.classes]
+defining-attr-methods = ["__init__", "__new__", "setUp"]
+exclude-protected = ["_asdict", "_fields", "_replace", "_source", "_make"]
+
+[tool.pylint.design]
+max-args = 8
+max-attributes = 20
+max-locals = 20
+max-positional-arguments = 14
+
+[tool.pylint.exceptions]
+overgeneral-exceptions = ["builtins.Exception"]
+
+[tool.pylint.format]
+max-line-length = 120
+max-module-lines = 2000
+
+[tool.pylint.imports]
+deprecated-modules = ["optparse", "tkinter.tix"]
+
+[tool.pylint."messages control"]
+disable = ["raw-checker-failed", "bad-inline-option", "locally-disabled", "file-ignored", "suppressed-message", "useless-suppression", "deprecated-pragma", "use-symbolic-message-instead", "use-implicit-booleaness-not-comparison-to-string", "use-implicit-booleaness-not-comparison-to-zero", "duplicate-code", "missing-function-docstring", "consider-using-f-string"]
+
+[tool.pylint.reports]
+evaluation = "10.0 - ((float(5 * error + warning + refactor + convention) / statement) * 10)"
+
+[tool.pylint.typecheck]
+ignored-classes = ["optparse.Values", "thread._local", "_thread._local"]
+
+[tool.pylint.variables]
+init-import = true
+redefining-builtins-modules = ["six.moves", "future.builtins"]
