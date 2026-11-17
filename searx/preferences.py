@@ -139,8 +139,8 @@ class MultipleChoiceSetting(Setting):
 class SetSetting(Setting):
     """Setting of values of type ``set`` (comma separated string)"""
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+    def __init__(self, *args, **kwargs):  # type: ignore
+        super().__init__(*args, **kwargs)  # type: ignore
         self.values: set[str] = set()
 
     def get_value(self):
