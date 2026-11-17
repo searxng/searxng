@@ -185,6 +185,8 @@ sc_code_cache_sec = 3600
 # startpage's anubis difficulty is set to 4
 max_difficulty = 4
 
+enable_http2 = False
+
 
 def _solve_anubis(resp: "SXNG_Response") -> str:
     pass_resp = solve_anubis_pow(resp, max_difficulty=max_difficulty)
