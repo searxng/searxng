@@ -14,6 +14,8 @@ a focus on useability and speed.
 """
 
 from urllib.parse import urlencode
+from searx.utils import searxng_useragent
+
 
 about = {
     "website": 'https://github.com/mwmbl/mwmbl',
@@ -28,8 +30,11 @@ api_url = "https://api.mwmbl.org/api/v1"
 
 
 def request(query, params):
-    params['url'] = f"{api_url}/search/?{urlencode({'s': query})}"
-    return params
+    headers = {
+        "User-Agent": searxng_useragent(),
+    }
+    params["headers"].update(headers)
+    params["url"] = f"{api_url}/search/?{urlencode({'s': query})}"
 
 
 def response(resp):
