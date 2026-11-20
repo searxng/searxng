@@ -24,6 +24,7 @@ import typing as t
 from datetime import datetime
 from urllib.parse import urlencode
 
+from curl_cffi import CurlOpt
 from lxml import etree
 
 from searx.result_types import EngineResults
@@ -62,6 +63,9 @@ pubmed_url = "https://www.ncbi.nlm.nih.gov/pubmed/"
 
 
 def request(query: str, params: "OnlineParams") -> None:
+    # NCBI's HTTPS-record (ECH) DNS lookups fail only after seconds, and curl waits
+    # for them; ECH GREASE skips that wait (lexiforest/curl_cffi#900).
+    curl_options: dict[int, t.Any] = {CurlOpt.ECH: "grease"}
 
     args = urlencode(
         {
@@ -73,7 +77,7 @@ def request(query: str, params: "OnlineParams") -> None:
     )
     esearch_url = f"{eutils_api}/esearch.fcgi?{args}"
     # DTD: https://eutils.ncbi.nlm.nih.gov/eutils/dtd/20060628/esearch.dtd
-    esearch_resp: "SXNG_Response" = get(esearch_url, timeout=3)
+    esearch_resp: "SXNG_Response" = get(esearch_url, timeout=3, curl_options=curl_options)
     pmids_results = etree.XML(esearch_resp.content)
     pmids: list[str] = [i.text for i in pmids_results.xpath("//eSearchResult/IdList/Id")]
 
@@ -87,6 +91,7 @@ def request(query: str, params: "OnlineParams") -> None:
     )
     efetch_url = f"{eutils_api}/efetch.fcgi?{args}"
     params["url"] = efetch_url
+    params["curl_options"] = curl_options
 
 
 def response(resp: "SXNG_Response") -> EngineResults:  # pylint: disable=too-many-locals
