@@ -55,8 +55,8 @@ msgstr ""
 "Project-Id-Version: searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2026-10-09 19:03+0000\n"
-"PO-Revision-Date: 2026-10-20 12:27+0000\n"
-"Last-Translator: cyh21185 <cyh21185@noreply.codeberg.org>\n"
+"PO-Revision-Date: 2026-11-20 02:27+0000\n"
+"Last-Translator: Outbreak2096 <outbreak2096@noreply.codeberg.org>\n"
 "Language: zh_Hans_CN\n"
 "Language-Team: Chinese (Simplified Han script) <https://"
 "translate.codeberg.org/projects/searxng/searxng/zh_Hans/>\n"
@@ -619,99 +619,99 @@ msgstr "来源"
 
 #: searx/webapp.py:330
 msgid "Error loading the next page"
-msgstr "载入下个页面时发生错误"
+msgstr "加载下一页时出错"
 
 #: searx/webapp.py:332
 msgid "close"
-msgstr "\t"
+msgstr "关闭"
 
 #: searx/webapp.py:333
 msgid "How to navigate SearXNG with hotkeys"
-msgstr ""
+msgstr "如何使用热键导航 SearXNG"
 
 #: searx/webapp.py:334
 msgid "Control"
-msgstr ""
+msgstr "控制"
 
 #: searx/webapp.py:335
 msgid "Results"
-msgstr ""
+msgstr "结果"
 
 #: searx/webapp.py:336
 msgid "Navigation"
-msgstr ""
+msgstr "导航"
 
 #: searx/webapp.py:337
 msgid "Other"
-msgstr ""
+msgstr "其他"
 
 #: searx/webapp.py:338
 msgid "remove focus from the focused input"
-msgstr ""
+msgstr "从已聚焦的输入框中移除焦点"
 
 #: searx/webapp.py:339
 msgid "copy url of the selected result to the clipboard"
-msgstr ""
+msgstr "将所选结果的 URL 复制到剪贴板"
 
 #: searx/webapp.py:340
 msgid "toggle help window"
-msgstr ""
+msgstr "切换帮助窗口"
 
 #: searx/webapp.py:341
 msgid "focus on the search input"
-msgstr ""
+msgstr "聚焦到搜索输入框"
 
 #: searx/webapp.py:342
 msgid "go to next page"
-msgstr ""
+msgstr "转到下一页"
 
 #: searx/webapp.py:343
 msgid "open search result"
-msgstr ""
+msgstr "打开搜索结果"
 
 #: searx/webapp.py:344
 msgid "go to previous page"
-msgstr ""
+msgstr "转到上一页"
 
 #: searx/webapp.py:345
 msgid "reload page from the server"
-msgstr ""
+msgstr "从服务器重新加载页面"
 
 #: searx/webapp.py:346
 msgid "open the result in a new tab"
-msgstr ""
+msgstr "在新标签页中打开结果"
 
 #: searx/webapp.py:347
 msgid "select previous search result"
-msgstr ""
+msgstr "选择上一个搜索结果"
 
 #: searx/webapp.py:348
 msgid "select next search result"
-msgstr ""
+msgstr "选择下一个搜索结果"
 
 #: searx/webapp.py:349
 msgid "scroll one page up"
-msgstr ""
+msgstr "向上滚动一页"
 
 #: searx/webapp.py:350
 msgid "scroll half a page down"
-msgstr ""
+msgstr "向下滚动半页"
 
 #: searx/webapp.py:351
 msgid "scroll one page down"
-msgstr ""
+msgstr "向下滚动一页"
 
 #: searx/webapp.py:352
 msgid "scroll to the top of the page"
-msgstr ""
+msgstr "滚动到页面顶部"
 
 #: searx/webapp.py:353
 msgid "scroll half a page up"
-msgstr ""
+msgstr "向上滚动半页"
 
 #: searx/webapp.py:354
 msgid "scroll to the bottom of the page"
-msgstr ""
+msgstr "滚动到页面底部"
 
 #: searx/webapp.py:502 searx/webapp.py:902
 msgid "Invalid settings, please edit your preferences"
@@ -1007,7 +1007,7 @@ msgstr "未找到网页"
 #: searx/templates/simple/404.html:6
 #, python-format
 msgid "Go to %(search_page)s."
-msgstr "前往 %(search_page)s。"
+msgstr "转到 %(search_page)s。"
 
 #: searx/templates/simple/404.html:6
 msgid "search page"
@@ -1329,7 +1329,7 @@ msgstr "复制"
 
 #: searx/templates/simple/elements/suggestions.html:3
 msgid "Suggestions"
-msgstr "搜索建议"
+msgstr "建议"
 
 #: searx/templates/simple/filters/languages.html:1
 #: searx/templates/simple/preferences/language.html:2
@@ -1401,7 +1401,7 @@ msgstr "信息！"
 
 #: searx/templates/simple/messages/no_cookies.html:4
 msgid "currently, there are no cookies defined."
-msgstr "目前还没有在 Cookie 中存储任何信息。"
+msgstr "目前未定义任何 Cookie。"
 
 #: searx/templates/simple/messages/no_results.html:6
 msgid "Sorry!"
@@ -1508,8 +1508,8 @@ msgid ""
 "Note: specifying custom settings in the search URL can reduce privacy by "
 "leaking data to the clicked result sites."
 msgstr ""
-"注意：当您从 SearXNG 搜索结果页点击进入一个网站时，SearXNG 搜索结果页的 URL 将会在请求头的 Referer "
-"字段中发送给目标网站服务器。如果您的设置了自定义搜索，URL 中将会包含您的个性化设置参数（如语言等），它们会被目标网站得知，这不利于您的隐私。"
+"注意：在搜索 URL 中指定自定义设置可能会将数据泄露到所点击的结果网站，从而降低"
+"隐私。"
 
 #: searx/templates/simple/preferences/cookies.html:35
 msgid "URL to restore your preferences in another browser"
@@ -1535,7 +1535,7 @@ msgstr "首选项散列"
 
 #: searx/templates/simple/preferences/doi_resolver.html:2
 msgid "DOI Resolver"
-msgstr ""
+msgstr "DOI 解析器"
 
 #: searx/templates/simple/preferences/engines.html:9
 msgid ""
@@ -1545,11 +1545,11 @@ msgstr "此标签页在用户界面中不存在，但可以通过 !bangs 使用�
 
 #: searx/templates/simple/preferences/engines.html:15
 msgid "Enable all"
-msgstr "启用所有"
+msgstr "全部启用"
 
 #: searx/templates/simple/preferences/engines.html:16
 msgid "Disable all"
-msgstr "禁用所有"
+msgstr "全部禁用"
 
 #: searx/templates/simple/preferences/engines.html:25
 msgid "!bang"
