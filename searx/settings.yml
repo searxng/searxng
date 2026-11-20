@@ -440,6 +440,26 @@ engines:
     engine: arxiv
     shortcut: arx
 
+  - name: authentic
+    engine: xpath
+    categories: [general, blogs]
+    paging: true
+    search_url: https://authentic.inbeta.cc/?q={query}&p={pageno}
+    first_page_num: 0
+    shortcut: au
+    disabled: true
+    inactive: true
+    results_xpath: //ol[contains(@class, "res")]/li
+    url_xpath: ./a/@href
+    title_xpath: ./a
+    content_xpath: ./div[contains(@class, "s")]
+    about:
+      website: https://authentic.inbeta.cc
+      description: "Search engine with the goal of surfacing authentic human expression on the internet"
+      use_official_api: false
+      require_api_key: false
+      results: HTML
+
   - name: avalw
     engine: json_engine
     shortcut: av
