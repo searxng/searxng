@@ -36,8 +36,7 @@ enable_http3 = True
 search_type = ""
 
 # Search URL
-base_url_web = "https://yandex.com/search/site/"
-base_url_images = "https://yandex.com/images/search"
+base_url = "https://yandex.com"
 
 # Supported languages
 yandex_supported_langs = [
@@ -79,6 +78,15 @@ def _time_range_to_start_date(time_range: TimeRangeType) -> datetime:
 
 
 def request(query: str, params: "OnlineParams") -> None:
+    # yandex.com redirects to the country specific domain (e.g. yandex.ru from a
+    # Russian IP).  Without following the redirect the engine only receives the
+    # empty body of the 302 response and fails with an lxml ParserError.
+    # Instances that set ``base_url`` in settings.yml to their local domain never
+    # see a redirect; for the rest every search costs one extra hop, which is why
+    # overriding ``base_url`` is the recommended fix.
+    params['allow_redirects'] = True
+    params['soft_max_redirects'] = 1
+
     args: dict[str, t.Any] = {
         "text": query,
     }
@@ -113,9 +121,9 @@ def request(query: str, params: "OnlineParams") -> None:
                 "searchid": "3131712",
             }
         )
-        params['url'] = f"{base_url_web}?{urlencode(args)}"
+        params['url'] = f"{base_url}/search/site/?{urlencode(args)}"
     elif search_type == 'images':
-        params['url'] = f"{base_url_images}?{urlencode(args)}"
+        params['url'] = f"{base_url}/images/search?{urlencode(args)}"
 
 
 def _parse_json_results(dom: html.HtmlElement) -> dict[str, t.Any]:
