@@ -40,6 +40,7 @@ categories = ["general"]
 paging = True
 
 base_url = "https://duckduckgo.com"
+impersonate = "firefox"
 
 CACHE: EngineCache
 """Cache to store the API URLs for combinations of (query, page)."""
@@ -72,8 +73,7 @@ def _fetch_first_page_link(
     resp = get(
         url=f"{base_url}/?q={quote_plus(query)}&t=h_&ia=web",
         headers=headers,
-        impersonate="firefox",
-        default_headers=False,
+        impersonate=impersonate,
     )
 
     if resp.status_code != 200:
@@ -126,8 +126,7 @@ def _solve_jsa(resp: "SXNG_Response") -> "SXNG_Response":
     follow = get(
         urljoin("https://links.duckduckgo.com", jsa_match.group(2) + str(jsa)),
         headers=params["headers"],
-        impersonate="firefox",
-        default_headers=False,
+        impersonate=impersonate,
     )
     follow.search_params = params
     return follow
@@ -140,9 +139,7 @@ def request(query: str, params: "OnlineParams") -> None:
         params["url"] = None
         return
 
-    # firefox TLS only
-    params["impersonate"] = "firefox"
-    params["default_headers"] = False
+    params["impersonate"] = impersonate
 
     api_url = ""
     if params["pageno"] > 1:
