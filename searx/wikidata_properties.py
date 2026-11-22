@@ -376,7 +376,14 @@ def fetch_properties(units: dict[str, WikiDataUnitType]) -> WikiDataPropertiesTy
     # WIKIDATA_PROPERTIES : add property labels
     wikidata_property_names: list[str] = []
     for attribute in get_attributes("en"):
-        if type(attribute) in (WDAttribute, WDAmountAttribute, WDURLAttribute, WDDateAttribute, WDLabelAttribute):
+        if type(attribute) in (
+            WDAttribute,
+            WDAmountAttribute,
+            WDURLAttribute,
+            WDDateAttribute,
+            WDLabelAttribute,
+            WDImageAttribute,
+        ):
             if attribute.name not in properties:
                 wikidata_property_names.append("wd:" + attribute.name)
 

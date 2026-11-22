@@ -46,10 +46,18 @@ class TrackerPatternsDB:
         self.cache = get_cache()
 
     def init(self):
-        if self.cache.properties("tracker_patterns loaded") != "OK":
-            # To avoid parallel initializations, the property is set first
-            self.cache.properties.set("tracker_patterns loaded", "OK")
+        if self.cache.properties("tracker_patterns loaded") == "OK":
+            return
+        # Atomically claim the initialization: only the process that creates the
+        # property loads the rules, so parallel searches cannot load twice.
+        if not self.cache.properties.set_if_absent("tracker_patterns loaded", "OK"):
+            return
+        try:
             self.load()
+        except Exception:
+            # allow a later call to retry instead of leaving an empty cache
+            self.cache.properties.delete("tracker_patterns loaded")
+            raise
         # F I X M E:
         #     do we need a maintenance .. remember: database is stored
         #     in /tmp and will be rebuild during the reboot anyway

@@ -396,6 +396,7 @@ CREATE TABLE IF NOT EXISTS properties (
         "    ON CONFLICT(name) DO UPDATE"
         "   SET value=excluded.value, m_time=strftime('%s', 'now')"
     )
+    SQL_SET_IF_ABSENT: str = "INSERT OR IGNORE INTO properties (name, value) VALUES (?, ?)"
     SQL_DELETE: str = "DELETE FROM properties WHERE name = ?"
     SQL_TABLE_EXISTS: str = (
         "SELECT name FROM sqlite_master"
@@ -437,6 +438,15 @@ CREATE TABLE IF NOT EXISTS properties (
 
         with self.DB:
             self.DB.execute(self.SQL_SET, (name, value))
+
+    def set_if_absent(self, name: str, value: str | int) -> bool:
+        """Set ``value`` of property ``name`` only if the property does not
+        exist yet.  Returns ``True`` if this call created the property, i.e.
+        the caller won the race."""
+
+        with self.DB:
+            cur = self.DB.execute(self.SQL_SET_IF_ABSENT, (name, value))
+        return cur.rowcount == 1
 
     def delete(self, name: str) -> int:
         """Delete of property ``name`` from DB."""

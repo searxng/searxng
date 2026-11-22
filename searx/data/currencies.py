@@ -20,19 +20,28 @@ class CurrenciesDB:
     ctx_names: str = "data_currencies_names"
     ctx_iso4217: str = "data_currencies_iso4217"
 
+    # Any ISO 4217 code present in currencies.json can be used as a sentinel to
+    # detect a cache that is marked as loaded but contains no data.
+    sentinel_iso4217: str = "USD"
+
     json_file: pathlib.Path = pathlib.Path(__file__).parent / "currencies.json"
 
     def __init__(self):
         self.cache = get_cache()
 
     def init(self):
-        if self.cache.properties("currencies loaded") != "OK":
-            # To avoid parallel initializations, the property is set first
-            self.cache.properties.set("currencies loaded", "OK")
-            self.load()
+        if self.cache.properties("currencies loaded") == "OK" and self._is_loaded():
+            return
+        # Load first: if loading fails, the property is not set and the next
+        # call retries instead of leaving an empty cache marked as loaded.
+        self.load()
+        self.cache.properties.set("currencies loaded", "OK")
         # F I X M E:
         #     do we need a maintenance .. rember: database is stored
         #     in /tmp and will be rebuild during the reboot anyway
+
+    def _is_loaded(self) -> bool:
+        return bool(self.cache.get(key=self.sentinel_iso4217, default=None, ctx=self.ctx_iso4217))
 
     def load(self):
         log.debug("init searx.data.CURRENCIES")
@@ -60,5 +69,7 @@ class CurrenciesDB:
         return iso4217_languages.get(language)
 
     def is_iso4217(self, iso4217: str) -> bool:
+        self.init()
+
         item = self.cache.get(key=iso4217, default={}, ctx=self.ctx_iso4217)
         return bool(item)
