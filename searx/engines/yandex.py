@@ -117,6 +117,10 @@ def request(query: str, params: "OnlineParams") -> None:
     elif search_type == 'images':
         params['url'] = f"{base_url_images}?{urlencode(args)}"
 
+    # yandex.com redirects to yandex.ru from some regions (e.g. Russia)
+    params["allow_redirects"] = True
+    params["soft_max_redirects"] = 1
+
 
 def _parse_json_results(dom: html.HtmlElement) -> dict[str, t.Any]:
     # attempt to parse using xpath - finding element with "data-state" attribute

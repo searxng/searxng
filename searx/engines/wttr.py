@@ -7,7 +7,9 @@ from urllib.parse import quote
 from datetime import datetime
 
 from searx.result_types import EngineResults, WeatherAnswer
-from searx import weather
+from searx import logger, weather
+
+logger = logger.getChild("wttr")
 
 about = {
     "website": "https://wttr.in",
@@ -29,6 +31,7 @@ WWO_TO_CONDITION: dict[str, weather.WeatherConditionType] = {
     "119": "cloudy",
     "122": "fair",
     "143": "fair",
+    "152": "fog",  # smog
     "176": "light rain showers",
     "179": "light snow showers",
     "182": "light sleet showers",
@@ -90,7 +93,7 @@ def _weather_data(location: weather.GeoLocation, data: dict[str, t.Any]):
     return WeatherAnswer.Item(
         location=location,
         temperature=weather.Temperature(val=tempC, unit="°C"),
-        condition=WWO_TO_CONDITION[data["weatherCode"]],
+        condition=WWO_TO_CONDITION.get(str(data.get("weatherCode")), "fog"),
         feels_like=weather.Temperature(val=data["FeelsLikeC"], unit="°C"),
         wind_from=weather.Compass(int(data["winddirDegree"])),
         wind_speed=weather.WindSpeed(val=data["windspeedKmph"], unit="km/h"),
@@ -103,10 +106,14 @@ def _weather_data(location: weather.GeoLocation, data: dict[str, t.Any]):
 def response(resp):
     res = EngineResults()
 
-    if resp.status_code == 404:
+    if resp.status_code != 200:
         return res
 
-    json_data = resp.json()
+    try:
+        json_data = resp.json()
+    except ValueError:
+        logger.error("invalid JSON response (HTTP %s)", resp.status_code)
+        return res
     geoloc = weather.GeoLocation.by_query(resp.search_params["query"])
 
     weather_answer = WeatherAnswer(

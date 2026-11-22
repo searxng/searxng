@@ -73,7 +73,7 @@ def _fetch_first_page_link(
         url=f"{base_url}/?q={quote_plus(query)}&t=h_&ia=web",
         headers=headers,
         impersonate="firefox",
-        default_headers=False,
+        default_headers=True,
     )
 
     if resp.status_code != 200:

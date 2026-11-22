@@ -61,7 +61,10 @@ from dateutil import parser
 
 from curl_cffi import CurlOpt
 
+from searx import logger
 from searx.utils import html_to_text
+
+logger = logger.getChild("yacy")
 
 # about
 about = {
@@ -153,7 +156,11 @@ def request(query, params):
 def response(resp):
     results = []
 
-    raw_search_results = loads(resp.text)
+    try:
+        raw_search_results = loads(resp.text)
+    except ValueError:
+        logger.error("invalid JSON response (HTTP %s)", resp.status_code)
+        return []
 
     # return empty array if there are no results
     if not raw_search_results:

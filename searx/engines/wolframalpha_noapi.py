@@ -62,7 +62,7 @@ def obtain_token() -> str:
         resp = http_get('https://www.wolframalpha.com/input/api/v1/code?ts=9999999999999999999', timeout=2.0)
         token = resp.json()["code"]
         # seems, wolframalpha resets its token in every hour
-        CACHE.set(key="code", value=token, expire=3600)
+        CACHE.set(key="token", value=token, expire=3600)
     return token
 
 

@@ -149,7 +149,15 @@ def get_wiki_params(sxng_locale, eng_traits):
     (region) higher than a language (compare :py:obj:`wiki_lc_locale_variants`).
 
     """
-    eng_tag = eng_traits.get_region(sxng_locale, eng_traits.get_language(sxng_locale, "en"))
+    eng_lang = eng_traits.get_language(sxng_locale, "en")
+    eng_region = eng_traits.get_region(sxng_locale, eng_lang)
+    # A region variant is only valid for the language it belongs to.  Otherwise
+    # the territory approximation can pick an unrelated language, e.g. en-SG
+    # resolves to zh because Chinese is an official language in Singapore.
+    if eng_region and eng_lang and eng_region.split("-")[0] == eng_lang.split("-")[0]:
+        eng_tag = eng_region
+    else:
+        eng_tag = eng_lang
     wiki_netloc = eng_traits.custom["wiki_netloc"].get(eng_tag, "en.wikipedia.org")
     return eng_tag, wiki_netloc
 
@@ -161,7 +169,9 @@ def setup(_: dict[str, t.Any]) -> bool:
 def request(query, params):
     """Assemble a request (`wikipedia rest_v1 summary API`_)."""
     if query.islower():
-        query = query.title()
+        # Wikipedia titles only capitalise the first letter; title() would turn
+        # "mixed raster content" into "Mixed Raster Content" and miss the page.
+        query = query[0].upper() + query[1:]
 
     _eng_tag, wiki_netloc = get_wiki_params(params["searxng_locale"], traits)
     title = urllib.parse.quote(query)

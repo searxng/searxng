@@ -5,6 +5,7 @@ engine that uses the official public API and does not require an API key.
 
 .. _OpenAlex: https://openalex.org
 .. _OpenAlex API overview: https://docs.openalex.org/how-to-use-the-api/api-overview
+.. _OpenAlex authentication: https://docs.openalex.org/how-to-use-the-api/rate-limits-and-authentication
 
 Key features
 ------------
@@ -17,7 +18,7 @@ Key features
   (reconstructed from inverted index), journal/venue, publisher, DOI, tags
   (concepts), PDF/HTML links, pages, volume, issue, published date, and a short
   citations comment
-- Supports OpenAlex "polite pool" by adding a ``mailto`` parameter
+- Supports an optional ``api_key`` (raises the daily quota)
 
 
 Configuration
@@ -32,13 +33,16 @@ Minimal example for :origin:`settings.yml <searx/settings.yml>`:
      shortcut: oa
      categories: science, scientific publications
      timeout: 5.0
-     # Recommended by OpenAlex: join the polite pool with an email address
-     mailto: "[email protected]"
+     # Optional: a free OpenAlex account raises the daily quota (10x)
+     api_key: "YOUR_OPENALEX_API_KEY"
 
 Notes
 -----
 
-- The ``mailto`` key is optional but recommended by OpenAlex for better service.
+- The ``api_key`` is optional.  Without it the public quota applies; a free
+  OpenAlex account raises the daily quota.  See `OpenAlex authentication`_.
+- The ``mailto`` key is deprecated (the polite pool was retired in February
+  2026); it is still accepted for backward compatibility.
 - Language is inherited from the user's UI language; when it is not ``all``, the
   engine adds ``filter=language:<iso2>`` (e.g. ``language:fr``). If OpenAlex has
   few results for that language, you may see fewer items.
@@ -64,13 +68,13 @@ Each result uses the :ref:`result_types.paper` class and may include:
 - ``type`` and a brief ``comments`` string with citation count
 
 
-Rate limits & polite pool
-=========================
+Rate limits & authentication
+============================
 
-OpenAlex offers a free public API with generous daily limits. For extra courtesy
-and improved service quality, include a contact email in each request via
-``mailto``. You can set it directly in the engine configuration as shown above.
-See: `OpenAlex API overview`_.
+OpenAlex offers a free public API with daily limits.  A free OpenAlex account
+raises the daily quota; pass its key via ``api_key`` as shown above.  The old
+``mailto`` polite pool was retired in February 2026 and is only kept for
+backward compatibility.  See: `OpenAlex authentication`_.
 
 
 Troubleshooting
@@ -115,8 +119,10 @@ categories = ["science", "scientific publications"]
 paging = True
 search_url = "https://api.openalex.org/works"
 
-# Optional: include your email for OpenAlex polite pool. Can be set from settings.yml
-# engines: - name: openalex; engine: openalex; mailto: "[email protected]"
+# Optional: OpenAlex API key (raises the daily quota).  Set from settings.yml.
+api_key = ""
+
+# Deprecated: the polite pool was retired in February 2026.
 mailto = ""
 
 
@@ -142,8 +148,10 @@ def request(query: str, params: "OnlineParams") -> None:
     if filters:
         args["filter"] = ",".join(filters)
 
-    # include mailto if configured for polite pool (engine module setting)
-    if isinstance(mailto, str) and mailto != "":
+    if isinstance(api_key, str) and api_key != "":
+        args["api_key"] = api_key
+    elif isinstance(mailto, str) and mailto != "":
+        # deprecated polite pool, kept for backward compatibility
         args["mailto"] = mailto
 
     params["url"] = f"{search_url}?{urlencode(args)}"
