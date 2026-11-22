@@ -75,6 +75,10 @@ def new_client(
     curl_options: dict[int, t.Any] | None = None,
 ) -> AsyncClient:
     extra_curl = dict(curl_options or {})
+    # curl_cffi 0.17 performs an ECH DNS lookup before connecting; some
+    # resolvers take seconds to fail it and the request times out.  "grease"
+    # skips the lookup without changing TLS behaviour.
+    extra_curl.setdefault(CurlOpt.ECH, "grease")
     if not enable_http:
         extra_curl.setdefault(CurlOpt.PROTOCOLS_STR, "https")
         extra_curl.setdefault(CurlOpt.REDIR_PROTOCOLS_STR, "https")
