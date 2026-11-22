@@ -73,12 +73,15 @@ def new_client(
     max_redirects: int,
     impersonate: str = DEFAULT_IMPERSONATE,
     curl_options: dict[int, t.Any] | None = None,
+    ech: str = "",
 ) -> AsyncClient:
     extra_curl = dict(curl_options or {})
-    # curl_cffi 0.17 performs an ECH DNS lookup before connecting; some
-    # resolvers take seconds to fail it and the request times out.  "grease"
-    # skips the lookup without changing TLS behaviour.
-    extra_curl.setdefault(CurlOpt.ECH, "grease")
+    # ECH is enabled by the library default.  Operators can opt into a
+    # different value ("false", "true", "grease" or "hard") via
+    # ``outgoing.ech``; "grease" avoids the ECH DNS lookup that makes some
+    # resolvers time out, at the cost of not encrypting the ClientHello.
+    if ech:
+        extra_curl.setdefault(CurlOpt.ECH, ech)
     if not enable_http:
         extra_curl.setdefault(CurlOpt.PROTOCOLS_STR, "https")
         extra_curl.setdefault(CurlOpt.REDIR_PROTOCOLS_STR, "https")

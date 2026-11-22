@@ -53,6 +53,7 @@ class Network:
         'verify',
         'enable_http2',
         'enable_http3',
+        'ech',
         'max_connections',
         'local_addresses',
         'proxies',
@@ -76,6 +77,7 @@ class Network:
         verify: bool = True,
         enable_http2: bool = False,
         enable_http3: bool = False,
+        ech: str = "",
         max_connections: int = None,  # pyright: ignore[reportArgumentType]
         proxies: str | dict[str, str] | None = None,
         using_tor_proxy: bool = False,
@@ -90,6 +92,7 @@ class Network:
         self.verify = verify
         self.enable_http2 = enable_http2
         self.enable_http3 = enable_http3
+        self.ech = ech
         self.max_connections = max_connections
         self.proxies = proxies
         self.using_tor_proxy = using_tor_proxy
@@ -219,6 +222,7 @@ class Network:
                 max_redirects,
                 impersonate=impersonate,
                 curl_options=curl_options,
+                ech=self.ech,
             )
             if self.using_tor_proxy and not await self.check_tor_proxy(client, proxies):
                 await client.aclose()
@@ -352,6 +356,7 @@ def initialize(
         'verify': settings_outgoing['verify'],
         'enable_http2': settings_outgoing['enable_http2'],
         'enable_http3': False,
+        'ech': settings_outgoing['ech'],
         'max_connections': settings_outgoing['pool_connections'],
         'local_addresses': settings_outgoing['source_ips'],
         'using_tor_proxy': settings_outgoing['using_tor_proxy'],

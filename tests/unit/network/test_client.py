@@ -11,7 +11,7 @@ from tests import SearxTestCase
 
 class TestNewClient(SearxTestCase):
 
-    def test_ech_is_set_to_grease(self):
+    def _new_client(self, **kwargs):
         with patch.object(client, "AsyncClient") as async_client:
             client.new_client(
                 enable_http=False,
@@ -22,6 +22,13 @@ class TestNewClient(SearxTestCase):
                 proxies={},
                 local_address=None,
                 max_redirects=5,
+                **kwargs,
             )
-        curl_options = async_client.call_args.kwargs["curl_options"]
-        self.assertEqual(curl_options[CurlOpt.ECH], "grease")
+        return async_client.call_args.kwargs["curl_options"]
+
+    def test_ech_keeps_library_default(self):
+        # ECH must stay enabled unless the operator opts in (#6912)
+        self.assertNotIn(CurlOpt.ECH, self._new_client())
+
+    def test_ech_is_configurable(self):
+        self.assertEqual(self._new_client(ech="grease")[CurlOpt.ECH], "grease")

@@ -185,6 +185,11 @@ outgoing:
   pool_connections: 100
   # Enables the use of HTTP2
   enable_http2: true
+  # ECH (Encrypted Client Hello) value passed to curl.  Leave empty to keep
+  # the library default (ECH enabled).  Set to "grease" only if a slow DNS
+  # resolver makes requests time out; "grease" skips the ECH DNS lookup but
+  # does not encrypt the ClientHello.
+  # ech: "grease"
   # uncomment below section if you want to use a custom server certificate
   # see https://curl-cffi.readthedocs.io/en/latest/quick_start.html
   #  verify: ~/.mitmproxy/mitmproxy-ca-cert.cer

@@ -251,6 +251,9 @@ SCHEMA: dict[str, t.Any] = {
         'useragent_suffix': SettingsValue((None, False, str), ""),
         'request_timeout': SettingsValue(numbers.Real, 3.0),
         'enable_http2': SettingsValue(bool, True),
+        # ECH (Encrypted Client Hello) value passed to curl: "", "false",
+        # "true", "grease" or "hard".  Empty keeps the library default.
+        'ech': SettingsValue(str, ""),
         'verify': SettingsValue((bool, str), True),
         'max_request_timeout': SettingsValue((None, numbers.Real), None),
         'pool_connections': SettingsValue(int, 100),
