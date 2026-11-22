@@ -307,6 +307,24 @@ To get live builds while modifying CSS & JS use (:ref:`make run`):
 
    $ LIVE_THEME=simple make run
 
+.. _make version.freeze:
+
+``python -m searx.version freeze``
+==================================
+
+When SearXNG runs outside a git repository (for example from a release
+archive), the version is read from the generated module
+:origin:`searx/version_frozen.py`.  Generate it before packing the sources:
+
+.. code:: sh
+
+   $ python -m searx.version freeze
+
+The generated module contains ``VERSION_STRING``, ``VERSION_TAG``,
+``DOCKER_TAG``, ``GIT_URL`` and ``GIT_BRANCH``.  When the module exists it
+takes precedence over the git information; delete it to go back to the
+git-based version.
+
 .. _make static.build:
 
 ``make static.build.*``

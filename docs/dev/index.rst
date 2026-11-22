@@ -17,5 +17,6 @@ Developer documentation
    answerers/index
    translation
    makefile
+   versioning
    reST
    searxng_extra/index

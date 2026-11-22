@@ -145,7 +145,17 @@ engine is shown.  Most of the options have a default value or even are optional.
   :ref:`private engines`.
 
 ``weight`` : default ``1``
-  Weighting of the results of this engine.
+  Weighting of the results of this engine.  The weight is multiplied into the
+  score of every result the engine returns; results are sorted by score
+  (highest first).  For a result found at positions ``p`` by engines with
+  weights ``w1, w2, ...`` the score is::
+
+      weight = w1 * w2 * ... * len(positions)
+      score  = weight * sum(1 / p for p in positions)
+
+  A higher weight therefore moves the engine's results up.  The ``/stats``
+  page shows the per-engine reliability and response-time metrics that are
+  useful to monitor an engine.
 
 ``display_error_messages`` : default ``true``
   When an engine returns an error, the message is displayed on the user interface.
@@ -158,6 +168,15 @@ engine is shown.  Most of the options have a default value or even are optional.
 
   - ``ipv4`` set ``local_addresses`` to ``0.0.0.0`` (use only IPv4 local addresses)
   - ``ipv6`` set ``local_addresses`` to ``::`` (use only IPv6 local addresses)
+
+  .. hint::
+
+     ``network`` creates an implicit dependency on the referenced engine.  When
+     you remove an engine with ``use_default_settings.engines.remove``, remove
+     all engines that reference its network as well.  For example, to remove
+     Brave you have to remove ``brave``, ``brave.images``, ``brave.videos`` and
+     ``brave.news`` together; otherwise SearXNG fails to start because the
+     ``brave`` network no longer exists.
 
 ``enable_http`` : optional
   Enable HTTP for this engine (by default only HTTPS is enabled).

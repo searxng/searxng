@@ -14,6 +14,7 @@ Administrator documentation
    installation-uwsgi
    installation-nginx
    installation-apache
+   installation-freebsd
    update-searxng
    answer-captcha
    searx.favicons

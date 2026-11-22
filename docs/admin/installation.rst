@@ -9,6 +9,7 @@ Installation
 - :ref:`installation container`
 - :ref:`installation scripts`
 - :ref:`installation basic`
+- :ref:`installation freebsd` (community-maintained)
 
 The :ref:`installation basic` is an excellent illustration of *how a SearXNG
 instance is build up* (see :ref:`architecture uWSGI`).  If you do not have any

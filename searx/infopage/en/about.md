@@ -38,6 +38,19 @@ search engine, see your browser's documentation:
 - [Chromium]-based browsers only add websites that the user navigates to without
   a path.
 
+If your browser does not support OpenSearch, or you want a custom search
+shortcut, you can use the search URL directly.  Put ``%s`` where the query
+should go, for example::
+
+    https://searx.example.org/search?q=%s
+
+To send every query to specific engines, append the bangs after the query::
+
+    https://searx.example.org/search?q=%s%20!bing%20!google
+
+The ``%s`` placeholder must be the first part of the query; the rest of the URL
+is appended to it.
+
 When adding a search engine, there must be no duplicates with the same name.  If
 you encounter a problem where you cannot add the search engine, you can either:
 

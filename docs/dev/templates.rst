@@ -129,6 +129,73 @@ audio_src : uri,
   URL of an embedded ``<audio controls>``.
 
 
+.. _template code:
+
+``code.html``
+-------------
+
+Displays result fields from:
+
+- :ref:`macro result_header`,
+- :ref:`macro result_sub_header`,
+- the ``result_sub_footer`` and ``result_footer`` macros
+
+Additional fields used in the :origin:`code.html
+<searx/templates/simple/result_templates/code.html>`:
+
+content : :py:class:`str`
+  Description of the code result.
+
+repository : :py:class:`str`
+  URL of the repository the code belongs to.
+
+filename : :py:class:`str`
+  Name of the file.
+
+HTML() : :py:class:`str`
+  Rendered, syntax-highlighted code (HTML).
+
+.. _template file:
+
+``file.html``
+-------------
+
+Displays result fields from:
+
+- :ref:`macro result_header`,
+- :ref:`macro result_sub_header`,
+- the ``result_sub_footer`` and ``result_footer`` macros
+
+Additional fields used in the :origin:`file.html
+<searx/templates/simple/result_templates/file.html>`:
+
+abstract : :py:class:`str`
+  Short abstract of the file.
+
+content : :py:class:`str`
+  Description of the file.
+
+author : :py:class:`str`
+  Author of the file.
+
+filename : :py:class:`str`
+  Name of the file.
+
+size : :py:class:`str`
+  Human readable file size.
+
+time : :py:class:`str`
+  Date of the file.
+
+mimetype : :py:class:`str`
+  MIME type of the file.
+
+embedded : :py:class:`str`
+  URL of the embedded media.
+
+mtype / subtype : :py:class:`str`
+  Media type and subtype used for the ``<audio>``/``<video>`` element.
+
 .. _template torrent:
 
 ``torrent.html``

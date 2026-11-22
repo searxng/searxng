@@ -54,6 +54,21 @@ In the case of Docker, you need to add the user running the container to the
 In the case of Podman, no additional steps are generally required, but there
 are some considerations when running `Podman rootless containers`_.
 
+.. _Container WSL:
+
+WSL (Windows)
+-------------
+
+SearXNG runs in a container under WSL2 (Windows Subsystem for Linux).  Use
+either Docker Desktop with the WSL2 backend, or install Docker/Podman inside
+the WSL2 distribution.  Publish the port as usual (``-p 8080:8080``) and open
+``http://localhost:8080`` in the Windows browser; WSL2 forwards localhost
+ports to Windows automatically.
+
+Keep the configuration and data volumes on the Linux filesystem (for example
+``~/searxng``), not on ``/mnt/c``, because file permissions and performance on
+the Windows mount are unreliable for containers.
+
 .. _Container registries:
 
 Registries

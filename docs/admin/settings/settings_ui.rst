@@ -10,6 +10,8 @@
 .. code:: yaml
 
    ui:
+     static_path: ""
+     templates_path: ""
      default_locale: ""
      query_in_title: false
      center_alignment: false
@@ -20,6 +22,14 @@
      search_on_category_select: true
      hotkeys: default
      url_formatting: pretty
+
+``static_path`` : optional
+  Path to a custom directory with static files (CSS, images, ...).  Leave it
+  blank to use the static files shipped with SearXNG.
+
+``templates_path`` : optional
+  Path to a custom directory with Jinja templates.  Leave it blank to use the
+  templates shipped with SearXNG.
 
 ``default_locale`` :
   SearXNG interface language.  If blank, the locale is detected by using the
