@@ -171,6 +171,20 @@ class TestPreferences(SearxTestCase):
             {'value': ['general'], 'locked': False, 'choices': ['general', 'none']},
         )
 
+    def test_get_cookie_names(self):
+        names = self.preferences.get_cookie_names()
+        for name in (
+            'language',
+            'categories',
+            'disabled_engines',
+            'enabled_engines',
+            'disabled_plugins',
+            'enabled_plugins',
+            'tokens',
+        ):
+            self.assertIn(name, names)
+        self.assertNotIn('authelia_session', names)
+
     def test_save_key_value_setting(self):
         setting_key = 'foo'
         setting_value = 'bar'

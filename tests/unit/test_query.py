@@ -43,8 +43,10 @@ class TestQuery(SearxTestCase):
         query_text = '<8 the query'
         query = RawTextQuery(query_text, [])
         another_query = query.changeQuery('another text')
-        self.assertEqual(query, another_query)
-        self.assertEqual(query.getFullQuery(), '<8 another text')
+        self.assertNotEqual(query, another_query)
+        self.assertEqual(another_query.getFullQuery(), '<8 another text')
+        # the original query must not be mutated
+        self.assertEqual(query.getFullQuery(), '<8 the query')
 
 
 class TestLanguageParser(SearxTestCase):

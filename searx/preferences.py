@@ -506,6 +506,14 @@ class Preferences:
         self.tokens = SetSetting('tokens')
         self.client = client or ClientPref()
 
+    def get_cookie_names(self) -> set[str]:
+        """Return the names of the cookies that belong to SearXNG."""
+        names = set(self.key_value_settings)
+        names.update(('disabled_engines', 'enabled_engines'))
+        names.update(('disabled_plugins', 'enabled_plugins'))
+        names.add('tokens')
+        return names
+
     def get_as_url_params(self):
         """Return preferences as URL parameters"""
         settings_kv = {}

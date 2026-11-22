@@ -38,7 +38,9 @@
   {%- endif -%}
   <div class="url_wrapper">
     {%- for part in get_pretty_url(result.parsed_url) -%}
+    {%- if part -%}
     <span class="url_o{{loop.index}}"><span class="url_i{{loop.index}}">{{- part -}}</span></span>
+    {%- endif -%}
     {%- endfor %}
   </div>
   {{- result_close_link() -}}
@@ -47,7 +49,7 @@
 
 <!-- Draw result sub header -->
 {%- macro result_sub_header(result) -%}
-  {%- if result.publishedDate %}<time class="published_date" datetime="{{ result.pubdate }}" >{{ result.publishedDate }}</time>{% endif -%}
+  {%- if result.publishedDate %}<time class="published_date" datetime="{{ result.pubdate }}" >{{ result.publishedDate.strftime('%Y-%m-%d %H:%M') }}</time>{% endif -%}
   <!-- Length is displayed inside the thumbnail if there's any, so don't display it here a second time -->
   {%- if result.length and not result.thumbnail %}<div class="result_length">{{ _('Length') }}: {{ result.length }}</div>{% endif -%}
   {%- if result.views %}<div class="result_views">{{ _('Views') }}: {{ result.views }}</div>{% endif -%}

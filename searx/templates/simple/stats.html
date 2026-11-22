@@ -88,26 +88,27 @@
 {% endif %}
 
 {% if selected_engine_name %}
-    <div class="engine-errors">
+    {#- the error report is technical output: keep it in English and LTR -#}
+    <div class="engine-errors" dir="ltr">
         {% for secondary in [False, True] %}
             {% set ns = namespace(first=true) %}
             {% for error in engine_reliabilities[selected_engine_name].errors %}
                 {% if secondary == error.secondary %}
                     {% if ns.first %}
                         {% set ns.first = false %}
-                        <h2>{% if secondary %}{{ _('Warnings') }}{% else %}{{ _('Errors and exceptions') }}{% endif %}</h2>
+                        <h2>{% if secondary %}Warnings{% else %}Errors and exceptions{% endif %}</h2>
                     {% endif %}
                     <table class="engine-error">
                         <tbody>
                             <tr>
                                 {%- if error.exception_classname -%}
-                                    <th scope="row" class="engine-error-type">{{ _('Exception') }}</th><td>{{ error.exception_classname }}</td>
+                                    <th scope="row" class="engine-error-type">Exception</th><td>{{ error.exception_classname }}</td>
                                 {%- elif error.log_message -%}
-                                    <th scope="row" class="engine-error-type">{{ _('Message') }}</th><td>{{ error.log_message }}</td>
+                                    <th scope="row" class="engine-error-type">Message</th><td>{{ error.log_message }}</td>
                                 {%- endif -%}
-                                <th scope="row" class="engine-error-type">{{ _('Percentage') }}</th><td class="engine-error-type">{{ error.percentage }}</td>
+                                <th scope="row" class="engine-error-type">Percentage</th><td class="engine-error-type">{{ error.percentage }}</td>
                             </tr>
-                            {% if error.log_parameters and error.log_parameters != (None, None, None) %}<tr><th scope="row">{{ _('Parameter') }}</th>{{- '' -}}
+                            {% if error.log_parameters and error.log_parameters != (None, None, None) %}<tr><th scope="row">Parameter</th>{{- '' -}}
                                 <td colspan="3">
                                     {%- for param in error.log_parameters -%}
                                         <span class="log_parameters">{{ param }}</span>
@@ -115,9 +116,9 @@
                                 </td>
                             </tr>
                             {% endif %}
-                            <tr><th scope="row">{{ _('Filename') }}</th><td colspan="3">{{ error.filename }}:{{ error.line_no }}</td></tr>
-                            <tr><th scope="row">{{ _('Function') }}</th><td colspan="3">{{ error.function }}</td></tr>
-                            <tr><th scope="row">{{ _('Code') }}</th><td colspan="3">{{ error.code }}</td></tr>
+                            <tr><th scope="row">Filename</th><td colspan="3">{{ error.filename }}:{{ error.line_no }}</td></tr>
+                            <tr><th scope="row">Function</th><td colspan="3">{{ error.function }}</td></tr>
+                            <tr><th scope="row">Code</th><td colspan="3">{{ error.code }}</td></tr>
                         </tbody>
                     </table>
                 {% endif %}

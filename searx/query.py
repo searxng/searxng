@@ -313,12 +313,12 @@ class RawTextQuery:
         qlist[position] = text
         return self.getFullQuery()
 
-    def changeQuery(self, query):
-        self.user_query_parts = query.strip().split()
-        self.query = self.getFullQuery()
-        self.autocomplete_location = (self.user_query_parts, len(self.user_query_parts) - 1)
-        self.autocomplete_list = []
-        return self
+    def changeQuery(self, query: str) -> "RawTextQuery":
+        full_query = "{0} {1}".format(" ".join(self.query_parts), query).strip()
+        new_rawtextquery = RawTextQuery(full_query, self.disabled_engines)
+        new_rawtextquery.autocomplete_location = (self.user_query_parts, len(self.user_query_parts) - 1)
+        new_rawtextquery.autocomplete_list = []
+        return new_rawtextquery
 
     def getQuery(self):
         return ' '.join(self.user_query_parts)

@@ -2,6 +2,9 @@
 # pylint: disable=missing-module-docstring,disable=missing-class-docstring,invalid-name
 
 import json
+from datetime import datetime, timezone
+from unittest.mock import patch
+
 import babel
 from mock import Mock
 
@@ -124,6 +127,68 @@ class ViewsTestCase(SearxTestCase):  # pylint: disable=too-many-public-methods
             b'<p class="content">\n    second <span class="highlight">test</span> ',
             result.data,
         )
+
+    def test_search_html_published_date(self):
+        dated = MainResult(
+            title="Dated",
+            url="http://dated.test.xyz",
+            content="dated content",
+            engine="startpage",
+            publishedDate=datetime(2025, 8, 2, 13, 30, 36, 153728, tzinfo=timezone.utc),
+        )
+        dated.normalize_result_fields()
+
+        def search_mock(search_self, *args):  # pylint: disable=unused-argument
+            search_self.result_container = Mock(
+                get_ordered_results=lambda: [dated],
+                answers={},
+                corrections=set(),
+                suggestions=set(),
+                infoboxes=[],
+                unresponsive_engines=set(),
+                results=[dated],
+                results_length=lambda: 1,
+                get_timings=lambda: [],
+                redirect_url=None,
+                engine_data={},
+            )
+            search_self.search_query.locale = babel.Locale.parse("en-US", sep='-')
+
+        self.setattr4test(searx.search.Search, 'search', search_mock)
+        result = self.client.post('/search', data={'q': 'dated'})
+        self.assertIn(b'2025-08-02 13:30', result.data)
+        self.assertNotIn(b'153728', result.data)
+
+    def test_search_html_omits_empty_url_part(self):
+        # URLs without a path must not emit an empty url_o2/url_i2 span (#3724)
+        result = self.client.post('/search', data={'q': 'test'})
+        self.assertNotIn(b'url_o2', result.data)
+        self.assertNotIn(b'url_i2', result.data)
+
+    def test_stats_errors_are_not_translated(self):
+        fake = {
+            "dummy engine": {
+                "errors": [
+                    {
+                        "secondary": False,
+                        "exception_classname": "SearxEngineError",
+                        "log_message": None,
+                        "log_parameters": (None, None, None),
+                        "percentage": 100,
+                        "filename": "x.py",
+                        "line_no": 1,
+                        "function": "f",
+                        "code": "E",
+                    }
+                ],
+                "reliability": 0,
+            }
+        }
+        with patch.object(searx.webapp, "get_reliabilities", return_value=fake):
+            result = self.client.get('/stats?engine=dummy%20engine')
+        self.assertEqual(result.status_code, 200)
+        self.assertIn(b'Errors and exceptions', result.data)
+        self.assertIn(b'dir="ltr"', result.data)
 
     def test_index_json(self):
         result = self.client.post('/', data={'q': 'test', 'format': 'json'})

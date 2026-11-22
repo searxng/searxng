@@ -72,6 +72,16 @@ class TestWebUtils(SearxTestCase):
                 'a string with class.',
                 '<span class="highlight">a</span> string with <span class="highlight">class</span>.',
             ),
+            (
+                r'Laminas\XmlRpc\Client',
+                r'Laminas\XmlRpc\Client',
+                r'<span class="highlight">Laminas\XmlRpc\Client</span>',
+            ),
+            (
+                r'C:\temp',
+                r'C:\temp\x',
+                r'<span class="highlight">C:\temp</span>\x',
+            ),
         ]
     )
     def test_highlight_content_equal(self, query: str, content: str, expected: str):

@@ -22,7 +22,7 @@
   {%- if result.publishedDate -%}
     <div class="result_pubdate">{{- '' -}}
       <span>{{ _('Updated at') }}:</span>{{- '' -}}
-      <span><time datetime="{{ result.pubdate }}">{{ result.publishedDate }}</time></span>{{- '' -}}
+      <span><time datetime="{{ result.pubdate }}">{{ result.publishedDate.strftime('%Y-%m-%d %H:%M') }}</time></span>{{- '' -}}
     </div>
   {%- endif -%}
   {%- if result.tags -%}

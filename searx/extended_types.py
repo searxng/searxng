@@ -116,4 +116,6 @@ class SXNG_Response(CurlResponse):
     def html(self) -> html.HtmlElement:
         """Parses the result into a HTML document via :py:obj:`lxml.html`."""
 
-        return html.fromstring(self.text)
+        # parse bytes: lxml refuses unicode strings that carry an XML encoding
+        # declaration (e.g. OPDS / Atom feeds)
+        return html.fromstring(self.content)

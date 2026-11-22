@@ -418,7 +418,10 @@ def render(template_name: str, **kwargs):
 
     # values from the HTTP requests
     kwargs['endpoint'] = 'results' if 'q' in kwargs else sxng_request.endpoint
-    kwargs['cookies'] = sxng_request.cookies
+    # only expose cookies owned by SearXNG, never cookies of other services
+    # sharing the domain (see #3763)
+    cookie_names = sxng_request.preferences.get_cookie_names()
+    kwargs['cookies'] = {k: v for k, v in sxng_request.cookies.items() if k in cookie_names}
     kwargs['errors'] = sxng_request.errors
     kwargs['link_token'] = link_token.get_token()
 
@@ -854,8 +857,6 @@ def autocompleter():
         backend_name = sxng_request.preferences.get_value('autocomplete')
 
         for result in search_autocomplete(backend_name, sug_prefix, sxng_locale):
-            # attention: this loop will change raw_text_query object and this is
-            # the reason why the sug_prefix was stored before (see above)
             if result != sug_prefix:
                 results.append(raw_text_query.changeQuery(result).getFullQuery())
 
