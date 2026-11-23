@@ -78,7 +78,7 @@ texlive-core texlive-latexextra ttf-dejavu shellcheck"
 # dnf packages
 
 SEARXNG_PACKAGES_fedora="\
-python python-pip python-lxml python-babel python3-devel
+python python3-pip python3-lxml python3-babel python3-devel
 uwsgi uwsgi-plugin-python3
 git @development-tools libxml2 openssl"
 
@@ -87,6 +87,16 @@ graphviz graphviz-gd ImageMagick librsvg2-tools
 texlive-xetex-bin texlive-collection-fontsrecommended
 texlive-collection-latex dejavu-sans-fonts dejavu-serif-fonts
 dejavu-sans-mono-fonts ShellCheck"
+
+# dnf packages for RHEL and derivatives
+# Mostly similar to Fedora, but "Development Tools" has an incompatible different name.
+
+SEARXNG_PACKAGES_el="\
+python python3-pip python3-lxml python3-babel python3-devel
+uwsgi uwsgi-plugin-python3
+git @development libxml2 openssl"
+
+SEARXNG_BUILD_PACKAGES_el=$SEARXNG_BUILD_PACKAGES_fedora
 
 case $DIST_ID-$DIST_VERS in
     ubuntu-18.04)
@@ -105,6 +115,10 @@ case $DIST_ID-$DIST_VERS in
     fedora-*)
         SEARXNG_PACKAGES="${SEARXNG_PACKAGES_fedora}"
         SEARXNG_BUILD_PACKAGES="${SEARXNG_BUILD_PACKAGES_fedora}"
+        ;;
+    rhel-* | centos-* | ol-* | almalinux-* | rocky-*)
+        SEARXNG_PACKAGES="${SEARXNG_PACKAGES_el}"
+        SEARXNG_BUILD_PACKAGES="${SEARXNG_BUILD_PACKAGES_el}"
         ;;
 esac
 
@@ -853,7 +867,7 @@ searxng.instance.inspect() {
         case $DIST_ID-$DIST_VERS in
             ubuntu-* | debian-*) tail -f "/var/log/uwsgi/app/${SERVICE_NAME%.*}.log" ;;
             arch-*) journalctl -f -u "uwsgi@${SERVICE_NAME%.*}" ;;
-            fedora-*) journalctl -f -u uwsgi ;;
+            fedora-* | rhel-* | centos-* | ol-* | almalinux-* | rocky-*) journalctl -f -u uwsgi ;;
         esac
     done
 
@@ -886,15 +900,19 @@ searxng.doc.rst() {
     local debian="${SEARXNG_PACKAGES_debian}"
     local arch="${SEARXNG_PACKAGES_arch}"
     local fedora="${SEARXNG_PACKAGES_fedora}"
+    local el="${SEARXNG_PACKAGES_el}"
     local debian_build="${SEARXNG_BUILD_PACKAGES_debian}"
     local arch_build="${SEARXNG_BUILD_PACKAGES_arch}"
     local fedora_build="${SEARXNG_BUILD_PACKAGES_fedora}"
+    local el_build="${SEARXNG_BUILD_PACKAGES_el}"
     debian="$(echo "${debian}" | sed 's/.*/          & \\/' | sed '$ s/.$//')"
     arch="$(echo "${arch}" | sed 's/.*/          & \\/' | sed '$ s/.$//')"
     fedora="$(echo "${fedora}" | sed 's/.*/          & \\/' | sed '$ s/.$//')"
+    el="$(echo "${el}" | sed 's/.*/          & \\/' | sed '$ s/.$//')"
     debian_build="$(echo "${debian_build}" | sed 's/.*/          & \\/' | sed '$ s/.$//')"
     arch_build="$(echo "${arch_build}" | sed 's/.*/          & \\/' | sed '$ s/.$//')"
     fedora_build="$(echo "${fedora_build}" | sed 's/.*/          & \\/' | sed '$ s/.$//')"
+    el_build="$(echo "${el_build}" | sed 's/.*/          & \\/' | sed '$ s/.$//')"
 
     if [[ ${SEARXNG_UWSGI_USE_SOCKET} == true ]]; then
         uwsgi_variant=':socket'
@@ -954,7 +972,7 @@ EOF
 
 EOF
                     ;;
-                fedora-* | centos-7)
+                fedora-* | rhel-* | centos-* | ol-* | almalinux-* | rocky-*)
                     cat <<EOF
 
 .. code:: bash

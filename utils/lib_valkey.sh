@@ -8,7 +8,7 @@ valkey.distro.setup() {
         ubuntu | debian)
             VALKEY_PACKAGES="valkey-server"
             ;;
-        arch | fedora | centos)
+        arch | fedora | rhel | centos | ol | almalinux | rocky)
             VALKEY_PACKAGES="valkey"
             ;;
         *)
@@ -54,7 +54,7 @@ valkey.install() {
 
             systemd_activate_service valkey-server
             ;;
-        arch | fedora | centos)
+        arch | fedora | rhel | centos | ol | almalinux | rocky)
             pkg_install "${VALKEY_PACKAGES}"
             systemd_activate_service valkey
             ;;
@@ -65,7 +65,7 @@ valkey.install() {
     esac
 
     # case $DIST_ID-$DIST_VERS in
-    #     arch-*|fedora-*|centos-7)
+    #     arch-* | fedora-* | rhel-* | centos-* | ol-* | almalinux-* | rocky-*)
     #         systemctl enable nginx
     #         systemctl start nginx
     #         ;;

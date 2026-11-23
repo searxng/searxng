@@ -970,7 +970,7 @@ nginx_distro_setup() {
         arch-*)
             NGINX_PACKAGES="nginx-mainline"
             ;;
-        fedora-* | centos-7)
+        fedora-* | rhel-* | centos-* | ol-* | almalinux-* | rocky-*)
             NGINX_PACKAGES="nginx"
             ;;
         *)
@@ -983,7 +983,7 @@ install_nginx() {
     info_msg "installing nginx ..."
     pkg_install "${NGINX_PACKAGES}"
     case $DIST_ID-$DIST_VERS in
-        arch-* | fedora-* | centos-7)
+        arch-* | fedora-* | rhel-* | centos-* | ol-* | almalinux-* | rocky-*)
             systemctl enable nginx
             systemctl start nginx
             ;;
@@ -1132,7 +1132,7 @@ apache_distro_setup() {
             APACHE_MODULES="modules"
             APACHE_PACKAGES="apache"
             ;;
-        fedora-* | centos-7)
+        fedora-* | rhel-* | centos-* | ol-* | almalinux-* | rocky-*)
             APACHE_SITES_AVAILABLE="/etc/httpd/sites-available"
             APACHE_SITES_ENABLED="/etc/httpd/sites-enabled"
             APACHE_MODULES="modules"
@@ -1148,7 +1148,7 @@ install_apache() {
     info_msg "installing apache ..."
     pkg_install "$APACHE_PACKAGES"
     case $DIST_ID-$DIST_VERS in
-        arch-* | fedora-* | centos-7)
+        arch-* | fedora-* | rhel-* | centos-* | ol-* | almalinux-* | rocky-*)
             if ! grep "IncludeOptional sites-enabled" "/etc/httpd/conf/httpd.conf"; then
                 echo "IncludeOptional sites-enabled/*.conf" >>"/etc/httpd/conf/httpd.conf"
             fi
@@ -1162,7 +1162,7 @@ apache_is_installed() {
     case $DIST_ID-$DIST_VERS in
         ubuntu-* | debian-*) (command -v apachectl) &>/dev/null ;;
         arch-*) (command -v httpd) &>/dev/null ;;
-        fedora-* | centos-7) (command -v httpd) &>/dev/null ;;
+        fedora-* | rhel-* | centos-* | ol-* | almalinux-* | rocky-*) (command -v httpd) &>/dev/null ;;
     esac
 }
 
@@ -1175,7 +1175,7 @@ apache_reload() {
             sudo -H apachectl configtest
             sudo -H systemctl force-reload apache2
             ;;
-        arch-* | fedora-* | centos-7)
+        arch-* | fedora-* | rhel-* | centos-* | ol-* | almalinux-* | rocky-*)
             sudo -H httpd -t
             sudo -H systemctl force-reload httpd
             ;;
@@ -1231,7 +1231,7 @@ apache_enable_site() {
             rm -f "${APACHE_SITES_ENABLED}/${CONF}"
             ln -s "${APACHE_SITES_AVAILABLE}/${CONF}" "${APACHE_SITES_ENABLED}/${CONF}"
             ;;
-        fedora-* | centos-7)
+        fedora-* | rhel-* | centos-* | ol-* | almalinux-* | rocky-*)
             mkdir -p "${APACHE_SITES_ENABLED}"
             rm -f "${APACHE_SITES_ENABLED}/${CONF}"
             ln -s "${APACHE_SITES_AVAILABLE}/${CONF}" "${APACHE_SITES_ENABLED}/${CONF}"
@@ -1255,7 +1255,7 @@ apache_disable_site() {
         arch-*)
             rm -f "${APACHE_SITES_ENABLED}/${CONF}"
             ;;
-        fedora-* | centos-7)
+        fedora-* | rhel-* | centos-* | ol-* | almalinux-* | rocky-*)
             rm -f "${APACHE_SITES_ENABLED}/${CONF}"
             ;;
     esac
@@ -1289,7 +1289,7 @@ uWSGI_distro_setup() {
             uWSGI_APPS_ENABLED="${uWSGI_SETUP}"
             uWSGI_PACKAGES="uwsgi"
             ;;
-        fedora-* | centos-7)
+        fedora-* | rhel-* | centos-* | ol-* | almalinux-* | rocky-*)
             # systemd --> /usr/lib/systemd/system/uwsgi.service
             # Fedora runs uWSGI in emperor-tyrant mode: in Tyrant mode the
             # Emperor will run the vassal using the UID/GID of the vassal
@@ -1310,7 +1310,7 @@ install_uwsgi() {
     info_msg "installing uwsgi ..."
     pkg_install "$uWSGI_PACKAGES"
     case $DIST_ID-$DIST_VERS in
-        fedora-* | centos-7)
+        fedora-* | rhel-* | centos-* | ol-* | almalinux-* | rocky-*)
             # enable & start should be called once at uWSGI installation time
             systemctl enable uwsgi
             systemctl restart uwsgi
@@ -1340,7 +1340,7 @@ uWSGI_restart() {
                 info_msg "[uWSGI:systemd-template] ${CONF} not installed (no need to restart)"
             fi
             ;;
-        fedora-* | centos-7)
+        fedora-* | rhel-* | centos-* | ol-* | almalinux-* | rocky-*)
             # in emperor mode, just touch the file to restart
             if uWSGI_app_enabled "${CONF}"; then
                 touch "${uWSGI_APPS_ENABLED}/${CONF}"
@@ -1418,7 +1418,7 @@ uWSGI_app_enabled() {
             systemctl -q is-enabled "uwsgi@${CONF%.*}"
             exit_val=$?
             ;;
-        fedora-* | centos-7)
+        fedora-* | rhel-* | centos-* | ol-* | almalinux-* | rocky-*)
             [[ -f "${uWSGI_APPS_ENABLED}/${CONF}" ]]
             exit_val=$?
             ;;
@@ -1453,7 +1453,7 @@ uWSGI_enable_app() {
             systemctl enable "uwsgi@${CONF%.*}"
             info_msg "enabled uWSGI app: ${CONF} (restart required)"
             ;;
-        fedora-* | centos-7)
+        fedora-* | rhel-* | centos-* | ol-* | almalinux-* | rocky-*)
             mkdir -p "${uWSGI_APPS_ENABLED}"
             rm -f "${uWSGI_APPS_ENABLED}/${CONF}"
             ln -s "${uWSGI_APPS_AVAILABLE}/${CONF}" "${uWSGI_APPS_ENABLED}/${CONF}"
@@ -1484,7 +1484,7 @@ uWSGI_disable_app() {
             systemctl disable "uwsgi@${CONF%.*}"
             rm -f "${uWSGI_APPS_ENABLED}/${CONF}"
             ;;
-        fedora-* | centos-7)
+        fedora-* | rhel-* | centos-* | ol-* | almalinux-* | rocky-*)
             # in emperor mode, just remove the app.ini file
             rm -f "${uWSGI_APPS_ENABLED}/${CONF}"
             ;;
@@ -1529,7 +1529,7 @@ pkg_install() {
             # shellcheck disable=SC2068
             dnf install -y $@
             ;;
-        centos)
+        centos | rhel | ol | almalinux | rocky)
             # shellcheck disable=SC2068
             yum install -y $@
             ;;
@@ -1561,7 +1561,7 @@ pkg_remove() {
             # shellcheck disable=SC2068
             dnf remove -y $@
             ;;
-        centos)
+        rhel | centos | ol | almalinux | rocky)
             # shellcheck disable=SC2068
             yum remove -y $@
             ;;
@@ -1585,7 +1585,7 @@ pkg_is_installed() {
             dnf list -q --installed "$1" &>/dev/null
             return $?
             ;;
-        centos)
+        rhel | centos | ol | almalinux | rocky)
             yum list -q --installed "$1" &>/dev/null
             return $?
             ;;
