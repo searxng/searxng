@@ -153,7 +153,7 @@ def main():
             db['names'][name] = db['names'][name][0]
 
     with CurrenciesDB.json_file.open('w', encoding='utf8') as f:
-        json.dump(db, f, indent=4, sort_keys=True, ensure_ascii=False)
+        json.dump(db, f, indent=2, sort_keys=True, ensure_ascii=False)
 
 
 if __name__ == '__main__':

@@ -22,8 +22,8 @@ set_loggers(wikidata, 'wikidata')
 if __name__ == '__main__':
     units = fetch_units()
     with UNITS_DATA_FILE.open('w', encoding="utf8") as f:
-        json.dump(units, f, indent=4, sort_keys=True, ensure_ascii=False)
+        json.dump(units, f, indent=2, sort_keys=True, ensure_ascii=False)
 
     properties = fetch_properties(units)
     with PROPERTIES_DATA_FILE.open('w', encoding="utf8") as f:
-        json.dump(properties, f, indent=4, sort_keys=True, ensure_ascii=False)
+        json.dump(properties, f, indent=2, sort_keys=True, ensure_ascii=False)

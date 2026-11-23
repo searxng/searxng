@@ -129,4 +129,4 @@ if __name__ == '__main__':
         'tags': get_tags(),
     }
     with DATA_FILE.open('w', encoding="utf8") as f:
-        json.dump(result, f, indent=4, sort_keys=True, ensure_ascii=False)
+        json.dump(result, f, indent=2, sort_keys=True, ensure_ascii=False)
