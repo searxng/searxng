@@ -8,37 +8,40 @@ import urllib.parse
 
 from functools import partial
 
-from flask_babel import gettext
+from flask_babel import gettext  # type: ignore
 
 from searx import get_setting
-from searx.data import OSM_KEYS_TAGS, CURRENCIES
+from searx.data import OSM_KEYS_TAGS
 from searx.external_urls import get_external_url
 from searx.wikidata import send_wikidata_query
 from searx.engines.wikidata import sparql_string_escape, get_thumbnail
 from searx.result_types import EngineResults
 
-# about
+if t.TYPE_CHECKING:
+    from searx.extended_types import SXNG_Response
+    from searx.search.processors import OnlineParams
+
 about = {
-    "website": 'https://www.openstreetmap.org/',
-    "wikidata_id": 'Q936',
-    "official_api_documentation": 'http://wiki.openstreetmap.org/wiki/Nominatim',
+    "website": "https://www.openstreetmap.org/",
+    "wikidata_id": "Q936",
+    "official_api_documentation": "http://wiki.openstreetmap.org/wiki/Nominatim",
     "use_official_api": True,
     "require_api_key": False,
-    "results": 'JSON',
+    "results": "JSON",
 }
 
 # engine dependent config
-categories = ['map']
+categories = ["map"]
 paging = False
 language_support = True
 
 # search-url
-base_url = 'https://nominatim.openstreetmap.org/'
-search_string = 'search?{query}&polygon_geojson=1&format=jsonv2&addressdetails=1&extratags=1&dedupe=1'
-result_id_url = 'https://openstreetmap.org/{osm_type}/{osm_id}'
-result_lat_lon_url = 'https://www.openstreetmap.org/?mlat={lat}&mlon={lon}&zoom={zoom}&layers=M'
+base_url = "https://nominatim.openstreetmap.org/"
+search_string = "search?{query}&polygon_geojson=1&format=jsonv2&addressdetails=1&extratags=1&dedupe=1"
+result_id_url = "https://openstreetmap.org/{osm_type}/{osm_id}"
+result_lat_lon_url = "https://www.openstreetmap.org/?mlat={lat}&mlon={lon}&zoom={zoom}&layers=M"
 
-route_url = 'https://graphhopper.com/maps'
+route_url = "https://graphhopper.com/maps"
 
 wikidata_image_sparql = """
 select ?item ?itemLabel ?image ?sign ?symbol ?website ?wikipediaName
@@ -68,73 +71,76 @@ ORDER by ?item
 # 'mapillary': P1947
 # but https://github.com/kartaview/openstreetcam.org/issues/60
 # but https://taginfo.openstreetmap.org/keys/kartaview ...
-def value_to_https_link(value):
-    http = 'http://'
+def value_to_https_link(value: str) -> tuple[str, str]:
+    http = "http://"
     if value.startswith(http):
-        value = 'https://' + value[len(http) :]
+        value = "https://" + value[len(http) :]
     return (value, value)
 
 
-def value_to_website_link(value):
-    value = value.split(';')[0]
+def value_to_website_link(value: str) -> tuple[str, str]:
+    value = value.split(";")[0]
     return (value, value)
 
 
-def value_wikipedia_link(value):
-    value = value.split(':', 1)
-    return ('https://{0}.wikipedia.org/wiki/{1}'.format(*value), '{1} ({0})'.format(*value))
+def value_wikipedia_link(value: str) -> tuple[str, str]:
+    v = value.split(":", 1)
+    return (
+        "https://{0}.wikipedia.org/wiki/{1}".format(*v),
+        "{1} ({0})".format(*v),
+    )
 
 
-def value_with_prefix(prefix, value):
+def value_with_prefix(prefix: str, value: str) -> tuple[str, str]:
     return (prefix + value, value)
 
 
 VALUE_TO_LINK = {
-    'website': value_to_website_link,
-    'contact:website': value_to_website_link,
-    'email': partial(value_with_prefix, 'mailto:'),
-    'contact:email': partial(value_with_prefix, 'mailto:'),
-    'contact:phone': partial(value_with_prefix, 'tel:'),
-    'phone': partial(value_with_prefix, 'tel:'),
-    'fax': partial(value_with_prefix, 'fax:'),
-    'contact:fax': partial(value_with_prefix, 'fax:'),
-    'contact:mastodon': value_to_https_link,
-    'facebook': value_to_https_link,
-    'contact:facebook': value_to_https_link,
-    'contact:foursquare': value_to_https_link,
-    'contact:instagram': value_to_https_link,
-    'contact:linkedin': value_to_https_link,
-    'contact:pinterest': value_to_https_link,
-    'contact:telegram': value_to_https_link,
-    'contact:tripadvisor': value_to_https_link,
-    'contact:twitter': value_to_https_link,
-    'contact:yelp': value_to_https_link,
-    'contact:youtube': value_to_https_link,
-    'contact:webcam': value_to_website_link,
-    'wikipedia': value_wikipedia_link,
-    'wikidata': partial(value_with_prefix, 'https://wikidata.org/wiki/'),
-    'brand:wikidata': partial(value_with_prefix, 'https://wikidata.org/wiki/'),
+    "website": value_to_website_link,
+    "contact:website": value_to_website_link,
+    "email": partial(value_with_prefix, "mailto:"),
+    "contact:email": partial(value_with_prefix, "mailto:"),
+    "contact:phone": partial(value_with_prefix, "tel:"),
+    "phone": partial(value_with_prefix, "tel:"),
+    "fax": partial(value_with_prefix, "fax:"),
+    "contact:fax": partial(value_with_prefix, "fax:"),
+    "contact:mastodon": value_to_https_link,
+    "facebook": value_to_https_link,
+    "contact:facebook": value_to_https_link,
+    "contact:foursquare": value_to_https_link,
+    "contact:instagram": value_to_https_link,
+    "contact:linkedin": value_to_https_link,
+    "contact:pinterest": value_to_https_link,
+    "contact:telegram": value_to_https_link,
+    "contact:tripadvisor": value_to_https_link,
+    "contact:twitter": value_to_https_link,
+    "contact:yelp": value_to_https_link,
+    "contact:youtube": value_to_https_link,
+    "contact:webcam": value_to_website_link,
+    "wikipedia": value_wikipedia_link,
+    "wikidata": partial(value_with_prefix, "https://wikidata.org/wiki/"),
+    "brand:wikidata": partial(value_with_prefix, "https://wikidata.org/wiki/"),
 }
-KEY_ORDER = [
-    'cuisine',
-    'organic',
-    'delivery',
-    'delivery:covid19',
-    'opening_hours',
-    'opening_hours:covid19',
-    'fee',
-    'payment:*',
-    'currency:*',
-    'outdoor_seating',
-    'bench',
-    'wheelchair',
-    'level',
-    'building:levels',
-    'bin',
-    'public_transport',
-    'internet_access:ssid',
+KEY_ORDER: list[str] = [
+    "cuisine",
+    "organic",
+    "delivery",
+    "delivery:covid19",
+    "opening_hours",
+    "opening_hours:covid19",
+    "fee",
+    "payment:*",
+    "currency:*",
+    "outdoor_seating",
+    "bench",
+    "wheelchair",
+    "level",
+    "building:levels",
+    "bin",
+    "public_transport",
+    "internet_access:ssid",
 ]
-KEY_RANKS = {k: i for i, k in enumerate(KEY_ORDER)}
+KEY_RANKS: dict[str, int] = {k: i for i, k in enumerate(KEY_ORDER)}
 
 
 def setup(_: dict[str, t.Any]) -> bool:
@@ -144,25 +150,26 @@ def setup(_: dict[str, t.Any]) -> bool:
     return bool(contact)
 
 
-def request(query, params):
-    params['url'] = base_url + search_string.format(query=urllib.parse.urlencode({'q': query}))
-    return params
+def request(query: str, params: "OnlineParams") -> None:
+    params["url"] = base_url + search_string.format(
+        query=urllib.parse.urlencode({'q': query}),
+    )
 
 
-def response(resp) -> EngineResults:
-    results = EngineResults()
+def response(resp: "SXNG_Response") -> EngineResults:
+    res = EngineResults()
 
-    nominatim_json = resp.json()
-    user_language = resp.search_params['language']
+    nominatim_json: list[dict[str, t.Any]] = resp.json()  # pyright: ignore[reportAny]
+    user_language = resp.search_params["searxng_locale"]
 
-    l = re.findall(r"from\s+(.*)\s+to\s+(.+)", resp.search_params["query"])
+    l: list[str] = re.findall(r"from\s+(.*)\s+to\s+(.+)", resp.search_params["query"])
     if not l:
         l = re.findall(r"\s*(.*)\s+to\s+(.+)", resp.search_params["query"])
     if l:
         point1, point2 = [urllib.parse.quote_plus(p) for p in l[0]]
 
-        results.add(
-            results.types.Answer(
+        res.add(
+            res.types.Answer(
                 answer=gettext('Show route in map ..'),
                 url=f"{route_url}/?point={point1}&point={point2}",
             )
@@ -184,42 +191,49 @@ def response(resp) -> EngineResults:
         if not title:
             continue
 
-        url, osm, geojson = get_url_osm_geojson(result)
+        url, _osm, geojson = get_url_osm_geojson(result)
         thumbnail = get_thumbnail(get_img_src(result))
         links, link_keys = get_links(result, user_language)
         data = get_data(result, user_language, link_keys)
 
-        results.append(
-            {
-                'template': 'map.html',
-                'title': title,
-                'address': address,
-                'address_label': get_key_label('addr', user_language),
-                'url': url,
-                'osm': osm,
-                'geojson': geojson,
-                'thumbnail': thumbnail,
-                'links': links,
-                'data': data,
-                'type': get_tag_label(result.get('category'), result.get('type', ''), user_language),
-                'type_icon': result.get('icon'),
-                'content': '',
-                'longitude': result['lon'],
-                'latitude': result['lat'],
-                'boundingbox': result['boundingbox'],
-            }
+        _address_label: str | None = OSM_KEYS_TAGS.get_key_label("addr", user_language)
+        # _type: str | None = OSM_KEYS_TAGS.get_tag_label(
+        #     result.get("category"),
+        #     result.get("type", ""),
+        #     user_language
+        # )
+        res.add(
+            res.types.LegacyResult(
+                template="map.html",
+                title=title,
+                address=address,
+                address_label=_address_label,
+                url=url,
+                geojson=geojson,
+                thumbnail=thumbnail,
+                links=links,
+                data=data,
+                content="",
+                longitude=result["lon"],
+                latitude=result["lat"],
+                boundingbox=result["boundingbox"],
+                # not used in map.html
+                # osm=_osm,
+                # type=_type,
+                # type_icon=result.get("icon"),
+            )
         )
 
-    return results
+    return res
 
 
-def get_wikipedia_image(raw_value):
+def get_wikipedia_image(raw_value: str | None) -> str | None:
     if not raw_value:
         return None
     return get_external_url('wikimedia_image', raw_value)
 
 
-def fetch_wikidata(nominatim_json, user_language):
+def fetch_wikidata(nominatim_json: list[dict[str, t.Any]], user_language: str):
     """Update nominatim_json using the result of an unique to wikidata
 
     For result in nominatim_json:
@@ -228,141 +242,139 @@ def fetch_wikidata(nominatim_json, user_language):
             Set result['extratags']['wikipedia'] if not defined
             Set result['extratags']['contact:website'] if not defined
     """
-    wikidata_ids = []
-    wd_to_results = {}
+    wikidata_ids: list[str] = []
+    wd_to_results: dict[str, list[dict[str, t.Any]]] = {}
+    wd_id: str
     for result in nominatim_json:
-        extratags = result['extratags']
+        extratags = result["extratags"]
         # ignore brand:wikidata
-        wd_id = extratags.get('wikidata', extratags.get('wikidata link'))
+        wd_id = extratags.get("wikidata", extratags.get("wikidata link")) or ""
         if wd_id and wd_id not in wikidata_ids:
-            wikidata_ids.append('wd:' + wd_id)
+            wikidata_ids.append("wd:" + wd_id)
             wd_to_results.setdefault(wd_id, []).append(result)
 
     if wikidata_ids:
-        user_language = 'en' if user_language == 'all' else user_language.split('-')[0]
+        user_language = "en" if user_language == "all" else user_language.split("-")[0]
         wikidata_ids_str = " ".join(wikidata_ids)
-        query = wikidata_image_sparql.replace('%WIKIDATA_IDS%', sparql_string_escape(wikidata_ids_str)).replace(
-            '%LANGUAGE%', sparql_string_escape(user_language)
+        query = wikidata_image_sparql.replace("%WIKIDATA_IDS%", sparql_string_escape(wikidata_ids_str)).replace(
+            "%LANGUAGE%", sparql_string_escape(user_language)
         )
         wikidata_json = send_wikidata_query(query)
-        for wd_result in wikidata_json.get('results', {}).get('bindings', {}):
-            wd_id = wd_result['item']['value'].replace('http://www.wikidata.org/entity/', '')
+        for wd_result in wikidata_json.get("results", {}).get("bindings", {}):
+            wd_id = wd_result["item"]["value"].replace("http://www.wikidata.org/entity/", "")
             for result in wd_to_results.get(wd_id, []):
-                result['wikidata'] = {
-                    'itemLabel': wd_result['itemLabel']['value'],
-                    'image': get_wikipedia_image(wd_result.get('image', {}).get('value')),
-                    'image_sign': get_wikipedia_image(wd_result.get('sign', {}).get('value')),
-                    'image_symbol': get_wikipedia_image(wd_result.get('symbol', {}).get('value')),
+                result["wikidata"] = {
+                    "itemLabel": wd_result["itemLabel"]["value"],
+                    "image": get_wikipedia_image(wd_result.get("image", {}).get("value")),
+                    "image_sign": get_wikipedia_image(wd_result.get("sign", {}).get("value")),
+                    "image_symbol": get_wikipedia_image(wd_result.get("symbol", {}).get("value")),
                 }
                 # overwrite wikipedia link
-                wikipedia_name = wd_result.get('wikipediaName', {}).get('value')
+                wikipedia_name = wd_result.get("wikipediaName", {}).get("value")
                 if wikipedia_name:
-                    result['extratags']['wikipedia'] = user_language + ':' + wikipedia_name
+                    result["extratags"]["wikipedia"] = user_language + ":" + wikipedia_name
                 # get website if not already defined
-                website = wd_result.get('website', {}).get('value')
+                website = wd_result.get("website", {}).get("value")
                 if (
                     website
-                    and not result['extratags'].get('contact:website')
-                    and not result['extratags'].get('website')
+                    and not result["extratags"].get("contact:website")
+                    and not result["extratags"].get("website")
                 ):
-                    result['extratags']['contact:website'] = website
+                    result["extratags"]["contact:website"] = website
 
 
-def get_title_address(result):
-    """Return title and address
-
-    title may be None
-    """
-    address_raw = result.get('address')
-    address_name = None
-    address = {}
-
+def get_title_address(result: dict[str, t.Any]) -> tuple[str | None, dict[str, str]]:
+    """Return title and address title may be None"""
+    address_raw: dict[str, t.Any] = result.get("address") or {}
+    address_name: str | None = None
+    address: dict[str, t.Any] = {}
+    title: str
     # get name
     if (
-        result['category'] == 'amenity'
-        or result['category'] == 'shop'
-        or result['category'] == 'tourism'
-        or result['category'] == 'leisure'
+        result["category"] == "amenity"
+        or result["category"] == "shop"
+        or result["category"] == "tourism"
+        or result["category"] == "leisure"
     ):
-        if address_raw.get('address29'):
+        if address_raw.get("address29"):
             # https://github.com/osm-search/Nominatim/issues/1662
-            address_name = address_raw.get('address29')
+            address_name = address_raw.get("address29")
         else:
-            address_name = address_raw.get(result['category'])
-    elif result['type'] in address_raw:
-        address_name = address_raw.get(result['type'])
+            address_name = address_raw.get(result["category"])
+    elif result["type"] in address_raw:
+        address_name = address_raw.get(result["type"])
 
     # add rest of adressdata, if something is already found
     if address_name:
         title = address_name
         address.update(
             {
-                'name': address_name,
-                'house_number': address_raw.get('house_number'),
-                'road': address_raw.get('road'),
-                'locality': address_raw.get(
-                    'city',
-                    address_raw.get('town', address_raw.get('village')),  # noqa
-                ),  # noqa
-                'postcode': address_raw.get('postcode'),
-                'country': address_raw.get('country'),
-                'country_code': address_raw.get('country_code'),
+                "name": address_name,
+                "house_number": address_raw.get("house_number"),
+                "road": address_raw.get("road"),
+                "locality": address_raw.get(
+                    "city",
+                    address_raw.get("town", address_raw.get("village")),
+                ),
+                "postcode": address_raw.get("postcode"),
+                "country": address_raw.get("country"),
+                "country_code": address_raw.get("country_code"),
             }
         )
     else:
-        title = result.get('display_name')
+        title = result.get("display_name")  # pyright: ignore[reportAssignmentType]
 
     return title, address
 
 
-def get_url_osm_geojson(result):
+def get_url_osm_geojson(result: dict[str, t.Any]) -> tuple[str, dict[str, t.Any], None | dict[str, t.Any]]:
     """Get url, osm and geojson"""
-    osm_type = result.get('osm_type', result.get('type'))
-    if 'osm_id' not in result:
+    osm_type = result.get("osm_type", result.get("type"))
+    if "osm_id" not in result:
         # see https://github.com/osm-search/Nominatim/issues/1521
         # query example: "EC1M 5RF London"
-        url = result_lat_lon_url.format(lat=result['lat'], lon=result['lon'], zoom=12)
+        url = result_lat_lon_url.format(lat=result["lat"], lon=result["lon"], zoom=12)
         osm = {}
     else:
-        url = result_id_url.format(osm_type=osm_type, osm_id=result['osm_id'])
-        osm = {'type': osm_type, 'id': result['osm_id']}
+        url = result_id_url.format(osm_type=osm_type, osm_id=result["osm_id"])
+        osm = {"type": osm_type, "id": result["osm_id"]}
 
-    geojson = result.get('geojson')
+    geojson: dict[str, t.Any] | None = result.get("geojson")
     # if no geojson is found and osm_type is a node, add geojson Point
-    if not geojson and osm_type == 'node':
-        geojson = {'type': 'Point', 'coordinates': [result['lon'], result['lat']]}
+    if not geojson and osm_type == "node":
+        geojson = {"type": "Point", "coordinates": [result["lon"], result["lat"]]}
 
     return url, osm, geojson
 
 
-def get_img_src(result):
+def get_img_src(result: dict[str, dict[str, str]]) -> str | None:
     """Get image URL from either wikidata or r['extratags']"""
     # wikidata
-    img_src = None
-    if 'wikidata' in result:
-        img_src = result['wikidata']['image']
+    img_src: str | None = None
+    if "wikidata" in result:
+        img_src = result["wikidata"]["image"]
         if not img_src:
-            img_src = result['wikidata']['image_symbol']
+            img_src = result["wikidata"]["image_symbol"]
         if not img_src:
-            img_src = result['wikidata']['image_sign']
+            img_src = result["wikidata"]["image_sign"]
 
     # img_src
-    extratags = result['extratags']
-    if not img_src and extratags.get('image'):
-        img_src = extratags['image']
-        del extratags['image']
-    if not img_src and extratags.get('wikimedia_commons'):
-        img_src = get_external_url('wikimedia_image', extratags['wikimedia_commons'])
-        del extratags['wikimedia_commons']
+    extratags = result["extratags"]
+    if not img_src and extratags.get("image"):
+        img_src = extratags["image"]
+        del extratags["image"]
+    if not img_src and extratags.get("wikimedia_commons"):
+        img_src = get_external_url("wikimedia_image", extratags["wikimedia_commons"])
+        del extratags["wikimedia_commons"]
 
     return img_src
 
 
-def get_links(result, user_language):
+def get_links(result: dict[str, dict[str, str]], user_language: str) -> tuple[list[dict[str, str]], set[str]]:
     """Return links from result['extratags']"""
-    links = []
-    link_keys = set()
-    extratags = result['extratags']
+    links: list[dict[str, str]] = []
+    link_keys: set[str] = set()
+    extratags = result["extratags"]
     if not extratags:
         # minor optimization : no need to check VALUE_TO_LINK if extratags is empty
         return links, link_keys
@@ -371,46 +383,46 @@ def get_links(result, user_language):
         if not raw_value:
             continue
         url, url_label = mapping_function(raw_value)
-        if url.startswith('https://wikidata.org'):
-            url_label = result.get('wikidata', {}).get('itemLabel') or url_label
+        if url.startswith("https://wikidata.org"):
+            url_label = result.get("wikidata", {}).get("itemLabel") or url_label
         links.append(
             {
-                'label': get_key_label(k, user_language),
-                'url': url,
-                'url_label': url_label,
+                "label": OSM_KEYS_TAGS.get_key_label(k, user_language) or "",
+                "url": url,
+                "url_label": url_label,
             }
         )
         link_keys.add(k)
     return links, link_keys
 
 
-def get_data(result, user_language, ignore_keys):
+def get_data(result: dict[str, dict[str, str]], user_language: str, ignore_keys: set[str]) -> list[dict[str, str]]:
     """Return key, value of result['extratags']
 
     Must be call after get_links
 
     Note: the values are not translated
     """
-    data = []
-    for k, v in result['extratags'].items():
+    data: list[dict[str, str]] = []
+    for k, v in result["extratags"].items():
         if k in ignore_keys:
             continue
         if get_key_rank(k) is None:
             continue
-        k_label = get_key_label(k, user_language)
+        k_label = OSM_KEYS_TAGS.get_key_label(k, user_language)
         if k_label:
             data.append(
                 {
-                    'label': k_label,
-                    'key': k,
-                    'value': v,
+                    "label": k_label,
+                    "key": k,
+                    "value": v,
                 }
             )
-    data.sort(key=lambda entry: (get_key_rank(entry['key']), entry['label']))
+    data.sort(key=lambda entry: (get_key_rank(entry["key"]), entry["label"]))
     return data
 
 
-def get_key_rank(k):
+def get_key_rank(k: str):
     """Get OSM key rank
 
     The rank defines in which order the key are displayed in the HTML result
@@ -418,53 +430,5 @@ def get_key_rank(k):
     key_rank = KEY_RANKS.get(k)
     if key_rank is None:
         # "payment:*" in KEY_ORDER matches "payment:cash", "payment:debit card", etc...
-        key_rank = KEY_RANKS.get(k.split(':')[0] + ':*')
+        key_rank = KEY_RANKS.get(k.split(":")[0] + ":*")
     return key_rank
-
-
-def get_label(labels, lang) -> str | None:
-    """Get label from labels in OSM_KEYS_TAGS
-
-    in OSM_KEYS_TAGS, labels have key == '*'
-    """
-    tag_label = labels.get(lang.lower())
-    if tag_label is None:
-        # example: if 'zh-hk' is not found, check 'zh'
-        tag_label = labels.get(lang.split('-')[0])
-    if tag_label is None and lang != 'en':
-        # example: if 'zh' is not found, check 'en'
-        tag_label = labels.get('en')
-    if tag_label is None and len(labels.values()) > 0:
-        # example: if still not found, use the first entry
-        tag_label = labels.values()[0]
-    return tag_label
-
-
-def get_tag_label(tag_category, tag_name, lang):
-    """Get tag label from OSM_KEYS_TAGS"""
-    tag_name = '' if tag_name is None else tag_name
-    tag_labels = OSM_KEYS_TAGS.get_tag_label(tag_category, tag_name)
-    if tag_labels is None:
-        return None
-    return get_label(tag_labels, lang)
-
-
-def get_key_label(key_name, lang):
-    """Get key label from OSM_KEYS_TAGS"""
-    if key_name.startswith('currency:'):
-        # currency:EUR --> get the name from the CURRENCIES variable
-        # see https://wiki.openstreetmap.org/wiki/Key%3Acurrency
-        # and for example https://taginfo.openstreetmap.org/keys/currency:EUR#values
-        # but there is also currency=EUR (currently not handled)
-        # https://taginfo.openstreetmap.org/keys/currency#values
-        currency = key_name.split(':')
-        if len(currency) > 1:
-            o = CURRENCIES.iso4217_to_name(currency[1], lang)
-            if o:
-                return get_label(o, lang).lower()
-            return currency[1]
-
-    labels = OSM_KEYS_TAGS.get_key_label(key_name)
-    if labels is None:
-        return None
-    return get_label(labels, lang)

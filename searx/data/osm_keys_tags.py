@@ -42,17 +42,58 @@ class OSMKeysTagsDB:
         rows: list["CacheRowType"] = [(k, v, None) for k, v in data_dict["keys"].items()]
         self.cache.setmany(rows, ctx=self.ctx_keys)
 
-        rows: list["CacheRowType"] = [(k, v, None) for k, v in data_dict["tags"].items()]
+        rows = [(k, v, None) for k, v in data_dict["tags"].items()]
         self.cache.setmany(rows, ctx=self.ctx_tags)
 
-    def get_key_label(self, key: str) -> dict[str, str] | None:
-        """Returns a dict of language code to translation text."""
+    def get_key_label(self, key_name: str, lang: str) -> str | None:
+        """Returns translated label of OSM key ``{category}={tag_name}``."""
         self.init()
 
-        return self.cache.get(key=key, default=None, ctx=self.ctx_keys)
+        if key_name.startswith("currency:"):
+            # currency:EUR --> get the name from the CURRENCIES variable
+            # see https://wiki.openstreetmap.org/wiki/Key%3Acurrency
+            # and for example https://taginfo.openstreetmap.org/keys/currency:EUR#values
+            # but there is also currency=EUR (currently not handled)
+            # https://taginfo.openstreetmap.org/keys/currency#values
+            currency = key_name.split(':')
+            if len(currency) > 1:
+                # pylint: disable=import-outside-toplevel, cyclic-import
+                from . import CURRENCIES
 
-    def get_tag_label(self, category: str, label: str) -> dict[str, str] | None:
-        """Returns a dict of language code to translation text."""
+                if lang_iso4217 := CURRENCIES.iso4217_to_name(currency[1], lang):
+                    return lang_iso4217
+                return currency[1]
+
+        labels: dict[str, str] = self.cache.get(  # type: ignore
+            key=key_name,
+            default={},
+            ctx=self.ctx_keys,
+        )
+        return self.l10n(labels, lang)
+
+    def get_tag_label(self, category: str, tag_name: str, lang: str) -> str | None:
+        """Returns translated label of OSM tag ``{category}={tag_name}``."""
         self.init()
 
-        return self.cache.get(key=f"{category}={label}", default=None, ctx=self.ctx_tags)
+        labels: dict[str, str] = self.cache.get(  # type: ignore
+            key=f"{category}={tag_name}",
+            default={},
+            ctx=self.ctx_tags,
+        )
+        return self.l10n(labels, lang)
+
+    @staticmethod
+    def l10n(labels: dict[str, str], lang: str) -> str | None:
+        """Returns the string for the OSM label in the specified language."""
+
+        # breakpoint()
+        if label := labels.get(lang.lower()):
+            return label
+        # example: if 'zh-hk' is not found, check 'zh'
+        if label := labels.get(lang.split("-")[0]):
+            return label
+        # example: if 'zh' is not found, check 'en'
+        if label := labels.get("en"):
+            return label
+        # example: if still not found, use the first entry
+        return (list(labels.values()) or [None])[0]
