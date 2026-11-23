@@ -174,7 +174,7 @@ class OnlineProcessor(EngineProcessor):
         }
         for key in ("curl_options", "impersonate", "default_headers"):
             if params.get(key) is not None:
-                request_args[key] = params[key]
+                request_args[key] = params.get(key)
 
         verify = params.get("verify")
         if verify is not None:
