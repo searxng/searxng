@@ -42,6 +42,7 @@ Output file: :origin:`searx/data/osm_keys_tags` (:origin:`CI Update data ...
 
 """
 
+import time
 from itertools import groupby
 import json
 import collections
@@ -95,7 +96,11 @@ PRESET_KEYS = {
 
 
 def get_keys():
-    response = send_wikidata_query(SPARQL_KEYS_REQUEST)
+    start = time.perf_counter()
+    print("sending Wikidata query: SPARQL_KEYS_REQUEST .. can take up to 5min!")
+    response = send_wikidata_query(SPARQL_KEYS_REQUEST, timeout=300)
+    print(f"  duration: {time.perf_counter() - start:.2f} sec")
+
     results = collections.OrderedDict(PRESET_KEYS)
     for key, entries in groupby(response["results"]["bindings"], key=lambda b: b["key"]["value"]):
         results[key] = {
@@ -104,8 +109,11 @@ def get_keys():
     return results
 
 
-def get_tags():
-    response = send_wikidata_query(SPARQL_TAGS_REQUEST)
+def get_tags() -> dict[str, str]:
+    start = time.perf_counter()
+    print("sending Wikidata query: SPARQL_TAGS_REQUEST .. can take up to 5min!")
+    response = send_wikidata_query(SPARQL_TAGS_REQUEST, timeout=300)
+    print(f"  duration: {time.perf_counter() - start:.2f} sec")
     results = collections.OrderedDict()
     for key, entries in groupby(response["results"]["bindings"], key=lambda b: b["tag"]["value"]):
         results[key] = {
