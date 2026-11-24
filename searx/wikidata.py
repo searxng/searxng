@@ -10,8 +10,8 @@ from searx.utils import searxng_useragent
 
 logger = logger.getChild("wikidata")
 
-# SPARQL
-SPARQL_ENDPOINT_URL = "https://query.wikidata.org/sparql"
+# SPARQL V2: https://www.wikidata.org/wiki/Wikidata:SPARQL_query_service/WDQS_backend_update
+SPARQL_ENDPOINT_URL = "https://query-next.wikidata.org/sparql"
 SPARQL_EXPLAIN_URL = "https://query.wikidata.org/bigdata/namespace/wdq/sparql?explain"
 
 
@@ -23,7 +23,7 @@ def send_wikidata_query(
 ) -> dict[str, t.Any]:
     """Send SPARQL query to Wikidata and return ``dict`` from the JSON response.
 
-    SPARQL statements can be tested at: https://query.wikidata.org/
+    SPARQL statements can be tested at: https://query-next.wikidata.org/
 
     The runtimes of queries can be very long, the default timeout is 60 seconds.
     The runtimes are not deterministic, in addition Wikidata cached both the

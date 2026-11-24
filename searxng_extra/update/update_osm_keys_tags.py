@@ -9,7 +9,7 @@ map.atownsend.org.uk_ might be useful to normalize OSM tags).
 Output file: :origin:`searx/data/osm_keys_tags` (:origin:`CI Update data ...
 <.github/workflows/data-update.yml>`).
 
-.. _Wikidata Query Service: https://query.wikidata.org/
+.. _Wikidata Query Service: https://query-next.wikidata.org/
 .. _OSM tags API: https://taginfo.openstreetmap.org/taginfo/apidoc
 .. _map.atownsend.org.uk: https://map.atownsend.org.uk/maps/map/changelog.html
 
