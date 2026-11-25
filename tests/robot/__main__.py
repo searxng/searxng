@@ -9,6 +9,7 @@ import traceback
 import pathlib
 import shutil
 
+from selenium.webdriver.firefox.options import Options as FirefoxOptions
 from splinter import Browser
 
 import tests as searx_tests
@@ -48,9 +49,21 @@ def run_robot_tests(tests):
     print(f'{shutil.which("geckodriver")}')
     print(f'{shutil.which("firefox")}')
 
+    js_errors = []
     for test in tests:
-        with Browser('firefox', headless=True, profile_preferences={'intl.accept_languages': 'en'}) as browser:
+        options = FirefoxOptions()
+        options.enable_bidi = True
+        with Browser(
+            'firefox', headless=True, options=options, profile_preferences={'intl.accept_languages': 'en'}
+        ) as browser:
+            errors = []
+            browser.driver.script.add_javascript_error_handler(errors.append)
             test(browser)
+            for err in errors:
+                js_errors.append(f'{test.__name__}: {err.text}')
+
+    if js_errors:
+        raise AssertionError('JavaScript errors in the browser console:\n  ' + '\n  '.join(js_errors))
 
 
 def main():
