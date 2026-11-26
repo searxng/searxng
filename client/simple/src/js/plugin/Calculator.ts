@@ -85,7 +85,10 @@ export default class Calculator extends Plugin {
         return;
       }
 
-      return `${node.toString()} = ${value}`;
+      // IEEE 754's binary64 format loses precision above 15 significant digits.
+      const roundedValue = Number(value.toPrecision(15));
+
+      return `${node.toString()} = ${roundedValue}`;
     } catch {
       // not a compatible math expression
       return;
