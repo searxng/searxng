@@ -9,6 +9,7 @@ Output file: :origin:`searx/data/currencies.json` (:origin:`CI Update data ...
 
 # pylint: disable=invalid-name
 
+import time
 import re
 import unicodedata
 import json
@@ -90,10 +91,13 @@ def add_currency_label(db, label, iso4217, language):
     labels[language] = label
 
 
-def wikidata_request_result_iterator(request):
-    result = send_wikidata_query(request.replace('%LANGUAGES_SPARQL%', LANGUAGES_SPARQL), timeout=20)
-    if result is not None:
-        yield from result['results']['bindings']
+def wikidata_request_result_iterator(query: str):
+    start = time.perf_counter()
+    query = query.replace('%LANGUAGES_SPARQL%', LANGUAGES_SPARQL)
+    print(f"{query}\nsending Wikidata query .. can take up to 5min!")
+    result = send_wikidata_query(query, timeout=300)
+    print(f"  duration: {time.perf_counter() - start:.2f} sec")
+    yield from result['results']['bindings']
 
 
 def fetch_db():
@@ -149,7 +153,7 @@ def main():
             db['names'][name] = db['names'][name][0]
 
     with CurrenciesDB.json_file.open('w', encoding='utf8') as f:
-        json.dump(db, f, indent=4, sort_keys=True, ensure_ascii=False)
+        json.dump(db, f, indent=2, sort_keys=True, ensure_ascii=False)
 
 
 if __name__ == '__main__':

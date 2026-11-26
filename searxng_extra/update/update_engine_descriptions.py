@@ -31,7 +31,7 @@ DATA_FILE = data_dir / "engine_descriptions.json"
 set_loggers(wikidata, "wikidata")
 locales_initialize()
 
-# you can run the query in https://query.wikidata.org
+# you can run the query in https://query-next.wikidata.org
 # replace %IDS% by Wikidata entities separated by spaces with the prefix wd:
 # for example wd:Q182496 wd:Q1540899
 # replace %LANGUAGES_SPARQL% by languages

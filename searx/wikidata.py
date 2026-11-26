@@ -10,31 +10,50 @@ from searx.utils import searxng_useragent
 
 logger = logger.getChild("wikidata")
 
-# SPARQL
-SPARQL_ENDPOINT_URL = "https://query.wikidata.org/sparql"
+# SPARQL V2: https://www.wikidata.org/wiki/Wikidata:SPARQL_query_service/WDQS_backend_update
+SPARQL_ENDPOINT_URL = "https://query-next.wikidata.org/sparql"
 SPARQL_EXPLAIN_URL = "https://query.wikidata.org/bigdata/namespace/wdq/sparql?explain"
 
 
-def send_wikidata_query(query: str, method: str = "GET", **kwargs: dict[str, t.Any]) -> dict[str, t.Any]:
+def send_wikidata_query(
+    query: str,
+    method: str = "GET",
+    timeout: float = 60,
+    **kwargs: dict[str, t.Any],
+) -> dict[str, t.Any]:
+    """Send SPARQL query to Wikidata and return ``dict`` from the JSON response.
+
+    SPARQL statements can be tested at: https://query-next.wikidata.org/
+
+    The runtimes of queries can be very long, the default timeout is 60 seconds.
+    The runtimes are not deterministic, in addition Wikidata cached both the
+    queries incoming via POST and those via GET.
+
+    Sometimes it can happen that a query takes too long or for unknown reasons
+    Wikidata drops the connection. In these cases, it often helps to simply send
+    the query again a second time.
+    """
 
     headers = get_wikidata_headers()
     logger.debug("send_wikidata_query (%s): %s", method, headers)
 
     if method == "GET":
-        # query will be cached by wikidata
         http_response = get(
             SPARQL_ENDPOINT_URL + "?" + urlencode({"query": query}),
             headers=headers,
             impersonate="none",
+            timeout=timeout,
             **kwargs,
         )
     else:
-        # query won't be cached by wikidata
         http_response = post(
             SPARQL_ENDPOINT_URL,
             data={"query": query},
             headers=headers,
             impersonate="none",
+            timeout=timeout,
+            # kwargs are lost in commit 38929d14
+            **kwargs,
         )
 
     http_response.raise_for_status()

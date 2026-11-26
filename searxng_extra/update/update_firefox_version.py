@@ -78,4 +78,4 @@ def fetch_firefox_last_versions():
 if __name__ == '__main__':
     useragents["versions"] = fetch_firefox_last_versions()
     with DATA_FILE.open('w', encoding='utf-8') as f:
-        json.dump(useragents, f, indent=4, sort_keys=True, ensure_ascii=False)
+        json.dump(useragents, f, indent=2, sort_keys=True, ensure_ascii=False)

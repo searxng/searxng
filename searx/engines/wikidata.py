@@ -41,7 +41,7 @@ if t.TYPE_CHECKING:
 about = {
     "website": 'https://wikidata.org/',
     "wikidata_id": 'Q2013',
-    "official_api_documentation": 'https://query.wikidata.org/',
+    "official_api_documentation": 'https://query-next.wikidata.org/',
     "use_official_api": True,
     "require_api_key": False,
     "results": 'JSON',
