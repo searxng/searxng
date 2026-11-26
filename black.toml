@@ -1,0 +1,13 @@
+[tool.black]
+# project specifics
+target-version = ["py311"]
+include = 'searxng.msg|\.pyi?$'
+extend-exclude = '''
+/(
+    searx/static
+  | searx/languages\.py
+)/
+'''
+# formatting specifics
+line-length = 120
+skip-string-normalization = true
