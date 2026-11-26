@@ -26,6 +26,7 @@ jobs:
       fail-fast: false
       matrix:
         fetch:
+          - update_osm_keys_tags.py
           - update_ahmia_blacklist.py
           - update_currencies.py
           - update_external_bangs.py

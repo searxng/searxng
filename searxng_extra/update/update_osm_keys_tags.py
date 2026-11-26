@@ -42,13 +42,14 @@ Output file: :origin:`searx/data/osm_keys_tags` (:origin:`CI Update data ...
 
 """
 
+import time
+from itertools import groupby
 import json
 import collections
 
 from searx.network import set_timeout_for_thread
 from searx.engines import wikidata, set_loggers
 from searx.sxng_locales import sxng_locales
-from searx.engines.openstreetmap import get_key_rank, VALUE_TO_LINK
 from searx.data import data_dir
 from searx.wikidata import send_wikidata_query
 
@@ -58,157 +59,74 @@ set_loggers(wikidata, 'wikidata')
 
 
 SPARQL_TAGS_REQUEST = """
-SELECT ?tag ?item ?itemLabel WHERE {
+SELECT DISTINCT ?tag ?item ?itemLabel ?language
+WHERE {
   ?item wdt:P1282 ?tag .
   ?item rdfs:label ?itemLabel .
-  FILTER(STRSTARTS(?tag, 'Tag'))
+
+  BIND(LANG(?itemLabel) AS ?language)
 }
-GROUP BY ?tag ?item ?itemLabel
-ORDER BY ?tag ?item ?itemLabel
+ORDER BY ?tag ?language
 """
 
 SPARQL_KEYS_REQUEST = """
-SELECT ?key ?item ?itemLabel WHERE {
-  ?item wdt:P1282 ?key .
+SELECT DISTINCT ?key ?item ?itemLabel ?language
+WHERE {
+  ?item wdt:P13786 ?key .
   ?item rdfs:label ?itemLabel .
-  FILTER(STRSTARTS(?key, 'Key'))
+
+  BIND(LANG(?itemLabel) AS ?language)
 }
-GROUP BY ?key ?item ?itemLabel
-ORDER BY ?key ?item ?itemLabel
+ORDER BY ?key LANG(?itemLabel)
 """
 
 LANGUAGES = [l[0].lower() for l in sxng_locales]
+"""Language codes supported by SearXNG."""
 
 PRESET_KEYS = {
-    ('wikidata',): {'en': 'Wikidata'},
-    ('wikipedia',): {'en': 'Wikipedia'},
-    ('email',): {'en': 'Email'},
-    ('facebook',): {'en': 'Facebook'},
-    ('fax',): {'en': 'Fax'},
-    ('internet_access', 'ssid'): {'en': 'Wi-Fi'},
+    "wikidata": {"en": "Wikidata"},
+    "wikipedia": {"en": "Wikipedia"},
+    "email": {"en": "Email"},
+    "facebook": {"en": "Facebook"},
+    "fax": {"en": "Fax"},
+    "ssid": {"en": "Wi-Fi"},
+    "internet_access": {"en": "Wi-Fi"},
 }
-
-INCLUDED_KEYS = {('addr',)}
-
-
-def get_preset_keys():
-    results = collections.OrderedDict()
-    for keys, value in PRESET_KEYS.items():
-        r = results
-        for k in keys:
-            r = r.setdefault(k, {})
-        r.setdefault('*', value)
-    return results
+"""Additional keys that are missing in Wikidata."""
 
 
 def get_keys():
-    results = get_preset_keys()
-    response = send_wikidata_query(SPARQL_KEYS_REQUEST)
+    start = time.perf_counter()
+    print("sending Wikidata query: SPARQL_KEYS_REQUEST .. can take up to 5min!")
+    response = send_wikidata_query(SPARQL_KEYS_REQUEST, timeout=300)
+    print(f"  duration: {time.perf_counter() - start:.2f} sec")
 
-    for key in response['results']['bindings']:
-        keys = key['key']['value'].split(':')[1:]
-        if keys[0] == 'currency' and len(keys) > 1:
-            # special case in openstreetmap.py
-            continue
-        if keys[0] == 'contact' and len(keys) > 1:
-            # label for the key "contact.email" is "Email"
-            # whatever the language
-            r = results.setdefault('contact', {})
-            r[keys[1]] = {'*': {'en': keys[1]}}
-            continue
-        if tuple(keys) in PRESET_KEYS:
-            # skip presets (already set above)
-            continue
-        if (
-            get_key_rank(':'.join(keys)) is None
-            and ':'.join(keys) not in VALUE_TO_LINK
-            and tuple(keys) not in INCLUDED_KEYS
-        ):
-            # keep only keys that will be displayed by openstreetmap.py
-            continue
-        label = key['itemLabel']['value'].lower()
-        lang = key['itemLabel']['xml:lang']
-        r = results
-        for k in keys:
-            r = r.setdefault(k, {})
-        r = r.setdefault('*', {})
-        if lang in LANGUAGES:
-            r.setdefault(lang, label)
-
-    # special cases
-    results['delivery']['covid19']['*'].clear()
-    for k, v in results['delivery']['*'].items():
-        results['delivery']['covid19']['*'][k] = v + ' (COVID19)'
-
-    results['opening_hours']['covid19']['*'].clear()
-    for k, v in results['opening_hours']['*'].items():
-        results['opening_hours']['covid19']['*'][k] = v + ' (COVID19)'
-
+    results = collections.OrderedDict(PRESET_KEYS)
+    for key, entries in groupby(response["results"]["bindings"], key=lambda b: b["key"]["value"]):
+        results[key] = {
+            e["language"]["value"]: e["itemLabel"]["value"] for e in entries if e["language"]["value"] in LANGUAGES
+        }
     return results
 
 
-def get_tags():
+def get_tags() -> dict[str, str]:
+    start = time.perf_counter()
+    print("sending Wikidata query: SPARQL_TAGS_REQUEST .. can take up to 5min!")
+    response = send_wikidata_query(SPARQL_TAGS_REQUEST, timeout=300)
+    print(f"  duration: {time.perf_counter() - start:.2f} sec")
     results = collections.OrderedDict()
-    response = send_wikidata_query(SPARQL_TAGS_REQUEST)
-    for tag in response['results']['bindings']:
-        tag_names = tag['tag']['value'].split(':')[1].split('=')
-        if len(tag_names) == 2:
-            tag_category, tag_type = tag_names
-        else:
-            tag_category, tag_type = tag_names[0], ''
-        label = tag['itemLabel']['value'].lower()
-        lang = tag['itemLabel']['xml:lang']
-        if lang in LANGUAGES:
-            results.setdefault(tag_category, {}).setdefault(tag_type, {}).setdefault(lang, label)
+    for key, entries in groupby(response["results"]["bindings"], key=lambda b: b["tag"]["value"]):
+        results[key] = {
+            e["language"]["value"]: e["itemLabel"]["value"] for e in entries if e["language"]["value"] in LANGUAGES
+        }
     return results
-
-
-def optimize_data_lang(translations):
-    language_to_delete = []
-    # remove "zh-hk" entry if the value is the same as "zh"
-    # same for "en-ca" / "en" etc...
-    for language in translations:
-        if '-' in language:
-            base_language = language.split('-')[0]
-            if translations.get(base_language) == translations.get(language):
-                language_to_delete.append(language)
-
-    for language in language_to_delete:
-        del translations[language]
-    language_to_delete = []
-
-    # remove entries that have the same value than the "en" entry
-    value_en = translations.get('en')
-    if value_en:
-        for language, value in translations.items():
-            if language != 'en' and value == value_en:
-                language_to_delete.append(language)
-
-    for language in language_to_delete:
-        del translations[language]
-
-
-def optimize_tags(data):
-    for v in data.values():
-        for translations in v.values():
-            optimize_data_lang(translations)
-    return data
-
-
-def optimize_keys(data):
-    for k, v in data.items():
-        if k == '*':
-            optimize_data_lang(v)
-        elif isinstance(v, dict):
-            optimize_keys(v)
-    return data
 
 
 if __name__ == '__main__':
     set_timeout_for_thread(60)
     result = {
-        'keys': optimize_keys(get_keys()),
-        'tags': optimize_tags(get_tags()),
+        'keys': get_keys(),
+        'tags': get_tags(),
     }
     with DATA_FILE.open('w', encoding="utf8") as f:
-        json.dump(result, f, indent=4, sort_keys=True, ensure_ascii=False)
+        json.dump(result, f, indent=2, sort_keys=True, ensure_ascii=False)
