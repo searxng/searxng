@@ -164,7 +164,7 @@ def parse_news(data):
     for item in eval_xpath_list(
         dom, "//div[contains(@class, 'sds-comps-base-layout') and contains(@class, 'sds-comps-full-layout')]"
     ):
-        title = extract_text(eval_xpath(item, ".//span[contains(@class, 'sds-comps-text-type-headline1')]/text()"))
+        title = extract_text(eval_xpath(item, ".//span[contains(@class, 'sds-comps-text-type-headline1')]"))
 
         url = eval_xpath_getindex(item, ".//a[@href and @nocr='1']/@href", 0)
 
