@@ -58,6 +58,9 @@ def run_robot_tests(tests):
         ) as browser:
             errors = []
             browser.driver.script.add_javascript_error_handler(errors.append)
+            browser.driver.script.add_console_message_handler(
+                lambda entry: errors.append(entry) if entry.level == 'error' else None
+            )
             test(browser)
             for err in errors:
                 js_errors.append(f'{test.__name__}: {err.text}')
