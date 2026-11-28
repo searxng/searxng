@@ -282,7 +282,7 @@ def highlight_content(content, query):
             queries.extend(re.findall(regex_highlight_cjk(qs), content, flags=re.I | re.U))
     if len(queries) > 0:
         regex = re.compile("|".join(map(regex_highlight_cjk, queries)))
-        return regex.sub(lambda match: f'<span class="highlight">{match.group(0)}</span>'.replace('\\', r'\\'), content)
+        return regex.sub(lambda match: f'<span class="highlight">{match.group(0)}</span>', content)
     return content
 
 
