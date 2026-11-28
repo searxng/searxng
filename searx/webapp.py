@@ -47,7 +47,7 @@ from flask_babel import (
 )
 
 import searx
-from searx.extended_types import sxng_request
+from searx.extended_types import sxng_request, has_request, set_request, reset_request, SXNG_Request
 from searx import (
     logger,
     get_setting,
@@ -153,7 +153,8 @@ app.secret_key = settings['server']['secret_key']
 
 def get_locale():
     locale = localeselector()
-    logger.debug("%s uses locale `%s`", urllib.parse.quote(sxng_request.url), locale)
+    if has_request():  # False outside request_scope -> falls back to default locale
+        logger.debug("%s uses locale `%s`", urllib.parse.quote(sxng_request.url), locale)
     return locale
 
 
@@ -476,6 +477,18 @@ def render(template_name: str, **kwargs):
     sxng_request.render_time += default_timer() - start_time  # pylint: disable=assigning-non-slot
 
     return result
+
+
+@app.before_request
+def _bind_sxng_request() -> None:
+    flask.g.sxng_request_token = set_request(SXNG_Request.from_flask_request(flask.request))
+
+
+@app.teardown_request
+def _unbind_sxng_request(_exc) -> None:
+    token = flask.g.pop("sxng_request_token", None)
+    if token is not None:
+        reset_request(token)
 
 
 @app.before_request

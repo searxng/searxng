@@ -25,7 +25,7 @@ class AnswererTest(SearxTestCase):
     @parameterized.expand(searx.answerers.STORAGE.answerer_list)
     def test_unicode_input(self, answerer_obj: searx.answerers.Answerer):
 
-        with self.app.test_request_context():
+        with self.scoped_request():
             sxng_request.preferences = self.pref
 
             unicode_payload = "árvíztűrő tükörfúrógép"

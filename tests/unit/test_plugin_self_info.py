@@ -125,7 +125,7 @@ class PluginIPSelfInfo(SearxTestCase):
 
         query = "user-agent"
 
-        with self.app.test_request_context():
+        with self.scoped_request():
             sxng_request.preferences = self.pref
             sxng_request.user_agent = "Dummy agent"  # type: ignore
             answer = Answer(answer=gettext("Your user-agent is: ") + "Dummy agent")

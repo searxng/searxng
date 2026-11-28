@@ -49,7 +49,7 @@ class PluginHashTest(SearxTestCase):
 
     @parameterized.expand(query_res)
     def test_hash_digest_new(self, query: str, res: str):
-        with self.app.test_request_context():
+        with self.scoped_request():
             sxng_request.preferences = self.pref
             answer = Answer(answer=res)
 
@@ -57,7 +57,7 @@ class PluginHashTest(SearxTestCase):
             self.assertIn(answer, search.result_container.answers)
 
     def test_pageno_1_2(self):
-        with self.app.test_request_context():
+        with self.scoped_request():
             sxng_request.preferences = self.pref
             query, res = query_res[0]
             answer = Answer(answer=res)

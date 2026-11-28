@@ -3,19 +3,16 @@
 
 __all__ = ["SearchWithPlugins"]
 
-import typing as t
-
 import threading
+import typing as t
 from timeit import default_timer
 from uuid import uuid4
 
-from flask import copy_current_request_context
-
-from searx import logger
-from searx import settings
 import searx.answerers
 import searx.plugins
+from searx import logger, settings
 from searx.engines import load_engines
+from searx.extended_types import bind_request_context
 from searx.external_bang import get_bang_url
 from searx.metrics import initialize as initialize_metrics, counter_inc
 from searx.network import initialize as initialize_network, check_network_configuration
@@ -140,7 +137,7 @@ class Search:
         search_id = str(uuid4())
 
         for engine_name, query, request_params in requests:
-            _search = copy_current_request_context(PROCESSORS[engine_name].search)
+            _search = bind_request_context(PROCESSORS[engine_name].search)
             th = threading.Thread(  # pylint: disable=invalid-name
                 target=_search,
                 args=(query, request_params, self.result_container, self.start_time, self.actual_timeout),
@@ -186,16 +183,9 @@ class SearchWithPlugins(Search):
 
     def __init__(self, search_query: "SearchQuery", request: "SXNG_Request", user_plugins: list[str]):
         super().__init__(search_query)
-        self.user_plugins = user_plugins
+        self.user_plugins: list[str] = user_plugins
         self.result_container.on_result = self._on_result
-        # pylint: disable=line-too-long
-        # get the "real" request to use it outside the Flask context.
-        # see
-        # * https://github.com/pallets/flask/blob/d01d26e5210e3ee4cbbdef12f05c886e08e92852/src/flask/globals.py#L55
-        # * https://github.com/pallets/werkzeug/blob/3c5d3c9bd0d9ce64590f0af8997a38f3823b368d/src/werkzeug/local.py#L548-L559
-        # * https://werkzeug.palletsprojects.com/en/2.0.x/local/#werkzeug.local.LocalProxy._get_current_object
-        # pylint: enable=line-too-long
-        self.request = request._get_current_object()
+        self.request: SXNG_Request = request
 
     def _on_result(self, result):
         return searx.plugins.STORAGE.on_result(self.request, self, result)
