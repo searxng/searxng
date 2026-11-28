@@ -92,7 +92,7 @@ class PluginStorage(SearxTestCase):
 
     def test_hooks(self):
 
-        with self.app.test_request_context():
+        with self.scoped_request():
             sxng_request.preferences = self.pref
             query = ""
 

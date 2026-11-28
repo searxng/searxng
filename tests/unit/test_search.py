@@ -41,7 +41,7 @@ class SearchTestCase(SearxTestCase):
             'test', [EngineRef(PUBLIC_ENGINE_NAME, 'general')], 'en-US', SAFESEARCH, PAGENO, None, None
         )
         search = searx.search.Search(search_query)
-        with self.app.test_request_context('/search'):
+        with self.scoped_request():
             search.search()
         self.assertEqual(search.actual_timeout, 3.0)
 
@@ -51,7 +51,7 @@ class SearchTestCase(SearxTestCase):
             'test', [EngineRef(PUBLIC_ENGINE_NAME, 'general')], 'en-US', SAFESEARCH, PAGENO, None, 5.0
         )
         search = searx.search.Search(search_query)
-        with self.app.test_request_context('/search'):
+        with self.scoped_request():
             search.search()
         self.assertEqual(search.actual_timeout, 3.0)
 
@@ -61,7 +61,7 @@ class SearchTestCase(SearxTestCase):
             'test', [EngineRef(PUBLIC_ENGINE_NAME, 'general')], 'en-US', SAFESEARCH, PAGENO, None, 1.0
         )
         search = searx.search.Search(search_query)
-        with self.app.test_request_context('/search'):
+        with self.scoped_request():
             search.search()
         self.assertEqual(search.actual_timeout, 1.0)
 
@@ -71,7 +71,7 @@ class SearchTestCase(SearxTestCase):
             'test', [EngineRef(PUBLIC_ENGINE_NAME, 'general')], 'en-US', SAFESEARCH, PAGENO, None, 5.0
         )
         search = searx.search.Search(search_query)
-        with self.app.test_request_context('/search'):
+        with self.scoped_request():
             search.search()
         self.assertEqual(search.actual_timeout, 5.0)
 
@@ -81,7 +81,7 @@ class SearchTestCase(SearxTestCase):
             'test', [EngineRef(PUBLIC_ENGINE_NAME, 'general')], 'en-US', SAFESEARCH, PAGENO, None, 15.0
         )
         search = searx.search.Search(search_query)
-        with self.app.test_request_context('/search'):
+        with self.scoped_request():
             search.search()
         self.assertEqual(search.actual_timeout, 10.0)
 
@@ -113,7 +113,7 @@ class SearchTestCase(SearxTestCase):
         )
 
         search = searx.search.Search(search_query)
-        with self.app.test_request_context('/search'):
+        with self.scoped_request():
             results = search.search()
         # This should not redirect
         self.assertIsNone(results.redirect_url)

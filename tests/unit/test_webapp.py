@@ -220,6 +220,28 @@ class ViewsTestCase(SearxTestCase):  # pylint: disable=too-many-public-methods
         self.assertEqual(result.status_code, 200)
         self.assertIn(b'<h1>Engine stats</h1>', result.data)
 
+    def test_metrics_authorization(self):
+        """The metrics endpoint preserves Flask's Basic-auth behavior."""
+        general = searx.settings['general']
+        previous_general = dict(general)
+        general['enable_metrics'] = True
+        general['open_metrics'] = 'secret'
+
+        def restore_general():
+            general.clear()
+            general.update(previous_general)
+
+        self.addCleanup(restore_general)
+
+        result = self.client.get('/metrics')
+        self.assertEqual(result.status_code, 401)
+
+        result = self.client.get('/metrics', headers={'Authorization': 'Basic malformed'})
+        self.assertEqual(result.status_code, 401)
+
+        result = self.client.get('/metrics', headers={'Authorization': 'Basic c2VjcmV0OnNlY3JldA=='})
+        self.assertEqual(result.status_code, 200)
+
     def test_robots_txt(self):
         result = self.client.get('/robots.txt')
         self.assertEqual(result.status_code, 200)
